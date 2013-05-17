@@ -111,7 +111,7 @@ namespace Goteo\Controller {
                         $task->text = "Poner la cuenta PayPal al proyecto <strong>{$project->name}</strong> urgentemente!";
                         $task->url = "/admin/projects/accounts/{$project->id}";
                         $task->done = null;
-                        $task->save();
+                        $task->saveUnique();
 
                     }
 
@@ -1183,6 +1183,7 @@ namespace Goteo\Controller {
 
                 // si ya lleva 3 meses de publicacion, hasta máximo un año
                 if ($from > 90 && $from < 360) {
+                    if ($project->id == 'tuderechoasaber.es') break;
                     //   mirar el tiempo desde la última actualización,
                     $sql = "
                         SELECT
@@ -1393,10 +1394,6 @@ namespace Goteo\Controller {
                     unset($log);
                     echo \vsprintf($log_text, array($call->name)).'<br />';
                 }
-
-
-
-
             }
 
 

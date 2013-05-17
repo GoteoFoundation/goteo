@@ -100,8 +100,8 @@ namespace Goteo\Controller\Admin {
                                     ));
                                 $log->doAdmin('call');
 
-                                // si la convocatoria está en campaña, feed público
-                                if ($call->status == 4) {
+                                // si la convocatoria está en campaña ( y el proyecto también), feed público
+                                if ($call->status == 4 && $projectData->status == 3) {
                                     $log->populate($projectData->name, '/project/'.$projectData->id,
                                         \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
                                             Feed::item('call', $call->name, $call->id))

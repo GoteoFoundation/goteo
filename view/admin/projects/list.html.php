@@ -75,7 +75,7 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                     <input type="submit" name="filter" value="Buscar">
                 </td>
                 <td>
-                    <label for="order-filter">Ver por:</label><br />
+                    <label for="order-filter">Ordenar por:</label><br />
                     <select id="order-filter" name="order" onchange="document.getElementById('filter-form').submit();">
                     <?php foreach ($this['orders'] as $orderId=>$orderName) : ?>
                         <option value="<?php echo $orderId; ?>"<?php if ($filters['order'] == $orderId) echo ' selected="selected"';?>><?php echo $orderName; ?></option>

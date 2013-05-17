@@ -280,6 +280,8 @@ namespace Goteo\Controller {
                          * Fin tratamiento imagen Vip
                          */
 
+                        // ojo si es receptor de pruebas, no machacarlo
+                        if (in_array('15', $user->interests)) $_POST['user_interests'][] = '15';
                         $user->interests = $_POST['user_interests'];
 
                         //tratar webs existentes
@@ -410,7 +412,8 @@ namespace Goteo\Controller {
                             'updates',
                             'threads',
                             'rounds',
-                            'mailing'
+                            'mailing',
+                            'email'
                         );
 
                         $preferences = array();

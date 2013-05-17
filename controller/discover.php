@@ -167,7 +167,7 @@ namespace Goteo\Controller {
 
             // Resumen de busqueda en aviso azul
             $categories = Model\Category::getList();  // categorias que se usan en proyectos
-            $locs = \Goteo\Library\Location::getList();  //localizaciones de royectos
+            $locs = Model\Location::getProjLocs();  //localizaciones de royectos
             $icons = Model\Icon::getList(); // iconos que se usan en proyectos
 
 
@@ -192,7 +192,7 @@ namespace Goteo\Controller {
                 $locations = \explode(',', $call->call_location);
 
                 // solo ponemos las localidades que existan en proyectos
-                $existing_locations = \Goteo\Library\Location::getList();
+                $existing_locations = Model\Location::getProjLocs();
 
                 $txt_locations = array();
                 foreach ($locations as $location ) {

@@ -3,6 +3,47 @@
 namespace {
 
     /**
+     * Obtiene dirección ip del cliente
+     * @return ip address
+     */
+    function myip() {
+		if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			   $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+               // si 'HTTP_X_FORWARDED_FOR' lleva una coma, la conexión es a través de  un proxy sin anonimato,
+               // en este caso la id del proxy viene en  [HTTP_X_PROXY_ID] y los detalles en HTTP_VIA
+               // basta que el servidor sea un poco anónimo para no tener esta info aquí
+               if (strpos($ip, ',') > 0) {
+                   // PROXY
+                   /*
+                   @mail('proxy_alert@doukeshi.org', 'Acceso mediante proxy en '. SITE_URL, 'Detalles: 
+SEVER
+----------------
+'.print_r($_SERVER, 1).'
+    
+SESSION
+----------------
+'.print_r($_SESSION, 1));
+                    */
+                   
+                   // nos quedamos con la primera parte
+                   $parts = explode(',', $ip);
+                   $ip = strim($parts[1]); // temporalmente la segunda para investigar
+               }
+			}
+			elseif (isset($_SERVER['HTTP_VIA'])) {
+			   $ip = $_SERVER['HTTP_VIA'];
+			}
+			elseif (isset($_SERVER['REMOTE_ADDR'])) {
+			   $ip = $_SERVER['REMOTE_ADDR'];
+			}
+			else {
+			   $ip = NULL;
+			}
+		return $ip;
+    }
+    
+    
+    /**
      * Traza información sobre el recurso especificado de forma legible.
      *
     * @param    type mixed  $resource   Recurso

@@ -31,13 +31,18 @@ $accounts = $this['accounts'];
     </p>
 
     <p>
-        <label for="account-paypal">Cuenta paypal:</label><br />
+        <label for="account-paypal">Cuenta PayPal:</label><br />
         <input type="text" id="account-paypal" name="paypal" value="<?php echo $accounts->paypal; ?>" style="width: 475px;"/>
     </p>
 
     <p>
-        <label for="account-paypal_owner">Titular de la cuenta paypal:</label><br />
+        <label for="account-paypal_owner">Titular de la cuenta PayPal:</label><br />
         <input type="text" id="account-paypal_owner" name="paypal_owner" value="<?php echo $accounts->paypal_owner; ?>" style="width: 475px;"/>
+    </p>
+
+    <p>
+        <label for="account-allowpp">Permite uso de PayPal: </label>
+        <input type="checkbox" id="account-allowpp" name="allowpp" value="1"<?php if ($accounts->allowpp) echo ' checked="checked"'; ?>/>
     </p>
 
         <input type="submit" name="save-accounts" value="Guardar" />

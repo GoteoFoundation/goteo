@@ -9,7 +9,6 @@ if (NODE_ID != GOTEO_NODE) {
 }
 
 ?>
-<!-- REMOTE ADDR : <?php echo $_SERVER['REMOTE_ADDR'] ?> -->
 <?php include 'view/header/lang.html.php' ?> 
 
 

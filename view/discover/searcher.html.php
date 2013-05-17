@@ -2,11 +2,11 @@
 
 use Goteo\Model\Category,
     Goteo\Model\Icon,
-    Goteo\Library\Location,
+    Goteo\Model\Location,
     Goteo\Library\Text;
 
 $categories = Category::getList();  // categorias que se usan en proyectos
-$locations = Location::getList();  //localizaciones de royectos
+$locations = Location::getProjLocs();  //localizaciones de royectos
 $rewards = Icon::getList(); // iconos que se usan en proyectos
 
 $params = $this['params'];

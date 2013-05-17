@@ -29,7 +29,7 @@ if (count($patrons) > 4) :  ?>
             <div class="row">
             <?php $c=1; foreach ($patrons as $patron) {
                 echo new View('view/user/widget/patron.html.php', array('user' => $patron));
-                if ($c == 4 && $c != count($patrons)) { echo '</div><div class="row">'; $c=0; }
+                if ( ($c % 4) == 0 && $c != count($patrons)) { echo '</div><div class="row">'; }
             $c++; } ?>
             </div>
         </div>

@@ -6,8 +6,8 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Model,
-		Goteo\Library\Feed,
-		Goteo\Library\Text,
+        Goteo\Library\Feed,
+        Goteo\Library\Text,
         Goteo\Library\Mail,
         Goteo\Library\Template,
         Goteo\Library\Message,
@@ -26,14 +26,20 @@ namespace Goteo\Controller {
             $message = '';
 
             $projectData = Model\Project::get($project);
-            $methods = Model\Invest::methods();
+            //$methods = Model\Invest::methods();
+            // Métodos habilitados en este entorno
+            // en real solamente tpv, en beta también cash
+            $methods = array(
+                'tpv' => 'tpv',
+                'cash' => 'cash'
+            );
 
             // si no está en campaña no pueden esta qui ni de coña
             if ($projectData->status != 3) {
                 throw new Redirection('/project/'.$project, Redirection::TEMPORARY);
             }
 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $errors = array();
                 $los_datos = $_POST;
@@ -213,7 +219,8 @@ namespace Goteo\Controller {
                 }
             }
 
-            if ($confirm->method == 'paypal') {
+            // Paypal solo disponible si activado
+            if ($confirm->method == 'paypal' && Model\Project\Account::getAllowpp($project)) {
 
                 // hay que cambiarle el status a 0
                 $confirm->setStatus('0');
@@ -271,10 +278,14 @@ namespace Goteo\Controller {
                 unset($log);
             }
 
+            // texto recompensa
+            $rewards = $confirm->rewards;
+            array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
+            $txt_rewards = implode(', ', $rewards);
+
             // email de agradecimiento al cofinanciador
             // primero monto el texto de recompensas
             if ($confirm->resign) {
-                $txt_rewards = Text::get('invest-resign');
                 // Plantilla de donativo segun la ronda
                 if ($projectData->round == 2) {
                     $template = Template::get(36); // en segunda ronda
@@ -282,9 +293,6 @@ namespace Goteo\Controller {
                     $template = Template::get(28); // en primera ronda
                 }
             } else {
-                $rewards = $confirm->rewards;
-                array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
-                $txt_rewards = implode(', ', $rewards);
                 // plantilla de agradecimiento segun la ronda
                 if ($projectData->round == 2) {
                     $template = Template::get(34); // en segunda ronda

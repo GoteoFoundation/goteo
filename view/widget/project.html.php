@@ -1,5 +1,5 @@
 <?php
-//vista para poner un idget de proyecto en un iframe
+//vista para poner un widget de proyecto en un iframe
 
 use Goteo\Core\View;
 

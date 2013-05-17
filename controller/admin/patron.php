@@ -11,7 +11,7 @@ namespace Goteo\Controller\Admin {
 
     class Patron {
 
-        public static function process ($action = 'list', $id = null, $flag = null) {
+        public static function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
             

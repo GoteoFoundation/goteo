@@ -23,6 +23,8 @@ if ($this['global'] === true) {
 if (isset($this['investor']) && is_object($this['investor'])) {
     $investor = $this['investor'];
     $invest = Invest::supported($investor->id, $project->id);
+    // si no ha aportado, que no ponga el avatar
+    if (empty($invest->total)) unset($this['investor']);
 }
 
 ?>
@@ -57,7 +59,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         } ?>
 
         <?php if (isset($this['investor'])) : ?>
-            <div class="investor"><img src="<?php echo $investor->avatar->getLink(34, 34, 1) ?>" alt="<?php echo $investor->name ?>" /><div class="invest">Mi aporte<br /><span class="amount"><?php echo $invest->total ?></span></div></div>
+            <div class="investor"><img src="<?php echo $investor->avatar->getLink(34, 34, 1) ?>" alt="<?php echo $investor->name ?>" /><div class="invest"><?php echo Text::get('proj-widget-my_invest'); ?><br /><span class="amount"><?php echo $invest->total ?></span></div></div>
         <?php endif; ?>
 
         <?php if ($project->image instanceof Image): ?>

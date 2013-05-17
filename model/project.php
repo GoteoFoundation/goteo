@@ -331,7 +331,7 @@ namespace Goteo\Model {
 				return $project;
 
 			} catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
+				throw new \Goteo\Core\Exception($e->getMessage());
 			} catch(\Goteo\Core\Error $e) {
                 throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
 			}
@@ -353,7 +353,7 @@ namespace Goteo\Model {
 				return $project;
 
 			} catch(\PDOException $e) {
-				throw \Goteo\Core\Exception($e->getMessage());
+				throw new \Goteo\Core\Exception($e->getMessage());
 			}
 		}
 
@@ -440,7 +440,7 @@ namespace Goteo\Model {
                 return $project;
 
             } catch(\PDOException $e) {
-                    throw \Goteo\Core\Exception($e->getMessage());
+				throw new \Goteo\Core\Exception($e->getMessage());
             }
         }
 
@@ -1593,6 +1593,10 @@ namespace Goteo\Model {
                 self::query("DELETE FROM image WHERE id IN (SELECT image FROM project_image WHERE project = ?)", array($this->id));
                 self::query("DELETE FROM project_image WHERE project = ?", array($this->id));
                 self::query("DELETE FROM message WHERE project = ?", array($this->id));
+                self::query("DELETE FROM project_account WHERE project = ?", array($this->id));
+                self::query("DELETE FROM review WHERE project = ?", array($this->id));
+                self::query("DELETE FROM call_project WHERE project = ?", array($this->id));
+                self::query("DELETE FROM project_lang WHERE id = ?", array($this->id));
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
                 self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
@@ -1648,7 +1652,7 @@ namespace Goteo\Model {
                             return false;
                         }
                     } else {
-                        throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
+                        throw new \Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
                     }
                 } elseif (!empty ($newid)) {
 //                   echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
@@ -1708,6 +1712,7 @@ namespace Goteo\Model {
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE promote SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE patron SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
 
@@ -1736,7 +1741,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch (\PDOException $e) {
-                throw new Goteo\Core\Exception('Fallo rebase id temporal. ' . \trace($e));
+                throw new \Goteo\Core\Exception('Fallo rebase id temporal. ' . \trace($e));
             }
 
         }
@@ -2040,11 +2045,11 @@ namespace Goteo\Model {
                 WHERE project.status = 3
                 AND (
                     (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 35
-                        AND passed IS NULL
+                        AND (passed IS NULL OR passed = '0000-00-00')
                         )
                     OR
                     (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 75
-                        AND success IS NULL
+                        AND (success IS NULL OR success = '0000-00-00')
                         )
                     )
                 ORDER BY name ASC

@@ -146,7 +146,7 @@ namespace Goteo\Model {
          * Los datos que sacamos: usuario, proyecto, cantidad, estado de proyecto, estado de aporte, fecha de aporte, tipo de aporte, campaña
          * .... anonimo, resign, etc...
          */
-        public static function getList ($filters = array(), $node = null) {
+        public static function getList ($filters = array(), $node = null, $limited = false) {
 
             $list = array();
             $values = array();
@@ -291,6 +291,12 @@ namespace Goteo\Model {
                         $sqlFilter
                     ORDER BY invest.id DESC
                     ";
+            
+            if ($limited > 0 && is_numeric($limited)) {
+                $sql .= "LIMIT $limited";
+            }
+            
+            
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item;

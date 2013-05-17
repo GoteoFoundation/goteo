@@ -297,6 +297,35 @@ namespace Goteo\Model {
             return $list;
         }
 
+        /*
+         * Lista de proyectos mensajeados por un usuario (proyectos en los que el usuario es participante)
+         */
+        public static function getMesseged($user, $publicOnly = true)
+        {
+            $projects = array();
+
+            $sql = "SELECT project.id
+                    FROM  project
+                    INNER JOIN message
+                        ON project.id = message.project
+                        AND message.user = ?
+                    WHERE project.status < 7
+                    ";
+            if ($publicOnly) {
+                $sql .= "AND project.status >= 3
+                    ";
+            }
+            $sql .= "GROUP BY project.id
+                    ORDER BY name ASC
+                    ";
+
+            $query = self::query($sql, array($user));
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $proj) {
+                $projects[] = \Goteo\Model\Project::getMedium($proj->id);
+            }
+            return $projects;
+        }
+
     }
     
 }

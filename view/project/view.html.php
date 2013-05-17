@@ -174,25 +174,10 @@ include 'view/prologue.html.php' ?>
                         if (!empty($step) && in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) {
 
                             switch ($step) {
-                                case 'start':
-                                    echo
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step));
-                                    break;
-                                case 'confirm':
-                                    echo
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step));
-                                    break;
-                                case 'login':
-                                    echo
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step));
-                                    break;
                                 case 'continue':
                                     echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest_redirect.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step));
+                                        new View('view/project/widget/invest_redirect.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp']));
                                     break;
 									
                                 case 'ok':
@@ -205,7 +190,12 @@ include 'view/prologue.html.php' ?>
                                 case 'fail':
                                     echo
                                         new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => User::get($_SESSION['user']->id))),
-                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => User::getPersonal($_SESSION['user']->id)));
+                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => User::getPersonal($_SESSION['user']->id), 'allowpp'=> $this['allowpp']));
+                                    break;
+                                default:
+                                    echo
+                                        new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
+                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp']));
                                     break;
                             }
                         } else {

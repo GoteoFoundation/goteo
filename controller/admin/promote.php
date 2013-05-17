@@ -11,7 +11,7 @@ namespace Goteo\Controller\Admin {
 
     class Promote {
 
-        public static function process ($action = 'list', $id = null, $flag = null) {
+        public static function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
 
             $errors = array();
 

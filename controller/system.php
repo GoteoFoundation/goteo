@@ -6,14 +6,45 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Model,
+		Goteo\Library\Geoloc,
 		Goteo\Library\Text,
 		Goteo\Library\Feed;
 
 	class System extends \Goteo\Core\Controller {
 
 
+        public function test () {
+            
+            echo new View('view/system/test.html.php');
+        }
+
         public function whoami () {
             die(\trace($_SESSION['user']));
+        }
+
+        public function whereami ($type = '') {
+            
+            switch ($type) {
+                case 'c':
+                    // POR COORDENADAS
+                    $geoloc = Geoloc::searchLoc(array('latlng'=>"39.588757,-6.05896"));
+                    echo \trace($geoloc);
+                    break;
+
+                case 'a':
+                    //  POR DIRECCION
+                    $geoloc = Geoloc::searchLoc(array('address'=>"España"));
+                    echo \trace($geoloc);
+                    break;
+                
+                default:
+                    echo new View('view/prologue.html.php');
+                    echo new View('view/system/geoloc.html.php');
+                    echo new View('view/epilogue.html.php');
+                    break;
+            }
+            
+            die;
         }
 
         public function index ($tool = 'index') {

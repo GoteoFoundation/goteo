@@ -549,6 +549,9 @@ namespace Goteo\Controller {
 
                     $viewData['show'] = 'supporters';
 
+                    // si permite uso de paypal
+                    $viewData['allowpp'] = Model\Project\Account::getAllowpp($id);
+                    
                     /* pasos de proceso aporte
                      *
                      * 1, 'start': ver y seleccionar recompensa (y cantidad)

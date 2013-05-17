@@ -127,9 +127,7 @@ namespace Goteo\Controller\Admin {
                         }
                         $action = $editing ? 'edit' : 'list';
 
-                        // piñon para que no haga feed de nodo andalucía
-                        if ($post->author == 'goteoandalucia') { // nada
-                        } elseif ((bool) $post->publish) {
+                        if ((bool) $post->publish) {
                             // Evento Feed
                             $log = new Feed();
                             $log->setTarget('goteo', 'blog');

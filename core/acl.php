@@ -84,12 +84,21 @@ namespace Goteo\Core {
 
         public static function allow($url, $node = \GOTEO_NODE, $role = '*', $user = '*') {
             return static::addperms($url, $node, $role, $user, true);
-
         }
 
         public static function deny($url, $node = \GOTEO_NODE, $role = '*', $user = '*') {
 
-            //@TODO Ojo, si ya tiene un permiso, se elimina el permiso en vez de añadir una denegacion
+            //si ya tiene un permiso, se elimina el permiso en vez de añadir una denegacion
+            if (!empty($user) && $user != '*') {
+                $values = array(
+                    ':user' => $user,
+                    ':url' => $url
+                );
+                $sql = "SELECT id FROM acl WHERE user_id = :user AND url = :url AND allow = 1";
+                $query = Model::query($sql, $values);
+                if ($query->rowCount() > 0)
+                    return (bool) Model::query("DELETE FROM acl WHERE user_id = :user AND url = :url", $values);
+            }
 
             return static::addperms($url, $node, $role, $user, false);
         }

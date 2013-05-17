@@ -4,6 +4,13 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $call = $this['call'];
+
+foreach ($call->projects as $key => $proj) {
+
+    if ($proj->status < 3) {
+        unset($call->projects[$key]);
+    }
+}
 ?>
 <h3><?php echo Text::get('call-splash-selected_projects-header') ?></h3>
 

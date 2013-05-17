@@ -346,6 +346,14 @@ body.home.patron div#main div.patron-profile div.info p {
     margin: 0px 0px 10px 0px;
 }
 
+body.home.patron div#main div.patron-profile div.info p a {
+    font-size: 16px !important;
+}
+
+body.home.patron div#main div.patron-profile div.info p a:hover {
+    color: #20B2B3 !important;
+}
+
 body.home.patron div#main div.patron-profile div.info ul {
     list-style: none;
     padding: 0;

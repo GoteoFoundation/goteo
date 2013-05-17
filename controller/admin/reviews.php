@@ -220,6 +220,9 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
+            // si hay proyecto filtrado, no filtramos estado
+            if (!empty($filters['project'])) unset($filters['status']);
+
             $list = Model\Review::getList($filters, $node);
             $projects = Model\Review::getProjects($node);
             $status = array(

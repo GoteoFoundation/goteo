@@ -5,22 +5,21 @@
  */
 
 namespace Goteo\Model {
-    
+
     class Task extends \Goteo\Core\Model {
 
         public
-            $id,
-            $node,
-            $text,
-            $url,
-            $datetime,
-            $done = null;
-
+        $id,
+        $node,
+        $text,
+        $url,
+        $datetime,
+        $done = null;
 
         /**
          * Obtener los datos de una tarea
          */
-        static public function get ($id) {
+        static public function get($id) {
             try {
                 $query = static::query("SELECT * FROM task WHERE id = ?", array($id));
                 $item = $query->fetchObject(__CLASS__);
@@ -28,8 +27,8 @@ namespace Goteo\Model {
                     $item->user = \Goteo\Model\User::getMini($item->done);
                 }
                 return $item;
-            } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+            } catch (\PDOException $e) {
+                throw new \Goteo\Core\Exception($e->getMessage());
             }
         }
 
@@ -39,7 +38,7 @@ namespace Goteo\Model {
          * @param  bool $visible    true|false
          * @return mixed            Array de objetos de tareas
          */
-        public static function getAll ($filters = array(), $node = null, $undoneOnly = false ) {
+        public static function getAll($filters = array(), $node = null, $undoneOnly = false) {
 
             $values = array();
 
@@ -71,7 +70,7 @@ namespace Goteo\Model {
                 $and = " AND";
             }
             if ($undoneOnly) {
-                $sqlFilter .= "$and done IS NULL";
+                $sqlFilter .= "$and (done IS NULL OR done = '')";
                 $and = " AND";
             }
 
@@ -94,44 +93,62 @@ namespace Goteo\Model {
         }
 
         /**
-		 * Guardar.
+         * Guardar.
          * @param   type array  $errors     Errores devueltos pasados por referencia.
          * @return  type bool   true|false
          */
-         public function save (&$errors = array()) {
-             if (!$this->validate()) return false;
+        public function save(&$errors = array()) {
+            if (!$this->validate())
+                return false;
 
-            $values = array(':id'=>$this->id, ':node'=>$this->node, ':text'=>$this->text, ':url'=>$this->url, ':done'=>$this->done);
+            $values = array(':id' => $this->id, ':node' => $this->node, ':text' => $this->text, ':url' => $this->url, ':done' => $this->done);
 
-			try {
-	            $sql = "REPLACE INTO task (id, node, text, url, done) VALUES(:id, :node, :text, :url, :done)";
-				self::query($sql, $values);
-				return true;
-			} catch(\PDOException $e) {
-				$errors[] = "HA FALLADO!!! " . $e->getMessage();
-				return false;
-			}
-         }
+            try {
+                $sql = "REPLACE INTO task (id, node, text, url, done) VALUES(:id, :node, :text, :url, :done)";
+                self::query($sql, $values);
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                return false;
+            }
+        }
 
         /**
          * Validar.
          * @param   type array  $errors     Errores devueltos pasados por referencia.
          * @return  type bool   true|false
          */
-        public function validate (&$errors = array()) {
+        public function validate(&$errors = array()) {
             if (empty($this->node)) {
                 $this->node = \GOTEO_NODE;
             }
             return true;
         }
 
+        /*
+         * Guarda solo si no hay una tarea con esa url
+         */
+        public function saveUnique(&$errors = array()) {
+            if (empty($this->node)) {
+                $this->node = \GOTEO_NODE;
+            }
+
+            $query = static::query("SELECT id FROM task WHERE url = :url", array(':url'=>$this->url));
+            $exists = $query->fetchColumn();
+            if (!empty($exists)) {
+                // ya existe
+                return true;
+            } else {
+                return $this->save($errors);
+            }
+        }
 
         /**
          * Este método marca el usuario en el campo Done
          */
-        public function setDone (&$errors = array()) {
+        public function setDone(&$errors = array()) {
 
-            $values = array(':id'=>$this->id, ':done'=>$_SESSION['user']->id);
+            $values = array(':id' => $this->id, ':done' => $_SESSION['user']->id);
 
             try {
                 $sql = "UPDATE task SET `done` = :done WHERE id = :id";
@@ -141,19 +158,18 @@ namespace Goteo\Model {
                     $errors[] = 'Algo ha fallado';
                     return false;
                 }
-            } catch(\PDOException $e) {
+            } catch (\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
-
         }
 
         /**
          * Este método marca el usuario en el campo Done
          */
-        public function remove (&$errors = array()) {
+        public function remove(&$errors = array()) {
 
-            $values = array(':id'=>$this->id);
+            $values = array(':id' => $this->id);
 
             try {
                 $sql = "DELETE FROM task WHERE id = :id";
@@ -163,14 +179,12 @@ namespace Goteo\Model {
                     $errors[] = 'Algo ha fallado';
                     return false;
                 }
-            } catch(\PDOException $e) {
+            } catch (\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
-
         }
 
-        
-
     }
+
 }

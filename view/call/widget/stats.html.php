@@ -56,6 +56,19 @@ $call = $this['call'];
                 </dd>
             </dl>
         </div>
+    
+        <?php if (!empty($call->call_location)) : ?>
+            <dl class="block location">
+                <dt><?php echo Text::get('call-splash-location-header') ?></dt>
+                <dd><?php echo Text::GmapsLink($call->call_location); ?></dd>
+            </dl>
+        <?php endif; ?>
+
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button info long" ><?php echo Text::get('call-splash-more_info-button') ?></a>
+        <?php if (!$call->expired) : // sigue abierta   ?>
+            <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red join" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
+        <?php endif; ?>
+            
     <?php else : //en campaña   ?>
         <div class="row">
             <?php if (!empty($call->amount)) : //con dinero   ?>
@@ -114,22 +127,17 @@ $call = $this['call'];
                 </dl>
             <?php endif; ?>
         </div>
-    <?php endif; ?>
 
-    <?php if (!empty($call->call_location)) : ?>
-        <dl class="block location">
-            <dt><?php echo Text::get('call-splash-location-header') ?></dt>
-            <dd><?php echo Text::GmapsLink($call->call_location); ?></dd>
-        </dl>
-    <?php endif; ?>
-
-    <?php if ($call->status == 3) : //inscripcion   ?>
-        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button info long" ><?php echo Text::get('call-splash-more_info-button') ?></a>
-        <?php if (!$call->expired) : // sigue abierta   ?>
-            <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red join" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
+        <?php if (!empty($call->call_location)) : ?>
+            <dl class="block location">
+                <dt><?php echo Text::get('call-splash-location-header') ?></dt>
+                <dd><?php echo Text::GmapsLink($call->call_location); ?></dd>
+            </dl>
         <?php endif; ?>
-    <?php else : // ver proyectos  ?>
+
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button info"><?php echo Text::get('call-splash-more_info-button') ?></a>
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
+        
     <?php endif; ?>
+        
 </div>
