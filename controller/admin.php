@@ -1117,7 +1117,8 @@ namespace Goteo\Controller {
                                 'projects' => $options['projects'], // proyectos del nodo
                                 'reviews' => $options['reviews'], // revisiones de proyectos del nodo
                                 'translates' => $options['translates'], // traducciones de proyectos del nodo
-                                'invests' => $options['invests']
+                                'invests' => $options['invests'],
+                                'patron' => $options['patron']
                             )
                         ),
                         'users' => array(
