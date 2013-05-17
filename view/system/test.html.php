@@ -25,7 +25,7 @@ include 'view/prologue.html.php';
 /*
  * Nos da, using: Win32, Win64, iPad, iPhone, iPod, MacIntel, MacPPC, Linux, Linux i686, Linux x86_64
  * 
- * 
+ * Problema: para samsung, tanto smartphone como tablet da: linuxarmv7|
  * 
  * 
  * 
