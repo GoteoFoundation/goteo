@@ -220,6 +220,7 @@ body.node.home div#node-patrons div.patron,
 body.home div#main div.patron {
     display: inline-block;
     width: 185px;
+    position: relative;
 }
 body.node.home div#node-patrons div.patron + div.patron,
 body.home div#main div.patron + div.patron {
