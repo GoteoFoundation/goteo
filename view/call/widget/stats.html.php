@@ -25,7 +25,7 @@ $call = $this['call'];
             </dl>
             <dl class="block last applied">
                 <dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>
-                <dd><?php echo count($call->projects) ?></dd>
+                <dd><?php echo $call->applied ?></dd>
             </dl>
         </div>
         <div class="row">
@@ -102,7 +102,7 @@ $call = $this['call'];
         <div class="row">
             <dl class="block selected">
                 <dt><?php echo Text::get('call-splash-selected_projects-header') ?></dt>
-                <dd><?php echo count($call->projects) ?></dd>
+                <dd><?php echo $call->applied ?></dd>
             </dl>
             <dl class="block processing">
                 <dt><?php echo Text::get('call-splash-runing_projects-header') ?></dt>
