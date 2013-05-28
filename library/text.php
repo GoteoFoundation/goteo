@@ -635,6 +635,15 @@ namespace Goteo\Library {
 
 		}
 
+        /*
+         * Método para ocultar parámetros de una url
+         */
+        public static function cutUrlParams($url) {
+            $url = preg_replace('^http(?<https>s)?://^', '', $url);
+            return substr($url, 0, strpos($url, '/'));
+        }
+        
+        
 	}
     
 }
