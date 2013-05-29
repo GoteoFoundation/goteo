@@ -97,7 +97,10 @@ namespace Goteo\Model {
 
                 case "applied":
                     // número de proyectos presentados a la campaña
-                    return $this->getApplied();
+                    $applied = array(
+                        'unia-capital-riego' => 44
+                    );
+                    return (isset($applied[$this->id])) ? $applied[$this->id] : $this->getApplied();
                     break;
 
                 default:
@@ -239,7 +242,8 @@ namespace Goteo\Model {
                 foreach ($call->projects as $proj) {
                     if (\Goteo\Model\Project::isSuccessful($proj->id)) {
                         $call->success_projects++;
-                    } elseif ($proj->status == 3) {
+                    } 
+                    if ($proj->status == 3) {
                         $call->runing_projects++;
                     }
                 }

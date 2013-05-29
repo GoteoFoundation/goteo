@@ -23,7 +23,11 @@ include 'view/call/header.html.php';
                 <a href="/call/<?php echo $call->id ?>/info"><?php
             if ($call->status == 3) {
                 // inscripción
-                echo Text::get('call-splash-searching_projects', $call->user->name);
+                echo empty($call->amount) ?
+                    Text::recorta($call->resources, 200)
+                    :
+                    Text::get('call-splash-searching_projects', $call->user->name)
+                ;
             } elseif (!empty($call->amount)) {
                 //en campaña con dinero
                 echo Text::html('call-splash-invest_explain', $call->user->name);

@@ -101,7 +101,7 @@ try {
         Message::Info(Text::get('user-login-required-access'));
 
         //si es un cron (ejecutandose) con los parámetros adecuados, no redireccionamos
-        if (strpos($uri, 'cron') !== false && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
+        if ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
             define('CRON_EXEC', true);
         } else {
             throw new Redirection("/user/login/?return=".rawurlencode($uri));

@@ -30,8 +30,8 @@ $status = Model\Project::status();
 
 <?php if ($node == \GOTEO_NODE) : ?>
 <p>
-    <label for="promo-name">Título:</label><span style="font-style:italic;">Máximo 20 caracteres</span><br />
-    <input type="text" name="title" id="promo-title" value="<?php echo $promo->title; ?>" maxlength="20" style="width:500px;" />
+    <label for="promo-name">Título:</label><span style="font-style:italic;">Máximo 24 caracteres</span><br />
+    <input type="text" name="title" id="promo-title" value="<?php echo $promo->title; ?>" maxlength="24" style="width:500px;" />
 </p>
 
 <p>

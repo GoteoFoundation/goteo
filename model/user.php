@@ -676,6 +676,7 @@ namespace Goteo\Model {
                 $values[':node'] = $filters['node'];
             } elseif (!empty($node) && $node != \GOTEO_NODE) {
                 // un admin de nodo puede ver sus usuarios y los que hayan aportado a sus proyectos
+                /*
                 $sqlFilter .= " AND (node = :node
                     OR id IN (
                         SELECT user
@@ -687,6 +688,8 @@ namespace Goteo\Model {
                         )
                     )";
                 $values[':node'] = $node;
+                 * 
+                 */
             }
             if (!empty($filters['project'])) {
                 $subFilter = $filters['project'] == 'any' ? '' : 'invest.project = :project AND';

@@ -436,12 +436,15 @@ namespace Goteo\Controller {
                     if (!empty($social->tags)) {
                         $tsQuery .= implode(', OR ', $social->tags);
                     }
+                    /*
+                     * // quitamos las menciones y los propios
                     if (!empty($social->author)) {
                         // mencionando al convocador
                         $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
                         // del convocador
                         $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
                     }
+                     */
                     $tsUrl = "http://search.twitter.com/search?q=".  urlencode($tsQuery);
                     $social->buzz_debug = $tsUrl;
 

@@ -14,6 +14,7 @@ namespace {
                // basta que el servidor sea un poco anónimo para no tener esta info aquí
                if (strpos($ip, ',') > 0) {
                    // PROXY
+                   /*
                    @mail('proxy_alert@doukeshi.org', 'Acceso mediante proxy en '. SITE_URL, 'Detalles: 
 SEVER
 ----------------
@@ -22,6 +23,7 @@ SEVER
 SESSION
 ----------------
 '.print_r($_SESSION, 1));
+                    */
                    
                    // nos quedamos con la primera parte
                    $parts = explode(',', $ip);

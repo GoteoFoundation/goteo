@@ -181,7 +181,7 @@ color:#20B3B2;
   
 <div class="disclaimer"><?php echo Text::get('mailer-disclaimer') ?></div>
 
-<div class="goteo-url"><a href="<?php echo $URL ?>">guadalinfo.goteo.org</a></div>
+<div class="goteo-url"><a href="<?php echo $URL ?>">andalucia.goteo.org</a></div>
 <div class="descubre"><a href="<?php echo $URL . '/discover' ?>"><?php echo Text::get('regular-discover'); ?></a></div>
 <div class="crea"><a href="<?php echo $URL . '/project/create' ?>"><?php echo Text::get('regular-create'); ?></a></div>
 

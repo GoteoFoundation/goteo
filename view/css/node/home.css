@@ -432,5 +432,17 @@ body.node.home div#node-calls a.all:hover{
     color: #20B3B2;
 }
 
+/* padrinos */
+body.node.home div#node-patrons {
+    padding-bottom: 35px !important;
+    height: 169px;
+}
+body.node.home div#node-patrons h2 {
+    margin-bottom: 25px;
+}
+body.node.home div#node-patrons div#slides_patrons div.slder_patrons {
+	width: 670px !important;
+}
+
 
 /* Fin de estilos elementos centrales */

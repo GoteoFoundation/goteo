@@ -126,7 +126,7 @@ include 'view/prologue.html.php' ?>
                 new View('view/project/widget/support.html.php', array('project' => $project));
 
             // seleccionado para capital riego
-            if ($project->called && $project->round == 1) {
+            if ($project->called) {
                 echo new View('view/project/widget/called.html.php', array('project' => $project));
             }
 
