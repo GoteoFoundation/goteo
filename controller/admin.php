@@ -290,7 +290,9 @@ namespace Goteo\Controller {
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
                     'paypal' => array('label' => 'Informe PayPal', 'item' => false),
+                    'geoloc' => array('label' => 'Informe usuarios Localizados', 'item' => false),
                     'projects' => array('label' => 'Informe Impulsores', 'item' => true),
+                    'calls' => array('label' => 'Informe Convocatorias', 'item' => true),
                     'donors' => array('label' => 'Informe Donantes', 'item' => false)
                 ),
                 'filters' => array('report' => '', 'from' => '', 'until' => '', 'year' => '2012', 'status' => '', 'user' => '')

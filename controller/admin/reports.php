@@ -5,7 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-	Goteo\Library\Reporting,
+        Goteo\Library\Reporting,
         Goteo\Model;
 
     class Reports {
@@ -498,6 +498,71 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'reports',
                             'file'   => 'paypal',
+                            'data'   => $data
+                        )
+                    );
+
+                    break;
+                
+                case 'geoloc':
+                    // para este informe guardamos datos diarios para no saturar la bd a consultas
+                    // algo así como un bloqueo
+                    $data_file = GOTEO_PATH.'logs/report-geoloc.data';
+                    if (file_exists($data_file)) {
+                        // leemos el archivo de datos
+                        $data_content = \file_get_contents($data_file);
+                        $data = unserialize($data_content);
+                        // sacamos la fecha, si no es de hoy lo borramos y lanzamos de nuevo el report
+                        if ($data['date'] != date('Ymd')) {
+                            unlink($data_file);
+                            throw new Redirection('/admin/reprts/geoloc');
+                        }
+                    } else {
+                        $data = array(
+                            'date'          => date('Ymd'),
+                            'report'        => 'geoloc',
+                            'registered'    => Model\Location::countBy('registered'),
+                            'no-location'   => Model\Location::countBy('no-location'),
+                            'located'       => Model\Location::countBy('located'),
+                            'unlocated'     => Model\Location::countBy('unlocated'),
+                            'unlocable'     => Model\Location::countBy('unlocable'),
+                            'not-spain'     => Model\Location::countBy('not-country', 'España'),
+                            'by-region'     => array(),
+                            'by-country'    => array(),
+                            'by-node'       => array()
+                        );
+                        
+                        // por provincias españolas
+                        $regions = Model\Location::getList('region', array('type'=>'country', 'value'=>md5('España')));
+                        foreach ($regions as $regionId => $regionName) {
+                            $data['by-region'][$regionName] = Model\Location::countBy('region', $regionName);
+                        }
+                        
+                        // por paises
+                        $countries = Model\Location::getList('country');
+                        foreach ($countries as $countryId => $countryName) {
+                            $data['by-country'][$countryName] = Model\Location::countBy('country', $countryName);
+                        }
+                        
+                        // por nodo (no exactamente geoloc....)
+                        $nodes = Model\Node::getList();
+                        foreach ($nodes as $nodeId => $nodeName) {
+                            $data['by-node'][$nodeName] = Model\Location::countBy('node', $nodeId);
+                        }
+                        
+                        if (\file_put_contents($data_file, serialize($data), FILE_APPEND)) {
+                            \chmod($data_file, 0777);
+                        } else {
+                            die ('No se ha podido crear el archivo de datos');
+                        }
+                    }
+                    
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'reports',
+                            'file'   => 'geoloc',
                             'data'   => $data
                         )
                     );
