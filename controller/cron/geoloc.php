@@ -61,6 +61,7 @@ namespace Goteo\Controller\Cron {
                         echo 'existe:<br />';
                         echo \trace($locations[0]) . '<br />';
                         $geoloc = (count($locations) > 0) ? $locations[0]->id : '';
+                        $locName = (count($locations) > 0) ? $locations[0]->name : '';
                         echo 'usamos: '.$geoloc.'<br />';
                     } else {
                         // si no la tenemeos (no tenemos id), la creamos con los datos obtenidos de la API gmaps
@@ -76,6 +77,7 @@ namespace Goteo\Controller\Cron {
 
                         if ($newloc->save($errors)) {
                             // OK
+                            $locName = "{$geodata['location']}, {$geodata['region']}, {$geodata['country']}";
                             echo 'Localización creada:<br />';
                             echo \trace($newloc);
                             echo '<hr />';
@@ -125,9 +127,16 @@ namespace Goteo\Controller\Cron {
                     echo $sql7 . '<br />';
                     Model\Location::query($sql7);
                 } else {
-                    $sql7 = "DELETE FROM `geologin` WHERE user = '{$row->user}'";
+                    // si no ha rellenado el campo localidad, se lo rellenamos
+                    $sql70 = "UPDATE `user` SET location = :locname WHERE user = :usr AND (location IS NULL OR TRIM(location) = '')";
+                    echo $sql70 . '<br />';
+                    Model\Location::query($sql70, array(':locname'=>$locName, ':usr'=>$row->user));
+                    
+                    
+                    // borramos el geologin
+                    $sql7 = "DELETE FROM `geologin` WHERE user = :usr";
                     echo $sql7 . '<br />';
-                    Model\Location::query($sql7);
+                    Model\Location::query($sql7, array(':usr'=>$row->user));
                 }
 
                 echo "<hr />";

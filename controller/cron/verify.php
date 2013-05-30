@@ -10,24 +10,38 @@ namespace Goteo\Controller\Cron {
 
         public static function process () {
 
-            // eliminamos feed antiguo
-            $sql = "DELETE 
-                FROM `feed` 
-                WHERE type != 'goteo' 
-                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 50
-                AND (url NOT LIKE '%updates%' OR url IS NULL)
+            // eliminamos ACL innecesario
+            $sql = "DELETE FROM `acl` 
+                WHERE id > 1000 
+                AND role_id = 'user' 
+                AND user_id != '*' 
+                AND (url LIKE '%project/edit%'  OR url LIKE '%project/delete%') 
+                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`timestamp`)), '%j') > 30
                 ";
             
             // echo $sql . '<br />';
             $query = Model\Project::query($sql);
             $count = $query->rowCount();
-            echo "Eliminados $count registros de feed.<br />";
+            echo "Eliminados $count registros de ACL antiguo.<br />";
+            
+            // eliminamos feed antiguo
+            $sql1 = "DELETE 
+                FROM `feed` 
+                WHERE type != 'goteo' 
+                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 30
+                AND (url NOT LIKE '%updates%' OR url IS NULL)
+                ";
+            
+            // echo $sql . '<br />';
+            $query1 = Model\Project::query($sql1);
+            $count1 = $query1->rowCount();
+            echo "Eliminados $count1 registros de feed.<br />";
             
             // eliminamos mail antiguo
             $sql2 = "DELETE
                 FROM `mail` 
                 WHERE (template != 33 OR template IS NULL)
-                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`date`)), '%j') > 60
+                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`date`)), '%j') > 30
                 ";
             
             // echo $sql2 . '<br />';

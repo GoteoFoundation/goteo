@@ -649,10 +649,11 @@ namespace Goteo\Controller {
             Cron\Verify::process();
             
             // recogemos el buffer para grabar el log
+            /*
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
-            
+            */
             die();
         }
 
