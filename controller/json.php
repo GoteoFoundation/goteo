@@ -10,6 +10,19 @@ namespace Goteo\Controller {
 		private $result = array();
 
 		/**
+		 * Localizaciones para autocomplete
+		 * */
+		public function locations() {
+
+            $locations = Model\Location::getAll();
+			foreach ($locations as $loc) {
+                $this->result[] = $loc->name;
+            }
+
+			return $this->output();
+		}
+
+		/**
 		 * Solo retorna si la sesion esta activa o no
 		 * */
 		public function keep_alive() {
