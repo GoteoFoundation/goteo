@@ -47,12 +47,11 @@ include 'view/call/header.html.php';
         <?php echo new View('view/call/widget/buzz.html.php', $this); ?>
     </div>
 
-    <?php if ($call->status > 3) : ?>
     <div id="supporters-sponsors">
-        <?php echo new View('view/call/widget/supporters.html.php', $this); ?>
+        <?php if ($call->status > 3) echo new View('view/call/widget/supporters.html.php', $this); 
+        else  echo new View('view/call/widget/post.html.php', $this); ?>
         <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>
     </div>
-    <?php endif; ?>
 </div>
 
 <?php

@@ -24,3 +24,49 @@
 	height: 32px;
 	width: 32px;
 }
+
+/* post */
+#supporters-sponsors #post {
+	width: 526px;
+	float: left;
+	overflow: hidden;
+	padding: 15px 0 0 15px;
+}
+
+#supporters-sponsors #post div.image {
+    float: left;
+    height: 130px;
+    width: 228px;
+}
+#supporters-sponsors #post div.content {
+    float: left;
+    margin-left: 10px;
+    width: 285px;
+}
+#supporters-sponsors #post div.description {
+    line-height: 14px;
+    margin: 0px;
+    text-transform: none;
+}
+#supporters-sponsors #post h3 {
+    font-size: 14px;
+    margin: 0 !important;
+}
+#supporters-sponsors #post div.author {
+    line-height: 12px;
+    margin-top: 5px;
+    text-transform: none;
+}
+#supporters-sponsors #post div.author a {
+    color: #20B2B3;
+    font-size: 11px;
+    text-decoration: none;
+}
+#supporters-sponsors #post div.author a:hover {
+    text-decoration: underline;
+}
+
+#supporters-sponsors #post div.read_more {
+    margin-top: 10px;
+    margin-left: 100px;
+}
