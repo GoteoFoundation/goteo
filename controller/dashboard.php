@@ -1429,6 +1429,7 @@ namespace Goteo\Controller {
 
                             case 'overview':
                                 if ($action == 'save') {
+                                    $call->name_lang = $_POST['name'];
                                     $call->description_lang = $_POST['description'];
                                     $call->whom_lang = $_POST['whom'];
                                     $call->apply_lang = $_POST['apply'];

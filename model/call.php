@@ -202,6 +202,7 @@ namespace Goteo\Model {
                 } elseif (!empty($lang)) {
                     $sql = "
                         SELECT
+                            IFNULL(call_lang.name, call.name) as name,
                             IFNULL(call_lang.subtitle, call.subtitle) as subtitle,
                             IFNULL(call_lang.description, call.description) as description,
                             IFNULL(call_lang.whom, call.whom) as whom,
@@ -608,6 +609,7 @@ namespace Goteo\Model {
                 $fields = array(
                     'id' => 'id',
                     'lang' => 'lang_lang',
+                    'name' => 'name_lang',
                     'subtitle' => 'subtitle_lang',
                     'description' => 'description_lang',
                     'whom' => 'whom_lang',
