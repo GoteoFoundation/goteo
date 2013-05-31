@@ -183,6 +183,7 @@ div#main ul#list>li {
 
 #social-logo li.email {
     padding-left: 0px !important;
+    margin-top: 10px;
 }
 
 #social-logo li.email a {

@@ -47,10 +47,19 @@
     line-height: 14px;
     margin: 0px;
     text-transform: none;
+    height: 100px;
+    overflow: hidden;
 }
 #supporters-sponsors #post h3 {
-    font-size: 14px;
     margin: 0 !important;
+}
+#supporters-sponsors #post h3 a {
+    font-size: 16px;
+    color: #20B2B3;
+    text-decoration: none;
+}
+#supporters-sponsors #post h3 a:hover {
+    text-decoration: underline;
 }
 #supporters-sponsors #post div.author {
     line-height: 12px;
@@ -67,6 +76,7 @@
 }
 
 #supporters-sponsors #post div.read_more {
-    margin-top: 10px;
-    margin-left: 100px;
+    margin-top: -30px;
+    text-align: right;
+    margin-right: 5px;
 }
