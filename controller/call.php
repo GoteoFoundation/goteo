@@ -426,7 +426,7 @@ namespace Goteo\Controller {
                 // para el buzz en la portada
                 if ($show == 'index') {
                     $matches = array();
-                    preg_match_all('/(#[a-zA-Z0-9_\-]+)/', $call->tweet, $matches);
+                    preg_match_all('/#([a-zA-Z0-9_\-]+)/', $call->tweet, $matches);
                     if (!empty($matches)) {
                         $social->tags = $matches[0];
                     }

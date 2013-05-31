@@ -57,7 +57,6 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
 
         <a href="https://twitter.com/share" class="twitter-share-button"
            data-url="<?php echo $share_url; ?>"
-           data-via="<?php echo $social->author ?>"
            data-text="<?php echo $share_title; ?>"
            data-lang="<?php echo \LANG; ?>"
            data-count="none"
