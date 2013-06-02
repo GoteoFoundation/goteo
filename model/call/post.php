@@ -31,7 +31,7 @@ namespace Goteo\Model\Call {
                 $query = static::query($sql, $values);
                 $id = $query->fetchColumn();
                 
-                $postData = Model\Blog\Post::get($id);
+                $postData = Model\Blog\Post::get($id, \LANG);
                 
                 return $postData;
             } catch(\PDOException $e) {
