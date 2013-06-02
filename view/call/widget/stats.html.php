@@ -16,7 +16,7 @@ $call = $this['call'];
             <?php else: ?>
                 <dl class="block long category">
                     <dt><?php echo Text::get('call-splash-resources-header') ?></dt>
-                    <dd><?php echo Text::recorta($call->resources, 100) ?></dd>
+                    <dd><?php echo $call->resources ?></dd>
                 </dl>
             <?php endif; ?>
             <dl class="block long expires">

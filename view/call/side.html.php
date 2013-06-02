@@ -18,7 +18,7 @@ $filter = $this['filter'];
     <?php else : ?>
     <dl class="block category">
         <dt><?php echo Text::get('call-splash-resources-header') ?></dt>
-        <dd><?php echo Text::recorta($call->resources, 100) ?></dd>
+        <dd><?php echo $call->resources ?></dd>
     </dl>
     <?php endif; ?>
     <dl class="expires">
