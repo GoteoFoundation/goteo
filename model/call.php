@@ -267,7 +267,7 @@ namespace Goteo\Model {
 
                     // rellenamos el array de visualizacion de fecha limite
                     $call->until['day'] = date('d', $until);
-                    $call->until['month'] = ucfirst(substr(strftime('%B', $until), 0, 3));
+                    $call->until['month'] = strftime('%b', $until);
                     ;
                     $call->until['year'] = date('Y', $until);
                 }
@@ -842,7 +842,7 @@ namespace Goteo\Model {
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $call) {
-                $calls[] = self::get($call->id);
+                $calls[] = self::get($call->id, \LANG);
             }
             return $calls;
         }

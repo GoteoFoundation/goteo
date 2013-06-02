@@ -55,7 +55,7 @@ $tag = array(
                 <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
                 <p class="subtitle"><?php echo Text::html('call-splash-invest_explain', $call->user->name) ?></p>
                 <?php else : // inscripción o en campaña sin dinero, con recursos ?>
-                <p class="subtitle"><?php echo Text::recorta($call->resources, 100) ?></p>
+                <p class="subtitle"><?php echo $call->resources ?></p>
                 <?php endif; ?>
             </li>
 
