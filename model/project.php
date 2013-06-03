@@ -138,7 +138,17 @@ namespace Goteo\Model {
             if (empty($user)) {
                 return false;
             }
-            
+
+            // si aplicando a convocatoria, asignar el proyecto al nodo del convocador
+            if (isset($_SESSION['oncreate_applyto'])) {
+                $call = $_SESSION['oncreate_applyto'];
+                $callData = Call::getMini($call);
+                 if (!empty($callData->user->node)) 
+                     $node = $callData->user->node;
+            }
+
+
+
             // cojemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
             if ($now = $query->fetchObject())

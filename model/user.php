@@ -610,7 +610,8 @@ namespace Goteo\Model {
                         id,
                         name,
                         avatar,
-                        email
+                        email,
+                        node
                     FROM user
                     WHERE id = :id
                     ", array(':id' => $id));
