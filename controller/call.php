@@ -434,7 +434,10 @@ namespace Goteo\Controller {
                     $tsQuery = '';
                     // tweets con alguno de los hastags
                     if (!empty($social->tags)) {
-                        $tsQuery .= implode(', OR ', $social->tags);
+                        if ($call->id == 'crowdsasuna')
+                            $tsQuery .= $social->tags[0];
+                        else
+                            $tsQuery .= implode(', OR ', $social->tags);
                     }
                     /*
                      * // quitamos las menciones y los propios
