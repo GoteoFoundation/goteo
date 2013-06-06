@@ -36,8 +36,6 @@ $emails = Invest::emails(true);
         'first' => 'Todos los aportes')
 ); ?>
 <a href="/admin/accounts/add" class="button">Generar aporte manual</a>
-<a href="http://ppcalc.com/es" target="_blank" class="button">Calculadora PayPal</a>&nbsp;&nbsp;&nbsp;
-<a href="/cron/execute" target="_blank" class="button" onclick="return confirm('Se va lanzar el proceso automático ahora mismo, ok?');">Ejecutar cargos</a>&nbsp;&nbsp;&nbsp;
 <a href="/admin/accounts/viewer" class="button">Visor de logs</a>&nbsp;&nbsp;&nbsp;
 <?php if (!empty($filters['projects'])) : ?>
     <br />

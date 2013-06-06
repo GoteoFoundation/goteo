@@ -93,6 +93,7 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
 <?php elseif (!empty($this['projects'])) : ?>
+    <p><strong>OJO!</strong> Resultado limitado a 999 registros como máximo.</p>
     <table>
         <thead>
             <tr>

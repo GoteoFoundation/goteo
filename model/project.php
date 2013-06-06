@@ -2152,6 +2152,7 @@ namespace Goteo\Model {
                     WHERE id != ''
                         $sqlFilter
                         $sqlOrder
+                    LIMIT 999
                     ";
 
             $query = self::query($sql, $values);

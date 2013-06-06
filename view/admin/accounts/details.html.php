@@ -34,7 +34,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
         <?php if ($invest->method == 'paypal' && $invest->status == 0) : ?>
         <a href="/admin/accounts/execute/<?php echo $invest->id ?>"
-            onclick="return confirm('¿Seguro que quieres ejecutar ahora? ¿No quieres esperar a la ejecución automática al final de la ronda? ?');"
+            onclick="return confirm('¿Seguro que quieres ejecutar ahora el cargo del preapproval?');"
             class="button">Ejecutar cargo ahora</a>
         <?php endif; ?>
 
