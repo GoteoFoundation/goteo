@@ -143,8 +143,11 @@ namespace Goteo\Model {
             if (isset($_SESSION['oncreate_applyto'])) {
                 $call = $_SESSION['oncreate_applyto'];
                 $callData = Call::getMini($call);
-                 if (!empty($callData->user->node)) 
+                 if (!empty($callData->user->node)) { 
                      $node = $callData->user->node;
+                     // también movemos al impulsor a ese nodo
+                    self::query("UPDATE user SET node = :node WHERE id = :id", array(':node'=>$node, ':id'=>$user));
+                 }
             }
 
 
@@ -1425,7 +1428,7 @@ namespace Goteo\Model {
             if ($progress < 0)   $progress = 0;
 
             if ($this->status == 1 && 
-                $progress > 80 &&
+                $progress >= 80 &&
                 \array_empty($this->errors)
                 ) {
                 $this->finishable = true;
