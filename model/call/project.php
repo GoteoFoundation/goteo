@@ -194,6 +194,34 @@ namespace Goteo\Model\Call {
 		}
 
         /**
+         * Devuelve la convocatoria a la que está asignado (mini) 
+         *
+         * @param varchar50 $project proyecto
+         * @return object $call convocatoria
+         */
+        public static function miniCalled ($project) {
+            try {
+                $sql = "SELECT
+                            call_project.call as id
+                        FROM call_project
+                        WHERE  call_project.project = :project
+                        LIMIT 1
+                        ";
+
+                $query = static::query($sql, array(':project'=>$project));
+                $called = $query->fetchColumn();
+                if (!empty ($called)) {
+                    $call = Model\Call::getMini($called);
+
+                    return $call;
+                }
+
+            } catch(\PDOException $e) {
+                return null;
+            }
+		}
+
+        /**
          * Devuelve la convocatoria de la que puede obtener riego
          *
          * @param varchar50 $project proyecto

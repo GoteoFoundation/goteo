@@ -124,6 +124,18 @@ namespace Goteo\Model {
             $tagmark = null;  // banderolo a mostrar
 
 
+        /**
+         * Sobrecarga de métodos 'getter'.
+         *
+         * @param type string $name
+         * @return type mixed
+         */
+        public function __get ($name) {
+            if($name == "call") {
+	            return Call\Project::miniCalled($this->id);
+	        }
+            return $this->$name;
+        }
 
         /**
          * Inserta un proyecto con los datos mínimos
@@ -1158,7 +1170,10 @@ namespace Goteo\Model {
             }
 
             if (empty($this->media)) {
-                $errors['overview']['media'] = Text::get('mandatory-project-field-media');
+                // solo error si no está aplicando a una convocatoria
+                if (!isset($this->call)) {
+                    $errors['overview']['media'] = Text::get('mandatory-project-field-media');
+                }
             } else {
                  $okeys['overview']['media'] = 'ok';
                  $score+=3;
