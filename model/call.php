@@ -337,7 +337,7 @@ namespace Goteo\Model {
                         INNER JOIN call_project
                             ON  call_project.project = project.id
                             AND call_project.call = :call
-                        WHERE (project.status != 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )
+                        WHERE (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )
                         ";
                 
                 $query = static::query($sql, array(':call'=>$this->id));
