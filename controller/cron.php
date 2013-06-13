@@ -658,6 +658,22 @@ namespace Goteo\Controller {
         }
 
         /*
+         *  Proceso que limpia la tabla de imágenes
+         * y también limpia el directorio
+         *
+         */
+        public function cleanup () {
+            if (\defined('CRON_EXEC')) {
+                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                    'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+               die;
+            } else {
+                Cron\Cleanup::process();
+                die();
+            }
+        }
+
+        /*
          *  Proceso para tratar los geologins
          *
          */
@@ -1323,6 +1339,20 @@ namespace Goteo\Controller {
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
+        }
+
+        /*
+         *  Proceso que arregla las extensiones de los archivos de imágenes
+         */
+        public function imgrename () {
+            if (\defined('CRON_EXEC')) {
+                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                    'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+               die;
+            } else {
+                Cron\Imgrename::process();
+                die();
+            }
         }
 
     }
