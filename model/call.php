@@ -888,9 +888,9 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND status = :status";
                 $values[':status'] = $filters['status'];
             }
-            if (!empty($filters['owner'])) {
-                $sqlFilter .= " AND owner = :owner";
-                $values[':owner'] = $filters['owner'];
+            if (!empty($filters['caller'])) {
+                $sqlFilter .= " AND owner = :caller";
+                $values[':caller'] = $filters['caller'];
             }
             if (!empty($filters['name'])) {
                 $sqlFilter .= " AND name LIKE :name";
