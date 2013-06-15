@@ -51,6 +51,16 @@ namespace Goteo\Controller {
         public function edit ($id) {
             $call = Model\Call::get($id, null);
 
+            // si es admin (no superadmin) (y no es el autor) si no la tiene asignada, fuera.
+            if (isset($_SESSION['user']->roles['admin'])
+                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
+                && $call->owner != $_SESSION['user']->id // no es el autor
+                && !$call->isAdmin($_SESSION['user']->id) // no la tiene asignada
+                ) {
+                Message::Error('No tienes permiso para editar esta convocatoria');
+                throw new Redirection("/admin/calls");
+            }
+            
             if (isset($_GET['from']) && $_GET['from'] == 'dashboard') {
                 // Evento Feed
                 $log = new Feed();

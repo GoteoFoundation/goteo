@@ -78,12 +78,13 @@ namespace Goteo\Controller {
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva convocatoria', 'item' => false),
-                    'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true)
+                    'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true),
+                    'admins' => array('label' => 'Asignando administradores de la convocatoria', 'item' => true)
                 ),
-                'filters' => array('status' => '', 'category' => '', 'caller' => '', 'name' => '', 'order' => '')
+                'filters' => array('status' => '', 'category' => '', 'caller' => '', 'name' => '', 'admin' => '','order' => '')
             ),
             'campaigns' => array(
-                'label' => 'Convocatorias',
+                'label' => 'Convocatorias destacadas',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva convocatoria destacada', 'item' => false)
@@ -1120,7 +1121,8 @@ namespace Goteo\Controller {
                                 'reviews' => $options['reviews'], // revisiones de proyectos del nodo
                                 'translates' => $options['translates'], // traducciones de proyectos del nodo
                                 'invests' => $options['invests'],
-                                'patron' => $options['patron']
+                                'patron' => $options['patron'],
+                                'calls' => $options['calls']
                             )
                         ),
                         'users' => array(
