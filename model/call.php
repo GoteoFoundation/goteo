@@ -914,6 +914,10 @@ namespace Goteo\Model {
                 $values[':icon'] = $filters['icon'];
             }
 
+            if (!empty($filters['admin'])) {
+                $sqlFilter .= " AND id IN (SELECT `call` FROM user_call WHERE user = '{$filters['admin']}')";
+            }
+            
             //el Order
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
@@ -1355,6 +1359,106 @@ namespace Goteo\Model {
 
         }
 
+        // Administradores para gestión de convocatoria
+        //------
+        /*
+         * Array asociativo de administradores de una convocatoria
+         *  (o todos los que administran alguna, si no hay filtro)
+         */
+        public static function getAdmins ($call = null) {
+
+            $list = array();
+
+            $sqlFilter = "";
+            if (!empty($call)) {
+                $sqlFilter .= " WHERE user_call.call = '{$call}'";
+            }
+
+
+            $query = static::query("
+                SELECT
+                    DISTINCT(user_call.user) as admin,
+                    user.name as name
+                FROM user_call
+                INNER JOIN user
+                    ON user.id = user_call.user
+                $sqlFilter
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->admin] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Asignar a un usuario como administrador de un nodo
+         */
+		public function assign ($user, &$errors = array()) {
+
+            $values = array(':user'=>$user, ':call'=>$this->id);
+
+			try {
+	            $sql = "REPLACE INTO user_call (`user`, `call`) VALUES(:user, :call)";
+				if (self::query($sql, $values)) {
+                    ACL::allow('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
+    				return true;
+                } else {
+                    $errors[] = 'No se ha creado el registro `user_call`';
+    				return false;
+                }
+			} catch(\PDOException $e) {
+				$errors[] = "No se ha podido asignar al usuario {$user} como administrador de la convocatoria {$this->id}. Por favor, revise el metodo Call->assign." . $e->getMessage();
+				return false;
+			}
+
+		}
+
+        /*
+         * Quitarle a un usuario la administración de un nodo
+         */
+		public function unassign ($user, &$errors = array()) {
+			$values = array (
+				':user'=>$user,
+				':call'=>$this->id,
+			);
+
+            try {
+                if (self::query("DELETE FROM user_call WHERE `call` = :call AND `user` = :user", $values)) {
+                    ACL::deny('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
+                    return true;
+                } else {
+                    return false;
+                }
+			} catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar al usuario ' . $this->user . ' de la administracion de la convocatoria ' . $this->id . '. ' . $e->getMessage();
+                return false;
+			}
+		}
+
+        /**
+         * Si  cierto usuario es administrador de esta convocatoria
+         * @param   type varchar(50)  $id   Usuario admin
+         * @return  type bool true/false
+         */
+        public function isAdmin ($admin) {
+            $query = static::query("
+                SELECT
+                    `call`
+                FROM user_call
+                WHERE `user` = :admin
+                AND `call` = :call
+                LIMIT 1
+                ", array(':admin' => $admin, ':call' => $this->id));
+
+            $thecall = $query->fetchColumn();
+            return ($thecall == $this->id);
+        }
+        
+        
+        
 
         /*
          * Estados de publicación de un convocatoria
