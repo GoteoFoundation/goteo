@@ -118,6 +118,7 @@ namespace Goteo\Model {
                     $data[':node'] = \NODE_ID;
 
                     // Rol por defecto.
+                    /*
                     if (!empty($this->id)) {
                         static::query('REPLACE INTO user_role (user_id, role_id, node_id) VALUES (:user, :role, :node);', array(
                             ':user' => $this->id,
@@ -125,6 +126,7 @@ namespace Goteo\Model {
                             ':node' => '*',
                         ));
                     }
+                     */
 
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;
@@ -662,7 +664,7 @@ namespace Goteo\Model {
                     ) ";
                 $values[':interest'] = $filters['interest'];
             }
-            if (!empty($filters['role'])) {
+            if (!empty($filters['role']) && $filters['role'] != 'user') {
                 $sqlFilter .= " AND id IN (
                     SELECT user_id
                     FROM user_role
@@ -754,7 +756,10 @@ namespace Goteo\Model {
 
             // si es solo los usuarios normales, añadimos HAVING
             if ($filters['role'] == 'user') {
-                $sqlOrder .= " HAVING roles <= 1";
+                $sqlCR = ", (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles";
+                $sqlOrder .= " HAVING roles = 0";
+            } else {
+                $sqlCR = "";
             }
 
             //el Order
@@ -783,14 +788,15 @@ namespace Goteo\Model {
                         active,
                         hide,
                         DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
-                        node,
-                        (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles
+                        node
+                        $sqlCR
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter
                    $sqlOrder
+                    LIMIT 999
                     ";
-
+            
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
 
@@ -1424,6 +1430,9 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
                 $roles[$rol->id] = $rol;
             }
+            // añadimos el de usuario normal
+            $roles['user'] = (object) array('id'=>'user', 'name'=>'Usuario registrado');
+            
             return $roles;
 
 		}

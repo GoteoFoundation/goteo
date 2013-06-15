@@ -101,6 +101,7 @@ $pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET[
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
 <?php elseif (!empty($this['users'])) : ?>
+    <p><strong>OJO!</strong> Resultado limitado a 999 registros como máximo.</p>
     <p><strong><?php echo count($this['users']) ?></strong> usuarios cumplen este filtro </p>
     <table>
         <thead>
