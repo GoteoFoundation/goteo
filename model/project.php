@@ -63,6 +63,7 @@ namespace Goteo\Model {
             $lang = 'es',
             $image,
             $gallery = array(), // array de instancias image de project_image
+            $secGallery = array(), // array de instancias image de project_image (secundarias)
             $description,
              $motivation,
               $video,   // video de motivacion
@@ -285,7 +286,9 @@ namespace Goteo\Model {
 
                 // imágenes por sección
                 foreach (Project\Image::sections() as $sec => $val) {
-                    $project->secGallery[$sec] = Project\Image::get($project->id, $sec);
+                    if ($sec != '') {
+                        $project->secGallery[$sec] = Project\Image::get($project->id, $sec);
+                    }
                 }
 
 				// categorias
