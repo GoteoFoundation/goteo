@@ -458,11 +458,8 @@ namespace Goteo\Controller {
                         $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
                     }
                      */
-                    $tsUrl = "http://search.twitter.com/search?q=".  urlencode($tsQuery);
-                    $social->buzz_debug = $tsUrl;
-
+                    $social->buzz_debug = "https://api.twitter.com/1.1/search/tweets.json?q=".  urlencode($tsQuery);
                     $social->buzz = Buzz::getTweets($tsQuery, true);
-//                      $social->buzz = array();  // para desconectar la petición: descomentar esta linea y comentar la de arriba
                 }
 
                 // filtro proyectos por categoria
