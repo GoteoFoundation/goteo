@@ -31,6 +31,19 @@ namespace Goteo\Model {
         );
 
         /**
+         * Sobrecarga de métodos 'getter'.
+         *
+         * @param type string $name
+         * @return type mixed
+         */
+        public function __get ($name) {
+            if($name == "uses") { // numero de usuarios asignados a la localización
+	            return self::countBy('geolocation', $this->id);
+	        }
+            return $this->$name;
+        }
+
+        /**
          * Obtener datos de una localizacion (longitud, latitud, nombre completo(montado), poblacion, provincia, pais y si está validada )
          * @param   type mixed  $id     Identificador
          * @return  type object         Instancia de geolocalización
@@ -399,6 +412,9 @@ namespace Goteo\Model {
                     break;
                 case 'region':
                     $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location IN (SELECT location.id FROM location WHERE location.region LIKE '{$keyword}')";
+                    break;
+                case 'geolocation':
+                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location = '{$keyword}'";
                     break;
             }
             

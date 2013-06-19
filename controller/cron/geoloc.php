@@ -37,6 +37,7 @@ namespace Goteo\Controller\Cron {
             echo $sql5 . '<br />';
             $query5 = Model\Location::query($sql5);
             foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
+                echo "latlng: {$row->lat},{$row->lon}<br />";
                 // para cada uno: 
                 $geoloc = null;
                 $newloc = null;
@@ -128,9 +129,11 @@ namespace Goteo\Controller\Cron {
                     Model\Location::query($sql7);
                 } else {
                     // si no ha rellenado el campo localidad, se lo rellenamos
-                    $sql70 = "UPDATE `user` SET location = :locname WHERE user = :usr AND (location IS NULL OR TRIM(location) = '')";
+                    $values = array(':locname'=>$locName, ':usr'=>$row->user);
+                    $sql70 = "UPDATE `user` SET location = :locname WHERE id = :usr AND (location IS NULL OR TRIM(location) = '')";
                     echo $sql70 . '<br />';
-                    Model\Location::query($sql70, array(':locname'=>$locName, ':usr'=>$row->user));
+                    echo \trace($values);
+                    Model\Location::query($sql70, $values);
                     
                     
                     // borramos el geologin
