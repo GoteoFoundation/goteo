@@ -377,9 +377,10 @@ namespace Goteo\Controller {
             if (empty($id))
                 throw new Redirection("/project/$project/invest", Redirection::TEMPORARY);
 
-            // dejamos el aporte como en proceso
-            $invest = Model\Invest::get($id);
-            $invest->setStatus(-1);
+            // dejamos el aporte tal cual esta
+            Invest::setDetail($id, 'confirm-fail', 'El usuario regresó a /invest/fail');
+//            $invest = Model\Invest::get($id);
+//            $invest->setStatus(-1);
 
             // mandarlo a la pagina de aportar para que lo intente de nuevo
             throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
