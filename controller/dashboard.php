@@ -343,6 +343,11 @@ namespace Goteo\Controller {
                         }
                         break;
 
+                    // geolocalización
+                    case 'location':
+                        $errors = Dashboard\Location::process();
+                        break;
+                        
                     //cambio de email y contraseña
                     case 'access':
                         // E-mail
@@ -485,14 +490,20 @@ namespace Goteo\Controller {
                 case 'personal':
                     $viewData['personal'] = Model\User::getPersonal($user->id);
                     break;
-                case 'preferences':
-                    $viewData['preferences'] = Model\User::getPreferences($user->id);
+                case 'location':
+                    // datos que se necesiten para la visualización
+                    $viewData['locations'] = Model\Location::getAll();
+                    // contenido de la página
+                    $viewData['page'] = Page::get('geoloc');
                     break;
                 case 'access':
                     // si es recover, en contraseña actual tendran que poner el username
                     if ($action == 'recover') {
                         $viewData['message'] = Text::get('dashboard-password-recover-advice');
                     }
+                    break;
+                case 'preferences':
+                    $viewData['preferences'] = Model\User::getPreferences($user->id);
                     break;
             }
 
