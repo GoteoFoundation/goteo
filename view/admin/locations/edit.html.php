@@ -8,9 +8,7 @@ $location = $this['location'];
 <div class="widget">
     <form action="/admin/locations/<?php echo ($this['action'] == 'add') ? 'add' : 'edit/'.$location->id ?>" method="post">
         <p>
-            <label for="name">Buscar:</label><br />
-            <input type="text" id="location-name" name="name" value="" />
-            <span stye="font-style: italic;">Al escribir algo lo busca en el mapa</span>
+            <a href="https://maps.google.com/maps?q=<?php echo urlencode($location->name) ?>" target="_blank">Ver en google maps, por nombre</a>
         </p>
         
         <table>
@@ -36,6 +34,12 @@ $location = $this['location'];
                 <td>
                     <label>Longitud:</label>
                     <input type="text" name="lon" id="locLg" value="<?php echo $location->lon ?>" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Revisada:</label>
+                    <input type="checkbox" name="valid" value="1" <?php if ($location->valid) echo 'checked="checked"'; ?>/>
                 </td>
             </tr>
             <tr>

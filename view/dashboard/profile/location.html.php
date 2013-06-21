@@ -1,32 +1,46 @@
 <?php
 
 use Goteo\Library\Text,
+    Goteo\Core\View,
     Goteo\Model;
 
 $user = $this['user'];
 
-$locs = Model\Location::getAll();
-foreach ($locs as $loc) {
+$locations = array();
+foreach ($this['locations'] as $loc) {
     $locations[] = $loc->name;
 }
 
+// si geolocalizado
+$geoloc = $user->geoloc;
+$geolocation = !empty($geoloc) ? Model\Location::get($geoloc) : null;
+
+
+// contenido
+$content = explode('<hr />', $this['page']->content);
+
 ?>
 <form action="/dashboard/profile/location" method="post" enctype="multipart/form-data">
-
     <div class="widget">
-        <input type="hidden" name="action" value="check" />
-
-        <blockquote><?php echo Text::get('guide-dashboard-user-location') ?></blockquote>
-
-        <div class="ui-widget">
-            <label for="user_location"><?php echo Text::get('profile-field-location'); ?></label><br />
-            <input type="text" id="user_location" name="location" value="<?php echo $user->location; ?>" style="width:300px;"/>
-        </div>
-
-        <input type="submit" name="test" value="Testear" />
-    </div>
+        
+    <?php 
+    if ($user->unlocable) : 
+        echo $content[0];
     
+    elseif ($geolocation instanceof Model\Location) : 
+        echo str_replace('<!-- MAPA -->', 
+                new View('view/widget/map.html.php', array('lat'=>$geolocation->lat,'lon'=>$geolocation->lon, 'name'=>$geolocation->name)),
+                $content[1]);
+    
+    else : 
+        echo $content[2];
+    
+    endif; 
+    ?>
+
+    </div>
 </form>
+<?php if (empty($geoloc)) : ?>
 <script type="text/javascript">
 $(function () {
 
@@ -40,3 +54,4 @@ $(function () {
 
 });
 </script>
+<?php endif; ?>

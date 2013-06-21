@@ -17,7 +17,7 @@ namespace Goteo\Model\User {
 	 	public static function get ($id) {
             
             try {
-                $query = static::query("SELECT id FROM location_item WHERE type = 'user' AND item = ?", array($id));
+                $query = static::query("SELECT location FROM location_item WHERE type = 'user' AND item = ?", array($id));
                 $loc = $query->fetchColumn();
                 return (!empty($loc)) ? $loc : null;
             } catch(\PDOException $e) {
@@ -64,7 +64,7 @@ namespace Goteo\Model\User {
             $values = array(':item'=>$user, ':type'=>'user');
 
             try {
-                self::query("DELETE FROM location_item WHERE type = :type AND user = :user", $values);
+                self::query("DELETE FROM location_item WHERE type = :type AND item = :item", $values);
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = 'No se ha podido quitar la geolocalización del usuario ' . $user . '.<br />' . $e->getMessage();

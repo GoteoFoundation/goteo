@@ -645,8 +645,13 @@ namespace Goteo\Controller {
                echo 'Lanzamiento automatico<br />';
             }
             
+            $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
+            if ($debug) echo 'Modo debug activado<br />';
+            
             // lanzamos subcontrolador
-            Cron\Verify::process();
+            Cron\Verify::process($debug);
+            // también el tratamiento de geologin
+            Cron\Geoloc::process($debug);
             
             // recogemos el buffer para grabar el log
             /*
