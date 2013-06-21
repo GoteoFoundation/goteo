@@ -350,5 +350,6 @@ $(function () {
        Superform.update(webs, data);
        event.preventDefault();
     });
-    
+
+});
 </script>
