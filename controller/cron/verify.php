@@ -8,7 +8,7 @@ namespace Goteo\Controller\Cron {
 
     class Verify {
 
-        public static function process () {
+        public static function process ($debug = false) {
 
             // eliminamos ACL innecesario
             $sql = "DELETE FROM `acl` 
@@ -22,7 +22,7 @@ namespace Goteo\Controller\Cron {
             // echo $sql . '<br />';
             $query = Model\Project::query($sql);
             $count = $query->rowCount();
-            echo "Eliminados $count registros de ACL antiguo.<br />";
+            if ($debug) echo "Eliminados $count registros de ACL antiguo.<br />";
             
             // eliminamos feed antiguo
             $sql1 = "DELETE 
@@ -35,7 +35,7 @@ namespace Goteo\Controller\Cron {
             // echo $sql . '<br />';
             $query1 = Model\Project::query($sql1);
             $count1 = $query1->rowCount();
-            echo "Eliminados $count1 registros de feed.<br />";
+            if ($debug) echo "Eliminados $count1 registros de feed.<br />";
             
             // eliminamos mail antiguo
             $sql2 = "DELETE
@@ -47,7 +47,7 @@ namespace Goteo\Controller\Cron {
             // echo $sql2 . '<br />';
             $query2 = Model\Project::query($sql2);
             $count2 = $query2->rowCount();
-            echo "Eliminados $count2 registros de mail.<br />";
+            if ($debug) echo "Eliminados $count2 registros de mail.<br />";
             
             // eliminamos registros de imágenes cuyo archivo no esté en el directorio de imágenes
 
@@ -80,7 +80,7 @@ namespace Goteo\Controller\Cron {
             echo "Eliminados $count4 aportes incompletos y sus registros (recompensa, dirección, detalles) relacionados.<br />";
             */
             
-            echo "<hr /> Iniciamos caducidad de tokens<br/>";
+            if ($debug) echo "<hr /> Iniciamos caducidad de tokens<br/>";
             // eliminamos los tokens que tengan más de 4 días
             $sql5 = "SELECT id, token FROM user WHERE token IS NOT NULL AND token != '' AND token LIKE '%¬%'";
             $query5 = Model\Project::query($sql5);
@@ -91,24 +91,21 @@ namespace Goteo\Controller\Cron {
                 $datedif = strtotime($today) - $datepart;
                 $days = round($datedif / 86400);
                 if ($days > 4 || !isset($parts[2])) {
-                    echo "User: $row->id  ;  Token: $row->token  ; ";
-                    echo "Datepart: $parts[2]   =>  $datepart  ; ";
-                    echo "Compare: $today  =>  $datedif  ;  ";
-                    echo "Days: $days  ;   ";
+                    if ($debug) echo "User: $row->id  ;  Token: $row->token  ;  Datepart: $parts[2]   =>  $datepart  ;  Compare: $today  =>  $datedif  ;  Days: $days  ;   ";
                     
                     if (Model\Project::query("UPDATE user SET token = '' WHERE id = ?", array($row->id))) {
-                        echo "Token borrado.";
+                        if ($debug) echo "Token borrado.";
                     } else {
-                        echo "Fallo al borrar Token!!!";
+                        if ($debug) echo "Fallo al borrar Token!!!";
                     }
-                    echo "<br />";
+                    if ($debug) echo "<br />";
                 }
                 
             }
             
-            echo "<br />";
+            if ($debug) echo "<br />";
                 
-            echo 'Listo!';
+            echo 'Verify Listo!';
 
             return;
         }

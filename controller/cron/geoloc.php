@@ -9,43 +9,46 @@ namespace Goteo\Controller\Cron {
 
     class Geoloc {
 
-        public static function process () {
+        public static function process ($debug = false) {
 
+            // esto graba en un único archivo de log, solo las creaciones
+            $log_file = GOTEO_PATH.'logs/cron/created_locations.log';
+            \chmod($log_file, 0777);
+            
             // geolocalizaciones existentes
             
             // eliminamos los registros que no nos sirven
             $sql = "DELETE FROM `geologin` WHERE msg LIKE '%unavailable%' OR msg LIKE '%not supported%'";
-            
-            echo $sql . '<br />';
+            if ($debug) echo $sql . '<br />';
             $query = Model\Location::query($sql);
             $count = $query->rowCount();
-            echo "Eliminados $count registros de geologin que no nos sirven.<br />";
+            if ($debug) echo "Eliminados $count registros de geologin que no nos sirven.<br />";
             
             // marca como ilocalizables los geologin no permitidos por el usuario
             $sql2 = "REPLACE INTO unlocable SELECT user FROM `geologin` WHERE msg LIKE '%denied%'";
-            echo $sql2 . '<br />';
+            if ($debug) echo $sql2 . '<br />';
             if ($query2 = Model\Location::query($sql2)) {
                 $sql21 = "DELETE FROM `geologin` WHERE msg LIKE '%denied%'";
                 $query21 = Model\Location::query($sql21);
                 $count2 = $query21->rowCount();
-                echo "Eliminados $count2 registros de geologin añadidos a los usuarios ilocalizables.<br />";
+                if ($debug) echo "Eliminados $count2 registros de geologin añadidos a los usuarios ilocalizables.<br />";
             }
             
-            echo "<hr /> Iniciamos tratamiento de geologins correctos<br/>";
+            if ($debug) echo "<hr /> Iniciamos tratamiento de geologins correctos<br/>";
             //Library\Geoloc
             $sql5 = "SELECT * FROM `geologin` WHERE msg LIKE 'OK' LIMIT 2000";
-            echo $sql5 . '<br />';
+            if ($debug) echo $sql5 . '<br />';
             $query5 = Model\Location::query($sql5);
             foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
-                echo "latlng: {$row->lat},{$row->lon}<br />";
+                if ($debug) echo "latlng: {$row->lat},{$row->lon}<br />";
                 // para cada uno: 
                 $geoloc = null;
                 $newloc = null;
                 $issue = false;
                 // peticion api gmaps
                 $geodata = Library\Geoloc::searchLoc(array('latlng'=>"{$row->lat},{$row->lon}"));
-                echo 'Obtenido por consulta API:<br />';
-                echo \trace($geodata);
+                if ($debug) echo 'Obtenido por consulta API:<br />';
+                if ($debug) echo \trace($geodata);
                 
                 // si no recupera nada
                 if (!empty($geodata)) {
@@ -59,11 +62,11 @@ namespace Goteo\Controller\Cron {
                     ));
                     
                     if (count($locations) > 0) {
-                        echo 'existe:<br />';
-                        echo \trace($locations[0]) . '<br />';
+                        if ($debug) echo 'existe:<br />';
+                        if ($debug) echo \trace($locations[0]) . '<br />';
                         $geoloc = (count($locations) > 0) ? $locations[0]->id : '';
                         $locName = (count($locations) > 0) ? $locations[0]->name : '';
-                        echo 'usamos: '.$geoloc.'<br />';
+                        if ($debug) echo 'usamos: '.$geoloc.'<br />';
                     } else {
                         // si no la tenemeos (no tenemos id), la creamos con los datos obtenidos de la API gmaps
                         $errors = array();
@@ -79,11 +82,15 @@ namespace Goteo\Controller\Cron {
                         if ($newloc->save($errors)) {
                             // OK
                             $locName = "{$geodata['location']}, {$geodata['region']}, {$geodata['country']}";
-                            echo 'Localización creada:<br />';
-                            echo \trace($newloc);
-                            echo '<hr />';
+                            \file_put_contents($log_file, 'Localización creada: ['.$newloc->id.'] '.$locName.'<br />', FILE_APPEND);
+                            if ($debug) echo 'Localización creada:<br />';
+                            if ($debug) echo \trace($newloc);
+                            if ($debug) echo '<hr />';
                         } else {
-                            echo 'ERROR al crear, no se asignará. <br />'. implode('<br />', $errors).'<br />';
+                            @mail('goteo_fail@doukeshi.org',
+                                'Error al crear localidad automáticamente en cron/geoloc. En ' . SITE_URL,
+                                'ERROR al crear, no se asignará. <br />'. implode('<br />', $errors).'<br />'.\trace($newloc).'<br />');
+                            if ($debug) echo 'ERROR al crear, no se asignará. <br />'. implode('<br />', $errors).'<br />';
                             unset($geoloc);
                             unset($newloc);
                         }
@@ -103,13 +110,9 @@ namespace Goteo\Controller\Cron {
                     
                     if ($sql_insloc) {
                         if (Model\Location::query($sql_insloc, $values)) {
-                            echo 'Se ha asignado:<br />';
-                            echo \trace($values);
-                            echo '<hr />';
+                            if ($debug) echo 'Se ha asignado:<br />'.\trace($values).'<hr />';
                         } else {
-                            echo 'ERROR al asignar:<br />'. $sql_insloc.'<br />';
-                            echo \trace($values);
-                            echo '<hr />';
+                            if ($debug) echo 'ERROR al asignar:<br />'. $sql_insloc.'<br />'.\trace($values).'<hr />';
                         }
                     } else {
                         // increible
@@ -117,7 +120,7 @@ namespace Goteo\Controller\Cron {
                     }
                     
                 } else {
-                    echo 'No se ha recuperado ninguna localización<br />';
+                    if ($debug) echo 'No se ha recuperado ninguna localización<br />';
                     // increible
                     $issue = true;
                 }
@@ -125,30 +128,27 @@ namespace Goteo\Controller\Cron {
                 // borrar entrada geologin (o marcar como increible)
                 if ($issue) {
                     $sql7 = "UPDATE `geologin` SET msg = 'NOK' WHERE user = '{$row->user}'";
-                    echo $sql7 . '<br />';
+                    if ($debug) echo $sql7 . '<br />';
                     Model\Location::query($sql7);
                 } else {
                     // si no ha rellenado el campo localidad, se lo rellenamos
                     $values = array(':locname'=>$locName, ':usr'=>$row->user);
                     $sql70 = "UPDATE `user` SET location = :locname WHERE id = :usr AND (location IS NULL OR TRIM(location) = '')";
-                    echo $sql70 . '<br />';
-                    echo \trace($values);
+                    if ($debug) echo $sql70 . '<br />';
+                    if ($debug) echo \trace($values);
                     Model\Location::query($sql70, $values);
                     
                     
                     // borramos el geologin
                     $sql7 = "DELETE FROM `geologin` WHERE user = :usr";
-                    echo $sql7 . '<br />';
+                    if ($debug) echo $sql7 . '<br />';
                     Model\Location::query($sql7, array(':usr'=>$row->user));
                 }
 
-                echo "<hr />";
-                echo "<br />Hasta aqui por el mometno";
-                return;
+                if ($debug) echo "<hr />";
             }
             
-            echo "<br />";
-            echo 'Listo!';
+            echo "Geoloc Listo!";
 
             return;
         }
