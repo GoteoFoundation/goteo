@@ -523,6 +523,8 @@ namespace Goteo\Controller {
          *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
          *      'gestionar retornos' resumen recompensas/cofinanciadores/conseguido  y lista de cofinanciadores y recompensas esperadas
          *      'pagina publica' enlace a la página pública del proyecto
+         * 
+         *      NEW: 'analytics' grafico de evolución de recaudación del proyecto
          *
          */
 
@@ -1128,6 +1130,14 @@ namespace Goteo\Controller {
                 // datos de contrato
                 case 'contract':
                     $viewData['contract'] = Model\Contract::get($project->id);
+                    break;
+
+                // goteo-analytics para este proyecto
+                case 'graph':
+                    
+                    // los datos json de invests y visitors_data  podrían venir por aquí en vez de hacer peticiones ajax
+                    $viewData['other-data'] = Dashboard\Projects::graph();
+                    
                     break;
             }
 
@@ -1846,7 +1856,8 @@ namespace Goteo\Controller {
 //                        'contract' => Text::get('dashboard-menu-projects-contract'),
                         'supports' => Text::get('dashboard-menu-projects-supports'),
                         'rewards' => Text::get('dashboard-menu-projects-rewards'),
-                        'messegers' => Text::get('dashboard-menu-projects-messegers')
+                        'messegers' => Text::get('dashboard-menu-projects-messegers'),
+                        'graph' => 'Analytics'
                     )
                 )
             );
