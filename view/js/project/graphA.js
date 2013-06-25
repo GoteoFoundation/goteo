@@ -2,28 +2,10 @@
 // Goteo Analytics
 // By Franc Camps-Febrer 
 // 2013
+// 
+// Modificado por Julián Cánaves para implementarlo en beta
+// 
 //
-
-$(document).ready(function(){
-    
-    /*
-     * Esto no se usa en beta, se hace la llamada a updateGraph con la id de proyecto desde la vista
-     *
-    // Load list of projects
-    // This functionality will be removed from the final version
-    $("#project_selection").load("projects.php", function(){
-        $("#project_selector").change(function(){ 
-            // Remove previous chart when selecting a new one
-            // This functionality will be removed from the final version
-            d3.selectAll(".svg_funds").remove();
-            d3.selectAll(".svg_funders").remove();
-
-            // Generate chart with id from selector
-            var project_id = $("#project_selector").val();
-            updateGraph(project_id); 
-        });
-    });
-    */
 
     function updateGraph(project_id){
         // Properties for funding chart
@@ -57,11 +39,11 @@ $(document).ready(function(){
             formatLabel = d3.time.format("%d %B");
 
         // Load fund and cofunders data for selected project
-        function loadData(){
+        function loadData(project_id){
             $.ajax({
                 url: 'http://goteo:gotagota@beta.goteo.org/json/invests/'+project_id,
 //                data: {id: project_id},  // 
-                dataType: 'json',
+                dataType: 'json'
             }).done(function(raw_data){
                 initializeCharts(raw_data); 
             });
@@ -785,11 +767,30 @@ $(document).ready(function(){
                 .attr("cy", fundersChart.y(fundersChart.current.value))
         }
    
-        /*
-         * La inicialización también se hace en la vista
-         *
         // Initialize 
-        loadData();
-        */
+        loadData(project_id);
         };
-});
+
+
+//$(document).ready(function(){
+    
+    /*
+     * Esto no se usa en beta, se hace la llamada a updateGraph con la id de proyecto desde la vista
+     *
+    // Load list of projects
+    // This functionality will be removed from the final version
+    $("#project_selection").load("projects.php", function(){
+        $("#project_selector").change(function(){ 
+            // Remove previous chart when selecting a new one
+            // This functionality will be removed from the final version
+            d3.selectAll(".svg_funds").remove();
+            d3.selectAll(".svg_funders").remove();
+
+            // Generate chart with id from selector
+            var project_id = $("#project_selector").val();
+            updateGraph(project_id); 
+        });
+    });
+    */
+
+//});

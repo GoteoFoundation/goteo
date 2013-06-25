@@ -1,5 +1,5 @@
     <!-- librerias externas -->
-    <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<!--    <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>  -->
     <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
     <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
     <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
@@ -9,7 +9,7 @@
     <script language="javascript" type="text/javascript" src="/view/js/project/graphB.js"></script>
 
     <!-- estilos para la visualización -->
-    <link rel="stylesheet" type="text/css" href="/view/css/project/widget/graph.css"/>	
+    <link rel="stylesheet" type="text/css" href="/view/css/project/graph.css"/>	
     
     
     
@@ -50,10 +50,8 @@
     
 <script type="text/javascript">
     /* función para cargar los datos del gáfico, sacado de graphA.js */
-    $(function(){
-        updateGraph(<?php echo $this['project']->id; ?>); 
-        // Initialize
-        loadData();
+jQuery(document).ready(function(){
+        updateGraph('<?php echo $this['project']->id; ?>'); 
     });
 
 </script>        
