@@ -3,18 +3,14 @@
 // By Franc Camps-Febrer 
 // 2013
 // 
-// Modificado por Julián Cánaves para implementarlo en beta
-// 
-//
+// Modificado por Julian para implementarlo en beta  "////" = (Julian)
+
 
     function updateGraph(project_id){
         // Properties for funding chart
         var funds_options = {
             size : {'w' : 540, 'h' : 250},
             margin : {'left' : 40, 'right' : 10, 'top' : 20, 'bottom' : 40},
-            minimum_data : '',
-            current : {value : '', time : ''},
-            data_for_hover : '',
             t : d3.time.scale(),
             y : d3.scale.linear()}
 
@@ -22,16 +18,16 @@
          var funders_options = {
             size : {'w' : 540, 'h' : 40},
             margin : {'left' : 40, 'right' : 10, 'top' : 5, 'bottom' : 20},
-            minimum_data : '',
-            data_for_hover : '',
-            current : {value : '', time : ''},
             t : d3.time.scale(),
             y : d3.scale.linear()}
 
         var fundsChart, fundersChart;
 
         var start_date,
+            first_deadline,
             deadline,
+            passed_minimum,
+            finished,
             day_number;
 
         var format = d3.time.format("%Y-%m-%d"),
@@ -49,6 +45,33 @@
             });
         }
  
+        // ---------------
+        //
+        // Determine deadlines and whether project is finished 
+        //
+        // ---------------
+
+        function checkDates(dates){
+            start_date = format.parse(dates.published);
+            finished = (dates.success || dates.closed) ? true : false;
+
+            // Possible combinations of states, returns deadline
+            if (!dates.passed && !dates.success && !dates.closed) {
+                return d3.time.day.offset(start_date, 40);
+            }
+            if (dates.passed && !dates.success){
+                passed_minimum = true;
+                first_deadline = format.parse(dates.passed);
+                return d3.time.day.offset(start_date, 80);
+            }
+            if (dates.success) {
+                passed_minimum = (dates.passed) ? true : false;
+                first_deadline = (dates.passed) ? format.parse(dates.passed) : undefined;
+                return format.parse(dates.success);
+            } 
+            return format.parse(dates.closed);
+        }
+
         // ----------------------
         //
         // Create chart objects and render them
@@ -56,12 +79,7 @@
         // ----------------------
 
         function initializeCharts(raw_data){
-                    // Date when the project was published
-                    start_date = format.parse(raw_data.dates[0].published);
-
-                    // Deadline should be 40 days after that
-                    // THIS SHOULD COME FROM DB TOO
-                    deadline = d3.time.day.offset(start_date, 40);
+                    deadline = checkDates(raw_data.dates);
 
                     // Generate array of invest objects
                     var invests = [];
@@ -72,7 +90,8 @@
                     });
 
                     // Required minimum to achieve
-                    var minimum = d3.sum(raw_data.minimum, function(d){ return +d.amount; });
+                    var minimum = raw_data.minimum;
+                    var optimum = parseInt(raw_data.minimum) + parseInt(raw_data.optimum)
 
                     // Generate daily data, funding and cofunders
                     var data = getFundingByDay(invests);
@@ -85,10 +104,18 @@
                     fundsChart.data = data.funded_data;
                     fundsChart.current = {'value' : _.last(data.funded_data).value,
                                             'time' : _.last(data.funded_data).date },
-                    fundsChart.minimum_data = [{ 'date' : format(start_date), 'value' : 0},
-                                    { 'date' : format(deadline), 'value' : minimum}];
                     fundsChart.minimum = minimum;
+                    fundsChart.optimum = optimum;
                     fundsChart.data_for_hover = _.groupBy(data.funded_data, function(d){ return d.date; });
+
+                    if (passed_minimum){
+                        fundsChart.minimum_data = [{ 'date' : format(start_date), 'value' : 0},
+                                    { 'date' : format(first_deadline), 'value' : minimum },
+                                    { 'date' : format(deadline), 'value' : minimum}];
+                    } else {
+                        fundsChart.minimum_data = [{ 'date' : format(start_date), 'value' : 0},
+                                    { 'date' : format(deadline), 'value' : minimum}];
+                    }
 
                     // Create chart Object for funders
                     fundersChart = new Chart(funders_options);
@@ -167,12 +194,20 @@
         // ----------------------
 
         function updateTitles(){
-            $("#dias").html(40 - day_number);
+            var total_days = 40,
+                amount_out_of = fundsChart.minimum,
+                text = "de euros.";
+            if (passed_minimum) {
+                var total_days = 80,
+                    text = "de euros. (<div style='color: #bb70b6; display: inline'>" + fundsChart.optimum + "</div> &oacuteptimo)";
+            }
+            var days_left = (finished) ? 0 : total_days - day_number;
+            $("#dias").html(days_left);
             if (fundsChart.current.value){
                     $("#funded").html(fundsChart.current.value);
                     $("#de").html('de');
-                    $("#minimum").html(fundsChart.minimum);
-                    $("#euros").html("de euros.");
+                    $("#minimum").html(amount_out_of);
+                    $("#euros").html(text);
             } else {
                 $("#funded").html('No hay donaciones.');
                     $("#de").html('');
@@ -199,13 +234,17 @@
                 y = Chart.y,
                 minimum_data = Chart.minimum_data,
                 minimum = Chart.minimum,
+                optimum = Chart.optimum,
                 current = Chart.current.value,
                 current_time = Chart.current.time;
 
             // Define scales
             t.domain([start_date, deadline])
                 .range([margin.left,size.w + margin.left]),
-            y.domain([0,d3.max([minimum, current])])
+
+            yScaleMax = (passed_minimum) ? optimum : minimum;
+
+            y.domain([0,d3.max([yScaleMax, current])])
                 .range([size.h + margin.top, margin.top]);
 
             // Create SVG
@@ -275,16 +314,6 @@
                 .on("mousemove", onHover)
                 .on("mouseout", offHover)
    
-            // Draw circle for last day with data or hovered day 
-            chart.append("circle")
-                .attr("class", "day_circle_funds day_circle")
-                .attr("cx", t(format.parse(data[data.length - 1].date)))
-                .attr("cy", y(current))
-                .attr("r", 5)
-                .on("mouseover", onHover)
-                .on("mousemove", onHover)
-                .on("mouseout", offHover)
-   
             // ---
             // Column on right side, filling up with funds
             // ---
@@ -305,6 +334,16 @@
                     .style("fill", "#96238f");
             }
             
+            // Only draw optimum if past minimum and optimum is not reached 
+            if (current > minimum && current < optimum){ 
+                chart.append("rect")
+                    .attr("x", size.w + margin.left)
+                    .attr("y", y(optimum))
+                    .attr("height", - y(optimum) + y(current))
+                    .attr("width", columnW)
+                    .style("fill", "#BB70B6");
+            }
+            
             // Level marks on column for minimum and funded 
             var line_width = 26;
             chart.append("line")
@@ -322,6 +361,26 @@
                 .attr("y2", y(0))
                 .style("stroke", "#20b3b2")
                 .style("stroke-width", 2);
+   
+            if (current > minimum) {
+                chart.append("line")
+                    .attr("x1", size.w + margin.left - line_width + columnW)
+                    .attr("x2", size.w + margin.left + columnW)
+                    .attr("y1", y(optimum))
+                    .attr("y2", y(optimum))
+                    .style("stroke", "#bb70b6")
+                    .style("stroke-width", 2);
+            }
+   
+            // Draw circle for last day with data or hovered day 
+            chart.append("circle")
+                .attr("class", "day_circle_funds day_circle")
+                .attr("cx", t(format.parse(data[data.length - 1].date)))
+                .attr("cy", y(current))
+                .attr("r", 5)
+                .on("mouseover", onHover)
+                .on("mousemove", onHover)
+                .on("mouseout", offHover)
    
             // -------------------
             //
@@ -635,8 +694,9 @@
             var today_funds = fundsChart.data_for_hover[format(day)][0],
                 tomorrow = fundsChart.data_for_hover[format(d3.time.day.offset(day, 1))][0],
                 this_minute = (now - day)/1000,
+                total_days = (passed_minimum) ? 80 : 40,
                 day_number = Math.floor((format.parse(today_funds.date) - (start_date))/86400000),
-                today_minimum = Math.floor((minimum / 40)*day_number),
+                today_minimum = Math.floor((minimum / total_days)*day_number),
                 y_today_funds = y(today_funds.value),
                 y_tomorrow_funds = y(tomorrow.value);
             
@@ -770,27 +830,3 @@
         // Initialize 
         loadData(project_id);
         };
-
-
-//$(document).ready(function(){
-    
-    /*
-     * Esto no se usa en beta, se hace la llamada a updateGraph con la id de proyecto desde la vista
-     *
-    // Load list of projects
-    // This functionality will be removed from the final version
-    $("#project_selection").load("projects.php", function(){
-        $("#project_selector").change(function(){ 
-            // Remove previous chart when selecting a new one
-            // This functionality will be removed from the final version
-            d3.selectAll(".svg_funds").remove();
-            d3.selectAll(".svg_funders").remove();
-
-            // Generate chart with id from selector
-            var project_id = $("#project_selector").val();
-            updateGraph(project_id); 
-        });
-    });
-    */
-
-//});

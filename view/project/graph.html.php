@@ -1,6 +1,6 @@
     <!-- librerias externas -->
 <!--    <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>  -->
-    <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
+    <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.js"></script>
     <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
     <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
 
@@ -15,15 +15,15 @@
     
     <div class="widget"> 
             <div id="project_selection" style="margin-bottom: 10px"></div>
-            <div style="width: 295px; float: left">
+            <div style="width: 325px; float: left">
                 <h2>FINANCIACI&OacuteN OBTENIDA</h2>
                 <div id="funded" class="obtenido number"></div>
                 <div id="de" style="float: left; margin-left: 5px"></div>
                 <div id="minimum" class="minimum number" style="margin-left: 5px"></div>
                 <div id="euros" style="margin-left: 5px; float:left"></div>
             </div>
-            <div style="width: 295px; float: left; text-align: right">
-                <div style="font-weight: normal; font-size: 12px">QUEDAN<h2 id="dias"></h2>D&IacuteAS</div>
+            <div style="width: 265px; float: left; text-align: right">
+                <div style="font-weight: normal; font-size: 12px">QUEDAN<h2 id="dias" style="display:inline"></h2>D&IacuteAS</div>
             </div>
 
             <div id="funds" style="clear: both"></div>

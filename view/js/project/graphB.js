@@ -25,7 +25,7 @@ $(document).ready(function(){
 
     var maxMean = 25;
 
-    d3.json('./visitors_data.json', function(json){
+    d3.json('http://goteo:gotagota@beta.goteo.org/view/js/project/visitors_data.json', function(json){
         createTable(json);
         renderTable(json);
     });

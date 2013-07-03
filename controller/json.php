@@ -27,22 +27,27 @@ namespace Goteo\Controller {
             }
 
             $dates = array();
-            $sql = 'SELECT published FROM project WHERE id = ?';
+            $sql = 'SELECT published, closed, success, passed FROM project WHERE id = ?';
             $result = Model\Invest::query($sql, array($id));
             foreach ($result->fetchAll(\PDO::FETCH_ASSOC) as $row){
-                $dates[] = $row;
+                $dates = $row;
             }
 
-            $minimum = array();
-            $sql = 'SELECT amount FROM cost WHERE project = ? AND required = 1';
+            $optimum = $minimum = 0;
+            $sql = 'SELECT sum(amount) as amount, required FROM cost WHERE project = ? GROUP BY required';
             $result = Model\Invest::query($sql, array($id));
             foreach ($result->fetchAll(\PDO::FETCH_ASSOC) as $row){
-                $minimum[] = $row;
+                if ($row['required'] == 1){
+                    $minimum = $row['amount'];
+                } else {
+                    $optimum = $row['amount'];
+                }
             }
 
             $this->result = array('invests' => $invests, 
                             'dates' => $dates,
-                            'minimum' => $minimum);
+                            'minimum' => $minimum,
+                            'optimum' => $optimum);
 
 			return $this->output();
 		}
@@ -135,7 +140,7 @@ namespace Goteo\Controller {
 		 * */
 		public function output() {
 
-			header("Content-Type: application/javascript");
+			header("Content-Type: application/json; charset=utf-8");
 
 			return json_encode($this->result);
 		}
