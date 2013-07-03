@@ -98,7 +98,8 @@ namespace Goteo\Model {
                 case "applied":
                     // número de proyectos presentados a la campaña
                     $applied = array(
-                        'unia-capital-riego' => 44
+                        'unia-capital-riego' => 44,
+                        'crowdsasuna' => 26
                     );
                     return (isset($applied[$this->id])) ? $applied[$this->id] : $this->getApplied();
                     break;
