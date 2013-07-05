@@ -132,9 +132,19 @@ namespace Goteo\Controller {
 
                 if (empty($errors)) {
                     Message::Info(Text::get('user-register-success'));
-                    Message::Info('Tus datos de acceso son Usuario: <strong>' . $user->id . '</strong> Contraseña: <strong>' . $_POST['password'] . '</strong>');
 
-                    throw new Redirection('/user/login');
+                    $_SESSION['user'] = Model\User::get($user->id);
+                    
+                    // creamos una cookie
+                    setcookie("goteo_user", $user->id, time() + 3600 * 24 * 365);
+
+                    if (!empty($_SESSION['jumpto'])) {
+                        $jumpto = $_SESSION['jumpto'];
+                        unset($_SESSION['jumpto']);
+                        throw new Redirection($jumpto);
+                    } else {
+                        throw new Redirection('/dashboard');
+                    }
                 } else {
                     foreach ($errors as $field => $text) {
                         Message::Error($text);

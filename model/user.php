@@ -139,8 +139,8 @@ namespace Goteo\Model {
 						$subject = $template->title;
 
 						// En el contenido:
-						$search  = array('%USERNAME%', '%USERID%', '%ACTIVATEURL%');
-						$replace = array($this->name, $this->id, $URL . '/user/activate/' . $token);
+						$search  = array('%USERNAME%', '%USERID%', '%USERPWD%', '%ACTIVATEURL%');
+						$replace = array($this->name, $this->id, $this->password, $URL . '/user/activate/' . $token);
 						$content = \str_replace($search, $replace, $template->text);
 
 						// Activación
