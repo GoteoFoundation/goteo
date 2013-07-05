@@ -17,7 +17,7 @@ namespace Goteo\Model\User {
 	 	public static function get ($id) {
             
             try {
-                $query = static::query("SELECT id FROM location_item WHERE type = 'user' AND item = ?", array($id));
+                $query = static::query("SELECT location FROM location_item WHERE type = 'user' AND item = ?", array($id));
                 $loc = $query->fetchColumn();
                 return (!empty($loc)) ? $loc : null;
             } catch(\PDOException $e) {
@@ -39,8 +39,13 @@ namespace Goteo\Model\User {
 
 			try {
 	            $sql = "REPLACE INTO location_item (location, item, type) VALUES(:location, :item, :type)";
-				self::query($sql, $values);
-				return true;
+				if (self::query($sql, $values)) {
+                    // lo quitamos de unlocable
+                    self::locable($this->user, $errors);
+                    return true;
+                } else {
+                    return false;
+                }
 			} catch(\PDOException $e) {
 				$errors[] = "No se ha podido asignar. Por favor, revise los datos." . $e->getMessage();
 				return false;
@@ -59,20 +64,20 @@ namespace Goteo\Model\User {
             $values = array(':item'=>$user, ':type'=>'user');
 
             try {
-                self::query("DELETE FROM location_item WHERE type = :type AND user = :user", $values);
+                self::query("DELETE FROM location_item WHERE type = :type AND item = :item", $values);
 				return true;
 			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido quitar la geolocalización del usuario ' . $user . ' ' . $e->getMessage();
+                $errors[] = 'No se ha podido quitar la geolocalización del usuario ' . $user . '.<br />' . $e->getMessage();
                 return false;
 			}
 		}
 
 		/*
-		 *  Guarda datos de login
+		 *  Guarda datos de geologin
 		 */
 		public static function loginRec ($data, &$errors = array()) {
 			try {
-	            $sql = "INSERT INTO geologin (user, ip, lon, lat, msg) VALUES(:user, :ip, :lon, :lat, :msg)";
+	            $sql = "REPLACE INTO geologin (user, ip, lon, lat, msg) VALUES(:user, :ip, :lon, :lat, :msg)";
 				self::query($sql, $data);
 				return true;
 			} catch(\PDOException $e) {
@@ -80,6 +85,101 @@ namespace Goteo\Model\User {
 				return false;
 			}
 
+		}
+
+		/*
+		 *  Elimina geologin
+		 */
+		public static function loginDel ($user, &$errors = array()) {
+            try {
+                self::query("DELETE FROM geologin WHERE user = ?", array($user));
+				return true;
+			} catch(\PDOException $e) {
+                $errors[] = 'No se ha podido borrar geologin usuario ' . $user . '.<br />' . $e->getMessage();
+                return false;
+			}
+		}
+
+        /**
+         * Recupera geologin
+         * @param varcahr(50) $id  user identifier
+         * @return mixed (geologin row)
+         */
+	 	public static function getLogin ($user) {
+            
+            try {
+                $query = static::query("SELECT * FROM geologin WHERE user = ?", array($user));
+                return $query->fetchObject();
+            } catch(\PDOException $e) {
+                return null;
+            }
+		}
+        
+        /**
+         * Si tiene ya un registro de geologin
+         * @param varcahr(50) $id  user identifier
+         * @return int (have a geologin register)
+         */
+	 	public static function is_geologed ($user) {
+            
+            try {
+                $query = static::query("SELECT user FROM geologin WHERE user = ?", array($user));
+                $gl = $query->fetchColumn();
+                return ($gl == $user) ? true : false;
+            } catch(\PDOException $e) {
+                return false;
+            }
+		}
+
+		/**
+		 * Borrar de unlocable
+		 *
+		 * @param varchar(50) $user id de un usuario
+		 * @param array $errors
+		 * @return boolean
+		 */
+		public static function locable ($user, &$errors = array()) {
+            try {
+                self::query("DELETE FROM unlocable WHERE user = :user", array(':user'=>$user));
+				return true;
+			} catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar al usuario ' . $user . ' de los ilocalizables.<br />' . $e->getMessage();
+                return false;
+			}
+		}
+
+		/**
+		 * Añadir a unlocable
+		 *
+		 * @param varchar(50) $user id de un usuario
+		 * @param array $errors
+		 * @return boolean
+		 */
+		public static function unlocable ($user, &$errors = array()) {
+            try {
+                self::query("REPLACE INTO unlocable (user) VALUES (:user)", array(':user'=>$user));
+				return true;
+			} catch(\PDOException $e) {
+                $errors[] = 'No se ha podido añadir al usuario ' . $user . ' a los ilocalizables.<br />' . $e->getMessage();
+                return false;
+			}
+		}
+        
+        
+        /**
+         * Si está como ilocalizable
+         * @param varcahr(50) $id  user identifier
+         * @return int (have an unlocable register)
+         */
+	 	public static function is_unlocable ($user) {
+            
+            try {
+                $query = static::query("SELECT user FROM unlocable WHERE user = ?", array($user));
+                $gl = $query->fetchColumn();
+                return ($gl == $user) ? true : false;
+            } catch(\PDOException $e) {
+                return false;
+            }
 		}
 
 	}

@@ -343,6 +343,11 @@ namespace Goteo\Controller {
                         }
                         break;
 
+                    // geolocalización
+                    case 'location':
+                        $errors = Dashboard\Location::process();
+                        break;
+                        
                     //cambio de email y contraseña
                     case 'access':
                         // E-mail
@@ -485,14 +490,20 @@ namespace Goteo\Controller {
                 case 'personal':
                     $viewData['personal'] = Model\User::getPersonal($user->id);
                     break;
-                case 'preferences':
-                    $viewData['preferences'] = Model\User::getPreferences($user->id);
+                case 'location':
+                    // datos que se necesiten para la visualización
+                    $viewData['locations'] = Model\Location::getAll();
+                    // contenido de la página
+                    $viewData['page'] = Page::get('geoloc');
                     break;
                 case 'access':
                     // si es recover, en contraseña actual tendran que poner el username
                     if ($action == 'recover') {
                         $viewData['message'] = Text::get('dashboard-password-recover-advice');
                     }
+                    break;
+                case 'preferences':
+                    $viewData['preferences'] = Model\User::getPreferences($user->id);
                     break;
             }
 
@@ -1429,6 +1440,7 @@ namespace Goteo\Controller {
 
                             case 'overview':
                                 if ($action == 'save') {
+                                    $call->name_lang = $_POST['name'];
                                     $call->description_lang = $_POST['description'];
                                     $call->whom_lang = $_POST['whom'];
                                     $call->apply_lang = $_POST['apply'];
@@ -1818,6 +1830,7 @@ namespace Goteo\Controller {
                     'options' => array(
                         'profile' => Text::get('dashboard-menu-profile-profile'),
                         'personal' => Text::get('dashboard-menu-profile-personal'),
+                        'location' => Text::get('dashboard-menu-profile-location'),
                         'access' => Text::get('dashboard-menu-profile-access'),
                         'preferences' => Text::get('dashboard-menu-profile-preferences'),
                         'public' => Text::get('dashboard-menu-profile-public')

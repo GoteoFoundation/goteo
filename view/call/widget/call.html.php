@@ -44,18 +44,18 @@ $tag = array(
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img alt="<?php echo $call->name ?>" src="<?php echo $call->logo->getLink(150) ?>" /></a>
         <?php endif ?>
 
-        <h3><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></a></h3>
+        <h3><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>><?php echo $call->name ?></a></h3>
     </div>
 
     <div class="data">
         <ul>
             <li class="item" id="description">
-                <?php if ($call->status == 3) : //inscripcion ?>
+                <?php if ($call->status == 3 && !empty($call->amount)) : //inscripcion con dinero ?>
                 <p class="subtitle"><?php echo Text::get('call-splash-searching_projects', $call->user->name) ?></p>
                 <?php elseif (!empty($call->amount)) : //en campaña con dinero ?>
                 <p class="subtitle"><?php echo Text::html('call-splash-invest_explain', $call->user->name) ?></p>
-                <?php else : //en campaña sin dinero, con recursos ?>
-                <p class="subtitle"><?php echo Text::get('call-splash-resources_explain') ?></p>
+                <?php else : // inscripción o en campaña sin dinero, con recursos ?>
+                <p class="subtitle"><?php echo $call->resources ?></p>
                 <?php endif; ?>
             </li>
 
@@ -70,7 +70,7 @@ $tag = array(
                     <?php else: ?>
                         <dl class="block long resources">
                             <dt><?php echo Text::get('call-splash-resources-header') ?></dt>
-                            <dd><?php echo Text::recorta($call->resources, 100) ?></dd>
+                            <dd><?php echo Text::get('call-splash-resources_explain') ?></dd>
                         </dl>
                     <?php endif; ?>
                         <dl class="block long expires">

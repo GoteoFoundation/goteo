@@ -148,12 +148,14 @@ $contract_date = date('dmY', $dContract);
 
     <br />
     <table>
-        <?php foreach ($Data['issues'] as $issue) : ?>
+        <?php foreach ($Data['issues'] as $issue) : 
+            $warst = ($issue->status == 1) ? ' style="color: red !important;"' : '';
+            ?>
         <tr>
 <?php if ($admin) : ?>
-            <td><?php echo '<a href="/admin/accounts/details/'.$issue->invest.'" target="_blank">[Ir al aporte]</a> Usuario <a href="/admin/users/manage/' . $issue->user . '" target="_blank">' . $issue->userName . '</a> [<a href="mailto:'.$issue->userEmail.'">'.$issue->userEmail.'</a>], ' . $issue->statusName . ', ' . $issue->amount . ' euros.'; ?></td>
+            <td><?php echo '<a href="/admin/accounts/details/'.$issue->invest.'" target="_blank"'.$warst.'>[Ir al aporte]</a> Usuario <a href="/admin/users/manage/' . $issue->user . '" target="_blank">' . $issue->userName . '</a> [<a href="mailto:'.$issue->userEmail.'">'.$issue->userEmail.'</a>], ' . $issue->statusName . ', ' . $issue->amount . ' euros.'; if (!empty($warst)) echo '  (Aporte: '.$issue->invest.')'; ?></td>
 <?php else: ?>
-            <td>Usuario/a <?php echo $issue->userName; ?>,  <?php echo $issue->statusName; ?>, <?php echo $issue->amount . ' euros'; ?></td>
+            <td<?php echo $warst; ?>>Usuario/a <?php echo $issue->userName; ?>,  <?php echo $issue->statusName; ?>, <?php echo $issue->amount . ' euros.'; if (!empty($warst)) echo '  (Aporte: '.$issue->invest.')';?></td>
 <?php endif; ?>
         </tr>
         <?php endforeach; ?>

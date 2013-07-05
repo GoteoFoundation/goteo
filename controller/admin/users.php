@@ -192,7 +192,7 @@ namespace Goteo\Controller\Admin {
                         if (Model\User::query($sql, array(':user'=>$id))) {
 
                             // mensaje de ok y volvemos a la gestion del usuario
-                            Message::Info('Ha <strong>' . $log_action . '</strong> al usuario <strong>'.$user->name.'</strong> CORRECTAMENTE');
+//                            Message::Info('Ha <strong>' . $log_action . '</strong> al usuario <strong>'.$user->name.'</strong> CORRECTAMENTE');
                             $log_text = 'El admin %s ha %s al usuario %s';
 
                             $onNode = Model\Node::get($node);
@@ -201,17 +201,17 @@ namespace Goteo\Controller\Admin {
                             switch ($subaction) {
                                 case 'admin':
                                     if ($onNode->assign($id)) {
-                                        Message::Info('El nuevo admin se ha asignado al nodo <strong>'.$onNode->name.'</strong>.');
+                                        Message::Info('El nuevo admin se ha añadido a los administradores del nodo <strong>'.$onNode->name.'</strong>.');
                                     } else{
-                                        Message::Error('El nuevo admin no se ha asignado al nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
+                                        Message::Error('ERROR!!! El nuevo admin no se ha podido añadir a los administradores del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
                                     }
                                     break;
 
                                 case 'noadmin':
                                     if ($onNode->unassign($id)) {
-                                        Message::Info('El ex-admin se ha desasignado del nodo <strong>'.$onNode->name.'</strong>.');
+                                        Message::Info('El ex-admin se ha quitado de los administradores del nodo <strong>'.$onNode->name.'</strong>.');
                                     } else{
-                                        Message::Error('El ex-admin no se ha desasignado del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
+                                        Message::Error('ERROR!!! El ex-admin no se ha podido quitar de los administradores del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
                                     }
                                     break;
 

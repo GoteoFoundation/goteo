@@ -101,6 +101,7 @@ $filters = $this['filters'];
                 <th>Latitud</th>
                 <th>Longitud</th>
                 <?php endif; ?>
+                <th>Usos</th>
                 <th></th>
             </tr>
         </thead>
@@ -116,6 +117,7 @@ $filters = $this['filters'];
                 <td><?php echo $item->lat; ?></td>
                 <td><?php echo $item->lon; ?></td>
                 <?php endif; ?>
+                <td><?php echo $item->uses;?></td>
                 <td><?php echo (empty($item->valid)) ? '<span style="color: red;">Revisar</span>' : '';?></td>
             </tr>
             <?php endforeach; ?>

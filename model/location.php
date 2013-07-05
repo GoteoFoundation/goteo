@@ -31,6 +31,19 @@ namespace Goteo\Model {
         );
 
         /**
+         * Sobrecarga de métodos 'getter'.
+         *
+         * @param type string $name
+         * @return type mixed
+         */
+        public function __get ($name) {
+            if($name == "uses") { // numero de usuarios asignados a la localización
+	            return self::countBy('geolocation', $this->id);
+	        }
+            return $this->$name;
+        }
+
+        /**
          * Obtener datos de una localizacion (longitud, latitud, nombre completo(montado), poblacion, provincia, pais y si está validada )
          * @param   type mixed  $id     Identificador
          * @return  type object         Instancia de geolocalización
@@ -168,7 +181,7 @@ namespace Goteo\Model {
             foreach ($fields as $field) {
                 if ($set != '') $set .= ", ";
                 $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
+                $values[":$field"] = addslashes($this->$field);
             }
 
             try {
@@ -227,7 +240,7 @@ namespace Goteo\Model {
                 $values[':fVal'] = "%".$filter['value']."%";
             }
 
-            $sql = static::query("
+            $sql = "
                 SELECT
                     DISTINCT({$type}) as name
                 FROM  location
@@ -235,9 +248,9 @@ namespace Goteo\Model {
                 AND {$type} != ''
                 $sqlFilter
                 ORDER BY name ASC
-                ", $values);
-
-            foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                ";
+            $query = static::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[md5($item->name)] = $item->name;
             }
 
@@ -365,6 +378,54 @@ namespace Goteo\Model {
             }
 
             return $list;
+        }
+
+        /*
+         * Conteo de usuarios por geolocalización
+         */
+        public static function countBy ($type = 'registered', $keyword = '') {
+
+            switch ($type) {
+                case 'registered':
+                    $sql = "SELECT COUNT(id) FROM user";
+                    break;
+                case 'node':
+                    $sql = "SELECT COUNT(id) FROM user WHERE node = '{$keyword}'";
+                    break;
+                case 'no-location':
+                    $sql = "SELECT COUNT(id) FROM user WHERE TRIM(location) = '' OR location IS NULL";
+                    break;
+                case 'located':
+                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.type = 'user'";
+                    break;
+                case 'unlocated':
+                    $sql = "SELECT COUNT(id) FROM user WHERE id NOT IN (SELECT item FROM location_item WHERE location_item.type = 'user')";
+                    break;
+                case 'unlocable':
+                    $sql = "SELECT COUNT(user) FROM unlocable";
+                    break;
+                case 'not-country':
+                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location IN (SELECT location.id FROM location WHERE location.country NOT LIKE '{$keyword}')";
+                    break;
+                case 'country':
+                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location IN (SELECT location.id FROM location WHERE location.country LIKE '{$keyword}')";
+                    break;
+                case 'region':
+                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location IN (SELECT location.id FROM location WHERE location.region LIKE '{$keyword}')";
+                    break;
+                case 'geolocation':
+                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location = '{$keyword}'";
+                    break;
+            }
+            
+            if (!empty($sql)) {
+                $query = self::query($sql);
+                $num = $query->fetchColumn();
+
+                return $num;
+            } else {
+                return false;
+            }
         }
 
 

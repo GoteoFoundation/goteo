@@ -121,6 +121,12 @@ namespace Goteo\Library {
          */
         public static function pay($invest, &$errors = array()) {
 
+            if ($invest->status == 1) {
+                $errors[] = 'Este aporte ya está cobrado!';
+                @mail('goteo-paypal-fail@doukeshi.org', 'Dobleejecución de preapproval', 'Se intentaba ejecutar un aporte en estado Cobrado. <br /><pre>' . print_r($invest, 1) . '</pre>');
+                return false;
+            }
+            
             try {
                 $project = Project::getMini($invest->project);
                 $userData = User::getMini($invest->user);

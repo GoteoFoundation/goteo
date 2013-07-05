@@ -28,6 +28,7 @@ namespace Goteo\Controller {
         public function raw ($id) {
             $project = Model\Project::get($id, LANG);
             $project->check();
+            \trace($project->call);
             \trace($project);
             die;
         }
@@ -58,7 +59,6 @@ namespace Goteo\Controller {
                 && (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) // es admin pero no es admin de central
                 && (isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) // no es de su nodo
                 && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
-                && !isset($_SESSION['user']->roles['root']) // no es root
                 && (isset($_SESSION['user']->roles['checker']) && !Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // no lo tiene asignado
                 ) {
                 Message::Info('No tienes permiso para editar este proyecto');

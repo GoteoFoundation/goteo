@@ -146,6 +146,27 @@ namespace Goteo\Controller {
                 }
             }
 
+            // padrinos
+            if (isset($order['patrons'])) {
+                $patrons  =  Patron::getActiveVips(NODE_ID);
+
+                foreach ($patrons as $userId => $user) {
+                    try {
+                        $userData = User::getMini($userId);
+                        $vipData = User\Vip::get($userId);
+                        if (!empty($vipData->image)) {
+                            $userData->avatar = $vipData->image;
+                        }
+                        $patrons[$userId] = $userData;
+                    } catch (\Goteo\Core\Error $e) {
+                        unset($patrons[$key]);
+                    }
+                }
+
+            }
+
+            
+            
             // Laterales
             // ---------------------
             if (isset($side_order['searcher'])) {
@@ -254,6 +275,7 @@ namespace Goteo\Controller {
                         'posts'    => $posts,
                         'promotes' => $promotes,
                         'calls'    => array('calls'=>$calls, 'campaigns'=>$campaigns),
+                        'patrons' => $patrons,
                     
                     // laterales
                     'side_order' => $side_order,

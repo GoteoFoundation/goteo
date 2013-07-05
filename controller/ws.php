@@ -140,7 +140,7 @@ EOD;
             $errors = array();
             //
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['geologin'] == 'record') {
-                echo \trace($_POST);
+                
                 if (Model\User\Location::loginRec(array(
                     ':user' => isset($_SESSION['user']) ? $_SESSION['user']->id : '',
                     ':ip'   => \myip(),

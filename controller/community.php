@@ -22,7 +22,10 @@ namespace Goteo\Controller {
             $items = array();
             $shares = array();
 
-            if (!in_array($show, array('sharemates', 'activity'))) $show = 'activity';
+            // Deshabilitamos el Compartiendo - 04/07/2013
+            if ($show != 'activity') {
+                throw new Redirection('/community');
+            }
 
             $viewData = array(
                     'description' => $page->description,

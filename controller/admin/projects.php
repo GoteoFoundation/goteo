@@ -85,10 +85,17 @@ namespace Goteo\Controller\Admin {
                     } else {
 
                         $values = array(':id' => $projData->id, ':node' => $_POST['node']);
+                        $values2 = array(':id' => $projData->owner, ':node' => $_POST['node']);
                         try {
                             $sql = "UPDATE project SET node = :node WHERE id = :id";
+                            $sql2 = "UPDATE user SET node = :node WHERE id = :id";
                             if (Model\Project::query($sql, $values)) {
                                 $log_text = 'El admin %s ha <span class="red">movido al nodo '.$nodes[$_POST['node']].'</span> el proyecto '.$projData->name.' %s';
+                                if (Model\User::query($sql2, $values2)) {
+                                    $log_text .= ', tambien se ha movido al impulsor';
+                                } else {
+                                    $log_text .= ', pero no se ha movido al impulsor';
+                                }
                             } else {
                                 $log_text = 'Al admin %s le ha <span class="red">fallado al mover al nodo '.$nodes[$_POST['node']].'</span> el proyecto '.$projData->name.' %s';
                             }
@@ -195,11 +202,11 @@ namespace Goteo\Controller\Admin {
                     }
                     break;
                 case 'publish':
-                    // poner un proyecto en campaña
+                    // poner un proyecto en campaï¿½a
                     if ($project->publish($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>';
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaï¿½a</span>';
                     } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaï¿½a</span>';
                     }
                     break;
                 case 'cancel':

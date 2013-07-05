@@ -133,7 +133,7 @@ namespace Goteo\Model {
 		* @param $dir if specified, generated name will be changed if exists in that dir
 		*/
 		public static function check_filename($name='',$dir=null){
-			$name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(self::idealiza($name)));
+			$name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(self::idealiza($name, true)));
 			if(is_dir($dir)) {
 				while ( file_exists ( "$dir/$name" )) {
 					$name = preg_replace ( "/^(.+?)(_?)(\d*)(\.[^.]+)?$/e", "'\$1_'.(\$3+1).'\$4'", $name );

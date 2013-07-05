@@ -23,7 +23,11 @@ include 'view/call/header.html.php';
                 <a href="/call/<?php echo $call->id ?>/info"><?php
             if ($call->status == 3) {
                 // inscripción
-                echo Text::get('call-splash-searching_projects', $call->user->name);
+                echo empty($call->amount) ?
+                    Text::recorta($call->resources, 200)
+                    :
+                    Text::get('call-splash-searching_projects', $call->user->name)
+                ;
             } elseif (!empty($call->amount)) {
                 //en campaña con dinero
                 echo Text::html('call-splash-invest_explain', $call->user->name);
@@ -43,12 +47,11 @@ include 'view/call/header.html.php';
         <?php echo new View('view/call/widget/buzz.html.php', $this); ?>
     </div>
 
-    <?php if ($call->status > 3) : ?>
     <div id="supporters-sponsors">
-        <?php echo new View('view/call/widget/supporters.html.php', $this); ?>
+        <?php if ($call->status > 3) echo new View('view/call/widget/supporters.html.php', $this); 
+        else  echo new View('view/call/widget/post.html.php', $this); ?>
         <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>
     </div>
-    <?php endif; ?>
 </div>
 
 <?php

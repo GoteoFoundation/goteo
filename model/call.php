@@ -97,7 +97,11 @@ namespace Goteo\Model {
 
                 case "applied":
                     // número de proyectos presentados a la campaña
-                    return $this->getApplied();
+                    $applied = array(
+                        'unia-capital-riego' => 44,
+                        'crowdsasuna' => 26
+                    );
+                    return (isset($applied[$this->id])) ? $applied[$this->id] : $this->getApplied();
                     break;
 
                 default:
@@ -199,6 +203,7 @@ namespace Goteo\Model {
                 } elseif (!empty($lang)) {
                     $sql = "
                         SELECT
+                            IFNULL(call_lang.name, call.name) as name,
                             IFNULL(call_lang.subtitle, call.subtitle) as subtitle,
                             IFNULL(call_lang.description, call.description) as description,
                             IFNULL(call_lang.whom, call.whom) as whom,
@@ -232,6 +237,9 @@ namespace Goteo\Model {
                 // proyectos
                 $call->projects = Call\Project::get($id);
 
+                // entrada blog
+                $call->post = Call\Post::get($id);
+
                 // cuantos en campaña (status 3) y cuantos exitosos
                 $call->runing_projects = 0;
                 $call->success_projects = 0;
@@ -239,7 +247,8 @@ namespace Goteo\Model {
                 foreach ($call->projects as $proj) {
                     if (\Goteo\Model\Project::isSuccessful($proj->id)) {
                         $call->success_projects++;
-                    } elseif ($proj->status == 3) {
+                    } 
+                    if ($proj->status == 3) {
                         $call->runing_projects++;
                     }
                 }
@@ -259,7 +268,7 @@ namespace Goteo\Model {
 
                     // rellenamos el array de visualizacion de fecha limite
                     $call->until['day'] = date('d', $until);
-                    $call->until['month'] = ucfirst(substr(strftime('%B', $until), 0, 3));
+                    $call->until['month'] = strftime('%b', $until);
                     ;
                     $call->until['year'] = date('Y', $until);
                 }
@@ -329,7 +338,7 @@ namespace Goteo\Model {
                         INNER JOIN call_project
                             ON  call_project.project = project.id
                             AND call_project.call = :call
-                        WHERE (project.status != 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )
+                        WHERE (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )
                         ";
                 
                 $query = static::query($sql, array(':call'=>$this->id));
@@ -601,6 +610,7 @@ namespace Goteo\Model {
                 $fields = array(
                     'id' => 'id',
                     'lang' => 'lang_lang',
+                    'name' => 'name_lang',
                     'subtitle' => 'subtitle_lang',
                     'description' => 'description_lang',
                     'whom' => 'whom_lang',
@@ -833,7 +843,7 @@ namespace Goteo\Model {
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $call) {
-                $calls[] = self::get($call->id);
+                $calls[] = self::get($call->id, \LANG);
             }
             return $calls;
         }
@@ -879,9 +889,9 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND status = :status";
                 $values[':status'] = $filters['status'];
             }
-            if (!empty($filters['owner'])) {
-                $sqlFilter .= " AND owner = :owner";
-                $values[':owner'] = $filters['owner'];
+            if (!empty($filters['caller'])) {
+                $sqlFilter .= " AND owner = :caller";
+                $values[':caller'] = $filters['caller'];
             }
             if (!empty($filters['name'])) {
                 $sqlFilter .= " AND name LIKE :name";
@@ -905,6 +915,10 @@ namespace Goteo\Model {
                 $values[':icon'] = $filters['icon'];
             }
 
+            if (!empty($filters['admin'])) {
+                $sqlFilter .= " AND id IN (SELECT `call` FROM user_call WHERE user = '{$filters['admin']}')";
+            }
+            
             //el Order
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
@@ -1346,6 +1360,106 @@ namespace Goteo\Model {
 
         }
 
+        // Administradores para gestión de convocatoria
+        //------
+        /*
+         * Array asociativo de administradores de una convocatoria
+         *  (o todos los que administran alguna, si no hay filtro)
+         */
+        public static function getAdmins ($call = null) {
+
+            $list = array();
+
+            $sqlFilter = "";
+            if (!empty($call)) {
+                $sqlFilter .= " WHERE user_call.call = '{$call}'";
+            }
+
+
+            $query = static::query("
+                SELECT
+                    DISTINCT(user_call.user) as admin,
+                    user.name as name
+                FROM user_call
+                INNER JOIN user
+                    ON user.id = user_call.user
+                $sqlFilter
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->admin] = $item->name;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Asignar a un usuario como administrador de un nodo
+         */
+		public function assign ($user, &$errors = array()) {
+
+            $values = array(':user'=>$user, ':call'=>$this->id);
+
+			try {
+	            $sql = "REPLACE INTO user_call (`user`, `call`) VALUES(:user, :call)";
+				if (self::query($sql, $values)) {
+                    ACL::allow('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
+    				return true;
+                } else {
+                    $errors[] = 'No se ha creado el registro `user_call`';
+    				return false;
+                }
+			} catch(\PDOException $e) {
+				$errors[] = "No se ha podido asignar al usuario {$user} como administrador de la convocatoria {$this->id}. Por favor, revise el metodo Call->assign." . $e->getMessage();
+				return false;
+			}
+
+		}
+
+        /*
+         * Quitarle a un usuario la administración de un nodo
+         */
+		public function unassign ($user, &$errors = array()) {
+			$values = array (
+				':user'=>$user,
+				':call'=>$this->id,
+			);
+
+            try {
+                if (self::query("DELETE FROM user_call WHERE `call` = :call AND `user` = :user", $values)) {
+                    ACL::deny('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
+                    return true;
+                } else {
+                    return false;
+                }
+			} catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar al usuario ' . $this->user . ' de la administracion de la convocatoria ' . $this->id . '. ' . $e->getMessage();
+                return false;
+			}
+		}
+
+        /**
+         * Si  cierto usuario es administrador de esta convocatoria
+         * @param   type varchar(50)  $id   Usuario admin
+         * @return  type bool true/false
+         */
+        public function isAdmin ($admin) {
+            $query = static::query("
+                SELECT
+                    `call`
+                FROM user_call
+                WHERE `user` = :admin
+                AND `call` = :call
+                LIMIT 1
+                ", array(':admin' => $admin, ':call' => $this->id));
+
+            $thecall = $query->fetchColumn();
+            return ($thecall == $this->id);
+        }
+        
+        
+        
 
         /*
          * Estados de publicación de un convocatoria

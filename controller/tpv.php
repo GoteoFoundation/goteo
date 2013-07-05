@@ -166,7 +166,11 @@ namespace Goteo\Controller {
                                     charged = :charged,
                                     transaction = :transaction
                                 WHERE id = :id";
-                        Invest::query($sql, $values);
+                        if (Invest::query($sql, $values)) {
+                            Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se a completado correctamente. Proceso controller/tpv');
+                        } else {
+                            @mail('goteo-tpv-fault@doukeshi.org', 'Error db en comunicacion online', 'En la grabación de referencia, num auth. y estado. Ha fallado: '.$sql.' '.print_r($values, 1).'<hr /><pre>' . print_r($invest, 1) . '</pre>');
+                        }
 
                         // si tiene capital riego asociado pasa al mismo estado
                         if (!empty($invest->droped)) {
@@ -181,8 +185,6 @@ namespace Goteo\Controller {
                     $doPublic = true;
 
                     echo '$*$OKY$*$';
-                    Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se a completado correctamente. Proceso controller/tpv');
-                    
                 } else {
 
                     $Cerr = (string) $_POST['Codigo_error'];

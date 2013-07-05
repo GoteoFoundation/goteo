@@ -169,15 +169,15 @@ namespace Goteo\Controller\Admin {
             $admins = Model\Node::getAdmins();
 
             return new View(
-                            'view/admin/index.html.php',
-                            array(
-                                'folder' => 'nodes',
-                                'file' => 'list',
-                                'filters' => $filters,
-                                'nodes' => $nodes,
-                                'status' => $status,
-                                'admins' => $admins
-                            )
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'nodes',
+                    'file' => 'list',
+                    'filters' => $filters,
+                    'nodes' => $nodes,
+                    'status' => $status,
+                    'admins' => $admins
+                )
             );
         }
 

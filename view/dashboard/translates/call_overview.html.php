@@ -67,17 +67,20 @@ $original = \Goteo\Model\Call::get($call->id);
             'value' => 'overview'
         ),
 
-        /*
+        'name-orig' => array(
+            'type'      => 'html',
+            'title'     => Text::get('call-field-name'),
+            'html'     => $original->name
+        ),
         'name' => array(
             'type'      => 'textbox',
-            'title'     => Text::get('call-field-name'),
-            'required'  => true,
-            'hint'      => Text::get('tooltip-call-name'),
+            'title'     => '',
+            'class'     => 'inline',
             'value'     => $call->name,
-            'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
-            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
+            'hint'      => Text::get('tooltip-call-name'),
+            'errors'    => array(),
+            'ok'        => array()
         ),
-        */
 
         'subtitle-orig' => array(
             'type'      => 'html',

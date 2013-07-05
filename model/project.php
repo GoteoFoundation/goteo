@@ -63,6 +63,7 @@ namespace Goteo\Model {
             $lang = 'es',
             $image,
             $gallery = array(), // array de instancias image de project_image
+            $secGallery = array(), // array de instancias image de project_image (secundarias)
             $description,
              $motivation,
               $video,   // video de motivacion
@@ -124,6 +125,18 @@ namespace Goteo\Model {
             $tagmark = null;  // banderolo a mostrar
 
 
+        /**
+         * Sobrecarga de métodos 'getter'.
+         *
+         * @param type string $name
+         * @return type mixed
+         */
+        public function __get ($name) {
+            if($name == "call") {
+	            return Call\Project::miniCalled($this->id);
+	        }
+            return $this->$name;
+        }
 
         /**
          * Inserta un proyecto con los datos mínimos
@@ -138,7 +151,20 @@ namespace Goteo\Model {
             if (empty($user)) {
                 return false;
             }
-            
+
+            // si aplicando a convocatoria, asignar el proyecto al nodo del convocador
+            if (isset($_SESSION['oncreate_applyto'])) {
+                $call = $_SESSION['oncreate_applyto'];
+                $callData = Call::getMini($call);
+                 if (!empty($callData->user->node)) { 
+                     $node = $callData->user->node;
+                     // también movemos al impulsor a ese nodo
+                    self::query("UPDATE user SET node = :node WHERE id = :id", array(':node'=>$node, ':id'=>$user));
+                 }
+            }
+
+
+
             // cojemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
             if ($now = $query->fetchObject())
@@ -260,7 +286,9 @@ namespace Goteo\Model {
 
                 // imágenes por sección
                 foreach (Project\Image::sections() as $sec => $val) {
-                    $project->secGallery[$sec] = Project\Image::get($project->id, $sec);
+                    if ($sec != '') {
+                        $project->secGallery[$sec] = Project\Image::get($project->id, $sec);
+                    }
                 }
 
 				// categorias
@@ -1145,7 +1173,10 @@ namespace Goteo\Model {
             }
 
             if (empty($this->media)) {
-                $errors['overview']['media'] = Text::get('mandatory-project-field-media');
+                // solo error si no está aplicando a una convocatoria
+                if (!isset($this->call)) {
+                    $errors['overview']['media'] = Text::get('mandatory-project-field-media');
+                }
             } else {
                  $okeys['overview']['media'] = 'ok';
                  $score+=3;
@@ -1415,7 +1446,7 @@ namespace Goteo\Model {
             if ($progress < 0)   $progress = 0;
 
             if ($this->status == 1 && 
-                $progress > 80 &&
+                $progress >= 80 &&
                 \array_empty($this->errors)
                 ) {
                 $this->finishable = true;
@@ -2139,6 +2170,7 @@ namespace Goteo\Model {
                     WHERE id != ''
                         $sqlFilter
                         $sqlOrder
+                    LIMIT 999
                     ";
 
             $query = self::query($sql, $values);

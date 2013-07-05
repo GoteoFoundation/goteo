@@ -61,7 +61,7 @@ namespace Goteo\Model\Project {
                     
                     $array[] = $image;
                 }
-
+                
                 return $array;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
