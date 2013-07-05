@@ -55,6 +55,7 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                     <label for="status-filter">Mostrar por estado:</label><br />
                     <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
                         <option value="-1"<?php if ($filters['status'] == -1) echo ' selected="selected"';?>>Todos los estados</option>
+                        <option value="-2"<?php if ($filters['status'] == -2) echo ' selected="selected"';?>>En negociacion</option>
                     <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
                         <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
                     <?php endforeach; ?>
@@ -116,7 +117,7 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                 <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
                 <td><a href="mailto:<?php echo $project->user->email; ?>"><?php echo $project->user->email; ?></a></td>
                 <td><?php echo date('d-m-Y', strtotime($project->updated)); ?></td>
-                <td><?php echo $this['status'][$project->status]; ?></td>
+                <td><?php echo ($project->status == 1 && !$project->draft) ? '<span style="color: green;">En negociación</span>' : $this['status'][$project->status]; ?></td>
                 <td><?php if ($project->status < 3)  echo $project->progress; ?></td>
                 <td><?php if ($project->status == 3) echo "$project->days (round {$project->round})"; ?></td>
                 <td><?php echo $project->invested; ?></td>
