@@ -989,6 +989,7 @@ namespace Goteo\Model {
 		 * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
 		 */
 		public static function login ($username, $password) {
+            
             $query = self::query("
                     SELECT
                         id
@@ -997,7 +998,8 @@ namespace Goteo\Model {
                     AND BINARY password = :password",
 				array(
 					':username' => trim($username),
-					':password' => sha1($password)
+                    // si la contraseña ya viene en formato sha1 no la encriptamos
+					':password' => (\is_sha1($password)) ? $password : sha1($password)
 				)
 			);
 

@@ -77,6 +77,10 @@ if (NODE_ID != GOTEO_NODE) {
         <?php endif; ?>
         
       
+        <?php if (isset($jscrypt)) : ?>
+            <script src="<?php echo SRC_URL ?>/view/js/sha1.min.js"></script>
+        <?php endif; ?>
+
         <?php if (isset($jsreq_autocomplete)) : ?>
             <link href="<?php echo SRC_URL ?>/view/css/jquery-ui-1.10.3.autocomplete.min.css" rel="stylesheet" />
             <script src="<?php echo SRC_URL ?>/view/js/jquery-ui-1.10.3.autocomplete.min.js"></script>
