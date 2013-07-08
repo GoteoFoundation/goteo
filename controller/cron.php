@@ -927,8 +927,11 @@ namespace Goteo\Controller {
             return false;
         }
 
-        /* A los cofinanciadores */
-        static public function toInvestors ($type, $project) {
+        /* A los cofinanciadores 
+         * Se usa tambien para notificar cuando un proyecto publica una novedad.
+         * Por eso añadimos el tercer parámetro, para recibir los datos del post
+         */
+        static public function toInvestors ($type, $project, $post = null) {
 
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';
@@ -979,8 +982,10 @@ namespace Goteo\Controller {
 
                         case 'update': // template 18, publica novedad
                                 $tpl = 18;
-                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%');
-                                $replace = array($investor->name, $project->name, SITE_URL.'/project/'.$project->id.'/updates');
+                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%', '%POST%');
+                                // contenido del post
+                                $post_content = (empty($post)) ? '' : "<p><strong>{$post->title}</strong><br />".  utf8_decode( nl2br( Text::recorta($post->text, 500) ) ) ."</p>";
+                                $replace = array($investor->name, $project->name, SITE_URL.'/project/'.$project->id.'/updates', $post_content);
                             break;
                     }
 
