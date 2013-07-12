@@ -1,5 +1,5 @@
 CREATE TABLE `geologin` (
-  `user` varchar(50) DEFAULT NULL,
+  `user` varchar(50) NOT NULL DEFAULT '',
   `ip` varchar(15) NOT NULL,
   `lon` decimal(14,12) DEFAULT NULL,
   `lat` decimal(14,12) DEFAULT NULL,
