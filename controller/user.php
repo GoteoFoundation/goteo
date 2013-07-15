@@ -132,9 +132,19 @@ namespace Goteo\Controller {
 
                 if (empty($errors)) {
                     Message::Info(Text::get('user-register-success'));
-                    Message::Info('Tus datos de acceso son Usuario: <strong>' . $user->id . '</strong> Contraseña: <strong>' . $_POST['password'] . '</strong>');
 
-                    throw new Redirection('/user/login');
+                    $_SESSION['user'] = Model\User::get($user->id);
+                    
+                    // creamos una cookie
+                    setcookie("goteo_user", $user->id, time() + 3600 * 24 * 365);
+
+                    if (!empty($_SESSION['jumpto'])) {
+                        $jumpto = $_SESSION['jumpto'];
+                        unset($_SESSION['jumpto']);
+                        throw new Redirection($jumpto);
+                    } else {
+                        throw new Redirection('/dashboard');
+                    }
                 } else {
                     foreach ($errors as $field => $text) {
                         Message::Error($text);
@@ -458,10 +468,16 @@ namespace Goteo\Controller {
             // impulsor y usuario solamente pueden comunicarse si:
             if ($show == 'message') {
 
-                $is_investor = false;
-                $is_messeger = false;
+                $is_author   = false; // si es autor de un proyecto publicado
+                $is_investor = false; // si es cofinanciador
+                $is_messeger = false; // si es participante
 
-                // si el usuario logueado es el impulsor:
+                // si el usuario logueado es impulsor (autro de proyecto publicado
+                $user_created = Model\Project::ofmine($_SESSION['user']->id, true);
+                if (!empty($user_created)) {
+                    $is_author = true;
+                }
+                
                 // si el usuario del perfil es cofin. o partic.
                 // proyectos que es cofinanciador este usuario (el del perfil)
                 $user_invested = Model\User::invested($id, true);
@@ -502,7 +518,7 @@ namespace Goteo\Controller {
                     }
                 }
 
-                if (!$is_investor && !$is_messeger) {
+                if (!$is_investor && !$is_messeger && !$is_author) {
                     Message::Info(Text::get('user-message-restricted'));
                     throw new Redirection('/user/profile/' . $id);
                 } else {

@@ -2109,6 +2109,8 @@ namespace Goteo\Model {
             if ($filters['status'] > -1) {
                 $sqlFilter .= " AND status = :status";
                 $values[':status'] = $filters['status'];
+            } elseif ($filters['status'] == -2) {
+                $sqlFilter .= " AND (status = 1  AND id NOT REGEXP '[0-9a-f]{5,40}')";
             } else {
                 $sqlFilter .= " AND (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{5,40}') )";
             }
@@ -2165,7 +2167,8 @@ namespace Goteo\Model {
 
             // la select
             $sql = "SELECT 
-                        id
+                        id,
+                        id REGEXP '[0-9a-f]{5,40}' as draft
                     FROM project
                     WHERE id != ''
                         $sqlFilter
@@ -2175,7 +2178,9 @@ namespace Goteo\Model {
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $projects[] = self::getMedium($proj['id']);
+                $the_proj = self::getMedium($proj['id']);
+                $the_proj->draft = $proj['draft'];
+                $projects[] = $the_proj;
             }
             return $projects;
         }

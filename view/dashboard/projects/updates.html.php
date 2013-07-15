@@ -7,6 +7,7 @@ define('ADMIN_NOAUTOSAVE', true);
 
 $blog  = $this['blog'];
 $posts = $this['posts'];
+$project = $this['project'];
 
 $errors = $this['errors'];
 
@@ -30,8 +31,9 @@ if ($this['action'] == 'none') return;
             <a class="button" href="<?php echo $url; ?>/edit/<?php echo $post->id; ?>"><?php echo Text::get('regular-edit') ?></a>&nbsp;&nbsp;&nbsp;
             <a class="remove button weak" href="<?php echo $url; ?>/delete/<?php echo $post->id; ?>" onclick="return confirm('¿Seguro que deseas eliminar esta actualización?');">Eliminar</a>
             <span><?php echo $post->publish ? Text::get('regular-published_yes') : Text::get('regular-published_no'); ?></span>
-            <strong><?php echo $post->title; ?></strong>
+            <a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank" style="text-decoration: none;"><strong><?php echo $post->title; ?></strong></a>
             <span><?php echo $post->date; ?></span>
+            <a class="button" href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>?preview=<?php echo $_SESSION['user']->id ?>" target="_blank"><?php echo $post->publish ? 'Ver' : 'Previsualizar'; ?></a>
         </div>
     <?php endforeach; ?>
     <?php else : ?>

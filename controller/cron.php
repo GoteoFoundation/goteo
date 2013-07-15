@@ -273,12 +273,15 @@ namespace Goteo\Controller {
                                 $passtime = strtotime($project->passed);
                                 $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
 
+                                /*
+                                 * Ya no hacemos pagos secundarios mediante sistema
                                 $task = new Model\Task();
                                 $task->node = \GOTEO_NODE;
                                 $task->text = "Hacer los pagos secundarios al proyecto <strong>{$project->name}</strong> antes del día <strong>{$limsec}</strong>";
                                 $task->url = "/admin/accounts/?projects={$project->id}";
                                 $task->done = null;
                                 $task->save();
+                                 */
 
                                 // y preparar contrato
                                 $task = new Model\Task();
@@ -287,7 +290,7 @@ namespace Goteo\Controller {
                                 //@TODO enlace a gestión de contrato
                                 $task->url = "/admin/projects?proj_name={$project->name}";
                                 $task->done = null;
-                                $task->save();
+                                $task->saveUnique();
                                 
                                 // + mail a mercè
                                 @mail(\GOTEO_CONTACT_MAIL,
@@ -351,7 +354,7 @@ namespace Goteo\Controller {
                                 $task->text = date('d/m/Y').": Pagar a <strong>{$project->name}</strong>, {$project->user->name}";
                                 $task->url = "/admin/projects/report/{$project->id}";
                                 $task->done = null;
-                                $task->save();
+                                $task->saveUnique();
                                 
                                 // + mail a susana
                                 @mail('susana@goteo.org',
@@ -927,8 +930,11 @@ namespace Goteo\Controller {
             return false;
         }
 
-        /* A los cofinanciadores */
-        static public function toInvestors ($type, $project) {
+        /* A los cofinanciadores 
+         * Se usa tambien para notificar cuando un proyecto publica una novedad.
+         * Por eso añadimos el tercer parámetro, para recibir los datos del post
+         */
+        static public function toInvestors ($type, $project, $post = null) {
 
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';
@@ -979,8 +985,10 @@ namespace Goteo\Controller {
 
                         case 'update': // template 18, publica novedad
                                 $tpl = 18;
-                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%');
-                                $replace = array($investor->name, $project->name, SITE_URL.'/project/'.$project->id.'/updates');
+                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%', '%POST%');
+                                // contenido del post
+                                $post_content = (empty($post)) ? '' : "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
+                                $replace = array($investor->name, $project->name, SITE_URL.'/project/'.$project->id.'/updates', $post_content);
                             break;
                     }
 

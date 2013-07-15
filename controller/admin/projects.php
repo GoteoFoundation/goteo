@@ -8,6 +8,8 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
         Goteo\Library\Message,
+        Goteo\Library\Mail,
+		Goteo\Library\Template,
         Goteo\Model;
 
     class Projects {
@@ -391,6 +393,38 @@ namespace Goteo\Controller\Admin {
                         'available' => $available
                     )
                 );
+            }
+
+
+            // Rechazo express
+            if ($action == 'reject') {
+                if (empty($project)) {
+                    Message::Error('No hay proyecto sobre el que operar');
+                } else {
+                    // Obtenemos la plantilla para asunto y contenido
+                    $template = Template::get(40);
+                    // Sustituimos los datos
+                    $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                    $search  = array('%USERNAME%', '%PROJECTNAME%');
+                    $replace = array($project->user->name, $project->name);
+                    $content = \str_replace($search, $replace, $template->text);
+                    // iniciamos mail
+                    $mailHandler = new Mail();
+                    $mailHandler->to = $project->user->email;
+                    $mailHandler->toName = $project->user->name;
+                    $mailHandler->subject = $subject;
+                    $mailHandler->content = $content;
+                    $mailHandler->html = true;
+                    $mailHandler->template = $template->id;
+                    if ($mailHandler->send()) {
+                        Message::Info('Se ha enviado un email a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
+                    } else {
+                        Message::Error('Ha fallado al enviar el mail a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
+                    }
+                    unset($mailHandler);
+                }
+
+                throw new Redirection('/admin/projects/list');
             }
 
 

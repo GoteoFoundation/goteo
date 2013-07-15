@@ -977,23 +977,24 @@ namespace Goteo\Controller {
                                 // Evento Feed
                                 $log = new Feed();
                                 $log->setTarget($project->id);
-                                $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
+                                $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/project/' . $project->id . '/updates/' . $post->id, 
+                                        \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
                                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                             Feed::item('blog', Text::get('project-menu-updates')),
                                             Feed::item('project', $project->name, $project->id),
                                             Feed::item('update', $post->title, $project->id . '/updates/' . $post->id)
                                         )));
+                                $log->unique = true;
                                 $log->doAdmin('user');
 
                                 // evento público
-                                $log->unique = true;
                                 $log->populate($post->title, '/project/' . $project->id . '/updates/' . $post->id, Text::html('feed-new_update', Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id), Feed::item('blog', Text::get('project-menu-updates')), Feed::item('project', $project->name, $project->id)
                                         ), $post->gallery[0]->id);
                                 $log->doPublic('projects');
 
                                 // si no ha encontrado otro, lanzamos el update
                                 if (!$log->unique_issue) {
-                                    \Goteo\Controller\Cron::toInvestors('update', $project);
+                                    \Goteo\Controller\Cron::toInvestors('update', $project, $post);
                                 }
 
                                 unset($log);
