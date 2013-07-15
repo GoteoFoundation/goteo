@@ -273,12 +273,15 @@ namespace Goteo\Controller {
                                 $passtime = strtotime($project->passed);
                                 $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
 
+                                /*
+                                 * Ya no hacemos pagos secundarios mediante sistema
                                 $task = new Model\Task();
                                 $task->node = \GOTEO_NODE;
                                 $task->text = "Hacer los pagos secundarios al proyecto <strong>{$project->name}</strong> antes del día <strong>{$limsec}</strong>";
                                 $task->url = "/admin/accounts/?projects={$project->id}";
                                 $task->done = null;
                                 $task->save();
+                                 */
 
                                 // y preparar contrato
                                 $task = new Model\Task();
@@ -287,7 +290,7 @@ namespace Goteo\Controller {
                                 //@TODO enlace a gestión de contrato
                                 $task->url = "/admin/projects?proj_name={$project->name}";
                                 $task->done = null;
-                                $task->save();
+                                $task->saveUnique();
                                 
                                 // + mail a mercè
                                 @mail(\GOTEO_CONTACT_MAIL,
@@ -351,7 +354,7 @@ namespace Goteo\Controller {
                                 $task->text = date('d/m/Y').": Pagar a <strong>{$project->name}</strong>, {$project->user->name}";
                                 $task->url = "/admin/projects/report/{$project->id}";
                                 $task->done = null;
-                                $task->save();
+                                $task->saveUnique();
                                 
                                 // + mail a susana
                                 @mail('susana@goteo.org',
