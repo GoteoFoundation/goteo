@@ -5,6 +5,15 @@ $banner = $this['banner'];
 
 $metter_txt = Text::get('regular-banner-metter');
 list($mreach, $mof, $mrest) = explode('-', $metter_txt);
+
+if (empty($banner->project)) : 
+    if (!empty($banner->url)) echo '<a href="'.$banner->url.'" class="expand"></a>';
+?>
+<h2 class="message"><?php echo $banner->title ?></h2>
+<span class="greenblue"><?php echo $banner->description; ?></span>
+<?php 
+else : 
+    $banner->title = $banner->project->name; 
 ?>
 <a href="/project/<?php echo $banner->project->id ?>" class="expand"></a>
 <div class="shb-info clearfix">
@@ -35,4 +44,5 @@ list($mreach, $mof, $mrest) = explode('-', $metter_txt);
         <?php endif; ?>
     </ul>
 </div>
-<div class="shb-img"><?php if ($banner->image instanceof \Goteo\Model\Image) : ?><img src="<?php echo $banner->image->getLink(700, 156, true) ?>" title="<?php echo $banner->project->name ?>" alt="<?php echo $banner->project->name ?>" /><?php endif; ?></div>
+<?php endif; ?>
+<?php if ($banner->image instanceof \Goteo\Model\Image) : ?><div class="shb-img"><img src="<?php echo $banner->image->getLink(700, 156, true) ?>" title="<?php echo $banner->title ?>" alt="<?php echo $banner->title ?>" /></div><?php endif; ?>

@@ -85,7 +85,7 @@ namespace Goteo\Model {
                 ", array(':node' => $node, ':lang' => \LANG));
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
-                $banner->image = Image::get($banner->image);
+                $banner->image = !empty($banner->image) ? Image::get($banner->image) : null;
                 $banner->status = $status[$banner->status];
                 $banners[] = $banner;
             }
@@ -148,7 +148,7 @@ namespace Goteo\Model {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
 
-        // ya no validamos esto
+        // ya no validamos esto,  puede haber banners in proyecto y sin imagen
         public function validate (&$errors = array()) {
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
