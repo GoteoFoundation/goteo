@@ -984,7 +984,7 @@ namespace Goteo\Controller {
                                 $tpl = 18;
                                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%', '%POST%');
                                 // contenido del post
-                                $post_content = (empty($post)) ? '' : "<p><strong>{$post->title}</strong><br />".  utf8_decode( nl2br( Text::recorta($post->text, 500) ) ) ."</p>";
+                                $post_content = (empty($post)) ? '' : "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
                                 $replace = array($investor->name, $project->name, SITE_URL.'/project/'.$project->id.'/updates', $post_content);
                             break;
                     }
