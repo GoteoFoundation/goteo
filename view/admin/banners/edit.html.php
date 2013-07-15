@@ -33,7 +33,24 @@ if ($node == \GOTEO_NODE) {
     <?php endforeach; ?>
     </select>
 </p>
-<?php else : ?>
+
+<script type="text/javascript">
+    /* para ocultar los campos de texto al seleccionar proyecto*/
+    $(function () {
+        
+        $("#banner-project").change( function() {
+            if ($(this).val() != '') {
+                $("#text-banner").hide();
+            } else {
+                $("#text-banner").show();
+            }
+        });
+        
+    });
+</script>
+<?php endif; ?>
+
+<div id="text-banner"<?php if (!empty($banner->project)) echo' style="display: none;"';?>>
 <p>
     <label for="banner-name">T&iacute;tulo:</label><br />
     <input type="text" name="title" id="banner-title" value="<?php echo $banner->title; ?>" size="50" />
@@ -48,7 +65,7 @@ if ($node == \GOTEO_NODE) {
     <label for="banner-url">Enlace:</label><br />
     <input type="text" name="url" id="banner-url" value="<?php echo $banner->url; ?>" size="85" />
 </p>
-<?php endif; ?>
+</div>
 
 <p>
     <label for="banner-image">Imagen de fondo: <?php echo $image_size_txt; ?></label><br />

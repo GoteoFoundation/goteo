@@ -26,7 +26,7 @@ $transNode = ACL::check('/translate/node/'.$node) ? true : false;
 
         <tbody>
             <?php foreach ($this['bannered'] as $banner) :
-                $banner_title = ($node == \GOTEO_NODE) ? $banner->name : $banner->title;
+                $banner_title = (!empty($banner->name)) ? $banner->name : $banner->title;
                 ?>
             <tr>
                 <td><?php echo ($banner->active) ? '<strong>'.$banner_title.'</strong>' : $banner_title; ?></td>
