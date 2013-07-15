@@ -468,10 +468,16 @@ namespace Goteo\Controller {
             // impulsor y usuario solamente pueden comunicarse si:
             if ($show == 'message') {
 
-                $is_investor = false;
-                $is_messeger = false;
+                $is_author   = false; // si es autor de un proyecto publicado
+                $is_investor = false; // si es cofinanciador
+                $is_messeger = false; // si es participante
 
-                // si el usuario logueado es el impulsor:
+                // si el usuario logueado es impulsor (autro de proyecto publicado
+                $user_created = Model\Project::ofmine($_SESSION['user']->id, true);
+                if (!empty($user_created)) {
+                    $is_author = true;
+                }
+                
                 // si el usuario del perfil es cofin. o partic.
                 // proyectos que es cofinanciador este usuario (el del perfil)
                 $user_invested = Model\User::invested($id, true);
@@ -512,7 +518,7 @@ namespace Goteo\Controller {
                     }
                 }
 
-                if (!$is_investor && !$is_messeger) {
+                if (!$is_investor && !$is_messeger && !$is_author) {
                     Message::Info(Text::get('user-message-restricted'));
                     throw new Redirection('/user/profile/' . $id);
                 } else {
