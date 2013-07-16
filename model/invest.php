@@ -1547,6 +1547,34 @@ namespace Goteo\Model {
                 $item->statusName = $status[$item->status];
                 $list[] = $item;
             }
+            
+            // añadimos el capital riego de aportes con incidencia
+             $sql = "SELECT
+                        invest.id as invest,
+                        user.id as user,
+                        user.name as userName,
+                        user.email as userEmail,
+                        invest.amount as amount,
+                        invest.status as status
+                    FROM invest
+                    INNER JOIN user
+                        ON user.id = invest.user
+                    WHERE invest.id IN (
+                        SELECT droped 
+                        FROM invest 
+                        WHERE issue = 1 
+                        AND droped IS NOT NULL
+                        AND invest.project = :id
+                    )
+                    ORDER BY user.name DESC
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $item->statusName = $status[$item->status].' (CAPITAL RIEGO)';
+                $list[] = $item;
+            }
+            
             return $list;
 
 

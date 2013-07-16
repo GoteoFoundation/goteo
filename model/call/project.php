@@ -214,6 +214,8 @@ namespace Goteo\Model\Call {
                     $call = Model\Call::getMini($called);
 
                     return $call;
+                } else {
+                    return null;
                 }
 
             } catch(\PDOException $e) {
