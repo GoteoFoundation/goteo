@@ -51,13 +51,10 @@ include 'view/header.html.php';
 <div id="sub-header" class="banners">
     <div class="clearfix">
         <div class="slides_container">
-            <!-- Módulo de texto más sign in -->
-            <div class="subhead-banner"><?php echo Text::html('main-banner-header'); ?></div>
-            <!-- Módulo banner imagen más resumen proyecto -->
             <?php if (!empty($this['banners'])) : foreach ($this['banners'] as $id=>$banner) : ?>
             <div class="subhead-banner"><?php echo new View('view/header/banner.html.php', array('banner'=>$banner)); ?></div>
-            <?php endforeach;
-            else : ?>
+            <?php endforeach; endif;
+            if (count($this['banners']) == 1) : ?>
             <div class="subhead-banner"><?php echo Text::html('main-banner-header'); ?></div>
             <?php endif; ?>
         </div>
