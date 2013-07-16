@@ -235,14 +235,14 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 
 /* banners de texto */
 div.subhead-banner .shb-banner {
-	width:100%;
+	width:535px;
 	height:100%;
 	position:absolute;
 	z-index:5;
 }
 
-div.subhead-banner .shb-banner > div.title{padding-top: 20px; margin-left: 25px; line-height:28px;font-size:24px;color:#585a5c;}
-div.subhead-banner .shb-banner > div.short-desc{margin-top: 10px; margin-left: 25px; line-height:24px;font-size:20px;color:#20B3B2;}
+div.subhead-banner .shb-banner > div.title{padding-top: 15px; margin-left: 20px; line-height:28px;font-size:24px;color:#585a5c;}
+div.subhead-banner .shb-banner > div.short-desc{margin-top: 10px; margin-left: 20px; line-height:24px;font-size:20px;color:#20B3B2;}
 
 /* fin banners de texto */
 
