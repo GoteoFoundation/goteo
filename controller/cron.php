@@ -997,7 +997,13 @@ namespace Goteo\Controller {
                         // en el idioma del usuario
                         $template = Template::get($tpl, $investor->lang);
                         // Sustituimos los datos
-                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                        if (!empty($post)) {
+                            $subject = str_replace(array('%PROJECTNAME%', '%OWNERNAME%', '%P_TITLE%')
+                                    , array($project->name, $project->user->name, $post->title)
+                                    , $template->title);
+                        } else {
+                            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                        }
                         $content = \str_replace($search, $replace, $template->text);
                         // iniciamos mail
                         $mailHandler = new Mail();
