@@ -1071,9 +1071,11 @@ namespace Goteo\Controller {
             switch ($option) {
                 // en la portada del proyecto va el informe
                 case 'summary':
+                    /*
                     if (!empty($project->passed)) {
                         $viewData['Data'] = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
                     }
+                     */
                     break;
 
 

@@ -124,7 +124,7 @@ switch ($order) {
 
                 $address = $investData->address;
                 $cumplida = true; //si nos encontramos una sola no cumplida, pasa a false
-                $estilo = "disabled";
+                $estilo = " disabled";
                 foreach ($investData->rewards as $reward) {
                     if ($reward->fulfilled != 1) {
                         $estilo = "";
@@ -153,34 +153,34 @@ switch ($order) {
                     </div>
                    
                     <div class="left recompensas"  style="width:280px;">
-                     	<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-choosen'); ?></strong></span>
+                     	<span style="margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-choosen'); ?></strong></span>
                     <?php if (empty($investData->rewards)) : // si no hay recompensas es renuncia ?>
                      	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-resigns'); ?></strong></span>
                     <?php else : ?>
                         <?php foreach ($investData->rewards as $reward) : ?>
-                        <div style="width: 250px; overflow: hidden; height: 18px; margin-bottom:2px;" class="<?php echo $estilo;?>">
-                        <input type="checkbox" class="fulrew" id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
+                        <div style="width: 250px; overflow: hidden; height: 18px; margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>">
+                        <input type="checkbox" class="fulrew" id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" ref="<?php echo $investId; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
                         <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 40); ?></label>
                         </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                    <?php if ($investData->resign) : // donativo o reconocimiento/agradecimiento ?>
-                     	<span style="margin-bottom:2px;color:green;"><?php echo Text::get('dashboard-rewards-thanks'); ?></span>
-                    <?php endif; ?>
+	                    <span class="status" id="status-<?php echo $investId; ?>"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
                     <?php if ($investData->issue) : // si es incidencia ?>
                      	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-issue'); ?></strong></span>
                     <?php endif; ?>
                     </div>
                     
 					<div class="left" style="width:200px;padding-right:30px;">
-						<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-address'); ?></strong></span>
-						<span class="<?php echo $estilo;?>">
+						<span style="margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-address'); ?></strong></span>
+						<span class="<?php echo 'dis'.$investId; echo $estilo;?>">
                     	<?php echo $address->address; ?>, <?php echo $address->location; ?>, <?php echo $address->zipcode; ?> <?php echo $address->country; ?>
                     	</span>
+                    <?php if ($investData->resign) : // donativo o reconocimiento/agradecimiento ?>
+                     	<span style="margin-bottom:2px;color:green;"><?php echo Text::get('dashboard-rewards-thanks'); ?></span>
+                    <?php endif; ?>
                     </div>
                     
                     <div class="left">
-	                    <span class="status"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
                         <span class="profile"><a href="/user/profile/<?php echo $investData->user->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
                         <span class="contact"><a onclick="msgto_user('<?php echo $investData->user->id; ?>', '<?php echo addslashes($investData->user->name); ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
                     </div>
@@ -216,6 +216,10 @@ switch ($order) {
                 if (success_text == '') {
                     $(this).attr('checked', false);
                     alert('Ha habido algún problema, contáctanos');
+                } else {
+                    $(this).attr('disabled', 'disabled');
+                    $('#status-'+$(this).attr('ref')).html('<span class="cumplida"><?php echo Text::get('dashboard-rewards-fulfilled_status'); ?></span>')                    
+                    $('.dis'+$(this).attr('ref')).addClass('disabled');
                 }
             } else {
                 $(this).attr('checked', false);
