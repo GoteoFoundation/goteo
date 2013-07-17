@@ -87,7 +87,8 @@ switch ($order) {
         document.getElementById('invests-filter-form').submit();
         return false;
     }
-</script><div class="widget gestrew">
+</script>
+<div class="widget gestrew">
     <h2 class="title">Gestionar retornos</h2>
     <a name="gestrew"></a>
    <form id="invests-filter-form" name="filter_form" action="<?php echo '/dashboard/projects/rewards/filter#gestrew'; ?>" method="post">
@@ -146,7 +147,7 @@ switch ($order) {
                     
                     <div class="left" style="width:120px;">
 						<span class="username"><a href="/user/<?php echo $investData->user->id; ?>"><?php echo $investData->user->name; ?></a></span>
-                        <label class="amount">Aporte<?php if ($investData->anonymous) echo ' <strong>'.  Text::get('regular-anonymous').'</strong>'; ?></label>
+                        <label class="amount">Aporte<?php if ($investData->anonymous) echo ' <strong>'.  Text::get('regular-anonymous').'</strong>'; echo " [{$investData->id}]";?></label>
 						<span class="amount"><?php echo $investData->amount; ?> &euro;</span>
                         <span class="date"><?php echo date('d-m-Y', strtotime($investData->invested)); ?></span>
                     </div>
@@ -158,7 +159,7 @@ switch ($order) {
                     <?php else : ?>
                         <?php foreach ($investData->rewards as $reward) : ?>
                         <div style="width: 250px; overflow: hidden; height: 18px; margin-bottom:2px;" class="<?php echo $estilo;?>">
-                        <input type="checkbox"  id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" name="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
+                        <input type="checkbox" class="fulrew" id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
                         <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 40); ?></label>
                         </div>
                         <?php endforeach; ?>
@@ -189,13 +190,40 @@ switch ($order) {
                 
             <?php endforeach; ?>
 
-            <?php if ($project->amount >= $project->mincost) : ?>
-            <input type="submit" name="process" value="<?php echo Text::get('dashboard-rewards-process'); ?>" class="save" onclick="return confirm('<?php echo Text::get('dashboard-rewards-process_alert'); ?>')"/>
-            <?php endif; ?>
         </form>
     </div>
 
 </div>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        
+        
+        
+        // al clickar el recuadro de recompensa
+        $(".fulrew").click(function(){
+            
+            // solo si el proyecto está financiado
+            <?php if ($project->status !=4) : ?>
+            alert('No tienes que marcar las recompensas cumplidas hasta que el proyecto termine la campaña'); 
+            $(this).attr('checked', false);
+            return false;
+            <?php endif; ?>        
+            
+            // confirmación porque no se puede desacer
+            if (confirm('<?php echo Text::get('dashboard-rewards-process_alert'); ?>')) {
+                // usar webservice para marcar como cumplida
+                success_text = $.ajax({async: false, type: "POST", data: ({token: $(this).attr('id')}), url: '<?php echo SITE_URL; ?>/ws/fulfill_reward/<?php echo $project->id; ?>/<?php echo $_SESSION['user']->id; ?>'}).responseText;
+                if (success_text == '') {
+                    $(this).attr('checked', false);
+                    alert('Ha habido algún problema, contáctanos');
+                }
+            } else {
+                $(this).attr('checked', false);
+            }
+        });
+    });
+</script>
+
 
 <div class="widget projects" id="colective-messages">
     <a name="message"></a>
@@ -225,7 +253,6 @@ switch ($order) {
     		</div>
 		    <div id="comment">
             <script type="text/javascript">
-                // Mark DOM as javascript-enabled
                 jQuery(document).ready(function ($) {
                     //change div#preview content when textarea lost focus
                     $("#message").blur(function(){

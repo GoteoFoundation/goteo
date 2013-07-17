@@ -625,7 +625,8 @@ namespace Goteo\Controller {
                                 $order = $_POST['order'];
                                 break;
 
-                            // procesar marcas
+                            // ya no se procesan las marcas, se hace por ajax en /ws/fulfill_reward
+                            /*
                             case 'process':
                                 $filter = $_POST['filter'];
                                 $order = $_POST['order'];
@@ -642,6 +643,7 @@ namespace Goteo\Controller {
                                     }
                                 }
                                 break;
+                             */
 
                             // enviar mensaje
                             case 'message':
