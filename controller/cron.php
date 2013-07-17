@@ -985,10 +985,13 @@ namespace Goteo\Controller {
 
                         case 'update': // template 18, publica novedad
                                 $tpl = 18;
-                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%', '%POST%');
+                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%', '%POST%', '%SHARETWITTER%', '%SHAREFACEBOOK%');
+                                $post_url = (empty($post)) ? SITE_URL.'/project/'.$project->id.'/updates' : SITE_URL.'/project/'.$project->id.'/updates/'.$post->id;
                                 // contenido del post
                                 $post_content = (empty($post)) ? '' : "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
-                                $replace = array($investor->name, $project->name, SITE_URL.'/project/'.$project->id.'/updates', $post_content);
+                                // y preparar los enlaces para compartir en redes sociales
+                                $share_urls = (empty($post)) ? array('twitter'=>'', 'facebook'=>'') : Text::shareLinks($post_url, $post->title);
+                                $replace = array($investor->name, $project->name, $post_url, $post_content, $share_urls['twitter'], $share_urls['facebook']);
                             break;
                     }
 
