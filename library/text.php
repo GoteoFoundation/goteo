@@ -428,6 +428,19 @@ namespace Goteo\Library {
             return $code;
         }
 
+        /*
+         * Devuelve array de urls para compartir en redes sociales
+         */
+        static public function shareLinks ($url, $title) {
+
+            $urls = array(
+                'twitter' => 'http://twitter.com/home?status=' . rawurlencode($title . ': ' . $url . ' #Goteo'),
+                'facebook' => 'http://facebook.com/sharer.php?u=' . rawurlencode($url . '&t=' . rawurlencode($title)) 
+            );
+            
+            return $urls;
+        }
+
 		/*
 		 *   Pone el enlace a gmaps segun localidad
          * @TODO , ponerle el LANG
