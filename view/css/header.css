@@ -240,10 +240,8 @@ div.subhead-banner .shb-banner {
 	position:absolute;
 	z-index:5;
 }
-
-div.subhead-banner .shb-banner > div.title{padding-top: 15px; margin-left: 20px; line-height:28px;font-size:24px;color:#585a5c;}
-div.subhead-banner .shb-banner > div.short-desc{margin-top: 10px; margin-left: 20px; line-height:24px;font-size:20px;color:#20B3B2;}
-
+div.subhead-banner .shb-banner > div.title{padding-top:15px;margin-left:20px;line-height:28px;font-size:24px;font-weight:bold;color:#585a5c;}
+div.subhead-banner .shb-banner > div.short-desc{margin-top:10px;margin-left:20px;line-height:24px;font-size:20px;color:#20B3B2;}
 /* fin banners de texto */
 
 /* pseudo-banner */
