@@ -576,7 +576,7 @@ namespace Goteo\Model {
                 $user = $query->fetchObject(__CLASS__);
 
                 if (!$user instanceof  \Goteo\Model\User) {
-                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-user'));
+                    return false;
                 }
 
                 $user->roles = $user->getRoles();
