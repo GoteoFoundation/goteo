@@ -43,7 +43,7 @@ namespace Goteo\Controller {
             }
 
             // si estamos en easy-mode limitamos a 3 proyectos por grupo (en la portada)
-            $limit = (defined('GOTEO_EASY') && \GOTEO_EASY === true) ? 3 : null;
+            $limit = (defined('GOTEO_EASY') && \GOTEO_EASY === true) ? 3 : 30;
             
             // cada tipo tiene sus grupos
             foreach ($types as $type) {
