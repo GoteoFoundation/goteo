@@ -22,7 +22,14 @@ class Paginated {
 	private $offSet;
 	private $layout;
 
-	function __construct($obj, $displayRows = 10, $pageNum = 1) {
+	function __construct($the_obj, $displayRows = 10, $pageNum = 1) {
+        
+        // quitar los indices...
+        $obj = array();
+        foreach ($the_obj as $key => $value) {
+            $obj[] = $value;
+        }
+        
 		$this->setRs($obj);
 		$this->setPageSize($displayRows);
 		$this->assignPageNumber($pageNum);

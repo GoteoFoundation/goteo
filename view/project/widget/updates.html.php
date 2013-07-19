@@ -30,13 +30,7 @@ if ($this['show'] == 'list') {
     // paginacion
     require_once 'library/pagination/pagination.php';
 
-    //recolocamos los post para la paginacion
-    $the_posts = array();
-    foreach ($posts as $i=>$p) {
-        $the_posts[] = $p;
-    }
-
-    $pagedResults = new \Paginated($the_posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
+    $pagedResults = new \Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
 }
 
 // segun lo que tengamos que mostrar :  lista o entrada
