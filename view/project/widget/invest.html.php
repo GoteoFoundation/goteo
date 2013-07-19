@@ -9,7 +9,8 @@ use Goteo\Core\View,
     Goteo\Model\License;
 
 $project = $this['project'];
-if ($project->called instanceof Call) {
+// verificar si puede obtener riego
+if ($project->called instanceof Call && $project->called->dropable) {
     $call = $project->called;
     $rest = $call->rest;
     // a ver si este usuario ya ha regado este proyecto

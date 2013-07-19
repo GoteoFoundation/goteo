@@ -231,13 +231,6 @@ namespace Goteo\Model\Call {
          */
         public static function called ($project) {
 
-            // fallo directo: si no está en uno de los estados, si no está en primera ronda, si ha llegado al óptimo
-            if (!in_array($project->status, array(1, 2, 3))
-                || $project->round > 1
-                || $project->invested >= $project->maxcost) {
-                return false;
-            }
-
             try {
                 $sql = "SELECT
                             call_project.call as id
@@ -287,6 +280,8 @@ namespace Goteo\Model\Call {
                     if ($call->rest < $call->curr_maxdrop)
                         $call->curr_maxdrop = $call->rest;
                     
+                    // finalmente lo más importante, si está en situación de ser regable
+                    $call->dropable = ($project->status == 3 && $project->round == 1 && $project->invested < $project->maxcost);
 
                     return $call;
                 }
@@ -295,7 +290,7 @@ namespace Goteo\Model\Call {
                 return null;
             }
 
-            return false;
+            return null;
         }
 
         /*

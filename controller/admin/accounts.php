@@ -297,7 +297,7 @@ namespace Goteo\Controller\Admin {
                         )
                     );
 
-                    //@TODO si llega campaign, montar el $invest->called con instancia call para que el save genere el riego
+                    // si llega campaign, montar el $invest->called con instancia call para que el save genere el riego
                     if (!empty($_POST['campaign'])) {
                         $called = Model\Call::get($_POST['campaign']);
 
