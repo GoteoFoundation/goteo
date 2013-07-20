@@ -78,6 +78,7 @@ switch ($order) {
         <?php ++$num;
             endforeach; ?>
     </div>
+    <?php if ($project->status == 4) echo Text::html('dashboard-rewards-investors_table'); ?>
 </div>
 
 <?php if (!empty($invests)) : ?>
