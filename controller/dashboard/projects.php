@@ -3,6 +3,8 @@
 namespace Goteo\Controller\Dashboard {
 
     use Goteo\Model,
+        Goteo\Core\ACL,
+        Goteo\Core\Redirection,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
 		Goteo\Library\Mail,
@@ -23,6 +25,105 @@ namespace Goteo\Controller\Dashboard {
  */            
     class Projects {
             
+        public static function verifyProject($user, $action) {
+            
+            $projects = Model\Project::ofmine($user->id); // sus proyectos
+
+            // si no tiene, no debería estar aquí
+            if (empty($projects) || !is_array($projects)) {
+                throw new Redirection('/dashboard');
+            }
+            
+            // comprobamos que tenga los permisos para editar y borrar
+            foreach ($projects as $proj) {
+
+                // comprueba que puede editar sus proyectos
+                if (!ACL::check('/project/edit/' . $proj->id)) {
+                    ACL::allow('/project/edit/' . $proj->id, '*', 'user', $user);
+                }
+
+                // y borrarlos
+                if (!ACL::check('/project/delete/' . $proj->id)) {
+                    ACL::allow('/project/delete/' . $proj->id, '*', 'user', $user);
+                }
+            }
+
+            // si está seleccionando otro proyecto
+            if ($action == 'select' && !empty($_POST['project'])) {
+                $project = Model\Project::get($_POST['project']);
+            } elseif (!empty($_SESSION['project']->id)) {
+                // mantener los datos del proyecto de trabajo
+                $project = Model\Project::get($_SESSION['project']->id);
+            }
+
+            // si aun no tiene proyecto de trabajo, coge el primero
+            if (empty($project)) {
+                $project = $projects[0];
+            }
+
+            // tiene que volver con un proyecto de trabajo
+            if ($project instanceof \Goteo\Model\Project) {
+                $_SESSION['project'] = $project; // lo guardamos en sesión para la próxima verificación
+            } else {
+                Message::Error('No se puede trabajar con el proyecto seleccionado, contacta con nosotros');
+                throw new Redirection('/dashboard');
+            }
+            
+            // devolvemos lista de proyectos y proyecto de trabajo
+            return array($project, $projects);
+        }
+        
+        /**
+         * Verifica que todo está correcto para publicar novedades
+         * 
+         * @param type $project Instancia de proyecto de trabajo
+         * @return \Goteo\Controller\Dashboard\Blog
+         * @throws Redirection a Mis Proyectos si hay algo mal
+         */
+        public static function verifyBlog($project) {
+            
+            $errors = array();
+            
+            // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
+            if ($project->status < 3 || $project->status == 6) {
+                Message::Error(Text::get('dashboard-project-blog-wrongstatus'));
+                throw new Redirection('/dashboard/projects/summary');
+            }
+            
+            // si no tiene registro de blog se lo creamos
+            $blog = Model\Blog::get($project->id);
+            if (!$blog) {
+                $blog = new Model\Blog(
+                                array(
+                                    'id' => '',
+                                    'type' => 'project',
+                                    'owner' => $project->id,
+                                    'active' => true,
+                                    'project' => $project->id,
+                                    'posts' => array()
+                                )
+                );
+                if (!$blog->save($errors)) {
+                    Message::Error(Text::get('dashboard-project-blog-fail'));
+                    Message::Error(implode('<br />', $errors));
+                    throw new Redirection('/dashboard/projects/summary');
+                }
+            }
+
+            // y verificar que está correcto
+            if (!$blog instanceof Model\Blog) {
+                Message::Error(Text::get('dashboard-project-updates-noblog'));
+                throw new Redirection('/dashboard/projects/summary');
+            } elseif (!$blog->active) {
+                Message::Error(Text::get('dashboard-project-blog-inactive'));
+                throw new Redirection('/dashboard/projects/summary');
+            }
+
+            return $blog;
+        }
+
+
+        
         /**
          * Gestiona las acciones de gestión de updates
          * 

@@ -9,8 +9,7 @@ namespace Goteo\Controller {
         Goteo\Library\Message,
         Goteo\Library\Feed,
         Goteo\Library\Page,
-        Goteo\Library\Text,
-        Goteo\Library\Listing;
+        Goteo\Library\Text;
 
     class Dashboard extends \Goteo\Core\Controller {
 
@@ -33,33 +32,28 @@ namespace Goteo\Controller {
             }
 
             $user = $_SESSION['user'];
-            $status = Model\Project::status();
-
-            // agrupacion de proyectos que cofinancia y proyectos suyos
-            $lists = array();
-            // mis proyectos
-            $projects = Model\Project::ofmine($user->id);
-            if (!empty($projects)) {
-                $lists['my_projects'] = Listing::get($projects);
+            
+            $viewData = array(
+                                'menu' => self::menu(),
+                                'section' => __FUNCTION__,
+                                'option' => $option,
+                                'action' => $action
+                            );
+            
+            // portada
+            if ($option == 'summary') {
+                $page = Page::get('dashboard');
+                $viewData['message'] = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
+                $viewData['lists'] = Dashboard\Activity::projList($user);
+                $viewData['status'] = Model\Project::status();
             }
-            // proyectos que cofinancio
-            $invested = Model\User::invested($user->id, false);
-            if (!empty($invested)) {
-                $lists['invest_on'] = Listing::get($invested);
-            }
 
-            foreach ($projects as $project) {
+            //@TODO: if ($option == 'wall') Dashboard\Activity::wall($user);
 
-                // compruebo que puedo editar mis proyectos
-                if (!ACL::check('/project/edit/' . $project->id)) {
-                    ACL::allow('/project/edit/' . $project->id . '/', '*', 'user', $user);
-                }
+            // gestión de certificado
+            if ($option == 'donor') 
+                $viewData['donation'] = Dashboard\Activity::donor($user);
 
-                // y borrarlos
-                if (!ACL::check('/project/delete/' . $project->id)) {
-                    ACL::allow('/project/delete/' . $project->id . '/', '*', 'user', $user);
-                }
-            }
 
             // si es un salto a otro panel
             if (in_array($option, array('admin', 'review', 'translate'))) {
@@ -70,136 +64,7 @@ namespace Goteo\Controller {
                 }
             }
             
-            
-            
-            if ($option == 'summary') {
-                $page = Page::get('dashboard');
-                $message = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
-            } else {
-                $message = null;
-            }
-
-            if ($option == 'wall') {
-                /*
-                 * Depurar antes de poner esto
-                 *
-                  // eventos privados del usuario
-                  $items['private'] = Feed::getUserItems($_SESSION['user']->id, 'private');
-                  // eventos de proyectos que he cofinanciado
-                  $items['supported'] = Feed::getUserItems($_SESSION['user']->id, 'supported');
-                  // eventos de proyectos donde he mensajeado o comentado
-                  $items['comented'] = Feed::getUserItems($_SESSION['user']->id, 'comented');
-                 *
-                 */
-            }
-
-            if ($option == 'donor') {
-                // ver si es donante, cargando sus datos
-                $donation = Model\User\Donor::get($user->id);
-                $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
-                $donation->userData = Model\User::getMini($donation->user);
-
-                if (!$donation || !$donation instanceof Model\User\Donor) {
-                    Message::Error(Text::get('dashboard-donor-no_donor'));
-                    throw new Redirection('/dashboard/activity');
-                }
-
-                if ($action == 'edit' && $donation->confirmed) {
-                    Message::Error(Text::get('dashboard-donor-confirmed'));
-                    throw new Redirection('/dashboard/activity/donor');
-                }
-
-                // si están guardando, actualizar los datos y guardar
-                if ($action == 'save' && $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['save'] == 'donation') {
-                    $donation->edited = 1;
-                    $donation->confirmed = 0;
-                    $donation->name = $_POST['name'];
-                    $donation->nif = $_POST['nif'];
-                    $donation->address = $_POST['address'];
-                    $donation->zipcode = $_POST['zipcode'];
-                    $donation->location = $_POST['location'];
-                    $donation->country = $_POST['country'];
-
-                    if ($donation->save()) {
-                        Message::Info(Text::get('dashboard-donor-saved'));
-                        throw new Redirection('/dashboard/activity/donor');
-                    } else {
-                        Message::Error(Text::get('dashboard-donor-save_fail'));
-                        throw new Redirection('/dashboard/activity/donor/edit');
-                    }
-                }
-
-                if ($action == 'confirm') {
-                    // marcamos que los datos estan confirmados
-                    Model\User\Donor::setConfirmed($user->id);
-                    Message::Info(Text::get('dashboard-donor-confirmed'));
-                    throw new Redirection('/dashboard/activity/donor');
-                }
-
-                if ($action == 'download') {
-                    // preparamos los datos para el pdf
-                    // generamos el pdf y lo mosteramos con la vista específica
-                    // estos pdf se guardan en /data/pdfs/donativos
-                    // el formato del archivo es: Ymd_nif_userid
-                    // se genera una vez, si ya está generado se abre directamente
-                    if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/' . $donation->pdf)) {
-
-                        // forzar descarga
-                        header('Content-type: application/pdf');
-                        header("Content-disposition: attachment; filename={$donation->pdf}");
-                        header("Content-Transfer-Encoding: binary");
-                        echo file_get_contents('data/pdfs/donativos/' . $donation->pdf);
-                        die();
-                    } else {
-
-                        $objeto = new \Goteo\Library\Num2char($donation->amount, null);
-                        $donation->amount_char = $objeto->getLetra();
-
-                        $filename = "certificado_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
-
-
-                        $debug = false;
-
-                        if ($debug)
-                            header('Content-type: text/html');
-
-                        require_once 'library/pdf.php';  // Libreria pdf
-                        $pdf = donativeCert($donation);
-
-                        if ($debug) {
-                            echo 'FIN';
-                            echo '<hr><pre>' . print_r($pdf, 1) . '</pre>';
-                        } else {
-                            $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
-                            $donation->setPdf($filename);
-//                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
-                            header('Content-type: application/pdf');
-                            header("Content-disposition: attachment; filename={$donation->pdf}");
-                            header("Content-Transfer-Encoding: binary");
-                            echo $pdf->Output('', 'S');
-                            die;
-                        }
-                    }
-                }
-                // fin action download
-            }
-
-            return new View(
-                            'view/dashboard/index.html.php',
-                            array(
-                                'menu' => self::menu(),
-                                'section' => __FUNCTION__,
-                                'option' => $option,
-                                'action' => $action,
-                                'message' => $message,
-                                'lists' => $lists,
-                                'items' => $items,
-                                'donation' => $donation,
-                                'status' => $status,
-                                'errors' => $errors,
-                                'success' => $success
-                            )
-            );
+            return new View('view/dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -539,84 +404,19 @@ namespace Goteo\Controller {
 
             $errors = array();
 
-            $projects = Model\Project::ofmine($user->id); // sus proyectos
+            // verificación de proyectos y proyecto de trabajo
+            list($project, $projects) = Dashboard\Projects::verifyProject($user, $action);
 
-            // si no hay proyectos no tendria que estar aqui
-            if (!empty($projects)) {
-                // compruebo permisos
-                foreach ($projects as $proj) {
+            // teniendo proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
+            if ($option == 'updates') $blog = Dashboard\Projects::verifyBlog($project);
 
-                    // compruebo que puedo editar mis proyectos
-                    if (!ACL::check('/project/edit/' . $proj->id)) {
-                        ACL::allow('/project/edit/' . $proj->id, '*', 'user', $user);
-                    }
-
-                    // y borrarlos
-                    if (!ACL::check('/project/delete/' . $proj->id)) {
-                        ACL::allow('/project/delete/' . $proj->id, '*', 'user', $user);
-                    }
-                }
+            // sacaexcel de cofinanciadores
+            if ($option == 'rewards' && $action == 'table') {
+                $response = new \Goteo\Controller\Sacaexcel;
+                return $response->index('investors', $project->id);
             }
-
-            if ($action == 'select' && !empty($_POST['project'])) {
-                // otro proyecto de trabajo
-                $project = Model\Project::get($_POST['project']);
-            } elseif (!empty($_SESSION['project']->id)) {
-                // si tenemos ya proyecto, mantener los datos actualizados
-                $project = Model\Project::get($_SESSION['project']->id);
-            }
-
-            if (empty($project) && !empty($projects)) {
-                $project = $projects[0];
-            }
-
-            // aqui necesito tener un proyecto de trabajo,
-            // si no hay ninguno ccoge el último
-            if ($project instanceof \Goteo\Model\Project) {
-                $_SESSION['project'] = $project;
-            } else {
-                unset($project);
-                $option = 'summary';
-            }
-
-            // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
-            if ($option == 'updates' && $project->status < 3) {
-                $errors[] = Text::get('dashboard-project-blog-wrongstatus');
-                $action = 'none';
-            } elseif ($option == 'updates') {
-                // solo cargamos el blog en la gestion de updates
-                $blog = Model\Blog::get($project->id);
-                if (!$blog instanceof \Goteo\Model\Blog) {
-                    $blog = new Model\Blog(
-                                    array(
-                                        'id' => '',
-                                        'type' => 'project',
-                                        'owner' => $project->id,
-                                        'active' => true,
-                                        'project' => $project->id,
-                                        'posts' => array()
-                                    )
-                    );
-                    if (!$blog->save($errors)) {
-                        $errors[] = Text::get('dashboard-project-blog-fail');
-                        $option = 'summary';
-                        $action = 'none';
-                    }
-                } elseif (!$blog->active) {
-                    $errors[] = Text::get('dashboard-project-blog-inactive');
-                    $action = 'none';
-                }
-
-                // primero comprobar que tenemos blog
-                if (!$blog instanceof Model\Blog) {
-                    $errors[] = Text::get('dashboard-project-updates-noblog');
-                    $option = 'summary';
-                    $action = 'none';
-                }
-            }
-
-
-
+            
+            // procesamiento de formularios
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 switch ($option) {
@@ -653,8 +453,8 @@ namespace Goteo\Controller {
                         break;
 
                     case 'updates':
-                        // verificación: si no llega blog no lo procesamos
-                        if (empty($_POST['blog'])) throw new Redirection('/dashboard/projects/summary');
+                        // verificación: si no llega blog correcto no lo procesamos
+                        if (empty($_POST['blog']) || $_POST['blog'] != $blog->id) throw new Redirection('/dashboard/projects/summary');
                         
                         list($action, $id) = Dashboard\Projects::process_updates($action, $project, $errors);
                         break;
@@ -667,14 +467,8 @@ namespace Goteo\Controller {
             if ($option == 'updates') {
                 list($post, $posts) = Dashboard\Projects::prepare_updates($action, $id, $blog->id);
             }
-            
-            // sacaexcel de cofinanciadores
-            if ($option == 'rewards' && $action == 'table') {
-                $response = new \Goteo\Controller\Sacaexcel;
-                return $response->index('investors', $project->id);
-            }
-            
 
+            
             // view data basico para esta seccion
             $viewData = array(
                 'menu' => self::menu(),
@@ -682,21 +476,13 @@ namespace Goteo\Controller {
                 'option' => $option,
                 'action' => $action,
                 'projects' => $projects,
-                'errors' => $errors,
-                'success' => $success
+                'errors' => $errors
             );
 
 
             switch ($option) {
-                // en la portada del proyecto va el informe
                 case 'summary':
-                    /*
-                    if (!empty($project->passed)) {
-                        $viewData['Data'] = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
-                    }
-                     */
                     break;
-
 
                 // gestionar retornos
                 case 'rewards':
@@ -718,6 +504,7 @@ namespace Goteo\Controller {
                 case 'supports':
                     $viewData['types'] = Model\Project\Support::types();
 
+                    // para mantener registros desplegados
                     if ($_POST) {
                         foreach ($_POST as $k => $v) {
                             if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
