@@ -20,9 +20,9 @@ namespace Goteo\Controller {
         /*
          * Sección, Mi actividad
          * Opciones:
-         *      'projects' los proyectos del usuario y a los que ha aportado,
-         *      'comunity' relacion con la comunidad
-         * 
+         *      'summary' portada y proyectos del usuario y a los que ha aportado,
+         *      'donor' gestión del certificado de donativo 
+         *      'comunity'//'wall' relacion con la comunidad
          */
         public function activity($option = 'summary', $action = 'view') {
 
@@ -44,8 +44,8 @@ namespace Goteo\Controller {
             if ($option == 'summary') {
                 $page = Page::get('dashboard');
                 $viewData['message'] = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
-                $viewData['lists'] = Dashboard\Activity::projList($user);
-                $viewData['status'] = Model\Project::status();
+                $viewData['lists']   = Dashboard\Activity::projList($user);
+                $viewData['status']  = Model\Project::status();
             }
 
             //@TODO: if ($option == 'wall') Dashboard\Activity::wall($user);
@@ -81,233 +81,41 @@ namespace Goteo\Controller {
             // tratamos el post segun la opcion y la acion
             $user = $_SESSION['user'];
 
-            if ($option == 'public') {
-                throw new Redirection('/user/profile/' . $user->id);
-            }
+            // salto al perfil público
+            if ($option == 'public') throw new Redirection('/user/profile/' . $user->id);
 
-            if (isset($user->roles['vip'])) {
-                $vip = Model\User\Vip::get($user->id);
-            }
+            // vip/recomendador tiene una imagen adicional
+            $vip = ($option == 'profile' && isset($user->roles['vip'])) ? Model\User\Vip::get($user->id) : null;
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $log_action = null;
-
                 $errors = array();
+                
                 switch ($option) {
                     // perfil publico
                     case 'profile':
-                        // tratar la imagen y ponerla en la propiedad avatar
-                        // __FILES__
-
-                        $fields = array(
-                            'user_name' => 'name',
-                            'user_location' => 'location',
-                            'user_avatar' => 'avatar',
-                            'user_about' => 'about',
-                            'user_keywords' => 'keywords',
-                            'user_contribution' => 'contribution',
-                            'user_facebook' => 'facebook',
-                            'user_google' => 'google',
-                            'user_twitter' => 'twitter',
-                            'user_identica' => 'identica',
-                            'user_linkedin' => 'linkedin'
-                        );
-
-                        foreach ($fields as $fieldPost => $fieldTable) {
-                            if (isset($_POST[$fieldPost])) {
-                                $user->$fieldTable = $_POST[$fieldPost];
-                            }
-                        }
-
-                        // Avatar
-                        if (!empty($_FILES['avatar_upload']['name'])) {
-                            $user->avatar = $_FILES['avatar_upload'];
-                        }
-
-                        // tratar si quitan la imagen
-                        if (!empty($_POST['avatar-' . $user->avatar->id . '-remove'])) {
-                            $user->avatar->remove();
-                            $user->avatar = '';
-                        }
-
-                        /*
-                         * Tratamiento de la imagen vip
-                         * Se hace todo aqui usando el modelo User\Vip
-                         */
-                        if (isset($user->roles['vip'])) {
-                            $files = $_FILES;
-                            if (!empty($_FILES['vip_image_upload']['name'])) {
-                                $vip->image = $_FILES['vip_image_upload'];
-                                $vip->save();
-                            }
-
-                            // tratar si quitan la imagen vip
-                            if ($vip->image instanceof Image && !empty($_POST['vip_image-' . $vip->image->id . '-remove'])) {
-                                $vip->image->remove();
-                                $vip->remove();
-                            }
-                        }
-                        /*
-                         * Fin tratamiento imagen Vip
-                         */
-
-                        // ojo si es receptor de pruebas, no machacarlo
-                        if (in_array('15', $user->interests)) $_POST['user_interests'][] = '15';
-                        $user->interests = $_POST['user_interests'];
-
-                        //tratar webs existentes
-                        foreach ($user->webs as $i => &$web) {
-                            // luego aplicar los cambios
-
-                            if (isset($_POST['web-' . $web->id . '-url'])) {
-                                $web->url = $_POST['web-' . $web->id . '-url'];
-                            }
-
-                            //quitar las que quiten
-                            if (!empty($_POST['web-' . $web->id . '-remove'])) {
-                                unset($user->webs[$i]);
-                            }
-                        }
-
-                        //tratar nueva web
-                        if (!empty($_POST['web-add'])) {
-                            $user->webs[] = new Model\User\Web(array(
-                                        'url' => 'http://'
-                                    ));
-                        }
-
-                        /// este es el único save que se lanza desde un metodo process_
-                        if ($user->save($errors)) {
-                            Message::Info(Text::get('user-profile-saved'));
-                            $user = Model\User::flush();
-                        }
+                        Dashboard\Profile::process_profile($user, $vip, $errors, $log_action);
                         break;
 
                     // datos personales
                     case 'personal':
-                        // campos que guarda este paso
-                        $fields = array(
-                            'contract_name',
-                            'contract_nif',
-                            'phone',
-                            'address',
-                            'zipcode',
-                            'location',
-                            'country'
-                        );
-
-                        $personalData = array();
-
-                        foreach ($fields as $field) {
-                            if (isset($_POST[$field])) {
-                                $personalData[$field] = $_POST[$field];
-                            }
-                        }
-
-                        // actualizamos estos datos en los personales del usuario
-                        if (!empty($personalData)) {
-                            if (Model\User::setPersonal($user->id, $personalData, true, $errors)) {
-                                Message::Info(Text::get('user-personal-saved'));
-
-                                $log_action = 'Modificado sus datos personales'; //feed admin
-                            }
-                        }
+                        Dashboard\Profile::process_personal($user->id, $errors, $log_action);
                         break;
 
-                    // geolocalización
+                    // geolocalización (tiene un subcontrolador específico)
                     case 'location':
                         $errors = Dashboard\Location::process();
                         break;
                         
                     //cambio de email y contraseña
                     case 'access':
-                        // E-mail
-                        if (!empty($_POST['user_nemail']) || !empty($_POST['user_remail'])) {
-                            if (empty($_POST['user_nemail'])) {
-                                $errors['email'] = Text::get('error-user-email-empty');
-                            } elseif (!\Goteo\Library\Check::mail($_POST['user_nemail'])) {
-                                $errors['email'] = Text::get('error-user-email-invalid');
-                            } elseif (empty($_POST['user_remail'])) {
-                                $errors['email_retry'] = Text::get('error-user-email-empty');
-                            } elseif (strcmp($_POST['user_nemail'], $_POST['user_remail']) !== 0) {
-                                $errors['email_retry'] = Text::get('error-user-email-confirm');
-                            } else {
-                                $user->email = $_POST['user_nemail'];
-                                unset($_POST['user_nemail']);
-                                unset($_POST['user_remail']);
-                                $success[] = Text::get('user-email-change-sended');
-
-                                $log_action = 'Cambiado su email'; //feed admin
-                            }
-                        }
-                        // Contraseña
-                        if (!empty($_POST['user_npassword']) || !empty($_POST['user_rpassword'])) {
-                            // Ya no checkeamos más la contraseña actual (ni en recover ni en normal)
-                            // porque los usuarios que acceden mediante servicio no tienen contraseña
-                            /*
-                              if(!isset($_SESSION['recovering']) && empty($_POST['user_password'])) {
-                              $errors['password'] = Text::get('error-user-password-empty');
-                              }
-                              elseif(!isset($_SESSION['recovering']) && !Model\User::login($user->id, $_POST['user_password'])) {
-                              $errors['password'] = Text::get('error-user-wrong-password');
-                              }
-                              else
-                             */
-                            if (empty($_POST['user_npassword'])) {
-                                $errors['password_new'] = Text::get('error-user-password-empty');
-                            } elseif (!\Goteo\Library\Check::password($_POST['user_npassword'])) {
-                                $errors['password_new'] = Text::get('error-user-password-invalid');
-                            } elseif (empty($_POST['user_rpassword'])) {
-                                $errors['password_retry'] = Text::get('error-user-password-empty');
-                            } elseif (strcmp($_POST['user_npassword'], $_POST['user_rpassword']) !== 0) {
-                                $errors['password_retry'] = Text::get('error-user-password-confirm');
-                            } else {
-                                $user->password = $_POST['user_npassword'];
-                                unset($_POST['user_password']);
-                                unset($_POST['user_npassword']);
-                                unset($_POST['user_rpassword']);
-                                $success[] = Text::get('user-password-changed');
-
-                                $log_action = 'Cambiado su contraseña'; //feed admin
-                            }
-                        }
-                        if (empty($errors) && $user->save($errors)) {
-                            // Refresca la sesión.
-                            $user = Model\User::flush();
-                            if (isset($_SESSION['recovering']))
-                                unset($_SESSION['recovering']);
-                        } else {
-                            $errors[] = Text::get('user-save-fail');
-                        }
+                        Dashboard\Profile::process_profile($user, $errors, $log_action);
                         break;
 
                     // preferencias de notificación
                     case 'preferences':
-                        // campos de preferencias
-                        $fields = array(
-                            'updates',
-                            'threads',
-                            'rounds',
-                            'mailing',
-                            'email'
-                        );
-
-                        $preferences = array();
-
-                        foreach ($fields as $field) {
-                            if (isset($_POST[$field])) {
-                                $preferences[$field] = $_POST[$field];
-                            }
-                        }
-
-                        // actualizamos estos datos en los personales del usuario
-                        if (!empty($preferences)) {
-                            if (Model\User::setPreferences($user->id, $preferences, $errors)) {
-                                Message::Info(Text::get('user-prefer-saved'));
-                                $log_action = 'Modificado las preferencias de notificación'; //feed admin
-                            }
-                        }
+                        Dashboard\Profile::process_preferences($user->id, $errors, $log_action);
                         break;
                 }
 
@@ -330,7 +138,6 @@ namespace Goteo\Controller {
                 'option' => $option,
                 'action' => $action,
                 'errors' => $errors,
-                'success' => $success,
                 'user' => $user
             );
 
@@ -380,10 +187,7 @@ namespace Goteo\Controller {
             }
 
 
-            return new View(
-                            'view/dashboard/index.html.php',
-                            $viewData
-            );
+            return new View('view/dashboard/index.html.php', $viewData);
         }
 
         /*
