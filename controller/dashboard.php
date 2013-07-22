@@ -795,6 +795,8 @@ namespace Goteo\Controller {
 
                     /*
                      * Ya no hay Modo Asignar proyectos
+                     * y tampoco permitimos desasignar 
+                     * 
                     if ($action == 'assign_mode' && $id == 'on') {
                         if ($call->status < 3) {
                             $_SESSION['assign_mode'] = true;
@@ -807,7 +809,6 @@ namespace Goteo\Controller {
                         unset($_SESSION['assign_mode']);
                         throw new Redirection('/dashboard/calls/summary');
                     }
-                    */
 
                     //si estamos quitando un proyecto
                     if ($action == 'unassign' && !empty($id) && isset($call->projects[$id]) && $call->projects[$id]->amount <= 0) {
@@ -824,6 +825,7 @@ namespace Goteo\Controller {
                     } elseif ($action == 'unassign') {
                         Message::Error('No se puede quitar este proyecto ahora');
                     }
+                    */
 
                     break;
 
