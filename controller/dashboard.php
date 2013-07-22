@@ -777,56 +777,15 @@ namespace Goteo\Controller {
 
             $errors = array();
 
-            $calls = Model\Call::ofmine($user->id);
-
-            if (!empty($calls)) {
-                // compruebo permisos
-                foreach ($calls as $call) {
-
-                    // compruebo que puedo editar mis proyectos
-                    if (!ACL::check('/call/edit/' . $call->id)) {
-                        ACL::allow('/call/edit/' . $call->id . '/', '*', 'caller', $user);
-                    }
-
-                    // y borrarlos
-                    if (!ACL::check('/call/delete/' . $call->id)) {
-                        ACL::allow('/call/delete/' . $call->id . '/', '*', 'caller', $user);
-                    }
-                }
-            }
-
-            if ($action == 'select' && !empty($_POST['call'])) {
-                // otra convocatoria de trabajo
-                $call = Model\call::get($_POST['call']);
-            } else {
-                // si tenemos ya convocatoria, mantener los datos actualizados
-                if (!empty($_SESSION['call']->id)) {
-                    $call = Model\Call::get($_SESSION['call']->id);
-                }
-            }
-
-            if (empty($call) && !empty($calls)) {
-                $call = $calls[0];
-            }
-
-            // aqui necesito tener una convocatoria de trabajo,
-            // si no hay ninguna ccoge la última
-            if ($call instanceof \Goteo\Model\Call) {
-                $_SESSION['call'] = $call;
-            } else {
-                unset($call);
-                $option = 'summary';
-            }
-
+            list($call, $calls) = Dashboard\Calls::verifyCalls($user, $action);
+            
             // view data basico para esta seccion
             $viewData = array(
                 'menu' => self::menu(),
                 'section' => __FUNCTION__,
                 'option' => $option,
                 'action' => $action,
-                'calls' => $calls,
-                'errors' => $errors,
-                'success' => $success
+                'calls' => $calls
             );
 
 
@@ -834,7 +793,8 @@ namespace Goteo\Controller {
                 // proyectos
                 case 'projects':
 
-                    // Si no s ponemos en Modo asignar proyectos
+                    /*
+                     * Ya no hay Modo Asignar proyectos
                     if ($action == 'assign_mode' && $id == 'on') {
                         if ($call->status < 3) {
                             $_SESSION['assign_mode'] = true;
@@ -847,6 +807,7 @@ namespace Goteo\Controller {
                         unset($_SESSION['assign_mode']);
                         throw new Redirection('/dashboard/calls/summary');
                     }
+                    */
 
                     //si estamos quitando un proyecto
                     if ($action == 'unassign' && !empty($id) && isset($call->projects[$id]) && $call->projects[$id]->amount <= 0) {
@@ -868,83 +829,11 @@ namespace Goteo\Controller {
 
                 // patrocinadores
                 case 'sponsors':
-
-                    switch ($action) {
-                        case 'add':
-                            $viewData['sponsor'] = (object) array(
-                                        'order' => Model\Call\Sponsor::next($call->id)
-                            );
-                            break;
-                        case 'edit':
-                            // gestionar post
-                            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                                $dpost = $_POST;
-                                $dfiles = $_FILES;
-
-                                // instancia
-                                $sponsor = new Model\Call\Sponsor(array(
-                                            'id' => $_POST['id'],
-                                            'name' => $_POST['name'],
-                                            'call' => $call->id,
-                                            'image' => $_POST['prev_image'],
-                                            'url' => $_POST['url'],
-                                            'order' => $_POST['order']
-                                        ));
-
-                                // tratar si quitan la imagen
-                                $current = $_POST['prev_image']; // la actual
-                                if (isset($_POST['image-' . $current . '-remove'])) {
-                                    $image = Model\Image::get($current);
-                                    $image->remove();
-                                    $sponsor->image = '';
-                                    $removed = true;
-                                }
-
-                                // tratar la imagen y ponerla en la propiedad image
-                                if (!empty($_FILES['image']['name'])) {
-                                    $sponsor->image = $_FILES['image'];
-                                }
-
-                                if ($sponsor->save($errors)) {
-                                    Message::Info('Datos grabados correctamente');
-                                    if (!$removed)
-                                        throw new Redirection('/dashboard/calls/sponsors');
-                                } else {
-                                    Message::Error('No se han podido grabar los datos. ' . implode(', ', $errors));
-                                }
-                            } else {
-                                $sponsor = Model\Call\Sponsor::get($id);
-                            }
-
-                            $viewData['sponsor'] = $sponsor;
-                            break;
-                        case 'delete':
-                            //si estamos quitando un patrocinador
-                            if (!empty($id)) {
-
-                                if (Model\Call\Sponsor::delete($id)) {
-                                    Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
-                                } else {
-                                    Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
-                                }
-                            }
-                            throw new Redirection('/dashboard/calls/sponsors');
-                            break;
-                        case 'up':
-                            Model\Call\Sponsor::up($id, $call->id);
-                            throw new Redirection('/dashboard/calls/sponsors');
-                            break;
-                        case 'down':
-                            Model\Call\Sponsor::down($id, $call->id);
-                            throw new Redirection('/dashboard/calls/sponsors');
-                            break;
-                    }
-
-
+                    $viewData['sponsor'] = Dashboard\Calls::process_sponsors($id, $call->id, $action, $errors);
                     break;
             }
 
+            $viewData['errors'] = $errors;
             $viewData['call'] = $call;
 
             return new View('view/dashboard/index.html.php', $viewData);

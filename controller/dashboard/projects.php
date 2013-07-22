@@ -25,13 +25,20 @@ namespace Goteo\Controller\Dashboard {
  */            
     class Projects {
             
+        /**
+         * Verificación de proyecto de trabajo
+         * 
+         * @param object $user instancia Model\User del convocador
+         * @param string $action por si es 'select'
+         * @return array(project, projects)
+         */
         public static function verifyProject($user, $action) {
             
             $projects = Model\Project::ofmine($user->id); // sus proyectos
 
             // si no tiene, no debería estar aquí
             if (empty($projects) || !is_array($projects)) {
-                throw new Redirection('/dashboard');
+                return array(null, null);
             }
             
             // comprobamos que tenga los permisos para editar y borrar
@@ -66,7 +73,7 @@ namespace Goteo\Controller\Dashboard {
                 $_SESSION['project'] = $project; // lo guardamos en sesión para la próxima verificación
             } else {
                 Message::Error('No se puede trabajar con el proyecto seleccionado, contacta con nosotros');
-                throw new Redirection('/dashboard');
+                $project = null;
             }
             
             // devolvemos lista de proyectos y proyecto de trabajo
