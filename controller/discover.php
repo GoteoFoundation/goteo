@@ -150,6 +150,8 @@ namespace Goteo\Controller {
          * Resultados para los
          */
         public function call () {
+            //@TODO: que muestre los proyectos seleccionados de una convocatoria (pero ya tenemos la página de convocatoria para esto...)
+            return $this->calls();
 
             // antenemos actualizados los datos de convocatoria
             $_SESSION['call'] = Model\Call::get($_SESSION['call']->id);
