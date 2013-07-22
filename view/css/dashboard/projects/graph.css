@@ -9,7 +9,6 @@ body {
 .widget {
     background: #fff;
     padding: 20px;
-    width: 600px;
     margin: 0 auto;
 }
 
@@ -32,8 +31,29 @@ h2 {
     color: #20b3b2;
 }
 
+.de {
+    float: left;
+    margin-left: 5px;   
+}
+
 .minimum {
     color: #96238f;
+    margin-left: 5px;
+}
+
+.euros {
+    margin-left: 5px;
+    float: left;
+}
+
+.quedan {
+    width: 265px;
+    float: left;
+    text-align: right;
+}
+
+.chart_div {
+    clear: both;
 }
 
 /* --- CHART STYLING --- */
@@ -122,76 +142,4 @@ g.x.axis text {
     fill: #ffffff;
     font-weight: normal;
     font-size: 11;
-}
-
-/* ---- TABLE STYLING ---- */
-
-.table {
-    width: 100%;
-    overflow:hidden;
-}
-
-.column_head {
-    float: left;
-    font-weight: normal;
-    text-align: left;
-    font-size: 11px;
-    width: 137px;
-    height: 15px;
-    padding-top: 15px;
-    padding-bottom: 10px;
-    border-right: 3px solid #e7e7e7;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.head_row {
-    border-top: 10px solid #e7e7e7;
-}
-
-.row {
-    width: 640px;
-    float: left;
-    border-bottom: 10px solid #e7e7e7;
-}
-
-.cell {
-    float: left;
-    width: 137px;
-    height: 50px;
-    border-right: 3px solid #e7e7e7;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.metric_in_cell {
-    height: 15px;
-    float: left;
-    width: 137px;
-    font-weight: normal;
-    font-size: 14px;
-}
-
-.chart_in_cell {
-    width: 137px;
-    float: left;
-    height: 35px;
-}
-
-.final_cell {
-    border: 0px !important;
-}
-
-.source_name {
-    font-size:12px;
-}
-
-.source_total {
-    font-size: 12px;
-    font-weight: bold;
-    color: #95268D;
 }

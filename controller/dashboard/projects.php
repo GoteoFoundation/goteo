@@ -600,13 +600,48 @@ namespace Goteo\Controller\Dashboard {
             
         }
         
-                /* Método de datos para la vista del gráfico goteo-analytics*/
-        public static function graph () {
+        /**
+         * Método de datos para la vista del gráfico goteo-analytics
+         * @param object $project Instancia del proyecto a visualizar
+         * @return mixed 
+         */
+        public static function graph ($id) {
 
-            // lo que sea que necesitemos
-            $data = array();
+            // aportes
+            $invests = array();
+            $sql = "SELECT amount, user, invested FROM invest WHERE project = ? AND status IN ('0', '1', '3', '4')"; // solo aportes que aparecen públicamente
+            $result = Model\Invest::query($sql, array($id));
+            foreach ($result->fetchAll(\PDO::FETCH_ASSOC) as $row){
+                $invests[] = $row;
+            }
 
-            return $data;
+            // fechas
+            $dates = array();
+            $sql = 'SELECT published, closed, success, passed FROM project WHERE id = ?';
+            $result = Model\Invest::query($sql, array($id));
+            foreach ($result->fetchAll(\PDO::FETCH_ASSOC) as $row){
+                $dates = $row;
+            }
+
+            // importes objetivo
+            $optimum = $minimum = 0;
+            $sql = 'SELECT sum(amount) as amount, required FROM cost WHERE project = ? GROUP BY required';
+            $result = Model\Invest::query($sql, array($id));
+            foreach ($result->fetchAll(\PDO::FETCH_ASSOC) as $row){
+                if ($row['required'] == 1){
+                    $minimum = $row['amount'];
+                } else {
+                    $optimum = $row['amount'];
+                }
+            }
+
+            $data = array('invests' => $invests, 
+                        'dates' => $dates,
+                        'minimum' => $minimum,
+                        'optimum' => $optimum
+                    );
+    
+            return json_encode($data);
         }
 
     }

@@ -350,8 +350,8 @@ namespace Goteo\Controller {
                 // goteo-analytics para este proyecto
                 case 'graph':
                     
-                    // los datos json de invests y visitors_data  podrían venir por aquí en vez de hacer peticiones ajax
-                    $viewData['other-data'] = Dashboard\Projects::graph();
+                    // los datos json de invests y visitors_data
+                    $viewData['data'] = Dashboard\Projects::graph($project->id);
                     
                     break;
             }
