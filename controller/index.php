@@ -98,11 +98,15 @@ namespace Goteo\Controller {
             $banners   = Banner::getAll(true);
 
             foreach ($banners as $id => &$banner) {
-                try {
-                    $banner->project = Project::get($banner->project, LANG);
-                } catch (\Goteo\Core\Error $e) {
-                    unset($banners[$id]);
+                
+                if (!empty($banner->project)) {
+                    try {
+                        $banner->project = Project::get($banner->project, LANG);
+                    } catch (\Goteo\Core\Error $e) {
+                        unset($banners[$id]);
+                    }
                 }
+                
             }
 
             return new View('view/index.html.php',

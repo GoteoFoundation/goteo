@@ -4,6 +4,8 @@ use Goteo\Library\Text,
     Goteo\Model\Image,
     Goteo\Model\Blog\Post;
 
+$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+
 $blog = $this['blog'];
 $posts = $blog->posts;
 $filters = $this['filters'];
@@ -57,13 +59,7 @@ if ($this['show'] == 'list') {
 // paginacion
 require_once 'library/pagination/pagination.php';
 
-//recolocamos los post para la paginacion
-$the_posts = array();
-foreach ($posts as $i=>$p) {
-    $the_posts[] = $p;
-}
-
-$pagedResults = new \Paginated($the_posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new \Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
 
 include 'view/prologue.html.php';
 include 'view/header.html.php'; 
@@ -81,21 +77,10 @@ include 'view/header.html.php';
 		<div id="blog-content">
 			<?php if ($this['show'] == 'list') : ?>
 				<?php if (!empty($posts)) : ?>
-					<?php while ($post = $pagedResults->fetchPagedRow()) :
-
-                            $share_title = $post->title;
-                            $share_url = SITE_URL . '/blog/' . $post->id;
-                            $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url . '&t=' . rawurlencode($share_title));
-                            $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
-
-                        ?>
+					<?php while ($post = $pagedResults->fetchPagedRow()) : ?>
 						<div class="widget blog-content-module">
-							<?php echo new View('view/blog/post.html.php', array('post'=>$post->id, 'show' => 'list')); ?>
-                            <ul class="share-goteo">
-                                <li class="sharetext"><?php echo Text::get('regular-share_this'); ?></li>
-                                <li class="twitter"><a href="<?php echo htmlspecialchars($twitter_url) ?>" target="_blank"><?php echo Text::get('regular-twitter'); ?></a></li>
-                                <li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" target="_blank"><?php echo Text::get('regular-facebook'); ?></a></li>
-                            </ul>
+							<?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'list')); ?>
+							<?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/blog/' . $post->id, $post->title))); ?>
                             <div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 						</div>
 					<?php endwhile; ?>
@@ -109,17 +94,8 @@ include 'view/header.html.php';
 			<?php endif; ?>
 			<?php if ($this['show'] == 'post') : ?>
 				<div class="widget post">
-					<?php echo new View('view/blog/post.html.php', $this);
-                        $share_title = $post->title;
-                        $share_url = SITE_URL . '/blog/' . $post->id;
-                        $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url . '&t=' . rawurlencode($share_title));
-                        $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
-                    ?>
-					<ul class="share-goteo">
-							<li class="sharetext"><?php echo Text::get('regular-share_this'); ?></li>
-							<li class="twitter"><a href="<?php echo htmlspecialchars($twitter_url) ?>" target="_blank"><?php echo Text::get('regular-twitter'); ?></a></li>
-							<li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" target="_blank"><?php echo Text::get('regular-facebook'); ?></a></li>
-					</ul>
+					<?php echo new View('view/blog/post.html.php', $this); ?>
+                    <?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/blog/' . $post->id, $post->title))); ?>
 					<div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 				</div>
                 <?php echo new View('view/blog/comments.html.php', $this) ?>

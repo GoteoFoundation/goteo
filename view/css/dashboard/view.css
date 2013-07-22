@@ -237,18 +237,17 @@ body.dashboard div#invests-list div.investor div.left span.pendiente{color:#f00;
 /* Custom checkbox in investors list*/
 body.dashboard div#invests-list div.investor div.recompensas input[type="checkbox"]{height:16px;width:16px;float:left;position:absolute;left:0;opacity:0;margin:0;padding:0}
 body.dashboard div#invests-list div.investor div.recompensas label{line-height:16px;padding:0 0 0 20px}
-body.dashboard div#invests-list div.investor div.recompensas input + label{background:url('/view/css/dashboard/gr_custom-inputs.png') 0 -1px no-repeat;height:18px;}
-body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label{background-position:0 -81px}
-body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:hover:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label:hover,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label{background-position:0 -101px}
-
-body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:hover + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox] + label:hover{background-position:0 -21px}
-
-body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:active + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox] + label:hover:active{background-position:0 -41px}
-
+body.dashboard div#invests-list div.investor div.recompensas input + label{background:url('/view/css/dashboard/checkbox.png') 0 1px no-repeat;height:12px;}
+body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label{background-position:0 -12px}
+body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:hover + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox] + label:hover{background-position:0 -12px}
+body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:disabled + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:hover:disabled + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:disabled + label,input[type=checkbox]:disabled + label:hover,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:disabled + label:hover:active{background:url('/view/css/dashboard/checkbox_disabled.png') 0 -12px no-repeat;}
+input[type=checkbox]:disabled:checked + label,input[type=checkbox]:hover:disabled:checked + label,input[type=checkbox]:focus:disabled:checked + label,input[type=checkbox]:disabled:checked + label:hover,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:disabled:checked + label:hover:active{background:url('/view/css/dashboard/checkbox_disabled.png') 0 -12px no-repeat;}
+/*
+body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:hover:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label:hover,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:checked + label{background-position:0 -12px}
+body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:active + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox] + label:hover:active{background-position:0 0}
 body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:active:checked + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:checked + label:hover:active{background-position:0 -121px}
+*/
 
-body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:disabled + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:hover:disabled + label,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:focus:disabled + label,input[type=checkbox]:disabled + label:hover,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:disabled + label:hover:active{background-position:0 -61px}
-input[type=checkbox]:disabled:checked + label,input[type=checkbox]:hover:disabled:checked + label,input[type=checkbox]:focus:disabled:checked + label,input[type=checkbox]:disabled:checked + label:hover,body.dashboard div#invests-list div.investor div.recompensas input[type=checkbox]:disabled:checked + label:hover:active{background-position:0 -141px}
 
 
 /* Custom checkbox in comment box*/

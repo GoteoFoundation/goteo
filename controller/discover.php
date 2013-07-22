@@ -43,7 +43,7 @@ namespace Goteo\Controller {
             }
 
             // si estamos en easy-mode limitamos a 3 proyectos por grupo (en la portada)
-            $limit = (defined('GOTEO_EASY') && \GOTEO_EASY === true) ? 3 : null;
+            $limit = (defined('GOTEO_EASY') && \GOTEO_EASY === true) ? 3 : 30;
             
             // cada tipo tiene sus grupos
             foreach ($types as $type) {
@@ -150,6 +150,8 @@ namespace Goteo\Controller {
          * Resultados para los
          */
         public function call () {
+            //@TODO: que muestre los proyectos seleccionados de una convocatoria (pero ya tenemos la página de convocatoria para esto...)
+            return $this->calls();
 
             // antenemos actualizados los datos de convocatoria
             $_SESSION['call'] = Model\Call::get($_SESSION['call']->id);

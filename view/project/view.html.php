@@ -51,6 +51,8 @@ if ($show == 'updates') {
     $ogmeta['url'] .= '/updates';
     if (!empty($post)) {
         $ogmeta['url'] .= '/'.$post;
+        $tpost = $blog->posts[$post];
+        $ogmeta['title'] .= (empty($tpost->title)) ?: ' - '.$tpost->title;
     }
 }
 

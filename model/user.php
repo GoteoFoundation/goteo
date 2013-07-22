@@ -576,7 +576,7 @@ namespace Goteo\Model {
                 $user = $query->fetchObject(__CLASS__);
 
                 if (!$user instanceof  \Goteo\Model\User) {
-                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-user'));
+                    return false;
                 }
 
                 $user->roles = $user->getRoles();
@@ -770,12 +770,6 @@ namespace Goteo\Model {
                 case 'id':
                     $sqlOrder .= " ORDER BY id ASC";
                 break;
-                case 'amount':
-                    $sqlOrder .= " ORDER BY amount DESC";
-                break;
-                case 'projects':
-                    $sqlOrder .= " ORDER BY projects DESC";
-                break;
                 default:
                     $sqlOrder .= " ORDER BY created DESC";
                 break;
@@ -824,6 +818,9 @@ namespace Goteo\Model {
                     }
                 }
 
+                $user->namount = (int) $user->amount;
+                $user->nprojs = (int) count($user->support['projects']);
+                
                 $users[] = $user;
             }
             return $users;

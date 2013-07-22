@@ -16,11 +16,7 @@ foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$the_posts = array();
-foreach ($this['posts'] as $apost) {
-    $the_posts[] = $apost;
-}
-$pagedResults = new \Paginated($the_posts, 10, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new \Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/blog/add" class="button">Nueva entrada</a>
 &nbsp;&nbsp;&nbsp;

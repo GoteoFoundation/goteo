@@ -4,6 +4,7 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $project = $this['project'];
+$called = $project->call;
 $Data    = $this['Data'];
 $admin = (isset($this['admin']) && $this['admin'] === true) ? true : false;
 
@@ -25,22 +26,24 @@ $contract_date = date('dmY', $dContract);
 
     <?php
     $sumData['total'] = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount'];
+    $sumData['drop'] = $Data['drop']['total']['amount'];
     $sumData['fail']  = $total_issues;
-    $sumData['shown'] = $sumData['total'] + $sumData['fail'];
+    $sumData['shown'] = $sumData['total'] + $sumData['fail'] + $sumData['drop'];
     $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
     $sumData['cash_goteo'] = $Data['cash']['total']['amount']  * 0.08;
     $sumData['tpv_goteo'] = $Data['tpv']['total']['amount']  * 0.08;
     $sumData['pp_goteo'] = $Data['paypal']['total']['amount'] * 0.08;
+    $sumData['drop_goteo'] = $Data['drop']['total']['amount'] * 0.08;
     $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
     $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['amount'] * 0.034);
     $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
     $sumData['pp_net_project'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
     $sumData['fee_goteo'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
-    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'];
-    $sumData['total_fee_project'] = $sumData['fee_goteo'] + $sumData['goteo'];
+    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'] + $sumData['drop_goteo']; // si que se descuenta la comisión sobre capital riego
+    $sumData['total_fee_project'] = $sumData['fee_goteo'] + $sumData['goteo']; // este es el importe de la factura
     $sumData['tpv_project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'] - $sumData['pp_project'];
     $sumData['project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'];
-    $sumData['drop'] = $Data['drop']['total']['amount'];
+    // * el capital riego no lo manda goteo, lo manda el convocador
     ?>
 <p>
     <?php if (!empty($project->passed)) {
@@ -71,9 +74,9 @@ $contract_date = date('dmY', $dContract);
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total recaudado: <strong><?php echo \amount_format($sumData['total'], 2).' &euro;'; ?></strong> (importe de las ayudas monetarias recibidas)</td>
         </tr>
-        <?php if (!empty($project->called)) : ?>
+        <?php if (!empty($called)) : ?>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Capital riego de la campa&ntilde;a <?php echo $project->called->name ?>: <strong><?php echo \amount_format($sumData['drop']).' &euro;'; ?></strong> (Transferencia de <?php echo $project->called->user->name ?> directamente al impulsor)</td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total Capital Riego: <strong><?php echo \amount_format($sumData['drop']).' &euro;'; ?></strong> (Transferencia del convocador '<?php echo $project->call->user->name ?>' directamente al impulsor)</td>
         </tr>
         <?php endif; ?>
     </table>
@@ -89,6 +92,13 @@ $contract_date = date('dmY', $dContract);
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisión del 8&#37; de Goteo.org: <strong><?php echo \amount_format($sumData['goteo'], 2).' &euro;'; ?></strong></td>
         </tr>
+<?php if ($admin) : ?>
+        <!--
+        <tr>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Desglose calculo Comisión del 8&#37; de Goteo.org: <?php $aportes = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount']; $comisionaportes = $aportes * 0.08; $comisionriego = $Data['drop']['total']['amount'] * 0.08; echo "Aportes usuarios: {$Data['tpv']['total']['amount']}(tpv) + {$Data['paypal']['total']['amount']}(paypal) + {$Data['cash']['total']['amount']}(cash) = {$aportes} -> {$comisionaportes} Capital Riego: {$Data['drop']['total']['amount']} -> {$comisionriego}"; ?></td>
+        </tr>
+        -->
+<?php endif; ?>
         <tr>
             <td>Por el total de estas comisiones  la Fundación Fuentes Abiertas ha emitido la factura <strong>[N&uacute;mero de factura]</strong> por importe de <strong><?php echo \amount_format($sumData['total_fee_project'], 2).' &euro;'; ?></strong>, a nombre de la persona o entidad que firma el contrato</td>
         </tr>
@@ -142,7 +152,7 @@ $contract_date = date('dmY', $dContract);
             <th style="text-align:left;">* Listado de usuarios/as con incidencias en su cuenta PayPal.</th>
         </tr>
         <tr>
-            <td>Estos son los aportes con problemas en payPal que no se han conseguido cobrar y se han cancelado.</td>
+            <td>Estos son los aportes con problemas en payPal que no se han conseguido cobrar y se han cancelado. (NOTA: el Capital Riego generado por aportes con incidencia no ha sido descontado)</td>
         </tr>
     </table>
 

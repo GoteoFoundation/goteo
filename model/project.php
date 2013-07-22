@@ -2280,6 +2280,24 @@ namespace Goteo\Model {
         }
 
         /*
+         * Para saber si un usuario es el impulsor
+         */
+        public static function isMine($id, $user) {
+            $sql = "SELECT id, owner FROM project WHERE id = :id AND owner = :owner";
+            $values = array(
+                ':id' => $id,
+                ':owner' => $user
+            );
+            $query = static::query($sql, $values);
+            $mine = $query->fetchObject();
+            if ($mine->owner == $user && $mine->id == $id) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /*
          * Estados de desarrollo del propyecto
          */
         public static function currentStatus () {

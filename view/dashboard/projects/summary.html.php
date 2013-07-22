@@ -40,9 +40,10 @@ if (!$project instanceof  Goteo\Model\Project) {
 <br clear="both" />
 <br />
 
-<?php if (isset($this['Data']) && !empty($project->passed) && empty($project->success)) : ?>
+<?php /* Quitamos el informe del dashboard del impulsor
+ if (isset($this['Data']) && !empty($project->passed) && empty($project->success)) : ?>
 <p style="font-weight: bold; color: black;">Las cantidades que aparecen en este informe no son definitivas hasta que termine la segunda ronda</p>
 <?php endif; ?>
 <?php if (isset($this['Data']) && !empty($project->passed)) {
     echo new View('view/project/report.html.php', array('project'=>$project, 'Data'=>$this['Data']));
-} ?>
+} */ ?>

@@ -106,7 +106,8 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 	z-index:100;
 }
 
-div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner:hover div.shb-info > h2{
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner:hover div.shb-info > h2,
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner:hover div.shb-banner > div.title {
 	color:#20B3B2;
 }
 
@@ -232,6 +233,18 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 	color:#1eb2b2;
 }
 
+/* banners de texto */
+div.subhead-banner .shb-banner {
+	width:535px;
+	height:100%;
+	position:absolute;
+	z-index:5;
+}
+div.subhead-banner .shb-banner > div.title{padding-top:15px;margin-left:20px;line-height:28px;font-size:24px;font-weight:bold;color:#585a5c;}
+div.subhead-banner .shb-banner > div.short-desc{margin-top:10px;margin-left:20px;line-height:24px;font-size:20px;color:#20B3B2;}
+/* fin banners de texto */
+
+/* pseudo-banner */
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner h2.message{
 	margin:20px 0px 20px 20px;
 }
@@ -245,6 +258,7 @@ div.subhead-banner .banner-button{
     right: 20px;
     bottom: 10px;
 }
+/* fin pseudo-banner */
 
 div#sub-header > div.clearfix{
 	min-width:915px;

@@ -436,7 +436,7 @@ namespace Goteo\Controller {
             }
 
             if (!$user instanceof Model\User || $user->hide) {
-                throw new Redirection('/', Redirection::PERMANENT);
+                throw new Error('404', Text::html('fatal-error-user'));
             }
 
             //--- para usuarios públicos---
