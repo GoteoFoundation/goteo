@@ -105,7 +105,7 @@ namespace Goteo\Controller {
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false)
                 ),
-                'filters' => array('project' => '', 'status' => '', 'icon' => '')
+                'filters' => array('project' => '', 'status' => '', 'icon' => '', 'projStatus'=>'')
             ),
             'contracts' => array(
                 'label' => 'Contratos',

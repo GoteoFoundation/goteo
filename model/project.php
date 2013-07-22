@@ -1983,6 +1983,10 @@ namespace Goteo\Model {
                         HAVING getamount >= mincost
                         ORDER BY published DESC";
                     break;
+                case 'fulfilled':
+                    // los que han conseguido el mínimo
+                    $sql = "SELECT id FROM project WHERE status IN ('4', '5') $sqlFilter ORDER BY name ASC";
+                    break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
                     $sql = "SELECT id FROM project WHERE status > 2 AND status < 6 $sqlFilter ORDER BY name ASC";

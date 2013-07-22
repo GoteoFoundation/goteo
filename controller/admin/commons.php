@@ -34,7 +34,11 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
-            $projects = Model\Project::getList(array('status'=>4));
+            if (!empty($filters['projStatus'])) {
+                $projects = Model\Project::getList(array('status'=>$filters['projStatus']));
+            } else {
+                $projects = Model\Project::published('fulfilled');
+            }
 
             foreach ($projects as $kay=>&$project) {
                 $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', LANG, $filters['status'], $filters['icon']);
@@ -49,6 +53,8 @@ namespace Goteo\Controller\Admin {
             foreach ($icons as $key => $icon) {
                 $icons[$key] = $icon->name;
             }
+            $statuses = Model\Project::status();
+            $projStatus = array(4=>$statuses[4], 5=>$statuses[5]);
 
             return new View(
                 'view/admin/index.html.php',
@@ -57,6 +63,8 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'projects'=>$projects,
                     'filters' => $filters,
+                    'statuses' => $statuses,
+                    'projStatus' => $projStatus,
                     'status' => $status,
                     'icons' => $icons
                 )

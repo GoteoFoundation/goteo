@@ -1,28 +1,36 @@
 <?php
-
 use Goteo\Library\Text;
 
 $filters = $this['filters'];
-
-$status = Goteo\Model\Project::status();
-
+$status = $this['statuses'];
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/commons" method="get">
         <div style="float:left;margin:5px;">
-            <label for="projects-filter">Proyecto</label><br />
+            <label for="projStatus-filter">Solo proyectos en estado:</label><br />
+            <select id="projStatus-filter" name="projStatus">
+                <option value="">Cualquier exitoso</option>
+            <?php foreach ($this['projStatus'] as $Id=>$Name) : ?>
+                <option value="<?php echo $Id; ?>"<?php if ($filters['projStatus'] == $Id) echo ' selected="selected"';?>><?php echo $Name; ?></option>
+            <?php endforeach; ?>
+            </select><br />
+            <span style="font-size: 10px;">Afecta al filtro Proyecto</span>
+        </div>
+
+        <div style="float:left;margin:5px;">
+            <label for="projects-filter">Proyecto:</label><br />
             <select id="projects-filter" name="project" >
                 <option value="">Todos los proyectos</option>
             <?php foreach ($this['projects'] as $project) : ?>
-                <option value="<?php echo $project->id; ?>"<?php if ($filters['project'] === $project->id) echo ' selected="selected"';?>><?php echo $project->name; ?></option>
+                <option value="<?php echo $project->id; ?>"<?php if ($filters['project'] === $project->id) echo ' selected="selected"';?> status="<?php echo $project->status; ?>"><?php echo $project->name; ?></option>
             <?php endforeach; ?>
             </select>
         </div>
         
         <div style="float:left;margin:5px;">
-            <label for="status-filter">Mostrar por estado:</label><br />
+            <label for="status-filter">Mostrar por estado del retorno:</label><br />
             <select id="status-filter" name="status" >
-                <option value="">Todos los estados</option>
+                <option value="">Cualquier estado</option>
             <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
                 <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
             <?php endforeach; ?>
@@ -59,8 +67,7 @@ $status = Goteo\Model\Project::status();
             }
         ?>
 
-        <h3><?php echo $project->name; ?></h3>
-        <p>Estado: <?php echo $status[$project->status]; ?></p>
+        <h3><?php echo $project->name; ?> (<?php echo $status[$project->status]; ?>)</h3>
         <?php 
         if (empty($project->social_rewards)) {
             echo '<p>Este proyecto no tiene retornos colectivos</p><hr />';
@@ -103,3 +110,14 @@ $status = Goteo\Model\Project::status();
     <p>No se han encontrado registros</p>
     <?php endif; ?>
 </div>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        
+        // al filtrar por estado de proyecto
+        $("#projStatus-filter").change(function(){
+            
+            $("#filter-form").submit();
+        });
+        
+    });
+</script>
