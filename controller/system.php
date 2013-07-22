@@ -6,12 +6,59 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Model,
+		Goteo\Library\Google,
 		Goteo\Library\Geoloc,
 		Goteo\Library\Text,
 		Goteo\Library\Feed;
 
 	class System extends \Goteo\Core\Controller {
 
+
+        public function analytics () {
+
+            try {
+
+                require_once '../library/google/Google_Client.php';  
+                require_once '../library/google/contrib/Google_AnalyticsService.php';  
+
+                // create client object and set app name
+                $client = new \Google_Client();
+                $client->setApplicationName('Goteo-analytics'); // name of your app
+
+                // set assertion credentials
+                $client->setAssertionCredentials(
+                  new \Google_AssertionCredentials(
+
+                    '179663724496@developer.gserviceaccount.com', // email you added to GA
+
+                    array('https://www.googleapis.com/auth/analytics.readonly'),
+
+                    file_get_contents('/var/www/goteo/ga-key/6aace4fc93268addf70cd0339050c4fc94140b9f-privatekey.p12')  // keyfile you downloaded
+
+                ));
+
+                // other settings
+                $client->setClientId('179663724496.apps.googleusercontent.com');           // from API console
+                $client->setAccessType('offline_access');  // this may be unnecessary?
+
+                // create service and get data
+                $service = new \Google_AnalyticsService($client);
+                $results = $service->data_ga->get(53209379, '2013-06-03', '2013-06-30', 'ga:visits');
+
+                echo \trace($results);
+                die;
+			}
+			catch(Exception $ex) {
+
+                echo 'EXCEPTION!!!<br />';
+                echo $ex->getMessage();
+                die;
+			}
+        }
+
+        public function info () {
+            phpinfo();
+        }
 
         public function test () {
             

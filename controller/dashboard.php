@@ -200,6 +200,8 @@ namespace Goteo\Controller {
          *      'gestionar retornos' resumen recompensas/cofinanciadores/conseguido  y lista de cofinanciadores y recompensas esperadas
          *      'participantes' para comunicarse con los participantes en mensajes
          *      'pagina publica' enlace a la página pública del proyecto
+         * 
+         *      NEW: 'analytics' grafico de evolución de recaudación del proyecto
          *
          */
         public function projects($option = 'summary', $action = 'list', $id = null) {
@@ -343,6 +345,14 @@ namespace Goteo\Controller {
                 // datos de contrato
                 case 'contract':
                     $viewData['contract'] = Model\Contract::get($project->id);
+                    break;
+
+                // goteo-analytics para este proyecto
+                case 'graph':
+                    
+                    // los datos json de invests y visitors_data
+                    $viewData['data'] = Dashboard\Projects::graph($project->id);
+                    
                     break;
             }
 
@@ -873,7 +883,8 @@ namespace Goteo\Controller {
                         'contract' => Text::get('dashboard-menu-projects-contract'),
                         'supports' => Text::get('dashboard-menu-projects-supports'),
                         'rewards' => Text::get('dashboard-menu-projects-rewards'),
-                        'messegers' => Text::get('dashboard-menu-projects-messegers')
+                        'messegers' => Text::get('dashboard-menu-projects-messegers'),
+                        'graph' => 'Analytics'
                     )
                 )
             );
