@@ -62,6 +62,7 @@ switch ($order) {
 ?>
 <div class="widget gestrew">
     <div class="message"><?php echo Text::html('dashboard-rewards-notice') ?></div>
+    <?php if (in_array($project->status, array(4, 5))) echo Text::html('dashboard-rewards-investors_table'); ?>
     <div class="rewards">
         <?php $num = 1; 
             foreach ($rewards as $rewardId=>$rewardData) : ?>
@@ -78,7 +79,6 @@ switch ($order) {
         <?php ++$num;
             endforeach; ?>
     </div>
-    <?php if ($project->status == 4) echo Text::html('dashboard-rewards-investors_table'); ?>
 </div>
 
 <?php if (!empty($invests)) : ?>

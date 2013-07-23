@@ -5,6 +5,7 @@ use Goteo\Library\Text,
 
 $node = $this['node'];
 $transNode = ACL::check('/translate/node/'.$node) ? true : false;
+$translator = ACL::check('/translate') ? true : false;
 ?>
 <a href="/admin/banners/add" class="button">Nuevo banner</a>
 
@@ -41,7 +42,7 @@ $transNode = ACL::check('/translate/node/'.$node) ? true : false;
                 <a href="/admin/banners/active/<?php echo $banner->id; ?>/on">[Mostrar]</a>
                 <?php endif; ?></td>
                 <td>
-                <?php if ($transNode && $node != \GOTEO_NODE) : ?>
+                <?php if ($transNode || $translator) : ?>
                 <a href="/translate/node/<?php echo $node ?>/banner/edit/<?php echo $banner->id; ?>" target="_blank">[Traducir]</a>
                 <?php endif; ?>
                 </td>
