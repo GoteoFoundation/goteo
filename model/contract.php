@@ -4,6 +4,8 @@ namespace Goteo\Model {
 
     class Contract extends \Goteo\Core\Model {
 
+        //@TODO: Hacer que el id del registrod e contrato sea el id del proyecto
+        
         public
             $id,
             $project,
