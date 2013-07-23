@@ -320,7 +320,7 @@ namespace Goteo\Controller\Dashboard {
         
         
         /**
-         * Graba el contrato con lo recibido por POST
+         * Aplica cambio de estado al proceso de contrato
          * 
          * @param object $project Instancia de proyecto de trabajo
          * @param array $errors (por referncia)
@@ -330,59 +330,34 @@ namespace Goteo\Controller\Dashboard {
 
             $contract = Model\Contract::get($project->id);
 
-            foreach ($_POST as $key => $value) {
-                if (isset($contract->$key)) {
-                    $contract->$key = $value;
-                }
-            }
-
-            if ($contract->save($errors)) {
-                Message::Info('Datos de contrato actualizados');
-
-                // si el impulsor da los datos por cerrados hacemos un feed para admin
-                if (!empty($_POST['close_owner'])) {
-                    $contract->setStatus('owner', true);
+            // si el impulsor da los datos por cerrados hacemos un feed para admin
+            if (isset($_POST['close_owner']) && $_POST['close_owner'] == 'close') {
+                // marcar en el registro de gestión, "datos de contrato" cerrados
+                if ($contract->setStatus('owner', true)) {
+                    Message::Info('Datos de contrato cerrados para revisión');
 
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($project->id);
-                    $log->populate('usuario cambia los datos del contrato de su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha modificado los datos del contrato del proyecto %s', array(
+                    $log->populate('usuario da por cerrados los datos del contrato (dashboard)', '/admin/projects', \vsprintf('%s ha cerrado los datos del contrato del proyecto %s', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('project', $project->name, $project->id)
                             )));
                     $log->doAdmin('user');
                     unset($log);
-                    
-                    //@TODO: marcar en el registro de gestión, "datos de contrato" cerrados
+
+                    return true;
+
+                } else {
+                    Message::Error('Ha habido algún error al cerrar los datos de contrato');
+                    return false;
                 }
-                
-                return true;
-                
-            } else {
-                Message::Error('Ha habido algún error al grabar los datos de contrato');
-                return false;
+
             }
 
-        }
-        
-        
-        /**
-         * Graba las cuentas con lo recibido por POST
-         * 
-         * @param object $project Instancia de proyecto de trabajo
-         * @param array $errors (por referncia)
-         * @return boolean
-         */
-        public static function process_account ($project, &$errors = array()) {
-            $accounts = Model\Project\Account::get($project->id);
-            $accounts->bank = $_POST['bank'];
-            $accounts->bank_owner = $_POST['bank_owner'];
-            $accounts->paypal = $_POST['paypal'];
-            $accounts->paypal_owner = $_POST['paypal_owner'];
-            if ($accounts->save($errors)) {
-
-                Message::Info('Cuentas actualizadas');
-
+            // si el impulsor notifica que ha actualizado las cuentas
+            if (isset($_POST['account_update']) && $_POST['account_update'] == 'updated') {
+                
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($project->id);
@@ -392,10 +367,8 @@ namespace Goteo\Controller\Dashboard {
                         )));
                 $log->doAdmin('user');
                 unset($log);
-            } else {
-                Message::Error('Ha habido algún error al grabar los datos de cuentas');
-                return false;
             }
+
         }
         
         

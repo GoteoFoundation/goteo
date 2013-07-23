@@ -248,11 +248,6 @@ namespace Goteo\Controller {
                         if ($action == 'save') Dashboard\Projects::process_contract($project, $errors);
                         break;
 
-                    // cuentas
-                    case 'account':
-                        if ($action == 'save') Dashboard\Projects::process_account($project, $errors);
-                        break;
-
                     // colaboraciones
                     case 'supports':
                         if ($action == 'save') $project = Dashboard\Projects::process_supports($project, $errors);
@@ -337,12 +332,8 @@ namespace Goteo\Controller {
                     $viewData['post'] = $post;
                     break;
 
-                // cuentas
-                case 'account':
-                    $viewData['account'] = Model\Project\Account::get($project->id);
-                    break;
-
                 // datos de contrato
+                // bastaría con un getStatus para saber como va, ya que aqui no se gestionan los datos del contrato
                 case 'contract':
                     $viewData['contract'] = Model\Contract::get($project->id);
                     break;
