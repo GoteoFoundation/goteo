@@ -235,7 +235,7 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 
 /* banners de texto */
 div.subhead-banner .shb-banner {
-	width:535px;
+	width:520px;
 	height:100%;
 	position:absolute;
 	z-index:5;
