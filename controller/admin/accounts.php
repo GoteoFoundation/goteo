@@ -264,17 +264,14 @@ namespace Goteo\Controller\Admin {
             // aportes manuales, cargamos la lista completa de usuarios, proyectos y campañas
            if ($action == 'add') {
 
-                // listado de proyectos existentes
+                // listado de proyectos en campaña
                 $projects = Model\Project::getAll();
                 // usuarios
                 $users = Model\User::getAllMini();
                 // campañas
                 $calls = Model\Call::getAll();
-
-                //@TODO tema convocatorias (calls)
-                //Ojo! Solo convocatorias revisadas?
-                //Ojo! Puede ser que se tenga que restringir proyectos de esa
-
+                   
+                
                 // generar aporte manual
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add']) ) {
 
@@ -332,6 +329,7 @@ namespace Goteo\Controller\Admin {
                  $viewData = array(
                         'folder' => 'accounts',
                         'file' => 'add',
+                        'autocomplete'  => true,
                         'users'         => $users,
                         'projects'      => $projects,
                         'calls'         => $calls

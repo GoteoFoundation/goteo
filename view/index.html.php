@@ -44,7 +44,9 @@ include 'view/header.html.php';
 ?>
 <script type="text/javascript">
     $(function(){
-        $('#sub-header').slides();
+        $('#sub-header').slides({
+            play: 8000
+        });
     });
 
 </script>

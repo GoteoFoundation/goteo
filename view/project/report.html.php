@@ -25,21 +25,24 @@ $contract_date = date('dmY', $dContract);
     <h3 class="title" style="text-transform: none;">Informe de financiación del proyecto P-[N&ordm;]-<?php echo $contract_date; ?><br /><span style="color:#20B2B3;"><?php echo $project->name ?></span></h3>
 
     <?php
+    // tanto los aportes de riego como los cash-no-cobrados: aparecen en el termómetro, cobran comisión, pero no se incluyen en el previsto a transferir
     $sumData['total'] = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount'];
     $sumData['drop'] = $Data['drop']['total']['amount'];
+    $sumData['ghost'] = $Data['ghost']['total']['amount'];
     $sumData['fail']  = $total_issues;
-    $sumData['shown'] = $sumData['total'] + $sumData['fail'] + $sumData['drop'];
+    $sumData['shown'] = $sumData['total'] + $sumData['fail'] + $sumData['drop'] + $sumData['ghost'];
     $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
     $sumData['cash_goteo'] = $Data['cash']['total']['amount']  * 0.08;
     $sumData['tpv_goteo'] = $Data['tpv']['total']['amount']  * 0.08;
     $sumData['pp_goteo'] = $Data['paypal']['total']['amount'] * 0.08;
     $sumData['drop_goteo'] = $Data['drop']['total']['amount'] * 0.08;
+    $sumData['ghost_goteo'] = $Data['ghost']['total']['amount'] * 0.08;
     $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
     $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['amount'] * 0.034);
     $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
     $sumData['pp_net_project'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
     $sumData['fee_goteo'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
-    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'] + $sumData['drop_goteo']; // si que se descuenta la comisión sobre capital riego
+    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'] + $sumData['drop_goteo'] + $sumData['ghost_goteo']; // si que se descuenta la comisión sobre capital riego
     $sumData['total_fee_project'] = $sumData['fee_goteo'] + $sumData['goteo']; // este es el importe de la factura
     $sumData['tpv_project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'] - $sumData['pp_project'];
     $sumData['project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'];
@@ -77,6 +80,11 @@ $contract_date = date('dmY', $dContract);
         <?php if (!empty($called)) : ?>
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total Capital Riego: <strong><?php echo \amount_format($sumData['drop']).' &euro;'; ?></strong> (Transferencia del convocador '<?php echo $project->call->user->name ?>' directamente al impulsor)</td>
+        </tr>
+        <?php endif; ?>
+        <?php if (!empty($sumData['ghost'])) : ?>
+        <tr>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Otro recibido: <strong><?php echo \amount_format($sumData['ghost']).' &euro;'; ?></strong> (Directamente del cofinanciador al impulsor)</td>
         </tr>
         <?php endif; ?>
     </table>

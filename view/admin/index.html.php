@@ -24,6 +24,10 @@ if (isset($allowed) && !empty($this['folder']) && !in_array($this['folder'], $al
 
 $bodyClass = 'admin';
 
+// funcionalidades con autocomplete
+$jsreq_autocomplete = $this['autocomplete'];
+
+
 include 'view/prologue.html.php';
 include 'view/header.html.php'; 
 ?>
