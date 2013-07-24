@@ -473,7 +473,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Listado simple de todos los proyectos
+         * Listado simple de todos los proyectos en campaña
          */
         public static function getAll($node = \GOTEO_NODE) {
 
@@ -484,6 +484,7 @@ namespace Goteo\Model {
                     project.id as id,
                     project.name as name
                 FROM    project
+                WHERE project.status = 3
                 ORDER BY project.name ASC
                 ", array(':node' => $node));
 

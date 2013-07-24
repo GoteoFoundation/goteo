@@ -836,7 +836,7 @@ namespace Goteo\Model {
             $query = static::query("
                 SELECT
                     user.id as id,
-                    user.name as name
+                    CONCAT(user.name, ' (', user.email, ')') as name
                 FROM    user
                 ");
 
