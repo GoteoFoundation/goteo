@@ -84,7 +84,7 @@ $contract_date = date('dmY', $dContract);
         <?php endif; ?>
         <?php if (!empty($sumData['ghost'])) : ?>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Otro recibido: <strong><?php echo \amount_format($sumData['ghost']).' &euro;'; ?></strong> (Directamente del cofinanciador al impulsor)</td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Otro recibido: <strong><?php echo \amount_format($sumData['ghost']).' &euro;'; ?></strong> (Aporte manual sin ingreso bancario)</td>
         </tr>
         <?php endif; ?>
     </table>
