@@ -19,12 +19,11 @@ if ($project->called instanceof Call && $project->called->dropable) {
     } else {
         $allready = false;
     }
+    $allowpp = false;
 } else {
     $call = null;
+    $allowpp = true;
 }
-
-// si permite paypal
-$allowpp = $this['allowpp'];
 
 $personal = $this['personal'];
 $step = $this['step'];

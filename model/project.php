@@ -473,7 +473,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Listado simple de todos los proyectos en campaña
+         * Listado simple de todos los proyectos de cierto nodo
          */
         public static function getAll($node = \GOTEO_NODE) {
 
@@ -484,7 +484,7 @@ namespace Goteo\Model {
                     project.id as id,
                     project.name as name
                 FROM    project
-                WHERE project.status = 3
+                WHERE project.node = :node
                 ORDER BY project.name ASC
                 ", array(':node' => $node));
 
@@ -2046,10 +2046,18 @@ namespace Goteo\Model {
             return $projects;
         }
 
-        /*
-         * Lista de proyectos en campaña o financiados (para ser revisados por el cron/daily)
+        // 
+        /**
+         * Lista de proyectos en campaña o financiados 
+         *   para ser revisados por el cron/daily
+         *   para crear aporte manual
+         *   para gestión de contratos
+         * 
+         * @param bool $campaignonly  solo saca proyectos en proceso de campaña  (parece que esto no se usa...)
+         * @param bool $mini  devuelve array asociativo id => nombre, para cuando no se necesita toda la instancia
+         * @return array de instancias de proyecto // array asociativo (si recibe mini = true)
          */
-        public static function active($campaignonly = false)
+        public static function active($campaignonly = false, $mini = false)
         {
             $projects = array();
 
@@ -2059,11 +2067,15 @@ namespace Goteo\Model {
                 $sqlFilter = " WHERE project.status = 3 OR project.status = 4";
             }
 
-            $sql = "SELECT project.id FROM  project {$sqlFilter} ORDER BY name ASC";
+            $sql = "SELECT id, name FROM  project {$sqlFilter} ORDER BY name ASC";
 
             $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $projects[] = self::get($proj->id);
+                if ($mini) {
+                    $projects[$proj->id] = $proj->name;
+                } else {
+                    $projects[] = self::get($proj->id);
+                }
             }
             return $projects;
         }

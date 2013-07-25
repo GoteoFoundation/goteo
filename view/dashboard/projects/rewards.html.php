@@ -61,8 +61,7 @@ switch ($order) {
 
 ?>
 <div class="widget gestrew">
-    <div class="message"><?php echo Text::html('dashboard-rewards-notice') ?></div>
-    <?php if (in_array($project->status, array(4, 5))) echo Text::html('dashboard-rewards-investors_table'); ?>
+    <div class="message"><?php echo (in_array($project->status, array(4, 5))) ? Text::html('dashboard-rewards-investors_table') : Text::html('dashboard-rewards-notice'); ?></div>
     <div class="rewards">
         <?php $num = 1; 
             foreach ($rewards as $rewardId=>$rewardData) : ?>
@@ -156,16 +155,22 @@ switch ($order) {
                     <div class="left recompensas"  style="width:280px;">
                      	<span style="margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-choosen'); ?></strong></span>
                     <?php if (empty($investData->rewards)) : // si no hay recompensas es renuncia ?>
-                     	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-resigns'); ?></strong></span>
+                     	<span style="margin-bottom:2px;"><strong><?php echo Text::get('dashboard-rewards-resigns'); ?></strong></span>
                     <?php else : ?>
                         <?php foreach ($investData->rewards as $reward) : ?>
                         <div style="width: 250px; overflow: hidden; height: 18px; margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>">
-                        <input type="checkbox" class="fulrew" id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" ref="<?php echo $investId; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
-                        <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 40); ?></label>
+                        <?php if (in_array($project->status, array(4,5))) : ?>
+                            <input type="checkbox" class="fulrew" id="<?php echo "ful_reward-{$investId}-{$reward->id}"; ?>" ref="<?php echo $investId; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
+                            <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 100); ?></label>
+                        <?php else : ?>
+                            <span><?php echo Text::recorta($reward->reward, 100); ?></span>
+                        <?php endif; ?>
                         </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
-	                    <span class="status" id="status-<?php echo $investId; ?>"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
+                    <?php if (in_array($project->status, array(4,5)) && !empty($investData->rewards) ) : ?>
+                        <span class="status" id="status-<?php echo $investId; ?>"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
+                    <?php endif; ?>
                     <?php if ($investData->issue) : // si es incidencia ?>
                      	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-issue'); ?></strong></span>
                     <?php endif; ?>
@@ -204,7 +209,7 @@ switch ($order) {
         $(".fulrew").click(function(){
             
             // solo si el proyecto está financiado
-            <?php if ($project->status !=4) : ?>
+            <?php if (!in_array($project->status, array(4,5))) : ?>
             alert('No tienes que marcar las recompensas cumplidas hasta que el proyecto termine la campaña'); 
             $(this).attr('checked', false);
             return false;

@@ -265,7 +265,7 @@ namespace Goteo\Controller\Admin {
            if ($action == 'add') {
 
                 // listado de proyectos en campaña
-                $projects = Model\Project::getAll();
+                $projects = Model\Project::active(false, true);
                 // usuarios
                 $users = Model\User::getAllMini();
                 // campañas

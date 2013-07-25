@@ -12,7 +12,7 @@ foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/translates" class="button">Asignar traductores</a>
 
@@ -88,45 +88,51 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
     </form>
     <br clear="both" />
     <a href="/admin/projects/?reset=filters">Quitar filtros</a>
-</div>
-
-<div class="widget board">
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($this['projects'])) : ?>
+<?php elseif (empty($this['projects'])) : ?>
+    <p>No se han encontrado registros</p>
+<?php else: ?>
     <p><strong>OJO!</strong> Resultado limitado a 999 registros como máximo.</p>
+<?php endif; ?>
+</div>
+
+    
+<?php if (!empty($this['projects'])) : 
+    while ($project = $pagedResults->fetchPagedRow()) : 
+?>
+<div class="widget board">
     <table>
         <thead>
             <tr>
-                <th>Proyecto</th> <!-- edit -->
-                <th>Creador</th> <!-- mailto -->
-                <th>Recibido</th> <!-- enviado a revision -->
-                <th>Estado</th>
-                <th>%</th> <!-- segun estado -->
-                <th>Días</th> <!-- segun estado -->
-                <th>Conseguido</th> <!-- segun estado -->
-                <th>Mínimo</th> <!-- segun estado -->
-                <th>Cofin.</th> <!-- Usuarios que han completado aportes a este proyecto -->
-                <th>Colab.</th> <!-- usuarios de mensaje que no sea el autor -->
+                <th style="width: 250px;">Proyecto</th> <!-- edit -->
+                <th style="min-width: 150px;">Creador</th> <!-- mailto -->
+                <th style="min-width: 75px;">Recibido</th> <!-- enviado a revision -->
+                <th style="min-width: 80px;">Estado</th>
+                <th style="min-width: 50px;">Nodo</th>
+                <th style="min-width: 50px;">M&iacute;nimo</th>
+                <th style="min-width: 50px;">&Oacute;ptimo</th>
             </tr>
         </thead>
 
         <tbody>
-            <?php while ($project = $pagedResults->fetchPagedRow()) : ?>
             <tr>
-                <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
-                <td><a href="mailto:<?php echo $project->user->email; ?>"><?php echo $project->user->email; ?></a></td>
+                <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview" style="<?php if (isset($project->called)) echo 'color: blue;'; ?>"><?php echo $project->name; ?></a></td>
+                <td><a href="mailto:<?php echo $project->user->email; ?>"><?php echo substr($project->user->email, 0, 100); ?></a></td>
                 <td><?php echo date('d-m-Y', strtotime($project->updated)); ?></td>
                 <td><?php echo ($project->status == 1 && !$project->draft) ? '<span style="color: green;">En negociación</span>' : $this['status'][$project->status]; ?></td>
-                <td><?php if ($project->status < 3)  echo $project->progress; ?></td>
-                <td><?php if ($project->status == 3) echo "$project->days (round {$project->round})"; ?></td>
-                <td><?php echo $project->invested; ?></td>
-                <td><?php echo $project->mincost; ?></td>
-                <td><?php echo $project->num_investors; ?></td>
-                <td><?php echo $project->num_messegers; ?></td>
+                <td style="text-align: center;"><?php echo $project->node; ?></td>
+                <td style="text-align: right;"><?php echo \amount_format($project->mincost).'€'; ?></td>
+                <td style="text-align: right;"><?php echo \amount_format($project->maxcost).'€'; ?></td>
             </tr>
             <tr>
-                <td colspan="10">
+                <td colspan="7"><?php 
+                    if ($project->status < 3)  echo "Información al <strong>{$project->progress}%</strong>";
+                    if ($project->status == 3 && $project->round > 0) echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;<strong>Conseguido:</strong> ".\amount_format($project->invested)."€&nbsp;&nbsp;&nbsp;<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messegers}"; 
+                ?></td>
+            </tr>
+            <tr>
+                <td colspan="7">
                     IR A:&nbsp;
                     <a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a>
                     <a href="/admin/users/?id=<?php echo $project->owner; ?>" target="_blank">[Impulsor]</a>
@@ -142,7 +148,7 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                 </td>
             </tr>
             <tr>
-                <td colspan="10">
+                <td colspan="7">
                     CAMBIAR:&nbsp;
                     <a href="<?php echo "/admin/projects/dates/{$project->id}"; ?>">[Fechas]</a>
                     <a href="<?php echo "/admin/projects/accounts/{$project->id}"; ?>">[Cuentas]</a>
@@ -157,7 +163,7 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                 </td>
             </tr>
             <tr>
-                <td colspan="10">
+                <td colspan="5">
                     GESTIONAR:&nbsp;
                     <?php if ($project->status == 1) : ?><a href="<?php echo "/admin/reviews/add/{$project->id}"; ?>" onclick="return confirm('Se va a iniciar revisión de un proyecto en estado Edición, ok?');">[Iniciar revisión]</a><?php endif; ?>
                     <?php if ($project->status == 2) : ?><a href="<?php echo "/admin/reviews/?project=".urlencode($project->id); ?>">[Ir a la revisión]</a><?php endif; ?>
@@ -169,18 +175,13 @@ $pagedResults = new \Paginated($this['projects'], 20, isset($_GET['page']) ? $_G
                     <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/projects/reject/{$project->id}"; ?>" onclick="return confirm('Se va a enviar un mail automáticamente pero no cambiará el estado, ok?');">[Rechazo express]</a><?php endif; ?>
                 </td>
             </tr>
-            <tr>
-                <td colspan="10"><hr /></td>
-            </tr>
-            <?php endwhile; ?>
         </tbody>
 
     </table>
 </div>
+<?php endwhile; ?>
 <ul id="pagination">
 <?php   $pagedResults->setLayout(new DoubleBarLayout());
         echo $pagedResults->fetchPagedNavigation($the_filters); ?>
 </ul>
-<?php else : ?>
-<p>No se han encontrado registros</p>
 <?php endif; ?>
