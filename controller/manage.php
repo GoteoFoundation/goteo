@@ -47,28 +47,28 @@ namespace Goteo\Controller {
                     'label'   => 'Gestión financiera',
                     'options' => array (
                         'projects' => array(
-                            'label' => 'Proyectos',
+                            'label' => 'Proyectos (solo en campaña y financiados)',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'manage' => array('label' => 'Gestionando proyecto', 'item' => true)
                             )
                         ),
                         'campaigns' => array(
-                            'label' => 'Convocatorias',
+                            'label' => 'Convocatorias (solo asuntos económicos)',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'manage' => array('label' => 'Gestionando convocatoria', 'item' => true)
                             )
                         ),
                         'accounts' => array(
-                            'label' => 'Aportes delicados',
+                            'label' => 'Aportes delicados (solo con incidencia, manuales, fantasmas y casos conflictivos)',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'manage' => array('label' => 'Gestionando aporte', 'item' => true)
                             )
                         ),
                         'reports' => array(
-                            'label' => 'Informes',
+                            'label' => 'Informes (financieros)',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'view' => array('label' => 'Viendo informe', 'item' => true)
@@ -80,21 +80,21 @@ namespace Goteo\Controller {
                     'label'   => 'Asuntos legales',
                     'options' => array (
                         'users' => array(
-                            'label' => 'Impulsores',
+                            'label' => 'Impulsores (solo impulsores de proyectos publicados)',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'manage' => array('label' => 'Gestionando impulsor', 'item' => true)
                             )
                         ),
                         'contracts' => array(
-                            'label' => 'Contratos',
+                            'label' => 'Contratos (para control de proceso)',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'manage' => array('label' => 'Gestionando contrato', 'item' => true)
                             )
                         ),
                         'certificates' => array(
-                            'label' => 'Certificados',
+                            'label' => 'Certificados (exportación)',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'manage' => array('label' => 'Gestionando certificado', 'item' => true)
