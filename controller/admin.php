@@ -1026,6 +1026,7 @@ namespace Goteo\Controller {
                         unset($menu['projects']['options']['invests']);
                         $menu['projects']['options']['accounts'] = $options['accounts']; // gestion completa de aportes
                         $menu['projects']['options']['reports'] = $options['reports']; // informes
+                        $menu['contents']['options']['texts'] = $options['texts']; // gestión de textos
                     }
 
                     break;

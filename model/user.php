@@ -88,6 +88,9 @@ namespace Goteo\Model {
 	        if($name == "unlocable") {
 	            return User\Location::is_unlocable($this->id);
 	        }
+	        if($name == "admin_node") {
+	            return \Goteo\Model\Node::getAdminNode($this->id);
+	        }
             return $this->$name;
         }
 

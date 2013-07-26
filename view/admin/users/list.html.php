@@ -135,9 +135,11 @@ $pagedResults = new \Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] 
         </thead>
 
         <tbody>
-            <?php while ($user = $pagedResults->fetchPagedRow()) : ?>
+            <?php while ($user = $pagedResults->fetchPagedRow()) :
+                $adminNode = ($user->admin) ? $user->admin_node : null;
+                ?>
             <tr>
-                <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" title="Ver perfil público"><?php echo substr($user->name, 0, 20); ?></a></td>
+                <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" <?php echo ($adminNode != 'goteo') ? 'style="color: green;" title="Admin nodo '.$adminNode.'"' : 'title="Ver perfil público"'; ?>><?php echo substr($user->name, 0, 20); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 20); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
                 <td><?php echo $user->nprojs; ?></td>
