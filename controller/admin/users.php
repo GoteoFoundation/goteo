@@ -14,6 +14,77 @@ namespace Goteo\Controller\Admin {
 
     class Users {
 
+        public static $manageSubAct = array(
+            "ban" => array (
+                'sql' => "UPDATE user SET active = 0 WHERE id = :user",
+                'log' => "Desactivado"
+                ),
+            "unban" => array (
+                'sql' => "UPDATE user SET active = 1 WHERE id = :user",
+                'log' => "Activado"
+                ),
+            "show" => array (
+                'sql' => "UPDATE user SET hide = 0 WHERE id = :user",
+                'log' => "Mostrado"
+                ),
+            "hide" => array (
+                'sql' => "UPDATE user SET hide = 1 WHERE id = :user",
+                'log' => "Ocultado"
+                ),
+            "checker" => array (
+                'sql' => "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'checker')",
+                'log' => "Hecho revisor"
+                ),
+            "nochecker" => array (
+                'sql' => "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = :user",
+                'log' => "Quitado de revisor"
+                ),
+            "translator" => array (
+                'sql' => "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'translator')",
+                'log' => "Hecho traductor"
+                ),
+            "notranslator" => array (
+                'sql' => "DELETE FROM user_role WHERE role_id = 'translator' AND user_id = :user",
+                'log' => "Quitado de traductor"
+                ),
+            "caller" => array (
+                'sql' => "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'caller')",
+                'log' => "Hecho convocador"
+                ),
+            "nocaller" => array (
+                'sql' => "DELETE FROM user_role WHERE role_id = 'caller' AND user_id = :user",
+                'log' => "Quitado de convocador"
+                ),
+            "admin" => array (
+                'sql' => "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'admin')",
+                'log' => "Hecho admin"
+                ),
+            "noadmin" => array (
+                'sql' => "DELETE FROM user_role WHERE role_id = 'admin' AND user_id = :user",
+                'log' => "Quitado de admin"
+                ),
+            "vip" => array (
+                'sql' => "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'vip')",
+                'log' => "Hecho VIP"
+                ),
+            "novip" => array (
+                'sql' => "DELETE FROM user_role WHERE role_id = 'vip' AND user_id = :user",
+                'log' => "Quitado el VIP"
+                ),
+            "manager" => array (
+                'sql' => "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'manager')",
+                'log' => "Hecho gestor"
+                ),
+            "nomanager" => array (
+                'sql' => "DELETE FROM user_role WHERE role_id = 'manager' AND user_id = :user",
+                'log' => "Quitado de gestor"
+                )            
+        );
+        
+        
+        
+        
+        
         public static function process ($action = 'list', $id = null, $filters = array(), $subaction = '') {
 
             // multiples usos
@@ -123,68 +194,10 @@ namespace Goteo\Controller\Admin {
                     // si llega post: ejecutamos + mensaje + seguimos editando
 
                     // operación y acción para el feed
-                    $sql = '';
-                    switch ($subaction)  {
-                        case 'ban':
-                            $sql = "UPDATE user SET active = 0 WHERE id = :user";
-                            $log_action = 'Desactivado';
-                            break;
-                        case 'unban':
-                            $sql = "UPDATE user SET active = 1 WHERE id = :user";
-                            $log_action = 'Activado';
-                            break;
-                        case 'show':
-                            $sql = "UPDATE user SET hide = 0 WHERE id = :user";
-                            $log_action = 'Mostrado';
-                            break;
-                        case 'hide':
-                            $sql = "UPDATE user SET hide = 1 WHERE id = :user";
-                            $log_action = 'Ocultado';
-                            break;
-                        case 'checker':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'checker')";
-                            $log_action = 'Hecho revisor';
-                            break;
-                        case 'nochecker':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'checker' AND user_id = :user";
-                            $log_action = 'Quitado de revisor';
-                            break;
-                        case 'translator':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'translator')";
-                            $log_action = 'Hecho traductor';
-                            break;
-                        case 'notranslator':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'translator' AND user_id = :user";
-                            $log_action = 'Quitado de traductor';
-                            break;
-                        case 'caller':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'caller')";
-                            $log_action = 'Hecho convocador';
-                            $newcaller = true;
-                            break;
-                        case 'nocaller':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'caller' AND user_id = :user";
-                            $log_action = 'Quitado de convocador';
-                            break;
-                        case 'admin':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'admin')";
-                            $log_action = 'Hecho admin';
-                            break;
-                        case 'noadmin':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'admin' AND user_id = :user";
-                            $log_action = 'Quitado de admin';
-                            break;
-                        case 'vip':
-                            $sql = "REPLACE INTO user_role (user_id, role_id) VALUES (:user, 'vip')";
-                            $log_action = 'Hecho VIP';
-                            break;
-                        case 'novip':
-                            $sql = "DELETE FROM user_role WHERE role_id = 'vip' AND user_id = :user";
-                            $log_action = 'Quitado el VIP';
-                            break;
-                    }
-
-
+                    
+                    $sql = self::$manageSubAct[$subaction]['sql'];
+                    $log_action = self::$manageSubAct[$subaction]['log'];
+                    
                     if (!empty($sql)) {
 
                         $user = Model\User::getMini($id);
@@ -380,14 +393,8 @@ namespace Goteo\Controller\Admin {
                                 'inactive' => 'Inactivo'
                             );
                     $interests = Model\User\Interest::getAll();
-                    $roles = array(
-                        'admin' => 'Admin',
-                        'checker' => 'Revisor',
-                        'translator' => 'Traductor',
-                        'caller' => 'Convocador',
-                        'vip' => 'VIP',
-                        'user' => 'Solo usuario'
-                    );
+                    $roles = Model\User::getRolesList();
+                    $roles['user'] = 'Solo usuario';
                     $types = array(
                         'creators' => 'Impulsores', // que tienen algun proyecto 
                         'investors' => 'Cofinanciadores', // que han aportado a algun proyecto en campaña, financiado, archivado o caso de éxito

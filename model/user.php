@@ -2,8 +2,7 @@
 
 namespace Goteo\Model {
 
-	use Goteo\Core\Redirection,
-        Goteo\Library\Text,
+	use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\Node,
         Goteo\Library\Template,
@@ -119,17 +118,6 @@ namespace Goteo\Model {
                     $data[':confirmed'] = false;
                     $data[':lang'] = \LANG;
                     $data[':node'] = \NODE_ID;
-
-                    // Rol por defecto.
-                    /*
-                    if (!empty($this->id)) {
-                        static::query('REPLACE INTO user_role (user_id, role_id, node_id) VALUES (:user, :role, :node);', array(
-                            ':user' => $this->id,
-                            ':role' => 'user',
-                            ':node' => '*',
-                        ));
-                    }
-                     */
 
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;
@@ -804,21 +792,8 @@ namespace Goteo\Model {
                     WHERE user_id = :id
                     ", array(':id' => $user->id));
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $role) {
-                    if ($role->role_id == 'checker') {
-                        $user->checker = true;
-                    }
-                    if ($role->role_id == 'translator') {
-                        $user->translator = true;
-                    }
-                    if ($role->role_id == 'caller') {
-                        $user->caller = true;
-                    }
-                    if ($role->role_id == 'admin') {
-                        $user->admin = true;
-                    }
-                    if ($role->role_id == 'vip') {
-                        $user->vip = true;
-                    }
+                    $rolevar = $role->role_id;
+                    $user->$rolevar = true;
                 }
 
                 $user->namount = (int) $user->amount;
