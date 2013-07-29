@@ -171,6 +171,9 @@ namespace Goteo\Library {
                 if ($type != 'all') {
                     $sqlType = " AND feed.type = :type";
                     $values[':type'] = $type;
+                } else {
+                    // acciones del web service ultra secreto
+                    $sqlType = " AND feed.type != 'usws'";
                 }
                 
                 $sqlNode = '';
