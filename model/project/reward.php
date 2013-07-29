@@ -63,7 +63,8 @@ namespace Goteo\Model\Project {
                             reward.amount as amount,
                             reward.units as units,
                             reward.fulsocial as fulsocial,
-                            IFNULL(icon_lang.name, icon.name) as icon_name
+                            IFNULL(icon_lang.name, icon.name) as icon_name,
+                            url
                         FROM    reward
                         LEFT JOIN icon
                             ON icon.id = reward.icon
