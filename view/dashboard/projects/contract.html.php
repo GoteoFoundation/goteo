@@ -6,7 +6,31 @@ $project = $this['project'];
 $contract = $this['contract'];
 $status = $this['status']; // datos de estado de contrato
 
-
+// campos
+$fields = array(
+    
+    // persona
+    'name' => 'Nombre y apellidos (propios o representante)',
+    'nif' => 'NIF (propio o representante)',
+    'office' => 'Cargo en la asociaci&oacute;n o entidad mercantil<br /> (solo si representa a una asociaci&oacute;n o entidad mercantil)',
+    'address' => 'Domicilio (propio o representante)',
+    'location' => 'Municipio (propio o representante)',
+    'region' => 'Provincia (propio o representante)',
+    'country' => 'Pa&iacute;s (propio o representante)',
+    
+    // entidad
+    'entity_name' => 'Nombre o raz&oacute;n social (de la asociaci&oacute;n o entidad mercantil)',
+    'entity_cif' => 'CIF (de la asociaci&oacute;n o entidad mercantil)',
+    'entity_address' => 'Domicilio social (de la asociaci&oacute;n o entidad mercantil)',
+    'entity_location' => 'Municipio (de la asociaci&oacute;n o entidad mercantil)',
+    'entity_region' => 'Provincia (de la asociaci&oacute;n o entidad mercantil)',
+    'entity_country' => 'Pa&iacute;s (de la asociaci&oacute;n o entidad mercantil)',
+    
+    // registro
+    'reg_name' => 'Registro en el que se inscribi&oacute; la asociaci&oacute;n (si asociaci&oacute;n)<br /> / Nombre  del notario que  otorg&oacute; la escritura p&uacute;blica de la empresa (si entidad mercantil)',
+    'reg_number' => 'N&uacute;mero de Registro (si asociaci&oacute;n)<br /> / N&uacute;mero del protocolo del notario (si entidad mercantil)',
+    'reg_id' => 'Numero de inscripci&oacute;n en el Registro Mercantil (solo si entidad mercantil)'
+);
 
 /*
  * Segun el estado de proceso:
@@ -52,6 +76,18 @@ $status = $this['status']; // datos de estado de contrato
         <dd><?php echo $contract->$field; ?></dd>
     <?php endforeach; ?>
     </dl>
+    
+<form method="post" action="/dashboard/projects/contract/save" >
+    <input type="hidden" name="id" value="<?php echo $contract->id; ?>" />
+    <input type="hidden" name="project" value="<?php echo $project->id; ?>" />
+    
+    <p>
+        <label><input type="checkbox" id="close-data" name="close_owner" value="1" /> Dar por rellenados los datos</label>
+    </p>
+
+    <input type="submit" name="save" value="<?php echo Text::get('form-apply-button') ?>" />
+</form>
+    
     
 </div>
 

@@ -184,28 +184,6 @@ namespace Goteo\Controller {
 
         }
 
-        /* Solo desde admin, para inicializar el registro del contrato
-         * 
-         * Pone numero de contrato
-         * los datos del proyecto y del impulsor
-         * 
-         * 
-         * 
-         */
-        public function create () {
-
-            
-            
-            
-            $contract = new Model\Contract(
-                            array(
-                                'id'=>'a'
-                            )
-                        );
-            
-            throw new Redirection("/contract/edit/{$contract->id}");
-        }
-
         //-----------------------------------------------
         // Métodos privados para el tratamiento de datos
         // del save y remove de las tablas relacionadas se enmcarga el model/contract

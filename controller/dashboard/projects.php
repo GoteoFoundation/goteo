@@ -333,7 +333,7 @@ namespace Goteo\Controller\Dashboard {
             // si el impulsor da los datos por cerrados hacemos un feed para admin
             if (isset($_POST['close_owner']) && $_POST['close_owner'] == 'close') {
                 // marcar en el registro de gestión, "datos de contrato" cerrados
-                if ($contract->setStatus('owner', true)) {
+                if (Model\Contract::setStatus($project->id, array('owner'=>true))) {
                     Message::Info('Datos de contrato cerrados para revisión');
 
                     // Evento Feed
