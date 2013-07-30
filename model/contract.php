@@ -4,20 +4,17 @@ namespace Goteo\Model {
 
     class Contract extends \Goteo\Core\Model {
 
-        //@TODO: Hacer que el id del registrod e contrato sea el id del proyecto
-        
         public
-            $id,
             $project,
             $number, //numero de contrato
             $date, // día anterior a la publicación
             $fullnum, // numero+fecha de publicación
-            $type,
+            $type, //  0 = persona física; 1 = representante asociacion; 2 = apoderado entidad mercantil
                 
             // datos del representante
             $name,
             $nif,
-            $office,
+            $office, // Cargo en la asociación o empresa	
             $address,
             $location,
             $region,
@@ -31,29 +28,27 @@ namespace Goteo\Model {
             $entity_region,
             $entity_country,
             
-            // datos de cuentas
+            // datos de cuentas (se guardan en project_account para procesos y aquí para el pdf)
             $bank,
             $bank_owner,
             $paypal,
             $paypal_owner,
                 
             // datos de registro
-            $reg_name,
-            $reg_number,
-            $reg_id,
+            $reg_name,  // Registro de asociaciones o nombre del notario
+            $reg_number, // Número de registro o número de protocolo del notario
+            $reg_id, // Número en el registro mercantil
                 
             // proyecto
             $project_name,
             $project_url,
-            $project_owner,
-            $project_user,
-            $project_profile,
+            $project_owner, // Id del impulsor
+            $project_user, // Nombre del impulsor
+            $project_profile, // URL del perfil del impulsor
             $project_description,
             
-            // seguimiento
-            $status_owner,
-            $status_admin,
-            $status_pdf;
+            // seguimiento (es un objeto, cada atributo es un valor de seguimiento)
+            $status;
 
 
         /**
@@ -72,8 +67,6 @@ namespace Goteo\Model {
                         contract_status.admin as status_admin,
                         contract_status.pdf as status_pdf
                     FROM contract
-                    LEFT JOIN contract_status
-                        ON contract_status.contract = contract.id
                     WHERE contract.project = ?
                 ";
                 
@@ -83,6 +76,7 @@ namespace Goteo\Model {
                 if (!empty($contract)) {
                     
                     // ponemos tambien los datos de seguimiento de estado
+                    $contract->status = self::getStatus($id);
                     
                     return $contract;
                 } else {
@@ -94,26 +88,18 @@ namespace Goteo\Model {
                         $date = strtotime($projData->published);
                         $contract->date = date('dmY', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
                     }
-                    $contract->type = (int) $projData->contract_entity; // segun si el proyecto tiene marcado persona fisica/juridica
+                    $contract->type = 0; // inicialmente persona fisica
+                    
+                    // @TODO como ya no tendremos paso 2, estos datos se inicializan con los datos personales del impulsor
+                    $personalData = \Goteo\Model\User::getPersonal($projData->owner);
                     
                     // persona física o representante
-                    $contract->name = $projData->contract_name;
-                    $contract->nif = $projData->contract_nif;
-                    $contract->office = $projData->entity_office;
-                    $contract->address = $projData->address;
-                    $contract->location = $projData->location;
-                    $contract->region = $projData->zipcode;
-                    $contract->country = $projData->country;
-                    
-                    if ($contract->type > 0) {
-                        // persona juridica
-                        $contract->entity_name = $projData->entity_name;
-                        $contract->entity_cif = $projData->entity_cif;
-                        $contract->entity_address = $projData->secondary_address ? $projData->post_address : $projData->address;
-                        $contract->entity_location = $projData->secondary_address ? $projData->post_location : $projData->location;
-                        $contract->entity_region = $projData->secondary_address ? $projData->post_zipcode : $projData->zipcode;
-                        $contract->entity_country = $projData->secondary_address ? $projData->post_country : $projData->country;
-                    }
+                    $contract->name = $personalData->contract_name;
+                    $contract->nif = $personalData->contract_nif;
+                    $contract->address = $personalData->address;
+                    $contract->location = $personalData->location;
+                    $contract->region = '';
+                    $contract->country = $personalData->country;
                     
                     $contract->project_description = $projData->description;
                     $contract->project_name = $projData->name;
@@ -131,9 +117,7 @@ namespace Goteo\Model {
                     $contract->paypal_owner = $account->paypal_owner;
                     
                     // datos de seguimiento vacios
-                    $contract->status_owner = 0;
-                    $contract->status_admin = 0;
-                    $contract->status_pdf = null;
+                    $contract->status = new \stdClass();
                     
                     return $contract;
                 }
@@ -229,19 +213,15 @@ namespace Goteo\Model {
                 SELECT
                     project.id as id,
                     contract.number as number,
-                    project.name as project,
-                    contract_status.owner as status_owner,
-                    contract_status.admin as status_admin,
-                    contract_status.pdf as status_pdf
+                    project.name as project
                 FROM contract
                 INNER JOIN project
                     ON project.id = contract.project
-                LEFT JOIN contract_status
-                    ON contract_status.contract = contract.id
                 ORDER BY project.name ASC
                 ");
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $item->status = self::getStatus($item->id);
                 $list[$item->id] = $item;
             }
 
@@ -274,36 +254,69 @@ namespace Goteo\Model {
         }
         
         
-        
         /* Otros métodos para seguimiento de estado de contrato */
-        public function setStatus($status, $value) {
-            
-            $sql = "REPLACE INTO contract_status 
-                SET contract = :contract,
-                owner = :owner,
-                admin = :admin,
-                pdf = :pdf
-            ";
-            $values = array(
-                ':contract' => $this->id,
-                ':owner' => (int) $this->status_owner,
-                ':admin' => (int) $this->status_admin,
-                ':pdf' => (string) $this->status_pdf,
-            );
-            
-            $values[':'.$status] = $value;
-            
-            if (!self::query($sql, $values)) {
-                die ($sql . '<pre>' . print_r($values, 1) . '</pre>');
-                return false;
-            } else {
-                return true;
-            }
-            
+        
+        /*
+         * Obtener estado de contrato
+         */
+	 	public static function getStatus ($id) {
+
+            $query = static::query("
+                SELECT *
+                FROM contract_status 
+                WHERE contract_status.contract = ?
+                ", array($id));
+
+            $status = $query->fetchObject();
+
+            return $status;
         }
         
+        /**
+         * Metodo para aplicar cambios al estado del contrato
+         * @param varchar(50) $id del proyecto
+         * @param array $statuses array asociativo: campo => valor a modificar
+         * @return bool si se ejecuta la sentencia o no
+         */
+        public static function setStatus($id, $statuses) {
+            
+            $fields = array();
+            $values = array();
+
+            // verificamos registro
+            $query = static::query("SELECT contract FROM contract_status WHERE contract_status.contract = ?", array($id));
+
+            $regExist = $query->fetchColumn();
+            if (empty($regExist)) {
+                $sql = "REPLACE INTO";
+                $statuses['contract'] = $id;
+                $sqlend = '';
+            } else {
+                $sql = "UPDATE";
+                $sqlend = " WHERE contract = :id";
+                $values[':id'] = $id;
+            }
+            
+            foreach ($statuses as $key => $value) {
+                $fields[] = "{$key} = :{$key}";
+                $values[":{$key}"] = $value;
+            }
+            
+            $sql .= " contract_status SET ";
+            $sql .= implode(', ', $fields);
+            $sql .= $sqlend;
+
+            return (static::query($sql, $values)) ? true : false;
+        }
         
 
+        /* Otros métodos para control desde admin  (además de cambios de estado)
+         * 
+         * - set number
+         * - refresh date
+         * 
+         */
+        
 	}
     
 }

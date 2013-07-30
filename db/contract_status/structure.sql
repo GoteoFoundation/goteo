@@ -5,3 +5,6 @@ CREATE TABLE `contract_status` (
 `pdf` varchar(255) DEFAULT NULL,
 PRIMARY KEY ( `contract` )
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Seguimiento de estado de contrato';
+
+-- el id de contrato es el id de proyecto
+ALTER TABLE `contract_status` CHANGE `contract` `contract` VARCHAR( 50 ) NOT NULL COMMENT 'Id del proyecto';
