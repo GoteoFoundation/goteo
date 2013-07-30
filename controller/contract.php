@@ -101,8 +101,8 @@ namespace Goteo\Controller {
                 throw new Redirection('/contract/'.$id);
             }
 
-            // todos los pasos, entrando en userProfile por defecto
-            $step = 'accounts';
+            // todos los pasos, entrando en datos del promotor por defecto
+            $step = 'promoter';
 
             $steps = array(
                 'promoter' => array(
@@ -117,7 +117,7 @@ namespace Goteo\Controller {
                     'class' => 'off-off off',
                     'num' => '2'
                 ),
-                'additionals' => array(
+                'additional' => array(
                     'name' => 'Detalles',
                     'title' => 'Detalles',
                     'class' => 'off-last off',

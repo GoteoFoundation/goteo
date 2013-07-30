@@ -13,7 +13,7 @@ use Goteo\Library\Text;
 
         <?php foreach ($this['steps'] as $step => $stepData) : ?>
             <span class="step <?php echo $stepData['class']; ?><?php if ($this['step'] === $step) echo ' active'; else echo ' activable'; ?>">
-                <button type="submit" name="view-step-<?php echo $step ?>" value="<?php echo $stepData['name']; ?>"><?php echo $stepData['name']; ?>
+                <button type="submit" name="view-step-<?php echo $step ?>" value="<?php echo $step; ?>"><?php echo $stepData['name']; ?>
                 <strong class="number"><?php echo $stepData['num']; ?></strong></button>                            
             </span>
         <?php endforeach; ?>

@@ -7,7 +7,7 @@ $bodyClass = 'project-edit';
 
 $contract = $this['contract'];
 
-$steps  = new View('view/contract/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $this['contract']->errors));
+$steps  = new View('view/contract/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $contract->errors));
 
 Goteo\Library\Message::Info(Text::get('form-ajax-info'));
 
@@ -25,7 +25,7 @@ include 'view/prologue.html.php';
 
     <div id="main" class="<?php echo htmlspecialchars($this['step']) ?>">
 
-        <form method="post" action="<?php echo "/contract/edit/" . $this['contract']->id ?>" class="project" enctype="multipart/form-data" >
+        <form method="post" action="<?php echo "/contract/edit/" . $contract->project ?>" class="project" enctype="multipart/form-data" >
 
             <input type="hidden" name="view-step-<?php echo $this['step'] ?>" value="please" />
 

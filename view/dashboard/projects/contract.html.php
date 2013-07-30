@@ -6,6 +6,8 @@ $project = $this['project'];
 $contract = $this['contract'];
 $status = $this['status']; // datos de estado de contrato
 
+if ($project->status < 3) return '';
+
 // campos
 $fields = array(
     
@@ -52,80 +54,61 @@ $fields = array(
     <h2 class="title"><?php echo Text::get('contract-data_title') ?></h2>
     Aquí funcionalidades y mensajes para el proceso de contrato, informe y pago.
     <?php echo \trace($contract->status); ?>
-</div>
-
+    
 <?php if (!$contract->status->owner) : ?>
-<div class="widget projects">
-    <h2 class="title">Formulario de Contrato</h2>
-    
-    <p>- Datos personales del promotor del proyecto<br />
+    <p>En el Formulario de contrato puedes modificar:<br />
+        - Datos personales del promotor del proyecto<br />
         - Cuentas bancarias del impulsor<br />
-        - Otros datos legales.
-    </p>
-    
-    <p>
+        - Otros datos legales.<br /><br />
+        
         <a href="/contract/edit/<?php echo $project->id ?>" target="_blank" class="button">Editar</a>
     </p>
 
     <hr />
     
     <form method="post" action="/dashboard/projects/contract" >
-        <input type="submit" name="close_owner" value="Doy por rellenados los datos, no necesito editarlos mas" />
-    
-    <hr />
-    
+        <input type="submit" name="close_owner" value="Doy por rellenados los datos, no necesito editarlos mas" class="weak" />
+    <br />
         <input type="submit" name="account_update" value="Informar al admin de que he modificado las cuentas bancarias" />
     </form>
     
-</div>
-<?php endif; ?>
-
-<?php if (!$contract->status->owner) : ?>
-<div class="widget projects">
-    <h2 class="title">Datos de Contrato</h2>
+<?php else: ?>
+    <p>
+        La edición de datos está cerrada, a continuación un listado de los datos introducidos.<br />
+        Si hay alguna incorrecci&oacute;n ponte en contacto con nosotros enviando un email a <a href="mailto:info@goteo.org">info@goteo.org</a>
+    </p>
     
-    <p>La edición de datos está cerrada, a continuación un listado de los datos introducidos.</p>
-    <p>Si hay alguna incorrecci&oacute;n ponte en contacto con nosotros enviando un email a <a href="mailto:info@goteo.org">info@goteo.org</a></p>
     <dl>
     <?php foreach ($fields as $field => $label) : if(empty($contract->$field)) continue; ?>
         <dt><?php echo $label ?></dt>
         <dd><?php echo $contract->$field; ?></dd>
     <?php endforeach; ?>
     </dl>
-    
+<?php endif; ?>
     
 </div>
-<?php endif; ?>
 
-<?php if ($contract->status->owner && !$contract->status->admin) : ?>
+
+<?php if ($contract->status->owner) : ?>
 <div class="widget projects">
-    <h2 class="title">Texto del Contrato</h2>
-    
-    <p>Puedes consultar el contenido provisional del contrato, aun esta en revision.
-        
-        <a htref="/contract/<?php echo $project->id ?>" target="_blank" class="button">Consultar</a>
-    </p>
-    
-</div>
-<?php endif; ?>
-
+    <h2 class="title">Pdf contrato</h2>
 <?php if ($contract->status->admin) : ?>
-<div class="widget projects">
-    <h2 class="title">Contrato</h2>
-    
-    <p>Ya puedes descargar el pdf del contrato. Fírmalo y nos o envias a ....
-        
+    <p>Puedes consultar el contenido provisional del contrato, aun esta en revision.<br />
+        <a href="/contract/<?php echo $project->id ?>" target="_blank" class="button">Consultar</a>
+    </p>
+<?php else : ?>
+    <p>Ya puedes descargar el pdf del contrato. Fírmalo y nos o envias a ....<br />
         <a htref="/contract/<?php echo $project->id ?>" target="_blank" class="button">Descargar</a>
     </p>
-    
+<?php endif; ?>
 </div>
 <?php endif; ?>
 
-<?php if ($contract->status->report) : ?>
+<?php /* if ($contract->status->report) : ?>
 <div class="widget projects">
     <h2 class="title">Informe financiero</h2>
     
     <p>Este es el informe final de financiación en goteo</p>
     <?php echo new View('view/project/report.html.php', array('project'=>$project, 'Data'=>$this['Data'])); ?>
 </div>
-<?php endif; ?>
+<?php endif; */ ?>

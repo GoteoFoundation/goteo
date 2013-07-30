@@ -8,6 +8,82 @@ $contract = $this['contract'];
 $errors = $contract->errors[$this['step']] ?: array();
 $okeys  = $contract->okeys[$this['step']] ?: array();
 
+
+// captions segun tipo (tambien campos segun tipo
+switch ($contract->type) {
+    case 0:
+        // propio nombre y derecho
+        $reg_name = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        $reg_number = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        $reg_id = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        break;
+    
+    case 1:
+        // representatne de asociación
+        $reg_name = array(
+                    'type'      => 'textbox',
+                    'title'     => 'Registro en el que se inscribió la asociación',
+                    'required'  => true,
+                    'value'     => $contract->reg_name,
+                    'errors'    => !empty($errors['reg_name']) ? array($errors['reg_name']) : array(),
+                    'ok'        => !empty($okeys['reg_name']) ? array($okeys['reg_name']) : array()
+                );
+
+        $reg_number = array(
+                    'type'      => 'textbox',
+                    'title'     => 'Número de Registro',
+                    'required'  => true,
+                    'value'     => $contract->reg_number,
+                    'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
+                    'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
+                );
+
+        $reg_id = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        break;
+    
+    case 2:
+        // apoderado de entidad mercantil
+        $reg_name = array(
+                    'type'      => 'textbox',
+                    'title'     => 'Nombre del notario que otorgó la escritura pública de la empresa',
+                    'required'  => true,
+                    'value'     => $contract->reg_name,
+                    'errors'    => !empty($errors['reg_name']) ? array($errors['reg_name']) : array(),
+                    'ok'        => !empty($okeys['reg_name']) ? array($okeys['reg_name']) : array()
+                );
+
+        $reg_number = array(
+                    'type'      => 'textbox',
+                    'title'     => 'Número del protocolo del notario',
+                    'required'  => true,
+                    'value'     => $contract->reg_number,
+                    'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
+                    'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
+                );
+
+        $reg_id = array(
+                    'type'      => 'textbox',
+                    'title'     => 'Numero de inscripción en el Registro Mercantil',
+                    'required'  => true,
+                    'value'     => $contract->reg_id,
+                    'errors'    => !empty($errors['reg_id']) ? array($errors['reg_id']) : array(),
+                    'ok'        => !empty($okeys['reg_id']) ? array($okeys['reg_id']) : array()
+                );
+        break;
+}
+
 $superform = array(
     'level'         => $this['level'],
     'action'        => '',
@@ -21,25 +97,22 @@ $superform = array(
             'value' => 'additional'
         ),
         
-        'name' => array(
-            'type'      => 'textbox',
-            'title'     => Text::get('overview-field-name'),
+        'birthdate'  => array(
+            'type'      => 'datebox',
             'required'  => true,
-            'hint'      => Text::get('tooltip-contract-name'),
-            'value'     => $contract->name,
-            'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
-            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
+            'size'      => 8,
+            'title'     => Text::get('personal-field-contract_birthdate'),
+            'hint'      => Text::get('tooltip-project-contract_birthdate'),
+            'errors'    => !empty($errors['birthdate']) ? array($errors['birthdate']) : array(),
+            'ok'        => !empty($okeys['birthdate']) ? array($okeys['birthdate']) : array(),
+            'value'     => $contract->birthdate
         ),
+                
+        'reg_name' => $reg_name,
         
-        'description' => array(            
-            'type'      => 'textarea',
-            'title'     => Text::get('overview-field-description'),
-            'required'  => true,
-            'hint'      => Text::get('tooltip-contract-description'),
-            'value'     => $contract->description,            
-            'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
-            'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array()
-        ),
+        'reg_number' => $reg_number,
+        
+        'reg_id' => $reg_id,
         
         
         'footer' => array(
