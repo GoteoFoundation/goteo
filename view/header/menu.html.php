@@ -60,6 +60,9 @@ $nodes = Nodesys::activeNodes();
                         <?php if (ACL::check('/admin')) : ?>
                         <li><a href="/admin"><span><?php echo Text::get('regular-admin_board'); ?></span></a></li>
                         <?php endif; ?>
+                        <?php if (ACL::check('/manage')) : ?>
+                        <li><a href="/manage"><span><?php echo Text::get('regular-manage_board'); ?></span></a></li>
+                        <?php endif; ?>
                         <li class="logout"><a href="/user/logout"><span><?php echo Text::get('regular-logout'); ?></span></a></li>
                     </ul>
                 </div>

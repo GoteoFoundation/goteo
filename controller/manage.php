@@ -143,9 +143,9 @@ namespace Goteo\Controller {
                 }
 
                 if (empty($BC['option'])) {
-                    $path = '<strong>Panel Gestor</strong>';
+                    $path = '<strong>'.Text::get('regular-manage_board').'</strong>';
                 } else {
-                    $path = '<a href="/manage">Panel Gestor</a>' . $path;
+                    $path = '<a href="/manage">'.Text::get('regular-manage_board').'</a>' . $path;
                 }
                 
                 return $path;
