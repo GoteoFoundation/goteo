@@ -31,3 +31,6 @@ ALTER TABLE `reward` ADD `other` TINYTEXT CHARACTER SET utf8 COLLATE utf8_genera
 -- tamaño de los campos
 ALTER TABLE `reward` CHANGE `reward` `reward` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 ALTER TABLE `reward` CHANGE `description` `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+-- url localización del retorno
+ALTER TABLE `reward` ADD `url` TINYTEXT NULL DEFAULT '' COMMENT 'Localización del Retorno cumplido';
