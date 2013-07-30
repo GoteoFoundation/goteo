@@ -1,8 +1,7 @@
 <?php
 
 use Goteo\Core\View,
-    Goteo\Library\Text,
-    Goteo\Library\SuperForm;
+    Goteo\Library\Text;
 
 $bodyClass = 'project-edit';
 

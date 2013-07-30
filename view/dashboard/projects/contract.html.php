@@ -51,20 +51,36 @@ $fields = array(
 <div class="widget projects">
     <h2 class="title"><?php echo Text::get('contract-data_title') ?></h2>
     Aquí funcionalidades y mensajes para el proceso de contrato, informe y pago.
+    <?php echo \trace($contract->status); ?>
 </div>
 
+<?php if (!$contract->status->owner) : ?>
 <div class="widget projects">
     <h2 class="title">Formulario de Contrato</h2>
     
     <p>- Datos personales del promotor del proyecto<br />
         - Cuentas bancarias del impulsor<br />
         - Otros datos legales.
-        
-        <a htref="/contract/edit/<?php echo $project->id ?>">Editar</a>
     </p>
     
-</div>
+    <p>
+        <a href="/contract/edit/<?php echo $project->id ?>" target="_blank" class="button">Editar</a>
+    </p>
 
+    <hr />
+    
+    <form method="post" action="/dashboard/projects/contract" >
+        <input type="submit" name="close_owner" value="Doy por rellenados los datos, no necesito editarlos mas" />
+    
+    <hr />
+    
+        <input type="submit" name="account_update" value="Informar al admin de que he modificado las cuentas bancarias" />
+    </form>
+    
+</div>
+<?php endif; ?>
+
+<?php if (!$contract->status->owner) : ?>
 <div class="widget projects">
     <h2 class="title">Datos de Contrato</h2>
     
@@ -77,33 +93,39 @@ $fields = array(
     <?php endforeach; ?>
     </dl>
     
-<form method="post" action="/dashboard/projects/contract/save" >
-    <input type="hidden" name="id" value="<?php echo $contract->id; ?>" />
-    <input type="hidden" name="project" value="<?php echo $project->id; ?>" />
-    
-    <p>
-        <label><input type="checkbox" id="close-data" name="close_owner" value="1" /> Dar por rellenados los datos</label>
-    </p>
-
-    <input type="submit" name="save" value="<?php echo Text::get('form-apply-button') ?>" />
-</form>
-    
     
 </div>
+<?php endif; ?>
 
+<?php if ($contract->status->owner && !$contract->status->admin) : ?>
 <div class="widget projects">
-    <h2 class="title">Formulario de Contrato</h2>
+    <h2 class="title">Texto del Contrato</h2>
     
-    <p>Pdf del texto íntegro del contrato
+    <p>Puedes consultar el contenido provisional del contrato, aun esta en revision.
         
-        <a htref="/contract/<?php echo $project->id ?>">Descargar</a>
+        <a htref="/contract/<?php echo $project->id ?>" target="_blank" class="button">Consultar</a>
     </p>
     
 </div>
+<?php endif; ?>
 
+<?php if ($contract->status->admin) : ?>
+<div class="widget projects">
+    <h2 class="title">Contrato</h2>
+    
+    <p>Ya puedes descargar el pdf del contrato. Fírmalo y nos o envias a ....
+        
+        <a htref="/contract/<?php echo $project->id ?>" target="_blank" class="button">Descargar</a>
+    </p>
+    
+</div>
+<?php endif; ?>
+
+<?php if ($contract->status->report) : ?>
 <div class="widget projects">
     <h2 class="title">Informe financiero</h2>
     
     <p>Este es el informe final de financiación en goteo</p>
-    
+    <?php echo new View('view/project/report.html.php', array('project'=>$project, 'Data'=>$this['Data'])); ?>
 </div>
+<?php endif; ?>

@@ -51,8 +51,13 @@ namespace Goteo\Controller {
 
                 // si existe el archivo físico lo mostramos
                 // si no existe, lo generamos con los datos actuales
-                return new View('view/contract/view.html.php', $viewData);
+                if (!empty($contract->status->pdf)) {
+                    $viewData['pdf'] = ''; // coger el get contents del archivo y sacarlo talcual
+                } else {
+                    // montar el contenido del pdf con los datops del contrato
+                }
 
+                return new View('view/contract/view.html.php', $viewData);
             } else {
                 // no lo puede ver y punto
                 throw new Redirection("/");
@@ -88,7 +93,7 @@ namespace Goteo\Controller {
 
             // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados
             if ($contract->owner != $_SESSION['user']->id // no es su proyecto
-                && $contract->status->editable
+                && $contract->status->owner
                 && !isset($_SESSION['user']->roles['gestor']) // no es un gestor
                 && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
                 ) {
@@ -102,19 +107,21 @@ namespace Goteo\Controller {
             $steps = array(
                 'promoter' => array(
                     'name' => 'Promotor',
-                    'title' => 'Promotor'
+                    'title' => 'Promotor',
+                    'class' => 'first-off off',
+                    'num' => '1'
                 ),
                 'accounts' => array(
                     'name' => 'Cuentas',
-                    'title' => 'Cuentas'
+                    'title' => 'Cuentas',
+                    'class' => 'off-off off',
+                    'num' => '2'
                 ),
                 'additionals' => array(
                     'name' => 'Detalles',
-                    'title' => 'Detalles'
-                ),
-                'legal'=> array(
-                    'name' => 'Legales',
-                    'title' => 'Legales'
+                    'title' => 'Detalles',
+                    'class' => 'off-last off',
+                    'num' => '3'
                 )
             );
             
@@ -140,9 +147,6 @@ namespace Goteo\Controller {
                 $contract->save($errors);
             }
 
-            //checkeo de campos oblogatorios
-            $contract->check();
-
             // variables para la vista
             $viewData = array(
                 'contract' => $contract,
@@ -159,18 +163,14 @@ namespace Goteo\Controller {
                     // si tiene registro de contrato, cargamos de ahí
                     break;
                 
-                // cuentas
+                // cuentas bancarias
                 case 'accounts':
                     // cargamos los datos de las cuentas del proyecto (ver dashboard)
 //                    $viewData['accounts'] = Model\Contract::currentStatus();
                     break;
 
-                // adicionales
+                // datos adicionales
                 case 'additionals':
-                    break;
-
-                // otros datos legales
-                case 'legals':
                     break;
 
             }

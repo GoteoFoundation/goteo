@@ -46,12 +46,12 @@ namespace Goteo\Controller\Dashboard {
 
                 // comprueba que puede editar sus proyectos
                 if (!ACL::check('/project/edit/' . $proj->id)) {
-                    ACL::allow('/project/edit/' . $proj->id, '*', 'user', $user);
+                    ACL::allow('/project/edit/' . $proj->id . '/', '*', 'user', $user);
                 }
 
                 // y borrarlos
                 if (!ACL::check('/project/delete/' . $proj->id)) {
-                    ACL::allow('/project/delete/' . $proj->id, '*', 'user', $user);
+                    ACL::allow('/project/delete/' . $proj->id . '/', '*', 'user', $user);
                 }
             }
 
@@ -328,10 +328,8 @@ namespace Goteo\Controller\Dashboard {
          */
         public static function process_contract ($project, &$errors = array()) {
 
-            $contract = Model\Contract::get($project->id);
-
             // si el impulsor da los datos por cerrados hacemos un feed para admin
-            if (isset($_POST['close_owner']) && $_POST['close_owner'] == 'close') {
+            if (isset($_POST['close_owner'])) {
                 // marcar en el registro de gestión, "datos de contrato" cerrados
                 if (Model\Contract::setStatus($project->id, array('owner'=>true))) {
                     Message::Info('Datos de contrato cerrados para revisión');
@@ -352,11 +350,13 @@ namespace Goteo\Controller\Dashboard {
                     Message::Error('Ha habido algún error al cerrar los datos de contrato');
                     return false;
                 }
-
             }
 
             // si el impulsor notifica que ha actualizado las cuentas
-            if (isset($_POST['account_update']) && $_POST['account_update'] == 'updated') {
+            if (isset($_POST['account_update'])) {
+                
+                // enviar mail a Mercè que el usuario ha modificado las cuentas bancarias de su proyecto
+                // mensaje que le diga al usuario si el mail se ha enviado correctamente
                 
                 // Evento Feed
                 $log = new Feed();

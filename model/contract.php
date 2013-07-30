@@ -62,10 +62,7 @@ namespace Goteo\Model {
 
             try {
                 $sql = "
-                    SELECT *,
-                        contract_status.owner as status_owner,
-                        contract_status.admin as status_admin,
-                        contract_status.pdf as status_pdf
+                    SELECT *
                     FROM contract
                     WHERE contract.project = ?
                 ";
@@ -316,6 +313,7 @@ namespace Goteo\Model {
          * - refresh date
          * 
          */
+ 
         
 	}
     

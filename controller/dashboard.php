@@ -245,7 +245,7 @@ namespace Goteo\Controller {
 
                     // contrato
                     case 'contract':
-                        if ($action == 'save') Dashboard\Projects::process_contract($project, $errors);
+                        Dashboard\Projects::process_contract($project, $errors);
                         break;
 
                     // colaboraciones
@@ -870,7 +870,6 @@ namespace Goteo\Controller {
                         'summary' => Text::get('dashboard-menu-projects-summary'),
                         'updates' => Text::get('dashboard-menu-projects-updates'),
                         'widgets' => Text::get('dashboard-menu-projects-widgets'),
-                        'account' => Text::get('dashboard-menu-projects-account'),
                         'contract' => Text::get('dashboard-menu-projects-contract'),
                         'supports' => Text::get('dashboard-menu-projects-supports'),
                         'rewards' => Text::get('dashboard-menu-projects-rewards'),
