@@ -107,14 +107,6 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('project' => '', 'status' => '', 'icon' => '', 'projStatus'=>'')
             ),
-            'contracts' => array(
-                'label' => 'Contratos',
-                'actions' => array(
-                    'list' => array('label' => 'Listando', 'item' => false),
-                    'edit' => array('label' => 'Gestionando contrato del proyecto', 'item' => false)
-                ),
-                'filters' => array('project' => '')
-            ),
             'criteria' => array(
                 'label' => 'Criterios de revisión',
                 'actions' => array(

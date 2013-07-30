@@ -14,15 +14,15 @@ namespace Goteo\Controller\Admin {
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
             // edición
-            if ($action == 'edit') {
+            if ($action == 'manage') {
 
                 $contract = Model\Contract::get($id);
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'view/manage/index.html.php',
                     array(
                         'folder' => 'contracts',
-                        'file' => 'edit',
+                        'file' => 'manage',
                         'contract' => $contract
                     )
                 );
@@ -34,7 +34,7 @@ namespace Goteo\Controller\Admin {
                 $contract = Model\Contract::get($id);
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'view/manage/index.html.php',
                     array(
                         'folder'   => 'contracts',
                         'file'     => 'preview',
@@ -63,7 +63,7 @@ namespace Goteo\Controller\Admin {
                 );
 
             return new View(
-                'view/admin/index.html.php',
+                'view/manage/index.html.php',
                 $viewData
             );
 

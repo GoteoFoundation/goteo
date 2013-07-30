@@ -6,7 +6,7 @@ $filters = $this['filters'];
 ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
-    <form id="filter-form" action="/admin/contracts" method="get">
+    <form id="filter-form" action="/manage/contracts" method="get">
         <input type="hidden" name="filtered" value="yes" />
         <div style="float:left;margin:5px;">
             <label for="projects-filter">Segun estado del proyecto</label><br />
@@ -35,7 +35,7 @@ $filters = $this['filters'];
         </div>
     </form>
     <br clear="both" />
-    <a href="/admin/contracts/?reset=filters">Quitar filtros</a>
+    <a href="/manage/contracts/?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">
@@ -74,9 +74,9 @@ $filters = $this['filters'];
                 if ($filters['contract'] != 'all') {
                     if ( ($filters['contract'] == 'none' && empty($contract) )
                         || ($filters['contract'] == 'filled' && !empty($contract) ) 
-                        || ($filters['contract'] == 'sended' && (empty($contract) || !$contract->status_owner )) 
-                        || ($filters['contract'] == 'checked' && (empty($contract) || !$contract->status_admin )) 
-                        || ($filters['contract'] == 'ready' && (empty($contract) || empty($contract->status_pdf) )) 
+                        || ($filters['contract'] == 'sended' && (empty($contract) || !$contract->status->owner )) 
+                        || ($filters['contract'] == 'checked' && (empty($contract) || !$contract->status->admin )) 
+                        || ($filters['contract'] == 'ready' && (empty($contract) || empty($contract->status->pdf) )) 
                             ) {
                         continue;
                     }
@@ -84,26 +84,26 @@ $filters = $this['filters'];
             
                 ?>
             <tr>
-                <td><?php if (!empty($contract)) : ?><a href="/admin/contracts/edit/<?php echo $item->id ?>">[Revisar]<?php endif; ?></a></td>
+                <td><?php if (!empty($contract)) : ?><a href="/manage/contracts/manage/<?php echo $item->id ?>">[Revisar]<?php endif; ?></a></td>
                 <td><?php echo Text::recorta($item->name, 20) ?></td>
                 <td><?php if ($item->status == 3 && !empty($item->passed)) 
                     echo 'Pasado la primera ronda';
                 else
                     echo $this['status'][$item->status] ?></td>
                 <td><a href="/admin/users/manage/<?php echo $item->owner ?>"><?php echo Text::recorta($item->user->name, 20) ?></a></td>
-                <td><a href="/admin/contracts/preview/<?php echo $item->id ?>"><?php 
+                <td><a href="/manage/contracts/preview/<?php echo $item->id ?>"><?php 
                     if (empty($contract)) {
                         echo 'Pendiente';
-                    } elseif (!$contract->status_owner) {
+                    } elseif (!$contract->status->owner) {
                         echo  'No enviado';
-                    } elseif (!$contract->status_admin) {
+                    } elseif (!$contract->status->admin) {
                         echo  'No revisado';
-                    } elseif (!$contract->status_pdf) {
+                    } elseif (!$contract->status->pdf) {
                         echo  'Sin documento';
                     }
                 ?></a></td>
                 <td><?php echo $contract->number ?></td>
-                <td><?php if (!empty($contract->status_pdf)) echo $contract->status_pdf ?></td>
+                <td><?php if (!empty($contract->status->pdf)) echo $contract->status->pdf ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
