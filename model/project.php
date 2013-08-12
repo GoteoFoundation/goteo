@@ -1889,7 +1889,7 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos publicados
          */
-        public static function published($type = 'all', $limit = null)
+        public static function published($type = 'all', $limit = null, $mini = false)
         {
             $values = array();
             // si es un nodo, filtrado
@@ -1906,6 +1906,7 @@ namespace Goteo\Model {
                     // de los que estan en campaña,
                     // los que tienen más usuarios entre cofinanciadores y mensajeros
                     $sql = "SELECT project.id as id,
+                                   project.name as name,
                                     (SELECT COUNT(DISTINCT(invest.user))
                                         FROM    invest
                                         WHERE   invest.project = project.id
@@ -1924,7 +1925,8 @@ namespace Goteo\Model {
                     break;
                 case 'outdate':
                     // los que les quedan 15 dias o menos
-                    $sql = "SELECT  id
+                    $sql = "SELECT  id,
+                                   name
                             FROM    project
                             WHERE   days <= 15
                             AND     days > 0
@@ -1957,7 +1959,8 @@ namespace Goteo\Model {
                     //        HAVING day <= 15 AND day IS NOT NULL
                     $limit = 9;
                     $sql = "SELECT 
-                                project.id as id
+                                project.id as id,
+                                project.name as name
                             FROM project
                             WHERE project.status = 3
                             AND project.passed IS NULL
@@ -1968,6 +1971,7 @@ namespace Goteo\Model {
                     // los que han conseguido el mínimo
                     $sql = "SELECT
                                 id,
+                                name,
                                 (SELECT  SUM(amount)
                                 FROM    cost
                                 WHERE   project = project.id
@@ -1984,17 +1988,21 @@ namespace Goteo\Model {
                         HAVING getamount >= mincost
                         ORDER BY published DESC";
                     break;
+                case 'almost-fulfilled':
+                    // para gestión de retornos
+                    $sql = "SELECT id, name FROM project WHERE status IN ('4','5') $sqlFilter ORDER BY name ASC";
+                    break;
                 case 'fulfilled':
-                    // los que han conseguido el mínimo
-                    $sql = "SELECT id FROM project WHERE status IN ('4', '5') $sqlFilter ORDER BY name ASC";
+                    // retorno cumplido
+                    $sql = "SELECT id, name FROM project WHERE status IN ('5') $sqlFilter ORDER BY name ASC";
                     break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
-                    $sql = "SELECT id FROM project WHERE status > 2 AND status < 6 $sqlFilter ORDER BY name ASC";
+                    $sql = "SELECT id, name FROM project WHERE status > 2 AND status < 6 $sqlFilter ORDER BY name ASC";
                     break;
                 case 'archive':
                     // caducados, financiados o casos de exito
-                    $sql = "SELECT id FROM project WHERE status = 6 $sqlFilter ORDER BY closed DESC";
+                    $sql = "SELECT id, name FROM project WHERE status = 6 $sqlFilter ORDER BY closed DESC";
                     break;
                 case 'others':
                     // todos los que estan 'en campaña', en otro nodo
@@ -2022,7 +2030,8 @@ namespace Goteo\Model {
                     */
                     $limit = 40;
                     $sql = "SELECT
-                                project.id as id
+                                project.id as id,
+                                project.name as name
                             FROM project
                             WHERE project.status = 3
                             $sqlFilter
@@ -2030,7 +2039,7 @@ namespace Goteo\Model {
                     break;
                 default: 
                     // todos los que estan 'en campaña', en cualquier nodo
-                    $sql = "SELECT id FROM project WHERE status = 3 ORDER BY name ASC";
+                    $sql = "SELECT id, name FROM project WHERE status = 3 ORDER BY name ASC";
             }
 
             // Limite
@@ -2041,7 +2050,11 @@ namespace Goteo\Model {
             $projects = array();
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $projects[] = self::getMedium($proj['id']);
+                if ($mini) {
+                    $projects[$proj['id']] = $proj['name'];
+                } else {
+                    $projects[] = self::getMedium($proj['id']);
+                }
             }
             return $projects;
         }
