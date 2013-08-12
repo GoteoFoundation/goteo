@@ -16,7 +16,8 @@ namespace Goteo\Controller {
                 'recent',
                 'success',
                 'outdate',
-                'archive'
+                'archive',
+                'fulfilled'
             );
 
         /*
@@ -136,14 +137,23 @@ namespace Goteo\Controller {
             $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
             // segun el tipo cargamos la lista
-            $viewData['list']  = Model\Project::published($type);
+            if (isset($_GET['list'])) {
+                $viewData['list']  = Model\Project::published($type, null, true);
 
+                return new View(
+                    'view/discover/list.html.php',
+                    $viewData
+                 );
+            } else {
 
-            return new View(
-                'view/discover/view.html.php',
-                $viewData
-             );
+                $viewData['list']  = Model\Project::published($type);
 
+                return new View(
+                    'view/discover/view.html.php',
+                    $viewData
+                 );
+
+            }
         }
 
         /*

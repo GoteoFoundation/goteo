@@ -21,7 +21,7 @@ namespace Goteo\Controller\Admin {
             if (!empty($filters['projStatus'])) {
                 $projects = Model\Project::getList(array('status'=>$filters['projStatus']));
             } else {
-                $projects = Model\Project::published('fulfilled');
+                $projects = Model\Project::published('almost-fulfilled');
             }
 
             foreach ($projects as $kay=>&$project) {
