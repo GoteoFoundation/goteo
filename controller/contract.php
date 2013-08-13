@@ -109,19 +109,25 @@ namespace Goteo\Controller {
                     'name' => 'Promotor',
                     'title' => 'Promotor',
                     'class' => 'first-off off',
-                    'num' => '1'
+                    'num' => ''
                 ),
                 'accounts' => array(
                     'name' => 'Cuentas',
                     'title' => 'Cuentas',
                     'class' => 'off-off off',
-                    'num' => '2'
+                    'num' => ''
                 ),
                 'additional' => array(
                     'name' => 'Detalles',
                     'title' => 'Detalles',
+                    'class' => 'off-off off',
+                    'num' => ''
+                ),
+                'final' => array(
+                    'name' => 'Revisión',
+                    'title' => 'Revisión',
                     'class' => 'off-last off',
-                    'num' => '3'
+                    'num' => ''
                 )
             );
             
@@ -171,6 +177,10 @@ namespace Goteo\Controller {
 
                 // datos adicionales
                 case 'additionals':
+                    break;
+
+                // revisión final
+                case 'final':
                     break;
 
             }
@@ -321,21 +331,14 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Legales
+         * Paso final, revisión y cierre
          */
-        private function process_legals(&$contract, &$errors) {
-            if (!isset($_POST['process_legals'])) {
+        private function process_final(&$contract, &$errors) {
+            if (!isset($_POST['process_final'])) {
                 return false;
             }
 
-            // campos que guarda este paso
-            // image, media y category  van aparte
-            $fields = array(
-            );
-
-            foreach ($fields as $field) {
-                $contract->$field = $_POST[$field];
-            }
+            // este paso solo cambia el campo de cerrado (y flag de cerrado por impulsor)
             
             return true;
         }

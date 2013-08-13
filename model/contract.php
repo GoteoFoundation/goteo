@@ -315,6 +315,31 @@ namespace Goteo\Model {
          */
  
         
+        /*
+         * comprueba errores de datos y actualiza la puntuación
+         */
+        public function check() {
+            //primero resetea los errores y los okeys
+            $this->errors = self::blankErrors();
+            $this->okeys  = self::blankErrors();
+
+            $errors = &$this->errors;
+            $okeys  = &$this->okeys ;
+
+            // comprueba los campos obligatorios
+            // (y los obligatorios por tipo de contrato)
+            
+        }
+ 
+        // para guardar los fallos en los datos
+        public static function blankErrors() {
+            return array(
+                'promoter'     => array(),
+                'account'      => array(),
+                'additionals'  => array()
+            );
+        }
+        
 	}
     
 }
