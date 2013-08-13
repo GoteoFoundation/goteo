@@ -107,6 +107,17 @@ echo new SuperForm(array(
             'value'     => $contract->region
         ),
 
+        'zipcode' => array(
+            'type'      => 'textbox',
+            'class'     => 'inline',
+            'required'  => true,
+            'title'     => Text::get('personal-field-zipcode'),
+            'size'      => 7,
+            'errors'    => !empty($errors['zipcode']) ? array($errors['zipcode']) : array(),
+            'ok'        => !empty($okeys['zipcode']) ? array($okeys['zipcode']) : array(),
+            'value'     => $contract->zipcode
+        ),
+        
         'country' => array(
             'type'      => 'textbox',
             'class'     => 'inline',
@@ -193,6 +204,17 @@ echo new SuperForm(array(
                     'errors'    => !empty($errors['entity_region']) ? array($errors['entity_region']) : array(),
                     'ok'        => !empty($okeys['entity_region']) ? array($okeys['entity_region']) : array(),
                     'value'     => $contract->entity_region
+                ),
+
+                'entity_zipcode' => array(
+                    'type'      => 'textbox',
+                    'class'     => 'inline',
+                    'required'  => ($contract->type > 0),
+                    'title'     => Text::get('personal-field-zipcode'),
+                    'size'      => 7,
+                    'errors'    => !empty($errors['entity_zipcode']) ? array($errors['entity_zipcode']) : array(),
+                    'ok'        => !empty($okeys['entity_zipcode']) ? array($okeys['entity_zipcode']) : array(),
+                    'value'     => $contract->entity_zipcode
                 ),
 
                 'entity_country' => array(

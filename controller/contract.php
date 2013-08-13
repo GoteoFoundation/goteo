@@ -108,26 +108,26 @@ namespace Goteo\Controller {
                 'promoter' => array(
                     'name' => 'Promotor',
                     'title' => 'Promotor',
-                    'class' => 'first-off off',
-                    'num' => ''
+                    'class' => 'first-on on',
+                    'num' => '1'
                 ),
                 'accounts' => array(
                     'name' => 'Cuentas',
                     'title' => 'Cuentas',
-                    'class' => 'off-off off',
-                    'num' => ''
+                    'class' => 'on-on on',
+                    'num' => '2'
                 ),
                 'additional' => array(
                     'name' => 'Detalles',
                     'title' => 'Detalles',
-                    'class' => 'off-off off',
-                    'num' => ''
+                    'class' => 'on-off on',
+                    'num' => '3'
                 ),
                 'final' => array(
                     'name' => 'Revisión',
                     'title' => 'Revisión',
                     'class' => 'off-last off',
-                    'num' => ''
+                    'num' => '4'
                 )
             );
             
@@ -194,51 +194,6 @@ namespace Goteo\Controller {
 
         }
 
-        //-----------------------------------------------
-        // Métodos privados para el tratamiento de datos
-        // del save y remove de las tablas relacionadas se enmcarga el model/contract
-        // primero añadir y luego quitar para que no se pisen los indices
-        //-----------------------------------------------
-        
-        /*
-         * Los campos que tenemos en la tabla son:
-                `id`, 
-                `project`, 
-                `number`, 
-                `date`, 
-                `type`, 
-                `name`, 
-                `nif`, 
-                `office`, 
-                `address`, 
-                `location`, 
-                `region`, 
-                `country`, 
-                `entity_name`, 
-                `entity_cif`, 
-                `entity_address`, 
-                `entity_location`, 
-                `entity_region`, 
-                `entity_country`, 
-                `reg_name`, 
-                `reg_number`, 
-                `reg_id`, 
-                `project_name`, 
-                `project_url`, 
-                `project_owner`, 
-                `project_user`, 
-                `project_profile`, 
-                `project_description`, 
-                `bank`, 
-                `bank_owner`, 
-                `paypal`, 
-                `paypal_owner`                
-         * 
-         */
-        
-        
-        
-        
         /*
          * Promotor
          */
@@ -256,12 +211,14 @@ namespace Goteo\Controller {
                 'address',
                 'location',
                 'region',
+                'zipcode',
                 'country',
                 'entity_name',
                 'entity_cif',
                 'entity_address',
                 'entity_location',
                 'entity_region',
+                'entity_zipcode',
                 'entity_country'
             );
 
