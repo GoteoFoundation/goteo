@@ -6,6 +6,7 @@ use Goteo\Library\Page,
 $bodyClass = 'about';
 
 $page = Page::get('contact');
+$tags = $this['tags'];
 
 include 'view/prologue.html.php';
 include 'view/header.html.php';
@@ -48,6 +49,21 @@ include 'view/header.html.php';
                                 </div>
                             </td>
                         </tr>
+                        <?php if (!empty($tags)) : ?>
+                        <tr>
+                            <td colspan="2">
+                                <div class="field">
+                                    <label for="tag"><?php echo Text::get('contact-tag-field'); ?></label><br />
+                                    <select name="tag" id="tag">
+                                        <?php foreach ($tags as $key => $val) { 
+                                            $sel = ($key == $this['data']['tag']) ? ' selected="selected"' : '';
+                                            echo '<option value="'.$key.'"'.$sel.'>'.$val.'</option>'; 
+                                        } ?>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endif; ?>
                         <tr>
                             <td colspan="2">
                                 <div class="field">

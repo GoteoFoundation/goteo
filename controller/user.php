@@ -778,11 +778,9 @@ namespace Goteo\Controller {
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recover'])) {
-                $username = $_POST['username'];
                 $email = $_POST['email'];
-                if ((!empty($username) || !empty($email)) && Model\User::recover($username, $email)) {
+                if (!empty($email) && Model\User::recover($email)) {
                     $message = Text::get('recover-email-sended');
-                    unset($_POST['username']);
                     unset($_POST['email']);
                 } else {
                     $error = Text::get('recover-request-fail');

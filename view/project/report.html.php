@@ -160,7 +160,7 @@ $contract_date = date('dmY', $dContract);
             <th style="text-align:left;">* Listado de usuarios/as con incidencias en su cuenta PayPal.</th>
         </tr>
         <tr>
-            <td>Estos son los aportes con problemas en payPal que no se han conseguido cobrar y se han cancelado. (NOTA: el Capital Riego generado por aportes con incidencia no ha sido descontado)</td>
+            <td>Estos son los aportes con problemas en payPal que no se han conseguido cobrar y se han cancelado.</td>
         </tr>
     </table>
 
