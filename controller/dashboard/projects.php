@@ -293,6 +293,7 @@ namespace Goteo\Controller\Dashboard {
 
                 // iniciamos el objeto mail
                 $mailHandler = new Mail();
+                $mailHandler->from = $project->user->email;
                 $mailHandler->fromName = $remite;
                 $mailHandler->to = $userData->email;
                 $mailHandler->toName = $userData->name;
