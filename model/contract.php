@@ -18,6 +18,7 @@ namespace Goteo\Model {
             $address,
             $location,
             $region,
+            $zipcode,
             $country,
                 
             // datos de la entidad
@@ -26,6 +27,7 @@ namespace Goteo\Model {
             $entity_address,
             $entity_location,
             $entity_region,
+            $entity_zipcode,
             $entity_country,
             
             // datos de cuentas (se guardan en project_account para procesos y aquí para el pdf)
@@ -36,6 +38,7 @@ namespace Goteo\Model {
                 
             // datos de registro
             $reg_name,  // Registro de asociaciones o nombre del notario
+            $reg_date,  // Fecha de escritura del notario
             $reg_number, // Número de registro o número de protocolo del notario
             $reg_id, // Número en el registro mercantil
                 
@@ -45,12 +48,70 @@ namespace Goteo\Model {
             $project_owner, // Id del impulsor
             $project_user, // Nombre del impulsor
             $project_profile, // URL del perfil del impulsor
-            $project_description,
+                
+            $project_description, // descripción del proyecto
+            $project_invest, // objetivo de financiación
+            $project_return, // retornos comprometidos
             
             // seguimiento (es un objeto, cada atributo es un valor de seguimiento)
             $status;
 
 
+        /**
+         * Creación de registro de contrato. 
+         * Esto lo lanzará el cron/execute cuando el proyecto pase la primera ronda.
+         * 
+         * @param varchar(50) $id del proyecto
+         * @return true (el control de errores habrá que hacerlo por email)
+         */
+        public static function create ($id) {
+            $contract = new Contract;
+            $contract->project = $id;
+            /* sacar datos del proyecto */
+            $projData = \Goteo\Model\Project::get($id);
+            if (empty($contract->number) && !empty($projData->published)) {
+                $date = strtotime($projData->published);
+                $contract->date = date('dmY', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
+            }
+            $contract->type = 0; // inicialmente persona fisica
+
+            // @TODO como ya no tendremos paso 2, estos datos se inicializan con los datos personales del impulsor
+            $personalData = \Goteo\Model\User::getPersonal($projData->owner);
+
+            // persona física o representante
+            $contract->name = $personalData->contract_name;
+            $contract->nif = $personalData->contract_nif;
+            $contract->address = $personalData->address;
+            $contract->location = $personalData->location;
+            $contract->region = '';
+            $contract->country = $personalData->country;
+
+            $contract->project_name = $projData->name;
+            $contract->project_url = SITE_URL . '/project/' .$projData->id;
+            $contract->project_owner = $projData->owner;
+            $contract->project_user = $projData->user->name;
+            $contract->project_profile = SITE_URL . '/user/profile/' .$projData->owner;
+
+            // campos de descripción del proyecto
+            $contract->project_description = $projData->description;
+            // texto montadod esde costes
+            $contract->project_invest = 'texto montado desde costes';
+            // texto montado desde retornos
+            $contract->project_return = 'texto montado desde retornos';
+            
+            // cuentas
+            $account = \Goteo\Model\Project\Account::get($projData->id);
+
+            $contract->bank = $account->bank;
+            $contract->bank_owner = $account->bank_owner;
+            $contract->paypal = $account->paypal;
+            $contract->paypal_owner = $account->paypal_owner;
+
+            if ($contract->save()) return true;
+        }
+
+
+        
         /**
          * Datos de contrato del proyecto
          * si no hay, precargamos con los datos del proyecto
@@ -60,66 +121,23 @@ namespace Goteo\Model {
          */
 	 	public static function get ($id) {
 
-            try {
-                $sql = "
-                    SELECT *
-                    FROM contract
-                    WHERE contract.project = ?
-                ";
-                
-                
-                $query = static::query($sql, array($id));
-                $contract = $query->fetchObject(__CLASS__);
-                if (!empty($contract)) {
-                    
-                    // ponemos tambien los datos de seguimiento de estado
-                    $contract->status = self::getStatus($id);
-                    
-                    return $contract;
-                } else {
-                    $contract = new Contract();
-                    $contract->project = $id;
-                    /* sacar datos del proyecto */
-                    $projData = \Goteo\Model\Project::get($id);
-                    if (empty($contract->number) && !empty($projData->published)) {
-                        $date = strtotime($projData->published);
-                        $contract->date = date('dmY', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
-                    }
-                    $contract->type = 0; // inicialmente persona fisica
-                    
-                    // @TODO como ya no tendremos paso 2, estos datos se inicializan con los datos personales del impulsor
-                    $personalData = \Goteo\Model\User::getPersonal($projData->owner);
-                    
-                    // persona física o representante
-                    $contract->name = $personalData->contract_name;
-                    $contract->nif = $personalData->contract_nif;
-                    $contract->address = $personalData->address;
-                    $contract->location = $personalData->location;
-                    $contract->region = '';
-                    $contract->country = $personalData->country;
-                    
-                    $contract->project_description = $projData->description;
-                    $contract->project_name = $projData->name;
-                    $contract->project_url = SITE_URL . '/project/' .$projData->id;
-                    $contract->project_owner = $projData->owner;
-                    $contract->project_user = $projData->user->name;
-                    $contract->project_profile = SITE_URL . '/user/profile/' .$projData->owner;
-                    
-                    // cuentas
-                    $account = \Goteo\Model\Project\Account::get($projData->id);
-                    
-                    $contract->bank = $account->bank;
-                    $contract->bank_owner = $account->bank_owner;
-                    $contract->paypal = $account->paypal;
-                    $contract->paypal_owner = $account->paypal_owner;
-                    
-                    // datos de seguimiento vacios
-                    $contract->status = new \stdClass();
-                    
-                    return $contract;
-                }
-            } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+            $sql = "
+                SELECT *
+                FROM contract
+                WHERE contract.project = ?
+            ";
+
+            $query = static::query($sql, array($id));
+            $contract = $query->fetchObject(__CLASS__);
+            if (!empty($contract)) {
+
+                // ponemos tambien los datos de seguimiento de estado
+                $contract->status = self::getStatus($id);
+
+                return $contract;
+            } else {
+                // aun no tenemos datos de contrato
+                return null;
             }
 		}
 
@@ -168,6 +186,7 @@ namespace Goteo\Model {
                     'paypal',
                     'paypal_owner',
                     'reg_name',
+                    'reg_date',
                     'reg_number',
                     'reg_id',
                     'project_name',
@@ -175,7 +194,9 @@ namespace Goteo\Model {
                     'project_owner',
                     'project_user',
                     'project_profile',
-                    'project_description'
+                    'project_description',
+                    'project_invest',
+                    'project_return'
                     );
 
                 $set = '';
@@ -329,6 +350,8 @@ namespace Goteo\Model {
             $okeys  = &$this->okeys ;
 
             // comprueba los campos obligatorios
+            
+            
             // (y los obligatorios por tipo de contrato)
             
         }
@@ -337,7 +360,9 @@ namespace Goteo\Model {
         public static function blankErrors() {
             return array(
                 'promoter'     => array(),
+                'entity'       => array(),
                 'account'      => array(),
+                'documents'    => array(),
                 'additionals'  => array()
             );
         }

@@ -21,12 +21,19 @@ $superform = array(
             'value' => 'accounts'
         ),
         
-        'bank' => array(
+        'paypal' => array (
+            'type' => 'html',
+            'title' => 'Cuenta PayPal del proyecto:',
+            'html' => $contract->paypal
+        ),
+        
+        'paypal_owner' => array(
             'type'      => 'textbox',
-            'title'     => Text::get('contract-bank_account'),
+            'title'     => Text::get('contract-paypal_owner'),
+            'class'     => 'inline',
             'required'  => true,
-            'hint'      => Text::get('tooltip-contract-bank_account'),
-            'value'     => $contract->bank,
+            'hint'      => Text::get('tooltip-contract-paypal_owner'),
+            'value'     => $contract->paypal_owner,
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
         ),
@@ -41,26 +48,16 @@ $superform = array(
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
         ),
         
-        'paypal' => array(
+        'bank' => array(
             'type'      => 'textbox',
-            'title'     => Text::get('contract-paypal_account'),
+            'title'     => Text::get('contract-bank_account'),
+            'class'     => 'inline',
             'required'  => true,
-            'hint'      => Text::get('tooltip-contract-paypal_account'),
-            'value'     => $contract->paypal,
+            'hint'      => Text::get('tooltip-contract-bank_account'),
+            'value'     => $contract->bank,
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
         ),
-        
-        'paypal_owner' => array(
-            'type'      => 'textbox',
-            'title'     => Text::get('contract-paypal_owner'),
-            'required'  => true,
-            'hint'      => Text::get('tooltip-contract-paypal_owner'),
-            'value'     => $contract->paypal_owner,
-            'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
-            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
-        ),
-        
         
         'footer' => array(
             'type'      => 'group',
@@ -77,7 +74,7 @@ $superform = array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-additional',
+                            'name'  => 'view-step-documents',
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

@@ -17,6 +17,10 @@ switch ($contract->type) {
             'type' => 'hidden',
             'value' => ''
         );
+        $reg_date = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
         $reg_number = array (
             'type' => 'hidden',
             'value' => ''
@@ -38,6 +42,11 @@ switch ($contract->type) {
                     'ok'        => !empty($okeys['reg_name']) ? array($okeys['reg_name']) : array()
                 );
 
+        $reg_date = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        
         $reg_number = array(
                     'type'      => 'textbox',
                     'title'     => 'Número de Registro',
@@ -64,6 +73,18 @@ switch ($contract->type) {
                     'ok'        => !empty($okeys['reg_name']) ? array($okeys['reg_name']) : array()
                 );
 
+        $reg_date  = array(
+            'type'      => 'datebox',
+            'required'  => true,
+            'size'      => 8,
+            'title'     => 'Fecha en que se otorgó la escritura pública de la empresa',
+            'errors'    => !empty($errors['reg_date']) ? array($errors['reg_date']) : array(),
+            'ok'        => !empty($okeys['reg_date']) ? array($okeys['reg_date']) : array(),
+            'value'     => $contract->reg_date
+        );
+                
+        
+        
         $reg_number = array(
                     'type'      => 'textbox',
                     'title'     => 'Número del protocolo del notario',
@@ -75,7 +96,7 @@ switch ($contract->type) {
 
         $reg_id = array(
                     'type'      => 'textbox',
-                    'title'     => 'Numero de inscripción en el Registro Mercantil',
+                    'title'     => 'Inscripción en el Registro Mercantil de (ciudad y número de registro)',
                     'required'  => true,
                     'value'     => $contract->reg_id,
                     'errors'    => !empty($errors['reg_id']) ? array($errors['reg_id']) : array(),
@@ -110,6 +131,8 @@ $superform = array(
                 
         'reg_name' => $reg_name,
         
+        'reg_date' => $reg_date,
+        
         'reg_number' => $reg_number,
         
         'reg_id' => $reg_id,
@@ -130,7 +153,7 @@ $superform = array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-promoter',
+                            'name'  => 'view-step-final',
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

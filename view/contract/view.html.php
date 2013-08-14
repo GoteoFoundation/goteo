@@ -9,6 +9,7 @@ $bodyClass = 'contract';
 
 
 // temporal, luego esto mostrará el pdf dinámico (o estático si ya se ha grabado)
+// mientras sea generado (y no grabado) el pdf se mostrará con un sello [Invalid]
 
 $fields = array(
     

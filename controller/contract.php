@@ -109,25 +109,37 @@ namespace Goteo\Controller {
                     'name' => 'Promotor',
                     'title' => 'Promotor',
                     'class' => 'first-on on',
-                    'num' => '1'
+                    'num' => ''
+                ),
+                'entity' => array(
+                    'name' => 'Entidad',
+                    'title' => 'Entidad',
+                    'class' => 'on-on on',
+                    'num' => ''
                 ),
                 'accounts' => array(
                     'name' => 'Cuentas',
                     'title' => 'Cuentas',
                     'class' => 'on-on on',
-                    'num' => '2'
+                    'num' => ''
+                ),
+                'documents' => array(
+                    'name' => 'Documentos',
+                    'title' => 'Documentos',
+                    'class' => 'on-on on',
+                    'num' => ''
                 ),
                 'additional' => array(
-                    'name' => 'Detalles',
-                    'title' => 'Detalles',
+                    'name' => 'Adicionales',
+                    'title' => 'Adicionales',
                     'class' => 'on-off on',
-                    'num' => '3'
+                    'num' => ''
                 ),
                 'final' => array(
                     'name' => 'Revisión',
                     'title' => 'Revisión',
                     'class' => 'off-last off',
-                    'num' => '4'
+                    'num' => ''
                 )
             );
             
@@ -169,10 +181,9 @@ namespace Goteo\Controller {
                     // si tiene registro de contrato, cargamos de ahí
                     break;
                 
-                // cuentas bancarias
+                // cuentas bancarias y documentación
                 case 'accounts':
-                    // cargamos los datos de las cuentas del proyecto (ver dashboard)
-//                    $viewData['accounts'] = Model\Contract::currentStatus();
+                    // los documentos del contrato necesitamos tenerlos de antes porque se tratan en el process_
                     break;
 
                 // datos adicionales
@@ -207,12 +218,31 @@ namespace Goteo\Controller {
                 'type',
                 'name',
                 'nif',
-                'office',
                 'address',
                 'location',
                 'region',
                 'zipcode',
-                'country',
+                'country'
+            );
+
+            foreach ($fields as $field) {
+                $contract->$field = $_POST[$field];
+            }
+
+            return true;
+        }
+
+        /*
+         * Entidad
+         */
+        private function process_entity(&$contract, &$errors) {
+            if (!isset($_POST['process_entity'])) {
+                return false;
+            }
+
+            // campos que guarda este paso. Verificar luego. 
+            $fields = array(
+                'office',
                 'entity_name',
                 'entity_cif',
                 'entity_address',
@@ -231,9 +261,6 @@ namespace Goteo\Controller {
 
         /*
          * Cuentas
-         * Dualidad: En 
-         * 
-         * 
          */
         private function process_accounts(&$contract, &$errors) {
             if (!isset($_POST['process_accounts'])) {
@@ -246,7 +273,7 @@ namespace Goteo\Controller {
             $fields = array(
                 'bank',
                 'bank_owner',
-                'paypal',
+//                'paypal', no modificamos la cuenta paypal
                 'paypal_owner'
             );
 
@@ -261,12 +288,48 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Datos adicionales, verificar luego
-         * Descripción del proyecto (para contrato)
-         * datos de registro,
+         * Documentación
+         */
+        private function process_documents(&$contract, &$errors) {
+            if (!isset($_POST['process_documents'])) {
+                return false;
+            }
+
+            // tratar el que suben
+            if(!empty($_FILES['doc_upload']['name'])) {
+                // procesarlo aqui con el submodelo Contract\Doc
+//                $contract->docs[] = Contract\Doc::upload($contract->id, $_FILES['doc_upload']);
+            }
+
+            // tratar el que quitan
+            foreach ($contract->docs as $key=>$doc) {
+                if (!empty($_POST["docs-{$doc->id}-remove"])) {
+                // if ( Contract\Doc::remove($contract->id, $doc->id) ) {
+                // unset($contract->docs[$key]);
+                // }
+                }
+            }
+            
+            // y los campos de descripción
+            $fields = array(
+                'project_description',
+                'project_invest',
+                'project_return'
+            );
+
+            foreach ($fields as $field) {
+                $contract->$field = $_POST[$field];
+            }
+            
+            
+            
+            return true;
+        }
+
+        /*
+         * datos adicionales de registro, según tipo
          * 
          */
-
         private function process_additionals(&$contract, &$errors) {
             if (!isset($_POST['process_additionals'])) {
                 return false;
@@ -274,8 +337,8 @@ namespace Goteo\Controller {
 
             $fields = array(
                 'birthdate',
-                'project_description',
                 'reg_name',
+                'reg_date',
                 'reg_number',
                 'reg_id'
             );
