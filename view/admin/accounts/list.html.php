@@ -38,9 +38,7 @@ $emails = Invest::emails(true);
 <a href="/admin/accounts/add" class="button">Generar aporte manual</a>
 <a href="/admin/accounts/viewer" class="button">Visor de logs</a>&nbsp;&nbsp;&nbsp;
 <?php if (!empty($filters['projects'])) : ?>
-    <br />
-    <a href="/admin/accounts/report/<?php echo $filters['projects'] ?>#detail" class="button red" target="_blank">Informe financiero completo de <strong><?php echo $this['projects'][$filters['projects']] ?></strong></a>&nbsp;&nbsp;&nbsp;
-    <a href="/cron/dopay/<?php echo $filters['projects'] ?>" target="_blank" class="button red" onclick="return confirm('No hay vuelta atrás, ok?');">Realizar pagos secundarios a <strong><?php echo $this['projects'][$filters['projects']] ?></strong></a>
+    <a href="/admin/accounts/report/<?php echo $filters['projects'] ?>#detail" class="button" target="_blank">Ver informe financiero completo del proyecto <strong><?php echo $this['projects'][$filters['projects']] ?></strong></a>
 <?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
