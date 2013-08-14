@@ -1042,7 +1042,7 @@ namespace Goteo\Model {
 		 * @param string $email    Email de la cuenta
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
-		public static function recover ($username = null, $email = null) {
+		public static function recover ($email = null) {
             $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
             $query = self::query("
                     SELECT
@@ -1050,11 +1050,9 @@ namespace Goteo\Model {
                         name,
                         email
                     FROM user
-                    WHERE (BINARY id = :username
-                    OR BINARY email = :email)
+                    WHERE BINARY email = :email
                     ",
 				array(
-					':username' => trim($username),
 					':email'    => trim($email)
 				)
 			);
