@@ -329,30 +329,6 @@ namespace Goteo\Controller\Dashboard {
          */
         public static function process_contract ($project, &$errors = array()) {
 
-            // si el impulsor da los datos por cerrados hacemos un feed para admin
-            if (isset($_POST['close_owner'])) {
-                // marcar en el registro de gestión, "datos de contrato" cerrados
-                if (Model\Contract::setStatus($project->id, array('owner'=>true))) {
-                    Message::Info('Datos de contrato cerrados para revisión');
-
-                    // Evento Feed
-                    $log = new Feed();
-                    $log->setTarget($project->id);
-                    $log->populate('usuario da por cerrados los datos del contrato (dashboard)', '/admin/projects', \vsprintf('%s ha cerrado los datos del contrato del proyecto %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('project', $project->name, $project->id)
-                            )));
-                    $log->doAdmin('user');
-                    unset($log);
-
-                    return true;
-
-                } else {
-                    Message::Error('Ha habido algún error al cerrar los datos de contrato');
-                    return false;
-                }
-            }
-
             // si el impulsor notifica que ha actualizado las cuentas
             if (isset($_POST['account_update'])) {
                 

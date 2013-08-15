@@ -341,7 +341,30 @@ namespace Goteo\Controller {
             }
 
             // este paso solo cambia el campo de cerrado (y flag de cerrado por impulsor)
-            
+            if (isset($_POST['finish'])) {
+                // marcar en el registro de gestión, "datos de contrato" cerrados
+                if (Model\Contract::setStatus($contract->project, array('owner'=>true))) {
+                    Message::Info('El formulario de contrato ha sido cerrado para revisión');
+
+                    // Evento Feed
+                    $log = new Feed();
+                    $log->setTarget($contract->project);
+                    $log->populate('Impulsor da por cerrados los datos del contrato (dashboard)', '/admin/projects', \vsprintf('%s ha cerrado los datos del contrato del proyecto %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('project', $contract->project_name, $contract->project)
+                            )));
+                    $log->doAdmin('user');
+                    unset($log);
+
+                    $contract->status = Model\Contract::getStatus($contract->project);
+                    
+                    return true;
+
+                } else {
+                    Message::Error('Ha habido algún error al cerrar los datos de contrato');
+                    return false;
+                }
+            }            
             
             return true;
         }

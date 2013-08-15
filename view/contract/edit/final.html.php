@@ -17,7 +17,7 @@ foreach ($this['steps'] as $id => $data) {
     }
 }
 
-// boton de revisar que no sirve para mucho
+// boton de revisar sirve para volver al principio del formulario
 $buttons = array(
     'review' => array(
         'type'  => 'submit',
@@ -58,30 +58,33 @@ $elements      = array(
         'html'      =>   '<div class="contract-final" style="position: relative"><div>'
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
-                       . new View('view/contract/edit/review.html.php', array('contract' => $contract))
+                       . new View('view/contract/widget/review.html.php', array('contract' => $contract))
+                       . new View('view/contract/widget/notice.html.php')
                        . '</div>'
                        . '</div></div>'
     )
 );
 
-// Footer
-$elements['footer'] = array(
-    'type'      => 'group',
-    'children'  => array(
-        'errors' => array(
-            'title' => Text::get('form-footer-errors_title'),
-            'view'  => new View('view/contract/edit/errors.html.php', array(
-                'contract'   => $contract,
-                'step'      => $this['step']
-            ))                    
-        ),
-        'buttons'  => array(
-            'type'  => 'group',
-            'children' => $buttons
+if (!$contract->status->owner) {
+    // Footer
+    $elements['footer'] = array(
+        'type'      => 'group',
+        'children'  => array(
+            'errors' => array(
+                'title' => Text::get('form-footer-errors_title'),
+                'view'  => new View('view/contract/edit/errors.html.php', array(
+                    'contract'   => $contract,
+                    'step'      => $this['step']
+                ))                    
+            ),
+            'buttons'  => array(
+                'type'  => 'group',
+                'children' => $buttons
+            )
         )
-    )
 
-);
+    );
+}
 
 // lanzamos el superform
 echo new SuperForm(array(

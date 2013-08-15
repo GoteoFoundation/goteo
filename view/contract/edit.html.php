@@ -1,7 +1,8 @@
 <?php
 
 use Goteo\Core\View,
-    Goteo\Library\Text;
+    Goteo\Library\Text,
+    Goteo\Library\Message;
 
 $bodyClass = 'project-edit';
 
@@ -9,7 +10,8 @@ $contract = $this['contract'];
 
 $steps  = new View('view/contract/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $contract->errors));
 
-Goteo\Library\Message::Info(Text::get('form-ajax-info'));
+if (!$contract->status->owner) 
+    Message::Info(Text::get('form-ajax-info'));
 
 include 'view/prologue.html.php';
 

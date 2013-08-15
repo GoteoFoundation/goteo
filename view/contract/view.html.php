@@ -1,8 +1,8 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
-$project = $this['project'];
 $contract = $this['contract'];
 
 $bodyClass = 'contract';
@@ -42,16 +42,9 @@ $fields = array(
 
 include 'view/prologue.html.php';
 include 'view/header.html.php';
-?>
 
-<dl>
-<?php foreach ($fields as $field => $label) : if(empty($contract->$field)) continue; ?>
-    <dt><?php echo $label ?></dt>
-    <dd><?php echo $contract->$field; ?></dd>
-<?php endforeach; ?>
-</dl>
+echo new View('view/contract/widget/review.html.php', $this);
 
-<?php 
 include 'view/footer.html.php';
 include 'view/epilogue.html.php';
 ?>
