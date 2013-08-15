@@ -2,6 +2,9 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Library\Check,
+        Goteo\Library\Text;
+    
     class Contract extends \Goteo\Core\Model {
 
         public
@@ -185,6 +188,7 @@ namespace Goteo\Model {
                     'bank_owner',
                     'paypal',
                     'paypal_owner',
+                    'birthdate',
                     'reg_name',
                     'reg_date',
                     'reg_number',
@@ -339,7 +343,9 @@ namespace Goteo\Model {
  
         
         /*
-         * comprueba errores de datos y actualiza la puntuación
+         * comprueba los campos obligatorios
+         * y los obligatorios por tipo de promotor
+         * NOTA: en algunos casos usa los textos 'mandatory-' del proyecto
          */
         public function check() {
             //primero resetea los errores y los okeys
@@ -349,11 +355,185 @@ namespace Goteo\Model {
             $errors = &$this->errors;
             $okeys  = &$this->okeys ;
 
-            // comprueba los campos obligatorios
+            /***************** Revisión de campos del paso PROMOTOR *****************/
+            if (empty($this->name)) {
+                $errors['promoter']['name'] = Text::get('mandatory-project-field-contract_name');
+            } else {
+                 $okeys['promoter']['name'] = 'ok';
+            }
+
+            if (empty($this->nif)) {
+                $errors['promoter']['nif'] = Text::get('mandatory-project-field-contract_nif');
+            } elseif (!Check::nif($this->nif) && !Check::vat($this->nif)) {
+                $errors['promoter']['nif'] = Text::get('validate-project-value-contract_nif');
+            } else {
+                 $okeys['promoter']['nif'] = 'ok';
+            }
+
+            if (empty($this->address)) {
+                $errors['promoter']['address'] = Text::get('mandatory-project-field-address');
+            } else {
+                 $okeys['promoter']['address'] = 'ok';
+            }
+
+            if (empty($this->location)) {
+                $errors['promoter']['location'] = Text::get('mandatory-project-field-residence');
+            } else {
+                 $okeys['promoter']['location'] = 'ok';
+            }
+
+            if (empty($this->region)) {
+                $errors['promoter']['region'] = Text::get('mandatory-project-field-region');
+            } else {
+                 $okeys['promoter']['region'] = 'ok';
+            }
+
+            if (empty($this->zipcode)) {
+                $errors['promoter']['zipcode'] = Text::get('mandatory-project-field-zipcode');
+            } else {
+                 $okeys['promoter']['zipcode'] = 'ok';
+            }
+
+            if (empty($this->country)) {
+                $errors['promoter']['country'] = Text::get('mandatory-project-field-country');
+            } else {
+                 $okeys['promoter']['country'] = 'ok';
+            }
+
+            /***************** FIN Revisión del paso PROMOTOR *****************/
             
+            /***************** Revisión de campos del paso ENTIDAD *****************/
+            if ($this->type > 0) {  // solo obligatorios para representante
+                if (empty($this->entity_name)) {
+                    $errors['entity']['entity_name'] = Text::get('mandatory-project-field-entity_name');
+                } else {
+                     $okeys['entity']['entity_name'] = 'ok';
+                }
+
+                if (empty($this->entity_cif)) {
+                    $errors['entity']['entity_cif'] = Text::get('mandatory-project-field-entity_cif');
+                } elseif (!Check::nif($this->entity_cif)) {
+                    $errors['entity']['entity_cif'] = Text::get('validate-project-value-entity_cif');
+                } else {
+                     $okeys['entity']['entity_cif'] = 'ok';
+                }
+
+                if (empty($this->office)) {
+                    $errors['entity']['office'] = Text::get('mandatory-project-field-entity_office');
+                } else {
+                     $okeys['entity']['office'] = 'ok';
+                }
+
+                // y la dirección
+                if (empty($this->entity_address)) {
+                    $errors['entity']['entity_address'] = Text::get('mandatory-project-field-address');
+                } else {
+                     $okeys['entity']['entity_address'] = 'ok';
+                }
+
+                if (empty($this->entity_location)) {
+                    $errors['entity']['entity_location'] = Text::get('mandatory-project-field-residence');
+                } else {
+                     $okeys['entity']['entity_location'] = 'ok';
+                }
+
+                if (empty($this->entity_region)) {
+                    $errors['entity']['entity_region'] = Text::get('mandatory-project-field-region');
+                } else {
+                     $okeys['entity']['entity_region'] = 'ok';
+                }
+
+                if (empty($this->entity_zipcode)) {
+                    $errors['entity']['entity_zipcode'] = Text::get('mandatory-project-field-zipcode');
+                } else {
+                     $okeys['entity']['entity_zipcode'] = 'ok';
+                }
+
+                if (empty($this->entity_country)) {
+                    $errors['entity']['entity_country'] = Text::get('mandatory-project-field-country');
+                } else {
+                     $okeys['entity']['entity_country'] = 'ok';
+                }
+                
+            }
+            /***************** FIN Revisión del paso ENTIDAD *****************/
             
-            // (y los obligatorios por tipo de contrato)
+            /***************** Revisión de campos del paso CUENTAS  *****************/
+            if (empty($this->paypal_owner)) {
+                $errors['accounts']['paypal_owner'] = 'Es obligatorio poner el nombre del titular de la cuenta PayPal del proyecto';
+            } else {
+                 $okeys['accounts']['paypal_owner'] = 'ok';
+            }
+            if (empty($this->bank)) {
+                $errors['accounts']['bank'] = 'Es obligatorio indicar una cuenta bancaria para el proyecto';
+            } else {
+                 $okeys['accounts']['bank'] = 'ok';
+            }
+            if (empty($this->bank_owner)) {
+                $errors['accounts']['bank_owner'] = 'Es obligatorio poner el nombre del titular de la cuenta bancaria';
+            } else {
+                 $okeys['accounts']['bank_owner'] = 'ok';
+            }
+            /***************** FIN Revisión del paso CUENTAS *****************/
+
             
+            /***************** Revisión de campos del paso DOCUMENTACIÓN  *****************/
+            if (empty($this->docs)) {
+                // por ahora no
+                // $errors['documents']['docs'] = Text::get('mandatory-contract-docs');
+            } else {
+                 $okeys['documents']['docs'] = 'ok';
+            }
+            /***************** FIN Revisión del paso DOCUMENTACIÓN *****************/
+
+            
+            /***************** Revisión de campos del paso ADICIONALES  *****************/
+            if (empty($this->birthdate)) {
+                $errors['additional']['birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
+            } else {
+                 $okeys['additional']['birthdate'] = 'ok';
+            }
+            
+            // para representantes de asociación
+            if ($this->type == 1) {
+                if (empty($this->reg_name)) {
+                    $errors['additional']['reg_name'] = 'Es obligatorio indicar en que registro se inscribió la asociación';
+                } else {
+                     $okeys['additional']['reg_name'] = 'ok';
+                }
+                if (empty($this->reg_number)) {
+                    $errors['additional']['reg_number'] = 'Es obligatorio indicar el número de registro';
+                } else {
+                     $okeys['additional']['reg_number'] = 'ok';
+                }
+            }
+            
+            // para representantes de entidad jurídica
+            if ($this->type == 2) {
+                if (empty($this->reg_name)) {
+                    $errors['additional']['reg_name'] = 'Es obligatorio indicar el nombre del notario que otorgó la escritura pública de la empresa';
+                } else {
+                     $okeys['additional']['reg_name'] = 'ok';
+                }
+                if (empty($this->reg_date)) {
+                    $errors['additional']['reg_date'] = 'Es obligatorio indicar la fecha en que el notario otorgó la escritura pública';
+                } else {
+                     $okeys['additional']['reg_date'] = 'ok';
+                }
+                if (empty($this->reg_number)) {
+                    $errors['additional']['reg_number'] = 'Es obligatorio indicar el número de protocolo del notario';
+                } else {
+                     $okeys['additional']['reg_number'] = 'ok';
+                }
+                if (empty($this->reg_id)) {
+                    $errors['additional']['reg_id'] = 'Es obligatorio indicar el número y la ciudad de inscripción en el Registro Mercantil';
+                } else {
+                     $okeys['additional']['reg_id'] = 'ok';
+                }
+            }
+            /***************** FIN Revisión del paso ADICIONALES *****************/
+            
+            $this->finishable = (\array_empty($errors));
         }
  
         // para guardar los fallos en los datos
@@ -363,7 +543,7 @@ namespace Goteo\Model {
                 'entity'       => array(),
                 'account'      => array(),
                 'documents'    => array(),
-                'additionals'  => array()
+                'additional'  => array()
             );
         }
         

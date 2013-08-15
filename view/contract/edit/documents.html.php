@@ -63,7 +63,7 @@ $superform = array(
     'level'         => $this['level'],
     'action'        => '',
     'method'        => 'post',
-    'title'         => Text::get('contract-documents-main-header'),
+    'title'         => Text::get('contract-step-documents'),
     'hint'          => Text::get('guide-contract-documents'),
     'class'         => 'aqua',        
     'elements'      => array(
@@ -76,16 +76,16 @@ $superform = array(
             'title'     => 'Documentación',
             'type'      => 'group',
             'required'  => true,
-            'hint'      => Text::get('tooltip-contract-doc'),
-            'errors'    => !empty($errors['doc']) ? array($errors['doc']) : array(),
-            'ok'        => !empty($okeys['doc']) ? array($okeys['doc']) : array(),
+            'hint'      => Text::get('tooltip-contract-docs'),
+            'errors'    => !empty($errors['docs']) ? array($errors['docs']) : array(),
+            'ok'        => !empty($okeys['docs']) ? array($okeys['docs']) : array(),
             'class'     => 'doc',
             'children'  => array(
                 'doc_upload'    => array(
                     'type'  => 'file',
                     'label' => 'Subir documento',
                     'class' => 'inline doc_upload',
-                    'hint'  => Text::get('tooltip-contract-doc')
+                    'hint'  => Text::get('tooltip-contract-docs')
                 )
             )
         ),        

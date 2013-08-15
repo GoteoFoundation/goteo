@@ -15,6 +15,7 @@ foreach ($contract->errors as $st => $errors) {
 ?>
 <div>
 
+    <?php if ($step != 'final') : ?>
     <p><?php echo Text::get('form-errors-info', $total_errors, $step_errors) ?></p>
 
         <?php if (!empty($contract->errors[$step])) : ?>
@@ -26,6 +27,19 @@ foreach ($contract->errors as $st => $errors) {
             <?php endforeach ?>
         </ul>
         <?php endif ?>
+    <?php else : ?>
+        <p><?php echo Text::get('form-errors-total', $total_errors) ?></p>
+        <?php foreach ($contract->errors as $st => $errors)  :
+            if (!empty($errors)) : ?>
+            <h4 class="title"><?php echo Text::get('contract-step-'.$st); ?></h4>
+            <ul class="sf-footer-errors">
+            <?php foreach ($errors as $id => $error) : ?>
+                <li><?php echo $error ?></li>
+            <?php endforeach; ?>
+            </ul>
+        <?php endif;
+            endforeach; ?>
+    <?php endif; ?>
 
 </div>
 

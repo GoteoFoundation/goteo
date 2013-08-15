@@ -57,7 +57,6 @@ $elements = ($contract->type == 0)
         
         'entity_name' => array(
             'type'      => 'textbox',
-            'class'     => 'inline',
             'required'  => ($contract->type > 0),
             'title'     => Text::get('personal-field-entity_name'),
             'hint'      => Text::get('tooltip-contract-entity_name'),
@@ -80,12 +79,11 @@ $elements = ($contract->type == 0)
         /* cargo */
         'office' => array(
             'type'      => 'textbox',
-            'class'     => 'inline',
             'required'  => ($contract->type > 0),
             'title'     => Text::get('personal-field-entity_office'),
             'hint'      => Text::get('tooltip-contract-entity_office'),
-            'errors'    => !empty($errors['entity_office']) ? array($errors['entity_office']) : array(),
-            'ok'        => !empty($okeys['entity_office']) ? array($okeys['entity_office']) : array(),
+            'errors'    => !empty($errors['office']) ? array($errors['office']) : array(),
+            'ok'        => !empty($okeys['office']) ? array($okeys['office']) : array(),
             'value'     => $contract->office
         ),
 
@@ -182,7 +180,7 @@ echo new SuperForm(array(
 
     'level'         => $this['level'],
     'method'        => 'post',
-    'title'         => Text::get('contract-entity-main-header'),
+    'title'         => Text::get('contract-step-entity'),
     'hint'          => $hint,    
     'elements'      => $elements
     )

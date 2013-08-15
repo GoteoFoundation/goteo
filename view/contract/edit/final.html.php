@@ -5,7 +5,6 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 $contract = $this['contract'];
-$types   = $this['types'];
 $errors = $contract->errors ?: array();
 
 // miramos el pruimer paso con errores para mandarlo a ese
@@ -89,7 +88,7 @@ echo new SuperForm(array(
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',
-    'title'         => Text::get('final-main-header'),
+    'title'         => Text::get('contract-step-final'),
     'hint'          => Text::get('guide-contract-final'),
     'elements'      => $elements
 ));

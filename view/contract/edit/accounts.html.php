@@ -12,7 +12,7 @@ $superform = array(
     'level'         => $this['level'],
     'action'        => '',
     'method'        => 'post',
-    'title'         => Text::get('contract-accounts-main-header'),
+    'title'         => Text::get('contract-step-accounts'),
     'hint'          => Text::get('guide-contract-accounts'),
     'class'         => 'aqua',        
     'elements'      => array(
@@ -34,8 +34,8 @@ $superform = array(
             'required'  => true,
             'hint'      => Text::get('tooltip-contract-paypal_owner'),
             'value'     => $contract->paypal_owner,
-            'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
-            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
+            'errors'    => !empty($errors['paypal_owner']) ? array($errors['paypal_owner']) : array(),
+            'ok'        => !empty($okeys['paypal_owner']) ? array($okeys['paypal_owner']) : array()
         ),
         
         'bank_owner' => array(
@@ -44,8 +44,8 @@ $superform = array(
             'required'  => true,
             'hint'      => Text::get('tooltip-contract-bank_owner'),
             'value'     => $contract->bank_owner,
-            'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
-            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
+            'errors'    => !empty($errors['bank_owner']) ? array($errors['bank_owner']) : array(),
+            'ok'        => !empty($okeys['bank_owner']) ? array($okeys['bank_owner']) : array()
         ),
         
         'bank' => array(
@@ -55,8 +55,8 @@ $superform = array(
             'required'  => true,
             'hint'      => Text::get('tooltip-contract-bank_account'),
             'value'     => $contract->bank,
-            'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
-            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
+            'errors'    => !empty($errors['bank']) ? array($errors['bank']) : array(),
+            'ok'        => !empty($okeys['bank']) ? array($okeys['bank']) : array()
         ),
         
         'footer' => array(

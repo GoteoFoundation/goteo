@@ -101,43 +101,46 @@ namespace Goteo\Controller {
                 throw new Redirection('/contract/'.$id);
             }
 
+            // checkeamos errores
+            $contract->check();
+            
             // todos los pasos, entrando en datos del promotor por defecto
             $step = 'promoter';
 
             $steps = array(
                 'promoter' => array(
-                    'name' => 'Promotor',
-                    'title' => 'Promotor',
+                    'name' => Text::get('contract-step-promoter'),
+                    'title' => 'Title Promotor',
                     'class' => 'first-on on',
                     'num' => ''
                 ),
                 'entity' => array(
-                    'name' => 'Entidad',
-                    'title' => 'Entidad',
+                    'name' => Text::get('contract-step-entity'),
+                    'title' => 'Title Entidad',
                     'class' => 'on-on on',
                     'num' => ''
                 ),
                 'accounts' => array(
-                    'name' => 'Cuentas',
-                    'title' => 'Cuentas',
+                    'name' => Text::get('contract-step-accounts'),
+                    'title' => 'Title Cuentas',
                     'class' => 'on-on on',
                     'num' => ''
                 ),
                 'documents' => array(
-                    'name' => 'Documentos',
-                    'title' => 'Documentos',
+                    'name' => Text::get('contract-step-documents'),
+                    'title' => 'Title Documentos',
                     'class' => 'on-on on',
                     'num' => ''
                 ),
                 'additional' => array(
-                    'name' => 'Adicionales',
-                    'title' => 'Adicionales',
+                    'name' => Text::get('contract-step-additional'),
+                    'title' => 'Title Adicionales',
                     'class' => 'on-off on',
                     'num' => ''
                 ),
                 'final' => array(
-                    'name' => 'Revisión',
-                    'title' => 'Revisión',
+                    'name' => Text::get('contract-step-final'),
+                    'title' => 'Title Revisión',
                     'class' => 'off-last off',
                     'num' => ''
                 )
@@ -163,6 +166,9 @@ namespace Goteo\Controller {
 
                 // guardamos los datos que hemos tratado y los errores de los datos
                 $contract->save($errors);
+                
+                // checkeamos de nuevo
+                $contract->check();
             }
 
             // variables para la vista
@@ -171,30 +177,6 @@ namespace Goteo\Controller {
                 'steps' => $steps,
                 'step' => $step
             );
-
-
-            // segun el paso añadimos los datos auxiliares para pintar
-            switch ($step) {
-                // datos del promotor
-                case 'promoter': // cambiar luego a promoter
-                    // si no tiene registro de contrato, cargamos los datos personales del usuario
-                    // si tiene registro de contrato, cargamos de ahí
-                    break;
-                
-                // cuentas bancarias y documentación
-                case 'accounts':
-                    // los documentos del contrato necesitamos tenerlos de antes porque se tratan en el process_
-                    break;
-
-                // datos adicionales
-                case 'additionals':
-                    break;
-
-                // revisión final
-                case 'final':
-                    break;
-
-            }
 
             $view = new View (
                 "view/contract/edit.html.php",
@@ -330,8 +312,8 @@ namespace Goteo\Controller {
          * datos adicionales de registro, según tipo
          * 
          */
-        private function process_additionals(&$contract, &$errors) {
-            if (!isset($_POST['process_additionals'])) {
+        private function process_additional(&$contract, &$errors) {
+            if (!isset($_POST['process_additional'])) {
                 return false;
             }
 
@@ -359,6 +341,7 @@ namespace Goteo\Controller {
             }
 
             // este paso solo cambia el campo de cerrado (y flag de cerrado por impulsor)
+            
             
             return true;
         }

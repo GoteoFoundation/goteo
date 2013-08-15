@@ -12,7 +12,7 @@ echo new SuperForm(array(
 
     'level'         => $this['level'],
     'method'        => 'post',
-    'title'         => Text::get('contract-promoter-main-header'),
+    'title'         => Text::get('contract-step-promoter'),
     'hint'          => Text::get('guide-contract-promoter'),    
     'elements'      => array(
         'process_promoter' => array (
@@ -24,6 +24,7 @@ echo new SuperForm(array(
         'contract_entity-radioset' => array(
             'type'      => 'group',
             'title'     => Text::get('personal-field-contract_entity'),
+            'hint'     => Text::get('tooltip-project-contract_entity'),
             'children'  => array(
                 'type-person' =>  array(
                     'name'  => 'type',
@@ -52,24 +53,24 @@ echo new SuperForm(array(
             )
         ),
 
-        'contract_name' => array(
+        'name' => array(
             'type'      => 'textbox',
             'class'     => 'inline',
             'required'  => true,
             'title'     => Text::get('personal-field-contract_name'),
-            'errors'    => !empty($errors['contract_name']) ? array($errors['contract_name']) : array(),
-            'ok'        => !empty($okeys['contract_name']) ? array($okeys['contract_name']) : array(),
-            'value'     => $contract->contract_name
+            'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
+            'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array(),
+            'value'     => $contract->name
         ),
 
-        'contract_nif' => array(
+        'nif' => array(
             'type'      => 'textbox',
             'class'     => 'inline',
             'required'  => true,
             'title'     => Text::get('personal-field-contract_nif'),
-            'errors'    => !empty($errors['contract_nif']) ? array($errors['contract_nif']) : array(),
-            'ok'        => !empty($okeys['contract_nif']) ? array($okeys['contract_nif']) : array(),
-            'value'     => $contract->contract_nif
+            'errors'    => !empty($errors['nif']) ? array($errors['nif']) : array(),
+            'ok'        => !empty($okeys['nif']) ? array($okeys['nif']) : array(),
+            'value'     => $contract->nif
         ),
 
         /* Domicilio fiscal */
