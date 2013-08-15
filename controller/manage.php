@@ -24,11 +24,11 @@ namespace Goteo\Controller {
                 define('ADMIN_BCPATH', $BC);
                 $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
                 $tasks = Model\Task::getAll(array(), $node, true);
-                return new View('view/admin/index.html.php', array('tasks' => $tasks));
+                return new View('view/manage/index.html.php', array('tasks' => $tasks));
             } else {
                 $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
                 define('ADMIN_BCPATH', $BC);
-                $SubC = 'Goteo\Controller\Admin' . \chr(92) . \ucfirst($option);
+                $SubC = 'Goteo\Controller\Manage' . \chr(92) . \ucfirst($option);
                 return $SubC::process($action, $id, self::setFilters($option), $subaction);
             }
         }

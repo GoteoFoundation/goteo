@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Controller\Admin {
+namespace Goteo\Controller\Manage {
 
     use Goteo\Core\View,
         Goteo\Core\Redirection,
