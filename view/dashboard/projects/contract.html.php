@@ -2,113 +2,60 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$project = $this['project'];
 $contract = $this['contract'];
-$status = $this['status']; // datos de estado de contrato
+$show = $this['show']; // estado del proceso (ver conroller/dashboard/projects::prepare_contract ) 
 
-if ($project->status < 3) return '';
+//esto es una tnteria temporal, esto debería ir en una página institucional o algo así
+function wprint ($title, $message) {
+    echo '<div class="widget projects"><h2 class="title">'.$title.'</h2><p>'.$message.'</p></div>';
+}
 
-// campos
-$fields = array(
+switch ($show) {
+    case 'payed': // ya se ha realizado el pago
+        wprint('Proyecto en campaña', 'El proyecto está en campaña, aun no hay contrato.');
+		break;
     
-    // persona
-    'name' => 'Nombre y apellidos (propios o representante)',
-    'nif' => 'NIF (propio o representante)',
-    'office' => 'Cargo en la asociaci&oacute;n o entidad mercantil<br /> (solo si representa a una asociaci&oacute;n o entidad mercantil)',
-    'address' => 'Domicilio (propio o representante)',
-    'location' => 'Municipio (propio o representante)',
-    'region' => 'Provincia (propio o representante)',
-    'country' => 'Pa&iacute;s (propio o representante)',
+    case 'recieved': // goteo ha recibido el contrato firmado
+        wprint('Contrato recibido', 'Hemos  recibido el contrato firmado, está en cola para revisión.');
+		break;
     
-    // entidad
-    'entity_name' => 'Nombre o raz&oacute;n social (de la asociaci&oacute;n o entidad mercantil)',
-    'entity_cif' => 'CIF (de la asociaci&oacute;n o entidad mercantil)',
-    'entity_address' => 'Domicilio social (de la asociaci&oacute;n o entidad mercantil)',
-    'entity_location' => 'Municipio (de la asociaci&oacute;n o entidad mercantil)',
-    'entity_region' => 'Provincia (de la asociaci&oacute;n o entidad mercantil)',
-    'entity_country' => 'Pa&iacute;s (de la asociaci&oacute;n o entidad mercantil)',
+    case 'ready': // el pdf está listo para descargarse
+        wprint('Contrato listo', 'Ya puedes imprimir el pdf, firmar todas las hojas y enviárnoslo a ....</p><p><a href="/contract/'.$contract->project.'" target="_blank" class="button">PDF</a>');
+		break;
     
-    // registro
-    'reg_name' => 'Registro en el que se inscribi&oacute; la asociaci&oacute;n (si asociaci&oacute;n)<br /> / Nombre  del notario que  otorg&oacute; la escritura p&uacute;blica de la empresa (si entidad mercantil)',
-    'reg_number' => 'N&uacute;mero de Registro (si asociaci&oacute;n)<br /> / N&uacute;mero del protocolo del notario (si entidad mercantil)',
-    'reg_id' => 'Numero de inscripci&oacute;n en el Registro Mercantil (solo si entidad mercantil)'
-);
-
-/*
- * Segun el estado de proceso:
- * 
- * Mensaje que dice en que estado se encuentra y que debería hacer a continuación
- * 
- * botón para dar por cerrados los datos 
- * botón para informar que ha actualizado las cuentas
- * 
- * enlace a la edición de contrato
- * enlace al pdf
- * 
- */
-
-
-
-?>
-<div class="widget projects">
-    <h2 class="title"><?php echo Text::get('contract-data_title') ?></h2>
-    Aquí funcionalidades y mensajes para el proceso de contrato, informe y pago.
-    <?php echo \trace($contract->status); ?>
+    case 'review': // los datos están siendo revisados por el admín
+        wprint('Datos en revisión', 'Los datos del contrato y la documentación están siendo revisados. Si todo está correcto habilitaremos el pdf. Si hay algo que aclarar te contactaremos por email.</p><p>Si quieres puedes consultar el documento PROVISIONAL <a href="/contract/'.$contract->project.'" target="_blank" class="button">aquí</a>');
+		break;
     
-<?php if (!$contract->status->owner) : ?>
-    <p>En el Formulario de contrato puedes modificar:<br />
-        - Datos personales del promotor del proyecto<br />
-        - Cuentas bancarias del impulsor<br />
-        - Otros datos legales.<br /><br />
+    case 'closed': // el formuladio está cerrado, el contrato está en cola para ser revisado
+        wprint('Formulario cerrado', 'La edición de datos está cerrada, a continuación puedes ver los datos introducidos.<br />Si hay alguna incorrección ponte en contacto con nosotros enviando un email a <a href="mailto:info@goteo.org">info@goteo.org</a>');
+        echo new View('view/contract/widget/review.html.php', array('contract'=>$contract));
+        break;
+    
+    case 'edit': // hay registro y se puede editar
+        wprint('Pendiente de datos', 'Rellena el siguiente formulario --> <a href="/contract/edit/'.$contract->project.'" target="_blank" class="button">Datos de contrato</a>');
+		break;
+	
+    case 'campaign': // el proyecto sigue en campaña, aun no se puede gestionar el contrato
+        wprint('Proyecto en campaña', 'El proyecto está en campaña, aun no hay contrato.');
+		break;
+    
+    case 'off': // el proyecto aun no ha sido publicado
+    default: // off
+        wprint('Proyecto no publicado', 'El proyecto aun no ha sido publicado, no hay nada que hacer aquí.');
         
-        <a href="/contract/edit/<?php echo $project->id ?>" target="_blank" class="button">Editar</a>
-    </p>
-
-    <hr />
-    
-    <form method="post" action="/dashboard/projects/contract" >
-        <input type="submit" name="close_owner" value="Doy por rellenados los datos, no necesito editarlos mas" class="weak" />
-    <br />
-        <input type="submit" name="account_update" value="Informar al admin de que he modificado las cuentas bancarias" />
-    </form>
-    
-<?php else: ?>
-    <p>
-        La edición de datos está cerrada, a continuación un listado de los datos introducidos.<br />
-        Si hay alguna incorrecci&oacute;n ponte en contacto con nosotros enviando un email a <a href="mailto:info@goteo.org">info@goteo.org</a>
-    </p>
-    
-    <dl>
-    <?php foreach ($fields as $field => $label) : if(empty($contract->$field)) continue; ?>
-        <dt><?php echo $label ?></dt>
-        <dd><?php echo $contract->$field; ?></dd>
-    <?php endforeach; ?>
-    </dl>
-<?php endif; ?>
-    
-</div>
+        break;
+}
 
 
-<?php if ($contract->status->owner) : ?>
-<div class="widget projects">
-    <h2 class="title">Pdf contrato</h2>
-<?php if ($contract->status->admin) : ?>
-    <p>Puedes consultar el contenido provisional del contrato, aun esta en revision.<br />
-        <a href="/contract/<?php echo $project->id ?>" target="_blank" class="button">Consultar</a>
-    </p>
-<?php else : ?>
-    <p>Ya puedes descargar el pdf del contrato. Fírmalo y nos o envias a ....<br />
-        <a htref="/contract/<?php echo $project->id ?>" target="_blank" class="button">Descargar</a>
-    </p>
-<?php endif; ?>
-</div>
-<?php endif; ?>
-
-<?php /* if ($contract->status->report) : ?>
+/* 
+ * Si hubiera que mostrarle el informe financiero... 
+?>
 <div class="widget projects">
     <h2 class="title">Informe financiero</h2>
     
     <p>Este es el informe final de financiación en goteo</p>
     <?php echo new View('view/project/report.html.php', array('project'=>$project, 'Data'=>$this['Data'])); ?>
 </div>
-<?php endif; */ ?>
+<?php endif; 
+ */

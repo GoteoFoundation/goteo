@@ -243,9 +243,9 @@ namespace Goteo\Controller {
                         }
                         break;
 
-                    // contrato
+                    // contrato, pahora mismo nada
                     case 'contract':
-                        Dashboard\Projects::process_contract($project, $errors);
+                        // Dashboard\Projects::process_contract($project, $errors);
                         break;
 
                     // colaboraciones
@@ -332,10 +332,35 @@ namespace Goteo\Controller {
                     $viewData['post'] = $post;
                     break;
 
-                // datos de contrato
-                // bastaría con un getStatus para saber como va, ya que aqui no se gestionan los datos del contrato
+                // datos de contrato y mensaje segun estado del proceso
                 case 'contract':
-                    $viewData['contract'] = Model\Contract::get($project->id);
+                    if ($project->status < 3) {
+                        $contract = null;
+                        $show = 'off';
+                    } else {
+                        // a ver si tiene registro
+                        $contract = Model\Contract::get($project->id);
+
+                        if (!$contract) {
+                            $show = 'campaign'; // el proyecto sigue en campaña, aun no se puede gestionar el contrato
+                        } elseif ($contract->status->payed) {
+                            $show = 'payed'; // ya se ha realizado el pago
+                        } elseif ($contract->status->recieved) {
+                            $show = 'recieved'; // goteo ha recibido el contrato firmado
+                        } elseif ($contract->status->ready) {
+                            $show = 'ready'; // el pdf está listo para descargarse
+                        } elseif ($contract->status->admin) {
+                            $show = 'review'; // los datos están siendo revisados por el admín
+                        } elseif ($contract->status->owner) {
+                            $show = 'closed'; // el formuladio está cerrado, el contrato está en cola para ser revisado
+                        } else {
+                            $show = 'edit'; // hay registro y se puede editar
+                        }
+                    }
+                    
+                    $viewData['show'] = $show;
+                    $viewData['contract'] = $contract;
+
                     break;
 
                 // goteo-analytics para este proyecto

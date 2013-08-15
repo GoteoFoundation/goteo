@@ -321,30 +321,13 @@ namespace Goteo\Controller\Dashboard {
         
         
         /**
-         * Aplica cambio de estado al proceso de contrato
+         * procesar algo respecto al contrato....
          * 
          * @param object $project Instancia de proyecto de trabajo
          * @param array $errors (por referncia)
          * @return boolean
          */
         public static function process_contract ($project, &$errors = array()) {
-
-            // si el impulsor notifica que ha actualizado las cuentas
-            if (isset($_POST['account_update'])) {
-                
-                // enviar mail a Mercè que el usuario ha modificado las cuentas bancarias de su proyecto
-                // mensaje que le diga al usuario si el mail se ha enviado correctamente
-                
-                // Evento Feed
-                $log = new Feed();
-                $log->setTarget($project->id);
-                $log->populate('usuario cambia las cuentas de su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha modificado la cuenta bancaria/paypal del proyecto %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('project', $project->name, $project->id)
-                        )));
-                $log->doAdmin('user');
-                unset($log);
-            }
 
         }
         
