@@ -135,6 +135,9 @@ namespace Goteo\Model {
             if($name == "call") {
 	            return Call\Project::miniCalled($this->id);
 	        }
+            if($name == "allowpp") {
+	            return Project\Account::getAllowpp($this->id);
+	        }
             return $this->$name;
         }
 

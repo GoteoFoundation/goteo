@@ -22,7 +22,8 @@ if ($project->called instanceof Call && $project->called->dropable) {
     $allowpp = false;
 } else {
     $call = null;
-    $allowpp = true;
+    
+    $allowpp = $project->allowpp;
 }
 
 $personal = $this['personal'];
