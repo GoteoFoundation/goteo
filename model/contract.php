@@ -3,7 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Model;
     
     class Contract extends \Goteo\Core\Model {
 
@@ -71,7 +72,7 @@ namespace Goteo\Model {
             $contract = new Contract;
             $contract->project = $id;
             /* sacar datos del proyecto */
-            $projData = \Goteo\Model\Project::get($id);
+            $projData = \Goteo\Model\Project::get($id, 'es');
             if (empty($contract->number) && !empty($projData->published)) {
                 $date = strtotime($projData->published);
                 $contract->date = date('dmY', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
@@ -97,10 +98,12 @@ namespace Goteo\Model {
 
             // campos de descripción del proyecto
             $contract->project_description = $projData->description;
-            // texto montadod esde costes
-            $contract->project_invest = 'texto montado desde costes';
+            
+            // texto montado desde costes
+            $contract->project_invest = self::txtInvest($projData);
+            
             // texto montado desde retornos
-            $contract->project_return = 'texto montado desde retornos';
+            $contract->project_return = self::txtReturn($projData);
             
             // cuentas
             $account = \Goteo\Model\Project\Account::get($projData->id);
@@ -545,6 +548,48 @@ namespace Goteo\Model {
                 'documents'    => array(),
                 'additional'  => array()
             );
+        }
+ 
+        // para montar el texto de objetivo de financiación
+        public static function txtInvest($projData) {
+            $txt_invest_min = array();
+            $txt_invest_opt = array();
+            foreach ($projData->costs as $costData) {
+                if ($costData->required) 
+                    $txt_invest_min[] = $costData->cost;
+                else
+                    $txt_invest_opt[] = $costData->cost;
+            }
+            
+            return 'El objetivo de la campaña en Goteo es financiar los costes de: 
+- '
+                . implode('
+- ', $txt_invest_min)
+                . '. 
+
+En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gastos de: 
+- ' 
+                . implode('
+- ', $txt_invest_opt)
+                . '.';
+        }
+        
+        // para montar el texto de retornos
+        public static function txtReturn($projData) {
+            $licenses = array();
+
+            foreach (Model\License::getAll() as $l) {
+                $licenses[$l->id] = $l;
+            }
+            
+            $rews = 'El retorno colectivo que ofrece el proyecto consistirá en:';
+            foreach ($projData->social_rewards as $social) {
+                $rews .= "
+
+- {$social->icon_name}: {$social->reward} Será publicado bajo licencia {$licenses[$social->license]->name} ({$licenses[$social->license]->url})";
+            }
+            
+            return $rews;
         }
         
 	}
