@@ -65,9 +65,16 @@ namespace Goteo\Controller {
         }
 
         public function raw ($id) {
-            $contract = Model\Contract::get($id, LANG);
-            \trace($contract);
-            die;
+            $contract = Model\Contract::get($id);
+            // temporal para testeo, si no tiene contrato lo creamos
+            if (!$contract) {
+                if (Model\Contract::create($id)) {
+                    $contract = Model\Contract::get($id);
+                } else {
+                    die ('fallo al crear el registro de contrato');
+                }
+            }
+            die(\trace($contract));
         }
 
         // los contratos no se pueden eliminar... ¿o sí?
@@ -89,8 +96,8 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar los datos de contrato
         public function edit ($id) {
-            $contract = Model\Contract::get($id, null);
-
+            $contract = Model\Contract::get($id);
+            
             // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados
             if ($contract->owner != $_SESSION['user']->id // no es su proyecto
                 && $contract->status->owner
