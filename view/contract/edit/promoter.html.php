@@ -93,7 +93,7 @@ echo new SuperForm(array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => 'Municipio',
+                    'title'     => Text::get('contract-field-location'),
                     'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
                     'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
                     'value'     => $contract->location
@@ -103,7 +103,7 @@ echo new SuperForm(array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => 'Provincia',
+                    'title'     => Text::get('personal-field-region'),
                     'errors'    => !empty($errors['region']) ? array($errors['region']) : array(),
                     'ok'        => !empty($okeys['region']) ? array($okeys['region']) : array(),
                     'value'     => $contract->region

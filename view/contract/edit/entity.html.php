@@ -107,7 +107,7 @@ $elements = ($contract->type == 0)
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => ($contract->type > 0),
-                    'title'     => 'Municipio',
+                    'title'     => Text::get('contract-field-location'),
                     'errors'    => !empty($errors['entity_location']) ? array($errors['entity_location']) : array(),
                     'ok'        => !empty($okeys['entity_location']) ? array($okeys['entity_location']) : array(),
                     'value'     => $contract->entity_location
@@ -117,7 +117,7 @@ $elements = ($contract->type == 0)
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => ($contract->type > 0),
-                    'title'     => 'Provincia',
+                    'title'     => Text::get('personal-field-region'),
                     'errors'    => !empty($errors['entity_region']) ? array($errors['entity_region']) : array(),
                     'ok'        => !empty($okeys['entity_region']) ? array($okeys['entity_region']) : array(),
                     'value'     => $contract->entity_region
