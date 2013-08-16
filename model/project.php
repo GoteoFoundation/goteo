@@ -1477,7 +1477,6 @@ namespace Goteo\Model {
                 
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para revisión. ' . $e->getMessage();
-                //Text::get('send-project-review-fail');
                 return false;
             }
         }
@@ -1492,7 +1491,6 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
-                //Text::get('send-project-reedit-fail');
                 return false;
             }
         }
@@ -1528,7 +1526,6 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al publicar el proyecto. ' . $e->getMessage();
-                //Text::get('send-project-publish-fail');
                 return false;
             }
         }
@@ -1543,7 +1540,6 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
-                //Text::get('send-projecct-close-fail');
                 return false;
             }
         }
@@ -1558,7 +1554,6 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
-                //Text::get('send-projecct-close-fail');
                 return false;
             }
         }
@@ -1573,7 +1568,6 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar por financiado el proyecto. ' . $e->getMessage();
-                //Text::get('send-project-success-fail');
                 return false;
             }
         }
@@ -1588,7 +1582,6 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo SQL al marcar fecha de paso de ronda. ' . $e->getMessage();
-                //Text::get('send-project-success-fail');
                 return false;
             }
         }
@@ -1603,7 +1596,20 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar el retorno por cunplido para el proyecto. ' . $e->getMessage();
-                //Text::get('send-project-fulfill-fail');
+                return false;
+            }
+        }
+
+        /*
+         * Devuelve a estado financiado (por retorno pendiente) pero no modifica fecha
+         */
+        public function rollback(&$errors = array()) {
+			try {
+				$sql = "UPDATE project SET status = :status WHERE id = :id";
+				self::query($sql, array(':status'=>4, ':id'=>$this->id));
+                return true;
+            } catch (\PDOException $e) {
+                $errors[] = 'Fallo al dar el retorno pendiente para el proyecto. ' . $e->getMessage();
                 return false;
             }
         }
