@@ -9,3 +9,5 @@ CREATE TABLE `contract_status` (
 PRIMARY KEY ( `contract` )
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Seguimiento de estado de contrato';
 
+-- otros 2 flags
+ALTER TABLE `contract_status`  ADD `prepay` INT(1) NOT NULL COMMENT 'Ha habido pago avanzado',  ADD `closed` INT(1) NOT NULL COMMENT 'Contrato finiquitado';
