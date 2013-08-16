@@ -31,7 +31,7 @@ echo new SuperForm(array(
                     'value' => 0,
                     'type'  => 'radio',
                     'class' => 'inline',
-                    'label' => 'En su propio nombre y derecho ',
+                    'label' => Text::get('contract-entity-option_0'),
                     'checked' => $contract->type == 0,
                 ),
                 'type-association' =>  array(
@@ -39,7 +39,7 @@ echo new SuperForm(array(
                     'value' => 1,
                     'type'  => 'radio',
                     'class' => 'inline',
-                    'label' => 'Como representante de una asociación ',
+                    'label' => Text::get('contract-entity-option_1'),
                     'checked' => $contract->type == 1,
                 ),
                 'type-bussines' =>  array(
@@ -47,7 +47,7 @@ echo new SuperForm(array(
                     'value' => 2,
                     'type'  => 'radio',
                     'class' => 'inline',
-                    'label' => 'Como apoderado de una entidad mercantil ',
+                    'label' => Text::get('contract-entity-option_2'),
                     'checked' => $contract->type == 2,
                 )
             )
@@ -58,6 +58,7 @@ echo new SuperForm(array(
             'class'     => 'inline',
             'required'  => true,
             'title'     => Text::get('personal-field-contract_name'),
+            'hint'     => Text::get('tooltip-project-contract_name'),
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array(),
             'value'     => $contract->name
@@ -68,15 +69,27 @@ echo new SuperForm(array(
             'class'     => 'inline',
             'required'  => true,
             'title'     => Text::get('personal-field-contract_nif'),
+            'hint'     => Text::get('tooltip-project-contract_nif'),
             'errors'    => !empty($errors['nif']) ? array($errors['nif']) : array(),
             'ok'        => !empty($okeys['nif']) ? array($okeys['nif']) : array(),
             'value'     => $contract->nif
         ),
 
+        'birthdate'  => array(
+            'type'      => 'datebox',
+            'required'  => true,
+            'size'      => 8,
+            'title'     => Text::get('personal-field-contract_birthdate'),
+            'hint'      => Text::get('tooltip-project-contract_birthdate'),
+            'errors'    => !empty($errors['birthdate']) ? array($errors['birthdate']) : array(),
+            'ok'        => !empty($okeys['birthdate']) ? array($okeys['birthdate']) : array(),
+            'value'     => $contract->birthdate
+        ),
+                
         /* Domicilio fiscal */
         'fiscaladdr' => array(
             'type'      => 'group',
-            'title'     => 'Dirección fiscal',
+            'title'     => Text::get('personal-field-main_address'),
             'children'  => array(
 
                 'address' => array(

@@ -8,9 +8,103 @@ $contract = $this['contract'];
 $errors = $contract->errors[$this['step']] ?: array();         
 $okeys  = $contract->okeys[$this['step']] ?: array();
 
-$hint = ($contract->type == 0) 
-? 'Como promotor en propio nombre y derecho no tienes nada para rellenar en este paso.'
-: Text::get('guide-contract-entity');
+$hint = ($contract->type == 0) ? Text::get('guide-contract-no_entity') : Text::get('guide-contract-entity');
+
+// captions segun tipo (tambien campos segun tipo
+switch ($contract->type) {
+    case 0:
+        // propio nombre y derecho
+        $reg_name = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        $reg_date = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        $reg_number = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        $reg_id = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        break;
+    
+    case 1:
+        // representatne de asociación
+        $reg_name = array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_name_1'),
+                    'required'  => true,
+                    'value'     => $contract->reg_name,
+                    'errors'    => !empty($errors['reg_name']) ? array($errors['reg_name']) : array(),
+                    'ok'        => !empty($okeys['reg_name']) ? array($okeys['reg_name']) : array()
+                );
+
+        $reg_date = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        
+        $reg_number = array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_number_1'),
+                    'required'  => true,
+                    'value'     => $contract->reg_number,
+                    'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
+                    'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
+                );
+
+        $reg_id = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        break;
+    
+    case 2:
+        // apoderado de entidad mercantil
+        $reg_name = array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_name_2'),
+                    'required'  => true,
+                    'value'     => $contract->reg_name,
+                    'errors'    => !empty($errors['reg_name']) ? array($errors['reg_name']) : array(),
+                    'ok'        => !empty($okeys['reg_name']) ? array($okeys['reg_name']) : array()
+                );
+
+        $reg_date  = array(
+            'type'      => 'datebox',
+            'required'  => true,
+            'size'      => 8,
+            'title'     => Text::get('contract-field-reg_date_2'),
+            'errors'    => !empty($errors['reg_date']) ? array($errors['reg_date']) : array(),
+            'ok'        => !empty($okeys['reg_date']) ? array($okeys['reg_date']) : array(),
+            'value'     => $contract->reg_date
+        );
+                
+        
+        
+        $reg_number = array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_number_2'),
+                    'required'  => true,
+                    'value'     => $contract->reg_number,
+                    'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
+                    'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
+                );
+
+        $reg_id = array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_id_2'),
+                    'required'  => true,
+                    'value'     => $contract->reg_id,
+                    'errors'    => !empty($errors['reg_id']) ? array($errors['reg_id']) : array(),
+                    'ok'        => !empty($okeys['reg_id']) ? array($okeys['reg_id']) : array()
+                );
+        break;
+}
 
 // Datos de asociación (si representante) o entidad (si apoderado)
 $elements = ($contract->type == 0) 
@@ -20,6 +114,15 @@ $elements = ($contract->type == 0)
                 'type' => 'hidden',
                 'value' => 'entity'
             ),
+
+            'reg_name' => $reg_name,
+
+            'reg_date' => $reg_date,
+
+            'reg_number' => $reg_number,
+
+            'reg_id' => $reg_id,
+
 
             'footer' => array(
                 'type'      => 'group',
@@ -90,7 +193,7 @@ $elements = ($contract->type == 0)
         /* Domicilio */
         'entity' => array(
             'type'      => 'group',
-            'title'     => 'Dirección social',
+            'title'     => Text::get('personal-field-post_address'),
             'children'  => array(
 
                 'entity_address' => array(
@@ -147,6 +250,14 @@ $elements = ($contract->type == 0)
             )
         ),
 
+        'reg_name' => $reg_name,
+        
+        'reg_date' => $reg_date,
+        
+        'reg_number' => $reg_number,
+        
+        'reg_id' => $reg_id,
+        
         'footer' => array(
             'type'      => 'group',
             'children'  => array(

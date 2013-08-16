@@ -373,6 +373,12 @@ namespace Goteo\Model {
                  $okeys['promoter']['nif'] = 'ok';
             }
 
+            if (empty($this->birthdate)) {
+                $errors['promoter']['birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
+            } else {
+                 $okeys['promoter']['birthdate'] = 'ok';
+            }
+            
             if (empty($this->address)) {
                 $errors['promoter']['address'] = Text::get('mandatory-project-field-address');
             } else {
@@ -458,6 +464,45 @@ namespace Goteo\Model {
                      $okeys['entity']['entity_country'] = 'ok';
                 }
                 
+                // y los legales
+                // para representantes de asociación
+                if ($this->type == 1) {
+                    if (empty($this->reg_name)) {
+                        $errors['entity']['reg_name'] = 'Es obligatorio indicar en que registro se inscribió la asociación';
+                    } else {
+                         $okeys['entity']['reg_name'] = 'ok';
+                    }
+                    if (empty($this->reg_number)) {
+                        $errors['entity']['reg_number'] = 'Es obligatorio indicar el número de registro';
+                    } else {
+                         $okeys['entity']['reg_number'] = 'ok';
+                    }
+                }
+
+                // para representantes de entidad jurídica
+                if ($this->type == 2) {
+                    if (empty($this->reg_name)) {
+                        $errors['entity']['reg_name'] = 'Es obligatorio indicar el nombre del notario que otorgó la escritura pública de la empresa';
+                    } else {
+                         $okeys['entity']['reg_name'] = 'ok';
+                    }
+                    if (empty($this->reg_date)) {
+                        $errors['entity']['reg_date'] = 'Es obligatorio indicar la fecha en que el notario otorgó la escritura pública';
+                    } else {
+                         $okeys['entity']['reg_date'] = 'ok';
+                    }
+                    if (empty($this->reg_number)) {
+                        $errors['entity']['reg_number'] = 'Es obligatorio indicar el número de protocolo del notario';
+                    } else {
+                         $okeys['entity']['reg_number'] = 'ok';
+                    }
+                    if (empty($this->reg_id)) {
+                        $errors['entity']['reg_id'] = 'Es obligatorio indicar el número y la ciudad de inscripción en el Registro Mercantil';
+                    } else {
+                         $okeys['entity']['reg_id'] = 'ok';
+                    }
+                }
+                
             }
             /***************** FIN Revisión del paso ENTIDAD *****************/
             
@@ -488,53 +533,6 @@ namespace Goteo\Model {
                  $okeys['documents']['docs'] = 'ok';
             }
             /***************** FIN Revisión del paso DOCUMENTACIÓN *****************/
-
-            
-            /***************** Revisión de campos del paso ADICIONALES  *****************/
-            if (empty($this->birthdate)) {
-                $errors['additional']['birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
-            } else {
-                 $okeys['additional']['birthdate'] = 'ok';
-            }
-            
-            // para representantes de asociación
-            if ($this->type == 1) {
-                if (empty($this->reg_name)) {
-                    $errors['additional']['reg_name'] = 'Es obligatorio indicar en que registro se inscribió la asociación';
-                } else {
-                     $okeys['additional']['reg_name'] = 'ok';
-                }
-                if (empty($this->reg_number)) {
-                    $errors['additional']['reg_number'] = 'Es obligatorio indicar el número de registro';
-                } else {
-                     $okeys['additional']['reg_number'] = 'ok';
-                }
-            }
-            
-            // para representantes de entidad jurídica
-            if ($this->type == 2) {
-                if (empty($this->reg_name)) {
-                    $errors['additional']['reg_name'] = 'Es obligatorio indicar el nombre del notario que otorgó la escritura pública de la empresa';
-                } else {
-                     $okeys['additional']['reg_name'] = 'ok';
-                }
-                if (empty($this->reg_date)) {
-                    $errors['additional']['reg_date'] = 'Es obligatorio indicar la fecha en que el notario otorgó la escritura pública';
-                } else {
-                     $okeys['additional']['reg_date'] = 'ok';
-                }
-                if (empty($this->reg_number)) {
-                    $errors['additional']['reg_number'] = 'Es obligatorio indicar el número de protocolo del notario';
-                } else {
-                     $okeys['additional']['reg_number'] = 'ok';
-                }
-                if (empty($this->reg_id)) {
-                    $errors['additional']['reg_id'] = 'Es obligatorio indicar el número y la ciudad de inscripción en el Registro Mercantil';
-                } else {
-                     $okeys['additional']['reg_id'] = 'ok';
-                }
-            }
-            /***************** FIN Revisión del paso ADICIONALES *****************/
             
             $this->finishable = (\array_empty($errors));
         }
@@ -545,8 +543,7 @@ namespace Goteo\Model {
                 'promoter'     => array(),
                 'entity'       => array(),
                 'account'      => array(),
-                'documents'    => array(),
-                'additional'  => array()
+                'documents'    => array()
             );
         }
  

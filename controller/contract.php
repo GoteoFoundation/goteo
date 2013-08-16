@@ -136,12 +136,6 @@ namespace Goteo\Controller {
                 'documents' => array(
                     'name' => Text::get('contract-step-documents'),
                     'title' => 'Title Documentos',
-                    'class' => 'on-on on',
-                    'num' => ''
-                ),
-                'additional' => array(
-                    'name' => Text::get('contract-step-additional'),
-                    'title' => 'Title Adicionales',
                     'class' => 'on-off on',
                     'num' => ''
                 ),
@@ -207,6 +201,7 @@ namespace Goteo\Controller {
                 'type',
                 'name',
                 'nif',
+                'birthdate',
                 'address',
                 'location',
                 'region',
@@ -238,7 +233,11 @@ namespace Goteo\Controller {
                 'entity_location',
                 'entity_region',
                 'entity_zipcode',
-                'entity_country'
+                'entity_country',
+                'reg_name',
+                'reg_date',
+                'reg_number',
+                'reg_id'
             );
 
             foreach ($fields as $field) {
@@ -311,30 +310,6 @@ namespace Goteo\Controller {
             }
             
             
-            
-            return true;
-        }
-
-        /*
-         * datos adicionales de registro, según tipo
-         * 
-         */
-        private function process_additional(&$contract, &$errors) {
-            if (!isset($_POST['process_additional'])) {
-                return false;
-            }
-
-            $fields = array(
-                'birthdate',
-                'reg_name',
-                'reg_date',
-                'reg_number',
-                'reg_id'
-            );
-
-            foreach ($fields as $field) {
-                $contract->$field = $_POST[$field];
-            }
             
             return true;
         }
