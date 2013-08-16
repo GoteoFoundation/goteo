@@ -338,11 +338,23 @@ namespace Goteo\Controller {
                         $contract = null;
                         $show = 'off';
                     } else {
+                        
+                        // veamos si quiere editarlo
+                        if ($action == 'edit') 
+                            throw new Redirection('/contract/edit/'.$project->id);
+                        
+                        // o si quiere ver el borrador/pdf
+                        if ($action == 'view') 
+                            throw new Redirection('/contract/'.$project->id);
+                        
+                        
                         // a ver si tiene registro
                         $contract = Model\Contract::get($project->id);
 
                         if (!$contract) {
                             $show = 'campaign'; // el proyecto sigue en campaña, aun no se puede gestionar el contrato
+                        } elseif ($contract->status->closed) {
+                            $show = 'fulfilled'; // se ha finiquitado el contrato
                         } elseif ($contract->status->payed) {
                             $show = 'payed'; // ya se ha realizado el pago
                         } elseif ($contract->status->recieved) {
@@ -358,6 +370,7 @@ namespace Goteo\Controller {
                         }
                     }
                     
+                    $viewData['page'] = Page::get('dashboard_contract');
                     $viewData['show'] = $show;
                     $viewData['contract'] = $contract;
 
@@ -894,12 +907,12 @@ namespace Goteo\Controller {
                     'options' => array(
                         'summary' => Text::get('dashboard-menu-projects-summary'),
                         'updates' => Text::get('dashboard-menu-projects-updates'),
-                        'widgets' => Text::get('dashboard-menu-projects-widgets'),
-                        'contract' => Text::get('dashboard-menu-projects-contract'),
                         'supports' => Text::get('dashboard-menu-projects-supports'),
                         'rewards' => Text::get('dashboard-menu-projects-rewards'),
                         'messegers' => Text::get('dashboard-menu-projects-messegers'),
-                        'graph' => 'Analytics'
+                        'contract' => Text::get('dashboard-menu-projects-contract'),
+                        'widgets' => Text::get('dashboard-menu-projects-widgets'),
+                        'graph' => 'Analytics' // esto lo metemos en summary
                     )
                 )
             );
