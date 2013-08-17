@@ -12,6 +12,7 @@ namespace Goteo\Model {
             $project,
             $number, //numero de contrato
             $date, // día anterior a la publicación
+            $enddate, // un año después de la fecha del contrato
             $fullnum, // numero+fecha de publicación
             $type, //  0 = persona física; 1 = representante asociacion; 2 = apoderado entidad mercantil
                 
@@ -75,7 +76,8 @@ namespace Goteo\Model {
             $projData = \Goteo\Model\Project::get($id, 'es');
             if (empty($contract->number) && !empty($projData->published)) {
                 $date = strtotime($projData->published);
-                $contract->date = date('dmY', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
+                $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
+                $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)+1));
             }
             $contract->type = 0; // inicialmente persona fisica
 
@@ -171,6 +173,7 @@ namespace Goteo\Model {
                     'project',
                     'number',
                     'date',
+                    'enddate',
                     'type',
                     'name',
                     'nif',
