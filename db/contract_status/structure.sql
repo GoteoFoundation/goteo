@@ -11,3 +11,6 @@ PRIMARY KEY ( `contract` )
 
 -- otros 2 flags
 ALTER TABLE `contract_status`  ADD `prepay` INT(1) NOT NULL COMMENT 'Ha habido pago avanzado',  ADD `closed` INT(1) NOT NULL COMMENT 'Contrato finiquitado';
+
+-- pasamos el campo pdf al registro de contrato, no es un flag
+ALTER TABLE `contract_status` DROP `pdf`;
