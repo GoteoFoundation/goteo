@@ -59,7 +59,6 @@ $elements      = array(
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
                        . new View('view/contract/widget/review.html.php', array('contract' => $contract))
-                       . new View('view/contract/widget/notice.html.php')
                        . '</div>'
                        . '</div></div>'
     )
