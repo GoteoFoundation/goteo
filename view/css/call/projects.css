@@ -185,6 +185,10 @@ a.expand {
     padding-left: 25px;
 }
 
+#project-list li div.image div.tagmark.aqua {
+    background:url('/view/css/node/tagmark_aqua.png') 0 0 no-repeat;
+}
+
 #project-list li div.image div.tagmark.green {
     background:url('/view/css/node/tagmark_green.png') 0 0 no-repeat;
 }

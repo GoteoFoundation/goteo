@@ -27,20 +27,12 @@ namespace Goteo\Controller {
 
             $types = self::$types;
 
-            $viewData = array();
-            $viewData['title'] = array(
-                'popular' => Text::get('discover-group-popular-header'),
-                'outdate' => Text::get('discover-group-outdate-header'),
-                'recent'  => Text::get('discover-group-recent-header'),
-                'success' => Text::get('discover-group-success-header'),
-                'archive' => Text::get('discover-group-archive-header')
+            $viewData = array(
+                'lists' => array()
             );
-
-            $viewData['lists'] = array();
 
             if (\NODE_ID != \GOTEO_NODE) {
                 $types[] = 'others';
-                $viewData['title']['others'] = Text::get('discover-group-others-header');
             }
 
             // si estamos en easy-mode limitamos a 3 proyectos por grupo (en la portada)

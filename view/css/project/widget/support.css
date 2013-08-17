@@ -233,6 +233,10 @@ div.widget.project-support div.tagmark {
 	line-height: 40px;
 }
 
+div.widget.project-support div.tagmark.aqua {
+    background:url('/view/css/project/long_tagmark_aqua.png') left top no-repeat;
+}
+
 div.widget.project-support div.tagmark.green {
     background:url('/view/css/project/long_tagmark_green.png') left top no-repeat;
 }

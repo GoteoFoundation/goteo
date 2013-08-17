@@ -73,7 +73,6 @@ namespace Goteo\Controller\Admin {
                     $accounts->bank_owner = $_POST['bank_owner'];
                     $accounts->paypal = $_POST['paypal'];
                     $accounts->paypal_owner = $_POST['paypal_owner'];
-                    $accounts->allowpp = $_POST['allowpp'];
                     if ($accounts->save($errors)) {
                         Message::Info('Se han actualizado las cuentas del proyecto '.$projData->name);
                     } else {
@@ -204,11 +203,11 @@ namespace Goteo\Controller\Admin {
                     }
                     break;
                 case 'publish':
-                    // poner un proyecto en campaï¿½a
+                    // poner un proyecto en campaña
                     if ($project->publish($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaï¿½a</span>';
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>';
                     } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaï¿½a</span>';
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
                     }
                     break;
                 case 'cancel':
@@ -227,20 +226,20 @@ namespace Goteo\Controller\Admin {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Edicion</span>';
                     }
                     break;
-                case 'complete':
-                    // dar un proyecto por financiado manualmente
-                    if ($project->succeed($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Financiado</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Financiado</span>';
-                    }
-                    break;
                 case 'fulfill':
                     // marcar que el proyecto ha cumplido con los retornos colectivos
                     if ($project->satisfied($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Retorno cumplido</span>';
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Retorno cumplido</span>';
+                    }
+                    break;
+                case 'unfulfill':
+                    // dar un proyecto por financiado manualmente
+                    if ($project->rollback($errors)) {
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Financiado</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Financiado</span>';
                     }
                     break;
             }

@@ -57,7 +57,7 @@
                 continue;
             ?>
             <div class="widget projects">
-                <h2 class="title"><?php echo $this['title'][$type] ?></h2>
+                <h2 class="title"><?php echo Text::get('discover-group-'.$type.'-header') ?></h2>
                 <?php foreach ($list as $group=>$projects) : ?>
                     <div class="discover-group discover-group-<?php echo $type ?>" id="discover-group-<?php echo $type ?>-<?php echo $group ?>">
 

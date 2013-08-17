@@ -74,7 +74,7 @@ uasort($project->individual_rewards,
                     </a>
                 </div>
                 <?php endif ?>
-                <?php if ($social->url) : ?><a href="<?php echo $social->url ?>" target="_blank" class="button green"><?php echo Text::get('social_reward-access'); ?></a><?php endif; ?>
+                <?php if ($social->url) : ?><a href="<?php echo $social->url ?>" target="_blank" class="button green tipsy" title="<?php echo Text::get('social_reward-access_title'); ?>"><?php echo Text::get('social_reward-access'); ?></a><?php endif; ?>
             </li>
         <?php endforeach; ?>
         </ul>
