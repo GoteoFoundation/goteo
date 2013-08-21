@@ -59,7 +59,10 @@ namespace Goteo\Model {
             $project_return, // retornos comprometidos
             
             // seguimiento (es un objeto, cada atributo es un valor de seguimiento)
-            $status;
+            $status,
+                
+            // documentación
+            $docs = array();
 
 
         /**
@@ -142,6 +145,10 @@ namespace Goteo\Model {
                 // ponemos tambien los datos de seguimiento de estado
                 $contract->status = self::getStatus($id);
 
+                // cargamos los documentos
+                $contract->docs = Contract\Document::getDocs($id);
+            
+                
                 return $contract;
             } else {
                 // aun no tenemos datos de contrato
@@ -518,22 +525,21 @@ namespace Goteo\Model {
             if (empty($this->bank)) {
                 $errors['accounts']['bank'] = 'Es obligatorio indicar una cuenta bancaria para el proyecto';
             } else {
-                 $okeys['accounts']['bank'] = 'ok';
+                $okeys['accounts']['bank'] = 'ok';
             }
             if (empty($this->bank_owner)) {
                 $errors['accounts']['bank_owner'] = 'Es obligatorio poner el nombre del titular de la cuenta bancaria';
             } else {
-                 $okeys['accounts']['bank_owner'] = 'ok';
+                $okeys['accounts']['bank_owner'] = 'ok';
             }
             /***************** FIN Revisión del paso CUENTAS *****************/
 
             
             /***************** Revisión de campos del paso DOCUMENTACIÓN  *****************/
             if (empty($this->docs)) {
-                // por ahora no
-                // $errors['documents']['docs'] = Text::get('mandatory-contract-docs');
+                $errors['documents']['docs'] = Text::get('mandatory-contract-docs');
             } else {
-                 $okeys['documents']['docs'] = 'ok';
+                $okeys['documents']['docs'] = 'ok';
             }
             /***************** FIN Revisión del paso DOCUMENTACIÓN *****************/
             

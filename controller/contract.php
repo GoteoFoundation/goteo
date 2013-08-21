@@ -35,7 +35,7 @@ namespace Goteo\Controller {
             // Es un admin, es el impulsor
             // 
             $grant = false;
-            if ($contract->owner == $_SESSION['user']->id)  // es el dueño del proyecto
+            if ($contract->project_user == $_SESSION['user']->id)  // es el dueño del proyecto
                 $grant = true;
             elseif (ACL::check('/contract/edit/'.$id))  // puede editar el proyecto
                 $grant = true;
@@ -95,11 +95,11 @@ namespace Goteo\Controller {
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar los datos de contrato
-        public function edit ($id) {
+        public function edit ($id, $step = 'promoter') {
             $contract = Model\Contract::get($id);
             
             // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados
-            if ($contract->owner != $_SESSION['user']->id // no es su proyecto
+            if ($contract->project_user != $_SESSION['user']->id // no es su proyecto
                 && $contract->status->owner
                 && !isset($_SESSION['user']->roles['gestor']) // no es un gestor
                 && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
@@ -112,8 +112,6 @@ namespace Goteo\Controller {
             $contract->check();
             
             // todos los pasos, entrando en datos del promotor por defecto
-            $step = 'promoter';
-
             $steps = array(
                 'promoter' => array(
                     'name' => Text::get('contract-step-promoter'),
@@ -170,6 +168,10 @@ namespace Goteo\Controller {
                 
                 // checkeamos de nuevo
                 $contract->check();
+            }
+            
+            if (!empty($errors)) {
+                Message::Error(implode('<br />', $errors));
             }
 
             // variables para la vista
@@ -286,15 +288,21 @@ namespace Goteo\Controller {
             // tratar el que suben
             if(!empty($_FILES['doc_upload']['name'])) {
                 // procesarlo aqui con el submodelo Contract\Doc
-//                $contract->docs[] = Contract\Doc::upload($contract->id, $_FILES['doc_upload']);
+                $newdoc = new Model\Contract\Document(
+                        array('contract' => $contract->project)
+                    );
+                $newdoc->setFile($_FILES['doc_upload']);
+                if ($newdoc->save($errors)) {
+                    $contract->docs[] = $newdoc;
+                }
             }
 
             // tratar el que quitan
             foreach ($contract->docs as $key=>$doc) {
                 if (!empty($_POST["docs-{$doc->id}-remove"])) {
-                // if ( Contract\Doc::remove($contract->id, $doc->id) ) {
-                // unset($contract->docs[$key]);
-                // }
+                    if ($doc->remove($errors)) {
+                        unset($contract->docs[$key]);
+                    }
                 }
             }
             
