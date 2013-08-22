@@ -373,7 +373,7 @@ namespace Goteo\Controller {
                 throw new Redirection("/project/$project/invest", Redirection::TEMPORARY);
 
             // dejamos el aporte tal cual esta
-            Invest::setDetail($id, 'confirm-fail', 'El usuario regresó a /invest/fail');
+            Model\Invest::setDetail($id, 'confirm-fail', 'El usuario regresó a /invest/fail');
 //            $invest = Model\Invest::get($id);
 //            $invest->setStatus(-1);
 
