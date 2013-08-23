@@ -283,6 +283,8 @@ namespace Goteo\Controller {
 
             switch ($option) {
                 case 'summary':
+                    // los datos json de invests y visitors_data
+                    $viewData['data'] = Dashboard\Projects::graph($project->id);
                     break;
 
                 // gestionar retornos
@@ -374,14 +376,6 @@ namespace Goteo\Controller {
                     $viewData['show'] = $show;
                     $viewData['contract'] = $contract;
 
-                    break;
-
-                // goteo-analytics para este proyecto
-                case 'graph':
-                    
-                    // los datos json de invests y visitors_data
-                    $viewData['data'] = Dashboard\Projects::graph($project->id);
-                    
                     break;
             }
 
@@ -911,8 +905,7 @@ namespace Goteo\Controller {
                         'rewards' => Text::get('dashboard-menu-projects-rewards'),
                         'messegers' => Text::get('dashboard-menu-projects-messegers'),
                         'contract' => Text::get('dashboard-menu-projects-contract'),
-                        'widgets' => Text::get('dashboard-menu-projects-widgets'),
-                        'graph' => 'Analytics' // esto lo metemos en summary
+                        'widgets' => Text::get('dashboard-menu-projects-widgets')
                     )
                 )
             );
