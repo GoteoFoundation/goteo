@@ -215,7 +215,7 @@ namespace Goteo\Controller {
             }
 
             // Paypal solo disponible si activado
-            if ($confirm->method == 'paypal' && Model\Project\Account::getAllowpp($project)) {
+            if ($confirm->method == 'paypal') {
 
                 // hay que cambiarle el status a 0
                 $confirm->setStatus('0');
@@ -357,6 +357,9 @@ namespace Goteo\Controller {
             // marcar que ya se ha completado el proceso de aportar
             $_SESSION['invest_'.$invest.'_completed'] = true;
 
+            // log
+            Model\Invest::setDetail($invest, 'confirmed', 'El usuario regresó a /invest/confirmed');
+            
             // mandarlo a la pagina de gracias
             throw new Redirection("/project/$project/invest/?confirm=ok", Redirection::TEMPORARY);
         }
@@ -374,8 +377,6 @@ namespace Goteo\Controller {
 
             // dejamos el aporte tal cual esta
             Model\Invest::setDetail($id, 'confirm-fail', 'El usuario regresó a /invest/fail');
-//            $invest = Model\Invest::get($id);
-//            $invest->setStatus(-1);
 
             // mandarlo a la pagina de aportar para que lo intente de nuevo
             throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
