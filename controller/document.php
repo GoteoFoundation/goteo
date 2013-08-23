@@ -7,15 +7,17 @@ namespace Goteo\Controller {
 
     class Document extends \Goteo\Core\Controller {
 
-        public function index($id, $name) {
+        public function index($id, $name = null) {
             try {
                 $doc = Model\Contract\Document::get($id);
+                
+                if (!$doc instanceof Model\Contract\Document)
+                    throw new Error('404', 'No tenemos el documento '.$name);
+                
                 // mime type en el header
                 header("Content-type: " . $doc->type);
-                // ruta absoluta a contract_docs
-                $path = Model\Contract\Document::$dir_docs . $doc->name;
-                // coger contenidos y ponerlos
-                echo file_get_contents($path);
+                // contenidos
+                echo file_get_contents($doc->filedir . $doc->name);
             } catch(\PDOException $e) {
                 die("No se ha podido recuperar el documento:<br />" . $e->getMessage());
             }

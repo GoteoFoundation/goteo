@@ -14,12 +14,11 @@ namespace Goteo\Model\Contract {
             $name,
             $type,
             $size,
-            $tmp;
+            $tmp,
+            $filedir;
 
         // ruta absoluta a a contract_docs (no accesible por web)
-        public static $dir_docs = '/var/www/goteo/contracts/docs/';
-        public static $dir_pdfs = '/var/www/goteo/contracts/pdfs/';
-
+        public static $dir = '/var/www/goteo/contracts/';
 
 
         /**
@@ -29,14 +28,14 @@ namespace Goteo\Model\Contract {
          */
         public function setFile ($file) {
 
-            echo \trace($file);
+            $this->filedir = self::$dir . '/' . $this->contract . '/';
             
-            if(!is_dir(self::$dir_docs)) {
-				mkdir(self::$dir_docs);
+            if(!is_dir($this->filedir)) {
+				mkdir($this->filedir);
+                chmod($this->filedir, 0777);
 			}
             if(is_array($file) && !empty($file['name'])) {
-                $name = $this->contract. '_' . $file['name'];
-                $this->name = self::check_filename($name, self::$dir_docs);
+                $this->name = self::check_filename($file['name'], $this->filedir);
                 $this->type = $file['type'];
                 $this->tmp = $file['tmp_name'];
                 $this->error = $file['error'];
@@ -103,7 +102,7 @@ namespace Goteo\Model\Contract {
 
                     //si es un archivo que se sube
                     if(is_uploaded_file($this->tmp)) {
-                        $destino = self::$dir_docs . $this->name;
+                        $destino = $this->filedir . $this->name;
                         if (move_uploaded_file($this->tmp, $destino)) {
                             chmod($destino, 0777);
                         } else {
@@ -149,7 +148,8 @@ namespace Goteo\Model\Contract {
                     WHERE id = :id";
                 
                 $query = static::query($sql, array(':id' => $id));
-                $doc = $query->fetchObject();
+                $doc = $query->fetchObject(__CLASS__);
+                $doc->filedir = self::$dir . '/' . $doc->contract . '/';
                 
                 return $doc;
             } catch(\PDOException $e) {
@@ -175,6 +175,7 @@ namespace Goteo\Model\Contract {
                 
                 $query = static::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $document) {
+                    $document->filedir = self::$dir . '/' . $document->contract . '/';
                     $array[] = $document;
                 }
                 
@@ -192,7 +193,7 @@ namespace Goteo\Model\Contract {
             try {
                 $sql = "DELETE FROM document WHERE id = ?";
                 if (self::query($sql, array($this->id))) {
-                    if (unlink(self::$dir_docs . $this->name)) {
+                    if (unlink($this->filedir . $this->name)) {
                         return true;
                     } else {
                         $errors[] = 'Se ha borrado el registro pero el unlink() ha fallado';
