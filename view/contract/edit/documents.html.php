@@ -28,8 +28,10 @@ foreach ($contract->docs as $doc) {
 }
 
 // campos de proyecto (descripción, objetivo, retornos)
-// ya veremos si son editables por el impulsor o no
-$descfields = array(
+// solo editables por gestor
+$descfields = (!isset($_SESSION['user']->roles['gestor']) && !isset($_SESSION['user']->roles['superadmin'])) 
+    ? array()
+    : array(
             'type' => 'group',
             'title'     => 'Proyecto',
             'children'  => array(                

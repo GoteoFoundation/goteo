@@ -314,7 +314,9 @@ namespace Goteo\Controller {
             );
 
             foreach ($fields as $field) {
-                $contract->$field = $_POST[$field];
+                if (isset($_POST[$field])) {
+                    $contract->$field = $_POST[$field];
+                }
             }
             
             
