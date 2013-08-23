@@ -310,7 +310,15 @@ namespace Goteo\Controller {
 
                             $errors = array();
                             if ($project->passed($errors)) {
-                                echo ' -> Ok';
+                                // se crea el registro de contrato
+                                if (Model\Contract::create($project->id, $errors)) {
+                                    echo ' -> Ok:: se ha creado el registro de contrato';
+                                } else {
+                                    @mail('goteo_fail@doukeshi.org',
+                                        'Fallo al crear registro de contrato ' . SITE_URL,
+                                        'Fallo al crear registro de contrato para el proyecto '.$project->name.': ' . implode(',', $errors));
+                                    echo ' -> semi-Ok: se ha actualiuzado el estado del proyecto pero ha fallado al crear el registro de contrato. ERROR: ' . implode(',', $errors);
+                                }
                             } else {
                                 @mail('goteo_fail@doukeshi.org',
                                     'Fallo al marcar fecha de paso a segunda ronda ' . SITE_URL,

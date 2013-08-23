@@ -72,7 +72,7 @@ namespace Goteo\Model {
          * @param varchar(50) $id del proyecto
          * @return true (el control de errores habrá que hacerlo por email)
          */
-        public static function create ($id) {
+        public static function create ($id, &$errors = array()) {
             $contract = new Contract;
             $contract->project = $id;
             /* sacar datos del proyecto */
@@ -118,7 +118,7 @@ namespace Goteo\Model {
             $contract->paypal = $account->paypal;
             $contract->paypal_owner = $account->paypal_owner;
 
-            if ($contract->save()) return true;
+            return $contract->save($errors);
         }
 
 
