@@ -295,6 +295,9 @@ namespace Goteo\Controller {
                         }
                     }
                     break;
+                case 'userPersonal':
+                    $viewData['account'] = Model\Project\Account::get($project->id);
+                    break;
                 
                 case 'overview':
                     $viewData['categories'] = Model\Project\Category::getAll();
@@ -777,6 +780,12 @@ namespace Goteo\Controller {
                 Model\User::setPersonal($project->owner, $personalData, true);
             }
 
+            // cuenta PayPal
+            $accounts = Model\Project\Account::get($project->id);
+            $accounts->paypal = $_POST['paypal'];
+            $accounts->save($project->errors['userPersonal']);
+            
+            
             return true;
         }
 
