@@ -517,7 +517,7 @@ namespace Goteo\Model {
             /***************** FIN Revisión del paso ENTIDAD *****************/
             
             /***************** Revisión de campos del paso CUENTAS  *****************/
-            if (empty($this->paypal_owner)) {
+            if (!empty($this->paypal) && empty($this->paypal_owner)) {
                 $errors['accounts']['paypal_owner'] = 'Es obligatorio poner el nombre del titular de la cuenta PayPal del proyecto';
             } else {
                  $okeys['accounts']['paypal_owner'] = 'ok';
