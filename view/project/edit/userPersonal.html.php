@@ -8,10 +8,6 @@ $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();         
 $okeys  = $project->okeys[$this['step']] ?: array();
 
-// si tiene algo en direccion postal entonces tiene una direccion secundaria (la postal)
-$secondary_address = empty($project->post_address) ? false : true;
-
-
 echo new SuperForm(array(
 
     'level'         => $this['level'],
@@ -24,7 +20,8 @@ echo new SuperForm(array(
             'value' => 'userPersonal'
         ),
         
-        /* Radio Tipo de persona */
+        /* Radio Tipo de persona
+         * Aligerando superform
         'contract_entity-radioset' => array(
             'type'      => 'group',
             'title'     => Text::get('personal-field-contract_entity'),
@@ -39,7 +36,7 @@ echo new SuperForm(array(
                     'id'    => 'contract_entity-person',
                     'checked' => !$project->contract_entity ? true : false,
                     'children' => array(
-                        /* vacio si es persona física */
+                        // vacio si es persona física 
                         'contract_entity-person' => array(
                             'type' => 'hidden',
                             'name' => "post_address-same",
@@ -56,7 +53,7 @@ echo new SuperForm(array(
                     'id'    => 'contract_entity-entity',
                     'checked' => $project->contract_entity ? true : false,
                     'children' => array(
-                        /* A desplegar si es persona jurídica */
+                        // A desplegar si es persona jurídica
                         'entity_name' => array(
                             'type'      => 'textbox',
                             'class'     => 'inline',
@@ -96,6 +93,7 @@ echo new SuperForm(array(
                 )
             )
         ),
+        */
 
         'contract' => array(
             'type'      => 'group',
@@ -221,7 +219,8 @@ echo new SuperForm(array(
             )
         ),
 
-        /* Radio de domicilio postal igual o diferente*/
+        /* Radio de domicilio postal igual o diferente
+         * Aligerando superform
         'post_address-radioset' => array(
             'type'      => 'group',
             'class'     => 'inline',
@@ -237,7 +236,7 @@ echo new SuperForm(array(
                     'id'    => 'post_address-radio-same',
                     'checked' => !$project->secondary_address ? true : false,
                     'children' => array(
-                        /* Children vacio si es igual */
+                        // Children vacio si es igual
                         'post_address-same' => array(
                             'type' => 'hidden',
                             'name' => "post_address-same",
@@ -254,7 +253,7 @@ echo new SuperForm(array(
                     'id'    => 'post_address-radio-different',
                     'checked' => $project->secondary_address ? true : false,
                     'children' => array(
-                        /* Domicilio postal (a desplegar si es diferente) */
+                        // Domicilio postal (a desplegar si es diferente)
                         'post_address' => array(
                             'type'      => 'textbox',
                             'class'     => 'inline',
@@ -303,6 +302,7 @@ echo new SuperForm(array(
                 ),
             )
         ),
+        */
 
         'footer' => array(
             'type'      => 'group',

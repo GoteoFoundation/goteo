@@ -7,16 +7,6 @@ use Goteo\Library\Text,
 $project = $this['project'];
 $user = $this['user'];
 
-/*
-if (!empty($user->avatar) && is_object($user->avatar))
-    $image ["avatar-{$user->avatar->id}-remove"] = array(
-        'type'  => 'submit',
-        'label' => Text::get('form-remove-button'),
-        'class' => 'inline remove image-remove weak'
-    );
-*/
-
-
 $interests = array();
 
 $errors = $project->errors[$this['step']] ?: array();
@@ -175,6 +165,7 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['interests']) ? array($okeys['interests']) : array(),
             'options'   => $interests
         ),
+        /* Aligerando superform
         'user_keywords' => array(
             'type'      => 'textbox',
             'required'  => true,
@@ -196,6 +187,7 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['contribution']) ? array($okeys['contribution']) : array(),
             'value'     => $user->contribution
         ),
+         */
         'user_webs' => array(
             'type'      => 'group',
             'required'  => true,
