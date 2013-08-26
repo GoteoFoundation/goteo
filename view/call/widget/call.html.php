@@ -18,13 +18,15 @@ $call->icons = Model\Call\Icon::getNames($call->id);
 $color = array(
     3 => 'red',
     4 => 'aqua',
-    5 => 'violet'
+    5 => 'violet',
+    6 => 'grey'
 );
 
 $tag = array(
-    3 => 'Convocatoria abierta',
-    4 => 'Campa&ntilde;a activa!',
-    5 => 'Convocatoria exitosa'
+    3 => Text::get('call-tagmark-3'),
+    4 => Text::get('call-tagmark-4'),
+    5 => Text::get('call-tagmark-5'),
+    6 => Text::get('call-tagmark-6')
 );
 ?>
 
@@ -32,7 +34,10 @@ $tag = array(
 	<a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="expand"<?php echo $blank; ?>></a>
 
     <div class="image">
+        <?php // en estado aplicación, solo se pone banderolo cuando está abierta la inscripción
+        if ($call->status != 3 || ($call->status == 3 && !$call->expired)) : ?>
         <div class="tagmark <?php echo $color[$call->status] ?>"><?php echo $tag[$call->status] ?></div>
+        <?php endif; ?>
 
         <?php if (!empty($call->image)): ?>
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img alt="<?php echo $call->name ?>" src="<?php echo $call->image->getLink(211, 230, true) ?>" /></a>

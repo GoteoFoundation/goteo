@@ -118,8 +118,9 @@ $filters = $this['filters'];
                     <?php if ($call->status == 1) : ?><a href="<?php echo "/admin/calls/review/{$call->id}"; ?>">[A revisión]</a><?php endif; ?>
                     <?php if ($call->status < 3) : ?><a href="<?php echo "/admin/calls/open/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a comenzar a recibir la inscripción de proyectos, ok?');">[Abrir aplicacion]</a><?php endif; ?>
                     <?php if ($call->status < 4) : ?><a href="<?php echo "/admin/calls/publish/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a comenzar a repartir dinero a los proyectos seleccionados, ok?');">[Publicar]</a><?php endif; ?>
-                    <?php if ($call->status > 1) : ?><a href="<?php echo "/admin/calls/enable/{$call->id}"; ?>" onclick="return confirm('Ojo si la convocatoria está publicandose ahora mismo... ¿seguimos?');">[Reabrir edición]</a><?php endif; ?>
-                    <a href="<?php echo "/admin/calls/cancel/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a CADUCAR, ¿seguro que hacemos eso?');">[Cancelar]</a>
+                    <?php if ($call->status > 1 && $call->status < 4) : ?><a href="<?php echo "/admin/calls/enable/{$call->id}"; ?>" onclick="return confirm('Ojo si la convocatoria está publicandose ahora mismo... ¿seguimos?');">[Reabrir edición]</a><?php endif; ?>
+                    <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/complete/{$call->id}"; ?>" onclick="return confirm('Significa que no se repartirá más dinero, ok?');">[Finalizar]</a><?php endif; ?>
+                    <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/cancel/{$call->id}"; ?>" onclick="return confirm('La convocatoria se va a CANCELAR (no completada), ¿seguro que hacemos eso?');">[Cerrar]</a><?php endif; ?>
             </tr>
             <tr>
                 <td colspan="6"><hr /></td>

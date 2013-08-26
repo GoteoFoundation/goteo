@@ -79,6 +79,13 @@ namespace Goteo\Controller\Admin {
                         $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Edición</span>';
                     }
                     break;
+                case 'complete': // dar por finalizada la convocatoria
+                    if ($call->succeed($errors)) {
+                        $log_text = 'El admin %s ha marcado la convocatoria %s como <span class="red">Finalizada</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al marcar la convocatoria %s como <span class="red">Finalizada</span>';
+                    }
+                    break;
                 case 'delete': // eliminar completamente la convocatoria
                     if ($call->delete($errors)) {
                         $log_text = 'El admin %s ha eliminado la convocatoria %s <span class="red">Completamente</span>';
