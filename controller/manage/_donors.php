@@ -17,7 +17,7 @@ namespace Goteo\Controller\Manage {
                     if (!empty($id)) {
                         Model\User\Donor::resetPdf($id);
                     }
-                    throw new Redirection('/admin/reports/donors');
+                    throw new Redirection('/manage/reports/donors');
                     
                     break;
 
@@ -28,7 +28,7 @@ namespace Goteo\Controller\Manage {
                     $data = Model\User\Donor::getList($filters);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'view/manage/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'donors',
@@ -230,7 +230,7 @@ namespace Goteo\Controller\Manage {
                     
                     
                     return new View(
-                        'view/admin/index.html.php',
+                        'view/manage/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'projects',
@@ -438,7 +438,7 @@ namespace Goteo\Controller\Manage {
 
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'view/manage/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'calls',
@@ -494,7 +494,7 @@ namespace Goteo\Controller\Manage {
                     $data->total = $charged->goteo + $paid->goteo;
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'view/manage/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'paypal',
@@ -515,7 +515,7 @@ namespace Goteo\Controller\Manage {
                         // sacamos la fecha, si no es de hoy lo borramos y lanzamos de nuevo el report
                         if ($data['date'] != date('Ymd')) {
                             unlink($data_file);
-                            throw new Redirection('/admin/reprts/geoloc');
+                            throw new Redirection('/manage/reprts/geoloc');
                         }
                     } else {
                         $data = array(
@@ -559,7 +559,7 @@ namespace Goteo\Controller\Manage {
                     
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'view/manage/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'geoloc',
@@ -580,7 +580,7 @@ namespace Goteo\Controller\Manage {
 
 
             return new View(
-                'view/admin/index.html.php',
+                'view/manage/index.html.php',
                 array(
                     'folder'  => 'reports',
                     'file'    => 'list',

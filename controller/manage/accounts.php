@@ -28,7 +28,7 @@ namespace Goteo\Controller\Manage {
                 //el original tiene que ser de tpv o cash y estar como 'cargo ejecutado'
                 if ($original->method == 'paypal' || $original->status != 1) {
                     Message::Error('No se puede reubicar este aporte!');
-                    throw new Redirection('/admin/accounts');
+                    throw new Redirection('/manage/accounts');
                 }
 
 
@@ -78,7 +78,7 @@ namespace Goteo\Controller\Manage {
                             // Evento Feed
                             $log = new Feed();
                             $log->setTarget($projectData->id);
-                            $log->populate('Aporte reubicado', '/admin/accounts',
+                            $log->populate('Aporte reubicado', '/manage/accounts',
                                 \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                     Feed::item('money', $_POST['amount'].' &euro;'),
@@ -89,7 +89,7 @@ namespace Goteo\Controller\Manage {
                             unset($log);
 
                             Message::Info('Aporte reubicado correctamente');
-                            throw new Redirection('/admin/accounts');
+                            throw new Redirection('/manage/accounts');
                         } else {
                             $errors[] = 'A fallado al cambiar el estado del aporte original ('.$original->id.')';
                         }
@@ -108,7 +108,7 @@ namespace Goteo\Controller\Manage {
                 );
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'view/manage/index.html.php',
                     $viewData
                 );
 
@@ -122,7 +122,7 @@ namespace Goteo\Controller\Manage {
                 $invest = Model\Invest::get($id);
                 if (!$invest instanceof Model\Invest) {
                     Message::Error('No tenemos registro del aporte '.$id);
-                    throw new Redirection('/admin/accounts');
+                    throw new Redirection('/manage/accounts');
                 }
 
                 $status = Model\Invest::status();
@@ -147,10 +147,10 @@ namespace Goteo\Controller\Manage {
                     } else {
                         Message::Error('No se ha cambiado el estado');
                     }
-                    throw new Redirection('/admin/accounts/details/'.$id);
+                    throw new Redirection('/manage/accounts/details/'.$id);
                 }
 
-                return new View('view/admin/index.html.php', array(
+                return new View('view/manage/index.html.php', array(
                     'folder' => 'accounts',
                     'file' => 'update',
                     'invest' => $invest,
@@ -167,7 +167,7 @@ namespace Goteo\Controller\Manage {
                 $invest = Model\Invest::get($id);
                 if (!$invest instanceof Model\Invest) {
                     Message::Error('No tenemos registro del aporte '.$id);
-                    throw new Redirection('/admin/accounts');
+                    throw new Redirection('/manage/accounts');
                 }
                 $projectData = Model\Project::getMini($invest->project);
 
@@ -217,7 +217,7 @@ namespace Goteo\Controller\Manage {
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($projectData->id);
-                $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
+                $log->populate('Cargo cancelado manualmente (admin)', '/manage/accounts',
                     \vsprintf($log_text, array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                         Feed::item('user', $userData->name, $userData->id),
@@ -234,7 +234,7 @@ namespace Goteo\Controller\Manage {
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($projectData->id);
-                    $log->populate('Incidencia resuelta (admin)', '/admin/accounts',
+                    $log->populate('Incidencia resuelta (admin)', '/manage/accounts',
                         \vsprintf("El admin %s ha dado por resuelta la incidencia con el botón \"Nos han hecho la transferencia\" para el aporte %s", array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('system', $id, 'accounts/details/'.$id)
@@ -243,12 +243,12 @@ namespace Goteo\Controller\Manage {
                     unset($log);
 
                     Message::Info('La incidencia se ha dado por resuelta, el aporte se ha pasado a manual y cobrado');
-                    throw new Redirection('/admin/accounts');
+                    throw new Redirection('/manage/accounts');
                 } else {
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($projectData->id);
-                    $log->populate('Fallo al resolver incidencia (admin)', '/admin/accounts',
+                    $log->populate('Fallo al resolver incidencia (admin)', '/manage/accounts',
                         \vsprintf("Al admin %s le ha fallado el botón \"Nos han hecho la transferencia\" para el aporte %s", array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('system', $id, 'accounts/details/'.$id)
@@ -257,7 +257,7 @@ namespace Goteo\Controller\Manage {
                     unset($log);
 
                     Message::Error('Ha fallado al resolver la incidencia: ' . implode (',', $errors));
-                    throw new Redirection('/admin/accounts/details/'.$id);
+                    throw new Redirection('/manage/accounts/details/'.$id);
                 }
            }
 
@@ -307,7 +307,7 @@ namespace Goteo\Controller\Manage {
                         // Evento Feed
                         $log = new Feed();
                         $log->setTarget($projectData->id);
-                        $log->populate('Aporte manual (admin)', '/admin/accounts',
+                        $log->populate('Aporte manual (admin)', '/manage/accounts',
                             \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('money', $_POST['amount'].' &euro;'),
@@ -319,7 +319,7 @@ namespace Goteo\Controller\Manage {
 
                         Model\Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . $_SESSION['user']->name);
                         Message::Info('Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.');
-                        throw new Redirection('/admin/rewards/edit/'.$invest->id);
+                        throw new Redirection('/manage/rewards/edit/'.$invest->id);
                     } else{
                         $errors[] = 'Ha fallado algo al crear el aporte manual';
                     }
@@ -336,7 +336,7 @@ namespace Goteo\Controller\Manage {
                     );
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'view/manage/index.html.php',
                     $viewData
                 );
 
@@ -350,7 +350,7 @@ namespace Goteo\Controller\Manage {
                 $project = Model\Project::get($id);
                 if (!$project instanceof Model\Project) {
                     Message::Error('Instancia de proyecto no valida');
-                    throw new Redirection('/admin/accounts');
+                    throw new Redirection('/manage/accounts');
                 }
                 $invests = Model\Invest::getAll($id);
                 $project->investors = Model\Invest::investors($id, false, true);
@@ -361,7 +361,7 @@ namespace Goteo\Controller\Manage {
                 $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'view/manage/index.html.php',
                     array(
                         'folder' => 'accounts',
                         'file' => 'report',
@@ -380,7 +380,7 @@ namespace Goteo\Controller\Manage {
                 $invest = Model\Invest::get($id);
                 if (!$invest instanceof Model\Invest) {
                     Message::Error('No tenemos objeto para el aporte '.$id);
-                    throw new Redirection('/admin/accounts');
+                    throw new Redirection('/manage/accounts');
                 }
                 $project = Model\Project::get($invest->project);
                 $userData = Model\User::get($invest->user);
@@ -433,7 +433,7 @@ namespace Goteo\Controller\Manage {
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($project->id);
-                $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
+                $log->populate('Cargo cancelado manualmente (admin)', '/manage/accounts',
                     \vsprintf($log_text, array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                         Feed::item('user', $userData->name, $userData->id),
@@ -453,7 +453,7 @@ namespace Goteo\Controller\Manage {
                 $invest = Model\Invest::get($id);
                 if (!$invest instanceof Model\Invest) {
                     Message::Error('No tenemos objeto para el aporte '.$id);
-                    throw new Redirection('/admin/accounts');
+                    throw new Redirection('/manage/accounts');
                 }
                 $project = Model\Project::get($invest->project);
                 $userData = Model\User::get($invest->user);
@@ -471,7 +471,7 @@ namespace Goteo\Controller\Manage {
                             // Evento Feed
                             $log = new Feed();
                             $log->setTarget($project->id);
-                            $log->populate('proyecto sin cuenta paypal (admin)', '/admin/projects',
+                            $log->populate('proyecto sin cuenta paypal (admin)', '/manage/projects',
                                 \vsprintf('El proyecto %s aun no ha puesto su %s !!!', array(
                                     Feed::item('project', $project->name, $project->id),
                                     Feed::item('relevant', 'cuenta PayPal')
@@ -524,7 +524,7 @@ namespace Goteo\Controller\Manage {
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($project->id);
-                    $log->populate('Cargo ejecutado manualmente (admin)', '/admin/accounts',
+                    $log->populate('Cargo ejecutado manualmente (admin)', '/manage/accounts',
                         \vsprintf($log_text, array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('user', $userData->name, $userData->id),
@@ -542,7 +542,7 @@ namespace Goteo\Controller\Manage {
             // visor de logs
             if ($action == 'viewer') {
                 return new View(
-                    'view/admin/index.html.php',
+                    'view/manage/index.html.php',
                     array(
                         'folder' => 'accounts',
                         'file' => 'viewer'
@@ -553,7 +553,7 @@ namespace Goteo\Controller\Manage {
             if ($action == 'resign' && !empty($id) && $_GET['token'] == md5('resign')) {
                 if ($invest->setResign(true)) {
                     Model\Invest::setDetail($invest->id, 'manually-resigned', 'Se ha marcado como donativo independientemente de las recompensas');
-                    throw new Redirection('/admin/accounts/detail/'.$invest->id);
+                    throw new Redirection('/manage/accounts/detail/'.$invest->id);
                 } else {
                     $errors[] = 'Ha fallado al marcar donativo';
                 }
@@ -605,7 +605,7 @@ namespace Goteo\Controller\Manage {
                 $project = Model\Project::get($invest->project);
                 $userData = Model\User::get($invest->user);
                 return new View(
-                    'view/admin/index.html.php',
+                    'view/manage/index.html.php',
                     array(
                         'folder' => 'accounts',
                         'file' => 'details',
@@ -644,7 +644,7 @@ namespace Goteo\Controller\Manage {
                 );
 
             return new View(
-                'view/admin/index.html.php',
+                'view/manage/index.html.php',
                 $viewData
             );
 

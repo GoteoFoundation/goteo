@@ -9,7 +9,7 @@ $project = $this['project'];
 
 if (!$project instanceof Model\Project) {
     Message::Error('Instancia de proyecto corrupta');
-    throw new Redirection('/admin/projects');
+    throw new Redirection('/manage/projects');
 }
 
 $accounts = $this['accounts'];
@@ -17,7 +17,7 @@ $accounts = $this['accounts'];
 <div class="widget">
     <p>Es necesario que un proyecto tenga una cuenta PayPal para ejecutar los cargos. La cuenta bancaria es solamente para tener toda la información en el mismo entorno pero no se utiliza en ningún proceso de este sistema.</p>
 
-    <form method="post" action="/admin/projects" >
+    <form method="post" action="/manage/projects" >
         <input type="hidden" name="id" value="<?php echo $project->id ?>" />
 
     <p>

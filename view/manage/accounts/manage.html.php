@@ -13,12 +13,12 @@ $user = $this['user'];
 $rewards = $invest->rewards;
 array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 ?>
-<a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Seguro que deseas cambiarle el estado a este aporte?, esto es delicado')" class="button">Cambiarle el estado</a>
+<a href="/manage/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Seguro que deseas cambiarle el estado a este aporte?, esto es delicado')" class="button">Cambiarle el estado</a>
 &nbsp;&nbsp;&nbsp;
-<a href="/admin/rewards/edit/<?php echo $invest->id ?>" class="button">Gestionar recompensa / dirección</a>
+<a href="/manage/rewards/edit/<?php echo $invest->id ?>" class="button">Gestionar recompensa / dirección</a>
 <?php if ($invest->issue) : ?>
 &nbsp;&nbsp;&nbsp;
-<a href="/admin/accounts/solve/<?php echo $invest->id ?>" onclick="return confirm('Esta incidencia se dará por resuelta: se va a cancelar el preaproval, el aporte pasará a ser de tipo Cash y en estado Cobrado por goteo, seguimos?')" class="button">Nos han hecho la transferencia</a>
+<a href="/manage/accounts/solve/<?php echo $invest->id ?>" onclick="return confirm('Esta incidencia se dará por resuelta: se va a cancelar el preaproval, el aporte pasará a ser de tipo Cash y en estado Cobrado por goteo, seguimos?')" class="button">Nos han hecho la transferencia</a>
 <?php endif; ?>
 <div class="widget">
     <p>
@@ -27,23 +27,19 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     </p>
     <p>
         <?php if ($invest->status < 1 || ($invest->method == 'tpv' && $invest->status < 2) ||($invest->method == 'cash' && $invest->status < 2)) : ?>
-        <a href="/admin/accounts/cancel/<?php echo $invest->id ?>"
+        <a href="/manage/accounts/cancel/<?php echo $invest->id ?>"
             onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
             class="button">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
         <?php endif; ?>
 
         <?php if ($invest->method == 'paypal' && $invest->status == 0) : ?>
-        <a href="/admin/accounts/execute/<?php echo $invest->id ?>"
+        <a href="/manage/accounts/execute/<?php echo $invest->id ?>"
             onclick="return confirm('¿Seguro que quieres ejecutar ahora el cargo del preapproval?');"
             class="button">Ejecutar cargo ahora</a>
         <?php endif; ?>
 
-        <?php if ($invest->method != 'paypal' && $invest->status == 1) : ?>
-        <a href="/admin/accounts/move/<?php echo $invest->id ?>" class="button">Reubicar este aporte</a>
-        <?php endif; ?>
-
         <?php if (!$invest->resign && $invest->status == 1 && $invest->status == 3) : ?>
-        <a href="/admin/accounts/resign/<?php echo $invest->id ?>/?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
+        <a href="/manage/accounts/resign/<?php echo $invest->id ?>/?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
         <?php endif; ?>
     </p>
     
@@ -138,7 +134,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <?php if ($invest->method == 'paypal') : ?>
         <?php if (!isset($_GET['full'])) : ?>
         <p>
-            <a href="/admin/accounts/details/<?php echo $invest->id; ?>/?full=show">Mostrar detalles técnicos</a>
+            <a href="/manage/accounts/details/<?php echo $invest->id; ?>/?full=show">Mostrar detalles técnicos</a>
         </p>
         <?php endif; ?>
 
@@ -160,7 +156,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <dt>Convocatoria:</dt>
         <dd><?php echo $calls[$droped->call] ?></dd>
     </dl>
-    <a href="/admin/invests/details/<?php echo $droped->id ?>" target="_blank">Ver aporte completo de riego</a>
+    <a href="/manage/invests/details/<?php echo $droped->id ?>" target="_blank">Ver aporte completo de riego</a>
     <?php endif; ?>
 
 </div>
