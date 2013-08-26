@@ -48,7 +48,7 @@ namespace Goteo\Controller {
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
-        public function edit ($id) {
+        public function edit ($id, $step = 'userProfile') {
             $project = Model\Project::get($id, null);
 
             // para que tenga todas las imágenes
@@ -90,9 +90,8 @@ namespace Goteo\Controller {
                  
                  
             } else {
-                // todos los pasos, entrando en userProfile por defecto
-                $step = 'userProfile';
-
+                // todos los pasos
+                // entrando, por defecto, en el paso especificado en url
                 $steps = array(
                     'userProfile' => array(
                         'name' => Text::get('step-1'),
@@ -298,9 +297,9 @@ namespace Goteo\Controller {
                     break;
                 
                 case 'overview':
-                    $viewData['currently'] = Model\Project::currentStatus();
                     $viewData['categories'] = Model\Project\Category::getAll();
-                    $viewData['scope'] = Model\Project::scope();
+//                    $viewData['currently'] = Model\Project::currentStatus();
+//                    $viewData['scope'] = Model\Project::scope();
                     break;
 
                 case 'costs':
@@ -671,8 +670,8 @@ namespace Goteo\Controller {
                 'user_location'=>'location',
                 'user_avatar'=>'avatar',
                 'user_about'=>'about',
-                'user_keywords'=>'keywords',
-                'user_contribution'=>'contribution',
+//                'user_keywords'=>'keywords',
+//                'user_contribution'=>'contribution',
                 'user_facebook'=>'facebook',
                 'user_google'=>'google',
                 'user_twitter'=>'twitter',
@@ -741,20 +740,20 @@ namespace Goteo\Controller {
                 'contract_nif',
                 'contract_email',
                 'phone',
-                'contract_entity',
+//                'contract_entity',
                 'contract_birthdate',
-                'entity_office',
-                'entity_name',
-                'entity_cif',
+//                'entity_office',
+//                'entity_name',
+//                'entity_cif',
                 'address',
                 'zipcode',
                 'location',
                 'country',
-                'secondary_address',
-                'post_address',
-                'post_zipcode',
-                'post_location',
-                'post_country'
+//                'secondary_address',
+//                'post_address',
+//                'post_zipcode',
+//                'post_location',
+//                'post_country'
             );
 
             $personalData = array();
@@ -806,9 +805,9 @@ namespace Goteo\Controller {
                 'keywords',
                 'media',
                 'media_usubs',
-                'currently',
+//                'currently',
                 'project_location',
-                'scope'
+//                'scope'
             );
 
             foreach ($fields as $field) {
@@ -872,9 +871,11 @@ namespace Goteo\Controller {
                 return false;
             }
 
+            /* aligerando
             if (isset($_POST['resource'])) {
                 $project->resource = $_POST['resource'];
             }
+            */
             
             //tratar costes existentes
             foreach ($project->costs as $key => $cost) {

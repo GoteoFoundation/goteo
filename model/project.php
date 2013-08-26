@@ -951,6 +951,7 @@ namespace Goteo\Model {
                 ++$score;
             }
 
+            /* Aligerando superform
             if (!empty($this->user->keywords)) {
                 $okeys['userProfile']['keywords'] = 'ok';
                 ++$score;
@@ -960,6 +961,7 @@ namespace Goteo\Model {
                 $okeys['userProfile']['contribution'] = 'ok';
                 ++$score;
             }
+             */
 
             if (empty($this->user->webs)) {
                 $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-web');
@@ -1034,6 +1036,7 @@ namespace Goteo\Model {
             }
 
             // Segun persona física o jurídica
+            /* Aligerando superform
             if ($this->contract_entity) {  // JURIDICA
                 if (empty($this->entity_office)) {
                     $errors['userPersonal']['entity_office'] = Text::get('mandatory-project-field-entity_office');
@@ -1054,15 +1057,14 @@ namespace Goteo\Model {
                 } else {
                      $okeys['userPersonal']['entity_cif'] = 'ok';
                 }
-
-            } else { // FISICA
-                if (empty($this->contract_birthdate)) {
-                    $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
-                } else {
-                     $okeys['userPersonal']['contract_birthdate'] = 'ok';
-                }
             }
-
+            */
+            
+            if (empty($this->contract_birthdate)) {
+                $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
+            } else {
+                 $okeys['userPersonal']['contract_birthdate'] = 'ok';
+            }
 
             if (empty($this->phone)) {
                 $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
@@ -1171,11 +1173,13 @@ namespace Goteo\Model {
                  ++$score;
             }
 
+            /* aligerando
             if (!empty($this->keywords)) {
                  $okeys['overview']['keywords'] = 'ok';
                  ++$score;
             }
-
+            */
+            
             if (empty($this->media)) {
                 // solo error si no está aplicando a una convocatoria
                 if (!isset($this->call)) {
@@ -1186,11 +1190,13 @@ namespace Goteo\Model {
                  $score+=3;
             }
 
+            /* aligerando
             if (!empty($this->currently)) {
 //                 $okeys['overview']['currently'] = 'ok';
                  ++$score;
                  if ($this->currently == 2 || $this->currently == 3) ++$score;
             }
+            */
 
             if (empty($this->project_location)) {
                 $errors['overview']['project_location'] = Text::get('mandatory-project-field-location');
@@ -1199,9 +1205,11 @@ namespace Goteo\Model {
                  ++$score;
             }
 
+            /* aligerando
             if (!empty($this->scope)) {
-//                 $okeys['overview']['scope'] = 'ok';
+                 $okeys['overview']['scope'] = 'ok';
             }
+            */
 
             $this->setScore($score, 16);
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
