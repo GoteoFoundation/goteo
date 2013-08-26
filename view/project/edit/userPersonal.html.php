@@ -7,6 +7,7 @@ use Goteo\Library\Text,
 $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();         
 $okeys  = $project->okeys[$this['step']] ?: array();
+$account = $this['account'];
 
 echo new SuperForm(array(
 
@@ -160,6 +161,20 @@ echo new SuperForm(array(
                 )
 
             )
+        ),
+
+        'paypal' => array(
+            'type'      => 'textbox',
+            'title'     => Text::get('contract-paypal_account'),
+            'hint'      => Text::get('tooltip-project-paypal'),
+            'errors'    => !empty($errors['contract_name']) ? array($errors['contract_name']) : array(),
+            'ok'        => !empty($okeys['contract_name']) ? array($okeys['contract_name']) : array(),
+            'value'     => $account->paypal
+        ),
+        'paypal_advice' => array(
+            'type'      => 'html',
+            'class'     => 'inline',
+            'html'      => Text::get('tooltip-project-paypal')
         ),
 
         /* Domicilio */

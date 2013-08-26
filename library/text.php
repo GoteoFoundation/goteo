@@ -327,7 +327,7 @@ namespace Goteo\Library {
                 'blog'  => 'Blog/Actualizaciones',
                 'faq'  => 'Pagina de FAQ',
                 'contact'  => 'Pagina de contacto',
-                'widget'  => 'Banderolos widget de proyecto',
+                'widget'  => 'Banderolos',
                 'invest'  => 'Pagina de aportar a un proyecto',
                 'types' => 'Tooltips para tipos de necesidades',
                 'banners' => 'Banners y cabeceras',
