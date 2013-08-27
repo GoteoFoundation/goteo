@@ -2,6 +2,7 @@
 /*
  * Webservice super secreto para realizar operaciones de admin
  * todos los datos se reciben por POST
+ * 'ultra-secret-ws'
  */
 namespace Goteo\Controller {
 
