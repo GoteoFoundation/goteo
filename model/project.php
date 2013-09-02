@@ -895,10 +895,7 @@ namespace Goteo\Model {
          * comprueba errores de datos y actualiza la puntuación
          */
         public function check() {
-            //primero resetea los errores y los okeys
-            $this->errors = self::blankErrors();
-            $this->okeys  = self::blankErrors();
-
+            
             $errors = &$this->errors;
             $okeys  = &$this->okeys ;
 
@@ -928,7 +925,7 @@ namespace Goteo\Model {
             }
 
             if(!empty($this->user->avatar) && $this->user->avatar->id != 1) {
-                $okeys['userProfile']['avatar'] = 'ok';
+                $okeys['userProfile']['avatar'] = empty($errors['userProfile']['avatar']) ? 'ok' : null;
                 $score+=2;
             }
 
@@ -1119,10 +1116,10 @@ namespace Goteo\Model {
                  $okeys['overview']['subtitle'] = 'ok';
             }
 
-            if (empty($this->gallery)) {
-                $errors['overview']['image'] = Text::get('mandatory-project-field-image');
+            if (empty($this->gallery) && empty($errors['overview']['image'])) {
+                $errors['overview']['image'] .= Text::get('mandatory-project-field-image');
             } else {
-                 $okeys['overview']['image'] = 'ok';
+                 $okeys['overview']['image'] = (empty($errors['overview']['image'])) ? 'ok' : null;
                  ++$score;
                  if (count($this->gallery) >= 2) ++$score;
             }

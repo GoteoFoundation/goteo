@@ -188,7 +188,7 @@ namespace Goteo\Model {
                     // Avatar
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
-                        if ($image->save()) {
+                        if ($image->save($errors)) {
                             $data[':avatar'] = $image->id;
 
                         } else {

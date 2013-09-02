@@ -113,6 +113,13 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
             'value'     => $user->location
         ),
+        
+        'anchor-avatar' => array(
+            'type' => 'html',
+            'class' => 'inline',
+            'html' => '<a name="avatar"></a>'
+        ),
+        
         'user_avatar' => array(
             'type'      => 'group',
             'required'  => true,
@@ -127,6 +134,7 @@ echo new SuperForm(array(
                     'label' => Text::get('form-image_upload-button'),
                     'class' => 'inline avatar_upload',
                     'hint'  => Text::get('tooltip-user-image'),
+                    'onclick' => "document.getElementById('proj-superform').action += '#avatar';"
                 ),
                 'avatar-current' => array(
                     'type' => 'hidden',

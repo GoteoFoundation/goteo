@@ -183,6 +183,7 @@ namespace Goteo\Model {
 					$errors['image'] = Text::get('error-image-size');
 				}
 			}
+            
             return empty($errors);
 		}
 

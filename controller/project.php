@@ -135,8 +135,10 @@ namespace Goteo\Controller {
                 }                
             }
 
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
+                
+                
                 foreach ($steps as $id => &$data) {
                     
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
@@ -150,6 +152,14 @@ namespace Goteo\Controller {
 
                 // guardamos los datos que hemos tratado y los errores de los datos
                 $project->save($errors);
+                
+                // hay que mostrar errores en la imagen
+                if (!empty($errors['image'])) {
+                    $project->errors['overview']['image'] = $errors['image'];
+                    $project->okeys['overview']['image'] = null;
+                }
+
+                
 
                 // si estan enviando el proyecto a revisión
                 if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
@@ -227,40 +237,13 @@ namespace Goteo\Controller {
                 }
 
 
+            } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST)) {
+                throw new Error(Error::INTERNAL, 'FORM CAPACITY OVERFLOW');
             }
 
             //re-evaluar el proyecto
             $project->check();
 
-            /*
-             * @deprecated
-            //si nos estan pidiendo el error de un campo, se lo damos
-            if (!empty($_GET['errors'])) {
-                foreach ($project->errors as $paso) {
-                    if (!empty($paso[$_GET['errors']])) {
-                        return new View(
-                            'view/project/errors.json.php',
-                            array('errors'=>array($paso[$_GET['errors']]))
-                        );
-                    }
-                }
-            }
-            */
-
-            // si
-            // para cada paso, si no han pasado por el, quitamos errores y okleys de ese paso
-            /*
-            foreach ($steps as $id => $data) {
-                if (!in_array($id, $_SESSION['stepped'])) {
-                    unset($project->errors[$id]);
-                    unset($project->okeys[$id]);
-                }
-            }
-             * 
-             */
-
-
-            
             // variables para la vista
             $viewData = array(
                 'project' => $project,
@@ -725,6 +708,12 @@ namespace Goteo\Controller {
 
             /// este es el único save que se lanza desde un metodo process_
             $user->save($project->errors['userProfile']);
+            
+            // si hay errores en la imagen hay que mostrarlos
+            if (!empty($project->errors['userProfile']['image'])) {
+                $project->errors['userProfile']['avatar'] = $project->errors['userProfile']['image'];
+            }
+            
             $user = Model\User::flush();
             return true;
         }
