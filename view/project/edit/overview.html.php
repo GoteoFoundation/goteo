@@ -143,6 +143,11 @@ $superform = array(
             'ok'        => !empty($okeys['subtitle']) ? array($okeys['subtitle']) : array()
         ),
 
+        'anchor-images' => array(
+            'type' => 'html',
+            'html' => '<a name="images"></a>'
+        ),
+        
         'images' => array(        
             'title'     => Text::get('overview-fields-images-title'),
             'type'      => 'group',
@@ -156,7 +161,8 @@ $superform = array(
                     'type'  => 'file',
                     'label' => Text::get('form-image_upload-button'),
                     'class' => 'inline image_upload',
-                    'hint'  => Text::get('tooltip-project-image')
+                    'hint'  => Text::get('tooltip-project-image'),
+                    'onclick' => "document.getElementById('proj-superform').action += '#images';"
                 )
             )
         ),        
@@ -178,6 +184,11 @@ $superform = array(
         ),
         
         // video principal del proyecto
+        'anchor-media' => array(
+            'type' => 'html',
+            'html' => '<a name="media"></a>'
+        ),
+        
         'media' => array(
             'type'      => 'textbox',
             'required'  => is_object($project->call) ? false : true, // solo obligatorio si no está aplicando a convocatoria
@@ -192,7 +203,8 @@ $superform = array(
             'name' => "upload",
             'type'  => 'submit',
             'label' => Text::get('form-upload-button'),
-            'class' => 'inline media-upload'
+            'class' => 'inline media-upload',
+            'onclick' => "document.getElementById('proj-superform').action += '#media';"
         ),
         
         'media-preview' => $media,
@@ -268,6 +280,11 @@ $superform = array(
         ),       
 
         // video motivacion
+        'anchor-video' => array(
+            'type' => 'html',
+            'html' => '<a name="video"></a>'
+        ),
+        
         'video' => array(
             'type'      => 'textbox',
             'required'  => false,
@@ -282,7 +299,8 @@ $superform = array(
             'name' => "upload",
             'type'  => 'submit',
             'label' => Text::get('form-upload-button'),
-            'class' => 'inline media-upload'
+            'class' => 'inline media-upload',
+            'onclick' => "document.getElementById('proj-superform').action += '#video';"
         ),
 
         'video-preview' => $video,

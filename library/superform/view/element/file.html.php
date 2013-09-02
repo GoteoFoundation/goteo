@@ -1,1 +1,1 @@
-<input name="<?php echo htmlspecialchars($this['name']) ?>" type="file" /> <input type="submit" name="upload" value="<?php echo htmlspecialchars($this['label']) ?>" />
+<input name="<?php echo htmlspecialchars($this['name']) ?>" type="file" /> <input type="submit" name="upload" value="<?php echo htmlspecialchars($this['label']) ?>"<?php if (!empty($this['onclick'])) echo 'onclick="' . addcslashes($this['onclick'], '"') . '"' ?>/>

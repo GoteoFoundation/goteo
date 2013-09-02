@@ -34,7 +34,7 @@ include 'view/prologue.html.php';
 
     <div id="main" class="<?php echo htmlspecialchars($this['step']) ?>">
 
-        <form method="post" action="<?php echo "/project/edit/" . $this['project']->id ?>" class="project" enctype="multipart/form-data" >
+        <form method="post" id="proj-superform" action="<?php echo "/project/edit/" . $this['project']->id ?>" class="project" enctype="multipart/form-data" >
 
             <input type="hidden" name="view-step-<?php echo $this['step'] ?>" value="please" />
 
