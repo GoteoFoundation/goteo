@@ -162,6 +162,7 @@ $pagedResults = new \Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] 
                     <?php echo $user->translator ? ' Traductor ' : ''; ?>
                     <?php echo $user->caller ? ' Convocador ' : ''; ?>
                     <?php echo $user->admin ? ' Admin ' : ''; ?>
+                    <?php echo $user->manager ? ' Gestor ' : ''; ?>
                     <?php echo $user->vip ? ' VIP ' : ''; ?>
                 </td>
             </tr>
