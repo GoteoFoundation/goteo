@@ -543,9 +543,8 @@ namespace Goteo\Controller {
                                  */
                                     break;
                                 case 'cash':
-                                    // los cargos manuales vienen ejecutados de base
-                                    $invest->setStatus('1');
-                                    if ($debug) echo ' -> Ok';
+                                    // los cargos manuales no los modificamos
+                                    if ($debug) echo ' Cash, nada que hacer -> Ok';
                                     break;
                             }
                             if ($debug) echo '<br />';
