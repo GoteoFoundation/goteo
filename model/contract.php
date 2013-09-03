@@ -478,12 +478,12 @@ namespace Goteo\Model {
                 // para representantes de asociación
                 if ($this->type == 1) {
                     if (empty($this->reg_name)) {
-                        $errors['entity']['reg_name'] = 'Es obligatorio indicar en que registro se inscribió la asociación';
+                        $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_1');
                     } else {
                          $okeys['entity']['reg_name'] = 'ok';
                     }
                     if (empty($this->reg_number)) {
-                        $errors['entity']['reg_number'] = 'Es obligatorio indicar el número de registro';
+                        $errors['entity']['reg_number'] = Text::get('mandatory-contract-reg_number_1');
                     } else {
                          $okeys['entity']['reg_number'] = 'ok';
                     }
@@ -492,22 +492,22 @@ namespace Goteo\Model {
                 // para representantes de entidad jurídica
                 if ($this->type == 2) {
                     if (empty($this->reg_name)) {
-                        $errors['entity']['reg_name'] = 'Es obligatorio indicar el nombre del notario que otorgó la escritura pública de la empresa';
+                        $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_2');
                     } else {
                          $okeys['entity']['reg_name'] = 'ok';
                     }
                     if (empty($this->reg_date)) {
-                        $errors['entity']['reg_date'] = 'Es obligatorio indicar la fecha en que el notario otorgó la escritura pública';
+                        $errors['entity']['reg_date'] = Text::get('mandatory-contract-reg_date_2');
                     } else {
                          $okeys['entity']['reg_date'] = 'ok';
                     }
                     if (empty($this->reg_number)) {
-                        $errors['entity']['reg_number'] = 'Es obligatorio indicar el número de protocolo del notario';
+                        $errors['entity']['reg_number'] = Text::get('mandatory-contract-reg_number_2');
                     } else {
                          $okeys['entity']['reg_number'] = 'ok';
                     }
                     if (empty($this->reg_id)) {
-                        $errors['entity']['reg_id'] = 'Es obligatorio indicar el número y la ciudad de inscripción en el Registro Mercantil';
+                        $errors['entity']['reg_id'] = Text::get('mandatory-contract-reg_id_2');
                     } else {
                          $okeys['entity']['reg_id'] = 'ok';
                     }
@@ -518,17 +518,17 @@ namespace Goteo\Model {
             
             /***************** Revisión de campos del paso CUENTAS  *****************/
             if (!empty($this->paypal) && empty($this->paypal_owner)) {
-                $errors['accounts']['paypal_owner'] = 'Es obligatorio poner el nombre del titular de la cuenta PayPal del proyecto';
+                $errors['accounts']['paypal_owner'] = Text::get('mandatory-contract-paypal_owner');
             } else {
                  $okeys['accounts']['paypal_owner'] = 'ok';
             }
             if (empty($this->bank)) {
-                $errors['accounts']['bank'] = 'Es obligatorio indicar una cuenta bancaria para el proyecto';
+                $errors['accounts']['bank'] = Text::get('mandatory-contract-bank');
             } else {
                 $okeys['accounts']['bank'] = 'ok';
             }
             if (empty($this->bank_owner)) {
-                $errors['accounts']['bank_owner'] = 'Es obligatorio poner el nombre del titular de la cuenta bancaria';
+                $errors['accounts']['bank_owner'] = Text::get('mandatory-contract-bank_owner');
             } else {
                 $okeys['accounts']['bank_owner'] = 'ok';
             }
