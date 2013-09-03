@@ -150,7 +150,7 @@ namespace Goteo\Controller\Admin {
                         }
 
                         if ($projData->status >= 3 && $_POST['force'] != 1) {
-                            Message::Error('El proyecto no estÃ¡ ni en EdiciÃ³n ni en RevisiÃ³n, no se modifica nada.');
+                            Message::Error('El proyecto no está ni en Edición ni en Revisión, no se modifica nada.');
                             throw new Redirection('/admin/projects/rebase/'.$id);
                         }
 
@@ -374,8 +374,8 @@ namespace Goteo\Controller\Admin {
 
             if ($action == 'assign') {
                 // asignar a una convocatoria solo si
-                //   estÃ¡ en ediciÃ³n a campaÃ±a
-                //   y no estÃ¡ asignado
+                //   está en edición a campaña
+                //   y no está asignado
                 if (!in_array($project->status, array('1', '2', '3')) || $project->called) {
                     Message::Error("No se puede asignar en este estado o ya esta asignado a una convocatoria");
                     throw new Redirection('/admin/projects/list');
@@ -416,9 +416,9 @@ namespace Goteo\Controller\Admin {
                     $mailHandler->html = true;
                     $mailHandler->template = $template->id;
                     if ($mailHandler->send()) {
-                        Message::Info('Se ha enviado un email a <strong>'.$project->user->name.'</strong> a la direcciÃ³n <strong>'.$project->user->email.'</strong>');
+                        Message::Info('Se ha enviado un email a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
                     } else {
-                        Message::Error('Ha fallado al enviar el mail a <strong>'.$project->user->name.'</strong> a la direcciÃ³n <strong>'.$project->user->email.'</strong>');
+                        Message::Error('Ha fallado al enviar el mail a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
                     }
                     unset($mailHandler);
                 }
