@@ -163,18 +163,33 @@ echo new SuperForm(array(
             )
         ),
 
-        'paypal' => array(
-            'type'      => 'textbox',
-            'title'     => Text::get('contract-paypal_account'),
-            'hint'      => Text::get('tooltip-project-paypal'),
-            'errors'    => !empty($errors['contract_name']) ? array($errors['contract_name']) : array(),
-            'ok'        => !empty($okeys['contract_name']) ? array($okeys['contract_name']) : array(),
-            'value'     => $account->paypal
-        ),
-        'paypal_advice' => array(
-            'type'      => 'html',
-            'class'     => 'inline',
-            'html'      => Text::get('tooltip-project-paypal')
+        /* Cuentas */
+        'accounts' => array(
+            'type'      => 'group',
+            'title'     => Text::get('personal-field-accounts'),
+            'children'  => array(
+                'paypal' => array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-paypal_account'),
+                    'hint'      => Text::get('tooltip-project-paypal'),
+                    'errors'    => !empty($errors['paypal']) ? array($errors['paypal']) : array(),
+                    'ok'        => !empty($okeys['paypal']) ? array($okeys['paypal']) : array(),
+                    'value'     => $account->paypal
+                ),
+                'paypal_advice' => array(
+                    'type'      => 'html',
+                    'class'     => 'inline',
+                    'html'      => Text::get('tooltip-project-paypal')
+                ),
+                'bank' => array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-bank_account'),
+                    'hint'      => Text::get('tooltip-project-bank'),
+                    'errors'    => !empty($errors['bank']) ? array($errors['bank']) : array(),
+                    'ok'        => !empty($okeys['bank']) ? array($okeys['bank']) : array(),
+                    'value'     => $account->bank
+                )
+            )
         ),
 
         /* Domicilio */

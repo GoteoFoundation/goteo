@@ -772,6 +772,7 @@ namespace Goteo\Controller {
             // cuenta PayPal
             $accounts = Model\Project\Account::get($project->id);
             $accounts->paypal = $_POST['paypal'];
+            $accounts->bank = $_POST['bank'];
             $accounts->save($project->errors['userPersonal']);
             
             
