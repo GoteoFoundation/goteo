@@ -44,7 +44,7 @@ namespace Goteo\Model\User {
             // Imagen
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
-                if ($image->save()) {
+                if ($image->save($errors)) {
                     $image = $image->id;
                 } else {
                     Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));

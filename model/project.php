@@ -628,8 +628,6 @@ namespace Goteo\Model {
                         if(!empty($image->id)) {
                             self::query("REPLACE project_image (project, image) VALUES (:project, :image)", array(':project' => $this->id, ':image' => $image->id));
                         }
-                    } else {
-                        \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 

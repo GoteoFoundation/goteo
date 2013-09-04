@@ -40,10 +40,10 @@ namespace Goteo\Controller\Dashboard {
             }
 
             // Avatar
-            if (!empty($_FILES['avatar_upload']['name'])) {
+            if (isset($_FILES['avatar_upload']) && $_FILES['avatar_upload']['error'] != UPLOAD_ERR_NO_FILE) {
                 $user->avatar = $_FILES['avatar_upload'];
             }
-
+ 
             // tratar si quitan la imagen
             if (!empty($_POST['avatar-' . $user->avatar->id . '-remove'])) {
                 $user->avatar->remove();
@@ -51,10 +51,10 @@ namespace Goteo\Controller\Dashboard {
             }
 
             // Tratamiento de la imagen vip mediante el modelo User\Vip
-            if (isset($user->roles['vip'])) {
-                if (!empty($_FILES['vip_image_upload']['name'])) {
+            if ($vip instanceof Model\User\Vip) {
+                if (isset($_FILES['avatar_upload']) && $_FILES['avatar_upload']['error'] != UPLOAD_ERR_NO_FILE) {
                     $vip->image = $_FILES['vip_image_upload'];
-                    $vip->save();
+                    $vip->save($errors);
                 }
 
                 // tratar si quitan la imagen vip
@@ -92,7 +92,7 @@ namespace Goteo\Controller\Dashboard {
             /// este es el único save que se lanza desde un metodo process_
             if ($user->save($errors)) {
                 $log_action = 'Actualizado su perfil';
-                Message::Info(Text::get('user-profile-saved'));
+//                Message::Info(Text::get('user-profile-saved'));
                 $user = Model\User::flush();
                 return true;
             } else {

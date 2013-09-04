@@ -66,9 +66,7 @@ namespace Goteo\Model {
          */
         public function save(&$errors = array()) {
             if($this->validate($errors)) {
-                if(!empty($this->name)) {
-                    $data[':name'] = $this->name;
-                }
+                $data[':name'] = $this->name;
 
                 if(!empty($this->type)) {
                     $data[':type'] = $this->type;
@@ -78,29 +76,14 @@ namespace Goteo\Model {
                     $data[':size'] = $this->size;
                 }
 
-                if(!empty($this->tmp)) {
-
-					//si es un archivo que se sube
-					if(is_uploaded_file($this->tmp)) {
-						move_uploaded_file($this->tmp,$this->dir_originals . $this->name);
-                        chmod($this->dir_originals . $this->name, 0777);
-					}
-					//si es un archivo del sistema de archivos o en una URL
-					elseif(@copy($this->tmp, $this->dir_originals . $this->name)) {
-						$data[':size'] = @filesize($this->dir_originals . $this->name);
-						if(function_exists("finfo_open")) {
-							$finfo = finfo_open(FILEINFO_MIME_TYPE);
-							$data[':type'] = finfo_file($finfo, $this->dir_originals . $this->name);
-							finfo_close($finfo);
-						}
-						elseif(function_exists("mime_content_type")) {
-							$data[':type'] = mime_content_type($this->dir_originals . $this->name);
-						}
-					}
-					else {
-						//die($this->tmp);
-						return false;
-					}
+                //si es un archivo que se sube
+                if(is_uploaded_file($this->tmp)) {
+                    move_uploaded_file($this->tmp,$this->dir_originals . $this->name);
+                    chmod($this->dir_originals . $this->name, 0777);
+                }
+                else {
+                    $errors[] = Text::get('image-upload-fail');
+                    return false;
                 }
 
                 try {
@@ -147,42 +130,61 @@ namespace Goteo\Model {
 		 * @see Goteo\Core.Model::validate()
 		 */
 		public function validate(&$errors = array()) {
+            
 			if(empty($this->name)) {
                 $errors['image'] = Text::get('error-image-name');
             }
-			if(is_uploaded_file($this->tmp)) {
-				if($this->error !== UPLOAD_ERR_OK) {
-					$errors['image'] = $this->error;
-				}
+            
+            // checkeo de errores de $_FILES
+            if($this->error !== UPLOAD_ERR_OK) {
+                switch($this->error) {
+                    case UPLOAD_ERR_INI_SIZE:
+                        $errors['image'] = Text::get('error-image-size-too-large');
+                        break;
+                    case UPLOAD_ERR_FORM_SIZE:
+                        $errors['image'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+                        break;
+                    case UPLOAD_ERR_PARTIAL:
+                        $errors['image'] = 'The uploaded file was only partially uploaded';
+                        break;
+                    case UPLOAD_ERR_NO_FILE:
+                        if (isset($_POST['upload']))
+                            $errors['image'] = 'No file was uploaded';
+                        break;
+                    case UPLOAD_ERR_NO_TMP_DIR:
+                        $errors['image'] = 'Missing a temporary folder';
+                        break;
+                    case UPLOAD_ERR_CANT_WRITE:
+                        $errors['image'] = 'Failed to write file to disk';
+                        break;
+                    case UPLOAD_ERR_EXTENSION:
+                        $errors['image'] = 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions';
+                        break;
+                }
+                return false;
+            }
 
-				if(!empty($this->type)) {
-					$allowed_types = array(
-						'image/gif',
-						'image/jpeg',
-						'image/png',
-					);
-					if(!in_array($this->type, $allowed_types)) {
-						$errors['image'] = Text::get('error-image-type-not-allowed');
-					}
-				}
-				else {
-					$errors['image'] = Text::get('error-image-type');
-				}
+            if(!empty($this->type)) {
+                $allowed_types = array(
+                    'image/gif',
+                    'image/jpeg',
+                    'image/png',
+                );
+                if(!in_array($this->type, $allowed_types)) {
+                    $errors['image'] = Text::get('error-image-type-not-allowed');
+                }
+            }
+            else {
+                $errors['image'] = Text::get('error-image-type');
+            }
 
-				if(empty($this->tmp) || $this->tmp == "none") {
-					$errors['image'] = Text::get('error-image-tmp');
-				}
+            if(empty($this->tmp) || $this->tmp == "none") {
+                $errors['image'] = Text::get('error-image-tmp');
+            }
 
-				if(!empty($this->size)) {
-					$max_upload_size = 2 * 1024 * 1024; // = 2097152 (2 megabytes)
-					if($this->size > $max_upload_size) {
-						$errors['image'] = Text::get('error-image-size-too-large');
-					}
-				}
-				else {
-					$errors['image'] = Text::get('error-image-size');
-				}
-			}
+            if(empty($this->size)) {
+                $errors['image'] = Text::get('error-image-size');
+            }
             
             return empty($errors);
 		}

@@ -190,10 +190,8 @@ namespace Goteo\Model {
                         $image = new Image($this->avatar);
                         if ($image->save($errors)) {
                             $data[':avatar'] = $image->id;
-
                         } else {
-                            Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
-                            $data[':avatar'] = '';
+                            unset($data[':avatar']);
                         }
                     }
 
@@ -413,12 +411,6 @@ namespace Goteo\Model {
                     }
                 }
 
-                if (is_array($this->avatar) && !empty($this->avatar['name'])) {
-                    $image = new Image($this->avatar);
-                    $_err = array();
-                    $image->validate($_err);
-                    $errors['avatar'] = $_err['image'];
-                }
             }
 
             if (\str_replace(Text::get('regular-facebook-url'), '', $this->facebook) == '') $this->facebook = '';

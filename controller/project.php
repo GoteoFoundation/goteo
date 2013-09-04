@@ -137,8 +137,7 @@ namespace Goteo\Controller {
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
-                
-                
+
                 foreach ($steps as $id => &$data) {
                     
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
@@ -672,14 +671,14 @@ namespace Goteo\Controller {
             }
             
             // Avatar
-            if(!empty($_FILES['avatar_upload']['name'])) {
+            if (isset($_FILES['avatar_upload']) && $_FILES['avatar_upload']['error'] != UPLOAD_ERR_NO_FILE) {
                 $user->avatar = $_FILES['avatar_upload'];
             }
 
             // tratar si quitan la imagen
             if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
-                $user->avatar->remove('user');
-                $user->avatar = '';
+                $user->avatar->remove();
+                $user->avatar = null;
             }
 
             $user->interests = $_POST['user_interests'];
@@ -715,6 +714,7 @@ namespace Goteo\Controller {
             }
             
             $user = Model\User::flush();
+            $project->user = $user;
             return true;
         }
 
@@ -816,7 +816,7 @@ namespace Goteo\Controller {
             }
             
             // tratar la imagen que suben
-            if(!empty($_FILES['image_upload']['name'])) {
+            if (isset($_FILES['image_upload']) && $_FILES['image_upload']['error'] != UPLOAD_ERR_NO_FILE) {
                 $project->image = $_FILES['image_upload'];
             }
 
