@@ -8,6 +8,8 @@ $bodyClass = 'about';
 $page = Page::get('contact');
 $tags = $this['tags'];
 
+$_SESSION['msg_token'] = uniqid(rand(), true);
+
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 ?>
@@ -34,6 +36,7 @@ include 'view/header.html.php';
 
             <div style="float:left;width: 450px;">
                 <form method="post" action="/contact">
+                    <input type="hidden" name="msg_token" value="<?php echo $_SESSION['msg_token'] ; ?>" />
                     <table>
                         <tr>
                             <td>

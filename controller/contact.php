@@ -21,13 +21,22 @@ namespace Goteo\Controller {
                 $pair = trim($pair);
                 if (empty($pair)) continue;
                 $pairTag = explode(']', $pair);
-                $keyTag = trim(str_replace('[', '', $pairTag[0]));
+                $keyTag = trim(str_replace(array('[', '<br />'), '', $pairTag[0]));
                 $tags[$keyTag] = trim($pairTag[1]);
             }
 
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
+
+                // verificamos token
+                if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token']) {
+                    
+                    @mail('goteo-contactspam@doukeshi.org', 'Intentan enviar mensaje de contacto sin token', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
+                    
+                    header("HTTP/1.1 400 Bad request");
+                    die('Token incorrect');
+                }
 
                 $name = $_POST['name'];
 
