@@ -100,9 +100,8 @@ namespace Goteo\Controller {
                     $mailHandler->toName = $toName;
                     $mailHandler->subject = $subject;
                     $mailHandler->content = $content;
-                    $mailHandler->fromName = '';
-                    $mailHandler->from = $email;
-                    $mailHandler->html = true;
+                    $mailHandler->reply = $email;
+                    $mailHandler->html = false;
                     $mailHandler->template = $template->id;
                     if ($mailHandler->send($errors)) {
                         Message::Info('Mensaje de contacto enviado correctamente.');
