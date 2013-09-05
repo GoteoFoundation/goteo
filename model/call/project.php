@@ -16,22 +16,28 @@ namespace Goteo\Model\Call {
          * @param varcahr(50) $id  Call identifier
          * @return array of categories identifiers
          */
-		public static function get ($call, $filter =  null, $all = false) {
+		public static function get ($call, $filters = array()) {
             $array = array ();
             try {
 
                 $values = array(':call'=>$call);
 
                 $sqlFilter = "";
-                if (!empty($filter)) {
+                if (!empty($filters['category'])) {
                     $sqlFilter .= "LEFT JOIN project_category
                         ON project_category.project = call_project.project
                         AND project_category.category = :filter";
-                    $values[':filter'] = $filter;
+                    $values[':filter'] = $filters['category'];
                 }
 
-                if (!$all) {
-                    $sqlFilter .= " WHERE (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                $and = "WHERE";
+                if (!isset($filters['all'])) {
+                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                    $and = "AND";
+                }
+                if (isset($filters['published'])) {
+                    $sqlFilter .= " $and project.status >= 3";
+                    $and = "AND";
                 }
 
                 $sql = "SELECT

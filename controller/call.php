@@ -483,11 +483,13 @@ namespace Goteo\Controller {
                 }
 
                 // filtro proyectos por categoria
-                $filter = null;
                 if ($show == 'projects') {
                     if (isset($_GET['filter']) && is_numeric($_GET['filter'])) {
-                        $filter = $_GET['filter'];
-                        $call->projects = Model\Call\Project::get($call->id, $filter);
+                        $filters = array(
+                            'category' => $_GET['filter'],
+                            'published' => true
+                        );
+                        $call->projects = Model\Call\Project::get($call->id, $filters);
                         }
                 }
 

@@ -29,11 +29,17 @@ namespace Goteo\Controller {
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
 
+                // verificaciones temporales para el tema spam
+                if (\NODE_ID == 'euskadi') {
+                    @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
+                }
+                
+                // verificamos referer
+                $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+                $referer = $URL.'/contact';
+                
                 // verificamos token
-                if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token']) {
-                    
-                    @mail('goteo-contactspam@doukeshi.org', 'Intentan enviar mensaje de contacto sin token', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
-                    
+                if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token'] || $_SERVER['HTTP_REFERER']!=$referer) {
                     header("HTTP/1.1 400 Bad request");
                     die('Token incorrect');
                 }

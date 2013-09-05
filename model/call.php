@@ -235,7 +235,7 @@ namespace Goteo\Model {
                 $call->icons = Call\Icon::get($id);
 
                 // proyectos
-                $call->projects = Call\Project::get($id);
+                $call->projects = Call\Project::get($id, array('published'=>true));
 
                 // entrada blog
                 $call->post = Call\Post::get($id);
