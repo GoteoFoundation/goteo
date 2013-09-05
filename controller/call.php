@@ -408,7 +408,7 @@ namespace Goteo\Controller {
 
                 }
 
-                if ($show == 'projects' && $call->status < 4) {
+                if ($show == 'projects' && ($call->status < 4 || empty($call->projects))) {
                     throw new Redirection("/call/".$call->id);
                 }
 
@@ -442,22 +442,42 @@ namespace Goteo\Controller {
                     }
 
                     $tsQuery = '';
-                    // tweets con alguno de los hastags
+
+                    // configuración especial de buzz
+                    $buzzConf = array(
+                        'crowdsasuna' => array(
+                            'first' => true,
+                            'own' => false,
+                            'mention' => false
+                        ),
+                        'cofinancia-extremadura' => array(
+                            'first' => false,
+                            'own' => true,
+                            'mention' => false
+                        )
+                    );
+                    
                     if (!empty($social->tags)) {
-                        if ($call->id == 'crowdsasuna')
+                        // si solo un hashtag
+                        if (isset($buzzConf[$call->id]) && $buzzConf[$call->id]['first']) {
                             $tsQuery .= $social->tags[0];
-                        else
+                        } else {
                             $tsQuery .= implode(', OR ', $social->tags);
+                        }
                     }
-                    /*
-                     * // quitamos las menciones y los propios
+                    
                     if (!empty($social->author)) {
-                        // mencionando al convocador
-                        $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
-                        // del convocador
-                        $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
+                        // propios
+                        if (!isset($buzzConf[$call->id]) || $buzzConf[$call->id]['own'])  {
+                            $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
+                        }
+
+                        // menciones
+                        if (!isset($buzzConf[$call->id]) || $buzzConf[$call->id]['mention'])  {
+                            $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
+                        }
                     }
-                     */
+                    
                     $social->buzz_debug = "https://api.twitter.com/1.1/search/tweets.json?q=".  urlencode($tsQuery);
                     $social->buzz = Buzz::getTweets($tsQuery, true);
                 }
