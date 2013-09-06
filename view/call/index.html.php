@@ -47,11 +47,7 @@ include 'view/call/header.html.php';
         <?php echo new View('view/call/widget/buzz.html.php', $this); ?>
     </div>
 
-    <div id="supporters-sponsors">
-        <?php if ($call->status > 3) echo new View('view/call/widget/supporters.html.php', $this); 
-        else  echo new View('view/call/widget/post.html.php', $this); ?>
-        <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>
-    </div>
+    <?php echo new View('view/call/bottom.html.php', $this); ?>
 </div>
 
 <?php

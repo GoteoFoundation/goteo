@@ -58,15 +58,10 @@ include 'view/call/header.html.php';
         <?php endif; ?>
             </p>
         </div>
-<?php echo new View('view/call/side.html.php', $this); ?>
+        <?php echo new View('view/call/side.html.php', $this); ?>
     </div>
 
-    <?php if ($call->status > 3) : ?>
-    <div id="supporters-sponsors">
-        <?php echo new View('view/call/widget/supporters.html.php', $this); ?>
-        <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>
-    </div>
-    <?php endif; ?>
+    <?php echo new View('view/call/bottom.html.php', $this); ?>
 </div>
 
 <?php
