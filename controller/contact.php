@@ -26,11 +26,6 @@ namespace Goteo\Controller {
         
         public function index () {
 
-            if (in_array($_SERVER['HTTP_X_FORWARDED_FOR'], self::$ips)) {
-                @mail('goteo-contactspam@doukeshi.org', 'Unauthorized', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
-                throw new Error(Error::UNAUTHORIZED, 'Unauthorized');
-            }
-            
             $tags = array();
             $rawTags = Text::get('contact-form-tags');
             $listTags = explode(';', $rawTags);
@@ -48,9 +43,14 @@ namespace Goteo\Controller {
 
                 // verificaciones temporales para el tema spam
                 if (NODE_ID == 'euskadi') {
-                    @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
-                }
-                
+                    if (in_array($_SERVER['HTTP_X_FORWARDED_FOR'], self::$ips)) {
+                        @mail('goteo-contactspam@doukeshi.org', 'Unauthorized', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
+                        throw new Error(Error::UNAUTHORIZED, 'Unauthorized');
+                    } else {
+                        @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
+                        }
+                    }
+
                 // verificamos referer
                 $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
                 $referer = $URL.'/contact';

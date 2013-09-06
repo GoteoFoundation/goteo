@@ -60,6 +60,10 @@ namespace Goteo\Controller {
             phpinfo();
         }
 
+        public function server () {
+            die(\trace($_SERVER));
+        }
+
         public function test () {
             
             echo new View('view/system/test.html.php');
