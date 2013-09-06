@@ -7,7 +7,12 @@ $filters = $this['filters'];
     <form id="filter-form" action="/manage/projects" method="get">
         <input type="hidden" name="filtered" value="yes" />
         <div style="float:left;margin:5px;">
-            <label for="name-filter">Alias/Email del autor:</label><br />
+            <label for="owner-filter">Id del impulsor:</label><br />
+            <input type="text" id ="owner-filter" name="owner" value ="<?php echo $filters['owner']?>" />
+        </div>
+        
+        <div style="float:left;margin:5px;">
+            <label for="name-filter">Alias/Email del impulsor:</label><br />
             <input type="text" id ="name-filter" name="name" value ="<?php echo $filters['name']?>" />
         </div>
         
@@ -41,11 +46,14 @@ $filters = $this['filters'];
             <label for="contract-filter">Estado de contrato</label><br />
             <select id="contract-filter" name="contractStatus" onchange="document.getElementById('filter-form').submit();">
                 <option value="all"<?php echo ($filters['contractStatus'] == 'all') ? ' selected="selected"' : ''; ?>>En cualquier estado</option>
-                <option value="none"<?php echo ($filters['contractStatus'] == 'none') ? ' selected="selected"' : ''; ?>>Sin rellenar</option>
-                <option value="filled"<?php echo ($filters['contractStatus'] == 'filled') ? ' selected="selected"' : ''; ?>>Contrato rellenado</option>
-                <option value="sended"<?php echo ($filters['contractStatus'] == 'sended') ? ' selected="selected"' : ''; ?>>Contrato enviado</option>
-                <option value="checked"<?php echo ($filters['contractStatus'] == 'checked') ? ' selected="selected"' : ''; ?>>Contrato revisado</option>
+                <option value="none"<?php echo ($filters['contractStatus'] == 'none') ? ' selected="selected"' : ''; ?>>Sin registro de contrato</option>
+                <option value="filled"<?php echo ($filters['contractStatus'] == 'filled') ? ' selected="selected"' : ''; ?>>Con registro de contrato</option>
+                <option value="sended"<?php echo ($filters['contractStatus'] == 'sended') ? ' selected="selected"' : ''; ?>>Formulario cerrado cerrado</option>
+                <option value="checked"<?php echo ($filters['contractStatus'] == 'checked') ? ' selected="selected"' : ''; ?>>Datos en revision</option>
                 <option value="ready"<?php echo ($filters['contractStatus'] == 'ready') ? ' selected="selected"' : ''; ?>>Documento generado</option>
+                <option value="received"<?php echo ($filters['contractStatus'] == 'received') ? ' selected="selected"' : ''; ?>>Sobre recibido</option>
+                <option value="payed"<?php echo ($filters['contractStatus'] == 'payed') ? ' selected="selected"' : ''; ?>>Pagos realizados</option>
+                <option value="finished"<?php echo ($filters['contractStatus'] == 'finished') ? ' selected="selected"' : ''; ?>>Contrato cumplido</option>
             </select>
         </div>
         

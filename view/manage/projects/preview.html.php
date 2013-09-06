@@ -1,9 +1,5 @@
 <?php
-$contract = $this['contract'];
+use Goteo\Core\View;
+
+echo new View('view/contract/widget/review.html.php', $this);
 ?>
-<div class="widget">
-    <h2>Previsualización datos del contrato</h2>
-    <p>
-        <?php echo \trace($contract); ?>
-    </p>
-</div>

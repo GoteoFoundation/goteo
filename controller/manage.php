@@ -20,9 +20,12 @@ namespace Goteo\Controller {
                 'label' => 'Proyectos (solo en campaña y financiados)',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
+                    'preview' => array('label' => 'Datos de contrato del proyecto', 'item' => true),
+                    'report' => array('label' => 'Informe proyecto', 'item' => true),
+                    'accounts' => array('label' => 'Cuentas proyecto', 'item' => true),
                     'manage' => array('label' => 'Gestionando proyecto', 'item' => true)
                 ),
-                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '')
+                'filters' => array('status' => '-1', 'projectStatus' => 'all', 'contractStatus' => 'all', 'proj_name' => '', 'owner' => '', 'name' => '', 'order' => 'date')
             ),
             'accounts' => array(
                 'label' => 'Aportes delicados (solo con incidencia, manuales, fantasmas y casos conflictivos)',

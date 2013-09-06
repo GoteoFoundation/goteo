@@ -2,7 +2,8 @@
 
 namespace Goteo\Controller\Manage {
 
-    use Goteo\Core\View,
+    use Goteo\Core\Redirection,
+        Goteo\Core\View,
         Goteo\Library\Message,
         Goteo\Model;
 
@@ -10,27 +11,23 @@ namespace Goteo\Controller\Manage {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
             
-            $log_text = null;
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['id'])) {
 
-                $projData = Model\Project::get($_POST['id']);
+                $projData = Model\Project::getMedium($_POST['id']);
                 if (empty($projData->id)) {
-                    Message::Error('El proyecto '.$_POST['id'].' no existe');
-                    break;
+                    Message::Error('El proyecto id "'.$_POST['id'].'" no existe o está corrupto');
+                    throw new Redirection('/manage/projects');
                 }
 
                 if (isset($_POST['save-accounts'])) {
 
                     $accounts = Model\Project\Account::get($projData->id);
                     $accounts->bank = $_POST['bank'];
-                    $accounts->bank_owner = $_POST['bank_owner'];
                     $accounts->paypal = $_POST['paypal'];
-                    $accounts->paypal_owner = $_POST['paypal_owner'];
-                    $accounts->allowpp = $_POST['allowpp'];
                     if ($accounts->save($errors)) {
-                        Message::Info('Se han actualizado las cuentas del proyecto '.$projData->name);
+                        throw new Redirection('/manage/projects');
                     } else {
                         Message::Error(implode('<br />', $errors));
                     }
@@ -49,6 +46,20 @@ namespace Goteo\Controller\Manage {
                 $project = Model\Project::get($id);
             }
 
+            if ($action == 'preview') {
+
+                $contract = Model\Contract::get($id);
+
+                return new View(
+                    'view/manage/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'preview',
+                        'contract' => $contract
+                    )
+                );
+            }
+
             if ($action == 'report') {
                 // informe financiero
                 // Datos para el informe de transacciones correctas
@@ -61,20 +72,6 @@ namespace Goteo\Controller\Manage {
                         'file' => 'report',
                         'project' => $project,
                         'Data' => $Data
-                    )
-                );
-            }
-
-            if ($action == 'manage') {
-
-                $contract = Model\Contract::get($id);
-
-                return new View(
-                    'view/manage/index.html.php',
-                    array(
-                        'folder' => 'projects',
-                        'file' => 'manage',
-                        'contract' => $contract
                     )
                 );
             }
@@ -95,6 +92,7 @@ namespace Goteo\Controller\Manage {
                 );
             }
 
+            
             if (!empty($filters['filtered'])) {
                 $projects = static::getList($filters);
             } else {
@@ -173,16 +171,34 @@ namespace Goteo\Controller\Manage {
 
                 
             // filtro estado de contrato 
-            //    segun campos de contract_status
-                /*
-                <option value="all"<?php echo ($filters['contractStatus'] == 'all') ? ' selected="selected"' : ''; ?>>En cualquier estado</option>
-                <option value="none"<?php echo ($filters['contractStatus'] == 'none') ? ' selected="selected"' : ''; ?>>Sin rellenar</option>
-                <option value="filled"<?php echo ($filters['contractStatus'] == 'filled') ? ' selected="selected"' : ''; ?>>Contrato rellenado</option>
-                <option value="sended"<?php echo ($filters['contractStatus'] == 'sended') ? ' selected="selected"' : ''; ?>>Contrato enviado</option>
-                <option value="checked"<?php echo ($filters['contractStatus'] == 'checked') ? ' selected="selected"' : ''; ?>>Contrato revisado</option>
-                <option value="ready"<?php echo ($filters['contractStatus'] == 'ready') ? ' selected="selected"' : ''; ?>>Documento generado</option>
-                 */
-            
+            if (!empty($filters['contractStatus'])) {
+                if ($filters['contractStatus'] == 'all') // Tengan o no contrato generado
+                  $sqlFilter .= "";
+                
+                if ($filters['contractStatus'] == 'none') // En primera ronda
+                  $sqlFilter .= "";
+                    
+                if ($filters['contractStatus'] == 'filled')// Registro de contrato generado pero no cerrado
+                  $sqlFilter .= "";
+                    
+                if ($filters['contractStatus'] == 'sended') // Datos cerrados
+                  $sqlFilter .= "";
+                    
+                if ($filters['contractStatus'] == 'checked') // Datos en revision
+                  $sqlFilter .= "";
+                    
+                if ($filters['contractStatus'] == 'ready') // Documento generado
+                  $sqlFilter .= "";
+                    
+                if ($filters['contractStatus'] == 'received') // Sobre recibido
+                  $sqlFilter .= "";
+                    
+                if ($filters['contractStatus'] == 'payed') // Pagos realizados
+                  $sqlFilter .= "";
+                    
+                if ($filters['contractStatus'] == 'finished') // Contrato cumplido
+                  $sqlFilter .= "";
+            }
             
             //el Order
             if (!empty($filters['order'])) {
