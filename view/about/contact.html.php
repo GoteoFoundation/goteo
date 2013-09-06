@@ -35,8 +35,8 @@ include 'view/header.html.php';
             <?php endif; ?>
 
             <div style="float:left;width: 450px;">
-                <form method="post" action="/contact">
-                    <input type="hidden" name="msg_token" value="<?php echo $_SESSION['msg_token'] ; ?>" />
+                <form method="post" action="/contact" id="frm_contact">
+                    <input type="hidden" id="msg_token" name="msg_token" value="" />
                     <table>
                         <tr>
                             <td>
@@ -85,7 +85,7 @@ include 'view/header.html.php';
                         </tr>
                     </table>
 
-                    <button class="aqua" type="submit" name="send"><?php echo Text::get('contact-send_message-button'); ?></button>
+                    <button class="aqua" name="send" onclick="document.getElementById('msg_token').value='<?php echo $_SESSION['msg_token'] ; ?>';document.getElementById('frm_contact').submit();"><?php echo Text::get('contact-send_message-button'); ?></button>
                 </form>
             </div>
 

@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Library\Page,
+        Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
@@ -12,8 +13,21 @@ namespace Goteo\Controller {
 
     class Contact extends \Goteo\Core\Controller {
         
+        private static $ips = array(
+            '199.15.233.142',
+            '208.177.76.7',
+            '88.190.61.93',
+            '208.177.76.8',
+            '91.207.5.46'
+        );
+        
         public function index () {
 
+            if (in_array($_SERVER['HTTP_X_FORWARDED_FOR'], self::$ips)) {
+                @mail('goteo-contactspam@doukeshi.org', 'Unauthorized', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
+                throw new Error(Error::UNAUTHORIZED, 'Unauthorized');
+            }
+            
             $tags = array();
             $rawTags = Text::get('contact-form-tags');
             $listTags = explode(';', $rawTags);
@@ -30,7 +44,7 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
 
                 // verificaciones temporales para el tema spam
-                if (\NODE_ID == 'euskadi') {
+                if (NODE_ID == 'euskadi') {
                     @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
                 }
                 
