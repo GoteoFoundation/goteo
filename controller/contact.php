@@ -14,11 +14,14 @@ namespace Goteo\Controller {
     class Contact extends \Goteo\Core\Controller {
         
         private static $ips = array(
+            '112.111.191.82',
             '199.15.233.142',
             '208.177.76.7',
-            '88.190.61.93',
             '208.177.76.8',
-            '91.207.5.46'
+            '88.190.61.93',
+            '88.190.61.104',
+            '91.207.5.46',
+            '91.207.7.238'
         );
         
         public function index () {
