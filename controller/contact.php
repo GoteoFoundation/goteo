@@ -14,6 +14,7 @@ namespace Goteo\Controller {
     class Contact extends \Goteo\Core\Controller {
         
         private static $ips = array(
+            '112.111.191.82',
             '199.15.233.142',
             '208.177.76.7',
             '208.177.76.8',
