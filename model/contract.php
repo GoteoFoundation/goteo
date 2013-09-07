@@ -628,8 +628,9 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
                 'onform' => 'Editando datos',
                 'owner' => 'Formulario cerrado',
                 'admin' => 'Datos en revision',
-                'ready' => 'Documento generado',
+                'ready' => 'Listo para imprimir',
                 'recieved' => 'Sobre recibido',
+                'prepay' => 'Pago adelantado',
                 'payed' => 'Pagos realizados',
                 'closed' => 'Contrato cumplido'
                 );

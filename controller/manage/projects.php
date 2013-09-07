@@ -9,7 +9,7 @@ namespace Goteo\Controller\Manage {
 
     class Projects {
 
-        public static function process ($action = 'list', $id = null, $filters = array()) {
+        public static function process ($action = 'list', $id = null, $subaction = null, $filters = array()) {
             
             $errors = array();
 
@@ -44,6 +44,24 @@ namespace Goteo\Controller\Manage {
              */
             if (isset($id)) {
                 $project = Model\Project::get($id);
+            }
+
+            // poner y quitar flags
+            if ($action == 'setflag') {
+                Model\Contract::setStatus($id, array($subaction => 1));
+                throw new Redirection('/manage/projects/#'.$id);
+            }
+            
+            if ($action == 'unsetflag') {
+                Model\Contract::setStatus($id, array($subaction => 0));
+                throw new Redirection('/manage/projects/#'.$id);
+            }
+            
+            if ($action == 'create') {
+
+                $contract = Model\Contract::get($id);
+                Model\Contract::create($id);
+                throw new Redirection('/manage/projects/#'.$id);
             }
 
             if ($action == 'preview') {
@@ -98,7 +116,6 @@ namespace Goteo\Controller\Manage {
             } else {
                 $projects = array();
             }
-            $status = Model\Project::status();
             $projectStatus = Model\Project::procStatus(); // estado del proceso de campaña (1a, 2a, compeltada)
             $contractStatus = Model\Contract::procStatus(); // estado del proceso de contrato
             $orders = array(
@@ -116,7 +133,6 @@ namespace Goteo\Controller\Manage {
                     'file' => 'list',
                     'projects' => $projects,
                     'filters' => $filters,
-                    'status' => $status,
                     'projectStatus' => $projectStatus,
                     'contractStatus' => $contractStatus,
                     'orders' => $orders
@@ -160,16 +176,16 @@ namespace Goteo\Controller\Manage {
             // filtro estado de campaña
             if (!empty($filters['projectStatus'])) {
                 if ($filters['projectStatus'] == 'all') // En campaña o financiados
-                  $sqlFilter .= " AND project.status IN (3, 4, 5)";
+                  $sqlFilter .= " AND project.status IN (3, 4)";
                 
                 if ($filters['projectStatus'] == 'first') // En primera ronda
-                  $sqlFilter .= " AND project.status = 3 AND (project.passed IS NULL OR project.passed = '0000-00-00')";
+                  $sqlFilter .= " AND project.status = 3 AND project.passed IS NULL";
                     
                 if ($filters['projectStatus'] == 'second')// En segunda ronda
-                  $sqlFilter .= " AND project.status = 3 AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')";
+                  $sqlFilter .= " AND project.status = 3 AND project.passed IS NOT NULL";
                     
                 if ($filters['projectStatus'] == 'completed') // Campaña completada
-                  $sqlFilter .= " AND project.status IN (4, 5)";
+                  $sqlFilter .= " AND project.status = 4";
             }
 
                 
@@ -256,6 +272,39 @@ namespace Goteo\Controller\Manage {
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $the_proj = Model\Project::getMedium($proj['id']);
                 $the_proj->contract = Model\Contract::get($proj['id']);
+                
+                // si aun no tiene fechas hay que calcularlas
+                $the_date = strtotime($the_proj->published);
+                if (empty($the_proj->passed)) {
+                    $the_proj->passed = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+40, date('Y', $the_date)));
+                }
+                if (empty($the_proj->success)) {
+                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+80, date('Y', $the_date)));
+                }
+                
+                // preparamos los flags
+                if (empty($the_proj->contract->status)) {
+                    $flags = array('noreg' => 1); // no tiene registro
+                } else {
+                    $flags = (array) $the_proj->contract->status;
+                    // si no está cerrado es que está editando
+                    if ($flags['owner'] == 0) {
+                        $flags['onform'] = 1;
+                    } else {
+                        unset($flags['onform']);
+                    }
+                }
+                $the_proj->flags = $flags;
+                
+                // y el número
+                list($cNum, $cDate) = Model\Contract::getNum($the_proj->id, $the_proj->published);
+                $the_proj->cName = "P-{$cNum}-{$cDate}";
+                
+                // incidencias
+                
+                
+                // y si estas incidencias hacen peligrar el mínimo
+                
                 $projects[] = $the_proj;
             }
             return $projects;

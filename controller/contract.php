@@ -37,9 +37,9 @@ namespace Goteo\Controller {
             $grant = false;
             if ($contract->project_user == $_SESSION['user']->id)  // es el dueño del proyecto
                 $grant = true;
-            elseif (ACL::check('/contract/edit/'.$id))  // puede editar el proyecto
+            elseif (ACL::check('/project/edit/'.$id))  // puede editar el proyecto
                 $grant = true;
-            elseif (ACL::check('/contract/edit/todos'))  // es un admin
+            elseif (ACL::check('/project/edit/todos'))  // es un admin
                 $grant = true;
 
             // si lo puede ver
@@ -64,34 +64,31 @@ namespace Goteo\Controller {
             }
         }
 
+        /*
+         * Datos en bruto de contrato
+         */
         public function raw ($id) {
+            // Solo superadmin
+            if (!isset($_SESSION['user']->roles['superadmin'])) {
+                throw new Redirection('/');
+            }
+
             $contract = Model\Contract::get($id);
             // temporal para testeo, si no tiene contrato lo creamos
             if (!$contract) {
                 if (Model\Contract::create($id)) {
                     $contract = Model\Contract::get($id);
                 } else {
-                    die ('fallo al crear el registro de contrato');
+                    Message::Error('fallo al crear el registro de contrato');
+                    throw new Redirection('/manage/projects');
                 }
             }
-            die(\trace($contract));
+            throw new Redirection('/contract/edit/'.$id);
         }
 
         // los contratos no se pueden eliminar... ¿o sí?
         public function delete ($id) {
-            /*
-            $contract = Model\Contract::get($id);
-            $errors = array();
-            if ($contract->delete($errors)) {
-                Message::Info("Has borrado los datos del proyecto '<strong>{$contract->name}</strong>' correctamente");
-                if ($_SESSION['contract']->id == $id) {
-                    unset($_SESSION['contract']);
-                }
-            } else {
-                Message::Info("No se han podido borrar los datos del proyecto '<strong>{$contract->name}</strong>'. Error:" . implode(', ', $errors));
-            }
-             */
-            throw new Redirection("/dashboard/projects/contract");
+            throw new Redirection("/");
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar los datos de contrato
