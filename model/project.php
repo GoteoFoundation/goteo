@@ -2376,13 +2376,13 @@ namespace Goteo\Model {
         }
 
         /*
-         * Estados de proceso de un proyecto
+         * Estados de proceso de campaña
          */
         public static function procStatus () {
             return array(
                 'first' => 'En primera ronda',
                 'second' => 'En segunda ronda',
-                'completed' => 'Terminada segunda ronda'
+                'completed' => 'Campaña completada'
                 );
         }
 

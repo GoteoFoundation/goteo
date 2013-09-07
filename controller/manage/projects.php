@@ -99,6 +99,8 @@ namespace Goteo\Controller\Manage {
                 $projects = array();
             }
             $status = Model\Project::status();
+            $projectStatus = Model\Project::procStatus(); // estado del proceso de campaña (1a, 2a, compeltada)
+            $contractStatus = Model\Contract::procStatus(); // estado del proceso de contrato
             $orders = array(
                 'name' => 'Nombre',
                 'date' => 'Fecha de publicación (recientes primero)',
@@ -115,6 +117,8 @@ namespace Goteo\Controller\Manage {
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
+                    'projectStatus' => $projectStatus,
+                    'contractStatus' => $contractStatus,
                     'orders' => $orders
                 )
             );
@@ -128,25 +132,24 @@ namespace Goteo\Controller\Manage {
          * @param string node id
          * @return array of project instances
          */
-        public static function getList($filters = array()) {
+        public static function getList(&$filters = array()) {
             $projects = array();
 
             $values = array();
 
             // los filtros
-            $sqlFilter = "";
+            $sqlFilter = $sqlJoin = "";
             if ($filters['status'] > -1) {
-                $sqlFilter .= " AND status = :status";
+                $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
-            } else {
-                $sqlFilter .= " AND status > 2 AND passed IS NOT NULL AND passed != '0000-00-00' AND status < 5";
             }
             if (!empty($filters['owner'])) {
-                $sqlFilter .= " AND owner = :owner";
+                $sqlFilter .= " AND project.owner = :owner";
                 $values[':owner'] = $filters['owner'];
             }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND owner IN (SELECT id FROM user WHERE (name LIKE :user OR email LIKE :user))";
+                $sqlJoin .= "INNER JOIN user ON user.id = project.owner";
+                $sqlFilter .= " AND (user.name LIKE :user OR user.email LIKE :user)";
                 $values[':user'] = "%{$filters['name']}%";
             }
             if (!empty($filters['proj_name'])) {
@@ -157,80 +160,98 @@ namespace Goteo\Controller\Manage {
             // filtro estado de campaña
             if (!empty($filters['projectStatus'])) {
                 if ($filters['projectStatus'] == 'all') // En campaña o financiados
-                  $sqlFilter .= "";
+                  $sqlFilter .= " AND project.status IN (3, 4, 5)";
                 
-                if ($filters['projectStatus'] == 'goingon') // En primera ronda
-                  $sqlFilter .= "";
+                if ($filters['projectStatus'] == 'first') // En primera ronda
+                  $sqlFilter .= " AND project.status = 3 AND (project.passed IS NULL OR project.passed = '0000-00-00')";
                     
-                if ($filters['projectStatus'] == 'passed')// Pasado la primera ronda
-                  $sqlFilter .= "";
+                if ($filters['projectStatus'] == 'second')// En segunda ronda
+                  $sqlFilter .= " AND project.status = 3 AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')";
                     
-                if ($filters['projectStatus'] == 'succed') // Terminado la segunda ronda
-                  $sqlFilter .= "";
+                if ($filters['projectStatus'] == 'completed') // Campaña completada
+                  $sqlFilter .= " AND project.status IN (4, 5)";
             }
 
                 
             // filtro estado de contrato 
             if (!empty($filters['contractStatus'])) {
-                if ($filters['contractStatus'] == 'all') // Tengan o no contrato generado
-                  $sqlFilter .= "";
-                
-                if ($filters['contractStatus'] == 'none') // En primera ronda
-                  $sqlFilter .= "";
-                    
-                if ($filters['contractStatus'] == 'filled')// Registro de contrato generado pero no cerrado
-                  $sqlFilter .= "";
-                    
-                if ($filters['contractStatus'] == 'sended') // Datos cerrados
-                  $sqlFilter .= "";
-                    
-                if ($filters['contractStatus'] == 'checked') // Datos en revision
-                  $sqlFilter .= "";
-                    
-                if ($filters['contractStatus'] == 'ready') // Documento generado
-                  $sqlFilter .= "";
-                    
-                if ($filters['contractStatus'] == 'received') // Sobre recibido
-                  $sqlFilter .= "";
-                    
-                if ($filters['contractStatus'] == 'payed') // Pagos realizados
-                  $sqlFilter .= "";
-                    
-                if ($filters['contractStatus'] == 'finished') // Contrato cumplido
-                  $sqlFilter .= "";
+                switch ($filters['contractStatus']) {
+                    case 'all': // Tengan o no contrato generado
+                        $sqlFilter .= " AND (contract_status.contract IS NULL OR contract_status.closed = 0)";
+                        break;
+
+                    case 'noreg': // Sin registro de contrato
+                        $sqlFilter .= " AND contract_status.contract IS NULL";
+                        break;
+
+                    case 'onform': // Editando datos
+                        $sqlFilter .= " AND contract_status.owner = 0";
+                        break;
+
+                    default:
+                          $sqlFilter .= " AND contract_status.{$filters['contractStatus']} = 1";
+                        break;
+                }
             }
             
+            /*
+            if ($filters['prepay'] == 1) {
+                $sqlFilter .= " AND contract_status.prepay = 1";
+            } elseif (!isset($filters['prepay'])) {
+                $filters['prepay'] = 0;
+            }
+             */
+            
             //el Order
-            if (!empty($filters['order'])) {
-                switch ($filters['order']) {
-                    case 'date':
-                        $sqlOrder .= " ORDER BY published DESC";
-                    break;
-                    case 'adate':
-                        $sqlOrder .= " ORDER BY published ASC";
-                    break;
-                    case 'name':
-                        $sqlOrder .= " ORDER BY name ASC";
-                    break;
-                    case 'number':
+            switch ($filters['order']) {
+                case 'adate': // por fecha, antiguos primero
+                    $sqlOrder .= " ORDER BY project.published ASC";
+                break;
+                case 'name': // por nombre
+                    $sqlOrder .= " ORDER BY project.name ASC";
+                break;
+                case 'number': // por numero, más nuevos primero
+                    if ($filters['contractStatus'] == 'noreg') {
+                        // ya hay un filtro para "Sin registro de contrato" 
+                        $sqlOrder .= " ORDER BY project.published DESC";
+                        $filters['order'] = 'date';
+                    } else {
+                        // solo con registro de contrato
+                        $sqlJoin .= "INNER JOIN contract ON contract.project = project.id";
                         $sqlOrder .= " ORDER BY contract.number DESC";
-                    break;
-                    case 'anumber':
+                    }
+                break;
+                case 'anumber': // por numero, más antiguos primero
+                    if ($filters['contractStatus'] == 'noreg') {
+                        // ya hay un filtro para "Sin registro de contrato" 
+                        $sqlOrder .= " ORDER BY project.published DESC";
+                        $filters['order'] = 'date';
+                    } else {
+                        // solo con registro de contrato
+                        $sqlJoin .= "INNER JOIN contract ON contract.project = project.id";
                         $sqlOrder .= " ORDER BY contract.number ASC";
-                    break;
-                }
+                    }
+                break;
+                case 'date': // por fecha, recientes primero
+                default:
+                    $sqlOrder .= " ORDER BY project.published DESC";
+                break;
             }
 
             // la select
             $sql = "SELECT 
-                        id
+                        project.id
                     FROM project
-                    WHERE id != ''
+                    $sqlJoin
+                    LEFT JOIN contract_status 
+                        ON contract_status.contract = project.id
+                    WHERE project.id != ''
                         $sqlFilter
                         $sqlOrder
                     LIMIT 999
                     ";
-
+//            Message::Info($sql);
+                    
             $query = Model\Project::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $the_proj = Model\Project::getMedium($proj['id']);

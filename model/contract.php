@@ -618,6 +618,22 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             
             return $rews;
         }
+ 
+        /*
+         * Estados de proceso de contrato
+         */
+        public static function procStatus () {
+            return array(
+                'noreg' => 'Sin registro de contrato',
+                'onform' => 'Editando datos',
+                'owner' => 'Formulario cerrado',
+                'admin' => 'Datos en revision',
+                'ready' => 'Documento generado',
+                'recieved' => 'Sobre recibido',
+                'payed' => 'Pagos realizados',
+                'closed' => 'Contrato cumplido'
+                );
+        }
         
 	}
     

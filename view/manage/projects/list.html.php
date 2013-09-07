@@ -1,6 +1,4 @@
 <?php
-use Goteo\Library\Text;
-
 $filters = $this['filters'];
 ?>
 <div class="widget board">
@@ -37,23 +35,18 @@ $filters = $this['filters'];
             <label for="projects-filter">Estado de campaña</label><br />
             <select id="projects-filter" name="projectStatus" onchange="document.getElementById('filter-form').submit();">
                 <option value="all"<?php echo ($filters['projectStatus'] == 'all') ? ' selected="selected"' : ''; ?>>En campaña o financiados</option>
-                <option value="goingon"<?php echo ($filters['projectStatus'] == 'goingon') ? ' selected="selected"' : ''; ?>>En campa&ntilde;a</option>
-                <option value="passed"<?php echo ($filters['projectStatus'] == 'passed') ? ' selected="selected"' : ''; ?>>Pasado la primera ronda</option>
-                <option value="succed"<?php echo ($filters['projectStatus'] == 'succed') ? ' selected="selected"' : ''; ?>>Terminado la segunda ronda</option>
+            <?php foreach ($this['projectStatus'] as $statusId=>$statusName) : ?>
+                <option value="<?php echo $statusId; ?>"<?php if ($filters['projectStatus'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
+            <?php endforeach; ?>
             </select>
         </div>
         <div style="float:left;margin:5px;">
             <label for="contract-filter">Estado de contrato</label><br />
             <select id="contract-filter" name="contractStatus" onchange="document.getElementById('filter-form').submit();">
                 <option value="all"<?php echo ($filters['contractStatus'] == 'all') ? ' selected="selected"' : ''; ?>>En cualquier estado</option>
-                <option value="none"<?php echo ($filters['contractStatus'] == 'none') ? ' selected="selected"' : ''; ?>>Sin registro de contrato</option>
-                <option value="filled"<?php echo ($filters['contractStatus'] == 'filled') ? ' selected="selected"' : ''; ?>>Con registro de contrato</option>
-                <option value="sended"<?php echo ($filters['contractStatus'] == 'sended') ? ' selected="selected"' : ''; ?>>Formulario cerrado cerrado</option>
-                <option value="checked"<?php echo ($filters['contractStatus'] == 'checked') ? ' selected="selected"' : ''; ?>>Datos en revision</option>
-                <option value="ready"<?php echo ($filters['contractStatus'] == 'ready') ? ' selected="selected"' : ''; ?>>Documento generado</option>
-                <option value="received"<?php echo ($filters['contractStatus'] == 'received') ? ' selected="selected"' : ''; ?>>Sobre recibido</option>
-                <option value="payed"<?php echo ($filters['contractStatus'] == 'payed') ? ' selected="selected"' : ''; ?>>Pagos realizados</option>
-                <option value="finished"<?php echo ($filters['contractStatus'] == 'finished') ? ' selected="selected"' : ''; ?>>Contrato cumplido</option>
+            <?php foreach ($this['contractStatus'] as $statusId=>$statusName) : ?>
+                <option value="<?php echo $statusId; ?>"<?php if ($filters['contractStatus'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
+            <?php endforeach; ?>
             </select>
         </div>
         
