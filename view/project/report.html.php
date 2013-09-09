@@ -1,7 +1,6 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Core\View;
+use Goteo\Model\Contract;
 
 $project = $this['project'];
 $called = $project->call;
@@ -13,16 +12,15 @@ foreach ($Data['issues'] as $issue) {
     $total_issues += $issue->amount;
 }
 
-// la fecha de contrato es el día antes de la publicación del proyecto
-$dPublished = strtotime($project->published);
-$dContract = mktime(0, 0, 0, date('m', $dPublished), date('d', $dPublished)-1, date('Y', $dPublished));
-$contract_date = date('dmY', $dContract);
+// si tiene registro de contrato
+list($cNum, $cDate) = Contract::getNum($project->id, $project->published);
+$cName = "P-{$cNum}-{$cDate}";
 ?>
 <style type="text/css">
     td {padding: 3px 10px;}
 </style>
 <div class="widget report">
-    <h3 class="title" style="text-transform: none;">Informe de financiación del proyecto P-[N&ordm;]-<?php echo $contract_date; ?><br /><span style="color:#20B2B3;"><?php echo $project->name ?></span></h3>
+    <h3 class="title" style="text-transform: none;">Informe de financiación del proyecto <?php echo $cName; ?><br /><span style="color:#20B2B3;"><?php echo $project->name ?></span></h3>
 
     <?php
     // tanto los aportes de riego como los cash-no-cobrados: aparecen en el termómetro, cobran comisión, pero no se incluyen en el previsto a transferir

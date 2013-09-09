@@ -20,9 +20,12 @@ namespace Goteo\Controller {
                 'label' => 'Proyectos (solo en campaña y financiados)',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
+                    'preview' => array('label' => 'Datos de contrato del proyecto', 'item' => true),
+                    'report' => array('label' => 'Informe proyecto', 'item' => true),
+                    'accounts' => array('label' => 'Cuentas proyecto', 'item' => true),
                     'manage' => array('label' => 'Gestionando proyecto', 'item' => true)
                 ),
-                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '')
+                'filters' => array('status' => '-1', 'projectStatus' => 'all', 'contractStatus' => 'all', 'proj_name' => '', 'owner' => '', 'name' => '', 'prepay' => '0', 'order' => 'date')
             ),
             'accounts' => array(
                 'label' => 'Aportes delicados (solo con incidencia, manuales, fantasmas y casos conflictivos)',
@@ -52,9 +55,7 @@ namespace Goteo\Controller {
         /*
          * Panel para gestionar asuntos financieros y legales
          */
-        public function index($option = 'index', $action = 'list', $id = null, $subaction = null) {
-            
-            $option = 'projects';
+        public function index($option = 'projects', $action = 'list', $id = null, $subaction = null) {
             
             if ($option == 'index') {
                 $BC = self::menu(array('option' => $option, 'action' => null, 'id' => null));
@@ -65,7 +66,7 @@ namespace Goteo\Controller {
                 $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
                 define('ADMIN_BCPATH', $BC);
                 $SubC = 'Goteo\Controller\Manage' . \chr(92) . \ucfirst($option);
-                return $SubC::process($action, $id, self::setFilters($option), $subaction);
+                return $SubC::process($action, $id, $subaction, self::setFilters($option));
             }
         }
 

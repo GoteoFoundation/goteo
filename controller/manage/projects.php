@@ -2,35 +2,32 @@
 
 namespace Goteo\Controller\Manage {
 
-    use Goteo\Core\View,
+    use Goteo\Core\Redirection,
+        Goteo\Core\View,
         Goteo\Library\Message,
         Goteo\Model;
 
     class Projects {
 
-        public static function process ($action = 'list', $id = null, $filters = array()) {
+        public static function process ($action = 'list', $id = null, $subaction = null, $filters = array()) {
             
-            $log_text = null;
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['id'])) {
 
-                $projData = Model\Project::get($_POST['id']);
+                $projData = Model\Project::getMedium($_POST['id']);
                 if (empty($projData->id)) {
-                    Message::Error('El proyecto '.$_POST['id'].' no existe');
-                    break;
+                    Message::Error('El proyecto id "'.$_POST['id'].'" no existe o está corrupto');
+                    throw new Redirection('/manage/projects');
                 }
 
                 if (isset($_POST['save-accounts'])) {
 
                     $accounts = Model\Project\Account::get($projData->id);
                     $accounts->bank = $_POST['bank'];
-                    $accounts->bank_owner = $_POST['bank_owner'];
                     $accounts->paypal = $_POST['paypal'];
-                    $accounts->paypal_owner = $_POST['paypal_owner'];
-                    $accounts->allowpp = $_POST['allowpp'];
                     if ($accounts->save($errors)) {
-                        Message::Info('Se han actualizado las cuentas del proyecto '.$projData->name);
+                        throw new Redirection('/manage/projects');
                     } else {
                         Message::Error(implode('<br />', $errors));
                     }
@@ -49,6 +46,38 @@ namespace Goteo\Controller\Manage {
                 $project = Model\Project::get($id);
             }
 
+            // poner y quitar flags
+            if ($action == 'setflag') {
+                Model\Contract::setStatus($id, array($subaction => 1));
+                throw new Redirection('/manage/projects/#'.$id);
+            }
+            
+            if ($action == 'unsetflag') {
+                Model\Contract::setStatus($id, array($subaction => 0));
+                throw new Redirection('/manage/projects/#'.$id);
+            }
+            
+            if ($action == 'create') {
+
+                $contract = Model\Contract::get($id);
+                Model\Contract::create($id);
+                throw new Redirection('/manage/projects/#'.$id);
+            }
+
+            if ($action == 'preview') {
+
+                $contract = Model\Contract::get($id);
+
+                return new View(
+                    'view/manage/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'preview',
+                        'contract' => $contract
+                    )
+                );
+            }
+
             if ($action == 'report') {
                 // informe financiero
                 // Datos para el informe de transacciones correctas
@@ -61,20 +90,6 @@ namespace Goteo\Controller\Manage {
                         'file' => 'report',
                         'project' => $project,
                         'Data' => $Data
-                    )
-                );
-            }
-
-            if ($action == 'manage') {
-
-                $contract = Model\Contract::get($id);
-
-                return new View(
-                    'view/manage/index.html.php',
-                    array(
-                        'folder' => 'projects',
-                        'file' => 'manage',
-                        'contract' => $contract
                     )
                 );
             }
@@ -95,12 +110,15 @@ namespace Goteo\Controller\Manage {
                 );
             }
 
+            
             if (!empty($filters['filtered'])) {
                 $projects = static::getList($filters);
             } else {
                 $projects = array();
             }
             $status = Model\Project::status();
+            $projectStatus = Model\Project::procStatus(); // estado del proceso de campaña (1a, 2a, compeltada)
+            $contractStatus = Model\Contract::procStatus(); // estado del proceso de contrato
             $orders = array(
                 'name' => 'Nombre',
                 'date' => 'Fecha de publicación (recientes primero)',
@@ -117,6 +135,8 @@ namespace Goteo\Controller\Manage {
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
+                    'projectStatus' => $projectStatus,
+                    'contractStatus' => $contractStatus,
                     'orders' => $orders
                 )
             );
@@ -130,25 +150,25 @@ namespace Goteo\Controller\Manage {
          * @param string node id
          * @return array of project instances
          */
-        public static function getList($filters = array()) {
+        public static function getList(&$filters = array()) {
             $projects = array();
 
             $values = array();
+            $joined = false; // si hay join con contract
 
             // los filtros
-            $sqlFilter = "";
+            $sqlFilter = $sqlJoin = "";
             if ($filters['status'] > -1) {
-                $sqlFilter .= " AND status = :status";
+                $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
-            } else {
-                $sqlFilter .= " AND status > 2 AND passed IS NOT NULL AND passed != '0000-00-00' AND status < 5";
             }
             if (!empty($filters['owner'])) {
-                $sqlFilter .= " AND owner = :owner";
+                $sqlFilter .= " AND project.owner = :owner";
                 $values[':owner'] = $filters['owner'];
             }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND owner IN (SELECT id FROM user WHERE (name LIKE :user OR email LIKE :user))";
+                $sqlJoin .= "INNER JOIN user ON user.id = project.owner";
+                $sqlFilter .= " AND (user.name LIKE :user OR user.email LIKE :user)";
                 $values[':user'] = "%{$filters['name']}%";
             }
             if (!empty($filters['proj_name'])) {
@@ -159,66 +179,143 @@ namespace Goteo\Controller\Manage {
             // filtro estado de campaña
             if (!empty($filters['projectStatus'])) {
                 if ($filters['projectStatus'] == 'all') // En campaña o financiados
-                  $sqlFilter .= "";
+                  $sqlFilter .= " AND project.status IN (3, 4)";
                 
-                if ($filters['projectStatus'] == 'goingon') // En primera ronda
-                  $sqlFilter .= "";
+                if ($filters['projectStatus'] == 'first') // En primera ronda
+                  $sqlFilter .= " AND project.status = 3 AND project.passed IS NULL";
                     
-                if ($filters['projectStatus'] == 'passed')// Pasado la primera ronda
-                  $sqlFilter .= "";
+                if ($filters['projectStatus'] == 'second')// En segunda ronda
+                  $sqlFilter .= " AND project.status = 3 AND project.passed IS NOT NULL";
                     
-                if ($filters['projectStatus'] == 'succed') // Terminado la segunda ronda
-                  $sqlFilter .= "";
+                if ($filters['projectStatus'] == 'completed') // Campaña completada
+                  $sqlFilter .= " AND project.status = 4";
             }
 
                 
             // filtro estado de contrato 
-            //    segun campos de contract_status
-                /*
-                <option value="all"<?php echo ($filters['contractStatus'] == 'all') ? ' selected="selected"' : ''; ?>>En cualquier estado</option>
-                <option value="none"<?php echo ($filters['contractStatus'] == 'none') ? ' selected="selected"' : ''; ?>>Sin rellenar</option>
-                <option value="filled"<?php echo ($filters['contractStatus'] == 'filled') ? ' selected="selected"' : ''; ?>>Contrato rellenado</option>
-                <option value="sended"<?php echo ($filters['contractStatus'] == 'sended') ? ' selected="selected"' : ''; ?>>Contrato enviado</option>
-                <option value="checked"<?php echo ($filters['contractStatus'] == 'checked') ? ' selected="selected"' : ''; ?>>Contrato revisado</option>
-                <option value="ready"<?php echo ($filters['contractStatus'] == 'ready') ? ' selected="selected"' : ''; ?>>Documento generado</option>
-                 */
+            if (!empty($filters['contractStatus'])) {
+                switch ($filters['contractStatus']) {
+                    case 'all': // Tengan o no contrato generado
+                        $sqlFilter .= " AND (contract_status.contract IS NULL OR contract_status.closed = 0)";
+                        break;
+
+                    case 'noreg': // Sin registro de contrato
+                        $sqlJoin .= "LEFT JOIN contract ON contract.project = project.id";
+                        $sqlFilter .= " AND contract.project IS NULL";
+                        $joined = true;
+                        break;
+
+                    case 'onform': // Editando datos
+                        $sqlJoin .= "INNER JOIN contract ON contract.project = project.id";
+                        $sqlFilter .= " AND (contract.project IS NOT NULL OR contract_status.owner = 0)";
+                        $joined = true;
+                        break;
+
+                    default:
+                          $sqlFilter .= " AND contract_status.{$filters['contractStatus']} = 1";
+                        break;
+                }
+            }
             
+            /*
+            if ($filters['prepay'] == 1) {
+                $sqlFilter .= " AND contract_status.prepay = 1";
+            } elseif (!isset($filters['prepay'])) {
+                $filters['prepay'] = 0;
+            }
+             */
             
             //el Order
-            if (!empty($filters['order'])) {
-                switch ($filters['order']) {
-                    case 'date':
-                        $sqlOrder .= " ORDER BY published DESC";
-                    break;
-                    case 'adate':
-                        $sqlOrder .= " ORDER BY published ASC";
-                    break;
-                    case 'name':
-                        $sqlOrder .= " ORDER BY name ASC";
-                    break;
-                    case 'number':
+            switch ($filters['order']) {
+                case 'adate': // por fecha, antiguos primero
+                    $sqlOrder .= " ORDER BY project.published ASC";
+                break;
+                case 'name': // por nombre
+                    $sqlOrder .= " ORDER BY project.name ASC";
+                break;
+                case 'number': // por numero, más nuevos primero
+                    if ($filters['contractStatus'] == 'noreg') {
+                        // ya hay un filtro para "Sin registro de contrato" 
+                        $sqlOrder .= " ORDER BY project.published DESC";
+                        $filters['order'] = 'date';
+                    } elseif (!$joined) {
+                        // solo con registro de contrato
+                        $sqlJoin .= "INNER JOIN contract ON contract.project = project.id";
                         $sqlOrder .= " ORDER BY contract.number DESC";
-                    break;
-                    case 'anumber':
+                    } else {
+                        $sqlOrder .= " ORDER BY contract.number DESC";
+                    }
+                break;
+                case 'anumber': // por numero, más antiguos primero
+                    if ($filters['contractStatus'] == 'noreg') {
+                        // ya hay un filtro para "Sin registro de contrato" 
+                        $sqlOrder .= " ORDER BY project.published DESC";
+                        $filters['order'] = 'date';
+                    } elseif (!$joined) {
+                        // solo con registro de contrato
+                        $sqlJoin .= "INNER JOIN contract ON contract.project = project.id";
                         $sqlOrder .= " ORDER BY contract.number ASC";
-                    break;
-                }
+                    } else {
+                        $sqlOrder .= " ORDER BY contract.number DESC";
+                    }
+                break;
+                case 'date': // por fecha, recientes primero
+                default:
+                    $sqlOrder .= " ORDER BY project.published DESC";
+                break;
             }
 
             // la select
             $sql = "SELECT 
-                        id
+                        project.id
                     FROM project
-                    WHERE id != ''
+                    $sqlJoin
+                    LEFT JOIN contract_status 
+                        ON contract_status.contract = project.id
+                    WHERE project.id != ''
                         $sqlFilter
                         $sqlOrder
                     LIMIT 999
                     ";
-
+//            Message::Info($sql);
+                    
             $query = Model\Project::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 $the_proj = Model\Project::getMedium($proj['id']);
                 $the_proj->contract = Model\Contract::get($proj['id']);
+                
+                // si aun no tiene fechas hay que calcularlas
+                $the_date = strtotime($the_proj->published);
+                if (empty($the_proj->passed)) {
+                    $the_proj->passed = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+40, date('Y', $the_date)));
+                }
+                if (empty($the_proj->success)) {
+                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+80, date('Y', $the_date)));
+                }
+                
+                // preparamos los flags
+                if (empty($the_proj->contract)) {
+                    $flags = array('noreg' => 1); // no tiene registro
+                } elseif (empty($the_proj->contract->status)) {
+                    $flags = array('onform' => 1); // tiene registro pero sin estados
+                } else {
+                    $flags = (array) $the_proj->contract->status;
+                    // si no está cerrado es que está editando
+                    if ($flags['owner'] == 0) {
+                        $flags['onform'] = 1;
+                    }
+                }
+                $the_proj->flags = $flags;
+                
+                // y el número
+                list($cNum, $cDate) = Model\Contract::getNum($the_proj->id, $the_proj->published);
+                $the_proj->cName = "P-{$cNum}-{$cDate}";
+                
+                // incidencias
+                
+                
+                // y si estas incidencias hacen peligrar el mínimo
+                
                 $projects[] = $the_proj;
             }
             return $projects;
