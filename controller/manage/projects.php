@@ -116,6 +116,7 @@ namespace Goteo\Controller\Manage {
             } else {
                 $projects = array();
             }
+            $status = Model\Project::status();
             $projectStatus = Model\Project::procStatus(); // estado del proceso de campaña (1a, 2a, compeltada)
             $contractStatus = Model\Contract::procStatus(); // estado del proceso de contrato
             $orders = array(
@@ -133,6 +134,7 @@ namespace Goteo\Controller\Manage {
                     'file' => 'list',
                     'projects' => $projects,
                     'filters' => $filters,
+                    'status' => $status,
                     'projectStatus' => $projectStatus,
                     'contractStatus' => $contractStatus,
                     'orders' => $orders
@@ -152,6 +154,7 @@ namespace Goteo\Controller\Manage {
             $projects = array();
 
             $values = array();
+            $joined = false; // si hay join con contract
 
             // los filtros
             $sqlFilter = $sqlJoin = "";
@@ -197,11 +200,15 @@ namespace Goteo\Controller\Manage {
                         break;
 
                     case 'noreg': // Sin registro de contrato
-                        $sqlFilter .= " AND contract_status.contract IS NULL";
+                        $sqlJoin .= "LEFT JOIN contract ON contract.project = project.id";
+                        $sqlFilter .= " AND contract.project IS NULL";
+                        $joined = true;
                         break;
 
                     case 'onform': // Editando datos
-                        $sqlFilter .= " AND contract_status.owner = 0";
+                        $sqlJoin .= "INNER JOIN contract ON contract.project = project.id";
+                        $sqlFilter .= " AND (contract.project IS NOT NULL OR contract_status.owner = 0)";
+                        $joined = true;
                         break;
 
                     default:
@@ -231,9 +238,11 @@ namespace Goteo\Controller\Manage {
                         // ya hay un filtro para "Sin registro de contrato" 
                         $sqlOrder .= " ORDER BY project.published DESC";
                         $filters['order'] = 'date';
-                    } else {
+                    } elseif (!$joined) {
                         // solo con registro de contrato
                         $sqlJoin .= "INNER JOIN contract ON contract.project = project.id";
+                        $sqlOrder .= " ORDER BY contract.number DESC";
+                    } else {
                         $sqlOrder .= " ORDER BY contract.number DESC";
                     }
                 break;
@@ -242,10 +251,12 @@ namespace Goteo\Controller\Manage {
                         // ya hay un filtro para "Sin registro de contrato" 
                         $sqlOrder .= " ORDER BY project.published DESC";
                         $filters['order'] = 'date';
-                    } else {
+                    } elseif (!$joined) {
                         // solo con registro de contrato
                         $sqlJoin .= "INNER JOIN contract ON contract.project = project.id";
                         $sqlOrder .= " ORDER BY contract.number ASC";
+                    } else {
+                        $sqlOrder .= " ORDER BY contract.number DESC";
                     }
                 break;
                 case 'date': // por fecha, recientes primero
@@ -283,15 +294,15 @@ namespace Goteo\Controller\Manage {
                 }
                 
                 // preparamos los flags
-                if (empty($the_proj->contract->status)) {
+                if (empty($the_proj->contract)) {
                     $flags = array('noreg' => 1); // no tiene registro
+                } elseif (empty($the_proj->contract->status)) {
+                    $flags = array('onform' => 1); // tiene registro pero sin estados
                 } else {
                     $flags = (array) $the_proj->contract->status;
                     // si no está cerrado es que está editando
                     if ($flags['owner'] == 0) {
                         $flags['onform'] = 1;
-                    } else {
-                        unset($flags['onform']);
                     }
                 }
                 $the_proj->flags = $flags;
