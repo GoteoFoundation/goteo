@@ -10,9 +10,13 @@ $tags = $this['tags'];
 
 $_SESSION['msg_token'] = uniqid(rand(), true);
 
+// recaptcha
+require_once 'library/recaptchalib.php';
+
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 ?>
+<style>#recaptcha_widget_div{display:none;}</style>
 <?php if (\NODE_ID == \GOTEO_NODE) : ?>
     <div id="sub-header">
         <div>
@@ -22,7 +26,6 @@ include 'view/header.html.php';
 <?php endif; ?>
 
 <?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
-
     <div id="main">
 
         <div class="widget contact-message">
@@ -30,13 +33,13 @@ include 'view/header.html.php';
 
             <?php if (!empty($this['errors'])) : ?>
                 <p style="color:red;">
-                    <?php echo implode(', ', $this['errors']); ?>
+                    <?php echo implode('<br />', $this['errors']); ?>
                 </p>
             <?php endif; ?>
 
             <div style="float:left;width: 450px;">
-                <form method="post" action="/contact" id="frm_contact">
-                    <input type="hidden" id="msg_token" name="msg_token" value="" />
+                <form method="post" action="/contact">
+                    <input type="hidden" id="msg_token" name="msg_token" value="<?php echo $_SESSION['msg_token'] ; ?>" />
                     <table>
                         <tr>
                             <td>
@@ -83,9 +86,23 @@ include 'view/header.html.php';
                                 </div>
                             </td>
                         </tr>
+                        
+                        <tr>
+                            <td colspan="2">
+                                <div class="field">
+                                    <label for="recaptcha_response"><?php echo Text::get('contact-captcha-field'); ?></label><br />
+                                    <input type="text" id="recaptcha_response" name="recaptcha_response" value=""/>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
+                    <!--reCAPTCHA -->
+                    <div id="recaptcha_image"></div><a href="javascript:Recaptcha.reload()"><?php echo Text::get('contact-captcha-refresh'); ?></a>
+                    <script type="text/javascript" src="<?php echo RECAPTCHA_API_SERVER . '/challenge?k='. RECAPTCHA_PUBLIC_KEY; ?>"></script>
+                    <br />
+                    <!-- fin reCAPTCHA -->
 
-                    <button class="aqua" name="send" onclick="document.getElementById('msg_token').value='<?php echo $_SESSION['msg_token'] ; ?>';document.getElementById('frm_contact').submit();"><?php echo Text::get('contact-send_message-button'); ?></button>
+                    <button class="aqua" name="send" type="submit"><?php echo Text::get('contact-send_message-button'); ?></button>
                 </form>
             </div>
 

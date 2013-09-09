@@ -166,3 +166,6 @@ define('OAUTH_LINKEDIN_SECRET', 'nNFLjxt1dY6NvuMY'); //
 //Un secreto inventado cualquiera para encriptar los emails que sirven de secreto en openid
 define('OAUTH_OPENID_SECRET','CjFap3Ow4HJvUahAjWZ8kQ==');
 
+// recaptcha
+define('RECAPTCHA_PUBLIC_KEY','6LcnLOcSAAAAALIipxqC0kcKA8v5maiNvh5pMDJ6');
+define('RECAPTCHA_PRIVATE_KEY','6LcnLOcSAAAAAM3fpJEYR-03ukTNMd21nLBZUrTr');
