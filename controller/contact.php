@@ -21,12 +21,17 @@ namespace Goteo\Controller {
             '208.177.76.8',
             '88.190.61.93',
             '88.190.61.104',
+            '88.190.62.120',
+            '88.190.62.111',
             '91.207.5.46',
             '91.207.7.238'
         );
         
         public function index () {
 
+            if (in_array($_SERVER['HTTP_X_FORWARDED_FOR'], self::$ips)) 
+                throw new Error(Error::UNAUTHORIZED, 'Unauthorized');
+                    
             $tags = array();
             $rawTags = Text::get('contact-form-tags');
             $listTags = explode(';', $rawTags);
@@ -42,15 +47,8 @@ namespace Goteo\Controller {
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
 
-                // verificaciones temporales para el tema spam
-                if (NODE_ID == 'euskadi') {
-                    if (in_array($_SERVER['HTTP_X_FORWARDED_FOR'], self::$ips)) {
-                        @mail('goteo-contactspam@doukeshi.org', 'Unauthorized', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
-                        throw new Error(Error::UNAUTHORIZED, 'Unauthorized');
-                    } else {
-                        @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
-                        }
-                    }
+                // Checkeo de spam
+                @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
 
                 // verificamos referer
                 $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
@@ -82,10 +80,16 @@ namespace Goteo\Controller {
                 if(empty($_POST['message'])) {
                     $errors['message'] = Text::get('error-contact-message-empty');
                 } else {
-                    $msg_content = \strip_tags($_POST['message']);
-                    $msg_content = nl2br($msg_content);
+                    $msg_content = nl2br(\strip_tags($_POST['message']));
                 }
 
+                // verificamos el captcha
+                require 'library/recaptchalib.php';
+                $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response"]);
+                if (!$resp->is_valid) {
+                    $errors['recaptcha'] = Text::get('error-contact-captcha');
+                  }                
+                
                 $data = array(
                         'tag' => $_POST['tag'],
                         'subject' => $_POST['subject'],
@@ -93,7 +97,7 @@ namespace Goteo\Controller {
                         'email'   => $_POST['email'],
                         'message' => $_POST['message']
                 );
-
+                
                 if (empty($errors)) {
 
                     // Obtenemos la plantilla para asunto y contenido
@@ -125,7 +129,7 @@ namespace Goteo\Controller {
                     $mailHandler->subject = $subject;
                     $mailHandler->content = $content;
                     $mailHandler->reply = $email;
-                    $mailHandler->html = false;
+                    $mailHandler->html = true;
                     $mailHandler->template = $template->id;
                     if ($mailHandler->send($errors)) {
                         Message::Info('Mensaje de contacto enviado correctamente.');
