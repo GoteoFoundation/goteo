@@ -287,7 +287,7 @@ namespace Goteo\Model\Call {
                         $call->curr_maxdrop = $call->rest;
                     
                     // finalmente lo más importante, si está en situación de ser regable
-                    $call->dropable = ($project->status == 3 && $project->round == 1 && $project->invested < $project->maxcost);
+                    $call->dropable = ($project->status == 3 && $project->invested < $project->maxcost);
 
                     return $call;
                 }
