@@ -80,3 +80,8 @@
     text-align: right;
     margin-right: 5px;
 }
+
+#call-supporters {
+    width: 544px;
+    float: left;
+}

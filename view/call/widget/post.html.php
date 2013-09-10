@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $call = $this['call'];
-if (!$call->post instanceof Post) return ''; else $post = $call->post;
+$post = $call->post;
 ?>
 <div id="post">
     <?php  if (!empty($post->image)) : ?>
