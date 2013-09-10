@@ -375,7 +375,7 @@ namespace Goteo\Model {
                     if (isset($this->called) && $this->called instanceof Call) {
 
                         // si el aporte es más de lo que puede 
-                        $drop_amount = ($this->amount > $this->called->curr_maxdrop) ? $this->called->curr_maxdrop : $this->amount;
+                        $drop_amount = ($this->amount > $this->maxdrop) ? $this->maxdrop : $this->amount;
 
                         // si queda capital riego
                         if ($drop_amount > 0) {

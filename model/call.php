@@ -11,6 +11,18 @@ namespace Goteo\Model {
 
     class Call extends \Goteo\Core\Model {
 
+        // limites por ronda:
+        //  'normal' = limite normal por proyecto definido (cantidad o % sobre mínimo)
+        //  'unlimited' = sin límite (óptimo como límite técnico. Ver, Model\Project::called cuando establece `dropable`) 
+        //  'minimum' = límite y luego minimo (mínimo más restrictivo que límite)
+        //  'none' = no hay riego
+        public static $callConf = array(
+            'unia-cofinanciacion-innovacion-educativa' => array(1=>'minimum', 2=>'none'),
+            'cofinancia-extremadura' => array(1=>'normal', 2=>'unlimited'),
+            'crowdsasuna' => array(1=>'normal', 2=>'normal')
+        );
+        
+        
         public
         $id = null,
         $owner, // User who created it
@@ -276,6 +288,9 @@ namespace Goteo\Model {
                 $call->sponsors = Call\Sponsor::getList($id);
                 $call->banners  = Call\Banner::getList($id, $lang);
 
+                // configuración personalizada
+                $call->conf = isset(self::$callConf) ? $callConf[$id] : null;
+                
                 return $call;
             } catch (\PDOException $e) {
                 throw \Goteo\Core\Exception($e->getMessage());

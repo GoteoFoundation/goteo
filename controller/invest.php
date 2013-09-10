@@ -104,9 +104,13 @@ namespace Goteo\Controller {
                 }
                 $invest->address = (object) $address;
 
-                // si está en primera ronda
-                // y obtiene dinero de convocatoria
-                $invest->called = (isset($projectData->called) && $projectData->called->dropable && $projectData->called->project_got < $projectData->called->maxproj) ? $projectData->called : null;
+                // saber si el aporte puede generar riego y cuanto
+                if ($projectData->called->dropable) {
+                    $invest->called = $projectData->called;
+                    $invest->maxdrop = Model\Call\Project::currMaxdrop($projectData, $invest->amount);
+                } else {
+                    $invest->called = null;
+                }
 
                 if ($invest->save($errors)) {
                     Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
