@@ -387,7 +387,10 @@ div.widget.project-rewards ul li div.license.odcby > a strong,
 }
 div.widget.project-invest ul li div.license.oshw > a strong,
 div.widget.project-rewards ul li div.license.oshw > a strong,
-#rewards-summary ul li div.license.oshw > a strong {
+#rewards-summary ul li div.license.oshw > a strong,
+div.widget.project-invest ul li div.license.cernohl > a strong,
+div.widget.project-rewards ul li div.license.cernohl > a strong,
+#rewards-summary ul li div.license.cernohl > a strong {
     background-image: url('/view/css/license/oshw.png');
 }
 div.widget.project-invest ul li div.license.pd > a strong,

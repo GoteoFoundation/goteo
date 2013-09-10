@@ -327,7 +327,9 @@ body.project-edit div#main.rewards div.superform li.element.editsocial_reward li
 }
 
 body.project-edit div#main.rewards div.superform li.element.reward div.license_oshw ,
-body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.license_oshw div.contents {
+body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.license_oshw div.contents,
+body.project-edit div#main.rewards div.superform li.element.reward div.license_cernohl ,
+body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.license_cernohl div.contents {
     background-image: url('/view/css/license/oshw.png');
 }
 
