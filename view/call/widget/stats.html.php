@@ -16,7 +16,7 @@ $call = $this['call'];
             <?php else: ?>
                 <dl class="block long category">
                     <dt><?php echo Text::get('call-splash-resources-header') ?></dt>
-                    <dd><?php echo Text::recorta($call->resources, 100) ?></dd>
+                    <dd><?php echo $call->resources ?></dd>
                 </dl>
             <?php endif; ?>
             <dl class="block long expires">
@@ -25,7 +25,7 @@ $call = $this['call'];
             </dl>
             <dl class="block last applied">
                 <dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>
-                <dd><?php echo count($call->projects) ?></dd>
+                <dd><?php echo $call->applied ?></dd>
             </dl>
         </div>
         <div class="row">
@@ -50,7 +50,7 @@ $call = $this['call'];
                 <dt><?php echo Text::get('call-splash-more_info-header') ?></dt>
                 <dd>
                     <?php if (!empty($call->pdf)) : ?><a class="red" href="<?php echo $call->pdf ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a><?php endif; ?>
-                    <?php if (!empty($call->user->webs[0]->url)) : ?><a href="<?php echo $call->user->webs[0]->url ?>" target="_blank"><?php echo preg_replace('^http(?<https>s)?://^', '', $call->user->webs[0]->url) ?></a><?php endif; ?>
+                    <?php if (!empty($call->user->webs[0]->url)) : ?><a href="<?php echo $call->user->webs[0]->url ?>" target="_blank"><?php echo Text::cutUrlParams($call->user->webs[0]->url) ?></a><?php endif; ?>
                     <a class="red" href="<?php echo $call->dossier ?>" target="_blank"><?php echo Text::get('call-splash-dossier-link') ?></a>
                     <!-- a class="aqua" href="/call/<?php echo $call->id ?>/terms" ><?php echo Text::get('call-splash-legal-link') ?></a -->
                 </dd>
@@ -102,7 +102,7 @@ $call = $this['call'];
         <div class="row">
             <dl class="block selected">
                 <dt><?php echo Text::get('call-splash-selected_projects-header') ?></dt>
-                <dd><?php echo count($call->projects) ?></dd>
+                <dd><?php echo $call->applied ?></dd>
             </dl>
             <dl class="block processing">
                 <dt><?php echo Text::get('call-splash-runing_projects-header') ?></dt>
@@ -136,7 +136,9 @@ $call = $this['call'];
         <?php endif; ?>
 
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button info"><?php echo Text::get('call-splash-more_info-button') ?></a>
+         <?php if (count($call->projects) > 0) : // solo si tiene proyectos  ?>
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
+        <?php endif; ?>
         
     <?php endif; ?>
         

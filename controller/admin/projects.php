@@ -8,6 +8,8 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
         Goteo\Library\Message,
+        Goteo\Library\Mail,
+		Goteo\Library\Template,
         Goteo\Model;
 
     class Projects {
@@ -71,7 +73,6 @@ namespace Goteo\Controller\Admin {
                     $accounts->bank_owner = $_POST['bank_owner'];
                     $accounts->paypal = $_POST['paypal'];
                     $accounts->paypal_owner = $_POST['paypal_owner'];
-                    $accounts->allowpp = $_POST['allowpp'];
                     if ($accounts->save($errors)) {
                         Message::Info('Se han actualizado las cuentas del proyecto '.$projData->name);
                     } else {
@@ -85,10 +86,17 @@ namespace Goteo\Controller\Admin {
                     } else {
 
                         $values = array(':id' => $projData->id, ':node' => $_POST['node']);
+                        $values2 = array(':id' => $projData->owner, ':node' => $_POST['node']);
                         try {
                             $sql = "UPDATE project SET node = :node WHERE id = :id";
+                            $sql2 = "UPDATE user SET node = :node WHERE id = :id";
                             if (Model\Project::query($sql, $values)) {
                                 $log_text = 'El admin %s ha <span class="red">movido al nodo '.$nodes[$_POST['node']].'</span> el proyecto '.$projData->name.' %s';
+                                if (Model\User::query($sql2, $values2)) {
+                                    $log_text .= ', tambien se ha movido al impulsor';
+                                } else {
+                                    $log_text .= ', pero no se ha movido al impulsor';
+                                }
                             } else {
                                 $log_text = 'Al admin %s le ha <span class="red">fallado al mover al nodo '.$nodes[$_POST['node']].'</span> el proyecto '.$projData->name.' %s';
                             }
@@ -142,7 +150,7 @@ namespace Goteo\Controller\Admin {
                         }
 
                         if ($projData->status >= 3 && $_POST['force'] != 1) {
-                            Message::Error('El proyecto no estÃ¡ ni en EdiciÃ³n ni en RevisiÃ³n, no se modifica nada.');
+                            Message::Error('El proyecto no está ni en Edición ni en Revisión, no se modifica nada.');
                             throw new Redirection('/admin/projects/rebase/'.$id);
                         }
 
@@ -218,20 +226,20 @@ namespace Goteo\Controller\Admin {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Edicion</span>';
                     }
                     break;
-                case 'complete':
-                    // dar un proyecto por financiado manualmente
-                    if ($project->succeed($errors)) {
-                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Financiado</span>';
-                    } else {
-                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Financiado</span>';
-                    }
-                    break;
                 case 'fulfill':
                     // marcar que el proyecto ha cumplido con los retornos colectivos
                     if ($project->satisfied($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Retorno cumplido</span>';
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Retorno cumplido</span>';
+                    }
+                    break;
+                case 'unfulfill':
+                    // dar un proyecto por financiado manualmente
+                    if ($project->rollback($errors)) {
+                        $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Financiado</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Financiado</span>';
                     }
                     break;
             }
@@ -366,8 +374,8 @@ namespace Goteo\Controller\Admin {
 
             if ($action == 'assign') {
                 // asignar a una convocatoria solo si
-                //   estÃ¡ en ediciÃ³n a campaÃ±a
-                //   y no estÃ¡ asignado
+                //   está en edición a campaña
+                //   y no está asignado
                 if (!in_array($project->status, array('1', '2', '3')) || $project->called) {
                     Message::Error("No se puede asignar en este estado o ya esta asignado a una convocatoria");
                     throw new Redirection('/admin/projects/list');
@@ -384,6 +392,38 @@ namespace Goteo\Controller\Admin {
                         'available' => $available
                     )
                 );
+            }
+
+
+            // Rechazo express
+            if ($action == 'reject') {
+                if (empty($project)) {
+                    Message::Error('No hay proyecto sobre el que operar');
+                } else {
+                    // Obtenemos la plantilla para asunto y contenido
+                    $template = Template::get(40);
+                    // Sustituimos los datos
+                    $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                    $search  = array('%USERNAME%', '%PROJECTNAME%');
+                    $replace = array($project->user->name, $project->name);
+                    $content = \str_replace($search, $replace, $template->text);
+                    // iniciamos mail
+                    $mailHandler = new Mail();
+                    $mailHandler->to = $project->user->email;
+                    $mailHandler->toName = $project->user->name;
+                    $mailHandler->subject = $subject;
+                    $mailHandler->content = $content;
+                    $mailHandler->html = true;
+                    $mailHandler->template = $template->id;
+                    if ($mailHandler->send()) {
+                        Message::Info('Se ha enviado un email a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
+                    } else {
+                        Message::Error('Ha fallado al enviar el mail a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
+                    }
+                    unset($mailHandler);
+                }
+
+                throw new Redirection('/admin/projects/list');
             }
 
 

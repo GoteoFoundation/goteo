@@ -6,41 +6,49 @@ $amount = (isset($_GET['amount'])) ? $_GET['amount'] : null;
 $user   = (isset($_GET['user'])) ? $_GET['user'] : null;
 $proj   = (isset($_GET['proj'])) ? $_GET['proj'] : null;
 
+
+$users = array();
+foreach ($this['users'] as $uI=>$uN) {
+    $users[] = '{ value: "'.str_replace(array("'", '"'), '`', $uN).' ['.$uI.']", id: "'.$uI.'" }';
+    if ($uI == $user) $preU = "$uN [$uI]";
+}
+
+$projs = array();
+foreach ($this['projects'] as $pI=>$pN) {
+    $projs[] = '{ value: "'.str_replace(array("'", '"'), '`', $pN).'", id: "'.$pI.'" }';
+    if ($pI == $proj) $preP = "$pN [$pI]";
+}
+
+
 ?>
 <div class="widget">
     <form id="filter-form" action="/admin/accounts/add" method="post">
+        <input type="hidden" id="user" name="user" value="<?php echo $user; ?>" /> <br />
+        <input type="hidden" id="project" name="project" value="<?php echo $proj; ?>" />
+
+        <div class="ui-widget">
+            <label for="busca-user">Buscador usuario:</label><br />
+            <input type="text" id="busca-user" name="user_searcher" value="<?php echo $preU; ?>" style="width:500px;"/>
+        </div>        
+        
+        <br />
+        
+        <div class="ui-widget">
+            <label for="busca-proj">Buscador proyecto: (solo proyectos en campaña)</label><br />
+            <input type="text" id="busca-proj" name="proj_searcher" value="<?php echo $preP; ?>" style="width:500px;"/>
+        </div>        
+        
         <p>
             <label for="invest-amount">Importe:</label><br />
             <input type="text" id="invest-amount" name="amount" value="<?php echo $amount; ?>" />
         </p>
-        <p>
-            <label for="invest-user">Usuario:</label><br />
-            <select id="invest-user" name="user">
-                <option value="">Seleccionar usuario que hace el aporte</option>
-            <?php foreach ($this['users'] as $userId=>$userName) : 
-                $selected = $userId == $user ? ' selected="selected"' : '';
-                ?>
-                <option value="<?php echo $userId; ?>"<?php echo $selected; ?>><?php echo $userId . ' :: ' . substr($userName, 0, 20); ?></option>
-            <?php endforeach; ?>
-            </select>
-        </p>
-        <p>
-            <label for="invest-project">Proyecto:</label><br />
-            <select id="invest-project" name="project">
-                <option value="">Seleccionar el proyecto al que se aporta</option>
-            <?php foreach ($this['projects'] as $projectId=>$projectName) : 
-                $selected = $projectId == $proj ? ' selected="selected"' : '';
-                ?>
-                <option value="<?php echo $projectId; ?>"<?php echo $selected; ?>><?php echo $projectName; ?></option>
-            <?php endforeach; ?>
-            </select>
-        </p>
+        
         <p>
             <label for="invest-campaign">Convocatoria:</label><br />
             <select id="invest-campaign" name="campaign">
                 <option value="">Seleccionar la convocatoria que riega este aporte</option>
             <?php foreach ($this['calls'] as $campaignId=>$campaignName) : ?>
-                <option value="<?php echo $campaignId; ?>"><?php echo $campaignName; ?></option>
+                <option value="<?php echo $campaignId; ?>"><?php echo substr($campaignName, 0, 100); ?></option>
             <?php endforeach; ?>
             </select>
         </p>
@@ -54,3 +62,30 @@ $proj   = (isset($_GET['proj'])) ? $_GET['proj'] : null;
 
     </form>
 </div>
+<script type="text/javascript">
+$(function () {
+
+    var users = [<?php echo implode(', ', $users); ?>];
+    var projs = [<?php echo implode(', ', $projs); ?>];
+
+    /* Autocomplete para usuario y proyecto */
+    $( "#busca-user" ).autocomplete({
+      source: users,
+      minLength: 2,
+      autoFocus: true,
+      select: function( event, ui) {
+                $("#user").val(ui.item.id);
+            }
+    });
+
+    $( "#busca-proj" ).autocomplete({
+      source: projs,
+      minLength: 2,
+      autoFocus: true,
+      select: function( event, ui) {
+                $("#project").val(ui.item.id);
+            }
+    });
+
+});
+</script>

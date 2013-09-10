@@ -1,5 +1,5 @@
 <?php
-// cÃ³digo javascript apra imagen de fondo
+// código javascript apra imagen de fondo
 if ($call->image instanceof Goteo\Model\Image) {
     $imghuge = $call->image->getLink(5000, 5000);
     $imgpad  = $call->image->getLink(1536, 1536);

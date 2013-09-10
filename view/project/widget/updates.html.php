@@ -4,8 +4,11 @@ use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Model\Blog\Post;
 
+$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+
 $project = $this['project'];
 $blog    = $this['blog'];
+
 if (empty($this['post'])) {
     $posts = $blog->posts;
     $action = 'list';
@@ -27,26 +30,20 @@ if ($this['show'] == 'list') {
     // paginacion
     require_once 'library/pagination/pagination.php';
 
-    //recolocamos los post para la paginacion
-    $the_posts = array();
-    foreach ($posts as $i=>$p) {
-        $the_posts[] = $p;
-    }
-
-    $pagedResults = new \Paginated($the_posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
+    $pagedResults = new \Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
 }
 
 // segun lo que tengamos que mostrar :  lista o entrada
 // uso la libreria blog para sacar los datos adecuados para esta vista
 
 $level = (int) $this['level'] ?: 3;
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 ?>
 <div class="project-updates"> 
     <!-- una entrada -->
     <?php if ($action == 'post') : ?>
     <div class="post widget">
         <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'post', 'url' => '/project/'.$project->id.'/updates/')); ?>
+        <?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/project/'.$project->id.'/updates/' . $post->id, $post->title))); ?>
     </div>
     <?php echo new View('view/blog/comments.html.php', array('post' => $post->id, 'owner' => $project->owner)); ?>
     <?php echo new View('view/blog/sendComment.html.php', array('post' => $post->id, 'project' => $project->id)); ?>
@@ -54,20 +51,10 @@ $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
     <!-- Lista de entradas -->
     <?php if ($action == 'list') : ?>
         <?php if (!empty($posts)) : ?>
-            <?php while ($post = $pagedResults->fetchPagedRow()) :
-                
-                    $share_title = $post->title;
-                    $share_url = $URL . '/project/'.$project->id.'/updates/' . $post->id;
-                    $facebook_url = 'http://facebook.com/sharer.php?u=' . rawurlencode($share_url) . '&t=' . rawurlencode($share_title);
-                    $twitter_url = 'http://twitter.com/home?status=' . rawurlencode($share_title . ': ' . $share_url . ' #Goteo');
-                ?>
+            <?php while ($post = $pagedResults->fetchPagedRow()) : ?>
                 <div class="widget post">
                     <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'list', 'url' => '/project/'.$project->id.'/updates/')); ?>
-					<ul class="share-goteo">
-						<li class="sharetext"><?php echo Text::get('regular-share_this'); ?></li>
-						<li class="twitter"><a href="<?php echo htmlspecialchars($twitter_url) ?>" target="_blank"><?php echo Text::get('regular-twitter'); ?></a></li>
-						<li class="facebook"><a href="<?php echo htmlspecialchars($facebook_url) ?>" target="_blank"><?php echo Text::get('regular-facebook'); ?></a></li>
-					</ul>
+                    <?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/project/'.$project->id.'/updates/' . $post->id, $post->title))); ?>
 					<div class="comments-num"><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
                 </div>
             <?php endwhile; ?>

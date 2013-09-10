@@ -19,7 +19,8 @@ namespace Goteo\Controller {
 
         // Array de usuarios con permisos especiales
         static public $supervisors = array(
-            'diegobus' => array(
+            'id-usuario-supervisor' => array(
+                // paneles de admin permitidos
                 'base',
                 'blog',
                 'texts',
@@ -78,12 +79,13 @@ namespace Goteo\Controller {
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva convocatoria', 'item' => false),
-                    'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true)
+                    'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true),
+                    'admins' => array('label' => 'Asignando administradores de la convocatoria', 'item' => true)
                 ),
-                'filters' => array('status' => '', 'category' => '', 'owner' => '', 'name' => '', 'order' => '')
+                'filters' => array('status' => '', 'category' => '', 'caller' => '', 'name' => '', 'admin' => '','order' => '')
             ),
             'campaigns' => array(
-                'label' => 'Convocatorias',
+                'label' => 'Convocatorias destacadas',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva convocatoria destacada', 'item' => false)
@@ -104,15 +106,7 @@ namespace Goteo\Controller {
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false)
                 ),
-                'filters' => array('project' => '', 'status' => '', 'icon' => '')
-            ),
-            'contracts' => array(
-                'label' => 'Contratos',
-                'actions' => array(
-                    'list' => array('label' => 'Listando', 'item' => false),
-                    'edit' => array('label' => 'Gestionando contrato del proyecto', 'item' => false)
-                ),
-                'filters' => array('project' => '')
+                'filters' => array('project' => '', 'status' => '', 'icon' => '', 'projStatus'=>'')
             ),
             'criteria' => array(
                 'label' => 'Criterios de revisión',
@@ -290,7 +284,9 @@ namespace Goteo\Controller {
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
                     'paypal' => array('label' => 'Informe PayPal', 'item' => false),
+                    'geoloc' => array('label' => 'Informe usuarios Localizados', 'item' => false),
                     'projects' => array('label' => 'Informe Impulsores', 'item' => true),
+                    'calls' => array('label' => 'Informe Convocatorias', 'item' => true),
                     'donors' => array('label' => 'Informe Donantes', 'item' => false)
                 ),
                 'filters' => array('report' => '', 'from' => '', 'until' => '', 'year' => '2012', 'status' => '', 'user' => '')
@@ -417,469 +413,21 @@ namespace Goteo\Controller {
             )
         );
 
-        public function index() {
-            $BC = self::menu(array('option' => 'index', 'action' => null, 'id' => null));
-            define('ADMIN_BCPATH', $BC);
-            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-            $tasks = Model\Task::getAll(array(), $node, true);
-            return new View('view/admin/index.html.php', array('tasks' => $tasks));
+        // preparado para index unificado
+        public function index($option = 'index', $action = 'list', $id = null, $subaction = null) {
+            if ($option == 'index') {
+                $BC = self::menu(array('option' => $option, 'action' => null, 'id' => null));
+                define('ADMIN_BCPATH', $BC);
+                $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+                $tasks = Model\Task::getAll(array(), $node, true);
+                return new View('view/admin/index.html.php', array('tasks' => $tasks));
+            } else {
+                $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
+                define('ADMIN_BCPATH', $BC);
+                $SubC = 'Goteo\Controller\Admin' . \chr(92) . \ucfirst($option);
+                return $SubC::process($action, $id, self::setFilters($option), $subaction);
+            }
         }
-
-        /*
-         * // preparado para index unificado
-          public function index ($option = 'index', $action = 'list', $id = null, $subaction = null) {
-          if ($option == 'index') {
-          $BC = self::menu(array('option'=>$option, 'action'=>null, 'id' => null));
-          define('ADMIN_BCPATH', $BC);
-          $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-          $tasks = Model\Task::getAll(array(), $node, true);
-          return new View('view/admin/index.html.php', array('tasks'=>$tasks));
-          } else {
-          $BC = self::menu(array('option'=>$option, 'action'=>$action, 'id' => $id));
-          define('ADMIN_BCPATH', $BC);
-          $SubC = 'Goteo\Controller\Admin' . \chr(92) . \ucfirst($option);
-          return $SubC::process($action, $id, self::setFilters($option), $subaction);
-          }
-          }
-         *
-         */
-
-        /* Todos estos métodos de a continuación se podrán borrar una vez unificado el index */
-
-        /*
-         * Info de Actividad reciente para los administradores
-         */
-
-        public function recent($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Recent::process($action, $id);
-        }
-
-        /*
-         * Gestión de páginas institucionales
-         */
-
-        public function pages($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Pages::process($action, $id);
-        }
-
-        /*
-         * Gestion de textos dinámicos
-         */
-
-        public function texts($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            // no cache para textos
-            define('GOTEO_ADMIN_NOCACHE', true);
-            return Admin\Texts::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Gestión de plantillas para emails automáticos
-         */
-
-        public function templates($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Templates::process($action, $id);
-        }
-
-        /*
-         *  Lista de proyectos
-         */
-
-        public function projects($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Projects::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         *  Revision de proyectos
-         */
-
-        public function reviews($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Reviews::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         *  Traducciones de proyectos
-         */
-
-        public function translates($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Translates::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         *  Traducciones de convocatorias
-         */
-
-        public function transcalls($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Transcalls::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         *  Traducciones de nodos
-         */
-
-        public function transnodes($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Transnodes::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * proyectos destacados
-         */
-
-        public function promote($action = 'list', $id = null, $flag = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Promote::process($action, $id, self::setFilters(__FUNCTION__), $flag);
-        }
-
-        /*
-         * proyectos recomendados por padrinos
-         */
-
-        public function patron($action = 'list', $id = null, $flag = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Patron::process($action, $id, self::setFilters(__FUNCTION__), $flag);
-        }
-
-        /*
-         * Banners
-         */
-
-        public function banners($action = 'list', $id = null, $flag = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Banners::process($action, $id, self::setFilters(__FUNCTION__), $flag);
-        }
-
-        /*
-         * preguntas frecuentes
-         */
-
-        public function faq($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Faq::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * criterios de puntuación Goteo
-         */
-
-        public function criteria($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Criteria::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Tipos de Retorno/Recompensa (iconos)
-         */
-
-        public function icons($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Icons::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Licencias
-         */
-
-        public function licenses($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Licenses::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Localizaciones
-         */
-
-        public function locations($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Locations::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * posts para portada
-         */
-
-        public function posts($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Posts::process($action, $id);
-        }
-
-        /*
-         * posts para pie
-         */
-
-        public function footer($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Footer::process($action, $id);
-        }
-
-        /*
-         *  Gestión de categorias de proyectos
-         */
-
-        public function categories($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Categories::process($action, $id);
-        }
-
-        /*
-         *  Gestión de tags de blog
-         */
-
-        public function tags($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Tags::process($action, $id);
-        }
-
-        /*
-         *  Gestión de tareas pendientes de administracion
-         */
-
-        public function tasks($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Tasks::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         *  administración de usuarios para superadmin
-         */
-
-        public function users($action = 'list', $id = null, $subaction = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Users::process($action, $id, self::setFilters(__FUNCTION__), $subaction);
-        }
-
-        /*
-         *  Gestión de aportes a proyectos
-         */
-
-        public function invests($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Invests::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         *  Gestión transacciones (tpv/paypal)
-         * 
-         */
-
-        public function accounts($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Accounts::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Gestión de retornos colectivos, para marcar un retorno colectivo como cumplido
-         */
-
-        public function commons($action = 'list', $id = null, $filters = array()) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Commons::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Gestión de recompensas y dirección de los aportes
-         */
-
-        public function rewards($action = 'list', $id = null, $filters = array()) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Rewards::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Visualización de informes generales de goteo
-         */
-
-        public function reports($action = 'list', $id = null, $filters = array()) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Reports::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Gestión de entradas de blog
-         */
-
-        public function blog($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Blog::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Gestión de términos del Glosario
-         */
-
-        public function glossary($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Glossary::process($action, $id);
-        }
-
-        /*
-         * Gestión de entradas de info
-         */
-
-        public function info($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Info::process($action, $id);
-        }
-
-        /*
-         *  Gestión de noticias
-         */
-
-        public function news($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\News::process($action, $id);
-        }
-
-        /*
-         * Gestor de envio automático de newsletter
-         */
-
-        public function newsletter($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Newsletter::process($action, $id);
-        }
-
-        /*
-         *  Gestión de patrocinadores
-         */
-
-        public function sponsors($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Sponsors::process($action, $id);
-        }
-
-        /*
-         *  Lista de convocatorias
-         */
-
-        public function calls($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Calls::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         *  Convocatorias en portada
-         */
-
-        public function campaigns($action = 'list', $id = null, $flag = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Campaigns::process($action, $id, self::setFilters(__FUNCTION__), $flag);
-        }
-
-        /*
-         *  Gestión de nodos
-         */
-
-        public function nodes($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Nodes::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         *  Gestión de datos del nodo
-         */
-
-        public function node($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Node::process($action, $id);
-        }
-
-        /*
-         * Comunicaciones con los usuarios mediante mailing
-         */
-
-        public function mailing($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Mailing::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         *  historial de emails enviados
-         */
-
-        public function sended($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Sended::process($action, $id, self::setFilters(__FUNCTION__));
-        }
-
-        /*
-         * Niveles de meritocracia
-         */
-
-        public function worth($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Worth::process($action, $id);
-        }
-
-        /*
-         * Conteo de palabras
-         */
-
-        public function wordcount($action = 'list', $id = null) {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Wordcount::process($action, $id);
-        }
-
-        /*
-         * Elementos en portada
-         */
-
-        public function home($action = 'list', $id = null, $type = 'main') {
-            $BC = self::menu(array('option' => __FUNCTION__, 'action' => $action, 'id' => $id));
-            define('ADMIN_BCPATH', $BC);
-            return Admin\Home::process($action, $id, self::setFilters(__FUNCTION__), $type);
-        }
-
-        /* Hasta aquí se `podrá borrar una vez unificado el index */
 
         // Para marcar tareas listas
         public function done($id) {
@@ -1117,7 +665,9 @@ namespace Goteo\Controller {
                                 'projects' => $options['projects'], // proyectos del nodo
                                 'reviews' => $options['reviews'], // revisiones de proyectos del nodo
                                 'translates' => $options['translates'], // traducciones de proyectos del nodo
-                                'invests' => $options['invests']
+                                'invests' => $options['invests'],
+                                'patron' => $options['patron'],
+                                'calls' => $options['calls']
                             )
                         ),
                         'users' => array(
@@ -1148,6 +698,10 @@ namespace Goteo\Controller {
                         unset($menu['projects']['options']['invests']);
                         $menu['projects']['options']['accounts'] = $options['accounts']; // gestion completa de aportes
                         $menu['projects']['options']['reports'] = $options['reports']; // informes
+                        $menu['contents']['options']['texts'] = $options['texts']; // gestión de textos
+                        $menu['contents']['options']['faq'] = $options['faq']; // gestión de faqs
+                        $menu['contents']['options']['templates'] = $options['templates']; // gestión de plantillas
+                        $menu['projects']['options']['commons'] = $options['commons']; // gestion de retornos colectivos
                     }
 
                     break;

@@ -189,7 +189,7 @@ namespace Goteo\Controller\Admin {
                     'columns' => array(
                         'edit' => '',
                         'title' => 'Noticia',
-                        'url' => 'Enlace',
+//                        'url' => 'Enlace',
                         'order' => 'Posición',
                         'up' => '',
                         'down' => '',

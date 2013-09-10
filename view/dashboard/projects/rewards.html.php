@@ -61,7 +61,7 @@ switch ($order) {
 
 ?>
 <div class="widget gestrew">
-    <div class="message"><?php echo Text::html('dashboard-rewards-notice') ?></div>
+    <div class="message"><?php echo (in_array($project->status, array(4, 5))) ? Text::html('dashboard-rewards-investors_table') : Text::html('dashboard-rewards-notice'); ?></div>
     <div class="rewards">
         <?php $num = 1; 
             foreach ($rewards as $rewardId=>$rewardData) : ?>
@@ -87,7 +87,8 @@ switch ($order) {
         document.getElementById('invests-filter-form').submit();
         return false;
     }
-</script><div class="widget gestrew">
+</script>
+<div class="widget gestrew">
     <h2 class="title">Gestionar retornos</h2>
     <a name="gestrew"></a>
    <form id="invests-filter-form" name="filter_form" action="<?php echo '/dashboard/projects/rewards/filter#gestrew'; ?>" method="post">
@@ -123,7 +124,7 @@ switch ($order) {
 
                 $address = $investData->address;
                 $cumplida = true; //si nos encontramos una sola no cumplida, pasa a false
-                $estilo = "disabled";
+                $estilo = " disabled";
                 foreach ($investData->rewards as $reward) {
                     if ($reward->fulfilled != 1) {
                         $estilo = "";
@@ -146,25 +147,29 @@ switch ($order) {
                     
                     <div class="left" style="width:120px;">
 						<span class="username"><a href="/user/<?php echo $investData->user->id; ?>"><?php echo $investData->user->name; ?></a></span>
-                        <label class="amount">Aporte<?php if ($investData->anonymous) echo ' <strong>'.  Text::get('regular-anonymous').'</strong>'; ?></label>
+                        <label class="amount">Aporte<?php if ($investData->anonymous) echo ' <strong>'.  Text::get('regular-anonymous').'</strong>'; echo " [{$investData->id}]";?></label>
 						<span class="amount"><?php echo $investData->amount; ?> &euro;</span>
                         <span class="date"><?php echo date('d-m-Y', strtotime($investData->invested)); ?></span>
                     </div>
                    
                     <div class="left recompensas"  style="width:280px;">
-                     	<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-choosen'); ?></strong></span>
+                     	<span style="margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-choosen'); ?></strong></span>
                     <?php if (empty($investData->rewards)) : // si no hay recompensas es renuncia ?>
-                     	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-resigns'); ?></strong></span>
+                     	<span style="margin-bottom:2px;"><strong><?php echo Text::get('dashboard-rewards-resigns'); ?></strong></span>
                     <?php else : ?>
                         <?php foreach ($investData->rewards as $reward) : ?>
-                        <div style="width: 250px; overflow: hidden; height: 18px; margin-bottom:2px;" class="<?php echo $estilo;?>">
-                        <input type="checkbox"  id="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" name="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
-                        <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 40); ?></label>
+                        <div style="width: 250px; overflow: hidden; height: 18px; margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>">
+                        <?php if (in_array($project->status, array(4,5))) : ?>
+                            <input type="checkbox" class="fulrew" id="<?php echo "ful_reward-{$investId}-{$reward->id}"; ?>" ref="<?php echo $investId; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
+                            <label for="ful_reward-<?php echo $investId; ?>-<?php echo $reward->id; ?>"><?php echo Text::recorta($reward->reward, 100); ?></label>
+                        <?php else : ?>
+                            <span><?php echo Text::recorta($reward->reward, 100); ?></span>
+                        <?php endif; ?>
                         </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                    <?php if ($investData->resign) : // donativo o reconocimiento/agradecimiento ?>
-                     	<span style="margin-bottom:2px;color:green;"><?php echo Text::get('dashboard-rewards-thanks'); ?></span>
+                    <?php if (in_array($project->status, array(4,5)) && !empty($investData->rewards) ) : ?>
+                        <span class="status" id="status-<?php echo $investId; ?>"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
                     <?php endif; ?>
                     <?php if ($investData->issue) : // si es incidencia ?>
                      	<span style="margin-bottom:2px;color:red;"><strong><?php echo Text::get('dashboard-rewards-issue'); ?></strong></span>
@@ -172,14 +177,16 @@ switch ($order) {
                     </div>
                     
 					<div class="left" style="width:200px;padding-right:30px;">
-						<span style="margin-bottom:2px;" class="<?php echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-address'); ?></strong></span>
-						<span class="<?php echo $estilo;?>">
+						<span style="margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-address'); ?></strong></span>
+						<span class="<?php echo 'dis'.$investId; echo $estilo;?>">
                     	<?php echo $address->address; ?>, <?php echo $address->location; ?>, <?php echo $address->zipcode; ?> <?php echo $address->country; ?>
                     	</span>
+                    <?php if ($investData->resign) : // donativo o reconocimiento/agradecimiento ?>
+                     	<span style="margin-bottom:2px;color:green;"><?php echo Text::get('dashboard-rewards-thanks'); ?></span>
+                    <?php endif; ?>
                     </div>
                     
                     <div class="left">
-	                    <span class="status"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
                         <span class="profile"><a href="/user/profile/<?php echo $investData->user->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
                         <span class="contact"><a onclick="msgto_user('<?php echo $investData->user->id; ?>', '<?php echo addslashes($investData->user->name); ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
                     </div>
@@ -189,13 +196,44 @@ switch ($order) {
                 
             <?php endforeach; ?>
 
-            <?php if ($project->amount >= $project->mincost) : ?>
-            <input type="submit" name="process" value="<?php echo Text::get('dashboard-rewards-process'); ?>" class="save" onclick="return confirm('<?php echo Text::get('dashboard-rewards-process_alert'); ?>')"/>
-            <?php endif; ?>
         </form>
     </div>
 
 </div>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        
+        
+        
+        // al clickar el recuadro de recompensa
+        $(".fulrew").click(function(){
+            
+            // solo si el proyecto está financiado
+            <?php if (!in_array($project->status, array(4,5))) : ?>
+            alert('No tienes que marcar las recompensas cumplidas hasta que el proyecto termine la campaña'); 
+            $(this).attr('checked', false);
+            return false;
+            <?php endif; ?>        
+            
+            // confirmación porque no se puede desacer
+            if (confirm('<?php echo Text::get('dashboard-rewards-process_alert'); ?>')) {
+                // usar webservice para marcar como cumplida
+                success_text = $.ajax({async: false, type: "POST", data: ({token: $(this).attr('id')}), url: '<?php echo SITE_URL; ?>/ws/fulfill_reward/<?php echo $project->id; ?>/<?php echo $_SESSION['user']->id; ?>'}).responseText;
+                if (success_text == '') {
+                    $(this).attr('checked', false);
+                    alert('Ha habido algún problema, contáctanos');
+                } else {
+                    $(this).attr('disabled', 'disabled');
+                    $('#status-'+$(this).attr('ref')).html('<span class="cumplida"><?php echo Text::get('dashboard-rewards-fulfilled_status'); ?></span>')                    
+                    $('.dis'+$(this).attr('ref')).addClass('disabled');
+                }
+            } else {
+                $(this).attr('checked', false);
+            }
+        });
+    });
+</script>
+
 
 <div class="widget projects" id="colective-messages">
     <a name="message"></a>
@@ -225,7 +263,6 @@ switch ($order) {
     		</div>
 		    <div id="comment">
             <script type="text/javascript">
-                // Mark DOM as javascript-enabled
                 jQuery(document).ready(function ($) {
                     //change div#preview content when textarea lost focus
                     $("#message").blur(function(){

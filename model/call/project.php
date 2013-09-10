@@ -16,22 +16,28 @@ namespace Goteo\Model\Call {
          * @param varcahr(50) $id  Call identifier
          * @return array of categories identifiers
          */
-		public static function get ($call, $filter =  null, $all = false) {
+		public static function get ($call, $filters = array()) {
             $array = array ();
             try {
 
                 $values = array(':call'=>$call);
 
                 $sqlFilter = "";
-                if (!empty($filter)) {
+                if (!empty($filters['category'])) {
                     $sqlFilter .= "LEFT JOIN project_category
                         ON project_category.project = call_project.project
                         AND project_category.category = :filter";
-                    $values[':filter'] = $filter;
+                    $values[':filter'] = $filters['category'];
                 }
 
-                if (!$all) {
-                    $sqlFilter .= " WHERE (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                $and = "WHERE";
+                if (!isset($filters['all'])) {
+                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                    $and = "AND";
+                }
+                if (isset($filters['published'])) {
+                    $sqlFilter .= " $and project.status >= 3";
+                    $and = "AND";
                 }
 
                 $sql = "SELECT
@@ -194,19 +200,42 @@ namespace Goteo\Model\Call {
 		}
 
         /**
+         * Devuelve la convocatoria a la que está asignado (mini) 
+         *
+         * @param varchar50 $project proyecto
+         * @return object $call convocatoria
+         */
+        public static function miniCalled ($project) {
+            try {
+                $sql = "SELECT
+                            call_project.call as id
+                        FROM call_project
+                        WHERE  call_project.project = :project
+                        LIMIT 1
+                        ";
+
+                $query = static::query($sql, array(':project'=>$project));
+                $called = $query->fetchColumn();
+                if (!empty ($called)) {
+                    $call = Model\Call::getMini($called);
+
+                    return $call;
+                } else {
+                    return null;
+                }
+
+            } catch(\PDOException $e) {
+                return null;
+            }
+		}
+
+        /**
          * Devuelve la convocatoria de la que puede obtener riego
          *
          * @param varchar50 $project proyecto
          * @return Model\Call $call convocatoria
          */
         public static function called ($project) {
-
-            // fallo directo: si no está en uno de los estados, si no está en primera ronda, si ha llegado al óptimo
-            if (!in_array($project->status, array(1, 2, 3))
-                || $project->round > 1
-                || $project->invested >= $project->maxcost) {
-                return false;
-            }
 
             try {
                 $sql = "SELECT
@@ -257,6 +286,8 @@ namespace Goteo\Model\Call {
                     if ($call->rest < $call->curr_maxdrop)
                         $call->curr_maxdrop = $call->rest;
                     
+                    // finalmente lo más importante, si está en situación de ser regable
+                    $call->dropable = ($project->status == 3 && $project->invested < $project->maxcost);
 
                     return $call;
                 }
@@ -265,7 +296,7 @@ namespace Goteo\Model\Call {
                 return null;
             }
 
-            return false;
+            return null;
         }
 
         /*

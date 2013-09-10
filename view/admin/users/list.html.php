@@ -6,13 +6,32 @@ use Goteo\Library\Text;
 require_once 'library/pagination/pagination.php';
 
 $filters = $this['filters'];
+$users = $this['users'];
+
+// la ordenación por cantidad y proyectos hay que hacerla aqui
+if ($filters['order'] == 'amount') {
+    uasort($users,
+        function ($a, $b) {
+            if ($a->namount == $b->namount) return 0;
+            return ($a->namount < $b->namount) ? 1 : -1;
+            }
+        );
+}
+if ($filters['order'] == 'projects') {
+    uasort($users,
+        function ($a, $b) {
+            if ($a->nprojs == $b->nprojs) return 0;
+            return ($a->nprojs < $b->nprojs) ? 1 : -1;
+            }
+        );
+}
 
 $the_filters = '';
 foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new \Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/users/add" class="button">Crear usuario</a>
 
@@ -100,8 +119,9 @@ $pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET[
 <div class="widget board">
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($this['users'])) : ?>
-    <p><strong><?php echo count($this['users']) ?></strong> usuarios cumplen este filtro </p>
+<?php elseif (!empty($users)) : ?>
+    <p><strong>OJO!</strong> Resultado limitado a 999 registros como máximo.</p>
+    <p><strong><?php echo count($users) ?></strong> usuarios cumplen este filtro </p>
     <table>
         <thead>
             <tr>
@@ -116,19 +136,19 @@ $pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET[
 
         <tbody>
             <?php while ($user = $pagedResults->fetchPagedRow()) :
-                $projects = count($user->support['projects']);
+                $adminNode = ($user->admin) ? $user->admin_node : null;
                 ?>
             <tr>
-                <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" title="Ver perfil público"><?php echo substr($user->name, 0, 20); ?></a></td>
+                <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" <?php echo ($adminNode != 'goteo') ? 'style="color: green;" title="Admin nodo '.$adminNode.'"' : 'title="Ver perfil público"'; ?>><?php echo substr($user->name, 0, 20); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 20); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
-                <td><?php echo $projects; ?></td>
-                <td><?php echo \amount_format($user->amount); ?> &euro;</td>
+                <td><?php echo $user->nprojs; ?></td>
+                <td><?php echo \amount_format($user->namount); ?> &euro;</td>
                 <td><?php echo $user->register_date; ?></td>
             </tr>
             <tr>
                 <td><a href="/admin/users/manage/<?php echo $user->id; ?>" title="Gestionar">[Gestionar]</a></td>
-                <td><?php if ($projects > 0) {
+                <td><?php if ($user->nprojs > 0) {
                     if (!isset($_SESSION['admin_node']) || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
                 <a href="/admin/accounts/?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
                 <?php else:  ?>
@@ -142,6 +162,7 @@ $pagedResults = new \Paginated($this['users'], 20, isset($_GET['page']) ? $_GET[
                     <?php echo $user->translator ? ' Traductor ' : ''; ?>
                     <?php echo $user->caller ? ' Convocador ' : ''; ?>
                     <?php echo $user->admin ? ' Admin ' : ''; ?>
+                    <?php echo $user->manager ? ' Gestor ' : ''; ?>
                     <?php echo $user->vip ? ' VIP ' : ''; ?>
                 </td>
             </tr>

@@ -16,7 +16,8 @@ namespace Goteo\Controller {
                 'recent',
                 'success',
                 'outdate',
-                'archive'
+                'archive',
+                'fulfilled'
             );
 
         /*
@@ -26,24 +27,16 @@ namespace Goteo\Controller {
 
             $types = self::$types;
 
-            $viewData = array();
-            $viewData['title'] = array(
-                'popular' => Text::get('discover-group-popular-header'),
-                'outdate' => Text::get('discover-group-outdate-header'),
-                'recent'  => Text::get('discover-group-recent-header'),
-                'success' => Text::get('discover-group-success-header'),
-                'archive' => Text::get('discover-group-archive-header')
+            $viewData = array(
+                'lists' => array()
             );
-
-            $viewData['lists'] = array();
 
             if (\NODE_ID != \GOTEO_NODE) {
                 $types[] = 'others';
-                $viewData['title']['others'] = Text::get('discover-group-others-header');
             }
 
             // si estamos en easy-mode limitamos a 3 proyectos por grupo (en la portada)
-            $limit = (defined('GOTEO_EASY') && \GOTEO_EASY === true) ? 3 : null;
+            $limit = (defined('GOTEO_EASY') && \GOTEO_EASY === true) ? 3 : 30;
             
             // cada tipo tiene sus grupos
             foreach ($types as $type) {
@@ -136,20 +129,31 @@ namespace Goteo\Controller {
             $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
             // segun el tipo cargamos la lista
-            $viewData['list']  = Model\Project::published($type);
+            if (isset($_GET['list'])) {
+                $viewData['list']  = Model\Project::published($type, null, true);
 
+                return new View(
+                    'view/discover/list.html.php',
+                    $viewData
+                 );
+            } else {
 
-            return new View(
-                'view/discover/view.html.php',
-                $viewData
-             );
+                $viewData['list']  = Model\Project::published($type);
 
+                return new View(
+                    'view/discover/view.html.php',
+                    $viewData
+                 );
+
+            }
         }
 
         /*
          * Resultados para los
          */
         public function call () {
+            //@TODO: que muestre los proyectos seleccionados de una convocatoria (pero ya tenemos la página de convocatoria para esto...)
+            return $this->calls();
 
             // antenemos actualizados los datos de convocatoria
             $_SESSION['call'] = Model\Call::get($_SESSION['call']->id);

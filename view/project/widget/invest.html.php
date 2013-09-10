@@ -9,7 +9,8 @@ use Goteo\Core\View,
     Goteo\Model\License;
 
 $project = $this['project'];
-if ($project->called instanceof Call) {
+// verificar si puede obtener riego
+if ($project->called instanceof Call && $project->called->dropable) {
     $call = $project->called;
     $rest = $call->rest;
     // a ver si este usuario ya ha regado este proyecto
@@ -18,12 +19,12 @@ if ($project->called instanceof Call) {
     } else {
         $allready = false;
     }
+    $allowpp = false;
 } else {
     $call = null;
+    
+    $allowpp = $project->allowpp;
 }
-
-// si permite paypal
-$allowpp = $this['allowpp'];
 
 $personal = $this['personal'];
 $step = $this['step'];
@@ -171,7 +172,6 @@ if ($step == 'start') : ?>
     <div class="buttons">
         <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
         <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
-        <!-- button type="submit" class="process pay-cash" name="method"  value="cash">Ca$h</button -->
     </div>
 <br />
     
@@ -186,7 +186,7 @@ if ($step == 'start') : ?>
 
 <?php echo new View('view/project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
 
-
+<a name="commons"></a>
 <div class="widget project-invest">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-social-header') ?></h<?php echo $level ?>>
 

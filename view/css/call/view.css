@@ -183,6 +183,7 @@ div#main ul#list>li {
 
 #social-logo li.email {
     padding-left: 0px !important;
+    margin-top: 10px;
 }
 
 #social-logo li.email a {
@@ -972,12 +973,12 @@ a.button.info {
 
 a.button.long {
 	font-size: 15px;
-	padding: 0.4em 1.6em;
+	/*padding: 0.4em 1.6em;*/
 }
 
 a.button.join {
 	font-size: 15px;
-	padding: 0.4em 2.1em;
+	/*padding: 0.4em 2.1em;*/
 	
 }
 

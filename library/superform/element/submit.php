@@ -6,7 +6,8 @@ namespace Goteo\Library\SuperForm\Element {
         
         public
             $label,
-            $disabled;
+            $disabled,
+            $onclick;
         
     }    
     

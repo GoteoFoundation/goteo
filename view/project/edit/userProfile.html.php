@@ -7,16 +7,6 @@ use Goteo\Library\Text,
 $project = $this['project'];
 $user = $this['user'];
 
-/*
-if (!empty($user->avatar) && is_object($user->avatar))
-    $image ["avatar-{$user->avatar->id}-remove"] = array(
-        'type'  => 'submit',
-        'label' => Text::get('form-remove-button'),
-        'class' => 'inline remove image-remove weak'
-    );
-*/
-
-
 $interests = array();
 
 $errors = $project->errors[$this['step']] ?: array();
@@ -123,6 +113,13 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
             'value'     => $user->location
         ),
+        
+        'anchor-avatar' => array(
+            'type' => 'html',
+            'class' => 'inline',
+            'html' => '<a name="avatar"></a>'
+        ),
+        
         'user_avatar' => array(
             'type'      => 'group',
             'required'  => true,
@@ -137,6 +134,7 @@ echo new SuperForm(array(
                     'label' => Text::get('form-image_upload-button'),
                     'class' => 'inline avatar_upload',
                     'hint'  => Text::get('tooltip-user-image'),
+                    'onclick' => "document.getElementById('proj-superform').action += '#avatar';"
                 ),
                 'avatar-current' => array(
                     'type' => 'hidden',
@@ -175,6 +173,7 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['interests']) ? array($okeys['interests']) : array(),
             'options'   => $interests
         ),
+        /* Aligerando superform
         'user_keywords' => array(
             'type'      => 'textbox',
             'required'  => true,
@@ -196,6 +195,7 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['contribution']) ? array($okeys['contribution']) : array(),
             'value'     => $user->contribution
         ),
+         */
         'user_webs' => array(
             'type'      => 'group',
             'required'  => true,

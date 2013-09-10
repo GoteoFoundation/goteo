@@ -98,11 +98,15 @@ namespace Goteo\Controller {
             $banners   = Banner::getAll(true);
 
             foreach ($banners as $id => &$banner) {
-                try {
-                    $banner->project = Project::get($banner->project, LANG);
-                } catch (\Goteo\Core\Error $e) {
-                    unset($banners[$id]);
+                
+                if (!empty($banner->project)) {
+                    try {
+                        $banner->project = Project::get($banner->project, LANG);
+                    } catch (\Goteo\Core\Error $e) {
+                        unset($banners[$id]);
+                    }
                 }
+                
             }
 
             return new View('view/index.html.php',
@@ -146,6 +150,27 @@ namespace Goteo\Controller {
                 }
             }
 
+            // padrinos
+            if (isset($order['patrons'])) {
+                $patrons  =  Patron::getActiveVips(NODE_ID);
+
+                foreach ($patrons as $userId => $user) {
+                    try {
+                        $userData = User::getMini($userId);
+                        $vipData = User\Vip::get($userId);
+                        if (!empty($vipData->image)) {
+                            $userData->avatar = $vipData->image;
+                        }
+                        $patrons[$userId] = $userData;
+                    } catch (\Goteo\Core\Error $e) {
+                        unset($patrons[$key]);
+                    }
+                }
+
+            }
+
+            
+            
             // Laterales
             // ---------------------
             if (isset($side_order['searcher'])) {
@@ -254,6 +279,7 @@ namespace Goteo\Controller {
                         'posts'    => $posts,
                         'promotes' => $promotes,
                         'calls'    => array('calls'=>$calls, 'campaigns'=>$campaigns),
+                        'patrons' => $patrons,
                     
                     // laterales
                     'side_order' => $side_order,

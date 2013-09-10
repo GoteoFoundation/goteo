@@ -62,21 +62,19 @@ namespace Goteo\Model\Project {
 
 		}
 
-        // comprobar permiso para usar PayPal
+        // comprobar, para aportar con PayPal tiene que tener puesta la cuenta
         public static function getAllowpp ($id) {
-            
-            // piñon temporal, funciona al reves: si es uno de estos proyectos no lo permitimos
-            $notAllowed = array(
-                'fab-movil-00',
-                'adtlantida-tv',
-                'redetejas',
-                'arquitecturas-colectivas',
-                'picnic'
-            );
-            
-            return (in_array($id, $notAllowed)) ? false : true;
+
+            try {
+                $query = static::query("SELECT paypal FROM project_account WHERE project = ?", array($id));
+                $paypal = $query->fetchColumn();
+                return (!empty($paypal));
+            } catch(\PDOException $e) {
+                return false;
+            }
             
             /*
+             * Esto al final no se usa, se podrá aprovechar el campo para marcar que la cuenta está verificada (o algo así)
             try {
                 $query = static::query("SELECT allowpp FROM project_account WHERE project = ?", array($id));
                 $allowpp = $query->fetchColumn(0);

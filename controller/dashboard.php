@@ -3,32 +3,27 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\ACL,
-        Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Library\Message,
         Goteo\Library\Feed,
         Goteo\Library\Page,
-        Goteo\Library\Mail,
-        Goteo\Library\Text,
-        Goteo\Library\Template,
-        Goteo\Library\Listing;
+        Goteo\Library\Text;
 
     class Dashboard extends \Goteo\Core\Controller {
 
-        public function index($section = null) {
+        public function index() {
             throw new Redirection('/dashboard/activity');
         }
 
         /*
          * Sección, Mi actividad
          * Opciones:
-         *      'projects' los proyectos del usuario y a los que ha aportado,
-         *      'comunity' relacion con la comunidad
-         * 
+         *      'summary' portada y proyectos del usuario y a los que ha aportado,
+         *      'donor' gestión del certificado de donativo 
+         *      'comunity'//'wall' relacion con la comunidad
          */
-
         public function activity($option = 'summary', $action = 'view') {
 
             // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
@@ -37,162 +32,39 @@ namespace Goteo\Controller {
             }
 
             $user = $_SESSION['user'];
-            $status = Model\Project::status();
-
-            // agrupacion de proyectos que cofinancia y proyectos suyos
-            $lists = array();
-            // mis proyectos
-            $projects = Model\Project::ofmine($user->id);
-            if (!empty($projects)) {
-                $lists['my_projects'] = Listing::get($projects);
-            }
-            // proyectos que cofinancio
-            $invested = Model\User::invested($user->id, false);
-            if (!empty($invested)) {
-                $lists['invest_on'] = Listing::get($invested);
-            }
-
-            foreach ($projects as $project) {
-
-                // compruebo que puedo editar mis proyectos
-                if (!ACL::check('/project/edit/' . $project->id)) {
-                    ACL::allow('/project/edit/' . $project->id . '/', '*', 'user', $user);
-                }
-
-                // y borrarlos
-                if (!ACL::check('/project/delete/' . $project->id)) {
-                    ACL::allow('/project/delete/' . $project->id . '/', '*', 'user', $user);
-                }
-            }
-
-            if ($option == 'summary') {
-                $page = Page::get('dashboard');
-                $message = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
-            } else {
-                $message = null;
-            }
-
-            if ($option == 'wall') {
-                /*
-                 * Depurar antes de poner esto
-                 *
-                  // eventos privados del usuario
-                  $items['private'] = Feed::getUserItems($_SESSION['user']->id, 'private');
-                  // eventos de proyectos que he cofinanciado
-                  $items['supported'] = Feed::getUserItems($_SESSION['user']->id, 'supported');
-                  // eventos de proyectos donde he mensajeado o comentado
-                  $items['comented'] = Feed::getUserItems($_SESSION['user']->id, 'comented');
-                 *
-                 */
-            }
-
-            if ($option == 'donor') {
-                // ver si es donante, cargando sus datos
-                $donation = Model\User\Donor::get($user->id);
-                $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
-                $donation->userData = Model\User::getMini($donation->user);
-
-                if (!$donation || !$donation instanceof Model\User\Donor) {
-                    Message::Error(Text::get('dashboard-donor-no_donor'));
-                    throw new Redirection('/dashboard/activity');
-                }
-
-                if ($action == 'edit' && $donation->confirmed) {
-                    Message::Error(Text::get('dashboard-donor-confirmed'));
-                    throw new Redirection('/dashboard/activity/donor');
-                }
-
-                // si están guardando, actualizar los datos y guardar
-                if ($action == 'save' && $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['save'] == 'donation') {
-                    $donation->edited = 1;
-                    $donation->confirmed = 0;
-                    $donation->name = $_POST['name'];
-                    $donation->nif = $_POST['nif'];
-                    $donation->address = $_POST['address'];
-                    $donation->zipcode = $_POST['zipcode'];
-                    $donation->location = $_POST['location'];
-                    $donation->country = $_POST['country'];
-
-                    if ($donation->save()) {
-                        Message::Info(Text::get('dashboard-donor-saved'));
-                        throw new Redirection('/dashboard/activity/donor');
-                    } else {
-                        Message::Error(Text::get('dashboard-donor-save_fail'));
-                        throw new Redirection('/dashboard/activity/donor/edit');
-                    }
-                }
-
-                if ($action == 'confirm') {
-                    // marcamos que los datos estan confirmados
-                    Model\User\Donor::setConfirmed($user->id);
-                    Message::Info(Text::get('dashboard-donor-confirmed'));
-                    throw new Redirection('/dashboard/activity/donor');
-                }
-
-                if ($action == 'download') {
-                    // preparamos los datos para el pdf
-                    // generamos el pdf y lo mosteramos con la vista específica
-                    // estos pdf se guardan en /data/pdfs/donativos
-                    // el formato del archivo es: Ymd_nif_userid
-                    // se genera una vez, si ya está generado se abre directamente
-                    if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/' . $donation->pdf)) {
-
-                        // forzar descarga
-                        header('Content-type: application/pdf');
-                        header("Content-disposition: attachment; filename={$donation->pdf}");
-                        header("Content-Transfer-Encoding: binary");
-                        echo file_get_contents('data/pdfs/donativos/' . $donation->pdf);
-                        die();
-                    } else {
-
-                        $objeto = new \Goteo\Library\Num2char($donation->amount, null);
-                        $donation->amount_char = $objeto->getLetra();
-
-                        $filename = "certificado_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
-
-
-                        $debug = false;
-
-                        if ($debug)
-                            header('Content-type: text/html');
-
-                        require_once 'library/pdf.php';  // Libreria pdf
-                        $pdf = donativeCert($donation);
-
-                        if ($debug) {
-                            echo 'FIN';
-                            echo '<hr><pre>' . print_r($pdf, 1) . '</pre>';
-                        } else {
-                            $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
-                            $donation->setPdf($filename);
-//                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
-                            header('Content-type: application/pdf');
-                            header("Content-disposition: attachment; filename={$donation->pdf}");
-                            header("Content-Transfer-Encoding: binary");
-                            echo $pdf->Output('', 'S');
-                            die;
-                        }
-                    }
-                }
-                // fin action download
-            }
-
-            return new View(
-                            'view/dashboard/index.html.php',
-                            array(
+            
+            $viewData = array(
                                 'menu' => self::menu(),
                                 'section' => __FUNCTION__,
                                 'option' => $option,
-                                'action' => $action,
-                                'message' => $message,
-                                'lists' => $lists,
-                                'items' => $items,
-                                'donation' => $donation,
-                                'status' => $status,
-                                'errors' => $errors,
-                                'success' => $success
-                            )
-            );
+                                'action' => $action
+                            );
+            
+            // portada
+            if ($option == 'summary') {
+                $page = Page::get('dashboard');
+                $viewData['message'] = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
+                $viewData['lists']   = Dashboard\Activity::projList($user);
+                $viewData['status']  = Model\Project::status();
+            }
+
+            //@TODO: if ($option == 'wall') Dashboard\Activity::wall($user);
+
+            // gestión de certificado
+            if ($option == 'donor') 
+                $viewData['donation'] = Dashboard\Activity::donor($user);
+
+
+            // si es un salto a otro panel
+            if (in_array($option, array('admin', 'review', 'translate'))) {
+                if (ACL::check('/'.$option)) {
+                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
+                } else {
+                    throw new Redirection('/dashboard', Redirection::TEMPORARY);
+                }
+            }
+            
+            return new View('view/dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -209,228 +81,41 @@ namespace Goteo\Controller {
             // tratamos el post segun la opcion y la acion
             $user = $_SESSION['user'];
 
-            if ($option == 'public') {
-                throw new Redirection('/user/profile/' . $user->id);
-            }
+            // salto al perfil público
+            if ($option == 'public') throw new Redirection('/user/profile/' . $user->id);
 
-            if (isset($user->roles['vip'])) {
-                $vip = Model\User\Vip::get($user->id);
-            }
+            // vip/recomendador tiene una imagen adicional
+            $vip = ($option == 'profile' && isset($user->roles['vip'])) ? Model\User\Vip::get($user->id) : null;
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $log_action = null;
-
                 $errors = array();
+                
                 switch ($option) {
                     // perfil publico
                     case 'profile':
-                        // tratar la imagen y ponerla en la propiedad avatar
-                        // __FILES__
-
-                        $fields = array(
-                            'user_name' => 'name',
-                            'user_location' => 'location',
-                            'user_avatar' => 'avatar',
-                            'user_about' => 'about',
-                            'user_keywords' => 'keywords',
-                            'user_contribution' => 'contribution',
-                            'user_facebook' => 'facebook',
-                            'user_google' => 'google',
-                            'user_twitter' => 'twitter',
-                            'user_identica' => 'identica',
-                            'user_linkedin' => 'linkedin'
-                        );
-
-                        foreach ($fields as $fieldPost => $fieldTable) {
-                            if (isset($_POST[$fieldPost])) {
-                                $user->$fieldTable = $_POST[$fieldPost];
-                            }
-                        }
-
-                        // Avatar
-                        if (!empty($_FILES['avatar_upload']['name'])) {
-                            $user->avatar = $_FILES['avatar_upload'];
-                        }
-
-                        // tratar si quitan la imagen
-                        if (!empty($_POST['avatar-' . $user->avatar->id . '-remove'])) {
-                            $user->avatar->remove();
-                            $user->avatar = '';
-                        }
-
-                        /*
-                         * Tratamiento de la imagen vip
-                         * Se hace todo aqui usando el modelo User\Vip
-                         */
-                        if (isset($user->roles['vip'])) {
-                            $files = $_FILES;
-                            if (!empty($_FILES['vip_image_upload']['name'])) {
-                                $vip->image = $_FILES['vip_image_upload'];
-                                $vip->save();
-                            }
-
-                            // tratar si quitan la imagen vip
-                            if ($vip->image instanceof Image && !empty($_POST['vip_image-' . $vip->image->id . '-remove'])) {
-                                $vip->image->remove();
-                                $vip->remove();
-                            }
-                        }
-                        /*
-                         * Fin tratamiento imagen Vip
-                         */
-
-                        // ojo si es receptor de pruebas, no machacarlo
-                        if (in_array('15', $user->interests)) $_POST['user_interests'][] = '15';
-                        $user->interests = $_POST['user_interests'];
-
-                        //tratar webs existentes
-                        foreach ($user->webs as $i => &$web) {
-                            // luego aplicar los cambios
-
-                            if (isset($_POST['web-' . $web->id . '-url'])) {
-                                $web->url = $_POST['web-' . $web->id . '-url'];
-                            }
-
-                            //quitar las que quiten
-                            if (!empty($_POST['web-' . $web->id . '-remove'])) {
-                                unset($user->webs[$i]);
-                            }
-                        }
-
-                        //tratar nueva web
-                        if (!empty($_POST['web-add'])) {
-                            $user->webs[] = new Model\User\Web(array(
-                                        'url' => 'http://'
-                                    ));
-                        }
-
-                        /// este es el único save que se lanza desde un metodo process_
-                        if ($user->save($errors)) {
-                            Message::Info(Text::get('user-profile-saved'));
-                            $user = Model\User::flush();
-                        }
+                        Dashboard\Profile::process_profile($user, $vip, $errors, $log_action);
                         break;
 
                     // datos personales
                     case 'personal':
-                        // campos que guarda este paso
-                        $fields = array(
-                            'contract_name',
-                            'contract_nif',
-                            'phone',
-                            'address',
-                            'zipcode',
-                            'location',
-                            'country'
-                        );
-
-                        $personalData = array();
-
-                        foreach ($fields as $field) {
-                            if (isset($_POST[$field])) {
-                                $personalData[$field] = $_POST[$field];
-                            }
-                        }
-
-                        // actualizamos estos datos en los personales del usuario
-                        if (!empty($personalData)) {
-                            if (Model\User::setPersonal($user->id, $personalData, true, $errors)) {
-                                Message::Info(Text::get('user-personal-saved'));
-
-                                $log_action = 'Modificado sus datos personales'; //feed admin
-                            }
-                        }
+                        Dashboard\Profile::process_personal($user->id, $errors, $log_action);
                         break;
 
+                    // geolocalización (tiene un subcontrolador específico)
+                    case 'location':
+                        $errors = Dashboard\Location::process();
+                        break;
+                        
                     //cambio de email y contraseña
                     case 'access':
-                        // E-mail
-                        if (!empty($_POST['user_nemail']) || !empty($_POST['user_remail'])) {
-                            if (empty($_POST['user_nemail'])) {
-                                $errors['email'] = Text::get('error-user-email-empty');
-                            } elseif (!\Goteo\Library\Check::mail($_POST['user_nemail'])) {
-                                $errors['email'] = Text::get('error-user-email-invalid');
-                            } elseif (empty($_POST['user_remail'])) {
-                                $errors['email_retry'] = Text::get('error-user-email-empty');
-                            } elseif (strcmp($_POST['user_nemail'], $_POST['user_remail']) !== 0) {
-                                $errors['email_retry'] = Text::get('error-user-email-confirm');
-                            } else {
-                                $user->email = $_POST['user_nemail'];
-                                unset($_POST['user_nemail']);
-                                unset($_POST['user_remail']);
-                                $success[] = Text::get('user-email-change-sended');
-
-                                $log_action = 'Cambiado su email'; //feed admin
-                            }
-                        }
-                        // Contraseña
-                        if (!empty($_POST['user_npassword']) || !empty($_POST['user_rpassword'])) {
-                            // Ya no checkeamos más la contraseña actual (ni en recover ni en normal)
-                            // porque los usuarios que acceden mediante servicio no tienen contraseña
-                            /*
-                              if(!isset($_SESSION['recovering']) && empty($_POST['user_password'])) {
-                              $errors['password'] = Text::get('error-user-password-empty');
-                              }
-                              elseif(!isset($_SESSION['recovering']) && !Model\User::login($user->id, $_POST['user_password'])) {
-                              $errors['password'] = Text::get('error-user-wrong-password');
-                              }
-                              else
-                             */
-                            if (empty($_POST['user_npassword'])) {
-                                $errors['password_new'] = Text::get('error-user-password-empty');
-                            } elseif (!\Goteo\Library\Check::password($_POST['user_npassword'])) {
-                                $errors['password_new'] = Text::get('error-user-password-invalid');
-                            } elseif (empty($_POST['user_rpassword'])) {
-                                $errors['password_retry'] = Text::get('error-user-password-empty');
-                            } elseif (strcmp($_POST['user_npassword'], $_POST['user_rpassword']) !== 0) {
-                                $errors['password_retry'] = Text::get('error-user-password-confirm');
-                            } else {
-                                $user->password = $_POST['user_npassword'];
-                                unset($_POST['user_password']);
-                                unset($_POST['user_npassword']);
-                                unset($_POST['user_rpassword']);
-                                $success[] = Text::get('user-password-changed');
-
-                                $log_action = 'Cambiado su contraseña'; //feed admin
-                            }
-                        }
-                        if (empty($errors) && $user->save($errors)) {
-                            // Refresca la sesión.
-                            $user = Model\User::flush();
-                            if (isset($_SESSION['recovering']))
-                                unset($_SESSION['recovering']);
-                        } else {
-                            $errors[] = Text::get('user-save-fail');
-                        }
+                        Dashboard\Profile::process_profile($user, $errors, $log_action);
                         break;
 
                     // preferencias de notificación
                     case 'preferences':
-                        // campos de preferencias
-                        $fields = array(
-                            'updates',
-                            'threads',
-                            'rounds',
-                            'mailing',
-                            'email'
-                        );
-
-                        $preferences = array();
-
-                        foreach ($fields as $field) {
-                            if (isset($_POST[$field])) {
-                                $preferences[$field] = $_POST[$field];
-                            }
-                        }
-
-                        // actualizamos estos datos en los personales del usuario
-                        if (!empty($preferences)) {
-                            if (Model\User::setPreferences($user->id, $preferences, $errors)) {
-                                Message::Info(Text::get('user-prefer-saved'));
-                                $log_action = 'Modificado las preferencias de notificación'; //feed admin
-                            }
-                        }
+                        Dashboard\Profile::process_preferences($user->id, $errors, $log_action);
                         break;
                 }
 
@@ -453,7 +138,6 @@ namespace Goteo\Controller {
                 'option' => $option,
                 'action' => $action,
                 'errors' => $errors,
-                'success' => $success,
                 'user' => $user
             );
 
@@ -485,8 +169,11 @@ namespace Goteo\Controller {
                 case 'personal':
                     $viewData['personal'] = Model\User::getPersonal($user->id);
                     break;
-                case 'preferences':
-                    $viewData['preferences'] = Model\User::getPreferences($user->id);
+                case 'location':
+                    // datos que se necesiten para la visualización
+                    $viewData['locations'] = Model\Location::getAll();
+                    // contenido de la página
+                    $viewData['page'] = Page::get('geoloc');
                     break;
                 case 'access':
                     // si es recover, en contraseña actual tendran que poner el username
@@ -494,13 +181,13 @@ namespace Goteo\Controller {
                         $viewData['message'] = Text::get('dashboard-password-recover-advice');
                     }
                     break;
+                case 'preferences':
+                    $viewData['preferences'] = Model\User::getPreferences($user->id);
+                    break;
             }
 
 
-            return new View(
-                            'view/dashboard/index.html.php',
-                            $viewData
-            );
+            return new View('view/dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -511,537 +198,78 @@ namespace Goteo\Controller {
          *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
          *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
          *      'gestionar retornos' resumen recompensas/cofinanciadores/conseguido  y lista de cofinanciadores y recompensas esperadas
+         *      'participantes' para comunicarse con los participantes en mensajes
          *      'pagina publica' enlace a la página pública del proyecto
+         * 
+         *      NEW: 'analytics' grafico de evolución de recaudación del proyecto
          *
          */
-
         public function projects($option = 'summary', $action = 'list', $id = null) {
 
             $user = $_SESSION['user'];
 
             $errors = array();
 
-            $projects = Model\Project::ofmine($user->id);
+            // verificación de proyectos y proyecto de trabajo
+            list($project, $projects) = Dashboard\Projects::verifyProject($user, $action);
 
-            // si no hay proyectos no tendria que estar aqui
-            if (!empty($projects)) {
-                // compruebo permisos
-                foreach ($projects as $proj) {
+            // teniendo proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
+            if ($option == 'updates') $blog = Dashboard\Projects::verifyBlog($project);
 
-                    // compruebo que puedo editar mis proyectos
-                    if (!ACL::check('/project/edit/' . $proj->id)) {
-                        ACL::allow('/project/edit/' . $proj->id, '*', 'user', $user);
-                    }
-
-                    // y borrarlos
-                    if (!ACL::check('/project/delete/' . $proj->id)) {
-                        ACL::allow('/project/delete/' . $proj->id, '*', 'user', $user);
-                    }
-                }
+            // sacaexcel de cofinanciadores
+            if ($option == 'rewards' && $action == 'table') {
+                $response = new \Goteo\Controller\Sacaexcel;
+                return $response->index('investors', $project->id);
             }
-
-            if ($action == 'select' && !empty($_POST['project'])) {
-                // otro proyecto de trabajo
-                $project = Model\Project::get($_POST['project']);
-            } elseif (!empty($_SESSION['project']->id)) {
-                // si tenemos ya proyecto, mantener los datos actualizados
-                $project = Model\Project::get($_SESSION['project']->id);
-            }
-
-            if (empty($project) && !empty($projects)) {
-                $project = $projects[0];
-            }
-
-            // aqui necesito tener un proyecto de trabajo,
-            // si no hay ninguno ccoge el último
-            if ($project instanceof \Goteo\Model\Project) {
-                $_SESSION['project'] = $project;
-            } else {
-                unset($project);
-                $option = 'summary';
-            }
-
-            // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
-            if ($option == 'updates' && $project->status < 3) {
-                $errors[] = Text::get('dashboard-project-blog-wrongstatus');
-                $action = 'none';
-            } elseif ($option == 'updates') {
-                // solo cargamos el blog en la gestion de updates
-                $blog = Model\Blog::get($project->id);
-                if (!$blog instanceof \Goteo\Model\Blog) {
-                    $blog = new Model\Blog(
-                                    array(
-                                        'id' => '',
-                                        'type' => 'project',
-                                        'owner' => $project->id,
-                                        'active' => true,
-                                        'project' => $project->id,
-                                        'posts' => array()
-                                    )
-                    );
-                    if (!$blog->save($errors)) {
-                        $errors[] = Text::get('dashboard-project-blog-fail');
-                        $option = 'summary';
-                        $action = 'none';
-                    }
-                } elseif (!$blog->active) {
-                    $errors[] = Text::get('dashboard-project-blog-inactive');
-                    $action = 'none';
-                }
-
-                // primero comprobar que tenemos blog
-                if (!$blog instanceof Model\Blog) {
-                    $errors[] = Text::get('dashboard-project-updates-noblog');
-                    $option = 'summary';
-                    $action = 'none';
-                    break;
-                }
-            }
-
-
-
+            
+            // procesamiento de formularios
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 switch ($option) {
                     // gestionar retornos (o mensaje a los mensajeros)
                     case 'messegers':
                     case 'rewards':
-                        // segun action
-                        switch ($action) {
-                            // filtro
-                            case 'filter':
-                                $filter = $_POST['filter'];
-                                $order = $_POST['order'];
-                                break;
-
-                            // procesar marcas
-                            case 'process':
-                                $filter = $_POST['filter'];
-                                $order = $_POST['order'];
-                                // todos los checkboxes
-                                $fulfill = array();
-                                // se marcan con Model/Invest con el id del aporte y el id de la recompensa
-                                // estos son ful_reward-[investid]-[rewardId]
-                                // no se pueden descumplir porque viene sin value (un admin en todo caso?)
-                                // o cuando sea con ajax @FIXME
-                                foreach ($_POST as $key => $value) {
-                                    $parts = explode('-', $key);
-                                    if ($parts[0] == 'ful_reward') {
-                                        Model\Invest::setFulfilled($parts[1], $parts[2]);
-                                    }
-                                }
-                                break;
-
-                            // enviar mensaje
-                            case 'message':
-                                $who = array();
-                                $filter = $_POST['filter'];
-                                $order = $_POST['order'];
-
-                                if (empty($_POST['message'])) {
-                                    $errors[] = Text::get('dashboard-investors-mail-text-required');
-                                    break;
-                                } else {
-                                    $msg_content = \strip_tags($_POST['message']);
-                                    $msg_content = nl2br($msg_content);
-                                }
-
-                                // si a todos los participantes
-                                if ($option == 'messegers' && !empty($_POST['msg_all'])) {
-                                    foreach (Model\Message::getMessegers($project->id) as $messeger => $msgData) {
-                                        if ($messeger == $project->owner)
-                                            continue;
-                                        $who[$messeger] = $messeger;
-                                    }
-                                } elseif (!empty($_POST['msg_all'])) {
-                                    // si a todos lso colaboradores
-                                    foreach (Model\Invest::investors($project->id, false, true) as $user => $investor) {
-                                        if (!in_array($user, $who)) {
-                                            $who[$user] = $investor->user;
-                                        }
-                                    }
-                                } elseif (!empty($_POST['msg_user'])) {
-                                    //si individual
-                                    $who[$_POST['msg_user']] = $_POST['msg_user'];
-                                } else {
-                                    $msg_rewards = array();
-                                    // estos son msg_reward-[rewardId]
-                                    foreach ($_POST as $key => $value) {
-                                        $parts = explode('-', $key);
-                                        if ($parts[0] == 'msg_reward' && $value == 1) {
-                                            $msg_rewards[] = $parts[1];
-                                        }
-                                    }
-
-                                    // para cada recompensa
-                                    foreach ($msg_rewards as $reward) {
-                                        foreach (Model\Invest::choosed($reward) as $user) {
-                                            $who[$user] = $user;
-                                        }
-                                    }
-                                }
-
-                                if (count($who) == 0) {
-                                    $errors[] = Text::get('dashboard-investors-mail-nowho');
-                                    break;
-                                }
-
-                                // obtener contenido
-                                // segun destinatarios
-                                $allsome = explode('/', Text::get('regular-allsome'));
-                                $enviandoa = !empty($_POST['msg_all']) ? $allsome[0] : $allsome[1];
-                                if ($option == 'messegers') {
-                                    Message::Info(Text::get('dashboard-messegers-mail-sendto', $enviandoa));
-                                } else {
-                                    Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa));
-                                }
-
-                                // Obtenemos la plantilla para asunto y contenido
-                                $template = Template::get(2);
-
-                                // Sustituimos los datos
-                                if (isset($_POST['subject']) && !empty($_POST['subject'])) {
-                                    $subject = $_POST['subject'];
-                                } else {
-                                    $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-                                }
-
-                                $remite = $project->name . ' ' . Text::get('regular-from') . ' ';
-                                $remite .= (NODE_ID != GOTEO_NODE) ? NODE_NAME : GOTEO_MAIL_NAME;
-
-                                $search = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%OWNERURL%', '%OWNERNAME%');
-                                $replace = array($msg_content, $project->name, SITE_URL . "/project/" . $project->id,
-                                    SITE_URL . "/user/profile/" . $project->owner, $project->user->name);
-                                $content = \str_replace($search, $replace, $template->text);
-
-                                foreach ($who as $userId) {
-                                    $errors = array();
-                                    //me cojo su email y lo meto en un array para enviar solo con una instancia de Mail
-                                    $data = Model\User::getMini($userId);
-
-                                    // iniciamos el objeto mail
-                                    $mailHandler = new Mail();
-                                    $mailHandler->fromName = $remite;
-                                    $mailHandler->to = $data->email;
-                                    $mailHandler->toName = $data->name;
-                                    // blind copy a goteo desactivado durante las verificaciones
-//                                    $mailHandler->bcc = 'comunicaciones@goteo.org';
-                                    $mailHandler->subject = $subject;
-                                    $mailHandler->content = str_replace('%NAME%', $data->name, $content);
-                                    // esto tambien es pruebas
-                                    $mailHandler->html = true;
-                                    $mailHandler->template = $template->id;
-                                    if ($mailHandler->send($errors)) {
-                                        Message::Info(Text::get('dashboard-investors-mail-sended', $data->name));
-                                    } else {
-                                        Message::Error(Text::get('dashboard-investors-mail-fail', $data->name) . ' : ' . implode(', ', $errors));
-                                    }
-
-                                    unset($mailHandler);
-                                }
-
-                                throw new Redirection('/dashboard/projects/' . $option);
-
-                                break;
+                        // sacamos del post el filtro y el orden
+                        if ($action == 'filter') {
+                            $_SESSION['dashboard-rewards-filter'] = (isset($_POST['filter'])) ? $_POST['filter'] : $_SESSION['dashboard-rewards-filter'];
+                            $_SESSION['dashboard-rewards-order']  = (isset($_POST['order']))  ?  $_POST['order'] : $_SESSION['dashboard-rewards-order'];
                         }
-                        // fin segun action
+                        
+                        //procesamos el envio de mails
+                        if ($action == 'message') {
+                            Dashboard\Projects::process_mailing($option, $project);
+                            // y lo devolvemos a donde estaba
+                            throw new Redirection('/dashboard/projects/' . $option);
+                        }
                         break;
 
-                    // contrato
+                    // contrato, pahora mismo nada
                     case 'contract':
-                        if ($action == 'save') {
-                            $contract = Model\Contract::get($project->id);
-
-                            foreach ($_POST as $key => $value) {
-                                if (isset($contract->$key)) {
-                                    $contract->$key = $value;
-                                }
-                            }
-
-                            if ($contract->save($errors)) {
-
-                                $success[] = 'Datos de contrato actualizados';
-
-                                if (!empty($_POST['close_owner'])) {
-                                    $contract->setStatus('owner', true);
-
-                                    // Evento Feed
-                                    $log = new Feed();
-                                    $log->setTarget($project->id);
-                                    $log->populate('usuario cambia los datos del contrato de su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha modificado los datos del contrato del proyecto %s', array(
-                                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                                Feed::item('project', $project->name, $project->id)
-                                            )));
-                                    $log->doAdmin('user');
-                                    unset($log);
-                                }
-                            }
-                        }
-                        // fin contrato
-                        break;
-
-                    // cuentas
-                    case 'account':
-                        if ($action == 'save') {
-                            $accounts = Model\Project\Account::get($project->id);
-                            $accounts->bank = $_POST['bank'];
-                            $accounts->bank_owner = $_POST['bank_owner'];
-                            $accounts->paypal = $_POST['paypal'];
-                            $accounts->paypal_owner = $_POST['paypal_owner'];
-                            if ($accounts->save($errors)) {
-
-                                $success[] = 'Cuentas actualizadas';
-
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($project->id);
-                                $log->populate('usuario cambia las cuentas de su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha modificado la cuenta bancaria/paypal del proyecto %s', array(
-                                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                            Feed::item('project', $project->name, $project->id)
-                                        )));
-                                $log->doAdmin('user');
-                                unset($log);
-                            }
-                        }
+                        // Dashboard\Projects::process_contract($project, $errors);
                         break;
 
                     // colaboraciones
                     case 'supports':
-                        if ($action == 'save') {
-                            // tratar colaboraciones existentes
-                            foreach ($project->supports as $key => $support) {
-
-                                // quitar las colaboraciones marcadas para quitar
-                                if (!empty($_POST["support-{$support->id}-remove"])) {
-                                    unset($project->supports[$key]);
-                                    continue;
-                                }
-
-                                if (isset($_POST['support-' . $support->id . '-support'])) {
-                                    $support->support = $_POST['support-' . $support->id . '-support'];
-                                    $support->description = $_POST['support-' . $support->id . '-description'];
-                                    $support->type = $_POST['support-' . $support->id . '-type'];
-
-                                    if (!empty($support->thread)) {
-                                        // actualizar ese mensaje
-                                        $msg = Model\Message::get($support->thread);
-                                        $msg->date = date('Y-m-d');
-                                        $msg->message = "{$support->support}: {$support->description}";
-                                        $msg->blocked = true;
-                                        $msg->save();
-                                    } else {
-                                        // grabar nuevo mensaje
-                                        $msg = new Model\Message(array(
-                                                    'user' => $project->owner,
-                                                    'project' => $project->id,
-                                                    'date' => date('Y-m-d'),
-                                                    'message' => "{$support->support}: {$support->description}",
-                                                    'blocked' => true
-                                                ));
-                                        if ($msg->save()) {
-                                            // asignado a la colaboracion como thread inicial
-                                            $support->thread = $msg->id;
-
-                                            // Evento Feed
-                                            $log = new Feed();
-                                            $log->setTarget($project->id);
-                                            $log->populate('usuario pone una nueva colaboracion en su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha publicado una nueva %s en el proyecto %s, con el título "%s"', array(
-                                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                                        Feed::item('message', 'Colaboración'),
-                                                        Feed::item('project', $project->name, $project->id),
-                                                        Feed::item('update', $support->support, $project->id . '/messages#message' . $msg->id)
-                                                    )));
-                                            $log->doAdmin('user');
-
-                                            // evento público, si el proyecto es público
-                                            if ($project->status > 2) {
-                                                $log->populate($_SESSION['user']->name, '/user/profile/' . $_SESSION['user']->id, Text::html('feed-new_support', Feed::item('project', $project->name, $project->id), Feed::item('update', $support->support, $project->id . '/messages#message' . $msg->id)
-                                                        ), $_SESSION['user']->avatar->id);
-                                                $log->doPublic('community');
-                                            }
-                                            unset($log);
-                                        }
-                                    }
-                                }
-                            }
-
-                            // añadir nueva colaboracion (no hacemos lo del mensaje porque esta sin texto)
-                            if (!empty($_POST['support-add'])) {
-
-                                $new_support = new Model\Project\Support(array(
-                                            'project' => $project->id,
-                                            'support' => 'Nueva colaboración',
-                                            'type' => 'task',
-                                            'description' => ''
-                                        ));
-
-                                if ($new_support->save($errors)) {
-
-                                    $project->supports[] = $new_support;
-                                    $_POST['support-' . $new_support->id . '-edit'] = true;
-                                } else {
-                                    $project->supports[] = new Model\Project\Support(array(
-                                                'project' => $project->id,
-                                                'support' => 'Nueva colaboración',
-                                                'type' => 'task',
-                                                'description' => ''
-                                            ));
-                                }
-                            }
-
-                            // guardamos los datos que hemos tratado y los errores de los datos
-                            $project->save($errors);
-                        }
-
+                        if ($action == 'save') $project = Dashboard\Projects::process_supports($project, $errors);
                         break;
 
                     case 'updates':
-                        if (empty($_POST['blog'])) {
-                            break;
-                        }
-
-                        $editing = false;
-
-                        if (!empty($_POST['id'])) {
-                            $post = Model\Blog\Post::get($_POST['id']);
-                        } else {
-                            $post = new Model\Blog\Post();
-                        }
-                        // campos que actualizamos
-                        $fields = array(
-                            'id',
-                            'blog',
-                            'title',
-                            'text',
-                            'image',
-                            'media',
-                            'legend',
-                            'date',
-                            'publish',
-                            'allow'
-                        );
-
-                        foreach ($fields as $field) {
-                            $post->$field = $_POST[$field];
-                        }
-
-                        // tratar la imagen y ponerla en la propiedad image
-                        if (!empty($_FILES['image_upload']['name'])) {
-                            $post->image = $_FILES['image_upload'];
-                            $editing = true;
-                        }
-
-                        // tratar las imagenes que quitan
-                        foreach ($post->gallery as $key => $image) {
-                            if (!empty($_POST["gallery-{$image->id}-remove"])) {
-                                $image->remove('post');
-                                unset($post->gallery[$key]);
-                                if ($post->image == $image->id) {
-                                    $post->image = '';
-                                }
-                                $editing = true;
-                            }
-                        }
-
-                        if (!empty($post->media)) {
-                            $post->media = new Model\Project\Media($post->media);
-                        }
-
-                        // el blog de proyecto no tiene tags?Â¿?
-                        // $post->tags = $_POST['tags'];
-                        /// este es el único save que se lanza desde un metodo process_
-                        if ($post->save($errors)) {
-                            $id = $post->id;
-                            if ($action == 'edit') {
-                                $success[] = Text::get('dashboard-project-updates-saved');
-                            } else {
-                                $success[] = Text::get('dashboard-project-updates-inserted');
-                            }
-                            $action = $editing ? 'edit' : 'list';
-
-                            // si ha marcado publish, grabamos evento de nueva novedad en proyecto
-                            if ((bool) $post->publish) {
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($project->id);
-                                $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
-                                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                            Feed::item('blog', Text::get('project-menu-updates')),
-                                            Feed::item('project', $project->name, $project->id),
-                                            Feed::item('update', $post->title, $project->id . '/updates/' . $post->id)
-                                        )));
-                                $log->doAdmin('user');
-
-                                // evento público
-                                $log->unique = true;
-                                $log->populate($post->title, '/project/' . $project->id . '/updates/' . $post->id, Text::html('feed-new_update', Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id), Feed::item('blog', Text::get('project-menu-updates')), Feed::item('project', $project->name, $project->id)
-                                        ), $post->gallery[0]->id);
-                                $log->doPublic('projects');
-
-                                // si no ha encontrado otro, lanzamos el update
-                                if (!$log->unique_issue) {
-                                    \Goteo\Controller\Cron::toInvestors('update', $project);
-                                }
-
-                                unset($log);
-                            }
-                        } else {
-                            $errors[] = Text::get('dashboard-project-updates-fail');
-                        }
+                        // verificación: si no llega blog correcto no lo procesamos
+                        if (empty($_POST['blog']) || $_POST['blog'] != $blog->id) throw new Redirection('/dashboard/projects/summary');
+                        
+                        list($action, $id) = Dashboard\Projects::process_updates($action, $project, $errors);
                         break;
                 }
             }
 
+            // SubControlador para add, edit, delete y list  
+            // devuelve $post en las acciones add y edit y $posts en delete y list
+            // maneja por referencia $action, $posts y $errors
             if ($option == 'updates') {
-                // segun la accion
-                switch ($action) {
-                    case 'none' :
-                        break;
-                    case 'add':
-                        $post = new Model\Blog\Post(
-                                        array(
-                                            'blog' => $blog->id,
-                                            'date' => date('Y-m-d'),
-                                            'publish' => false,
-                                            'allow' => true
-                                        )
-                        );
-
-                        break;
-                    case 'edit':
-                        if (empty($id)) {
-                            $errors[] = Text::get('dashboard-project-updates-nopost');
-                            $action = 'list';
-                            break;
-                        } else {
-                            $post = Model\Blog\Post::get($id);
-
-                            if (!$post instanceof Model\Blog\Post) {
-                                $errors[] = Text::get('dashboard-project-updates-postcorrupt');
-                                $action = 'list';
-                                break;
-                            }
-                        }
-
-                        break;
-                    case 'delete':
-                        $post = Model\Blog\Post::get($id);
-                        if ($post->delete($id)) {
-                            $success[] = Text::get('dashboard-project-updates-deleted');
-                        } else {
-                            $errors[] = Text::get('dashboard-project-updates-delete_fail');
-                        }
-                        $posts = Model\Blog\Post::getAll($blog->id, null, false);
-                        $action = 'list';
-
-                        break;
-                    default:
-                        $posts = Model\Blog\Post::getAll($blog->id, null, false);
-                        $action = 'list';
-                        break;
-                }
+                list($post, $posts) = Dashboard\Projects::prepare_updates($action, $id, $blog->id);
             }
 
+            
             // view data basico para esta seccion
             $viewData = array(
                 'menu' => self::menu(),
@@ -1049,19 +277,15 @@ namespace Goteo\Controller {
                 'option' => $option,
                 'action' => $action,
                 'projects' => $projects,
-                'errors' => $errors,
-                'success' => $success
+                'errors' => $errors
             );
 
 
             switch ($option) {
-                // en la portada del proyecto va el informe
                 case 'summary':
-                    if (!empty($project->passed)) {
-                        $viewData['Data'] = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
-                    }
+                    // los datos json de invests y visitors_data
+                    $viewData['data'] = Dashboard\Projects::graph($project->id);
                     break;
-
 
                 // gestionar retornos
                 case 'rewards':
@@ -1070,8 +294,8 @@ namespace Goteo\Controller {
                     // aportes para este proyecto
                     $viewData['invests'] = Model\Invest::getAll($project->id);
                     // ver por (esto son orden y filtros)
-                    $viewData['filter'] = $filter;
-                    $viewData['order'] = $order;
+                    $viewData['filter'] = $_SESSION['dashboard-rewards-filter'];
+                    $viewData['order'] = $_SESSION['dashboard-rewards-order'];
                     break;
 
                 // listar mensajeadores
@@ -1083,6 +307,7 @@ namespace Goteo\Controller {
                 case 'supports':
                     $viewData['types'] = Model\Project\Support::types();
 
+                    // para mantener registros desplegados
                     if ($_POST) {
                         foreach ($_POST as $k => $v) {
                             if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
@@ -1109,14 +334,48 @@ namespace Goteo\Controller {
                     $viewData['post'] = $post;
                     break;
 
-                // cuentas
-                case 'account':
-                    $viewData['account'] = Model\Project\Account::get($project->id);
-                    break;
-
-                // datos de contrato
+                // datos de contrato y mensaje segun estado del proceso
                 case 'contract':
-                    $viewData['contract'] = Model\Contract::get($project->id);
+                    if ($project->status < 3) {
+                        $contract = null;
+                        $show = 'off';
+                    } else {
+                        
+                        // veamos si quiere editarlo
+                        if ($action == 'edit') 
+                            throw new Redirection('/contract/edit/'.$project->id);
+                        
+                        // o si quiere ver el borrador/pdf
+                        if ($action == 'view') 
+                            throw new Redirection('/contract/'.$project->id);
+                        
+                        
+                        // a ver si tiene registro
+                        $contract = Model\Contract::get($project->id);
+
+                        if (!$contract) {
+                            $show = 'campaign'; // el proyecto sigue en campaña, aun no se puede gestionar el contrato
+                        } elseif ($contract->status->closed) {
+                            $show = 'fulfilled'; // se ha finiquitado el contrato
+                        } elseif ($contract->status->payed) {
+                            $show = 'payed'; // ya se ha realizado el pago
+                        } elseif ($contract->status->recieved) {
+                            $show = 'recieved'; // goteo ha recibido el contrato firmado
+                        } elseif ($contract->status->ready) {
+                            $show = 'ready'; // el pdf está listo para descargarse
+                        } elseif ($contract->status->admin) {
+                            $show = 'review'; // los datos están siendo revisados por el admín
+                        } elseif ($contract->status->owner) {
+                            $show = 'closed'; // el formuladio está cerrado, el contrato está en cola para ser revisado
+                        } else {
+                            $show = 'edit'; // hay registro y se puede editar
+                        }
+                    }
+                    
+                    $viewData['page'] = Page::get('dashboard_contract');
+                    $viewData['show'] = $show;
+                    $viewData['contract'] = $contract;
+
                     break;
             }
 
@@ -1124,6 +383,9 @@ namespace Goteo\Controller {
 
             return new View('view/dashboard/index.html.php', $viewData);
         }
+        // Fin de la sección Mis proyectos
+        
+        
 
         /*
          * Seccion, Mis traducciones
@@ -1429,6 +691,7 @@ namespace Goteo\Controller {
 
                             case 'overview':
                                 if ($action == 'save') {
+                                    $call->name_lang = $_POST['name'];
                                     $call->description_lang = $_POST['description'];
                                     $call->whom_lang = $_POST['whom'];
                                     $call->apply_lang = $_POST['apply'];
@@ -1547,56 +810,15 @@ namespace Goteo\Controller {
 
             $errors = array();
 
-            $calls = Model\Call::ofmine($user->id);
-
-            if (!empty($calls)) {
-                // compruebo permisos
-                foreach ($calls as $call) {
-
-                    // compruebo que puedo editar mis proyectos
-                    if (!ACL::check('/call/edit/' . $call->id)) {
-                        ACL::allow('/call/edit/' . $call->id . '/', '*', 'caller', $user);
-                    }
-
-                    // y borrarlos
-                    if (!ACL::check('/call/delete/' . $call->id)) {
-                        ACL::allow('/call/delete/' . $call->id . '/', '*', 'caller', $user);
-                    }
-                }
-            }
-
-            if ($action == 'select' && !empty($_POST['call'])) {
-                // otra convocatoria de trabajo
-                $call = Model\call::get($_POST['call']);
-            } else {
-                // si tenemos ya convocatoria, mantener los datos actualizados
-                if (!empty($_SESSION['call']->id)) {
-                    $call = Model\Call::get($_SESSION['call']->id);
-                }
-            }
-
-            if (empty($call) && !empty($calls)) {
-                $call = $calls[0];
-            }
-
-            // aqui necesito tener una convocatoria de trabajo,
-            // si no hay ninguna ccoge la última
-            if ($call instanceof \Goteo\Model\Call) {
-                $_SESSION['call'] = $call;
-            } else {
-                unset($call);
-                $option = 'summary';
-            }
-
+            list($call, $calls) = Dashboard\Calls::verifyCalls($user, $action);
+            
             // view data basico para esta seccion
             $viewData = array(
                 'menu' => self::menu(),
                 'section' => __FUNCTION__,
                 'option' => $option,
                 'action' => $action,
-                'calls' => $calls,
-                'errors' => $errors,
-                'success' => $success
+                'calls' => $calls
             );
 
 
@@ -1604,7 +826,10 @@ namespace Goteo\Controller {
                 // proyectos
                 case 'projects':
 
-                    // Si no s ponemos en Modo asignar proyectos
+                    /*
+                     * Ya no hay Modo Asignar proyectos
+                     * y tampoco permitimos desasignar 
+                     * 
                     if ($action == 'assign_mode' && $id == 'on') {
                         if ($call->status < 3) {
                             $_SESSION['assign_mode'] = true;
@@ -1633,173 +858,20 @@ namespace Goteo\Controller {
                     } elseif ($action == 'unassign') {
                         Message::Error('No se puede quitar este proyecto ahora');
                     }
+                    */
 
                     break;
 
                 // patrocinadores
                 case 'sponsors':
-
-                    switch ($action) {
-                        case 'add':
-                            $viewData['sponsor'] = (object) array(
-                                        'order' => Model\Call\Sponsor::next($call->id)
-                            );
-                            break;
-                        case 'edit':
-                            // gestionar post
-                            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                                $dpost = $_POST;
-                                $dfiles = $_FILES;
-
-                                // instancia
-                                $sponsor = new Model\Call\Sponsor(array(
-                                            'id' => $_POST['id'],
-                                            'name' => $_POST['name'],
-                                            'call' => $call->id,
-                                            'image' => $_POST['prev_image'],
-                                            'url' => $_POST['url'],
-                                            'order' => $_POST['order']
-                                        ));
-
-                                // tratar si quitan la imagen
-                                $current = $_POST['prev_image']; // la actual
-                                if (isset($_POST['image-' . $current . '-remove'])) {
-                                    $image = Model\Image::get($current);
-                                    $image->remove();
-                                    $sponsor->image = '';
-                                    $removed = true;
-                                }
-
-                                // tratar la imagen y ponerla en la propiedad image
-                                if (!empty($_FILES['image']['name'])) {
-                                    $sponsor->image = $_FILES['image'];
-                                }
-
-                                if ($sponsor->save($errors)) {
-                                    Message::Info('Datos grabados correctamente');
-                                    if (!$removed)
-                                        throw new Redirection('/dashboard/calls/sponsors');
-                                } else {
-                                    Message::Error('No se han podido grabar los datos. ' . implode(', ', $errors));
-                                }
-                            } else {
-                                $sponsor = Model\Call\Sponsor::get($id);
-                            }
-
-                            $viewData['sponsor'] = $sponsor;
-                            break;
-                        case 'delete':
-                            //si estamos quitando un patrocinador
-                            if (!empty($id)) {
-
-                                if (Model\Call\Sponsor::delete($id)) {
-                                    Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
-                                } else {
-                                    Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
-                                }
-                            }
-                            throw new Redirection('/dashboard/calls/sponsors');
-                            break;
-                        case 'up':
-                            Model\Call\Sponsor::up($id, $call->id);
-                            throw new Redirection('/dashboard/calls/sponsors');
-                            break;
-                        case 'down':
-                            Model\Call\Sponsor::down($id, $call->id);
-                            throw new Redirection('/dashboard/calls/sponsors');
-                            break;
-                    }
-
-
+                    $viewData['sponsor'] = Dashboard\Calls::process_sponsors($id, $call->id, $action, $errors);
                     break;
             }
 
+            $viewData['errors'] = $errors;
             $viewData['call'] = $call;
 
             return new View('view/dashboard/index.html.php', $viewData);
-        }
-
-        /*
-         * Página especial para Ricardo amaste para editar proyectos euskadi
-         * Es un apaño temporal pre-nodos
-         */
-
-        public function editor($option = 'main', $action = 'view') {
-
-            if ($_SESSION['user']->id != 'ricardo-amaste') {
-                throw new Redirection('/dashboard');
-            }
-
-            // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
-            if (isset($_SESSION['stepped'])) {
-                unset($_SESSION['stepped']);
-            }
-
-            // proyectos disponibles
-            $projects = array(
-                Model\Project::getMini('getxoberpiztu')
-            );
-
-            foreach ($projects as $project) {
-
-                // compruebo que puedo editar mis proyectos
-                if (!ACL::check('/project/edit/' . $project->id)) {
-                    ACL::allow('/project/edit/' . $project->id . '/', '*', 'user', $_SESSION['user']);
-                }
-            }
-
-            return new View(
-                            'view/dashboard/index.html.php',
-                            array(
-                                'menu' => self::menu(),
-                                'section' => __FUNCTION__,
-                                'option' => $option,
-                                'action' => $action,
-                                'projects' => $projects,
-                                'errors' => $errors,
-                                'success' => $success
-                            )
-            );
-        }
-
-        /*
-         * Salto al admin
-         *
-         */
-
-        public function admin($option = 'board') {
-            if (ACL::check('/admin')) {
-                throw new Redirection('/admin', Redirection::TEMPORARY);
-            } else {
-                throw new Redirection('/dashboard', Redirection::TEMPORARY);
-            }
-        }
-
-        /*
-         * Salto al panel de revisor
-         *
-         */
-
-        public function review($option = 'board') {
-            if (ACL::check('/review')) {
-                throw new Redirection('/review', Redirection::TEMPORARY);
-            } else {
-                throw new Redirection('/dashboard', Redirection::TEMPORARY);
-            }
-        }
-
-        /*
-         * Salto al panel de traductor
-         *
-         */
-
-        public function translate($option = 'board') {
-            if (ACL::check('/translate')) {
-                throw new Redirection('/translate', Redirection::TEMPORARY);
-            } else {
-                throw new Redirection('/dashboard', Redirection::TEMPORARY);
-            }
         }
 
         private static function menu() {
@@ -1818,6 +890,7 @@ namespace Goteo\Controller {
                     'options' => array(
                         'profile' => Text::get('dashboard-menu-profile-profile'),
                         'personal' => Text::get('dashboard-menu-profile-personal'),
+                        'location' => Text::get('dashboard-menu-profile-location'),
                         'access' => Text::get('dashboard-menu-profile-access'),
                         'preferences' => Text::get('dashboard-menu-profile-preferences'),
                         'public' => Text::get('dashboard-menu-profile-public')
@@ -1828,12 +901,11 @@ namespace Goteo\Controller {
                     'options' => array(
                         'summary' => Text::get('dashboard-menu-projects-summary'),
                         'updates' => Text::get('dashboard-menu-projects-updates'),
-                        'widgets' => Text::get('dashboard-menu-projects-widgets'),
-                        'account' => Text::get('dashboard-menu-projects-account'),
-//                        'contract' => Text::get('dashboard-menu-projects-contract'),
                         'supports' => Text::get('dashboard-menu-projects-supports'),
                         'rewards' => Text::get('dashboard-menu-projects-rewards'),
-                        'messegers' => Text::get('dashboard-menu-projects-messegers')
+                        'messegers' => Text::get('dashboard-menu-projects-messegers'),
+                        'contract' => Text::get('dashboard-menu-projects-contract'),
+                        'widgets' => Text::get('dashboard-menu-projects-widgets')
                     )
                 )
             );
@@ -1897,49 +969,18 @@ namespace Goteo\Controller {
                 $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
             }
 
-            /*
-             * Piñonaco para ricardo amaste para edicion de proyectos de esukadi
-             */
-            if ($_SESSION['user']->id == 'ricardo-amaste') {
-                $menu['editor'] = array(
-                    'label' => 'Editor Euskadi',
-                    'options' => array(
-                        'main' => 'Editor de proyectos de Euskadi'
-                    )
-                );
-            }
+            // si tiene permiso para ir al admin
+            if (ACL::check('/admin')) 
+                $menu['activity']['options']['admin'] = Text::get('dashboard-menu-admin_board');
 
-            /*
-              // si tiene permiso para ir al admin
-              if (ACL::check('/admin')) {
-              $menu['admin'] = array(
-              'label'   => Text::get('dashboard-menu-admin_board'),
-              'options' => array(
-              'board' => Text::get('dashboard-menu-admin_board')
-              )
-              );
-              }
+            // si tiene permiso para ir a las revisiones
+            if (ACL::check('/review')) 
+                $menu['activity']['options']['review'] = Text::get('dashboard-menu-review_board');
 
-              // si tiene permiso para ir a las revisiones
-              if (ACL::check('/review')) {
-              $menu['review'] = array(
-              'label'   => Text::get('dashboard-menu-review_board'),
-              'options' => array(
-              'board' => Text::get('dashboard-menu-review_board')
-              )
-              );
-              }
-
-              // si tiene permiso para ir a las traducciones
-              if (ACL::check('/translate')) {
-              $menu['translate'] = array(
-              'label'   => Text::get('dashboard-menu-translate_board'),
-              'options' => array(
-              'board' => Text::get('dashboard-menu-translate_board')
-              )
-              );
-              }
-             */
+            // si tiene permiso para ir a las traducciones
+            if (ACL::check('/translate')) 
+                $menu['activity']['options']['translate'] = Text::get('dashboard-menu-translate_board');
+            
             return $menu;
         }
 

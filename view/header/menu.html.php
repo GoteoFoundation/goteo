@@ -28,8 +28,10 @@ $nodes = Nodesys::activeNodes();
                     <ul>
                         <?php // si estamos en easy mode no pintamos estos enlaces
                         if (!defined('GOTEO_EASY') || \GOTEO_EASY !== true) : ?>
-                        <li><a href="/community/activity"><span><?php echo Text::get('community-menu-activity'); ?></span></a></li>
+                        <li><a href="/community"><span><?php echo Text::get('community-menu-activity'); ?></span></a></li>
+<?php /* quitamos Compartiendo porque con 20K usuarios se sobrecarga
                         <li><a href="/community/sharemates"><span><?php echo Text::get('community-menu-sharemates'); ?></span></a></li>
+ */ ?>
                         <?php endif; ?>
                         <!-- nodos activos -->
                         <?php  foreach ($nodes as $node) : ?>
@@ -57,6 +59,9 @@ $nodes = Nodesys::activeNodes();
                         <?php endif; ?>
                         <?php if (ACL::check('/admin')) : ?>
                         <li><a href="/admin"><span><?php echo Text::get('regular-admin_board'); ?></span></a></li>
+                        <?php endif; ?>
+                        <?php if (ACL::check('/manage')) : ?>
+                        <li><a href="/manage"><span><?php echo Text::get('regular-manage_board'); ?></span></a></li>
                         <?php endif; ?>
                         <li class="logout"><a href="/user/logout"><span><?php echo Text::get('regular-logout'); ?></span></a></li>
                     </ul>

@@ -398,6 +398,10 @@ div.call div.image div.tagmark {
 }
 
 div.call div.image div.tagmark.aqua {
+    background:url('/view/css/project/tagmark_aqua.png') 0 0 no-repeat;
+}
+
+div.call div.image div.tagmark.green {
     background:url('/view/css/project/tagmark_green.png') 0 0 no-repeat;
 }
 

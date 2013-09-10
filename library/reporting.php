@@ -49,10 +49,21 @@ namespace Goteo\Library {
                             'format'=> '2dec'
                         ),
                         array(
-                            'label' => 'Dinero cancelado',
+                            'label' => 'Dinero cancelado (por incidencia)',
                             'sql'   => "SELECT SUM(invest.amount)
                                         FROM invest
                                         WHERE invest.status = 2
+                                        AND invest.issue IS NOT NULL
+                                        ",
+                            'unit'  => '€',
+                            'format'=> 'amount'
+                        ),
+                        array(
+                            'label' => 'Dinero cancelado (no incidencia)',
+                            'sql'   => "SELECT SUM(invest.amount)
+                                        FROM invest
+                                        WHERE invest.status = 2
+                                        AND invest.issue IS NULL
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'

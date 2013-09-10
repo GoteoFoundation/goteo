@@ -47,7 +47,7 @@ include 'view/header.html.php' ?>
                     <?php endif; ?>
 
                     <?php if (!empty($success)) : ?>
-                    <div class="call-count mod3">
+                    <div class="call-count mod3" style="margin-right: 0px;">
                         <strong><?php echo count($success) ?></strong>
                         <span>Convocatorias<br />exitosas</span>
                     </div>

@@ -51,6 +51,8 @@ if ($show == 'updates') {
     $ogmeta['url'] .= '/updates';
     if (!empty($post)) {
         $ogmeta['url'] .= '/'.$post;
+        $tpost = $blog->posts[$post];
+        $ogmeta['title'] .= (empty($tpost->title)) ?: ' - '.$tpost->title;
     }
 }
 
@@ -126,7 +128,7 @@ include 'view/prologue.html.php' ?>
                 new View('view/project/widget/support.html.php', array('project' => $project));
 
             // seleccionado para capital riego
-            if ($project->called && $project->round == 1) {
+            if ($project->called) {
                 echo new View('view/project/widget/called.html.php', array('project' => $project));
             }
 
@@ -137,12 +139,17 @@ include 'view/prologue.html.php' ?>
                 echo new View('view/project/widget/investors.html.php', array('project' => $project));
             }
 
+            if ($project->status == 5 && $show != 'rewards' && $show != 'messages') {
+                echo new View('view/project/widget/rewards.html.php', array('project' => $project, 'only'=>'social'));
+            }
+            
             if (!empty($project->supports)) {
                 echo new View('view/project/widget/collaborations.html.php', array('project' => $project));
             }
 
             if ($show != 'rewards' && $show != 'messages') {
-                echo new View('view/project/widget/rewards.html.php', array('project' => $project));
+                $only_rew = ($project->status == 5) ? 'individual' : null;
+                echo new View('view/project/widget/rewards.html.php', array('project' => $project, 'only'=>$only_rew));
             }
 
             echo new View('view/user/widget/user.html.php', array('user' => $project->user));
@@ -211,8 +218,12 @@ include 'view/prologue.html.php' ?>
                         break;
                    
 				    case 'rewards':
-                        echo
-                            new View('view/project/widget/rewards-summary.html.php', array('project' => $project));
+                        if ($project->status == 5) {
+                            echo new View('view/project/widget/rewards-summary.html.php', array('project' => $project, 'only'=>'social'));
+                            echo new View('view/project/widget/rewards-summary.html.php', array('project' => $project, 'only'=>'individual'));
+                        } else {
+                            echo new View('view/project/widget/rewards-summary.html.php', array('project' => $project));
+                        }
                         break;
                     
 					case 'updates':

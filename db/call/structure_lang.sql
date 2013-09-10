@@ -17,3 +17,6 @@ ALTER TABLE `call_lang` ADD `resources` TEXT NULL DEFAULT NULL COMMENT 'Recursos
 
 -- Texto para el tweet
 ALTER TABLE `call_lang` ADD `tweet` tinytext DEFAULT NULL AFTER `dossier` ;
+
+-- nombre
+ALTER TABLE `call_lang` ADD `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `lang` 

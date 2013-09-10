@@ -327,7 +327,7 @@ namespace Goteo\Library {
                 'blog'  => 'Blog/Actualizaciones',
                 'faq'  => 'Pagina de FAQ',
                 'contact'  => 'Pagina de contacto',
-                'widget'  => 'Banderolos widget de proyecto',
+                'widget'  => 'Banderolos',
                 'invest'  => 'Pagina de aportar a un proyecto',
                 'types' => 'Tooltips para tipos de necesidades',
                 'banners' => 'Banners y cabeceras',
@@ -345,7 +345,7 @@ namespace Goteo\Library {
                 'call_dash' => 'Convocatorias: dashboard',
                 'wof' => 'Wall of friends',
                 'node_public' => 'Nodos',
-                'contract' => 'Contrato impulsor'
+                'contract' => 'Formulario Contrato'
             );
 
             \asort($groups);
@@ -426,6 +426,19 @@ namespace Goteo\Library {
             }
 
             return $code;
+        }
+
+        /*
+         * Devuelve array de urls para compartir en redes sociales
+         */
+        static public function shareLinks ($url, $title) {
+
+            $urls = array(
+                'twitter' => 'http://twitter.com/home?status=' . rawurlencode($title . ': ' . $url . ' #Goteo'),
+                'facebook' => 'http://facebook.com/sharer.php?u=' . rawurlencode($url . '&t=' . rawurlencode($title)) 
+            );
+            
+            return $urls;
         }
 
 		/*
@@ -574,7 +587,7 @@ namespace Goteo\Library {
             $rexPath     = '(/[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]*?)?';
             $rexQuery    = '(\?[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
             $rexFragment = '(#[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
-            $rexUrlLinker = "{\\b$rexProtocol$rexDomain$rexPort$rexPath$rexQuery$rexFragment(?=[?.!,;:\)\"]?(,|\s|$))}";
+            $rexUrlLinker = "{\\b$rexProtocol$rexDomain$rexPort$rexPath$rexQuery$rexFragment(?=[?.!,;:\)\"]?(,|\s|\)|$))}";
 
             /**
              *  $validTlds is an associative array mapping valid TLDs to the value true.
@@ -635,6 +648,15 @@ namespace Goteo\Library {
 
 		}
 
+        /*
+         * Método para ocultar parámetros de una url
+         */
+        public static function cutUrlParams($url) {
+            $url = preg_replace('^http(?<https>s)?://^', '', $url);
+            return substr($url, 0, strpos($url, '/'));
+        }
+        
+        
 	}
     
 }

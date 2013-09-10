@@ -1,15 +1,14 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
 $location = $this['location'];
 ?>
 <div class="widget">
     <form action="/admin/locations/<?php echo ($this['action'] == 'add') ? 'add' : 'edit/'.$location->id ?>" method="post">
         <p>
-            <label for="name">Buscar:</label><br />
-            <input type="text" id="location-name" name="name" value="" />
-            <span stye="font-style: italic;">Al escribir algo lo busca en el mapa</span>
+            <a href="https://maps.google.com/maps?q=<?php echo urlencode($location->name) ?>" target="_blank">Ver en google maps, por nombre</a>
         </p>
         
         <table>
@@ -37,19 +36,24 @@ $location = $this['location'];
                     <input type="text" name="lon" id="locLg" value="<?php echo $location->lon ?>" />
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <label>Revisada:</label>
+                    <input type="checkbox" name="valid" value="1" <?php if ($location->valid) echo 'checked="checked"'; ?>/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="button" href="/admin/locations">CANCELAR / Salir sin guardar</a>
+                </td>
+                <td>
+                    <input type="submit" name="save" value="GUARDAR / Aplicar los cambios" />
+                </td>
+            </tr>
         </table>
-
-        <!-- mapa -->
-        <p>Al mover el iconito se modificará la longitud y la latitud.</p>
-
-        <div id="map-canvas">Aqui ira el mapa</div>
-
-        <p>
-            <label><input type="checkbox" name="valid" value="1" <?php if ($location->valid) echo 'checked="checked";' ?>/>Dar por revisada</label>
-        </p>
-
-        <a class="button" href="/admin/locations">Cancelar / Salir sin guardar</a>
-        <input type="submit" name="save" value="Guardar / Aplicar los cambios" />
-
     </form>
+
+    <!-- mapa -->
+    <?php echo new View('view/widget/map.html.php', array('lat'=>$location->lat,'lon'=>$location->lon, 'name'=>$location->name)); ?>
+
 </div>

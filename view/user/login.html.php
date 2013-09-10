@@ -6,6 +6,7 @@ use Goteo\Core\View,
 $bodyClass = 'user-login';
 // para que el prologue ponga el código js para botón facebook en el bannerside
 $fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
+$jscrypt = true;
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 
@@ -51,6 +52,14 @@ jQuery(document).ready(function($) {
 		$('.sign-in-with li:hidden').slideDown();
 		return false;
 	});
+    
+    $("#login_frm").submit(function () {
+        $("#thepw").val(hex_sha1($("#thepw").val()));
+        return true;
+    });
+
+    
+    
 });
 </script>
 
@@ -71,7 +80,7 @@ jQuery(document).ready(function($) {
             <div>
                 <h2><?php echo Text::get('login-access-header'); ?></h2>
 
-                <form action="/user/login" method="post">
+                <form action="/user/login" method="post" id="login_frm">
                     <input type="hidden" name="return" value="<?php echo $_GET['return']; ?>" />
                     <div class="username">
                         <label><?php echo Text::get('login-access-username-field'); ?>
@@ -80,7 +89,7 @@ jQuery(document).ready(function($) {
 
                     <div class="password">
                         <label><?php echo Text::get('login-access-password-field'); ?>
-                        <input type="password" name="password" value="" /></label>
+                        <input type="password" id="thepw" name="password" value="" /></label>
                     </div>
 
                     <input type="submit" name="login" value="<?php echo Text::get('login-access-button'); ?>" />

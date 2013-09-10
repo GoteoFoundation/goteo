@@ -14,12 +14,11 @@ foreach ($project->gallery as $image) {
         'type'  => 'html',
         'class' => 'inline gallery-image',
         'html'  => is_object($image) ?
-                   $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
+                   $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove" onclick="document.getElementById(\'proj-superform\').action += \'#images\';"></button>' :
                    ''
     );
 
 }
-
 
 $categories = array();
 
@@ -31,6 +30,8 @@ foreach ($this['categories'] as $value => $label) {
         );            
 }
 
+/*
+ * Aligerando superform
 $currently = array();
 
 foreach ($this['currently'] as $value => $label) {
@@ -48,6 +49,7 @@ foreach ($this['scope'] as $value => $label) {
         'label'     => $label
         );
 }
+ */
 
 // media del proyecto
 if (!empty($project->media->url)) {
@@ -140,6 +142,11 @@ $superform = array(
             'ok'        => !empty($okeys['subtitle']) ? array($okeys['subtitle']) : array()
         ),
 
+        'anchor-images' => array(
+            'type' => 'html',
+            'html' => '<a name="images"></a>'
+        ),
+        
         'images' => array(        
             'title'     => Text::get('overview-fields-images-title'),
             'type'      => 'group',
@@ -153,7 +160,8 @@ $superform = array(
                     'type'  => 'file',
                     'label' => Text::get('form-image_upload-button'),
                     'class' => 'inline image_upload',
-                    'hint'  => Text::get('tooltip-project-image')
+                    'hint'  => Text::get('tooltip-project-image'),
+                    'onclick' => "document.getElementById('proj-superform').action += '#images';"
                 )
             )
         ),        
@@ -173,6 +181,48 @@ $superform = array(
             'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
             'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array()
         ),
+        
+        // video principal del proyecto
+        'anchor-media' => array(
+            'type' => 'html',
+            'html' => '<a name="media"></a>'
+        ),
+        
+        'media' => array(
+            'type'      => 'textbox',
+            'required'  => is_object($project->call) ? false : true, // solo obligatorio si no está aplicando a convocatoria
+            'title'     => Text::get('overview-field-media'),
+            'hint'      => Text::get('tooltip-project-media'),
+            'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
+            'ok'        => !empty($okeys['media']) ? array($okeys['media']) : array(),
+            'value'     => (string) $project->media
+        ),
+
+        'media-upload' => array(
+            'name' => "upload",
+            'type'  => 'submit',
+            'label' => Text::get('form-upload-button'),
+            'class' => 'inline media-upload',
+            'onclick' => "document.getElementById('proj-superform').action += '#media';"
+        ),
+        
+        'media-preview' => $media,
+        
+        // universal subtitles video principal
+        'media_usubs' => array(
+            'type'      => 'checkbox',
+            'class'     => 'inline cols_1',
+            'required'  => false,
+            'label'     => Text::get('overview-field-usubs'),
+            'name'      => 'media_usubs',
+            'hint'      => Text::get('tooltip-project-usubs'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'checked'   => (bool) $project->media_usubs,
+            'value'     => 1
+        ),
+        // fin media
+        
         'description_group' => array(
             'type' => 'group',
             'children'  => array(                
@@ -194,40 +244,6 @@ $superform = array(
                     'ok'        => !empty($okeys['motivation']) ? array($okeys['motivation']) : array(),
                     'value'     => $project->motivation
                 ),
-                // video motivacion
-                'video' => array(
-                    'type'      => 'textbox',
-                    'required'  => false,
-                    'title'     => Text::get('overview-field-video'),
-                    'hint'      => Text::get('tooltip-project-video'),
-                    'errors'    => !empty($errors['video']) ? array($errors['video']) : array(),
-                    'ok'        => !empty($okeys['video']) ? array($okeys['video']) : array(),
-                    'value'     => (string) $project->video
-                ),
-
-                'video-upload' => array(
-                    'name' => "upload",
-                    'type'  => 'submit',
-                    'label' => Text::get('form-upload-button'),
-                    'class' => 'inline media-upload'
-                ),
-
-                'video-preview' => $video,
-                
-                // universal subtitles video motivacion
-                'video_usubs' => array(
-                    'type'      => 'checkbox',
-                    'class'     => 'inline cols_1',
-                    'required'  => false,
-                    'name'      => 'video_usubs',
-                    'label'     => Text::get('overview-field-usubs'),
-                    'hint'      => Text::get('tooltip-project-usubs'),
-                    'errors'    => array(),
-                    'ok'        => array(),
-                    'value'     => 1,
-                    'checked'   => (bool) $project->video_usubs
-                ),
-                // fin video motivacion
                 'goal' => array(
                     'type'      => 'textarea',
                     'title'     => Text::get('overview-field-goal'),
@@ -262,6 +278,48 @@ $superform = array(
             'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
         ),       
 
+        // video motivacion
+        'anchor-video' => array(
+            'type' => 'html',
+            'html' => '<a name="video"></a>'
+        ),
+        
+        'video' => array(
+            'type'      => 'textbox',
+            'required'  => false,
+            'title'     => Text::get('overview-field-video'),
+            'hint'      => Text::get('tooltip-project-video'),
+            'errors'    => !empty($errors['video']) ? array($errors['video']) : array(),
+            'ok'        => !empty($okeys['video']) ? array($okeys['video']) : array(),
+            'value'     => (string) $project->video
+        ),
+
+        'video-upload' => array(
+            'name' => "upload",
+            'type'  => 'submit',
+            'label' => Text::get('form-upload-button'),
+            'class' => 'inline media-upload',
+            'onclick' => "document.getElementById('proj-superform').action += '#video';"
+        ),
+
+        'video-preview' => $video,
+
+        // universal subtitles video motivacion
+        'video_usubs' => array(
+            'type'      => 'checkbox',
+            'class'     => 'inline cols_1',
+            'required'  => false,
+            'name'      => 'video_usubs',
+            'label'     => Text::get('overview-field-usubs'),
+            'hint'      => Text::get('tooltip-project-usubs'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'value'     => 1,
+            'checked'   => (bool) $project->video_usubs
+        ),
+        // fin video motivacion
+        
+        /*
         'keywords' => array(
             'type'      => 'textbox',
             'title'     => Text::get('overview-field-keywords'),
@@ -271,41 +329,9 @@ $superform = array(
             'ok'        => !empty($okeys['keywords']) ? array($okeys['keywords']) : array(),
             'value'     => $project->keywords
         ),
+         */
 
-        'media' => array(
-            'type'      => 'textbox',
-            'required'  => true,
-            'title'     => Text::get('overview-field-media'),
-            'hint'      => Text::get('tooltip-project-media'),
-            'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
-            'ok'        => !empty($okeys['media']) ? array($okeys['media']) : array(),
-            'value'     => (string) $project->media
-        ),
-
-        'media-upload' => array(
-            'name' => "upload",
-            'type'  => 'submit',
-            'label' => Text::get('form-upload-button'),
-            'class' => 'inline media-upload'
-        ),
-        
-        'media-preview' => $media,
-        
-        // universal subtitles video principal
-        'media_usubs' => array(
-            'type'      => 'checkbox',
-            'class'     => 'inline cols_1',
-            'required'  => false,
-            'label'     => Text::get('overview-field-usubs'),
-            'name'      => 'media_usubs',
-            'hint'      => Text::get('tooltip-project-usubs'),
-            'errors'    => array(),
-            'ok'        => array(),
-            'checked'   => (bool) $project->media_usubs,
-            'value'     => 1
-        ),
-        // fin media
-
+        /* Aligerando superform
         'currently' => array(    
             'title'     => Text::get('overview-field-currently'),
             'type'      => 'slider',
@@ -317,6 +343,7 @@ $superform = array(
             'ok'        => !empty($okeys['currently']) ? array($okeys['currently']) : array(),
             'value'     => $project->currently
         ),
+         */
 
         'location' => array(
             'type'      => 'textbox',
@@ -329,6 +356,7 @@ $superform = array(
             'value'     => $project->project_location
         ),
 
+        /* Aligerando superform
         'scope' => array(
             'title'     => Text::get('overview-field-scope'),
             'type'      => 'slider',
@@ -340,6 +368,7 @@ $superform = array(
             'ok'        => !empty($okeys['scope']) ? array($okeys['scope']) : array(),
             'value'     => $project->scope
         ),
+         */
         
         'footer' => array(
             'type'      => 'group',

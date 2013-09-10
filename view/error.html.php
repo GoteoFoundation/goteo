@@ -11,7 +11,7 @@ $message = $error->getMessage();
 
 header("HTTP/1.0 {$code} {$message}");
 
-if (is_file("view/error/{$code}.html.php")) {
+if (file_exists("view/error/{$code}.html.php")) {
     include "view/error/{$code}.html.php";
 } else {
     include "view/error/default.html.php";

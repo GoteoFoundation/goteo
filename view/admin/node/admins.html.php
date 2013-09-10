@@ -10,7 +10,6 @@ if (!$node instanceof Model\Node) {
     throw new Redirection('/admin');
 }
 
-$admins = $node->getAdmins();
 ?>
 <a href="/admin/node" class="button">Volver</a>
 <div class="widget">

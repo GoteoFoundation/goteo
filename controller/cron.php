@@ -273,12 +273,15 @@ namespace Goteo\Controller {
                                 $passtime = strtotime($project->passed);
                                 $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
 
+                                /*
+                                 * Ya no hacemos pagos secundarios mediante sistema
                                 $task = new Model\Task();
                                 $task->node = \GOTEO_NODE;
                                 $task->text = "Hacer los pagos secundarios al proyecto <strong>{$project->name}</strong> antes del día <strong>{$limsec}</strong>";
                                 $task->url = "/admin/accounts/?projects={$project->id}";
                                 $task->done = null;
                                 $task->save();
+                                 */
 
                                 // y preparar contrato
                                 $task = new Model\Task();
@@ -287,7 +290,7 @@ namespace Goteo\Controller {
                                 //@TODO enlace a gestión de contrato
                                 $task->url = "/admin/projects?proj_name={$project->name}";
                                 $task->done = null;
-                                $task->save();
+                                $task->saveUnique();
                                 
                                 // + mail a mercè
                                 @mail(\GOTEO_CONTACT_MAIL,
@@ -307,7 +310,15 @@ namespace Goteo\Controller {
 
                             $errors = array();
                             if ($project->passed($errors)) {
-                                echo ' -> Ok';
+                                // se crea el registro de contrato
+                                if (Model\Contract::create($project->id, $errors)) {
+                                    echo ' -> Ok:: se ha creado el registro de contrato';
+                                } else {
+                                    @mail('goteo_fail@doukeshi.org',
+                                        'Fallo al crear registro de contrato ' . SITE_URL,
+                                        'Fallo al crear registro de contrato para el proyecto '.$project->name.': ' . implode(',', $errors));
+                                    echo ' -> semi-Ok: se ha actualiuzado el estado del proyecto pero ha fallado al crear el registro de contrato. ERROR: ' . implode(',', $errors);
+                                }
                             } else {
                                 @mail('goteo_fail@doukeshi.org',
                                     'Fallo al marcar fecha de paso a segunda ronda ' . SITE_URL,
@@ -351,7 +362,7 @@ namespace Goteo\Controller {
                                 $task->text = date('d/m/Y').": Pagar a <strong>{$project->name}</strong>, {$project->user->name}";
                                 $task->url = "/admin/projects/report/{$project->id}";
                                 $task->done = null;
-                                $task->save();
+                                $task->saveUnique();
                                 
                                 // + mail a susana
                                 @mail('susana@goteo.org',
@@ -532,9 +543,8 @@ namespace Goteo\Controller {
                                  */
                                     break;
                                 case 'cash':
-                                    // los cargos manuales vienen ejecutados de base
-                                    $invest->setStatus('1');
-                                    if ($debug) echo ' -> Ok';
+                                    // los cargos manuales no los modificamos
+                                    if ($debug) echo ' Cash, nada que hacer -> Ok';
                                     break;
                             }
                             if ($debug) echo '<br />';
@@ -644,175 +654,67 @@ namespace Goteo\Controller {
             } else {
                echo 'Lanzamiento automatico<br />';
             }
-            // eliminamos feed antiguo
-            $sql = "DELETE 
-                FROM `feed` 
-                WHERE type != 'goteo' 
-                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 50
-                AND (url NOT LIKE '%updates%' OR url IS NULL)
-                ";
             
-            // echo $sql . '<br />';
-            $query = Model\Project::query($sql);
-            $count = $query->rowCount();
-            echo "Eliminados $count registros de feed.<br />";
+            $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
+            if ($debug) echo 'Modo debug activado<br />';
             
-            // eliminamos mail antiguo
-            $sql2 = "DELETE
-                FROM `mail` 
-                WHERE (template != 33 OR template IS NULL)
-                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`date`)), '%j') > 60
-                ";
+            // lanzamos subcontrolador
+            Cron\Verify::process($debug);
+            // también el tratamiento de geologin
+            Cron\Geoloc::process($debug);
             
-            // echo $sql2 . '<br />';
-            $query2 = Model\Project::query($sql2);
-            $count2 = $query2->rowCount();
-            echo "Eliminados $count2 registros de mail.<br />";
-            
-            // eliminamos registros de imágenes cuyo archivo no esté en el directorio de imágenes
-
-
-            // busco aportes incompletos con codigo de autorización
-            $sql5 = "SELECT * FROM invest WHERE status = -1 AND transaction IS NOT NULL";
-            $query5 = Model\Project::query($sql5);
-            foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
-                @mail('goteo_fail@doukeshi.org',
-                    'Aporte Incompleto con numero de autorización. En ' . SITE_URL,
-                    'Aporte Incompleto con numero de autorización: <pre>' . print_r($row, 1). '</pre>');
-            }
-            
-            
-            // eliminamos aportes incompletos
-            /*
-            $sql4 = "DELETE
-                FROM `invest` 
-                WHERE status = -1
-                AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 120
-                ";
-            
-            //echo $sql4 . '<br />';
-            $query4 = Model\Project::query($sql4);
-            $count4 = $query4->rowCount();
-            // -- eliminamos registros relativos a aportes no existentes
-            Model\Project::query("DELETE FROM `invest_address` WHERE invest NOT IN (SELECT id FROM `invest`)");
-            Model\Project::query("DELETE FROM `invest_detail`  WHERE invest NOT IN (SELECT id FROM `invest`)");
-            Model\Project::query("DELETE FROM `invest_reward`  WHERE invest NOT IN (SELECT id FROM `invest`)");
-            echo "Eliminados $count4 aportes incompletos y sus registros (recompensa, dirección, detalles) relacionados.<br />";
-            */
-            
-            echo "<hr /> Iniciamos caducidad de tokens<br/>";
-            // eliminamos los tokens que tengan más de 4 días
-            $sql5 = "SELECT id, token FROM user WHERE token IS NOT NULL AND token != '' AND token LIKE '%¬%'";
-            $query5 = Model\Project::query($sql5);
-            foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
-                $parts = explode('¬', $row->token);
-                $datepart = strtotime($parts[2]);
-                $today = date('Y-m-d');
-                $datedif = strtotime($today) - $datepart;
-                $days = round($datedif / 86400);
-                if ($days > 4 || !isset($parts[2])) {
-                    echo "User: $row->id  ;  Token: $row->token  ; ";
-                    echo "Datepart: $parts[2]   =>  $datepart  ; ";
-                    echo "Compare: $today  =>  $datedif  ;  ";
-                    echo "Days: $days  ;   ";
-                    
-                    if (Model\Project::query("UPDATE user SET token = '' WHERE id = ?", array($row->id))) {
-                        echo "Token borrado.";
-                    } else {
-                        echo "Fallo al borrar Token!!!";
-                    }
-                    echo "<br />";
-                }
-                
-            }
-            
-            echo "<br />";
-                
-            echo 'Listo!';
             // recogemos el buffer para grabar el log
+            /*
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
+            */
+            die();
+        }
+
+        /*
+         *  Proceso que limpia la tabla de imágenes
+         * y también limpia el directorio
+         *
+         */
+        public function cleanup () {
+            if (\defined('CRON_EXEC')) {
+                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                    'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+               die;
+            } else {
+                Cron\Cleanup::process();
+                die();
+            }
+        }
+
+        /*
+         *  Proceso para tratar los geologins
+         *
+         */
+        public function geoloc () {
+            // no necesito email de aviso por el momento
+            /*
+            if (!\defined('CRON_EXEC')) {
+                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+               echo 'Lanzamiento manual<br />';
+            } else {
+               echo 'Lanzamiento automatico<br />';
+            }
+            */
+            
+            // lanzamos subcontrolador
+            Cron\Geoloc::process();
+            
+            // Por el momento no grabamos log de esto, lo lanzamos manual
+            /*
+            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
+            \chmod($log_file, 0777);
+             */
             
             die();
-
-            /*
-            // proyectos en campaña
-            $projects = Model\Project::active(true);
-
-            foreach ($projects as &$project) {
-                // aportes de ese proyecto que esten pendientes de cargo
-//                $timeago = date('Y-m-d', \mktime(0, 0, 0, date('m'), date('d')-30, date('Y')));
-                $query = Model\Project::query("
-                    SELECT  *
-                    FROM  invest
-                    WHERE   invest.status = 0
-                    AND     invest.method = 'paypal'
-                    AND     invest.project = ?
-                    ", array($project->id));
-//                    AND     invest.invested <= '{$timeago}'
-                $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
-
-                if (empty($project->invests)) continue;
-
-//                echo "Proyecto: {$project->name} <br />Aportes pendientes: " . count($project->invests) . "<br />";
-
-                foreach ($project->invests as $key=>&$invest) {
-
-                    $details = null;
-                    $errors = array();
-
-                    if (empty($invest->preapproval)) {
-                        // no tiene preaproval, cancelar
-                        echo 'Aporte ' . $invest->id . ' del ' . $invest->invested . ' No tiene preapproval, aporte cancelado<br />';
-                        $invest->cancel();
-                        Model\Invest::setDetail($invest->id, 'no-preapproval', 'Aporte cancelado en el proceso cron/verify porque no tiene preapproval');
-                    } else {
-                        // comprobar si está cancelado por el usuario
-                        if ($details = Paypal::preapprovalDetails($invest->preapproval, $errors)) {
-
-                            // actualizar la cuenta de paypal que se validó para aprobar
-                            $invest->setAccount($details->senderEmail);
-
-                            // si está aprobado y el aporte está en proceso, lo marcamos como pendiente de cargo
-                            if ($details->approved == true && $invest->status == '-1') {
-                                $invest->setStatus('0');
-                                Model\Invest::setDetail($invest->id, 'set-status-0', 'El Aporte estaba \'En proceso\' pero los detalles dicen que el preapproval está aprobado. Cambio estado a \'pendiente de cargo\' en el proceso cron/verify');
-                            }
-
-//                            echo \trace($details);
-                            switch ($details->status) {
-                                case 'ACTIVE':
-                                    //echo 'Sigue activo<br />';
-                                    break;
-                                case 'CANCELED':
-                                    echo 'Proyecto: '.$project->name.' <br /> Aporte ' . $invest->id . ' del ' . $invest->invested . '  Preapproval cancelado por el usuario<br />';
-                                    $invest->cancel();
-                                    Model\Invest::setDetail($invest->id, 'preapproval_canceled', 'Preapproval cancelado por el usuario, aporte cancelado en el proceso cron/verify');
-                                    @mail('goteo_fail@doukeshi.org',
-                                        'Preapproval cancelado por el usuario ' . SITE_URL,
-                                        'Aporte ' . $invest->id . ': al pedir detalles paypal: Cancelado por el usuario');
-                                    break;
-                                case 'DEACTIVED':
-                                    echo 'Proyecto: '.$project->name.' <br /> Aporte ' . $invest->id . ' del ' . $invest->invested . '  Preapproval Desactivado!<br />';
-                                    $invest->cancel();
-                                    Model\Invest::setDetail($invest->id, 'preapproval_canceled', 'Preapproval está desactivado, aporte cancelado en el proceso cron/verify');
-                                    @mail('goteo_fail@doukeshi.org',
-                                        'Preapproval desactivado ' . SITE_URL,
-                                        'Aporte ' . $invest->id . ': al pedir detalles paypal: Está desactivado!!');
-                                    break;
-                            }
-                        } else {
-                            @mail('goteo_fail@doukeshi.org',
-                                'errores al pedir detalles Paypal ' . SITE_URL,
-                                'Aporte ' . $invest->id . ': al pedir detalles paypal: Errores:<br />' . implode('<br />', $errors));
-                        }
-                    }
-                }
-            }
-
-
-            */
         }
 
         /*
@@ -1035,8 +937,11 @@ namespace Goteo\Controller {
             return false;
         }
 
-        /* A los cofinanciadores */
-        static public function toInvestors ($type, $project) {
+        /* A los cofinanciadores 
+         * Se usa tambien para notificar cuando un proyecto publica una novedad.
+         * Por eso añadimos el tercer parámetro, para recibir los datos del post
+         */
+        static public function toInvestors ($type, $project, $post = null) {
 
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';
@@ -1087,8 +992,14 @@ namespace Goteo\Controller {
 
                         case 'update': // template 18, publica novedad
                                 $tpl = 18;
-                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%');
-                                $replace = array($investor->name, $project->name, SITE_URL.'/project/'.$project->id.'/updates');
+                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%', '%POST%', '%SHAREFACEBOOK%', '%SHARETWITTER%');
+                                $post_url = SITE_URL.'/project/'.$project->id.'/updates/'.$post->id;
+                                // contenido del post
+                                $post_content = "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
+                                // y preparar los enlaces para compartir en redes sociales
+                                $share_urls = Text::shareLinks($post_url, $post->title);
+                                
+                                $replace = array($investor->name, $project->name, $post_url, $post_content, $share_urls['facebook'], $share_urls['twitter']);
                             break;
                     }
 
@@ -1097,7 +1008,13 @@ namespace Goteo\Controller {
                         // en el idioma del usuario
                         $template = Template::get($tpl, $investor->lang);
                         // Sustituimos los datos
-                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                        if (!empty($post)) {
+                            $subject = str_replace(array('%PROJECTNAME%', '%OWNERNAME%', '%P_TITLE%')
+                                    , array($project->name, $project->user->name, $post->title)
+                                    , $template->title);
+                        } else {
+                            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                        }
                         $content = \str_replace($search, $replace, $template->text);
                         // iniciamos mail
                         $mailHandler = new Mail();
@@ -1452,6 +1369,20 @@ namespace Goteo\Controller {
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
+        }
+
+        /*
+         *  Proceso que arregla las extensiones de los archivos de imágenes
+         */
+        public function imgrename () {
+            if (\defined('CRON_EXEC')) {
+                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                    'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+               die;
+            } else {
+                Cron\Imgrename::process();
+                die();
+            }
         }
 
     }

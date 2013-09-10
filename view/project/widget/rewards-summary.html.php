@@ -5,6 +5,7 @@ use Goteo\Library\Text,
 $level = (int) $this['level'] ?: 3;
 
 $project = $this['project'];
+$only = (in_array($this['only'], array('individual', 'social'))) ? $this['only'] : null;
 
 $licenses = array();
 
@@ -23,11 +24,13 @@ uasort($project->individual_rewards,
         }
     );
 ?>
+<?php if (!isset($only) || $only == 'social') : ?>
 <div class="widget project-rewards-summary" id="rewards-summary">
 
     <h<?php echo $level ?> class="supertitle"><?php echo Text::get('project-rewards-supertitle'); ?></h<?php echo $level ?>>
+    <?php endif; ?>
 
-    <?php if (!empty($project->individual_rewards)) : ?>
+    <?php if (!empty($project->individual_rewards) && (!isset($only) || $only == 'individual')) : ?>
     <div class="individual">
         <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-rewards-individual_reward-title'); ?></h<?php echo $level+1 ?>>
         <ul>
@@ -44,14 +47,14 @@ uasort($project->individual_rewards,
                     echo Text::get('project-rewards-individual_reward-units_left', $units); ?><br />
                 <?php endif; ?>
                 <div class="investors"><span class="taken"><?php echo $individual->taken; ?></span><?php echo Text::get('project-view-metter-investors'); ?></div>
-                <?php if (!$individual->none) : ?><a href="/project/<?php echo $project->id ?>/invest?amount=<?php echo $individual->amount ?>" class="button violet"><?php echo Text::get('regular-getit'); ?></a><?php endif; ?>
+                <?php if ($project->status ==3 && !$individual->none) : ?><a href="/project/<?php echo $project->id ?>/invest?amount=<?php echo $individual->amount ?>" class="button violet"><?php echo Text::get('regular-getit'); ?></a><?php endif; ?>
         </li>
         <?php endforeach ?>
         </ul>
     </div>
     <?php endif; ?>
 
-    <?php if (!empty($project->social_rewards)) : ?>
+    <?php if (!empty($project->social_rewards) && (!isset($only) || $only == 'social')) : ?>
     <div class="social">
         <h<?php echo $level + 1 ?> class="title"><?php echo Text::get('project-rewards-social_reward-title'); ?></h<?php echo $level + 1 ?>>
         <ul>
@@ -71,10 +74,13 @@ uasort($project->individual_rewards,
                     </a>
                 </div>
                 <?php endif ?>
+                <?php if ($social->url) : ?><a href="<?php echo $social->url ?>" target="_blank" class="button green tipsy" title="<?php echo Text::get('social_reward-access_title'); ?>"><?php echo Text::get('social_reward-access'); ?></a><?php endif; ?>
             </li>
         <?php endforeach; ?>
         </ul>
     </div>
     <?php endif; ?>
 
+<?php if (!isset($only) || $only == 'individual') : ?>
 </div>
+<?php endif; ?>

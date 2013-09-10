@@ -346,6 +346,10 @@ body.node.home div.node-projects ul li div.image div.tagmark {
     padding-left: 25px;
 }
 
+body.node.home div.node-projects ul li div.image div.tagmark.aqua {
+    background:url('/view/css/node/tagmark_aqua.png') 0 0 no-repeat;
+}
+
 body.node.home div.node-projects ul li div.image div.tagmark.green {
     background:url('/view/css/node/tagmark_green.png') 0 0 no-repeat;
 }
@@ -430,6 +434,18 @@ body.node.home div#node-calls a.all {
 
 body.node.home div#node-calls a.all:hover{
     color: #20B3B2;
+}
+
+/* padrinos */
+body.node.home div#node-patrons {
+    padding-bottom: 35px !important;
+    height: 169px;
+}
+body.node.home div#node-patrons h2 {
+    margin-bottom: 25px;
+}
+body.node.home div#node-patrons div#slides_patrons div.slder_patrons {
+	width: 670px !important;
 }
 
 

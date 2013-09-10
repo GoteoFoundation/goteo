@@ -213,6 +213,7 @@ echo new SuperForm(array(
             'hint'      => Text::get('tooltip-project-totals')
         ),
         
+        /* aligerando
         'resource' => array(
             'type'      => 'textarea',
             'cols'      => 40,
@@ -223,6 +224,7 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys["resource"]) ? array($okeys["resource"]) : array(),
             'value'     => $project->resource
         ),
+        */
         
         'schedule' => array(
             'type'      => 'html',

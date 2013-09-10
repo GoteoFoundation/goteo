@@ -51,6 +51,16 @@ namespace Goteo\Controller {
         public function edit ($id) {
             $call = Model\Call::get($id, null);
 
+            // si es admin (no superadmin) (y no es el autor) si no la tiene asignada, fuera.
+            if (isset($_SESSION['user']->roles['admin'])
+                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
+                && $call->owner != $_SESSION['user']->id // no es el autor
+                && !$call->isAdmin($_SESSION['user']->id) // no la tiene asignada
+                ) {
+                Message::Error('No tienes permiso para editar esta convocatoria');
+                throw new Redirection("/admin/calls");
+            }
+            
             if (isset($_GET['from']) && $_GET['from'] == 'dashboard') {
                 // Evento Feed
                 $log = new Feed();
@@ -398,7 +408,7 @@ namespace Goteo\Controller {
 
                 }
 
-                if ($show == 'projects' && $call->status < 4) {
+                if ($show == 'projects' && ($call->status < 4 || empty($call->projects))) {
                     throw new Redirection("/call/".$call->id);
                 }
 
@@ -426,35 +436,60 @@ namespace Goteo\Controller {
                 // para el buzz en la portada
                 if ($show == 'index') {
                     $matches = array();
-                    preg_match_all('/(#[a-zA-Z0-9_\-]+)/', $call->tweet, $matches);
+                    preg_match_all('/#([a-zA-Z0-9_\-]+)/', $call->tweet, $matches);
                     if (!empty($matches)) {
                         $social->tags = $matches[0];
                     }
 
                     $tsQuery = '';
-                    // tweets con alguno de los hastags
-                    if (!empty($social->tags)) {
-                        $tsQuery .= implode(', OR ', $social->tags);
-                    }
-                    if (!empty($social->author)) {
-                        // mencionando al convocador
-                        $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
-                        // del convocador
-                        $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
-                    }
-                    $tsUrl = "http://search.twitter.com/search?q=".  urlencode($tsQuery);
-                    $social->buzz_debug = $tsUrl;
 
+                    // configuración especial de buzz
+                    $buzzConf = array(
+                        'crowdsasuna' => array(
+                            'first' => true,
+                            'own' => false,
+                            'mention' => false
+                        ),
+                        'cofinancia-extremadura' => array(
+                            'first' => false,
+                            'own' => true,
+                            'mention' => false
+                        )
+                    );
+                    
+                    if (!empty($social->tags)) {
+                        // si solo un hashtag
+                        if (isset($buzzConf[$call->id]) && $buzzConf[$call->id]['first']) {
+                            $tsQuery .= $social->tags[0];
+                        } else {
+                            $tsQuery .= implode(', OR ', $social->tags);
+                        }
+                    }
+                    
+                    if (!empty($social->author)) {
+                        // propios
+                        if (!isset($buzzConf[$call->id]) || $buzzConf[$call->id]['own'])  {
+                            $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
+                        }
+
+                        // menciones
+                        if (!isset($buzzConf[$call->id]) || $buzzConf[$call->id]['mention'])  {
+                            $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
+                        }
+                    }
+                    
+                    $social->buzz_debug = "https://api.twitter.com/1.1/search/tweets.json?q=".  urlencode($tsQuery);
                     $social->buzz = Buzz::getTweets($tsQuery, true);
-//                      $social->buzz = array();  // para desconectar la petición: descomentar esta linea y comentar la de arriba
                 }
 
                 // filtro proyectos por categoria
-                $filter = null;
                 if ($show == 'projects') {
                     if (isset($_GET['filter']) && is_numeric($_GET['filter'])) {
-                        $filter = $_GET['filter'];
-                        $call->projects = Model\Call\Project::get($call->id, $filter);
+                        $filters = array(
+                            'category' => $_GET['filter'],
+                            'published' => true
+                        );
+                        $call->projects = Model\Call\Project::get($call->id, $filters);
                         }
                 }
 

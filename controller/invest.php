@@ -31,7 +31,7 @@ namespace Goteo\Controller {
             // en real solamente tpv, en beta también cash
             $methods = array(
                 'tpv' => 'tpv',
-                'cash' => 'cash'
+                'paypal' => 'paypal'
             );
 
             // si no está en campaña no pueden esta qui ni de coña
@@ -106,9 +106,7 @@ namespace Goteo\Controller {
 
                 // si está en primera ronda
                 // y obtiene dinero de convocatoria
-                if ($projectData->round == 1 && isset($projectData->called) && $projectData->called->project_got < $projectData->called->maxproj) {
-                    $invest->called = $projectData->called;
-                }
+                $invest->called = (isset($projectData->called) && $projectData->called->dropable && $projectData->called->project_got < $projectData->called->maxproj) ? $projectData->called : null;
 
                 if ($invest->save($errors)) {
                     Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
@@ -156,9 +154,6 @@ namespace Goteo\Controller {
 
             // para evitar las duplicaciones de feed y email
             if (isset($_SESSION['invest_'.$invest.'_completed'])) {
-                @mail('goteo_fail@doukeshi.org',
-                    'Reconfirmacion aporte ' . $invest,
-                    'Ha llegado a invest/confirm con aporte completado: invest_'.$invest.'_completed = '.$_SESSION['invest_'.$invest.'_completed'].' Aporte ' . $invest);
                 Message::Info(Text::get('invest-process-completed'));
                 throw new Redirection("/project/$project/invest/?confirm=ok");
             }
@@ -220,7 +215,7 @@ namespace Goteo\Controller {
             }
 
             // Paypal solo disponible si activado
-            if ($confirm->method == 'paypal' && Model\Project\Account::getAllowpp($project)) {
+            if ($confirm->method == 'paypal') {
 
                 // hay que cambiarle el status a 0
                 $confirm->setStatus('0');
@@ -362,6 +357,9 @@ namespace Goteo\Controller {
             // marcar que ya se ha completado el proceso de aportar
             $_SESSION['invest_'.$invest.'_completed'] = true;
 
+            // log
+            Model\Invest::setDetail($invest, 'confirmed', 'El usuario regresó a /invest/confirmed');
+            
             // mandarlo a la pagina de gracias
             throw new Redirection("/project/$project/invest/?confirm=ok", Redirection::TEMPORARY);
         }
@@ -377,9 +375,8 @@ namespace Goteo\Controller {
             if (empty($id))
                 throw new Redirection("/project/$project/invest", Redirection::TEMPORARY);
 
-            // dejamos el aporte como en proceso
-            $invest = Model\Invest::get($id);
-            $invest->setStatus(-1);
+            // dejamos el aporte tal cual esta
+            Model\Invest::setDetail($id, 'confirm-fail', 'El usuario regresó a /invest/fail');
 
             // mandarlo a la pagina de aportar para que lo intente de nuevo
             throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);

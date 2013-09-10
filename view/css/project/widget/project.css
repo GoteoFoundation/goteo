@@ -54,6 +54,10 @@ div.widget.project div.image div.tagmark {
 	padding: 1px 0px 0px 30px;
 }
 
+div.widget.project div.image div.tagmark.aqua {
+    background:url('/view/css/project/tagmark_aqua.png') 0 0 no-repeat;
+}
+
 div.widget.project div.image div.tagmark.green {
     background:url('/view/css/project/tagmark_green.png') 0 0 no-repeat;
 }

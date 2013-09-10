@@ -5,6 +5,17 @@ $banner = $this['banner'];
 
 $metter_txt = Text::get('regular-banner-metter');
 list($mreach, $mof, $mrest) = explode('-', $metter_txt);
+
+if (empty($banner->project)) : 
+    if (!empty($banner->url)) echo '<a href="'.$banner->url.'" class="expand"></a>';
+?>
+<div class="shb-banner clearfix">
+    <div class="title"><?php echo $banner->title ?></div>
+    <div class="short-desc"><?php echo $banner->description ?></div>
+</div>
+<?php 
+else : 
+    $banner->title = $banner->project->name; 
 ?>
 <a href="/project/<?php echo $banner->project->id ?>" class="expand"></a>
 <div class="shb-info clearfix">
@@ -20,9 +31,9 @@ list($mreach, $mof, $mrest) = explode('-', $metter_txt);
         </ul>
         <div class="license"><?php foreach ($banner->project->social_rewards as $id=>$reward) :
             if (empty($reward->license)) continue; ?>
-            <img src="<?php echo SRC_URL ?>/view/css/license/<?php echo $reward->license ?>.png" alt="<?php echo $reward->license ?>" /></div>
+            <img src="<?php echo SRC_URL ?>/view/css/license/<?php echo $reward->license ?>.png" alt="<?php echo $reward->license ?>" />
             <?php break; endforeach; ?>
-
+        </div>
     </div>
     <ul class="financ-meter">
         <li><?php echo $mreach ?></li>
@@ -35,4 +46,5 @@ list($mreach, $mof, $mrest) = explode('-', $metter_txt);
         <?php endif; ?>
     </ul>
 </div>
-<div class="shb-img"><?php if ($banner->image instanceof \Goteo\Model\Image) : ?><img src="<?php echo $banner->image->getLink(700, 156, true) ?>" title="<?php echo $banner->project->name ?>" alt="<?php echo $banner->project->name ?>" /><?php endif; ?></div>
+<?php endif; ?>
+<?php if ($banner->image instanceof \Goteo\Model\Image) : ?><div class="shb-img"><img src="<?php echo $banner->image->getLink(700, 156, true) ?>" title="<?php echo $banner->title ?>" alt="<?php echo $banner->title ?>" /></div><?php endif; ?>

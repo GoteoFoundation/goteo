@@ -1283,6 +1283,22 @@ namespace Goteo\Model {
                             $Data['cash']['total'] = $Data['cash']['first'];
                         }
 
+                        // Cash no cobrados (aportes fantasma)
+                        $inv_ghost = self::getList(array(
+                            'methods' => 'cash',
+                            'projects' => $project,
+                            'investStatus' => '0'
+                        ));
+                        if (!empty($inv_ghost)) {
+                            $Data['ghost']['first']['fail'] = 0;
+                            foreach ($inv_ghost as $invId => $invest) {
+                                $Data['ghost']['first']['users'][$invest->user] = $invest->user;
+                                $Data['ghost']['first']['invests']++;
+                                $Data['ghost']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['ghost']['total'] = $Data['ghost']['first'];
+                        }
+
                         // TPV
                         $inv_tpv = self::getList(array(
                             'methods' => 'tpv',
@@ -1332,7 +1348,7 @@ namespace Goteo\Model {
                             }
                             $Data['drop']['total'] = $Data['drop']['first'];
                         }
-
+                        
                     } elseif ($act_eq === 'sum') {
                         // complicado: primero los de primera ronda, luego los de segunda ronda sumando al total
                         // calcular ultimo dia de primera ronda segun la fecha de pase
@@ -1354,6 +1370,23 @@ namespace Goteo\Model {
                                 $Data['cash']['first']['amount'] += $invest->amount;
                             }
                             $Data['cash']['total'] = $Data['cash']['first'];
+                        }
+
+                        // Cash no cobrados (aportes fantasma) first
+                        $inv_ghost = self::getList(array(
+                            'methods' => 'cash',
+                            'projects' => $project,
+                            'investStatus' => '0',
+                            'date_until' => $last_day
+                        ));
+                        if (!empty($inv_ghost)) {
+                            $Data['ghost']['first']['fail'] = 0;
+                            foreach ($inv_ghost as $invId => $invest) {
+                                $Data['ghost']['first']['users'][$invest->user] = $invest->user;
+                                $Data['ghost']['first']['invests']++;
+                                $Data['ghost']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['ghost']['total'] = $Data['ghost']['first'];
                         }
 
                         // TPV first
@@ -1437,6 +1470,25 @@ namespace Goteo\Model {
                             $Data['cash']['total']['amount'] += $Data['cash']['second']['amount'];
                         }
 
+                        // CASH no cobrado (fantasmas)  second
+                        $inv_ghost = self::getList(array(
+                            'methods' => 'cash',
+                            'projects' => $project,
+                            'investStatus' => '0',
+                            'date_from' => $passed
+
+                        ));
+                        if (!empty($inv_ghost)) {
+                            $Data['ghost']['second']['fail'] = 0;
+                            foreach ($inv_ghost as $invId => $invest) {
+                                $Data['ghost']['second']['users'][$invest->user] = $invest->user;
+                                $Data['ghost']['total']['users'][$invest->user] = $invest->user;
+                                $Data['ghost']['second']['invests']++;
+                                $Data['ghost']['total']['invests']++;
+                                $Data['ghost']['second']['amount'] += $invest->amount;
+                            }
+                            $Data['ghost']['total']['amount'] += $Data['ghost']['second']['amount'];
+                        }
 
                         // TPV  second
                         $inv_tpv = self::getList(array(
@@ -1547,6 +1599,34 @@ namespace Goteo\Model {
                 $item->statusName = $status[$item->status];
                 $list[] = $item;
             }
+            
+            // añadimos el capital riego de aportes con incidencia
+             $sql = "SELECT
+                        invest.id as invest,
+                        user.id as user,
+                        user.name as userName,
+                        user.email as userEmail,
+                        invest.amount as amount,
+                        invest.status as status
+                    FROM invest
+                    INNER JOIN user
+                        ON user.id = invest.user
+                    WHERE invest.id IN (
+                        SELECT droped 
+                        FROM invest 
+                        WHERE issue = 1 
+                        AND droped IS NOT NULL
+                        AND invest.project = :id
+                    )
+                    ORDER BY user.name DESC
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                $item->statusName = $status[$item->status].' (CAPITAL RIEGO)';
+                $list[] = $item;
+            }
+            
             return $list;
 
 

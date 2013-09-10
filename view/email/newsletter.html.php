@@ -33,7 +33,7 @@ img a {
 
 <body style="margin: 0px; padding: 0px; font-family: Helvetica, Arial, Geneva, sans-serif; color:#58595B; padding-left: 20px; background-color: #f1f1f1;">
 
-<?php if (isset($this['sinoves'])) : ?><div style="width: 100%; height: 22px; line-height:22px; font-size:10px; color:#cccccc; background-color:#58595B;"><span style="margin-left:50px;"><?php echo Text::html('mailer-sinoves', $this['sinoves']); ?></span></div><?php endif; ?>
+<?php if (isset($this['sinoves'])) : ?><div style="width: 100%; height: 22px; line-height:22px; font-size:10px; color:#cccccc; background-color:#58595B;"><span style="margin-left:50px;"><?php echo Text::html('mailer-sinoves', $this['sinoves'].'" style="color:white;'); ?></span></div><?php endif; ?>
 <div style="width: 100%; background-color:#CDE4E5; padding-top:7px; padding-bottom:7px;"><span style="margin-left:50px;"><img src="cid:logo" alt="Goteo"/></span></div>
 
 <div style="width:630px; margin-left:50px; margin-top:20px;">

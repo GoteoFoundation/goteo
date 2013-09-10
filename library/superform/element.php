@@ -14,7 +14,7 @@ namespace Goteo\Library\SuperForm {
             $class = '',
             $hint,
             $required = false,
-            $ok = false,
+            $ok = array(),
             $errors = array(),
             $children = array(),
             $level = 2,
@@ -62,6 +62,8 @@ namespace Goteo\Library\SuperForm {
                 $this->view = $this->getView();                
             }
             
+            // si hay ok no hay error
+            if (!empty($this->ok)) $this->errors = array();
         }
         
         public function getView () {

@@ -47,6 +47,7 @@ if (NODE_ID != GOTEO_NODE) {
 			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
 		}
 	    </script>
+      
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
         <!-- custom scrollbars -->
@@ -69,6 +70,21 @@ if (NODE_ID != GOTEO_NODE) {
 
         <!-- saltos entre nodos -->
         <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/nodejump.js"></script>
+
+        <?php if (!isset($_SESSION['impersonating']) && $_SESSION['user'] instanceof \Goteo\Model\User && empty($_SESSION['user']->geoloc) && !$_SESSION['user']->geologed && !$_SESSION['user']->unlocable) : ?>
+        <!-- geologin -->
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/geologin.js"></script>
+        <?php endif; ?>
+        
+      
+        <?php if (isset($jscrypt)) : ?>
+            <script src="<?php echo SRC_URL ?>/view/js/sha1.min.js"></script>
+        <?php endif; ?>
+
+        <?php if (isset($jsreq_autocomplete)) : ?>
+            <link href="<?php echo SRC_URL ?>/view/css/jquery-ui-1.10.3.autocomplete.min.css" rel="stylesheet" />
+            <script src="<?php echo SRC_URL ?>/view/js/jquery-ui-1.10.3.autocomplete.min.js"></script>
+        <?php endif; ?>
 
     </head>
 

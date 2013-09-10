@@ -1,9 +1,9 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Core\View;
+use Goteo\Model\Contract;
 
 $project = $this['project'];
+$called = $project->call;
 $Data    = $this['Data'];
 $admin = (isset($this['admin']) && $this['admin'] === true) ? true : false;
 
@@ -12,35 +12,39 @@ foreach ($Data['issues'] as $issue) {
     $total_issues += $issue->amount;
 }
 
-// la fecha de contrato es el día antes de la publicación del proyecto
-$dPublished = strtotime($project->published);
-$dContract = mktime(0, 0, 0, date('m', $dPublished), date('d', $dPublished)-1, date('Y', $dPublished));
-$contract_date = date('dmY', $dContract);
+// si tiene registro de contrato
+list($cNum, $cDate) = Contract::getNum($project->id, $project->published);
+$cName = "P-{$cNum}-{$cDate}";
 ?>
 <style type="text/css">
     td {padding: 3px 10px;}
 </style>
 <div class="widget report">
-    <h3 class="title" style="text-transform: none;">Informe de financiación del proyecto P-[N&ordm;]-<?php echo $contract_date; ?><br /><span style="color:#20B2B3;"><?php echo $project->name ?></span></h3>
+    <h3 class="title" style="text-transform: none;">Informe de financiación del proyecto <?php echo $cName; ?><br /><span style="color:#20B2B3;"><?php echo $project->name ?></span></h3>
 
     <?php
+    // tanto los aportes de riego como los cash-no-cobrados: aparecen en el termómetro, cobran comisión, pero no se incluyen en el previsto a transferir
     $sumData['total'] = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount'];
+    $sumData['drop'] = $Data['drop']['total']['amount'];
+    $sumData['ghost'] = $Data['ghost']['total']['amount'];
     $sumData['fail']  = $total_issues;
-    $sumData['shown'] = $sumData['total'] + $sumData['fail'];
+    $sumData['shown'] = $sumData['total'] + $sumData['fail'] + $sumData['drop'] + $sumData['ghost'];
     $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
     $sumData['cash_goteo'] = $Data['cash']['total']['amount']  * 0.08;
     $sumData['tpv_goteo'] = $Data['tpv']['total']['amount']  * 0.08;
     $sumData['pp_goteo'] = $Data['paypal']['total']['amount'] * 0.08;
+    $sumData['drop_goteo'] = $Data['drop']['total']['amount'] * 0.08;
+    $sumData['ghost_goteo'] = $Data['ghost']['total']['amount'] * 0.08;
     $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
     $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['amount'] * 0.034);
     $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
     $sumData['pp_net_project'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
     $sumData['fee_goteo'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
-    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'];
-    $sumData['total_fee_project'] = $sumData['fee_goteo'] + $sumData['goteo'];
+    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'] + $sumData['drop_goteo'] + $sumData['ghost_goteo']; // si que se descuenta la comisión sobre capital riego
+    $sumData['total_fee_project'] = $sumData['fee_goteo'] + $sumData['goteo']; // este es el importe de la factura
     $sumData['tpv_project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'] - $sumData['pp_project'];
     $sumData['project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'];
-    $sumData['drop'] = $Data['drop']['total']['amount'];
+    // * el capital riego no lo manda goteo, lo manda el convocador
     ?>
 <p>
     <?php if (!empty($project->passed)) {
@@ -71,9 +75,14 @@ $contract_date = date('dmY', $dContract);
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total recaudado: <strong><?php echo \amount_format($sumData['total'], 2).' &euro;'; ?></strong> (importe de las ayudas monetarias recibidas)</td>
         </tr>
-        <?php if (!empty($project->called)) : ?>
+        <?php if (!empty($called)) : ?>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Capital riego de la campa&ntilde;a <?php echo $project->called->name ?>: <strong><?php echo \amount_format($sumData['drop']).' &euro;'; ?></strong> (Transferencia de <?php echo $project->called->user->name ?> directamente al impulsor)</td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total Capital Riego: <strong><?php echo \amount_format($sumData['drop']).' &euro;'; ?></strong> (Transferencia del convocador '<?php echo $project->call->user->name ?>' directamente al impulsor)</td>
+        </tr>
+        <?php endif; ?>
+        <?php if (!empty($sumData['ghost'])) : ?>
+        <tr>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Otro recibido: <strong><?php echo \amount_format($sumData['ghost']).' &euro;'; ?></strong> (Aporte manual sin ingreso bancario)</td>
         </tr>
         <?php endif; ?>
     </table>
@@ -89,6 +98,13 @@ $contract_date = date('dmY', $dContract);
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisión del 8&#37; de Goteo.org: <strong><?php echo \amount_format($sumData['goteo'], 2).' &euro;'; ?></strong></td>
         </tr>
+<?php if ($admin) : ?>
+        <!--
+        <tr>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Desglose calculo Comisión del 8&#37; de Goteo.org: <?php $aportes = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount']; $comisionaportes = $aportes * 0.08; $comisionriego = $Data['drop']['total']['amount'] * 0.08; echo "Aportes usuarios: {$Data['tpv']['total']['amount']}(tpv) + {$Data['paypal']['total']['amount']}(paypal) + {$Data['cash']['total']['amount']}(cash) = {$aportes} -> {$comisionaportes} Capital Riego: {$Data['drop']['total']['amount']} -> {$comisionriego}"; ?></td>
+        </tr>
+        -->
+<?php endif; ?>
         <tr>
             <td>Por el total de estas comisiones  la Fundación Fuentes Abiertas ha emitido la factura <strong>[N&uacute;mero de factura]</strong> por importe de <strong><?php echo \amount_format($sumData['total_fee_project'], 2).' &euro;'; ?></strong>, a nombre de la persona o entidad que firma el contrato</td>
         </tr>
@@ -148,12 +164,14 @@ $contract_date = date('dmY', $dContract);
 
     <br />
     <table>
-        <?php foreach ($Data['issues'] as $issue) : ?>
+        <?php foreach ($Data['issues'] as $issue) : 
+            $warst = ($issue->status == 1) ? ' style="color: red !important;"' : '';
+            ?>
         <tr>
 <?php if ($admin) : ?>
-            <td><?php echo '<a href="/admin/accounts/details/'.$issue->invest.'" target="_blank">[Ir al aporte]</a> Usuario <a href="/admin/users/manage/' . $issue->user . '" target="_blank">' . $issue->userName . '</a> [<a href="mailto:'.$issue->userEmail.'">'.$issue->userEmail.'</a>], ' . $issue->statusName . ', ' . $issue->amount . ' euros.'; ?></td>
+            <td><?php echo '<a href="/admin/accounts/details/'.$issue->invest.'" target="_blank"'.$warst.'>[Ir al aporte]</a> Usuario <a href="/admin/users/manage/' . $issue->user . '" target="_blank">' . $issue->userName . '</a> [<a href="mailto:'.$issue->userEmail.'">'.$issue->userEmail.'</a>], ' . $issue->statusName . ', ' . $issue->amount . ' euros.'; if (!empty($warst)) echo '  (Aporte: '.$issue->invest.')'; ?></td>
 <?php else: ?>
-            <td>Usuario/a <?php echo $issue->userName; ?>,  <?php echo $issue->statusName; ?>, <?php echo $issue->amount . ' euros'; ?></td>
+            <td<?php echo $warst; ?>>Usuario/a <?php echo $issue->userName; ?>,  <?php echo $issue->statusName; ?>, <?php echo $issue->amount . ' euros.'; if (!empty($warst)) echo '  (Aporte: '.$issue->invest.')';?></td>
 <?php endif; ?>
         </tr>
         <?php endforeach; ?>

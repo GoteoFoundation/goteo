@@ -27,6 +27,22 @@ namespace Goteo\Controller\Admin {
             if (isset($id)) {
                 $call = Model\Call::get($id);
             }
+            // si es admin (no superadmin) si no la tiene asignada no puede hacer otra cosa que no sea listar.
+            if ($action != 'list'
+                && isset($_SESSION['user']->roles['admin'])
+                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
+                ) {
+                    // Si no la tiene asignada no puede gestionar cosas
+                    if (isset($id) && !$call->isAdmin($_SESSION['user']->id)) {
+                        Message::Error('No tienes permiso para gestionar esta convocatoria');
+                        throw new Redirection("/admin/calls");
+                    } elseif (!isset($id)) {
+                        // si no hay id es crear y tampoco puede
+                        Message::Error('No tienes permiso para gestionar convocatorias');
+                        throw new Redirection("/admin/calls");
+                    }
+            }
+            
             switch ($action) {
                 case 'review': // listo para aplicar proyectos (se publica, sino que siga en edicion)
                     if ($call->ready($errors)) {
@@ -61,6 +77,13 @@ namespace Goteo\Controller\Admin {
                         $log_text = 'El admin %s ha pasado la convocatoria %s al estado <span class="red">Edición</span>';
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar la convocatoria %s al estado <span class="red">Edición</span>';
+                    }
+                    break;
+                case 'complete': // dar por finalizada la convocatoria
+                    if ($call->succeed($errors)) {
+                        $log_text = 'El admin %s ha marcado la convocatoria %s como <span class="red">Finalizada</span>';
+                    } else {
+                        $log_text = 'Al admin %s le ha fallado al marcar la convocatoria %s como <span class="red">Finalizada</span>';
                     }
                     break;
                 case 'delete': // eliminar completamente la convocatoria
@@ -182,7 +205,7 @@ namespace Goteo\Controller\Admin {
                 if (empty($call)) {
                     throw new Redirection('/admin/calls/list');
                 }
-                $projects   = Model\Call\Project::get($call->id, null, true);
+                $projects   = Model\Call\Project::get($call->id, array('all'=>true));
                 $status     = Model\Project::status();
 
                 // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
@@ -203,11 +226,40 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if ($action == 'admins') {
+                if (isset($_GET['op']) && isset($_GET['user']) && in_array($_GET['op'], array('assign', 'unassign'))) {
+                    if ($call->$_GET['op']($_GET['user'])) {
+                        // ok
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
+                }
 
+                $call->admins = Model\Call::getAdmins($call->id);
+                $admins = Model\User::getAdmins();
+
+                return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'calls',
+                                    'file' => 'admins',
+                                    'action' => 'admins',
+                                    'call' => $call,
+                                    'admins' => $admins
+                                )
+                );
+            }            
+
+            // si es admin, solo las suyas
+            if (isset($_SESSION['user']->roles['admin'])) {
+                $filters['admin'] = $_SESSION['user']->id;
+            }
+            
             $calls = Model\Call::getList($filters);
             $status = Model\Call::status();
             $categories = Model\Call\Category::getAll();
             $callers = Model\User::getCallers();
+            $admins = Model\Call::getAdmins();
             $orders = array(
                 'name' => 'Nombre',
                 'updated' => 'Apertura postulacion'
@@ -223,6 +275,7 @@ namespace Goteo\Controller\Admin {
                     'status' => $status,
                     'categories' => $categories,
                     'callers' => $callers,
+                    'admins' => $admins,
                     'orders' => $orders
                 )
             );

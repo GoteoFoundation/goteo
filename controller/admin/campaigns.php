@@ -91,20 +91,23 @@ namespace Goteo\Controller\Admin {
                 case 'active':
                     $set = $flag == 'on' ? true : false;
                     Model\Campaign::setActive($id, $set);
-
+                    throw new Redirection('/admin/campaigns');
                     break;
                 case 'up':
                     Model\Campaign::up($id, $node);
+                    throw new Redirection('/admin/campaigns');
                     break;
                 case 'down':
                     Model\Campaign::down($id, $node);
+                    throw new Redirection('/admin/campaigns');
                     break;
                 case 'remove':
                     if (Model\Campaign::delete($id)) {
-                        Message::Info('Convocatoria quitada correctamente');
+                        // ok
                     } else {
                         Message::Error('No se ha podido quitar la convocatoria');
                     }
+                    throw new Redirection('/admin/campaigns');
                     break;
                 case 'add':
                     // siguiente orden

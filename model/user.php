@@ -2,8 +2,7 @@
 
 namespace Goteo\Model {
 
-	use Goteo\Core\Redirection,
-        Goteo\Library\Text,
+	use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\Node,
         Goteo\Library\Template,
@@ -80,7 +79,16 @@ namespace Goteo\Model {
 	            return $this->getProjects();
 	        }
 	        if($name == "geoloc") {
-	            return $this->getGeoloc();
+	            return User\Location::get($this->id);
+	        }
+	        if($name == "geologed") {
+	            return User\Location::is_geologed($this->id);
+	        }
+	        if($name == "unlocable") {
+	            return User\Location::is_unlocable($this->id);
+	        }
+	        if($name == "admin_node") {
+	            return \Goteo\Model\Node::getAdminNode($this->id);
 	        }
             return $this->$name;
         }
@@ -111,15 +119,6 @@ namespace Goteo\Model {
                     $data[':lang'] = \LANG;
                     $data[':node'] = \NODE_ID;
 
-                    // Rol por defecto.
-                    if (!empty($this->id)) {
-                        static::query('REPLACE INTO user_role (user_id, role_id, node_id) VALUES (:user, :role, :node);', array(
-                            ':user' => $this->id,
-                            ':role' => 'user',
-                            ':node' => '*',
-                        ));
-                    }
-
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;
 					else {
@@ -131,8 +130,8 @@ namespace Goteo\Model {
 						$subject = $template->title;
 
 						// En el contenido:
-						$search  = array('%USERNAME%', '%USERID%', '%ACTIVATEURL%');
-						$replace = array($this->name, $this->id, $URL . '/user/activate/' . $token);
+						$search  = array('%USERNAME%', '%USERID%', '%USERPWD%', '%ACTIVATEURL%');
+						$replace = array($this->name, $this->id, $this->password, $URL . '/user/activate/' . $token);
 						$content = \str_replace($search, $replace, $template->text);
 
 						// Activación
@@ -189,12 +188,10 @@ namespace Goteo\Model {
                     // Avatar
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
-                        if ($image->save()) {
+                        if ($image->save($errors)) {
                             $data[':avatar'] = $image->id;
-
                         } else {
-                            Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
-                            $data[':avatar'] = '';
+                            unset($data[':avatar']);
                         }
                     }
 
@@ -414,12 +411,6 @@ namespace Goteo\Model {
                     }
                 }
 
-                if (is_array($this->avatar) && !empty($this->avatar['name'])) {
-                    $image = new Image($this->avatar);
-                    $_err = array();
-                    $image->validate($_err);
-                    $errors['avatar'] = $_err['image'];
-                }
             }
 
             if (\str_replace(Text::get('regular-facebook-url'), '', $this->facebook) == '') $this->facebook = '';
@@ -568,7 +559,7 @@ namespace Goteo\Model {
                 $user = $query->fetchObject(__CLASS__);
 
                 if (!$user instanceof  \Goteo\Model\User) {
-                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-user'));
+                    return false;
                 }
 
                 $user->roles = $user->getRoles();
@@ -604,7 +595,8 @@ namespace Goteo\Model {
                         id,
                         name,
                         avatar,
-                        email
+                        email,
+                        node
                     FROM user
                     WHERE id = :id
                     ", array(':id' => $id));
@@ -655,7 +647,7 @@ namespace Goteo\Model {
                     ) ";
                 $values[':interest'] = $filters['interest'];
             }
-            if (!empty($filters['role'])) {
+            if (!empty($filters['role']) && $filters['role'] != 'user') {
                 $sqlFilter .= " AND id IN (
                     SELECT user_id
                     FROM user_role
@@ -670,6 +662,7 @@ namespace Goteo\Model {
                 $values[':node'] = $filters['node'];
             } elseif (!empty($node) && $node != \GOTEO_NODE) {
                 // un admin de nodo puede ver sus usuarios y los que hayan aportado a sus proyectos
+                /*
                 $sqlFilter .= " AND (node = :node
                     OR id IN (
                         SELECT user
@@ -681,6 +674,8 @@ namespace Goteo\Model {
                         )
                     )";
                 $values[':node'] = $node;
+                 * 
+                 */
             }
             if (!empty($filters['project'])) {
                 $subFilter = $filters['project'] == 'any' ? '' : 'invest.project = :project AND';
@@ -744,7 +739,10 @@ namespace Goteo\Model {
 
             // si es solo los usuarios normales, añadimos HAVING
             if ($filters['role'] == 'user') {
-                $sqlOrder .= " HAVING roles <= 1";
+                $sqlCR = ", (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles";
+                $sqlOrder .= " HAVING roles = 0";
+            } else {
+                $sqlCR = "";
             }
 
             //el Order
@@ -754,12 +752,6 @@ namespace Goteo\Model {
                 break;
                 case 'id':
                     $sqlOrder .= " ORDER BY id ASC";
-                break;
-                case 'amount':
-                    $sqlOrder .= " ORDER BY amount DESC";
-                break;
-                case 'projects':
-                    $sqlOrder .= " ORDER BY projects DESC";
                 break;
                 default:
                     $sqlOrder .= " ORDER BY created DESC";
@@ -773,14 +765,15 @@ namespace Goteo\Model {
                         active,
                         hide,
                         DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
-                        node,
-                        (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles
+                        node
+                        $sqlCR
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter
                    $sqlOrder
+                    LIMIT 999
                     ";
-
+            
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
 
@@ -791,23 +784,13 @@ namespace Goteo\Model {
                     WHERE user_id = :id
                     ", array(':id' => $user->id));
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $role) {
-                    if ($role->role_id == 'checker') {
-                        $user->checker = true;
-                    }
-                    if ($role->role_id == 'translator') {
-                        $user->translator = true;
-                    }
-                    if ($role->role_id == 'caller') {
-                        $user->caller = true;
-                    }
-                    if ($role->role_id == 'admin') {
-                        $user->admin = true;
-                    }
-                    if ($role->role_id == 'vip') {
-                        $user->vip = true;
-                    }
+                    $rolevar = $role->role_id;
+                    $user->$rolevar = true;
                 }
 
+                $user->namount = (int) $user->amount;
+                $user->nprojs = (int) count($user->support['projects']);
+                
                 $users[] = $user;
             }
             return $users;
@@ -823,7 +806,7 @@ namespace Goteo\Model {
             $query = static::query("
                 SELECT
                     user.id as id,
-                    user.name as name
+                    CONCAT(user.name, ' (', user.email, ')') as name
                 FROM    user
                 ");
 
@@ -973,6 +956,7 @@ namespace Goteo\Model {
 		 * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
 		 */
 		public static function login ($username, $password) {
+            
             $query = self::query("
                     SELECT
                         id
@@ -981,7 +965,8 @@ namespace Goteo\Model {
                     AND BINARY password = :password",
 				array(
 					':username' => trim($username),
-					':password' => sha1($password)
+                    // si la contraseña ya viene en formato sha1 no la encriptamos
+					':password' => (\is_sha1($password)) ? $password : sha1($password)
 				)
 			);
 
@@ -1024,7 +1009,7 @@ namespace Goteo\Model {
 		 * @param string $email    Email de la cuenta
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
-		public static function recover ($username = null, $email = null) {
+		public static function recover ($email = null) {
             $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
             $query = self::query("
                     SELECT
@@ -1032,11 +1017,9 @@ namespace Goteo\Model {
                         name,
                         email
                     FROM user
-                    WHERE (BINARY id = :username
-                    OR BINARY email = :email)
+                    WHERE BINARY email = :email
                     ",
 				array(
-					':username' => trim($username),
 					':email'    => trim($email)
 				)
 			);
@@ -1212,15 +1195,6 @@ namespace Goteo\Model {
                 @mail('geoloc_fail@doukeshi.org', 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
                 return false;
             }
-    	}
-
-    	/**
-    	 * Recupera la Geolocalización asignada al usuario
-    	 *
-    	 * @return type int (id geolocation)
-    	 */
-    	private function getGeoloc () {
-            return User\Location::get($this->id);
     	}
 
         /**
@@ -1423,6 +1397,9 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
                 $roles[$rol->id] = $rol;
             }
+            // añadimos el de usuario normal
+            $roles['user'] = (object) array('id'=>'user', 'name'=>'Usuario registrado');
+            
             return $roles;
 
 		}

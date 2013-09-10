@@ -5,10 +5,11 @@ use Goteo\Library\Text;
 $filters = $this['filters'];
 
 ?>
+<?php if (isset($_SESSION['user']->roles['superadmin'])) : ?>
 <a href="/admin/calls/add" class="button">Crear convocatoria</a>
 &nbsp;&nbsp;&nbsp;
 <a href="/admin/transcalls" class="button">Asignar traductores</a>
-
+<?php endif; ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/calls" method="get">
         <table>
@@ -31,6 +32,17 @@ $filters = $this['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <?php if (!isset($_SESSION['user']->roles['admin'])) : ?>
+                <td>
+                    <label for="admin-filter">Administradas por:</label><br />
+                    <select id="admin-filter" name="admin" onchange="document.getElementById('filter-form').submit();">
+                        <option value="">Cualquier administrador</option>
+                    <?php foreach ($this['admins'] as $userId=>$userName) : ?>
+                        <option value="<?php echo $userId; ?>"<?php if ($filters['admin'] == $userId) echo ' selected="selected"';?>><?php echo $userName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+                <?php endif; ?>
             </tr>
             <tr>
                 <td>
@@ -91,19 +103,24 @@ $filters = $this['filters'];
                 <td><?php echo count($call->projects); ?></td>
             </tr>
             <tr>
-                <td colspan="6"> >>> Acciones:
+                <td colspan="6"> GESTI&Oacute;N:&nbsp;
                     <a href="/call/edit/<?php echo $call->id; ?>" target="_blank">[Editar]</a>
+                    <a href="<?php echo "/admin/calls/projects/{$call->id}"; ?>">[Proyectos]</a>
+                    <?php if (isset($_SESSION['user']->roles['superadmin'])) : ?><a href="<?php echo "/admin/calls/admins/{$call->id}"; ?>">[Administradores]</a><?php endif; ?>
+                    <?php if ($call->translate) : ?><a href="<?php echo "/admin/transcalls/edit/{$call->id}"; ?>">[Ir a traducción]</a>
+                    <?php else : ?><a href="<?php echo "/admin/transcalls/add/?call={$call->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
+                    <?php if (isset($_SESSION['user']->roles['superadmin']) && $call->status == 1) : ?><a href="<?php echo "/admin/calls/delete/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a ELIMINAR comlpetamente, ¿seguro que hacemos eso?');" style="color: red;">[Suprimir]</a><?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    PROCESO:&nbsp;
                     <?php if ($call->status == 1) : ?><a href="<?php echo "/admin/calls/review/{$call->id}"; ?>">[A revisión]</a><?php endif; ?>
                     <?php if ($call->status < 3) : ?><a href="<?php echo "/admin/calls/open/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a comenzar a recibir la inscripción de proyectos, ok?');">[Abrir aplicacion]</a><?php endif; ?>
                     <?php if ($call->status < 4) : ?><a href="<?php echo "/admin/calls/publish/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a comenzar a repartir dinero a los proyectos seleccionados, ok?');">[Publicar]</a><?php endif; ?>
-                    <?php if ($call->status > 1) : ?><a href="<?php echo "/admin/calls/enable/{$call->id}"; ?>" onclick="return confirm('Ojo si la convocatoria está publicandose ahora mismo... ¿seguimos?');">[Reabrir edición]</a><?php endif; ?>
-                    <a href="<?php echo "/admin/calls/projects/{$call->id}"; ?>">[Proyectos]</a>
-                    <?php if ($call->translate) : ?><a href="<?php echo "/admin/translates/calls/{$call->id}"; ?>">[Ir a traducción]</a><?php endif; ?>
-                    <a href="<?php echo "/admin/calls/cancel/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a CADUCAR, ¿seguro que hacemos eso?');">[Cancelar]</a>
-                    <?php if ($call->status == 1) : ?><a href="<?php echo "/admin/calls/delete/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a ELIMINAR comlpetamente, ¿seguro que hacemos eso?');" style="color: red;">[Suprimir]</a><?php endif; ?>
-                    <?php if ($call->translate) : ?><a href="<?php echo "/admin/transcalls/edit/{$call->id}"; ?>">[Ir a traducción]</a>
-                    <?php else : ?><a href="<?php echo "/admin/transcalls/add/?call={$call->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
-                </td>
+                    <?php if ($call->status > 1 && $call->status < 4) : ?><a href="<?php echo "/admin/calls/enable/{$call->id}"; ?>" onclick="return confirm('Ojo si la convocatoria está publicandose ahora mismo... ¿seguimos?');">[Reabrir edición]</a><?php endif; ?>
+                    <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/complete/{$call->id}"; ?>" onclick="return confirm('Significa que no se repartirá más dinero, ok?');">[Finalizar]</a><?php endif; ?>
+                    <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/cancel/{$call->id}"; ?>" onclick="return confirm('La convocatoria se va a CANCELAR (no completada), ¿seguro que hacemos eso?');">[Cerrar]</a><?php endif; ?>
             </tr>
             <tr>
                 <td colspan="6"><hr /></td>
