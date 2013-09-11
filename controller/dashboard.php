@@ -110,7 +110,7 @@ namespace Goteo\Controller {
                         
                     //cambio de email y contraseña
                     case 'access':
-                        Dashboard\Profile::process_profile($user, $errors, $log_action);
+                        Dashboard\Profile::process_access($user, $errors, $log_action);
                         break;
 
                     // preferencias de notificación
