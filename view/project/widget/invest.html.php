@@ -24,7 +24,7 @@ if (isset($_SESSION['invest-amount'])) {
 if ($project->called instanceof Call && $project->called->dropable) {
     $call = $project->called;
     $rest = $call->rest;
-    $maxdrop = Call\Project::currMaxdrop($project, $amount);
+    $maxdrop = Call\Project::currMaxdrop($project);
 
     // a ver si este usuario ya ha regado este proyecto
     if ($_SESSION['user'] instanceof User) {
@@ -70,7 +70,7 @@ $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
     <p><?php echo Text::html('invest-called-maxproj', $call->name) ?></p>
 <?php elseif ($rest > 0) : ?>
     <input type="hidden" id="rest" name="rest" value="<?php echo $rest ?>" />
-    <p><?php echo Text::html('call-splash-invest_explain_this', $call->user->name) ?><br /><?php echo Text::html('invest-called-maxdrop', $maxdrop) ?></p>
+    <p><?php echo Text::html('call-splash-invest_explain_this', $call->user->name) ?><br /><?php echo Text::html('invest-called-maxdrop', \amount_format($maxdrop)) ?></p>
     <p><?php echo Text::html('invest-called-rest', \amount_format($rest), $call->name) ?></p>
 <?php else: ?>
     <p><?php echo Text::html('invest-called-nodrop', $call->name) ?></p>

@@ -10,6 +10,22 @@ namespace Goteo\Model\Call {
             $id,
             $call;
 
+        // limites por ronda:
+        //  'normal' = limite normal por proyecto definido (cantidad o % sobre mínimo)
+        //  'unlimited' = sin límite (óptimo como límite técnico. Ver, Model\Project::called cuando establece `dropable`) 
+        //  'minimum' = límite y luego minimo (mínimo más restrictivo que límite)
+        //  'none' = no hay riego
+        public static $conf = array(
+            'unia-cofinanciacion-innovacion-educativa' => array(1=>'minimum', 2=>'none'),
+            'cofinancia-extremadura' => array(1=>'minimum', 2=>'unlimited'),
+            'crowdsasuna' => array(1=>'normal', 2=>'normal'),
+            // otros de beta
+            'unia-test' => array(1=>'minimum', 2=>'none'),
+            'testeosux' => array(1=>'minimum', 2=>'unlimited'),
+            'goteoeuskadi' => array(1=>'normal', 2=>'normal'),
+            'julian' => array(1=>'normal', 2=>'unlimited')
+        );
+        
 
         /**
          * Get the projects assigned to a call
@@ -253,36 +269,58 @@ namespace Goteo\Model\Call {
                 if (!empty ($called)) {
                     $call = Model\Call::get($called);
 
+                    // configuración personalizada
+                    $call->conf = isset(static::$conf[$call->id]) ? static::$conf[$call->id] : null;
+                    
                     // calcular el obtenido por este proyecto
                     $call->project_got = Model\Invest::invested($project->id, 'call', $call->id);
 
                     // recalculo de maxproj si es modalidad porcentaje
                     if (empty($call->maxproj)) {
-                        $call->maxproj = null;
+                        $call->maxproj = floor($project->maxcost / 2);
                     } elseif ($call->modemaxp == 'per') {
                         $call->maxproj = $project->mincost * $call->maxproj / 100;
                     }
                     
-                    // si tiene configuracion de que en esta ronda es ilimitado, el límite por proyecto cambia completamente
-                    if (isset($call->conf) && $call->conf[$project->round] == 'unlimited') {
+                    // si no tiene configuracion 
+                    if (!isset($call->conf)) {
                         // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
-                        $new_maxproj = $call->project_got + ($project->maxcost - $project->invested) / 2;
+                        $call->maxproj = min($call->maxproj, ($call->project_got + floor(($project->maxcost - $project->invested) / 2)));
+                    }
+                    // si tiene configuración de que en esta ronda el mínimo es más prioritario que el límite
+                    elseif ($call->conf[$project->round] == 'minimum') {
+                        // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al mínimo (la otra mitad la pone el usuario)
+                        $call->maxproj = min($call->maxproj, ($call->project_got + floor(($project->mincost - $project->invested) / 2)));
+                    }
+                    // si tiene configurado ilimitado, el límite por proyecto SUBE!!!
+                    elseif ($call->conf[$project->round] == 'unlimited') {
+                        // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
+                        $call->maxproj = floor(($project->maxcost - $project->invested) / 2);
                     }
                     
-                    // si tiene configuración de que en esta ronda el mínimo es más prioritario que el límite
-                    if (isset($call->conf) && $call->conf[$project->round] == 'minimum') {
-                        // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al mínimo (la otra mitad la pone el usuario)
-                        $new_maxproj = $call->project_got + ($project->mincost - $project->invested) / 2;
-                        if ($new_maxproj < $call->maxproj) $call->maxproj = $new_maxproj;
-                    }
+                    // si a la convocatoria le queda menos que el limite actual
+                    $call->maxproj = min($call->maxproj, $call->rest);
                     
                     // es regable a menos que la configuración no lo permita para esta ronda
                     // y siempre que no haya superado el óptimo
-                    $call->dropable = (isset($call->conf)) ? ($call->conf[$project->round] != 'none') : ($project->invested < $project->maxcost);
+                    $call->dropable = true;
+                    if (isset($call->conf) && $call->conf[$project->round] == 'none') {
+                        $call->dropable = false; 
+                        $call->maxproj = 0;
+                    }
+                    
+                    // por defecto no permite en segunda ronda
+                    if (!isset($call->conf) && $project->round == 2) {
+                        $call->dropable = false; 
+                        $call->maxproj = 0;
+                    }
+                    
 
                     // si no está en campaña ni de coña puede obtener riego
-                    if ($project->status != 3) 
+                    if ($project->status != 3) {
                         $call->dropable = false; 
+                        $call->maxproj = 0;
+                    }
                     
                     return $call;
                 }
@@ -300,7 +338,7 @@ namespace Goteo\Model\Call {
          * @param type $called
          * @param type $amount
          */
-        public static function currMaxdrop ($project, $amount) {
+        public static function currMaxdrop ($project, $amount = 0) {
             
             $call = $project->called;
             
@@ -308,48 +346,45 @@ namespace Goteo\Model\Call {
             if (!isset($call) || !$call instanceof Model\Call || !$call->dropable)
                 return 0;
 
+             if (isset($call->conf) && $call->conf[$project->round] == 'none')
+                return 0;
+                 
             // si establecido un máximo por aporte
             $maxdrop = (!empty($call->maxdrop)) ? $call->maxdrop : 99999999;
 
-            // si no hay configuración específica
-            //  o para esta ronda la config. es el límite normal
-            // o si la configuración es de mínimo (porque luego checkearemos el mínimo
-            if (!isset($call->conf) || $call->conf[$project->round] == 'normal' || $call->conf[$project->round] == 'mincost') {
-                // mientras tenga límite por proyecto
-                if (isset($call->maxproj)) {
-                    $new_maxdrop = $call->maxproj - $call->project_got;
-                    if ($new_maxdrop < $maxdrop) $maxdrop = $new_maxdrop; // verificamos el límite para este aporte
-                }
-                // si no tiene límite por proyecto, el maxdrop no cambia
-                
+            // si no tiene configuración el óptimo es límite técnico
+            if(!isset($call->conf)) {
+                $maxdrop = min($maxdrop, ($project->maxcost - $project->invested - $amount));
             } 
-            
+            // si la config para esta ronda la config. es el límite normal
+            elseif($call->conf[$project->round] == 'normal') {
+                // si tiene límite por proyecto, ese es
+                $maxdrop = (isset($call->maxproj)) ? min($maxdrop, $call->maxproj) : $maxdrop;
+                $maxdrop = min($maxdrop, ($project->maxcost - $project->invested - $amount));
+            } 
             // una vez aplicado el límite normal, aplicamos el limite sobre mínimo
-            if ($call->conf[$project->round] == 'minimum') {
-                $new_maxdrop = $project->mincost - $project->invested - $amount;
-                if ($new_maxdrop < $maxdrop) $maxdrop = $new_maxdrop;
+            elseif ($call->conf[$project->round] == 'minimum') {
+                $maxdrop = min($maxdrop, ($project->mincost - $project->invested - $amount));
+            } 
+            // si la configuración de de ilimitado cámbia completamente, el límite SUBE!!
+            elseif($call->conf[$project->round] == 'unlimited') {
+                if(!empty($amount)) {
+                    $maxdrop = $project->maxcost - $project->invested - $amount;
+                } else {
+                    $maxdrop = floor(($project->maxcost - $project->invested) /2);
+                }
+            } elseif (isset($call->maxproj)) {
+                // si tiene límite por proyecto, ese es
+                $maxdrop = min($maxdrop, $call->maxproj);
             }
-            
-            // si la configuración de de ilimitado o si no hay límite por proyecto
-            // o en cualquier caso, porque el óptimo es límite técnico
-//            if (!isset($call->maxproj) || $call->conf[$project->round] == 'unlimited') {
-                $new_maxdrop = $project->maxcost - $project->invested - $amount;
-                if ($new_maxdrop < $maxdrop) $maxdrop = $new_maxdrop; // verificamos el límite para este aporte
-                
-//            }
 
-            // si a la convocatoria le queda menos que el limite actual
-            if ($call->rest < $maxdrop) $maxdrop = $call->rest;
 
-            // y no queremos que riege negativo
-            if ($maxdrop < 0) $maxdrop = 0;
+            // siempre mientras le quede riego
+            $maxdrop = min($maxdrop, $call->rest);
 
-            return $maxdrop;
-//            die($call->maxdrop .' >>> '. $maxdrop);
-            
+            // y no queremos que riege negativo, sacamos el menor de todos los límites o cero
+            return ($maxdrop > 0) ? $maxdrop : 0;
         }
-        
-        
         
         /*
          * Devuelve true o false si este proyecto está seleccionado en alguna de las convocatorias del usuario
