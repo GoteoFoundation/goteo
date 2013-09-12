@@ -128,7 +128,7 @@ namespace Goteo\Controller {
 
                 // porcentaje alcanzado
                 if ($project->mincost > 0) {
-                    $per_amount = \round(($project->amount / $project->mincost) * 100);
+                    $per_amount = \floor(($project->amount / $project->mincost) * 100);
                 } else {
                     $per_amount = 0;
                 }
@@ -199,7 +199,7 @@ namespace Goteo\Controller {
                                 \vsprintf($log_text, array(
                                     Feed::item('project', $project->name, $project->id),
                                     Feed::item('relevant', 'caducado sin éxito'),
-                                    Feed::item('money', $project->amount.' &euro; ('.\round($per_amount).'&#37;) de aportes sobre minimo')
+                                    Feed::item('money', $project->amount.' &euro; ('.$per_amount.'&#37;) de aportes sobre minimo')
                             )));
                             $log->doAdmin('project');
 
@@ -208,7 +208,7 @@ namespace Goteo\Controller {
                                 Text::html('feed-project_fail',
                                     Feed::item('project', $project->name, $project->id),
                                     $project->amount,
-                                    \round($per_amount)
+                                    $per_amount
                             ));
                             $log->doPublic('projects');
 
