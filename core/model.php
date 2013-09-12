@@ -107,7 +107,7 @@ namespace Goteo\Core {
          * @return string $id
          */
         public static function idealiza ($value, $filename = false) {
-            $id = trim(strtolower($value));
+            $id = trim($value);
             // Acentos
             $table = array(
                 'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
@@ -127,6 +127,7 @@ namespace Goteo\Core {
             }
             
             $id = strtr($id, $table);
+            $id = strtolower($value);
 
             // Separadores
             $id = preg_replace("/[\s\,\(\)\[\]\:\;\_\/\"\'\{\}]+/", "-", $id);
