@@ -61,6 +61,7 @@ namespace Goteo\Model\Call {
                             project.name as name,
                             project.status as status,
                             project.owner as owner,
+                            project.amount as amount,
                             project.project_location as location,
                             project.subtitle as subtitle,
                             project.description as description

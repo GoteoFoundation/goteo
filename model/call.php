@@ -809,8 +809,8 @@ namespace Goteo\Model {
             }
             $sql .= " ORDER BY created DESC";
             $query = self::query($sql, array($owner));
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $calls[] = self::get($proj->id);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $call) {
+                $calls[] = self::get($call->id);
             }
 
             return $calls;

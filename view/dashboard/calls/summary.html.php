@@ -36,8 +36,9 @@ $status = Project::status();
             <th>Impulsor</th>
             <th>Proyecto</th>
             <th>Estado</th>
+            <th>Cofinanciado</th>
             <th>Riego</th>
-            <th></th>
+            <th>Conseguido</th>
         </tr>
         <?php foreach ($call->projects as $proj) : ?>
         <tr>
@@ -45,10 +46,9 @@ $status = Project::status();
             <td><?php echo $proj->user->name ?></td>
             <td><a href="/project/<?php echo $proj->id ?>" target="_blank"><?php echo $proj->name ?></a></td>
             <td><?php echo $status[$proj->status] ?></td>
-            <td><?php echo $proj->amount ?></td>
-            <td><?php /* if ($proj->amount <= 0) : ?>
-                <a href="/dashboard/calls/projects/unassign/<?php echo $proj->id ?>" onclick="return confirm('Seguro que quitamos el proyecto \'<?php echo $proj->name ?>\' de la convocatoria \'<?php echo $call->name ?>\' ?')">[Quitar]</a>
-            <?php endif; */ ?></td>
+            <td style="text-align: right;"><?php echo $proj->amount_users ?>&euro;</td>
+            <td style="text-align: right;"><?php echo $proj->amount_call ?>&euro;</td>
+            <td style="text-align: right;"><?php echo $proj->amount ?>&euro;</td>
         </tr>
         <?php endforeach; ?>
     </table>

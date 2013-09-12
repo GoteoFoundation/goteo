@@ -47,6 +47,8 @@ namespace Goteo\Controller\Dashboard {
             } elseif (!empty($_SESSION['call']->id)) {
                 // mantener los datos de la convocatoria de trabajo
                 $call = Model\Call::get($_SESSION['call']->id);
+                // y con todos los proyectos
+                $call->projects = Model\Call\Project::get($_SESSION['call']->id, array('all'));
             }
 
             if (empty($call)) {
