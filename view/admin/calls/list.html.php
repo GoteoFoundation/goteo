@@ -107,8 +107,10 @@ $filters = $this['filters'];
                     <a href="/call/edit/<?php echo $call->id; ?>" target="_blank">[Editar]</a>
                     <a href="<?php echo "/admin/calls/projects/{$call->id}"; ?>">[Proyectos]</a>
                     <?php if (isset($_SESSION['user']->roles['superadmin'])) : ?><a href="<?php echo "/admin/calls/admins/{$call->id}"; ?>">[Administradores]</a><?php endif; ?>
-                    <?php if ($call->translate) : ?><a href="<?php echo "/admin/transcalls/edit/{$call->id}"; ?>">[Ir a traducción]</a>
+                    <?php if ($call->translate) : ?><a href="<?php echo "/admin/transcalls/edit/{$call->id}"; ?>">[Asignar traducción]</a>
                     <?php else : ?><a href="<?php echo "/admin/transcalls/add/?call={$call->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
+                    <?php if (isset($_SESSION['user']->roles['translator'])) : ?><a href="<?php echo "/dashboard/translates"; ?>" target="_blank">[Abrir Mis Traducciones]</a><?php endif; ?>
+                    &nbsp;|&nbsp;&nbsp;&nbsp;
                     <?php if (isset($_SESSION['user']->roles['superadmin']) && $call->status == 1) : ?><a href="<?php echo "/admin/calls/delete/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a ELIMINAR comlpetamente, ¿seguro que hacemos eso?');" style="color: red;">[Suprimir]</a><?php endif; ?>
                 </td>
             </tr>

@@ -452,6 +452,11 @@ namespace Goteo\Controller {
                         ),
                         'cofinancia-extremadura' => array(
                             'first' => false,
+                            'own' => false,
+                            'mention' => false
+                        ),
+                        'unia-cofinanciacion-innovacion-educativa' => array(
+                            'first' => false,
                             'own' => true,
                             'mention' => false
                         )
