@@ -302,6 +302,9 @@ namespace Goteo\Model\Call {
                     // si a la convocatoria le queda menos que el limite actual
                     $call->maxproj = min($call->maxproj, $call->rest);
                     
+                    // y que no sea negativo
+                    if ($call->maxproj > 0) $call->maxproj = 0;
+                    
                     // es regable a menos que la configuración no lo permita para esta ronda
                     // y siempre que no haya superado el óptimo
                     $call->dropable = true;
