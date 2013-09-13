@@ -123,7 +123,7 @@ $superform = array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-additional',
+                            'name'  => 'view-step-final',
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )
