@@ -701,6 +701,7 @@ namespace Goteo\Controller {
                         $menu['contents']['options']['texts'] = $options['texts']; // gestión de textos
                         $menu['contents']['options']['faq'] = $options['faq']; // gestión de faqs
                         $menu['contents']['options']['templates'] = $options['templates']; // gestión de plantillas
+                        $menu['projects']['options']['transcalls'] = $options['transcalls']; // traducción de convocatorias    
                         $menu['projects']['options']['commons'] = $options['commons']; // gestion de retornos colectivos
                     }
 
