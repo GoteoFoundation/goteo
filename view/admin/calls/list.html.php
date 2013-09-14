@@ -92,7 +92,9 @@ $filters = $this['filters'];
         </thead>
 
         <tbody>
-            <?php foreach ($this['calls'] as $call) : ?>
+            <?php foreach ($this['calls'] as $call) : 
+                $conf = $call->getConf();
+                ?>
             <tr>
                 <td><a href="/call/<?php echo $call->id; ?>" target="_blank" title="Preview"><?php echo $call->name; ?></a></td>
                 <td><?php echo $call->user->name; ?></td>
@@ -122,6 +124,15 @@ $filters = $this['filters'];
                     <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/complete/{$call->id}"; ?>" onclick="return confirm('Significa que no se repartirá más dinero, ok?');">[Finalizar]</a><?php endif; ?>
                     <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/cancel/{$call->id}"; ?>" onclick="return confirm('La convocatoria se va a CANCELAR (no completada), ¿seguro que hacemos eso?');">[Cerrar]</a><?php endif; ?>
             </tr>
+            <?php if (isset($conf)) : ?>
+            <tr>
+                <td colspan="6">
+                    CONFIG:<br />L&iacute;mites:&nbsp;<?php echo "Primera ronda: '{$conf->limit1}'; Segunda ronda: '{$conf->limit2}';"; ?><br />
+                    Buzz: <?php echo "Solo primer hashtag: '{$conf->buzz_first}'; Propios: '{$conf->buzz_own}'; Menciones: '{$conf->buzz_mention}';"; ?><br />
+                    <?php if (!empty($conf->applied)) echo "Número fijo de proyectos recibidos: '{$conf->applied}'; "; ?>
+                </td>
+            </tr>
+            <?php endif; ?>
             <tr>
                 <td colspan="6"><hr /></td>
             </tr>
