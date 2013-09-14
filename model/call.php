@@ -94,14 +94,10 @@ namespace Goteo\Model {
                 case "used":
                     return $this->getRest(true);
                     break;
-
                 case "applied":
                     // número de proyectos presentados a la campaña
-                    $applied = array(
-                        'unia-capital-riego' => 44,
-                        'crowdsasuna' => 26
-                    );
-                    return (isset($applied[$this->id])) ? $applied[$this->id] : $this->getApplied();
+                    $applied = $this->getConf('applied');
+                    return (isset($applied)) ? $applied : $this->getApplied();
                     break;
 
                 default:
@@ -1456,6 +1452,24 @@ namespace Goteo\Model {
 
             $thecall = $query->fetchColumn();
             return ($thecall == $this->id);
+        }
+        
+        
+        /**
+         * Para recuperar configuración de convocatoria
+         * @return  objeto
+         */
+        public function getConf ($field = '*') {
+            
+            $query = static::query("
+                SELECT
+                    $field
+                FROM call_conf
+                WHERE `call` = :id
+                ", array(':id' => $this->id));
+
+            $conf = ($field == '*') ? $query->fetchObject() : $query->fetchColumn();
+            return (!empty($conf)) ? $conf : null;
         }
         
         

@@ -444,27 +444,11 @@ namespace Goteo\Controller {
                     $tsQuery = '';
 
                     // configuración especial de buzz
-                    $buzzConf = array(
-                        'crowdsasuna' => array(
-                            'first' => true,
-                            'own' => false,
-                            'mention' => false
-                        ),
-                        'cofinancia-extremadura' => array(
-                            'first' => false,
-                            'own' => false,
-                            'mention' => false
-                        ),
-                        'unia-cofinanciacion-innovacion-educativa' => array(
-                            'first' => false,
-                            'own' => true,
-                            'mention' => false
-                        )
-                    );
+                    $buzzConf = $call->getConf();
                     
                     if (!empty($social->tags)) {
                         // si solo un hashtag
-                        if (isset($buzzConf[$call->id]) && $buzzConf[$call->id]['first']) {
+                        if (isset($buzzConf) && $buzzConf->first) {
                             $tsQuery .= $social->tags[0];
                         } else {
                             $tsQuery .= implode(', OR ', $social->tags);
@@ -473,12 +457,12 @@ namespace Goteo\Controller {
                     
                     if (!empty($social->author)) {
                         // propios
-                        if (!isset($buzzConf[$call->id]) || $buzzConf[$call->id]['own'])  {
+                        if (!isset($buzzConf) || $buzzConf->own)  {
                             $tsQuery .= ($tsQuery == '') ? 'from:' . $social->author : ' OR from:' . $social->author;
                         }
 
                         // menciones
-                        if (!isset($buzzConf[$call->id]) || $buzzConf[$call->id]['mention'])  {
+                        if (!isset($buzzConf) || $buzzConf->mention)  {
                             $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
                         }
                     }
