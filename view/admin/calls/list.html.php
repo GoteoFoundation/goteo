@@ -129,8 +129,8 @@ $filters = $this['filters'];
             <?php if (isset($conf)) : ?>
             <tr>
                 <td colspan="6">
-                    CONFIG:<br />L&iacute;mites:&nbsp;<?php echo "Primera ronda: '{$conf->limit1}'; Segunda ronda: '{$conf->limit2}';"; ?><br />
-                    Buzz: <?php echo "Solo primer hashtag: '{$conf->buzz_first}'; Propios: '{$conf->buzz_own}'; Menciones: '{$conf->buzz_mention}';"; ?><br />
+                    <?php echo "LIMITES, Primera ronda: '{$conf->limit1}'; Segunda ronda: '{$conf->limit2}';"; ?><br />
+                    <?php echo "BUZZ, Solo primer hashtag: '{$conf->buzz_first}'; Propios: '{$conf->buzz_own}'; Menciones: '{$conf->buzz_mention}';"; ?><br />
                     <?php if (!empty($conf->applied)) echo "Número fijo de proyectos recibidos: '{$conf->applied}'; "; ?>
                 </td>
             </tr>
