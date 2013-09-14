@@ -11,20 +11,12 @@ namespace Goteo\Model\Call {
             $call;
 
         // limites por ronda:
+        // $call->conf->limit1 para primera
+        // $call->conf->limit2 para segunda
         //  'normal' = limite normal por proyecto definido (cantidad o % sobre mínimo)
         //  'unlimited' = sin límite (óptimo como límite técnico. Ver, Model\Project::called cuando establece `dropable`) 
         //  'minimum' = límite y luego minimo (mínimo más restrictivo que límite)
         //  'none' = no hay riego
-        public static $conf = array(
-            'unia-cofinanciacion-innovacion-educativa' => array(1=>'minimum', 2=>'none'),
-            'cofinancia-extremadura' => array(1=>'minimum', 2=>'unlimited'),
-            'crowdsasuna' => array(1=>'normal', 2=>'normal'),
-            // otros de beta
-            'unia-test' => array(1=>'minimum', 2=>'none'),
-            'testeosux' => array(1=>'minimum', 2=>'unlimited'),
-            'goteoeuskadi' => array(1=>'normal', 2=>'normal'),
-            'julian' => array(1=>'normal', 2=>'unlimited')
-        );
         
 
         /**
@@ -270,8 +262,8 @@ namespace Goteo\Model\Call {
                 if (!empty ($called)) {
                     $call = Model\Call::get($called);
 
-                    // configuración personalizada
-                    $call->conf = isset(static::$conf[$call->id]) ? static::$conf[$call->id] : null;
+                    // configuración para esta ronda
+                    $call->conf = ($project->round > 0) ? $call->getConf('limit'.$project->round) : 'none';
                     
                     // calcular el obtenido por este proyecto
                     $call->project_got = Model\Invest::invested($project->id, 'call', $call->id);
@@ -289,12 +281,12 @@ namespace Goteo\Model\Call {
                         $call->maxproj = min($call->maxproj, ($call->project_got + floor(($project->maxcost - $project->invested) / 2)));
                     }
                     // si tiene configuración de que en esta ronda el mínimo es más prioritario que el límite
-                    elseif ($call->conf[$project->round] == 'minimum') {
+                    elseif ($call->conf == 'minimum') {
                         // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al mínimo (la otra mitad la pone el usuario)
                         $call->maxproj = min($call->maxproj, ($call->project_got + floor(($project->mincost - $project->invested) / 2)));
                     }
                     // si tiene configurado ilimitado, el límite por proyecto SUBE!!!
-                    elseif ($call->conf[$project->round] == 'unlimited') {
+                    elseif ($call->conf == 'unlimited') {
                         // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
                         $call->maxproj = floor(($project->maxcost - $project->invested) / 2);
                     }
@@ -303,12 +295,12 @@ namespace Goteo\Model\Call {
                     $call->maxproj = min($call->maxproj, $call->rest);
                     
                     // y que no sea negativo
-                    if ($call->maxproj > 0) $call->maxproj = 0;
+                    if ($call->maxproj < 0) $call->maxproj = 0;
                     
                     // es regable a menos que la configuración no lo permita para esta ronda
                     // y siempre que no haya superado el óptimo
                     $call->dropable = true;
-                    if (isset($call->conf) && $call->conf[$project->round] == 'none') {
+                    if (isset($call->conf) && $call->conf == 'none') {
                         $call->dropable = false; 
                         $call->maxproj = 0;
                     }
@@ -350,7 +342,7 @@ namespace Goteo\Model\Call {
             if (!isset($call) || !$call instanceof Model\Call || !$call->dropable)
                 return 0;
 
-             if (isset($call->conf) && $call->conf[$project->round] == 'none')
+             if (isset($call->conf) && $call->conf == 'none')
                 return 0;
                  
             // si establecido un máximo por aporte
@@ -359,27 +351,35 @@ namespace Goteo\Model\Call {
             // si no tiene configuración el óptimo es límite técnico
             if(!isset($call->conf)) {
                 $maxdrop = min($maxdrop, ($project->maxcost - $project->invested - $amount));
+                if (isset($call->maxproj)) {
+                    // y que no sea mayor al límite por proyecto si tiene límite por proyecto, ese es
+                    $maxdrop = min($maxdrop, $call->maxproj);
+                }
             } 
             // si la config para esta ronda la config. es el límite normal
-            elseif($call->conf[$project->round] == 'normal') {
-                // si tiene límite por proyecto, ese es
-                $maxdrop = (isset($call->maxproj)) ? min($maxdrop, $call->maxproj) : $maxdrop;
+            elseif($call->conf == 'normal') {
                 $maxdrop = min($maxdrop, ($project->maxcost - $project->invested - $amount));
+                if (isset($call->maxproj)) {
+                    // y que no sea mayor al límite por proyecto si tiene límite por proyecto, ese es
+                    $maxdrop = min($maxdrop, $call->maxproj);
+                }
             } 
             // una vez aplicado el límite normal, aplicamos el limite sobre mínimo
-            elseif ($call->conf[$project->round] == 'minimum') {
+            elseif ($call->conf == 'minimum') {
                 $maxdrop = min($maxdrop, ($project->mincost - $project->invested - $amount));
+                if (isset($call->maxproj)) {
+                    // y que no sea mayor al límite por proyecto si tiene límite por proyecto, ese es
+                    $maxdrop = min($maxdrop, $call->maxproj);
+                }
             } 
             // si la configuración de de ilimitado cámbia completamente, el límite SUBE!!
-            elseif($call->conf[$project->round] == 'unlimited') {
+            elseif($call->conf == 'unlimited') {
                 if(!empty($amount)) {
                     $maxdrop = $project->maxcost - $project->invested - $amount;
                 } else {
                     $maxdrop = floor(($project->maxcost - $project->invested) /2);
                 }
-            } elseif (isset($call->maxproj)) {
-                // si tiene límite por proyecto, ese es
-                $maxdrop = min($maxdrop, $call->maxproj);
+                // independiente del límite por proyecto
             }
 
 
@@ -387,7 +387,9 @@ namespace Goteo\Model\Call {
             $maxdrop = min($maxdrop, $call->rest);
 
             // y no queremos que riege negativo, sacamos el menor de todos los límites o cero
-            return ($maxdrop > 0) ? $maxdrop : 0;
+            if ($maxdrop < 0) $maxdrop = 0;
+            
+            return $maxdrop;
         }
         
         /*
