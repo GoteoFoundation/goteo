@@ -57,7 +57,7 @@ if (!$project instanceof  Goteo\Model\Project) {
     
     
     
-    <div class="widget"> 
+    <div class="widget chart"> 
             <div id="project_selection" style="margin-bottom: 10px"></div>
             <div class="titles">
                 <div>
