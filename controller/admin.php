@@ -80,7 +80,8 @@ namespace Goteo\Controller {
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva convocatoria', 'item' => false),
                     'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true),
-                    'admins' => array('label' => 'Asignando administradores de la convocatoria', 'item' => true)
+                    'admins' => array('label' => 'Asignando administradores de la convocatoria', 'item' => true),
+                    'conf' => array('label' => 'Configurando la convocatoria', 'item' => true)
                 ),
                 'filters' => array('status' => '', 'category' => '', 'caller' => '', 'name' => '', 'admin' => '','order' => '')
             ),
