@@ -1,7 +1,10 @@
 <?php
 require_once 'library/fpdf/fpdf.php';  // Libreria pdf
 
-  class PDF extends FPDF{
+/**
+ *  Extensión de la clase FPDF para el pdf Certificado de Donativo
+ */
+class PDF extends FPDF{
 
     /*
     public function Footer() {
@@ -45,7 +48,7 @@ require_once 'library/fpdf/fpdf.php';  // Libreria pdf
 
 
 /*
- * Especifica para generar el objeto de certificado de donativo
+ * Certificado de Donativo
  */
 function donativeCert($data) {
 

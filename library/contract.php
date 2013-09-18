@@ -1,0 +1,382 @@
+<?php
+
+require_once('library/fpdf/html2pdf.php');
+
+define('EURO', chr(128));
+
+class Pdf extends \PDF_HTML {
+
+    const DYNAMIC_TEXT_SOURCE = "library/contract/contenido_dinamico.xml";
+    const STATIC_TEXT_SOURCE = "library/contract/contenido_estatico.xml";
+    const DRAFT_IMAGE = "library/contract/borrador.png";
+
+    /* Document margins */
+    const MARGIN_LEFT = 50;
+    const MARGIN_TOP = 5;
+    const MARGIN_RIGHT = 65;
+    const X_START = 24.5;
+    const X_STATIC_TEXT = 34;
+    const HEIGHT = 8;
+    const FONT = "Arial";
+    const FONT_HEADER_SIZE = 12;
+    const FONT_SIZE = 8;
+    const DPI = 96;
+    const MM_IN_INCH = 25.4;
+    const DRAFT_X = 70;
+    const DRAFT_Y = 100;
+    const MAX_WIDTH = 400;
+    const MAX_HEIGHT = 250;
+
+    /* Constants related with project identification */
+    const TEXT_IDENTIFYING_DATA = "DATOS IDENTIFICATIVOS PROYECTO";
+    const TEXT_PROJECT_NAME = "Nombre del proyecto/iniciativa: ";
+    const TEXT_LINK_GOTEO = "Link de la página en Goteo: ";
+    const TEXT_IMPULSOR = "Impulsor: ";
+    const TEXT_USER = "Usuario desde el que se creó el proyecto: ";
+    const TEXT_USER_PAGE = "Página del usuario: ";
+    /* Constants related with project description */
+    const TEXT_DESCRIPTION_AND_TARGET = "DESCRIPCIÓN Y OBJETIVO";
+    /* Constants related with payment section */
+    const TEXT_PAYMENT_HEADER = "CUENTA BANCARIA ORDINARIA Y DIRECCIÓN PAYPAL QUE SE DESIGNAN POR EL IMPULSOR A LOS EFECTOS DE LOS PAGOS REGULADOS EN LA CONDICIÓN SÉPTIMA";
+    const TEXT_PAYMENT_ACCOUNT_NUMBER = "Número Cuenta Bancaria: ";
+    const TEXT_PAYMENT_ACCOUNT_OWNER = "Titular: ";
+    const TEXT_PAYMENT_PAYPAL_ACCOUNT = "Cuenta PayPal: ";
+    const TEXT_PAYMENT_PAYPAL_OWNER = "Titular: ";
+    /* Dynamic part */
+    const TEXT_TYPE_1 = " en su propio nombre y derecho";
+    const TEXT_TYPE_2 = " en su calidad de apoderado y %office%, en nombre y representación de la entidad %entity_name%, titular del CIF %entity_cif%, con domicilio social en %entity_location%, calle/plaza/avenida %entity_address%, %entity_zipcode%, %entity_region%, %entity_country%; entidad constituida en escritura pública otorgada en fecha %reg_date%. ante el Notario de %region%. Don %reg_name%.. (nº %reg_number% de su protocolo) e inscrita en el Registro Mercantil de %region%, %reg_id%";
+    const TEXT_TYPE_3 = " en su calidad de %office%, en nombre y representación de la entidad %reg_name%, titular del CIF %reg%, con domicilio social en %entity_location%, calle/plaza/avenida %entity_address%, %entity_zipcode%, %entity_region%, %entity_country%; entidad inscrita en el Registro de Asociaciones de %entity_region%, con el número %reg_id%";
+    /* Other texts */
+    const TEXT_GENERAL_CONDITIONS = "DOCUMENTO DE CONDICIONES GENERALES USO";
+    const TEXT_PLATFORM = "PLATAFORMA GOTEO";
+    const TEXT_PLACE = "Palma de Mallorca, ";
+    const TEXT_FOOTER_IMPULSOR = "El impulsor";
+    const TEXT_FOOTER_FOUNDATION = "Fundación Fuentes Abiertas";
+
+    private $data = array();
+
+    /**
+     * Sets the parameters to use to print the contract.
+     * @param StdClass $data
+     */
+    public function setParameters($data) {
+        $this->data = $data;
+    }
+
+    private function projectIdentification() {
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, iconv('UTF-8', 'ISO-8859-15', self::TEXT_IDENTIFYING_DATA), "LTR", 1);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_PROJECT_NAME . $this->data->project_name);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LR", 1);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_LINK_GOTEO . $this->data->project_url);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LR", 1);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_IMPULSOR . $this->data->project_owner);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LR", 1);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_USER . $this->data->project_user);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LR", 1);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_USER_PAGE . $this->data->project_profile);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LBR", 1);
+    }
+
+    private function projectDescription() {
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, iconv('UTF-8', 'ISO-8859-15', self::TEXT_DESCRIPTION_AND_TARGET), "LTR", 1);
+        $description = $this->data->project_description;
+        $invest = $this->data->project_invest;
+        $return = $this->data->project_return;
+        $txt = (!empty($description) ? $this->data->project_description : '')
+                . (!empty($invest) ? $this->data->project_invest : '')
+                . (!empty($return) ? $this->data->project_return : '');
+        $txt = iconv('UTF-8', 'ISO-8859-15', $txt);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LBR", 1, "J");
+    }
+
+    /**
+     * Draws the payment section in a box.
+     */
+    private function payment() {
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 3.5, iconv('UTF-8', 'ISO-8859-15', self::TEXT_PAYMENT_HEADER), "LTR", 1);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_PAYMENT_ACCOUNT_NUMBER . $this->data->bank);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LR", 1);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_PAYMENT_ACCOUNT_OWNER . $this->data->bank_owner);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LR", 1);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_PAYMENT_PAYPAL_ACCOUNT . $this->data->paypal);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LR", 1);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_PAYMENT_PAYPAL_OWNER . $this->data->paypal_owner);
+        $this->setX(self::X_STATIC_TEXT);
+        $this->MultiCell(0, 5, $txt, "LBR", 1);
+    }
+
+    function Cell($w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = 0, $link = '') {
+        $k = $this->k;
+        if ($this->y + $h > $this->PageBreakTrigger and !$this->InFooter and $this->AcceptPageBreak()) {
+            $x = $this->x;
+            $ws = $this->ws;
+            if ($ws > 0) {
+                $this->ws = 0;
+                $this->_out('0 Tw');
+            }
+            $this->AddPage($this->CurOrientation);
+            $this->x = $x;
+            if ($ws > 0) {
+                $this->ws = $ws;
+                $this->_out(sprintf('%.3f Tw', $ws * $k));
+            }
+        }
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
+        $s = '';
+        if ($fill == 1 or $border == 1) {
+            if ($fill == 1)
+                $op = ($border == 1) ? 'B' : 'f';
+            else
+                $op = 'S';
+            $s = sprintf('%.2f %.2f %.2f %.2f re %s ', $this->x * $k, ($this->h - $this->y) * $k, $w * $k, -$h * $k, $op);
+        }
+        if (is_string($border)) {
+            $x = $this->x;
+            $y = $this->y;
+            if (is_int(strpos($border, 'L')))
+                $s.=sprintf('%.2f %.2f m %.2f %.2f l S ', $x * $k, ($this->h - $y) * $k, $x * $k, ($this->h - ($y + $h)) * $k);
+            if (is_int(strpos($border, 'T')))
+                $s.=sprintf('%.2f %.2f m %.2f %.2f l S ', $x * $k, ($this->h - $y) * $k, ($x + $w) * $k, ($this->h - $y) * $k);
+            if (is_int(strpos($border, 'R')))
+                $s.=sprintf('%.2f %.2f m %.2f %.2f l S ', ($x + $w) * $k, ($this->h - $y) * $k, ($x + $w) * $k, ($this->h - ($y + $h)) * $k);
+            if (is_int(strpos($border, 'B')))
+                $s.=sprintf('%.2f %.2f m %.2f %.2f l S ', $x * $k, ($this->h - ($y + $h)) * $k, ($x + $w) * $k, ($this->h - ($y + $h)) * $k);
+        }
+        if ($txt != '') {
+            if ($align == 'R')
+                $dx = $w - $this->cMargin - $this->GetStringWidth($txt);
+            elseif ($align == 'C')
+                $dx = ($w - $this->GetStringWidth($txt)) / 2;
+            elseif ($align == 'FJ') {
+                //Set word spacing
+                $wmax = ($w - 2 * $this->cMargin);
+                $this->ws = ($wmax - $this->GetStringWidth($txt)) / substr_count($txt, ' ');
+                $this->_out(sprintf('%.3f Tw', $this->ws * $this->k));
+                $dx = $this->cMargin;
+            }
+            else
+                $dx = $this->cMargin;
+            $txt = str_replace(')', '\\)', str_replace('(', '\\(', str_replace('\\', '\\\\', $txt)));
+            if ($this->ColorFlag)
+                $s.='q ' . $this->TextColor . ' ';
+            $s.=sprintf('BT %.2f %.2f Td (%s) Tj ET', ($this->x + $dx) * $k, ($this->h - ($this->y + .5 * $h + .3 * $this->FontSize)) * $k, $txt);
+            if ($this->underline)
+                $s.=' ' . $this->_dounderline($this->x + $dx, $this->y + .5 * $h + .3 * $this->FontSize, $txt);
+            if ($this->ColorFlag)
+                $s.=' Q';
+            if ($link) {
+                if ($align == 'FJ')
+                    $wlink = $wmax;
+                else
+                    $wlink = $this->GetStringWidth($txt);
+                $this->Link($this->x + $dx, $this->y + .5 * $h - .5 * $this->FontSize, $wlink, $this->FontSize, $link);
+            }
+        }
+        if ($s)
+            $this->_out($s);
+        if ($align == 'FJ') {
+            //Remove word spacing
+            $this->_out('0 Tw');
+            $this->ws = 0;
+        }
+        $this->lasth = $h;
+        if ($ln > 0) {
+            $this->y+=$h;
+            if ($ln == 1)
+                $this->x = $this->lMargin;
+        }
+        else
+            $this->x+=$w;
+    }
+
+    private function parseText($text) {
+        $reader = new XMLReader;
+        $reader->xml($text);
+        while ($reader->read() !== FALSE) {
+            if ($reader->nodeType === XMLReader::ELEMENT) {
+                $txt = $reader->readString();
+                $txt = iconv('UTF-8', 'ISO-8859-15', $txt);
+                switch ($reader->name) {
+                    case 'head':
+                        $this->setX(self::X_START);
+                        $this->SetFont($this->FontFamily, 'B', self::FONT_SIZE);
+                        $this->Cell(0, 5, $txt, 0, 0, "C");
+                        break;
+                    case 'name':
+                        $this->SetX(self::X_START);
+                        $this->SetFont($this->FontFamily, 'B', self::FONT_SIZE);
+                        $this->WriteHTML($txt);
+                        $this->SetFont($this->FontFamily, '', self::FONT_SIZE);
+                        break;
+                    case 'title':
+                        $this->SetX(self::X_STATIC_TEXT);
+                        $this->SetFont($this->FontFamily, 'IB', self::FONT_SIZE);
+                        $this->WriteHTML($txt);
+                        $this->SetFont($this->FontFamily, '', self::FONT_SIZE);
+                        break;
+                    case 'text':
+                        $this->SetX(self::X_STATIC_TEXT);
+                        $this->SetFont($this->FontFamily, '', self::FONT_SIZE);
+                        if ($reader->getAttribute("option") == "type") {
+                            switch ($this->data->type) {
+                                case '1':
+                                    $txt .= self::TEXT_TYPE_1;
+                                    break;
+                                case '2':
+                                    $txt .= iconv('UTF-8', 'ISO-8859-15', self::TEXT_TYPE_2);
+                                    break;
+                                case '3':
+                                    $txt .= iconv('UTF-8', 'ISO-8859-15', self::TEXT_TYPE_3);
+                                    break;
+                            }
+                            $txt = preg_replace('/%([a-z_]+)%/e', 'iconv(\'UTF-8\', \'ISO-8859-15\', $this->st_params["$1"])', $txt);
+                        }
+                        $this->WriteHTML($txt);
+                        break;
+                    case 'data':
+                        switch ($reader->getAttribute("option")) {
+                            case 'project_identification':
+                                $this->projectIdentification();
+                                break;
+                            case 'project_description':
+                                $this->projectDescription();
+                                break;
+                            case 'payment':
+                                $this->payment();
+                                break;
+                        }
+                    case 'title':
+                        $this->SetX(self::X_STATIC_TEXT);
+                        $this->SetStyle("B", false);
+                        $this->Cell(0, 5, $txt, 0, 0, "L");
+                        $this->SetFont($this->FontFamily, '', self::FONT_SIZE);
+                        break;
+                    default:
+                        break;
+                }
+                $this->setY($this->getY() + 5);
+            }
+        }
+    }
+
+    private function contractStart() {
+        $this->setX(self::X_START + 10);
+        $this->SetFont($this->FontFamily, 'B', 12);
+        $this->Cell(0, 5, self::TEXT_GENERAL_CONDITIONS, 0, 1, "C");
+        $this->setX(self::X_START);
+        $this->Cell(0, 5, self::TEXT_PLATFORM, 0, 1, "C");
+        $this->SetFont($this->FontFamily, 'B', self::FONT_SIZE);
+        $this->setX(self::X_START);
+        $placeAndDate = self::TEXT_PLACE . $this->data->date;
+        $this->Cell(0, 5, $placeAndDate, 0, 1, "C");
+    }
+
+    /**
+     * Gets and fills the dynamic part of the contract.
+     */
+    private function getDynamicText() {
+        $text = file_get_contents(self::DYNAMIC_TEXT_SOURCE);
+        $text = preg_replace('/%([a-z_]+)%/e', '$this->data->$1', $text);
+        $this->parseText($text);
+    }
+
+    /**
+     * Gets and fills the static part of the contract.
+     */
+    private function getStaticText() {
+        $text = file_get_contents(self::STATIC_TEXT_SOURCE);
+        $this->parseText($text);
+    }
+
+    private function contractEnd() {
+        $this->setX(self::X_STATIC_TEXT);
+        $this->Cell(0, 5, self::TEXT_FOOTER_IMPULSOR);
+        $this->setX(100);
+        $this->Cell(0, 5, iconv('UTF-8', 'ISO-8859-15', self::TEXT_FOOTER_FOUNDATION));
+    }
+
+    /**
+     * Draw header part
+     * (non-PHPdoc)
+     * @see FPDF::Header()
+     */
+    function Header() {
+        $this->SetX(10);
+        $this->SetFont(self::FONT, '', self::FONT_HEADER_SIZE);
+        $this->WriteHTML($this->data->fullnum);
+        $this->Cell(0, 5, "", 0, 1);
+        $this->centerImage(self::DRAFT_IMAGE);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see FPDF::Footer()
+     */
+    function Footer() {
+        $this->SetY(-15);
+        $this->SetFont(self::FONT, '', self::FONT_HEADER_SIZE);
+        $this->Cell(0, 10, $this->PageNo(), 0, 0, 'C');
+    }
+
+    private function pixelsToMM($val) {
+        return $val * self::MM_IN_INCH / self::DPI;
+    }
+
+    private function resizeToFit($imgFilename) {
+        list($width, $height) = getimagesize($imgFilename);
+
+        $widthScale = self::MAX_WIDTH / $width;
+        $heightScale = self::MAX_HEIGHT / $height;
+
+        $scale = min($widthScale, $heightScale);
+
+        return array(
+            round($this->pixelsToMM($scale * $width)),
+            round($this->pixelsToMM($scale * $height))
+        );
+    }
+
+    /**
+     * Draws a centered image.
+     * @param string $img
+     */
+    private function centerImage($img) {
+        list($width, $height) = $this->resizeToFit($img);
+        $this->Image(
+                $img, self::DRAFT_X, self::DRAFT_Y, $width, $height
+        );
+    }
+
+    /**
+     * Generates the contract pdf document.
+     * @param string $output I to show in browser, D to download the document.
+     * @param string $draft true if the draft image will be shown in the document.
+     */
+    public function generate() {
+        $this->FontFamily = self::FONT;
+        $this->AliasNbPages();
+        $this->AddPage("P", "A4");
+        $this->SetFont(self::FONT, '', self::FONT_SIZE);
+        $this->SetMargins(self::MARGIN_LEFT, self::MARGIN_TOP, self::MARGIN_RIGHT);
+        $this->contractStart();
+        $this->getDynamicText();
+        $this->getStaticText();
+        $this->contractEnd();
+    }
+
+}
+
+?>
