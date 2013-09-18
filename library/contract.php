@@ -14,8 +14,8 @@ class Pdf extends \PDF_HTML {
     const MARGIN_LEFT = 20;
     const MARGIN_TOP = 10;
     const MARGIN_RIGHT = 30;
-    const X_START = 24.5;
-    const X_STATIC_TEXT = 34;
+    const X_START = 20;
+    const X_STATIC_TEXT = 23;
     const HEIGHT = 8;
     const HEADER_FONT = "Times";
     const FONT = "Arial";
