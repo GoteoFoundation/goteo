@@ -80,7 +80,8 @@ namespace Goteo\Controller {
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva convocatoria', 'item' => false),
                     'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true),
-                    'admins' => array('label' => 'Asignando administradores de la convocatoria', 'item' => true)
+                    'admins' => array('label' => 'Asignando administradores de la convocatoria', 'item' => true),
+                    'conf' => array('label' => 'Configurando la convocatoria', 'item' => true)
                 ),
                 'filters' => array('status' => '', 'category' => '', 'caller' => '', 'name' => '', 'admin' => '','order' => '')
             ),
@@ -701,6 +702,7 @@ namespace Goteo\Controller {
                         $menu['contents']['options']['texts'] = $options['texts']; // gestión de textos
                         $menu['contents']['options']['faq'] = $options['faq']; // gestión de faqs
                         $menu['contents']['options']['templates'] = $options['templates']; // gestión de plantillas
+                        $menu['projects']['options']['transcalls'] = $options['transcalls']; // traducción de convocatorias    
                         $menu['projects']['options']['commons'] = $options['commons']; // gestion de retornos colectivos
                     }
 

@@ -127,7 +127,7 @@ namespace Goteo\Core {
             }
             
             $id = strtr($id, $table);
-            $id = strtolower($value);
+            $id = strtolower($id);
 
             // Separadores
             $id = preg_replace("/[\s\,\(\)\[\]\:\;\_\/\"\'\{\}]+/", "-", $id);

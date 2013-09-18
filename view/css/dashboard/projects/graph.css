@@ -1,11 +1,3 @@
-body {
-    font-family: 'Liberation Sans', Helvetica, 'Helvetica Neue', Arial, Geneva, sans-serif;
-    font-weight: bold;
-    font-size: 17px;
-    color: #58595b;
-    background: #e7e7e7;
-}
-
 .widget {
     background: #fff;
     padding: 20px;
@@ -57,51 +49,51 @@ h2 {
 }
 
 /* --- CHART STYLING --- */
-.funds_area {
+div.widget.chart .funds_area {
     fill: #20B3B2;
     opacity: 0.3;
 }
 
-.funds_line {
+div.widget.chart .funds_line {
     stroke: #20B3B2;
     stroke-width: 3;
     fill: none;
     cursor: pointer;
 }
 
-.funders_area {
+div.widget.chart .funders_area {
     fill: #92AFD1;
     opacity: 0.5;
 }
 
-.funders_line {
+div.widget.chart .funders_line {
     stroke: #313B96;
     stroke-width: 3;
     fill: none;
     cursor: pointer;
 }
 
-.day_circle {
+div.widget.chart .day_circle {
     stroke-width: 3;
     stroke: #20B3B2;
     fill: #ffffff;
     cursor: pointer;
 }
 
-g.x.axis {
+div.widget.chart g.x.axis {
     stroke: #808184;
     stroke-width: 1;
     fill: none;
 }
 
-g.y.axis line {
+div.widget.chart g.y.axis line {
     stroke: #808184;
     fill : none;
     stroke-dasharray: 1px 3px;
     stroke-width: 1px;
 }
 
-g.axis text {
+div.widget.chart g.axis text {
     font-size: 10px;
     font-weight: normal;
     stroke: none;
@@ -109,36 +101,36 @@ g.axis text {
     text-anchor: end;
 }
 
-g.x.axis text {
+div.widget.chart g.x.axis text {
     text-anchor: middle;
 }
 
-.arrow_funded_height {
+div.widget.chart .arrow_funded_height {
     fill: #ffffff;
     text-anchor: middle;
     font-size: 11;
 }
 
-.infobox {
+div.widget.chart .infobox {
     fill: #CAE2E2;
     opacity: 0;
 }
 
-.infobox_funds_bg {
+div.widget.chart .infobox_funds_bg {
     fill: #808184;
 }
 
-.infofunds_text {
+div.widget.chart .infofunds_text {
     fill: #58595b;
 }
 
-.infofunds_text2 {
+div.widget.chart .infofunds_text2 {
     fill: #58595b;
     font-weight: normal;
     font-size: 12;
 }
 
-.infofunders_text {
+div.widget.chart .infofunders_text {
     fill: #ffffff;
     font-weight: normal;
     font-size: 11;

@@ -250,6 +250,34 @@ namespace Goteo\Controller\Admin {
                 );
             }            
 
+            if ($action == 'conf') {
+                /*
+                if (isset($_GET['op']) && isset($_GET['user']) && in_array($_GET['op'], array('assign', 'unassign'))) {
+                    if ($call->setConf($_GET['key'], $_GET['value'])) {
+                        // ok
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
+                }
+                 */
+
+                $conf = $call->getConf();
+
+                if (!isset($conf))
+                    Message::Info('Esta convocatoria no tiene configuración especial');
+                else
+                    return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'calls',
+                                    'file' => 'conf',
+                                    'action' => 'list',
+                                    'call' => $call,
+                                    'conf' => $conf
+                                )
+                );
+            }            
+
             // si es admin, solo las suyas
             if (isset($_SESSION['user']->roles['admin'])) {
                 $filters['admin'] = $_SESSION['user']->id;
