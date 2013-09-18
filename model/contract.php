@@ -13,7 +13,7 @@ namespace Goteo\Model {
             $number, //numero de contrato
             $date, // día anterior a la publicación
             $enddate, // un año después de la fecha del contrato
-            $fullnum, // numero+fecha de publicación
+            $pdf, // si está generado aquí viene el nomre de archivo en  
             $type, //  0 = persona física; 1 = representante asociacion; 2 = apoderado entidad mercantil
                 
             // datos del representante
@@ -64,6 +64,24 @@ namespace Goteo\Model {
             // documentación
             $docs = array();
 
+
+        /**
+         * Sobrecarga de métodos 'getter'.
+         *
+         * @param type string $name
+         * @return type mixed
+         */
+
+        public function __get($name) {
+            switch ($name) {
+                case "fullnum":
+                    //num-00000000
+                    return $this->number.'-'.$this->txtdate;
+                    break;
+                default:
+                    return $this->$name;
+            }
+        }
 
         /**
          * Creación de registro de contrato. 
@@ -133,7 +151,7 @@ namespace Goteo\Model {
 	 	public static function get ($id) {
 
             $sql = "
-                SELECT *
+                SELECT *, DATE_FORMAT(date, '%d%m%Y') as txtdate 
                 FROM contract
                 WHERE contract.project = ?
             ";
@@ -367,14 +385,21 @@ namespace Goteo\Model {
             return (static::query($sql, $values)) ? true : false;
         }
         
-
-        /* Otros métodos para control desde admin  (además de cambios de estado)
-         * 
-         * - set number
-         * - refresh date
-         * 
+        /**
+         * Metodo para rellenar campo pdf
+         * @param varchar(50) $id del proyecto
+         * @param string $value  nombre del archivo
+         * @return bool si ok
          */
- 
+        public static function setPdf($id, $pdf) {
+            
+            $sql = "UPDATE contract SET pdf = :pdf WHERE contract = :id";
+            $values = array(':id' => $id, ':pdf'=>$pdf);
+            
+            return (static::query($sql, $values)) ? true : false;
+        }
+        
+
         
         /*
          * comprueba los campos obligatorios

@@ -28,7 +28,7 @@ namespace Goteo\Model\Contract {
          */
         public function setFile ($file) {
 
-            $this->filedir = self::$dir . '/' . $this->contract . '/';
+            $this->filedir = self::$dir . $this->contract . '/';
             
             if(!is_dir($this->filedir)) {
 				mkdir($this->filedir);

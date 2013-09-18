@@ -91,7 +91,7 @@ $filters = $this['filters'];
             <tr>
                 <td colspan="5">OPERACIONES:&nbsp;&nbsp;&nbsp;
                     <a href="<?php echo "/manage/projects/accounts/{$project->id}"; ?>">[Cambiar cuentas]</a>
-                    <a href="/contract/<?php echo $project->id; ?>" target="_blank">[Datos de Contrato]</a>
+                    <a href="/contract/<?php echo $project->id; ?>" target="_blank">[Pdf]</a>
                     <?php if (empty($project->contract)) : ?>
                         <a href="/manage/projects/create/<?php echo $project->id; ?>" title="Crea el registro de contrato" onclick="return confirm('Se va a crear el registro de contrato cogiendo el siguiente número, ok?');">[CREAR Registro de Contrato]</a>
                     <?php else : ?>

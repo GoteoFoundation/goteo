@@ -14,7 +14,7 @@ namespace Goteo\Model\User {
         $location,
         $country,
         $numproj,
-        $year = 2012,
+        $year = 2013,
         $edited = 0,
         $confirmed = 0,
         $pdf = null,
@@ -24,7 +24,7 @@ namespace Goteo\Model\User {
          * Get invest data if a user is a donor
          * @param varcahr(50) $id  user identifier
          */
-        public static function get($id, $year = '2012') {
+        public static function get($id, $year = '2013') {
 
             // ESTA PRIMERA VEZ ESESPECIAL  porque el cif no lo tuvimos hasta el 2012
             $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
@@ -115,7 +115,7 @@ namespace Goteo\Model\User {
 
         public function getList($filters = array()) {
 
-            $year = empty($filter['year']) ? '2012' : $filter['year'];
+            $year = empty($filter['year']) ? '2013' : $filter['year'];
             $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
             $year1 = $year + 1;
 
@@ -235,7 +235,7 @@ namespace Goteo\Model\User {
 
         }
 
-        public static function setConfirmed($user, $year = '2012') {
+        public static function setConfirmed($user, $year = '2013') {
             try {
                 $sql = "UPDATE user_donation SET confirmed = 1 WHERE user = :user AND year = :year";
                 if (self::query($sql, array(':user' => $user, 'year' => $year))) {
@@ -289,7 +289,7 @@ namespace Goteo\Model\User {
         }
 
 
-        static public function getDates ($user, $year = '2012') {
+        static public function getDates ($user, $year = '2013') {
 
             $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
             $year1 = $year + 1;

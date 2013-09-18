@@ -29,7 +29,6 @@ namespace Goteo\Controller {
         public function index($id = null) {
             
             $contract = Model\Contract::get($id); // datos del contrato
-            $project  = Model\Project::get($id, null); // datos del proyecto
 
             // solamente se puede ver si....
             // Es un admin, es el impulsor
@@ -44,6 +43,49 @@ namespace Goteo\Controller {
 
             // si lo puede ver
             if ($grant) {
+                
+                require_once 'library/contract.php';  // Libreria pdf contrato
+                
+                $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';
+                $filename = Model\Contract\Document::$dir . $contract->project . '/' . $pdf_name;
+                
+                // fecha
+                \setlocale(\LC_TIME, 'esp');                
+                $contract->date = strftime('%e de %B de %Y', strtotime($contract->date));
+                
+                // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
+                $contract->draft = ($contract->status->ready === '1') ? false : true;
+                
+                // si ya está generado, lo abrimos con un get contents
+                if (file_exists($filename)) {
+                    header('Content-Type: application/x-download');
+                    header('Content-Disposition: attachment; filename="'.$pdf_name.'"');
+                    header('Cache-Control: private, max-age=0, must-revalidate');
+                    header('Pragma: public');
+                    echo file_get_contents($filename);
+                    die;
+                }
+
+                // para generarlo
+                $pdf = new \Pdf;
+                $pdf->setParameters($contract);
+                $pdf->generate();
+
+                // borrador
+                if ($contract->draft) {
+                    echo $pdf->Output();
+                    die;
+                } else {
+                    // guardamos el archivo
+                    echo $pdf->Output($filename, 'F');
+
+                    // y se lo damos para descargar
+                    echo $pdf->Output($pdf_name, 'D');
+
+                    die;
+                }
+
+                /*
                 $viewData = array(
                         'contract' => $contract,
                         'project' => $project
@@ -58,6 +100,9 @@ namespace Goteo\Controller {
                 }
 
                 return new View('view/contract/view.html.php', $viewData);
+                 * 
+                 */
+                
             } else {
                 // no lo puede ver y punto
                 throw new Redirection("/");
@@ -78,12 +123,13 @@ namespace Goteo\Controller {
             if (!$contract) {
                 if (Model\Contract::create($id)) {
                     $contract = Model\Contract::get($id);
+                    die (\trace($contract));
                 } else {
                     Message::Error('fallo al crear el registro de contrato');
                     throw new Redirection('/manage/projects');
                 }
             }
-            throw new Redirection('/contract/edit/'.$id);
+            die (\trace($contract));
         }
 
         // los contratos no se pueden eliminar... ¿o sí?
