@@ -11,21 +11,23 @@ class Pdf extends \PDF_HTML {
     const DRAFT_IMAGE = "library/contract/borrador.png";
 
     /* Document margins */
-    const MARGIN_LEFT = 50;
-    const MARGIN_TOP = 5;
-    const MARGIN_RIGHT = 65;
+    const MARGIN_LEFT = 20;
+    const MARGIN_TOP = 10;
+    const MARGIN_RIGHT = 30;
     const X_START = 24.5;
     const X_STATIC_TEXT = 34;
     const HEIGHT = 8;
+    const HEADER_FONT = "Times";
     const FONT = "Arial";
-    const FONT_HEADER_SIZE = 12;
-    const FONT_SIZE = 8;
+    const FONT_HEADER_SIZE = 14;
+    const FONT_SIZE = 10;
+    const FONT_TITLE_SIZE = 11;
     const DPI = 96;
     const MM_IN_INCH = 25.4;
-    const DRAFT_X = 70;
-    const DRAFT_Y = 100;
-    const MAX_WIDTH = 400;
-    const MAX_HEIGHT = 250;
+    const DRAFT_X = 8;
+    const DRAFT_Y = 15;
+    const MAX_WIDTH = 750;
+    const MAX_HEIGHT = 1500;
 
     /* Constants related with project identification */
     const TEXT_IDENTIFYING_DATA = "DATOS IDENTIFICATIVOS PROYECTO";
@@ -50,6 +52,7 @@ class Pdf extends \PDF_HTML {
     const TEXT_GENERAL_CONDITIONS = "DOCUMENTO DE CONDICIONES GENERALES USO";
     const TEXT_PLATFORM = "PLATAFORMA GOTEO";
     const TEXT_PLACE = "Palma de Mallorca, ";
+    const TEXT_HEADER_NUM = "Núm. contrato  ";
     const TEXT_FOOTER_IMPULSOR = "El impulsor";
     const TEXT_FOOTER_FOUNDATION = "Fundación Fuentes Abiertas";
 
@@ -63,9 +66,26 @@ class Pdf extends \PDF_HTML {
         $this->data = $data;
     }
 
+    /* formatting methods */
+    public function regular($size = self::FONT_SIZE) {
+        $this->SetFont($this->FontFamily,'',$size);
+    }
+
+    public function bold($size = self::FONT_SIZE) {
+        $this->SetFont($this->FontFamily,'B',$size);
+    }
+
+    public static function txt($txt) {
+        return iconv('UTF-8', 'ISO-8859-15', $txt);
+    }
+
+    
+
     private function projectIdentification() {
         $this->setX(self::X_STATIC_TEXT);
-        $this->MultiCell(0, 5, iconv('UTF-8', 'ISO-8859-15', self::TEXT_IDENTIFYING_DATA), "LTR", 1);
+        $this->bold(self::FONT_TITLE_SIZE);
+        $this->MultiCell(0, 5, self::txt(self::TEXT_IDENTIFYING_DATA), "LTR", 1);
+        $this->regular();
         $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_PROJECT_NAME . $this->data->project_name);
         $this->setX(self::X_STATIC_TEXT);
         $this->MultiCell(0, 5, $txt, "LR", 1);
@@ -85,27 +105,31 @@ class Pdf extends \PDF_HTML {
 
     private function projectDescription() {
         $this->setX(self::X_STATIC_TEXT);
-        $this->MultiCell(0, 5, iconv('UTF-8', 'ISO-8859-15', self::TEXT_DESCRIPTION_AND_TARGET), "LTR", 1);
+        $this->bold(self::FONT_TITLE_SIZE);
+        $this->MultiCell(0, 5, self::txt(self::TEXT_DESCRIPTION_AND_TARGET), "LTR", 1);
+        $this->regular();
         $description = $this->data->project_description;
         $invest = $this->data->project_invest;
         $return = $this->data->project_return;
         $txt = (!empty($description) ? $this->data->project_description : '')
                 . (!empty($invest) ? $this->data->project_invest : '')
                 . (!empty($return) ? $this->data->project_return : '');
-        $txt = iconv('UTF-8', 'ISO-8859-15', $txt);
         $this->setX(self::X_STATIC_TEXT);
-        $this->MultiCell(0, 5, $txt, "LBR", 1, "J");
+        $this->MultiCell(0, 5, self::txt($txt), "LBR", 1, "J");
     }
 
     /**
      * Draws the payment section in a box.
      */
     private function payment() {
+        $this->setY($this->getY() + 5);
         $this->setX(self::X_STATIC_TEXT);
-        $this->MultiCell(0, 3.5, iconv('UTF-8', 'ISO-8859-15', self::TEXT_PAYMENT_HEADER), "LTR", 1);
+        $this->bold(self::FONT_TITLE_SIZE);
+        $this->MultiCell(0, 3.8, iconv('UTF-8', 'ISO-8859-15', self::TEXT_PAYMENT_HEADER), "LTR", 1);
+        $this->regular();
         $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_PAYMENT_ACCOUNT_NUMBER . $this->data->bank);
         $this->setX(self::X_STATIC_TEXT);
-        $this->MultiCell(0, 5, $txt, "LR", 1);
+        $this->MultiCell(0, 6, $txt, "LR", 1);
         $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_PAYMENT_ACCOUNT_OWNER . $this->data->bank_owner);
         $this->setX(self::X_STATIC_TEXT);
         $this->MultiCell(0, 5, $txt, "LR", 1);
@@ -207,39 +231,40 @@ class Pdf extends \PDF_HTML {
         $reader->xml($text);
         while ($reader->read() !== FALSE) {
             if ($reader->nodeType === XMLReader::ELEMENT) {
-                $txt = $reader->readString();
-                $txt = iconv('UTF-8', 'ISO-8859-15', $txt);
+                $txt = self::txt($reader->readString());
                 switch ($reader->name) {
                     case 'head':
                         $this->setX(self::X_START);
-                        $this->SetFont($this->FontFamily, 'B', self::FONT_SIZE);
+                        $this->bold();
                         $this->Cell(0, 5, $txt, 0, 0, "C");
                         break;
                     case 'name':
                         $this->SetX(self::X_START);
-                        $this->SetFont($this->FontFamily, 'B', self::FONT_SIZE);
+                        $this->bold();
                         $this->WriteHTML($txt);
-                        $this->SetFont($this->FontFamily, '', self::FONT_SIZE);
+                        $this->regular();
                         break;
                     case 'title':
+                        $this->y = $this->y - 3;
                         $this->SetX(self::X_STATIC_TEXT);
                         $this->SetFont($this->FontFamily, 'IB', self::FONT_SIZE);
                         $this->WriteHTML($txt);
-                        $this->SetFont($this->FontFamily, '', self::FONT_SIZE);
+                        $this->regular();
+                        $this->y = $this->y - 5;
                         break;
                     case 'text':
                         $this->SetX(self::X_STATIC_TEXT);
-                        $this->SetFont($this->FontFamily, '', self::FONT_SIZE);
+                        $this->regular();
                         if ($reader->getAttribute("option") == "type") {
                             switch ($this->data->type) {
                                 case '1':
-                                    $txt .= self::TEXT_TYPE_1;
+                                    $txt .= self::txt(self::TEXT_TYPE_1);
                                     break;
                                 case '2':
-                                    $txt .= iconv('UTF-8', 'ISO-8859-15', self::TEXT_TYPE_2);
+                                    $txt .= self::txt(self::TEXT_TYPE_2);
                                     break;
                                 case '3':
-                                    $txt .= iconv('UTF-8', 'ISO-8859-15', self::TEXT_TYPE_3);
+                                    $txt .= self::txt(self::TEXT_TYPE_3);
                                     break;
                             }
                             $txt = preg_replace('/%([a-z_]+)%/e', 'iconv(\'UTF-8\', \'ISO-8859-15\', $this->st_params["$1"])', $txt);
@@ -262,7 +287,7 @@ class Pdf extends \PDF_HTML {
                         $this->SetX(self::X_STATIC_TEXT);
                         $this->SetStyle("B", false);
                         $this->Cell(0, 5, $txt, 0, 0, "L");
-                        $this->SetFont($this->FontFamily, '', self::FONT_SIZE);
+                        $this->regular();
                         break;
                     default:
                         break;
@@ -274,11 +299,12 @@ class Pdf extends \PDF_HTML {
 
     private function contractStart() {
         $this->setX(self::X_START + 10);
-        $this->SetFont($this->FontFamily, 'B', 12);
+        $this->bold(16);
         $this->Cell(0, 5, self::TEXT_GENERAL_CONDITIONS, 0, 1, "C");
         $this->setX(self::X_START);
         $this->Cell(0, 5, self::TEXT_PLATFORM, 0, 1, "C");
-        $this->SetFont($this->FontFamily, 'B', self::FONT_SIZE);
+        $this->bold();
+        $this->setY($this->getY()+7); // para separar
         $this->setX(self::X_START);
         $placeAndDate = self::TEXT_PLACE . $this->data->date;
         $this->Cell(0, 5, $placeAndDate, 0, 1, "C");
@@ -305,7 +331,7 @@ class Pdf extends \PDF_HTML {
         $this->setX(self::X_STATIC_TEXT);
         $this->Cell(0, 5, self::TEXT_FOOTER_IMPULSOR);
         $this->setX(100);
-        $this->Cell(0, 5, iconv('UTF-8', 'ISO-8859-15', self::TEXT_FOOTER_FOUNDATION));
+        $this->Cell(0, 5, self::txt(self::TEXT_FOOTER_FOUNDATION));
     }
 
     /**
@@ -315,8 +341,8 @@ class Pdf extends \PDF_HTML {
      */
     function Header() {
         $this->SetX(10);
-        $this->SetFont(self::FONT, '', self::FONT_HEADER_SIZE);
-        $this->WriteHTML($this->data->fullnum);
+        $this->SetFont(self::HEADER_FONT, '', self::FONT_HEADER_SIZE);
+        $this->WriteHTML(self::txt(self::TEXT_HEADER_NUM) . $this->data->fullnum);
         $this->Cell(0, 5, "", 0, 1);
         $this->centerImage(self::DRAFT_IMAGE);
     }
@@ -327,7 +353,7 @@ class Pdf extends \PDF_HTML {
      */
     function Footer() {
         $this->SetY(-15);
-        $this->SetFont(self::FONT, '', self::FONT_HEADER_SIZE);
+        $this->SetFont(self::HEADER_FONT, '', self::FONT_HEADER_SIZE);
         $this->Cell(0, 10, $this->PageNo(), 0, 0, 'C');
     }
 
