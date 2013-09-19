@@ -376,6 +376,14 @@ namespace Goteo\Model {
             foreach ($statuses as $key => $value) {
                 $fields[] = "{$key} = :{$key}";
                 $values[":{$key}"] = $value;
+                
+                // fecha
+                $fields[] = "{$key}_date = :d{$key}";
+                $values[":d{$key}"] = date('Y-m-d');
+                
+                // usuario
+                $fields[] = "{$key}_user = :u{$key}";
+                $values[":u{$key}"] = $_SESSION['user']->id;
             }
             
             $sql .= " contract_status SET ";

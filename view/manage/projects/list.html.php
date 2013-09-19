@@ -119,7 +119,7 @@ $filters = $this['filters'];
                 <td colspan="5">PROCESO:&nbsp;&nbsp;&nbsp;
                 <?php
                 foreach ($project->flags as $flag=>$fval) {
-                    if (empty($flag) || $flag == 'contract') continue;
+                    if (empty($flag) || $flag == 'contract' || strpos($flag, '_') > 0) continue;
                     $fname = $this['contractStatus'][$flag];
                     // los no gestionables
                     if (in_array($flag, array('noreg', 'onform'))) {
@@ -127,9 +127,13 @@ $filters = $this['filters'];
                         continue;
                     }
                     
+                    $fdate = $project->flags[$flag.'_date'];
+                    $fuser = $project->flags[$flag.'_user'];
+                    $title = (!empty($fdate) && !empty($fuser)) ? "Modificado por {$fuser} el {$fdate}" : '';
+                    
                     // los fval = 1 se pueden quitar (con un confirm)
-                    if ($fval) {?><a href="/manage/projects/unsetflag/<?php echo $project->id ?>/<?php echo $flag ?>" style="color:green;text-decoration:none;" onclick="return confirm('¿Seguro que quieres desmarcar el flag \'<?php echo $fname; ?>\' ?');">[<?php echo $fname; ?>]</a>&nbsp;&nbsp;
-                    <?php } else { // los fval = 0 se pueden marcar ?><a href="/manage/projects/setflag/<?php echo $project->id ?>/<?php echo $flag ?>" style="color:red;text-decoration:none;" onclick="return confirm('Vas a marcar el flag \'<?php echo $fname; ?>\', ok?');">[<?php echo $fname; ?>]</a>&nbsp;&nbsp;<?php }
+                    if ($fval) {?><a href="/manage/projects/unsetflag/<?php echo $project->id ?>/<?php echo $flag ?>" style="color:green;text-decoration:none;" onclick="return confirm('¿Seguro que quieres desmarcar el flag \'<?php echo $fname; ?>\' ?');" <?php if (!empty($title)) echo 'title="'.$title.'"'; ?>>[<?php echo $fname; ?>]</a>&nbsp;&nbsp;
+                    <?php } else { // los fval = 0 se pueden marcar ?><a href="/manage/projects/setflag/<?php echo $project->id ?>/<?php echo $flag ?>" style="color:red;text-decoration:none;" onclick="return confirm('Vas a marcar el flag \'<?php echo $fname; ?>\', ok?');" <?php if (!empty($title)) echo 'title="'.$title.'"'; ?>>[<?php echo $fname; ?>]</a>&nbsp;&nbsp;<?php }
         
                 }
                 ?>
