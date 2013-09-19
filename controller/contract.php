@@ -82,6 +82,8 @@ namespace Goteo\Controller {
                     // y se lo damos para descargar
                     echo $pdf->Output($pdf_name, 'D');
 
+                    Model\Contract::setStatus($id, array('pdf'=>1));
+                    
                     die;
                 }
 

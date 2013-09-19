@@ -14,3 +14,7 @@ ALTER TABLE `contract_status`  ADD `prepay` INT(1) NOT NULL COMMENT 'Ha habido p
 
 -- pasamos el campo pdf al registro de contrato, no es un flag
 ALTER TABLE `contract_status` DROP `pdf`;
+
+-- flag para descarga
+ALTER TABLE `contract_status`  ADD `pdf` INT(1) NOT NULL COMMENT 'El impulsor ha descargado el pdf' AFTER `ready`;
+

@@ -654,6 +654,7 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
                 'owner' => 'Formulario cerrado',
                 'admin' => 'Datos en revision',
                 'ready' => 'Listo para imprimir',
+                'pdf' => 'Se ha generado el pdf',
                 'recieved' => 'Sobre recibido',
                 'prepay' => 'Pago adelantado',
                 'payed' => 'Pagos realizados',

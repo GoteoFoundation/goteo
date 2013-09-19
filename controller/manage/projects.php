@@ -54,6 +54,19 @@ namespace Goteo\Controller\Manage {
             
             if ($action == 'unsetflag') {
                 Model\Contract::setStatus($id, array($subaction => 0));
+                
+                // si están quitando pdf, eliminamos el registro de contrato y archivo
+                /*
+                $contract = Model\Contract::get($id);
+                Model\Contract::setPdf($id, '');
+                $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';
+                $filename = Model\Contract\Document::$dir . $id . '/' . $pdf_name;
+                if (file_exists($filename)) {
+                    unlink($filename);
+                }
+                 */
+                
+                
                 throw new Redirection('/manage/projects/#'.$id);
             }
             
