@@ -56,6 +56,21 @@ namespace Goteo\Controller {
                 // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
                 $contract->draft = ($contract->status->ready === '1') ? false : true;
                 
+                // texto para "... en adelante EL IMPULSOR"
+                switch ($contract->type) {
+                    case 0: // persona
+                        //el responsable o la entidad %entity_name%
+                        $contract->el_impulsor = "El responsable, {$contract->name}";
+                        break;
+                    case 1: // asociación
+                        $contract->el_impulsor = "La asociación {$contract->entity_name}";
+                        break;
+                    case 2: // entidad
+                        $contract->el_impulsor = "La entidad {$contract->entity_name}";
+
+                        break;
+                }
+                
                 // si ya está generado, lo abrimos con un get contents
                 if (file_exists($filename)) {
                     header('Content-Type: application/x-download');

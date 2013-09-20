@@ -45,9 +45,9 @@ class Pdf extends \PDF_HTML {
     const TEXT_PAYMENT_PAYPAL_ACCOUNT = "Cuenta PayPal: ";
     const TEXT_PAYMENT_PAYPAL_OWNER = "Titular: ";
     /* Dynamic part */
-    const TEXT_TYPE_1 = " en su propio nombre y derecho";
-    const TEXT_TYPE_2 = " en su calidad de apoderado y %office%, en nombre y representación de la entidad %entity_name%, titular del CIF %entity_cif%, con domicilio social en %entity_location%, calle/plaza/avenida %entity_address%, %entity_zipcode%, %entity_region%, %entity_country%; entidad constituida en escritura pública otorgada en fecha %reg_date%. ante el Notario de %region%. Don %reg_name%.. (nº %reg_number% de su protocolo) e inscrita en el Registro Mercantil de %region%, %reg_id%";
-    const TEXT_TYPE_3 = " en su calidad de %office%, en nombre y representación de la entidad %reg_name%, titular del CIF %reg%, con domicilio social en %entity_location%, calle/plaza/avenida %entity_address%, %entity_zipcode%, %entity_region%, %entity_country%; entidad inscrita en el Registro de Asociaciones de %entity_region%, con el número %reg_id%";
+    const TEXT_TYPE_0 = "En su propio nombre y derecho.";
+    const TEXT_TYPE_1 = "En su calidad de %office%, en nombre y representación de la entidad %reg_name%, titular del CIF %reg%, con domicilio social en %entity_location% (%entity_region%, CP %entity_zipcode%, %entity_country%), calle/plaza/avenida %entity_address%; entidad inscrita en el Registro de Asociaciones de %entity_region%, con el número %reg_id%.";
+    const TEXT_TYPE_2 = "En su calidad de apoderado y %office%, en nombre y representación de la entidad %entity_name%, titular del CIF %entity_cif%, con domicilio social en %entity_location% (%entity_region%, CP %entity_zipcode%, %entity_country%), calle/plaza/avenida %entity_address%; entidad constituida en escritura pública otorgada en fecha %reg_date%. ante el Notario de %region%. Don %reg_name% (nº %reg_number% de su protocolo) e inscrita en el Registro Mercantil de %reg_id%.";
     /* Other texts */
     const TEXT_GENERAL_CONDITIONS = "DOCUMENTO DE CONDICIONES GENERALES USO";
     const TEXT_PLATFORM = "PLATAFORMA GOTEO";
@@ -92,10 +92,10 @@ class Pdf extends \PDF_HTML {
         $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_LINK_GOTEO . $this->data->project_url);
         $this->setX(self::X_STATIC_TEXT);
         $this->MultiCell(0, 5, $txt, "LR", 1);
-        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_IMPULSOR . $this->data->project_owner);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_IMPULSOR . $this->data->project_user);
         $this->setX(self::X_STATIC_TEXT);
         $this->MultiCell(0, 5, $txt, "LR", 1);
-        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_USER . $this->data->project_user);
+        $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_USER . $this->data->project_owner);
         $this->setX(self::X_STATIC_TEXT);
         $this->MultiCell(0, 5, $txt, "LR", 1);
         $txt = iconv('UTF-8', 'ISO-8859-15', self::TEXT_USER_PAGE . $this->data->project_profile);
@@ -253,21 +253,22 @@ class Pdf extends \PDF_HTML {
                         $this->y = $this->y - 5;
                         break;
                     case 'text':
-                        $this->SetX(self::X_STATIC_TEXT);
+                        $this->SetX(self::X_START);
                         $this->regular();
                         if ($reader->getAttribute("option") == "type") {
+                            $txt .= '<br />';
                             switch ($this->data->type) {
+                                case '0':
+                                    $txt .= self::txt(self::TEXT_TYPE_0);
+                                    break;
                                 case '1':
                                     $txt .= self::txt(self::TEXT_TYPE_1);
                                     break;
                                 case '2':
                                     $txt .= self::txt(self::TEXT_TYPE_2);
                                     break;
-                                case '3':
-                                    $txt .= self::txt(self::TEXT_TYPE_3);
-                                    break;
                             }
-                            $txt = preg_replace('/%([a-z_]+)%/e', 'iconv(\'UTF-8\', \'ISO-8859-15\', $this->st_params["$1"])', $txt);
+                            $txt = preg_replace('/%([a-z_]+)%/e', 'iconv(\'UTF-8\', \'ISO-8859-15\', $this->data->$1)', $txt);
                         }
                         $this->WriteHTML($txt);
                         break;
