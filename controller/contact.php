@@ -13,25 +13,8 @@ namespace Goteo\Controller {
 
     class Contact extends \Goteo\Core\Controller {
         
-        private static $ips = array(
-            '112.111.191.82',
-            '199.15.233.142',
-            '198.24.152.122',
-            '208.177.76.7',
-            '208.177.76.8',
-            '88.190.61.93',
-            '88.190.61.104',
-            '88.190.62.120',
-            '88.190.62.111',
-            '91.207.5.46',
-            '91.207.7.238'
-        );
-        
         public function index () {
 
-            if (in_array($_SERVER['HTTP_X_FORWARDED_FOR'], self::$ips)) 
-                throw new Error(Error::UNAUTHORIZED, 'Unauthorized');
-                    
             $tags = array();
             $rawTags = Text::get('contact-form-tags');
             $listTags = explode(';', $rawTags);
@@ -48,7 +31,7 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
 
                 // Checkeo de spam
-                @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
+//                @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
 
                 // verificamos referer
                 $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
