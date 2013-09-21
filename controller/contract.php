@@ -44,6 +44,20 @@ namespace Goteo\Controller {
             // si lo puede ver
             if ($grant) {
                 
+                //--------- por ahora en real solamente mostramos preview de datos
+                // PAra pruebas: puede ver el pdf si admin o suplantando
+                // 
+                if (SITE_URL == 'http://goteo.org') {
+/*                    if (isset($_SESSION['user']->roles['manager']) &&
+                        isset($_SESSION['user']->roles['superadmin']) &&
+                        isset($_SESSION['user']->roles['root']) &&
+                        $_SESSION['impersonating'] === true) {
+                    } else { */
+                        return new View('view/contract/view.html.php', array('contract' => $contract));
+//                    }
+                }
+                //--------- quitaremos estas 4 lineas cuando esté listo
+                
                 require_once 'library/contract.php';  // Libreria pdf contrato
                 
                 $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';
@@ -102,24 +116,6 @@ namespace Goteo\Controller {
                     die;
                 }
 
-                /*
-                $viewData = array(
-                        'contract' => $contract,
-                        'project' => $project
-                    );
-
-                // si existe el archivo físico lo mostramos
-                // si no existe, lo generamos con los datos actuales
-                if (!empty($contract->status->pdf)) {
-                    $viewData['pdf'] = ''; // coger el get contents del archivo y sacarlo talcual
-                } else {
-                    // montar el contenido del pdf con los datops del contrato
-                }
-
-                return new View('view/contract/view.html.php', $viewData);
-                 * 
-                 */
-                
             } else {
                 // no lo puede ver y punto
                 throw new Redirection("/");
