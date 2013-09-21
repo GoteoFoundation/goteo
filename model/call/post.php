@@ -18,22 +18,21 @@ namespace Goteo\Model\Call {
          */
 		public static function get ($call) {
             try {
-
+                $list = array();
                 $values = array(':call'=>$call);
 
                 $sql = "SELECT
                             post as id
                         FROM call_post
                         WHERE call_post.call = :call
-                        LIMIT 1
                         ";
                 
                 $query = static::query($sql, $values);
-                $id = $query->fetchColumn();
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $post) {
+                    $list[] = Model\Blog\Post::get($post->id, \LANG);
+                }
                 
-                $postData = Model\Blog\Post::get($id, \LANG);
-                
-                return $postData;
+                return $list;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
             }
