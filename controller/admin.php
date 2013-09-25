@@ -350,7 +350,8 @@ namespace Goteo\Controller {
                     'list' => array('label' => 'Listando', 'item' => false),
                     'edit' => array('label' => 'Editando Plantilla', 'item' => true),
                     'translate' => array('label' => 'Traduciendo Plantilla', 'item' => true)
-                )
+                ),
+                'filters' => array('group' => '', 'name' => '')
             ),
             'texts' => array(
                 'label' => 'Textos interficie',

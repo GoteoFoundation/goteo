@@ -54,13 +54,25 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de páginas
 		 */
-		public static function getAll() {
+		public static function getAll($filters = array()) {
             $templates = array();
 
             try {
 
                 $values = array(':lang' => \LANG);
-
+                $sqlFilter = '';
+                $and = "WHERE";
+                if (!empty($filters['group'])) {
+                    $sqlFilter = "$and template.`group` = :group";
+                    $and = "AND";
+                    $values[':group'] = "{$filters['group']}";
+                }
+                if (!empty($filters['name'])) {
+                    $sqlFilter = "$and (template.`name` LIKE :name OR template.`title` LIKE :name)";
+                    $and = "AND";
+                    $values[':name'] = "%{$filters['name']}%";
+                }
+                
                 $sql = "SELECT
                             template.id as id,
                             template.name as name,
@@ -71,6 +83,7 @@ namespace Goteo\Library {
                         LEFT JOIN template_lang
                             ON  template_lang.id = template.id
                             AND template_lang.lang = :lang
+                        $sqlFilter
                         ORDER BY name ASC
                         ";
 
@@ -164,6 +177,25 @@ namespace Goteo\Library {
 
 		}
 
+        /*
+         * Grupos de textos
+         */
+        static public function groups()
+        {
+            $groups = array(
+                'general' => 'Propósito general',
+                'access'  => 'Registro y acceso usuario',
+                'project' => 'Actividad proyecto',
+                'tips'    => 'Auto-tips difusión',
+                'invest'  => 'Proceso aporte',
+                'contact' => 'Comunicación',
+                'advice'  => 'Avisos al autor'
+            );
+
+            \asort($groups);
+
+            return $groups;
+        }
 
 	}
 }

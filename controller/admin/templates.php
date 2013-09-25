@@ -11,9 +11,12 @@ namespace Goteo\Controller\Admin {
 
     class Templates {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $errors = array();
+
+            // valores de filtro
+            $groups    = Template::groups();
 
             switch ($action) {
                 case 'edit':
@@ -45,14 +48,16 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'list':
                     // si estamos en la lista de páginas
-                    $templates = Template::getAll();
+                    $templates = Template::getAll($filters);
 
                     return new View(
                         'view/admin/index.html.php',
                         array(
                             'folder' => 'templates',
                             'file' => 'list',
-                            'templates' => $templates
+                            'templates' => $templates,
+                            'groups' => $groups,
+                            'filters' => $filters
                         )
                     );
                     break;
