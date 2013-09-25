@@ -141,6 +141,27 @@ namespace Goteo\Model {
             }
         }
 
+        /*
+         *  Para saber si un proyecto tiene novedades publicadas
+         */
+        public static function hasUpdates ($project) {
+                $query = static::query("
+                    SELECT
+                        COUNT(post.id) as num
+                    FROM blog
+                    LEFT JOIN post
+                    ON post.blog = blog.id
+                    WHERE post.publish = 1
+                    AND blog.type = 'project'
+                    AND blog.owner = :id
+                    GROUP BY post.blog
+                    ", array(':id' => $project));
+
+                $post = $query->fetchObject(__CLASS__);
+                $num = $post->fetchColumn(0);
+                return ($num > 0);
+        }
+        
     }
     
 }

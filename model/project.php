@@ -467,6 +467,11 @@ namespace Goteo\Model {
                 // podría estar asignado a alguna convocatoria
                 $project->called = Call\Project::called($project);
 
+                // datos del nodo
+                if (!empty($project->node)) {
+                    $project->nodeData = Node::getMini($project->node);
+                }
+
 
                 return $project;
 
