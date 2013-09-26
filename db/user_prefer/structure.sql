@@ -10,3 +10,6 @@ CREATE TABLE IF NOT EXISTS `user_prefer` (
 
 -- campo para marcar que no quiere que se le de su email a los proyectos que cofinancia
 ALTER TABLE `user_prefer` ADD `email` INT( 1 ) NOT NULL DEFAULT '0';
+
+-- bloquear consejos de difusión
+ALTER TABLE `user_prefer` ADD `tips` INT( 1 ) NOT NULL DEFAULT '0';

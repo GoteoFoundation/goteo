@@ -1340,7 +1340,8 @@ namespace Goteo\Model {
                                       threads,
                                       rounds,
                                       mailing,
-                                      email
+                                      email,
+                                      tips
                                   FROM user_prefer
                                   WHERE user = ?'
                 , array($id));
