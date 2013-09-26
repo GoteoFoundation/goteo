@@ -76,6 +76,13 @@ if (!$node instanceof Model\Node) {
                 )
             ),
 
+            'email' => array(
+                'type'      => 'textbox',
+                'size'      => 20,
+                'title'     => 'Email',
+                'value'     => $node->email,
+            ),
+            
             'location' => array(
                 'type'      => 'textbox',
                 'size'      => 20,

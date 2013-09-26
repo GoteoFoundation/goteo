@@ -10,6 +10,7 @@ namespace Goteo\Model {
         public
             $id = null,
             $name,
+            $email,
             $admins = array(), // administradores
             $logo,
             $image;
@@ -26,11 +27,13 @@ namespace Goteo\Model {
                     SELECT
                         node.id as id,
                         node.name as name,
+                        node.email as email,
                         IFNULL(node_lang.subtitle, node.subtitle) as subtitle,
                         IFNULL(node_lang.description, node.description) as description,
                         node.logo as logo,
                         node.location as location,
-                        node.url as url
+                        node.url as url,
+                        node.active as active
                     FROM node
                     LEFT JOIN node_lang
                         ON  node_lang.id = node.id
@@ -53,7 +56,7 @@ namespace Goteo\Model {
         static public function getMini ($id) {
                 $sql = static::query("
                     SELECT
-                        id, name, url
+                        id, name, url, email
                     FROM node
                     WHERE id = :id
                     ", array(':id' => $id));
@@ -166,6 +169,9 @@ namespace Goteo\Model {
             if (empty($this->name))
                 $this->name = $this->id;
 
+            if (empty($this->email))
+                $this->email = \GOTEO_CONTACT_MAIL;
+
             if (!isset($this->active))
                 $this->active = 0;
 
@@ -185,6 +191,7 @@ namespace Goteo\Model {
 
             $fields = array(
                 'name',
+                'email',
                 'active'
                 );
 
@@ -219,6 +226,7 @@ namespace Goteo\Model {
             $fields = array(
                 'id',
                 'name',
+                'email',
                 'url',
                 'active'
                 );
@@ -325,6 +333,7 @@ namespace Goteo\Model {
             $fields = array(
                 'name',
                 'subtitle',
+                'email',
                 'location',
                 'logo',
                 'description'

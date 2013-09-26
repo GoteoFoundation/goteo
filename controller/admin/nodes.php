@@ -25,6 +25,7 @@ namespace Goteo\Controller\Admin {
                         $node = new Model\Node(array(
                                     'id' => $_POST['id'],
                                     'name' => $_POST['name'],
+                                    'email' => $_POST['email'],
                                     'url' => $url,
                                     'active' => $_POST['active']
                                 ));
@@ -67,6 +68,7 @@ namespace Goteo\Controller\Admin {
                         $node = new Model\Node(array(
                                     'id' => $_POST['id'],
                                     'name' => $_POST['name'],
+                                    'email' => $_POST['email'],
                                     'url' => $_POST['url'],
                                     'active' => $_POST['active']
                                 ));

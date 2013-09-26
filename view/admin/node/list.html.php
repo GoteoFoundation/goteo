@@ -22,6 +22,10 @@ if (!$node instanceof Model\Node) {
             <td><?php echo $node->name ?></td>
         </tr>
         <tr>
+            <td>Email</td>
+            <td><?php echo $node->email ?></td>
+        </tr>
+        <tr>
             <td>Título</td>
             <td><?php echo $node->subtitle ?></td>
         </tr>
