@@ -31,6 +31,7 @@ namespace Goteo\Controller\Admin {
                         $fields = array(
                             'name',
                             'subtitle',
+                            'email',
                             'location',
                             'description',
                             'logo'
