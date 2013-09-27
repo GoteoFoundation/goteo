@@ -21,7 +21,6 @@ namespace Goteo\Controller\Cron {
          */
         public static function toOwner ($type, $project) {
             $tpl = null;
-            $project->percent = floor(($project->invested / $project->mincost) * 100);
             
             /// tipo de envio
             switch ($type) {
@@ -134,15 +133,16 @@ namespace Goteo\Controller\Cron {
                     $tpl = 49;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%LOWREWARD%', '%HIGHREWARD%');
                     // ordenar recompensas
-                    uasort($project->individual_rewards,
+                    $rewards = Model\Project\Reward::getAll($project->id, 'individual', \LANG);
+                    uasort($rewards,
                         function ($a, $b) {
                             if ($a->amount == $b->amount) return 0;
                             return ($a->amount > $b->amount) ? 1 : -1;
                             }
                         );
                     // sacar la primera y la última
-                    $lower = reset($project->individual_rewards);
-                    $higher = end($project->individual_rewards);
+                    $lower = reset($rewards);
+                    $higher = end($rewards);
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $lower->reward, $higher->reward);
                     break;
                 
