@@ -2079,8 +2079,7 @@ namespace Goteo\Model {
 
         // 
         /**
-         * Lista de proyectos en campaña o financiados 
-         *   para ser revisados por el cron/daily
+         * Lista de proyectos en campaña y/o financiados 
          *   para crear aporte manual
          *   para gestión de contratos
          * 
@@ -2107,6 +2106,40 @@ namespace Goteo\Model {
                 } else {
                     $projects[] = self::get($proj->id);
                 }
+            }
+            return $projects;
+        }
+
+        /**
+         * Lista de proyectos para ser revisados por el cron/daily
+         * en campaña
+         *  o financiados hace más de dos meses y con retornos/recompensas pendientes
+         * 
+         * solo carga datos necesarios para cron/daily
+         * 
+         * @return array de instancias parciales de proyecto
+         */
+        public static function review()
+        {
+            $projects = array();
+
+            $sql = "SELECT 
+                    id, status, 
+                    DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
+                FROM  project 
+                WHERE status IN ('3', '4')
+                HAVING status = 3 OR (status = 4 AND  days > 138)
+                ORDER BY days ASC";
+            
+            
+            $query = self::query($sql);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+                $the_proj = self::getMedium($proj->id);
+                $the_proj->percent = floor(($the_proj->invested / $the_proj->mincost) * 100);
+                $the_proj->from = $proj->days - 1;
+                $the_proj->patrons = Patron::numRecos($proj->id);
+                
+                $projects[] = $the_proj;
             }
             return $projects;
         }

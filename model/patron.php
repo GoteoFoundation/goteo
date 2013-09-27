@@ -207,6 +207,23 @@ namespace Goteo\Model {
         }
 
         /*
+         * Solo contar
+         */
+        public static function numRecos($project) {
+
+            $values = array(':project'=>$project);
+
+            $sql = "SELECT
+                        COUNT(user) as num
+                    FROM patron
+                    WHERE patron.project = :project
+                    AND patron.active = 1
+                    ";
+            $query = self::query($sql, $values);
+            return $query->fetchColumn();
+        }
+
+        /*
          * Lista de proyectos disponibles para recomendar
          */
         public static function available ($current = null, $node = \GOTEO_NODE) {
