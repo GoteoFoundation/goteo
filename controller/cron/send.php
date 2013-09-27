@@ -173,6 +173,7 @@ namespace Goteo\Controller\Cron {
                 
                 // si es un proyecto de nodo: reply al mail del nodo
                 // si es de centra: reply a MAIL_GOTEO
+                $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : \GOTEO_CONTACT_MAIL;
                 
                 // blind copy a goteo desactivado durante las verificaciones
                 $mailHandler->bcc = 'comunicaciones@goteo.org';

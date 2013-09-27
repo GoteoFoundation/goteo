@@ -52,6 +52,19 @@ Id 	Mensaje/consejo                                 A partir del día	Reenvio   
 
                 if ($debug) echo "Proyecto {$project->name}, estado {$project->status}, lleva {$project->from} dias<br />";
                 
+                // primero el que no se bloquea
+//                    case 140: // Recuerdo al autor proyecto, 2 meses despues de financiado
+                if ($project->from == 140) {
+                        // si quedan recompensas/retornos pendientes por cumplir
+                        if (!Model\Project\Reward::areFulfilled($project->id) || !Model\Project\Reward::areFulfilled($project->id, 'social') ) 
+                            Send::toOwner('2m_after', $project);
+//                        break;
+                }
+                
+                // ahora checkeamos bloqueo de consejos
+                $prefs = Model\User::getPreferences($project->owner);
+                if ($prefs->tips) continue;
+                
                 // Consejos/avisos puntuales
                 switch ($project->from) {
                     
@@ -136,12 +149,6 @@ Id 	Mensaje/consejo                                 A partir del día	Reenvio   
                         // si no ha llegado al mínimo
                         if ($project->invested < $project->mincost)
                             Send::toOwner('2_days', $project);
-                        break;
-                    
-                    case 140: // Recuerdo al autor proyecto, 2 meses despues de financiado
-                        // si quedan recompensas/retornos pendientes por cumplir
-                        if (!Model\Project\Reward::areFulfilled($project->id) || !Model\Project\Reward::areFulfilled($project->id, 'social') ) 
-                            Send::toOwner('2m_after', $project);
                         break;
                 }
                 
