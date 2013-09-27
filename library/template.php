@@ -32,6 +32,7 @@ namespace Goteo\Library {
             // buscamos la página para este nodo en este idioma
 			$sql = "SELECT  template.id as id,
                             template.name as name,
+                            template.group as `group`,
                             template.purpose as purpose,
                             IFNULL(template_lang.title, template.title) as title,
                             IFNULL(template_lang.text, template.text) as text
@@ -153,15 +154,16 @@ namespace Goteo\Library {
                 $values = array(
                     ':template' => $this->id,
                     ':name' => $this->name,
+                    ':group' => $this->group,
                     ':purpose' => $this->purpose,
                     ':title' => $this->title,
                     ':text' => $this->text
                 );
 
 				$sql = "REPLACE INTO template
-                            (id, name, purpose, title, text)
+                            (id, name, purpose, title, text, `group`)
                         VALUES
-                            (:template, :name, :purpose, :title, :text)
+                            (:template, :name, :purpose, :title, :text, :group)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;
