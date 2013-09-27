@@ -12,32 +12,6 @@ namespace Goteo\Controller\Cron {
          * Control diario de proyectos
          *  Para envio de tips y avisos
          * @param bool $debug
-         * 
-         * 
-Id 	Mensaje/consejo                                 A partir del día	Reenvio     Condición
---  ----------------------
-38	Difunde, difunde, difunde                       1º	No	No
-39	Comienza por lo más próximo                     2º	No	No
-40	Una acción a diario, por pequeña que sea        3º	No	No
-41	Llama a todas las puertas                       4º	No	No
-42	Busca dónde está tu comunidad                   5º	No	No
-24	Publica novedades!                              6º	Cada 6 días si no posts 	Si no hay posts
-43	Agradece en público e individualmente           7º	En fechas libres si no 20	Más de 20 backers
-44	Agradece en público e individualmente           8º	No	No
-45	Busca prescriptores e implícalos                9º	No                          Si no tiene padrinos
-46	Luce tus recompensas y retornos                 10º	No	No
-47	Refresca tu mensaje de motivacion               11º	No                          Si no tiene vídeo motivacional
-48	Sigue los avances y calcula lo que falta        15º	No                          Si no ha llegado al mínimo
-23	Hace días que no publicas ninguna novedad       16º	Cada 7 días sin nuevas      Si lleva más de una semana sin publicar novedades
-19	No bajes la guardia!                            25º	No                          Si no ha llegado al mínimo
-13	Al proyecto le faltan 8 días para archivarse	32º	No                          Si no ha llegado al mínimo
-14	Al proyecto le faltan 2 días para archivarse 	38º	No                          Si no ha llegado al mínimo
-25	Recuerdo al autor proyecto financiado           80+60	No                      Si financiado y quedan recompensas/retornos pendientes         * 
-         * 
-         * 
-         * 
-         * 
-         * 
          */
         public static function Projects ($debug = false) {
 
