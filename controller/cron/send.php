@@ -175,8 +175,6 @@ namespace Goteo\Controller\Cron {
                 // si es de centra: reply a MAIL_GOTEO
                 $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : \GOTEO_CONTACT_MAIL;
                 
-                // blind copy a goteo desactivado durante las verificaciones
-                $mailHandler->bcc = 'comunicaciones@goteo.org';
                 $mailHandler->subject = $subject;
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
@@ -276,8 +274,6 @@ namespace Goteo\Controller\Cron {
                         $mailHandler = new Mail();
                         $mailHandler->to = $investor->email;
                         $mailHandler->toName = $investor->name;
-                        // blind copy a goteo desactivado durante las verificaciones
-            //              $mailHandler->bcc = 'comunicaciones@goteo.org';
                         $mailHandler->subject = $subject;
                         $mailHandler->content = $content;
                         $mailHandler->html = true;
