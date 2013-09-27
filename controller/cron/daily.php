@@ -41,29 +41,35 @@ Id 	Mensaje/consejo                                 A partir del día	Reenvio   
          */
         public static function Projects ($debug = false) {
 
-            // proyectos en campaña (3) o financiados (4)
-            $projects = Model\Project::active();
+            // proyectos a notificar
+            $projects = Model\Project::review();
 
             // para cada uno,
             foreach ($projects as $project) {
-
-                // dias desde la publicacion
-                $project->from = $project->daysActive();
+                
+                // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
+                if ($project->from > 40 || $project->from > 360) continue;
 
                 if ($debug) echo "Proyecto {$project->name}, estado {$project->status}, lleva {$project->from} dias<br />";
                 
                 // primero el que no se bloquea
-//                    case 140: // Recuerdo al autor proyecto, 2 meses despues de financiado
+                // Recuerdo al autor proyecto, 2 meses despues de financiado
                 if ($project->from == 140) {
                         // si quedan recompensas/retornos pendientes por cumplir
-                        if (!Model\Project\Reward::areFulfilled($project->id) || !Model\Project\Reward::areFulfilled($project->id, 'social') ) 
+                        if (!Model\Project\Reward::areFulfilled($project->id) || !Model\Project\Reward::areFulfilled($project->id, 'social') ) {
+                            if ($debug) echo "Recompensas/Retornos pendientes<br />";
                             Send::toOwner('2m_after', $project);
-//                        break;
+                        } else {
+                            if ($debug) echo "Recompensas/Retornos cumplidas, no se envía<br />";
+                        }
                 }
                 
                 // ahora checkeamos bloqueo de consejos
                 $prefs = Model\User::getPreferences($project->owner);
-                if ($prefs->tips) continue;
+                if ($prefs->tips) {
+                    if ($debug) echo "Bloqueado por preferencias<hr />";
+                    continue;
+                }
                 
                 // Consejos/avisos puntuales
                 switch ($project->from) {
@@ -76,7 +82,9 @@ Id 	Mensaje/consejo                                 A partir del día	Reenvio   
                     case 5: // Busca dónde está tu comunidad
                     case 8: // Agradece en público e individualmente
                     case 10: // Luce tus recompensas y retornos
-                        Send::toOwner('tip_'.$from, $project);
+                        $template = 'tip_'.$project->from;
+                        if ($debug) echo "Envío {$template}<br />";
+                        Send::toOwner($template, $project);
                         break;
                     
                     // periodico condicional
@@ -88,8 +96,12 @@ Id 	Mensaje/consejo                                 A partir del día	Reenvio   
                     case 30: 
                     case 36: 
                         // si ya hay novedades, nada
-                        if (!Model\Blog::hasUpdates($project->id))
+                        if (Model\Blog::hasUpdates($project->id) > 0) {
+                            if ($debug) echo "Ya ha publicado novedades<br />";
+                        } else {
+                            if ($debug) echo "Envío aviso de que no ha publicado novedades<br />";
                             Send::toOwner('any_update', $project);
+                        }
                         break;
                     
                     // comprobación periódica pero solo un envío
@@ -111,72 +123,135 @@ Id 	Mensaje/consejo                                 A partir del día	Reenvio   
                             LIMIT 1";
                         $query = Model\Project::query($sql, array(':email' => $project->user->email));
                         $sended = $query->fetchColumn(0);
-                        if (!$sended && $project->num_investors >= 20)
-                            Send::toOwner('20_backers', $project);
+                        if (!$sended) {
+                            if ($project->num_investors >= 20) {
+                                if ($debug) echo "Tiene 20 backers y no se le habia enviado aviso antes<br />";
+                                Send::toOwner('20_backers', $project);
+                            } else {
+                                if ($debug) echo "No llega a los 20 backers<br />";
+                            }
+                        } else {
+                            if ($debug) echo "Ya enviado<br />";
+                        }
                         break;
                     
                     case 9: // Busca prescriptores e implícalos
                         // si no tiene padrinos
-                        if (empty($project->patrons))
+                        if ($project->patrons > 0) {
+                            if ($debug) echo "Tiene padrino<br />";
+                        } else {
+                            if ($debug) echo "No tiene padrino<br />";
                             Send::toOwner('tip_9', $project);
+                        }
                         break;
                     
                     case 11: // Refresca tu mensaje de motivacion
                         // si no tiene video motivacional
-                        if (empty($project->video->url))
+                        if (empty($project->video)) {
+                            if ($debug) echo "No tiene video motivacional<br />";
                             Send::toOwner('tip_11', $project);
+                        } else {
+                            if ($debug) echo "Tiene video motivacional<br />";
+                        }
                         break;
                     
                     case 15: // Sigue los avances y calcula lo que falta
                         // si no ha llegado al mínimo
-                        if ($project->invested < $project->mincost)
+                        if ($project->invested < $project->mincost) {
+                            if ($debug) echo "No ha llegado al mínimo<br />";
                             Send::toOwner('tip_15', $project);
+                        } else {
+                            if ($debug) echo "Ha llegado al mínimo<br />";
+                        }
                         break;
                     
                     case 25: // No bajes la guardia!
                         // si no ha llegado al mínimo
-                        if ($project->invested < $project->mincost)
+                        if ($project->invested < $project->mincost) {
+                            if ($debug) echo "No ha llegado al mínimo<br />";
                             Send::toOwner('two_weeks', $project);
+                        } else {
+                            if ($debug) echo "Ha llegado al mínimo<br />";
+                        }
                         break;
                     
                     case 32: // Al proyecto le faltan 8 días para archivarse
                         // si no ha llegado al mínimo
-                        if ($project->invested < $project->mincost)
+                        if ($project->invested < $project->mincost) {
+                            if ($debug) echo "No ha llegado al mínimo<br />";
                             Send::toOwner('8_days', $project);
+                        } else {
+                            if ($debug) echo "Ha llegado al mínimo<br />";
+                        }
                         break;
                     
                     case 38: // Al proyecto le faltan 2 días para archivarse 
                         // si no ha llegado al mínimo
-                        if ($project->invested < $project->mincost)
+                        if ($project->invested < $project->mincost) {
+                            if ($debug) echo "No ha llegado al mínimo<br />";
                             Send::toOwner('2_days', $project);
+                        } else {
+                            if ($debug) echo "Ha llegado al mínimo<br />";
+                        }
                         break;
                 }
                 
                 // Avisos periodicos 
                 // si lleva más de 15 días: si no se han publicado novedades en la última semana 
                 // Ojo! que si no a enviado ninguna no lanza este sino la de cada 6 días
-                if ($from > 15) {
-                    // veamos cuanto hace de la última novedad
+                if ($project->from > 15) {
+                    if ($debug) echo "ya lleva una quincena de campaña<br />";
+                    
+                    // veamos si ya le avisamos hace una semana
+                    // Si ya se mandó esta plantilla (al llegar a los 20 por primera vez) no se envía de nuevo
                     $sql = "
                         SELECT
+                            id,
                             DATE_FORMAT(
                                 from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
                                 , '%j'
                             ) as days
-                        FROM post
-                        INNER JOIN blog
-                            ON  post.blog = blog.id
-                            AND blog.type = 'project'
-                            AND blog.owner = :project
-                        WHERE post.publish = 1
-                        ORDER BY post.date DESC
+                        FROM mail
+                        WHERE mail.email = :email
+                        AND mail.template = 23
+                        ORDER BY mail.date DESC
                         LIMIT 1";
-                    $query = Model\Project::query($sql, array(':project' => $project->id));
-                    $lastUpdate = $query->fetchColumn(0);
-                    if ($lastUpdate > 7) {
-                        Send::toOwner('no_updates', $project);
+                    $query = Model\Project::query($sql, array(':email' => $project->user->email));
+                    $lastsend = $query->fetchObject();
+                    if (!$lastsend->id || $lastsend->days > 7) {
+                        // veamos cuanto hace de la última novedad
+                        $sql = "
+                            SELECT
+                                DATE_FORMAT(
+                                    from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
+                                    , '%j'
+                                ) as days
+                            FROM post
+                            INNER JOIN blog
+                                ON  post.blog = blog.id
+                                AND blog.type = 'project'
+                                AND blog.owner = :project
+                            WHERE post.publish = 1
+                            ORDER BY post.date DESC
+                            LIMIT 1";
+                        $query = Model\Project::query($sql, array(':project' => $project->id));
+                        $lastUpdate = $query->fetchColumn(0);
+                        if ($lastUpdate > 7) {
+                            if ($debug) echo "Ultima novedad es de hace más de una semana<br />";
+                            Send::toOwner('no_updates', $project);
+                        } elseif (isset($lastUpdate)) {
+                            if ($debug) echo "Publicó hace menos de una semana<br />";
+                        } else {
+                            if ($debug) echo "No se ha publicado nada<br />";
+                        }
+                    } else {
+                        if ($debug) echo "Se le avisó hace menos de una semana<br />";
                     }
+                    
+                    
                 }
+                
+                if ($debug) echo "Proyecto {$project->name} listo!<hr />";
                 
             }
             
