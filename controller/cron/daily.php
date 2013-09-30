@@ -26,8 +26,8 @@ namespace Goteo\Controller\Cron {
 
                 if ($debug) echo "Proyecto {$project->name}, estado {$project->status}, lleva {$project->from} dias<br />";
                 
-                // primero el que no se bloquea
-                // Recuerdo al autor proyecto, 2 meses despues de financiado
+                // primero los que no se bloquean
+                // Recuerdo al autor proyecto, 2 meses despues de campaña finalizada
                 if ($project->from == 140) {
                         // si quedan recompensas/retornos pendientes por cumplir
                         if (!Model\Project\Reward::areFulfilled($project->id) || !Model\Project\Reward::areFulfilled($project->id, 'social') ) {
@@ -35,6 +35,17 @@ namespace Goteo\Controller\Cron {
                             Send::toOwner('2m_after', $project);
                         } else {
                             if ($debug) echo "Recompensas/Retornos cumplidas, no se envía<br />";
+                        }
+                }
+                
+                // Recuerdo al autor proyecto, 8 meses despues de campaña finalizada
+                if ($project->from == 320) {
+                        // si quedan retornos pendientes por cumplir
+                        if (!Model\Project\Reward::areFulfilled($project->id, 'social') ) {
+                            if ($debug) echo "Retornos pendientes<br />";
+                            Send::toOwner('8m_after', $project);
+                        } else {
+                            if ($debug) echo "Retornos cumplidos, no se envía<br />";
                         }
                 }
                 

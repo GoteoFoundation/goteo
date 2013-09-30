@@ -80,6 +80,12 @@ namespace Goteo\Controller\Cron {
                     $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/rewards');
                     break;
 
+                case '8m_after': // template 52, ocho meses despues de financiado
+                    $tpl = 52;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%COMMONSURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/commons');
+                    break;
+
                 case '20_backers': // template 46, "Apóyate en quienes te van apoyando "  (en cuanto se llega a los 20 backers
                     $tpl = 46;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
