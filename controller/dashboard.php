@@ -222,6 +222,13 @@ namespace Goteo\Controller {
                 return $response->index('investors', $project->id);
             }
             
+            // ojo si no tiene retornos  
+            if ($option == 'commons' && empty($project->social_rewards)) {
+                Message::Error('Este proyecto no tiene retornos colectivos');
+                throw new Redirection('/dashboard/projects/');
+            }
+            
+            
             // procesamiento de formularios
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -287,7 +294,7 @@ namespace Goteo\Controller {
                     $viewData['data'] = Dashboard\Projects::graph($project->id);
                     break;
 
-                // gestionar retornos
+                // gestionar recompensas
                 case 'rewards':
                     // recompensas ofrecidas
                     $viewData['rewards'] = Model\Project\Reward::getAll($project->id, 'individual', LANG);
@@ -296,6 +303,15 @@ namespace Goteo\Controller {
                     // ver por (esto son orden y filtros)
                     $viewData['filter'] = $_SESSION['dashboard-rewards-filter'];
                     $viewData['order'] = $_SESSION['dashboard-rewards-order'];
+                    break;
+
+                // gestionar retornos
+                case 'commons':
+                    $icons = Model\Icon::getAll('social');
+                    foreach ($icons as $key => $icon) {
+                        $icons[$key] = $icon->name;
+                    }
+                    $viewData['icons'] = $icons;
                     break;
 
                 // listar mensajeadores
@@ -905,7 +921,7 @@ namespace Goteo\Controller {
                         'rewards' => Text::get('dashboard-menu-projects-rewards'),
                         'messegers' => Text::get('dashboard-menu-projects-messegers'),
                         'contract' => Text::get('dashboard-menu-projects-contract'),
-                        'widgets' => Text::get('dashboard-menu-projects-widgets')
+                        'commons' => Text::get('dashboard-menu-projects-commons')
                     )
                 )
             );
