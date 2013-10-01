@@ -131,10 +131,12 @@ namespace Goteo\Model {
 
             try {
                 $sql = "REPLACE INTO blog SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
-
-                return true;
+                if (self::query($sql, $values)) {
+                    if (empty($this->id)) $this->id = self::insertId();
+                    return true;
+                } else {
+                    return false;
+                }
             } catch(\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
