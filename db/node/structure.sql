@@ -12,3 +12,6 @@ ALTER TABLE `node`
 	ADD `logo` INT( 20 ) UNSIGNED NULL ,
 	ADD `location` VARCHAR( 100 ) NULL ,
 	ADD `description` TEXT NULL ;
+
+-- mail de contacto para impulsores
+ALTER TABLE `node` ADD `email` VARCHAR( 255 ) NOT NULL AFTER `name`;

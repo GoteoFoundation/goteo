@@ -250,6 +250,43 @@ namespace Goteo\Controller\Admin {
                 );
             }            
 
+            if ($action == 'posts') {
+                if (isset($_GET['op']) && isset($_GET['post']) && is_numeric($_GET['post']) && in_array($_GET['op'], array('save', 'remove'))) {
+                    
+                    $postId = $_GET['post'];
+                    // verificar que existe
+                    $thepost = Model\Blog\Post::get($postId);
+                    if ($_GET['op'] == 'save' && !$thepost instanceof Model\Blog\Post) {
+                        Message::Error("La entrada de blog id {$postId} NO es válida");
+                    } else {
+                        // objeto
+                        $post = new Model\Call\Post(array(
+                            'id' =>  $postId,
+                            'call' => $call->id
+                        ));
+                        if ($post->$_GET['op']($errors)) {
+                            // ok
+                        } else {
+                            Message::Error(implode('<br />', $errors));
+                        }
+                    }
+                    
+                }
+
+                $call->posts = Model\Call\Post::get($call->id);
+
+                return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'calls',
+                                    'file' => 'posts',
+                                    'action' => 'posts',
+                                    'call' => $call,
+                                    'posts' => posts
+                                )
+                );
+            }            
+
             if ($action == 'conf') {
                 /*
                 if (isset($_GET['op']) && isset($_GET['user']) && in_array($_GET['op'], array('assign', 'unassign'))) {

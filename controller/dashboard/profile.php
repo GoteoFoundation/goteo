@@ -220,7 +220,8 @@ namespace Goteo\Controller\Dashboard {
                 'threads',
                 'rounds',
                 'mailing',
-                'email'
+                'email',
+                'tips'
             );
 
             $preferences = array();

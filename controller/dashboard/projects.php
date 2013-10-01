@@ -99,7 +99,7 @@ namespace Goteo\Controller\Dashboard {
             
             // si no tiene registro de blog se lo creamos
             $blog = Model\Blog::get($project->id);
-            if (!$blog) {
+            if (!$blog instanceof Model\Blog) {
                 $blog = new Model\Blog(
                                 array(
                                     'id' => '',
@@ -115,12 +115,6 @@ namespace Goteo\Controller\Dashboard {
                     Message::Error(implode('<br />', $errors));
                     throw new Redirection('/dashboard/projects/summary');
                 }
-            }
-
-            // y verificar que está correcto
-            if (!$blog instanceof Model\Blog) {
-                Message::Error(Text::get('dashboard-project-updates-noblog'));
-                throw new Redirection('/dashboard/projects/summary');
             } elseif (!$blog->active) {
                 Message::Error(Text::get('dashboard-project-blog-inactive'));
                 throw new Redirection('/dashboard/projects/summary');

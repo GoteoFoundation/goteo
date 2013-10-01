@@ -16,6 +16,10 @@ $node = $this['node'];
     <input type="text" id="node-name" name="name" value="<?php echo $node->name; ?>" style="width:250px" />
 </p>
 <p>
+    <label for="node-email">Email:</label><br />
+    <input type="text" id="node-email" name="email" value="<?php echo $node->email; ?>" style="width:250px" />
+</p>
+<p>
     <label for="node-active">Activo:</label><br />
     <input type="checkbox" id="node-active" name="active" value="1" <?php if ($node->active) echo ' checked="checked"'; ?>/>
 </p>

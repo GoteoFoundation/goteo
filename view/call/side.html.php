@@ -27,7 +27,7 @@ $filter = $this['filter'];
     </dl>
     <dl class="applied">
         <dt><?php echo Text::get('call-splash-applied_projects-header') ?></dt>
-        <dd><?php echo count($call->projects) ?></dd>
+        <dd><?php echo $call->applied ?></dd>
     </dl>
 <?php elseif (!empty($call->amount)) : ?>
     <dl class="">

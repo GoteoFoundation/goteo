@@ -4,8 +4,7 @@ use Goteo\Library\Text,
     Goteo\Model\Blog\Post,
     Goteo\Core\View;
 
-$call = $this['call'];
-$post = $call->post;
+$post = $this['post'];
 ?>
 <div id="post">
     <?php  if (!empty($post->image)) : ?>

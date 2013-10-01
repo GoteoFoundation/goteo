@@ -17,7 +17,10 @@ $call = $this['call'];
     <div id="call-supporters">
         <div class="call-supporters-container">
         <?php if ($call->status > 3 && $call->getSupporters(true) > 0) echo new View('view/call/widget/supporters.html.php', $this); ?>
-        <?php if ($call->post instanceof Goteo\Model\Blog\Post) echo new View('view/call/widget/post.html.php', $this); ?>
+        <?php foreach ($call->posts as $post) {
+            if ($post instanceof Goteo\Model\Blog\Post) 
+                echo new View('view/call/widget/post.html.php', array('post' => $post));
+        } ?>
         </div>
     </div>
     
