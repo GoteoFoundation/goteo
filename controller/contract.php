@@ -45,18 +45,12 @@ namespace Goteo\Controller {
             if ($grant) {
                 
                 //--------- por ahora en real solamente mostramos preview de datos
-                // PAra pruebas: puede ver el pdf si admin o suplantando
-                // 
-                if (SITE_URL == 'http://goteo.org') {
-/*                    if (isset($_SESSION['user']->roles['manager']) &&
-                        isset($_SESSION['user']->roles['superadmin']) &&
-                        isset($_SESSION['user']->roles['root']) &&
-                        $_SESSION['impersonating'] === true) {
-                    } else { */
-                        return new View('view/contract/view.html.php', array('contract' => $contract));
-//                    }
+                // a menos que sea alguien con privilegios
+                if (!isset($_SESSION['user']->roles['manager']) &&
+                    !isset($_SESSION['user']->roles['superadmin']) &&
+                    !isset($_SESSION['user']->roles['root'])) {
+                    return new View('view/contract/view.html.php', array('contract' => $contract));
                 }
-                //--------- quitaremos estas 4 lineas cuando esté listo
                 
                 require_once 'library/contract.php';  // Libreria pdf contrato
                 
