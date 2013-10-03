@@ -105,6 +105,7 @@ $filters = $this['filters'];
             <tr>
                 <td colspan="6"> GESTI&Oacute;N:&nbsp;
                     <a href="/call/edit/<?php echo $call->id; ?>" target="_blank">[Editar]</a>
+                    <a href="/admin/users/?id=<?php echo $call->owner; ?>" target="_blank">[Convocador]</a>
                     <a href="<?php echo "/admin/calls/projects/{$call->id}"; ?>">[Proyectos]</a>
                     <?php if (isset($_SESSION['user']->roles['superadmin'])) : ?><a href="<?php echo "/admin/calls/admins/{$call->id}"; ?>">[Administradores]</a><?php endif; ?>
                     <a href="<?php echo "/admin/calls/conf/{$call->id}"; ?>">[Configuraci&oacute;n]</a>
