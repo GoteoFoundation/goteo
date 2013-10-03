@@ -226,7 +226,7 @@ namespace Goteo\Library {
             $sqlSec = '';
             $and = 'WHERE';
             foreach ($extra as $campo=>$valor) {
-                $sqlSec .= " $and `{$campo}` = '{$valor}'";
+                $sqlSec .= ($valor == '') ? " $and (`{$campo}` = '{$valor}' OR `{$campo}` IS NULL)" : " $and `{$campo}` = '{$valor}'";
                 $and = 'AND';
             }
             //sacar de la tabla ordenando y poniendo en array de 10 en 10

@@ -21,8 +21,9 @@ function the_link($current, $image) {
 
 ?>
 <script type="text/javascript">
-function move (img, direction) {
+function move (img, direction, section) {
     document.getElementById('the_action').value = direction;
+    document.getElementById('the_section').value = section;
     document.getElementById('move_pos').value = img;
     document.getElementById('images_form').submit();
 }
@@ -38,6 +39,7 @@ function move (img, direction) {
     <form id="images_form" action="/admin/projects/images/<?php echo $project->id; ?>" method="post">
         <input type="hidden" name="id" value="<?php echo $project->id; ?>" />
         <input type="hidden" id="the_action" name="action" value="apply" />
+        <input type="hidden" id="the_section" name="section" value="" />
         <input type="hidden" id="move_pos" name="move" value="" />
     <table>
         <thead>
@@ -70,8 +72,8 @@ function move (img, direction) {
                     </table>
                 </td>
                 <td>&nbsp;</td>
-                <td><a href="#" onclick="move('<?php echo $image->image; ?>', 'up'); return false;">[&uarr;]</a></td>
-                <td><a href="#" onclick="move('<?php echo $image->image; ?>', 'down'); return false;">[&darr;]</a></td>
+                <td><a href="#" onclick="move('<?php echo $image->image; ?>', 'up', '<?php echo $image->section; ?>'); return false;">[&uarr;]</a></td>
+                <td><a href="#" onclick="move('<?php echo $image->image; ?>', 'down', '<?php echo $image->section; ?>'); return false;">[&darr;]</a></td>
             </tr>
             <?php endforeach; ?>
         <?php endforeach; ?>

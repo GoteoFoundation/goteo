@@ -49,7 +49,7 @@ namespace Goteo\Model\Project {
                     FROM project_image 
                     WHERE project = :id 
                     $sqlFilter
-                    ORDER BY `order`";
+                    ORDER BY `order` ASC, image DESC";
                 
                 $query = static::query($sql, $values);
                 $images = $query->fetchAll(\PDO::FETCH_OBJ);
@@ -74,7 +74,7 @@ namespace Goteo\Model\Project {
         public static function getFirst ($id) {
 
             try {
-                $sql = "SELECT image FROM project_image WHERE project = ? AND (section = '' OR section IS NULL) ORDER BY `order` ASC LIMIT 1";
+                $sql = "SELECT image FROM project_image WHERE project = ? AND (section = '' OR section IS NULL) ORDER BY `order` ASC, image DESC LIMIT 1";
                 $query = self::query($sql, array($id));
                 $first = $query->fetchColumn(0);
                 return Model\Image::get($first);
@@ -93,7 +93,7 @@ namespace Goteo\Model\Project {
             $gallery = array();
 
             try {
-                $sql = "SELECT image FROM project_image WHERE project = ? AND (section = '' OR section IS NULL) ORDER BY `order` ASC";
+                $sql = "SELECT image FROM project_image WHERE project = ? AND (section = '' OR section IS NULL) ORDER BY `order` ASC, image DESC";
                 $query = self::query($sql, array($id));
                 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
                     $gallery[] = Model\Image::get($image['image']);
@@ -124,15 +124,15 @@ namespace Goteo\Model\Project {
         /*
          * Para que una imagen salga antes  (disminuir el order)
          */
-        public static function up ($project, $image) {
-            return Check::reorder($image, 'up', 'project_image', 'image', 'order', array('project' => $project));
+        public static function up ($project, $image, $section) {
+            return Check::reorder($image, 'up', 'project_image', 'image', 'order', array('project' => $project, 'section' => $section));
         }
 
         /*
          * Para que una imagen salga despues  (aumentar el order)
          */
-        public static function down ($project, $image) {
-            return Check::reorder($image, 'down', 'project_image', 'image', 'order', array('project' => $project));
+        public static function down ($project, $image, $section) {
+            return Check::reorder($image, 'down', 'project_image', 'image', 'order', array('project' => $project, 'section' => $section));
         }
 
         /*
