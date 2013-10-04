@@ -56,6 +56,9 @@ namespace Goteo\Controller\Cron {
                     continue;
                 }
                 
+                // Aqui piñon para monitorización en real de una sola cmapaña
+                
+                
                 // Consejos/avisos puntuales
                 switch ($project->from) {
                     
