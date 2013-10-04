@@ -70,8 +70,8 @@ namespace Goteo\Controller\Cron {
 
                 case 'any_update': // template 24, no hay posts de novedades
                     $tpl = 24;
-                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATESURL%');
-                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/updates');
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATESURL%', '%NOVEDADES%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/updates', SITE_URL.'/project/'.$project->id.'/updates');
                     break;
 
                 case '2m_after': // template 25, dos meses despues de financiado

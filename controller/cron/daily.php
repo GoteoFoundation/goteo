@@ -171,12 +171,12 @@ namespace Goteo\Controller\Cron {
                         break;
                     
                     case 38: // Al proyecto le faltan 2 días para archivarse 
-                        // si no ha llegado al mínimo
-                        if ($project->invested < $project->mincost) {
+                        // si no ha llegado al mínimo pero está por encima del 70%
+                        if ($project->invested < $project->mincost && $project->percent >= 70) {
                             if ($debug) echo "No ha llegado al mínimo<br />";
                             Send::toOwner('2_days', $project);
                         } else {
-                            if ($debug) echo "Ha llegado al mínimo<br />";
+                            if ($debug) echo "Ha llegado al mínimo o lleva menos de 70%<br />";
                         }
                         break;
                 }
