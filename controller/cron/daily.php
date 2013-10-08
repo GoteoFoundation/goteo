@@ -8,6 +8,11 @@ namespace Goteo\Controller\Cron {
 
     class Daily {
 
+        public static $monitor = array(
+            'quien-manda'
+        );
+        
+        
         /*
          * Control diario de proyectos
          *  Para envio de tips y avisos
@@ -21,14 +26,18 @@ namespace Goteo\Controller\Cron {
             // para cada uno,
             foreach ($projects as $project) {
                 
+                // piñon temporal para monitorizar
+                if (!in_array($project->id, static::$monitor)) continue;
+                
+                
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
-                if ($project->from > 40 || $project->from > 360) continue;
+                if ($project->days > 40 || $project->days > 360) continue;
 
-                if ($debug) echo "Proyecto {$project->name}, estado {$project->status}, lleva {$project->from} dias<br />";
+                if ($debug) echo "Proyecto {$project->name}, Impulsor:  {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias<br />";
                 
                 // primero los que no se bloquean
                 // Recuerdo al autor proyecto, 2 meses despues de campaña finalizada
-                if ($project->from == 140) {
+                if ($project->days == 140) {
                         // si quedan recompensas/retornos pendientes por cumplir
                         if (!Model\Project\Reward::areFulfilled($project->id) || !Model\Project\Reward::areFulfilled($project->id, 'social') ) {
                             if ($debug) echo "Recompensas/Retornos pendientes<br />";
@@ -39,7 +48,7 @@ namespace Goteo\Controller\Cron {
                 }
                 
                 // Recuerdo al autor proyecto, 8 meses despues de campaña finalizada
-                if ($project->from == 320) {
+                if ($project->days == 320) {
                         // si quedan retornos pendientes por cumplir
                         if (!Model\Project\Reward::areFulfilled($project->id, 'social') ) {
                             if ($debug) echo "Retornos pendientes<br />";
@@ -60,7 +69,7 @@ namespace Goteo\Controller\Cron {
                 
                 
                 // Consejos/avisos puntuales
-                switch ($project->from) {
+                switch ($project->days) {
                     
                     // NO condicionales
                     case 1: // Difunde, difunde, difunde
@@ -70,7 +79,7 @@ namespace Goteo\Controller\Cron {
                     case 5: // Busca dónde está tu comunidad
                     case 8: // Agradece en público e individualmente
                     case 10: // Luce tus recompensas y retornos
-                        $template = 'tip_'.$project->from;
+                        $template = 'tip_'.$project->days;
                         if ($debug) echo "Envío {$template}<br />";
                         Send::toOwner($template, $project);
                         break;
@@ -187,7 +196,7 @@ namespace Goteo\Controller\Cron {
                 // Avisos periodicos 
                 // si lleva más de 15 días: si no se han publicado novedades en la última semana 
                 // Ojo! que si no a enviado ninguna no lanza este sino la de cada 6 días
-                if ($project->from > 15) {
+                if ($project->days > 15) {
                     if ($debug) echo "ya lleva una quincena de campaña<br />";
                     
                     // veamos si ya le avisamos hace una semana

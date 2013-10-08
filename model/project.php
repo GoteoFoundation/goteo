@@ -2136,7 +2136,7 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $the_proj = self::getMedium($proj->id);
                 $the_proj->percent = floor(($the_proj->invested / $the_proj->mincost) * 100);
-                $the_proj->from = $proj->days - 1;
+                $the_proj->days = (int) $proj->days;
                 $the_proj->patrons = Patron::numRecos($proj->id);
                 
                 $projects[] = $the_proj;

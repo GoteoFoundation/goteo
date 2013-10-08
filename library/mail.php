@@ -106,7 +106,13 @@ namespace Goteo\Library {
                         $mail->AddCC($this->cc);
                     }
                     if($this->bcc) {
-                        $mail->AddBCC($this->bcc);
+                        if (is_array($this->bcc)) {
+                            foreach ($this->bcc as $ml) {
+                                $mail->AddBCC($ml);
+                            }
+                        } else {
+                            $mail->AddBCC($this->bcc);
+                        }
                     }
                     if($this->reply) {
                         $mail->AddReplyTo($this->reply, $this->replyName);

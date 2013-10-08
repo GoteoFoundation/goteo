@@ -161,12 +161,13 @@ namespace Goteo\Controller\Cron {
                 case 'tip_15': // template 51, "Sigue los avances y calcula lo que falta"
                     $tpl = 51;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%DIASCAMPAÑA%', '%DAYSTOGO%');
-                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->from, $project->days);
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->days, $project->days);
                     break;
                 
             }
 
             if (!empty($tpl)) {
+                $errors = array();
                 // Obtenemos la plantilla para asunto y contenido
                 $template = Template::get($tpl);
                 // Sustituimos los datos
@@ -176,7 +177,7 @@ namespace Goteo\Controller\Cron {
                 $mailHandler = new Mail();
                 $mailHandler->to = $project->user->email;
                 $mailHandler->toName = $project->user->name;
-                $mailHandler->bcc = array('enric@goteo.org', 'maria@goteo.org', 'monitorizing@goteo.org');
+                $mailHandler->bcc = array('enric@goteo.org', 'maria@goteo.org', 'olivier@goteo.org', 'jcanaves@doukeshi.org');
                 
                 // si es un proyecto de nodo: reply al mail del nodo
                 // si es de centra: reply a MAIL_GOTEO
@@ -186,9 +187,10 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
                 $mailHandler->template = $template->id;
-                if ($mailHandler->send()) {
+                if ($mailHandler->send($errors)) {
                     return true;
                 } else {
+                    echo \trace($errors);
                     @mail('goteo_fail@doukeshi.org',
                         'Fallo al enviar email automaticamente al autor ' . SITE_URL,
                         'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, 1). '</pre>');
