@@ -935,15 +935,12 @@ namespace Goteo\Model {
             if (!empty($this->user->about)) {
                 $okeys['userProfile']['about'] = 'ok';
                 ++$score;
-                // otro +1 si tiene más de 1000 caracteres
-                if (\strlen($this->user->about) > 1000) {
+                // otro +1 si tiene más de 1000 caracteres (pero menos de 2000)
+                if (\strlen($this->user->about) > 1000 && \strlen($this->user->about) < 2000) {
                     ++$score;
                 }
-                // además error si tiene más de 2000
-                if (\strlen($this->user->about) > 2000) {
-                    $errors['userProfile']['about'] = Text::get('validate-user-field-about');
-                    unset($okeys['userProfile']['about']);
-                }
+            } else {
+                $errors['userProfile']['about'] = Text::get('validate-user-field-about');
             }
 
             if (!empty($this->user->interests)) {
