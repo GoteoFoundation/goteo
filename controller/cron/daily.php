@@ -9,7 +9,17 @@ namespace Goteo\Controller\Cron {
     class Daily {
 
         public static $monitor = array(
-            'quien-manda'
+            'quien-manda',
+            'despliegue-de-guifi-net-en-extremadura',
+            'foo-station',
+            'festival-europa-sur',
+            'lafabrika-detodalavida-lfdtv1',
+            'kannibal-3d',
+            'pets-meet-pets1',
+            'pedal-de-guitarra-mfx',
+            'gamegalizacion',
+            'sistema-control-domotica-arduino',
+            'cervecita-fresca'
         );
         
         

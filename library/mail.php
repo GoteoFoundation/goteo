@@ -100,7 +100,7 @@ namespace Goteo\Library {
                     $mail->AddAddress($this->to, $this->toName);
                     // copia a mail log si no es newsletter
                     if ($this->template != 33) {
-                        //$mail->AddBCC('goteomaillog@gmail.com', 'Verifier');
+                        $mail->AddBCC('goteomaillog@gmail.com', 'Verifier');
                     }
                     if($this->cc) {
                         $mail->AddCC($this->cc);
