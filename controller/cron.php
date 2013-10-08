@@ -860,7 +860,10 @@ namespace Goteo\Controller {
 //                die('Este proceso no necesitamos lanzarlo manualmente');
             }
             
-            $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
+            // temporalmente debug fijo (quitarlo al quitar monitorización)
+//            $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
+            $debug = true;
+            
             if ($debug) echo 'Modo debug activado<br />';
             
             // subcontrolador Auto-tips
@@ -870,12 +873,12 @@ namespace Goteo\Controller {
             Cron\Daily::Calls($debug);
             
             
-
-
-            // recogemos el buffer para grabar el log
-            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
-            \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
-            \chmod($log_file, 0777);
+            if ($debug) {
+                // recogemos el buffer para grabar el log
+                $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+                \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
+                \chmod($log_file, 0777);
+            }
         }
 
         /*
