@@ -51,11 +51,12 @@ $recos = $this['recos'];
 <div id="sub-header">
     <div>
         <h2><span class="greenblue"><?php echo $user->name ?></span><br /><?php echo Text::html('profile-patron-header', count($recos)) ?></h2>
+        
+        <?php if (!empty($user->node) && $user->node != \GOTEO_NODE) : ?>
+        <div class="nodemark"><a class="node-jump" href="<?php echo $user->nodeData->url ?>" ><img src ="/nodesys/<?php echo $user->node ?>/sello.png" alt="<?php echo $user->nodeData->name ?>" title="Nodo <?php echo $user->nodeData->name ?>"/></a></div>
+        <?php endif; ?>
     </div>
     
-    <?php if (!empty($user->node) && $user->node != \GOTEO_NODE) : ?>
-    <div class="nodemark"><a class="node-jump" href="<?php echo $user->nodeData->url ?>" >NODO: <?php echo $user->nodeData->name ?></a></div>
-    <?php endif; ?>
 </div>
 
 <?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>

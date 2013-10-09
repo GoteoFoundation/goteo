@@ -848,15 +848,21 @@ ul.lang li:hover>a {
 
 /* Sello de nodo  en pagina proyecto y pagina usuario */
 body.project-show div#sub-header div.nodemark,
-body.user-profile div#sub-header div.nodemark {
+body.patron div#sub-header div.nodemark {
     text-align: left;
     overflow: hidden;
+    width: 102px;
 }
 
-body.user-profile div#sub-header div.nodemark {
-	position: absolute;
-    right: 205px;
-    top: 105px;
+body.patron div#sub-header div.nodemark {
+    float: right;
+    margin-top: -30px;
+    padding-right: 80px;
+}
+
+body.patron div#sub-header h2 {
+    width: 500px;
+    display: inline-block;
 }
 
 body.project-show div#sub-header div.nodemark {
