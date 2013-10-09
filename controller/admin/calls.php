@@ -209,7 +209,8 @@ namespace Goteo\Controller\Admin {
                 $status     = Model\Project::status();
 
                 // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
-                $available  = Model\Call\Project::getAvailable($call->id);
+                //$available  = Model\Call\Project::getAvailable($call->id);
+                // los quitamos por ahora
 
 
                 // cambiar fechas
@@ -220,7 +221,7 @@ namespace Goteo\Controller\Admin {
                         'file' => 'projects',
                         'call' => $call,
                         'projects' => $projects,
-                        'available' => $available,
+                        // 'available' => $available,
                         'status' => $status
                     )
                 );

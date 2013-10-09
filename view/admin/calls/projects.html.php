@@ -4,7 +4,7 @@ use Goteo\Library\Text;
 
 $call = $this['call'];
 $projects = $this['projects'];
-$available = $this['available'];
+//$available = $this['available']; // quitamos los relacionados
 $status = $this['status'];
 ?>
 <script type="text/javascript">
@@ -48,6 +48,14 @@ $status = $this['status'];
     <p>Ning&uacute;n proyecto</p>
     <?php endif; ?>
 </div>
+<form id="hidform" method="post" action="/admin/calls/projects/<?php echo $call->id; ?>">
+    <input type="hidden" id="operation" name="operation" value="" />
+    <input type="hidden" id="hidproj" name="project" value="" />
+</form>
+<?php
+/*
+ * Quitamos los relacionados
+ * 
 <div class="widget">
     <h3>Proyectos relacionados (no seleccionados)</h3>
     <?php if (!empty($available)) : ?>
@@ -73,8 +81,4 @@ $status = $this['status'];
     <p>Ning&uacute;n proyecto</p>
     <?php endif; ?>
 </div>
-<form id="hidform" method="post" action="/admin/calls/projects/<?php echo $call->id; ?>">
-    <input type="hidden" id="operation" name="operation" value="" />
-    <input type="hidden" id="hidproj" name="project" value="" />
-</form>
-
+*/
