@@ -986,23 +986,19 @@ namespace Goteo\Model {
             if (!empty($this->user->facebook)) {
                 $okeys['userProfile']['facebook'] = 'ok';
                 ++$score;
-                // if amigos > 1000 ++$score;
             }
 
             if (!empty($this->user->twitter)) {
                 $okeys['userProfile']['twitter'] = 'ok';
                 ++$score;
-                // if followers > 1000 ++$score;
-                // if listed > 100 ++$score;
             }
 
             if (!empty($this->user->linkedin)) {
                 $okeys['userProfile']['linkedin'] = 'ok';
-                // if contacts > 250 $score+=2;
             }
 
             //puntos
-            $this->setScore($score, 14);
+            $this->setScore($score, 12);
             /***************** FIN Revisión del paso 1, PERFIL *****************/
 
             /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
@@ -1032,31 +1028,6 @@ namespace Goteo\Model {
                  $okeys['userPersonal']['contract_email'] = 'ok';
             }
 
-            // Segun persona física o jurídica
-            /* Aligerando superform
-            if ($this->contract_entity) {  // JURIDICA
-                if (empty($this->entity_office)) {
-                    $errors['userPersonal']['entity_office'] = Text::get('mandatory-project-field-entity_office');
-                } else {
-                     $okeys['userPersonal']['entity_office'] = 'ok';
-                }
-
-                if (empty($this->entity_name)) {
-                    $errors['userPersonal']['entity_name'] = Text::get('mandatory-project-field-entity_name');
-                } else {
-                     $okeys['userPersonal']['entity_name'] = 'ok';
-                }
-
-                if (empty($this->entity_cif)) {
-                    $errors['userPersonal']['entity_cif'] = Text::get('mandatory-project-field-entity_cif');
-                } elseif (!Check::nif($this->entity_cif)) {
-                    $errors['userPersonal']['entity_cif'] = Text::get('validate-project-value-entity_cif');
-                } else {
-                     $okeys['userPersonal']['entity_cif'] = 'ok';
-                }
-            }
-            */
-            
             if (empty($this->contract_birthdate)) {
                 $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
             } else {
@@ -1138,12 +1109,6 @@ namespace Goteo\Model {
              } else {
                  $okeys['overview']['about'] = 'ok';
                  ++$score;
-                 /*
-                 if (\strlen($this->about) > 2000) {
-                     $errors['overview']['about'] = Text::get('validate-project-field-about');
-                 }
-                  * 
-                  */
             }
 
             if (empty($this->motivation)) {
@@ -1170,13 +1135,6 @@ namespace Goteo\Model {
                  ++$score;
             }
 
-            /* aligerando
-            if (!empty($this->keywords)) {
-                 $okeys['overview']['keywords'] = 'ok';
-                 ++$score;
-            }
-            */
-            
             if (empty($this->media)) {
                 // solo error si no está aplicando a una convocatoria
                 if (!isset($this->call)) {
@@ -1187,14 +1145,6 @@ namespace Goteo\Model {
                  $score+=3;
             }
 
-            /* aligerando
-            if (!empty($this->currently)) {
-//                 $okeys['overview']['currently'] = 'ok';
-                 ++$score;
-                 if ($this->currently == 2 || $this->currently == 3) ++$score;
-            }
-            */
-
             if (empty($this->project_location)) {
                 $errors['overview']['project_location'] = Text::get('mandatory-project-field-location');
             } else {
@@ -1202,13 +1152,7 @@ namespace Goteo\Model {
                  ++$score;
             }
 
-            /* aligerando
-            if (!empty($this->scope)) {
-                 $okeys['overview']['scope'] = 'ok';
-            }
-            */
-
-            $this->setScore($score, 16);
+            $this->setScore($score, 13);
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
 
             /***************** Revisión de campos del paso 4, COSTES *****************/
@@ -1283,16 +1227,6 @@ namespace Goteo\Model {
                 ++$score;
             }
 
-            /*
-            if (empty($this->resource)) {
-                $errors['costs']['resource'] = Text::get('mandatory-project-resource');
-            } else {
-                 $okeys['costs']['resource'] = 'ok';
-                 ++$score;
-            }
-             * 
-             */
-
             $this->setScore($score, 6);
             /***************** FIN Revisión del paso 4, COSTES *****************/
 
@@ -1323,7 +1257,7 @@ namespace Goteo\Model {
                     $anyerror = !$anyerror ?: true;
                 } else {
                      $okeys['rewards']['social_reward-'.$social->id.'reward'] = 'ok';
-                     $scoreName = 4;
+                     $scoreName = 1;
                 }
 
                 if (empty($social->description)) {
@@ -1343,13 +1277,6 @@ namespace Goteo\Model {
 
                 if (!empty($social->license)) {
                     $scoreLicense = 1;
-                    /*
-                     * Si elige de las mas abiertas
-                    if ($license_group == 1) {
-                        ++$score;
-                    }
-                     *
-                     */
                 }
             }
 
@@ -1360,7 +1287,7 @@ namespace Goteo\Model {
 
             
             $score = $score + $scoreName + $scoreDesc + $scoreLicense;
-            $scoreName = $scoreDesc = 0;
+            $scoreName = $scoreDesc = $scoreAmount = 0;
 
             $anyerror = false;
             foreach ($this->individual_rewards as $individual) {
@@ -1403,7 +1330,7 @@ namespace Goteo\Model {
             }
 
             $score = $score + $scoreName + $scoreDesc + $scoreAmount;
-            $this->setScore($score, 11);
+            $this->setScore($score, 8);
             /***************** FIN Revisión del paso 5, RETORNOS *****************/
 
             /***************** Revisión de campos del paso 6, COLABORACIONES *****************/
