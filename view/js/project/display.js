@@ -160,7 +160,8 @@ GOTEO.initializeGraph = function(raw_data) {
         fundersChart.render();
         
         // Render charts and info
-        GOTEO.updateTitles();
+        // GOTEO.updateTitles();
+        // now with php
 }
 
 // ----------------------
@@ -168,7 +169,9 @@ GOTEO.initializeGraph = function(raw_data) {
 // Update funds and days left in subtitle
 //
 // ----------------------
-
+/*
+ * Estos datos los pintamos en la vista con php
+ * 
 GOTEO.updateTitles = function() {
     var fundsChart = GOTEO.charts.fundsChart,
         current = fundsChart.getCurrent().value,
@@ -192,3 +195,4 @@ GOTEO.updateTitles = function() {
     }
     $("#dias").html(dates.days_left).css("margin", "0px 5px");
 };
+*/
