@@ -231,7 +231,6 @@ namespace Goteo\Model {
             try {
                 $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
                 $sql .= ($which == 'project') ? " ORDER BY section ASC, `order` ASC, image DESC" : " ORDER BY image ASC";
-                \Goteo\Library\Message::Info($sql);
                 $query = self::query($sql, array($id));
                 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
                     $gallery[] = self::get($image['image']);
