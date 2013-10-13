@@ -10,12 +10,12 @@ namespace Goteo\Controller\Cron {
 
         public static $monitor = array(
             'quien-manda',
-            'despliegue-de-guifi-net-en-extremadura',
+            'guifi-net-extremadura',
             'foo-station',
             'festival-europa-sur',
-            'lafabrika-detodalavida-lfdtv1',
+            'lafabrika-detodalavida',
             'kannibal-3d',
-            'pets-meet-pets1',
+            'collar-nfc-pets',
             'pedal-de-guitarra-mfx',
             'gamegalizacion',
             'sistema-control-domotica-arduino',
