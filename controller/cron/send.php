@@ -88,8 +88,8 @@ namespace Goteo\Controller\Cron {
 
                 case '20_backers': // template 46, "Apóyate en quienes te van apoyando "  (en cuanto se llega a los 20 backers
                     $tpl = 46;
-                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
-                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id);
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NUMBACKERS%');
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->num_investors);
                     break;
                 
                 // consejos normales

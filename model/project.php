@@ -2049,10 +2049,10 @@ namespace Goteo\Model {
 
             $sql = "SELECT 
                     id, status, 
-                    DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
+                    DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as dias
                 FROM  project 
                 WHERE status IN ('3', '4')
-                HAVING status = 3 OR (status = 4 AND  days > 138)
+                HAVING status = 3 OR (status = 4 AND  dias > 138)
                 ORDER BY days ASC";
             
             
@@ -2060,7 +2060,7 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $the_proj = self::getMedium($proj->id);
                 $the_proj->percent = floor(($the_proj->invested / $the_proj->mincost) * 100);
-                $the_proj->days = (int) $proj->days;
+                $the_proj->days = (int) $proj->dias - 1;
                 $the_proj->patrons = Patron::numRecos($proj->id);
                 
                 $projects[] = $the_proj;

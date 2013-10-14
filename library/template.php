@@ -64,12 +64,12 @@ namespace Goteo\Library {
                 $sqlFilter = '';
                 $and = "WHERE";
                 if (!empty($filters['group'])) {
-                    $sqlFilter = "$and template.`group` = :group";
+                    $sqlFilter .= " $and template.`group` = :group";
                     $and = "AND";
                     $values[':group'] = "{$filters['group']}";
                 }
                 if (!empty($filters['name'])) {
-                    $sqlFilter = "$and (template.`name` LIKE :name OR template.`title` LIKE :name)";
+                    $sqlFilter .= " $and (template.`name` LIKE :name OR template.`purpose` LIKE :name OR template.`title` LIKE :name)";
                     $and = "AND";
                     $values[':name'] = "%{$filters['name']}%";
                 }
