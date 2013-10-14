@@ -30,7 +30,7 @@ $campaigns = $this['campaigns'];
             $('#calls').slides({
                 container: 'slder_calls',
                 generatePagination: false,
-                play: 10000
+                play: 6000
             });
         });
     </script>
@@ -53,7 +53,7 @@ $campaigns = $this['campaigns'];
             $('#campaigns').slides({
                 container: 'slder_campaigns',
                 generatePagination: false,
-                play: 10000
+                play: 6000
             });
         });
     </script>
