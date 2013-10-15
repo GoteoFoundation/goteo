@@ -8,21 +8,6 @@ namespace Goteo\Controller\Cron {
 
     class Daily {
 
-        public static $monitor = array(
-            'quien-manda',
-            'guifi-net-extremadura',
-            'foo-station',
-            'festival-europa-sur',
-            'lafabrika-detodalavida',
-            'kannibal-3d',
-            'collar-nfc-pets',
-            'pedal-de-guitarra-mfx',
-            'gamegalizacion',
-            'sistema-control-domotica-arduino',
-            'cervecita-fresca'
-        );
-        
-        
         /*
          * Control diario de proyectos
          *  Para envio de tips y avisos
@@ -35,10 +20,6 @@ namespace Goteo\Controller\Cron {
 
             // para cada uno,
             foreach ($projects as $project) {
-                
-                // piñon temporal para monitorizar
-                if (!in_array($project->id, static::$monitor)) continue;
-                
                 
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
                 if ($project->days > 40 || $project->days > 360) continue;
