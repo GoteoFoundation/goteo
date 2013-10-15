@@ -213,6 +213,10 @@ namespace Goteo\Library {
                 $sql .= " AND ( text.text LIKE :text OR (text.text IS NULL AND purpose.purpose LIKE :text ))";
                 $values[':text'] = "%{$filters['text']}%";
             }
+            // pendientes de traducir
+            if (!empty($filters['pending'])) {
+                $sql .= " HAVING pendiente = 1";
+            }
             $sql .= " ORDER BY pendiente DESC, text ASC";
             
             try {

@@ -39,16 +39,26 @@ $types = Content::$fields[$table]; // por tipo de campo
     <form id="filter-form" action="/translate/<?php echo $table ?>/list/<?php echo $filter ?>" method="get">
         <input type="hidden" name="table" value="<?php echo $table ?>" />
 
-        <label for="filter-<?php echo $id; ?>">Filtrar por campo:</label>
-        <select id="filter-<?php echo $id; ?>" name="type" >
-        <?php foreach ($types as $val=>$opt) : ?>
-            <option value="<?php echo $val; ?>"<?php if ($this['filters']['type'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
-        <?php endforeach; ?>
-        </select>
+        <div style="float:left;margin:5px;">
+            <label for="filter-type">Filtrar por campo:</label><br />
+            <select id="filter-type" name="type" >
+            <?php foreach ($types as $val=>$opt) : ?>
+                <option value="<?php echo $val; ?>"<?php if ($this['filters']['type'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
+            <?php endforeach; ?>
+            </select>
+        </div>
         
-        <label for="filter-<?php echo $id; ?>">Buscar texto:</label>
-        <input name="text" value="<?php echo (string) $this['filters']['text']; ?>" />
+        <div style="float:left;margin:5px;">
+            <label for="filter-text">Buscar texto:</label><br />
+            <input name="text" value="<?php echo (string) $this['filters']['text']; ?>" />
+        </div>
 
+        <div style="float:left;margin:5px;">
+            <label for="filter-pending">Solo pendientes:</label><br />
+            <input type="checkbox" name="pending" value="1" <?php if ($this['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
+        </div>
+            
+        <br clear="both" />
         <input type="submit" name="filter" value="Buscar">
     </form>
 </div>
@@ -70,7 +80,7 @@ $types = Content::$fields[$table]; // por tipo de campo
         <tbody>
         <?php while ($item = $pagedResults->fetchPagedRow()) : ?>
             <tr>
-                <td width="5%"><a title="Registro <?php echo $item->id ?>" href='/translate/<?php echo $table ?>/edit/<?php echo $item->id . $filter . '&page=' . $_GET['page'] ?>'>[Edit]</a></td>
+                <td width="5%"><a title="Registro <?php echo $item->id ?>" href='/translate/<?php echo $table ?>/edit/<?php echo $item->id . $filter . '&page=' . $_GET['page'] ?>' <?php if ($item->pendiente == 1) echo 'style="color:red;"'; ?>>[Edit]</a></td>
                 <td width="75%"><?php if ($item->pendiente == 1) echo '* '; ?><?php echo Text::recorta($item->value, 250) ?></td>
                 <td><?php echo $item->fieldName ?></td>
                 <td><?php echo $item->id ?></td>

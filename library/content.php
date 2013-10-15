@@ -168,6 +168,7 @@ namespace Goteo\Library {
                     if (!empty($filters['table']) && $table != $filters['table']) continue;
 
                     $sql = "";
+                    $primercampo = "";
                     $values = array();
 
                     $sql .= "SELECT
@@ -178,6 +179,7 @@ namespace Goteo\Library {
                         $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field,
                                 IF({$table}_lang.$field IS NULL, 0, 1) as {$field}ready,
                                 ";
+                        $primercampo = ($primercampo == '') ?: "{$field}ready";
                     }
 
                     $sql .= "CONCAT('{$table}') as `table`
@@ -217,6 +219,10 @@ namespace Goteo\Library {
                             ";
                     }
 
+                    // pendientes de traducir
+                    if (!empty($filters['pending'])) {
+                        $sql .= " HAVING $primercampo = 0";
+                    }
 
                     $sql .= " ORDER BY id ASC";
 

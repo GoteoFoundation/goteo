@@ -68,7 +68,8 @@ namespace Goteo\Controller {
                 case 'texts':
                     // comprobamos los filtros
                     $filters = array();
-                    $fields = array('group', 'text');
+                    $fields = array('group', 'text', 'pending');
+                    if (!isset($_GET['pending'])) $_GET['pending'] = 0;
                     foreach ($fields as $field) {
                         if (isset($_GET[$field])) {
                             $filters[$field] = $_GET[$field];
@@ -79,7 +80,7 @@ namespace Goteo\Controller {
                         }
                     }
 
-                    $filter = "?group={$filters['group']}&text={$filters['text']}";
+                    $filter = "?group={$filters['group']}&text={$filters['text']}&pending={$filters['pending']}";
 
                     // si llega post, vamos a guardar los cambios
                     if ($action == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
@@ -312,7 +313,8 @@ namespace Goteo\Controller {
                 default:
                     // comprobamos los filtros
                     $filters = array();
-                    $fields = array('type', 'text');
+                    $fields = array('type', 'text', 'pending');
+                    if (!isset($_GET['pending'])) $_GET['pending'] = 0;
                     foreach ($fields as $field) {
                         if (isset($_GET[$field])) {
                             $filters[$field] = $_GET[$field];
@@ -323,7 +325,7 @@ namespace Goteo\Controller {
                         }
                     }
 
-                    $filter = "?type={$filters['type']}&text={$filters['text']}";
+                    $filter = "?type={$filters['type']}&text={$filters['text']}&pending={$filters['pending']}";
 
                     // si llega post, vamos a guardar los cambios
                     if ($action == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
