@@ -11,6 +11,7 @@ include 'view/header.html.php';
 
 $user = $this['user'];
 $recos = $this['recos'];
+shuffle($recos);
 ?>
 <script type="text/javascript">
 
