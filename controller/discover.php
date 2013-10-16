@@ -42,6 +42,9 @@ namespace Goteo\Controller {
             foreach ($types as $type) {
                 $projects = Model\Project::published($type, $limit);
                 if (empty($projects)) continue;
+                // random para exitosos y retorno cumplido
+                if ($type == 'success' || $type == 'fulfilled') shuffle ($projects);
+                
                 $viewData['lists'][$type] = Listing::get($projects);
             }
 
@@ -138,7 +141,10 @@ namespace Goteo\Controller {
                  );
             } else {
 
-                $viewData['list']  = Model\Project::published($type);
+                $projects = Model\Project::published($type);
+                // random para exitosos y retorno cumplido
+                if ($type == 'success' || $type == 'fulfilled') shuffle ($projects);
+                $viewData['list'] = $projects;
 
                 return new View(
                     'view/discover/view.html.php',
