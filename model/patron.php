@@ -142,20 +142,16 @@ namespace Goteo\Model {
 
             $values = array(':node'=>$node);
 
-            $sqlFilter = ($activeonly) ? " AND " : '';
-
             $sql = "SELECT
-                        DISTINCT(patron.user) as id,
-                        user.name as name
+                        patron.user as id
                     FROM patron
-                    LEFT JOIN user
-                        ON user.id = patron.user
                     WHERE patron.active = 1
                     AND patron.node = :node
-                    ORDER BY `order` ASC";
+                    ORDER BY patron.`order` ASC";
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-                $list[$item->id] = $item->name;
+                if (!in_array($item->id, $list))
+                    $list[$item->id] = $item->id;
             }
 
             return $list;

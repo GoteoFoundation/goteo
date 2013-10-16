@@ -68,9 +68,9 @@ namespace Goteo\Controller {
 
             // padrinos
             if (isset($order['patrons'])) {
-                $patrons  =  Patron::getActiveVips();
+                $patrons  = Patron::getActiveVips();
 
-                foreach ($patrons as $userId => $user) {
+                foreach ($patrons as $key=>$userId) {
                     try {
                         $userData = User::getMini($userId);
                         $vipData = User\Vip::get($userId);
@@ -79,7 +79,7 @@ namespace Goteo\Controller {
                         }
                         $patrons[$userId] = $userData;
                     } catch (\Goteo\Core\Error $e) {
-                        unset($patrons[$key]);
+                        unset($patrons[$userId]);
                     }
                 }
 
@@ -154,7 +154,7 @@ namespace Goteo\Controller {
             if (isset($order['patrons'])) {
                 $patrons  =  Patron::getActiveVips(NODE_ID);
 
-                foreach ($patrons as $userId => $user) {
+                foreach ($patrons as $key=>$userId) {
                     try {
                         $userData = User::getMini($userId);
                         $vipData = User\Vip::get($userId);
@@ -163,7 +163,7 @@ namespace Goteo\Controller {
                         }
                         $patrons[$userId] = $userData;
                     } catch (\Goteo\Core\Error $e) {
-                        unset($patrons[$key]);
+                        unset($patrons[$userId]);
                     }
                 }
 
