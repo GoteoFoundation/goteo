@@ -136,6 +136,24 @@ namespace Goteo\Controller {
 		}
 
 		/**
+		 * Meses en Locale
+		 * */
+		public function months($full = true) {
+
+            $fmt = ($full) ? '%B' : '%b';
+            
+            $months = array();
+            
+            for( $i = 1; $i <= 12; $i++ ) {
+                $months[ $i ] = strftime( $fmt, mktime( 0, 0, 0, $i, 1 ) );
+            }            
+            
+            $this->result['months'] = $months;
+            
+            return $this->output();
+		}
+
+		/**
 		 * Json encoding...
 		 * */
 		public function output() {
