@@ -62,14 +62,22 @@ if (!$project instanceof  Goteo\Model\Project) {
             <div class="titles">
                 <div>
                     <h2>FINANCIACI&OacuteN OBTENIDA</h2>
-                    <div id="funded" class="obtenido number"></div>
-                    <div id="de" class="de"></div>
-                    <div id="minimum" class="minimum number"></div>
-                    <div id="euros" class="euros"></div>
+                <?php if (empty($this['data']['invests'])) : ?>
+                    <div id="funded" class="obtenido number">No hay aportes.</div>
+                <?php else : ?>
+                    <div id="funded" class="obtenido number"><?php echo \amount_format($project->invested); ?> &euro;</div>
+                    <div id="de" class="de">de</div>
+                    <div id="minimum" class="minimum number"><?php echo \amount_format($project->mincost); ?> &euro;</div>
+                    <div id="euros" class="euros">
+                         (<div style='color: #bb70b6; display: inline'><?php echo \amount_format($project->maxcost); ?> &euro;</div> &oacuteptimo)
+                    </div>
+                <?php endif; ?>
                 </div>
+                <?php if ($project->status == 3) : ?>
                 <div class="quedan">
-                    <div style="font-weight: normal; font-size: 12px">QUEDAN<h2 id="dias" style="display:inline"></h2>D&IacuteAS</div>
+                    <div style="font-weight: normal; font-size: 12px">QUEDAN<h2 id="dias" style="display:inline; margin:0px 5px"><?php $project->days; ?></h2>D&IacuteAS</div>
                 </div>
+                <?php endif; ?>
             </div>
             <div id="funds" class="chart_div"></div>
             <div>

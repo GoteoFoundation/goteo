@@ -1,50 +1,50 @@
-.widget {
+div.widget.chart {
     background: #fff;
     padding: 20px;
     margin: 0 auto;
 }
 
-.table_widget {
+div.widget.chart .table_widget {
     background: #fff;
     width: 640px;
     margin: 0 auto;
 }
 
-h2 {
+div.widget.chart h2 {
     margin: 0px;
     font-size: 17px;
 }
 
-.number {
+div.widget.chart .number {
     float: left;
 }
 
-.obtenido {
+div.widget.chart .obtenido {
     color: #20b3b2;
 }
 
-.de {
+div.widget.chart .de {
     float: left;
     margin-left: 5px;   
 }
 
-.minimum {
+div.widget.chart .minimum {
     color: #96238f;
     margin-left: 5px;
 }
 
-.euros {
+div.widget.chart .euros {
     margin-left: 5px;
     float: left;
 }
 
-.quedan {
+div.widget.chart .quedan {
     width: 265px;
     float: left;
     text-align: right;
 }
 
-.chart_div {
+div.widget.chart .chart_div {
     clear: both;
 }
 
