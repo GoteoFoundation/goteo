@@ -98,8 +98,8 @@ GOTEO.initializeGraph = function(raw_data) {
             format = GOTEO.formats.format,
             minimum = raw_data.minimum,
             optimum = parseInt(raw_data.minimum) + parseInt(raw_data.optimum),
-            funds_options = {size : {'w' : 540, 'h' : 250}},
-            funders_options = {size : {'w' : 540, 'h' : 40}};
+            funds_options = {size : {'w' : 840, 'h' : 250}},
+            funders_options = {size : {'w' : 840, 'h' : 40}};
 
         // Get deadline, day_number and other time flags
         GOTEO.getDates(raw_data.dates);
