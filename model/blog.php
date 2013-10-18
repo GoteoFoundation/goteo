@@ -150,16 +150,15 @@ namespace Goteo\Model {
             $sql = "
                     SELECT
                         COUNT(post.id) as num
-                    FROM blog
-                    LEFT JOIN post
-                    ON post.blog = blog.id
+                    FROM post
+                    INNER JOIN blog
+                        ON  post.blog = blog.id
+                        AND blog.type = 'project'
+                        AND blog.owner = :project
                     WHERE post.publish = 1
-                    AND blog.type = 'project'
-                    AND blog.owner = :id
-                    GROUP BY post.blog
                     ";
 
-                $query = static::query($sql, array(':id' => $project));
+                $query = static::query($sql, array(':project' => $project));
                 $num = $query->fetchColumn(0);
                 return ($num > 0);
         }

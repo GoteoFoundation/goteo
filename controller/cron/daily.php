@@ -56,8 +56,8 @@ namespace Goteo\Controller\Cron {
                     continue;
                 }
                 
-                // Aqui piñon para monitorización en real de una sola cmapaña
-                
+                // flag de aviso
+                $avisado = false;
                 
                 // Consejos/avisos puntuales
                 switch ($project->days) {
@@ -83,11 +83,12 @@ namespace Goteo\Controller\Cron {
                     case 30: 
                     case 36: 
                         // si ya hay novedades, nada
-                        if (Model\Blog::hasUpdates($project->id) > 0) {
+                        if (Model\Blog::hasUpdates($project->id)) {
                             if ($debug) echo "Ya ha publicado novedades<br />";
                         } else {
                             if ($debug) echo "Envío aviso de que no ha publicado novedades<br />";
                             Send::toOwner('any_update', $project);
+                            $avisado = true;
                         }
                         break;
                     
@@ -216,7 +217,7 @@ namespace Goteo\Controller\Cron {
                 // Avisos periodicos 
                 // si lleva más de 15 días: si no se han publicado novedades en la última semana 
                 // Ojo! que si no a enviado ninguna no lanza este sino la de cada 6 días
-                if ($project->days > 15) {
+                if (!$avisado && $project->days > 15) {
                     if ($debug) echo "ya lleva una quincena de campaña, verificamos novedades<br />";
                     
                     // veamos si ya le avisamos hace una semana
@@ -256,7 +257,7 @@ namespace Goteo\Controller\Cron {
                         if ($lastUpdate > 7) {
                             if ($debug) echo "Ultima novedad es de hace más de una semana<br />";
                             Send::toOwner('no_updates', $project);
-                        } elseif (isset($lastUpdate)) {
+                        } elseif (is_numeric($lastUpdate)) {
                             if ($debug) echo "Publicó novedad hace menos de una semana<br />";
                         } else {
                             if ($debug) echo "No se ha publicado nada, recibirá el de cada 6 días<br />";
