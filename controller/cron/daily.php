@@ -69,7 +69,6 @@ namespace Goteo\Controller\Cron {
                     case 4: // Llama a todas las puertas
                     case 5: // Busca dónde está tu comunidad
                     case 8: // Agradece en público e individualmente
-                    case 10: // Luce tus recompensas y retornos
                         $template = 'tip_'.$project->days;
                         if ($debug) echo "Envío {$template}<br />";
                         Send::toOwner($template, $project);
@@ -133,6 +132,36 @@ namespace Goteo\Controller\Cron {
                         }
                         break;
                     
+                    case 10: // Luce tus recompensas y retornos
+                        // que no se envie a los que solo tienen recompensas de agradecimiento
+                        $thanksonly = true;
+                        // recompensas
+                        $rewards = Model\Project\Reward::getAll($project->id, 'individual', \LANG);
+                        foreach ($rewards as $rew) {
+                            if ($rew->icon != 'thanks') {
+                                $thanksonly = false;
+                                break; // ya salimos del bucle, no necesitamos más
+                            }
+                        }
+                        if ($thanksonly) {
+                            if ($debug) echo "Solo tiene recompensas de agradecimiento<br />";
+                        } else {
+                            if ($debug) echo "Tienen recompensas<br />";
+                            uasort($rewards,
+                                function ($a, $b) {
+                                    if ($a->amount == $b->amount) return 0;
+                                    return ($a->amount > $b->amount) ? 1 : -1;
+                                    }
+                                );
+                            // sacar la primera y la última
+                            $lower = reset($rewards); $project->lower = $lower->reward;
+                            $higher = end($rewards); $project->higher = $higher->reward;
+
+                            Send::toOwner('tip_10', $project);
+                        }
+                        break;
+                        
+                        
                     case 11: // Refresca tu mensaje de motivacion
                         // si no tiene video motivacional
                         if (empty($project->video)) {
@@ -188,7 +217,7 @@ namespace Goteo\Controller\Cron {
                 // si lleva más de 15 días: si no se han publicado novedades en la última semana 
                 // Ojo! que si no a enviado ninguna no lanza este sino la de cada 6 días
                 if ($project->days > 15) {
-                    if ($debug) echo "ya lleva una quincena de campaña<br />";
+                    if ($debug) echo "ya lleva una quincena de campaña, verificamos novedades<br />";
                     
                     // veamos si ya le avisamos hace una semana
                     // Si ya se mandó esta plantilla (al llegar a los 20 por primera vez) no se envía de nuevo
@@ -228,18 +257,18 @@ namespace Goteo\Controller\Cron {
                             if ($debug) echo "Ultima novedad es de hace más de una semana<br />";
                             Send::toOwner('no_updates', $project);
                         } elseif (isset($lastUpdate)) {
-                            if ($debug) echo "Publicó hace menos de una semana<br />";
+                            if ($debug) echo "Publicó novedad hace menos de una semana<br />";
                         } else {
-                            if ($debug) echo "No se ha publicado nada<br />";
+                            if ($debug) echo "No se ha publicado nada, recibirá el de cada 6 días<br />";
                         }
                     } else {
-                        if ($debug) echo "Se le avisó hace menos de una semana<br />";
+                        if ($debug) echo "Se le avisó por novedades hace menos de una semana<br />";
                     }
                     
                     
                 }
                 
-                if ($debug) echo "Proyecto {$project->name} listo!<hr />";
+                if ($debug) echo "<hr />";
                 
             }
             
