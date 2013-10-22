@@ -514,7 +514,7 @@ namespace Goteo\Controller\Dashboard {
 
                     // si no ha encontrado otro, lanzamos el update
                     if (!$log->unique_issue) {
-                        \Goteo\Controller\Cron::toInvestors('update', $project, $post);
+                        \Goteo\Controller\Cron\Send::toInvestors('update', $project, $post);
                     }
 
                     unset($log);
