@@ -17,11 +17,11 @@ class Pdf extends \PDF_HTML {
     const X_START = 20;
     const X_STATIC_TEXT = 23;
     const HEIGHT = 8;
-    const HEADER_FONT = "Times";
+    const HEADER_FONT = "Arial";
     const FONT = "Arial";
-    const FONT_HEADER_SIZE = 14;
+    const FONT_HEADER_SIZE = 11;
     const FONT_SIZE = 10;
-    const FONT_TITLE_SIZE = 11;
+    const FONT_TITLE_SIZE = 12;
     const DPI = 96;
     const MM_IN_INCH = 25.4;
     const DRAFT_X = 8;
@@ -45,9 +45,9 @@ class Pdf extends \PDF_HTML {
     const TEXT_PAYMENT_PAYPAL_ACCOUNT = "Cuenta PayPal: ";
     const TEXT_PAYMENT_PAYPAL_OWNER = "Titular: ";
     /* Dynamic part */
-    const TEXT_TYPE_0 = "En su propio nombre y derecho.";
-    const TEXT_TYPE_1 = "En su calidad de %office%, en nombre y representación de la entidad %reg_name%, titular del CIF %reg%, con domicilio social en %entity_location% (%entity_region%, CP %entity_zipcode%, %entity_country%), calle/plaza/avenida %entity_address%; entidad inscrita en el Registro de Asociaciones de %entity_region%, con el número %reg_id%.";
-    const TEXT_TYPE_2 = "En su calidad de apoderado y %office%, en nombre y representación de la entidad %entity_name%, titular del CIF %entity_cif%, con domicilio social en %entity_location% (%entity_region%, CP %entity_zipcode%, %entity_country%), calle/plaza/avenida %entity_address%; entidad constituida en escritura pública otorgada en fecha %reg_date%. ante el Notario de %region%. Don %reg_name% (nº %reg_number% de su protocolo) e inscrita en el Registro Mercantil de %reg_id%.";
+    const TEXT_TYPE_0 = " en su propio nombre y derecho.";
+    const TEXT_TYPE_1 = " en su calidad de %office%, en nombre y representación de la entidad %entity_name%, titular del CIF %entity_cif%, con domicilio social en %entity_location% (%entity_region%, CP %entity_zipcode%, %entity_country%), %entity_address%; entidad inscrita en el %reg_name%, %reg_number%.";
+    const TEXT_TYPE_2 = " en su calidad de apoderado y %office%, en nombre y representación de la entidad %entity_name%, titular del CIF %entity_cif%, con domicilio social en %entity_location% (%entity_region%, CP %entity_zipcode%, %entity_country%), calle/plaza/avenida %entity_address%; entidad constituida en escritura pública otorgada en fecha %reg_date%. ante el Notario de %entity_region%. %reg_name% (nº %reg_number% de su protocolo) e inscrita en el %reg_id%.";
     /* Other texts */
     const TEXT_GENERAL_CONDITIONS = "DOCUMENTO DE CONDICIONES GENERALES USO";
     const TEXT_PLATFORM = "PLATAFORMA GOTEO";
@@ -256,7 +256,6 @@ class Pdf extends \PDF_HTML {
                         $this->SetX(self::X_START);
                         $this->regular();
                         if ($reader->getAttribute("option") == "type") {
-                            $txt .= '<br />';
                             switch ($this->data->type) {
                                 case '0':
                                     $txt .= self::txt(self::TEXT_TYPE_0);

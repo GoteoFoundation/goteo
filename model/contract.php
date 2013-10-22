@@ -365,8 +365,9 @@ namespace Goteo\Model {
             $regExist = $query->fetchColumn();
             if (empty($regExist)) {
                 $sql = "REPLACE INTO";
-                $statuses['contract'] = $id;
                 $sqlend = '';
+                $fields[] = "contract = :id";
+                $values[':id'] = $id;
             } else {
                 $sql = "UPDATE";
                 $sqlend = " WHERE contract = :id";
