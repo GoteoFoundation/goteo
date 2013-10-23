@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
                 <h8 class="title"><?php echo Text::get('footer-header-categories') ?></h8>
                 <ul class="scroll-pane">
                 <?php foreach ($categories as $id=>$name) : ?>
-                    <li><a href="/discover/results/<?php echo $id; ?>"><?php echo $name; ?></a></li>
+                    <li><a href="/discover/results/<?php echo $id.'/'.$name; ?>"><?php echo $name; ?></a></li>
                 <?php endforeach; ?>
                 </ul>
             </div>

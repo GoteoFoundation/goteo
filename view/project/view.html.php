@@ -91,7 +91,7 @@ include 'view/prologue.html.php' ?>
                 <?php if (!empty($categories)) : ?>
                 <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
                     <?php $sep = ''; foreach ($categories as $key=>$value) :
-                        echo $sep.'<a href="/discover/results/'.$key.'">'.htmlspecialchars($value).'</a>';
+                        echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'">'.htmlspecialchars($value).'</a>';
                     $sep = ', '; endforeach; ?>
                 </div>
                 <?php endif; ?>
