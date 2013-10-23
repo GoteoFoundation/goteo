@@ -67,7 +67,7 @@ namespace Goteo\Controller {
             if (!empty($category)) {
                 $_POST['category'][] = $category;
             }
-
+            
 			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query']) && !isset($category)) {
                 $errors = array();
 
@@ -89,6 +89,11 @@ namespace Goteo\Controller {
                         $params[$param][] = "'{$value}'";
                     }
                 }
+                
+                if (isset($_GET['status'])) {
+                    $params['status'] = $_GET['status'];
+                }
+
 
                 $params['query'] = \strip_tags($_POST['query']);
 
