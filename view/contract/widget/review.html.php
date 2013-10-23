@@ -36,7 +36,7 @@ $fields = array(
     'paypal' => 'Cuenta PayPal del proyecto',
     'paypal_owner' => 'Titular de la cuenta PayPal',
     'bank' => 'Cuenta bancaria del proyeccto',
-    'benk_owner' => 'Titular de la cuenta bancaria'
+    'bank_owner' => 'Titular de la cuenta bancaria'
     
 );
 
