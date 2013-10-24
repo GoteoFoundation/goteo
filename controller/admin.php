@@ -700,6 +700,7 @@ namespace Goteo\Controller {
                         unset($menu['contents']['options']['node']);
                         unset($menu['projects']['options']['invests']);
                         $menu['projects']['options']['accounts'] = $options['accounts']; // gestion completa de aportes
+                        $menu['projects']['options']['rewards'] = $options['rewards']; // gestion de recompensas de aportes
                         $menu['projects']['options']['reports'] = $options['reports']; // informes
                         $menu['contents']['options']['texts'] = $options['texts']; // gestión de textos
                         $menu['contents']['options']['faq'] = $options['faq']; // gestión de faqs
