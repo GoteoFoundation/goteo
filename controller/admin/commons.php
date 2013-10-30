@@ -19,9 +19,9 @@ namespace Goteo\Controller\Admin {
              */
             
             if (!empty($filters['projStatus'])) {
-                $projects = Model\Project::getList(array('status'=>$filters['projStatus']));
+                $projects = Model\Project::getList(array('status'=>$filters['projStatus']), $_SESSION['admin_node']);
             } else {
-                $projects = Model\Project::published('almost-fulfilled');
+                $projects = Model\Project::getList(array('multistatus'=>"4,5"), $_SESSION['admin_node']);
             }
 
             foreach ($projects as $kay=>&$project) {

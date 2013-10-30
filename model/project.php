@@ -2111,6 +2111,9 @@ namespace Goteo\Model {
 
             // los filtros
             $sqlFilter = "";
+            if (!empty($filters['multistatus'])) {
+                $sqlFilter .= " AND status IN ({$filters['multistatus']})";
+            }
             if ($filters['status'] > -1) {
                 $sqlFilter .= " AND status = :status";
                 $values[':status'] = $filters['status'];

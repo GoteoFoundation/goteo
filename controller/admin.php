@@ -670,6 +670,7 @@ namespace Goteo\Controller {
                                 'translates' => $options['translates'], // traducciones de proyectos del nodo
                                 'invests' => $options['invests'],
                                 'patron' => $options['patron'],
+                                'commons' => $options['commons'],
                                 'calls' => $options['calls']
                             )
                         ),
