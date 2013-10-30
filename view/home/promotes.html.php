@@ -3,8 +3,11 @@ use Goteo\Core\View,
     Goteo\Library\Text;
 
 $promotes = $this['promotes'];
-// random si más de 6
-if (count($promotes) > 6) shuffle($promotes);
+// random y que solo pinte seis si hubiera más
+if (count($promotes) > 6) {
+	shuffle($promotes);
+	$promotes = array_slice($promotes, 0, 6);
+}
 ?>
 <div class="widget projects">
 
