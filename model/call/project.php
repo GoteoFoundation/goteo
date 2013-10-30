@@ -383,6 +383,9 @@ namespace Goteo\Model\Call {
             }
 
 
+            // y no supere lo que le queda por conseguir
+            $maxdrop = min($maxdrop, ($call->maxproj - $call->project_got));
+
             // siempre mientras le quede riego
             $maxdrop = min($maxdrop, $call->rest);
 
