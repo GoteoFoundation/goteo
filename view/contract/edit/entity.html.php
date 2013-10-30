@@ -26,7 +26,15 @@ switch ($contract->type) {
             'type' => 'hidden',
             'value' => ''
         );
+        $reg_loc = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
         $reg_id = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+        $reg_idloc = array (
             'type' => 'hidden',
             'value' => ''
         );
@@ -57,7 +65,17 @@ switch ($contract->type) {
                     'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
                 );
 
+        $reg_loc = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+
         $reg_id = array (
+            'type' => 'hidden',
+            'value' => ''
+        );
+
+        $reg_idloc = array (
             'type' => 'hidden',
             'value' => ''
         );
@@ -85,7 +103,6 @@ switch ($contract->type) {
         );
                 
         
-        
         $reg_number = array(
                     'type'      => 'textbox',
                     'title'     => Text::get('contract-field-reg_number_2'),
@@ -95,6 +112,15 @@ switch ($contract->type) {
                     'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
                 );
 
+        $reg_loc = array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_loc_2'),
+                    'required'  => true,
+                    'value'     => $contract->reg_loc,
+                    'errors'    => !empty($errors['reg_loc']) ? array($errors['reg_loc']) : array(),
+                    'ok'        => !empty($okeys['reg_loc']) ? array($okeys['reg_loc']) : array()
+                );
+
         $reg_id = array(
                     'type'      => 'textbox',
                     'title'     => Text::get('contract-field-reg_id_2'),
@@ -102,6 +128,14 @@ switch ($contract->type) {
                     'value'     => $contract->reg_id,
                     'errors'    => !empty($errors['reg_id']) ? array($errors['reg_id']) : array(),
                     'ok'        => !empty($okeys['reg_id']) ? array($okeys['reg_id']) : array()
+                );
+        $reg_idloc = array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_idloc_2'),
+                    'required'  => true,
+                    'value'     => $contract->reg_idloc,
+                    'errors'    => !empty($errors['reg_idloc']) ? array($errors['reg_idloc']) : array(),
+                    'ok'        => !empty($okeys['reg_idloc']) ? array($okeys['reg_idloc']) : array()
                 );
         break;
 }

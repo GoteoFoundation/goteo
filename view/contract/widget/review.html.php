@@ -29,8 +29,10 @@ $fields = array(
     // registro
     'reg_name' => 'Registro en el que se inscribi&oacute; la asociaci&oacute;n (si asociaci&oacute;n)<br /> / Nombre  del notario que  otorg&oacute; la escritura p&uacute;blica de la empresa (si entidad mercantil)',
     'reg_date' => 'Fecha en que se otorg&oacute; la escritura p&uacute;blica de la empresa (solo si entidad mercantil)',
-    'reg_number' => 'N&uacute;mero de Registro (si asociaci&oacute;n)<br /> / N&uacute;mero del protocolo del notario (si entidad mercantil)',
-    'reg_id' => 'Numero de inscripci&oacute;n en el Registro Mercantil (solo si entidad mercantil)',
+    'reg_number' => 'N&uacute;mero de Registro (si asociaci&oacute;n o entidad mercantil)',
+    'reg_loc' => 'Ciudad del Registro Mercantil (solo si entidad mercantil)',
+    'reg_id' => 'N&uacute;mero del protocolo del notario (solo si entidad mercantil)',
+    'reg_idloc' => 'Ciudad de actuaci&oacute;n del notario (solo si entidad mercantil)',
     
     // cuentas
     'paypal' => 'Cuenta PayPal del proyecto',

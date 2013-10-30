@@ -223,7 +223,9 @@ namespace Goteo\Model {
                     'reg_name',
                     'reg_date',
                     'reg_number',
+                    'reg_loc',
                     'reg_id',
+                    'reg_idloc',
                     'project_name',
                     'project_url',
                     'project_owner',
@@ -561,8 +563,18 @@ namespace Goteo\Model {
                     } else {
                          $okeys['entity']['reg_number'] = 'ok';
                     }
+                    if (empty($this->reg_loc)) {
+                        $errors['entity']['reg_loc'] = Text::get('mandatory-contract-reg_loc_2');
+                    } else {
+                         $okeys['entity']['reg_loc'] = 'ok';
+                    }
                     if (empty($this->reg_id)) {
                         $errors['entity']['reg_id'] = Text::get('mandatory-contract-reg_id_2');
+                    } else {
+                         $okeys['entity']['reg_id'] = 'ok';
+                    }
+                    if (empty($this->reg_idloc)) {
+                        $errors['entity']['reg_id'] = Text::get('mandatory-contract-reg_idloc_2');
                     } else {
                          $okeys['entity']['reg_id'] = 'ok';
                     }

@@ -44,9 +44,13 @@ namespace Goteo\Controller {
             // si lo puede ver
             if ($grant) {
                 
+                // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
+                $contract->draft = ($contract->status->ready === '1') ? false : true;
+                
                 //--------- por ahora en real solamente mostramos preview de datos
                 // a menos que sea alguien con privilegios
-                if (!isset($_SESSION['user']->roles['manager']) &&
+                if (!$contract->draft &&
+                    !isset($_SESSION['user']->roles['manager']) &&
                     !isset($_SESSION['user']->roles['superadmin']) &&
                     !isset($_SESSION['user']->roles['root'])) {
                     return new View('view/contract/view.html.php', array('contract' => $contract));
@@ -61,9 +65,6 @@ namespace Goteo\Controller {
                 \setlocale(\LC_TIME, 'esp');                
                 $contract->date = strftime('%e de %B de %Y', strtotime($contract->date));
                 
-                // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
-                $contract->draft = ($contract->status->ready === '1') ? false : true;
-                
                 // texto para "... en adelante EL IMPULSOR"
                 switch ($contract->type) {
                     case 0: // persona
@@ -71,7 +72,7 @@ namespace Goteo\Controller {
                         $contract->el_impulsor = "El responsable, {$contract->name}";
                         break;
                     case 1: // asociación
-                        $contract->el_impulsor = "La asociación {$contract->entity_name}";
+                        $contract->el_impulsor = "La entidad {$contract->entity_name}";
                         break;
                     case 2: // entidad
                         $contract->el_impulsor = "La entidad {$contract->entity_name}";
@@ -289,7 +290,9 @@ namespace Goteo\Controller {
                 'reg_name',
                 'reg_date',
                 'reg_number',
-                'reg_id'
+                'reg_loc',
+                'reg_id',
+                'reg_idloc'
             );
 
             foreach ($fields as $field) {
