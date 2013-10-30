@@ -47,7 +47,7 @@ class Pdf extends \PDF_HTML {
     /* Dynamic part */
     const TEXT_TYPE_0 = " en su propio nombre y derecho.";
     const TEXT_TYPE_1 = " en su calidad de %office%, en nombre y representación de la entidad %entity_name%, titular del CIF %entity_cif%, con domicilio social en %entity_location% (%entity_region%, CP %entity_zipcode%, %entity_country%), %entity_address%; entidad inscrita en el %reg_name%, %reg_number%.";
-    const TEXT_TYPE_2 = " en su calidad de apoderado y %office%, en nombre y representación de la entidad %entity_name%, titular del CIF %entity_cif%, con domicilio social en %entity_location% (%entity_region%, CP %entity_zipcode%, %entity_country%), %entity_address%; entidad constituida en escritura pública otorgada en fecha %reg_date%. ante el Notario de %reg_idloc%. Don %reg_name% (nº %reg_id% de su protocolo) e inscrita con el número %reg_number% en el Registro Mercantil de %reg_city%.";
+    const TEXT_TYPE_2 = " en su calidad de apoderado y %office%, en nombre y representación de la entidad %entity_name%, titular del CIF %entity_cif%, con domicilio social en %entity_location% (%entity_region%, CP %entity_zipcode%, %entity_country%), %entity_address%; entidad constituida en escritura pública otorgada en fecha %reg_date%. ante el Notario de %reg_idloc%. Don %reg_name% (nº %reg_id% de su protocolo) e inscrita con el número %reg_number% en el Registro Mercantil de %reg_loc%.";
     /* Other texts */
     const TEXT_GENERAL_CONDITIONS = "DOCUMENTO DE CONDICIONES GENERALES USO";
     const TEXT_PLATFORM = "PLATAFORMA GOTEO";

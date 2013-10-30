@@ -574,9 +574,9 @@ namespace Goteo\Model {
                          $okeys['entity']['reg_id'] = 'ok';
                     }
                     if (empty($this->reg_idloc)) {
-                        $errors['entity']['reg_id'] = Text::get('mandatory-contract-reg_idloc_2');
+                        $errors['entity']['reg_idloc'] = Text::get('mandatory-contract-reg_idloc_2');
                     } else {
-                         $okeys['entity']['reg_id'] = 'ok';
+                         $okeys['entity']['reg_idloc'] = 'ok';
                     }
                 }
                 

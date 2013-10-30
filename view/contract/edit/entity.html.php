@@ -155,7 +155,11 @@ $elements = ($contract->type == 0)
 
             'reg_number' => $reg_number,
 
+            'reg_loc' => $reg_loc,
+
             'reg_id' => $reg_id,
+
+            'reg_idloc' => $reg_idloc,
 
 
             'footer' => array(
@@ -290,7 +294,11 @@ $elements = ($contract->type == 0)
         
         'reg_number' => $reg_number,
         
+        'reg_loc' => $reg_loc,
+        
         'reg_id' => $reg_id,
+        
+        'reg_idloc' => $reg_idloc,
         
         'footer' => array(
             'type'      => 'group',
