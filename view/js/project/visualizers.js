@@ -15,7 +15,10 @@ if (typeof GOTEO === 'undefined') {
         formats : {
             format : d3.time.format("%Y-%m-%d"),
             formatXaxis : d3.time.format("%b %d"),
-            formatLabel : d3.time.format("%d %B")
+            formatLabel : d3.time.format("%d %B"),
+            formatYaxis : function (d) {
+                return (+d).toLocaleString("de-DE");
+            }
         }
     };
 };
@@ -29,6 +32,7 @@ if (typeof GOTEO === 'undefined') {
 GOTEO.visualizers.renderFunds = function(dates){
     // Get dates and date formatting    
     var formatXaxis = GOTEO.formats.formatXaxis,
+        formatYaxis = GOTEO.formats.formatYaxis,
         format = GOTEO.formats.format,
         start_date = GOTEO.dates.start_date,
         deadline = GOTEO.dates.deadline,
@@ -108,6 +112,9 @@ GOTEO.visualizers.renderFunds = function(dates){
         .tickPadding(5)
         .tickSize(size.w, size.w, 0)
         .tickSubdivide(true)
+        .tickFormat(function(d){
+            return (+d).toLocaleString("de-DE");
+        });
 
     chart.append("g")
         .attr("class", "x axis")
@@ -316,6 +323,7 @@ GOTEO.utilities.leftTip = function(d, box_length, point_left){
 // ----------------------
 
 GOTEO.visualizers.renderCofunders = function(){
+
     // Make local variables for performance
     var data = this.getData(),
         size = this.getSize(),
@@ -329,6 +337,7 @@ GOTEO.visualizers.renderCofunders = function(){
         data_for_hover = this.getHoverData();
 
     var formatXaxis = GOTEO.formats.formatXaxis,
+        formatYaxis = GOTEO.formats.formatYaxis,
         format = GOTEO.formats.format;
 
     var onHover = GOTEO.utilities.onHover,
@@ -380,7 +389,10 @@ GOTEO.visualizers.renderCofunders = function(){
         .scale(y)
         .ticks(2)
         .tickPadding(5)
-        .tickSize(size.w, size.w, 0);
+        .tickSize(size.w, size.w, 0)
+        .tickFormat(function(d){
+            return (+d).toLocaleString("de-DE");
+        });
 
     chart.append("g")
         .attr("class", "x axis")
@@ -512,10 +524,14 @@ GOTEO.utilities.onHover = function(){
             this_minute = (now - day) / 1000,
             total_days = dates.total_days,
             day_number = Math.floor((format.parse(today_funds.date) - (start_date)) / 86400000),
-            today_minimum = Math.floor((minimum / total_days) * day_number),
+            today_minimum = (day_number > 40) ? minimum : Math.floor((+minimum / 40) * +day_number),
             y_today_funds = y(today_funds.value),
-            y_tomorrow_funds = y(tomorrow.value),
-            text_today_minimum = (!passed_minimum) ? (today_funds.value + " de " + minimum + " (" + today_minimum + " recomendado)") : (today_funds.value + " de " + minimum + "&ocuteptimo: " + optimum);
+            y_tomorrow_funds = y(tomorrow.value);
+            if (!passed_minimum) {
+                text_today_minimum = (+today_funds.value).toLocaleString("de-DE") + " de " + (+minimum).toLocaleString("de-DE") + " (" + (+today_minimum).toLocaleString("de-DE") + " recomendado)"; 
+            } else {
+                text_today_minimum = (+today_funds.value).toLocaleString("de-DE") + " de " + (+minimum).toLocaleString("de-DE") + "(&ocuteptimo: " + (+optimum).toLocaleString("de-DE") + ")";
+            }
         
         // Get coordinates of funds circle
         var cx = t(format.parse(today_funds.date));
@@ -526,7 +542,7 @@ GOTEO.utilities.onHover = function(){
         }
 
         data_for_hover = fundersChart.getHoverData();
-        var total_funders = d3.sum(_.pluck(data_for_hover, function(d){ return d.value; })),
+        var total_funders = d3.sum(_.map(data_for_hover, function(d){ return _.values(d)[0].value; }))
             today_funders = data_for_hover[format(day)][0].value,
             tomorrow_funders = data_for_hover[format(d3.time.day.offset(day, 1))][0].value,
             y_today_funders = yFunders(today_funders),
@@ -631,7 +647,7 @@ GOTEO.utilities.onHover = function(){
             .attr("x", function(d){ return d.x + box_margin + text_padd.x + tooltip_to_right_funders; })
             .attr("y", function(d){ return d.y + text_padd.y / 2;})
             .style("opacity", 1)
-            .text(today_funders + " donaciones" + " | Total: " + total_funders);        
+            .text((+today_funders).toLocaleString("de-DE") + " donaciones" + " | Total: " + (+total_funders).toLocaleString("de-DE"));        
 
         // Circles for hovered day
         d3.selectAll(".day_circle_funds")

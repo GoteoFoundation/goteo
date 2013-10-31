@@ -98,8 +98,8 @@ GOTEO.initializeGraph = function(raw_data) {
             format = GOTEO.formats.format,
             minimum = raw_data.minimum,
             optimum = parseInt(raw_data.minimum) + parseInt(raw_data.optimum),
-            funds_options = {size : {'w' : 840, 'h' : 250}},
-            funders_options = {size : {'w' : 840, 'h' : 40}};
+        funds_options = {size : {'w' : $("#funds").width() - 50, 'h' : 250}},
+        funders_options = {size : {'w' : $("#funds").width() - 50, 'h' : 40}};
 
         // Get deadline, day_number and other time flags
         GOTEO.getDates(raw_data.dates);
@@ -180,12 +180,12 @@ GOTEO.updateTitles = function() {
 
     if (dates.passed_minimum) {
         text = text + " (<div style='color: #bb70b6; display: inline'>" 
-                + fundsChart.getOptimum() + "</div> &oacuteptimo)";
+                + (+fundsChart.getOptimum()).toLocaleString("de-DE") + "</div> &oacuteptimo)";
     }
     if (current) {
-            $("#funded").html(current);
+            $("#funded").html((+current).toLocaleString("de-DE"));
             $("#de").html('de');
-            $("#minimum").html(fundsChart.getMinimum());
+            $("#minimum").html((+fundsChart.getMinimum()).toLocaleString("de-DE"));
             $("#euros").html(text);
     } else {
         $("#funded").html('No hay donaciones.');
