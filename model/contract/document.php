@@ -64,17 +64,17 @@ namespace Goteo\Model\Contract {
 				}
 
 				if(empty($this->tmp) || $this->tmp == "none") {
-					$errors[] = 'No hay archivo temporal';
+					$errors[] = Text::get('error-image-tmp');
 				}
 
 				if(!empty($this->size)) {
 					$max_upload_size = 2 * 1024 * 1024; // = 2097152 (2 megabytes)
 					if($this->size > $max_upload_size) {
-						$errors[] = 'Demasiado grande, maximo 2MB';
+						$errors[] = Text::get('error-image-size-too-large');
 					}
 				}
 				else {
-					$errors[] = 'No sabemos el tamaño';
+					$errors[] = Text::get('error-image-size');
 				}
 			}
             return empty($errors);
@@ -110,7 +110,7 @@ namespace Goteo\Model\Contract {
                             return false;
                         }
                     } else {
-                        $errors[] = $this->tmp . ' no es un archivo';
+                        $errors[] = Text::get('error-image-tmp');
                         return false;
                     }
 
