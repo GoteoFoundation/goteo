@@ -69,7 +69,7 @@ namespace Goteo\Controller {
                 switch ($contract->type) {
                     case 0: // persona
                         //el responsable o la entidad %entity_name%
-                        $contract->el_impulsor = "El responsable, {$contract->name}";
+                        $contract->el_impulsor = "La persona responsable, {$contract->name}";
                         break;
                     case 1: // asociación
                         $contract->el_impulsor = "La entidad {$contract->entity_name}";
