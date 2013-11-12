@@ -118,7 +118,8 @@ namespace Goteo\Library {
 			// buscamos el texto en la tabla
             $values = array(':id'=>$id, ':lang' => $lang);
 
-            $sql = "SELECT
+            // Español de purpose como alternativa
+            $sql_es = "SELECT
                         IFNULL(text.text,purpose.purpose) as `text`
                     FROM purpose
                     LEFT JOIN text
@@ -126,7 +127,21 @@ namespace Goteo\Library {
                         AND text.lang = :lang
                     WHERE purpose.text = :id
                     ";
-			$query = Model::query($sql, $values);
+            // Inglés como alternativa
+            $sql_en = "SELECT
+                        IFNULL(text.text, eng.text) as `text`
+                    FROM purpose
+                    LEFT JOIN text
+                        ON text.id = purpose.text
+                        AND text.lang = :lang
+                    LEFT JOIN text as eng
+                        ON  eng.id = purpose.text
+                        AND eng.lang = 'en'
+                    WHERE purpose.text = :id
+                    ";
+            // idiomas no españoles usan alternativa en inglés
+            $sql = (in_array($lang, array('es','ca', 'gl', 'eu', 'en'))) ? $sql_es : $sql_en;
+            $query = Model::query($sql, $values);
 			if ($exist = $query->fetchObject()) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
 
@@ -141,7 +156,7 @@ namespace Goteo\Library {
 
 			} else {
                 // para catalogar textos nuevos
-				Model::query("REPLACE INTO purpose (text, purpose, html, `group`) VALUES (:text, :purpose, NULL, 'new')", array(':text' => $id, ':purpose' => $id));
+//				Model::query("REPLACE INTO purpose (text, purpose, html, `group`) VALUES (:text, :purpose, NULL, 'new')", array(':text' => $id, ':purpose' => $id));
                 $texto = $id;
 			}
 
