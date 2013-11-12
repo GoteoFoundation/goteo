@@ -7,7 +7,7 @@ $call = $project->called;
 ?>
 <div class="widget project-called collapsable activable" id="project-called">
     <div class="explain">
-        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="expand" target="_blank"></a>
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>" class="expand" target="_blank"></a>
         <dl>
             <dt><?php echo Text::get('call-project-get') ?></dt>
             <dd><?php echo $call->name ?></dd>
@@ -15,7 +15,7 @@ $call = $project->called;
         <p><?php echo Text::html('call-project-got_explain', \amount_format($call->project_got), $call->user->name) ?></p>
     </div>
     <div class="amount">
-        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="expand" target="_blank"></a>
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>" class="expand" target="_blank"></a>
         <dl>
             <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
             <dd class="light-violet"><span><?php echo \amount_format($call->amount) ?></span></dd>
