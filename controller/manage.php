@@ -43,11 +43,10 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('report' => '', 'from' => '', 'until' => '', 'year' => '2012', 'status' => '', 'user' => '')
             ),
-            'certificates' => array(
-                'label' => 'Certificados (exportación)',
+            'donors' => array(
+                'label' => 'Donantes',
                 'actions' => array(
-                    'list' => array('label' => 'Listando', 'item' => false),
-                    'manage' => array('label' => 'Gestionando certificado', 'item' => true)
+                    'list' => array('label' => 'Listando', 'item' => false)
                 )
             )
         );

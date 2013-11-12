@@ -216,14 +216,13 @@ namespace Goteo\Controller\Dashboard {
                     if ($messeger == $project->owner)
                         continue;
                     $who[$messeger] = $messeger;
-                    unset($msgData); // los datos del mensaje del participante no se usan
+//                    unset($msgData); // los datos del mensaje del participante no se usan
                 }
             } elseif ($option == 'rewards' && !empty($_POST['msg_all'])) {
                 // a todos los cofinanciadores
                 foreach (Model\Invest::investors($project->id, false, true) as $user => $investor) {
-                    if (!in_array($user, $who)) {
-                        $who[$user] = $investor->user;
-                    }
+                    // no duplicar
+                    $who[$investor->user] = $investor->user;
                 }
             } elseif (!empty($_POST['msg_user'])) {
                 // a usuario individual
