@@ -23,6 +23,8 @@ include 'view/header.html.php';
 
             <div class="admin-center">
 
+            <a href="/manage/donors">Certificados 2013</a>
+
 <!--
             <div class="widget board">
                 <ul>

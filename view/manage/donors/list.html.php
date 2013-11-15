@@ -4,10 +4,13 @@ use Goteo\Library\Text;
 
 $data = $this['data'];
 $filters = $this['filters'];
+
+$excelUrl = "/manage/donors/excel?year={$filters['year']}&status={$filters['status']}";
+$excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` del año `{$filters['year']}`";
 ?>
-<a href="/sacaexcel/donors/?year=<?php echo $filters['year']; ?>&status=<?php echo $filters['status']; ?>&user=<?php echo $filters['user']; ?>" target="_blank">Sacaexcel</a>
+<a href="<?php echo $excelUrl; ?>" target="_blank">Sacaexcel</a>
 <div class="widget board">
-    <form id="filter-form" action="/admin/reports/donors" method="get">
+    <form id="filter-form" action="/manage/donors/list" method="get">
 
         <div style="float:left;margin:5px;">
             <label for="year-filter">A&ntilde;o fiscal:</label><br />
@@ -71,7 +74,7 @@ $filters = $this['filters'];
                     elseif ($row->edited) echo ' Revisado'; ?>
                     <?php if ($row->pdf) : ?>
                         <br /><a href="/data/pdfs/donativos/<?php echo $row->pdf; ?>" target="_blank">[Ver pdf]</a><br />
-                        <a href="/admin/reports/resetpdf/<?php echo md5($row->pdf); ?>" onclick="return confirm('Seguro que eliminamos este pdf de certificado?');">[Eliminar pdf]</a>
+                        <a href="/manage/donors/resetpdf/<?php echo md5($row->pdf); ?>" onclick="return confirm('Seguro que eliminamos este pdf de certificado?');">[Eliminar pdf]</a>
                     <?php endif; ?>
                 </td>
                 <td><?php echo $row->address; ?></td>
