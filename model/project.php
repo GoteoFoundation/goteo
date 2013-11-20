@@ -1773,7 +1773,7 @@ namespace Goteo\Model {
         public function daysActive() {
             // días desde el published
             $sql = "
-                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
+                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(CONCAT(published, DATE_FORMAT(now(), ' %H:%i:%s')))), '%j') as days
                 FROM project
                 WHERE id = ?";
             $query = self::query($sql, array($this->id));
