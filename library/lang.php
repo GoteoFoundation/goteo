@@ -81,13 +81,16 @@ namespace Goteo\Library {
          * Establece el idioma de visualización de la web
          */
 
-        static public function set() {
+        static public function set($force = null) {
             //echo 'Session: ' . $_SESSION['lang'] . '<br />';
             //echo 'Get: ' . $_GET['lang'] . '<br />';
             //definido por navegador =
             $nav = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-            // si lo estan cambiando, ponemos el que llega
-            if (isset($_GET['lang'])) {
+            // si lo estamos forzando
+            if (isset($force)) {
+                $_SESSION['lang'] = $force;
+            } elseif (isset($_GET['lang'])) {
+                // si lo estan cambiando, ponemos el que llega
                 setcookie("goteo_lang", $_GET['lang'], time() + 3600 * 24 * 365);
                 $_SESSION['lang'] = $_GET['lang'];
             } elseif (empty($_SESSION['lang'])) {

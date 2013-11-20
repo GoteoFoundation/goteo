@@ -68,7 +68,7 @@ namespace Goteo\Controller {
             // o (publicados hace mas de 80 días que no tengan fecha de exito)
             $projects = Model\Project::getActive();
 
-            if ($debug) echo 'Comenzamos con los proyectos en campaña<br /><br />';
+            if ($debug) echo 'Comenzamos con los proyectos en campaña (esto está en '.\LANG.')<br /><br />';
 
             foreach ($projects as $project) {
 

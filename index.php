@@ -80,12 +80,6 @@ if (file_exists($conf_file)) {
 session_name('goteo');
 session_start();
 
-// set Lang
-Lang::set();
-
-// cambiamos el locale
-\setlocale(\LC_TIME, Lang::locale());
-
 // Get URI without query string
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
 
@@ -94,6 +88,13 @@ $segments = preg_split('!\s*/+\s*!', $uri, -1, \PREG_SPLIT_NO_EMPTY);
 
 // Normalize URI
 $uri = '/' . implode('/', $segments);
+
+// set Lang (forzado para el cron y el admin)
+$forceLang = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
+Lang::set($forceLang);
+
+// cambiamos el locale
+\setlocale(\LC_TIME, Lang::locale());
 
 try {
     // Check permissions on requested URI
