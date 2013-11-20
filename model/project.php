@@ -136,7 +136,10 @@ namespace Goteo\Model {
 	            return Call\Project::miniCalled($this->id);
 	        }
             if($name == "allowpp") {
-	            return Project\Account::getAllowpp($this->id);
+                return Project\Account::getAllowpp($this->id);
+            }
+            if($name == "budget") {
+	            return self::calcCosts($this->id);
 	        }
             return $this->$name;
         }
@@ -299,7 +302,6 @@ namespace Goteo\Model {
 
 				// costes y los sumammos
 				$project->costs = Project\Cost::getAll($id, $lang);
-
                 $project->minmax();
 
 				// retornos colectivos
@@ -442,21 +444,8 @@ namespace Goteo\Model {
                 $project->num_investors = Invest::numInvestors($id);
                 $project->num_messegers = Message::numMessegers($id);
 
-                // sacamos rapidamente el minimo y el optimo
-                $cost_query = self::query("SELECT
-                            (SELECT  SUM(amount)
-                            FROM    cost
-                            WHERE   project = project.id
-                            AND     required = 1
-                            ) as `mincost`,
-                            (SELECT  SUM(amount)
-                            FROM    cost
-                            WHERE   project = project.id
-                            ) as `maxcost`
-                    FROM project
-                    WHERE id =?", array($project->id));
-                $costs = $cost_query->fetchObject();
-
+                // sacamos rapidamente el presupuesto mínimo y óptimo
+                $costs = self::calcCosts($id);
                 $project->mincost = $costs->mincost;
                 $project->maxcost = $costs->maxcost;
 
@@ -2260,6 +2249,28 @@ namespace Goteo\Model {
 
             return $investors;
         }
+
+        /*
+        Método para calcular el mínimo y óptimo de un proyecto
+        */
+        public static function calcCosts($id) {
+            $cost_query = self::query("SELECT
+                        (SELECT  SUM(amount)
+                        FROM    cost
+                        WHERE   project = project.id
+                        AND     required = 1
+                        ) as `mincost`,
+                        (SELECT  SUM(amount)
+                        FROM    cost
+                        WHERE   project = project.id
+                        ) as `maxcost`
+                FROM project
+                WHERE id =?", array($id));
+            $costs = $cost_query->fetchObject();
+            
+            return $costs;
+        }
+
 
         /*
          * Para saber si ha conseguido el mínimo

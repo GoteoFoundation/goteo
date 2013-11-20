@@ -201,6 +201,7 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            // lista de proyectos seleccionados
             if ($action == 'projects') {
                 if (empty($call)) {
                     throw new Redirection('/admin/calls/list');
@@ -212,8 +213,26 @@ namespace Goteo\Controller\Admin {
                 //$available  = Model\Call\Project::getAvailable($call->id);
                 // los quitamos por ahora
 
+                // a los seleccionados les añadimos el presupuesto y el máximo
+                foreach ($projects as &$project) {
+                    // su presupuesto
+                    $costs = Model\Project::calcCosts($project->id);
+                    $project->mincost = $costs->mincost;
+                    $project->maxcost = $costs->maxcost;
 
-                // cambiar fechas
+                    // calculamos en base a primera ronda (ficticio para antes de campaña)
+                    $project->round = 1;
+
+                    // le ponemos lo conseguido
+                    $project->invested = $project->amount_call + $project->amount_users;
+
+                    // y su máximo por proyecto
+                    $called = Model\Call\Project::called($project, $thisCall, $thisGot);
+                    $project->maxproj = $called->maxproj;
+                }
+
+
+
                 return new View(
                     'view/admin/index.html.php',
                     array(
@@ -289,15 +308,10 @@ namespace Goteo\Controller\Admin {
             }            
 
             if ($action == 'conf') {
-                /*
-                if (isset($_GET['op']) && isset($_GET['user']) && in_array($_GET['op'], array('assign', 'unassign'))) {
-                    if ($call->setConf($_GET['key'], $_GET['value'])) {
-                        // ok
-                    } else {
-                        Message::Error(implode('<br />', $errors));
-                    }
-                }
-                 */
+
+                // si llega post guardamos la configuración (la de pasta en la tabla call y la otra en call_conf)
+
+
 
                 $conf = $call->getConf();
 

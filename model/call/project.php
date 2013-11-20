@@ -242,31 +242,38 @@ namespace Goteo\Model\Call {
          * Devuelve la convocatoria de la que puede obtener riego
          *
          * @param varchar50 $project proyecto
+         * @param object $thisCall instancia de convocatoria
+         * @param int $thisGot riego conseguido
          * @return Model\Call $call convocatoria
          */
-        public static function called ($project) {
+        public static function called ($project, $thisCall = null, $thisGot = null) {
 
             try {
-                $sql = "SELECT
-                            call_project.call as id
-                        FROM call_project
-                        INNER JOIN `call`
-                            ON call_project.call = call.id
-                        WHERE  call_project.project = :project
-                        AND call.status > 3 AND call.status < 6
-                        LIMIT 1
-                        ";
+                if ($thisCall instanceof Model\Call) {
+                    $called = $thisCall->id;
+                } else {
+                    $sql = "SELECT
+                                call_project.call as id
+                            FROM call_project
+                            INNER JOIN `call`
+                                ON call_project.call = call.id
+                            WHERE  call_project.project = :project
+                            AND call.status > 3 AND call.status < 6
+                            LIMIT 1
+                            ";
 
-                $query = static::query($sql, array(':project'=>$project->id));
-                $called = $query->fetchColumn();
+                    $query = static::query($sql, array(':project'=>$project->id));
+                    $called = $query->fetchColumn();
+                }
+
                 if (!empty ($called)) {
-                    $call = Model\Call::get($called);
+                    $call = (!isset($thisCall) || !$thisCall instanceof Model\Call) ? Model\Call::get($called) : $thisCall;
 
                     // configuración para esta ronda
                     $call->conf = ($project->round > 0) ? $call->getConf('limit'.$project->round) : 'none';
                     
-                    // calcular el obtenido por este proyecto
-                    $call->project_got = Model\Invest::invested($project->id, 'call', $call->id);
+                    // calcular el obtenido por este proyecto, si no lo tenemos
+                    $call->project_got = (!isset($thisGote)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
 
                     // recalculo de maxproj si es modalidad porcentaje
                     if (empty($call->maxproj)) {
