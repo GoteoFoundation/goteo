@@ -178,8 +178,8 @@ namespace Goteo\Library {
                     // de cualquier manera el aporte lo cancelamos
                     $invest->cancel($fail);
                     // buscamos el codigo 900 de anulacion realizada correctamente
-                    if (\stripos($response, 'REALIZADA') !== false
-                        && \strpos($respobj, '900') !== false ) {
+                    if (\stripos($response, 'success') !== false
+                        && \strpos($respobj, 'anulaoperacionok') !== false ) {
                         Invest::setDetail($invest->id, 'tpv-cancel', 'Se ha anulado la operacion de tpv. Proceso libary/tpv::cancelPay');
                         $errors[] = 'Cargo anulado correctamente';
                         return true;
