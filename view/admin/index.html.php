@@ -7,10 +7,6 @@ use Goteo\Library\Text,
     Goteo\Model\Node,
     Goteo\Controller\Admin;
 
-if (LANG != 'es') {
-    header('Location: /admin/?lang=es');
-}
-
 if (!isset($_SESSION['admin_menu'])) {
     $_SESSION['admin_menu'] = Admin::menu();
 }
