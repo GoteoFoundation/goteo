@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
+        Goteo\Library\Check,
         Goteo\Library\Mail,
         Goteo\Library\Template,
         Goteo\Library\Message,
@@ -769,10 +770,20 @@ namespace Goteo\Controller {
                 Model\User::setPersonal($project->owner, $personalData, true);
             }
 
-            // cuenta PayPal
+            // cuentas bancarias
+            $ppacc = (!empty($_POST['paypal'])) ? $_POST['paypal'] : '';
+            $bankacc = (!empty($_POST['bank'])) ? $_POST['bank'] : '';
+
+            // primero checkeamos si la cuenta Paypal es tipo email
+            if (!Check::mail($ppacc)) {
+                $project->errors['userPersonal']['paypal'] = Text::get('validate-project-paypal_account');
+            } else {
+                $project->okeys['userPersonal']['paypal'] = true;
+            }
+
             $accounts = Model\Project\Account::get($project->id);
-            $accounts->paypal = $_POST['paypal'];
-            $accounts->bank = $_POST['bank'];
+            $accounts->paypal = $ppacc;
+            $accounts->bank = $bankacc;
             $accounts->save($project->errors['userPersonal']);
             
             
