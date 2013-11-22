@@ -42,10 +42,13 @@ namespace Goteo\Model {
             $paypal_owner,
                 
             // datos de registro
-            $reg_name,  // Registro de asociaciones o nombre del notario
+            $reg_name,  // Nombre del registro en el que está incrita la entidad
+            $reg_loc, // Ciudad del registro
+            $reg_number, // Número de registro
             $reg_date,  // Fecha de escritura del notario
-            $reg_number, // Número de registro o número de protocolo del notario
             $reg_id, // Número en el registro mercantil
+            $reg_idname, // Nombre del notario
+            $reg_idloc, // Ciudad de actuacióndel notario
                 
             // proyecto
             $project_name,
@@ -226,6 +229,7 @@ namespace Goteo\Model {
                     'reg_loc',
                     'reg_id',
                     'reg_idloc',
+                    'reg_idname',
                     'project_name',
                     'project_url',
                     'project_owner',
