@@ -19,8 +19,8 @@ function limitSel ($label, $name, $current) {
 
     $sel = '<label>'.$label.': <select name="'.$name.'">';
     foreach ($limits as $key => $val) {
-        $selected = ($val == $current) ? ' selected="selected"' : '';
-        $sel .= '<option value="'.$key.'">'.$val.'</option>';
+        $curr = ($key == $current) ? ' selected="selected"' : '';
+        $sel .= '<option value="'.$key.'"'.$curr.'>'.$val.'</option>';
     }
     $sel .= '</select></label>';
 
@@ -68,12 +68,12 @@ echo new NormalForm(array(
                 'limit_1st' => array(
                     'type'  => 'html',
                     'class' => 'inline',
-                    'html'  => limitSel('En primera ronda', 'limit1', $values[$conf->limit1])
+                    'html'  => limitSel('En primera ronda', 'limit1', $conf->limit1)
                 ),
                 'limit_2nd' => array(
                     'type'  => 'html',
                     'class' => 'inline',
-                    'html'  => limitSel('En segunda ronda', 'limit2', $values[$conf->limit2])
+                    'html'  => limitSel('En segunda ronda', 'limit2', $conf->limit2)
                 ),
 
                 'legend'    => array(

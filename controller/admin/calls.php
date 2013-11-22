@@ -158,6 +158,17 @@ namespace Goteo\Controller\Admin {
             }
 
 
+            // si llega post de configuración de configuración
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['save-conf']) && $call instanceof Model\Call ) {
+                if ($call->setConf($_POST, $errors)) {
+                    $log_text = 'El admin %s ha <span class="red">cambiado la configuracion</span> de la convocatoria %s';
+                } else {
+                    $log_text = 'Al admin %s le ha <span class="red">fallado al cambiar la configuracion</span> de la convocatoria %s';
+                    Message::Info('Ha dado estos errores:<br/>'.implode('<br />', $errors));
+                }
+            }
+
+
             if (isset($log_text)) {
                 // Evento Feed
                 $log = new Feed();
@@ -309,24 +320,17 @@ namespace Goteo\Controller\Admin {
 
             if ($action == 'conf') {
 
-                // si llega post guardamos la configuración (la de pasta en la tabla call y la otra en call_conf)
-
-
-
                 $conf = $call->getConf();
 
-                if (!isset($conf))
-                    Message::Info('Esta convocatoria no tiene configuración especial');
-                else
-                    return new View(
-                                'view/admin/index.html.php',
-                                array(
-                                    'folder' => 'calls',
-                                    'file' => 'conf',
-                                    'action' => 'list',
-                                    'call' => $call,
-                                    'conf' => $conf
-                                )
+                return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'calls',
+                                'file' => 'conf',
+                                'action' => 'list',
+                                'call' => $call,
+                                'conf' => $conf
+                            )
                 );
             }            
 

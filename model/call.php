@@ -1473,6 +1473,58 @@ namespace Goteo\Model {
         }
         
         
+        /**
+         * Actualizar los valores de configuración
+         *
+         * @params conf array of config values
+         * @return type booblean
+         */
+        public function setConf ($conf = array(), &$errors = array()) {
+
+            // verificación 
+            $limits = array('normal', 'unlimited', 'minimum', 'none');
+            $conf['limit1'] = in_array($conf['limit1'], $limits) ? $conf['limit1'] : null ;
+            $conf['limit2'] = in_array($conf['limit2'], $limits) ? $conf['limit2'] : null ;
+            $conf['applied'] = is_numeric($conf['applied']) ? $conf['applied'] : null ;
+
+
+            $fields = array(
+                  'limit1', // tipo limite riego primera ronda
+                  'limit2', // tipo limite riego segunda ronda
+                  'buzz_first', // Solo primer hashtag en el buzz
+                  'buzz_own', // Tweets  propios en el buzz
+                  'buzz_mention', // Menciones en el buzz
+                  'applied' // Para fijar numero de proyectos recibidos
+            );
+
+            $values = array();
+            $set = '';
+
+            foreach ($conf as $key=>$value) {
+                if (in_array($key, $fields)) {
+                    $values[":$key"] = $value;
+                    if ($set != '') $set .= ', ';
+                    $set .= "$key = :$key";
+                }
+            }
+
+            if (!empty($values) && $set != '') {
+                    $values[':call'] = $this->id;
+                    $sql = "REPLACE INTO  call_conf SET `call` = :call, " . $set;
+
+                try {
+                    self::query($sql, $values);
+                    return true;
+
+                } catch (\PDOException $e) {
+                    $errors[] = "FALLO al gestionar el registro de datos personales " . $e->getMessage();
+                    return false;
+                }
+            }
+
+
+        }
+
         
 
         /*
