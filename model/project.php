@@ -2132,12 +2132,33 @@ namespace Goteo\Model {
                 $values[':category'] = $filters['category'];
             }
             if (!empty($filters['called'])) {
-                $sqlFilter .= " AND id IN (
-                    SELECT project
-                    FROM call_project
-                    WHERE `call` = :called
-                    )";
-                $values[':called'] = $filters['called'];
+
+                switch ($filters['called']) {
+                    
+                    //en cualquier convocatoria
+                    case 'all':
+                        $sqlFilter .= " AND id IN (
+                        SELECT project
+                        FROM call_project)";
+                        break;
+                    //en ninguna convocatoria    
+                    case 'none':
+                        $sqlFilter .= " AND id NOT IN (
+                        SELECT project
+                        FROM call_project)";
+                        break;
+                    //filtro en esta convocatoria    
+                    default:
+                        $sqlFilter .= " AND id IN (
+                        SELECT project
+                        FROM call_project
+                        WHERE `call` = :called
+                        )";
+                        $values[':called'] = $filters['called'];
+                        break;
+
+                }
+
             }
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND node = :node";
