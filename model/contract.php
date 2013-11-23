@@ -553,7 +553,7 @@ namespace Goteo\Model {
                 // para representantes de entidad jurídica
                 if ($this->type == 2) {
                     if (empty($this->reg_name)) {
-                        $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_2');
+                        $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_1');
                     } else {
                          $okeys['entity']['reg_name'] = 'ok';
                     }
@@ -576,6 +576,11 @@ namespace Goteo\Model {
                         $errors['entity']['reg_id'] = Text::get('mandatory-contract-reg_id_2');
                     } else {
                          $okeys['entity']['reg_id'] = 'ok';
+                    }
+                    if (empty($this->reg_idname)) {
+                        $errors['entity']['reg_idname'] = Text::get('mandatory-contract-reg_idname_2');
+                    } else {
+                         $okeys['entity']['reg_idname'] = 'ok';
                     }
                     if (empty($this->reg_idloc)) {
                         $errors['entity']['reg_idloc'] = Text::get('mandatory-contract-reg_idloc_2');
