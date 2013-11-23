@@ -300,7 +300,7 @@ namespace Goteo\Library {
                     URL: {$url}<br />
                     RESPONSE:<br />" . print_r($data, 1)."<br />";
 */                
-                @mail('gmaps_api_fail@doukehsi.org', 'Error en la petición a la api gmaps en ' . SITE_URL, "Error {$data->status} ".self::$gmaps_api_statuses[$data->status]."
+                @mail('gmaps_api_fail@doukeshi.org', 'Error en la petición a la api gmaps en ' . SITE_URL, "Error {$data->status} ".self::$gmaps_api_statuses[$data->status]."
                     URL: {$url}
                     INPUT:
                     " . print_r($input, 1)."
