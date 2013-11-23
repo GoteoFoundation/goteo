@@ -12,155 +12,162 @@ $hint = ($contract->type == 0) ? Text::get('guide-contract-no_entity') : Text::g
 
 // captions segun tipo (tambien campos segun tipo
 switch ($contract->type) {
-    case 0:
-        // propio nombre y derecho
-        $reg_name = array (
-            'type' => 'hidden',
-            'value' => ''
-        );
-        $reg_date = array (
-            'type' => 'hidden',
-            'value' => ''
-        );
-        $reg_number = array (
-            'type' => 'hidden',
-            'value' => ''
-        );
-        $reg_loc = array (
-            'type' => 'hidden',
-            'value' => ''
-        );
-        $reg_id = array (
-            'type' => 'hidden',
-            'value' => ''
-        );
-        $reg_idloc = array (
-            'type' => 'hidden',
-            'value' => ''
-        );
-        break;
-    
     case 1:
-        // representatne de asociación
-        $reg_name = array(
+        // como representante de asociación
+        $regfields = array(
+            'reg_name' => array(
                     'type'      => 'textbox',
                     'title'     => Text::get('contract-field-reg_name_1'),
                     'required'  => true,
                     'value'     => $contract->reg_name,
                     'errors'    => !empty($errors['reg_name']) ? array($errors['reg_name']) : array(),
                     'ok'        => !empty($okeys['reg_name']) ? array($okeys['reg_name']) : array()
-                );
+                ),
 
-        $reg_date = array (
-            'type' => 'hidden',
-            'value' => ''
-        );
-        
-        $reg_number = array(
-                    'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_number_1'),
-                    'required'  => true,
-                    'value'     => $contract->reg_number,
-                    'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
-                    'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
-                );
+            'reg_date' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
+            
+            'reg_number' => array(
+                'type'      => 'textbox',
+                'title'     => Text::get('contract-field-reg_number_1'),
+                'required'  => true,
+                'value'     => $contract->reg_number,
+                'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
+                'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
+            ),
 
-        $reg_loc = array (
-            'type' => 'hidden',
-            'value' => ''
-        );
+            'reg_loc' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
 
-        $reg_id = array (
-            'type' => 'hidden',
-            'value' => ''
-        );
+            'reg_id' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
 
-        $reg_idloc = array (
-            'type' => 'hidden',
-            'value' => ''
+            'reg_idloc' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
+
+            'reg_idname' => array (
+                'type' => 'hidden',
+                'value' => ''
+            )
         );
         break;
     
     case 2:
-        // apoderado de entidad mercantil
-        $reg_loc = array(
-                    'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_loc_2'),
-                    'required'  => true,
-                    'value'     => $contract->reg_loc,
-                    'errors'    => !empty($errors['reg_loc']) ? array($errors['reg_loc']) : array(),
-                    'ok'        => !empty($okeys['reg_loc']) ? array($okeys['reg_loc']) : array()
-                );
-
-        $reg_number = array(
-                    'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_number_2'),
-                    'required'  => true,
-                    'value'     => $contract->reg_number,
-                    'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
-                    'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
-                );
-
-        $reg_name = array(
+        // como representante de de entidad mercantil
+        $regfields = array(
+            'reg_name' => array(
                     'type'      => 'textbox',
                     'title'     => Text::get('contract-field-reg_name_2'),
                     'required'  => true,
                     'value'     => $contract->reg_name,
                     'errors'    => !empty($errors['reg_name']) ? array($errors['reg_name']) : array(),
                     'ok'        => !empty($okeys['reg_name']) ? array($okeys['reg_name']) : array()
-                );
+                ),
 
-        $reg_date  = array(
-            'type'      => 'datebox',
-            'required'  => true,
-            'size'      => 8,
-            'title'     => Text::get('contract-field-reg_date_2'),
-            'errors'    => !empty($errors['reg_date']) ? array($errors['reg_date']) : array(),
-            'ok'        => !empty($okeys['reg_date']) ? array($okeys['reg_date']) : array(),
-            'value'     => $contract->reg_date
-        );
+            'reg_loc' => array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_loc_2'),
+                    'required'  => true,
+                    'value'     => $contract->reg_loc,
+                    'errors'    => !empty($errors['reg_loc']) ? array($errors['reg_loc']) : array(),
+                    'ok'        => !empty($okeys['reg_loc']) ? array($okeys['reg_loc']) : array()
+                ),
+
+            'reg_number' => array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_number_2'),
+                    'required'  => true,
+                    'value'     => $contract->reg_number,
+                    'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
+                    'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
+                ),
+
+            'reg_idname' => array(
+                    'type'      => 'textbox',
+                    'title'     => Text::get('contract-field-reg_idname_2'),
+                    'required'  => true,
+                    'value'     => $contract->reg_idname,
+                    'errors'    => !empty($errors['reg_idname']) ? array($errors['reg_idname']) : array(),
+                    'ok'        => !empty($okeys['reg_idname']) ? array($okeys['reg_idname']) : array()
+                ),
                 
-        
-        $reg_id = array(
+            'reg_id' => array(
                     'type'      => 'textbox',
                     'title'     => Text::get('contract-field-reg_id_2'),
                     'required'  => true,
                     'value'     => $contract->reg_id,
                     'errors'    => !empty($errors['reg_id']) ? array($errors['reg_id']) : array(),
                     'ok'        => !empty($okeys['reg_id']) ? array($okeys['reg_id']) : array()
-                );
-        $reg_idloc = array(
-                    'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_idloc_2'),
-                    'required'  => true,
-                    'value'     => $contract->reg_idloc,
-                    'errors'    => !empty($errors['reg_idloc']) ? array($errors['reg_idloc']) : array(),
-                    'ok'        => !empty($okeys['reg_idloc']) ? array($okeys['reg_idloc']) : array()
-                );
+                ),
+
+            'reg_idloc' => array(
+                'type'      => 'textbox',
+                'title'     => Text::get('contract-field-reg_idloc_2'),
+                'required'  => true,
+                'value'     => $contract->reg_idloc,
+                'errors'    => !empty($errors['reg_idloc']) ? array($errors['reg_idloc']) : array(),
+                'ok'        => !empty($okeys['reg_idloc']) ? array($okeys['reg_idloc']) : array()
+                ),
+            
+            'reg_date'  => array(
+                'type'      => 'datebox',
+                'required'  => true,
+                'size'      => 8,
+                'title'     => Text::get('contract-field-reg_date_2'),
+                'errors'    => !empty($errors['reg_date']) ? array($errors['reg_date']) : array(),
+                'ok'        => !empty($okeys['reg_date']) ? array($okeys['reg_date']) : array(),
+                'value'     => $contract->reg_date
+                )
+        );
         break;
 }
 
+
 // Datos de asociación (si representante) o entidad (si apoderado)
-$elements = ($contract->type == 0) 
+if ($contract->type == 0) {
     // si es en su propio nombre
-    ? array(
+    $elements = array(
             'process_entity' => array (
                 'type' => 'hidden',
                 'value' => 'entity'
             ),
 
-            'reg_name' => $reg_name,
-
-            'reg_date' => $reg_date,
-
-            'reg_number' => $reg_number,
-
-            'reg_loc' => $reg_loc,
-
-            'reg_id' => $reg_id,
-
-            'reg_idloc' => $reg_idloc,
-
+            'reg_name' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
+            'reg_date' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
+            'reg_number' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
+            'reg_loc' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
+            'reg_id' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
+            'reg_idloc' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
+            'reg_idname' => array (
+                'type' => 'hidden',
+                'value' => ''
+            ),
 
             'footer' => array(
                 'type'      => 'group',
@@ -187,10 +194,11 @@ $elements = ($contract->type == 0)
 
             )
 
-        )
+        );
 
+} else {
     // si es un representatne
-    : array(
+    $elements = array(
         'process_entity' => array (
             'type' => 'hidden',
             'value' => 'entity'
@@ -198,7 +206,7 @@ $elements = ($contract->type == 0)
         
         'entity_name' => array(
             'type'      => 'textbox',
-            'required'  => ($contract->type > 0),
+            'required'  => true,
             'title'     => Text::get('personal-field-entity_name'),
             'hint'      => Text::get('tooltip-contract-entity_name'),
             'errors'    => !empty($errors['entity_name']) ? array($errors['entity_name']) : array(),
@@ -209,7 +217,7 @@ $elements = ($contract->type == 0)
         'entity_cif' => array(
             'type'      => 'textbox',
             'class'     => 'inline',
-            'required'  => ($contract->type > 0),
+            'required'  => true,
             'title'     => Text::get('personal-field-entity_cif'),
             'hint'      => Text::get('tooltip-contract-entity_cif'),
             'errors'    => !empty($errors['entity_cif']) ? array($errors['entity_cif']) : array(),
@@ -220,7 +228,7 @@ $elements = ($contract->type == 0)
         /* cargo */
         'office' => array(
             'type'      => 'textbox',
-            'required'  => ($contract->type > 0),
+            'required'  => true,
             'title'     => Text::get('personal-field-entity_office'),
             'hint'      => Text::get('tooltip-contract-entity_office'),
             'errors'    => !empty($errors['office']) ? array($errors['office']) : array(),
@@ -237,7 +245,7 @@ $elements = ($contract->type == 0)
                 'entity_address' => array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
-                    'required'  => ($contract->type > 0),
+                    'required'  => true,
                     'title'     => Text::get('personal-field-address'),
                     'errors'    => !empty($errors['entity_address']) ? array($errors['entity_address']) : array(),
                     'ok'        => !empty($okeys['entity_address']) ? array($okeys['entity_address']) : array(),
@@ -247,7 +255,7 @@ $elements = ($contract->type == 0)
                 'entity_location' => array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
-                    'required'  => ($contract->type > 0),
+                    'required'  => true,
                     'title'     => Text::get('contract-field-location'),
                     'errors'    => !empty($errors['entity_location']) ? array($errors['entity_location']) : array(),
                     'ok'        => !empty($okeys['entity_location']) ? array($okeys['entity_location']) : array(),
@@ -257,7 +265,7 @@ $elements = ($contract->type == 0)
                 'entity_region' => array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
-                    'required'  => ($contract->type > 0),
+                    'required'  => true,
                     'title'     => Text::get('personal-field-region'),
                     'errors'    => !empty($errors['entity_region']) ? array($errors['entity_region']) : array(),
                     'ok'        => !empty($okeys['entity_region']) ? array($okeys['entity_region']) : array(),
@@ -267,7 +275,7 @@ $elements = ($contract->type == 0)
                 'entity_zipcode' => array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
-                    'required'  => ($contract->type > 0),
+                    'required'  => true,
                     'title'     => Text::get('personal-field-zipcode'),
                     'size'      => 7,
                     'errors'    => !empty($errors['entity_zipcode']) ? array($errors['entity_zipcode']) : array(),
@@ -278,7 +286,7 @@ $elements = ($contract->type == 0)
                 'entity_country' => array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
-                    'required'  => ($contract->type > 0),
+                    'required'  => true,
                     'title'     => Text::get('personal-field-country'),
                     'errors'    => !empty($errors['entity_country']) ? array($errors['entity_country']) : array(),
                     'ok'        => !empty($okeys['entity_country']) ? array($okeys['entity_country']) : array(),
@@ -288,18 +296,13 @@ $elements = ($contract->type == 0)
             )
         ),
 
-        'reg_name' => $reg_name,
-        
-        'reg_loc' => $reg_loc,
-        
-        'reg_number' => $reg_number,
-        
-        'reg_date' => $reg_date,
-        
-        'reg_id' => $reg_id,
-        
-        'reg_idloc' => $reg_idloc,
-        
+        /* Registro */
+        'regdata' => array(
+            'type'      => 'group',
+            'title'     => Text::get('contract-field-regdata'),
+            'children'  => $regfields
+        ),
+
         'footer' => array(
             'type'      => 'group',
             'children'  => array(
@@ -325,9 +328,9 @@ $elements = ($contract->type == 0)
         
         )
         
-    )
-;
-    
+    );
+}
+
     
 echo new SuperForm(array(
 

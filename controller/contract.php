@@ -292,6 +292,7 @@ namespace Goteo\Controller {
                 'reg_number',
                 'reg_loc',
                 'reg_id',
+                'reg_idname',
                 'reg_idloc'
             );
 

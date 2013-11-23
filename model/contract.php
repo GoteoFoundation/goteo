@@ -42,10 +42,13 @@ namespace Goteo\Model {
             $paypal_owner,
                 
             // datos de registro
-            $reg_name,  // Registro de asociaciones o nombre del notario
+            $reg_name,  // Nombre del registro en el que está incrita la entidad
+            $reg_loc, // Ciudad del registro
+            $reg_number, // Número de registro
             $reg_date,  // Fecha de escritura del notario
-            $reg_number, // Número de registro o número de protocolo del notario
             $reg_id, // Número en el registro mercantil
+            $reg_idname, // Nombre del notario
+            $reg_idloc, // Ciudad de actuacióndel notario
                 
             // proyecto
             $project_name,
@@ -226,6 +229,7 @@ namespace Goteo\Model {
                     'reg_loc',
                     'reg_id',
                     'reg_idloc',
+                    'reg_idname',
                     'project_name',
                     'project_url',
                     'project_owner',
@@ -549,7 +553,7 @@ namespace Goteo\Model {
                 // para representantes de entidad jurídica
                 if ($this->type == 2) {
                     if (empty($this->reg_name)) {
-                        $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_2');
+                        $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_1');
                     } else {
                          $okeys['entity']['reg_name'] = 'ok';
                     }
@@ -572,6 +576,11 @@ namespace Goteo\Model {
                         $errors['entity']['reg_id'] = Text::get('mandatory-contract-reg_id_2');
                     } else {
                          $okeys['entity']['reg_id'] = 'ok';
+                    }
+                    if (empty($this->reg_idname)) {
+                        $errors['entity']['reg_idname'] = Text::get('mandatory-contract-reg_idname_2');
+                    } else {
+                         $okeys['entity']['reg_idname'] = 'ok';
                     }
                     if (empty($this->reg_idloc)) {
                         $errors['entity']['reg_idloc'] = Text::get('mandatory-contract-reg_idloc_2');
