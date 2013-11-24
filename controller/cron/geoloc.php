@@ -36,10 +36,14 @@ namespace Goteo\Controller\Cron {
             
             if ($debug) echo "<hr /> Iniciamos tratamiento de geologins correctos<br/>";
             //Library\Geoloc
-            $sql5 = "SELECT * FROM `geologin` WHERE msg LIKE 'OK' LIMIT 2000";
+            $sql5 = "SELECT * FROM `geologin` WHERE msg LIKE 'OK' LIMIT 1000";
             if ($debug) echo $sql5 . '<br />';
             $query5 = Model\Location::query($sql5);
             foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
+                if ($_SESSION['over-quota']) {
+                    if ($debug) echo "Hemos excedido la quota<br />";
+                    break;
+                }
                 if ($debug) echo "latlng: {$row->lat},{$row->lon}<br />";
                 // para cada uno: 
                 $geoloc = null;

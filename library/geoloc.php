@@ -306,7 +306,14 @@ namespace Goteo\Library {
                     " . print_r($input, 1)."
                     RESPONSE:
                     " . print_r($data, 1));
-                    
+
+                // si excedemos la cuota, no enviamos más peticiones
+                if ($data->status == 'OVER_QUERY_LIMIT') {
+                    $_SESSION['over-quota'] = true;
+                    return null;
+                }
+
+
             } else {
                 $_SESSION['last_gmaps_response_data'] = $data;
                 
