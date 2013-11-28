@@ -295,7 +295,7 @@ namespace Goteo\Model\Call {
                     // si tiene configurado ilimitado, el límite por proyecto SUBE!!!
                     elseif ($call->conf == 'unlimited') {
                         // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
-                        $call->maxproj = floor(($project->maxcost - $project->invested) / 2);
+                        $call->maxproj = $call->project_got + floor(($project->maxcost - $project->invested) / 2);
                     }
                     
                     // si a la convocatoria le queda menos que el limite actual
@@ -382,9 +382,9 @@ namespace Goteo\Model\Call {
             // si la configuración de de ilimitado cámbia completamente, el límite SUBE!!
             elseif($call->conf == 'unlimited') {
                 if(!empty($amount)) {
-                    $maxdrop = $project->maxcost - $project->invested - $amount;
+                    $maxdrop = min($maxdrop, ($project->maxcost - $project->invested - $amount));
                 } else {
-                    $maxdrop = floor(($project->maxcost - $project->invested) /2);
+                    $maxdrop = min($maxdrop, (floor(($project->maxcost - $project->invested) /2)));
                 }
                 // independiente del límite por proyecto
             }
