@@ -8,7 +8,7 @@ $filters = $this['filters'];
 $excelUrl = "/manage/donors/excel?year={$filters['year']}&status={$filters['status']}";
 $excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` del año `{$filters['year']}`";
 ?>
-<a href="<?php echo $excelUrl; ?>" target="_blank">Sacaexcel</a>
+<a href="<?php echo $excelUrl; ?>" target="_blank">CSV</a>
 <div class="widget board">
     <form id="filter-form" action="/manage/donors/list" method="get">
 
@@ -51,23 +51,17 @@ $excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` 
         <thead>
             <tr>
                 <th>Usuario</th>
-                <th>Datos</th>
                 <th>Cantidad</th>
-                <th>Proyectos</th>
-                <th style="max-width: 20px;"></th>
-                <th>Direcci&oacute;n</th>
                 <th>CP</th>
-                <th>Localidad</th>
-                <th>Pa&iacute;s</th>
+                <th style="max-width: 20px;"></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($data as $row) : ?>
             <tr>
-                <td><a href="/admin/users/?id=<?php echo $row->id; ?>"><?php echo $row->email; ?></a></td>
-                <td><?php echo "{$row->name} "; ?> <?php echo $row->nif; ?></td>
+                <td><a href="/admin/users/?id=<?php echo $row->id; ?>" title="<?php echo $row->email; ?>"><?php echo "{$row->name} "; ?> <?php echo $row->nif; ?></a></td>
                 <td><?php echo $row->amount; ?></td>
-                <td><?php echo $row->numproj; ?></td>
+                <td><?php echo $row->zipcode; ?></td>
                 <td>
                     <?php echo ($row->pending == $row->id) ? '' : $row->pending; ?>
                     <?php if ($row->confirmed) echo ' Confirmado';
@@ -77,10 +71,6 @@ $excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` 
                         <a href="/manage/donors/resetpdf/<?php echo md5($row->pdf); ?>" onclick="return confirm('Seguro que eliminamos este pdf de certificado?');">[Eliminar pdf]</a>
                     <?php endif; ?>
                 </td>
-                <td><?php echo $row->address; ?></td>
-                <td><?php echo $row->zipcode; ?></td>
-                <td><?php echo $row->location; ?></td>
-                <td><?php echo $row->country; ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

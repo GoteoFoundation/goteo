@@ -112,8 +112,9 @@ namespace Goteo\Model\User {
 
         /* 
         * Listado de datos de donativos que tenemos
+        * @param csv boolean si procesamos los datos para el excel
         */
-        public function getList($filters = array()) {
+        public function getList($filters = array(), $csv = false) {
 
             $year = empty($filter['year']) ? '2013' : $filter['year'];
             $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
@@ -184,7 +185,29 @@ namespace Goteo\Model\User {
 //die ($sql);
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
-                $list[] = $item;
+
+                if ($csv) {
+// el nif limpiarlo
+
+//@TODO si estamos procesando datos para csv hay que mirar:
+// clave A
+// Tema pais.. se puede mirar por texto pero hay "paises raros"
+//'Spain', ' España', 'ESPAÑA', 'Espanya', '', ''
+$esp = true;
+// dos dígitos para la provincia  (99 si no es españa)
+$cp = ($esp) ? substr($item->zipcode, 0, 2) : '99';
+// tipo de persona segun nif/nie/cif
+$pf =true; // false para persona juridica
+// porcentaje segun tipo de persona (25, 35)
+$per = ($pf) ? 25 : 35; 
+// naturaleza según tipo de persona (F, J)
+$nat = ($pf) ? 'F' : 'J'; 
+
+// NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
+                    $list[] = array($item->nif, '', $item->name, $cp, 'A', $per, '', '', '', '', $nat, '', $item->year, '', '', '');
+                } else {
+                    $list[] = $item;
+                }
             }
             return $list;
         }
