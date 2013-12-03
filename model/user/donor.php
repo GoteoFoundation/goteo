@@ -38,8 +38,7 @@ namespace Goteo\Model\User {
                         INNER JOIN project
                             ON project.id = invest.project
                             AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                        WHERE   invest.resign = 1
-                        AND invest.status IN ('1', '3')
+                        WHERE   invest.status IN ('1', '3')
                         AND invest.invested >= '{$year0}-01-01'
                         AND invest.invested < '{$year1}-01-01'
                         AND invest.user = :id
@@ -62,8 +61,7 @@ namespace Goteo\Model\User {
                                 INNER JOIN project
                                     ON project.id = invest.project
                                     AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                                WHERE   invest.resign = 1
-                                AND invest.user = :id
+                                WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
                                 AND invest.charged >= '{$year0}-01-01'
                                 AND invest.charged < '{$year1}-01-01'
@@ -96,8 +94,7 @@ namespace Goteo\Model\User {
                                 INNER JOIN user ON user.id = invest.user
                                 LEFT JOIN invest_address ON invest_address.invest = invest.id
                                 LEFT JOIN user_personal ON user_personal.user = invest.user
-                                WHERE   invest.resign = 1
-                                AND invest.user = :id
+                                WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
                                 AND invest.charged >= '{$year0}-01-01'
                                 AND invest.charged < '{$year1}-01-01'
@@ -113,7 +110,11 @@ namespace Goteo\Model\User {
             }
         }
 
-        public function getList($filters = array()) {
+        /* 
+        * Listado de datos de donativos que tenemos
+        * @param csv boolean si procesamos los datos para el excel
+        */
+        public function getList($filters = array(), $csv = false) {
 
             $year = empty($filter['year']) ? '2013' : $filter['year'];
             $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
@@ -174,8 +175,7 @@ namespace Goteo\Model\User {
                 INNER JOIN user ON user.id = invest.user
                 LEFT JOIN user_donation ON user_donation.user = invest.user AND user_donation.year = '{$year}'
                 LEFT JOIN invest_address ON invest_address.invest = invest.id
-                WHERE   invest.resign = 1
-                AND invest.status IN ('1', '3')
+                WHERE   invest.status IN ('1', '3')
                 AND invest.charged >= '{$year0}-01-01'
                 AND invest.charged < '{$year1}-01-01'
                 $sqlFilter
@@ -185,7 +185,29 @@ namespace Goteo\Model\User {
 //die ($sql);
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
-                $list[] = $item;
+
+                if ($csv) {
+// el nif limpiarlo
+
+//@TODO si estamos procesando datos para csv hay que mirar:
+// clave A
+// Tema pais.. se puede mirar por texto pero hay "paises raros"
+//'Spain', ' España', 'ESPAÑA', 'Espanya', '', ''
+$esp = true;
+// dos dígitos para la provincia  (99 si no es españa)
+$cp = ($esp) ? substr($item->zipcode, 0, 2) : '99';
+// tipo de persona segun nif/nie/cif
+$pf =true; // false para persona juridica
+// porcentaje segun tipo de persona (25, 35)
+$per = ($pf) ? 25 : 35; 
+// naturaleza según tipo de persona (F, J)
+$nat = ($pf) ? 'F' : 'J'; 
+
+// NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
+                    $list[] = array($item->nif, '', $item->name, $cp, 'A', $per, '', '', '', '', $nat, '', $item->year, '', '', '');
+                } else {
+                    $list[] = $item;
+                }
             }
             return $list;
         }
@@ -305,8 +327,7 @@ namespace Goteo\Model\User {
                     INNER JOIN project
                         ON project.id = invest.project
                         AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                    WHERE   invest.resign = 1
-                    AND invest.status IN ('1', '3')
+                    WHERE   invest.status IN ('1', '3')
                     AND invest.charged >= '{$year0}-01-01'
                     AND invest.charged < '{$year1}-01-01'
                     AND invest.user = :id
