@@ -86,6 +86,8 @@ $excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` 
         </tbody>
     </table>
 </div>
+<?php elseif (empty($filters['filtered'])) : ?>
+<p>hay que filtrar, hay demasiados registros</p>
 <?php else : ?>
 <p>No se han encontrado registros</p>
 <?php endif; ?>

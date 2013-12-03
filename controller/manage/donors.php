@@ -10,7 +10,7 @@ namespace Goteo\Controller\Manage {
 
     class Donors {
 
-        public static function process ($action = 'list', $id = null, $filters = array()) {
+        public static function process ($action = 'list', $id = null, $subaction = null, $filters = array()) {
 
             if ($action == 'excel') {
                 $filters = array(
@@ -65,7 +65,11 @@ namespace Goteo\Controller\Manage {
             if (empty($filters['year']))
                 $filters['year'] = 2013;
 
-            $data = Model\User\Donor::getList($filters);
+            if (!empty($filters['filtered'])) {
+                $data = Model\User\Donor::getList($filters);
+            } else {
+                $data = array();
+            }
 
             return new View(
                 'view/manage/index.html.php',
