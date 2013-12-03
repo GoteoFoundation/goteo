@@ -38,8 +38,7 @@ namespace Goteo\Model\User {
                         INNER JOIN project
                             ON project.id = invest.project
                             AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                        WHERE   invest.resign = 1
-                        AND invest.status IN ('1', '3')
+                        WHERE   invest.status IN ('1', '3')
                         AND invest.invested >= '{$year0}-01-01'
                         AND invest.invested < '{$year1}-01-01'
                         AND invest.user = :id
@@ -62,8 +61,7 @@ namespace Goteo\Model\User {
                                 INNER JOIN project
                                     ON project.id = invest.project
                                     AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                                WHERE   invest.resign = 1
-                                AND invest.user = :id
+                                WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
                                 AND invest.charged >= '{$year0}-01-01'
                                 AND invest.charged < '{$year1}-01-01'
@@ -96,8 +94,7 @@ namespace Goteo\Model\User {
                                 INNER JOIN user ON user.id = invest.user
                                 LEFT JOIN invest_address ON invest_address.invest = invest.id
                                 LEFT JOIN user_personal ON user_personal.user = invest.user
-                                WHERE   invest.resign = 1
-                                AND invest.user = :id
+                                WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
                                 AND invest.charged >= '{$year0}-01-01'
                                 AND invest.charged < '{$year1}-01-01'
@@ -113,6 +110,9 @@ namespace Goteo\Model\User {
             }
         }
 
+        /* 
+        * Listado de datos de donativos que tenemos
+        */
         public function getList($filters = array()) {
 
             $year = empty($filter['year']) ? '2013' : $filter['year'];
@@ -174,8 +174,7 @@ namespace Goteo\Model\User {
                 INNER JOIN user ON user.id = invest.user
                 LEFT JOIN user_donation ON user_donation.user = invest.user AND user_donation.year = '{$year}'
                 LEFT JOIN invest_address ON invest_address.invest = invest.id
-                WHERE   invest.resign = 1
-                AND invest.status IN ('1', '3')
+                WHERE   invest.status IN ('1', '3')
                 AND invest.charged >= '{$year0}-01-01'
                 AND invest.charged < '{$year1}-01-01'
                 $sqlFilter
@@ -305,8 +304,7 @@ namespace Goteo\Model\User {
                     INNER JOIN project
                         ON project.id = invest.project
                         AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                    WHERE   invest.resign = 1
-                    AND invest.status IN ('1', '3')
+                    WHERE   invest.status IN ('1', '3')
                     AND invest.charged >= '{$year0}-01-01'
                     AND invest.charged < '{$year1}-01-01'
                     AND invest.user = :id
