@@ -127,8 +127,8 @@ namespace Goteo\Library {
                 $query = Model::query($sql, $values);
 
                 $mailId = Model::insertId();
-                $sql = "INSERT INTO `mailer_content` (`id`, `active`, `mail`, `subject`)
-                    VALUES ('' , '0', :mail, :subject)";
+                $sql = "INSERT INTO `mailer_content` (`id`, `active`, `mail`, `subject`, `blocked`)
+                    VALUES ('' , '0', :mail, :subject, 0)";
                 Model::query($sql, array(':subject'=>$subject, ':mail'=>$mailId));
 
                 // destinatarios

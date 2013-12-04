@@ -33,18 +33,6 @@ spl_autoload_register(
 
 );
 
-// Error handler
-set_error_handler (
-
-    function ($errno, $errstr, $errfile, $errline, $errcontext) {
-        // @todo Insert error into buffer
-//        echo "Error:  {$errno}, {$errstr}, {$errfile}, {$errline}, {$errcontext}<br />";
-        //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-    }
-
-);
-
-
 /**
  * Sesión.
  */
@@ -54,20 +42,33 @@ session_start();
 // set Lang
 define('LANG', 'es');
 
+$fail = false;
 $debug = true;
+if ($debug) $txtdebug = '<html><head></head><body>';
+
+// Error handler
+set_error_handler (
+
+    function ($errno, $errstr, $errfile, $errline, $errcontext) {
+//        global $debug, $txtdebug;
+        // @todo Insert error into buffer
+//if ($debug) $txtdebug .= "Error:  {$errno}, {$errstr}, {$errfile}, {$errline}, {$errcontext}<br />";
+        //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+    }
+
+);
+
 
 $mailing = Newsletter::getSending();
 // si no está activa fin
 if (!$mailing->active) {
-    die('NADA');
+    // inactivo, nada de debug
+    die;
 }
 if ($mailing->blocked) {
-    die('BLOQUEADA');
+    if ($debug) $txtdebug .= 'BLOQUEADO!<br />';
+    $fail = true;
 }
-
-if ($debug) echo "bloqueo la tabla<br />";
-Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
-
 
 // ponemos el id del envio
 $_SESSION['NEWSLETTER_SENDID'] = $mailing->mail;
@@ -78,76 +79,97 @@ $data = $query->fetch(\PDO::FETCH_ASSOC);
 $content = $data['html'];
 $template = $data['template'];
 if (empty($content)) {
-    die('Sin contenido');
+    if ($debug) $txtdebug .= 'Sin contenido';
+    $fail = true;
 }
 
-// cargamos los destinatarios
-$users = array();
-$sql = "SELECT
-        id,
-        user,
-        name,
-        email
-    FROM mailer_send
-    WHERE sended IS NULL
-    ORDER BY id
-    LIMIT 500
-    ";
+if (!$fail) {
+    if ($debug) $txtdebug .= "bloqueo la tabla<br />";
+    Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
 
-if ($query = Model::query($sql)) {
-    foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
-        $users[] = $user;
+
+    // cargamos los destinatarios
+    $users = array();
+    $sql = "SELECT
+            id,
+            user,
+            name,
+            email
+        FROM mailer_send
+        WHERE sended IS NULL
+        ORDER BY id
+        LIMIT 500
+        ";
+    if ($debug) $txtdebug .= "$sql<br /><br />";
+
+    if ($query = Model::query($sql)) {
+        foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
+            $users[] = $user;
+        }
     }
-}
 
-// si no quedan pendientes, grabamos el feed y desactivamos
-if (empty($users)) {
-    // Desactivamos
-    Model::query('UPDATE mailer_content SET active = 0 WHERE id = ?', array($mailing->id));
+    // si no quedan pendientes, grabamos el feed y desactivamos
+    if (empty($users)) {
 
-    // evento feed
-    $log = new Feed();
-    $log->populate('Envio newsletter (cron)', '/admin/mailing/newsletter', 'Se ha completado el envio del boletin');
-    $log->doAdmin('system');
-    unset($log);
+        if ($debug) $txtdebug .= "No hay destinatarios<br />";
 
-    die('FIN');
-}
+        // Desactivamos
+        Model::query('UPDATE mailer_content SET active = 0 WHERE id = ?', array($mailing->id));
 
-foreach ($users as $user) {
-    $mailHandler = new Mail();
+        // evento feed
+        $log = new Feed();
+        $log->populate('Envio newsletter (cron)', '/admin/mailing/newsletter', 'Se ha completado el envio del boletin');
+        $log->doAdmin('system');
+        unset($log);
 
-    $mailHandler->to = \trim($user->email);
-    $mailHandler->toName = $user->name;
-    $mailHandler->subject = $mailing->subject;
-    $mailHandler->content = '<br />'.$content.'<br />';
-    $mailHandler->html = true;
-    $mailHandler->template = $template;
-    $mailHandler->massive = true;
-    
-    $errors = array();
-    if ($mailHandler->send($errors)) {
-
-        // Envio correcto
-        Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}'");
-        if ($debug) echo "Enviado OK a $user->email<br />";
-
+        if ($debug) $txtdebug .= 'Se ha completado el envio del boletin<br />';
     } else {
 
-        // falló al enviar
-        $sql = "UPDATE mailer_send
-        SET sended = 0 , error = ? , datetime = NOW()
-        WHERE		id = '{$user->id}'
-        ";
-        Model::query($sql, array(implode(',', $errors)));
-        if ($debug) echo "Fallo ERROR a $user->email ".implode(',', $errors)."<br />";
+        foreach ($users as $user) {
+            $mailHandler = new Mail();
+
+            $mailHandler->to = \trim($user->email);
+            $mailHandler->toName = $user->name;
+            $mailHandler->subject = $mailing->subject;
+            $mailHandler->content = '<br />'.$content.'<br />';
+            $mailHandler->html = true;
+            $mailHandler->template = $template;
+            $mailHandler->massive = true;
+            
+            $errors = array();
+            if ($mailHandler->send($errors)) {
+
+                // Envio correcto
+                Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}'");
+                if ($debug) $txtdebug .= "Enviado OK a $user->email<br />";
+
+            } else {
+
+                // falló al enviar
+                $sql = "UPDATE mailer_send
+                SET sended = 0 , error = ? , datetime = NOW()
+                WHERE		id = '{$user->id}'
+                ";
+                Model::query($sql, array(implode(',', $errors)));
+                if ($debug) $txtdebug .= "Fallo ERROR a $user->email ".implode(',', $errors)."<br />";
+            }
+
+            unset($mailHandler);
+            
+        }
     }
 
-    unset($mailHandler);
-    
+    if ($debug) $txtdebug .= "desbloqueo la tabla<br />";
+    Model::query('UPDATE mailer_content SET blocked = 0 WHERE id = ?', array($mailing->id));
+
+    if ($debug) $txtdebug .= 'Listo';
 }
 
-if ($debug) echo "desbloqueo la tabla<br />";
-Model::query('UPDATE mailer_content SET blocked = 0 WHERE id = ?', array($mailing->id));
+if ($debug) $txtdebug .= '</body></html>';
 
-die('Listo');
+// mail debug
+// Para enviar un correo HTML mail, la cabecera Content-type debe fijarse
+$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
+$cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+if ($debug) mail('root-goteo@doukeshi.org', 'Debug enviador de mailing masivo', $txtdebug, $cabeceras);
+if ($debug) echo $txtdebug;
