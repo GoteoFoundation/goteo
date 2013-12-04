@@ -18,7 +18,6 @@ namespace Goteo\Controller\Admin {
 
             // año fiscal
             $year = Model\User\Donor::$currYear;
-            // ESTA PRIMERA VEZ ESESPECIAL  porque el cif no lo tuvimos hasta el 2012
             $year0 = $year;
             $year1 = $year-1;
             

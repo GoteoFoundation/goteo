@@ -23,7 +23,7 @@ namespace Goteo\Controller\Admin {
 
                 case 'donors':
 
-                    $filters['year'] = (!empty($filters['year'])) ? $filters['year'] : 2012;
+                    if (empty($filters['year'])) $filters['year'] = Model\User\Donor::$currYear;
 
                     $data = Model\User\Donor::getList($filters);
 
