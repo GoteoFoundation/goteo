@@ -66,7 +66,7 @@ namespace Goteo\Library {
 
         }
 
-		static public function initiateSending ($subject, $receivers) {
+		static public function initiateSending ($subject, $receivers, $tpl) {
 
             /*
              * Grabar el contenido para el sinoves en la tabla mail, obtener el id y el codigo para sinoves
@@ -82,14 +82,14 @@ namespace Goteo\Library {
                 Model::query("DELETE FROM mailer_send");
 
                 // contenido (plantilla, mas contenido de newsletter
-                $Template = Template::get(33);
-                $content = Newsletter::getContent($Template->text);
+                $template = Template::get($tpl);
+                $content = ($tpl == 33) ? Newsletter::getContent($template->text) : $template->text;
 
                 $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
                 $values = array (
                     ':email' => 'any',
                     ':html' => $content,
-                    ':template' => 33,
+                    ':template' => $tpl,
                     ':node' => $_SESSION['admin_node']
                 );
                 $query = Model::query($sql, $values);

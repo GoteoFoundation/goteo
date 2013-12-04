@@ -16,13 +16,14 @@ namespace Goteo\Controller\Admin {
             switch ($action) {
                 case 'init':
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $template = $_POST['template'];
                         $suject = \strip_tags($_POST['subject']);
                         if ($_POST['test']) {
                             $receivers = Boletin::getTesters();
                         } else {
                             $receivers = Boletin::getReceivers();
                         }
-                        if (Boletin::initiateSending($suject, $receivers)) {
+                        if (Boletin::initiateSending($suject, $receivers, $template)) {
 
                             $mailing = Boletin::getSending();
 
@@ -43,7 +44,7 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'activate':
                     if (Boletin::activateSending()) {
-                        Message::Info('Se ha activado el envío automático de newsletter');
+                        Message::Info('Se ha activado un nuevo envío automático');
                     } else {
                         Message::Error('No se pudo activar el envío. Iniciar de nuevo');
                     }

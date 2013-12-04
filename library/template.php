@@ -186,6 +186,7 @@ namespace Goteo\Library {
         {
             $groups = array(
                 'general' => 'Propósito general',
+                'massive' => 'Masivos',
                 'access'  => 'Registro y acceso usuario',
                 'project' => 'Actividad proyecto',
                 'tips'    => 'Auto-tips difusión',

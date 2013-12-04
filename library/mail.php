@@ -21,6 +21,7 @@ namespace Goteo\Library {
             $replyName,
             $attachments = array(),
             $html = true,
+            $massive = false,
             $template = null;
 
         /**
@@ -98,8 +99,8 @@ namespace Goteo\Library {
                     $mail->FromName = $this->fromName;
                     
                     $mail->AddAddress($this->to, $this->toName);
-                    // copia a mail log si no es newsletter
-                    if ($this->template != 33) {
+                    // copia a mail log si no es masivo
+                    if (!$this->massive) {
                         $mail->AddBCC('goteomaillog@gmail.com', 'Verifier');
                     }
                     if($this->cc) {
@@ -182,8 +183,8 @@ namespace Goteo\Library {
             $viewData = array('content' => $this->content);
 
             // grabamos el contenido en la tabla de envios
-            // especial para newsletter, solo grabamos un sinoves
-            if ($this->template == 33) {
+            // especial para masivos, solo grabamos un sinoves
+            if ($this->massive) {
                 if (!empty($_SESSION['NEWSLETTER_SENDID']) ) {
                     $sendId = $_SESSION['NEWSLETTER_SENDID'];
                 } else {
@@ -233,7 +234,7 @@ namespace Goteo\Library {
                 // para plantilla boletin
                 if ($this->template == 33) {
                     $viewData['baja'] = \SITE_URL . '/user/leave/?unsuscribe=newsletter&email=' . $this->to;
-                    return new View (GOTEO_PATH.'/view/email/newsletter.html.php', $viewData);
+                    return new View ('view/email/newsletter.html.php', $viewData);
                 } else {
                     return new View ('view/email/goteo.html.php', $viewData);
                 }

@@ -54,6 +54,8 @@ session_start();
 // set Lang
 define('LANG', 'es');
 
+$debug = true;
+
 $mailing = Newsletter::getSending();
 // si no está activa fin
 if (!$mailing->active) {
@@ -63,16 +65,18 @@ if ($mailing->blocked) {
     die('BLOQUEADA');
 }
 
-// bloqueo la tabla
+if ($debug) echo "bloqueo la tabla<br />";
 Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
 
 
 // ponemos el id del envio
 $_SESSION['NEWSLETTER_SENDID'] = $mailing->mail;
 
-// cogemos el contenido desde el historial
-$query = Model::query('SELECT html FROM mail WHERE id = ?', array($mailing->mail));
-$content = $query->fetchColumn();
+// cogemos el contenido y la plantilla desde el historial
+$query = Model::query('SELECT html, template FROM mail WHERE id = ?', array($mailing->mail));
+$data = $query->fetch(\PDO::FETCH_ASSOC);
+$content = $data['html'];
+$template = $data['template'];
 if (empty($content)) {
     die('Sin contenido');
 }
@@ -118,14 +122,16 @@ foreach ($users as $user) {
     $mailHandler->subject = $mailing->subject;
     $mailHandler->content = '<br />'.$content.'<br />';
     $mailHandler->html = true;
-    $mailHandler->template = 33; // porsupuesto estamos enviando la plantilla de boletin
+    $mailHandler->template = $template;
+    $mailHandler->massive = true;
     
     $errors = array();
     if ($mailHandler->send($errors)) {
 
         // Envio correcto
         Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}'");
-//        echo "Enviado OK a $user->email<br />";
+        if ($debug) echo "Enviado OK a $user->email<br />";
+
     } else {
 
         // falló al enviar
@@ -134,14 +140,14 @@ foreach ($users as $user) {
         WHERE		id = '{$user->id}'
         ";
         Model::query($sql, array(implode(',', $errors)));
-//        echo "Fallo ERROR a $user->email ".implode(',', $errors)."<br />";
+        if ($debug) echo "Fallo ERROR a $user->email ".implode(',', $errors)."<br />";
     }
 
     unset($mailHandler);
     
 }
 
-// desbloqueo la tabla
+if ($debug) echo "desbloqueo la tabla<br />";
 Model::query('UPDATE mailer_content SET blocked = 0 WHERE id = ?', array($mailing->id));
 
 die('Listo');
