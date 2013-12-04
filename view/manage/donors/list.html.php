@@ -15,7 +15,6 @@ $excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` 
         <div style="float:left;margin:5px;">
             <label for="year-filter">A&ntilde;o fiscal:</label><br />
             <select id ="year-filter" name="year">
-                <option value="2012"<?php if ($filters['year']=='2012') echo ' selected="selected"'; ?>>Hasta 2012</option>
                 <option value="2013"<?php if ($filters['year']=='2013') echo ' selected="selected"'; ?>>2013</option>
             </select>
         </div>

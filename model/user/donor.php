@@ -14,20 +14,23 @@ namespace Goteo\Model\User {
         $location,
         $country,
         $numproj,
-        $year = 2013,
+        $year,
         $edited = 0,
         $confirmed = 0,
         $pdf = null,
         $dates = array();
 
+        public static $currYear = 2013; // año fiscal actual
+
+
         /**
          * Get invest data if a user is a donor
          * @param varcahr(50) $id  user identifier
          */
-        public static function get($id, $year = '2013') {
+        public static function get($id, $year = null) {
 
-            // ESTA PRIMERA VEZ ESESPECIAL  porque el cif no lo tuvimos hasta el 2012
-            $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
+            if (empty($year)) $year = static::$currYear;
+            $year0 = $year;
             $year1 = $year + 1;
 
             try {
@@ -116,8 +119,8 @@ namespace Goteo\Model\User {
         */
         public function getList($filters = array(), $csv = false) {
 
-            $year = empty($filter['year']) ? '2013' : $filter['year'];
-            $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
+            $year = empty($filter['year']) ? static::$currYear : $filter['year'];
+            $year0 = $year;
             $year1 = $year + 1;
 
             $values = array();
@@ -213,7 +216,8 @@ $nat = ($pf) ? 'F' : 'J';
         }
 
         public function validate(&$errors = array()) {
-
+            if (empty($this->year)) 
+                $this->year = static::$currYear;
         }
 
         /*
@@ -257,8 +261,10 @@ $nat = ($pf) ? 'F' : 'J';
 
         }
 
-        public static function setConfirmed($user, $year = '2013') {
+        public static function setConfirmed($user) {
             try {
+                $year = static::$currYear;
+
                 $sql = "UPDATE user_donation SET confirmed = 1 WHERE user = :user AND year = :year";
                 if (self::query($sql, array(':user' => $user, 'year' => $year))) {
                     return true;
@@ -311,9 +317,10 @@ $nat = ($pf) ? 'F' : 'J';
         }
 
 
-        static public function getDates ($user, $year = '2013') {
+        static public function getDates ($user, $year = null) {
 
-            $year0 = $year == 2012 ? $year - 1 : $year; // solo para el 2012
+            if (empty($year)) $year = static::$currYear;
+            $year0 = $year;
             $year1 = $year + 1;
 
             $fechas = array();

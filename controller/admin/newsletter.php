@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Text,
+        Goteo\Model\User\Donor,
 		Goteo\Library\Message,
 		Goteo\Library\Newsletter as Boletin;
 
@@ -20,8 +21,12 @@ namespace Goteo\Controller\Admin {
                         $suject = \strip_tags($_POST['subject']);
                         if ($_POST['test']) {
                             $receivers = Boletin::getTesters();
-                        } else {
+                        } elseif ($template == 33) {
+                            // los destinatarios de newsletter
                             $receivers = Boletin::getReceivers();
+                        } elseif ($template == 27 || $template == 38) {
+                            // los cofinanciadores de este año
+                            $receivers = Boletin::getDonors(Donor::$currYear);
                         }
                         if (Boletin::initiateSending($suject, $receivers, $template)) {
 

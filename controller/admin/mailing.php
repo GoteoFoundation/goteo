@@ -16,11 +16,11 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
-            // año fiscal, esta primera vez es desde 2011
-            $year = '2012';
+            // año fiscal
+            $year = Model\User\Donor::$currYear;
             // ESTA PRIMERA VEZ ESESPECIAL  porque el cif no lo tuvimos hasta el 2012
-            $year0 = '2011';
-            $year1 = '2013';
+            $year0 = $year;
+            $year1 = $year-1;
             
 
             $errors = array();

@@ -33,7 +33,7 @@ namespace Goteo\Controller\Manage {
             }
 
             if (empty($filters['year']))
-                $filters['year'] = 2013;
+                $filters['year'] = Model\User\Donor::$currYear;
 
             if (!empty($filters['filtered'])) {
                 $data = Model\User\Donor::getList($filters);

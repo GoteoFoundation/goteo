@@ -39,7 +39,7 @@ namespace Goteo\Library {
         /*
          * Usuarios actualmente activos que no tienen bloqueado el envio de newsletter
          */
-		static public function getReceivers () {
+        static public function getReceivers () {
 
             $list = array();
 
@@ -55,6 +55,38 @@ namespace Goteo\Library {
                     AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
                     ORDER BY user.id ASC
                     ";
+
+            if ($query = Model::query($sql, $values)) {
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
+                    $list[] = $receiver;
+                }
+            }
+
+            return $list;
+
+        }
+
+        /*
+         * Usuarios cofinanciadores del año fiscal actual
+         */
+		static public function getDonors ($year) {
+
+            $year0 = $year;
+            $year1 = $year + 1;
+
+            $list = array();
+
+            $sql = "SELECT
+                        user.id as user,
+                        user.name as name,
+                        user.email as email
+                FROM  invest
+                INNER JOIN user ON user.id = invest.user
+                WHERE   invest.status IN ('1', '3')
+                AND invest.charged >= '{$year0}-01-01'
+                AND invest.charged < '{$year1}-01-01'
+                GROUP BY invest.user
+                ORDER BY user.email ASC";
 
             if ($query = Model::query($sql, $values)) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
