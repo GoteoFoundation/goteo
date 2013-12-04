@@ -42,8 +42,8 @@ session_start();
 // set Lang
 define('LANG', 'es');
 
-$fail = false;
 $debug = true;
+$fail = false;
 if ($debug) $txtdebug = '<html><head></head><body>';
 
 // Error handler
@@ -83,10 +83,12 @@ if (empty($content)) {
     $fail = true;
 }
 
+// voy a parar aquí, antes del bloqueo
+if ($debug) $txtdebug .= '<pre>'.print_r($mailing,1).'</pre>';
+
 if (!$fail) {
     if ($debug) $txtdebug .= "bloqueo la tabla<br />";
-    Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
-
+//    Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
 
     // cargamos los destinatarios
     $users = array();
@@ -107,6 +109,9 @@ if (!$fail) {
             $users[] = $user;
         }
     }
+
+    // destinatarios
+    if ($debug) $txtdebug .= '<pre>'.print_r($users,1).'</pre>';
 
     // si no quedan pendientes, grabamos el feed y desactivamos
     if (empty($users)) {
@@ -163,6 +168,8 @@ if (!$fail) {
     Model::query('UPDATE mailer_content SET blocked = 0 WHERE id = ?', array($mailing->id));
 
     if ($debug) $txtdebug .= 'Listo';
+} else {
+    if ($debug) $txtdebug .= 'FALLO';
 }
 
 if ($debug) $txtdebug .= '</body></html>';
