@@ -38,11 +38,6 @@ switch ($contract->type) {
                 'ok'        => !empty($okeys['reg_number']) ? array($okeys['reg_number']) : array()
             ),
 
-            'reg_loc' => array (
-                'type' => 'hidden',
-                'value' => ''
-            ),
-
             'reg_id' => array (
                 'type' => 'hidden',
                 'value' => ''
@@ -70,15 +65,6 @@ switch ($contract->type) {
                     'value'     => $contract->reg_name,
                     'errors'    => !empty($errors['reg_name']) ? array($errors['reg_name']) : array(),
                     'ok'        => !empty($okeys['reg_name']) ? array($okeys['reg_name']) : array()
-                ),
-
-            'reg_loc' => array(
-                    'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_loc_2'),
-                    'required'  => true,
-                    'value'     => $contract->reg_loc,
-                    'errors'    => !empty($errors['reg_loc']) ? array($errors['reg_loc']) : array(),
-                    'ok'        => !empty($okeys['reg_loc']) ? array($okeys['reg_loc']) : array()
                 ),
 
             'reg_number' => array(
@@ -149,10 +135,6 @@ if ($contract->type == 0) {
                 'value' => ''
             ),
             'reg_number' => array (
-                'type' => 'hidden',
-                'value' => ''
-            ),
-            'reg_loc' => array (
                 'type' => 'hidden',
                 'value' => ''
             ),

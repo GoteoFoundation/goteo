@@ -42,8 +42,7 @@ namespace Goteo\Model {
             $paypal_owner,
                 
             // datos de registro
-            $reg_name,  // Nombre del registro en el que está incrita la entidad
-            $reg_loc, // Ciudad del registro
+            $reg_name,  // Nombre del registro en el que está incrita la entidad (nombre completo y ciudad)
             $reg_number, // Número de registro
             $reg_date,  // Fecha de escritura del notario
             $reg_id, // Número en el registro mercantil
@@ -226,7 +225,6 @@ namespace Goteo\Model {
                     'reg_name',
                     'reg_date',
                     'reg_number',
-                    'reg_loc',
                     'reg_id',
                     'reg_idloc',
                     'reg_idname',
@@ -566,11 +564,6 @@ namespace Goteo\Model {
                         $errors['entity']['reg_number'] = Text::get('mandatory-contract-reg_number_2');
                     } else {
                          $okeys['entity']['reg_number'] = 'ok';
-                    }
-                    if (empty($this->reg_loc)) {
-                        $errors['entity']['reg_loc'] = Text::get('mandatory-contract-reg_loc_2');
-                    } else {
-                         $okeys['entity']['reg_loc'] = 'ok';
                     }
                     if (empty($this->reg_id)) {
                         $errors['entity']['reg_id'] = Text::get('mandatory-contract-reg_id_2');
