@@ -45,7 +45,7 @@ namespace Goteo\Controller\Dashboard {
         }
 
         // acciones de certificado de donativo
-        public static function donor ($user) {
+        public static function donor ($user, $action = 'view') {
 
             $errors = array();
 

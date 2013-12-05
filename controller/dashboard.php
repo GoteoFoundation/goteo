@@ -48,11 +48,9 @@ namespace Goteo\Controller {
                 $viewData['status']  = Model\Project::status();
             }
 
-            //@TODO: if ($option == 'wall') Dashboard\Activity::wall($user);
-
             // gestión de certificado
             if ($option == 'donor') 
-                $viewData['donation'] = Dashboard\Activity::donor($user);
+                $viewData['donation'] = Dashboard\Activity::donor($user, $action);
 
 
             // si es un salto a otro panel
