@@ -58,7 +58,7 @@ $excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` 
         <tbody>
             <?php foreach ($data as $row) : ?>
             <tr>
-                <td><a href="/admin/users/?id=<?php echo $row->id; ?>" title="<?php echo $row->email; ?>"><?php echo "{$row->name} "; ?> <?php echo $row->nif; ?></a></td>
+                <td><a href="/admin/users/?id=<?php echo $row->id; ?>" title="<?php echo $row->email; ?>"><?php echo empty($row->name) ? $row->email : $row->name; ?> <?php echo $row->nif; ?></a></td>
                 <td><?php echo $row->amount; ?></td>
                 <td><?php echo $row->zipcode; ?></td>
                 <td>
