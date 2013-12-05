@@ -194,7 +194,6 @@ namespace Goteo\Model\User {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
 
                 if ($csv) {
-// el nif limpiarlo
 
 //@TODO si estamos procesando datos para csv hay que mirar:
 $espanas = array('spain', 'españa', 'espanya');
