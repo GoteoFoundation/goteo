@@ -217,7 +217,7 @@ $nat = ($pf) ? 'F' : 'J';
 
         public function validate(&$errors = array()) {
             if (empty($this->year)) 
-                $this->year = static::$currYear;
+                $this->year = self::$currYear;
         }
 
         /*

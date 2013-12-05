@@ -47,6 +47,8 @@ namespace Goteo\Controller\Dashboard {
         // acciones de certificado de donativo
         public static function donor ($user) {
 
+            $errors = array();
+
             // ver si es donante, cargando sus datos
             $donation = Model\User\Donor::get($user->id);
             $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
@@ -64,6 +66,7 @@ namespace Goteo\Controller\Dashboard {
 
             // si están guardando, actualizar los datos y guardar
             if ($action == 'save' && $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['save'] == 'donation') {
+
                 $donation->edited = 1;
                 $donation->confirmed = 0;
                 $donation->name = $_POST['name'];
@@ -73,10 +76,11 @@ namespace Goteo\Controller\Dashboard {
                 $donation->location = $_POST['location'];
                 $donation->country = $_POST['country'];
 
-                if ($donation->save()) {
+                if ($donation->save($errors)) {
                     Message::Info(Text::get('dashboard-donor-saved'));
                     throw new Redirection('/dashboard/activity/donor');
                 } else {
+                    Message::Error(implode('<br />', $errors));
                     Message::Error(Text::get('dashboard-donor-save_fail'));
                     throw new Redirection('/dashboard/activity/donor/edit');
                 }
