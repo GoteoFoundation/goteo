@@ -96,6 +96,12 @@ Lang::set($forceLang);
 // cambiamos el locale
 \setlocale(\LC_TIME, Lang::locale());
 
+/* Cookie para la ley de cookies */
+if (empty($_COOKIE['goteo_cookies'])) {
+    setcookie("goteo_cookies", '1', time() + 3600 * 24 * 365);
+    Message::Info(Text::get('message-cookies'));
+}
+
 try {
     // Check permissions on requested URI
     if (!ACL::check($uri)) {
