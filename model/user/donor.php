@@ -206,13 +206,13 @@ $cp = ($esp) ? substr($item->zipcode, 0, 2) : '99';
 $type = '';
 Check::nif($item->nif, $type);
 // naturaleza según tipo de persona (F, J)
-$nt = arrray(
+$nt = array(
         'nif' => 'F',
         'nie' => 'F',
         'cif' => 'J'
     );
 // porcentaje segun tipo de persona (25, 35)
-$pt = arrray(
+$pt = array(
         'nif' => '25',
         'nie' => '25',
         'cif' => '35'
