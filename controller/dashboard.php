@@ -49,8 +49,9 @@ namespace Goteo\Controller {
             }
 
             // gestión de certificado
-            if ($option == 'donor') 
+            if ($option == 'donor')  {
                 $viewData['donation'] = Dashboard\Activity::donor($user, $action);
+            }
 
 
             // si es un salto a otro panel

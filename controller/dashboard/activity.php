@@ -5,8 +5,9 @@ namespace Goteo\Controller\Dashboard {
     use Goteo\Model,
         Goteo\Core\Redirection,
 		Goteo\Library\Message,
-		Goteo\Library\Text,
-		Goteo\Library\Listing;
+        Goteo\Library\Text,
+		Goteo\Library\Check,
+        Goteo\Library\Listing;
 
     class Activity {
 
@@ -87,13 +88,31 @@ namespace Goteo\Controller\Dashboard {
             }
 
             if ($action == 'confirm') {
-                // marcamos que los datos estan confirmados
-                Model\User\Donor::setConfirmed($user->id);
-                Message::Info(Text::get('dashboard-donor-confirmed'));
-                throw new Redirection('/dashboard/activity/donor');
+                // verificar que el nif es correcto
+                if (!Check::nif($donation->nif)) {
+                    Message::Error(Text::get('validate-project-value-contract_nif'));
+                    throw new Redirection('/dashboard/activity/donor');
+                } else {
+                    // marcamos que los datos estan confirmados
+                    Model\User\Donor::setConfirmed($user->id);
+                    Message::Info(Text::get('dashboard-donor-confirmed'));
+                    throw new Redirection('/dashboard/activity/donor');
+                }
             }
 
             if ($action == 'download') {
+
+                //@TODO descarga temporalmente no disponible
+                Message::Error('Descarga de certificado temporalmente no disponible.');
+                throw new Redirection('/dashboard/activity/donor');
+
+                // verificar que el nif es correcto
+                if (!Check::nif($donation->nif)) {
+                    Message::Error(Text::get('validate-project-value-contract_nif'));
+                    throw new Redirection('/dashboard/activity/donor');
+                }
+
+
                 // preparamos los datos para el pdf
                 // generamos el pdf y lo mosteramos con la vista específica
                 // estos pdf se guardan en /data/pdfs/donativos
