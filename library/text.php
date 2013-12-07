@@ -373,6 +373,14 @@ namespace Goteo\Library {
         }
 
         /*
+         * Devuelve el número de palabras de una cadena
+         */
+        static public function wcount ($string) {
+            // contar palabras (ojo! hay que quitar los tags html)
+            return count(explode(' ', \strip_tags($string)));
+        }
+
+        /*
          * Devuelve el número de palabras del contenido recibido
          */
         static public function wordCount ($section, $table, $fields = array(), &$total = 0 ) {
@@ -410,8 +418,7 @@ namespace Goteo\Library {
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row) {
                 // para cada campo
                 foreach ($fields as $field) {
-                    // contar palabras (ojo! hay que quitar los tags html)
-                    $count += count(explode(' ', \strip_tags($row[$field])));
+                    $count += static::wcount($row[$field]);
                 }
             }
 

@@ -66,6 +66,10 @@ $types = Content::$fields[$table]; // por tipo de campo
 <!-- lista -->
 <?php if (!empty($data)) : ?>
 <div class="widget board">
+    N&uacute;mero de palabras: <?php echo $nwords; ?>
+</div>
+
+<div class="widget board">
     <table>
         <thead>
             <tr>
