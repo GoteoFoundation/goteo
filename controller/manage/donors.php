@@ -19,6 +19,11 @@ namespace Goteo\Controller\Manage {
                 );
                 
                 $data = Model\User\Donor::getList($filters, true);
+
+                // forzar descarga
+                header('Content-type: text/csv');
+                header("Content-disposition: attachment; filename=donantes_goteo".$filters['year'].".csv");
+
                 foreach ($data as $id=>$row) {
                     echo implode(';', $row).';
 ';
