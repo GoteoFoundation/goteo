@@ -201,7 +201,7 @@ function donativeCert($data) {
         $pdf->bold();
         $pdf->Write(5,'diciembre');
         $pdf->regular();
-        $pdf->Write(5,' de 2.012');
+        $pdf->Write(5,' de '.$data->year);
     $pdf->Ln(6);
         $pdf->Image('view/css/firmas.jpg');
     $pdf->Ln(1);
