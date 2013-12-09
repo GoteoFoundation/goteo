@@ -102,10 +102,6 @@ namespace Goteo\Controller\Dashboard {
 
             if ($action == 'download') {
 
-                //@TODO descarga temporalmente no disponible
-                Message::Error('Descarga de certificado temporalmente no disponible.');
-                throw new Redirection('/dashboard/activity/donor');
-
                 // verificar que el nif es correcto
                 if (!Check::nif($donation->nif)) {
                     Message::Error(Text::get('validate-project-value-contract_nif'));
