@@ -365,7 +365,6 @@ namespace Goteo\Model\Call {
             } 
             // si la config para esta ronda la config. es el límite normal
             elseif($call->conf == 'normal') {
-                $maxdrop = min($maxdrop, ($project->maxcost - $project->invested - $amount));
                 if (isset($call->maxproj)) {
                     // y que no sea mayor al límite por proyecto si tiene límite por proyecto, ese es
                     $maxdrop = min($maxdrop, $call->maxproj);
