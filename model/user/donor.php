@@ -40,16 +40,19 @@ namespace Goteo\Model\User {
             try {
 
                 // primero saber si es donante
+                // aportes de este año en proyectos financiados (pasada primera ronda)
+                // aportes de año pasado en proyectos que pasaron este año
                 $sql = "SELECT COUNT(invest.id)
                         FROM invest
                         INNER JOIN project
                             ON project.id = invest.project
                             AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                         WHERE   invest.status IN ('1', '3')
-                        AND invest.invested >= '{$year0}-01-01'
-                        AND invest.invested < '{$year1}-01-01'
                         AND invest.user = :id
-                        ";
+                        AND (
+                            (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                            OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                        )";
                 $query = static::query($sql, array(':id' => $id));
                 $donativo = $query->fetchColumn();
                 if (empty($donativo)) {
@@ -70,8 +73,10 @@ namespace Goteo\Model\User {
                                     AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                                 WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
-                                AND invest.charged >= '{$year0}-01-01'
-                                AND invest.charged < '{$year1}-01-01'
+                                AND (
+                                    (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                                    OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                                )
                                 GROUP BY invest.user
                             ";
                         $query = static::query($sql, array(':id' => $id));
@@ -103,8 +108,10 @@ namespace Goteo\Model\User {
                                 LEFT JOIN user_personal ON user_personal.user = invest.user
                                 WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
-                                AND invest.charged >= '{$year0}-01-01'
-                                AND invest.charged < '{$year1}-01-01'
+                                AND (
+                                    (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                                    OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                                )
                                 GROUP BY invest.user
                             ";
                         $query = static::query($sql, array(':id' => $id));
@@ -136,6 +143,12 @@ namespace Goteo\Model\User {
                 $user = $filters['user'];
                 $sqlFilter .= " AND (user.id LIKE :user OR user.name LIKE :user OR user.email LIKE :user)";
                 $values[':user'] = "%{$user}%";
+            }
+
+            if (!empty($filters['year'])) {
+                $ayear = $filters['year'];
+                $sqlFilter .= " AND DATE_FORMAT(invest.invested,'%Y') = :ayear";
+                $values[':ayear'] = $ayear;
             }
 
             if (!empty($filters['status'])) {
@@ -183,8 +196,10 @@ namespace Goteo\Model\User {
                 LEFT JOIN user_donation ON user_donation.user = invest.user AND user_donation.year = '{$year}'
                 LEFT JOIN invest_address ON invest_address.invest = invest.id
                 WHERE   invest.status IN ('1', '3')
-                AND invest.charged >= '{$year0}-01-01'
-                AND invest.charged < '{$year1}-01-01'
+                AND (
+                    (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                    OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                )
                 $sqlFilter
                 GROUP BY invest.user
                 ORDER BY user.email ASC";
@@ -353,9 +368,11 @@ $nat = $nt[$type];
                         ON project.id = invest.project
                         AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                     WHERE   invest.status IN ('1', '3')
-                    AND invest.charged >= '{$year0}-01-01'
-                    AND invest.charged < '{$year1}-01-01'
                     AND invest.user = :id
+                    AND (
+                        (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                        OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                    )
                     ORDER BY invest.invested ASC
                     ";
 //                    echo($sql . '<br />' . $user);
