@@ -109,49 +109,46 @@ namespace Goteo\Controller\Dashboard {
                 }
 
 
+                //@TODO borramos el pdf anterior y generamos de nuevo
+                if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/' . $donation->pdf)) {
+                    unlink('data/pdfs/donativos/' . $donation->pdf);
+                } 
+
+
+                // para generar: 
                 // preparamos los datos para el pdf
                 // generamos el pdf y lo mosteramos con la vista específica
                 // estos pdf se guardan en /data/pdfs/donativos
                 // el formato del archivo es: Ymd_nif_userid
-                // se genera una vez, si ya está generado se abre directamente
-                if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/' . $donation->pdf)) {
 
-                    // forzar descarga
+                $objeto = new \Goteo\Library\Num2char($donation->amount, null);
+                $donation->amount_char = $objeto->getLetra();
+
+                $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
+
+
+                $debug = false;
+
+                if ($debug)
+                    header('Content-type: text/html');
+
+                require_once 'library/pdf.php';  // Libreria pdf
+                $pdf = donativeCert($donation);
+
+                if ($debug) {
+                    echo 'FIN';
+                    echo '<hr><pre>' . print_r($pdf, 1) . '</pre>';
+                } else {
+                    $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
+                    $donation->setPdf($filename);
+//                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
                     header('Content-type: application/pdf');
                     header("Content-disposition: attachment; filename={$donation->pdf}");
                     header("Content-Transfer-Encoding: binary");
-                    echo file_get_contents('data/pdfs/donativos/' . $donation->pdf);
-                    die();
-                } else {
-
-                    $objeto = new \Goteo\Library\Num2char($donation->amount, null);
-                    $donation->amount_char = $objeto->getLetra();
-
-                    $filename = "certificado_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
-
-
-                    $debug = false;
-
-                    if ($debug)
-                        header('Content-type: text/html');
-
-                    require_once 'library/pdf.php';  // Libreria pdf
-                    $pdf = donativeCert($donation);
-
-                    if ($debug) {
-                        echo 'FIN';
-                        echo '<hr><pre>' . print_r($pdf, 1) . '</pre>';
-                    } else {
-                        $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
-                        $donation->setPdf($filename);
-//                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
-                        header('Content-type: application/pdf');
-                        header("Content-disposition: attachment; filename={$donation->pdf}");
-                        header("Content-Transfer-Encoding: binary");
-                        echo $pdf->Output('', 'S');
-                        die;
-                    }
+                    echo $pdf->Output('', 'S');
+                    die;
                 }
+
             }
             // fin action download
 
