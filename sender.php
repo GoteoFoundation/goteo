@@ -88,7 +88,7 @@ if ($debug) $txtdebug .= '<pre>'.print_r($mailing,1).'</pre>';
 
 if (!$fail) {
     if ($debug) $txtdebug .= "bloqueo la tabla<br />";
-//    Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
+    Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
 
     // cargamos los destinatarios
     $users = array();

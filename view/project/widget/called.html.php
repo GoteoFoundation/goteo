@@ -21,7 +21,12 @@ $call = $project->called;
             <dd class="light-violet"><span><?php echo \amount_format($call->amount) ?></span></dd>
         </dl>
 
-<?php if (!empty($call->maxproj)) : ?>
+<?php if ($call->id == 'crowdsasuna' && !empty($call->rawmaxproj)) : ?>
+        <dl>
+            <dt><?php echo Text::get('call-project-limit-header') ?></dt>
+            <dd class="violet"><span><?php echo \amount_format($call->rawmaxproj) ?></span></dd>
+        </dl>
+<?php elseif (!empty($call->maxproj)) : ?>
         <dl>
             <dt><?php echo Text::get('call-project-limit-header') ?></dt>
             <dd class="violet"><span><?php echo \amount_format($call->maxproj) ?></span></dd>
