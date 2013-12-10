@@ -41,14 +41,14 @@ namespace Goteo\Controller {
                     'list' => array('label' => 'Listando', 'item' => false),
                     'view' => array('label' => 'Viendo informe', 'item' => true)
                 ),
-                'filters' => array('report' => '', 'from' => '', 'until' => '', 'year' => '2013', 'status' => '', 'user' => '')
+                'filters' => array('report' => '', 'from' => '', 'until' => '', 'year' => '', 'status' => '', 'user' => '')
             ),
             'donors' => array(
                 'label' => 'Donantes',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false)
                 ),
-                'filters' => array('year' => '2013', 'status' => '', 'user' => '')
+                'filters' => array('year' => '', 'status' => '', 'user' => '')
             )
         );
         

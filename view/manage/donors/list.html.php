@@ -2,20 +2,18 @@
 
 use Goteo\Library\Text;
 
-$data = $this['data'];
+//$data = $this['data'];
 $filters = $this['filters'];
-
-$excelUrl = "/manage/donors/excel?year={$filters['year']}&status={$filters['status']}";
-$excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` del año `{$filters['year']}`";
 ?>
-<a href="<?php echo $excelUrl; ?>" target="_blank">CSV</a>
 <div class="widget board">
-    <form id="filter-form" action="/manage/donors/list" method="get">
+    <form id="filter-form" action="/manage/donors/excel" method="get" target="_blank">
 
         <div style="float:left;margin:5px;">
-            <label for="year-filter">A&ntilde;o fiscal:</label><br />
+            <label for="year-filter">A&ntilde;o aporte:</label><br />
             <select id ="year-filter" name="year">
-                <option value="2013"<?php if ($filters['year']=='2013') echo ' selected="selected"'; ?>>2013</option>
+                <option value=""<?php if (empty($filters['year'])) echo ' selected="selected"'; ?>>Todos</option>
+                <option value="2012"<?php if ($filters['year']=='2012') echo ' selected="selected"'; ?>>Anterior (2012)</option>
+                <option value="2013"<?php if ($filters['year']=='2013') echo ' selected="selected"'; ?>>Actual (2013)</option>
             </select>
         </div>
 
@@ -39,13 +37,15 @@ $excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` 
         <br clear="both" />
 
         <div style="float:left;margin:5px;">
-            <input type="submit" value="Filtrar" />
+            <input type="submit" value="Sacar datos" />
         </div>
     </form>
 </div>
 
+<?php /* 
+*** ya no usamos esta página para visualizar, solo para sacar datos.
+if (!empty($data)) : ?>
 <div class="widget board">
-<?php if (!empty($data)) : ?>
     <table>
         <thead>
             <tr>
@@ -79,4 +79,6 @@ $excelAlert = "Vas a sacar los datos de donantes en estado `{$filters['year']}` 
 <p>hay que filtrar, hay demasiados registros</p>
 <?php else : ?>
 <p>No se han encontrado registros</p>
-<?php endif; ?>
+<?php endif; 
+*/
+?>
