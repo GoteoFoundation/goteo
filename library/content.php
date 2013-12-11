@@ -23,6 +23,7 @@ namespace Goteo\Library {
                 'faq'       => 'Faq',
                 'post'      => 'Blog',
                 'banner'    => 'Banners',
+                'bazar'     => 'Catalogo',
                 'tag'       => 'Tags',
                 'criteria'  => 'Criterios de evaluación',
                 'worthcracy'=> 'Meritocrácia',
@@ -32,6 +33,10 @@ namespace Goteo\Library {
             ),
             $fields = array(
                 'banner' => array (
+                    'title' => 'Título',
+                    'description' => 'Descripción'
+                ),
+                'bazar' => array (
                     'title' => 'Título',
                     'description' => 'Descripción'
                 ),
