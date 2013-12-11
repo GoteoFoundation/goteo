@@ -27,14 +27,10 @@ namespace Goteo\Library {
 			try {
                 $project = Project::getMini($invest->project);
 
-		           /* The returnURL is the location where buyers return when a
-		            payment has been succesfully authorized.
-		            The cancelURL is the location buyers are sent to when they hit the
-		            cancel button during authorization of payment during the PayPal flow                 */
                     $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 
-                    $returnURL = $URL."/invest/confirmed/".$invest->project."/".$invest->id; // a difundirlo @TODO mensaje gracias si llega desde un preapproval
-                    $cancelURL = $URL."/invest/fail/".$invest->project."/".$invest->id."/?amount=".$invest->amount; // a la página de aportar para intentarlo de nuevo
+                    $returnURL = $URL.$invest->urlOK;
+                    $cancelURL = $URL.$invest->urlNOK;
 
                     date_default_timezone_set('UTC');
                     $currDate = getdate();
