@@ -62,6 +62,15 @@ namespace Goteo\Controller {
                     'translate' => array('label' => 'Traduciendo Banner', 'item' => true)
                 )
             ),
+			'bazar' => array(
+                'label' => 'Gestión del Catálogo',
+                'actions' => array(
+                    'list' => array('label' => 'Listando', 'item' => false),
+                    'add' => array('label' => 'Nuevo Elemento', 'item' => false),
+                    'edit' => array('label' => 'Editando Elemento', 'item' => true),
+                    'translate' => array('label' => 'Traduciendo Elemento', 'item' => true)
+                )
+            ),
             'blog' => array(
                 'label' => 'Blog',
                 'actions' => array(
