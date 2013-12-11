@@ -147,8 +147,8 @@ namespace Goteo\Controller {
             } else {
 
                 $projects = Model\Project::published($type);
-                // random para exitosos y retorno cumplido
-                if ($type == 'success' || $type == 'fulfilled') shuffle ($projects);
+                // random para retorno cumplido
+                if ($type == 'fulfilled') shuffle ($projects);
                 $viewData['list'] = $projects;
 
                 return new View(
