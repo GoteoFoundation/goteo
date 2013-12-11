@@ -104,9 +104,17 @@ namespace Goteo\Controller {
                 $invest->address = (object) $address;
 
                 // saber si el aporte puede generar riego y cuanto
-                if ($projectData->called->dropable) {
-                    $invest->called = $projectData->called;
-                    $invest->maxdrop = Model\Call\Project::currMaxdrop($projectData, $invest->amount);
+                if ($projectData->called instanceof Model\Call  && $projectData->called->dropable) {
+
+                    // saber si este usuario ya ha generado riego
+                    $allready = $projectData->called->getSupporters(true, $_SESSION['user']->id, $projectData->id);
+                    if ($allready > 0) {
+                        $invest->called = null;
+                    } else  {
+                        $invest->called = $projectData->called;
+                        $invest->maxdrop = Model\Call\Project::currMaxdrop($projectData, $invest->amount);
+                    }
+
                 } else {
                     $invest->called = null;
                 }

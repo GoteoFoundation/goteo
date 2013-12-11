@@ -14,6 +14,12 @@ $filter = $this['filter'];
 
 $data = Text::getAll($this['filters'], $_SESSION['translate_lang']);
 
+// contamos el número de palabras
+$nwords = 0;
+foreach ($data as $key => $reg) {
+    $nwords += Text::wcount($reg->text);
+}
+
 $pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
 // valores de filtro
@@ -51,6 +57,10 @@ $groups    = Text::groups();
 
 <?php if (!empty($data)) : ?>
 <!-- lista -->
+<div class="widget board">
+    N&uacute;mero de palabras: <?php echo $nwords; ?>
+</div>
+
 <div class="widget board">
     <table>
         <thead>

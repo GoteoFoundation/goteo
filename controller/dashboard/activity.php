@@ -5,8 +5,9 @@ namespace Goteo\Controller\Dashboard {
     use Goteo\Model,
         Goteo\Core\Redirection,
 		Goteo\Library\Message,
-		Goteo\Library\Text,
-		Goteo\Library\Listing;
+        Goteo\Library\Text,
+		Goteo\Library\Check,
+        Goteo\Library\Listing;
 
     class Activity {
 
@@ -45,7 +46,9 @@ namespace Goteo\Controller\Dashboard {
         }
 
         // acciones de certificado de donativo
-        public static function donor ($user) {
+        public static function donor ($user, $action = 'view') {
+
+            $errors = array();
 
             // ver si es donante, cargando sus datos
             $donation = Model\User\Donor::get($user->id);
@@ -64,6 +67,7 @@ namespace Goteo\Controller\Dashboard {
 
             // si están guardando, actualizar los datos y guardar
             if ($action == 'save' && $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['save'] == 'donation') {
+
                 $donation->edited = 1;
                 $donation->confirmed = 0;
                 $donation->name = $_POST['name'];
@@ -73,66 +77,78 @@ namespace Goteo\Controller\Dashboard {
                 $donation->location = $_POST['location'];
                 $donation->country = $_POST['country'];
 
-                if ($donation->save()) {
+                if ($donation->save($errors)) {
                     Message::Info(Text::get('dashboard-donor-saved'));
                     throw new Redirection('/dashboard/activity/donor');
                 } else {
+                    Message::Error(implode('<br />', $errors));
                     Message::Error(Text::get('dashboard-donor-save_fail'));
                     throw new Redirection('/dashboard/activity/donor/edit');
                 }
             }
 
             if ($action == 'confirm') {
-                // marcamos que los datos estan confirmados
-                Model\User\Donor::setConfirmed($user->id);
-                Message::Info(Text::get('dashboard-donor-confirmed'));
-                throw new Redirection('/dashboard/activity/donor');
+                // verificar que el nif es correcto
+                if (!Check::nif($donation->nif)) {
+                    Message::Error(Text::get('validate-project-value-contract_nif'));
+                    throw new Redirection('/dashboard/activity/donor');
+                } else {
+                    // marcamos que los datos estan confirmados
+                    Model\User\Donor::setConfirmed($user->id);
+                    Message::Info(Text::get('dashboard-donor-confirmed'));
+                    throw new Redirection('/dashboard/activity/donor');
+                }
             }
 
             if ($action == 'download') {
+
+                // verificar que el nif es correcto
+                if (!Check::nif($donation->nif)) {
+                    Message::Error(Text::get('validate-project-value-contract_nif'));
+                    throw new Redirection('/dashboard/activity/donor');
+                }
+
+
+                //@TODO borramos el pdf anterior y generamos de nuevo
+                if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/' . $donation->pdf)) {
+                    unlink('data/pdfs/donativos/' . $donation->pdf);
+                } 
+
+
+                // para generar: 
                 // preparamos los datos para el pdf
                 // generamos el pdf y lo mosteramos con la vista específica
                 // estos pdf se guardan en /data/pdfs/donativos
                 // el formato del archivo es: Ymd_nif_userid
-                // se genera una vez, si ya está generado se abre directamente
-                if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/' . $donation->pdf)) {
 
-                    // forzar descarga
+                $objeto = new \Goteo\Library\Num2char($donation->amount, null);
+                $donation->amount_char = $objeto->getLetra();
+
+                $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
+
+
+                $debug = false;
+
+                if ($debug)
+                    header('Content-type: text/html');
+
+                require_once 'library/pdf.php';  // Libreria pdf
+                $pdf = donativeCert($donation);
+
+                if ($debug) {
+                    echo 'FIN';
+                    echo '<hr><pre>' . print_r($pdf, 1) . '</pre>';
+                } else {
+                    $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
+                    $donation->setPdf($filename);
+//                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
                     header('Content-type: application/pdf');
                     header("Content-disposition: attachment; filename={$donation->pdf}");
                     header("Content-Transfer-Encoding: binary");
-                    echo file_get_contents('data/pdfs/donativos/' . $donation->pdf);
-                    die();
-                } else {
-
-                    $objeto = new \Goteo\Library\Num2char($donation->amount, null);
-                    $donation->amount_char = $objeto->getLetra();
-
-                    $filename = "certificado_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
-
-
-                    $debug = false;
-
-                    if ($debug)
-                        header('Content-type: text/html');
-
-                    require_once 'library/pdf.php';  // Libreria pdf
-                    $pdf = donativeCert($donation);
-
-                    if ($debug) {
-                        echo 'FIN';
-                        echo '<hr><pre>' . print_r($pdf, 1) . '</pre>';
-                    } else {
-                        $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
-                        $donation->setPdf($filename);
-//                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
-                        header('Content-type: application/pdf');
-                        header("Content-disposition: attachment; filename={$donation->pdf}");
-                        header("Content-Transfer-Encoding: binary");
-                        echo $pdf->Output('', 'S');
-                        die;
-                    }
+                    echo $pdf->Output('', 'S');
+                    die;
                 }
+
             }
             // fin action download
 

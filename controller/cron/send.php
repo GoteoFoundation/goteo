@@ -166,15 +166,6 @@ namespace Goteo\Controller\Cron {
                 $mailHandler = new Mail();
                 $mailHandler->to = $project->user->email;
                 $mailHandler->toName = $project->user->name;
-                // monitorización solo para 'quien-manda'
-                if ($project->id == 'quien-manda' || $project->id == 'guifi-net-extremadura') 
-                    $mailHandler->bcc = array('enric@goteo.org', 'maria@goteo.org', 'olivier@goteo.org', 'jcanaves@doukeshi.org', 'info@goteo.org');
-                
-                if ($project->id == 'cervecita-fresca') 
-                    $mailHandler->bcc = array('jcanaves@doukeshi.org');
-                
-                if ($project->id == 'keinuka') 
-                    $mailHandler->bcc = array('rosa@euskadi.goteo.org', 'jcanaves@doukeshi.org');
                 
                 // si es un proyecto de nodo: reply al mail del nodo
                 // si es de centra: reply a MAIL_GOTEO

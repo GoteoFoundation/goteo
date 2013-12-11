@@ -2,6 +2,10 @@
 
 namespace Goteo\Model\User {
 
+    use Goteo\Library\Check,
+        Goteo\Library\Text;
+
+
     class Donor extends \Goteo\Core\Model {
 
         public
@@ -36,16 +40,19 @@ namespace Goteo\Model\User {
             try {
 
                 // primero saber si es donante
+                // aportes de este año en proyectos financiados (pasada primera ronda)
+                // aportes de año pasado en proyectos que pasaron este año
                 $sql = "SELECT COUNT(invest.id)
                         FROM invest
                         INNER JOIN project
                             ON project.id = invest.project
                             AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                         WHERE   invest.status IN ('1', '3')
-                        AND invest.invested >= '{$year0}-01-01'
-                        AND invest.invested < '{$year1}-01-01'
                         AND invest.user = :id
-                        ";
+                        AND (
+                            (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                            OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                        )";
                 $query = static::query($sql, array(':id' => $id));
                 $donativo = $query->fetchColumn();
                 if (empty($donativo)) {
@@ -66,8 +73,10 @@ namespace Goteo\Model\User {
                                     AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                                 WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
-                                AND invest.charged >= '{$year0}-01-01'
-                                AND invest.charged < '{$year1}-01-01'
+                                AND (
+                                    (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                                    OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                                )
                                 GROUP BY invest.user
                             ";
                         $query = static::query($sql, array(':id' => $id));
@@ -99,8 +108,10 @@ namespace Goteo\Model\User {
                                 LEFT JOIN user_personal ON user_personal.user = invest.user
                                 WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
-                                AND invest.charged >= '{$year0}-01-01'
-                                AND invest.charged < '{$year1}-01-01'
+                                AND (
+                                    (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                                    OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                                )
                                 GROUP BY invest.user
                             ";
                         $query = static::query($sql, array(':id' => $id));
@@ -132,6 +143,12 @@ namespace Goteo\Model\User {
                 $user = $filters['user'];
                 $sqlFilter .= " AND (user.id LIKE :user OR user.name LIKE :user OR user.email LIKE :user)";
                 $values[':user'] = "%{$user}%";
+            }
+
+            if (!empty($filters['year'])) {
+                $ayear = $filters['year'];
+                $sqlFilter .= " AND DATE_FORMAT(invest.invested,'%Y') = :ayear";
+                $values[':ayear'] = $ayear;
             }
 
             if (!empty($filters['status'])) {
@@ -179,8 +196,10 @@ namespace Goteo\Model\User {
                 LEFT JOIN user_donation ON user_donation.user = invest.user AND user_donation.year = '{$year}'
                 LEFT JOIN invest_address ON invest_address.invest = invest.id
                 WHERE   invest.status IN ('1', '3')
-                AND invest.charged >= '{$year0}-01-01'
-                AND invest.charged < '{$year1}-01-01'
+                AND (
+                    (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                    OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                )
                 $sqlFilter
                 GROUP BY invest.user
                 ORDER BY user.email ASC";
@@ -190,21 +209,31 @@ namespace Goteo\Model\User {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
 
                 if ($csv) {
-// el nif limpiarlo
 
 //@TODO si estamos procesando datos para csv hay que mirar:
-// clave A
-// Tema pais.. se puede mirar por texto pero hay "paises raros"
-//'Spain', ' España', 'ESPAÑA', 'Espanya', '', ''
-$esp = true;
+$espanas = array('spain', 'españa', 'espanya');
+$esp = (in_array($item->pais, $espanas)) ? true : false;
+
 // dos dígitos para la provincia  (99 si no es españa)
 $cp = ($esp) ? substr($item->zipcode, 0, 2) : '99';
+
 // tipo de persona segun nif/nie/cif
-$pf =true; // false para persona juridica
-// porcentaje segun tipo de persona (25, 35)
-$per = ($pf) ? 25 : 35; 
+$type = '';
+Check::nif($item->nif, $type);
 // naturaleza según tipo de persona (F, J)
-$nat = ($pf) ? 'F' : 'J'; 
+$nt = array(
+        'nif' => 'F',
+        'nie' => 'F',
+        'cif' => 'J'
+    );
+// porcentaje segun tipo de persona (25, 35)
+$pt = array(
+        'nif' => '25',
+        'nie' => '25',
+        'cif' => '35'
+    );
+$per = $pt[$type];
+$nat = $nt[$type]; 
 
 // NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
                     $list[] = array($item->nif, '', $item->name, $cp, 'A', $per, '', '', '', '', $nat, '', $item->year, '', '', '');
@@ -217,7 +246,11 @@ $nat = ($pf) ? 'F' : 'J';
 
         public function validate(&$errors = array()) {
             if (empty($this->year)) 
-                $this->year = static::$currYear;
+                $this->year = self::$currYear;
+
+            if (!empty($this->nif) && !Check::nif($this->nif)) {
+                $errors['nif'] = Text::get('validate-project-value-contract_nif');
+            }
         }
 
         /*
@@ -335,9 +368,11 @@ $nat = ($pf) ? 'F' : 'J';
                         ON project.id = invest.project
                         AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                     WHERE   invest.status IN ('1', '3')
-                    AND invest.charged >= '{$year0}-01-01'
-                    AND invest.charged < '{$year1}-01-01'
                     AND invest.user = :id
+                    AND (
+                        (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
+                        OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
+                    )
                     ORDER BY invest.invested ASC
                     ";
 //                    echo($sql . '<br />' . $user);

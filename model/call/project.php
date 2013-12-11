@@ -275,11 +275,15 @@ namespace Goteo\Model\Call {
                     // calcular el obtenido por este proyecto, si no lo tenemos
                     $call->project_got = (!isset($thisGote)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
 
-                    // recalculo de maxproj si es modalidad porcentaje
+                    // limite por proyecto
                     if (empty($call->maxproj)) {
                         $call->maxproj = floor($project->maxcost / 2);
                     } elseif ($call->modemaxp == 'per') {
-                        $call->maxproj = $project->mincost * $call->maxproj / 100;
+                        // recalculo de maxproj si es modalidad porcentaje
+                        $call->rawmaxproj = $call->maxproj = $project->mincost * $call->maxproj / 100;
+                    } else {
+                        // limite bruto
+                        $call->rawmaxproj = $call->maxproj;
                     }
                     
                     // si no tiene configuracion 
@@ -365,7 +369,6 @@ namespace Goteo\Model\Call {
             } 
             // si la config para esta ronda la config. es el límite normal
             elseif($call->conf == 'normal') {
-                $maxdrop = min($maxdrop, ($project->maxcost - $project->invested - $amount));
                 if (isset($call->maxproj)) {
                     // y que no sea mayor al límite por proyecto si tiene límite por proyecto, ese es
                     $maxdrop = min($maxdrop, $call->maxproj);
