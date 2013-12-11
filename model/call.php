@@ -1327,7 +1327,7 @@ namespace Goteo\Model {
                     FROM  invest
                     WHERE invest.call = :id
                     AND invest.status IN ('0', '1', '3')
-                    AND invest.campaign IS NULL
+                    AND invest.droped IS NOT NULL
             ";
 
             // si estamos filtrando cierto usuario
