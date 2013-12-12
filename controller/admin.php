@@ -300,7 +300,7 @@ namespace Goteo\Controller {
                     'calls' => array('label' => 'Informe Convocatorias', 'item' => true),
                     'donors' => array('label' => 'Informe Donantes', 'item' => false)
                 ),
-                'filters' => array('report' => '', 'from' => '', 'until' => '', 'year' => '2012', 'status' => '', 'user' => '')
+                'filters' => array('report' => '', 'from' => '', 'until' => '', 'year' => '2013', 'status' => '', 'user' => '')
             ),
             'reviews' => array(
                 'label' => 'Revisiones',

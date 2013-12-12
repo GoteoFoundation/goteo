@@ -34,7 +34,7 @@ namespace Goteo\Controller {
                     );
                     
                     if (empty($filters['year']))
-                        $filters['year'] = 2012;
+                        $filters['year'] = Model\User\Donor::$currYear;
 
                     $data = Model\User\Donor::getList($filters);
                     $columns = array(
@@ -59,6 +59,7 @@ namespace Goteo\Controller {
                 // cofinanciadores de un proyecto (para impulsor, tiene en cuenta email oculto)
                 case 'investors':
 
+//                                IF (invest.resign, 'Donativo', '') as resign,
                     $sql = "SELECT  
                                 invest.id as id,
                                 invest.user as user,
@@ -66,7 +67,6 @@ namespace Goteo\Controller {
                                 IF (user_prefer.email = 1, '', user.email) as email,
                                 invest.amount as amount,
                                 IF (invest.issue, 'Incidencia', '') as issue,
-                                IF (invest.resign, 'Donativo', '') as resign,
                                 IF (invest.anonymous, 'Anonimo', '') as anonymous,
                                 (SELECT GROUP_CONCAT(reward.reward) FROM reward where id IN (select reward from invest_reward where invest_reward.invest = invest.id) ) as rewards,
                                 IF(invest_address.address,
@@ -95,7 +95,7 @@ namespace Goteo\Controller {
                         'email' => 'Email',
                         'amount' => 'Importe',
                         'issue' => 'Incidencia',
-                        'resign' => 'Donativo',
+//                        'resign' => 'Renuncia',
                         'anonymous' => 'Anonimo',
                         'rewards' => 'Recompensas',
                         'address' => 'Direccion',
