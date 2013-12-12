@@ -1,5 +1,6 @@
 /* ==========================================================================
    Estilos comunes a todas las páginas
+   el tamaño de tipografia de estos elementos se modifica en los breakpoints
    ========================================================================== */
 * {
     font-family: "Liberation Sans",Helvetica,"Helvetica Neue",Arial,Geneva,sans-serif;
@@ -15,50 +16,137 @@ html, body {
 }          
 
 header img {
-    background: url("/view/bazar/img/carrito.png") no-repeat scroll left top;
-    padding: 20px 0 0 20px;
+    padding: 10px 0 0 20px;
+    width: 100%;
 }        
 
-h1 {
+header a.logo,
+header nav {
+  float: left;
+}
+
+header a.logo {min-width: 100px; max-width: 250px; width:20%;}
+header nav {width:80%;}
+
+h1,
+h1 a {
   text-transform: uppercase;
   color: #96238F;
   text-align: center;
-  font-size: 5rem;
   margin-bottom: 0;
+  text-decoration: none;
 }
 
-h2 {
+h1 a:hover {
+  color: #20B2B3;
+}
+
+h2,
+h2 a {
   text-transform: uppercase;
   text-decoration: underline;
   color: #20B2B3;
   text-align: center;
-  font-size: 2rem;
 }
 
-h3 {
+h2 a:hover {
+  color: #96238F;
+}
+
+
+h3, 
+h3 a {
   text-transform: uppercase;
+  text-decoration: none;
   color: #58595B;
   text-align: center;
-  font-size: 2rem;
   margin: 0;
 }
-/* el tamaño de tipografia de estos elementos se modifica en los breakpoints */
+
+h3 a:hover {
+  color: #20B2B3;
+}
+
+
+#encabezado {clear: both;width: 90%; margin: 10px auto;}
+
+section {margin: 0 10px;}
+
+/* para item.html.php */
+article.activable {max-width: 220px; padding-left: 5px; margin-right: 20px; margin-bottom: 20px; display: inline-block; position: relative;}
+article.activable img {width: 50%; max-width: 300px; min-width: 150px; margin-right: 20px;}
+article.activable p {margin: 0; padding: 0; color: #313B96;}
+article.active {background-color: #E1DBDD !important;}
+article.active p {color: #20B2B3 !important;}
+
+/* El link sobre el elemento */
+a.expand {
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+}
+
+/* para name.html.php */
+article.header {width: 80%; margin: 0 auto;}
+article.header img {width: 40%; max-width: 300px; min-width: 150px; margin-right: 20px;}
+article.header p {margin: 0; padding: 0;}
+
+/* Caj con el precio*/
+div.caja {
+  background:url('/view/bazar/img/caja.png') no-repeat top center;
+  background-size:100% 100%;
+  display:inline-block;
+  height:50px;
+  position: relative;
+  margin-right: -30px;
+  top: -25px;
+}
+article.header div.caja {margin: 10px; top: 0;}
+div.caja p.precio {
+  display:inline;
+  height:50px;
+  line-height:42px;
+  margin-left:12px;
+  margin-right:15px;
+  font-size: ;
+  font-weight: bold;
+  color: #96238F !important;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid black;
+    margin: 1em 0;
+    padding: 0;
+}
+
 
 /* footer */
 footer {
   margin-top: 20px;
+  width: 400px;
+  margin: 0 auto;
 }
 
-footer.img,
-footer.a {
+footer section {
   float: left;
 }
 
+footer section.logo {padding-top: 20px;}
 
+footer nav img {width: 92px;}
+
+/* Botones compartir en vista spread */
 ul.share {
   display: block;
   list-style: none outside none;
-  margin: 0;
   padding: 20px 0;
   text-align: center;
 }
@@ -91,25 +179,75 @@ ul.share li.facebook a {
     padding: 9px 14px 8px 45px;
 }
 
+p.spread,
+p.thanks {
+    display: block;
+    margin: 20px;
+}
 
-/*
-* 
-*/
-#caja{
-  background:url('view/bazar/img/caja.png') no-repeat top center;
-  background-size:100% 100%;
-  display:inline-block;
-  height:50px;
-}
-#caja p.precio {
-  display:inline;
-  height:50px;
-  line-height:42px;
-  margin-left:12px;
-  margin-right:15px;
-}
+
+/*  Página de producto  */
+
 
 /* Formulario */
+section#formulario {clear: both;}
+
+div.formfields {width: 360px; margin-right: 10px;}
+div.formfields.alone {width: 100%; margin: 20px 10px;}
+div.field {display: block;}
+form input[type="text"] {margin-bottom: 10px; width: 98%; font-size: 16px; height: 18px;}
+form input[type="checkbox"] {margin-right: 10px;}
+span.error {color: red; margin-left: 3px; font-size: 10px;}
+
+div.friend {display: none;}
+
+form input[type="text"], form textarea {
+    background-color: #D7D9DA;
+    border: 1px solid #58595B;
+    padding: 0.3em;
+}
+
+form input[type="text"]:focus, form textarea:focus {
+    background-color: #FFF !important;
+}
+
+form textarea,
+div#anonm {
+    width: 100%;
+}
+
+div.buttons {
+    clear: both;
+}
+
+div.buttons button {
+    display: inline-block;
+    margin: 10px;
+    border-radius: 40px;
+}
+
+div.buttons button:hover {
+    border: 1px solid #20B2B3;
+}
+
+div.buttons button.pay-tpv {
+  background: url("/view/css/button/logos_tarjetas.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+  height: 38px;
+  padding: 3px;
+  text-indent: 2000px;
+  width: 253px;
+}
+
+div.buttons button.pay-paypal {
+  background: url("/view/css/button/paypal.gif") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+  height: 32px;
+  padding: 3px;
+  text-indent: 2000px;
+  width: 145px;
+}
+
+
+/*
 form{
   margin-top:30px;
 }
@@ -172,3 +310,4 @@ form div#campo3 p{
 form div#campo4{
   clear:both;
 }
+*/

@@ -3,22 +3,26 @@
 	    Goteo\Model\Invest,
 	    Goteo\Model\Call;
 
-$item = $this['item'];
-$project = $this['project'];
 
+	$item = $this['item'];
+//	$project = $this['project'];
+
+	$debug = true;
+    $allowpp = true;
 
 	//@TODO si el usuario está logueado no mostramos los campos de nombre y email 
 	//@TODO textos dinamicos
-	//@TODO botones paypal y tpv (como en la página de aportar) (cash para pruebas)
+	//@TODO botones paypal y tpv (como en la página de aportar)
 	//@TODO preseleccion de regalo / anonimo
-	//@TODO jquery de verificación y de regalo/parami
-	//@TODO tema riego
-// verificar si puede obtener riego
+	//@TODO pasar a jquery después de maquetar
+
+/*
 if ($project->called instanceof Call && $project->called->dropable) {
     $allowpp = false;
 } else {
     $allowpp = $project->allowpp;
 }
+*/
 
 
 ?>
@@ -42,9 +46,10 @@ function validar(){
 function valnombre(){
 				var nam=document.getElementById("name").value;
 				if(nam==null || nam.length==0){
-					document.getElementById("namei").innerHTML="<p>Obligatorio</p>";
+					document.getElementById("namei").innerHTML="Obligatorio";
 					return false;
 				}else{
+					document.getElementById("namei").innerHTML="";
 					return true;
 				}
 				
@@ -52,42 +57,59 @@ function valnombre(){
 function valemail(){
 				var em=document.getElementById("email").value;
 				if(em==null || em.length==0){
-					document.getElementById("emaili").innerHTML="<p>Obligatorio</p>";
+					document.getElementById("emaili").innerHTML="Obligatorio";
 					return false;
 				}else if(!(/^\w+@[a-z]+\.[a-z]+$/.test(em))){
-		document.getElementById("emaili").innerHTML="<p>E-mail no válido</p>";
-		return false;}else{
+					document.getElementById("emaili").innerHTML="E-mail no válido";
+					return false;
+				}else{
+					document.getElementById("emaili").innerHTML="";
 					return true;
 				}
 				
   }
 function valnomdest(){
 	var namdest=document.getElementById("namedest").value;
-				if(namdest==null || namdest.length==0){
-					document.getElementById("namedesti").innerHTML="<p>Obligatorio</p>";
-					return false;
-				}else{
-					return true;
-				}
+	var check = document.getElementById("check");
+        if (check.checked) {
+			if(namdest==null || namdest.length==0){
+				document.getElementById("namedesti").innerHTML="Obligatorio";
+				return false;
+			}else{
+				document.getElementById("namedesti").innerHTML="";
+				return true;
+			}
+		} else {
+			document.getElementById("namedesti").innerHTML="";
+			return true;
+		}
 }
 function valemdest(){
-				var emdest=document.getElementById("emaildest").value;
-				if(emdest==null || emdest.length==0){
-					document.getElementById("emaildesti").innerHTML="<p>Obligatorio</p>";
-					return false;
-				}else if(!(/^\w+@[a-z]+\.[a-z]+$/.test(emdest))){
-		document.getElementById("emaildesti").innerHTML="<p>Formato de E-mail invalido</p>";
-		return false;}else{
-					return true;
-				}
-				
-  }
+	var check = document.getElementById("check");
+        if (check.checked) {
+			var emdest=document.getElementById("emaildest").value;
+			if(emdest==null || emdest.length==0){
+				document.getElementById("emaildesti").innerHTML="Obligatorio";
+				return false;
+			}else if(!(/^\w+@[a-z]+\.[a-z]+$/.test(emdest))){
+				document.getElementById("emaildesti").innerHTML="Formato de E-mail invalido";
+				return false;
+			}else{
+				document.getElementById("emaildesti").innerHTML="";
+				return true;
+			}
+		} else {
+			document.getElementById("emaildesti").innerHTML="";
+			return true;
+		}
+}
 function valdir(){
 				var dir=document.getElementById("address").value;
 				if(dir==null || dir.length==0){
-					document.getElementById("addressi").innerHTML="<p>Obligatorio</p>";
+					document.getElementById("addressi").innerHTML="Obligatorio";
 					return false;
 				}else{
+					document.getElementById("addressi").innerHTML="";
 					return true;
 				}
 				
@@ -95,9 +117,10 @@ function valdir(){
 function valciud(){
 				var ciud=document.getElementById("location").value;
 				if(ciud==null || ciud.length==0){
-					document.getElementById("locationi").innerHTML="<p>Obligatorio</p>";
+					document.getElementById("locationi").innerHTML="Obligatorio";
 					return false;
 				}else{
+					document.getElementById("locationi").innerHTML="";
 					return true;
 				}
 				
@@ -105,9 +128,10 @@ function valciud(){
 function valpais(){
 				var pais=document.getElementById("country").value;
 				if(pais==null || pais.length==0){
-					document.getElementById("countryi").innerHTML="<p>Obligatorio</p>";
+					document.getElementById("countryi").innerHTML="Obligatorio";
 					return false;
 				}else{
+					document.getElementById("countryi").innerHTML="";
 					return true;
 				}
 				
@@ -115,73 +139,96 @@ function valpais(){
 function valcp(){
 				var cp=document.getElementById("zipcode").value;
 				if(cp==null || cp.length==0){
-					document.getElementById("zipcodei").innerHTML="<p>Obligatorio</p>";
+					document.getElementById("zipcodei").innerHTML="Obligatorio";
 					return false;
 				}else{
+					document.getElementById("zipcodei").innerHTML="";
 					return true;
 				}
 				
   }
    function showContent() {
-        element = document.getElementById("campo3");
         check = document.getElementById("check");
         if (check.checked) {
-            element.style.display='block';
+        	$(".friend").show();
         }
         else {
-            element.style.display='none';
+			document.getElementById("namedesti").innerHTML="";
+			document.getElementById("emaildesti").innerHTML="";
+        	$(".friend").hide();
         }
     }
 </script>
 
-<form method="post" action="/bazaar/<?php echo $this['id']; ?>" onchange="return validar();" >
+<section id="formulario">
 
-<div id="regalo">
-	<label><input type="checkbox" onchange="showContent();" id="check" name="regalo" />Es un regalo</label>
-</div>
+	<form method="post" action="/bazaar/pay/<?php echo $item->id; ?>" onsubmit="return validar();" >
 
-<div id="campo1">
-	<label for="fullname">Tu Nombre</label><br />
-	<input type="text" onblur="valnombre();" id="name" name="name" value="<?php echo $_SESSION['bazar']['name']; ?>" /><p id="namei"></p>
+		<div id="sendto" class="formfields alone">
+			<label><input type="checkbox" onchange="showContent();" id="check" name="regalo" />Es un regalo</label>
+		</div>
 
-	<label for="email">Tu E-mail</label><br />
-	<input type="text" onblur="valemail();" id="email" name="email" value="<?php echo $_SESSION['bazar']['email']; ?>" /><p id="emaili"></p>
-</div>
+		<div id="fields-investor" class="formfields">
+			<div class="field">
+				<label for="name">Tu Nombre *</label><span class="error"  id="namei"></span><br />
+				<input type="text" onblur="valnombre();" id="name" name="name" value="<?php echo $_SESSION['bazar']['name']; ?>" />
+			</div>
 
-<div id="campo2">
-	<label for="adress">Direccion de Envio</label><br />
-	<input type="text" onblur="valdir();" id="address" name="address" value="<?php echo $_SESSION['bazar']['address']; ?>" /><p id="addressi"></p>
+			<div class="field">
+				<label for="email">Tu E-mail *</label><span class="error" id="emaili"></span><br />
+				<input type="text" onblur="valemail();" id="email" name="email" value="<?php echo $_SESSION['bazar']['email']; ?>" />
+			</div>
+		</div>
 
-	<label for="location">Ciudad</label><br />
-	<input type="text" onblur="valciud();" id="location" name="location" value="<?php echo $_SESSION['bazar']['location']; ?>" /><p id="locationi"></p>
+		<div id="fields-address" class="formfields">
+			<div class="field">
+				<label for="adress">Direccion de Envio *</label><span class="error" id="addressi"></span><br />
+				<input type="text" onblur="valdir();" id="address" name="address" value="<?php echo $_SESSION['bazar']['address']; ?>" />
+			</div>
 
-	<label for="country">Pais</label><br />
-	<input type="text" onblur="valpais();" id="country" name="country" value="<?php echo $_SESSION['bazar']['country']; ?>" /><p id="countryi"></p>
+			<div class="field">
+				<label for="location">Ciudad *</label><span class="error" id="locationi"></span><br />
+				<input type="text" onblur="valciud();" id="location" name="location" value="<?php echo $_SESSION['bazar']['location']; ?>" />
+			</div>
 
-	<label for="zipcode">Codigo Postal</label><br />
-	<input type="text" onblur="valcp();" id="zipcode" name="zipcode" value="<?php echo $_SESSION['bazar']['zipcode']; ?>" /><p id="zipcodei"></p>
-</div>
+			<div class="field">
+				<label for="country">Pais *</label><span class="error" id="countryi"></span><br />
+				<input type="text" onblur="valpais();" id="country" name="country" value="<?php echo $_SESSION['bazar']['country']; ?>" />
+			</div>
 
-<div id="campo3">
-	<label for="namedest">Nombre del Destinatario</label><br />
-	<input type="text" onblur="valnomdest();" id="namedest" name="namedest" value="<?php echo $_SESSION['bazar']['namedest']; ?>" /><p id="namedesti"></p>
+			<div class="field">
+				<label for="zipcode">Codigo Postal *</label><span class="error" id="zipcodei"></span><br />
+				<input type="text" onblur="valcp();" id="zipcode" name="zipcode" value="<?php echo $_SESSION['bazar']['zipcode']; ?>" />
+			</div>
+		</div>
 
-	<label for="emaildest">E-mail del Destinatario</label><br />
-	<input type="text" onblur="valemdest();" id="emaildest" name="emaildest" value="<?php echo $_SESSION['bazar']['emaildest']; ?>" /><p id="emaildesti"></p>
-</div>
+		<div id="fields-friend" class="formfields friend">
+			<div class="field">
+				<label for="namedest">Nombre del Destinatario</label><span class="error" id="namedesti"></span><br />
+				<input type="text" onblur="valnomdest();" id="namedest" name="namedest" value="<?php echo $_SESSION['bazar']['namedest']; ?>" />
+			</div>
 
-<div id="campo4">
-	<label for="message">Mensaje para el destinatario:</label><br />
-	<textarea cols="20" rows="5" id="message" name="message"><?php echo $_SESSION['bazar']['message']; ?></textarea>
-</div>
+			<div class="field">
+				<label for="emaildest">E-mail del Destinatario</label><span class="error" id="emaildesti"></span><br />
+				<input type="text" onblur="valemdest();" id="emaildest" name="emaildest" value="<?php echo $_SESSION['bazar']['emaildest']; ?>" />
+			</div>
+		</div>
 
-<div id="campo5">
-	<label for="anonymous"><input type="checkbox" id="anonymous" name="anonymous" />Aporte Anonimo</label><br />
-</div>
+		<div id="field-message" class="formfields friend">
+			<label for="message">Mensaje para el destinatario:</label><br />
+			<textarea rows="5" id="message" name="message"><?php echo $_SESSION['bazar']['message']; ?></textarea>
+		</div>
 
-<div class="buttons">
-    <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
-    <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
-</div>
+		<div id="anonm" class="formfields alone">
+			<label for="anonymous"><input type="checkbox" id="anonymous" name="anonymous" />Aporte Anonimo</label><br />
+		</div>
 
-</form>
+		<div class="buttons">
+		    <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
+		    <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
+		    <?php if ($debug) : ?><button type="submit" class="process pay-cash" name="method"  value="cash">CASH</button><?php endif; ?>
+		</div>
+
+	</form>
+
+</section>

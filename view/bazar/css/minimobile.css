@@ -1,3 +1,13 @@
+/* Minimobile (max-width:340px) */
+header, header nav {width: 100%;}
+header a.logo, footer a.logo {display: none;}
+
+article.activable {max-width: none; }
+
+footer {width: 100%;}
+
+
+/*
 body{background-color:white;width: 100%;height:auto;
 	margin:auto;text-align:center;
 }
@@ -42,4 +52,4 @@ padding-left:30px;}
 
 footer {width:100%;height:auto;}
 footer img.goteo {width:70%;}
-
+*/

@@ -1,9 +1,29 @@
-body{width:100%;text-align:center;height:auto;margin:auto;}
-header {width:100%;height:250px;}
+/* bigpc (min-width:1400px) */
+h1 {font-size:5rem;margin-top:40px;}
+h2 {font-size:3rem; margin-top:30px;}
+#encabezado {font-size: 1.6rem; margin: 20px auto;}
+article.activable {max-width: 350px;}
+
+div.formfields {width: 30%; margin-right: 30px;}
+
+div#fields-address,
+div#fields-investor,
+div#fields-friend {
+  float: left;
+}
+
+div#field-message,
+div#anonm {
+  clear: both;
+  width: 60%;
+}
+
+
+/*
+header {width:80%;height:250px;margin: 0 auto;}
 header.helemento{width:90%;height:150px;margin:auto;text-align:center;}
 img.logo {float:left;width:20%;margin-left:10%;}
 img.logoele {float:left;width:10%;margin-left:10%;}
-h1 {font-size:5rem;float:left;margin-top:200px;}
 h1.ele{font-size:150%;text-align:center;margin:60px 0 0 80px;}
  #encabezado {width:90%;height:200px;float:left;font-size:1.50rem;padding-left:50px; }
 article.redes {;height:70px;float:left;text-align:left;padding-left:130px;margin-top:-100px;}
@@ -43,3 +63,4 @@ footer img.goteo {width:25%;height:300px;margin-left:35%;}
 #caja p.precio{
 	margin-top:-12px;
 }
+*/
