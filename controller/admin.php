@@ -749,7 +749,8 @@ namespace Goteo\Controller {
                                 'reviews' => $options['reviews'],
                                 'translates' => $options['translates'],
                                 'rewards' => $options['rewards'],
-                                'commons' => $options['commons']
+                                'commons' => $options['commons'],
+                                'bazar' => $options['bazar']
                             )
                         ),
                         'users' => array(
