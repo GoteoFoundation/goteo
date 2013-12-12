@@ -19,18 +19,22 @@ namespace Goteo\Controller {
             $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 
             $vpath = "view/bazar/";
-            $vdata = array("page"=>$page);
+            $vdata = array();
 
             if ($id !== null) {
                 $item=Model\Bazar::get($id);
                 if (!$item instanceof Model\Bazar)
                     throw new Redirection("/bazaar"); 
 
-                $item->imgsrc = (!empty($item->img)) ? $URL.'/data/images/'.$item->img->name : $item->imgsrc = $URL.'/data/images/bazaritem.svg';
+                $item->imgsrc = (!empty($item->img)) ? '/data/images/'.$item->img->name : '/data/images/bazaritem.svg';
+
                 $vdata["item"] = $item;
 
-                $project=Model\Project::get($project);
-                $vdata["project"] = $project;
+                // página interna
+                $page->home = false;
+
+                // $project = Model\Project::get($item->project);
+                // $vdata["project"] = $project;
 
                 // si el $show es de agradecimiento mostramos thanks.html.php
                 if ($show == 'thanks') {
@@ -41,6 +45,9 @@ namespace Goteo\Controller {
                 }
              }
              else {
+                // portada
+                $page->home = true;
+
                 $vdata["items"] = Model\Bazar::getAll();
                 $vpath .= "home.html.php";
             }
@@ -49,18 +56,29 @@ namespace Goteo\Controller {
             // enlaces de compartir
             $bazar_title = $page->name;
             $item_title = !empty($item->title) ? $item->title : $page->name;
+            $item_description = !empty($item->description) ? $item->description : $page->description;
             $bazar_url = $page->url.$lsuf;
             $item_url = !empty($item->id) ? $page->url.'/'.$item->id.$lsuf : $page->url.$lsuf;
+            $item_image = !empty($item->imgsrc) ? $URL.$item->imgsrc : $URL.'/view/bazar/img/carro.png';
 
             $vdata["share"] = (object) array(
-                'description'=>$page->descrition, 
+                'description'=>$page->description, 
                 'bazar_url'=>$bazar_url, 
                 'bazar_twitter_url'=>'http://twitter.com/home?status=' . urlencode($bazar_title . ': ' . $bazar_url), 
                 'bazar_facebook_url'=>'http://facebook.com/sharer.php?u=' . urlencode($bazar_url) . '&t=' . urlencode($bazar_title), 
                 'item_url'=>$item_url, 
                 'item_twitter_url'=>'http://twitter.com/home?status=' . urlencode($item_title . ': ' . $item_url), 
                 'item_facebook_url'=>'http://facebook.com/sharer.php?u=' . urlencode($item_url) . '&t=' . urlencode($item_title), 
-                );
+            );
+
+            $vdata['page'] = $page;
+
+            $vdata['ogmeta'] = array(
+                'title' => $item_title,
+                'description' => $item_description,
+                'url' => $item_url,
+                'image' => $item_image
+            );
 
             return new View($vpath, $vdata);
 
