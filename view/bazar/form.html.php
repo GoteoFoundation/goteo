@@ -35,6 +35,8 @@ function validar(){
 	var a=valpais();
 	if(n==false || e==false || d==false || f==false || l==false || c==false || p==false || a==false){
 		return false;
+	} else {
+		return true;
 	}
 }
 function valnombre(){
@@ -132,7 +134,7 @@ function valcp(){
     }
 </script>
 
-<form method="post" action="/bazaar/<?php echo $this['id']; ?>">
+<form method="post" action="/bazaar/<?php echo $this['id']; ?>" onchange="return validar();" >
 
 <div id="regalo">
 	<label><input type="checkbox" onchange="showContent();" id="check" name="regalo" />Es un regalo</label>
@@ -182,5 +184,4 @@ function valcp(){
     <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
 </div>
 
-<input type="submit" name="method" value="Pagar" />
 </form>
