@@ -42,7 +42,7 @@ session_start();
 // set Lang
 define('LANG', 'es');
 
-$debug = true;
+$debug = false;
 $fail = false;
 if ($debug) $txtdebug = '<html><head></head><body>';
 
