@@ -12,7 +12,7 @@ $items = array();
 //@TODO montar valor: nomReco(50)+importe€+nomProj(50)
 foreach ($this['items'] as $iId=>$iObj) {
     $el_val = str_replace(array("'", '"'), '`', $iObj->name).' ['.$iObj->icon.' '.$iObj->amount.'€] ('.str_replace(array("'", '"'), '`', $iObj->projname);
-    $el_id = $iObj->reward.'¬'.$iObj->project.'¬'.$iObj->amount;
+    $el_id = $iObj->reward.'¬'.$iObj->project->id.'¬'.$iObj->amount;
     $items[] = '{ value: "'.$el_val.')", id: "'.$el_id.'" }';
     if ($iId == $promo->reward) $preVal = "$el_val";
 }
@@ -22,7 +22,7 @@ foreach ($this['items'] as $iId=>$iObj) {
     <input type="hidden" name="order" value="<?php echo $promo->order ?>" />
     <input type="hidden" name="id" value="<?php echo $promo->id; ?>" />
 
-    <input type="hidden" id="item" name="item" value="<?php echo $promo->reward.'¬'.$promo->project.'¬'.$promo->amount; ?>" />
+    <input type="hidden" id="item" name="item" value="<?php echo $promo->reward.'¬'.$promo->project->id.'¬'.$promo->amount; ?>" />
 
     <div class="ui-widget">
         <label for="busca-item">Buscador recompensa:</label><br />

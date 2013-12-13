@@ -53,8 +53,9 @@ namespace Goteo\Controller {
 
 
             // enlaces de compartir
-            $bazar_title = $page->name;
+            $bazar_title = Text::get('bazar-spread-text', $page->name);
             $item_title = !empty($item->title) ? $item->title : $page->name;
+            $item_title = Text::get('bazar-spread-text', $item_title);
             $item_description = !empty($item->description) ? $item->description : $page->description;
             $bazar_url = $page->url.$lsuf;
             $item_url = !empty($item->id) ? $page->url.'/'.$item->id.$lsuf : $page->url.$lsuf;

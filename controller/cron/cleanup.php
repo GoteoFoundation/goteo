@@ -49,6 +49,8 @@ namespace Goteo\Controller\Cron {
                     UNION DISTINCT
                     SELECT image as id FROM `sponsor`
                     UNION DISTINCT
+                    SELECT image as id FROM `bazar`
+                    UNION DISTINCT
                     SELECT image as id FROM `user_vip`
                     ";
             

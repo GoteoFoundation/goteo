@@ -156,6 +156,18 @@ function valida(){
 		</div>
 		<?php endif; ?>
 
+		<div id="fields-friend" class="formfields friend">
+			<div class="field">
+				<label for="namedest"><?php echo Text::get('invest-address-namedest-field') ?> *</label><span class="error" id="namedesti"></span><br />
+				<input type="text" onblur="valnomdest();" id="namedest" name="namedest" value="<?php echo $_SESSION['bazar']['namedest']; ?>" />
+			</div>
+
+			<div class="field">
+				<label for="emaildest"><?php echo Text::get('invest-address-maildest-field') ?> *</label><span class="error" id="emaildesti"></span><br />
+				<input type="text" onblur="valemdest();" id="emaildest" name="emaildest" value="<?php echo $_SESSION['bazar']['emaildest']; ?>" />
+			</div>
+		</div>
+
 		<div id="fields-address" class="formfields">
 			<div class="field">
 				<label for="adress"><?php echo Text::get('invest-address-address-field') ?> *</label><span class="error" id="addressi"></span><br />
@@ -175,18 +187,6 @@ function valida(){
 			<div class="field">
 				<label for="zipcode"><?php echo Text::get('invest-address-zipcode-field') ?> *</label><span class="error" id="zipcodei"></span><br />
 				<input type="text" onblur="vfield('zipcode');" id="zipcode" name="zipcode" value="<?php echo $_SESSION['bazar']['zipcode']; ?>" />
-			</div>
-		</div>
-
-		<div id="fields-friend" class="formfields friend">
-			<div class="field">
-				<label for="namedest"><?php echo Text::get('invest-address-namedest-field') ?> *</label><span class="error" id="namedesti"></span><br />
-				<input type="text" onblur="valnomdest();" id="namedest" name="namedest" value="<?php echo $_SESSION['bazar']['namedest']; ?>" />
-			</div>
-
-			<div class="field">
-				<label for="emaildest"><?php echo Text::get('invest-address-maildest-field') ?> *</label><span class="error" id="emaildesti"></span><br />
-				<input type="text" onblur="valemdest();" id="emaildest" name="emaildest" value="<?php echo $_SESSION['bazar']['emaildest']; ?>" />
 			</div>
 		</div>
 

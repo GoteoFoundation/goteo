@@ -3,8 +3,10 @@ use Goteo\Library\Text,
     Goteo\Library\Page,
     Goteo\Core\View,
     Goteo\Model\Image;
-	
-echo new View("view/bazar/prologue.html.php", array('ogmeta'=>$this['ogmeta']));
+
+$page = $this['page'];
+
+echo new View("view/bazar/prologue.html.php", array('ogmeta'=>$this['ogmeta'], 'title'=>$page->title, 'description'=>$page->description));
 echo new View("view/bazar/header.html.php", $this);
 
 echo new View("view/bazar/spread.html.php", array("share"=>$this['share']));

@@ -6,8 +6,9 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
+        <title><?php echo $this['title']; ?></title>
+        <link rel="icon" type="image/png" href="/myicon.png" />
+        <meta name="description" content="<?php echo $this['description']; ?>">
         <meta name="viewport" content="width=device-width">
 
         <meta property="og:title" content="<?php echo $this['ogmeta']['title'] ?>" />
