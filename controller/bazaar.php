@@ -142,7 +142,7 @@ namespace Goteo\Controller {
                 // si no creamos un usuario de modo instantaneo
                 if (isset($_SESSION['user']) && $_SESSION['user']->id == $_POST['user']) {
                     $formData['user'] = $_SESSION['user']->id;
-                } elseif (!empty($formData['email']) && Check::email($formData['email']))) {
+                } elseif (!empty($formData['email']) && Check::email($formData['email'])) {
 
                     $formData['user'] = \Goteo\Controller\User::instantReg($formData['email']);
 
