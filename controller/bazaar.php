@@ -6,6 +6,8 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
+        Goteo\Library\Message,
+        Goteo\Library\Check,
         Goteo\Library\Text;
 
     class Bazaar extends \Goteo\Core\Controller {
@@ -32,9 +34,6 @@ namespace Goteo\Controller {
 
                 // página interna
                 $page->home = false;
-
-                // $project = Model\Project::get($item->project);
-                // $vdata["project"] = $project;
 
                 // si el $show es de agradecimiento mostramos thanks.html.php
                 if ($show == 'thanks') {
@@ -95,19 +94,18 @@ namespace Goteo\Controller {
 
             // sacamos los datos del producto
             $item = Model\Bazar::get($reward);
+            $projectData = Model\Project::get($item->project->id);
 
             // si no es un producto de bazar tenemos un problema
 
             $message = '';
-
-            // datos del proyecto
-            $projectData = Model\Project::get($item->project);
 
             // metodos habilitados
             $methods = \Goteo\Controller\Invest::$methods;
 
             // si no está en campaña no pueden esta qui ni de coña, que elijan otro
             if ($projectData->status != 3) {
+                Message::Info(Text::get('project-not_published'));
                 throw new Redirection('/bazaar');
             }
 
@@ -142,10 +140,16 @@ namespace Goteo\Controller {
 
                 // si el usuario está logueado, usamos los datos de $_SESSION['user']
                 // si no creamos un usuario de modo instantaneo
+                if (isset($_SESSION['user']) && $_SESSION['user']->id == $_POST['user']) {
+                    $formData['user'] = $_SESSION['user']->id;
+                } elseif (!empty($formData['email']) && Check::email($formData['email']))) {
 
-                //@TODO Si el email es de un usuario existente, asignar el aporte a ese usuario
-                // si no, creamos un registro de usuario con todo el lio
-                $user = \Goteo\Controller\User::instanReg($email);
+                    $formData['user'] = \Goteo\Controller\User::instantReg($formData['email']);
+
+                } else {
+                    Message::Error(Text::get('register-confirm_mail-fail', \GOTEO_MAIL));
+                    throw new Redirection("/bazaar/{$reward}/fail");
+                }
 
 
                 $errors = array();
@@ -163,7 +167,7 @@ namespace Goteo\Controller {
 
 
                 // verificación de impulsor 
-                if ($projectData->owner == $user->id) {
+                if ($project->owner == $formData['user']) {
                     Message::Error(Text::get('invest-owner-error'));
                     throw new Redirection("/bazaar/{$item->id}/fail");
                 }
@@ -174,8 +178,8 @@ namespace Goteo\Controller {
                 $invest = new Model\Invest(
                     array(
                         'amount' => $item->amount,
-                        'user' => $_SESSION['user']->id,
-                        'project' => $item->project,
+                        'user' => $formData['user'],
+                        'project' => $projectData->id,
                         'method' => $method,
                         'status' => '-1',               // aporte en proceso
                         'invested' => date('Y-m-d'),
@@ -194,10 +198,14 @@ namespace Goteo\Controller {
                 // saber si el aporte puede generar riego y cuanto
                 if ($projectData->called->dropable) {
 
-                    //@TODO ojo, que no duplique aportes por usuario
-
-                    $invest->called = $projectData->called;
-                    $invest->maxdrop = Model\Call\Project::currMaxdrop($projectData, $invest->amount);
+                    // saber si este usuario ya ha generado riego
+                    $allready = $projectData->called->getSupporters(true, $formData['user'], $projectData->id);
+                    if ($allready > 0) {
+                        $invest->called = null;
+                    } else  {
+                        $invest->called = $projectData->called;
+                        $invest->maxdrop = Model\Call\Project::currMaxdrop($projectData, $invest->amount);
+                    }
                 } else {
                     $invest->called = null;
                 }

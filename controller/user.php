@@ -313,6 +313,62 @@ namespace Goteo\Controller {
         }
 
         /**
+         * Registro instantáneo de usuario mediante email
+         * (Si existe devuelve id pero no loguea)
+         */
+        static public function intantReg($email) {
+
+            $errors = array();
+
+            // Si el email es de un usuario existente, asignar el aporte a ese usuario (no lo logueamos)
+            $query = Model\User::query("
+                    SELECT
+                        id,
+                        name,
+                        email
+                    FROM user
+                    WHERE BINARY email = :email
+                    ",
+                array(
+                    ':email'    => trim($email)
+                )
+            );
+            if($row = $query->fetchObject()) {
+                if (!empty($row->id)) {
+                    return $row->id;
+                }
+            }
+
+
+            // si no existe, creamos un registro de usuario enviando el mail (y lo dejamos logueado)
+            // ponemos un random en user y contraseña (el modelo mandará el mail)
+            $name = substr($email, 0, strpos($email, '@'));
+            $userid = $name . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9);
+
+            $user = new Model\User();
+            $user->userid = $userid;
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = uniqid($name);
+            $user->active = false;
+            $user->node = \NODE_ID;
+
+            if ($user->save($errors)) {
+                $_SESSION['user'] = Model\User::get($user->id);
+                // creamos una cookie
+                setcookie("goteo_user", $user->id, time() + 3600 * 24 * 365);
+                Message::Info(Text::get('user-register-success'));
+                return $user->id;
+            }
+
+            if (!empty($errors)) {
+                Message::Error(implode('<br />', $errors));
+            }
+
+            return false;
+        }
+
+        /**
          * Modificación perfil de usuario.
          * Metodo Obsoleto porque esto lo hacen en el dashboard
          */
