@@ -47,6 +47,8 @@ namespace Goteo\Model {
                 if (!empty($promo->image))
                     $promo->img = Image::get($promo->image);
 
+                $promo->project = Project::getMini($promo->project);
+
                 return $promo;
         }
 
@@ -84,6 +86,8 @@ namespace Goteo\Model {
                 
                 if (!empty($promo->image))
                     $promo->img = Image::get($promo->image);
+
+                $promo->project = Project::getMini($promo->project);
 
                 $promos[] = $promo;
             }
