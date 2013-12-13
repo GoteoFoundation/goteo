@@ -5,12 +5,11 @@ use Goteo\Library\Text,
 	
 echo new View("view/bazar/prologue.html.php", array('ogmeta'=>$this['ogmeta']));
 echo new View("view/bazar/header.html.php", array('page'=>$this['page']));
-//echo new View("view/bazar/share.html.php", array("share"=>$this['share']));
 
-echo '<section id="contenedor">';
+echo '<section id="contenedor"><hr />';
 
 foreach($this['items'] as $item){
-	echo new View("view/bazar/item.html.php",array("item"=>$item));
+	echo new View("view/bazar/item.html.php",array("item"=>$item, "share"=>$this['share']));
 }
 
 echo '</section><hr />';

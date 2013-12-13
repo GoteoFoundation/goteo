@@ -67,17 +67,34 @@ h3 a:hover {
   color: #20B2B3;
 }
 
+span.by {
+  font-size: 0.8em;
+  color: #20B2B3;
+}
+
 
 #encabezado {clear: both;width: 90%; margin: 10px auto;}
 
 section {margin: 0 10px;}
 
 /* para item.html.php */
-article.activable {max-width: 220px; padding-left: 5px; margin-right: 20px; margin-bottom: 20px; display: inline-block; position: relative;}
-article.activable img {width: 50%; max-width: 300px; min-width: 150px; margin-right: 20px;}
+article.activable {max-width: 220px; padding: 5px; margin-right: 20px; margin-bottom: 20px; display: inline-block; position: relative;}
+article.activable img.item {width: 50%; max-width: 300px; min-width: 150px; margin-right: 20px;}
 article.activable p {margin: 0; padding: 0; color: #313B96;}
 article.active {background-color: #E1DBDD !important;}
 article.active p {color: #20B2B3 !important;}
+
+article.activable nav a {
+  position: relative;
+  z-index: 999;
+}
+
+article.activable nav img.twit,
+article.activable nav img.face {
+  width: 30px;
+  margin: 0;
+  padding: 0;  
+}
 
 /* El link sobre el elemento */
 a.expand {
@@ -92,9 +109,16 @@ a.expand {
 }
 
 /* para name.html.php */
-article.header {width: 80%; margin: 0 auto;}
-article.header img {width: 40%; max-width: 300px; min-width: 150px; margin-right: 20px;}
-article.header p {margin: 0; padding: 0;}
+article.header {width: 300px; margin: 0;}
+article.header img.item {width: 40%; max-width: 300px; min-width: 150px; margin-right: 20px;}
+article.header div.caja {float:left; margin-right: 20px !important;}
+article.header nav a {float:left;}
+article.header nav img.twit,
+article.header nav img.face {
+  width: 60px;
+  margin: 0 20px 0 0;
+  padding: 0;  
+}
 
 /* Caj con el precio*/
 div.caja {
@@ -190,7 +214,7 @@ p.thanks {
 
 
 /* Formulario */
-section#formulario {clear: both;}
+article#formulario {clear: both; padding-top: 20px;}
 
 div.formfields {width: 360px; margin-right: 10px;}
 div.formfields.alone {width: 100%; margin: 20px 10px;}
