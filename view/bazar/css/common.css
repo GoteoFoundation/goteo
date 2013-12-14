@@ -15,9 +15,14 @@ html, body {
     padding: 0;
 }          
 
+header {
+  display: block;
+}
+
 header img {
     padding: 10px 0 0 20px;
     width: 100%;
+    display: inline-block;
 }        
 
 header a.logo,
@@ -25,8 +30,8 @@ header nav {
   float: left;
 }
 
-header a.logo {min-width: 100px; max-width: 250px; width:20%;}
-header nav {width:80%;}
+header a.logo {min-width: 40px; max-width: 250px; width:30%; margin: 0 30px 10px 0;}
+header nav {width:100%; border-bottom: 1px solid black; margin-bottom: 10px;}
 
 h1,
 h1 a {
@@ -59,7 +64,6 @@ h3 a {
   text-transform: uppercase;
   text-decoration: none;
   color: #58595B;
-  text-align: center;
   margin: 0;
 }
 
@@ -67,21 +71,19 @@ h3 a:hover {
   color: #20B2B3;
 }
 
-span.by {
-  font-size: 0.8em;
-  color: #20B2B3;
-}
 
+#encabezado, #pie {width: 90%; margin: 10px auto;display: block;}
 
-#encabezado {clear: both;width: 90%; margin: 10px auto;}
-
-section {margin: 0 10px;}
+section {margin: 0 20px;}
 
 /* para item.html.php */
-article.activable {max-width: 220px; padding: 5px; margin-right: 20px; margin-bottom: 20px; display: inline-block; position: relative;}
-article.activable img.item {width: 50%; max-width: 300px; min-width: 150px; margin-right: 20px;}
+article.activable {padding: 5px; margin-right: 55px; margin-bottom: 20px; display: inline-block; position: relative;}
+article.activable img.item {max-width: 255px; width: 90%;}
 article.activable p {margin: 0; padding: 0; color: #313B96;}
-article.active {background-color: #E1DBDD !important;}
+
+article.active img.item {
+-webkit-filter: drop-shadow(2px 2px 20px black);  
+}
 article.active p {color: #20B2B3 !important;}
 
 article.activable nav a {
@@ -108,10 +110,9 @@ a.expand {
   z-index: 99;
 }
 
-/* para name.html.php */
-article.header {width: 300px; margin: 0;}
-article.header img.item {width: 40%; max-width: 300px; min-width: 150px; margin-right: 20px;}
-article.header div.caja {float:left; margin-right: 20px !important;}
+/* en página de producto  */
+article.header {display: inline-block; margin-right: 20px;}
+article.header.top {margin: 20px 10px 0 10px;}
 article.header nav a {float:left;}
 article.header nav img.twit,
 article.header nav img.face {
@@ -120,26 +121,39 @@ article.header nav img.face {
   padding: 0;  
 }
 
+article.header #proj-name {
+  display: block;
+  color: #20B2B3;
+}
+
+#proj-name a, #proj-name span {
+  font-size: 0.7em;
+  color: #20B2B3;
+  text-decoration: none;
+}
+#proj-name a:hover {
+  text-decoration: underline;
+}
+
 /* Caj con el precio*/
 div.caja {
   background:url('/view/bazar/img/caja.png') no-repeat top center;
   background-size:100% 100%;
   display:inline-block;
-  height:50px;
+  height:70px;
+  min-width: 80px;
   position: relative;
   margin-right: -30px;
   top: -25px;
 }
-article.header div.caja {margin: 10px; top: 0;}
 div.caja p.precio {
   display:inline;
-  height:50px;
-  line-height:42px;
-  margin-left:12px;
-  margin-right:15px;
-  font-size: ;
+  font-size: 1.6em;
+  line-height:60px;
+  padding: 0 18px;
   font-weight: bold;
   color: #96238F !important;
+  text-align: left;
 }
 
 hr {
@@ -151,35 +165,31 @@ hr {
     padding: 0;
 }
 
-
-/* footer */
-footer {
-  margin-top: 20px;
-  width: 400px;
-  margin: 0 auto;
+article.spread p {
+    padding-top: 10px;
 }
 
-footer section {
-  float: left;
+article.spread {
+    display: block;
+    width: 80%;
+    margin: 10px auto 0;
 }
 
-footer section.logo {padding-top: 20px;}
 
-footer nav img {width: 92px;}
-
-/* Botones compartir en vista spread */
+/* Botones compartir en vista thanks */
 ul.share {
   display: block;
   list-style: none outside none;
-  padding: 20px 0;
+  padding: 20px 0 0 0;
+  margin: 0;
   text-align: center;
 }
 
 ul.share li {
-    display: inline;
-    float: left;
+    display: inline-block;
     text-align: center;
-    width: 280px;          
+    width: 280px;
+    min-height: 50px; 
 }
 
 ul.share li a {
@@ -203,14 +213,7 @@ ul.share li.facebook a {
     padding: 9px 14px 8px 45px;
 }
 
-p.spread,
-p.thanks {
-    display: block;
-    margin: 20px;
-}
 
-
-/*  Página de producto  */
 
 
 /* Formulario */
@@ -219,11 +222,12 @@ article#formulario {clear: both; padding-top: 20px;}
 div.formfields {width: 360px; margin-right: 10px;}
 div.formfields.alone {width: 100%; margin: 20px 10px;}
 div.field {display: block;}
-form input[type="text"] {margin-bottom: 10px; width: 98%; font-size: 16px; height: 18px;}
+form input[type="text"] {margin-bottom: 10px; width: 80%; font-size: 16px; height: 18px;}
 form input[type="checkbox"] {margin-right: 10px;}
 span.error {color: red; margin-left: 3px; font-size: 10px;}
-
 div.friend {display: none;}
+
+div#sendto {font-size: 1.1em; color: #313B96;}
 
 form input[type="text"], form textarea {
     background-color: #D7D9DA;
@@ -237,7 +241,7 @@ form input[type="text"]:focus, form textarea:focus {
 
 form textarea,
 div#anonm {
-    width: 100%;
+    width: 80%;
 }
 
 div.buttons {
@@ -270,68 +274,24 @@ div.buttons button.pay-paypal {
   width: 145px;
 }
 
-
-/*
-form{
-  margin-top:30px;
-}
-form div#campo1{
-  width:45%;
-  float:left;
-  margin-left:50px;
-}
-form div#campo1 input, form div#campo1 label{
-  float:left;
-  margin-left:20px;
-  width:350px;
-  
-}
-form div#campo1 p{
-  width:150px;
-  float:left;
-  margin-top:0px;
-  font-size:80%;
-  height:20px;
-}
-form div#campo2{
-  width:45%;
-  float:right;
-}
-form div#campo2 input, form div#campo2 label{
-  float:left;
-  margin-left:20px;
-  width:350px;
-  
-}
-form div#campo2 p{
-  
-  width:150px;
-  float:left;
-  margin-top:0px;
-  font-size:80%;
-  height:20px;
-}
-form div#campo3{
-  width:45%;
-  float:left;
-  margin-left:50px;
-}
-form div#campo3 input, form div#campo3 label, form div#campo3 textarea{
-  float:left;
-  margin-left:20px;
-  width:350px;
-  
-}
-form div#campo3 p{
-  
-  width:150px;
-  float:left;
-  margin-top:0px;
-  font-size:80%;
-  height:20px;
+/* footer */
+footer {
+  margin-top: 20px;
+  width: 520px;
+  margin: 0 auto;
 }
 
-form div#campo4{
-  clear:both;
+footer section {
+  float: left;
 }
-*/
+
+footer section.logo2 {display: none;}
+
+footer section.logo img {
+  width: 120px;
+}
+
+footer nav img.twit,
+footer nav img.face {
+  width: 60px;
+}

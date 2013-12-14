@@ -1,10 +1,29 @@
 /* Minimobile (max-width:340px) */
 header, header nav {width: 100%;}
+header nav {margin-bottom: 3px;}
 header a.logo, footer a.logo {display: none;}
+footer section.logo2 {display: inline-block;}
 
-article.activable {max-width: none; }
+section {margin: 0 5px;}
+
+article.activable {margin: 0; }
+article.header.prod {width: 98%;}
+article img.item {max-width: 150px; }
+
+div.caja {
+  height:50px;
+  min-width: 50px;
+}
+div.caja p.precio {
+  line-height:42px;
+  font-size: 1.3em;
+  padding: 0 15px;
+}
+
+ul.share li.facebook {margin: 0;}
 
 footer {width: 100%;}
+
 
 
 /*

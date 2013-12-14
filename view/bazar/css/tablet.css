@@ -1,8 +1,29 @@
 /* Tablet (min-width:750px) and (max-width:1024px) */
 h1 {font-size:3rem; margin-top:20px;}
 h2 {font-size:2rem; margin-top:20px;}
-#encabezado {font-size: 1.1rem; margin: 10px auto;}
-article.activable {max-width: 330px;}
+#encabezado, #pie, article.spread p  {font-size: 1.1rem; margin: 10px auto;}
+#prod-description {font-size: 1rem;}
+#proj-name span, #proj-name a {font-size: 0.8em;}
+
+article.header.prod {width: 50%;}
+article img.item {max-width: 200px;}
+
+div.formfields {width: 390px; margin-right: 20px;}
+
+ul.share li.facebook {margin: 0;}
+
+div#fields-address,
+div#fields-investor,
+div#fields-friend {
+  float: left;
+}
+
+div#field-message,
+div#anonm {
+  clear: both;
+  width: 80%;
+}
+
 
 /*
 body{width:100%;text-align:center;

@@ -1,10 +1,27 @@
 /* bigpc (min-width:1400px) */
+header nav {margin-bottom: 30px;}
 h1 {font-size:5rem;margin-top:40px;}
-h2 {font-size:3rem; margin-top:30px;}
-#encabezado {font-size: 1.6rem; margin: 20px auto;}
-article.activable {max-width: 350px;}
+h2 {font-size:3rem; margin-top:10px;}
+#encabezado, #pie, article.spread p {font-size: 1.6rem; margin: 30px auto;}
+#prod-description {font-size: 1.4rem;}
+#proj-name span, #proj-name a {font-size: 0.9em;}
+section {margin: 0 30px;}
 
-div.formfields {width: 30%; margin-right: 30px;}
+article.header.prod {width: 50%;}
+article img.item {max-width: 360px;}
+
+div.caja {
+  height:80px;
+  min-width: 100px;
+}
+div.caja p.precio {
+  line-height:60px;
+  font-size: 2em;
+  padding: 0 20px;
+}
+
+
+div.formfields {width: 440px; margin-right: 30px;}
 
 div#fields-address,
 div#fields-investor,
@@ -15,7 +32,7 @@ div#fields-friend {
 div#field-message,
 div#anonm {
   clear: both;
-  width: 60%;
+  width: 80%;
 }
 
 
