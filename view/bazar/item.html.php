@@ -15,7 +15,8 @@ $item_facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($item_url) 
 	<a class="expand" href="/bazaar/<?php echo $item->id; ?>"></a>
 	<div class="caja"><p class="precio"><?php echo $item->amount; ?>&euro;</p></div>
 	<img class="item" src="<?php echo $item->imgsrc; ?>" title="<?php echo $item->title; ?>" alt="IMG" title="<?php echo $item->title; ?>"/>
-	<p class="desc"><?php echo $item->title; ?><br /><span class="by"><?php echo $item->project->name.'. '.Text::get('regular-by').' '. $item->project->user->name ?></span></p>
+	<p class="desc"><?php echo $item->title; ?></p>
+	<div id="proj-name"><span><?php echo $item->project->name.'<br />'.Text::get('regular-by').' '. $item->project->user->name ?></span></div>
 	<nav>    
 	    <a href="<?php echo htmlspecialchars($item_twitter_url) ?>" target="_blank"><img class="twit" src="/view/bazar/img/twitter.svg"></a>
 	    <a href="<?php echo htmlspecialchars($item_facebook_url) ?>" target="_blank"><img class="face" src="/view/bazar/img/facebook.svg"></a>

@@ -8,13 +8,15 @@ $page  = $this['page'];
 echo new View("view/bazar/prologue.html.php", array('ogmeta'=>$this['ogmeta'], 'title'=>$page->title, 'description'=>$page->description));
 echo new View("view/bazar/header.html.php", array('page'=>$this['page']));
 
-echo '<section id="contenedor"><hr />';
+if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; }
+
+echo '<section id="contenedor">';
 
 foreach($this['items'] as $item){
 	echo new View("view/bazar/item.html.php",array("item"=>$item, "share"=>$this['share']));
 }
 
-echo '</section><hr />';
+echo '</section>';
 
-echo new View("view/bazar/footer.html.php", array("share"=>$this['share']));
+echo new View("view/bazar/footer.html.php", array("share"=>$this['share'], 'text'=>$page->txtFoot));
 echo new View("view/bazar/epilogue.html.php");

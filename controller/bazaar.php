@@ -16,6 +16,8 @@ namespace Goteo\Controller {
 
             $page = Page::get('bazar');
 
+            list($page->txtHome, $page->txtHead, $page->txtFoot) = explode('<hr />', $page->content);
+
             $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
             $page->url = $URL.'/bazaar';
             $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
