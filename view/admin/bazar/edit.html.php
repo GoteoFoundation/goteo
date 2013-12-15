@@ -12,7 +12,7 @@ $items = array();
 //@TODO montar valor: nomReco(50)+importe€+nomProj(50)
 foreach ($this['items'] as $iId=>$iObj) {
     $el_val = str_replace(array("'", '"'), '`', $iObj->name).' ['.$iObj->icon.' '.$iObj->amount.'€] ('.str_replace(array("'", '"'), '`', $iObj->projname);
-    $el_id = $iObj->reward.'¬'.$iObj->project->id.'¬'.$iObj->amount;
+    $el_id = $iObj->reward.'¬'.$iObj->project.'¬'.$iObj->amount;
     $items[] = '{ value: "'.$el_val.')", id: "'.$el_id.'" }';
     if ($iId == $promo->reward) $preVal = "$el_val";
 }

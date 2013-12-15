@@ -717,6 +717,7 @@ namespace Goteo\Controller {
                         $menu['contents']['options']['templates'] = $options['templates']; // gestión de plantillas
                         $menu['projects']['options']['transcalls'] = $options['transcalls']; // traducción de convocatorias    
                         $menu['projects']['options']['commons'] = $options['commons']; // gestion de retornos colectivos
+                        $menu['projects']['options']['bazar'] = $options['bazar']; // gestion de retornos colectivos
                     }
 
                     break;
