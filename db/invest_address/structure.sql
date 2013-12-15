@@ -14,3 +14,7 @@ CREATE TABLE IF NOT EXISTS `invest_address` (
 --- alters
 ALTER TABLE `invest_address` ADD `name` VARCHAR( 255 ) NULL ,
 ADD `nif` VARCHAR( 10 ) NULL ;
+
+--- alters
+ALTER TABLE `invest_address` ADD `namedest` TINYTEXT NULL, ADD `emaildest` TINYTEXT NULL, ADD `regalo` INT(1)  NULL DEFAULT '0';
+ALTER TABLE `invest_address` ADD `message` TEXT NULL;

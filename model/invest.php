@@ -33,7 +33,11 @@ namespace Goteo\Model {
                 'address'  => '',
                 'zipcode'  => '',
                 'location' => '',
-                'country'  => ''),  // dirección de envio del retorno
+                'country'  => '',
+                'regalo'  => '',
+                'namedest'  => '',
+                'emaildest'  => '',
+                'message'  => ''),  // dirección de envio de la recompensa y datos de regalo
             $call = null; // aportes que tienen capital riego asociado
 
         // añadir los datos del cargo
@@ -60,7 +64,7 @@ namespace Goteo\Model {
 				$invest->rewards = $query->fetchAll(\PDO::FETCH_CLASS);
 
 				$query = static::query("
-                    SELECT  address, zipcode, location, country, name, nif
+                    SELECT  *
                     FROM  invest_address
                     WHERE   invest_address.invest = ?
                     ", array($id));
@@ -419,17 +423,21 @@ namespace Goteo\Model {
 
                 // dirección
                 if (!empty($this->address)) {
-                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country, name, nif)
-                        VALUES (:invest, :user, :address, :zipcode, :location, :country, :name, :nif)";
+                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country, name, nif, regalo, namedest, emaildest, message)
+                        VALUES (:invest, :user, :address, :zipcode, :location, :country, :name, :nif, :regalo, :namedest, :emaildest, :message)";
                     self::query($sql, array(
-                        ':invest'=>$this->id,
-                        ':user'=>$this->user,
-                        ':address'=>$this->address->address,
-                        ':zipcode'=>$this->address->zipcode, 
-                        ':location'=>$this->address->location, 
-                        ':country'=>$this->address->country,
-                        ':name'=>$this->address->name,
-                        ':nif'=>$this->address->nif
+                        ':invest'   => $this->id,
+                        ':user'     => $this->user,
+                        ':address'  => $this->address->address,
+                        ':zipcode'  => $this->address->zipcode, 
+                        ':location' => $this->address->location, 
+                        ':country'  => $this->address->country,
+                        ':name'     => $this->address->name,
+                        ':nif'      => $this->address->nif,
+                        ':regalo'   => $this->address->regalo,
+                        ':namedest' => $this->address->namedest,
+                        ':emaildest'=> $this->address->emaildest,
+                        ':message'  => $this->address->message
                         )
                     );
                 }
@@ -465,17 +473,20 @@ namespace Goteo\Model {
 
                 // dirección
                 if (!empty($this->address)) {
-                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country, name, nif)
-                        VALUES (:invest, :user, :address, :zipcode, :location, :country, :name, :nif)";
+                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country, name, nif, regalo, namedest, emaildest)
+                        VALUES (:invest, :user, :address, :zipcode, :location, :country, :name, :nif, :regalo, :namedest, :emaildest)";
                     self::query($sql, array(
-                        ':invest'=>$this->id,
-                        ':user'=>$this->user,
-                        ':address'=>$this->address->address,
-                        ':zipcode'=>$this->address->zipcode,
-                        ':location'=>$this->address->location,
-                        ':country'=>$this->address->country,
-                        ':name'=>$this->address->name,
-                        ':nif'=>$this->address->nif
+                        ':invest'   => $this->id,
+                        ':user'     => $this->user,
+                        ':address'  => $this->address->address,
+                        ':zipcode'  => $this->address->zipcode,
+                        ':location' => $this->address->location,
+                        ':country'  => $this->address->country,
+                        ':name'     => $this->address->name,
+                        ':nif'      => $this->address->nif,
+                        ':regalo'   => $this->address->regalo,
+                        ':namedest' => $this->address->namedest,
+                        ':emaildest'=> $this->address->emaildest
                         )
                     );
                 }

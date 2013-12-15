@@ -316,7 +316,7 @@ namespace Goteo\Controller {
          * Registro instantáneo de usuario mediante email
          * (Si existe devuelve id pero no loguea)
          */
-        static public function intantReg($email) {
+        static public function instantReg($email) {
 
             $errors = array();
 
@@ -335,7 +335,8 @@ namespace Goteo\Controller {
             );
             if($row = $query->fetchObject()) {
                 if (!empty($row->id)) {
-                    return $row->id;
+                    Message::Error(Text::get('error-user-email-exists'));
+                    return false;
                 }
             }
 

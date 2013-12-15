@@ -19,7 +19,7 @@ namespace Goteo\Controller {
         // metodos habilitados
         public static $methods = array(
                 'tpv' => 'tpv',
-//                'cash' => 'cash',  // solo en entornos de desarrollo y pruebas
+                'cash' => 'cash',  // solo en entornos de desarrollo y pruebas
                 'paypal' => 'paypal'
             );
 
@@ -172,16 +172,15 @@ namespace Goteo\Controller {
             // el aporte
             $invest = Model\Invest::get($id);
 
-            //@TODO revisar si no fuera una instancia correcta
-
-            //@TODO datos del usuario (name, email, avatar) desde $invest->user->
-
             $projectData = Model\Project::getMedium($invest->project);
+
+            // si es de Bazar, a /bazar/id-reward/thanks
+            $retUrl = ($project == 'bazargoteo') ? "/bazaar/{$reward}/thanks" : "/project/{$invest->project}/invest/?confirm=ok";
 
             // para evitar las duplicaciones de feed y email
             if (isset($_SESSION['invest_'.$invest->id.'_completed'])) {
                 Message::Info(Text::get('invest-process-completed'));
-                throw new Redirection("/project/$invest->project/invest/?confirm=ok");
+                throw new Redirection($retUrl);
             }
 
 
@@ -327,12 +326,14 @@ namespace Goteo\Controller {
 
             $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
             
-            // Dirección en el mail
-            $txt_address = Text::get('invest-mail_info-address');
-            $txt_address .= '<br> ' . Text::get('invest-address-address-field') . ' ' . $invest->address->address;
+            // Dirección en el mail (y version para regalo)
+            $txt_address = Text::get('invest-address-address-field') . ' ' . $invest->address->address;
             $txt_address .= '<br> ' . Text::get('invest-address-zipcode-field') . ' ' . $invest->address->zipcode;
             $txt_address .= '<br> ' . Text::get('invest-address-location-field') . ' ' . $invest->address->location;
             $txt_address .= '<br> ' . Text::get('invest-address-country-field') . ' ' . $invest->address->country;
+
+            $txt_destaddr = $txt_address;
+            $txt_address = Text::get('invest-mail_info-address') .'<br>'. $txt_address;
 
             // Agradecimiento al cofinanciador
             // Sustituimos los datos
@@ -360,6 +361,37 @@ namespace Goteo\Controller {
 
             unset($mailHandler);
             
+            // si es un regalo
+            if ($invest->address->regalo && !empty($invest->address->emaildest)) {
+                // Notificación al destinatario de regalo
+                $template = Template::get(53);
+                // Sustituimos los datos
+                $subject = str_replace('%REWNAME%', $txt_rewards, $template->title);
+
+                // En el contenido:
+                $search  = array('%DESTNAME%', '%USERNAME%', '%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWNAME%', '%ADDRESS%', '%DROPED%');
+                $replace = array($invest->address->namedest, $_SESSION['user']->name, $invest->address->message, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_destaddr, $txt_droped);
+                $content = \str_replace($search, $replace, $template->text);
+
+                $mailHandler = new Mail();
+
+                $mailHandler->to = $invest->address->emaildest;
+                $mailHandler->toName = $invest->address->namedest;
+                $mailHandler->subject = $subject;
+                $mailHandler->content = $content;
+                $mailHandler->html = true;
+                $mailHandler->template = $template->id;
+                if ($mailHandler->send($errors)) {
+                    Message::Info(Text::get('project-invest-friend_mail-success'));
+                } else {
+                    Message::Error(Text::get('project-invest-friend_mail-fail'));
+                    Message::Error(implode('<br />', $errors));
+                }
+
+                unset($mailHandler);
+            }
+
+
 
             // Notificación al autor
             $template = Template::get(29);
@@ -389,15 +421,8 @@ namespace Goteo\Controller {
             // log
             Model\Invest::setDetail($invest->id, 'confirmed', 'El usuario regresó a /invest/confirmed');
             
-            // @TODO-Bazar si es de bazar puede ser regalo y habría que enviar email al destinatario
-
-
             // mandarlo a la pagina de gracias
-            // si es de Bazar, a /bazar/id-reward/thanks
-            if ($project == 'bazargoteo')
-                throw new Redirection("/bazaar/{$reward}/thanks");
-            else
-                throw new Redirection("/project/{$invest->project}/invest/?confirm=ok");
+            throw new Redirection($retUrl);
         }
 
         /*

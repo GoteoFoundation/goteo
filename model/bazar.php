@@ -179,8 +179,6 @@ namespace Goteo\Model {
 
         // ya no validamos esto
         public function validate (&$errors = array()) { 
-                return true;
-                
             if ($this->active && (empty($this->reward) || empty($this->project) || empty($this->amount) ))
                 $errors[] = 'Se quiere publicar y no tiene recompensa/proyecto/importe. Seleccionar item o no publicar';
 

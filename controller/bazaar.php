@@ -6,24 +6,32 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
-        Goteo\Library\Message,
         Goteo\Library\Check,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Library\Message,
+        Goteo\Library\Paypal,
+        Goteo\Library\Tpv;
 
     class Bazaar extends \Goteo\Core\Controller {
     
         public function index($id = null, $show = null) {
 
+            $ogimages = array();
+
             $page = Page::get('bazar');
 
-            list($page->txtHome, $page->txtHead, $page->txtFoot) = explode('<hr />', $page->content);
+            list($page->txt1, $page->txt2, $page->txt3) = explode('<hr />', $page->content);
 
             $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
             $page->url = $URL.'/bazaar';
             $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 
+            $page->debug = ($URL == 'http://beta.goteo.org' || $URL == 'http://devgoteo.org');
+
             $vpath = "view/bazar/";
             $vdata = array();
+
+            $ogimages[] = $URL.'/view/bazar/img/carro.png';
 
             if ($id !== null) {
                 $item=Model\Bazar::get($id);
@@ -31,11 +39,19 @@ namespace Goteo\Controller {
                     throw new Redirection("/bazaar"); 
 
                 $item->imgsrc = (!empty($item->img)) ? '/data/images/'.$item->img->name : '/data/images/bazaritem.svg';
-
+                $ogimages[] = $URL.$item->imgsrc;
                 $vdata["item"] = $item;
 
                 // página interna
                 $page->home = false;
+
+                // veamos si puede usar paypal
+                $item->project->called = Model\Call\Project::miniCalled($item->project->id);
+                if ($item->project->called) {
+                    $item->project->allowpp = false;
+                } else {
+                    $item->project->allowpp = Model\Project\Account::getAllowpp($item->project->id);
+                }
 
                 // si el $show es de agradecimiento mostramos thanks.html.php
                 if ($show == 'thanks') {
@@ -49,7 +65,12 @@ namespace Goteo\Controller {
                 // portada
                 $page->home = true;
 
-                $vdata["items"] = Model\Bazar::getAll();
+                $items = Model\Bazar::getAll();
+                foreach ($items as &$item) {
+                    $item->imgsrc = (!empty($item->img)) ? '/data/images/'.$item->img->name : '/data/images/bazaritem.svg';
+                    $ogimages[] = $URL.$item->imgsrc;
+                }
+                $vdata["items"] = $items;
                 $vpath .= "home.html.php";
             }
 
@@ -79,7 +100,7 @@ namespace Goteo\Controller {
                 'title' => $item_title,
                 'description' => $item_description,
                 'url' => $item_url,
-                'image' => $item_image
+                'image' => $ogimages
             );
 
             return new View($vpath, $vdata);
@@ -116,7 +137,7 @@ namespace Goteo\Controller {
 
 
                 // hago un array de datos
-                $formData = array(
+                $_SESSION['bazar-form-data'] = $formData = array(
                     // el usuario
                     'name' => $_POST['name'],
                     'email' => $_POST['email'],
@@ -124,7 +145,7 @@ namespace Goteo\Controller {
                     // destinatario de regalo
                     'regalo' => $_POST['regalo'],
                     'namedest' => $_POST['namedest'],
-                    'maildest' => $_POST['maildest'],
+                    'emaildest' => $_POST['emaildest'],
 
                     // dirección de destino
                     'address'  => $_POST['address'],
@@ -135,25 +156,25 @@ namespace Goteo\Controller {
                     // mensaje
                     'message'  => $_POST['message']
                 );
-
-                die(\trace($formData));
-
-                // metemos los datos en sesión
-                $_SESSION['bazar'] = $formData;
+                $_SESSION['bazar-form-data']['anonymous'] = $_POST['anonymous'];
 
                 // si el usuario está logueado, usamos los datos de $_SESSION['user']
                 // si no creamos un usuario de modo instantaneo
                 if (isset($_SESSION['user']) && $_SESSION['user']->id == $_POST['user']) {
                     $formData['user'] = $_SESSION['user']->id;
-                } elseif (!empty($formData['email']) && Check::email($formData['email'])) {
+                } elseif (!empty($formData['email']) && Check::mail($formData['email'])) {
 
-                    $formData['user'] = \Goteo\Controller\User::instantReg($formData['email']);
+                    $nUser = \Goteo\Controller\User::instantReg($formData['email']);
+                    if (!$nUser) {
+                        Message::Error(Text::get('regular-login'));
+                        throw new Redirection("/user/login?return=".urlencode('/bazaar/'.$item->id));
+                    }
+                    $formData['user'] = $nUser;
 
                 } else {
                     Message::Error(Text::get('register-confirm_mail-fail', \GOTEO_MAIL));
                     throw new Redirection("/bazaar/{$reward}/fail");
                 }
-
 
                 $errors = array();
                 $los_datos = $_POST;
@@ -175,9 +196,6 @@ namespace Goteo\Controller {
                     throw new Redirection("/bazaar/{$item->id}/fail");
                 }
 
-                // todos los datos de la recompensa
-                $rewardData = Model\Project\Reward::get($item->id);
-
                 $invest = new Model\Invest(
                     array(
                         'amount' => $item->amount,
@@ -193,7 +211,7 @@ namespace Goteo\Controller {
                 );
 
                 // recompensa
-                $invest->rewards = array($item->id);
+                $invest->rewards = array($item->reward);
 
                 $invest->address = (object) $address;
 
