@@ -1,74 +1,14 @@
 /* Minimobile (max-width:340px) */
-header, header nav {width: 100%;}
-header nav {margin-bottom: 3px;}
-header a.logo, footer a.logo {display: none;}
-footer section.logo2 {display: inline-block;}
-
-section {margin: 0 5px;}
-
-article.activable {margin: 0; }
-article.header.prod {width: 98%;}
-article img.item {max-width: 150px; }
-
-div.caja {
-  height:50px;
-  min-width: 50px;
-}
-div.caja p.precio {
-  line-height:42px;
-  font-size: 1.3em;
-  padding: 0 15px;
-}
-
-ul.share li.facebook {margin: 0;}
-
-footer {width: 100%;}
-
-
-
-/*
-body{background-color:white;width: 100%;height:auto;
-	margin:auto;text-align:center;
-}
-
- header nav {width:100%;}
-  h1{font-size:1.8rem;
-	text-align:center;}
-	header.helemento{width:90%;height:100px;margin:auto;text-align:center;}
-h1.ele{font-size:150%;text-align:center;margin:60px 0 0 80px;}
-  img.logo {
-    width:50%;}
-	img.logoele {float:left;width:25%;margin-left:10%;}
-  #encabezado {clear:both;margin-top:20px;display:inline-block;text-align:left;
-padding-left:5px;width:90%;font-size:75%;}
-
-
-article.redes {width:80%;height:70px;margin:20px 0px 0px 15px;}
-
-img.face {width:15%;padding-left:10px;}
-img.twit {width:15%;padding:0px;}
-
- article {display:inline-block;
-	width:90%;
-	height:250px;
-	margin-top:50px;}
-
-section#contenedor{clear:both;
-				 width:90%;
-				 margin:auto;
-				 text-align:center;
-				 margin-bottom:20px;
-}
-img {width:60%;}
-#caja{
-	text-align:left;
-}
-#caja p.precio{
-	padding:0px;
-}
-article p.desc {text-align:left;width:90%;display:inline-block;
-padding-left:30px;}
-
-footer {width:100%;height:auto;}
-footer img.goteo {width:70%;}
-*/
+header,header nav{width:100%;}
+header nav{margin-bottom:3px;}
+header a.logo,footer a.logo{display:none;}
+footer section.logo2{display:inline-block;}
+section{margin:0 5px;}
+article.activable{margin:0;width:98%;}
+article.activable img.item{max-width: 150px;}
+article.header.prod{width:98%;}
+article.header img.item{max-width: 150px;}
+div.caja{height:50px;min-width:50px;}
+div.caja p.precio{line-height:42px;font-size:1.3em;padding:0 15px;}
+ul.share li.facebook{margin:0;}
+footer{width:100%;}

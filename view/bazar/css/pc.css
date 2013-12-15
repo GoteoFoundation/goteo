@@ -1,84 +1,16 @@
 /* pc  (min-width:1024px) and (max-width:1400px) */
-header nav {margin-bottom: 20px;}
-h1 {font-size:4rem;margin-top:30px;}
-h2 {font-size:2.5rem; margin-top:5px;}
-#encabezado, #pie, article.spread p  {font-size: 1.4rem; margin: 25px auto;}
-#prod-description {font-size: 1.2rem;}
-#proj-name span, #proj-name a {font-size: 0.8em;}
-
-article.header.prod {width: 50%;}
-article img.item {max-width: 320px;}
-
-div.caja {
-  height:70px;
-  min-width: 90px;
-}
-div.caja p.precio {
-  line-height:55px;
-  font-size: 1.6em;
-  padding: 0 20px;
-}
-
-
-div.formfields {width: 400px; margin-right: 20px;}
-
-div#fields-address,
-div#fields-investor,
-div#fields-friend {
-  float: left;
-}
-
-div#field-message,
-div#anonm {
-  clear: both;
-  width: 80%;
-}
-
-
-/*
-header {width:80%;height:250px;margin: 0 auto;}
-h1.ele{font-size:150%;text-align:center;margin:60px 0 0 80px;}
- #encabezado {width:90%;height:200px;float:left;
-  font-size:1.20rem;padding-left:50px; }
-article.redes {;height:70px;float:left;text-align:left;padding-left:130px;margin-top:-120px;}
-img.face {width:10%;margin-left:20px;}
-img.twit {width:10%;}
-
-
-#caja{
-	float:left;
-	margin-top:35%;
-	margin-left:-50%;
-}
-
-article {display:inline-block;
-	width:40%;
-	height:200px;
-	margin-left:20px;
-	margin-top:50px;}
-	
-article.elemento {display:inline-block;
-	width:60%;
-	height:300px;
-	margin-left:20px;
-	margin-top:20px;
-	margin-bottom:10px;}
-
-section#contenedor{clear:both;
-				 width:90%;
-				 margin:auto;
-				 margin-bottom:50px;}
-img {width:50%;float:left;}
-article img{width:50%;float:left;}
-article p.desc{width:55%;
-			text-align:left;
-			float:left;
-			margin:-45% 0px 0px 45%;
-			line-height:3em;
-			font-size:80%;}
-footer {width:100%;height:200px;}
-footer img.goteo {width:25%;height:200px;margin-left:35%;}
-#caja p.precio{
-	margin-top:-12px;
-}
-*/
+header nav{margin-bottom:20px;}
+h1{font-size:4rem;margin-top:30px;}
+h2{font-size:2.5rem;margin-top:5px;}
+#encabezado,#pie,article.spread p{font-size:1.4rem;margin:25px auto;}
+#prod-description{font-size:1.2rem;}
+#proj-name span,#proj-name a{font-size:0.8em;}
+article.activable{max-width:30%;margin-right:45px;}
+article.activable img.item{max-width:255px;}
+article.header{width:45%;}
+article.header img.item{width:50%;}
+div.caja{height:70px;min-width:90px;}
+div.caja p.precio{line-height:55px;font-size:1.6em;padding:0 20px;}
+div.formfields{width:400px;margin-right:20px;}
+div#fields-address,div#fields-investor,div#fields-friend{float:left;}
+div#field-message,div#anonm{clear: both;width: 80%;}

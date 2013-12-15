@@ -7,7 +7,7 @@
 	$item = $this['item'];
 //	$project = $this['project'];
 
-	$debug = true;
+	$debug = false;
     $allowpp = true;
 
 

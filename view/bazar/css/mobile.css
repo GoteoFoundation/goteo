@@ -1,67 +1,14 @@
 /* Mobile (min-width:340px) and (max-width:750px) */
-header, header nav {width: 100%;}
-header nav {margin-bottom: 5px;}
-header a.logo, footer a.logo {display: none;}
+header,header nav{width:100%;}
+header nav{margin-bottom:5px;}
+header a.logo,footer a.logo {display: none;}
 footer section.logo2 {display: inline-block;}
-
-section {margin: 0 10px;}
-
-article.header.prod {width: 90%;}
-article img.item {max-width: 150px; }
-
-div.caja {
-  height:50px;
-  min-width: 50px;
-}
-div.caja p.precio {
-  line-height:42px;
-  font-size: 1.3em;
-  padding: 0 15px;
-}
-
-ul.share li.facebook {margin: 0;}
-
-footer {width: 100%;}
-
-/*
-h1{font-size:1.8rem;
-float:left;
-margin-top:18%;
-margin-left:1.5%;}
-h1.ele{font-size:150%;text-align:center;margin:60px 0 0 0px;}
-header.helemento{width:90%;height:150px;margin:auto;text-align:center;}
-img.logo {float:left;position:relative;top:30px;width:20%;padding:0px;margin-left:10%;}
-img.logoele {float:left;width:20%;margin-left:5%;}
-#encabezado {clear:both;margin-top:70px;display:inline-block;text-align:left;
-padding-left:30px;width:90%;}
-
-
-article.redes {width:80%;height:70px;margin:30px 0px 0px 15px;}
-
-img.face {width:8%;padding-left:10px;}
-img.twit {width:8%;padding:0px;}
-
-article {display:inline-block;
-width:90%;
-height:250px;
-margin-top:50px;}
-
-section#contenedor{clear:both;
-width:90%;
-margin:auto;
-text-align:center;
-margin-bottom:20px;
-}
-img {width:50%;padding-left:50px;}
-#caja{
-text-align:left;
-}
-#caja p.precio{
-padding:0px;
-}
-article p.desc {text-align:left;width:90%;display:inline-block;
-padding-left:30px;margin-top:-10px;}
-
-footer {width:100%;height:auto;}
-footer img.goteo {width:70%;}
-*/
+section {margin:0 10px;}
+article.activable{margin:0;width:98%;}
+article.activable img.item{max-width:150px;}
+article.header.prod {width:90%;}
+article.header img.item{max-width:150px;}
+div.caja{height:50px;min-width:50px;}
+div.caja p.precio{line-height:42px;font-size:1.3em;padding:0 15px;}
+ul.share li.facebook{margin:0;}
+footer{width:100%;}
