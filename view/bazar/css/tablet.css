@@ -1,6 +1,7 @@
-/* Tablet (min-width:750px) and (max-width:1024px) */
+/* Tablet (min-width:750px) and (max-width:1023px) */
 h1{font-size:3rem;margin-top:20px;}
 h2{font-size:2rem;margin-top:20px;}
+header img.logo-goteo{width: 60px;}
 #encabezado,#pie,article.spread p {font-size:1.1rem;margin:10px auto;}
 #prod-description{font-size:1rem;}
 #proj-name span,#proj-name a{font-size:0.8em;}
@@ -8,7 +9,8 @@ article.activable{width:45%;margin-right:20px;}
 article.activable img.item{max-width:200px;}
 article.header{width:45%;}
 article.header img.item{width:40%;}
-div.formfields{width:390px;margin-right:20px;}
+article.header.prod{padding-top: 20px;vertical-align: top;}
+div.formfields{width:350px;margin-right:12px;}
 ul.share li.facebook{margin:0;}
 div#fields-address,div#fields-investor,div#fields-friend{float:left;}
 div#field-message,div#anonm{clear:both;width:80%;}

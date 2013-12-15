@@ -15,7 +15,9 @@
         <meta property="og:type" content="activity" />
         <meta property="og:site_name" content="Goteo.org" />
         <meta property="og:description" content="<?php echo $this['ogmeta']['description'] ?>" />
-        <meta property="og:image" content="<?php echo $this['ogmeta']['image'] ?>" />
+        <?php foreach($this['ogmeta']['image'] as $ogimg) : ?>
+        <meta property="og:image" content="<?php echo $ogimg; ?>" />
+        <?php endforeach; ?>
         <meta property="og:url" content="<?php echo $this['ogmeta']['url'] ?>" />
 
 
@@ -23,7 +25,7 @@
         <link rel="stylesheet" href="/view/bazar/css/common.css">
         <link rel="stylesheet" href="/view/bazar/css/minimobile.css" media="only screen and (max-width:340px)">
         <link rel="stylesheet" href="/view/bazar/css/mobile.css" media="only screen and (min-width:340px) and (max-width:750px)">
-        <link rel="stylesheet" href="/view/bazar/css/tablet.css" media="only screen and (min-width:750px) and (max-width:1024px)">
+        <link rel="stylesheet" href="/view/bazar/css/tablet.css" media="only screen and (min-width:750px) and (max-width:1023px)">
         <link rel="stylesheet" href="/view/bazar/css/pc.css" media="only screen and (min-width:1024px) and (max-width:1400px)">
         <link rel="stylesheet" href="/view/bazar/css/bigpc.css" media="only screen and (min-width:1400px)">
         

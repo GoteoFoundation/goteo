@@ -2,7 +2,6 @@
 use Goteo\Library\Text;
 
 $item = $this['item'];
-$item->imgsrc = (!empty($item->img)) ? '/data/images/'.$item->img->name : '/data/images/bazaritem.svg';
 
 $share = $this['share'];
 $item_url = str_replace('/bazaar', '/bazaar/'.$item->id,  $share->bazar_url);

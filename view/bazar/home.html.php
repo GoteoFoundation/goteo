@@ -18,5 +18,5 @@ foreach($this['items'] as $item){
 
 echo '</section>';
 
-echo new View("view/bazar/footer.html.php", array("share"=>$this['share'], 'text'=>$page->txtFoot));
+echo new View("view/bazar/footer.html.php", array("share"=>$this['share'], 'text'=>$page->txt3));
 echo new View("view/bazar/epilogue.html.php");
