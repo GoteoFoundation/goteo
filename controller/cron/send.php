@@ -299,5 +299,74 @@ namespace Goteo\Controller\Cron {
 
         }
         
+        /* A los destinatarios de recompensa (regalo)
+         * solo tipo 'fail' por ahora
+         */
+        static public function toFriends ($type, $project) {
+
+            $anyfail = false;
+            $tpl = null;
+
+            // para cada persona (que no es usuario) que espera una recompensa
+            $sql = "
+                SELECT
+                    invest.id as id,
+                    user.name as user,
+                    invest_address.namedest as name,
+                    invest_address.emaildest as email
+                FROM  invest
+                INNER JOIN invest_address
+                    ON invest_address.invest = invest.id
+                    AND invest_address.regalo = 1
+                INNER JOIN user
+                    ON user.id = invest.user
+                WHERE   invest.project = ?
+                AND invest.status IN ('0', '1', '3', '4')
+                ";
+            if ($query = Model\Invest::query($sql, array($project->id))) {
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
+
+                    // la recompensa
+                    $txt_rewards = Model\Project\Reward::txtRewards($investor->id);
+
+                    $search  = array('%USERNAME%', '%DESTNAME%', '%PROJECTNAME%', '%URL%', '%REWNAME%');
+                    $replace = array($investor->name, $investor->name, $project->name, SITE_URL, $txt_rewards);
+
+                    // Obtenemos la plantilla para asunto y contenido
+                    $template = Template::get(54);
+                    // Sustituimos los datos
+                    $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                    $content = \str_replace($search, $replace, $template->text);
+                    // iniciamos mail
+                    $mailHandler = new Mail();
+                    $mailHandler->to = $investor->email;
+                    $mailHandler->toName = $investor->name;
+                    $mailHandler->subject = $subject;
+                    $mailHandler->content = $content;
+                    $mailHandler->html = true;
+                    $mailHandler->template = $template->id;
+                    if ($mailHandler->send()) {
+
+                    } else {
+                        $anyfail = true;
+                        @mail('goteo_fail@doukeshi.org',
+                            'Fallo al enviar email automaticamente al amigo ' . SITE_URL,
+                            'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, 1). '</pre>');
+                    }
+                    unset($mailHandler);
+                }
+                // fin bucle inversores
+            } else {
+                echo '<p>'.str_replace('?', $project->id, $sql).'</p>';
+                $anyfail = true;
+            }
+            
+            if ($anyfail)
+                return false;
+            else
+                return true;
+
+        }
+        
     }
 }

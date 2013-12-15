@@ -362,6 +362,33 @@ namespace Goteo\Model\Project {
             }
         }
 
+        /*
+         * Método simple para sacar la lista de recompensas de un aporte
+         */        
+        public static function txtRewards($invest) {
+            try {
+                $array = array();
+
+                $sql = "SELECT
+                            reward.reward as name
+                        FROM invest_reward
+                        INNER JOIN reward
+                            ON reward.id = invest_reward.reward
+                        WHERE invest_reward.invest = ?
+                        ORDER BY reward.amount ASC
+                        ";
+
+                $query = self::query($sql, array($invest));
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                    $array[] = $item->name;
+                }
+                return implode(', ', $array);
+
+            } catch (\PDOException $e) {
+                return '';
+            }
+        }
+
         
     }
 

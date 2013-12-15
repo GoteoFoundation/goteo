@@ -216,6 +216,8 @@ namespace Goteo\Controller {
                             Cron\Send::toOwner('fail', $project);
                             //Email de proyecto fallido a los inversores
                             Cron\Send::toInvestors('fail', $project);
+                            // Email de proyecto fallido a los destinatarios de recompensa
+                            Cron\Send::toFriends('fail', $project);
                         }
                         
                         echo '<br />';
