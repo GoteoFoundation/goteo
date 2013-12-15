@@ -318,9 +318,16 @@ namespace Goteo\Model\Project {
                     $sqlFilterUser = " AND (user.name LIKE :name OR user.email LIKE :name)";
                     $values[':name'] = "%{$filters['name']}%";
                 }
+                $and = " WHERE";
                 if (!empty($filters['status'])) {
-                    $sqlFilter = " WHERE invest_reward.fulfilled = :status";
+                    $sqlFilter .= $and." invest_reward.fulfilled = :status";
                     $values[':status'] = $filters['status'] == 'ok' ? 1 : 0;
+                    $and = " AND";
+                }
+                if (!empty($filters['friend'])) {
+                    $not = ($filters['friend'] == 'only') ? '' : 'NOT';
+                    $sqlFilter .= $and." invest_reward.invest {$not} IN (SELECT invest FROM invest_address WHERE regalo = 1)";
+                    $and = " AND";
                 }
 
                 $sql = "SELECT

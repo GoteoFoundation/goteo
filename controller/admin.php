@@ -318,7 +318,7 @@ namespace Goteo\Controller {
                     'list' => array('label' => 'Listando', 'item' => false),
                     'edit' => array('label' => 'Gestionando recompensa', 'item' => true)
                 ),
-                'filters' => array('project' => '', 'name' => '', 'status' => '')
+                'filters' => array('project' => '', 'name' => '', 'status' => '', 'friend' => '')
             ),
             'sended' => array(
                 'label' => 'Historial envíos',

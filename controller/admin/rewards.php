@@ -66,7 +66,10 @@ namespace Goteo\Controller\Admin {
                         'address'  => $_POST['address'],
                         'zipcode'  => $_POST['zipcode'],
                         'location' => $_POST['location'],
-                        'country'  => $_POST['country']
+                        'country'  => $_POST['country'],
+                        'regalo'   => $_POST['regalo'],
+                        'namedest' => $_POST['namedest'],
+                        'emaildest'=> $_POST['emaildest']
                     );
 
                     

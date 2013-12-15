@@ -34,6 +34,15 @@ $emails = Invest::emails(true);
             </select>
         </div>
 
+        <div style="float:left;margin:5px;">
+            <label for="status-filter">Regalos:</label><br />
+            <select id="status-filter" name="friend" >
+                <option value="">--</option>
+                <option value="only"<?php if ($filters['friend'] == 'only') echo ' selected="selected"';?>>Solo regalos</option>
+                <option value="none"<?php if ($filters['friend'] == 'none') echo ' selected="selected"';?>>Solo NO regalos</option>
+            </select>
+        </div>
+
         <br clear="both" />
 
         <div style="float:left;margin:5px;">

@@ -108,6 +108,28 @@ echo new NormalForm(array(
             'value' => $invest->address->country
         ),
 
+
+        'regalo' => array(
+            'type'  => 'checkbox',
+            'title' => Text::get('invest-address-friend-field'),
+            'value' => '1',
+            'checked' => $invest->address->regalo
+        ),
+
+
+        'namedest' => array(
+            'type'  => 'textbox',
+            'title' => Text::get('invest-address-namedest-field'),
+            'value' => $invest->address->namedest
+        ),
+
+
+        'emaildest' => array(
+            'type'  => 'textbox',
+            'title' => Text::get('invest-address-maildest-field'),
+            'value' => $invest->address->emaildest
+        ),
+
     )
 
 ));
