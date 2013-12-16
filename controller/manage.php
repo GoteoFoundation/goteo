@@ -25,7 +25,7 @@ namespace Goteo\Controller {
                     'accounts' => array('label' => 'Cuentas proyecto', 'item' => true),
                     'manage' => array('label' => 'Gestionando proyecto', 'item' => true)
                 ),
-                'filters' => array('status' => '-1', 'projectStatus' => 'all', 'contractStatus' => 'all', 'proj_name' => '', 'owner' => '', 'name' => '', 'prepay' => '0', 'order' => 'date')
+                'filters' => array('status' => '-1', 'projectStatus' => 'all', 'contractStatus' => 'all', 'proj_name' => '', 'owner' => '', 'name' => '', 'node' => '', 'prepay' => '0', 'order' => 'date')
             ),
             'accounts' => array(
                 'label' => 'Aportes delicados (solo con incidencia, manuales, fantasmas y casos conflictivos)',

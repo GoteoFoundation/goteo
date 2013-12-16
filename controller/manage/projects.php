@@ -127,6 +127,7 @@ namespace Goteo\Controller\Manage {
             } else {
                 $projects = array();
             }
+            $nodes = Model\Node::getList();
             $status = Model\Project::status();
             $projectStatus = Model\Project::procStatus(); // estado del proceso de campaña (1a, 2a, compeltada)
             $contractStatus = Model\Contract::procStatus(); // estado del proceso de contrato
@@ -146,6 +147,7 @@ namespace Goteo\Controller\Manage {
                     'projects' => $projects,
                     'filters' => $filters,
                     'status' => $status,
+                    'nodes' => $nodes,
                     'projectStatus' => $projectStatus,
                     'contractStatus' => $contractStatus,
                     'orders' => $orders
@@ -183,8 +185,12 @@ namespace Goteo\Controller\Manage {
                 $values[':user'] = "%{$filters['name']}%";
             }
             if (!empty($filters['proj_name'])) {
-                $sqlFilter .= " AND name LIKE :name";
+                $sqlFilter .= " AND project.name LIKE :name";
                 $values[':name'] = "%{$filters['proj_name']}%";
+            }
+            if (!empty($filters['node'])) {
+                $sqlFilter .= " AND project.node LIKE :node";
+                $values[':node'] = $filters['node'];
             }
 
             // filtro estado de campaña
