@@ -164,7 +164,7 @@ namespace Goteo\Controller {
                     $formData['user'] = $_SESSION['user']->id;
                 } elseif (!empty($formData['email']) && Check::mail($formData['email'])) {
 
-                    $nUser = \Goteo\Controller\User::instantReg($formData['email']);
+                    $nUser = \Goteo\Controller\User::instantReg($formData['email'], $formData['name']);
                     if (!$nUser) {
                         Message::Error(Text::get('regular-login'));
                         throw new Redirection("/user/login?return=".urlencode('/bazaar/'.$item->id));

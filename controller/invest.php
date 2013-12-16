@@ -305,6 +305,11 @@ namespace Goteo\Controller {
             array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
             $txt_rewards = implode(', ', $rewards);
 
+            // recaudado y porcentaje
+            $amount = $projectData->invested;
+            $percent = floor(($projectData->invested / $projectData->mincost) * 100);
+
+
             // email de agradecimiento al cofinanciador
             // primero monto el texto de recompensas
             //@TODO el concepto principal sería 'renuncia' (porque todos los aportes son donativos)
@@ -337,7 +342,7 @@ namespace Goteo\Controller {
 
             // Agradecimiento al cofinanciador
             // Sustituimos los datos
-            $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
+            $subject = str_replace('%USERNAME%', $_SESSION['user']->name, $template->title);
 
             // En el contenido:
             $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%');
@@ -369,8 +374,8 @@ namespace Goteo\Controller {
                 $subject = str_replace('%REWNAME%', $txt_rewards, $template->title);
 
                 // En el contenido:
-                $search  = array('%DESTNAME%', '%USERNAME%', '%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWNAME%', '%ADDRESS%', '%DROPED%');
-                $replace = array($invest->address->namedest, $_SESSION['user']->name, $invest->address->message, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_destaddr, $txt_droped);
+                $search  = array('%DESTNAME%', '%USERNAME%', '%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%PROJAMOUNT%', '%PROJPER%', '%REWNAME%', '%ADDRESS%', '%DROPED%');
+                $replace = array($invest->address->namedest, $_SESSION['user']->name, $invest->address->message, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $amount, $percent, $txt_rewards, $txt_destaddr, $txt_droped);
                 $content = \str_replace($search, $replace, $template->text);
 
                 $mailHandler = new Mail();

@@ -78,6 +78,7 @@ namespace Goteo\Model {
                     AND bazar_lang.lang = :lang
                 INNER JOIN project
                     ON project.id = bazar.project
+                    AND project.status = 3
                 WHERE bazar.active = 1
                 ORDER BY `order` ASC, title ASC
                 ", array(':lang'=>\LANG));
