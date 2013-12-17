@@ -342,7 +342,7 @@ namespace Goteo\Controller {
 
             // Agradecimiento al cofinanciador
             // Sustituimos los datos
-            $subject = str_replace('%USERNAME%', $_SESSION['user']->name, $template->title);
+            $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
             // En el contenido:
             $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%');
@@ -371,7 +371,7 @@ namespace Goteo\Controller {
                 // Notificación al destinatario de regalo
                 $template = Template::get(53);
                 // Sustituimos los datos
-                $subject = str_replace('%REWNAME%', $txt_rewards, $template->title);
+                $subject = str_replace('%USERNAME%', $_SESSION['user']->name, $template->title);
 
                 // En el contenido:
                 $search  = array('%DESTNAME%', '%USERNAME%', '%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%PROJAMOUNT%', '%PROJPER%', '%REWNAME%', '%ADDRESS%', '%DROPED%');
