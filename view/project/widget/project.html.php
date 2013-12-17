@@ -62,7 +62,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
         <?php endif; ?>
 
         <?php if ($project->image instanceof Image): ?>
-        <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->name ?>" src="<?php echo $project->image->getLink(226, 130, true) ?>" /></a>
+        <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->id ?>" src="<?php echo $project->image->getLink(226, 130, true) ?>" /></a>
         <?php endif ?>
         <?php if (!empty($project->categories)): ?>
         <div class="categories">
