@@ -53,6 +53,7 @@ namespace Goteo\Controller {
                     $item->project->allowpp = Model\Project\Account::getAllowpp($item->project->id);
                 }
 
+                $ogurl = $URL.'/bazaar'.$id;
                 // si el $show es de agradecimiento mostramos thanks.html.php
                 if ($show == 'thanks') {
                     $vpath .= "thanks.html.php";
@@ -71,6 +72,7 @@ namespace Goteo\Controller {
                     $ogimages[] = $URL.$item->imgsrc;
                 }
                 $vdata["items"] = $items;
+                $ogurl = $URL.'/bazaar';
                 $vpath .= "home.html.php";
             }
 
@@ -81,7 +83,7 @@ namespace Goteo\Controller {
             $item_title = Text::get('bazar-spread-text', $item_title);
             $item_description = !empty($item->description) ? $item->description : $page->description;
             $bazar_url = $page->url.$lsuf;
-            $item_url = !empty($item->id) ? $page->url.'/'.$item->id.$lsuf : $page->url.$lsuf;
+            $item_url = !empty($item->id) ? $page->url.'/'.$item->id.$lsuf : $bazar_url;
             $item_image = !empty($item->imgsrc) ? $URL.$item->imgsrc : $URL.'/view/bazar/img/carro.png';
 
             $vdata["share"] = (object) array(
@@ -99,7 +101,7 @@ namespace Goteo\Controller {
             $vdata['ogmeta'] = array(
                 'title' => $item_title,
                 'description' => $item_description,
-                'url' => $item_url,
+                'url' => $ogurl,
                 'image' => $ogimages
             );
 
