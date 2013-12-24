@@ -271,6 +271,8 @@ namespace Goteo\Controller\Admin {
                         $mailHandler->content = '<br />'.$tmpcontent.'<br />';
                         $mailHandler->html = true;
                         $mailHandler->template = $templateId;
+                        $mailHandler->node = $node;
+                        $mailHandler->url = $URL;
                         if ($mailHandler->send($errors)) {
                             $_SESSION['mailing']['receivers'][$usr]->ok = true;
                         } else {

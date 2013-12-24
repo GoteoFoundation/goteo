@@ -31,7 +31,7 @@ body {
 
 .header { 
 	width: 100%;
-	background-color:#CDE4E5;
+	background-color:#2895CB;
 	padding-top:7px;
 	padding-bottom:7px;
 }

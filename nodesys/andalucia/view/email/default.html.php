@@ -6,7 +6,7 @@ $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>goteo.org Mailer</title>
+<title>andalucia.goteo.org Mailer</title>
 <style type="text/css">
 <!--
 body {
@@ -32,7 +32,7 @@ body {
 
 .header { 
 	width: 100%;
-	background-color:#CDE4E5;
+	background-color:#27AD7A;
 	padding-top:7px;
 	padding-bottom:7px;
 }

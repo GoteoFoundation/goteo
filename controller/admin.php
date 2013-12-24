@@ -167,6 +167,7 @@ namespace Goteo\Controller {
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
                     'edit' => array('label' => 'Editando Idea', 'item' => true),
+                    'add' => array('label' => 'Creando Idea', 'item' => false),
                     'translate' => array('label' => 'Traduciendo Idea', 'item' => true)
                 )
             ),
