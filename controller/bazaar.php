@@ -38,6 +38,9 @@ namespace Goteo\Controller {
                 if (!$item instanceof Model\Bazar)
                     throw new Redirection("/bazaar"); 
 
+                if ($item->project->status != 3)
+                    throw new Redirection('/bazaar');
+
                 $item->imgsrc = (!empty($item->img)) ? '/data/images/'.$item->img->name : '/data/images/bazaritem.svg';
                 $ogimages[] = $URL.$item->imgsrc;
                 $vdata["item"] = $item;
