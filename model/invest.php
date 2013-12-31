@@ -300,7 +300,6 @@ namespace Goteo\Model {
                 $sql .= "LIMIT $limited";
             }
             
-            
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item;
@@ -1559,8 +1558,8 @@ namespace Goteo\Model {
                             $Data['drop']['second']['fail'] = 0;
                             foreach ($inv_drop as $invId => $invest) {
                                 $Data['drop']['second']['users'][$invest->user] = $invest->user;
+                                $Data['drop']['total']['users'][$invest->user] = $invest->user;
                                 $Data['drop']['second']['invests']++;
-                                $Data['drop']['second']['amount'] += $invest->amount;
                                 $Data['drop']['total']['invests']++;
                                 $Data['drop']['second']['amount'] += $invest->amount;
                             }
