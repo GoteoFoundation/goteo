@@ -457,8 +457,8 @@ namespace Goteo\Model {
 
             try {
                 // si renuncia
-                $sql = "UPDATE invest SET resign = :resign WHERE id = :id";
-                self::query($sql, array(':id'=>$this->id, ':resign'=>$this->resign));
+                $sql = "UPDATE invest SET anonymous = :anonymous WHERE id = :id";
+                self::query($sql, array(':id'=>$this->id, ':anonymous'=>$this->anonymous));
 
                 // borramos als recompensas
                 $sql = "DELETE FROM invest_reward WHERE invest = :invest";
