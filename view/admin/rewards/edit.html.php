@@ -26,8 +26,8 @@ foreach ($invest->rewards as $key => $data) {
 
         <li>
             <label>
-                <input class="individual_reward" type="checkbox" id="resign" name="resign" value="1" <?php if ($invest->resign) echo ' checked="checked"'; ?>/>
-                Donativo
+                <input class="individual_reward" type="checkbox" id="anonymous" name="anonymous" value="1" <?php if ($invest->anonymous) echo ' checked="checked"'; ?>/>
+                An&oacute;nimo
             </label>
         </li>
         <li><hr /></li>
