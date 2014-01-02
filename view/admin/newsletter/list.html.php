@@ -4,6 +4,7 @@ use Goteo\Library\Text,
     Goteo\Library\Template;
 
 $mailing = $this['mailing'];
+$list = $this['list'];
 
 $link = SITE_URL.'/mail/'.base64_encode(md5(uniqid()).'¬any¬'.$mailing->mail).'/?email=any';
 
@@ -80,10 +81,10 @@ jQuery(document).ready(function ($) {
             <tr>
                 <th><!-- Si no ves --></th>
                 <th>Fecha</th>
-                <th><a href="/admin/newsletter/detail/receivers" title="Ver todos los destinatarios">Destinatarios</a></th>
-                <th><a href="/admin/newsletter/detail/sended" title="Ver todos los enviados">Enviados</a></th>
-                <th><a href="/admin/newsletter/detail/failed" title="Ver todos los fallidos">Fallidos</a></th>
-                <th><a href="/admin/newsletter/detail/pending" title="Ver todos los pendientes">Pendientes</a></th>
+                <th><a href="/admin/newsletter/detail/<?php echo $mailing->id; ?>?show=receivers" title="Ver destinatarios">Destinatarios</a></th>
+                <th><a href="/admin/newsletter/detail/<?php echo $mailing->id; ?>?show=sended" title="Ver enviados">Enviados</a></th>
+                <th><a href="/admin/newsletter/detail/<?php echo $mailing->id; ?>?show=failed" title="Ver fallidos">Fallidos</a></th>
+                <th><a href="/admin/newsletter/detail/<?php echo $mailing->id; ?>?show=pending" title="Ver pendientes">Pendientes</a></th>
             </tr>
         </thead>
         <tbody>
@@ -98,6 +99,33 @@ jQuery(document).ready(function ($) {
         </tbody>
     </table>
 </div>
-<?php else : ?>
-<p>No hay ning&uacute;n env&iacute;o masivo registrado, ni activo ni inactivo</p>
+<?php endif; ?>
+
+<?php if (!empty($list)) : ?>
+<div class="widget board">
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th><!-- Si no ves --></th>
+                <th>Fecha</th>
+                <th>Asunto</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($list as $item) : ?>
+            <tr>
+                <td><?php echo $item->id; ?></td>
+                <td><a href="<?php echo $item->link; ?>" target="_blank">[Si no ves]</a></td>
+                <td><?php echo $item->date; ?></td>
+                <td><?php echo $item->subject; ?></td>
+                <td><?php echo $item->active ? 'Activo' : 'Inactivo'; ?></td>
+                <td><?php echo $item->bloqued ? 'Bloqueado' : ''; ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 <?php endif; ?>

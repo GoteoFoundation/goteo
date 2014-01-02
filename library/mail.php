@@ -9,6 +9,7 @@ namespace Goteo\Library {
     class Mail {
 
         public
+            $url = SITE_URL,
             $from = GOTEO_MAIL_FROM,
             $fromName = GOTEO_MAIL_NAME,
             $to = GOTEO_MAIL_FROM,
