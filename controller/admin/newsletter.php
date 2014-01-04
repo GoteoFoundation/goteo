@@ -20,7 +20,7 @@ namespace Goteo\Controller\Admin {
                 case 'init':
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         // asunto
-                        $suject = \strip_tags($_POST['subject']);
+                        $subject = \strip_tags($_POST['subject']);
 
                         // plantilla
                         $template = $_POST['template'];
@@ -50,12 +50,12 @@ namespace Goteo\Controller\Admin {
                             ':template' => $template,
                             ':node' => $_SESSION['admin_node']
                         );
-                        $query = Donor::query($sql, $values);
-                        $mailId = Donor::insertId();
+                        $query = \Goteo\Core\Model::query($sql, $values);
+                        $mailId = \Goteo\Core\Model::insertId();
 
 
                         // inicializamos el envío
-                        if (Sender::initiateSending($mailId, $suject, $receivers)) {
+                        if (Sender::initiateSending($mailId, $subject, $receivers)) {
 
                             $mailing = Sender::getSending();
 

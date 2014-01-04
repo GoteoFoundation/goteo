@@ -126,10 +126,18 @@ if (!$fail) {
 
             $mailHandler = new Mail();
 
+            //@TODO::: replyTo, si es especial
+            if (!empty($mailing->reply)) {
+                $mailHandler->reply = $mailing->reply;
+                if (!empty($mailing->reply_name)) {
+                    $mailHandler->replyName = $mailing->reply_name;
+                }
+            }
+
             $mailHandler->to = \trim($user->email);
             $mailHandler->toName = $user->name;
             $mailHandler->subject = $mailing->subject;
-            $mailHandler->content = '<br />'.$content.'<br />';
+            $mailHandler->content = str_replace('%USERNAME%', $user->name, $content);
             $mailHandler->html = true;
             $mailHandler->template = $template;
             $mailHandler->massive = true;
