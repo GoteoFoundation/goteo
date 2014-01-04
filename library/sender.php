@@ -94,7 +94,7 @@ namespace Goteo\Library {
                         mailer_content.reply as reply,
                         mailer_content.reply_name as reply_name
                     FROM mailer_content
-                    ORDER BY active DESC, id ASC
+                    ORDER BY active DESC, id DESC
                     LIMIT 1
                     ";
 

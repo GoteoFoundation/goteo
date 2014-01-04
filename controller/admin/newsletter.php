@@ -90,7 +90,7 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'newsletter',
                             'file' => 'detail',
-                            'detail' => $id,
+                            'detail' => $filters['show'],
                             'list' => $list
                         )
                     );

@@ -596,6 +596,7 @@ namespace Goteo\Model {
                         name,
                         avatar,
                         email,
+                        IFNULL(lang, 'es') as lang,
                         node
                     FROM user
                     WHERE id = :id
