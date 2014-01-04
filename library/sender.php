@@ -40,7 +40,7 @@ namespace Goteo\Library {
 
         }
 
-		static public function initiateSending ($mailId, $subject, $receivers, $tpl) {
+		static public function initiateSending ($mailId, $subject, $receivers, $autoactive = 0, $reply = null, $reply_name = null) {
 
             /*
              * Grabar el contenido para el sinoves en la tabla mail, obtener el id y el codigo para sinoves
@@ -51,9 +51,9 @@ namespace Goteo\Library {
             try {
                 Model::query("START TRANSACTION");
 
-                $sql = "INSERT INTO `mailer_content` (`id`, `active`, `mail`, `subject`, `blocked`)
-                    VALUES ('' , '0', :mail, :subject, 0)";
-                Model::query($sql, array(':subject'=>$subject, ':mail'=>$mailId));
+                $sql = "INSERT INTO `mailer_content` (`id`, `active`, `mail`, `subject`, `blocked`, `reply`, `reply_name`)
+                    VALUES ('' , '{$autoactive}', :mail, :subject, 0, :reply, :reply_name)";
+                Model::query($sql, array(':subject'=>$subject, ':mail'=>$mailId, ':reply'=>$reply, ':reply_name'=>$reply_name));
                 $mailing = Model::insertId();
 
                 // destinatarios
@@ -90,7 +90,9 @@ namespace Goteo\Library {
                         mailer_content.mail as mail,
                         mailer_content.subject as subject,
                         DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date,
-                        mailer_content.blocked as blocked
+                        mailer_content.blocked as blocked,
+                        mailer_content.reply as reply,
+                        mailer_content.reply_name as reply_name
                     FROM mailer_content
                     ORDER BY active DESC, id DESC
                     LIMIT 1
