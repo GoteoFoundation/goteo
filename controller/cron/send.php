@@ -249,7 +249,6 @@ namespace Goteo\Controller\Cron {
                     invest.user as id,
                     user.name as name,
                     user.email as email,
-                    invest.method as method,
                     IFNULL(user.lang, 'es') as lang
                 FROM  invest
                 INNER JOIN user

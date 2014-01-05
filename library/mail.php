@@ -227,7 +227,6 @@ namespace Goteo\Library {
             } else {
                 $viewData['sinoves'] = $this->url . '/contact';
             }
-            $_SESSION['MAILING_TOKEN'] = $viewData['sinoves'];
 
             $viewData['baja'] = $this->url . '/user/leave/?email=' . $this->to;
 

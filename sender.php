@@ -137,7 +137,10 @@ if (!$fail) {
             $mailHandler->to = \trim($user->email);
             $mailHandler->toName = $user->name;
             $mailHandler->subject = $mailing->subject;
-            $mailHandler->content = str_replace('%USERNAME%', $user->name, $content);
+            $mailHandler->content = str_replace(
+                array('%USERID%', '%USEREMAIL%', '%USERNAME%'), 
+                array($user->user, $user->email, $user->name), 
+                $content);
             $mailHandler->html = true;
             $mailHandler->template = $template;
             $mailHandler->massive = true;
