@@ -39,7 +39,7 @@ if (!isset($_POST['email']) && isset($_GET['email'])) {
                 <p><?php echo $message; ?></p>
                 <?php endif ?>
 
-                <form action="/user/leave" method="post">
+                <form action="<?php echo SEC_URL; ?>/user/leave" method="post">
                     <div class="email">
                         <label><?php echo Text::get('login-recover-email-field'); ?>
                         <input type="text" name="email" value="<?php echo $email?>" /></label>

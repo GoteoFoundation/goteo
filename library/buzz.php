@@ -135,7 +135,7 @@ namespace Goteo\Library {
                                     $the_avatar = $image->getLink(48, 48, true);
                                 }
                             }
-                            $the_profile = 'http://goteo.org/user/profile/'.$the_author;
+                            $the_profile = SITE_URL.'/user/profile/'.$the_author;
                             $gUser = true;
                         } else {
                             $gUser = false;

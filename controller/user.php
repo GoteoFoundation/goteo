@@ -36,6 +36,11 @@ namespace Goteo\Controller {
          */
         public function login($username = '') {
 
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['HTTPS'] !== 'on') {
+                $ret = (!empty($_REQUEST['return'])) ? '?return='.$_REQUEST['return'] : '';
+                throw new Redirection(SEC_URL.'/user/login'.$RET);
+            }
+
             // si venimos de la página de aportar
             if (isset($_POST['amount'])) {
                 $_SESSION['invest-amount'] = $_POST['amount'];
@@ -65,8 +70,8 @@ namespace Goteo\Controller {
                     } else {
                         unset($_SESSION['admin_node']);
                     }
-                    if (!empty($_POST['return'])) {
-                        throw new Redirection($_POST['return']);
+                    if (!empty($_REQUEST['return'])) {
+                        throw new Redirection($_REQUEST['return']);
                     } elseif (!empty($_SESSION['jumpto'])) {
                         $jumpto = $_SESSION['jumpto'];
                         unset($_SESSION['jumpto']);
@@ -150,13 +155,9 @@ namespace Goteo\Controller {
                         Message::Error($text);
                     }
                 }
+            } else {
+                throw new Redirection(SEC_URL.'/user/login');
             }
-            return new View(
-                            'view/user/login.html.php',
-                            array(
-                                'errors' => $errors
-                            )
-            );
         }
 
         /**
@@ -502,7 +503,7 @@ namespace Goteo\Controller {
                 if ($show == 'message') {
                     $_SESSION['jumpto'] = '/user/profile/' . $id . '/message';
                     Message::Info(Text::get('user-login-required-to_message'));
-                    throw new Redirection("/user/login");
+                    throw new Redirection(SEC_URL."/user/login");
                 }
 
 
@@ -510,7 +511,7 @@ namespace Goteo\Controller {
                 if (!isset($user->roles['vip'])) {
                     $_SESSION['jumpto'] = '/user/profile/' . $id . '/' . $show;
                     Message::Info(Text::get('user-login-required-to_see'));
-                    throw new Redirection("/user/login");
+                    throw new Redirection(SEC_URL."/user/login");
                 }
 
                 /*
@@ -826,7 +827,7 @@ namespace Goteo\Controller {
                             $user = Model\User::get($id);
                             $_SESSION['user'] = $user;
                             $_SESSION['recovering'] = $user->id;
-                            throw new Redirection('/dashboard/profile/access/recover#password');
+                            throw new Redirection(SEC_URL.'/dashboard/profile/access/recover#password');
                         }
                     }
                 }
@@ -877,10 +878,10 @@ namespace Goteo\Controller {
                             // el token coincide con el email y he obtenido una id
                             if (Model\User::cancel($id)) {
                                 Message::Info(Text::get('leave-process-completed'));
-                                throw new Redirection('/user/login');
+                                throw new Redirection(SEC_URL.'/user/login');
                             } else {
                                 Message::Error(Text::get('leave-process-fail'));
-                                throw new Redirection('/user/login');
+                                throw new Redirection(SEC_URL.'/user/login');
                             }
                         }
                     }

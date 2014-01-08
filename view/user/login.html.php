@@ -80,7 +80,7 @@ jQuery(document).ready(function($) {
             <div>
                 <h2><?php echo Text::get('login-access-header'); ?></h2>
 
-                <form action="/user/login" method="post" id="login_frm">
+                <form action="<?php echo SEC_URL ?>/user/login" method="post" id="login_frm">
                     <input type="hidden" name="return" value="<?php echo $_GET['return']; ?>" />
                     <div class="username">
                         <label><?php echo Text::get('login-access-username-field'); ?>
@@ -98,7 +98,7 @@ jQuery(document).ready(function($) {
 
                 <p><a href="/user/recover"><?php echo Text::get('login-recover-link'); ?></a></p>
                 <br />
-                <p><a class="baja" href="/user/leave"><?php echo Text::get('login-leave-button'); ?></a></p>
+                <p><a class="baja" href="<?php echo SEC_URL; ?>/user/leave"><?php echo Text::get('login-leave-button'); ?></a></p>
 
             </div>
         </div>
@@ -147,7 +147,7 @@ jQuery(document).ready(function($) {
         <div class="register">
             <div>
                 <h2><?php echo Text::get('login-register-header'); ?></h2>
-                <form action="/user/register" method="post">
+                <form action="<?php echo SEC_URL; ?>/user/register" method="post">
 
                     <div class="userid">
                         <label for="RegisterUserid"><?php echo Text::get('login-register-userid-field'); ?></label>

@@ -134,8 +134,8 @@ namespace Goteo\Library {
                 // Create request object
                 $payRequest = new \PayRequest();
                 $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR del usuario '{$userData->name}' al proyecto '{$project->name}'";
-                $payRequest->cancelUrl = SITE_URL.'/invest/charge/fail/' . $invest->id;
-                $payRequest->returnUrl = SITE_URL.'/invest/charge/success/' . $invest->id;
+                $payRequest->cancelUrl = SEC_URL.'/invest/charge/fail/' . $invest->id;
+                $payRequest->returnUrl = SEC_URL.'/invest/charge/success/' . $invest->id;
                 $payRequest->clientDetails = new \ClientDetailsType();
 		        $payRequest->clientDetails->customerId = $invest->user;
                 $payRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;

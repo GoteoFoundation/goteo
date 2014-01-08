@@ -220,7 +220,7 @@ namespace Goteo\Library {
 
             $info = '';
             if ($this->project->status == 3) {
-                $info .= '<a class="expand" href="'.$URL.'/project/'.$this->project->id.'/invest" title="'.Text::get('wof-here').'"'.$target.'></a>';
+                $info .= '<a class="expand" href="'.SEC_URL.'/project/'.$this->project->id.'/invest" title="'.Text::get('wof-here').'"'.$target.'></a>';
             }
 
 			//num finançadors
@@ -240,7 +240,7 @@ namespace Goteo\Library {
 			$info .= '<div class="d i">';
             if ($this->project->status == 3) {
                 $info .= '<p>'.Text::get('wof-join-group').'</p>';
-                $info .= '<a href="'.$URL.'/project/'.$this->project->id.'/invest"'.$target.'>'.Text::get('wof-support').'</a>';
+                $info .= '<a href="'.SEC_URL.'/project/'.$this->project->id.'/invest"'.$target.'>'.Text::get('wof-support').'</a>';
             } else {
                 $info .= '<p>'.Text::get('wof-join-comunity').'</p>';
                 $info .= '<a href="'.$URL.'/project/'.$this->project->id.'/updates"'.$target.'>'.Text::get('wof-follow').'</a>';

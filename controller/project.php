@@ -386,7 +386,7 @@ namespace Goteo\Controller {
             if (empty($_SESSION['user'])) {
                 $_SESSION['jumpto'] = '/project/create';
                 Message::Info(Text::get('user-login-required-to_create'));
-                throw new Redirection("/user/login");
+                throw new Redirection(SEC_URL."/user/login");
             }
 
             if ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
@@ -581,7 +581,7 @@ namespace Goteo\Controller {
                             $step = 'start';
                         } elseif ($step == 'start') {
                             // para cuando salte
-                            $_SESSION['jumpto'] = '/project/' .  $id . '/invest/#continue';
+                            $_SESSION['jumpto'] = SEC_URL.'/project/' .  $id . '/invest/#continue';
                         } else {
                             $step = 'start';
                         }

@@ -57,7 +57,7 @@ $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
 <div class="widget project-invest project-invest-amount">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
 
-    <form method="post" action="<?php echo $action; ?>">
+    <form method="post" action="<?php echo SERC_URL.$action; ?>">
 
     <label><input type="text" id="amount" name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
 </div>

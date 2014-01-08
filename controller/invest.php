@@ -48,12 +48,12 @@ namespace Goteo\Controller {
 
                 if (!isset($methods[$method])) {
                     Message::Error(Text::get('invest-method-error'));
-                    throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 if (empty($_POST['amount'])) {
                     Message::Error(Text::get('invest-amount-error'));
-                    throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 // dirección de envio para las recompensas
@@ -69,7 +69,7 @@ namespace Goteo\Controller {
 
                 if ($projectData->owner == $_SESSION['user']->id) {
                     Message::Error(Text::get('invest-owner-error'));
-                    throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 // añadir recompensas que ha elegido
@@ -121,8 +121,8 @@ namespace Goteo\Controller {
                 }
 
                 if ($invest->save($errors)) {
-                    $invest->urlOK  = "/invest/confirmed/{$project}/{$invest->id}";
-                    $invest->urlNOK = "/invest/fail/{$project}/{$invest->id}";
+                    $invest->urlOK  = SEC_URL."/invest/confirmed/{$project}/{$invest->id}";
+                    $invest->urlNOK = SEC_URL."/invest/fail/{$project}/{$invest->id}";
                     Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
 
                     switch($method) {

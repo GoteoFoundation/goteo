@@ -312,7 +312,7 @@ namespace Goteo\Controller {
             if (empty($_SESSION['user'])) {
                 $_SESSION['jumpto'] = '/call/create';
                 Message::Info(Text::get('user-login-required-to_create'));
-                throw new Redirection("/user/login");
+                throw new Redirection(SEC_URL."/user/login");
             } elseif ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
                 $error = true;
             } elseif (empty($_POST['name'])) {
