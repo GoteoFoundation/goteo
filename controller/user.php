@@ -38,7 +38,7 @@ namespace Goteo\Controller {
 
             if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['HTTPS'] !== 'on') {
                 $ret = (!empty($_REQUEST['return'])) ? '?return='.$_REQUEST['return'] : '';
-                throw new Redirection(SEC_URL.'/user/login'.$RET);
+                throw new Redirection(SEC_URL.'/user/login'.$ret);
             }
 
             // si venimos de la página de aportar

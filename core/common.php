@@ -105,4 +105,15 @@ SESSION
     function is_sha1($str) {
         return (bool) preg_match('/^[0-9a-f]{40}$/i', $str);
     }    
+
+    /*
+     * Asegura una url si está en entorno seguro
+     */
+    function sec($url) {
+        return (defined('SECENV')) ? str_replace('http://', 'https://', $url) : $url;
+
+    }    
+
+
+
 }

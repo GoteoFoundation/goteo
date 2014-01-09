@@ -73,10 +73,23 @@ if (file_exists($conf_file)) {
     require_once $conf_file;
 }
 // url segura
-if (defined('NODE_URL'))
+if (defined('NODE_URL')) {
     define('SEC_URL', str_replace('http://', 'https://', NODE_URL));
-else
+}
+else {
     define('SEC_URL', str_replace('http://', 'https://', SITE_URL));
+}
+if ($_SERVER['HTTPS'] === 'on') {
+    define('SRC_URL', SEC_URL);
+} else {
+    if (defined('NODE_URL')) {
+        define('SRC_URL', NODE_URL);
+    }
+    else {
+        define('SRC_URL', SITE_URL);
+    }
+}
+
 /* Fin inicializacion nodo */
 
 /**

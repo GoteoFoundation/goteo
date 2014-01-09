@@ -39,8 +39,7 @@ namespace Goteo\Controller {
 //                @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
 
                 // verificamos referer
-                $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
-                $referer = $URL.'/contact';
+                $referer = SRC_URL.'/contact';
                 
                 // verificamos token
                 if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token'] || $_SERVER['HTTP_REFERER']!=$referer) {

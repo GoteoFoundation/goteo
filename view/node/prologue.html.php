@@ -27,43 +27,43 @@
 <?php else : ?>
         <meta property="og:title" content="<?php echo NODE_NAME ?>" />
         <meta property="og:description" content="<?php echo utf8_decode(NODE_META_DESCRIPTION) ?>" />
-        <meta property="og:image" content="<?php echo NODE_URL ?>/nodesys/<?php echo NODE_ID; ?>/view/css/logo.png" />
-        <meta property="og:url" content="<?php echo NODE_URL ?>" />
+        <meta property="og:image" content="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID; ?>/view/css/logo.png" />
+        <meta property="og:url" content="<?php echo SRC_URL ?>" />
 <?php endif; ?>
-        <link rel="stylesheet" type="text/css" href="<?php echo NODE_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/goteo.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo NODE_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/config.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo NODE_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/node.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/goteo.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/config.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/node.css" />
 
         <script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
 		{
-			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo NODE_URL ?>/view/css/mac.css" />');
+			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
 		}
         </script>
         
-        <script type="text/javascript" src="<?php echo NODE_URL ?>/view/js/jquery-1.6.4.min.js"></script>
-        <script type="text/javascript" src="<?php echo NODE_URL ?>/view/js/jquery.tipsy.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
 
         <!-- custom scrollbars -->
-        <link type="text/css" href="<?php echo NODE_URL ?>/view/css/jquery.jscrollpane.min.css" rel="stylesheet" media="all" />
-        <script type="text/javascript" src="<?php echo NODE_URL ?>/view/js/jquery.mousewheel.min.js"></script>
-        <script type="text/javascript" src="<?php echo NODE_URL ?>/view/js/jquery.jscrollpane.min.js"></script>
+        <link type="text/css" href="<?php echo SRC_URL ?>/view/css/jquery.jscrollpane.min.css" rel="stylesheet" media="all" />
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.mousewheel.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.jscrollpane.min.js"></script>
         <!-- end custom scrollbars -->
 
         <!-- sliders -->
-        <script type="text/javascript" src="<?php echo NODE_URL ?>/view/js/jquery.slides.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
         <!-- end sliders -->
 
         <!-- fancybox-->
-        <script type="text/javascript" src="<?php echo NODE_URL ?>/view/js/jquery.fancybox.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="<?php echo NODE_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.fancybox.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
         <!-- end custom fancybox-->
 
         <!-- vigilante de sesi�n -->
-        <script type="text/javascript" src="/view/js/watchdog.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
 
         <!-- saltos entre nodos -->
-        <script type="text/javascript" src="/view/js/nodejump.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/nodejump.js"></script>
 
         <?php if (defined('NODE_ANALYTICS_TRACKER')) echo NODE_ANALYTICS_TRACKER; ?>
         
