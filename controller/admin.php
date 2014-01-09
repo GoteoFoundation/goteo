@@ -167,6 +167,7 @@ namespace Goteo\Controller {
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
                     'edit' => array('label' => 'Editando Idea', 'item' => true),
+                    'add' => array('label' => 'Creando Idea', 'item' => false),
                     'translate' => array('label' => 'Traduciendo Idea', 'item' => true)
                 )
             ),
@@ -222,9 +223,11 @@ namespace Goteo\Controller {
                 'label' => 'Boletín',
                 'actions' => array(
                     'list' => array('label' => 'Estado del envío automático', 'item' => false),
-                    'init' => array('label' => 'Iniciando un nuevo boletín', 'item' => false),
-                    'init' => array('label' => 'Viendo listado completo', 'item' => true)
-                )
+                    'init' => array('label' => 'Iniciando un nuevo envío', 'item' => false),
+                    'activate' => array('label' => 'Iniciando envío', 'item' => true),
+                    'detail' => array('label' => 'Viendo destinatarios', 'item' => true)
+                ),
+                'filters' => array('show' => 'receivers')
             ),
             'node' => array(
                 'label' => 'Datos del Nodo',

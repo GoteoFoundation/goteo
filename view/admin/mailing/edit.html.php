@@ -7,8 +7,7 @@ use Goteo\Library\Text,
 $templates = array(
     '11' => 'Base',
     '27' => 'Aviso a los donantes',
-    '38' => 'Recordatorio a los donantes',
-    '33' => 'Boletin'
+    '38' => 'Recordatorio a los donantes'
 );
 // lista de destinatarios segun filtros recibidos, todos marcados por defecto
 ?>
@@ -38,11 +37,6 @@ jQuery(document).ready(function ($) {
         <li><strong>%USEREMAIL%</strong> Para el email del destinatario</li>
         <li><strong>%USERNAME%</strong> Para el nombre del destinatario</li>
         <li><strong>%SITEURL%</strong> Para la url de esta plataforma (<?php echo SITE_URL ?>)</li>
-        <?php if ($this['filters']['type'] == 'owner' || $this['filters']['type'] == 'investor') : ?>
-            <li><strong>%PROJECTID%</strong> Para el id del proyecto</li>
-            <li><strong>%PROJECTNAME%</strong> Para el nombre del proyecto</li>
-            <li><strong>%PROJECTURL%</strong> Para la url del proyecto</li>
-        <?php endif; ?>
     </ul>
 </div>
 <div class="widget">

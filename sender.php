@@ -1,4 +1,8 @@
 <?php
+/**
+* Este es el proceso que va procesando envios masivos
+**/
+
 
 use Goteo\Core\Resource,
     Goteo\Core\Error,
@@ -6,7 +10,7 @@ use Goteo\Core\Resource,
     Goteo\Core\Model,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
-    Goteo\Library\Newsletter;
+    Goteo\Library\Sender;
 
 require_once 'config.php';
 require_once 'core/common.php';
@@ -42,7 +46,7 @@ session_start();
 // set Lang
 define('LANG', 'es');
 
-$debug = false;
+$debug = true;
 $fail = false;
 if ($debug) $txtdebug = '<html><head></head><body>';
 
@@ -52,14 +56,15 @@ set_error_handler (
     function ($errno, $errstr, $errfile, $errline, $errcontext) {
 //        global $debug, $txtdebug;
         // @todo Insert error into buffer
-//if ($debug) $txtdebug .= "Error:  {$errno}, {$errstr}, {$errfile}, {$errline}, {$errcontext}<br />";
+//echo "Error:  {$errno}, {$errstr}, {$errfile}, {$errline}, {$errcontext}<br />";
         //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
 );
 
 
-$mailing = Newsletter::getSending();
+// cogemos el siguiente envío a tratar
+$mailing = Sender::getSending();
 // si no está activa fin
 if (!$mailing->active) {
     // inactivo, nada de debug
@@ -70,7 +75,7 @@ if ($mailing->blocked) {
     $fail = true;
 }
 
-// ponemos el id del envio
+// Solo si es boletin grabamos un solo sinoves
 $_SESSION['NEWSLETTER_SENDID'] = $mailing->mail;
 
 // cogemos el contenido y la plantilla desde el historial
@@ -87,28 +92,11 @@ if (empty($content)) {
 if ($debug) $txtdebug .= '<pre>'.print_r($mailing,1).'</pre>';
 
 if (!$fail) {
-    if ($debug) $txtdebug .= "bloqueo la tabla<br />";
+    if ($debug) $txtdebug .= "bloqueo este registro<br />";
     Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
 
     // cargamos los destinatarios
-    $users = array();
-    $sql = "SELECT
-            id,
-            user,
-            name,
-            email
-        FROM mailer_send
-        WHERE sended IS NULL
-        ORDER BY id
-        LIMIT 500
-        ";
-    if ($debug) $txtdebug .= "$sql<br /><br />";
-
-    if ($query = Model::query($sql)) {
-        foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
-            $users[] = $user;
-        }
-    }
+    $users = Sender::getRecipients($mailing->id);
 
     // destinatarios
     if ($debug) $txtdebug .= '<pre>'.print_r($users,1).'</pre>';
@@ -123,20 +111,36 @@ if (!$fail) {
 
         // evento feed
         $log = new Feed();
-        $log->populate('Envio newsletter (cron)', '/admin/mailing/newsletter', 'Se ha completado el envio del boletin');
+        $log->populate('Envio masivo (cron)', '/admin/mailing/newsletter', 'Se ha completado el envio masivo con asunto "'.$mailing->subject.'"');
         $log->doAdmin('system');
         unset($log);
 
-        if ($debug) $txtdebug .= 'Se ha completado el envio del boletin<br />';
+        if ($debug) $txtdebug .= 'Se ha completado el envio masivo '.$mailing->id.'<br />';
     } else {
 
         foreach ($users as $user) {
+
+            //@TODO::: Aquí hay que tener en cuenta si hay que reemplazar variables, si tenemos los datos
+
+
+
             $mailHandler = new Mail();
+
+            //@TODO::: replyTo, si es especial
+            if (!empty($mailing->reply)) {
+                $mailHandler->reply = $mailing->reply;
+                if (!empty($mailing->reply_name)) {
+                    $mailHandler->replyName = $mailing->reply_name;
+                }
+            }
 
             $mailHandler->to = \trim($user->email);
             $mailHandler->toName = $user->name;
             $mailHandler->subject = $mailing->subject;
-            $mailHandler->content = '<br />'.$content.'<br />';
+            $mailHandler->content = str_replace(
+                array('%USERID%', '%USEREMAIL%', '%USERNAME%'), 
+                array($user->user, $user->email, $user->name), 
+                $content);
             $mailHandler->html = true;
             $mailHandler->template = $template;
             $mailHandler->massive = true;
@@ -145,7 +149,7 @@ if (!$fail) {
             if ($mailHandler->send($errors)) {
 
                 // Envio correcto
-                Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}'");
+                Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'");
                 if ($debug) $txtdebug .= "Enviado OK a $user->email<br />";
 
             } else {
@@ -153,7 +157,7 @@ if (!$fail) {
                 // falló al enviar
                 $sql = "UPDATE mailer_send
                 SET sended = 0 , error = ? , datetime = NOW()
-                WHERE		id = '{$user->id}'
+                WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'
                 ";
                 Model::query($sql, array(implode(',', $errors)));
                 if ($debug) $txtdebug .= "Fallo ERROR a $user->email ".implode(',', $errors)."<br />";
@@ -164,7 +168,7 @@ if (!$fail) {
         }
     }
 
-    if ($debug) $txtdebug .= "desbloqueo la tabla<br />";
+    if ($debug) $txtdebug .= "desbloqueo este registro<br />";
     Model::query('UPDATE mailer_content SET blocked = 0 WHERE id = ?', array($mailing->id));
 
     if ($debug) $txtdebug .= 'Listo';
@@ -180,3 +184,6 @@ $cabeceras  = 'MIME-Version: 1.0' . "\r\n";
 $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 if ($debug) mail('root-goteo@doukeshi.org', 'Debug enviador de mailing masivo', $txtdebug, $cabeceras);
 if ($debug) echo $txtdebug;
+
+// limpiamos antiguos procesados
+Sender::cleanOld();

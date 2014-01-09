@@ -38,6 +38,9 @@ namespace Goteo\Controller {
                 if (!$item instanceof Model\Bazar)
                     throw new Redirection("/bazaar"); 
 
+                if ($item->project->status != 3)
+                    throw new Redirection('/bazaar');
+
                 $item->imgsrc = (!empty($item->img)) ? '/data/images/'.$item->img->name : '/data/images/bazaritem.svg';
                 $ogimages[] = $URL.$item->imgsrc;
                 $vdata["item"] = $item;
@@ -53,6 +56,7 @@ namespace Goteo\Controller {
                     $item->project->allowpp = Model\Project\Account::getAllowpp($item->project->id);
                 }
 
+                $ogurl = $URL.'/bazaar'.$id;
                 // si el $show es de agradecimiento mostramos thanks.html.php
                 if ($show == 'thanks') {
                     $vpath .= "thanks.html.php";
@@ -71,6 +75,7 @@ namespace Goteo\Controller {
                     $ogimages[] = $URL.$item->imgsrc;
                 }
                 $vdata["items"] = $items;
+                $ogurl = $URL.'/bazaar';
                 $vpath .= "home.html.php";
             }
 
@@ -81,7 +86,7 @@ namespace Goteo\Controller {
             $item_title = Text::get('bazar-spread-text', $item_title);
             $item_description = !empty($item->description) ? $item->description : $page->description;
             $bazar_url = $page->url.$lsuf;
-            $item_url = !empty($item->id) ? $page->url.'/'.$item->id.$lsuf : $page->url.$lsuf;
+            $item_url = !empty($item->id) ? $page->url.'/'.$item->id.$lsuf : $bazar_url;
             $item_image = !empty($item->imgsrc) ? $URL.$item->imgsrc : $URL.'/view/bazar/img/carro.png';
 
             $vdata["share"] = (object) array(
@@ -99,7 +104,7 @@ namespace Goteo\Controller {
             $vdata['ogmeta'] = array(
                 'title' => $item_title,
                 'description' => $item_description,
-                'url' => $item_url,
+                'url' => $ogurl,
                 'image' => $ogimages
             );
 
@@ -164,7 +169,7 @@ namespace Goteo\Controller {
                     $formData['user'] = $_SESSION['user']->id;
                 } elseif (!empty($formData['email']) && Check::mail($formData['email'])) {
 
-                    $nUser = \Goteo\Controller\User::instantReg($formData['email']);
+                    $nUser = \Goteo\Controller\User::instantReg($formData['email'], $formData['name']);
                     if (!$nUser) {
                         Message::Error(Text::get('regular-login'));
                         throw new Redirection("/user/login?return=".urlencode('/bazaar/'.$item->id));

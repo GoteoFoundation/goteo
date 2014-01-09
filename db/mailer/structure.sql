@@ -22,3 +22,12 @@ CREATE TABLE `mailer_send` (
 -- alter
 ALTER TABLE `mailer_content` ADD `blocked` INT( 1 ) NULL;
 
+-- para tener una cola de envios
+ALTER TABLE `mailer_content` CHANGE `id` `id` INT( 20 ) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mailer_send` ADD `mailing` INT( 20 ) UNSIGNED NOT NULL COMMENT 'Id de mailer_content' AFTER `id` ,
+ADD INDEX ( `mailing` );
+
+-- para el reply
+ALTER TABLE `mailer_content` ADD `reply` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Email remitente',
+ADD `reply_name` TEXT NULL DEFAULT NULL COMMENT 'Nombre remitente';

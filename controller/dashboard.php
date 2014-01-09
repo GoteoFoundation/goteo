@@ -980,8 +980,13 @@ namespace Goteo\Controller {
             }
 
             // si es donante, ponemos la opción
-            if (Model\User\Donor::get($_SESSION['user']->id) instanceof Model\User\Donor) {
+            $donante = Model\User\Donor::get($_SESSION['user']->id);
+            if ($donante instanceof Model\User\Donor) {
                 $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
+                // si no ha confirmado
+                if (!$donante->confirmed) {
+                    Message::Info(Text::get('dashboard-donor-remember'));
+                }
             }
 
             // si tiene permiso para ir al admin

@@ -291,6 +291,10 @@ namespace Goteo\Model\Call {
                         // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
                         $call->maxproj = min($call->maxproj, ($call->project_got + floor(($project->maxcost - $project->invested) / 2)));
                     }
+                    // si la config para esta ronda la config. es el límite normal
+                    elseif($call->conf == 'normal') {
+                        $call->maxproj = $call->rawmaxproj;
+                    } 
                     // si tiene configuración de que en esta ronda el mínimo es más prioritario que el límite
                     elseif ($call->conf == 'minimum') {
                         // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al mínimo (la otra mitad la pone el usuario)
@@ -301,9 +305,6 @@ namespace Goteo\Model\Call {
                         // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
                         $call->maxproj = $call->project_got + floor(($project->maxcost - $project->invested) / 2);
                     }
-                    
-                    // si a la convocatoria le queda menos que el limite actual
-                    $call->maxproj = min($call->maxproj, $call->rest);
                     
                     // y que no sea negativo
                     if ($call->maxproj < 0) $call->maxproj = 0;

@@ -300,7 +300,6 @@ namespace Goteo\Model {
                 $sql .= "LIMIT $limited";
             }
             
-            
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item;
@@ -458,8 +457,8 @@ namespace Goteo\Model {
 
             try {
                 // si renuncia
-                $sql = "UPDATE invest SET resign = :resign WHERE id = :id";
-                self::query($sql, array(':id'=>$this->id, ':resign'=>$this->resign));
+                $sql = "UPDATE invest SET anonymous = :anonymous WHERE id = :id";
+                self::query($sql, array(':id'=>$this->id, ':anonymous'=>$this->anonymous));
 
                 // borramos als recompensas
                 $sql = "DELETE FROM invest_reward WHERE invest = :invest";
@@ -1559,8 +1558,8 @@ namespace Goteo\Model {
                             $Data['drop']['second']['fail'] = 0;
                             foreach ($inv_drop as $invId => $invest) {
                                 $Data['drop']['second']['users'][$invest->user] = $invest->user;
+                                $Data['drop']['total']['users'][$invest->user] = $invest->user;
                                 $Data['drop']['second']['invests']++;
-                                $Data['drop']['second']['amount'] += $invest->amount;
                                 $Data['drop']['total']['invests']++;
                                 $Data['drop']['second']['amount'] += $invest->amount;
                             }

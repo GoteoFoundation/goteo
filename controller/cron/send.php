@@ -160,7 +160,7 @@ namespace Goteo\Controller\Cron {
                 // Obtenemos la plantilla para asunto y contenido
                 $template = Template::get($tpl);
                 // Sustituimos los datos
-                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
                 $content = \str_replace($search, $replace, $template->text);
                 // iniciamos mail
                 $mailHandler = new Mail();
@@ -194,11 +194,54 @@ namespace Goteo\Controller\Cron {
          */
         static public function toInvestors ($type, $project, $post = null) {
 
+            $debug = false;
+
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';
 
             $anyfail = false;
             $tpl = null;
+
+            // para usar el proceso Sender
+
+            // - Separamos los replaces de contenido de los replaces individuales (%USERNAME%)
+            switch ($type) {
+                case 'r1_pass': // template 15, proyecto supera la primera ronda
+                        $tpl = 15;
+                        $search  = array('%PROJECTNAME%', '%PROJECTURL%');
+                        $replace = array($project->name, SITE_URL . '/project/' . $project->id);
+                    break;
+
+                case 'fail': // template 17, proyecto no consigue el mínimo
+                        $tpl = 17;
+                        $search  = array('%PROJECTNAME%', '%DISCOVERURL%');
+                        $replace = array($project->name, SITE_URL . '/discover');
+                    break;
+
+                case 'r2_pass': // template 16, finaliza segunda ronda
+                        $tpl = 16;
+                        $search  = array('%PROJECTNAME%', '%PROJECTURL%');
+                        $replace = array($project->name, SITE_URL . '/project/' . $project->id);
+                    break;
+
+                case 'update': // template 18, publica novedad
+                        $tpl = 18;
+                        $post_url = SITE_URL.'/project/'.$project->id.'/updates/'.$post->id;
+                        // contenido del post
+                        $post_content = "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
+                        // y preparar los enlaces para compartir en redes sociales
+                        $share_urls = Text::shareLinks($post_url, $post->title);
+                        
+                        $search  = array('%PROJECTNAME%', '%UPDATEURL%', '%POST%', '%SHAREFACEBOOK%', '%SHARETWITTER%');
+                        $replace = array($project->name, $post_url, $post_content, $share_urls['facebook'], $share_urls['twitter']);
+                    break;
+            }
+            
+
+            if (empty($tpl)) return false;
+
+            // con esto montamos el receivers
+            $receivers = array();
 
             // para cada inversor que no tenga bloqueado esta notificacion
             $sql = "
@@ -206,7 +249,6 @@ namespace Goteo\Controller\Cron {
                     invest.user as id,
                     user.name as name,
                     user.email as email,
-                    invest.method as method,
                     IFNULL(user.lang, 'es') as lang
                 FROM  invest
                 INNER JOIN user
@@ -219,80 +261,68 @@ namespace Goteo\Controller\Cron {
                 AND (user_prefer.{$notif} = 0 OR user_prefer.{$notif} IS NULL)
                 GROUP BY user.id
                 ";
+            if ($debug) {
+                echo "Template: $tpl<br />";
+                echo str_replace('?',"'{$project->id}'",$sql);
+                die;
+            }
             if ($query = Model\Invest::query($sql, array($project->id))) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
-                    /// tipo de envio
-                    switch ($type) {
-                        case 'r1_pass': // template 15, proyecto supera la primera ronda
-                                $tpl = 15;
-                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
-                                $replace = array($investor->name, $project->name, SITE_URL . '/project/' . $project->id);
-                            break;
 
-                        case 'fail': // template 17 (paypalistas) / 35 (tpvistas) , caduca sin conseguir el mínimo
-                                $tpl = ($investor->method == 'paypal') ? 17 : 35;
-                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%DISCOVERURL%');
-                                $replace = array($investor->name, $project->name, SITE_URL . '/discover');
-                            break;
-
-                        case 'r2_pass': // template 16, finaliza segunda ronda
-                                $tpl = 16;
-                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
-                                $replace = array($investor->name, $project->name, SITE_URL . '/project/' . $project->id);
-                            break;
-
-                        case 'update': // template 18, publica novedad
-                                $tpl = 18;
-                                $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATEURL%', '%POST%', '%SHAREFACEBOOK%', '%SHARETWITTER%');
-                                $post_url = SITE_URL.'/project/'.$project->id.'/updates/'.$post->id;
-                                // contenido del post
-                                $post_content = "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
-                                // y preparar los enlaces para compartir en redes sociales
-                                $share_urls = Text::shareLinks($post_url, $post->title);
-                                
-                                $replace = array($investor->name, $project->name, $post_url, $post_content, $share_urls['facebook'], $share_urls['twitter']);
-                            break;
-                    }
-
-                    if (!empty($tpl)) {
-                        // Obtenemos la plantilla para asunto y contenido
-                        // en el idioma del usuario
-                        $template = Template::get($tpl, $investor->lang);
-                        // Sustituimos los datos
-                        if (!empty($post)) {
-                            $subject = str_replace(array('%PROJECTNAME%', '%OWNERNAME%', '%P_TITLE%')
-                                    , array($project->name, $project->user->name, $post->title)
-                                    , $template->title);
-                        } else {
-                            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-                        }
-                        $content = \str_replace($search, $replace, $template->text);
-                        // iniciamos mail
-                        $mailHandler = new Mail();
-                        $mailHandler->to = $investor->email;
-                        $mailHandler->toName = $investor->name;
-                        $mailHandler->subject = $subject;
-                        $mailHandler->content = $content;
-                        $mailHandler->html = true;
-                        $mailHandler->template = $template->id;
-                        if ($mailHandler->send()) {
-
-                        } else {
-                            $anyfail = true;
-                            @mail('goteo_fail@doukeshi.org',
-                                'Fallo al enviar email automaticamente al cofinanciador ' . SITE_URL,
-                                'Fallo al enviar email automaticamente al cofinanciador: <pre>' . print_r($mailHandler, 1). '</pre>');
-                        }
-                        unset($mailHandler);
-                    }
+//                    $receivers[$investor->lang][] = (object) array(
+                    $receivers[] = (object) array(
+                        'user' => $investor->id,
+                        'name' => $investor->name,
+                        'email' => $investor->email,
+                        'lang' => $investor->lang
+                        );
                 }
-                // fin bucle inversores
-            } else {
-                echo '<p>'.str_replace('?', $project->id, $sql).'</p>';
-                $anyfail = true;
             }
             
-            if ($anyfail)
+            // preparamos el contenido
+            // veamos los idiomas que necesitamos
+            // array_keys
+
+            // sacamos la plantilla en cada idioma
+            // $template_lang['es'] = Template::get($tpl, 'es');
+
+            // Luego, un mailing para cada idioma
+
+
+            // Obtenemos la plantilla para asunto y contenido
+            $template = Template::get($tpl);
+            
+
+            // - subject
+            if (!empty($post)) {
+                $subject = str_replace(array('%PROJECTNAME%', '%OWNERNAME%', '%P_TITLE%')
+                        , array($project->name, $project->user->name, $post->title)
+                        , $template->title);
+            } else {
+                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+            }
+
+            // content
+            $content = \str_replace($search, $replace, $template->text);
+
+
+
+
+            // - se crea un registro de tabla mail
+            $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+            $values = array (
+                ':email' => 'any',
+                ':html' => $content,
+                ':template' => $tpl,
+                ':node' => \GOTEO_NODE
+            );
+            $query = \Goteo\Core\Model::query($sql, $values);
+            $mailId = \Goteo\Core\Model::insertId();
+
+
+            // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
+            // - initiateSending ($mailId, $subject, $receivers, $autoactive = 0)
+            if (\Goteo\Library\Sender::initiateSending($mailId, $subject, $receivers, 1)) 
                 return false;
             else
                 return true;

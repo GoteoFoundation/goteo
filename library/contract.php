@@ -108,14 +108,11 @@ class Pdf extends \PDF_HTML {
         $this->bold(self::FONT_TITLE_SIZE);
         $this->MultiCell(0, 5, self::txt(self::TEXT_DESCRIPTION_AND_TARGET), "LTR", 1);
         $this->regular();
-        $description = $this->data->project_description;
-        $invest = $this->data->project_invest;
-        $return = $this->data->project_return;
-        $txt = (!empty($description) ? $this->data->project_description : '')
-                . (!empty($invest) ? $this->data->project_invest : '')
-                . (!empty($return) ? $this->data->project_return : '');
+        $description =  self::txt($this->data->project_description);
+        $invest =  self::txt($this->data->project_invest);
+        $return =  self::txt($this->data->project_return);
         $this->setX(self::X_STATIC_TEXT);
-        $this->MultiCell(0, 5, self::txt($txt), "LBR", 1, "J");
+        $this->MultiCell(0, 5, $description . $invest . $return, "LBR", 1, "J");
     }
 
     /**

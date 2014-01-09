@@ -316,7 +316,7 @@ namespace Goteo\Controller {
          * Registro instantáneo de usuario mediante email
          * (Si existe devuelve id pero no loguea)
          */
-        static public function instantReg($email) {
+        static public function instantReg($email, $name = '') {
 
             $errors = array();
 
@@ -343,14 +343,14 @@ namespace Goteo\Controller {
 
             // si no existe, creamos un registro de usuario enviando el mail (y lo dejamos logueado)
             // ponemos un random en user y contraseña (el modelo mandará el mail)
-            $name = substr($email, 0, strpos($email, '@'));
-            $userid = $name . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9);
+            if (empty($name)) $name = substr($email, 0, strpos($email, '@'));
+            $userid = substr($email, 0, strpos($email, '@')) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9);
 
             $user = new Model\User();
             $user->userid = $userid;
             $user->name = $name;
             $user->email = $email;
-            $user->password = uniqid($name);
+            $user->password = $name;
             $user->active = false;
             $user->node = \NODE_ID;
 

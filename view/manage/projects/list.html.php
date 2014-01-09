@@ -19,6 +19,16 @@ $filters = $this['filters'];
             <input id="proj_name-filter" name="proj_name" value="<?php echo $filters['proj_name']; ?>" style="width:250px"/>
         </div>
         
+        <div style="float:left;margin:5px;">
+            <label for="node-filter">Del nodo:</label><br />
+            <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
+                <option value="">Cualquier nodo</option>
+            <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+                <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
+            <?php endforeach; ?>
+            </select>
+        </div>
+        
         <br clear="both" />
         
         <div style="float:left;margin:5px;">
