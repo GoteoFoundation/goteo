@@ -31,3 +31,10 @@ ADD INDEX ( `mailing` );
 -- para el reply
 ALTER TABLE `mailer_content` ADD `reply` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Email remitente',
 ADD `reply_name` TEXT NULL DEFAULT NULL COMMENT 'Nombre remitente';
+
+-- tabla para control de envios
+CREATE TABLE IF NOT EXISTS `mailer_limit` (
+  `date` date NOT NULL COMMENT 'Día ',
+  `num` int(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Cuantos',
+  PRIMARY KEY (`date`)
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT='Para limitar el número de envios diarios';
