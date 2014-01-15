@@ -52,14 +52,14 @@ jQuery(document).ready(function($) {
 		$('.sign-in-with li:hidden').slideDown();
 		return false;
 	});
-    
+
     $("#login_frm").submit(function () {
         $("#thepw").val(hex_sha1($("#thepw").val()));
         return true;
     });
 
-    
-    
+
+
 });
 </script>
 
@@ -121,7 +121,7 @@ jQuery(document).ready(function($) {
 					'twitter' => '<a href="/user/oauth?provider=twitter">' . Text::get('login-signin-twitter') . '</a>',
 					'Google' => '<a href="/user/oauth?provider=Google">' . Text::get('login-signin-google') . '</a>',
 					'Yahoo' => '<a href="/user/oauth?provider=Yahoo">' . Text::get('login-signin-yahoo') . '</a>',
-					'myOpenid' => '<a href="/user/oauth?provider=myOpenid">' . Text::get('login-signin-myopenid') . '</a>',
+					'Ubuntu' => '<a href="/user/oauth?provider=Ubuntu">' . Text::get('login-signin-ubuntu') . '</a>',
 					'linkedin' => '<a href="/user/oauth?provider=linkedin">' . Text::get('login-signin-linkedin') . '</a>',
 					'openid' => ''
                 );
