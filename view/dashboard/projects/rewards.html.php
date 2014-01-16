@@ -203,7 +203,10 @@ switch ($order) {
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
         
-        
+        // al clickar, aviso 
+        $("#sacaexcel").click(function(){
+            alert('<?php echo Text::get('dashboard-investors_table-disclaimer'); ?>'); 
+        });
         
         // al clickar el recuadro de recompensa
         $(".fulrew").click(function(){
