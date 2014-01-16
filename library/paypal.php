@@ -27,10 +27,8 @@ namespace Goteo\Library {
 			try {
                 $project = Project::getMini($invest->project);
 
-                    $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
-
-                    $returnURL = $URL.$invest->urlOK;
-                    $cancelURL = $URL.$invest->urlNOK;
+                    $returnURL = $invest->urlOK;
+                    $cancelURL = $invest->urlNOK;
 
                     date_default_timezone_set('UTC');
                     $currDate = getdate();

@@ -27,7 +27,7 @@ namespace Goteo\Library {
                 WHERE mailing = ?
                 AND sended IS NULL
                 ORDER BY id
-                LIMIT 500
+                LIMIT 10
                 ";
 
             if ($query = Model::query($sql, array($id))) {
