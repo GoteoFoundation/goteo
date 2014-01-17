@@ -80,8 +80,16 @@ namespace Goteo\Library {
         /*
         * Método para obtener el siguiente envío a tratar
         */
-        static public function getSending () {
+        static public function getSending ($id = null) {
             try {
+
+                if (!empty($id)) {
+                    $sqlFilter = " WHERE id = $id";
+
+                } else {
+                    $sqlFilter = " ORDER BY active DESC, id DESC ";
+
+                }
 
                 // recuperamos los datos del envío
                 $sql = "SELECT
@@ -94,7 +102,7 @@ namespace Goteo\Library {
                         mailer_content.reply as reply,
                         mailer_content.reply_name as reply_name
                     FROM mailer_content
-                    ORDER BY active DESC, id DESC
+                    $sqlFilter
                     LIMIT 1
                     ";
 

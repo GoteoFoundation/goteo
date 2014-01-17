@@ -18,7 +18,8 @@ namespace Goteo\Library {
             $sql = "SELECT
                         user.id as user,
                         user.name as name,
-                        user.email as email
+                        user.email as email,
+                        user.lang as lang
                     FROM user
                     INNER JOIN user_interest
                         ON  user_interest.user = user.id
@@ -46,7 +47,8 @@ namespace Goteo\Library {
             $sql = "SELECT
                         user.id as user,
                         user.name as name,
-                        user.email as email
+                        user.email as email,
+                        user.lang as lang
                     FROM user
                     LEFT JOIN user_prefer
                         ON user_prefer.user = user.id
@@ -79,7 +81,8 @@ namespace Goteo\Library {
             $sql = "SELECT
                         user.id as user,
                         user.name as name,
-                        user.email as email
+                        user.email as email,
+                        user.lang as lang
                 FROM  invest
                 INNER JOIN user ON user.id = invest.user
                 WHERE   invest.status IN ('1', '3')
@@ -98,7 +101,7 @@ namespace Goteo\Library {
 
         }
 
-		static public function getContent ($content) {
+		static public function getContent ($content, $lang = LANG) {
             // orden de los elementos en portada
             $order = \Goteo\Model\Home::getAll();
 
@@ -128,7 +131,7 @@ namespace Goteo\Library {
 //                    $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
                     foreach ($home_promotes as $key => $promote) {
                         try {
-                            $the_project = \Goteo\Model\Project::getMedium($promote->project, LANG);
+                            $the_project = \Goteo\Model\Project::getMedium($promote->project, $lang);
                             $promotes_content .= new View('view/email/newsletter_project.html.php', array('promote'=>$promote, 'project'=>$the_project));
                         } catch (\Goteo\Core\Error $e) {
                             continue;
