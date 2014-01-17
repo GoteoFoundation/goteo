@@ -92,6 +92,12 @@ namespace Goteo\Library {
 		 * @param type array	$errors
 		 */
         public function send(&$errors = array()) {
+
+            if (!self::checkLimit(1)) {
+                $errors['subject'] = 'Limite diario alcanzado.';
+                return false;
+            }
+
             if($this->validate($errors)) {
                 $mail = $this->mail;
                 try {
@@ -341,6 +347,29 @@ namespace Goteo\Library {
             $query = Model::query($sql, $values);
             return $query->fetchAll(\PDO::FETCH_OBJ);
             
+        }
+
+
+        /**
+         * Control de límite de mails que se pueden enviar al día
+         */
+        public static function checkLimit($add = null, $ret = false) {
+
+            // limite de 10000 al día, nos guardamos 2000 para envios individuales
+            $LIMIT = 8000;
+
+            $sql = "SELECT num FROM mailer_limit
+                    WHERE `date` = ".date('Y-m-d');
+
+            $query = Model::query($sql, $values);
+            $cuantos = $query->fetchColumn();
+
+            if (!empty($add)) {
+                $cuantos += $add;
+                $sql = "REPLACE INTO mailer_limit (`num`, `date`) VALUES ('$cuantos', '".date('Y-m-d')."')";
+            };
+
+            return ($ret) ? ($LIMIT - $cuantos) : ($cuantos < $LIMIT);
         }
 
 	}

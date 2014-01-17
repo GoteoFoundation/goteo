@@ -62,6 +62,15 @@ set_error_handler (
 
 );
 
+// check the limit
+if (!Mail::checkLimit()) {
+    die;
+}
+
+
+define("MAIL_MAX_RATE", 500000); // microsegundos minimo entre envios individuales (1 seg = 100000 microseg)
+
+$itime = microtime(true);
 
 // cogemos el siguiente envío a tratar
 $mailing = Sender::getSending();
@@ -98,9 +107,6 @@ if (!$fail) {
     // cargamos los destinatarios
     $users = Sender::getRecipients($mailing->id);
 
-    // destinatarios
-    if ($debug) $txtdebug .= '<pre>'.print_r($users,1).'</pre>';
-
     // si no quedan pendientes, grabamos el feed y desactivamos
     if (empty($users)) {
 
@@ -118,15 +124,24 @@ if (!$fail) {
         if ($debug) $txtdebug .= 'Se ha completado el envio masivo '.$mailing->id.'<br />';
     } else {
 
+        // destinatarios
+        if ($debug) $txtdebug .= 'Enviamos a '.count($users).' usuarios <br />';
+
+        // si me paso con estos no sigo
+        if (Mail::checkLimit(null, true) < count($users)) {
+            if ($debug) $txtdebug .= 'Hoy no podemos enviarlos<br />';
+            break;
+        }
+
         foreach ($users as $user) {
 
-            //@TODO::: Aquí hay que tener en cuenta si hay que reemplazar variables, si tenemos los datos
-
-
+            // tiempo de ejecución
+            $ntime = microtime(true);
+            if ($debug) $txtdebug .= "Llevo ".$ntime - $itime.". microsegundos de ejecución<br />";
 
             $mailHandler = new Mail();
 
-            //@TODO::: replyTo, si es especial
+            // reply, si es especial
             if (!empty($mailing->reply)) {
                 $mailHandler->reply = $mailing->reply;
                 if (!empty($mailing->reply_name)) {
@@ -165,7 +180,10 @@ if (!$fail) {
 
             unset($mailHandler);
             
+            // pausa de medio segundo
+            usleep(MAIL_MAX_RATE);
         }
+
     }
 
     if ($debug) $txtdebug .= "desbloqueo este registro<br />";
@@ -180,9 +198,11 @@ if ($debug) $txtdebug .= '</body></html>';
 
 // mail debug
 // Para enviar un correo HTML mail, la cabecera Content-type debe fijarse
+/*
 $cabeceras  = 'MIME-Version: 1.0' . "\r\n";
 $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 if ($debug) mail('root-goteo@doukeshi.org', 'Debug enviador de mailing masivo', $txtdebug, $cabeceras);
+*/
 if ($debug) echo $txtdebug;
 
 // limpiamos antiguos procesados
