@@ -545,6 +545,11 @@ namespace Goteo\Controller {
                         throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
                     }
 
+                    if (Model\Project\Conf::getNoinvest($id)) {
+                        Message::Error(Text::get('investing_closed'));
+                        throw new Redirection('/project/'.$id);
+                    }
+
                     $viewData['show'] = 'supporters';
 
                     // si permite uso de paypal

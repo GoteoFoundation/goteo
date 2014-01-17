@@ -7,6 +7,9 @@ $level = (int) $this['level'] ?: 3;
 
 $project = $this['project'];
 
+// veamos si tiene el grifo cerrado
+if (Goteo\Model\Project\Conf::getNoinvest($project->id)) 
+    $project->status = 4;
 ?>
 <div class="widget project-support collapsable" id="project-support">
 
