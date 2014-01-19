@@ -75,8 +75,7 @@ define('GOTEO_DATA_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data' . DIR
 // Mail
 define('GOTEO_MAIL_FROM', 'noreply@goteo.org');
 define('GOTEO_MAIL_NAME', 'Goteo.org');
-define('GOTEO_MAIL_TYPE', 'mail');
-//define('GOTEO_MAIL_TYPE', 'smtp'); // 
+define('GOTEO_MAIL_TYPE', 'smtp');
 define('GOTEO_MAIL_SMTP_AUTH', true);
 define('GOTEO_MAIL_SMTP_SECURE', 'tls');
 define('GOTEO_MAIL_SMTP_HOST', 'email-smtp.us-east-1.amazonaws.com');
