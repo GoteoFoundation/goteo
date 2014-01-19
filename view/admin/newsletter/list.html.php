@@ -8,7 +8,8 @@ $list = $this['list'];
 $templates = array(
     '27' => 'Aviso a los donantes',
     '38' => 'Recordatorio a los donantes',
-    '33' => 'Boletin'
+    '33' => 'Boletin',
+    '35' => 'Testeo'
 );
 
 // por defecto cogemos la newsletter

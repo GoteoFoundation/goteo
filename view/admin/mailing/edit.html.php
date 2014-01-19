@@ -7,7 +7,8 @@ use Goteo\Library\Text,
 $templates = array(
     '11' => 'Base',
     '27' => 'Aviso a los donantes',
-    '38' => 'Recordatorio a los donantes'
+    '38' => 'Recordatorio a los donantes',
+    '35' => 'Testeo'
 );
 // lista de destinatarios segun filtros recibidos, todos marcados por defecto
 ?>

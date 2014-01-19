@@ -31,6 +31,9 @@ namespace Goteo\Controller\Admin {
                         } elseif ($template == 33) {
                             // los destinatarios de newsletter
                             $users = Boletin::getReceivers();
+                        } elseif ($template == 35) {
+                            // los destinatarios para testear a subscriptores
+                            $users = Boletin::getReceivers();
                         } elseif ($template == 27 || $template == 38) {
                             // los cofinanciadores de este año
                             $users = Boletin::getDonors(Donor::$currYear);

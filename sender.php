@@ -49,6 +49,9 @@ define('LANG', 'es');
 $debug = true;
 $fail = false;
 
+// temporal para ver esto que tarda tanto
+//define('DEVGOTEO_LOCAL', true);
+
 // Error handler
 set_error_handler (
 
@@ -56,7 +59,6 @@ set_error_handler (
         global $debug, $txtdebug;
         // @todo Insert error into buffer
 if ($debug) echo "Error:  {$errno}, {$errstr}, {$errfile}, {$errline}, {$errcontext}<br />";
-die;
         //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
@@ -68,7 +70,7 @@ if (!Mail::checkLimit()) {
 }
 
 
-define("MAIL_MAX_RATE", 500000); // microsegundos minimo entre envios individuales (1 seg = 100000 microseg)
+define("MAIL_MAX_RATE", 10000); // microsegundos minimo entre envios individuales (1 seg = 100000 microseg)
 
 $itime = microtime(true);
 
@@ -128,60 +130,93 @@ if (!$fail) {
         if ($debug) echo 'dbg: Enviamos a '.count($users).' usuarios <br />';
 
         // si me paso con estos no sigo
-        if (Mail::checkLimit(null, true) < count($users)) {
+        $rest = Mail::checkLimit(count($users), true) ;
+        if ($debug) echo 'dbg: Y con estos nos queda cuota para '.$rest.' <br />';
+
+        if ($rest < 0) {
             if ($debug) echo 'dbg: Hoy no podemos enviarlos<br />';
             break;
         }
 
+        if ($debug) echo 'dbg: Comienza a enviar<br />';
+
         foreach ($users as $user) {
 
             // tiempo de ejecución
-            $ntime = microtime(true);
-            if ($debug) echo "dbg: Llevo ".$ntime - $itime.". microsegundos de ejecución<br />";
+            $now = (microtime(true) - $itime);
+            if ($debug) echo "dbg: Lleva $now <br />";
 
-            $mailHandler = new Mail();
+            try {
 
-            // reply, si es especial
-            if (!empty($mailing->reply)) {
-                $mailHandler->reply = $mailing->reply;
-                if (!empty($mailing->reply_name)) {
-                    $mailHandler->replyName = $mailing->reply_name;
+                $mailHandler = new Mail($debug);
+
+                // reply, si es especial
+                if (!empty($mailing->reply)) {
+                    $mailHandler->reply = $mailing->reply;
+                    if (!empty($mailing->reply_name)) {
+                        $mailHandler->replyName = $mailing->reply_name;
+                    }
                 }
+
+                $mailHandler->to = \trim($user->email);
+                $mailHandler->toName = $user->name;
+                $mailHandler->subject = $mailing->subject;
+                $mailHandler->content = str_replace(
+                    array('%USERID%', '%USEREMAIL%', '%USERNAME%'), 
+                    array($user->user, $user->email, $user->name), 
+                    $content);
+                $mailHandler->html = true;
+                $mailHandler->template = $template;
+                $mailHandler->massive = true;
+                
+                $errors = array();
+
+                // tiempo de ejecución
+                $now = (microtime(true) - $itime);
+                if ($debug) echo "dbg: Lleva $now  antes de enviar<br />";
+
+
+                if ($mailHandler->send($errors)) {
+
+                    // Envio correcto
+                    Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'");
+                    if ($debug) echo "dbg: Enviado OK a $user->email<br />";
+
+                } else {
+
+                    // falló al enviar
+                    $sql = "UPDATE mailer_send
+                    SET sended = 0 , error = ? , datetime = NOW()
+                    WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'
+                    ";
+                    Model::query($sql, array(implode(',', $errors)));
+                    if ($debug) echo "dbg: Fallo ERROR a $user->email ".implode(',', $errors)."<br />";
+                }
+
+                unset($mailHandler);
+
+                // tiempo de ejecución
+                $now = (microtime(true) - $itime);
+                if ($debug) echo "dbg: Lleva $now  despues de enviar<br />";
+
+
+            } catch (phpmailerException $e) {
+                die ($e->errorMessage());
             }
-
-            $mailHandler->to = \trim($user->email);
-            $mailHandler->toName = $user->name;
-            $mailHandler->subject = $mailing->subject;
-            $mailHandler->content = str_replace(
-                array('%USERID%', '%USEREMAIL%', '%USERNAME%'), 
-                array($user->user, $user->email, $user->name), 
-                $content);
-            $mailHandler->html = true;
-            $mailHandler->template = $template;
-            $mailHandler->massive = true;
             
-            $errors = array();
-            if ($mailHandler->send($errors)) {
+            // tiempo de ejecución
+            $now = (microtime(true) - $itime);
+            if ($debug) echo "dbg: Lleva $now  antes de sleep<br />";
 
-                // Envio correcto
-                Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'");
-                if ($debug) echo "dbg: Enviado OK a $user->email<br />";
 
-            } else {
-
-                // falló al enviar
-                $sql = "UPDATE mailer_send
-                SET sended = 0 , error = ? , datetime = NOW()
-                WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'
-                ";
-                Model::query($sql, array(implode(',', $errors)));
-                if ($debug) echo "dbg: Fallo ERROR a $user->email ".implode(',', $errors)."<br />";
-            }
-
-            unset($mailHandler);
-            
             // pausa de medio segundo
             usleep(MAIL_MAX_RATE);
+
+            // tiempo de ejecución
+            $now = (microtime(true) - $itime);
+            if ($debug) echo "dbg: Lleva $now  despues de sleep<br />";
+
+
         }
 
     }
