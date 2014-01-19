@@ -48,15 +48,15 @@ define('LANG', 'es');
 
 $debug = true;
 $fail = false;
-if ($debug) $txtdebug = '<html><head></head><body>';
 
 // Error handler
 set_error_handler (
 
     function ($errno, $errstr, $errfile, $errline, $errcontext) {
-//        global $debug, $txtdebug;
+        global $debug, $txtdebug;
         // @todo Insert error into buffer
-//echo "Error:  {$errno}, {$errstr}, {$errfile}, {$errline}, {$errcontext}<br />";
+if ($debug) echo "Error:  {$errno}, {$errstr}, {$errfile}, {$errline}, {$errcontext}<br />";
+die;
         //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
@@ -80,7 +80,7 @@ if (!$mailing->active) {
     die;
 }
 if ($mailing->blocked) {
-    if ($debug) $txtdebug .= 'BLOQUEADO!<br />';
+    if ($debug) echo 'dbg: BLOQUEADO!<br />';
     $fail = true;
 }
 
@@ -93,15 +93,15 @@ $data = $query->fetch(\PDO::FETCH_ASSOC);
 $content = $data['html'];
 $template = $data['template'];
 if (empty($content)) {
-    if ($debug) $txtdebug .= 'Sin contenido';
+    if ($debug) echo 'dbg: Sin contenido';
     $fail = true;
 }
 
 // voy a parar aquí, antes del bloqueo
-if ($debug) $txtdebug .= '<pre>'.print_r($mailing,1).'</pre>';
+if ($debug) echo 'dbg: <pre>'.print_r($mailing,1).'</pre>';
 
 if (!$fail) {
-    if ($debug) $txtdebug .= "bloqueo este registro<br />";
+    if ($debug) echo "dbg: bloqueo este registro<br />";
     Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
 
     // cargamos los destinatarios
@@ -110,7 +110,7 @@ if (!$fail) {
     // si no quedan pendientes, grabamos el feed y desactivamos
     if (empty($users)) {
 
-        if ($debug) $txtdebug .= "No hay destinatarios<br />";
+        if ($debug) echo "dbg: No hay destinatarios<br />";
 
         // Desactivamos
         Model::query('UPDATE mailer_content SET active = 0 WHERE id = ?', array($mailing->id));
@@ -121,15 +121,15 @@ if (!$fail) {
         $log->doAdmin('system');
         unset($log);
 
-        if ($debug) $txtdebug .= 'Se ha completado el envio masivo '.$mailing->id.'<br />';
+        if ($debug) echo 'dbg: Se ha completado el envio masivo '.$mailing->id.'<br />';
     } else {
 
         // destinatarios
-        if ($debug) $txtdebug .= 'Enviamos a '.count($users).' usuarios <br />';
+        if ($debug) echo 'dbg: Enviamos a '.count($users).' usuarios <br />';
 
         // si me paso con estos no sigo
         if (Mail::checkLimit(null, true) < count($users)) {
-            if ($debug) $txtdebug .= 'Hoy no podemos enviarlos<br />';
+            if ($debug) echo 'dbg: Hoy no podemos enviarlos<br />';
             break;
         }
 
@@ -137,7 +137,7 @@ if (!$fail) {
 
             // tiempo de ejecución
             $ntime = microtime(true);
-            if ($debug) $txtdebug .= "Llevo ".$ntime - $itime.". microsegundos de ejecución<br />";
+            if ($debug) echo "dbg: Llevo ".$ntime - $itime.". microsegundos de ejecución<br />";
 
             $mailHandler = new Mail();
 
@@ -165,7 +165,7 @@ if (!$fail) {
 
                 // Envio correcto
                 Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'");
-                if ($debug) $txtdebug .= "Enviado OK a $user->email<br />";
+                if ($debug) echo "dbg: Enviado OK a $user->email<br />";
 
             } else {
 
@@ -175,7 +175,7 @@ if (!$fail) {
                 WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'
                 ";
                 Model::query($sql, array(implode(',', $errors)));
-                if ($debug) $txtdebug .= "Fallo ERROR a $user->email ".implode(',', $errors)."<br />";
+                if ($debug) echo "dbg: Fallo ERROR a $user->email ".implode(',', $errors)."<br />";
             }
 
             unset($mailHandler);
@@ -186,24 +186,14 @@ if (!$fail) {
 
     }
 
-    if ($debug) $txtdebug .= "desbloqueo este registro<br />";
+    if ($debug) echo "dbg: desbloqueo este registro<br />";
     Model::query('UPDATE mailer_content SET blocked = 0 WHERE id = ?', array($mailing->id));
 
-    if ($debug) $txtdebug .= 'Listo';
 } else {
-    if ($debug) $txtdebug .= 'FALLO';
+    if ($debug) echo 'dbg: FALLO';
 }
 
-if ($debug) $txtdebug .= '</body></html>';
-
-// mail debug
-// Para enviar un correo HTML mail, la cabecera Content-type debe fijarse
-/*
-$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
-$cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-if ($debug) mail('root-goteo@doukeshi.org', 'Debug enviador de mailing masivo', $txtdebug, $cabeceras);
-*/
-if ($debug) echo $txtdebug;
+if ($debug) echo 'dbg: FIN';
 
 // limpiamos antiguos procesados
 Sender::cleanOld();
