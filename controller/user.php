@@ -155,9 +155,13 @@ namespace Goteo\Controller {
                         Message::Error($text);
                     }
                 }
-            } else {
-                throw new Redirection(SEC_URL.'/user/login');
             }
+            return new View(
+                            'view/user/login.html.php',
+                            array(
+                                'errors' => $errors
+                            )
+            );
         }
 
         /**
