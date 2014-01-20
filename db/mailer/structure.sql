@@ -28,6 +28,9 @@ ALTER TABLE `mailer_content` CHANGE `id` `id` INT( 20 ) UNSIGNED NOT NULL AUTO_I
 ALTER TABLE `mailer_send` ADD `mailing` INT( 20 ) UNSIGNED NOT NULL COMMENT 'Id de mailer_content' AFTER `id` ,
 ADD INDEX ( `mailing` );
 
+-- blockeo individual
+ALTER TABLE `mailer_send` ADD `blocked` INT( 1 ) NULL;
+
 -- para el reply
 ALTER TABLE `mailer_content` ADD `reply` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Email remitente',
 ADD `reply_name` TEXT NULL DEFAULT NULL COMMENT 'Nombre remitente';

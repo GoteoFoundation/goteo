@@ -179,14 +179,14 @@ if (!$fail) {
                 if ($mailHandler->send($errors)) {
 
                     // Envio correcto
-                    Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'");
+                    Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW(), blocked = NULL WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'");
                     if ($debug) echo "dbg: Enviado OK a $user->email<br />";
 
                 } else {
 
                     // falló al enviar
                     $sql = "UPDATE mailer_send
-                    SET sended = 0 , error = ? , datetime = NOW()
+                    SET sended = 0 , error = ? , datetime = NOW(), blocked = NULL
                     WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'
                     ";
                     Model::query($sql, array(implode(',', $errors)));

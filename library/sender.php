@@ -26,6 +26,7 @@ namespace Goteo\Library {
                 FROM mailer_send
                 WHERE mailing = ?
                 AND sended IS NULL
+                AND blocked IS NULL
                 ORDER BY id
                 LIMIT 10
                 ";
