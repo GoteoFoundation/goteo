@@ -146,6 +146,9 @@ if (!$fail) {
             $now = (microtime(true) - $itime);
             if ($debug) echo "dbg: Lleva $now <br />";
 
+            // Envio correcto
+            Model::query("UPDATE mailer_send SET blocked = 1 WHERE id = '{$user->id}' AND mailing =  '{$mailing->id}'");
+
             try {
 
                 $mailHandler = new Mail($debug);
