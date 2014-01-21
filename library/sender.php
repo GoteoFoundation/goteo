@@ -15,7 +15,7 @@ namespace Goteo\Library {
         /*
         *  Metodo para obtener la siguiente tanda de destinatarios
         */
-        static public function getRecipients ($id) {
+        static public function getRecipients ($id, $limit=10) {
             $list = array();
 
             $sql = "SELECT
@@ -28,7 +28,8 @@ namespace Goteo\Library {
                 AND sended IS NULL
                 AND blocked IS NULL
                 ORDER BY id
-                LIMIT 10
+                ";
+                if($limit) $sql .= "LIMIT $limit
                 ";
 
             if ($query = Model::query($sql, array($id))) {
@@ -62,7 +63,7 @@ namespace Goteo\Library {
                  VALUES ('', :mailing, :user, :email, :name)";
 
                 foreach ($receivers as $user) {
-                    Model::query($sql, 
+                    Model::query($sql,
                         array(':mailing'=>$mailing, ':user'=>$user->user, ':email'=>$user->email, ':name'=>$user->name)
                         );
                 }
@@ -106,7 +107,6 @@ namespace Goteo\Library {
                     $sqlFilter
                     LIMIT 1
                     ";
-
 
                 $query = Model::query($sql);
                 $mailing = $query->fetchObject();
@@ -171,7 +171,7 @@ namespace Goteo\Library {
         }
 
         /*
-         * Listado completo de destinatarios/envaidos/fallidos/pendientes 
+         * Listado completo de destinatarios/envaidos/fallidos/pendientes
          */
 		static public function getDetail ($mailing, $detail = 'receivers') {
 
@@ -232,8 +232,8 @@ namespace Goteo\Library {
              AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(datetime)), '%j') > 2");
             // eliminamos los destinatarios
             Model::query("DELETE FROM mailer_send WHERE mailing NOT IN (SELECT id FROM mailer_content)");
-         
-            // eliminamos también los registors de limites 
+
+            // eliminamos también los registors de limites
             Model::query("DELETE FROM mailer_limit WHERE DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(date)), '%j') > 2");
 
         }
@@ -241,5 +241,5 @@ namespace Goteo\Library {
 
 
 	}
-	
+
 }
