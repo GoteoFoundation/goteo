@@ -402,6 +402,11 @@ namespace Goteo\Controller {
                     unset($log);
 
                     $contract->status = Model\Contract::getStatus($contract->project);
+
+                    // + mail a mercè
+                    @mail(\GOTEO_CONTACT_MAIL,
+                        'Datos contrato ' . $project->name,
+                        'El proyecto '.$project->name.' ha cerrado su formulario de contrato. Puedes revisar los datos en http://goteo.org/manage/projects?filtered=yes&name=&proj_name='.substr($project->name, 0, 10).'');
                     
                     return true;
 
