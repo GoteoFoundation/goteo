@@ -74,6 +74,12 @@ namespace Goteo\Controller\Cron {
                     $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/updates', SITE_URL.'/project/'.$project->id.'/updates');
                     break;
 
+                case '1d_after': // template 55, dia siguiente de financiado
+                    $tpl = 55;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%');
+                    $replace = array($project->user->name, $project->name);
+                    break;
+
                 case '2m_after': // template 25, dos meses despues de financiado
                     $tpl = 25;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
