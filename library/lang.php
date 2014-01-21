@@ -89,10 +89,13 @@ namespace Goteo\Library {
             // si lo estamos forzando
             if (isset($force)) {
                 $_SESSION['lang'] = $force;
-            } elseif (isset($_GET['lang'])) {
+            } elseif (!empty($_GET['lang'])) {
                 // si lo estan cambiando, ponemos el que llega
                 setcookie("goteo_lang", $_GET['lang'], time() + 3600 * 24 * 365);
                 $_SESSION['lang'] = $_GET['lang'];
+                if (!empty($_SESSION['user']->id)) {
+                    \Goteo\Model\User::updateLang($_SESSION['user']->id, $_GET['lang']);
+                }
             } elseif (empty($_SESSION['lang'])) {
                 //primero miramos si tiene cookie
                 if (isset($_COOKIE['goteo_lang'])) {
