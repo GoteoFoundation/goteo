@@ -194,6 +194,13 @@ namespace Goteo\Controller {
                 $drop = Model\Invest::get($invest->droped);
                 $callData = Model\Call::getMini($drop->call);
 
+                // + mail de aviso por tema de óptimo de convocatoria Unia
+                if ($drop->call == 'unia-cofinanciacion-innovacion-educativa' && $projectData->invested >= $projectData->maxcost) {
+                    @mail('goteo@doukeshi.org',
+                        'Proyecto ' . $project->name . ' ha alcanzado el óptimo',
+                        'El proyecto '.$project->name.' ha llegado a '.$projectData->invested.'eur rebasando '.$projectData->maxcost.'eur Corregir riego para que no supere y cerrar grifo.');
+                }
+
                 // texto de capital riego
                 $txt_droped = Text::get('invest-mail_info-drop', $callData->user->name, $drop->amount, $callData->name);
             } else {
