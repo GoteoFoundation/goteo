@@ -22,6 +22,7 @@ define('LANG', 'es');
 exec("ps x | grep " . escapeshellarg(escapeshellcmd(basename(__FILE__))) . " | grep -v grep | awk '{ print $1 }'", $commands);
 
 if (count($commands)>1) {
+    //echo `ps x`;
     die("Ya existe una copia de " . basename(__FILE__) . " en ejecución!\n");
 }
 
@@ -76,7 +77,7 @@ $total_users = 0;
 $mailing = Sender::getSending();
 // si no está activa fin
 if (!$mailing->active) {
-    // inactivo, nada de debug
+    if($debug) echo "INACTIVE\n";
     die;
 }
 if ($mailing->blocked) {
