@@ -7,7 +7,8 @@ namespace Goteo\Controller\Dashboard {
         Goteo\Core\Redirection,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
-		Goteo\Library\Mail,
+        Goteo\Library\Mail,
+		Goteo\Library\Page,
 		Goteo\Library\Template,
 		Goteo\Library\Message;
 
@@ -190,6 +191,34 @@ namespace Goteo\Controller\Dashboard {
             }
         }
         
+        /**
+        * Prepara el contenido a mostrar segun estado de contrato
+        *
+        * @param boolean $show Segmento segun estado
+        **/
+        public static function prepare_content ($show = 'off') {
+
+            $shwCnt = array(
+                'off' => 0,
+                'campaign' => 1,
+                'edit' => 2,
+                'closed' => 3,
+                'review' => 4,
+                'ready' => 5,
+                'recieved' => 6,
+                'payed' => 7,
+                'fulfilled' => 8,
+                'separador' => 9,
+                'siempre' => 10
+            );
+
+            $base = Page::get('dashboard_contract');
+            // explodear el contenido y mostrar segun el show
+            $content = explode('<hr />', $base->content);
+
+            return $content[$shwCnt[$show]];
+        }
+
         
         /**
          * Realiza el envio masivo a participantees o cofinanciadores

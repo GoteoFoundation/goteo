@@ -396,9 +396,9 @@ namespace Goteo\Controller {
                         }
                     }
                     
-                    $viewData['page'] = Page::get('dashboard_contract');
-                    $viewData['show'] = $show;
                     $viewData['contract'] = $contract;
+                    $viewData['content'] = Dashboard\Projects::prepare_content($show);
+                    $viewData['footer'] = Dashboard\Projects::prepare_content('siempre');
 
                     break;
             }
