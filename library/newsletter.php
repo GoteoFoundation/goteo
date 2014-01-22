@@ -125,7 +125,7 @@ namespace Goteo\Library {
             // Proyectos destacados
             $promotes_content = '';
             if (isset($order['promotes'])) {
-                $home_promotes  = \Goteo\Model\Promote::getAll(true);
+                $home_promotes  = \Goteo\Model\Promote::getAll(true, GOTEO_NODE, $lang);
 
                 if (!empty($home_promotes)) {
 //                    $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
