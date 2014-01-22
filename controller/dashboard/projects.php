@@ -339,7 +339,7 @@ namespace Goteo\Controller\Dashboard {
          * @param array $errors (por referncia)
          * @return object $project Instancia de proyecto modificada
          */
-        public static function process_support ($project, &$errors = array()) {
+        public static function process_supports ($project, &$errors = array()) {
             // tratar colaboraciones existentes
             foreach ($project->supports as $key => $support) {
 
