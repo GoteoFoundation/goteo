@@ -192,7 +192,8 @@ namespace Goteo\Library {
                 'tips'    => 'Auto-tips difusión',
                 'invest'  => 'Proceso aporte',
                 'contact' => 'Comunicación',
-                'advice'  => 'Avisos al autor'
+                'advice'  => 'Avisos al autor',
+                'contract'=> 'Proceso contrato'
             );
 
             \asort($groups);
