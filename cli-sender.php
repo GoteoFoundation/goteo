@@ -40,6 +40,10 @@ use Goteo\Core\Resource,
 require_once 'config.php';
 require_once 'core/common.php';
 
+// sobreescribit GOTEO_MAIL_QUOTA si existe para dejar margen a envios individuales
+$LIMIT = round((defined("GOTEO_MAIL_QUOTA") ? GOTEO_MAIL_QUOTA : 50000) * 0.8);
+define("GOTEO_MAIL_QUOTA", $LIMIT);
+
 // Autoloader
 spl_autoload_register(
 
@@ -130,21 +134,18 @@ if (!$fail) {
         $i=0;
         while($i<$total_users) {
             // comprueba la quota para los envios que se van a hacer
-            // si me paso con estos no sigo
-            $rest = Mail::checkLimit($current_concurrency, true) ;
 
-            if ($rest < 0) {
-                if ($debug) echo "dbg: No se pueden enviar $current_concurrency emails, se supera la cuota, lo dejamos para mañana\n";
+            if (!Mail::checkLimit()) {
+                if ($debug) echo "dbg: Se ha alcanzado el límite máximo de ".GOTEO_MAIL_QUOTA." de envíos diarios! Lo dejamos para mañana\n";
                 $total_users = $i; //para los calculos posteriores
                 break;
-            }
-            else {
-                if ($debug) echo "dbg: Y con estos nos queda cuota para $rest \n";
             }
 
             $pids = array();
             $stime = microtime(true);
+
             for($j=0; $j<$current_concurrency; $j++) {
+
                 if($j + $i >= $total_users) break;
                 $user = $users[$i + $j];
                 //envio delegado
@@ -185,8 +186,12 @@ if (!$fail) {
             } while($check_processes);
 
             $process_time = microtime(true) - $stime;
-            $current_rate  = round(($j + 1) / $process_time,2);
-            if($debug) echo "Envios por segundo: $current_rate Máximo: ".MAIL_MAX_RATE."\n";
+            $current_rate  = round($j / $process_time,2);
+
+            //No hace falta incrementar la quota de envio pues ya se hace en Mail::Send()
+            $rest = Mail::checkLimit(null, true);
+            if($debug) echo "Quota de envío restante para hoy: $rest emails, Quota diaria para mailing: ".GOTEO_MAIL_QUOTA."\n";
+            if($debug) echo "Envios por segundo: $current_rate - Ratio máximo: ".MAIL_MAX_RATE."\n";
 
             //aumentamos la concurrencia si el ratio es menor que el 75% de máximo
             if($current_rate < MAIL_MAX_RATE*0.75 && $current_concurrency < MAIL_MAX_CONCURRENCY) {
