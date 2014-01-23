@@ -47,7 +47,7 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos destacados
          */
-        public static function getAll ($activeonly = false, $node = \GOTEO_NODE) {
+        public static function getAll ($activeonly = false, $node = \GOTEO_NODE, $lang = \LANG) {
 
             // estados
             $status = Project::status();
@@ -75,7 +75,7 @@ namespace Goteo\Model {
                 WHERE promote.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
-                ", array(':node' => $node, ':lang'=>\LANG));
+                ", array(':node' => $node, ':lang'=>$lang));
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100, false);

@@ -172,7 +172,7 @@ namespace Goteo\Controller {
                     $nUser = \Goteo\Controller\User::instantReg($formData['email'], $formData['name']);
                     if (!$nUser) {
                         Message::Error(Text::get('regular-login'));
-                        throw new Redirection("/user/login?return=".urlencode('/bazaar/'.$item->id));
+                        throw new Redirection(SEC_URL."/user/login?return=".urlencode('/bazaar/'.$item->id));
                     }
                     $formData['user'] = $nUser;
 
@@ -237,8 +237,8 @@ namespace Goteo\Controller {
                 }
 
                 if ($invest->save($errors)) {
-                    $invest->urlOK  = "/invest/confirmed/bazargoteo/{$invest->id}/{$item->id}";
-                    $invest->urlNOK = "/invest/fail/bazargoteo/{$invest->id}/{$item->id}";
+                    $invest->urlOK  = SEC_URL."/invest/confirmed/bazargoteo/{$invest->id}/{$item->id}";
+                    $invest->urlNOK = SEC_URL."/invest/fail/bazargoteo/{$invest->id}/{$item->id}";
                     Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
 
                     switch($method) {

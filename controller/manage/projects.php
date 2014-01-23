@@ -5,6 +5,7 @@ namespace Goteo\Controller\Manage {
     use Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Message,
+        Goteo\Library\Mail,
         Goteo\Model;
 
     class Projects {
@@ -49,6 +50,31 @@ namespace Goteo\Controller\Manage {
             // poner y quitar flags
             if ($action == 'setflag') {
                 Model\Contract::setStatus($id, array($subaction => 1));
+
+                // aviso al impulsor cuando se activa el 'listo para imprimir'
+                if ($subaction == 'ready') {
+
+                    $mailHandler = new Mail();
+
+                    $mailHandler->to = $project->user->email;
+                    $mailHandler->toName = $project->user->name;
+                    $mailHandler->reply = GOTEO_CONTACT_MAIL;
+                    $mailHandler->replyName = GOTEO_MAIL_NAME;
+                    $mailHandler->subject = 'Contrato listo para imprimir';
+                    $mailHandler->content = \Goteo\Controller\Dashboard\Projects::prepare_content('ready');
+                    $mailHandler->html = true;
+                    $mailHandler->template = 11;
+                    if ($mailHandler->send($errors)) {
+                        // ok
+                    } else {
+                        \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al marcar contrato Listo para imprimir', 'Contrato Listo para imprimir, proyecto '.$project->name.'. Mandarle a mano. <pre>'.print_r($errors,1).'</pre>');
+                    }
+
+                    unset($mailHandler);
+                }
+
+
+
                 throw new Redirection('/manage/projects/#'.$id);
             }
             

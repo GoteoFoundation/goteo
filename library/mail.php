@@ -28,13 +28,13 @@ namespace Goteo\Library {
         /**
          * Constructor.
          */
-        function __construct() {
+        function __construct($exceptions = false) {
             require_once PHPMAILER_CLASS;
             require_once PHPMAILER_SMTP;
             require_once PHPMAILER_POP3;
 
             // Inicializa la instancia PHPMailer.
-            $mail = new \PHPMailer();
+            $mail = new \PHPMailer($exceptions);
 
             // Define  el idioma para los mensajes de error.
             $mail->SetLanguage("es", PHPMAILER_LANGS);
@@ -92,6 +92,12 @@ namespace Goteo\Library {
 		 * @param type array	$errors
 		 */
         public function send(&$errors = array()) {
+
+            if (!self::checkLimit(1)) {
+                $errors['subject'] = 'Limite diario alcanzado.';
+                return false;
+            }
+
             if($this->validate($errors)) {
                 $mail = $this->mail;
                 try {
@@ -147,7 +153,7 @@ namespace Goteo\Library {
                     }
 
                     // si estoy en entorno local ni lo intento
-                    if (DEVGOTEO_LOCAL === true) {
+                    if (defined('DEVGOTEO_LOCAL') && DEVGOTEO_LOCAL === true) {
                         return true;
                     }
 
@@ -341,6 +347,30 @@ namespace Goteo\Library {
             $query = Model::query($sql, $values);
             return $query->fetchAll(\PDO::FETCH_OBJ);
             
+        }
+
+
+        /**
+         * Control de límite de mails que se pueden enviar al día
+         * limite de 50000 al día, nos guardamos 20000 para envios individuales
+         */
+        public static function checkLimit($add = null, $ret = false) {
+
+            $LIMIT = 30000;
+
+            $sql = "SELECT num FROM mailer_limit
+                    WHERE `date` = :date";
+            $values= array(':date'=>date('Y-m-d'));
+
+            $query = Model::query($sql, $values);
+            $cuantos = $query->fetchColumn();
+
+            if (isset($add)) {
+                $cuantos += $add;
+                Model::query("REPLACE INTO mailer_limit (`num`, `date`) VALUES ('$cuantos', '".date('Y-m-d')."')", $values);
+            }
+
+            return ($ret) ? ($LIMIT - $cuantos) : ($cuantos < $LIMIT);
         }
 
 	}

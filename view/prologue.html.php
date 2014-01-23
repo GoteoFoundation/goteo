@@ -33,8 +33,8 @@ if (NODE_ID != GOTEO_NODE) {
 <?php else : ?>
         <meta property="og:title" content="Goteo.org" />
         <meta property="og:description" content="<?php echo utf8_decode(GOTEO_META_DESCRIPTION) ?>" />
-        <meta property="og:image" content="<?php echo SITE_URL ?>/goteo_logo.png" />
-        <meta property="og:url" content="<?php echo SITE_URL ?>" />
+        <meta property="og:image" content="<?php echo SRC_URL ?>/goteo_logo.png" />
+        <meta property="og:url" content="<?php echo SRC_URL ?>" />
 <?php endif; ?>
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.css" />
       <!--[if IE]>
@@ -66,14 +66,14 @@ if (NODE_ID != GOTEO_NODE) {
         <!-- end custom fancybox-->
 
         <!-- vigilante de sesion -->
-        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/watchdog.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
 
         <!-- saltos entre nodos -->
-        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/nodejump.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/nodejump.js"></script>
 
         <?php if (!isset($_SESSION['impersonating']) && $_SESSION['user'] instanceof \Goteo\Model\User && empty($_SESSION['user']->geoloc) && !$_SESSION['user']->geologed && !$_SESSION['user']->unlocable) : ?>
         <!-- geologin -->
-        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/geologin.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geologin.js"></script>
         <?php endif; ?>
         
       

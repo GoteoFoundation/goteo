@@ -508,7 +508,8 @@ namespace Goteo\Controller {
                                         $content = \str_replace($search, $replace, $template->text);
                                         // iniciamos mail
                                         $mailHandler = new Mail();
-                                        $mailHandler->from = GOTEO_CONTACT_MAIL;
+                                        $mailHandler->reply = GOTEO_CONTACT_MAIL;
+                                        $mailHandler->replyName = GOTEO_MAIL_NAME;
                                         $mailHandler->to = $userData->email;
                                         $mailHandler->toName = $userData->name;
                                         $mailHandler->subject = $subject;

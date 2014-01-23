@@ -52,14 +52,14 @@ jQuery(document).ready(function($) {
 		$('.sign-in-with li:hidden').slideDown();
 		return false;
 	});
-    
+
     $("#login_frm").submit(function () {
         $("#thepw").val(hex_sha1($("#thepw").val()));
         return true;
     });
 
-    
-    
+
+
 });
 </script>
 
@@ -80,7 +80,7 @@ jQuery(document).ready(function($) {
             <div>
                 <h2><?php echo Text::get('login-access-header'); ?></h2>
 
-                <form action="/user/login" method="post" id="login_frm">
+                <form action="<?php echo SEC_URL ?>/user/login" method="post" id="login_frm">
                     <input type="hidden" name="return" value="<?php echo $_GET['return']; ?>" />
                     <div class="username">
                         <label><?php echo Text::get('login-access-username-field'); ?>
@@ -98,7 +98,7 @@ jQuery(document).ready(function($) {
 
                 <p><a href="/user/recover"><?php echo Text::get('login-recover-link'); ?></a></p>
                 <br />
-                <p><a class="baja" href="/user/leave"><?php echo Text::get('login-leave-button'); ?></a></p>
+                <p><a class="baja" href="<?php echo SEC_URL; ?>/user/leave"><?php echo Text::get('login-leave-button'); ?></a></p>
 
             </div>
         </div>
@@ -121,7 +121,7 @@ jQuery(document).ready(function($) {
 					'twitter' => '<a href="/user/oauth?provider=twitter">' . Text::get('login-signin-twitter') . '</a>',
 					'Google' => '<a href="/user/oauth?provider=Google">' . Text::get('login-signin-google') . '</a>',
 					'Yahoo' => '<a href="/user/oauth?provider=Yahoo">' . Text::get('login-signin-yahoo') . '</a>',
-					'myOpenid' => '<a href="/user/oauth?provider=myOpenid">' . Text::get('login-signin-myopenid') . '</a>',
+					'Ubuntu' => '<a href="/user/oauth?provider=Ubuntu">' . Text::get('login-signin-ubuntu') . '</a>',
 					'linkedin' => '<a href="/user/oauth?provider=linkedin">' . Text::get('login-signin-linkedin') . '</a>',
 					'openid' => ''
                 );
@@ -147,7 +147,7 @@ jQuery(document).ready(function($) {
         <div class="register">
             <div>
                 <h2><?php echo Text::get('login-register-header'); ?></h2>
-                <form action="/user/register" method="post">
+                <form action="<?php echo SEC_URL; ?>/user/register" method="post">
 
                     <div class="userid">
                         <label for="RegisterUserid"><?php echo Text::get('login-register-userid-field'); ?></label>

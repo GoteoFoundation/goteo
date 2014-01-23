@@ -30,7 +30,7 @@ if ($_SESSION['recovering'] == $_SESSION['user']->id) {
 
 extract($_POST);
 ?>
-<form action="/dashboard/profile/access" method="post" enctype="multipart/form-data">
+<form action="<?php echo SEC_URL; ?>/dashboard/profile/access" method="post" enctype="multipart/form-data">
 
 <?php
 echo new SuperForm(array(
@@ -131,4 +131,4 @@ echo new SuperForm(array(
 
 </form>
 <hr />
-<a class="button red" href="<?php echo SITE_URL ?>/user/leave?email=<?php echo $user->email ?>"><?php echo Text::get('login-leave-header'); ?></a>
+<a class="button red" href="<?php echo SEC_URL ?>/user/leave?email=<?php echo $user->email ?>"><?php echo Text::get('login-leave-header'); ?></a>

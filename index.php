@@ -72,6 +72,42 @@ $conf_file = 'nodesys/'.NODE_ID.'/config.php';
 if (file_exists($conf_file)) {
     require_once $conf_file;
 }
+
+// url segura
+if (\DEVGOTEO_LOCAL) {
+
+    // en local la url es normal
+    if (defined('NODE_URL')) {
+        define('SEC_URL', NODE_URL);
+    }
+    else {
+        define('SEC_URL', SITE_URL);
+    }
+    define('SRC_URL', SEC_URL);
+    $_SERVER['HTTPS'] = 'on';
+
+} else {
+
+    if (defined('NODE_URL')) {
+        define('SEC_URL', str_replace('http://', 'https://', NODE_URL));
+    }
+    else {
+        define('SEC_URL', str_replace('http://', 'https://', SITE_URL));
+    }
+    if ($_SERVER['HTTPS'] === 'on') {
+        define('SRC_URL', SEC_URL);
+    } else {
+        if (defined('NODE_URL')) {
+            define('SRC_URL', NODE_URL);
+        }
+        else {
+            define('SRC_URL', SITE_URL);
+        }
+    }
+
+}
+
+
 /* Fin inicializacion nodo */
 
 /**
@@ -111,7 +147,7 @@ try {
         if ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
             define('CRON_EXEC', true);
         } else {
-            throw new Redirection("/user/login/?return=".rawurlencode($uri));
+            throw new Redirection(SEC_URL."/user/login/?return=".rawurlencode($uri));
         }
     }
 

@@ -483,9 +483,9 @@ namespace Goteo\Model {
         /**
          * Este método actualiza directamente el campo de idioma preferido
          */
-        public function updateLang (&$errors = array()) {
+        public function updateLang ($id, $lang) {
 
-            $values = array(':id'=>$this->id, ':lang'=>$this->lang);
+            $values = array(':id'=>$id, ':lang'=>$lang);
 
             try {
                 $sql = "UPDATE user SET `lang` = :lang WHERE id = :id";
@@ -1091,7 +1091,7 @@ namespace Goteo\Model {
 
                 // En el contenido:
                 $search  = array('%USERNAME%', '%URL%');
-                $replace = array($row->name, $URL . '/user/leave/' . base64_encode($token));
+                $replace = array($row->name, SEC_URL . '/user/leave/' . base64_encode($token));
                 $content = \str_replace($search, $replace, $template->text);
                 // Email de recuperacion
                 $mail = new Mail();

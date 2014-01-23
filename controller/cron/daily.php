@@ -22,11 +22,22 @@ namespace Goteo\Controller\Cron {
             foreach ($projects as $project) {
                 
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
-                if ($project->days > 40 || $project->days > 360) continue;
+                if ($project->days > 42 || $project->days > 360) continue;
 
                 if ($debug) echo "Proyecto {$project->name}, Impulsor:  {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias<br />";
                 
                 // primero los que no se bloquean
+                //Solicitud de datos del contrato
+                if ($project->days == 41) {
+                        // si ha superado el mínimo
+                        if ($project->invested >= $project->mincost) {
+                            if ($debug) echo "Solicitud de datos contrato<br />";
+                            Send::toOwner('1d_after', $project);
+                        } else {
+                            if ($debug) echo "Solicitud de datos, no se envía porque no está financiado<br />";
+                        }
+                }
+
                 // Recuerdo al autor proyecto, 2 meses despues de campaña finalizada
                 if ($project->days == 140) {
                         // si quedan recompensas/retornos pendientes por cumplir

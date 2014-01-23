@@ -40,6 +40,11 @@ namespace Goteo\Controller {
                 throw new Redirection('/project/'.$project, Redirection::TEMPORARY);
             }
 
+            if (Model\Project\Conf::getNoinvest($project)) {
+                Message::Error(Text::get('investing_closed'));
+                throw new Redirection('/project/'.$project);
+            }
+
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $errors = array();
@@ -48,12 +53,12 @@ namespace Goteo\Controller {
 
                 if (!isset($methods[$method])) {
                     Message::Error(Text::get('invest-method-error'));
-                    throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 if (empty($_POST['amount'])) {
                     Message::Error(Text::get('invest-amount-error'));
-                    throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 // dirección de envio para las recompensas
@@ -69,7 +74,7 @@ namespace Goteo\Controller {
 
                 if ($projectData->owner == $_SESSION['user']->id) {
                     Message::Error(Text::get('invest-owner-error'));
-                    throw new Redirection("/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 // añadir recompensas que ha elegido
@@ -121,8 +126,8 @@ namespace Goteo\Controller {
                 }
 
                 if ($invest->save($errors)) {
-                    $invest->urlOK  = "/invest/confirmed/{$project}/{$invest->id}";
-                    $invest->urlNOK = "/invest/fail/{$project}/{$invest->id}";
+                    $invest->urlOK  = SEC_URL."/invest/confirmed/{$project}/{$invest->id}";
+                    $invest->urlNOK = SEC_URL."/invest/fail/{$project}/{$invest->id}";
                     Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
 
                     switch($method) {
@@ -188,6 +193,13 @@ namespace Goteo\Controller {
             if (!empty($invest->droped)) {
                 $drop = Model\Invest::get($invest->droped);
                 $callData = Model\Call::getMini($drop->call);
+
+                // + mail de aviso por tema de óptimo de convocatoria Unia
+                if ($drop->call == 'unia-cofinanciacion-innovacion-educativa' && $projectData->invested >= $projectData->maxcost) {
+                    @mail('goteo@doukeshi.org',
+                        'Proyecto ' . $project->name . ' ha alcanzado el óptimo',
+                        'El proyecto '.$project->name.' ha llegado a '.$projectData->invested.'eur rebasando '.$projectData->maxcost.'eur Corregir riego para que no supere y cerrar grifo.');
+                }
 
                 // texto de capital riego
                 $txt_droped = Text::get('invest-mail_info-drop', $callData->user->name, $drop->amount, $callData->name);
@@ -350,7 +362,8 @@ namespace Goteo\Controller {
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
-            $mailHandler->from = GOTEO_CONTACT_MAIL;
+            $mailHandler->reply = GOTEO_CONTACT_MAIL;
+            $mailHandler->replyName = GOTEO_MAIL_NAME;
             $mailHandler->to = $_SESSION['user']->email;
             $mailHandler->toName = $_SESSION['user']->name;
             $mailHandler->subject = $subject;

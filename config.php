@@ -75,13 +75,13 @@ define('GOTEO_DATA_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data' . DIR
 // Mail
 define('GOTEO_MAIL_FROM', 'noreply@goteo.org');
 define('GOTEO_MAIL_NAME', 'Goteo.org');
-define('GOTEO_MAIL_TYPE', 'mail');
+define('GOTEO_MAIL_TYPE', 'smtp');
 define('GOTEO_MAIL_SMTP_AUTH', true);
-define('GOTEO_MAIL_SMTP_SECURE', 'ssl');
-define('GOTEO_MAIL_SMTP_HOST', 'mail.goteo.org');
-define('GOTEO_MAIL_SMTP_PORT', 465);
-define('GOTEO_MAIL_SMTP_USERNAME', 'hola@goteo.org');
-define('GOTEO_MAIL_SMTP_PASSWORD', 'goteo1234');
+define('GOTEO_MAIL_SMTP_SECURE', 'tls');
+define('GOTEO_MAIL_SMTP_HOST', 'email-smtp.us-east-1.amazonaws.com');
+define('GOTEO_MAIL_SMTP_PORT', 587);
+define('GOTEO_MAIL_SMTP_USERNAME', 'AKIAIB4NK7M6VJPJ3GWA');
+define('GOTEO_MAIL_SMTP_PASSWORD', 'AkJ7j1QgxvgyjCR9/bHxtSh2f2yE0MNFBiVCciB92ifn');
 
 define('GOTEO_MAIL', 'hola_goteo@doukeshi.org');
 define('GOTEO_CONTACT_MAIL', 'info_goteo@doukeshi.org');
@@ -91,7 +91,6 @@ define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
 define('SITE_URL', 'http://devgoteo.org');
-define('SRC_URL', 'http://resources.devgoteo.org');
 
 // Cron params
 define('CRON_PARAM', '4dTJYNfPovGqyMt');

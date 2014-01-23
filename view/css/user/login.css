@@ -128,8 +128,8 @@ body.user-login .sign-in-with {
 .sign-in-with li.yahoo a {
 	background-image: url('/view/css/openid-yahoo.png');
 }
-.sign-in-with li.myopenid a {
-	background-image: url('/view/css/openid-myopenid.png');
+.sign-in-with li.ubuntu a {
+	background-image: url('/view/css/openid-ubuntu.png');
 }
 .sign-in-with li.openid input {
 	color: #999;

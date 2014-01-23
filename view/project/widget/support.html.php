@@ -7,6 +7,9 @@ $level = (int) $this['level'] ?: 3;
 
 $project = $this['project'];
 
+// veamos si tiene el grifo cerrado
+if (Goteo\Model\Project\Conf::getNoinvest($project->id)) 
+    $project->status = 4;
 ?>
 <div class="widget project-support collapsable" id="project-support">
 
@@ -37,7 +40,7 @@ $project = $this['project'];
     
     <div class="buttons">
         <?php if ($project->status == 3) : // boton apoyar solo si esta en campaña ?>
-        <a class="button violet supportit" href="/project/<?php echo $project->id; ?>/invest"><?php echo Text::get('regular-invest_it'); ?></a>
+        <a class="button violet supportit" href="<?php echo SEC_URL."/project/{$project->id}/invest"; ?>"><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>
         <a class="button view" href="/project/<?php echo $project->id ?>/updates"><?php echo Text::get('regular-see_blog'); ?></a>
         <?php endif; ?>

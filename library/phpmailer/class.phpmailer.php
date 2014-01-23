@@ -81,13 +81,13 @@ class PHPMailer {
    * Sets the From email address for the message.
    * @var string
    */
-  public $From              = 'root@localhost';
+  public $From              = 'noreply@goteo.org';
 
   /**
    * Sets the From name of the message.
    * @var string
    */
-  public $FromName          = 'Root User';
+  public $FromName          = 'Goteo.org';
 
   /**
    * Sets the Sender email (Return-Path) of the message.  If not empty,
@@ -409,7 +409,10 @@ class PHPMailer {
       // Piñon para pruebas en beta
       if (strpos($address, 'goteo.org') !== false ||
           strpos($address, 'platoniq.net') !== false ||
-          strpos($address, 'pelousse.com') !== false
+          strpos($address, 'pelousse.com') !== false ||
+          strpos($address, 'julian.canaves@gmail.com') !== false ||
+          strpos($address, 'esenabre@gmail.com') !== false ||
+          strpos($address, 'olivierschulbaum@gmail.com') !== false
           ) {
         return $this->AddAnAddress('to', $address, $name);
       } else {
@@ -1476,13 +1479,13 @@ class PHPMailer {
           return false;
         }
       }
-      if (PHP_VERSION < 6) {
+      if (PHP_VERSION < 5.3) {
         $magic_quotes = get_magic_quotes_runtime();
         set_magic_quotes_runtime(0);
       }
       $file_buffer  = file_get_contents($path);
       $file_buffer  = $this->EncodeString($file_buffer, $encoding);
-      if (PHP_VERSION < 6) { set_magic_quotes_runtime($magic_quotes); }
+      if (PHP_VERSION < 5.3) { set_magic_quotes_runtime($magic_quotes); }
       return $file_buffer;
     } catch (Exception $e) {
       $this->SetError($e->getMessage());

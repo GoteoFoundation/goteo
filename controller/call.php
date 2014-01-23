@@ -163,8 +163,8 @@ namespace Goteo\Controller {
                         $mailHandler->toName = 'Revisor de convocatorias';
                         $mailHandler->subject = 'Convocatoria ' . $call->name . ' finalizó la edición';
                         $mailHandler->content = '<p>Se ha finalizado la edicion de la convocatoria <span class="message-highlight-blue">'.$call->name.'</span>, se puede ver en <span class="message-highlight-blue"><a href="'.SITE_URL.'/call/'.$call->id.'">'.SITE_URL.'/call/'.$call->id.'</a></span></p>';
-                        $mailHandler->fromName = "{$call->user->name}";
-                        $mailHandler->from = $call->user->email;
+                        $mailHandler->reply = $call->user->email;
+                        $mailHandler->replyName = "{$call->user->name}";
                         $mailHandler->html = true;
                         $mailHandler->template = 0;
                         if ($mailHandler->send($errors)) {
@@ -312,7 +312,7 @@ namespace Goteo\Controller {
             if (empty($_SESSION['user'])) {
                 $_SESSION['jumpto'] = '/call/create';
                 Message::Info(Text::get('user-login-required-to_create'));
-                throw new Redirection("/user/login");
+                throw new Redirection(SEC_URL."/user/login");
             } elseif ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
                 $error = true;
             } elseif (empty($_POST['name'])) {
