@@ -85,6 +85,8 @@ define('GOTEO_MAIL_SMTP_PASSWORD', 'AkJ7j1QgxvgyjCR9/bHxtSh2f2yE0MNFBiVCciB92ifn
 
 define('GOTEO_MAIL', 'hola_goteo@doukeshi.org');
 define('GOTEO_CONTACT_MAIL', 'info_goteo@doukeshi.org');
+define('GOTEO_FAIL_MAIL', 'failgoteo@doukeshi.org');
+define('GOTEO_LOG_MAIL', 'goteomaillog@gmail.com');
 
 // Language
 define('GOTEO_DEFAULT_LANG', 'es');
@@ -98,19 +100,8 @@ define('CRON_VALUE', 'HsIv6aG36ek2s7Q');
 
 
 /****************************************************
-Paypal web_constants.php
-
-Define constants used by web pages in this file
+Paypal constants (sandbox)
 ****************************************************/
-/* Define the PayPal URL. This is the URL that the buyer is
-   first sent to to authorize payment with their paypal account
-   change the URL depending if you are testing on the sandbox
-   or going to the live PayPal site
-   For the sandbox, the URL is
-   https://www.sandbox.paypal.com/webscr&cmd=_ap-payment&paykey=
-   For the live site, the URL is
-   https://www.paypal.com/webscr&cmd=_ap-payment&paykey=
-   */
 define('PAYPAL_REDIRECT_URL', 'https://www.sandbox.paypal.com/webscr&cmd=');
 define('PAYPAL_DEVELOPER_PORTAL', 'https://developer.paypal.com');
 define('PAYPAL_DEVICE_ID', 'goteo.org');
@@ -119,39 +110,21 @@ define('PAYPAL_BUSINESS_ACCOUNT', 'goteo_1314917819_biz@gmail.com');
 define('PAYPAL_IP_ADDRESS', '127.0.0.1');
 
 /****************************************************
-TPV constants
+TPV CECA constants (test)
 ****************************************************/
-/////////// SERMEPA
-/*
-define('TPV_MERCHANT_CODE', '');
-define('TPV_REDIRECT_URL', 'https://sis-t.sermepa.es:25443/sis/realizarPago');
-define('TPV_ENCRYPT_KEY', 'qwertyasdf0123456789');
-define('TPV_WEBSERVICE_URL', 'https://sis-t.sermepa.es:25443/sis/operaciones');
-*/
-
-/////////// CECA
-define('TPV_MERCHANT_CODE', '');
+define('TPV_MERCHANT_CODE', '079216792');
 define('TPV_REDIRECT_URL', 'http://tpv.ceca.es:8000/cgi-bin/tpv');
 define('TPV_ENCRYPT_KEY', '42353028');
 
-/******************************************************
-OAUTH APP's Secrets
-*******************************************************/
+/****************************************************
+Social Services constants
+****************************************************/
 if (!defined('OAUTH_LIBS')) {
     define ('OAUTH_LIBS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'oauth' . DIRECTORY_SEPARATOR . 'SocialAuth.php');
 }
-
 //Facebook (l'app de Facebook la té l'usuari ivan@microstudi.net a Facebook)
-/*
-//facebook app Julian
-define('OAUTH_FACEBOOK_ID', '189133314484241'); //
-define('OAUTH_FACEBOOK_SECRET', 'f557c5ef0daa83a36bde55807d466d00'); //
-*/
-//*
-//facebook app Ivan
 define('OAUTH_FACEBOOK_ID', '184483011630708'); //
 define('OAUTH_FACEBOOK_SECRET', '3ecdf6b61b43823f70fefd7b4a77378b'); //
-
 
 //Twitter (l'app de Twitter la té l'usuari goteofunding a Twitter)
 define('OAUTH_TWITTER_ID', 'fO2A3Kx5i2zv4npTUFWWKQ'); //
@@ -160,7 +133,6 @@ define('OAUTH_TWITTER_SECRET', 'JfMdtLhGgxx4z6aKiZJ6Pk2wmLlPly3bUohkP6U9zo'); //
 //Linkedin (l'app de LinkedIn la té l'usuari ivan@microstudi.net a LinkedIn)
 define('OAUTH_LINKEDIN_ID', 'xtmfiu6onthw'); //
 define('OAUTH_LINKEDIN_SECRET', 'nNFLjxt1dY6NvuMY'); //
-
 
 //Un secreto inventado cualquiera para encriptar los emails que sirven de secreto en openid
 define('OAUTH_OPENID_SECRET','CjFap3Ow4HJvUahAjWZ8kQ==');
