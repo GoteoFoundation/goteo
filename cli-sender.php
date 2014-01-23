@@ -96,6 +96,7 @@ if (!$fail) {
     $users = Sender::getRecipients($mailing->id, null); //sin limite de usuarios! los queremos todos, el script va por cli sin limite de tiempo
 
     $total_users = count($users);
+
     // si no quedan pendientes, grabamos el feed y desactivamos
     if (empty($users)) {
 
@@ -116,15 +117,6 @@ if (!$fail) {
         // destinatarios
         if ($debug) echo "dbg: Enviamos a $total_users usuarios \n";
 
-        // si me paso con estos no sigo
-        $rest = Mail::checkLimit(count($users), true) ;
-        if ($debug) echo 'dbg: Y con estos nos queda cuota para '.$rest." \n";
-
-        if ($rest < 0) {
-            if ($debug) echo "dbg: Hoy no podemos enviarlos\n";
-            break;
-        }
-
         //limpiar logs
         for($i=0; $i<MAIL_MAX_CONCURRENCY; $i++) {
             @unlink(__DIR__ . "/logs/cli-sendmail-$i.log");
@@ -137,6 +129,19 @@ if (!$fail) {
 
         $i=0;
         while($i<$total_users) {
+            // comprueba la quota para los envios que se van a hacer
+            // si me paso con estos no sigo
+            $rest = Mail::checkLimit($current_concurrency, true) ;
+
+            if ($rest < 0) {
+                if ($debug) echo "dbg: No se pueden enviar $current_concurrency emails, se supera la cuota, lo dejamos para mañana\n";
+                $total_users = $i; //para los calculos posteriores
+                break;
+            }
+            else {
+                if ($debug) echo "dbg: Y con estos nos queda cuota para $rest \n";
+            }
+
             $pids = array();
             $stime = microtime(true);
             for($j=0; $j<$current_concurrency; $j++) {
