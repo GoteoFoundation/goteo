@@ -22,6 +22,7 @@ define('LANG', 'es');
 exec("ps x | grep " . escapeshellarg(escapeshellcmd(basename(__FILE__))) . " | grep -v grep | awk '{ print $1 }'", $commands);
 
 if (count($commands)>1) {
+    //echo `ps x`;
     die("Ya existe una copia de " . basename(__FILE__) . " en ejecución!\n");
 }
 
@@ -38,6 +39,10 @@ use Goteo\Core\Resource,
 
 require_once 'config.php';
 require_once 'core/common.php';
+
+// sobreescribit GOTEO_MAIL_QUOTA si existe para dejar margen a envios individuales
+$LIMIT = round((defined("GOTEO_MAIL_QUOTA") ? GOTEO_MAIL_QUOTA : 50000) * 0.8);
+define("GOTEO_MAIL_QUOTA", $LIMIT);
 
 // Autoloader
 spl_autoload_register(
@@ -76,7 +81,7 @@ $total_users = 0;
 $mailing = Sender::getSending();
 // si no está activa fin
 if (!$mailing->active) {
-    // inactivo, nada de debug
+    if($debug) echo "INACTIVE\n";
     die;
 }
 if ($mailing->blocked) {
@@ -95,6 +100,7 @@ if (!$fail) {
     $users = Sender::getRecipients($mailing->id, null); //sin limite de usuarios! los queremos todos, el script va por cli sin limite de tiempo
 
     $total_users = count($users);
+
     // si no quedan pendientes, grabamos el feed y desactivamos
     if (empty($users)) {
 
@@ -115,15 +121,6 @@ if (!$fail) {
         // destinatarios
         if ($debug) echo "dbg: Enviamos a $total_users usuarios \n";
 
-        // si me paso con estos no sigo
-        $rest = Mail::checkLimit(count($users), true) ;
-        if ($debug) echo 'dbg: Y con estos nos queda cuota para '.$rest." \n";
-
-        if ($rest < 0) {
-            if ($debug) echo "dbg: Hoy no podemos enviarlos\n";
-            break;
-        }
-
         //limpiar logs
         for($i=0; $i<MAIL_MAX_CONCURRENCY; $i++) {
             @unlink(__DIR__ . "/logs/cli-sendmail-$i.log");
@@ -136,9 +133,19 @@ if (!$fail) {
 
         $i=0;
         while($i<$total_users) {
+            // comprueba la quota para los envios que se van a hacer
+
+            if (!Mail::checkLimit()) {
+                if ($debug) echo "dbg: Se ha alcanzado el límite máximo de ".GOTEO_MAIL_QUOTA." de envíos diarios! Lo dejamos para mañana\n";
+                $total_users = $i; //para los calculos posteriores
+                break;
+            }
+
             $pids = array();
             $stime = microtime(true);
+
             for($j=0; $j<$current_concurrency; $j++) {
+
                 if($j + $i >= $total_users) break;
                 $user = $users[$i + $j];
                 //envio delegado
@@ -179,8 +186,12 @@ if (!$fail) {
             } while($check_processes);
 
             $process_time = microtime(true) - $stime;
-            $current_rate  = round(($j + 1) / $process_time,2);
-            if($debug) echo "Envios por segundo: $current_rate Máximo: ".MAIL_MAX_RATE."\n";
+            $current_rate  = round($j / $process_time,2);
+
+            //No hace falta incrementar la quota de envio pues ya se hace en Mail::Send()
+            $rest = Mail::checkLimit(null, true);
+            if($debug) echo "Quota de envío restante para hoy: $rest emails, Quota diaria para mailing: ".GOTEO_MAIL_QUOTA."\n";
+            if($debug) echo "Envios por segundo: $current_rate - Ratio máximo: ".MAIL_MAX_RATE."\n";
 
             //aumentamos la concurrencia si el ratio es menor que el 75% de máximo
             if($current_rate < MAIL_MAX_RATE*0.75 && $current_concurrency < MAIL_MAX_CONCURRENCY) {

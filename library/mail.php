@@ -104,7 +104,7 @@ namespace Goteo\Library {
                     // Construye el mensaje
                     $mail->From = $this->from;
                     $mail->FromName = $this->fromName;
-                    
+
                     $mail->AddAddress($this->to, $this->toName);
                     // copia a mail log si no es masivo
                     if (!$this->massive) {
@@ -346,17 +346,18 @@ namespace Goteo\Library {
 
             $query = Model::query($sql, $values);
             return $query->fetchAll(\PDO::FETCH_OBJ);
-            
+
         }
 
 
         /**
          * Control de límite de mails que se pueden enviar al día
-         * limite de 50000 al día, nos guardamos 20000 para envios individuales
+         * limite de 50000 al día, o lo que esté definido en la variable GOTEO_MAIL_QUOT
+         * cli-sender.php sobreescribe GOTEO_MAIL_QUOTA para guardarnos un 20% para envios individuales
          */
         public static function checkLimit($add = null, $ret = false) {
 
-            $LIMIT = 30000;
+            $LIMIT = (defined("GOTEO_MAIL_QUOTA") ? GOTEO_MAIL_QUOTA : 50000);
 
             $sql = "SELECT num FROM mailer_limit
                     WHERE `date` = :date";
