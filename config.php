@@ -45,8 +45,8 @@ define('GOTEO_DATA_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data' . DIR
 **/
 if (file_exists('local-settings.php')) //en .gitignore
     require 'local-settings.php';
-elseif (file_exists('real-settings.php')) //se considera en git
-    require 'real-settings.php';
+elseif (file_exists('live-settings.php')) //se considera en git
+    require 'live-settings.php';
 else
     die(<<<EOF
 No se encuentra el archivo de configuraci&oacute;n <strong>local-settings.php</strong>, debes crear este archivo en la raiz.<br />
