@@ -2,4 +2,5 @@
 /controller/tpv_sermepa.php
 /view/css/goteo.min.css
 /nodesys/_*
+local-settings.php
 tmp-settings.php
