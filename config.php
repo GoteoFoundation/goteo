@@ -65,9 +65,9 @@ define('GOTEO_DB_DRIVER', 'mysql');
 define('GOTEO_DB_HOST', 'localhost');
 define('GOTEO_DB_PORT', 3306);
 define('GOTEO_DB_CHARSET', 'UTF-8');
-define('GOTEO_DB_SCHEMA', 'goteo');
-define('GOTEO_DB_USERNAME', 'goteo');
-define('GOTEO_DB_PASSWORD', 'goteo1234');
+define('GOTEO_DB_SCHEMA', 'goteodev');
+define('GOTEO_DB_USERNAME', 'root');
+define('GOTEO_DB_PASSWORD', '');
 
 //Uploads i catxe
 define('GOTEO_DATA_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR);
