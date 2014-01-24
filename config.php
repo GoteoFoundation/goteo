@@ -40,10 +40,13 @@ if (!defined('OAUTH_LIBS')) {
 define('GOTEO_DATA_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR);
 
 /**
- Carga de configuración local
+ * Carga de configuración local si existe
+ * Si no se carga el real (si existe)
 **/
-if (file_exists('local-settings.php'))
+if (file_exists('local-settings.php')) //en .gitignore
     require 'local-settings.php';
+elseif (file_exists('live-settings.php')) //se considera en git
+    require 'live-settings.php';
 else
     die(<<<EOF
 No se encuentra el archivo de configuraci&oacute;n <strong>local-settings.php</strong>, debes crear este archivo en la raiz.<br />
@@ -89,6 +92,11 @@ define('GOTEO_MAIL', 'info@example.com');
 define('GOTEO_CONTACT_MAIL', 'info@example.com');
 define('GOTEO_FAIL_MAIL', 'fail@example.com');
 define('GOTEO_LOG_MAIL', 'sitelog@example.com');
+
+//Quota de envio máximo para goteo en 24 horas
+define('GOTEO_MAIL_QUOTA', 50000);
+//Quota de envio máximo para newsletters para goteo en 24 horas
+define('GOTEO_MAIL_SENDER_QUOTA', round(GOTEO_MAIL_QUOTA * 0.8));
 
 // Language
 define('GOTEO_DEFAULT_LANG', 'es');
@@ -178,7 +186,7 @@ if (file_exists('tmp-settings.php'))
     require 'tmp-settings.php';
 else {
     // Comportamientos temporales
+    define('DEVGOTEO_LOCAL', false);
     define('GOTEO_MAINTENANCE', null);
     define('GOTEO_EASY', null);
 }
-
