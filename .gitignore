@@ -1,14 +1,5 @@
-
 /data/
 /controller/tpv_sermepa.php
-<<<<<<< HEAD
-/library/tpv_caja_laboral.php
-/library/tpv/wshandler_cjlaboral.php
-=======
-/library/tpv/wshandler_cjlaboral.php
-/library/tpv_caja_laboral.php
->>>>>>> view/project/form
-/robots.txt
 /view/css/goteo.min.css
-/nodesys/_andalucia_verde
-/data/images
+/nodesys/_*
+tmp-settings.php
