@@ -40,9 +40,8 @@ use Goteo\Core\Resource,
 require_once 'config.php';
 require_once 'core/common.php';
 
-// sobreescribit GOTEO_MAIL_QUOTA si existe para dejar margen a envios individuales
-$LIMIT = round((defined("GOTEO_MAIL_QUOTA") ? GOTEO_MAIL_QUOTA : 50000) * 0.8);
-define("GOTEO_MAIL_QUOTA", $LIMIT);
+// Limite para sender, (deja margen para envios individuales)
+$LIMIT = (defined("GOTEO_MAIL_SENDER_QUOTA") ? GOTEO_MAIL_SENDER_QUOTA : 40000);
 
 // Autoloader
 spl_autoload_register(
@@ -70,7 +69,7 @@ $debug = true;
 $fail = false;
 
 // check the limit
-if (!Mail::checkLimit()) {
+if (!Mail::checkLimit(null, false, $LIMIT)) {
     die("LIMIT REACHED\n");
 }
 
@@ -135,8 +134,8 @@ if (!$fail) {
         while($i<$total_users) {
             // comprueba la quota para los envios que se van a hacer
 
-            if (!Mail::checkLimit()) {
-                if ($debug) echo "dbg: Se ha alcanzado el límite máximo de ".GOTEO_MAIL_QUOTA." de envíos diarios! Lo dejamos para mañana\n";
+            if (!Mail::checkLimit(null, false, $LIMIT)) {
+                if ($debug) echo "dbg: Se ha alcanzado el límite máximo de ".GOTEO_MAIL_SENDER_QUOTA." de envíos diarios! Lo dejamos para mañana\n";
                 $total_users = $i; //para los calculos posteriores
                 break;
             }
@@ -189,8 +188,8 @@ if (!$fail) {
             $current_rate  = round($j / $process_time,2);
 
             //No hace falta incrementar la quota de envio pues ya se hace en Mail::Send()
-            $rest = Mail::checkLimit(null, true);
-            if($debug) echo "Quota de envío restante para hoy: $rest emails, Quota diaria para mailing: ".GOTEO_MAIL_QUOTA."\n";
+            $rest = Mail::checkLimit(null, true, $LIMIT);
+            if($debug) echo "Quota de envío restante para hoy: $rest emails, Quota diaria para mailing: ".GOTEO_MAIL_SENDER_QUOTA."\n";
             if($debug) echo "Envios por segundo: $current_rate - Ratio máximo: ".MAIL_MAX_RATE."\n";
 
             //aumentamos la concurrencia si el ratio es menor que el 75% de máximo
