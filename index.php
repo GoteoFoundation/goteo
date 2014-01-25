@@ -72,7 +72,16 @@ $conf_file = 'nodesys/'.NODE_ID.'/config.php';
 if (file_exists($conf_file)) {
     require_once $conf_file;
 }
-
+// temporal hasta activar certificado
+    if (defined('NODE_URL')) {
+        define('SRC_URL', NODE_URL);
+    define('SEC_URL', NODE_URL);
+    }
+    else {
+        define('SRC_URL', SITE_URL);
+    define('SEC_URL', SRC_URL);
+    }
+/*
 // url segura
 if (\DEVGOTEO_LOCAL) {
 
@@ -107,7 +116,7 @@ if (\DEVGOTEO_LOCAL) {
 
 }
 
-
+*/
 /* Fin inicializacion nodo */
 
 /**

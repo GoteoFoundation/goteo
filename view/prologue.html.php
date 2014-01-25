@@ -36,7 +36,7 @@ if (NODE_ID != GOTEO_NODE) {
         <meta property="og:image" content="<?php echo SRC_URL ?>/goteo_logo.png" />
         <meta property="og:url" content="<?php echo SRC_URL ?>" />
 <?php endif; ?>
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.min.css" />
       <!--[if IE]>
       <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
       <![endif]-->
@@ -86,9 +86,22 @@ if (NODE_ID != GOTEO_NODE) {
             <script src="<?php echo SRC_URL ?>/view/js/jquery-ui-1.10.3.autocomplete.min.js"></script>
         <?php endif; ?>
 
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17744816-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
     </head>
 
-    <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?> style="background-color:#B5DADC;">
+    <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?>>
 <?php if (isset($fbCode)) : ?>
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
