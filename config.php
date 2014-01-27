@@ -6,6 +6,21 @@ if (function_exists('ini_set')) {
     throw new Exception("No puedo añadir la API GOTEO al include_path.");
 }
 
+
+// Esto no sirve para quitar magic quotes. Ver php.net/manual/en/security.magicquotes.disabling.php
+// Tampoco lo he podido quitar a nivel de htacces, sale php.ini
+/*
+if (function_exists('ini_set')) {
+    if (ini_set('magic_quotes_gpc', '0') === false) {
+        phpinfo();
+        die;
+        throw new Exception("No puedo quitar las magic quotes");
+    }
+} else {
+    throw new Exception("no hay ini_set");
+}
+*/
+
 define('PEAR', GOTEO_PATH . 'library' . '/' . 'pear' . '/');
 if (function_exists('ini_set')) {
     ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . PEAR);
@@ -97,6 +112,12 @@ define('GOTEO_LOG_MAIL', 'sitelog@example.com');
 define('GOTEO_MAIL_QUOTA', 50000);
 //Quota de envio máximo para newsletters para goteo en 24 horas
 define('GOTEO_MAIL_SENDER_QUOTA', round(GOTEO_MAIL_QUOTA * 0.8));
+//clave de Amazon SNS para recopilar bounces automaticamente: 'arn:aws:sns:us-east-1:XXXXXXXXX:amazon-ses-bounces'
+//la URL de informacion debe ser: goteo_url.tld/aws-sns.php
+define('AWS_SNS_CLIENT_ID', 'XXXXXXXXX');
+define('AWS_SNS_REGION', 'us-east-1');
+define('AWS_SNS_BOUNCES_TOPIC', 'amazon-ses-bounces');
+define('AWS_SNS_COMPLAINTS_TOPIC', 'amazon-ses-complaints');
 
 // Language
 define('GOTEO_DEFAULT_LANG', 'es');
