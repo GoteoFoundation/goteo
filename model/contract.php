@@ -165,6 +165,10 @@ namespace Goteo\Model {
                 // ponemos tambien los datos de seguimiento de estado
                 $contract->status = self::getStatus($id);
 
+                // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
+                $contract->draft = ($contract->status->ready) ? false : true;
+                
+
                 // cargamos los documentos
                 $contract->docs = Contract\Document::getDocs($id);
             
