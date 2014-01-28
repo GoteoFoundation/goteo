@@ -218,47 +218,32 @@ namespace Goteo\Model\User {
                 ORDER BY user.email ASC";
 
             $query = self::query($sql, $values);
-            $items = $query->fetchAll(\PDO::FETCH_OBJ)
-die (\trace($items));
+            $items = $query->fetchAll(\PDO::FETCH_OBJ);
             foreach ($items as $item) {
-
-                if ($csv) {
-
-<<<<<<< HEAD
-//@TODO si estamos procesando datos para csv hay que mirar:
-$espanas = array('spain', 'españa', 'espanya', 'espana');
-$esp = (in_array(strtolower($item->country), $espanas)) ? true : false;
-
-// dos dígitos para la provincia  (99 si no es españa)
-$cp = ($esp) ? substr($item->zipcode, 0, 2) : '99';
-
-// tipo de persona segun nif/nie/cif
-$type = '';
-Check::nif($item->nif, $type);
-$per = $pt[$type];
-$nat = $nt[$type]; 
-=======
-                    if (empty($item->country)) {
-                        $cp = '';
-                    } else {
-                        // dos dígitos para la provincia  (99 si no es españa)
-                        $cp = (in_array(strtolower($item->country), array('spain', 'españa', 'espanya', 'espana'))) ? substr($item->zipcode, 0, 2) : '99';
-                    }
+                if (empty($item->country)) {
+                    $prov = '';
+                } else {
+                    // dos dígitos para la provincia  (99 si no es españa)
+                    $prov = static::esPana($item->country) ? substr($item->zipcode, 0, 2) : '99';
+                }
 
                 // tipo de persona segun nif/nie/cif
                 $type = '';
                 Check::nif($item->nif, $type);
                 $per = $pt[$type];
                 $nat = $nt[$type]; 
->>>>>>> portatil
 
 // NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
-                    $list[] = array($item->nif, '', $item->name, $cp, 'A', $per, '', '', '', '', $nat, '', $item->year, '', '', '');
-                } else {
-                    $list[] = $item;
-                }
+                $list[] = array($item->nif, '', 
+                    iconv('UTF-8', 'ISO-8859-15', $item->name), 
+                    $prov, 'A', $per, '', '', '', '', $nat, '', $item->year, '', '', '');
             }
             return $list;
+        }
+
+        static function esPana($str) {
+            $str = strtolower($str);
+            return (substr($str, 0, 4) == 'espa' || $str == 'spain');
         }
 
         public function validate(&$errors = array()) {
