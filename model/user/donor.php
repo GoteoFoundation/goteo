@@ -130,6 +130,20 @@ namespace Goteo\Model\User {
         */
         public function getList($filters = array(), $csv = false) {
 
+
+            // naturaleza según tipo de persona (F, J)
+            $nt = array(
+                    'nif' => 'F',
+                    'nie' => 'F',
+                    'cif' => 'J'
+                );
+            // porcentaje segun tipo de persona (25, 35)
+            $pt = array(
+                    'nif' => '25',
+                    'nie' => '25',
+                    'cif' => '35'
+                );
+
             $year = empty($filter['year']) ? static::$currYear : $filter['year'];
             $year0 = $year;
             $year1 = $year + 1;
@@ -211,7 +225,7 @@ namespace Goteo\Model\User {
 
 //@TODO si estamos procesando datos para csv hay que mirar:
 $espanas = array('spain', 'españa', 'espanya', 'espana');
-$esp = (in_array(strtolower($item->pais), $espanas)) ? true : false;
+$esp = (in_array(strtolower($item->country), $espanas)) ? true : false;
 
 // dos dígitos para la provincia  (99 si no es españa)
 $cp = ($esp) ? substr($item->zipcode, 0, 2) : '99';
@@ -219,18 +233,6 @@ $cp = ($esp) ? substr($item->zipcode, 0, 2) : '99';
 // tipo de persona segun nif/nie/cif
 $type = '';
 Check::nif($item->nif, $type);
-// naturaleza según tipo de persona (F, J)
-$nt = array(
-        'nif' => 'F',
-        'nie' => 'F',
-        'cif' => 'J'
-    );
-// porcentaje segun tipo de persona (25, 35)
-$pt = array(
-        'nif' => '25',
-        'nie' => '25',
-        'cif' => '35'
-    );
 $per = $pt[$type];
 $nat = $nt[$type]; 
 
