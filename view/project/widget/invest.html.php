@@ -173,6 +173,7 @@ if ($step == 'start') : ?>
     <input type="hidden" id="paymethod"  />
 
     <div class="buttons">
+        <button type="submit" class="process pay-cash" name="method"  value="cash">Aporte de Prueba</button>
         <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
         <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
     </div>

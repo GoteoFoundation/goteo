@@ -479,6 +479,9 @@
 				// store interval id
 				elem.data('interval',playInterval);
 			}
+
+			elem.data("stop",stop);
+			elem.data("start",pause);
 		});
 	};
 	

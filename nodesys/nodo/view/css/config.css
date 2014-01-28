@@ -12,11 +12,11 @@ body.node.home > div.widget > div.title-line {
 }
 
 div#node-header div.logos div.node-home > a {
-    background: url('/nodesys/euskadi/view/css/goteo-logo.png') no-repeat left top;
+    background: url('/nodesys/nodo/view/css/goteo-logo.png') no-repeat left top;
 }
 
 div#node-header div.logos div.node-home > a:hover {
-    background: url('/nodesys/euskadi/view/css/goteo-logo.png') no-repeat right top;
+    background: url('/nodesys/nodo/view/css/goteo-logo.png') no-repeat right top;
 }
 
 div#header div#menu{background:none repeat scroll 0 0 #2895CB !important}
@@ -35,10 +35,10 @@ div#header div#menu > ul > li.dashboard > div > ul > li > a:hover {
 }
 
 /* Pestaña de información/cerrar banner */
-div#header div#menu > ul > li.info > a.open{background:url('/nodesys/euskadi/view/css/node_info_close.png') no-repeat left center transparent} /*si está abierto mostrar cerrar*/
-div#header div#menu > ul > li.info > a.open:hover{background:url('/nodesys/euskadi/view/css/node_info_close.png') no-repeat right center transparent}
-div#header div#menu > ul > li.info > a.close{background:url('/nodesys/euskadi/view/css/node_info.png') no-repeat left center transparent}/*si está cerrado mostrar abrir*/
-div#header div#menu > ul > li.info > a.close:hover{background:url('/nodesys/euskadi/view/css/node_info.png') no-repeat right center transparent}
+div#header div#menu > ul > li.info > a.open{background:url('/nodesys/nodo/view/css/node_info_close.png') no-repeat left center transparent} /*si está abierto mostrar cerrar*/
+div#header div#menu > ul > li.info > a.open:hover{background:url('/nodesys/nodo/view/css/node_info_close.png') no-repeat right center transparent}
+div#header div#menu > ul > li.info > a.close{background:url('/nodesys/nodo/view/css/node_info.png') no-repeat left center transparent}/*si está cerrado mostrar abrir*/
+div#header div#menu > ul > li.info > a.close:hover{background:url('/nodesys/nodo/view/css/node_info.png') no-repeat right center transparent}
 /* Fin de pestaña de información/cerrar banner */
 
 div.node-banners-container div.node-banner > div.short-desc{color:#1f81bb;}
@@ -59,7 +59,7 @@ body.project-show div.project-menu ul li a {
 }
 
 body.node div.invest-message {
-    background-image: url("/nodesys/euskadi/view/css/message_beak.png") !important;
+    background-image: url("/nodesys/nodo/view/css/message_beak.png") !important;
 }
 
 /*
@@ -73,10 +73,6 @@ div.widget .title{
 }
 
 /* Esquinas del banderolo largo */
-div.widget.project-support div.tagmark.aqua {
-    background-image:url('project/long_tagmark_aqua.png') !important;
-}
-
 div.widget.project-support div.tagmark.green {
     background-image:url('project/long_tagmark_green.png') !important;
 }

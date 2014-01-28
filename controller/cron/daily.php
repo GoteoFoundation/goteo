@@ -29,7 +29,6 @@ namespace Goteo\Controller\Cron {
                 // primero los que no se bloquean
                 //Solicitud de datos del contrato
                 if ($project->days == 41) {
-                    if ($project->id != 'gnupg')  {
                         // si ha superado el mínimo
                         if ($project->invested >= $project->mincost) {
                             if ($debug) echo "Solicitud de datos contrato<br />";
@@ -37,7 +36,6 @@ namespace Goteo\Controller\Cron {
                         } else {
                             if ($debug) echo "Solicitud de datos, no se envía porque no está financiado<br />";
                         }
-                    }
                 }
 
                 // Recuerdo al autor proyecto, 2 meses despues de campaña finalizada

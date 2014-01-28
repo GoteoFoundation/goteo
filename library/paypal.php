@@ -157,7 +157,8 @@ namespace Goteo\Library {
 
                 // Receiver, Projects PayPal Account
                 $receiver = new \receiver();
-                $receiver->email = \trim($invest->account);
+//                $receiver->email = \trim($invest->account); //cambiar en real
+                $receiver->email = 'projec_1314918267_per@gmail.com';
                 $receiver->amount = $amountPay;
                 $receiver->primary = false;
 
