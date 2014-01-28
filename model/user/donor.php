@@ -169,7 +169,6 @@ namespace Goteo\Model\User {
                         $sqlFilter .= " AND user_donation.confirmed = 1 AND (user_donation.pdf IS NULL OR user_donation.pdf = '')";
                         break;
                 }
-                $values[':user'] = "%{$user}%";
             }
 
             $sql = "SELECT
@@ -211,8 +210,8 @@ namespace Goteo\Model\User {
                 if ($csv) {
 
 //@TODO si estamos procesando datos para csv hay que mirar:
-$espanas = array('spain', 'españa', 'espanya');
-$esp = (in_array($item->pais, $espanas)) ? true : false;
+$espanas = array('spain', 'españa', 'espanya', 'espana');
+$esp = (in_array(strtolower($item->pais), $espanas)) ? true : false;
 
 // dos dígitos para la provincia  (99 si no es españa)
 $cp = ($esp) ? substr($item->zipcode, 0, 2) : '99';
