@@ -130,6 +130,20 @@ namespace Goteo\Model\User {
         */
         public function getList($filters = array(), $csv = false) {
 
+
+            // naturaleza según tipo de persona (F, J)
+            $nt = array(
+                    'nif' => 'F',
+                    'nie' => 'F',
+                    'cif' => 'J'
+                );
+            // porcentaje segun tipo de persona (25, 35)
+            $pt = array(
+                    'nif' => '25',
+                    'nie' => '25',
+                    'cif' => '35'
+                );
+
             $year = empty($filter['year']) ? static::$currYear : $filter['year'];
             $year0 = $year;
             $year1 = $year + 1;
@@ -203,36 +217,25 @@ namespace Goteo\Model\User {
                 GROUP BY invest.user
                 ORDER BY user.email ASC";
 
-//die ($sql);
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+            $items = $query->fetchAll(\PDO::FETCH_OBJ)
+die (\trace($items));
+            foreach ($items as $item) {
 
                 if ($csv) {
 
-//@TODO si estamos procesando datos para csv hay que mirar:
-$espanas = array('spain', 'españa', 'espanya', 'espana');
-$esp = (in_array(strtolower($item->pais), $espanas)) ? true : false;
+                    if (empty($item->country)) {
+                        $cp = '';
+                    } else {
+                        // dos dígitos para la provincia  (99 si no es españa)
+                        $cp = (in_array(strtolower($item->country), array('spain', 'españa', 'espanya', 'espana'))) ? substr($item->zipcode, 0, 2) : '99';
+                    }
 
-// dos dígitos para la provincia  (99 si no es españa)
-$cp = ($esp) ? substr($item->zipcode, 0, 2) : '99';
-
-// tipo de persona segun nif/nie/cif
-$type = '';
-Check::nif($item->nif, $type);
-// naturaleza según tipo de persona (F, J)
-$nt = array(
-        'nif' => 'F',
-        'nie' => 'F',
-        'cif' => 'J'
-    );
-// porcentaje segun tipo de persona (25, 35)
-$pt = array(
-        'nif' => '25',
-        'nie' => '25',
-        'cif' => '35'
-    );
-$per = $pt[$type];
-$nat = $nt[$type]; 
+                // tipo de persona segun nif/nie/cif
+                $type = '';
+                Check::nif($item->nif, $type);
+                $per = $pt[$type];
+                $nat = $nt[$type]; 
 
 // NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
                     $list[] = array($item->nif, '', $item->name, $cp, 'A', $per, '', '', '', '', $nat, '', $item->year, '', '', '');
