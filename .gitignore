@@ -2,7 +2,6 @@
 /controller/tpv_sermepa.php
 /library/tpv_caja_laboral.php
 /library/tpv/wshandler_cjlaboral.php
-/view/css/goteo.min.css
 /nodesys/_*
 local-settings.php
 tmp-settings.php

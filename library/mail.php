@@ -78,12 +78,16 @@ namespace Goteo\Library {
 		    if(empty($this->to)) {
 		        $errors['email'] = 'El mensaje no tiene destinatario.';
 		    }
+            elseif (self::checkBlocked($this->to, $reason)) {
+                $errors['email'] = "El destinatario esta bloqueado por demasiados rebotes o quejas [$reason]";
+            }
 		    if(empty($this->content)) {
 		        $errors['content'] = 'El mensaje no tiene contenido.';
 		    }
             if(empty($this->subject)) {
                 $errors['subject'] = 'El mensaje no tiene asunto.';
             }
+
             return empty($errors);
 		}
 
@@ -97,6 +101,7 @@ namespace Goteo\Library {
                 $errors['subject'] = 'Limite diario alcanzado.';
                 return false;
             }
+
 
             if($this->validate($errors)) {
                 $mail = $this->mail;
@@ -380,6 +385,54 @@ namespace Goteo\Library {
             }
 
             return ($ret) ? ($LIMIT - $cuantos) : ($cuantos < $LIMIT);
+        }
+
+        /**
+         * Comprueba si un email esta bloqueado por bounces o complaints
+         * @param  string $email  email a comprobar
+         * @param  string $reason razon de bloqueo
+         * @return boolean        true o false
+         */
+        static public function checkBlocked($email, &$reason) {
+            $query = Model::query("SELECT * FROM mailer_control WHERE email=:email AND action='deny'", array(':email' => $email));
+            if($ob = $query->fetchObject()) {
+                $reason = $ob->last_reason;
+                return ($ob->complaints > $ob->bounces ? $ob->complaints : $ob->bounces);
+            }
+            return false;
+        }
+
+        /**
+         * Añade un email a la table de control (tipo bounce), con bloqueo de futuros envios si se especifica
+         * @param string  $email  email a controlar
+         * @param string  $reason razon de inclusion en la lista
+         * @param boolean $block  true o false, si se bloquea para envios o solo se incluye informativamente
+         */
+        static public function addBounce($email, $reason = '', $block = false) {
+            $query = Model::query("SELECT bounces FROM mailer_control WHERE email=:email", array(':email' => $email));
+            $bounces = (int) $query->fetchColumn();
+            $values = array(':email' => $email,
+                ':bounces' => $bounces+1,
+                ':reason' => $reason,
+                ':action' => ($block ? 'deny' : 'allow')
+                );
+            Model::query("REPLACE INTO mailer_control (`email`, `bounces`, `last_reason`, `action`) VALUES (:email, :bounces, :reason, :action)", $values);
+        }
+
+        /**
+         * Añade un email a la table de control (tipo complaint), con bloqueo de futuros envios
+         * @param string  $email  email a controlar
+         * @param string  $reason razon de inclusion en la lista
+         */
+        static public function addComplaint($email, $reason = '') {
+            $query = Model::query("SELECT complaints FROM mailer_control WHERE email=:email", array(':email' => $email));
+            $complaints = (int) $query->fetchColumn();
+            $values = array(':email' => $email,
+                ':complaints' => $complaints+1,
+                ':reason' => $reason,
+                ':action' => 'deny'
+                );
+            Model::query("REPLACE INTO mailer_control (`email`, `complaints`, `last_reason`, `action`) VALUES (:email, :complaints, :reason, :action)", $values);
         }
 
 	}

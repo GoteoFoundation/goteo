@@ -1,54 +1,7 @@
 <?php
-define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
-if (function_exists('ini_set')) {
-    ini_set('include_path', GOTEO_PATH . PATH_SEPARATOR . '.');
-} else {
-    throw new Exception("No puedo añadir la API GOTEO al include_path.");
-}
-
-// Esto no sirve para quitar magic quotes. Ver php.net/manual/en/security.magicquotes.disabling.php
-// Tampoco lo he podido quitar a nivel de htacces, sale php.ini
-/*
-if (function_exists('ini_set')) {
-    if (ini_set('magic_quotes_gpc', '0') === false) {
-        phpinfo();
-        die;
-        throw new Exception("No puedo quitar las magic quotes");
-    }
-} else {
-    throw new Exception("no hay ini_set");
-}
- *
- */
-
-//Estoy en mantenimiento
-define('GOTEO_MAINTENANCE', null);
-
-//Estoy en alto rendimiento
-define('GOTEO_EASY', null);
 
 // Nodo actual
 define('GOTEO_NODE', 'goteo');
-
-define('PEAR', GOTEO_PATH . 'library' . '/' . 'pear' . '/');
-if (function_exists('ini_set')) {
-    ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . PEAR);
-} else {
-    throw new Exception("No puedo añadir las librerías PEAR al include_path.");
-}
-
-if (!defined('PHPMAILER_CLASS')) {
-    define ('PHPMAILER_CLASS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.phpmailer.php');
-}
-if (!defined('PHPMAILER_LANGS')) {
-    define ('PHPMAILER_LANGS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'language' . DIRECTORY_SEPARATOR);
-}
-if (!defined('PHPMAILER_SMTP')) {
-    define ('PHPMAILER_SMTP', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.smtp.php');
-}
-if (!defined('PHPMAILER_POP3')) {
-    define ('PHPMAILER_POP3', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.pop3.php');
-}
 
 // Metadata
 define('GOTEO_META_TITLE', 'Goteo.org  Crowdfunding the commons');
@@ -87,6 +40,12 @@ define('GOTEO_CONTACT_MAIL', 'info@goteo.org');
 define('GOTEO_MAIL_QUOTA', 50000);
 //Quota de envio máximo para newsletters para goteo en 24 horas
 define('GOTEO_MAIL_SENDER_QUOTA', round(GOTEO_MAIL_QUOTA * 0.8));
+//clave de Amazon SNS para recopilar bounces automaticamente: 'arn:aws:sns:us-east-1:918923091822:amazon-ses-bounces'
+//la URL de informacion debe ser: goteo.org/aws-sns.php
+define('AWS_SNS_CLIENT_ID', '918923091822');
+define('AWS_SNS_REGION', 'us-east-1');
+define('AWS_SNS_BOUNCES_TOPIC', 'amazon-ses-bounces');
+define('AWS_SNS_COMPLAINTS_TOPIC', 'amazon-ses-complaints');
 
 // Language
 define('GOTEO_DEFAULT_LANG', 'es');
@@ -132,9 +91,6 @@ define('TPV_ENCRYPT_KEY', '83074958');
 /******************************************************
 OAUTH APP's Secrets
 *******************************************************/
-if (!defined('OAUTH_LIBS')) {
-    define ('OAUTH_LIBS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'oauth' . DIRECTORY_SEPARATOR . 'SocialAuth.php');
-}
 
 //Facebook (l'app de Facebook la té l'usuari ivan@microstudi.net a Facebook)
 /*
