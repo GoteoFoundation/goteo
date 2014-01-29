@@ -32,26 +32,26 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/extra.css" />
     <style type="text/css">
           body { 
-                 background: url(<?php echo $imghuge; ?>);
+                 background: url('<?php echo $imghuge; ?>');
                }
     </style>
     <style type="text/css" media="only screen and (max-width:340px)">
-          body { background: url(<?php echo $img_minimobile; ?>);
+          body { background: url('<?php echo $img_minimobile; ?>');
                  
                }
     </style>
     <style type="text/css" media="only screen and (min-width:340px) and (max-width:750px)">
-          body { background: url(<?php echo $img_mobile; ?>);
+          body { background: url('<?php echo $img_mobile; ?>');
                   
                }
     </style>
     <style type="text/css" media="only screen and (min-width:750px) and (max-width:1023px)">
-          body { background: url(<?php echo $img_tablet; ?>);
+          body { background: url('<?php echo $img_tablet; ?>');
                                
                }
     </style>
     <style type="text/css" media="only screen and (min-width:1024px) and (max-width:1400px)">
-          body { background: url(<?php echo $img_pc; ?>);
+          body { background: url('<?php echo $img_pc; ?>');
                  
                }
     </style>
