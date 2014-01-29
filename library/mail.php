@@ -104,7 +104,7 @@ namespace Goteo\Library {
                     // Construye el mensaje
                     $mail->From = $this->from;
                     $mail->FromName = $this->fromName;
-                    
+
                     $mail->AddAddress($this->to, $this->toName);
                     // copia a mail log si no es masivo
                     if (!$this->massive) {
@@ -352,22 +352,31 @@ namespace Goteo\Library {
 
         /**
          * Control de límite de mails que se pueden enviar al día
-         * limite de 50000 al día, nos guardamos 20000 para envios individuales
+         * limite de 50000 al día, o lo que esté definido en la variable GOTEO_MAIL_QUOT
+         * cli-sender.php sobreescribe GOTEO_MAIL_QUOTA para guardarnos un 20% para envios individuales
          */
-        public static function checkLimit($add = null, $ret = false) {
+        public static function checkLimit($add = null, $ret = false, $limit = null) {
 
-            $LIMIT = 30000;
+            if((int)$limit) $LIMIT = (int) $limit;
+            else            $LIMIT = (defined("GOTEO_MAIL_QUOTA") ? GOTEO_MAIL_QUOTA : 50000);
 
-            $sql = "SELECT num FROM mailer_limit
-                    WHERE `date` = :date";
-            $values= array(':date'=>date('Y-m-d'));
+            $hora = date('H:i');
+            $modified = date('Y-m-d H:i:s', time() - 24*3600);
 
-            $query = Model::query($sql, $values);
-            $cuantos = $query->fetchColumn();
+            //total de envios las ultimas 24 horas
+            $sql = "SELECT SUM(num) AS total FROM mailer_limit WHERE `modified` > :modified";
+            $query = Model::query($sql, array(':modified' => $modified));
+            $cuantos = (int) $query->fetchColumn();
 
+            //añadir
             if (isset($add)) {
                 $cuantos += $add;
-                Model::query("REPLACE INTO mailer_limit (`num`, `date`) VALUES ('$cuantos', '".date('Y-m-d')."')", $values);
+                $sql = "SELECT num FROM mailer_limit WHERE `modified` > :modified AND `hora` = :hora";
+                $query = Model::query($sql, array(':modified' => $modified, ':hora' => $hora));
+                $current = (int) $query->fetchColumn();
+
+                $values= array(':hora' => $hora, ':num' => ($current + $add), ':modified' => date('Y-m-d H:i:s'));
+                Model::query("REPLACE INTO mailer_limit (`hora`, `num`, `modified`) VALUES (:hora, :num, :modified)", $values);
             }
 
             return ($ret) ? ($LIMIT - $cuantos) : ($cuantos < $LIMIT);

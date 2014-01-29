@@ -44,18 +44,6 @@ namespace Goteo\Controller {
             // si lo puede ver
             if ($grant) {
                 
-                // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
-                $contract->draft = ($contract->status->ready === '1') ? false : true;
-                
-                //--------- por ahora en real solamente mostramos preview de datos
-                // a menos que sea alguien con privilegios
-                if (!$contract->draft &&
-                    !isset($_SESSION['user']->roles['manager']) &&
-                    !isset($_SESSION['user']->roles['superadmin']) &&
-                    !isset($_SESSION['user']->roles['root'])) {
-                    return new View('view/contract/view.html.php', array('contract' => $contract));
-                }
-                
                 require_once 'library/contract.php';  // Libreria pdf contrato
                 
                 $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';

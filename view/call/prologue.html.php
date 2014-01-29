@@ -9,10 +9,6 @@ if ($call->image instanceof Goteo\Model\Image) {
     $imghuge = $call->image->getLink(5000, 5000);
     
     
-    /*$imgtiny = $call->image->getLink(320, 320);
-    $bghuge = '<div><img alt="'.$call->name.'" src="'.$imghuge.'" /></div>';
-    $bgpad  = '<div><img alt="'.$call->name.'" src="'.$imgpad.'" /></div>';
-    $bgtiny = '<div><img alt="'.$call->name.'" src="'.$imgtiny.'" /></div>';*/
 } else {
     $bghuge = '<div></div>';
     $bgpad  = '<div></div>';
@@ -96,12 +92,6 @@ if ($call->image instanceof Goteo\Model\Image) {
       <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
       <![endif]-->
 
-        <!--<script type="text/javascript">
-        if(navigator.userAgent.indexOf('Mac') != -1)
-		{
-			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
-		}-->
-	    </script>
         <?php if (!isset($useJQuery) || !empty($useJQuery)): ?>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
@@ -143,25 +133,6 @@ if ($call->image instanceof Goteo\Model\Image) {
                     event.preventDefault();
                 });
 				
-                /*var plat = navigator.platform;
-                var disp = plat.toLowerCase().substring(0, 3);
-                var ldisp = plat.toLowerCase().substring(0, 8);
-                if (disp == 'win' || disp == 'mac' || (disp == 'lin' && ldisp != 'linuxarm' )) {
-                    $("#bgimage").html('<?php echo $bghuge; ?>');
-    				(function(){var a=document.body;var b=document.getElementById("bgimage").getElementsByTagName("img")[0];var c={};var d=b.src;setInterval(function(){window.scrollTo(0,0);if(b.complete){if(a.clientWidth!=c.w||a.clientHeight!=c.h||b.src!=d){d=b.src;c.w=a.clientWidth;c.h=a.clientHeight;var e=Math.round(c.h*(b.offsetWidth/b.offsetHeight));b.style.width=(c.w>e?c.w:e)+"px"}}},300)})()
-                } else {
-                    if (disp == 'ipa' || ldisp == 'linuxarm') {
-                        $("#bgimage").html('<?php echo $bgpad; ?>');
-                    } else {
-                        $("#bgimage").html('<?php echo $bgtiny; ?>');
-                    }
-                }
-
-               if ($('#side').height() > $('#content').height()) {
-                   $('#content').height($('#side').height());
-               } else {
-                   $('#side').height($('#content').height());
-               }*/
 
             });
         </script>
@@ -169,8 +140,6 @@ if ($call->image instanceof Goteo\Model\Image) {
 
         <noscript><!-- Please enable JavaScript --></noscript>
 
-        <!--<div id="bgimage">
-        </div>-->
 
         <div id="wrapper">
 			

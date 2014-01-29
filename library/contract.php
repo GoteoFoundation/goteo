@@ -341,7 +341,8 @@ class Pdf extends \PDF_HTML {
         $this->SetFont(self::HEADER_FONT, '', self::FONT_HEADER_SIZE);
         $this->WriteHTML(self::txt(self::TEXT_HEADER_NUM) . $this->data->fullnum);
         $this->Cell(0, 5, "", 0, 1);
-        $this->centerImage(self::DRAFT_IMAGE);
+        if ($this->data->draft)
+            $this->centerImage(self::DRAFT_IMAGE);
     }
 
     /**
