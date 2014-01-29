@@ -233,6 +233,9 @@ namespace Goteo\Library {
             // eliminamos los destinatarios
             Model::query("DELETE FROM mailer_send WHERE mailing NOT IN (SELECT id FROM mailer_content)");
 
+            // eliminamos también los registors de limites
+            Model::query("DELETE FROM mailer_limit WHERE DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(date)), '%j') > 2");
+
         }
 
 
