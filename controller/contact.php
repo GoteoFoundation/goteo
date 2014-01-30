@@ -15,9 +15,6 @@ namespace Goteo\Controller {
         
         public function index () {
 
-            if ($_SERVER['HTTPS'] !== 'on') {
-                throw new Redirection(SEC_URL.'/contact/');
-            }
 
 
             $tags = array();
