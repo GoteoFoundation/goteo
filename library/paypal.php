@@ -157,8 +157,8 @@ namespace Goteo\Library {
 
                 // Receiver, Projects PayPal Account
                 $receiver = new \receiver();
-//                $receiver->email = \trim($invest->account); //cambiar en real
-                $receiver->email = 'projec_1314918267_per@gmail.com';
+//              en dev/beta la cuenta paypal del proyecto es la de sandbox
+                $receiver->email = (GOTEO_ENV == 'real') ? \trim($invest->account) : 'projec_1314918267_per@gmail.com';
                 $receiver->amount = $amountPay;
                 $receiver->primary = false;
 

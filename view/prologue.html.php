@@ -88,7 +88,7 @@ if (NODE_ID != GOTEO_NODE) {
 
     </head>
 
-    <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?> style="background-color:#B5DADC;">
+    <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"'; if (GOTEO_ENV == 'beta') echo 'style="background-color:#B5DADC;"'; ?> >
 
         <script type="text/javascript">
             // Mark DOM as javascript-enabled
