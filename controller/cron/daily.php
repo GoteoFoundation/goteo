@@ -29,14 +29,12 @@ namespace Goteo\Controller\Cron {
                 // primero los que no se bloquean
                 //Solicitud de datos del contrato
                 if ($project->days == 41) {
-                    if ($project->id != 'gnupg')  {
-                        // si ha superado el mínimo
-                        if ($project->invested >= $project->mincost) {
-                            if ($debug) echo "Solicitud de datos contrato<br />";
-                            Send::toOwner('1d_after', $project);
-                        } else {
-                            if ($debug) echo "Solicitud de datos, no se envía porque no está financiado<br />";
-                        }
+                    // si ha superado el mínimo
+                    if ($project->invested >= $project->mincost) {
+                        if ($debug) echo "Solicitud de datos contrato<br />";
+                        Send::toOwner('1d_after', $project);
+                    } else {
+                        if ($debug) echo "Solicitud de datos, no se envía porque no está financiado<br />";
                     }
                 }
 
