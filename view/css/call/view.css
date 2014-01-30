@@ -63,7 +63,8 @@ body {
 /* Main */
 div#main {
     clear: both;
-	width: 770px;
+	max-width: 770px;
+	min-width:320px;
 	margin: 31px auto 36px;
     overflow: hidden;
 }
@@ -98,13 +99,14 @@ div#main ul#list>li {
 	margin: 0;
 	font-weight: bold;
 	float: right;
-	width: 500px;
+	width: 64.935%;
 }
 
 #title img.logo {
 	-moz-box-shadow: 7px 0px 22px #ccc;
 	-webkit-box-shadow: 7px 0px 22px #ccc;
 	box-shadow: 7px 0px 22px #ccc;
+	width:32.4675%;
 }
 
 /* Banners social container */
@@ -660,7 +662,7 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 	float: right;
 	margin: 0;
 	padding: 20px 0 20px 15px;
-	width: 210px;
+	width: 0.27%;
 }
 
 #side img.logo {

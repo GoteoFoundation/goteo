@@ -1,5 +1,5 @@
 /* Banners */
-div#banners-social div#call-banners{width: 545px; height:197px; margin: 0; border:#000 1px transparent !important /*no tocar o el contenido se alinea de forma extraña dentro del carrousel*/; position: relative; float: left;}
+div#banners-social div#call-banners{width: 0.7078%; height:197px; margin: 0; border:#000 1px transparent !important /*no tocar o el contenido se alinea de forma extraña dentro del carrousel*/; position: relative; float: left;}
 div#banners-social div#call-banners div.call-banners-container{width:545px;height:197px;margin:0 auto;}
 div.call-banners-container div.call-banner{width:545px;height:197px;}
 div.call-banners-container div.call-banner > div.title{width: 352px;padding-top: 66px; margin-left: 172px;line-height:22px;font-size:18px;font-weight: bold; color:#20B2B3}

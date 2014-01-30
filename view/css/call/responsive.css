@@ -1,0 +1,30 @@
+/*@media screen and (max-width: 800px) {
+  }
+}
+@media screen and (max-width: 600px) {
+  #header, #footer	{display:none;}
+}
+
+@media screen and (max-width: 400px) {
+  #main {position:relative; width:100%; margin:0;}
+
+  #title{margin-top:80px; width:100%; float:none;}
+  
+  div#banners-social div#call-banners {
+  float:none;
+  width: 100%;	
+  }
+  #social{ display:none; }
+
+  .proyects #content {
+   width:100%;
+
+  }
+
+  #side{
+  	display: none;
+  }
+  #supporters-sponsors {
+  	display: none;
+  }
+}*/
