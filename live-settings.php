@@ -35,6 +35,9 @@ define('GOTEO_MAIL_SMTP_PASSWORD', 'AkJ7j1QgxvgyjCR9/bHxtSh2f2yE0MNFBiVCciB92ifn
 
 define('GOTEO_MAIL', 'hola@goteo.org');
 define('GOTEO_CONTACT_MAIL', 'info@goteo.org');
+define('GOTEO_FAIL_MAIL', 'failgoteo@doukeshi.org');
+define('GOTEO_LOG_MAIL', 'goteomaillog@gmail.com');
+
 
 //Quota de envio máximo para goteo en 24 horas
 define('GOTEO_MAIL_QUOTA', 50000);
