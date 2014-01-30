@@ -41,3 +41,6 @@ CREATE TABLE IF NOT EXISTS `mailer_limit` (
   `num` int(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Cuantos',
   PRIMARY KEY (`date`)
 ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT='Para limitar el número de envios diarios';
+
+-- cambio para funcionamiento en 24 horas
+ALTER TABLE `goteo`.`mailer_limit` CHANGE `date` `hora` TIME NOT NULL COMMENT 'Hora envio', ADD COLUMN `modified` TIMESTAMP NOT NULL AFTER `num`;
