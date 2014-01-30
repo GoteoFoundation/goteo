@@ -405,19 +405,23 @@ class PHPMailer {
    * @return boolean true on success, false if address already used
    */
   public function AddAddress($address, $name = '') {
-//    return $this->AddAnAddress('to', $address, $name);
-      // Piñon para pruebas en beta
-      if (strpos($address, 'goteo.org') !== false ||
-          strpos($address, 'platoniq.net') !== false ||
-          strpos($address, 'pelousse.com') !== false ||
-          strpos($address, 'julian.canaves@gmail.com') !== false ||
-          strpos($address, 'esenabre@gmail.com') !== false ||
-          strpos($address, 'olivierschulbaum@gmail.com') !== false
-          ) {
-        return $this->AddAnAddress('to', $address, $name);
-      } else {
-        return $this->AddAnAddress('to', str_replace('@', '_', $address).'_from_beta@doukeshi.org', $name);
-      }
+
+      if (GOTEO_ENV == 'beta') {
+          // Para pruebas en beta
+          if (strpos($address, 'goteo.org') !== false ||
+              strpos($address, 'platoniq.net') !== false ||
+              strpos($address, 'pelousse.com') !== false ||
+              strpos($address, 'julian.canaves@gmail.com') !== false ||
+              strpos($address, 'esenabre@gmail.com') !== false ||
+              strpos($address, 'olivierschulbaum@gmail.com') !== false
+              ) {
+            return $this->AddAnAddress('to', $address, $name);
+          } else {
+            return $this->AddAnAddress('to', str_replace('@', '_', $address).'_from_beta@doukeshi.org', $name);
+          }
+        } else {
+          return $this->AddAnAddress('to', $address, $name);
+        }
   }
 
   /**
@@ -555,7 +559,10 @@ class PHPMailer {
    * @return bool
    */
   public function Send(&$errors = array()) {
-      $this->Subject = "TESTING EN BETA: " . $this->Subject;
+
+      if (GOTEO_ENV == 'beta')
+        $this->Subject = "TESTING EN BETA: " . $this->Subject;
+
     try {
       if ((count($this->to) + count($this->cc) + count($this->bcc)) < 1) {
         throw new phpmailerException($this->Lang('provide_address'), self::STOP_CRITICAL);

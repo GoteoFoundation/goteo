@@ -26,7 +26,7 @@ namespace Goteo\Controller {
             $page->url = $URL.'/bazaar';
             $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 
-            $page->debug = ($URL == 'http://beta.goteo.org' || $URL == 'http://devgoteo.org');
+            $page->debug = (GOTEO_ENV != 'real');
 
             $vpath = "view/bazar/";
             $vdata = array();
@@ -259,9 +259,13 @@ namespace Goteo\Controller {
                             }
                             break;
                         case 'cash':
-                            $invest->setStatus('1');
                             // En betatest aceptamos cash para pruebas
-                            throw new Redirection($invest->urlOK);
+                            if (GOTEO_ENV != 'real') {
+                                $invest->setStatus('1');
+                                throw new Redirection($invest->urlOK);
+                            } else {
+                                throw new Redirection('/');
+                            }
                             break;
                     }
                 } else {

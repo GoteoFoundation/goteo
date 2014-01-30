@@ -112,7 +112,7 @@ namespace Goteo\Library {
 
                     $mail->AddAddress($this->to, $this->toName);
                     // copia a mail log si no es masivo
-                    if (!$this->massive) {
+                    if (GOTEO_ENV == 'real' && !$this->massive) {
                         $mail->AddBCC('goteomaillog@gmail.com', 'Verifier');
                     }
                     if($this->cc) {
@@ -158,7 +158,7 @@ namespace Goteo\Library {
                     }
 
                     // si estoy en entorno local ni lo intento
-                    if (defined('DEVGOTEO_LOCAL') && DEVGOTEO_LOCAL === true) {
+                    if (GOTEO_ENV == 'local') {
                         return true;
                     }
 
