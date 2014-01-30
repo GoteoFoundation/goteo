@@ -17,7 +17,7 @@ namespace Goteo\Controller\Manage {
                 $data = Model\User\Donor::getList($filters, true);
 
                 // forzar descarga
-                header('Content-type: text/csv');
+                header('Content-type: text/csv; charset=utf-8');
                 header("Content-disposition: attachment; filename=donantes_goteo{$filters['year']}_{$filters['status']}.csv");
 
                 // cabecera
