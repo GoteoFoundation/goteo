@@ -235,8 +235,8 @@ namespace Goteo\Model\User {
 
 // NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
                 $list[] = array($item->nif, '', 
-                    iconv('UTF-8', 'ISO-8859-15', $item->name), 
-                    $prov, 'A', $per, '', '', '', '', $nat, '', $item->year, '', '', '');
+                    $item->name, 
+                    $prov, 'A', $per, $item->amount, '', '', '', $nat, '', $item->year, '', '', '');
             }
             return $list;
         }
