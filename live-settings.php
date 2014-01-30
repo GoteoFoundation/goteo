@@ -74,8 +74,6 @@ define("LOG_HANDLER", "file");
 
 // tipo de entorno: local, beta, real
 define("GOTEO_ENV", "beta");
-// para compatibilidad
-define('DEVGOTEO_LOCAL', true);
 
 
 //S3 bucket
