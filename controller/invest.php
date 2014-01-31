@@ -147,9 +147,13 @@ namespace Goteo\Controller {
                             }
                             break;
                         case 'cash':
-                            $invest->setStatus('1');
                             // En betatest aceptamos cash para pruebas
-                            throw new Redirection($invest->urlOK);
+                            if (GOTEO_ENV != 'real') {
+                                $invest->setStatus('1');
+                                throw new Redirection($invest->urlOK);
+                            } else {
+                                throw new Redirection('/');
+                            }
                             break;
                     }
                 } else {

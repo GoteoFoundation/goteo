@@ -31,17 +31,84 @@ $data    = $this['data'];
             </select>
         </div>
 
-        <!--
-        <div style="float:left;margin:5px;">
+        <div style="float:left;margin:5px;display: none;" id="date-filter-from">
             <label for="date-filter-from">Fecha desde</label><br />
-            <input type="text" id ="date-filter-from" name="from" value ="<?php echo $filters['from']?>" />
+            <input type="text" name="date_from" value ="<?php echo $filters['date_from']?>" />
+
+            <script type="text/javascript" src="http://resources.devgoteo.org/view/js/datepicker.min.js"></script>
+            <script type="text/javascript">
+
+                (function () {
+
+                    var dp = $('#date-filter-from input');
+
+                    dp.DatePicker({
+                        format: 'Y-m-d',
+                        date: '',
+                        current: '',
+                        starts: 0,
+                        position: 'bottom',
+                        eventName: 'click',
+                        onBeforeShow: function(){
+                            dp.DatePickerSetDate(dp.val(), true);
+                        },
+                        onChange: function(formatted, dates){
+                                dp.val(formatted);
+                                dp.DatePickerHide();
+                                dp.focus();
+                        },
+                        locale: {
+                            days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábad', 'Domingo'],
+                            daysShort: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                            daysMin: ['L', 'M', 'X', 'J', 'V', 'S', 'D'],
+                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                            week: []
+                        }
+                    });
+
+                })();
+            </script>
         </div>
 
-        <div style="float:left;margin:5px;">
+        <div style="float:left;margin:5px;display: none;" id="date-filter-until">
             <label for="date-filter-until">Fecha hasta</label><br />
-            <input type="text" id ="date-filter-until" name="until" value ="<?php echo $filters['until']?>" />
+            <input type="text" name="date_until" value ="<?php echo $filters['date_until']?>" />
+
+            <script type="text/javascript">
+
+                (function () {
+
+                    var dp = $('#date-filter-until input');
+
+                    dp.DatePicker({
+                        format: 'Y-m-d',
+                        date: '',
+                        current: '',
+                        starts: 0,
+                        position: 'bottom',
+                        eventName: 'click',
+                        onBeforeShow: function(){
+                            dp.DatePickerSetDate(dp.val(), true);
+                        },
+                        onChange: function(formatted, dates){
+                                dp.val(formatted);
+                                dp.DatePickerHide();
+                                dp.focus();
+                        },
+                        locale: {
+                            days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábad', 'Domingo'],
+                            daysShort: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                            daysMin: ['L', 'M', 'X', 'J', 'V', 'S', 'D'],
+                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                            week: []
+                        }
+                    });
+
+                })();
+            </script>
         </div>
-        -->
 
         <br clear="both" />
 
@@ -50,6 +117,27 @@ $data    = $this['data'];
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+    /* para mostrar los campos de fechas solo en los informes que es posible usarlas */
+    $(function () {
+        $("#report-filter").change( function() {
+            if (($(this).val() == 'money') || ($(this).val() == 'projects')) {
+                $("#date-filter-from").show();
+                $("#date-filter-until").show();
+            } else {
+                $("#date-filter-from").hide();
+                $("#date-filter-until").hide();
+            }
+        });
+
+        if (($("#report-filter").val() == 'money') || ($("#report-filter").val() == 'projects')) {
+            $("#date-filter-from").show();
+            $("#date-filter-until").show();
+        }
+    });
+
+</script>
 
 <div class="widget board">
 <?php if (!empty($data)) : ?>
