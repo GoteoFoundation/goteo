@@ -6,18 +6,8 @@ if ($call->image instanceof Goteo\Model\Image) {
     $img_mobile = $call->image->getLink(750, 750);
     $img_tablet = $call->image->getLink(1023, 1023);
     $img_pc = $call->image->getLink(1400, 1400);
-    $imghuge = $call->image->getLink(5000, 5000);
-    
-    
-    /*$imgtiny = $call->image->getLink(320, 320);
-    $bghuge = '<div><img alt="'.$call->name.'" src="'.$imghuge.'" /></div>';
-    $bgpad  = '<div><img alt="'.$call->name.'" src="'.$imgpad.'" /></div>';
-    $bgtiny = '<div><img alt="'.$call->name.'" src="'.$imgtiny.'" /></div>';*/
-} else {
-    $bghuge = '<div></div>';
-    $bgpad  = '<div></div>';
-    $bgtiny = '<div></div>';
-}
+    $imghuge = $call->image->getLink(5000, 5000);    
+} 
 
 
 ?>
@@ -33,7 +23,6 @@ if ($call->image instanceof Goteo\Model\Image) {
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
         <meta name="robots" content="all" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <meta property="og:title" content="<?php echo $call->name; ?>" />
         <meta property="og:description" content="<?php echo $call->subtitle; ?>" />
@@ -79,23 +68,9 @@ if ($call->image instanceof Goteo\Model\Image) {
                  
                }
     </style>
-    <style type="text/css">
-          body { 
-                 background-repeat: no-repeat;
-                 background-position: center center;
-                 background-attachment: fixed;
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                 -o-background-size: cover;
-                 background-size: cover;
-               }
-    </style>
+    <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/responsive.css" />
+
    
-    <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/minimobile.css" media="only screen and (max-width:340px)">
-        <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/mobile.css" media="only screen and (min-width:340px) and (max-width:750px)">
-        <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/tablet.css" media="only screen and (min-width:750px) and (max-width:1023px)">
-        <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/pc.css" media="only screen and (min-width:1024px) and (max-width:1400px)">
-        <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/bigpc.css" media="only screen and (min-width:1400px)">
     <?php endif; ?>
 
       <!--[if IE]>
@@ -149,25 +124,7 @@ if ($call->image instanceof Goteo\Model\Image) {
                     event.preventDefault();
                 });
 				
-                /*var plat = navigator.platform;
-                var disp = plat.toLowerCase().substring(0, 3);
-                var ldisp = plat.toLowerCase().substring(0, 8);
-                if (disp == 'win' || disp == 'mac' || (disp == 'lin' && ldisp != 'linuxarm' )) {
-                    $("#bgimage").html('<?php echo $bghuge; ?>');
-    				(function(){var a=document.body;var b=document.getElementById("bgimage").getElementsByTagName("img")[0];var c={};var d=b.src;setInterval(function(){window.scrollTo(0,0);if(b.complete){if(a.clientWidth!=c.w||a.clientHeight!=c.h||b.src!=d){d=b.src;c.w=a.clientWidth;c.h=a.clientHeight;var e=Math.round(c.h*(b.offsetWidth/b.offsetHeight));b.style.width=(c.w>e?c.w:e)+"px"}}},300)})()
-                } else {
-                    if (disp == 'ipa' || ldisp == 'linuxarm') {
-                        $("#bgimage").html('<?php echo $bgpad; ?>');
-                    } else {
-                        $("#bgimage").html('<?php echo $bgtiny; ?>');
-                    }
-                }
-
-               if ($('#side').height() > $('#content').height()) {
-                   $('#content').height($('#side').height());
-               } else {
-                   $('#side').height($('#content').height());
-               }*/
+               
 
             });
         </script>
@@ -175,8 +132,6 @@ if ($call->image instanceof Goteo\Model\Image) {
 
         <noscript><!-- Please enable JavaScript --></noscript>
 
-        <!--<div id="bgimage">
-        </div>-->
 
         <div id="wrapper">
 			
