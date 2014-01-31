@@ -63,7 +63,7 @@ $filters = $this['filters'];
         <tbody>
             <?php foreach ($this['nodes'] as $node) :
                 $status = $node->active ? 'active' : 'inactive';
-                if (DEVGOTEO_LOCAL === true) {
+                if (GOTEO_ENV == 'local') {
                     $url = str_replace('http://', "http://{$node->id}.", SITE_URL);
                 } else {
                     $url = $node->url;

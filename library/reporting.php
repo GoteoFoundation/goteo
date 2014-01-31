@@ -19,6 +19,7 @@ namespace Goteo\Library {
                             'sql'   => "SELECT SUM(invest.amount)
                                         FROM invest
                                         WHERE invest.status IN (0, 1, 3, 4)
+                                        :investfilter
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'
@@ -28,6 +29,7 @@ namespace Goteo\Library {
                             'sql'   => "SELECT SUM(invest.amount)
                                         FROM invest
                                         WHERE invest.status = 4
+                                        :investfilter
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'
@@ -38,10 +40,12 @@ namespace Goteo\Library {
                                                 SELECT SUM(invest.amount)
                                                 FROM invest
                                                 WHERE invest.status = 4
+                                                :investfilter
                                             ) / (
                                                 SELECT SUM(invest.amount)
                                                 FROM invest
                                                 WHERE invest.status IN (0, 1, 3, 4)
+                                                :investfilter
                                             ) * 100 as percent
                                         FROM DUAL
                                         ",
@@ -54,6 +58,7 @@ namespace Goteo\Library {
                                         FROM invest
                                         WHERE invest.status = 2
                                         AND invest.issue IS NOT NULL
+                                        :investfilter
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'
@@ -64,6 +69,7 @@ namespace Goteo\Library {
                                         FROM invest
                                         WHERE invest.status = 2
                                         AND invest.issue IS NULL
+                                        :investfilter
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'
@@ -76,6 +82,7 @@ namespace Goteo\Library {
                                             ON  project.id = invest.project
                                             AND project.status IN (4, 5)
                                         WHERE invest.status IN (1, 3)
+                                        :investfilter
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'
@@ -89,6 +96,7 @@ namespace Goteo\Library {
                                             AND project.status IN (4, 5)
                                         WHERE invest.status IN (1, 3)
                                         AND invest.method = 'paypal'
+                                        :investfilter
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'
@@ -102,6 +110,7 @@ namespace Goteo\Library {
                                             AND project.status IN (4, 5)
                                         WHERE invest.status IN (1, 3)
                                         AND invest.method = 'tpv'
+                                        :investfilter
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'
@@ -115,6 +124,7 @@ namespace Goteo\Library {
                                             AND project.status IN (4, 5)
                                         WHERE invest.status IN (1, 3)
                                         AND invest.method = 'cash'
+                                        :investfilter
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'
@@ -127,6 +137,7 @@ namespace Goteo\Library {
                                             ON  project.id = invest.project
                                             AND project.status IN (4, 5)
                                         WHERE invest.status IN (1, 3)
+                                        :investfilter
                                         ",
                             'unit'  => '€',
                             'format'=> 'amount'
@@ -139,6 +150,7 @@ namespace Goteo\Library {
                                             ON  project.id = invest.project
                                             AND project.status IN (4, 5)
                                         WHERE invest.status IN (1, 3)
+                                        :investfilter
                                         ",
                             'unit'  => ' €/cof.',
                             'format'=> '2dec'
@@ -152,6 +164,7 @@ namespace Goteo\Library {
                                             AND project.status IN (4, 5)
                                         WHERE invest.status IN (1, 3)
                                         AND invest.method = 'paypal'
+                                        :investfilter
                                         ",
                             'unit'  => ' €/cof.',
                             'format'=> '2dec'
@@ -176,6 +189,7 @@ namespace Goteo\Library {
                                             ON  project.id = invest.project
                                             AND project.status IN (4, 5)
                                         WHERE invest.status IN (1, 3)
+                                        :investfilter
                                         ",
                             'unit'  => ' €/proy.',
                             'format'=> '2dec'
@@ -187,6 +201,7 @@ namespace Goteo\Library {
                                                 FROM invest
                                                 WHERE invest.status IN (1, 3)
                                                 AND invest.project = project.id
+                                                :investfilter
                                             ) / (
                                                 SELECT SUM(cost.amount)
                                                 FROM cost
@@ -207,6 +222,7 @@ namespace Goteo\Library {
                                             ON  project.id = invest.project
                                             AND project.status IN (6)
                                         WHERE invest.status IN (0, 4)
+                                        :investfilter
                                         ",
                             'unit'  => ' €/proy.',
                             'format'=> '2dec'
@@ -218,6 +234,7 @@ namespace Goteo\Library {
                                                 FROM invest
                                                 WHERE invest.status IN (0, 4)
                                                 AND invest.project = project.id
+                                                :investfilter
                                             ) / (
                                                 SELECT SUM(cost.amount)
                                                 FROM cost
@@ -523,6 +540,7 @@ namespace Goteo\Library {
                             'sql'   => "SELECT COUNT(project.id)
                                         FROM project
                                         WHERE (project.updated IS NOT NULL AND project.updated != '0000-00-00')
+                                        :projectfilter
                                         "
                         ),
                         array(
@@ -531,6 +549,7 @@ namespace Goteo\Library {
                                         FROM project
                                         WHERE (project.published IS NOT NULL AND project.published != '0000-00-00')
                                         AND project.status > 0
+                                        :projectfilter
                                         "
                         ),
                         array(
@@ -539,6 +558,7 @@ namespace Goteo\Library {
                                         FROM project
                                         WHERE (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                                         AND project.status > 0
+                                        :projectfilter
                                         "
                         ),
                         array(
@@ -547,6 +567,7 @@ namespace Goteo\Library {
                                         FROM project
                                         WHERE (project.closed IS NOT NULL AND project.closed != '0000-00-00')
                                         AND project.status > 0
+                                        :projectfilter
                                         "
                         ),
                         array(
@@ -556,6 +577,7 @@ namespace Goteo\Library {
                                                 FROM project
                                                 WHERE (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                                                 AND project.status > 0
+                                                :projectfilter
                                             ) /
                                                 (
                                                 SELECT COUNT(project.id)
@@ -565,6 +587,7 @@ namespace Goteo\Library {
                                                     OR (project.closed IS NOT NULL AND project.closed != '0000-00-00')
                                                     )
                                                 AND project.status > 0
+                                                :projectfilter
                                             ) * 100 as percent
                                         FROM DUAL
                                         ",
@@ -769,11 +792,41 @@ namespace Goteo\Library {
                     $report['rows'][$key] = $fConf['label'];
                     // aqui si hay varias columnas, get data nos dara varios datos (tema fechas)
 
+                    $values = array();
+                    $sqlFilter = "";
+                    if ($req == 'money') {
+
+                        if (!empty($filters['date_from'])) {
+                            $sqlFilter .= " AND invest.invested >= :date_from";
+                            $values[':date_from'] = $filters['date_from'];
+                        }
+                        if (!empty($filters['date_until'])) {
+                            $sqlFilter .= " AND invest.invested <= :date_until";
+                            $values[':date_until'] = $filters['date_until'];
+                        }
+
+                        $sql = str_replace(":investfilter", $sqlFilter, $fConf['sql']);
+
+                    } else if ($req == 'projects') {
+
+                        if (!empty($filters['date_from'])) {
+                            $sqlFilter .= " AND project.created >= :date_from";
+                            $values[':date_from'] = $filters['date_from'];
+                        }
+                        if (!empty($filters['date_until'])) {
+                            $sqlFilter .= " AND project.created <= :date_until";
+                            $values[':date_until'] = $filters['date_until'];
+                        }
+
+                        $sql = str_replace(":projectfilter", $sqlFilter, $fConf['sql']);
+
+                    }
+
                     // resultados especiales de varios datos
                     if ($fConf['result'] == 'rows') {
-                        $report['data'][$key] = self::getDataRow($fConf['sql'], $filters, $fConf['unit'], $fConf['format']);
+                        $report['data'][$key] = self::getDataRow($sql, $values, $fConf['unit'], $fConf['format']);
                     } else {
-                        $report['data'][$key] = self::getData($fConf['sql'], $filters, $fConf['unit'], $fConf['format']);
+                        $report['data'][$key] = self::getData($sql, $values, $fConf['unit'], $fConf['format']);
                     }
                 }
 
@@ -785,11 +838,11 @@ namespace Goteo\Library {
          * //@TODO : aplicar filtros
          * // segun filtros y otro parametro sabremos si hay que sacar un array de varias columnas de dtos
          */
-        private static function getData($sql, $filters, $unit = '', $format = null) {
+        private static function getData($sql, $values, $unit = '', $format = null) {
 
                 if (empty($sql)) return array();
 
-                $query = Model::query($sql);
+                $query = Model::query($sql, $values);
                 $data = $query->fetchColumn();
                 switch ($format) {
                     case '2dec':
@@ -813,11 +866,11 @@ namespace Goteo\Library {
         /*
          * PAra datos de varios valores
          */
-        private static function getDataRow($sql, $filters) {
+        private static function getDataRow($sql, $values) {
 
                 if (empty($sql)) return array();
 
-                $query = Model::query($sql);
+                $query = Model::query($sql, $values);
                 $rows = $query->fetchAll(\PDO::FETCH_NUM);
                 $data = '';
                 foreach ($rows as $row) {
