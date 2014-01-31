@@ -105,6 +105,7 @@ div#main ul#list>li {
 	-moz-box-shadow: 7px 0px 22px #ccc;
 	-webkit-box-shadow: 7px 0px 22px #ccc;
 	box-shadow: 7px 0px 22px #ccc;
+	width:250px;
 }
 
 /* Banners social container */
