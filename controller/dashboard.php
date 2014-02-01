@@ -26,11 +26,6 @@ namespace Goteo\Controller {
          */
         public function activity($option = 'summary', $action = 'view') {
 
-            if ($option == 'donor' && $_SERVER['HTTPS'] !== 'on') {
-                throw new Redirection(SEC_URL.'/dashboard/activity/donor');
-            }
-
-
             // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
             if (isset($_SESSION['stepped'])) {
                 unset($_SESSION['stepped']);
@@ -81,10 +76,6 @@ namespace Goteo\Controller {
          */
 
         public function profile($option = 'profile', $action = 'edit') {
-
-            if ($_SERVER['HTTPS'] !== 'on') {
-                throw new Redirection(SEC_URL.'/dashboard/profile/'.$option);
-            }
 
             // tratamos el post segun la opcion y la acion
             $user = $_SESSION['user'];

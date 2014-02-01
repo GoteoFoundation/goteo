@@ -38,6 +38,10 @@ div.widget .title{
 }
 
 /* Esquinas del banderolo largo */
+div.widget.project-support div.tagmark.aqua {
+    background-image:url('project/long_tagmark_aqua.png') !important;
+}
+
 div.widget.project-support div.tagmark.green {
     background-image:url('project/long_tagmark_green.png') !important;
 }
