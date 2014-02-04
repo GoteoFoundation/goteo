@@ -75,6 +75,7 @@ if ($call->image instanceof Goteo\Model\Image) {
     </style>
     <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/responsive.css" />
     <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/mobile.css" media="only screen and (max-width:400px)">
+    <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/tablet.css" media="only screen and (min-width:400px) and (max-width:770px)">
 
    
     <?php endif; ?>

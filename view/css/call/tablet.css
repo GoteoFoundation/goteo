@@ -1,0 +1,67 @@
+/* Tablet (min-width:400px max-width:600px) */
+#header, #footer {display:none;}
+           
+div#main {
+     width: 100%;
+     margin: 0;
+}
+
+ #title img.logo {
+    width:32.4675%;
+         }
+  
+ #title h2.title {
+    width: 64.935%;
+    padding-top: 2%;
+         }
+
+#banners-social {
+    width: 100%;
+         }
+
+div#banners-social div#call-banners {
+            width:100%;
+           }
+
+div#banners-social div#call-banners div.call-banners-container {
+            width:100%;
+           }
+div.call-banners-container div.call-banner {
+            width:100%;
+
+           }
+
+div.call-banners-container div.call-banner > div.title {
+            width:70%;
+            margin-left: 22%;
+           }
+#social {
+  display:none;
+}
+
+#info {
+            width:100%;
+      }
+
+.projects #content {
+            width:100%;
+            float:none;
+            clear: both;
+      }
+
+ #project-list {
+            width: 100%
+      }
+ #project-list li {
+            width:28%;
+      }
+           
+ div#side {
+            display:none;
+            float:none;
+            clear: both;
+      }
+
+  #supporters-sponsors {
+            display: none;
+      }

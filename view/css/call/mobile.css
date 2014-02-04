@@ -44,7 +44,7 @@
             margin-left: 22%;
            }
 
-
+           
 
            #social {
             display: none;
@@ -75,5 +75,30 @@
            }
 
            #supporters-sponsors {
-            display: none;
+            width:100%;
+           }
+
+           #call-supporters {
+            width: 100%;
+           }
+
+           #supporters-sponsors #post {
+            width:96.6%;
+            padding: 2% 0 0 2%;
+           }
+
+          #supporters-sponsors #post div.image {
+            width:43.3%;
+           }
+          
+          .image_mobile {
+            max-width: 100%;
+          }
+
+          #supporters-sponsors #post div.content{
+            width:54%;
+            margin-left: 2.5%;
+           }
+           #sponsors {
+            display:none;
            }

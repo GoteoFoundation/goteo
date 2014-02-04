@@ -9,7 +9,7 @@ $post = $this['post'];
 <div id="post">
     <?php  if (!empty($post->image)) : ?>
         <div class="image">
-            <img src="<?php echo $post->image->getLink(228, 130, true); ?>" alt="Imagen"/>
+            <img src="<?php echo $post->image->getLink(228, 130, true); ?>" class="image_mobile" alt="Imagen"/>
         </div>
     <?php endif; ?>
     <div class="content">
