@@ -73,3 +73,7 @@
             float:none;
             clear: both;
            }
+
+           #supporters-sponsors {
+            display: none;
+           }

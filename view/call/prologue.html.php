@@ -1,5 +1,4 @@
 <?php
-// código javascript apra imagen de fondo
 
 if ($call->image instanceof Goteo\Model\Image) {
     $img_minimobile = $call->image->getLink(340, 340);
@@ -22,6 +21,7 @@ if ($call->image instanceof Goteo\Model\Image) {
         <meta name="keywords" content="<?php echo GOTEO_META_KEYWORDS ?>" />
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
+        <meta name="viewport" content="width=device-width">
         <meta name="robots" content="all" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <meta property="og:title" content="<?php echo $call->name; ?>" />
@@ -52,11 +52,16 @@ if ($call->image instanceof Goteo\Model\Image) {
           body { background: url(<?php echo $img_minimobile; ?>);
                  
                }
+           
     </style>
     <style type="text/css" media="only screen and (min-width:340px) and (max-width:750px)">
           body { background: url(<?php echo $img_mobile; ?>);
-                  
-               }
+
+          }
+
+  
+          
+                
     </style>
     <style type="text/css" media="only screen and (min-width:750px) and (max-width:1023px)">
           body { background: url(<?php echo $img_tablet; ?>);
@@ -69,6 +74,7 @@ if ($call->image instanceof Goteo\Model\Image) {
                }
     </style>
     <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/responsive.css" />
+    <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/mobile.css" media="only screen and (max-width:400px)">
 
    
     <?php endif; ?>
