@@ -820,6 +820,8 @@ namespace Goteo\Library {
 
                         $sql = str_replace(":projectfilter", $sqlFilter, $fConf['sql']);
 
+                    } else {
+                        $sql = $fConf['sql'];
                     }
 
                     // resultados especiales de varios datos

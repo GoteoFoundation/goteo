@@ -36,11 +36,13 @@ namespace Goteo\Controller {
          */
         public function login($username = '') {
 
+/*
+
             if (GOTEO_ENV != 'local' && $_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['HTTPS'] !== 'on') {
                 $ret = (!empty($_REQUEST['return'])) ? '?return='.$_REQUEST['return'] : '';
                 throw new Redirection(SEC_URL.'/user/login'.$ret);
             }
-
+*/
             // si venimos de la página de aportar
             if (isset($_POST['amount'])) {
                 $_SESSION['invest-amount'] = $_POST['amount'];
@@ -54,10 +56,10 @@ namespace Goteo\Controller {
                 $password = $_POST['password'];
                 if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
                     $_SESSION['user'] = $user;
-                    
+
                     // creamos una cookie
                     setcookie("goteo_user", $user->id, time() + 3600 * 24 * 365);
-                    
+
                     if (!empty($user->lang)) {
                         $_SESSION['lang'] = $user->lang;
                     }
@@ -139,7 +141,7 @@ namespace Goteo\Controller {
                     Message::Info(Text::get('user-register-success'));
 
                     $_SESSION['user'] = Model\User::get($user->id);
-                    
+
                     // creamos una cookie
                     setcookie("goteo_user", $user->id, time() + 3600 * 24 * 365);
 
@@ -539,7 +541,7 @@ namespace Goteo\Controller {
                 if (!empty($user_created)) {
                     $is_author = true;
                 }
-                
+
                 // si el usuario del perfil es cofin. o partic.
                 // proyectos que es cofinanciador este usuario (el del perfil)
                 $user_invested = Model\User::invested($id, true);
@@ -820,7 +822,7 @@ namespace Goteo\Controller {
 
             // si el token mola, logueo este usuario y lo llevo a su dashboard
             if (!empty($token)) {
-                $token = base64_decode($token);
+                $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
                 if (count($parts) > 1) {
                     $query = Model\User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));

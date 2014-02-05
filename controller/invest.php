@@ -19,7 +19,6 @@ namespace Goteo\Controller {
         // metodos habilitados
         public static $methods = array(
                 'tpv' => 'tpv',
-                'cash' => 'cash',  // solo en entornos de desarrollo y pruebas
                 'paypal' => 'paypal'
             );
 
@@ -213,33 +212,6 @@ namespace Goteo\Controller {
 
 
             // segun método
-            /*----------------------------------
-             * SOLAMENTE DESARROLLO Y PRUEBAS!!!
-             -----------------------------------*/
-            if ($invest->method == 'cash') {
-               
-                // Evento Feed
-                $log = new Feed();
-                $log->setTarget($projectData->id);
-                $log->populate('Aporte '.$invest->method, '/admin/invests',
-                    \vsprintf("%s ha aportado %s al proyecto %s mediante Cash", array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('money', $invest->amount.' &euro;'),
-                        Feed::item('project', $projectData->name, $projectData->id))
-                    ));
-                $log->doAdmin('money');
-                // evento público
-                $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id,
-                    Text::html('feed-invest',
-                                    Feed::item('money', $invest->amount.' &euro;'),
-                                    Feed::item('project', $projectData->name, $projectData->id)),
-                    $_SESSION['user']->avatar->id);
-                $log->doPublic('community');
-                unset($log);
-            }
-            /*--------------------------------------
-             * FIN SOLAMENTE DESARROLLO Y PRUEBAS!!!
-             --------------------------------------*/
 
             if ($invest->method == 'tpv') {
                 // si el aporte no está en estado "cobrado por goteo" (1) 
