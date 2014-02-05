@@ -14,6 +14,7 @@ namespace Goteo\Library {
 
         public static 
             $tables = array(
+                'stories'   => 'Historias exitosas',
                 'promote'   => 'Proyectos destacados',
                 'patron'    => 'Proyectos apadrinados',
                 'icon'      => 'Tipos de retorno/recompensa',
@@ -86,6 +87,11 @@ namespace Goteo\Library {
                 'template' => array (
                     'title' => 'Título',
                     'text' => 'Contenido'
+                ),
+                'stories' => array (
+                    'title' => 'Título',
+                    'description' => 'Descripción',
+                    'review' => 'Review'
                 ),
                 'glossary' => array (
                     'title' => 'Título',

@@ -23,13 +23,15 @@ namespace Goteo\Model {
              'promotes' => 'Proyectos destacados',
              'drops' => 'Capital Riego',
              'feed' => 'Actividad reciente',
-             'patrons' => 'Padrinos'
+             'patrons' => 'Padrinos',
+             'stories' => 'Historias exitosas'
          ),
          $node_items = array(
              'posts' => 'Novedades',
              'promotes' => 'Proyectos',
              'calls' => 'Convocatorias',
-             'patrons' => 'Padrinos'
+             'patrons' => 'Padrinos',
+             'stories' => 'Historias exitosas'
          ),
          $node_side_items = array(
              'searcher' => 'Selector proyectos',
@@ -44,7 +46,8 @@ namespace Goteo\Model {
              'calls' => '/admin/campaigns',
              'posts' => '/admin/blog',
              'patrons' => '/admin/patron',
-             'sponsors' => '/admin/sponsors'
+             'sponsors' => '/admin/sponsors',
+             'stories' => '/admin/stories'
          );
 
 

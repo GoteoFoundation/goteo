@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Model\Home,
         Goteo\Model\Project,
         Goteo\Model\Banner,
+        Goteo\Model\Stories,
         Goteo\Model\Call,
         Goteo\Model\Post,  // esto son entradas en portada o en footer
         Goteo\Model\Promote,
@@ -109,9 +110,26 @@ namespace Goteo\Controller {
                 
             }
 
+            if (isset($order['stories'])) {
+                $stories = Stories::getAll(true);
+
+                foreach ($stories as $id => &$story) {
+
+                    if (!empty($story->project)) {
+                        try {
+                            $story->project = Project::get($story->project, LANG);
+                        } catch (\Goteo\Core\Error $e) {
+                            unset($stories[$id]);
+                        }
+                    }
+
+                }
+            }
+
             return new View('view/index.html.php',
                 array(
                     'banners'   => $banners,
+                    'stories'   => $stories,
                     'posts'     => $posts,
                     'promotes'  => $promotes,
                     'calls'     => $calls,
