@@ -114,6 +114,13 @@ SESSION
 
     }    
 
+    /* problema de la barra en base64*/
+    function mybase64_encode($s) {
+        return str_replace(array('+', '/'), array('_', '-'), base64_encode($s));
+    }
 
+    function mybase64_decode($s) {
+        return base64_decode(str_replace(array('_', '-'), array('+', '/'), $s));
+    }
 
 }

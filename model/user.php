@@ -1038,7 +1038,7 @@ namespace Goteo\Model {
 
                 // En el contenido:
                 $search  = array('%USERNAME%', '%USERID%', '%RECOVERURL%');
-                $replace = array($row->name, $row->id, $URL . '/user/recover/' . base64_encode($token));
+                $replace = array($row->name, $row->id, $URL . '/user/recover/' . \mybase64_encode($token));
                 $content = \str_replace($search, $replace, $template->text);
                 // Email de recuperacion
                 $mail = new Mail();
