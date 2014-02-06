@@ -200,5 +200,6 @@ namespace Goteo\Core {
         public function nextRowset() {
             return self::_nonCachedMethod("nextRowset", func_get_args());
         }
+        /* el resto de métodos no son usados por SELECT, no hace falta definirlos otra vez*/
     }
 }
