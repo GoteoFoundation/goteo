@@ -93,9 +93,6 @@ define("AWS_S3_LOG_PREFIX", "betaapplogs/");
 // nodo central
 define('GOTEO_NODE', 'goteo');
 
-// tipo de entorno: local, beta, real
-define("GOTEO_ENV", "beta");
-
 // Cron params
 define('CRON_PARAM', '4dTJYNfPovGqyMt');
 define('CRON_VALUE', 'HsIv6aG36ek2s7Q');
