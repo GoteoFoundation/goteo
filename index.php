@@ -210,12 +210,15 @@ try {
             ob_end_clean();
 
             if ($result instanceof Resource\MIME) {
-                header("Content-type: {$result->getMIME()}");
+                $mime_type = $result->getMIME();
+                header("Content-type: $mime_type");
             }
 
             echo $result;
 
-            // print_r(Goteo\Core\CacheStatement::getQueriesSoFar());
+            if($mime_type == "text/html" && GOTEO_ENV != 'real') {
+                echo "<!-- ".implode(", ",Goteo\Core\CacheStatement::getQueriesSoFar()) . " -->";
+            }
             // Farewell
             die;
 

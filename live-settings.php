@@ -65,6 +65,9 @@ define('SITE_URL', 'http://goteo.org');
 #define('SITE_URL', 'http://ns235942.ovh.net');
 #define('SRC_URL', 'http://ns235942.ovh.net');
 
+// tipo de entorno: local, beta, real
+define("GOTEO_ENV", "beta");
+
 // Cron params
 define('CRON_PARAM', '4dTJYNfPovGqyMt');
 define('CRON_VALUE', 'HsIv6aG36ek2s7Q');
