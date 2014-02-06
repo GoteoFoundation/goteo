@@ -43,6 +43,12 @@ if (!defined('PHPMAILER_SMTP')) {
 if (!defined('PHPMAILER_POP3')) {
     define ('PHPMAILER_POP3', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.pop3.php');
 }
+/******************************************************
+PhpFastCache constants
+*******************************************************/
+if (!defined('PHPFASTCACHE_CLASS')) {
+    define ('PHPFASTCACHE_CLASS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpfastcache' . DIRECTORY_SEPARATOR . 'phpfastcache.php');
+}
 
 /******************************************************
 OAUTH APP's Secrets
@@ -91,6 +97,13 @@ define('GOTEO_DB_CHARSET', 'UTF-8');
 define('GOTEO_DB_SCHEMA', 'db-schema');
 define('GOTEO_DB_USERNAME', 'db-username');
 define('GOTEO_DB_PASSWORD', 'db-password');
+
+//SELECT queries caching
+//setup it as "files", "memcache"
+define("SQL_CACHE_DRIVER", 'memcache'); //dejar vacia para no activar cache
+define("SQL_CACHE_TIME", 20); //Segundos de cache para las queries SELECT (puede ser sobreescrito por las query->cacheTime())
+define("SQL_CACHE_SERVER", 'localhost'); //Si es memcache, si no será ignorado
+define("SQL_CACHE_PORT", '11211'); //Si es memcache, si no será ignorado
 
 // Mail
 define('GOTEO_MAIL_FROM', 'noreply@example.com');
