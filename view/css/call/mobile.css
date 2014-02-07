@@ -15,11 +15,8 @@
            }
 
            #title h2.title {
-            width: 80%;
-            float:none;
-            clear: both;
-            padding: 15%;
-            font-size: 19px;
+            float: none;
+            
            }
 
            #banners-social {
@@ -103,3 +100,27 @@
            #sponsors {
             display:none;
            }
+
+           #content
+           {
+            width:100%;
+           }
+
+           #stats {
+            width:100%;
+           }
+
+           #stats dl.long {
+            width:47%;
+           }
+
+           #stats dl.category {
+            width:100%;
+            margin-top: 30px;
+           }
+
+           #stats dl.block selected {
+            width:30%;
+           }
+
+
