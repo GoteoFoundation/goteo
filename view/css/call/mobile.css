@@ -15,7 +15,7 @@
            }
 
            #title h2.title {
-            float: none;
+            display:none;
             
            }
 
@@ -34,6 +34,10 @@
            }
            div.call-banners-container div.call-banner {
             width:100%;
+            background-image: none !important;
+            left:0px !important;
+            margin-left: 15%;
+            margin-right: 15%;
 
            }
 
@@ -67,10 +71,20 @@
            }
            
            div#side {
-            display:none;
             float:none;
             clear: both;
+            width: 100%;
            }
+
+           #side dl {
+            margin: 15px 0;
+            width: 45%;
+            float: left;
+            }
+
+            #side .block {
+              width: 100%;
+            }
 
            #supporters-sponsors {
             width:100%;
@@ -119,8 +133,30 @@
             margin-top: 30px;
            }
 
-           #stats dl.block selected {
-            width:30%;
+           #stats dl.block.selected, #stats dl.block.processing, #stats dl.block.success {
+            width:25%;
            }
+           #stats dl.block.last.return {
+            width: 100%;
+            margin-top: 20px;
+           }
+
+           #stats dl.location{
+            width:100%;
+            padding-right: 30px;
+           }
+
+           #supporters-sponsors #post div.read_more {
+            margin-top: 2px;
+           }
+           .freetext {
+            margin-right: 10%;
+           }
+
+           .mobile_contact{
+            width: 100% !important;
+           }
+
+           
 
 
