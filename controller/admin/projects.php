@@ -427,6 +427,22 @@ namespace Goteo\Controller\Admin {
             }
 
 
+            // cortar el grifo
+            if ($action == 'noinvest') {
+
+                $values = array(':project' => $projData->id);
+                $sql = "REPLACE INTO project_conf (`project`, `noinvest `) VALUES (:project, 1)";
+                if (Model\Project::query($sql, $values)) {
+                    Message::Info('Se ha cortado el grifo al proyecto <strong>'.$project->name.'</strong>');
+                } else {
+                    Message::Error('Ha fallado al cortar el grifo al proyecto <strong>'.$project->name.'</strong>');
+                }
+
+
+                throw new Redirection('/admin/projects/list');
+            }
+
+
             if (!empty($filters['filtered'])) {
                 $projects = Model\Project::getList($filters, $_SESSION['admin_node']);
             } else {
