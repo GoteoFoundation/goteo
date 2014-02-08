@@ -322,7 +322,12 @@ namespace Goteo\Model\Call {
                         $call->dropable = false; 
                         $call->maxproj = 0;
                     }
-                    
+                            
+                    // si está limitado a cubrir costes, no puede regarse más
+                    if ($call->conf == 'minimum' && $project->invested >= $project->maxcost) {
+                        $call->dropable = false; 
+                        $call->maxproj = 0;
+                    }
 
                     // si no está en campaña ni de coña puede obtener riego
                     if ($project->status != 3) {
@@ -350,6 +355,11 @@ namespace Goteo\Model\Call {
             
             $call = $project->called;
             
+            // si está limitado a cubrir costes, no puede regarse más
+            if ($call->conf == 'minimum' && $project->invested >= $project->maxcost) {
+                return 0;
+            }
+
             // si el proyecto no está en una convocatoria o ya no se puede regar
             if (!isset($call) || !$call instanceof Model\Call || !$call->dropable)
                 return 0;
