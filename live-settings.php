@@ -80,9 +80,6 @@ define("FILE_HANDLER", "file");
 //Log file management: s3, file
 define("LOG_HANDLER", "file");
 
-// tipo de entorno: local, beta, real
-define("GOTEO_ENV", "beta");
-
 
 //S3 bucket
 define("AWS_S3_BUCKET", "beta.static.goteo.org");
@@ -155,5 +152,14 @@ define('RECAPTCHA_PRIVATE_KEY','6LcnLOcSAAAAAM3fpJEYR-03ukTNMd21nLBZUrTr');
 /****************************************************
 Google Analytics
 ****************************************************/
-define('GOTEO_ANALYTICS_TRACKER', "
+define('GOTEO_ANALYTICS_TRACKER', "<script type=\"text/javascript\">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17744816-4']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 ");
