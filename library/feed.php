@@ -175,7 +175,7 @@ namespace Goteo\Library {
                     // acciones del web service ultra secreto
                     $sqlType = " AND feed.type != 'usws'";
                 }
-                
+
                 $sqlNode = '';
                 if (!empty($node) && $node != \GOTEO_NODE) {
                     /* segun el objetivo del feed sea:
@@ -213,7 +213,7 @@ namespace Goteo\Library {
                             feed.datetime as timer,
                             feed.html as html
                         FROM feed
-                        WHERE feed.scope = :scope 
+                        WHERE feed.scope = :scope
                         $sqlType
                         $sqlNode
                         ORDER BY datetime DESC
@@ -221,13 +221,14 @@ namespace Goteo\Library {
                         ";
 
                 $query = Model::query($sql, $values);
+                $query->cacheTime(60);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
                     // si es la columan goteo, vamos a cambiar el html por el del post traducido
                     if ($type == 'goteo') {
                         // primero sacamos la id del post de la url
                         $matches = array();
-                        
+
                         \preg_match('(\d+)', $item->url, $matches);
                         if (!empty($matches[0])) {
                             //  luego hacemos get del post
@@ -282,7 +283,7 @@ namespace Goteo\Library {
                             feed.datetime as timer,
                             feed.html as html
                         FROM feed
-                        WHERE feed.scope = 'public' 
+                        WHERE feed.scope = 'public'
                         AND feed.type = 'projects'
                         AND feed.url LIKE '%updates%'
                         ORDER BY datetime DESC
@@ -290,6 +291,7 @@ namespace Goteo\Library {
                         ";
 
                 $query = Model::query($sql, $values);
+                $query->cacheTime(60);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
                     //hace tanto
@@ -373,11 +375,12 @@ namespace Goteo\Library {
                         ";
 
                 $query = Model::query($sql, $values);
+                $query->cacheTime(60);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
                     //hace tanto
                     $item->timeago = self::time_ago($item->timer);
-                    
+
                     $list[] = $item;
                 }
                 return $list;
@@ -421,6 +424,8 @@ namespace Goteo\Library {
                     ':scope' => $this->scope,
                     ':type' => $this->type
                 ));
+                //esta consulta sin cache
+                $query->cacheTime(0);
                 if ($query->fetchColumn(0) != false) {
                     $this->unique_issue = true;
                     return true;
@@ -452,7 +457,7 @@ namespace Goteo\Library {
                         "Ha fallado Feed<br /> {$sql} con <pre>" . print_r($values, 1) . "</pre><hr /><pre>" . print_r($this, 1) . "</pre>");
                     return false;
                 }
-                
+
 			} catch(\PDOException $e) {
                     @mail('goteo_fail@doukeshi.org',
                         'PDO Exception evento feed: ' . SITE_URL,
@@ -461,10 +466,10 @@ namespace Goteo\Library {
 			}
 
 		}
-        
+
         /**
          * Metodo para transformar un TIMESTAMP en un "hace tanto"
-         * 
+         *
          * Los periodos vienen de un texto tipo singular-plural_sg-pl_id-sg-pl_...
          * en mismo orden y cantidad que los per_id
          */

@@ -47,7 +47,7 @@ namespace Goteo\Core {
          * http://www.php.net/manual/es/class.pdostatement.php
          *
          * @param   type string $query      Consulta SQL
-         * @param   type array  $params     ParÃ¡metros
+         * @param   type array  $params     Parámetros
          * $return  type object PDOStatement
          */
         public static function query ($query, $params = null) {
@@ -119,13 +119,13 @@ namespace Goteo\Core {
                 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ü'=>'u', 'ý'=>'y', 'ý'=>'y',
                 'þ'=>'b', 'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r', 'ª'=>'a', 'º'=>'o', '€'=>'eur',
                 '!'=>'', '¡'=>'', '?'=>'', '¿'=>'', '@'=>'', '^'=>'', '|'=>'', '#'=>'', '~'=>'',
-                '%'=>'', '$'=>'', '*'=>'', '+'=>'', '.'=>'-', '`'=>'', '´'=>'', '’'=>'', '”'=>'-', '“'=>'-'  
+                '%'=>'', '$'=>'', '*'=>'', '+'=>'', '.'=>'-', '`'=>'', '´'=>'', '’'=>'', '”'=>'-', '“'=>'-'
             );
 
             if ($filename) {
                 $table['.'] = '.';
             }
-            
+
             $id = strtr($id, $table);
             $id = strtolower($id);
 

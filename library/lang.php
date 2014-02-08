@@ -19,6 +19,7 @@ namespace Goteo\Library {
                     FROM lang WHERE id = :id
                     ";
             $query = Model::query($sql, array(':id' => $id));
+            $query->cacheTime(3600);
             return $query->fetchObject();
         }
 
@@ -41,6 +42,7 @@ namespace Goteo\Library {
             $sql .= "ORDER BY id ASC";
 
             $query = Model::query($sql);
+            $query->cacheTime(3600);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $lang) {
                 $array[$lang->id] = $lang;
             }
@@ -117,6 +119,7 @@ namespace Goteo\Library {
         static public function locale() {
             $sql = "SELECT locale FROM lang WHERE id = :id";
             $query = Model::query($sql, array(':id' => \LANG));
+            $query->cacheTime(3600);
             return $query->fetchColumn();
         }
 
@@ -148,14 +151,15 @@ namespace Goteo\Library {
 //            die(str_replace(':id', "'$id'", $sql));
 
             $query = Model::query($sql, array(':id' => $id));
+            $query->cacheTime(3600);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $lang) {
                 $array[$lang->id] = $lang->name;
             }
             return $array;
         }
 
-        
-        
+
+
     }
 
 }
