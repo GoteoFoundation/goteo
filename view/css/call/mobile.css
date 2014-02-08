@@ -19,7 +19,7 @@
             
            }
 
-           #banners-social {
+           #banners-social, div#banners-social div#call-banners div.call-banners-container, #info, #project-list, #side .block, #supporters-sponsors, #call-supporters, #content, #stats {
             width: 100%;
            }
 
@@ -29,9 +29,7 @@
             clear:both;
            }
 
-          div#banners-social div#call-banners div.call-banners-container {
-            width:100%;
-           }
+         
            div.call-banners-container div.call-banner {
             width:100%;
             background-image: none !important;
@@ -44,6 +42,8 @@
            div.call-banners-container div.call-banner > div.title {
             width:70%;
             margin-left: 22%;
+            max-width: 300px;
+            padding-top: 45px;
            }
 
            
@@ -53,19 +53,12 @@
            }
 
 
-           #info {
-            width:100%;
-           }
-
            .projects #content {
             width:100%;
             float:none;
             clear: both;
            }
 
-           #project-list {
-            width: 100%
-          }
            #project-list li {
             width:40%;
            }
@@ -82,21 +75,10 @@
             float: left;
             }
 
-            #side .block {
-              width: 100%;
-            }
-
-           #supporters-sponsors {
-            width:100%;
-           }
-
-           #call-supporters {
-            width: 100%;
-           }
-
            #supporters-sponsors #post {
             width:96.6%;
             padding: 2% 0 0 2%;
+            max-width: 300px;
            }
 
           #supporters-sponsors #post div.image {
@@ -115,14 +97,7 @@
             display:none;
            }
 
-           #content
-           {
-            width:100%;
-           }
-
-           #stats {
-            width:100%;
-           }
+          
 
            #stats dl.long {
             width:47%;
@@ -157,6 +132,17 @@
             width: 100% !important;
            }
 
-           
+           div#side.twitter {
+            display: none;
+           }
+
+           tr {
+            width: 100%;
+            max-width: 300px;
+            margin-right: 15px;
+           }
+          table.info-table tbody tr.odd, table.info-table tbody tr.even  {
+            width:30% !important;
+           }
 
 
