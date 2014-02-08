@@ -47,12 +47,22 @@
                         width:28%;
                   }
                        
-             div#side {
-                        display:none;
-                        float:none;
-                        clear: both;
-                  }
+            div#side {
+            float:none;
+            clear: both;
+            width: 100%;
+           }
 
+           #side dl {
+            margin: 15px 0;
+            width: 33%;
+            float: left;
+            }
+
+            #side .category {
+            padding-right: 0px;
+            clear: left;
+            }
            #supporters-sponsors #post {
             width:96.6%;
             padding: 2% 0 0 2%;
