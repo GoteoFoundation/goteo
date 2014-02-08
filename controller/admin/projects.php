@@ -431,7 +431,7 @@ namespace Goteo\Controller\Admin {
             if ($action == 'noinvest') {
 
                 $values = array(':project' => $projData->id);
-                $sql = "REPLACE INTO project_conf (`project`, `noinvest `) VALUES (:project, 1)";
+                $sql = "REPLACE INTO project_conf (`project`, `noinvest`) VALUES (:project, 1)";
                 if (Model\Project::query($sql, $values)) {
                     Message::Info('Se ha cortado el grifo al proyecto <strong>'.$project->name.'</strong>');
                 } else {
