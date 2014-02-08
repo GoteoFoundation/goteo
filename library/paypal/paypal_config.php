@@ -11,7 +11,7 @@ defines the parameters needed to make an API call.
 # Endpoint: this is the server URL which you have to connect for submitting your API request.
 Chanege to https://svcs.paypal.com/  to go live */
 
-define('API_BASE_ENDPOINT', 'https://svcs.sandbox.paypal.com/');
+define('API_BASE_ENDPOINT', 'https://svcs.paypal.com/');
 
 /**
 USE_PROXY: Set this variable to TRUE to route all the API requests through proxy.
@@ -50,9 +50,9 @@ define('PROXY_PORT', '808');
 
 /***** 3token API credentials *****************/
 define('API_AUTHENTICATION_MODE','3token');
-define('API_USERNAME', 'goteo_1314917819_biz_api1.gmail.com');
-define('API_PASSWORD', '1314917863');
-define('API_SIGNATURE', 'An5ns1Kso7MWUdW4ErQKJJJ4qi4-A0jpddAN2GLAUit7Ii3-bZGjjerJ');
+define('API_USERNAME', 'paypal_api1.goteo.org');//REAL
+define('API_PASSWORD', 'LN4FP7S5B6P9XMWY'); //REAL
+define('API_SIGNATURE', 'AtRL3LnLnoau4mPXnb2IpIN4.TF9A58X6DH-s8PzHv7t4q.6d2gmvQSE'); //REAL
 
 /**
  * Use the following setting (false) if you are testing or using SDK against live PayPal's production server
@@ -65,7 +65,7 @@ define('TRUST_ALL_CONNECTION',false);
  * Defines the SDK Version, Request and Response message formats.
  */
 define('SDK_VERSION','PHP_SOAP_SDK_V1.4');
-define('X_PAYPAL_APPLICATION_ID','APP-80W284485P519543T');
+define('X_PAYPAL_APPLICATION_ID','APP-4FW639590X463293E');
 
 /**
  * Solamente JSON
