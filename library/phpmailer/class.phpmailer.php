@@ -410,6 +410,7 @@ class PHPMailer {
           // Para pruebas en beta
           if (strpos($address, 'goteo.org') !== false ||
               strpos($address, 'platoniq.net') !== false ||
+              strpos($address, 'microstudi.net') !== false ||
               strpos($address, 'pelousse.com') !== false ||
               strpos($address, 'julian.canaves@gmail.com') !== false ||
               strpos($address, 'esenabre@gmail.com') !== false ||
