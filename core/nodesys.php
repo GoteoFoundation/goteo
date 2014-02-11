@@ -22,6 +22,7 @@ namespace Goteo\Core {
                     ':id' => $id
                 )
             );
+            $query->cacheTime(3600);
             return (bool) $query->fetchColumn();
         }
 
@@ -43,6 +44,7 @@ namespace Goteo\Core {
                     ':id' => $id
                 )
             );
+            $query->cacheTime(3600);
             return (bool) $query->fetchColumn();
         }
 
@@ -65,7 +67,7 @@ namespace Goteo\Core {
                 AND id != 'testnode'
                 ORDER BY `name` ASC
                 ");
-
+            $sql->cacheTime(3600);
             foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[] = $item;
             }
@@ -94,7 +96,7 @@ namespace Goteo\Core {
                     ':id' => $id
                 )
             );
-
+            $query->cacheTime(3600);
             $config = $query->fetch(\PDO::FETCH_OBJ);
 
             if (!empty($config)) {

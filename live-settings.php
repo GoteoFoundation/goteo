@@ -26,6 +26,13 @@ define('GOTEO_DB_SCHEMA', 'beta-goteo');
 define('GOTEO_DB_USERNAME', 'goteo');
 define('GOTEO_DB_PASSWORD', 'g0t3012');
 
+//SELECT queries caching
+//setup it as "files", "memcache"
+define("SQL_CACHE_DRIVER", 'memcache'); //dejar vacia para no activar cache
+define("SQL_CACHE_TIME", 20); //Segundos de cache para las queries SELECT (puede ser sobreescrito por las query->cacheTime())
+define("SQL_CACHE_SERVER", 'localhost'); //Si es memcache, si no será ignorado
+define("SQL_CACHE_PORT", '11211'); //Si es memcache, si no será ignorado
+
 //Uploads i catxe
 define('GOTEO_DATA_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR);
 
@@ -74,8 +81,6 @@ define("LOG_HANDLER", "file");
 
 // tipo de entorno: local, beta, real
 define("GOTEO_ENV", "beta");
-// para compatibilidad
-define('DEVGOTEO_LOCAL', true);
 
 
 //S3 bucket

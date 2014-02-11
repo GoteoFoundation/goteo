@@ -15,7 +15,7 @@ require_once 'core/common.php';
 /*
  * Pagina de en mantenimiento
  */
-if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance' 
+if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance'
      && !isset($_POST['Num_operacion'])
     ) {
     header('Location: /about/maintenance');
@@ -62,6 +62,7 @@ set_error_handler (
 /* Sistema nodos */
 // Get Node and check it
 $host = strtok($_SERVER['HTTP_HOST'], '.');
+
 if (NodeSys::isValid($host)) {
     define('NODE_ID', $host);
 } else {
@@ -209,11 +210,15 @@ try {
             ob_end_clean();
 
             if ($result instanceof Resource\MIME) {
-                header("Content-type: {$result->getMIME()}");
+                $mime_type = $result->getMIME();
+                header("Content-type: $mime_type");
             }
 
             echo $result;
 
+            if($mime_type == "text/html" && GOTEO_ENV != 'real') {
+                echo "<!-- ".implode(", ",Goteo\Core\CacheStatement::getQueriesSoFar()) . " -->";
+            }
             // Farewell
             die;
 

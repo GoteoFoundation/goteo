@@ -822,7 +822,7 @@ namespace Goteo\Controller {
 
             // si el token mola, logueo este usuario y lo llevo a su dashboard
             if (!empty($token)) {
-                $token = base64_decode($token);
+                $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
                 if (count($parts) > 1) {
                     $query = Model\User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));
