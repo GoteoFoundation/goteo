@@ -25,7 +25,7 @@ namespace Goteo\Core {
 
                 $this->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
 
-                if($this->cache === null && defined("SQL_CACHE_DRIVER") && SQL_CACHE_DRIVER && defined("SQL_CACHE_TIME") && SQL_CACHE_TIME) {
+                if($this->cache === null && defined("SQL_CACHE_DRIVER") && SQL_CACHE_DRIVER && defined("SQL_CACHE_TIME")) {
                     require_once PHPFASTCACHE_CLASS;
 
                     if(SQL_CACHE_DRIVER == "memcache") {
