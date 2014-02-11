@@ -5,3 +5,4 @@
 /nodesys/_*
 local-settings.php
 tmp-settings.php
+.idea

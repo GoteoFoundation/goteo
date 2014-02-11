@@ -170,6 +170,7 @@ namespace Goteo\Controller\Admin {
                     throw new Redirection('/admin/accounts');
                 }
                 $projectData = Model\Project::getMini($invest->project);
+                $userData =  Model\User::get($invest->user);
 
                 $errors = array();
 
@@ -346,7 +347,6 @@ namespace Goteo\Controller\Admin {
 
             // Informe de la financiación de un proyecto
             if ($action == 'report') {
-                // estados de aporte
                 $project = Model\Project::get($id);
                 if (!$project instanceof Model\Project) {
                     Message::Error('Instancia de proyecto no valida');
@@ -355,6 +355,7 @@ namespace Goteo\Controller\Admin {
                 $invests = Model\Invest::getAll($id);
                 $project->investors = Model\Invest::investors($id, false, true);
                 $users = $project->agregateInvestors();
+                $status = Model\Invest::status();
                 $investStatus = Model\Invest::status();
 
                 // Datos para el informe de transacciones correctas
@@ -387,64 +388,66 @@ namespace Goteo\Controller\Admin {
 
                 if ($project->status > 3 && $project->status < 6) {
                     $errors[] = 'No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv';
-                    break;
-                }
+                } else {
 
-                switch ($invest->method) {
-                    case 'paypal':
-                        $err = array();
-                        if (Paypal::cancelPreapproval($invest, $err)) {
-                            $errors[] = 'Preaproval paypal cancelado.';
-                            $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                        } else {
-                            $txt_errors = implode('; ', $err);
-                            $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . $txt_errors;
-                            $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                    switch ($invest->method) {
+                        case 'paypal':
+                            $err = array();
+                            if (Paypal::cancelPreapproval($invest, $err)) {
+                                $errors[] = 'Preaproval paypal cancelado.';
+                                $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                            } else {
+                                $txt_errors = implode('; ', $err);
+                                $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . $txt_errors;
+                                $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                                if ($invest->cancel()) {
+                                    $errors[] = 'Aporte cancelado';
+                                } else{
+                                    $errors[] = 'Fallo al cancelar el aporte';
+                                }
+                            }
+                            break;
+                        case 'tpv':
+                            $err = array();
+                            if (Tpv::cancelPreapproval($invest, $err)) {
+                                $txt_errors = implode('; ', $err);
+                                $errors[] = 'Aporte cancelado correctamente. ' . $txt_errors;
+                                $log_text = "El admin %s ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
+                            } else {
+                                $txt_errors = implode('; ', $err);
+                                $errors[] = 'Fallo en la operación. ' . $txt_errors;
+                                $log_text = "El admin %s ha fallado al solicitar la cancelación del cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                            }
+                            break;
+                        case 'cash':
                             if ($invest->cancel()) {
+                                $log_text = "El admin %s ha cancelado aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
                                 $errors[] = 'Aporte cancelado';
                             } else{
+                                $log_text = "El admin %s ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
                                 $errors[] = 'Fallo al cancelar el aporte';
                             }
-                        }
-                        break;
-                    case 'tpv':
-                        $err = array();
-                        if (Tpv::cancelPreapproval($invest, $err)) {
-                            $txt_errors = implode('; ', $err);
-                            $errors[] = 'Aporte cancelado correctamente. ' . $txt_errors;
-                            $log_text = "El admin %s ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
-                        } else {
-                            $txt_errors = implode('; ', $err);
-                            $errors[] = 'Fallo en la operación. ' . $txt_errors;
-                            $log_text = "El admin %s ha fallado al solicitar la cancelación del cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                        }
-                        break;
-                    case 'cash':
-                        if ($invest->cancel()) {
-                            $log_text = "El admin %s ha cancelado aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
-                            $errors[] = 'Aporte cancelado';
-                        } else{
-                            $log_text = "El admin %s ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
-                            $errors[] = 'Fallo al cancelar el aporte';
-                        }
-                        break;
+                            break;
+                    }
+
+                    // Evento Feed
+                    $log = new Feed();
+                    $log->setTarget($project->id);
+                    $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
+                        \vsprintf($log_text, array(
+                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', $userData->name, $userData->id),
+                            Feed::item('money', $invest->amount.' &euro;'),
+                            Feed::item('system', $invest->id),
+                            Feed::item('project', $project->name, $project->id),
+                            Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                    )));
+                    $log->doAdmin();
+                    Model\Invest::setDetail($invest->id, 'manually-canceled', $log->html);
+                    unset($log);
+
                 }
 
-                // Evento Feed
-                $log = new Feed();
-                $log->setTarget($project->id);
-                $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
-                    \vsprintf($log_text, array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                        Feed::item('user', $userData->name, $userData->id),
-                        Feed::item('money', $invest->amount.' &euro;'),
-                        Feed::item('system', $invest->id),
-                        Feed::item('project', $project->name, $project->id),
-                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                )));
-                $log->doAdmin();
-                Model\Invest::setDetail($invest->id, 'manually-canceled', $log->html);
-                unset($log);
             }
 
             // ejecutar cargo ahora!!, solo aportes no ejecutados
@@ -612,7 +615,6 @@ namespace Goteo\Controller\Admin {
                         'invest'=>$invest,
                         'project'=>$project,
                         'user'=>$userData,
-                        'details'=>$details,
                         'status'=>$status,
                         'investStatus'=>$investStatus
                     )
