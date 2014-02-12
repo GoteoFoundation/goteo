@@ -25,7 +25,7 @@ namespace Goteo\Core {
 
                 $this->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
 
-                if($this->cache === null && defined("SQL_CACHE_DRIVER") && SQL_CACHE_DRIVER && defined("SQL_CACHE_TIME") && SQL_CACHE_TIME) {
+                if($this->cache === null && defined("SQL_CACHE_DRIVER") && SQL_CACHE_DRIVER && defined("SQL_CACHE_TIME")) {
                     require_once PHPFASTCACHE_CLASS;
 
                     if(SQL_CACHE_DRIVER == "memcache") {
@@ -43,12 +43,9 @@ namespace Goteo\Core {
 
                     $this->cache = \phpFastCache();
                 }
-                if($this->cache) {
-                    //no queremos que las queries vayan al servidor para preparase si usamos cache
-                    $this->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
-
-                    $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('\Goteo\Core\CacheStatement', array($this, $this->cache)));
-                }
+                //no queremos que las queries vayan al servidor para preparase si usamos cache
+                $this->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+                $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('\Goteo\Core\CacheStatement', array($this, $this->cache)));
 
 
             } catch (\PDOException $e) {
