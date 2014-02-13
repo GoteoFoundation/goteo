@@ -50,7 +50,7 @@ namespace Goteo\Core {
          * @param   type array  $params     Parámetros
          * $return  type object PDOStatement
          */
-        public static function query ($query, $params = null) {
+        public static function query ($query, $params = null, $select_from_replica = true) {
 
             static $db = null;
 
@@ -69,7 +69,8 @@ namespace Goteo\Core {
                 }
             }
 
-            $result = $db->prepare($query);
+            //si no queremos leer de la replica se lo decimos
+            $result = $db->prepare($query, array(), $select_from_replica);
 
             try {
 
@@ -84,16 +85,20 @@ namespace Goteo\Core {
         }
 
         /**
-         * Devuelve el id autoincremental generado en la Ãºltima consulta, si se
+         * Devuelve el id autoincremental generado en la utima consulta, si se
          * ha generado uno.
          *
-         * @return  int Id de `AUTO_INCREMENT` o `0`, si la Ãºltima consulta no
+         * @return  int Id de `AUTO_INCREMENT` o `0`, si la ultima consulta no
          *          ha generado ninguna valor autoincremental.
          */
         public static function insertId() {
 
             try {
-                return static::query("SELECT LAST_INSERT_ID();")->fetchColumn();
+                //prevenimos que lea de replicas
+                $query = static::query("SELECT LAST_INSERT_ID();", null, false);
+                //no queremos que lea de cache
+                $query->cacheTime(0);
+                return $query->fetchColumn();
             } catch (\Exception $e) {
                 return 0;
             }
