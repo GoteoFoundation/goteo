@@ -1,16 +1,19 @@
+/*Reglas módulo stories de home */
+
 /* Banners */
+
 div#stories-home div#stories-banners{width: 700px; height:156px; margin: 0; border:#000 1px transparent !important /*no tocar o el contenido se alinea de forma extraña dentro del carrousel*/; position: relative; float: left;}
 div#stories-home div#stories-banners div.stories-banners-container{width:545px;height:197px;margin:0 auto;}
 div.stories-banners-container div.stories-banner{width:700px;height:156px;}
 div.stories-banners-container div.stories-banner > div.info{width: 250px; padding:5px; max-height:120px; margin-top:25px; margin-bottom:30px; margin-left: 50px;font-size:12px; color:#FFFFFF; font-weight: bold; background-color: #149290; border-radius: 1em;float:left; opacity:0.85;}
-/*div.stories-banners-container div.stories-banner > div.title{width: 200px;padding-top: 0px; margin-top:20px; margin-left: 100px;line-height:22px;font-size:18px;font-weight: bold; color:#FFFFFF; background-color: #b5dadc;}
-*/
+
 div.stories-banners-container div.stories-banner > div.short-desc{margin-top: 25px; margin-left: 50px; line-height:30px;font-size:20px;color:#1f81bb; max-width: 450px;}
 div.stories-banners-container div.stories-banner.active > div.title{}
 div.stories-banners-container div.stories-banner a.expand {padding: 0;position: absolute;width: 700px;height: 156px;z-index: 99;}
 
 
 /* paginación de los banners*/
+
 div#stories-banners-controler{position: absolute;width: 700px; bottom: 5px;z-index:100;overflow:auto;height:auto;text-align:center}
 ul.bannerspage{list-style:none; z-index:100;  padding:0;  margin:0; display:inline-block}
 ul.bannerspage li{ cursor:pointer;  display:block;  float:left;  overflow:hidden; margin:0px 4px 5px 4px}
@@ -20,3 +23,4 @@ ul.bannerspage li a:hover{ background-color:#808184;  color:#808184}
 ul.bannerspage li.current a{ background-color:#1f81bb !important;  color:#1f81bb !important}
 
 div.stories-banners-container div.stories-banner > div.info_right{ float:left; color:#FFFFFF; margin-left:220px; margin-top: 70px; font-weight: bold; font-size:15px;}
+

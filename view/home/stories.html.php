@@ -9,7 +9,7 @@ if (count($stories) > 6) {
 	$stories = array_slice($stories, 0, 6);
 }
 ?>
-<div class="stories-home" style="margin-left:120px;">
+<div class="stories-home">
 
     <h2 class="title"><?php echo Text::get('home-stories-header'); ?></h2>
 

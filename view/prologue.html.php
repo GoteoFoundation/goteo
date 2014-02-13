@@ -85,7 +85,6 @@ if (NODE_ID != GOTEO_NODE) {
             <link href="<?php echo SRC_URL ?>/view/css/jquery-ui-1.10.3.autocomplete.min.css" rel="stylesheet" />
             <script src="<?php echo SRC_URL ?>/view/js/jquery-ui-1.10.3.autocomplete.min.js"></script>
         <?php endif; ?>
-        <link href="<?php echo SRC_URL ?>/view/css/stories/modulo_stories.css" rel="stylesheet" />
 
 <script type="text/javascript">
 
