@@ -19,7 +19,11 @@ div.widget.project-media > embed {
 
 .video_button
 {
-
+    position:absolute;
+    left:236.5px;
+    top:169px; 
+    font-size:18px;
+    
     background-color: #58595B;
     text-transform: uppercase;
     border: none;    
@@ -35,4 +39,13 @@ div.widget.project-media > embed {
     background: #149290 url('button/aqua.png') repeat-x top;
     padding: .6em 0.8em .5em;
    
+}
+
+.video_button:active {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;    
+}
+
+
+.video_button:hover {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;
 }
