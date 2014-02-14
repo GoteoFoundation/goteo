@@ -6,7 +6,7 @@ function loadVideo()
 
     var vid = document.getElementById('video_holder');
 
-    vid.innerHTML = '<?php if(!empty($this['project']->media))  echo $this['project']->media->getEmbedCode($this['project']->media_usubs); ?>';
+    vid.innerHTML = '<?php if(!empty($this['project']->media))  echo $this['project']->media->getEmbedCode($this['project']->media_usubs,'\LANG',1); ?>';
    
 }
 </script>
