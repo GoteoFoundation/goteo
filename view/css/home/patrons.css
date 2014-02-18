@@ -1,90 +1,17 @@
-@import url("project/widget/projects.css");
-@import url("home/calls.css");
-@import url("home/feed.css");
-@import url("home/patrons.css");
-@import url("home/posts.css");
-@import url("home/promotes.css");
-@import url("home/stories.css");
+/*Reglas módulo patrons de home */
 
-body.node.home div#node-news div.slder_container div.slder_slide div.post h3,
-body.node.home div#node-news div.slder_container div.slder_slide div.post div.description,
-body.home div#main div.learn div.slder_container div.slder_slide div.post h3,
-body.home div#main div.learn div.slder_container div.slder_slide div.post div.description {
-	float: left;
-    margin: 0 0 10px 20px;
-    width: 380px;
-	line-height: 18px;
-	text-transform:none;
+/* Especial pagina vip */
+body.home div#main div.widget.projects.patron_invests h2.title {
+	margin-left:-15px !important;
 }
 
-body.node.home div#node-news div.slder_container div.slder_slide div.post h3 a,
-body.home div#main div.learn div.slder_container div.slder_slide div.post h3 a {
-    font-size: 14px;
-    text-decoration: none;
-    color: #20B2B3;
+body.home div#main div.widget.projects.patron_invests{
+	padding: 15px !important;
+    margin: 0 0 15px 0 !important;
 }
 
-body.node.home div#node-news div.slder_container div.slder_slide div.post h3 a:hover,
-body.home div#main div.learn div.slder_container div.slder_slide div.post h3 a:hover {
-    text-decoration: underline;
-}
-
-
-body.home div#main div.learn div.slder_container div.slder_slide div.post div.embed,
-body.home div#main div.learn div.slder_container div.slder_slide div.post div.image {
-	float:left;
-    width: 500px;
-    height: 285px;
-}
-
-body.node.home div#node-news div.slder_container div.slder_slide div.post div.author,
-body.home div#main div.learn div.slder_container div.slder_slide div.post div.author {
-	float: left;
-    margin: -5px 0 0 20px;
-    width: 380px;
-	line-height: 12px;
-	text-transform:none;
-}
-
-body.node.home div#node-news div.slder_container div.slder_slide div.post div.author a,
-body.home div#main div.learn div.slder_container div.slder_slide div.post div.author a {
-    font-size: 11px;
-    text-decoration: none;
-    color: #20B2B3;
-}
-
-body.node.home div#node-news div.slder_container div.slder_slide div.post div.author a:hover,
-body.home div#main div.learn div.slder_container div.slder_slide div.post div.author a:hover {
-    text-decoration: underline;
-}
-
-/* Hasta aqui las reglas para compartir estilos para blog en portada del nodo*/
-
-body.home div#main div.widget.projects {
-    overflow: hidden;
-    margin-left: -3%;    
-    margin-bottom: 15px;
-}
-
-body.home div#main div.widget.patrons,
-body.home div#main div.widget.calls,
-body.home div#main div.widget.feed {
-    margin-bottom: 16px;
-    position: relative;
-}
-
-body.home div#main div.widget.feed div.see_more {
-    margin-top: 16px;
-    text-align: right;
-}
-
-body.home div#main div.widget.feed div.see_more a {
-    text-transform: uppercase;
-    font-size: 0.9em;
-}
-
-body.home div#main div.widget.feed div.see_more a:hover {
-    color: #20B3B2;
+body.home div#main div.widget.projects.patron_invests div.widget.project{
+	margin: 0 0 20px 30px !important;
 }
 
 /* Padrinos en portada*/
@@ -250,45 +177,6 @@ body.home.patron div#main div.patron-profile div.info ul li a {
     font-size: 12px;
 }
 
-/* Flechitas de convocatorias y padrinos en portada */
-div.patronrow a.prev,
-div.patronrow a.next,
-div.callrow a.prev,
-div.callrow a.next {
-    width: 24px;
-    position:relative;
-    color: white;
-    line-height: 27px;
-    text-indent: 24px;
-    display: inline-block;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-}
-
-/* esto es chungo de la muerte, falla en mac */
-/* Convocatorias */
-body.home div#main div.widget.calls div.callrow {
-    margin-bottom: 20px;
-}
-
-div#calls a.prev {
-    top: 121px;
-    left: -312px;
-}
-
-div#campaigns a.prev {
-    top: 121px;
-    left: -21px;
-}
-
-div#calls a.next,
-div#campaigns a.next {
-    left: 894px;
-    bottom: 137px;
-}
-/* fin chunguerias del position */
-
 /* patronos */
 div#slides_patrons div.slder_patrons,
 div#slides_patrons div.arrow-left,
@@ -311,23 +199,3 @@ div#slides_patrons div.arrow-right {
     padding-top: 46px;
 }
 
-div.patronrow a.prev,
-div.callrow a.prev {
-	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 0;
-}
-
-div.patronrow a.prev:hover,
-div.callrow a.prev:hover {
-	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -48px;
-}
-
-div.patronrow a.next,
-div.callrow a.next {
-	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -24px;
-}
-
-div.patronrow a.next:hover,
-div.callrow a.next:hover {
-	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -72px;
-}
-/* Fin de las flechitas de convocatorias y patronos en portada */

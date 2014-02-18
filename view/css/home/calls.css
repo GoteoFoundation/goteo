@@ -1,0 +1,24 @@
+/*Reglas módulo calls de home */
+
+/* esto es chungo de la muerte, falla en mac */
+/* Convocatorias */
+body.home div#main div.widget.calls div.callrow {
+    margin-bottom: 20px;
+}
+
+div#calls a.prev {
+    top: 121px;
+    left: -312px;
+}
+
+div#campaigns a.prev {
+    top: 121px;
+    left: -21px;
+}
+
+div#calls a.next,
+div#campaigns a.next {
+    left: 894px;
+    bottom: 137px;
+}
+/* fin chunguerias del position */

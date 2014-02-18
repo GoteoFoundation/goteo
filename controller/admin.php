@@ -338,6 +338,15 @@ namespace Goteo\Controller {
                     'edit' => array('label' => 'Editando Patrocinador', 'item' => true)
                 )
             ),
+            'stories' => array(
+                'label' => 'Historias exitosas',
+                'actions' => array(
+                    'list' => array('label' => 'Listando', 'item' => false),
+                    'add' => array('label' => 'Nueva Historia', 'item' => false),
+                    'edit' => array('label' => 'Editando Historia', 'item' => true),
+                    'translate' => array('label' => 'Traduciendo Historia', 'item' => true)
+                )
+            ),
             'tags' => array(
                 'label' => 'Tags de blog',
                 'actions' => array(
@@ -703,6 +712,7 @@ namespace Goteo\Controller {
                                 'campaigns' => $options['campaigns'], // convocatorias en portada
                                 'blog' => $options['blog'], // entradas de blog (en la gestion de blog)
                                 'sponsors' => $options['sponsors'], // patrocinadores del nodo
+                                'stories' => $options['stories'],    // historias exitosas
                                 'recent' => $options['recent']
                             )
                         )
@@ -772,6 +782,7 @@ namespace Goteo\Controller {
                             'options' => array(
                                 'news' => $options['news'],
                                 'banners' => $options['banners'],
+                                'stories' => $options['stories'],
                                 'blog' => $options['blog'],
                                 'promote' => $options['promote'],
                                 'footer' => $options['footer'],

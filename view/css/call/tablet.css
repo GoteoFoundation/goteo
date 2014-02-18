@@ -1,0 +1,99 @@
+/* Tablet (min-width:400px max-width:600px) */
+            #header, #footer {display:none;}
+                       
+            div#main {
+                 width: 100%;
+                 margin: 0;
+            }
+
+             #title img.logo {
+                width:32.4675%;
+                     }
+              
+             #title h2.title {
+                width: 64.935%;
+                padding-top: 2%;
+                     }
+
+            #banners-social, div#banners-social div#call-banners, div#banners-social div#call-banners div.call-banners-container, #info,  #project-list, #supporters-sponsors, #call-supporters,  #content, #stats  {
+                width: 100%;
+                     }
+
+            div.call-banners-container div.call-banner {
+                        width:100%;
+                        background-image: none !important;
+                        left:0px !important;
+                        margin-left: 15%;
+                        margin-right: 15%;
+                       }
+
+            div.call-banners-container div.call-banner > div.title {
+                        width:70%;
+                        margin-left: 22%;
+                        max-width: 400px;
+                       }
+            #social {
+              display:none;
+            }
+
+
+            .projects #content {
+                        width:100%;
+                        float:none;
+                        clear: both;
+                  }
+
+             #project-list li {
+                        width:28%;
+                  }
+                       
+            div#side {
+            float:none;
+            clear: both;
+            width: 100%;
+           }
+
+           #side dl {
+            margin: 15px 0;
+            width: 33%;
+            float: left;
+            }
+
+            #side .category {
+            padding-right: 0px;
+            clear: left;
+            }
+           #supporters-sponsors #post {
+            width:96.6%;
+            padding: 2% 0 0 2%;
+            max-width: 450px;
+           }
+
+          #supporters-sponsors #post div.image {
+            width:43.3%;
+           }
+          
+          .image_mobile {
+            max-width: 100%;
+          }
+
+          #supporters-sponsors #post div.content{
+            width:54%;
+            margin-left: 2.5%;
+           }
+           #sponsors, #supporters-sponsors #post div.read_more {
+            display:none;
+           }
+
+           #stats dl.long, #stats dl.category {
+            width:30%;
+           }
+
+           #stats dl.block.selected, #stats dl.block.processing, #stats dl.block.success, dl.block.last.return {
+            width:22%;
+           }
+
+           .freetext {
+            margin-right: 5%;
+           }
+           
