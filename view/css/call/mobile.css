@@ -1,0 +1,148 @@
+/* Mobile (max-width:400px) */
+#header, #footer {display:none;}
+           
+           div#main {
+            width: 100%;
+            margin: 0;
+
+           }
+
+           #title img.logo {
+
+            width:80%;
+            float:none;
+            margin-left:10%;
+           }
+
+           #title h2.title {
+            display:none;
+            
+           }
+
+           #banners-social, div#banners-social div#call-banners div.call-banners-container, #info, #project-list, #side .block, #supporters-sponsors, #call-supporters, #content, #stats {
+            width: 100%;
+           }
+
+           div#banners-social div#call-banners {
+            width:100%;
+            float:none;
+            clear:both;
+           }
+
+         
+           div.call-banners-container div.call-banner {
+            width:100%;
+            background-image: none !important;
+            left:0px !important;
+            margin-left: 15%;
+            margin-right: 15%;
+
+           }
+
+           div.call-banners-container div.call-banner > div.title {
+            width:70%;
+            margin-left: 22%;
+            max-width: 300px;
+            padding-top: 45px;
+           }
+
+           
+
+           #social {
+            display: none;
+           }
+
+
+           .projects #content {
+            width:100%;
+            float:none;
+            clear: both;
+           }
+
+           #project-list li {
+            width:40%;
+           }
+           
+           div#side {
+            float:none;
+            clear: both;
+            width: 100%;
+           }
+
+           #side dl {
+            margin: 15px 0;
+            width: 45%;
+            float: left;
+            }
+
+           #supporters-sponsors #post {
+            width:96.6%;
+            padding: 2% 0 0 2%;
+            max-width: 300px;
+           }
+
+          #supporters-sponsors #post div.image {
+            width:43.3%;
+           }
+          
+          .image_mobile {
+            max-width: 100%;
+          }
+
+          #supporters-sponsors #post div.content{
+            width:54%;
+            margin-left: 2.5%;
+           }
+           #sponsors {
+            display:none;
+           }
+
+          
+
+           #stats dl.long {
+            width:47%;
+           }
+
+           #stats dl.category {
+            width:100%;
+            margin-top: 30px;
+           }
+
+           #stats dl.block.selected, #stats dl.block.processing, #stats dl.block.success {
+            width:25%;
+           }
+           #stats dl.block.last.return {
+            width: 100%;
+            margin-top: 20px;
+           }
+
+           #stats dl.location{
+            width:100%;
+            padding-right: 30px;
+           }
+
+           #supporters-sponsors #post div.read_more {
+            margin-top: 2px;
+           }
+           .freetext {
+            margin-right: 10%;
+           }
+
+           .mobile_contact{
+            width: 100% !important;
+           }
+
+           div#side.twitter {
+            display: none;
+           }
+
+           tr {
+            width: 100%;
+            max-width: 300px;
+            margin-right: 15px;
+           }
+          table.info-table tbody tr.odd, table.info-table tbody tr.even  {
+            width:30% !important;
+           }
+
+

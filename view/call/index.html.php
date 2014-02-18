@@ -18,7 +18,7 @@ include 'view/call/header.html.php';
     </div>
 
     <div id="info" class="stats-container">
-        <div id="content" style="width: 540px;">
+        <div id="content">
             <p class="subtitle">
                 <a href="/call/<?php echo $call->id ?>/info"><?php
             if ($call->status == 3) {
