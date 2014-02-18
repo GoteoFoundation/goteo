@@ -14,6 +14,7 @@ $sizes = array(
     'title'       => 'cols="100" rows="2"',
     'name'        => 'cols="100" rows="1"',
     'description' => 'cols="100" rows="4"',
+    'review'      => 'cols="100" rows="4"',
     'url'         => 'cols="100" rows="1"',
     'text'        => 'cols="100" rows="10"'
 );

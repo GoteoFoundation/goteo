@@ -68,6 +68,7 @@ namespace Goteo\Library {
                     ";
 
 			$query = Model::query($sql, $values);
+            $query->cacheTime(3600);
             return $query->fetchObject()->text;
 		}
 
@@ -88,6 +89,7 @@ namespace Goteo\Library {
                     ";
 
 			$query = Model::query($sql, $values);
+            $query->cacheTime(3600);
             return $query->fetchObject()->text;
 		}
 
@@ -142,6 +144,8 @@ namespace Goteo\Library {
             // idiomas no españoles usan alternativa en inglés
             $sql = (in_array($lang, array('es','ca', 'gl', 'eu', 'en'))) ? $sql_es : $sql_en;
             $query = Model::query($sql, $values);
+            //el cache de idiomas lo mantenemos hasta una hora
+            $query->cacheTime(3600);
 			if ($exist = $query->fetchObject()) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
 
@@ -168,6 +172,7 @@ namespace Goteo\Library {
 		static public function getPurpose ($id) {
 			// buscamos la explicación del texto en la tabla
 			$query = Model::query("SELECT purpose, html FROM purpose WHERE `text` = :id", array(':id' => $id));
+            $query->cacheTime(3600);
 			$exist = $query->fetchObject();
 			if (!empty($exist->purpose)) {
                 return $exist->purpose;
@@ -186,6 +191,7 @@ namespace Goteo\Library {
             {
                 // lo miramos en la tabla de propósitos
                 $query = Model::query("SELECT html FROM purpose WHERE text = :id", array(':id' => $id));
+                $query->cacheTime(3600);
                 $purpose = $query->fetchObject();
                 if ($purpose->html == 1)
                     return true;
@@ -233,9 +239,10 @@ namespace Goteo\Library {
                 $sql .= " HAVING pendiente = 1";
             }
             $sql .= " ORDER BY pendiente DESC, text ASC";
-            
+
             try {
                 $query = Model::query($sql, $values);
+                $query->cacheTime(3600);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
                     $texts[] = $text;
                 }
@@ -415,6 +422,7 @@ namespace Goteo\Library {
             // seleccionar toda la tabla,
             $sql = "SELECT ".implode(', ', $fields)." FROM {$table}{$sqlFilter}";
 			$query = Model::query($sql, $values);
+            $query->cacheTime(3600);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row) {
                 // para cada campo
                 foreach ($fields as $field) {
@@ -434,7 +442,7 @@ namespace Goteo\Library {
         static public function widget ($url, $type = 'project', $styles = null) {
 
             $style = (isset($styles)) ? ' style="'.$styles.'"' : '';
-            
+
             switch ($type) {
                 case 'fb':
                     $code = '<div class="fb-like" data-href="'.$url.'" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>';
@@ -461,9 +469,9 @@ namespace Goteo\Library {
 
             $urls = array(
                 'twitter' => 'http://twitter.com/home?status=' . rawurlencode($title . ': ' . $url . ' #Goteo'),
-                'facebook' => 'http://facebook.com/sharer.php?u=' . rawurlencode($url . '&t=' . rawurlencode($title)) 
+                'facebook' => 'http://facebook.com/sharer.php?u=' . rawurlencode($url . '&t=' . rawurlencode($title))
             );
-            
+
             return $urls;
         }
 
@@ -716,8 +724,8 @@ namespace Goteo\Library {
         public static function cutUrlParams($url) {
             return $url = preg_replace('#/.+#', '', preg_replace('#http|s?://#', '', $url));
         }
-        
-        
+
+
 	}
-    
+
 }

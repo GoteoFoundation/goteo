@@ -2,8 +2,10 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Core\Model;
     use Goteo\Library\Text,
         Goteo\Model\Image,
+        Goteo\Model\User,
         Goteo\Model\Call;
 
     class Invest extends \Goteo\Core\Model {
@@ -1586,57 +1588,50 @@ namespace Goteo\Model {
              $status = self::status();
 
              $list = array();
+             $drops = array();
 
              $values = array(':id' => $id);
 
+             // el riego de incidencias
+             $sql = "SELECT droped FROM invest
+                        WHERE issue = 1
+                        AND droped IS NOT NULL
+                        AND invest.project = :id";
+
+             $query = self::query($sql, $values);
+             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                 $drops[] = $item->droped;
+             }
+
+             $sqlFilter = (!empty($drops)) ? "OR invest.id IN (".implode(',', $drops).")" : '';
+
+             // las incidencias
              $sql = "SELECT
                         invest.id as invest,
-                        user.id as user,
-                        user.name as userName,
-                        user.email as userEmail,
+                        invest.user as user,
                         invest.amount as amount,
                         invest.status as status
                     FROM invest
-                    INNER JOIN user
-                        ON user.id = invest.user
                     WHERE invest.project = :id
                     AND invest.issue = 1
-                    ORDER BY user.name DESC
+                    $sqlFilter
+                    ORDER BY invest.id DESC
                     ";
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $item->statusName = $status[$item->status];
-                $list[] = $item;
-            }
-            
-            // añadimos el capital riego de aportes con incidencia
-             $sql = "SELECT
-                        invest.id as invest,
-                        user.id as user,
-                        user.name as userName,
-                        user.email as userEmail,
-                        invest.amount as amount,
-                        invest.status as status
-                    FROM invest
-                    INNER JOIN user
-                        ON user.id = invest.user
-                    WHERE invest.id IN (
-                        SELECT droped 
-                        FROM invest 
-                        WHERE issue = 1 
-                        AND droped IS NOT NULL
-                        AND invest.project = :id
-                    )
-                    ORDER BY user.name DESC
-                    ";
 
-            $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-                $item->statusName = $status[$item->status].' (CAPITAL RIEGO)';
+                if (in_array($item->id, $drops))
+                    $item->statusName .= ' (CAPITAL RIEGO)';
+
+                $user = User::getMini($item->user);
+                $item->userName = $user->name;
+                $item->userEmail = $user->email;
+
                 $list[] = $item;
             }
-            
+
             return $list;
 
 

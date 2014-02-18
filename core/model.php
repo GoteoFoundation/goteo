@@ -47,10 +47,10 @@ namespace Goteo\Core {
          * http://www.php.net/manual/es/class.pdostatement.php
          *
          * @param   type string $query      Consulta SQL
-         * @param   type array  $params     ParÃ¡metros
+         * @param   type array  $params     Parámetros
          * $return  type object PDOStatement
          */
-        public static function query ($query, $params = null) {
+        public static function query ($query, $params = null, $select_from_replica = true) {
 
             static $db = null;
 
@@ -69,7 +69,8 @@ namespace Goteo\Core {
                 }
             }
 
-            $result = $db->prepare($query);
+            //si no queremos leer de la replica se lo decimos
+            $result = $db->prepare($query, array(), $select_from_replica);
 
             try {
 
@@ -84,16 +85,20 @@ namespace Goteo\Core {
         }
 
         /**
-         * Devuelve el id autoincremental generado en la Ãºltima consulta, si se
+         * Devuelve el id autoincremental generado en la utima consulta, si se
          * ha generado uno.
          *
-         * @return  int Id de `AUTO_INCREMENT` o `0`, si la Ãºltima consulta no
+         * @return  int Id de `AUTO_INCREMENT` o `0`, si la ultima consulta no
          *          ha generado ninguna valor autoincremental.
          */
         public static function insertId() {
 
             try {
-                return static::query("SELECT LAST_INSERT_ID();")->fetchColumn();
+                //prevenimos que lea de replicas
+                $query = static::query("SELECT LAST_INSERT_ID();", null, false);
+                //no queremos que lea de cache
+                $query->cacheTime(0);
+                return $query->fetchColumn();
             } catch (\Exception $e) {
                 return 0;
             }
@@ -119,13 +124,13 @@ namespace Goteo\Core {
                 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ü'=>'u', 'ý'=>'y', 'ý'=>'y',
                 'þ'=>'b', 'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r', 'ª'=>'a', 'º'=>'o', '€'=>'eur',
                 '!'=>'', '¡'=>'', '?'=>'', '¿'=>'', '@'=>'', '^'=>'', '|'=>'', '#'=>'', '~'=>'',
-                '%'=>'', '$'=>'', '*'=>'', '+'=>'', '.'=>'-', '`'=>'', '´'=>'', '’'=>'', '”'=>'-', '“'=>'-'  
+                '%'=>'', '$'=>'', '*'=>'', '+'=>'', '.'=>'-', '`'=>'', '´'=>'', '’'=>'', '”'=>'-', '“'=>'-'
             );
 
             if ($filename) {
                 $table['.'] = '.';
             }
-            
+
             $id = strtr($id, $table);
             $id = strtolower($id);
 

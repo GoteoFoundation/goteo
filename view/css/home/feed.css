@@ -1,0 +1,16 @@
+/*Reglas módulo feed de home */
+
+body.home div#main div.widget.feed div.see_more {
+    margin-top: 16px;
+    text-align: right;
+}
+
+body.home div#main div.widget.feed div.see_more a {
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+body.home div#main div.widget.feed div.see_more a:hover {
+    color: #20B3B2;
+}
+

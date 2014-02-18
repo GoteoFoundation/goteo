@@ -3,26 +3,26 @@
 namespace Goteo\Core {
 
     class View extends \ArrayObject implements Resource, Resource\MIME {
-        
-        private 
+
+        private
             $file;
-                        
+
         public function __construct ($file, $vars = null) {
-            
-            if (!is_file($file)) {                
+
+            if (!is_file($file)) {
                 die("La vista `{$file}` no existe. ");
             }
-            
+
             $this->file = $file;
-            
+
             if (isset($vars)) {
                 $this->set($vars);
             }
-            
+
         }
-        
+
         public function set ($var) {
-            
+
             if (is_array($var) || is_object($var)) {
                 foreach ($var as $name => $value) {
                     $this[$name] = $value;
@@ -32,25 +32,25 @@ namespace Goteo\Core {
             } else {
                 throw new View\Exception;
             }
-            
+
         }
-        
+
         public function getMIME () {
-            
+
             // @todo Adivinar por la extensión
             return 'text/html';
         }
-        
+
         public function __toString () {
-            
+
             ob_start();
-            
+
             include $this->file;
-            
+
             return ob_get_clean();
-            
+
         }
-        
-        
-    }    
+
+
+    }
 }

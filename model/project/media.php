@@ -14,18 +14,22 @@ namespace Goteo\Model\Project {
             $this->url = $url;
         }
 
-        protected static function getYouTubeCode ($video, $https = false) {
-
+        protected static function getYouTubeCode ($video, $https = false, $autoplay=false) {
+            
+            if($autoplay)
+                $cod_auto="&autoplay=1";
             return '<iframe width="100%" height="100%" src="'
                    . ($https ? 'https' : 'http') . '://www.youtube.com/embed/'
-                   . $video . '?wmode=Opaque" frameborder="0" allowfullscreen></iframe>';
+                   . $video . '?wmode=Opaque'.$cod_auto.'" frameborder="0" allowfullscreen></iframe>';
 
         }
 
-        protected static function getVimeoCode ($id, $https = false) {
-
+        protected static function getVimeoCode ($id, $https = false, $autoplay=false) {
+            
+            if($autoplay)
+                $cod_auto=";autoplay=1";
             return '<iframe src="http://player.vimeo.com/video/'
-                   . $id . '?title=0&amp;byline=0&amp;portrait=0" width="100%" height="100%" frameborder="0"></iframe>';
+                   . $id . '?title=0&amp;byline=0&amp;portrait=0'.$cod_auto.'" width="100%" height="100%" frameborder="0"></iframe>';
         }
 
         protected static function getSlideshareCode ($id, $https = false) {
@@ -48,7 +52,7 @@ namespace Goteo\Model\Project {
         }
 
         protected static function getBlipCode ($id, $https = false) {
-
+          
             return '<iframe src="'
                     . ($https ? 'https' : 'http') . '://blip.tv/play/'
                     .$id.'.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
@@ -66,7 +70,7 @@ namespace Goteo\Model\Project {
 
         }
 
-        public function getEmbedCode ($universalSubtitles = false, $lang = \LANG) {
+        public function getEmbedCode ($universalSubtitles = false, $lang = \LANG, $autoplay) {
 
             $code = '';
 
@@ -94,7 +98,7 @@ namespace Goteo\Model\Project {
                             if (!empty($url['query'])) {
                                 parse_str($url['query'], $query);
                                 if (!empty($query['v'])) {
-                                    $code = static::getYouTubeCode($query['v'], $url['scheme'] === 'https');
+                                    $code = static::getYouTubeCode($query['v'], $url['scheme'] === 'https',$autoplay);
                                 }
                             }
                         }
@@ -102,12 +106,12 @@ namespace Goteo\Model\Project {
 
                     case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?youtu\.be/(?<video>[^\#\&]+)#', $this->url, $yt)):
                         // URL corta de YouTube
-                        $code = static::getYouTubeCode($yt['video'], !empty($yt['https']));
+                        $code = static::getYouTubeCode($yt['video'], !empty($yt['https']),$autoplay);
                         break;
 
                      case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?vimeo.com/(?<video>\d+)#', $this->url, $vm)):
                         // URL de Vimeo
-                        $code = static::getVimeoCode($vm['video'], !empty($vm['https']));
+                        $code = static::getVimeoCode($vm['video'], !empty($vm['https']),$autoplay);
                         break;
 
                      case (preg_match('#^\[slideshare\sid\=(?<slide>\d+)#', $this->url, $sh)):

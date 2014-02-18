@@ -209,6 +209,29 @@ namespace Goteo\Model {
             return $list;
         }
 
+        /*
+         * Usado en el autocompletado de
+         * http://devgoteo.org/admin/stories/edit/1
+         */
+        public static function getAutocomplete () {
+            $list = array();
+            $query = static::query("
+                SELECT
+                    post.id as id,
+                    IFNULL(post_lang.title, post.title) as title
+                FROM    post
+                LEFT JOIN post_lang
+                    ON  post_lang.id = post.id
+                    AND post_lang.lang = :lang
+                ", array(':lang'=>\LANG));
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $post) {
+                $list[$post->id] = $post->title;
+            }
+
+            return $list;
+        }
+
         public function validate (&$errors = array()) { 
             if (empty($this->title))
                 $errors[] = 'Falta título';

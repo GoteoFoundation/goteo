@@ -153,7 +153,8 @@ namespace Goteo\Model\Project {
                 'motivation' => Text::get('overview-field-motivation'),
                 'goal' => Text::get('overview-field-goal'),
                 'related' => Text::get('overview-field-related'),
-                'reward' => Text::get('overview-field-reward')
+                'reward' => Text::get('overview-field-reward'),
+                'play-video' => Text::get('overview-field-play-video')
             ); 
        }
 

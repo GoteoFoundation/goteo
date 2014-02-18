@@ -69,7 +69,7 @@ $filter = $this['filter'];
     </dl>
 
 <?php if (!empty($call->user->webs[0]->url)) : $web = $call->user->webs[0];?>
-    <dl class="">
+    <dl class="mobile_contact">
         <dt><?php echo Text::get('call-splash-more_info-header') ?></dt>
         <dd><a href="<?php echo $web->url ?>"><?php echo Text::cutUrlParams($web->url) ?></a></dd>
     </dl>
