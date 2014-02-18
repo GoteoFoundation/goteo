@@ -4,6 +4,9 @@ namespace Goteo\Core {
 
     class DB extends \PDO {
         public $cache = null;
+        public $read_replica = null;
+        public $is_select = false;
+        public $type = "master";
 
         public function __construct() {
 
@@ -25,7 +28,7 @@ namespace Goteo\Core {
 
                 $this->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
 
-                if($this->cache === null && defined("SQL_CACHE_DRIVER") && SQL_CACHE_DRIVER && defined("SQL_CACHE_TIME") && SQL_CACHE_TIME) {
+                if($this->cache === null && defined("SQL_CACHE_DRIVER") && SQL_CACHE_DRIVER && defined("SQL_CACHE_TIME")) {
                     require_once PHPFASTCACHE_CLASS;
 
                     if(SQL_CACHE_DRIVER == "memcache") {
@@ -43,15 +46,62 @@ namespace Goteo\Core {
 
                     $this->cache = \phpFastCache();
                 }
+
                 //no queremos que las queries vayan al servidor para preparase si usamos cache
                 $this->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
                 $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('\Goteo\Core\CacheStatement', array($this, $this->cache)));
+
+                //Preparamos un objeto para los select que lean de las replicas
+                if(defined("GOTEO_DB_READ_REPLICA_HOST")) {
+
+                    $dsn = GOTEO_DB_DRIVER . ':host=' . GOTEO_DB_READ_REPLICA_HOST . ';dbname=' . GOTEO_DB_SCHEMA;
+                    if (defined('GOTEO_DB_READ_REPLICA_PORT')) {
+                        $dsn .= ';port=' . \GOTEO_DB_READ_REPLICA_PORT;
+                    }
+
+                    $username = defined("GOTEO_DB_READ_REPLICA_USERNAME") ? GOTEO_DB_READ_REPLICA_USERNAME : GOTEO_DB_USERNAME;
+                    $password = defined("GOTEO_DB_READ_REPLICA_PASSWORD") ? GOTEO_DB_READ_REPLICA_PASSWORD : GOTEO_DB_PASSWORD;
+                    if (defined('GOTEO_DB_CHARSET') && GOTEO_DB_DRIVER == 'mysql') {
+                        $this->read_replica = new \PDO($dsn, $username, $password, array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
+                    }
+                    else {
+                        $this->read_replica = new \PDO($dsn, $username, $password);
+                    }
+                    $this->read_replica->type = "replica";
+                    $this->read_replica->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
+
+                    //no queremos que las queries vayan al servidor para preparase si usamos cache
+                    $this->read_replica->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+                    $this->read_replica->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('\Goteo\Core\CacheStatement', array($this->read_replica, $this->cache)));
+
+                }
 
 
             } catch (\PDOException $e) {
                 die ('Estamos teniendo problemas tecnicos, disculpen las molestias');
             }
 
+        }
+
+        /**
+         * Override de prepare
+         * @param  [type] $statement      [description]
+         * @param  array  $driver_options [description]
+         * @param  boolean  $select_from_replica Define si la próxima consulta se enviara a la replica (si es select)
+         * @return [type]                 [description]
+         */
+        public function prepare($statement, $driver_options = array(), $select_from_replica = true) {
+            $this->is_select = ( strtolower(rtrim(substr(ltrim($statement),0 ,7))) == "select" );
+            if($this->read_replica && $this->is_select && $select_from_replica) {
+                $this->read_replica->is_select = true;
+                //usamos el objecto replica
+                // echo "[$statement] des de replica";
+                return $this->read_replica->prepare($statement, $driver_options);
+            }
+            else {
+                //proceso normal
+                return parent::prepare($statement, $driver_options);
+            }
         }
 
     }
@@ -73,16 +123,17 @@ namespace Goteo\Core {
         protected function __construct($dbh, $cache=null) {
             $this->dbh = $dbh;
             $this->cache = $cache;
+            $this->is_select = $dbh->is_select;
         }
 
         /**
          * Si hay cache esta funcion deberia delegar la ejecución hasta que se pida un resultado
          */
         public function execute($input_parameters = null) {
+            $query = $this->queryString;
+            // echo "[".$this->dbh->type.":".intval($this->is_select)."]";
             if($this->cache) {
-                $query = $this->queryString;
                 //Solo aplicamos el cache en sentencias SELECT
-                $this->is_select = ( strtolower(rtrim(substr(ltrim($query),0 ,7))) == "select" );
                 if($this->is_select) {
                     $this->cache_key        = "sql-" . md5($query . serialize($input_parameters));
                     $this->input_parameters = $input_parameters;

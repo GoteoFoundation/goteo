@@ -98,6 +98,14 @@ define('GOTEO_DB_SCHEMA', 'db-schema');
 define('GOTEO_DB_USERNAME', 'db-username');
 define('GOTEO_DB_PASSWORD', 'db-password');
 
+//Replica de lectura (opcional)
+//define('GOTEO_DB_READ_REPLICA_HOST', 'replica-host');
+//si se define una replica de lectura los siguientes parametros son opcionales
+//define('GOTEO_DB_READ_REPLICA_PORT', 3307);
+//define('GOTEO_DB_READ_REPLICA_USERNAME', 'db-replica-username');
+//define('GOTEO_DB_READ_REPLICA_PASSWORD', 'db-replica-password');
+
+
 //SELECT queries caching
 //setup it as "files", "memcache"
 define("SQL_CACHE_DRIVER", 'memcache'); //dejar vacia para no activar cache
