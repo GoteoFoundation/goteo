@@ -1615,7 +1615,7 @@ namespace Goteo\Model {
                     WHERE invest.project = :id
                     AND invest.issue = 1
                     $sqlFilter
-                    ORDER BY user.name DESC
+                    ORDER BY invest.id DESC
                     ";
 
             $query = self::query($sql, $values);
