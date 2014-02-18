@@ -680,8 +680,7 @@ namespace Goteo\Controller {
                                 'node' => $options['node'], // la gestion de datos del nodo
                                 'pages' => $options['pages'], // páginas institucionales del nodo
                                 'blog' => $options['blog'], // entradas del blog
-                                'banners' => $options['banners'],    // banners del nodo
-                                'stories' => $options['stories']    // historias exitosas
+                                'banners' => $options['banners']    // banners del nodo
                             )
                         ),
                         'projects' => array(
@@ -713,6 +712,7 @@ namespace Goteo\Controller {
                                 'campaigns' => $options['campaigns'], // convocatorias en portada
                                 'blog' => $options['blog'], // entradas de blog (en la gestion de blog)
                                 'sponsors' => $options['sponsors'], // patrocinadores del nodo
+                                'stories' => $options['stories'],    // historias exitosas
                                 'recent' => $options['recent']
                             )
                         )

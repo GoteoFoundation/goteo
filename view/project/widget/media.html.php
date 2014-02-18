@@ -1,3 +1,6 @@
+<?php
+use Goteo\Library\Text;
+?>
 <script>
 
 function loadVideo()
@@ -23,7 +26,7 @@ if (!empty($this['project']->media)) {
 		?>
 		<div class="widget project-media" <?php if ($this['project']->media_usubs) : ?>style="height:412px;"<?php endif; ?> style="position:relative;" id="video_holder">	
 			<img src="<?php echo $img_url; ?>" width="620" height="380"/>  
-			<div onclick="loadVideo()" class="video_button"><img src="/view/css/project/widget/play.png" width="6"style="margin-right:12px;"/>Ver video</div>
+			<div onclick="loadVideo()" class="video_button"><img src="/view/css/project/widget/play.png" width="6"style="margin-right:12px;"/><?php echo Text::get('project-media-play_video'); ?></div>
 		</div>
 <?php 
 	}
