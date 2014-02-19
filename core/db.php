@@ -91,6 +91,7 @@ namespace Goteo\Core {
          * @return [type]                 [description]
          */
         public function prepare($statement, $driver_options = array(), $select_from_replica = true) {
+
             $this->is_select = ( strtolower(rtrim(substr(ltrim($statement),0 ,7))) == "select" );
             if($this->read_replica && $this->is_select && $select_from_replica) {
                 $this->read_replica->is_select = true;
@@ -104,6 +105,21 @@ namespace Goteo\Core {
             }
         }
 
+        /**
+         * Para debug, retorna un array con el numero de queries que se han obtenido de la base de datos y las cacheadas
+         */
+        public function getQueryStats() {
+            $ret = array();
+            $ret['replica']['non-cached'] = \Goteo\Core\CacheStatement::$query_stats['replica'][0];
+            $ret['replica']['cached'] = \Goteo\Core\CacheStatement::$query_stats['replica'][1];
+            $ret['master']['non-cached'] = \Goteo\Core\CacheStatement::$query_stats['master'][0];
+            $ret['master']['cached'] = \Goteo\Core\CacheStatement::$query_stats['master'][1];
+            $ret['sql_replica']['non-cached'] = \Goteo\Core\CacheStatement::$queries['replica'][0];
+            $ret['sql_replica']['cached'] = \Goteo\Core\CacheStatement::$queries['replica'][1];
+            $ret['sql_master']['non-cached'] = \Goteo\Core\CacheStatement::$queries['master'][0];
+            $ret['sql_master']['cached'] = \Goteo\Core\CacheStatement::$queries['master'][1];
+            return $ret;
+        }
     }
 
     /**
@@ -117,13 +133,17 @@ namespace Goteo\Core {
         public $cache_key = '';
         public $input_parameters = null;
         public $execute = null;
-        static $queries = 0;
-        static $queries_cached = 0;
+        static $query_stats = array('replica' => array(0, 0), 'master' => array(0, 0));
+        static $queries = array('replica' => array(array(), array()), 'master' => array(array(), array()));
+        public $debug = false;
 
         protected function __construct($dbh, $cache=null) {
             $this->dbh = $dbh;
             $this->cache = $cache;
             $this->is_select = $dbh->is_select;
+            //si debug es 1, se recojeran en el array las queries no cacheadas
+            //si debug es 2, se recojeran todas las queries
+            if(defined("DEBUG_SQL_QUERIES")) $this->debug = DEBUG_SQL_QUERIES;
         }
 
         /**
@@ -131,6 +151,7 @@ namespace Goteo\Core {
          */
         public function execute($input_parameters = null) {
             $query = $this->queryString;
+
             // echo "[".$this->dbh->type.":".intval($this->is_select)."]";
             if($this->cache) {
                 //Solo aplicamos el cache en sentencias SELECT
@@ -142,9 +163,12 @@ namespace Goteo\Core {
                     return true;
                 }
             }
-            self::$queries++;
+            //incrementar queries no cacheadas
+            self::$query_stats[$this->dbh->type][0]++;
             //si no hay cache se comporta igual
+            if($this->debug) $t = microtime(true);
             $this->execute = parent::execute($input_parameters);
+            if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $query ." | ". print_r($input_parameters,1);
             return $this->execute;
         }
 
@@ -154,8 +178,12 @@ namespace Goteo\Core {
         public function _execute($params = array()) {
             try {
                 if($this->execute === null) {
-                    self::$queries++;
+                    //incrementar queries no cacheadas
+                    self::$query_stats[$this->dbh->type][0]++;
+
+                    if($this->debug) $t = microtime(true);
                     $this->execute =  parent::execute($params);
+                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $this->queryString ." | ". print_r($this->input_parameters,1);
                 }
                 return $this->execute;
             } catch (\PDOException $e) {
@@ -182,7 +210,10 @@ namespace Goteo\Core {
                 $value = $this->cache->get($key);
 
                 if($value !== null) {
-                    self::$queries_cached++;
+                    //incrementar queries cacheadas
+                    self::$query_stats[$this->dbh->type][1]++;
+                    if($this->debug>1) self::$queries[$this->dbh->type][1][] = self::$query_stats[$this->dbh->type][1]. ": " . $this->queryString ." | ". print_r($this->input_parameters,1);
+
                     // echo "[cached [$method $class_name] cache time: [{$this->cache_time}s]";
 
                     //devolver el valor cacheado
@@ -211,13 +242,6 @@ namespace Goteo\Core {
             $this->_execute($this->input_parameters);
             //obtener el valor
             return call_user_func_array(array($this, "parent::$method"), $args);
-        }
-        /**
-         * Para debug, retorna un array con el numero de queries que se han obtenido de la base de datos y las cacheadas
-         * @return [type] [description]
-         */
-        public static function getQueriesSoFar() {
-            return array(self::$queries, self::$queries_cached);
         }
 
         /* métodos cacheables */
