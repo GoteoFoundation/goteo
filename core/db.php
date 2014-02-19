@@ -91,6 +91,7 @@ namespace Goteo\Core {
          * @return [type]                 [description]
          */
         public function prepare($statement, $driver_options = array(), $select_from_replica = true) {
+
             $this->is_select = ( strtolower(rtrim(substr(ltrim($statement),0 ,7))) == "select" );
             if($this->read_replica && $this->is_select && $select_from_replica) {
                 $this->read_replica->is_select = true;
@@ -113,6 +114,10 @@ namespace Goteo\Core {
             $ret['replica']['cached'] = \Goteo\Core\CacheStatement::$query_stats['replica'][1];
             $ret['master']['non-cached'] = \Goteo\Core\CacheStatement::$query_stats['master'][0];
             $ret['master']['cached'] = \Goteo\Core\CacheStatement::$query_stats['master'][1];
+            $ret['sql_replica']['non-cached'] = \Goteo\Core\CacheStatement::$queries['replica'][0];
+            $ret['sql_replica']['cached'] = \Goteo\Core\CacheStatement::$queries['replica'][1];
+            $ret['sql_master']['non-cached'] = \Goteo\Core\CacheStatement::$queries['master'][0];
+            $ret['sql_master']['cached'] = \Goteo\Core\CacheStatement::$queries['master'][1];
             return $ret;
         }
     }
@@ -128,7 +133,9 @@ namespace Goteo\Core {
         public $cache_key = '';
         public $input_parameters = null;
         public $execute = null;
-        static $query_stats = array('replica' => array(0,0), 'master' => array(0,0));
+        static $query_stats = array('replica' => array(0, 0), 'master' => array(0, 0));
+        static $queries = array('replica' => array(array(), array()), 'master' => array(array(), array()));
+        public $debug = true;
 
         protected function __construct($dbh, $cache=null) {
             $this->dbh = $dbh;
@@ -141,6 +148,7 @@ namespace Goteo\Core {
          */
         public function execute($input_parameters = null) {
             $query = $this->queryString;
+
             // echo "[".$this->dbh->type.":".intval($this->is_select)."]";
             if($this->cache) {
                 //Solo aplicamos el cache en sentencias SELECT
@@ -154,6 +162,7 @@ namespace Goteo\Core {
             }
             //incrementar queries no cacheadas
             self::$query_stats[$this->dbh->type][0]++;
+            if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ": " . $query;
             //si no hay cache se comporta igual
             $this->execute = parent::execute($input_parameters);
             return $this->execute;
@@ -167,6 +176,7 @@ namespace Goteo\Core {
                 if($this->execute === null) {
                     //incrementar queries no cacheadas
                     self::$query_stats[$this->dbh->type][0]++;
+                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ": " . $this->queryString;
 
                     $this->execute =  parent::execute($params);
                 }
@@ -197,6 +207,7 @@ namespace Goteo\Core {
                 if($value !== null) {
                     //incrementar queries cacheadas
                     self::$query_stats[$this->dbh->type][1]++;
+                    if($this->debug) self::$queries[$this->dbh->type][1][] = self::$query_stats[$this->dbh->type][1]. ": " . $this->queryString;
 
                     // echo "[cached [$method $class_name] cache time: [{$this->cache_time}s]";
 
