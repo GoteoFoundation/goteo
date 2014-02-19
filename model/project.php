@@ -2094,11 +2094,25 @@ namespace Goteo\Model {
          * @return array of project instances
          */
         public static function getList($filters = array(), $node = null) {
+
             $projects = array();
 
             $values = array();
+            $owners = array();
+
+            $sqlOrder = '';
 
             // los filtros
+
+            // pre-filtro de nombre|email de usuario
+            if (!empty($filters['name'])) {
+                $query = self::query("SELECT id FROM user WHERE (name LIKE :user OR email LIKE :user)",
+                    array(':user' => "%{$filters['name']}%"));
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $names) {
+                    $owners[] = $names->id;
+                }
+            }
+
             $sqlFilter = "";
             if (!empty($filters['multistatus'])) {
                 $sqlFilter .= " AND status IN ({$filters['multistatus']})";
@@ -2116,8 +2130,8 @@ namespace Goteo\Model {
                 $values[':owner'] = $filters['owner'];
             }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND owner IN (SELECT id FROM user WHERE (name LIKE :user OR email LIKE :user))";
-                $values[':user'] = "%{$filters['name']}%";
+                $sqlFilter .= " AND owner IN (".implode(',', $owners).")";
+//                $values[':user'] = "%{$filters['name']}%";
             }
             if (!empty($filters['proj_name'])) {
                 $sqlFilter .= " AND name LIKE :name";
