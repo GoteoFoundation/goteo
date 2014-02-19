@@ -91,7 +91,7 @@ namespace Goteo\Controller {
                         $item->email = ($item->noemail) ? '' : $user->email;
 
                         // recompensa
-                        $subQuery = static::query("SELECT reward.reward
+                        $subQuery = \Goteo\Core\Model::query("SELECT reward.reward
                                                 FROM reward, invest_reward
                                                 WHERE reward.id = invest_reward.reward
                                                 AND invest_reward.invest = ?
