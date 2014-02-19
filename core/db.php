@@ -135,12 +135,13 @@ namespace Goteo\Core {
         public $execute = null;
         static $query_stats = array('replica' => array(0, 0), 'master' => array(0, 0));
         static $queries = array('replica' => array(array(), array()), 'master' => array(array(), array()));
-        public $debug = true;
+        public $debug = false;
 
         protected function __construct($dbh, $cache=null) {
             $this->dbh = $dbh;
             $this->cache = $cache;
             $this->is_select = $dbh->is_select;
+            if(GOTEO_ENV == 'local') $this->debug = true;
         }
 
         /**
