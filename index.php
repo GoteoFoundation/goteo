@@ -217,7 +217,7 @@ try {
             echo $result;
 
             if($mime_type == "text/html" && GOTEO_ENV != 'real') {
-                echo "<!-- ".implode(", ",Goteo\Core\CacheStatement::getQueriesSoFar()) . " -->";
+                echo "<!-- ".print_r(Goteo\Core\DB::getQueryStats(), 1) . " -->";
             }
             // Farewell
             die;
