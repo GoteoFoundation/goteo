@@ -2130,7 +2130,7 @@ namespace Goteo\Model {
                 $values[':owner'] = $filters['owner'];
             }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND owner IN (".implode(',', $owners).")";
+                $sqlFilter .= " AND owner IN ('".implode("','", $owners)."')";
 //                $values[':user'] = "%{$filters['name']}%";
             }
             if (!empty($filters['proj_name'])) {
