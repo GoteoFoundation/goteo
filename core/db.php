@@ -141,7 +141,9 @@ namespace Goteo\Core {
             $this->dbh = $dbh;
             $this->cache = $cache;
             $this->is_select = $dbh->is_select;
-            if(GOTEO_ENV == 'local') $this->debug = true;
+            //si debug es 1, se recojeran en el array las queries no cacheadas
+            //si debug es 2, se recojeran todas las queries
+            if(defined("DEBUG_SQL_QUERIES")) $this->debug = DEBUG_SQL_QUERIES;
         }
 
         /**
@@ -163,9 +165,10 @@ namespace Goteo\Core {
             }
             //incrementar queries no cacheadas
             self::$query_stats[$this->dbh->type][0]++;
-            if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ": " . $query;
             //si no hay cache se comporta igual
+            if($this->debug) $t = microtime(true);
             $this->execute = parent::execute($input_parameters);
+            if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $query ." | ". print_r($input_parameters,1);
             return $this->execute;
         }
 
@@ -177,9 +180,10 @@ namespace Goteo\Core {
                 if($this->execute === null) {
                     //incrementar queries no cacheadas
                     self::$query_stats[$this->dbh->type][0]++;
-                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ": " . $this->queryString;
 
+                    if($this->debug) $t = microtime(true);
                     $this->execute =  parent::execute($params);
+                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $this->queryString ." | ". print_r($this->input_parameters,1);
                 }
                 return $this->execute;
             } catch (\PDOException $e) {
@@ -208,7 +212,7 @@ namespace Goteo\Core {
                 if($value !== null) {
                     //incrementar queries cacheadas
                     self::$query_stats[$this->dbh->type][1]++;
-                    if($this->debug) self::$queries[$this->dbh->type][1][] = self::$query_stats[$this->dbh->type][1]. ": " . $this->queryString;
+                    if($this->debug>1) self::$queries[$this->dbh->type][1][] = self::$query_stats[$this->dbh->type][1]. ": " . $this->queryString ." | ". print_r($this->input_parameters,1);
 
                     // echo "[cached [$method $class_name] cache time: [{$this->cache_time}s]";
 
