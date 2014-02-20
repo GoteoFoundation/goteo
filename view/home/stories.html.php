@@ -9,9 +9,9 @@ if (count($stories) > 6) {
 	$stories = array_slice($stories, 0, 6);
 }
 ?>
-<div class="stories-home">
+<div class="widget stories-home" style="padding:0;">
 
-    <h2 class="title"><?php echo Text::get('home-stories-header'); ?></h2>
+    
 
 	<script type="text/javascript">
     $(function(){
@@ -30,6 +30,7 @@ if (count($stories) > 6) {
         <?php foreach ($stories as $story) : ?>
             <div class="stories-banner<?php if (!empty($story->url)) echo ' activable'; ?>"<?php if ($story->image instanceof \Goteo\Model\Image) : ?> style="background: url('/data/images/<?php echo $story->image->name; ?>');"<?php endif; ?>>
                 <?php if (!empty($story->url)) : ?><a href="<?php echo $story->url; ?>" class="expand" target="_blank"></a><?php endif; ?>
+                <h2 class="title" style="margin-top:50px; margin-left:50px; color:#ee4843; background:none;"><?php echo Text::get('home-stories-header'); ?></h2>
                 <div class="info">
                     <div><?php echo htmlspecialchars($story->title); ?></div>
                     <div style="margin-top:5px;"><?php echo htmlspecialchars($story->description); ?></div>
