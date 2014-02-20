@@ -63,12 +63,10 @@ namespace Goteo\Controller {
                     $sql = "SELECT  
                                 invest.id as id,
                                 invest.user as user,
-                                user.name as name,
-                                IF (user_prefer.email = 1, '', user.email) as email,
+                                user_prefer.email as noemail,
                                 invest.amount as amount,
                                 IF (invest.issue, 'Incidencia', '') as issue,
                                 IF (invest.anonymous, 'Anonimo', '') as anonymous,
-                                (SELECT GROUP_CONCAT(reward.reward) FROM reward where id IN (select reward from invest_reward where invest_reward.invest = invest.id) ) as rewards,
                                 IF(invest_address.address,
                                     concat(invest_address.address, ', ', invest_address.zipcode, ', ', invest_address.location, ', ', invest_address.country),
                                     concat(user_personal.address, ', ', user_personal.zipcode, ', ', user_personal.location, ', ', user_personal.country)
@@ -81,11 +79,25 @@ namespace Goteo\Controller {
                             LEFT JOIN user_prefer ON user_prefer.user = invest.user
                             WHERE   invest.project = ?
                             AND invest.status IN ('1', '3')
-                            ORDER BY invest.amount ASC, user.name ASC
+                            ORDER BY invest.amount ASC
                             ";
 
                     $query = \Goteo\Core\Model::query($sql, array($id));
                     foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+
+                        // usuario
+                        $user = Model\User::getMini($item->user);
+                        $item->name = $user->name;
+                        $item->email = ($item->noemail) ? '' : $user->email;
+
+                        // recompensa
+                        $subQuery = \Goteo\Core\Model::query("SELECT reward.reward
+                                                FROM reward, invest_reward
+                                                WHERE reward.id = invest_reward.reward
+                                                AND invest_reward.invest = ?
+                            ", array($id));
+                        $item->rewards = $subQuery->fetchColumn();
+
                         $data[] = $item;
                     }
                     $columns = array(
