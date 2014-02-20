@@ -29,7 +29,7 @@ namespace Goteo\Model\Project {
             if($autoplay)
                 $cod_auto=";autoplay=1";
             return '<iframe src="http://player.vimeo.com/video/'
-                   . $id . '?title=0&amp;byline=0&amp;portrait=0'.$cod_auto.'" width="100%" height="100%" frameborder="0"></iframe>';
+                   . $id . '?title=0&amp;byline=0&amp;portrait=0'.$cod_auto.'" width="100%" height="100%" frameborder="0" style="max-width:none !important;" webkitallowfullscreen mozallowfullscreen></iframe>';
         }
 
         protected static function getSlideshareCode ($id, $https = false) {
