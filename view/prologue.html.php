@@ -11,7 +11,7 @@ if (NODE_ID != GOTEO_NODE) {
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php echo GOTEO_META_TITLE ?></title>
         <link rel="icon" type="image/png" href="/myicon.png" />
-        <meta name="description" content="<?php echo GOTEO_META_DESCRIPTION ?>" />
+        <meta name="description" content="La plataforma crowdfunding que recibe aportaciones más generosas. Sólo ubicamos proyectos abiertos, contamos con una gran comunidad que puede ayudar a hacer realidad tu proyecto" />
         <meta name="keywords" content="<?php echo GOTEO_META_KEYWORDS ?>" />
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
