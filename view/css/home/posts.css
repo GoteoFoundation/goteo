@@ -156,5 +156,18 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.au
     text-decoration: underline;
 }
 
+
+/*Nueva clase description para optimizar SEO */
+
+body.node.home div#node-news div.slder_container div.slder_slide div.post h3,
+body.node.home div#node-news div.slder_container div.slder_slide div.post div.post_text,
+body.home div#main div.learn div.slder_container div.slder_slide div.post h3,
+body.home div#main div.learn div.slder_container div.slder_slide div.post div.post_text {
+    float: left;
+    margin: 0 0 10px 20px;
+    width: 380px;
+    line-height: 18px;
+    text-transform:none;
+}
 /* Hasta aqui las reglas para compartir estilos para blog en portada del nodo*/
 
