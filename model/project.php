@@ -437,6 +437,9 @@ namespace Goteo\Model {
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
+                // asesores
+                $project->consultants = Project::getConsultants($id);
+
                 $amount = Invest::invested($id);
                 $project->invested = $amount;
                 $project->amount   = $amount;
@@ -490,6 +493,86 @@ namespace Goteo\Model {
             }
 
             return $list;
+        }
+
+        /*
+         * Array asociativo de los asesores de un proyecto
+         *  (o todos los que asesoran alguno, si no hay filtro)
+         */
+        public static function getConsultants ($project = null) {
+
+            $list = array();
+
+            $sqlFilter = "";
+            if (!empty($project)) {
+                $sqlFilter .= " WHERE user_project.project = '{$project}'";
+            }
+
+
+            $query = static::query("
+                SELECT
+                    DISTINCT(user_project.user) as consultant,
+                    user.name as name
+                FROM user_project
+                INNER JOIN user
+                    ON user.id = user_project.user
+                $sqlFilter
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->consultant] = $item->name;
+            }
+
+            return $list;
+        }
+
+
+        /*
+         * Asignar a un usuario como asesor de un proyecto
+         */
+        public function assignConsultant ($user, &$errors = array()) {
+
+            $values = array(':user'=>$user, ':project'=>$this->id);
+
+            try {
+                $sql = "REPLACE INTO user_project (`user`, `project`) VALUES(:user, :project)";
+                if (self::query($sql, $values)) {
+                    // FIXME: ACL
+                    //ACL::allow('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
+                    return true;
+                } else {
+                    $errors[] = 'No se ha creado el registro `user_project`';
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido asignar al usuario {$user} como asesor del proyecto {$this->id}.' . $e->getMessage();
+                return false;
+            }
+
+        }
+
+        /*
+         * Quitarle a un usuario el asesoramiento de un proyecto
+         */
+        public function unassignConsultant ($user, &$errors = array()) {
+            $values = array (
+                ':user'=>$user,
+                ':project'=>$this->id,
+            );
+
+            try {
+                if (self::query("DELETE FROM user_project WHERE `project` = :project AND `user` = :user", $values)) {
+                    // FIXME: ACL
+                    //ACL::deny('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar al usuario {$user} del asesoramiento del proyecto {$this->id}. ' . $e->getMessage();
+                return false;
+            }
         }
 
         /*
@@ -2114,31 +2197,38 @@ namespace Goteo\Model {
             }
 
             $sqlFilter = "";
+            $sqlConsultantFilter = "";
+
+            if ((!empty($filters['consultant'])) && ($filters['consultant'] != -1)) {
+                $sqlFilter .= " AND user_project.user = :consultant";
+                $values[':consultant'] = $filters['consultant'];
+                $sqlConsultantFilter = " INNER JOIN user_project ON user_project.project = project.id";
+            }
             if (!empty($filters['multistatus'])) {
-                $sqlFilter .= " AND status IN ({$filters['multistatus']})";
+                $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
             }
             if ($filters['status'] > -1) {
-                $sqlFilter .= " AND status = :status";
+                $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
             } elseif ($filters['status'] == -2) {
-                $sqlFilter .= " AND (status = 1  AND id NOT REGEXP '[0-9a-f]{5,40}')";
+                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{5,40}')";
             } else {
-                $sqlFilter .= " AND (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{5,40}') )";
+                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
             }
             if (!empty($filters['owner'])) {
-                $sqlFilter .= " AND owner = :owner";
+                $sqlFilter .= " AND project.owner = :owner";
                 $values[':owner'] = $filters['owner'];
             }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND owner IN ('".implode("','", $owners)."')";
+                $sqlFilter .= " AND project.owner IN ('".implode("','", $owners)."')";
 //                $values[':user'] = "%{$filters['name']}%";
             }
             if (!empty($filters['proj_name'])) {
-                $sqlFilter .= " AND name LIKE :name";
+                $sqlFilter .= " AND project.name LIKE :name";
                 $values[':name'] = "%{$filters['proj_name']}%";
             }
             if (!empty($filters['category'])) {
-                $sqlFilter .= " AND id IN (
+                $sqlFilter .= " AND project.id IN (
                     SELECT project
                     FROM project_category
                     WHERE category = :category
@@ -2151,19 +2241,19 @@ namespace Goteo\Model {
                     
                     //en cualquier convocatoria
                     case 'all':
-                        $sqlFilter .= " AND id IN (
+                        $sqlFilter .= " AND project.id IN (
                         SELECT project
                         FROM call_project)";
                         break;
                     //en ninguna convocatoria    
                     case 'none':
-                        $sqlFilter .= " AND id NOT IN (
+                        $sqlFilter .= " AND project.id NOT IN (
                         SELECT project
                         FROM call_project)";
                         break;
                     //filtro en esta convocatoria    
                     default:
-                        $sqlFilter .= " AND id IN (
+                        $sqlFilter .= " AND project.id IN (
                         SELECT project
                         FROM call_project
                         WHERE `call` = :called
@@ -2175,10 +2265,10 @@ namespace Goteo\Model {
 
             }
             if (!empty($filters['node'])) {
-                $sqlFilter .= " AND node = :node";
+                $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $filters['node'];
             } elseif (!empty($node) && $node != \GOTEO_NODE) {
-                $sqlFilter .= " AND node = :node";
+                $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
 
@@ -2186,10 +2276,10 @@ namespace Goteo\Model {
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
                     case 'updated':
-                        $sqlOrder .= " ORDER BY updated DESC";
+                        $sqlOrder .= " ORDER BY project.updated DESC";
                     break;
                     case 'name':
-                        $sqlOrder .= " ORDER BY name ASC";
+                        $sqlOrder .= " ORDER BY project.name ASC";
                     break;
                     default:
                         $sqlOrder .= " ORDER BY {$filters['order']}";
@@ -2199,10 +2289,11 @@ namespace Goteo\Model {
 
             // la select
             $sql = "SELECT 
-                        id,
-                        id REGEXP '[0-9a-f]{5,40}' as draft
+                        project.id,
+                        project.id REGEXP '[0-9a-f]{5,40}' as draft
                     FROM project
-                    WHERE id != ''
+                    $sqlConsultantFilter
+                    WHERE project.id != ''
                         $sqlFilter
                         $sqlOrder
                     LIMIT 999
