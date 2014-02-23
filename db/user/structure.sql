@@ -34,3 +34,7 @@ ALTER TABLE `user` ADD `lang` VARCHAR( 2 ) NULL DEFAULT NULL;
 -- nodo donde se registró
 ALTER TABLE `user` ADD `node` VARCHAR( 50 ) NULL DEFAULT NULL;
 
+-- cantidad aportada en goteo
+ALTER TABLE `user` ADD `amount` INT( 7 ) NULL COMMENT 'Cantidad total aportada' AFTER `linkedin` ;
+
+

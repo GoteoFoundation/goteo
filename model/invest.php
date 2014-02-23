@@ -979,6 +979,11 @@ namespace Goteo\Model {
                     }
                 }
 
+                // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                $this->keepUpdated();
+
+
+
                 return true;
             } else {
                 return false;
@@ -1673,6 +1678,20 @@ namespace Goteo\Model {
             }
             return $list;
 
+
+         }
+
+        /**
+         * Keep updated any related data entities
+         *
+         * @return success boolean
+         */
+        private function keepUpdated() {
+
+            // cantidad total aportada en goteo
+            $amount = User::updateAmount($this->user);
+            // nivel de meritocracia
+            User::updateWorth($this->user, $amount);
 
          }
 
