@@ -139,7 +139,14 @@ namespace Goteo\Model {
                 return Project\Account::getAllowpp($this->id);
             }
             if($name == "budget") {
-	            return self::calcCosts($this->id);
+                $cost = new stdClass;
+                $cost->mincost = $this->mincost;
+                $cost->maxcost = $this->maxcost;
+                //calcular si esta vacio
+                if(empty($cost->mincost)) {
+                    $cost = self::calcCosts($this->id);
+                }
+	            return $cost;
 	        }
             return $this->$name;
         }
@@ -444,10 +451,12 @@ namespace Goteo\Model {
                 $project->num_investors = Invest::numInvestors($id);
                 $project->num_messegers = Message::numMessegers($id);
 
-                // sacamos rapidamente el presupuesto mínimo y óptimo
-                $costs = self::calcCosts($id);
-                $project->mincost = $costs->mincost;
-                $project->maxcost = $costs->maxcost;
+                // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado
+                if(empty($project->mincost)) {
+                    $costs = self::calcCosts($id);
+                    $project->mincost = $costs->mincost;
+                    $project->maxcost = $costs->maxcost;
+                }
 
 
                 $project->setDays();
@@ -2291,6 +2300,8 @@ namespace Goteo\Model {
         */
         public static function calcCosts($id) {
             $cost_query = self::query("SELECT
+                        mincost AS oldmincost,
+                        maxcost AS oldmaxcost,
                         (SELECT  SUM(amount)
                         FROM    cost
                         WHERE   project = project.id
@@ -2303,11 +2314,13 @@ namespace Goteo\Model {
                 FROM project
                 WHERE id =?", array($id));
             if($costs = $cost_query->fetchObject()) {
-                self::query("UPDATE
-                    project SET
-                    mincost = :mincost,
-                    maxcost = :maxcost
-                    WHERE id = :id", array('id' => $id, 'mincost' => $costs->mincost, 'maxcost' => $costs->maxcost));
+                if($costs->mincost != $costs->oldmincost || $costs->maxcost != $costs->oldmaxcost) {
+                    self::query("UPDATE
+                        project SET
+                        mincost = :mincost,
+                        maxcost = :maxcost
+                     WHERE id = :id", array('id' => $id, 'mincost' => $costs->mincost, 'maxcost' => $costs->maxcost));
+                }
             }
             return $costs;
         }

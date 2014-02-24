@@ -48,7 +48,7 @@ namespace Goteo\Controller {
 
             // Proyectos destacados
             if (isset($order['promotes'])) {
-                $promotes  = Promote::getAll(true);
+                // $promotes  = Promote::getAll(true);
 
                 foreach ($promotes as $key => &$promo) {
                     try {
