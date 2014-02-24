@@ -21,7 +21,7 @@ namespace Goteo\Controller {
         Goteo\Library\Page; // para sacar el contenido de about
 
     class Index extends \Goteo\Core\Controller {
-        
+
         public function index () {
 
             if (NODE_ID != GOTEO_NODE) {
@@ -39,7 +39,7 @@ namespace Goteo\Controller {
             if (defined('GOTEO_EASY') && \GOTEO_EASY === true && isset($order['feed'])) {
                 unset($order['feed']);
             }
-            
+
             // entradas de blog
             if (isset($order['posts'])) {
                 // entradas en portada
@@ -63,7 +63,7 @@ namespace Goteo\Controller {
             if (isset($order['drops'])) {
                 $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
                 $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
-                
+
                 $drops = (!empty($calls) || !empty($campaigns)) ? true : false;
             }
 
@@ -94,12 +94,13 @@ namespace Goteo\Controller {
                 $feed['projects']  = Feed::getAll('projects', 'public', 15);
                 $feed['community'] = Feed::getAll('community', 'public', 15);
             }
-            
+
             // Banners siempre
             $banners   = Banner::getAll(true);
 
+/*          //esto genera una infinidad de queries:
             foreach ($banners as $id => &$banner) {
-                
+
                 if (!empty($banner->project)) {
                     try {
                         $banner->project = Project::get($banner->project, LANG);
@@ -107,9 +108,9 @@ namespace Goteo\Controller {
                         unset($banners[$id]);
                     }
                 }
-                
-            }
 
+            }
+*/
             if (isset($order['stories'])) {
                 $stories = Stories::getAll(true);
 
@@ -140,7 +141,7 @@ namespace Goteo\Controller {
                     'order'     => $order
                 )
             );
-            
+
         }
 
         public static function node_index ($page = 'index') {
@@ -187,8 +188,8 @@ namespace Goteo\Controller {
 
             }
 
-            
-            
+
+
             // Laterales
             // ---------------------
             if (isset($side_order['searcher'])) {
@@ -298,7 +299,7 @@ namespace Goteo\Controller {
                         'promotes' => $promotes,
                         'calls'    => array('calls'=>$calls, 'campaigns'=>$campaigns),
                         'patrons' => $patrons,
-                    
+
                     // laterales
                     'side_order' => $side_order,
                         'searcher' => $searcher,
@@ -322,5 +323,5 @@ namespace Goteo\Controller {
         }
 
     }
-    
+
 }

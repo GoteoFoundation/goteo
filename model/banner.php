@@ -20,7 +20,7 @@ namespace Goteo\Model {
          */
         public static function get ($id, $lang = null) {
                 $query = static::query("
-                    SELECT  
+                    SELECT
                         banner.id as id,
                         banner.node as node,
                         banner.project as project,
@@ -48,8 +48,12 @@ namespace Goteo\Model {
                 return $banner;
         }
 
-        /*
+        /**
          * Lista de proyectos en banners
+         * La función Banner::getAll esta en los archivos:
+         * controller/index.php OK
+         * controller/admin/banners.php (PARECE OK, FALTA COMPROBAR en el admin: parece que se usa en view/admin/banners/list.html.php pero solo usa los campos de la tabla banner)
+         * view/node/header.html.php (PARECE OK, FALTA COMPROBAR en el nodo, parece que se usa en view/node/banners.html.php campos: url, title, description, image->name )
          */
         public static function getAll ($activeonly = false, $node = \GOTEO_NODE) {
 
@@ -70,12 +74,24 @@ namespace Goteo\Model {
                     IFNULL(banner_lang.description, banner.description) as description,
                     banner.url as url,
                     project.status as status,
+                    project.name as project_name,
+                    project.days as project_days,
+                    project.amount as project_amount,
+                    project.mincost as project_mincost,
+                    project.maxcost as project_maxcost,
+                    user.name as project_user_name,
                     banner.image as image,
                     banner.order as `order`,
-                    banner.active as `active`
+                    banner.active as `active`,
+                    image.id AS image_id,
+                    image.name AS image_name
                 FROM    banner
                 LEFT JOIN project
                     ON project.id = banner.project
+                LEFT JOIN user
+                    ON user.id = project.owner
+                LEFT JOIN image
+                    ON image.id = banner.image
                 LEFT JOIN banner_lang
                     ON  banner_lang.id = banner.id
                     AND banner_lang.lang = :lang
@@ -83,13 +99,57 @@ namespace Goteo\Model {
                 $sqlFilter
                 ORDER BY `order` ASC
                 ", array(':node' => $node, ':lang' => \LANG));
-            
+
+            $used_projects = array();
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
-                $banner->image = !empty($banner->image) ? Image::get($banner->image) : null;
+                // metodo antiguo: una sql por cada banner
+                // $banner->image = !empty($banner->image) ? Image::get($banner->image) : null;
+                // nos ahorramos las llamadas sql a image pues en la vista solo se usa el nombre y la id (de la funcion getLink)
+                if(empty($banner->image)) $banner->image = null;
+                else {
+                    $banner->image = new Image;
+                    $banner->image->name = $banner->image_name;
+                    $banner->image->id = $banner->image_id;
+                }
                 $banner->status = $status[$banner->status];
-                $banners[] = $banner;
+
+                //mincost, maxcost, si mincost es zero, lo calculamos:
+                if(empty($banner->project_mincost)) {
+                    $calc = Project::calcCosts($banner->project);
+                    $banner->project_mincost = $calc->mincost;
+                    $banner->project_maxcost = $calc->maxcost;
+                    //a partir de aqui ya deberia estar calculado para las siguientes consultas
+                }
+
+                //rewards, metodo antiguo un sql por proyecto
+                // $banner->project_social_rewards = Project\Reward::getAll($banner->project, 'social', \LANG);
+                //
+                // usado para obtener los rewards de golpe
+                $used_projects[$banner->project] = $banner->id;
+                $banners[$banner->id] = $banner;
             }
 
+            // rewards es un array, podemo llamarlo directamente para los proyectos implicados
+            // REWARDS: la vista banner.html.php usa: (id, reward, icon, license)
+            // Nota: añadido el campo "project" en la tabla "reward" como indice para acelerar las busquedas
+            $query = static::query("
+                SELECT
+                reward.id,
+                reward.project,
+                reward.icon,
+                reward.license,
+                IFNULL(reward_lang.reward, reward.reward) as reward
+                FROM reward
+                LEFT JOIN reward_lang
+                    ON  reward_lang.id = reward.id
+                    AND reward_lang.lang = :lang
+                WHERE
+                project IN ('" . implode("','", array_keys($used_projects)) . "')
+                AND type = :type", array('lang' => \LANG, 'type' => 'social'));
+            //añadir a cada banner:
+            foreach($query->fetchAll(\PDO::FETCH_CLASS) as $reward){
+                $banners[$used_projects[$reward->project]]->project_social_rewards[$reward->id] = $reward;
+            }
             return $banners;
         }
 
@@ -213,7 +273,7 @@ namespace Goteo\Model {
          * Para quitar un proyecto banner
          */
         public static function delete ($id) {
-            
+
             $sql = "DELETE FROM banner WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
@@ -269,5 +329,5 @@ namespace Goteo\Model {
 
 
     }
-    
+
 }
