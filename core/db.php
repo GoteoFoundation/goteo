@@ -4,6 +4,7 @@ namespace Goteo\Core {
 
     class DB extends \PDO {
         public $cache = null;
+        static $cache_active = true; //para poder desactivar la cache globalmente si se necesita
         public $read_replica = null;
         public $is_select = false;
         public $type = "master";
@@ -120,6 +121,17 @@ namespace Goteo\Core {
             $ret['sql_master']['cached'] = \Goteo\Core\CacheStatement::$queries['master'][1];
             return $ret;
         }
+
+        /**
+         * Metodo global para activar/desactivar la cache
+         * Sin argumentos simplemente retorna si está o no activa
+         */
+        static public function cache($activate = null) {
+            if($activate !== null) {
+                self::$cache_active = (boolean) $activate;
+            }
+            return self::$cache_active;
+        }
     }
 
     /**
@@ -129,6 +141,7 @@ namespace Goteo\Core {
         public $dbh;
         public $cache = null;
         public $cache_time = \SQL_CACHE_TIME;
+        private $cache_active = true;
         public $is_select = false;
         public $cache_key = '';
         public $input_parameters = null;
@@ -141,6 +154,7 @@ namespace Goteo\Core {
             $this->dbh = $dbh;
             $this->cache = $cache;
             $this->is_select = $dbh->is_select;
+            $this->cache_active = \Goteo\Core\DB::$cache_active;
             //si debug es 1, se recojeran en el array las queries no cacheadas
             //si debug es 2, se recojeran todas las queries
             if(defined("DEBUG_SQL_QUERIES")) $this->debug = DEBUG_SQL_QUERIES;
@@ -153,7 +167,7 @@ namespace Goteo\Core {
             $query = $this->queryString;
 
             // echo "[".$this->dbh->type.":".intval($this->is_select)."]";
-            if($this->cache) {
+            if($this->cache && $this->cache_active) {
                 //Solo aplicamos el cache en sentencias SELECT
                 if($this->is_select) {
                     $this->cache_key        = "sql-" . md5($query . serialize($input_parameters));
@@ -205,7 +219,7 @@ namespace Goteo\Core {
          * Ejecución del método deseado con cache
          */
         public function _cachedMethod($method, $args=null) {
-            if($this->cache && $this->is_select && $this->cache_time) {
+            if($this->cache && $this->is_select && $this->cache_time && $this->cache_active) {
                 $key = $this->cache_key . "-$method-" . md5(serialize($args));
                 $value = $this->cache->get($key);
 
@@ -226,7 +240,7 @@ namespace Goteo\Core {
             //obtener el valor
             $value = call_user_func_array(array($this, "parent::$method"), $args);
 
-            if($this->cache && $this->is_select && $this->cache_time) {
+            if($this->cache && $this->is_select && $this->cache_time && $this->cache_active) {
                 //guardar en cache
                 $this->cache->set($key, $value, $this->cache_time);
             }
