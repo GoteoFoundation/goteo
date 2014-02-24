@@ -42,7 +42,7 @@ namespace Goteo\Controller\Admin {
                         throw new Redirection("/admin/calls");
                     }
             }
-            
+
             switch ($action) {
                 case 'review': // listo para aplicar proyectos (se publica, sino que siga en edicion)
                     if ($call->ready($errors)) {
@@ -219,7 +219,6 @@ namespace Goteo\Controller\Admin {
                 }
                 $projects   = Model\Call\Project::get($call->id, array('all'=>true));
                 $status     = Model\Project::status();
-
                 // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
                 //$available  = Model\Call\Project::getAvailable($call->id);
                 // los quitamos por ahora
@@ -227,9 +226,14 @@ namespace Goteo\Controller\Admin {
                 // a los seleccionados les añadimos el presupuesto y el máximo
                 foreach ($projects as &$project) {
                     // su presupuesto
-                    $costs = Model\Project::calcCosts($project->id);
-                    $project->mincost = $costs->mincost;
-                    $project->maxcost = $costs->maxcost;
+                    // calculo de mincost, maxcost solo si hace falta
+                    if(empty($project->mincost)) {
+                        $costs = Model\Project::calcCosts($project->id);
+                        $project->mincost = $costs->mincost;
+                        $project->maxcost = $costs->maxcost;
+                        // print_r($costs);die;
+                    }
+
 
                     // calculamos en base a primera ronda (ficticio para antes de campaña)
                     $project->round = 1;
@@ -279,11 +283,11 @@ namespace Goteo\Controller\Admin {
                                     'admins' => $admins
                                 )
                 );
-            }            
+            }
 
             if ($action == 'posts') {
                 if (isset($_GET['op']) && isset($_GET['post']) && is_numeric($_GET['post']) && in_array($_GET['op'], array('save', 'remove'))) {
-                    
+
                     $postId = $_GET['post'];
                     // verificar que existe
                     $thepost = Model\Blog\Post::get($postId);
@@ -301,7 +305,7 @@ namespace Goteo\Controller\Admin {
                             Message::Error(implode('<br />', $errors));
                         }
                     }
-                    
+
                 }
 
                 $call->posts = Model\Call\Post::get($call->id);
@@ -316,7 +320,7 @@ namespace Goteo\Controller\Admin {
                                     'posts' => posts
                                 )
                 );
-            }            
+            }
 
             if ($action == 'conf') {
 
@@ -332,13 +336,13 @@ namespace Goteo\Controller\Admin {
                                 'conf' => $conf
                             )
                 );
-            }            
+            }
 
             // si es admin, solo las suyas
             if (isset($_SESSION['user']->roles['admin'])) {
                 $filters['admin'] = $_SESSION['user']->id;
             }
-            
+
             $calls = Model\Call::getList($filters);
             $status = Model\Call::status();
             $categories = Model\Call\Category::getAll();
@@ -363,7 +367,7 @@ namespace Goteo\Controller\Admin {
                     'orders' => $orders
                 )
             );
-            
+
         }
 
     }
