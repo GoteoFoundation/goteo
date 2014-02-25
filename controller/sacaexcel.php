@@ -65,8 +65,8 @@ namespace Goteo\Controller {
                                 invest.user as user,
                                 user_prefer.email as noemail,
                                 invest.amount as amount,
-                                IF (invest.issue, 'Incidencia', '') as issue,
-                                IF (invest.anonymous, 'Anonimo', '') as anonymous,
+                                IF (invest.issue = 1, 'Incidencia', '') as issue,
+                                IF (invest.anonymous = 1, 'Anonimo', '') as anonymous,
                                 IF(invest_address.address,
                                     concat(invest_address.address, ', ', invest_address.zipcode, ', ', invest_address.location, ', ', invest_address.country),
                                     concat(user_personal.address, ', ', user_personal.zipcode, ', ', user_personal.location, ', ', user_personal.country)
@@ -95,7 +95,7 @@ namespace Goteo\Controller {
                                                 FROM reward, invest_reward
                                                 WHERE reward.id = invest_reward.reward
                                                 AND invest_reward.invest = ?
-                            ", array($id));
+                            ", array($item->id));
                         $item->rewards = $subQuery->fetchColumn();
 
                         $data[] = $item;
