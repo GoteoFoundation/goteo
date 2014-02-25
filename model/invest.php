@@ -297,11 +297,11 @@ namespace Goteo\Model {
                         $sqlFilter
                     ORDER BY invest.id DESC
                     ";
-            
+
             if ($limited > 0 && is_numeric($limited)) {
                 $sql .= "LIMIT $limited";
             }
-            
+
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item;
@@ -312,7 +312,7 @@ namespace Goteo\Model {
 
 
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (!is_numeric($this->amount))
                 $errors[] = 'La cantidad no es correcta';
 
@@ -379,7 +379,7 @@ namespace Goteo\Model {
                     // si es de convocatoria,
                     if (isset($this->called) && $this->called instanceof Call) {
 
-                        // si el aporte es más de lo que puede 
+                        // si el aporte es más de lo que puede
                         $drop_amount = ($this->amount > $this->maxdrop) ? $this->maxdrop : $this->amount;
 
                         // si queda capital riego
@@ -408,7 +408,7 @@ namespace Goteo\Model {
                                 $this->droped = $drop->id;
                                 $this->call = $this->called->id;
                             }
-                            
+
                         } else {
                             unset($this->called);
                         }
@@ -430,8 +430,8 @@ namespace Goteo\Model {
                         ':invest'   => $this->id,
                         ':user'     => $this->user,
                         ':address'  => $this->address->address,
-                        ':zipcode'  => $this->address->zipcode, 
-                        ':location' => $this->address->location, 
+                        ':zipcode'  => $this->address->zipcode,
+                        ':location' => $this->address->location,
                         ':country'  => $this->address->country,
                         ':name'     => $this->address->name,
                         ':nif'      => $this->address->nif,
@@ -443,7 +443,12 @@ namespace Goteo\Model {
                     );
                 }
 
+                //actualizar amounts y numero inversores
+                self::invested($this->project);
+                self::numInvestors($this->project);
+
                 return true;
+
             } catch(\PDOException $e) {
                 $errors[] = "El aporte no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
@@ -544,7 +549,7 @@ namespace Goteo\Model {
 
             $list = array();
             $values = array();
-            
+
             $and = " WHERE";
 
             $sql = "
@@ -704,7 +709,10 @@ namespace Goteo\Model {
             }
 
             $query = static::query($sql, $values);
-            $got = $query->fetchObject();
+            if($got = $query->fetchObject() && $only === null && $call === null) {
+                //actualiza el el amount en proyecto
+                static::query("UPDATE project SET num_investors = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+            }
             return (int) $got->much;
         }
 
@@ -796,7 +804,7 @@ namespace Goteo\Model {
                 }
 
             }
-            
+
             return $investors;
         }
 
@@ -810,7 +818,11 @@ namespace Goteo\Model {
                 ";
 
             $query = static::query($sql, $values);
-            $got = $query->fetchObject();
+            if($got = $query->fetchObject()) {
+                //actualiza el numero de inversores en proyecto
+                static::query("UPDATE project SET num_investors = :num WHERE id = :project", array(':num' => (int) $got->investors, ':project' => $project));
+            }
+
             return (int) $got->investors;
         }
 
@@ -947,7 +959,7 @@ namespace Goteo\Model {
             } else {
                 return false;
             }
-            
+
         }
 
         /*
@@ -1084,7 +1096,7 @@ namespace Goteo\Model {
                         self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
                     }
                 }
-                
+
                 return true;
             } else {
                 return false;
@@ -1113,9 +1125,9 @@ namespace Goteo\Model {
                         returned = :returned,
                         status = $status
                     WHERE id = :id";
-            
+
             if (self::query($sql, $values)) {
-                
+
                 // si tiene capital riego asociado, lo liberamos
                 if (!empty($this->droped)) {
                     $drop = Invest::get($this->droped);
@@ -1365,13 +1377,13 @@ namespace Goteo\Model {
                             }
                             $Data['drop']['total'] = $Data['drop']['first'];
                         }
-                        
+
                     } elseif ($act_eq === 'sum') {
                         // complicado: primero los de primera ronda, luego los de segunda ronda sumando al total
                         // calcular ultimo dia de primera ronda segun la fecha de pase
                         $passtime = strtotime($passed);
                         $last_day = date('Y-m-d', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)-1, date('Y', $passtime)));
-                        
+
                         // CASH first
                         $inv_cash = self::getList(array(
                             'methods' => 'cash',
@@ -1466,7 +1478,7 @@ namespace Goteo\Model {
                         }
 
                         // -- Los de segunda
-                        
+
                         // CASH  second
                         $inv_cash = self::getList(array(
                             'methods' => 'cash',
@@ -1696,5 +1708,5 @@ namespace Goteo\Model {
          }
 
     }
-    
+
 }

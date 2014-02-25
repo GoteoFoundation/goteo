@@ -49,7 +49,8 @@ namespace Goteo\Controller {
             // Proyectos destacados
             if (isset($order['promotes'])) {
                 $promotes  = Promote::getAll(true);
-
+/*
+                //demasiadas queries con esto
                 foreach ($promotes as $key => &$promo) {
                     try {
                         $promo->projectData = Project::getMedium($promo->project, LANG);
@@ -57,6 +58,7 @@ namespace Goteo\Controller {
                         unset($promotes[$key]);
                     }
                 }
+*/
             }
 
             // capital riego
@@ -160,6 +162,8 @@ namespace Goteo\Controller {
             if (isset($order['promotes']) || isset($side_order['searcher'])) {
                 $promotes  = Promote::getAll(true, NODE_ID);
 
+/*
+                //demasiadas queries con esto
                 foreach ($promotes as $key => &$promo) {
                     try {
                         $promo->projectData = Project::getMedium($promo->project, LANG);
@@ -167,6 +171,7 @@ namespace Goteo\Controller {
                         unset($promotes[$key]);
                     }
                 }
+*/
             }
 
             // padrinos

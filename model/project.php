@@ -323,14 +323,15 @@ namespace Goteo\Model {
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
                 $project->investors = Invest::investors($id);
-                $project->num_investors = Invest::numInvestors($id);
-
-                $amount = Invest::invested($id);
-                if ($project->invested != $amount) {
-                    self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($id));
+                //consultamos y actualizamos el numero de inversores
+                if(empty($project->num_investors)) {
+                    $project->num_investors = Invest::numInvestors($id);
                 }
-                $project->invested = $amount;
-                $project->amount   = $amount;
+
+                if(empty($project->amount)) {
+                    $project->amount = Invest::invested($id);
+                }
+                $project->invested = $project->amount;
 
                 //mensajes y mensajeros
                 $messegers = array();
@@ -444,11 +445,15 @@ namespace Goteo\Model {
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
-                $amount = Invest::invested($id);
-                $project->invested = $amount;
-                $project->amount   = $amount;
+                if(empty($project->amount)) {
+                    $project->amount = Invest::invested($id);
+                }
+                $project->invested = $project->amount;
 
-                $project->num_investors = Invest::numInvestors($id);
+                //consultamos y actualizamos el numero de inversores si no está definido
+                if(empty($project->num_investors)) {
+                    $project->num_investors = Invest::numInvestors($id);
+                }
                 $project->num_messegers = Message::numMessegers($id);
 
                 // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado
@@ -504,7 +509,7 @@ namespace Goteo\Model {
         /*
          *  Para calcular los dias y la ronda
          */
-        private function setDays() {
+        public function setDays() {
             //para proyectos en campaña o posterior
             if ($this->status > 2) {
                 // tiempo de campaña
@@ -545,7 +550,7 @@ namespace Goteo\Model {
         /*
          *  Para ver que tagmark le toca
          */
-        private function setTagmark() {
+        public function setTagmark() {
             // a ver que banderolo le toca
             // "financiado" al final de de los 80 dias
             if ($this->status == 4) :
@@ -1769,6 +1774,14 @@ namespace Goteo\Model {
          * @return numeric days active from published
          */
         public function daysActive() {
+            // se puede hacer sin consultar la base de datos
+            if($this->published) {
+                $published = strtotime($this->published . date(" H:i:s"));
+                $today = time();
+                $diff = $today - $published;
+                $days = floor($diff/60/60/24);
+            }
+            if($days) return $days;
             // días desde el published
             $sql = "
                 SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(CONCAT(published, DATE_FORMAT(now(), ' %H:%i:%s')))), '%j') as days
@@ -1776,7 +1789,7 @@ namespace Goteo\Model {
                 WHERE id = ?";
             $query = self::query($sql, array($this->id));
             $past = $query->fetchObject();
-
+            // echo "[{$past->days} $days]";die;
             return $past->days - 1;
         }
 
@@ -1786,6 +1799,8 @@ namespace Goteo\Model {
          * @return numeric days remaining to go
          */
         public function daysRemain($id) {
+            //esto tambien se puede hacer sin sql
+            //...FALTA
             // primero, días desde el published
             $sql = "
                 SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
