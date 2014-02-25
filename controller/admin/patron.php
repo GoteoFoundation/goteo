@@ -14,7 +14,7 @@ namespace Goteo\Controller\Admin {
         public static function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-            
+
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
@@ -169,7 +169,7 @@ namespace Goteo\Controller\Admin {
                     'patroned' => $patroned
                 )
             );
-            
+
         }
 
     }

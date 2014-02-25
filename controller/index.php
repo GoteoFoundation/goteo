@@ -70,7 +70,8 @@ namespace Goteo\Controller {
             // padrinos
             if (isset($order['patrons'])) {
                 $patrons  = Patron::getActiveVips();
-
+/*
+                //aqui también tenemos una infinidad de queries
                 foreach ($patrons as $key=>$userId) {
                     try {
                         $userData = User::getMini($userId);
@@ -83,9 +84,8 @@ namespace Goteo\Controller {
                         unset($patrons[$userId]);
                     }
                 }
-
+*/
             }
-
             // actividad reciente
             if (isset($order['feed'])) {
                 $feed = array();
@@ -172,7 +172,7 @@ namespace Goteo\Controller {
             // padrinos
             if (isset($order['patrons'])) {
                 $patrons  =  Patron::getActiveVips(NODE_ID);
-
+/*
                 foreach ($patrons as $key=>$userId) {
                     try {
                         $userData = User::getMini($userId);
@@ -185,7 +185,7 @@ namespace Goteo\Controller {
                         unset($patrons[$userId]);
                     }
                 }
-
+*/
             }
 
 
