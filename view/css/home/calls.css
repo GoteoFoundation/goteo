@@ -12,9 +12,8 @@ div#calls a.prev {
 }
 
 div#campaigns a.prev {
-    top: 178px;
-    left: 0px;
-    position:absolute;
+    top: 121px;
+    left: -312px;
 }
 
 div#calls a.next,
