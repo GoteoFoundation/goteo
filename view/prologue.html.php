@@ -1,8 +1,12 @@
 <?php
+
+use \Goteo\Library\Text;
+
 if (NODE_ID != GOTEO_NODE) {
     include 'view/node/prologue.html.php';
     return;
 }
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,7 +15,7 @@ if (NODE_ID != GOTEO_NODE) {
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php echo GOTEO_META_TITLE ?></title>
         <link rel="icon" type="image/png" href="/myicon.png" />
-        <meta name="description" content="La plataforma crowdfunding que recibe aportaciones más generosas. Sólo ubicamos proyectos abiertos, contamos con una gran comunidad que puede ayudar a hacer realidad tu proyecto" />
+        <meta name="description" content="<?php  echo Text::get('meta-description-index');?>" />
         <meta name="keywords" content="<?php echo GOTEO_META_KEYWORDS ?>" />
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
