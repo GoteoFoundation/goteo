@@ -18,10 +18,6 @@ $bodyClass = 'home';
 // para que el prologue ponga el código js para botón facebook en el bannerside
 $fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
 
-
-//para la meta etiqueta description
-$meta_description = Text::get('meta-description-index');
-
 // metas og: para que al compartir en facebook coja las imagenes de novedades
 $ogmeta = array(
     'title' => 'Goteo.org',
