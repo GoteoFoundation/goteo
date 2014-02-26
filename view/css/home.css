@@ -10,9 +10,7 @@
 
 /*En este archivo dejamos reglas que afectan a más de un módulo */
 
-body.home div#main div.widget.patrons,
-body.home div#main div.widget.calls,
-body.home div#main div.widget.feed {
+body.home div#main div.widget {
     margin-bottom: 16px;
     position: relative;
 }
