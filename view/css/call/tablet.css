@@ -32,7 +32,7 @@
                         margin-left: 22%;
                         max-width: 400px;
                        }
-            #social, div#side.twitter {
+            #banners-social #social, div#side.twitter {
               display:none;
             }
 
@@ -135,4 +135,36 @@
 
             div#super-header div#rightside {
               width:73%;
+            }
+
+            #social-responsive {
+              width:100%;
+              background: #FFFFFF;
+              margin-top: 6px;
+            }
+
+            #social-responsive #social {
+              width: 100%;
+              background: #FFFFFF;
+              margin-bottom: 6px;
+
+            }
+
+            #social-logo ul {
+              width: 40%;
+              margin-left: 5%;
+            }
+
+            #social-logo a#capital {
+              width: 91px;
+              height: 122px;  
+              display: block;
+              text-indent: -10000px;
+              background: url('/view/css/call/logo-capital_medium.png') no-repeat;
+              float: left;
+              margin: 10px 0 0 0;
+            }
+
+            #social-logo li.email {
+              display: none;
             }

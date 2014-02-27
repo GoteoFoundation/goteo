@@ -13,6 +13,10 @@ $call = $this['call'];
         });
     });
 </script>
+
+<div id="social-responsive">
+    <?php echo new View('view/call/widget/social.html.php', $this) ?>
+</div>
 <div id="supporters-sponsors">
     <div id="call-supporters">
         <div class="call-supporters-container">
