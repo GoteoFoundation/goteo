@@ -14,9 +14,6 @@ $call = $this['call'];
     });
 </script>
 
-<div id="social-responsive">
-    <?php echo new View('view/call/widget/social.html.php', $this) ?>
-</div>
 <div id="supporters-sponsors">
     <div id="call-supporters">
         <div class="call-supporters-container">
@@ -28,6 +25,7 @@ $call = $this['call'];
         </div>
     </div>
     
-    <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>
-        
+    <?php echo new View('view/call/widget/sponsors.html.php', $this); ?>    
+    <?php echo new View('view/call/widget/sponsors-responsive.html.php', $this); ?>
+    
 </div>

@@ -1117,3 +1117,7 @@ table.info-table tfoot tr > * {
 .info .freetext .button {
 	margin: 15px 0;
 }
+
+#social-responsive, #sponsors-responsive {
+	display: none;
+}

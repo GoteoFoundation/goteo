@@ -138,6 +138,7 @@
             }
 
             #social-responsive {
+              display: block;
               width:100%;
               background: #FFFFFF;
               margin-top: 6px;
@@ -167,4 +168,32 @@
 
             #social-logo li.email {
               display: none;
+            }
+
+             div#header ul > li.dashboard {
+              display: none !important;
+            }
+
+            #sponsors-responsive {
+              display: block;
+              width: 100%;
+              margin-top: 6px; 
+              margin-bottom: 10px; 
+                     
+            }
+
+            #supporters-sponsors .title {
+              margin-left: 15px;
+              color: #666;
+              font-size: 16px;
+
+            }
+
+            .sponsor{
+            float:left; 
+            width:30%;
+            }
+
+            #social-actions .fb-like {
+              float: left !important;
             }
