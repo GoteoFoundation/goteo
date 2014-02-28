@@ -78,6 +78,7 @@ include 'view/call/header.html.php';
         <?php echo new View('view/call/side.html.php', $this); ?>
     </div>
 
+    <?php echo new View('view/call/widget/social-responsive.html.php', $this) ?>
     <?php echo new View('view/call/bottom.html.php', $this); ?>
 </div>
 
