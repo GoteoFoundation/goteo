@@ -59,3 +59,4 @@ if (NODE_ID != GOTEO_NODE) {
     <?php include 'view/header/menu.html.php' ?>
 
 </div>
+
