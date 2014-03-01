@@ -233,7 +233,7 @@ div#main ul#list>li {
 }
 
 
-.connect_widget_not_connected_text {
+.connect_widget_not_connected_text, .connect_widget_connected_text {
   display:none !important;
 }
  

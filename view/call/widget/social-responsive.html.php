@@ -34,7 +34,7 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
             <?php endif ?>
             <li style="padding-left:0px;" class="float-none">
               <div id="social-actions">
-                <h2 style="float:none; margin-top:10px;"><?php echo Text::get('call-header-social_spread'); ?></h2>
+                <h2 style="float:none; clear:left; margin-top:10px;"><?php echo Text::get('call-header-social_spread'); ?></h2>
                 <?php
          if (!empty($social->fbappid)) : 
              echo Text::widget($social->fbappid, 'fb-nocount', 'height:20px;'); ?>
