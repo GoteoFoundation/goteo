@@ -214,7 +214,7 @@
 
             #supporters-sponsors #post div.content {
             width: 60%;
-            margin-left: 0;
+            margin-left: 2%;
             }
 
             #supporters-sponsors #post {
@@ -227,4 +227,8 @@
             
             width: 100%;
 
+            }
+
+            .slides_control {
+              width:100%;
             }
