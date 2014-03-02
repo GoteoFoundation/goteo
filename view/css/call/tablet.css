@@ -22,15 +22,14 @@
             div.call-banners-container div.call-banner {
                         width:100%;
                         background-image: none !important;
-                        left:0px !important;
                         margin-left: 15%;
                         margin-right: 15%;
                        }
 
             div.call-banners-container div.call-banner > div.title {
-                        width:70%;
-                        margin-left: 22%;
-                        max-width: 400px;
+                        width:80%;
+                        margin-left: 0;
+                        max-width: 750px;
                        }
             #banners-social #social, div#side.twitter {
               display:none;
@@ -134,7 +133,7 @@
             }
 
             div#super-header div#rightside {
-              width:73%;
+              width:72%;
             }
 
             #social-responsive {
@@ -231,4 +230,13 @@
 
             .slides_control {
               width:100% !important;
+            }
+
+              div#header div#menu {
+              width: 25%;
+              margin-left: 3%;
+            }
+
+            #supporters-sponsors #supporters {
+              width: 95%;
             }
