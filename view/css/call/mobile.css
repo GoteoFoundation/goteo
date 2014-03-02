@@ -162,7 +162,7 @@
             }
 
             div#super-header div#rightside {
-              width:73%;
+              width:65%;
             }
 
              #social-responsive {
@@ -251,3 +251,12 @@
             }
            
 
+            div#header div#menu {
+
+              width: 30%;
+              margin-left: 5%;
+            }
+
+            #supporters-sponsors #supporters {
+              width: 100%;
+            }
