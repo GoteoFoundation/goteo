@@ -18,6 +18,17 @@ namespace Goteo\Controller {
 
         public function index($id, $show = 'index') {
             if ($id !== null) {
+
+                // piñon para crowdsasuna2014, que en estado de aplicación no se pueda crear
+                // publicada en aplicación cerrada, pasará a configuración algún día
+                if (($id == 'crowdsasuna2014')) {
+                    define('CALL_NOAPPLY', true);
+                    if ($show == 'apply')
+                        $show = 'info';
+                }
+                // esto lo quitaremos el 11 de marzo 2014
+
+
                 if ($show == 'apply') {
                     // Preparamos la sesión para que al crear proyecto se asigne a esta convocatoria
                     $this->apply($id);
