@@ -240,3 +240,7 @@
             #supporters-sponsors #supporters {
               width: 95%;
             }
+
+            #supporters-sponsors .title {
+              margin-left:0px;
+            }

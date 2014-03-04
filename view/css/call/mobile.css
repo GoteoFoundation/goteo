@@ -258,5 +258,9 @@
             }
 
             #supporters-sponsors #supporters {
-              width: 100%;
+              width: 95%;
+            }
+
+            #supporters-sponsors .title {
+              margin-left:0px;
             }
