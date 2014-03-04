@@ -258,14 +258,14 @@ namespace Goteo\Model {
                     $until = mktime(0, 0, 0, date('m', $open), date('d', $open) + $call->days, date('Y', $open));
                     $hoy = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 
-                    if ($hoy > $until) {
+                    // si se ha pasado de dias o está publicada en aplicación cerrada
+                    if ($hoy > $until || (defined('CALL_NOAPPLY') && CALL_NOAPPLY == true)) {
                         $call->expired = true;
                     }
 
                     // rellenamos el array de visualizacion de fecha limite
                     $call->until['day'] = date('d', $until);
                     $call->until['month'] = strftime('%b', $until);
-                    ;
                     $call->until['year'] = date('Y', $until);
                 }
 
