@@ -5,7 +5,58 @@
 div#stories-home div#stories-banners{width: 940px; height:383px; margin: 0; border:#000 1px transparent !important /*no tocar o el contenido se alinea de forma extraña dentro del carrousel*/; position: relative; float: left;}
 div#stories-home div#stories-banners div.stories-banners-container{width:940px;height:383px;margin:0 auto;}
 div.stories-banners-container div.stories-banner{width:940px;height:383px;}
-div.stories-banners-container div.stories-banner > div.info{width: 250px; padding:5px; max-height:120px; margin-top:25px; margin-bottom:30px; margin-left: 50px;font-size:12px; color:#FFFFFF; font-weight: bold; background-color: #149290; border-radius: 1em;float:left; opacity:0.85;}
+
+div.stories-banners-container div.stories-banner > div.title_story{
+	margin-top:35px; 
+	z-index:300; 
+	padding:15px; 
+	font-size:18px;
+	margin-left:35px; 
+	opacity: 0.8;
+	color:#ee4843; 
+	background-color: #FFFFFF; 
+	color:#58595B; 
+	width:353px;
+}
+
+div.stories-banners-container div.stories-banner > div.info{
+
+	width:343px;
+	padding:20px; 
+	max-height:120px; 
+	margin-top:25px; 
+	margin-bottom:20px; 
+	margin-left: 35px;
+	font-size:12px; 
+	color:#FFFFFF; 
+	font-weight: bold; 
+	background-color: #20B3B2; 
+	opacity:0.85;
+}
+
+div.stories-banners-container div.stories-banner > div.info_extra{  
+	
+	width: 343px;
+	margin-left:35px; 
+	margin-top: 20px; 
+	font-weight: bold; 
+	font-size:15px;
+	padding: 20px;
+	background-color: #FFFFFF; 
+	opacity: 0.8;
+
+}
+
+span.euro {
+width: 19px;
+height: 19px;
+line-height: 2000px;
+overflow: hidden;
+display: inline-block;
+background: url('/view/css/euro/violet/m.png') no-repeat center;
+margin-bottom: -1px;
+}
+
 
 div.stories-banners-container div.stories-banner > div.short-desc{margin-top: 25px; margin-left: 50px; line-height:30px;font-size:20px;color:#1f81bb; max-width: 450px;}
 div.stories-banners-container div.stories-banner.active > div.title{}
@@ -22,7 +73,6 @@ ul.bannerspage li a{display:block;width:13px;height:13px;margin-top:2px; backgro
 ul.bannerspage li a:hover{ background-color:#808184;  color:#808184}
 ul.bannerspage li.current a{ background-color:#1f81bb !important;  color:#1f81bb !important}
 
-div.stories-banners-container div.stories-banner > div.info_right{ float:left; color:#FFFFFF; margin-left:280px; margin-top: 70px; font-weight: bold; font-size:15px;}
 
 div.stories-banners-container div.stories-banner > h2 .title{}
 
