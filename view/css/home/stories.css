@@ -7,54 +7,50 @@ div#stories-home div#stories-banners div.stories-banners-container{width:940px;h
 div.stories-banners-container div.stories-banner{width:940px;height:383px;}
 
 div.stories-banners-container div.stories-banner > div.title_story{
-	margin-top:35px; 
 	z-index:300; 
 	padding:15px; 
 	font-size:18px;
-	margin-left:35px; 
-	opacity: 0.8;
 	color:#ee4843; 
-	background-color: #FFFFFF; 
+	background-color: rgba(255,255,255,0.8); 
 	color:#58595B; 
-	width:353px;
+	min-width:353px;
+	position:absolute;
+	top:35px; 
+	left:35px;
+	max-width: 600px;
+	
 }
 
 div.stories-banners-container div.stories-banner > div.info{
 
-	width:343px;
+	min-width:343px;
+	max-width:686px;
 	padding:20px; 
-	max-height:120px; 
-	margin-top:25px; 
-	margin-bottom:20px; 
-	margin-left: 35px;
+	margin-top:50px;  
 	font-size:12px; 
 	color:#FFFFFF; 
 	font-weight: bold; 
-	background-color: #20B3B2; 
-	opacity:0.85;
+	background-color: rgba(32,179,178,0.85);
+	position:absolute;
+	bottom: 100px; 
+	left:35px;
+	max-height: 120px;
+	overflow: hidden;
+	
 }
 
 div.stories-banners-container div.stories-banner > div.info_extra{  
 	
-	width: 343px;
-	margin-left:35px; 
-	margin-top: 20px; 
+	min-width: 363px;
+	margin-top: 5px; 
 	font-weight: bold; 
 	font-size:15px;
-	padding: 20px;
-	background-color: #FFFFFF; 
-	opacity: 0.8;
+	padding: 10px;
+	background-color: rgba(255,255,255,0.8); 
+	position:absolute;
+	bottom: 50px;
+	left:35px;
 
-}
-
-span.euro {
-width: 19px;
-height: 19px;
-line-height: 2000px;
-overflow: hidden;
-display: inline-block;
-background: url('/view/css/euro/violet/m.png') no-repeat center;
-margin-bottom: -1px;
 }
 
 
@@ -65,13 +61,12 @@ div.stories-banners-container div.stories-banner a.expand {padding: 0;position: 
 
 /* paginación de los banners*/
 
-div#stories-banners-controler{position: absolute;width: 940px; bottom: 5px;z-index:100;overflow:auto;height:auto;text-align:center}
+div#stories-banners-controler{position: absolute;width: 940px; bottom: 15px;z-index:100;overflow:auto;height:auto;text-align:left; margin-left: 31px;}
 ul.bannerspage{list-style:none; z-index:100;  padding:0;  margin:0; display:inline-block}
 ul.bannerspage li{ cursor:pointer;  display:block;  float:left;  overflow:hidden; margin:0px 4px 5px 4px}
-ul.bannerspage li a{display:block;width:13px;height:13px;margin-top:2px; background-color:#d9cfd2;color:#d9cfd2;
--webkit-border-radius: 100px;-moz-border-radius: 100px;border-radius: 100px;}
+ul.bannerspage li a{display:block;width:8px;height:8px;margin-top:2px; background-color:#d9cfd2;color:#d9cfd2;}
 ul.bannerspage li a:hover{ background-color:#808184;  color:#808184}
-ul.bannerspage li.current a{ background-color:#1f81bb !important;  color:#1f81bb !important}
+ul.bannerspage li.current a{ background-color:#20B3B2 !important;  color:#20B3B2 !important}
 
 
 div.stories-banners-container div.stories-banner > h2 .title{}

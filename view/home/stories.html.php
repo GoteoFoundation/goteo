@@ -33,13 +33,14 @@ if (count($stories) > 6) {
                 <div class="title_story"><?php echo Text::get('home-stories-header'); ?></div>
                 <div class="info">
                     <div><?php echo htmlspecialchars($story->title); ?></div>
-                    <div style="margin-top:5px;"><?php echo htmlspecialchars($story->description); ?></div>
+                    <div style="margin-top:5px;"><?php echo htmlspecialchars($story->description); ?>Descripción de Architecture in your hand. Architecture in your hand. Architecture in your hand.
+ARCHINHAND | Architecture in your</div>
                     <div style="margin-top:5px;"><?php echo htmlspecialchars($story->name); ?></div>
                     <div><?php echo htmlspecialchars($story->node); ?></div>
                 </div>
                 <div class="info_extra">
-                    <span style="color:#313B96; font-size:15px;">COFINANCIADORES <strong style="font-size:18px;">80</strong></span>
-                    <span style="color:#96238F; margin-left:10px;">OBTENIDO <strong>2.500</strong></span>
+                    <span style="color:#313B96; font-size:12px;">COFINANCIADORES <strong style="font-size:20px;">80</strong></span>
+                    <span style="color:#96238F; font-size:12px; margin-left:10px;">OBTENIDO <strong style="font-size:20px;">2.500</strong><img style="vertical-align: middle; margin-left:5px;" src="/view/css/euro/violet/xl.png" width="20"/></span>
                 </div>
             </div>
         <?php endforeach; ?>
