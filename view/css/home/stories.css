@@ -13,18 +13,19 @@ div.stories-banners-container div.stories-banner > div.title_story{
 	color:#ee4843; 
 	background-color: rgba(255,255,255,0.8); 
 	color:#58595B; 
-	min-width:353px;
+	min-width:248px;
 	position:absolute;
 	top:35px; 
 	left:35px;
 	max-width: 600px;
+	font-size:15px;
 	
 }
 
 div.stories-banners-container div.stories-banner > div.info{
 
-	min-width:343px;
-	max-width:686px;
+	min-width:238px;
+	max-width:551px;
 	padding:20px; 
 	margin-top:50px;  
 	font-size:12px; 
@@ -32,7 +33,7 @@ div.stories-banners-container div.stories-banner > div.info{
 	font-weight: bold; 
 	background-color: rgba(32,179,178,0.85);
 	position:absolute;
-	bottom: 100px; 
+	bottom: 83px; 
 	left:35px;
 	max-height: 120px;
 	overflow: hidden;
@@ -48,7 +49,7 @@ div.stories-banners-container div.stories-banner > div.info_extra{
 	padding: 10px;
 	background-color: rgba(255,255,255,0.8); 
 	position:absolute;
-	bottom: 50px;
+	bottom: 35px;
 	left:35px;
 
 }
@@ -61,7 +62,7 @@ div.stories-banners-container div.stories-banner a.expand {padding: 0;position: 
 
 /* paginación de los banners*/
 
-div#stories-banners-controler{position: absolute;width: 940px; bottom: 15px;z-index:100;overflow:auto;height:auto;text-align:left; margin-left: 31px;}
+div#stories-banners-controler{position: absolute;width: 940px; bottom: 8px;z-index:100;overflow:auto;height:auto;text-align:left; margin-left: 31px;}
 ul.bannerspage{list-style:none; z-index:100;  padding:0;  margin:0; display:inline-block}
 ul.bannerspage li{ cursor:pointer;  display:block;  float:left;  overflow:hidden; margin:0px 4px 5px 4px}
 ul.bannerspage li a{display:block;width:8px;height:8px;margin-top:2px; background-color:#d9cfd2;color:#d9cfd2;}
