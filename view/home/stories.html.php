@@ -34,7 +34,7 @@ if (count($stories) > 6) {
                 <div class="info">
                     <div style="font-size:18px;"><strong><?php echo htmlspecialchars($story->title); ?></strong></div>
                     <div style="margin-top:5px; color:#BCE8E8; font-size:15px;"><?php echo htmlspecialchars($story->name); ?></div>
-                    <div style="border-bottom-style:solid; border-bottom-width:1px; width:15px; margin-top:7px; margin-bottom:7px;"></div>
+                    <div style="border-bottom-style:solid; border-bottom-width:1px; width:15px; margin-top:15px; margin-bottom:15px;"></div>
                     <div style="color:#58595B"><?php echo htmlspecialchars($story->description); ?></div>
                 </div>
                 <div class="info_extra">
