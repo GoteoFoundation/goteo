@@ -36,21 +36,13 @@ namespace Goteo\Controller {
          */
         public function login($username = '') {
 
-<<<<<<< Updated upstream
 /*
-
+            // esto debería verificar que esté instalado el certificado SSL
             if (GOTEO_ENV != 'local' && $_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['HTTPS'] !== 'on') {
                 $ret = (!empty($_REQUEST['return'])) ? '?return='.$_REQUEST['return'] : '';
                 throw new Redirection(SEC_URL.'/user/login'.$ret);
             }
 */
-=======
-            /*if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['HTTPS'] !== 'on') {
-                $ret = (!empty($_REQUEST['return'])) ? '?return='.$_REQUEST['return'] : '';
-                throw new Redirection(SEC_URL.'/user/login'.$ret);
-            }*/
-
->>>>>>> Stashed changes
             // si venimos de la página de aportar
             if (isset($_POST['amount'])) {
                 $_SESSION['invest-amount'] = $_POST['amount'];
