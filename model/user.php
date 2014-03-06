@@ -1070,8 +1070,6 @@ namespace Goteo\Model {
                         email
                     FROM user
                     WHERE BINARY email = :email
-                    AND active = 1
-                    AND hide = 0
                     ",
 				array(
 					':email'    => trim($email)
