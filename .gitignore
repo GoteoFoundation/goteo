@@ -6,3 +6,4 @@
 local-settings.php
 tmp-settings.php
 .idea
+/live-settings.php

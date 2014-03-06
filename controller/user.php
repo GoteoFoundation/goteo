@@ -37,7 +37,7 @@ namespace Goteo\Controller {
         public function login($username = '') {
 
 /*
-
+            // esto debería verificar que esté instalado el certificado SSL
             if (GOTEO_ENV != 'local' && $_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['HTTPS'] !== 'on') {
                 $ret = (!empty($_REQUEST['return'])) ? '?return='.$_REQUEST['return'] : '';
                 throw new Redirection(SEC_URL.'/user/login'.$ret);
