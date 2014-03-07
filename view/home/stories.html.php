@@ -28,7 +28,7 @@ $stories = $this['stories'];
                 <?php if (!empty($story->url)) : ?><a href="<?php echo $story->url; ?>" class="expand" target="_blank"></a><?php endif; ?>
                 <div class="title_story"><strong><?php echo Text::get('home-stories-header').": "?></strong><span style="text-decoration:underline">Open Data</span></div>
                 <div class="info">
-                    <div id="info_title"><?php echo mb_strtoupper(htmlspecialchars($story->title)); ?></div>
+                    <div id="info_title"><?php echo htmlspecialchars($story->title); ?></div>
                     <div id="review"><?php echo htmlspecialchars($story->review); ?></div>
                     <div id="line"></div>
                     <div id="description"><blockquote><?php echo htmlspecialchars($story->description).'</blockquote>. '.'<span class="underline">David Fernández</span>'.', del proyecto: '.'<span class="underline">Mini clínica de termoterapia para la tercera edad</span>'; ?></div>
