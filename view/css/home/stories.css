@@ -8,7 +8,7 @@ div.stories-banners-container div.stories-banner{width:940px;height:383px;}
 
 div.stories-banners-container div.stories-banner > div.title_story{
 	z-index:300; 
-	padding:15px; 
+	padding: 12px 20px; 
 	font-size:18px;
 	color:#ee4843; 
 	background-color: rgba(255,255,255,0.8); 
@@ -46,7 +46,7 @@ div.stories-banners-container div.stories-banner > div.info_extra{
 	margin-top: 5px; 
 	font-weight: bold; 
 	font-size:15px;
-	padding: 10px;
+	padding: 10px 20px;
 	background-color: rgba(255,255,255,0.8); 
 	position:absolute;
 	bottom: 35px;
@@ -57,6 +57,7 @@ div.stories-banners-container div.stories-banner > div.info_extra{
 div.stories-banners-container div.stories-banner div.info > div#info_title{
 
 font-size:18px;
+text-transform: uppercase;
 	
 }
 
