@@ -13,11 +13,11 @@ div.stories-banners-container div.stories-banner > div.title_story{
 	color:#ee4843; 
 	background-color: rgba(255,255,255,0.8); 
 	color:#58595B; 
-	min-width:248px;
+	min-width:238px;
 	position:absolute;
 	top:35px; 
 	left:35px;
-	max-width: 600px;
+	max-width: 360px;
 	
 	
 }
@@ -42,7 +42,8 @@ div.stories-banners-container div.stories-banner > div.info{
 
 div.stories-banners-container div.stories-banner > div.info_extra{  
 	
-	min-width: 363px;
+	min-width: 238px;
+	max-width: 328px;
 	margin-top: 5px; 
 	font-weight: bold; 
 	font-size:15px;
@@ -105,7 +106,7 @@ div.stories-banners-container div.stories-banner div.info_extra > span#obtenido 
 
 color:#96238F; 
 font-size:11px; 
-margin-left:40px;
+margin-left:20px;
 
 }
 
