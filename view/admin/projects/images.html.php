@@ -1,6 +1,15 @@
 <?php
 
+use Goteo\Core\Redirection,
+    Goteo\Library\Message;
+
 $project = $this['project'];
+
+if (!$project instanceof Model\Project) {
+    Message::Error('Instancia de proyecto corrupta');
+    throw new Redirection('/admin/projects');
+}
+
 $images = $this['images'];
 $sections = $this['sections'];
 
