@@ -9,30 +9,23 @@ $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 // $iId = id del post
 // $iObj = titulo
 foreach ($this['items'] as $iId=>$iObj) {
-    $el_val = str_replace(array("'", '"'), '`', $iObj);
+    $el_val = str_replace(array("'", '"'), '`', $iObj)." ({$iId})";
     $items[] = '{ value: "'.$el_val.'", id: "'.$iId.'" }';
     if ($iId == $story->post) $preVal = "$el_val";
 }
 
-if ($node == \GOTEO_NODE) {
-    // proyectos disponibles
-    // si tenemos ya proyecto seleccionado lo incluimos
-    $projects = Model\Stories::available($story->project);
-    $status = Model\Project::status();
-
-    $image_size_txt = '700 x 156 (estricto)';
-} else {
-    $image_size_txt = '940 x 270 (estricto)';
-}
+// proyectos disponibles
+// si tenemos ya proyecto seleccionado lo incluimos
+$projects = Model\Stories::available($story->project);
+$status = Model\Project::status();
 ?>
-<form method="post" action="/admin/stories" enctype="multipart/form-data">
+<form method="post" action="/admin/stories/<?php echo $this['action'] ?>" enctype="multipart/form-data">
     <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
     <input type="hidden" name="order" value="<?php echo $story->order ?>" />
     <input type="hidden" name="id" value="<?php echo $story->id; ?>" />
 
     <input type="hidden" id="item" name="item" value="<?php echo $story->post; ?>" />
 
-<?php if ($node == \GOTEO_NODE) : ?>
 <p>
     <label for="story-project">Proyecto:</label><br />
     <select id="story-project" name="project">
@@ -42,8 +35,6 @@ if ($node == \GOTEO_NODE) {
     <?php endforeach; ?>
     </select>
 </p>
-
-<?php endif; ?>
 
 <div id="text-story">
 <p>
@@ -62,7 +53,7 @@ if ($node == \GOTEO_NODE) {
 </p>
 
 <p>
-    <label for="story-post">Post:</label><br />
+    <label for="story-post">Post: (autocomplete título o numero)</label><br />
     <input type="text" name="post" id="story-post" value="<?php echo $preVal; ?>" size="60" />
 </p>
 
@@ -73,7 +64,7 @@ if ($node == \GOTEO_NODE) {
 </div>
 
 <p>
-    <label for="story-image">Imagen de fondo: <?php echo $image_size_txt; ?></label><br />
+    <label for="story-image">Imagen de fondo: 941x383</label><br />
     <input type="file" id="story-image" name="image" />
     <?php if (!empty($story->image)) : ?>
         <br />
@@ -99,7 +90,7 @@ $(function () {
     /* Autocomplete para elementos */
     $( "#story-post" ).autocomplete({
       source: items,
-      minLength: 2,
+      minLength: 1,
       autoFocus: true,
       select: function( event, ui) {
                 $("#item").val(ui.item.id);

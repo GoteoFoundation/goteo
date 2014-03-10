@@ -1,6 +1,7 @@
 <?php
 namespace Goteo\Model {
 
+    use Goteo\Core\Model;
     use Goteo\Library\Text,
         Goteo\Model\Project,
         Goteo\Model\Image,
@@ -70,19 +71,15 @@ namespace Goteo\Model {
                     stories.id as id,
                     stories.node as node,
                     stories.project as project,
-                    project.name as name,
                     IFNULL(stories_lang.title, stories.title) as title,
                     IFNULL(stories_lang.description, stories.description) as description,
                     IFNULL(stories_lang.review, stories.review) as review,
                     stories.url as url,
-                    project.status as status,
                     stories.image as image,
                     stories.order as `order`,
                     stories.post as `post`,
                     stories.active as `active`
                 FROM    stories
-                LEFT JOIN project
-                    ON project.id = stories.project
                 LEFT JOIN stories_lang
                     ON  stories_lang.id = stories.id
                     AND stories_lang.lang = :lang
@@ -94,6 +91,8 @@ namespace Goteo\Model {
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $story) {
                 $story->image = !empty($story->image) ? Image::get($story->image) : null;
                 $story->status = $status[$story->status];
+                $story->project = (!empty($story->project)) ? Project::getMedium($story->project) : null;
+
                 $stories[] = $story;
             }
 
@@ -111,10 +110,11 @@ namespace Goteo\Model {
                 SELECT
                     stories.id as id,
                     stories.node as node,
-                    stories.title as title,
-                    stories.description as description,
-                    stories.review as review
-                FROM    stories
+                    stories.title as name,
+                    stories.order as `order`,
+                    stories.post as `post`,
+                    stories.active
+                FROM stories
                 WHERE stories.node = :node
                 ORDER BY `order` ASC
                 ", array(':node' => $node));
@@ -143,7 +143,7 @@ namespace Goteo\Model {
                     project.name as name,
                     project.status as status
                 FROM    project
-                WHERE status = 5
+                WHERE ( status = 5 OR status = 4 )
                 AND project.id NOT IN (SELECT project FROM stories WHERE stories.node = :node AND project IS NOT NULL {$sqlCurr} )
                 ORDER BY name ASC
                 ", array(':node' => $node));
@@ -154,9 +154,6 @@ namespace Goteo\Model {
         public function validate (&$errors = array()) {
             if (empty($this->project))
                 $errors[] = 'Falta proyecto';
-
-            if (empty($this->image))
-                $errors[] = 'Falta imagen';
 
             if (empty($errors))
                 return true;

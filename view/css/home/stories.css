@@ -22,6 +22,11 @@ div.stories-banners-container div.stories-banner > div.title_story{
 	
 }
 
+div.stories-banners-container div.stories-banner div.title_story > a {
+	color:#ee4843; 
+	
+}
+
 div.stories-banners-container div.stories-banner > div.info{
 
 	min-width:238px;
@@ -39,6 +44,7 @@ div.stories-banners-container div.stories-banner > div.info{
 	overflow: hidden;
 	
 }
+
 
 div.stories-banners-container div.stories-banner > div.info_extra{  
 	
@@ -145,6 +151,11 @@ div.info div blockquote { margin-left: 0; margin-right: 0; font-style:italic; di
 div.info div blockquote:before { content: "\201C"; }
 div.info div blockquote:after  { content: "\201D"; }
 
-div.info .underline {
+div.info div#description > a {
 text-decoration: underline;
+color:#3E3E41;
+}
+
+div.info div#description > a:hover {
+color:#BCE8E8;
 }

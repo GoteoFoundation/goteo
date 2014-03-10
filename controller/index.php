@@ -94,7 +94,9 @@ namespace Goteo\Controller {
                 $feed['projects']  = Feed::getAll('projects', 'public', 15);
                 $feed['community'] = Feed::getAll('community', 'public', 15);
             }
-            
+
+            $stories = (isset($order['stories'])) ? Stories::getAll(true) : array();
+
             // Banners siempre
             $banners   = Banner::getAll(true);
 
@@ -108,22 +110,6 @@ namespace Goteo\Controller {
                     }
                 }
                 
-            }
-
-            if (isset($order['stories'])) {
-                $stories = Stories::getAll(true);
-
-                foreach ($stories as $id => &$story) {
-
-                    if (!empty($story->project)) {
-                        try {
-                            $story->project = Project::get($story->project, LANG);
-                        } catch (\Goteo\Core\Error $e) {
-                            unset($stories[$id]);
-                        }
-                    }
-
-                }
             }
 
             return new View('view/index.html.php',
