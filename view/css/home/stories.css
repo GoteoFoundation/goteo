@@ -22,10 +22,7 @@ div.stories-banners-container div.stories-banner > div.title_story{
 	
 }
 
-div.stories-banners-container div.stories-banner div.title_story > a {
-	color:#ee4843; 
-	
-}
+
 
 div.stories-banners-container div.stories-banner > div.info{
 
@@ -61,21 +58,42 @@ div.stories-banners-container div.stories-banner > div.info_extra{
 
 }
 
-div.stories-banners-container div.stories-banner div.info > div#info_title{
+div.stories-banners-container div.stories-banner div.info a > div#info_title{
 
 font-size:18px;
 text-transform: uppercase;
+color:#FFFFFF;
 	
 }
 
+div.stories-banners-container div.stories-banner div.info a {
+ 
+text-decoration:none;
 
-div.stories-banners-container div.stories-banner div.info > div#review{
+}
+
+div.stories-banners-container div.stories-banner div.info a:hover >div#info_title {
+ 
+color:#585a5c;
+
+}
+
+
+div.stories-banners-container div.stories-banner div.info a > div#review{
 
 margin-top:5px; 
 color:#BCE8E8; 
 font-size:15px;
 	
 }
+
+div.stories-banners-container div.stories-banner div.info a:hover >div#review {
+ 
+color:#585a5c;
+
+}
+
+
 
 div.stories-banners-container div.stories-banner div.info > div#line{
 
