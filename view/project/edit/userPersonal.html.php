@@ -12,7 +12,7 @@ $account = $this['account'];
 // esto lo hago para que proyectos en convocatoria no les salga para poner cuenta paypal
 $campos_cuentas  = array();
 
-if (isset($project->called)) {
+if (!isset($project->called)) {
     $campos_cuentas['paypal'] = array(
         'type'      => 'textbox',
         'title'     => Text::get('contract-paypal_account'),
