@@ -780,7 +780,7 @@ namespace Goteo\Controller {
             $bankacc = (!empty($_POST['bank'])) ? $_POST['bank'] : '';
 
             // primero checkeamos si la cuenta Paypal es tipo email
-            if (!Check::mail($ppacc)) {
+            if (!isset($project->called) && !empty($ppacc) && !Check::mail($ppacc)) {
                 $project->errors['userPersonal']['paypal'] = Text::get('validate-project-paypal_account');
             } else {
                 $project->okeys['userPersonal']['paypal'] = true;
