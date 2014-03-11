@@ -1615,7 +1615,7 @@ namespace Goteo\Model {
                             return false;
                         }
                     } else {
-                        throw new \Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
+                        throw new \Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ');
                     }
                 } elseif (!empty ($newid)) {
 //                   echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
