@@ -9,6 +9,37 @@ $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
 $account = $this['account'];
 
+// esto lo hago para que proyectos en convocatoria no les salga para poner cuenta paypal
+$campos_cuentas  = array();
+
+if (isset($project->called)) {
+    $campos_cuentas['paypal'] = array(
+        'type'      => 'textbox',
+        'title'     => Text::get('contract-paypal_account'),
+        'hint'      => Text::get('tooltip-project-paypal'),
+        'errors'    => !empty($errors['paypal']) ? array($errors['paypal']) : array(),
+        'ok'        => !empty($okeys['paypal']) ? array($okeys['paypal']) : array(),
+        'value'     => $account->paypal
+    );
+
+    $campos_cuentas['paypal_advice'] = array(
+        'type'      => 'html',
+        'class'     => 'inline',
+        'html'      => Text::get('tooltip-project-paypal')
+    );
+}
+
+$campos_cuentas['bank'] = array(
+    'type'      => 'textbox',
+    'title'     => Text::get('contract-bank_account'),
+    'hint'      => Text::get('tooltip-project-bank'),
+    'errors'    => !empty($errors['bank']) ? array($errors['bank']) : array(),
+    'ok'        => !empty($okeys['bank']) ? array($okeys['bank']) : array(),
+    'value'     => $account->bank
+);
+
+
+
 echo new SuperForm(array(
 
     'level'         => $this['level'],
@@ -167,29 +198,7 @@ echo new SuperForm(array(
         'accounts' => array(
             'type'      => 'group',
             'title'     => Text::get('personal-field-accounts'),
-            'children'  => array(
-                'paypal' => array(
-                    'type'      => 'textbox',
-                    'title'     => Text::get('contract-paypal_account'),
-                    'hint'      => Text::get('tooltip-project-paypal'),
-                    'errors'    => !empty($errors['paypal']) ? array($errors['paypal']) : array(),
-                    'ok'        => !empty($okeys['paypal']) ? array($okeys['paypal']) : array(),
-                    'value'     => $account->paypal
-                ),
-                'paypal_advice' => array(
-                    'type'      => 'html',
-                    'class'     => 'inline',
-                    'html'      => Text::get('tooltip-project-paypal')
-                ),
-                'bank' => array(
-                    'type'      => 'textbox',
-                    'title'     => Text::get('contract-bank_account'),
-                    'hint'      => Text::get('tooltip-project-bank'),
-                    'errors'    => !empty($errors['bank']) ? array($errors['bank']) : array(),
-                    'ok'        => !empty($okeys['bank']) ? array($okeys['bank']) : array(),
-                    'value'     => $account->bank
-                )
-            )
+            'children'  => $campos_cuentas
         ),
 
         /* Domicilio */
