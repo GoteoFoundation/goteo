@@ -201,6 +201,8 @@ namespace Goteo\Controller\Admin {
              * redirect
              *
              */
+            $admins = Model\User::getAdmins();
+
             if (isset($id)) {
                 $project = Model\Project::get($id);
             }
@@ -398,6 +400,29 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if ($action == 'consultants') {
+                // cambiar el asesor
+                if (isset($_GET['op']) && isset($_GET['user']) &&
+                    (($_GET['op'] == 'assignConsultant' && Model\User::isAdmin($_GET['user'])) || ($_GET['op'] == 'unassignConsultant'))) {
+                    if ($project->$_GET['op']($_GET['user'])) {
+                        // ok
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
+                }
+
+                $project->consultants = Model\Project::getConsultants($project->id);
+
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'consultants',
+                        'project' => $project,
+                        'admins' => $admins
+                    )
+                );
+            }
 
             if ($action == 'assign') {
                 // asignar a una convocatoria solo si
@@ -469,12 +494,12 @@ namespace Goteo\Controller\Admin {
                 throw new Redirection('/admin/projects/list');
             }
 
-
             if (!empty($filters['filtered'])) {
                 $projects = Model\Project::getList($filters, $_SESSION['admin_node']);
             } else {
                 $projects = array();
             }
+
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
             $contracts = Model\Contract::getProjects();
@@ -496,6 +521,7 @@ namespace Goteo\Controller\Admin {
                     'status' => $status,
                     'categories' => $categories,
                     'contracts' => $contracts,
+                    'admins' => $admins,
                     'calls' => $calls,
                     'nodes' => $nodes,
                     'open_tags' => $open_tags,
