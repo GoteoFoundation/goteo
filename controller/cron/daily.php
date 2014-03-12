@@ -22,9 +22,10 @@ namespace Goteo\Controller\Cron {
             foreach ($projects as $project) {
                 
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
+                // FIXME: la segunda condicion del if
                 if ($project->days > 42 || $project->days > 360) continue;
 
-                if ($debug) echo "Proyecto {$project->name}, Impulsor:  {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias<br />";
+                if ($debug) echo "Proyecto {$project->name}, Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias<br />";
                 
                 // primero los que no se bloquean
                 //Solicitud de datos del contrato
@@ -104,7 +105,7 @@ namespace Goteo\Controller\Cron {
                         break;
                     
                     // comprobación periódica pero solo un envío
-                    case 7: // Apóyate en quienes te van apoyando ,  si más de 20 cofinanciadores
+                    case 7: // Apóyate en quienes te van apoyando, si más de 20 cofinanciadores
                         // o en cuanto llegue a 20 backers (en fechas libres)
                     case 14: 
                     case 17: 
@@ -227,7 +228,7 @@ namespace Goteo\Controller\Cron {
                 
                 // Avisos periodicos 
                 // si lleva más de 15 días: si no se han publicado novedades en la última semana 
-                // Ojo! que si no a enviado ninguna no lanza este sino la de cada 6 días
+                // Ojo! que si no ha enviado ninguna no lanza este sino la de cada 6 días
                 if (!$avisado && $project->days > 15) {
                     if ($debug) echo "ya lleva una quincena de campaña, verificamos novedades<br />";
                     

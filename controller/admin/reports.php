@@ -515,7 +515,7 @@ namespace Goteo\Controller\Admin {
                         // sacamos la fecha, si no es de hoy lo borramos y lanzamos de nuevo el report
                         if ($data['date'] != date('Ymd')) {
                             unlink($data_file);
-                            throw new Redirection('/admin/reprts/geoloc');
+                            throw new Redirection('/admin/reports/geoloc');
                         }
                     } else {
                         $data = array(
