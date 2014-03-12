@@ -177,21 +177,21 @@ namespace Goteo\Controller\Admin {
 
                 }
 
-                /*elseif (isset($_POST['open-tag'])) {
+                elseif (isset($_POST['open-tag'])) {
 
-                    $values = array(':project' => $projData->id, ':call' => $_POST['call']);
+                    $values = array(':project' => $projData->id, ':open_tag' => $_POST['open-tag']);
                     try {
-                        $sql = "REPLACE INTO call_project (`call`, `project`) VALUES (:call, :project)";
+                        $sql = "REPLACE INTO project_open_tag (`project`, `open_tag`) VALUES (:project, :open_tag)";
                         if (Model\Project::query($sql, $values)) {
-                            $log_text = 'El admin %s ha <span class="red">asignado a la convocatoria call/'.$_POST['call'].'</span> el proyecto '.$projData->name.' %s';
+                            $log_text = 'El admin %s ha <span class="red">asignado nueva agrupación </span> al proyecto '.$projData->name.' %s';
                         } else {
-                            $log_text = 'Al admin %s le ha <span class="red">fallado al asignar a la convocatoria call/'.$_POST['call'].'</span> el proyecto '.$projData->name.' %s';
+                            $log_text = 'Al admin %s le ha <span class="red">fallado al asignar agrupación </span> al proyecto '.$projData->name.' %s';
                         }
                     } catch(\PDOException $e) {
                         Message::Error("Ha fallado! " . $e->getMessage());
                     }
 
-                }*/
+                }
 
             }
 
