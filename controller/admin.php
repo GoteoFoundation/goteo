@@ -284,9 +284,10 @@ namespace Goteo\Controller {
                     'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
                     'assign' => array('label' => 'Asignando a una Convocatoria el proyecto', 'item' => true),
                     'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true),
-                    'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true)
+                    'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true),
+                    'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true)
                 ),
-                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '')
+                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '', 'consultant' => '')
             ),
             'promote' => array(
                 'label' => 'Proyectos destacados',

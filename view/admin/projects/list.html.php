@@ -85,6 +85,15 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <td>
+                    <label for="consultant-filter">Asesorado por:</label><br />
+                    <select id="consultant-filter" name="consultant" onchange="document.getElementById('filter-form').submit();">
+                        <option value="-1"<?php if ($filters['consultant'] == -1) echo ' selected="selected"';?>>Cualquier admin</option>
+                    <?php foreach ($this['admins'] as $userId=>$userName) : ?>
+                        <option value="<?php echo $userId; ?>"<?php if ($filters['consultant'] == $userId) echo ' selected="selected"';?>><?php echo $userName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
             </tr>
         </table>
     </form>
@@ -129,8 +138,23 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
             </tr>
             <tr>
                 <td colspan="7"><?php 
-                    if ($project->status < 3)  echo "Información al <strong>{$project->progress}%</strong>";
-                    if ($project->status == 3 && $project->round > 0) echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;<strong>Conseguido:</strong> ".\amount_format($project->invested)."€&nbsp;&nbsp;&nbsp;<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messegers}"; 
+                    if ($project->status < 3) {
+                        echo "Información al <strong>{$project->progress}%</strong>";
+                    } elseif ($project->status == 3 && $project->round > 0) {
+                        echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;";
+                        echo "<strong>Conseguido:</strong> ".\amount_format($project->invested)."€&nbsp;&nbsp;&nbsp;";
+                        echo "<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messegers}";
+
+                    }
+
+                    $consultants = array_values($project->consultants);
+                    if (!empty($consultants)) {
+                        if (($project->status < 3) ||  ($project->status == 3 && $project->round > 0)) {
+                            echo " | ";
+                        }
+                        echo "Asesorado por: " . implode(", ", $consultants);
+                    }
+
                 ?></td>
             </tr>
             <tr>
@@ -157,6 +181,7 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                     <a href="<?php echo "/admin/projects/move/{$project->id}"; ?>">[Nodo]</a>
                     <a href="<?php echo "/admin/projects/open_tag/{$project->id}"; ?>">[Agrupación]</a>
                     <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}"; ?>" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Id]</a><?php endif; ?>
+                    <a href="<?php echo "/admin/projects/consultants/{$project->id}"; ?>">[Asesor]</a>
                     &nbsp;|&nbsp;
                     <?php if ($project->status < 2) : ?><a href="<?php echo "/admin/projects/review/{$project->id}"; ?>" onclick="return confirm('El creador no podrá editarlo más, ok?');">[A revisión]</a><?php endif; ?>
                     <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}"; ?>" onclick="return confirm('El proyecto va a comenzar los 40 dias de la primera ronda de campaña, ¿comenzamos?');">[Publicar]</a><?php endif; ?>
