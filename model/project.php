@@ -538,8 +538,6 @@ namespace Goteo\Model {
             try {
                 $sql = "REPLACE INTO user_project (`user`, `project`) VALUES(:user, :project)";
                 if (self::query($sql, $values)) {
-                    // FIXME: ACL
-                    //ACL::allow('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
                     return true;
                 } else {
                     $errors[] = 'No se ha creado el registro `user_project`';
@@ -563,8 +561,6 @@ namespace Goteo\Model {
 
             try {
                 if (self::query("DELETE FROM user_project WHERE `project` = :project AND `user` = :user", $values)) {
-                    // FIXME: ACL
-                    //ACL::deny('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
                     return true;
                 } else {
                     return false;

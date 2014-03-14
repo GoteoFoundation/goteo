@@ -12,7 +12,6 @@ if (!$project instanceof Model\Project) {
     throw new Redirection('/admin/projects');
 }
 
-//FIXME: Mostrar todos los admins? o solo los admins del nodo?
 ?>
 <script type="text/javascript">
 function assign() {

@@ -140,16 +140,21 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                 <td colspan="7"><?php 
                     if ($project->status < 3) {
                         echo "Información al <strong>{$project->progress}%</strong>";
-                        echo " | ";
                     } elseif ($project->status == 3 && $project->round > 0) {
                         echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;";
                         echo "<strong>Conseguido:</strong> ".\amount_format($project->invested)."€&nbsp;&nbsp;&nbsp;";
                         echo "<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messegers}";
-                        echo " | ";
+
                     }
 
-                    $consultants = array_keys($project->consultants);
-                    echo "Asesorado por: " . implode(", ", $consultants);
+                    $consultants = array_values($project->consultants);
+                    if (!empty($consultants)) {
+                        if (($project->status < 3) ||  ($project->status == 3 && $project->round > 0)) {
+                            echo " | ";
+                        }
+                        echo "Asesorado por: " . implode(", ", $consultants);
+                    }
+
                 ?></td>
             </tr>
             <tr>
