@@ -371,7 +371,18 @@ namespace Goteo\Controller\Admin {
             }
 
             if ($action == 'open_tag') {
-                // cambiar el nodo
+                // cambiar la agrupacion
+
+                if (isset($_GET['op']) && isset($_GET['open_tag']) &&
+                    (($_GET['op'] == 'assignOpen_tag') || ($_GET['op'] == 'unassignOpen_tag'))) {
+                    if ($project->$_GET['op']($_GET['open_tag'])) {
+                        // ok
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
+                }
+
+                $project->open_tags = Model\Project::getOpen_tags($project->id);
                 // disponibles
                 $open_all_tags = Model\Project\Open_tag::getAll();
                 return new View(
