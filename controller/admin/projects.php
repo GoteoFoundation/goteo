@@ -176,23 +176,6 @@ namespace Goteo\Controller\Admin {
                     }
 
                 }
-
-                elseif (isset($_POST['open-tag'])) {
-
-                    $values = array(':project' => $projData->id, ':open_tag' => $_POST['open-tag']);
-                    try {
-                        $sql = "REPLACE INTO project_open_tag (`project`, `open_tag`) VALUES (:project, :open_tag)";
-                        if (Model\Project::query($sql, $values)) {
-                            $log_text = 'El admin %s ha <span class="red">asignado nueva agrupación </span> al proyecto '.$projData->name.' %s';
-                        } else {
-                            $log_text = 'Al admin %s le ha <span class="red">fallado al asignar agrupación </span> al proyecto '.$projData->name.' %s';
-                        }
-                    } catch(\PDOException $e) {
-                        Message::Error("Ha fallado! " . $e->getMessage());
-                    }
-
-                }
-
             }
 
             /*
@@ -370,7 +353,7 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
-            if ($action == 'open_tag') {
+            if ($action == 'open_tags') {
                 // cambiar la agrupacion
 
                 if (isset($_GET['op']) && isset($_GET['open_tag']) &&
@@ -389,7 +372,7 @@ namespace Goteo\Controller\Admin {
                     'view/admin/index.html.php',
                     array(
                         'folder' => 'projects',
-                        'file' => 'open_tag',
+                        'file' => 'open_tags',
                         'project' => $project,
                         'open_tags' =>$open_all_tags
                     )
