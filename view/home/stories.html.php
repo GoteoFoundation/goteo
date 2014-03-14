@@ -23,10 +23,11 @@ $stories = $this['stories'];
 <div id="stories-banners" class="rounded-corners-bottom">
     <div class="stories-banners-container rounded-corners-bottom" style="background: url('/view/css/call/banner_background.png');">
 
-        <?php foreach ($stories as $story) : ?>
+        <?php foreach ($stories as $story) : 
+        ?>
             <div class="stories-banner<?php if (!empty($story->url)) echo ' activable'; ?>"<?php if ($story->image instanceof \Goteo\Model\Image) : ?> style="background: url('/data/images/<?php echo $story->image->name; ?>');"<?php endif; ?>>
                 <?php if (!empty($story->url)) : ?><a href="<?php echo $story->url; ?>" class="expand" target="_blank"></a><?php endif; ?>
-                <div class="title_story"><strong><?php echo Text::get('home-stories-header').": "?></strong><span style="text-decoration:underline">Open Data</span></div>
+                <div class="title_story"><strong><?php echo Text::get('home-stories-header').": "?></strong><span style="text-decoration:underline"><?php print_r($story->project->open_tags); ?></span></div>
                 <div class="info">
                     <div id="info_title"><?php echo htmlspecialchars($story->title); ?></div>
                     <div id="review"><?php echo htmlspecialchars($story->review); ?></div>
