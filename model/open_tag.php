@@ -50,11 +50,6 @@ namespace Goteo\Model {
                         FROM project_open_tag
                         WHERE project_open_tag.open_tag = open_tag.id
                     ) as numProj,
-                    (   SELECT
-                            COUNT(user_interest.user)
-                        FROM user_interest
-                        WHERE user_interest.interest = open_tag.id
-                    ) as numUser,
                     open_tag.order as `order`
                 FROM    open_tag
                 LEFT JOIN open_tag_lang
@@ -94,8 +89,6 @@ namespace Goteo\Model {
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $open_tags = $query->fetchAll();
                 foreach ($open_tags as $cat) {
-                    // la 15 es de testeos
-                    if ($cat[0] == 15) continue;
                     $array[$cat[0]] = $cat[1];
                 }
 
@@ -184,55 +177,7 @@ namespace Goteo\Model {
             return ++$order;
 
         }
-        
-        /**
-         * Get a list of used keywords
-         *
-         * can be of users, projects or  all
-         * 
-         */
-		public static function getKeyWords () {
-            $array = array ();
-            try {
-                
-                $sql = "SELECT 
-                            keywords
-                        FROM project
-                        WHERE status > 1
-                        AND keywords IS NOT NULL
-                        AND keywords != ''
-                        ";
-/*
-                     UNION
-                        SELECT 
-                            keywords
-                        FROM user
-                        WHERE keywords IS NOT NULL
-                        AND keywords != ''
-* 
- */
-                $query = static::query($sql);
-                $keywords = $query->fetchAll(\PDO::FETCH_ASSOC);
-                foreach ($keywords as $keyw) {
-                    $kw = $keyw['keywords'];
-//                    $kw = str_replace('|', ',', $keyw['keywords']);
-//                    $kw = str_replace(array(' ','|'), ',', $keyw['keywords']);
-//                    $kw = str_replace(array('-','.'), '', $kw);
-                    $kwrds = explode(',', $kw);
-                    
-                    foreach ($kwrds as $word) {
-                        $array[] = strtolower(trim($word));
-                    }
-                }
-
-                asort($array);
-                
-                return $array;
-            } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
-            }
-		}
-        
+         
     }
     
 }

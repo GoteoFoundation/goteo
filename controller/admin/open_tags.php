@@ -130,19 +130,6 @@ namespace Goteo\Controller\Admin {
                         throw new Redirection($url);
                     }
                     break;
-                case 'keywords':
-                    
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'keywords',
-                            'file' => 'list',
-                            'open_tags' => $model::getList(),
-                            'words' => $model::getKeyWords()
-                        )
-                    );
-                    
-                    break;
             }
 
             return new View(
@@ -152,13 +139,11 @@ namespace Goteo\Controller\Admin {
                     'file' => 'list',
                     'model' => 'open_tag',
                     'addbutton' => 'Nueva agrupación',
-                    'otherbutton' => '<a href="/admin/open_tags/keywords" class="button">Ver Palabras clave</a>',
                     'data' => $model::getAll(),
                     'columns' => array(
                         'edit' => '',
                         'name' => 'Agrupación',
                         'numProj' => 'Proyectos',
-                        'numUser' => 'Usuarios',
                         'order' => 'Prioridad',
                         'translate' => '',
                         'up' => '',

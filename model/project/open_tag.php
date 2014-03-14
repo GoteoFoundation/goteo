@@ -52,8 +52,6 @@ namespace Goteo\Model\Project {
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $open_tags = $query->fetchAll();
                 foreach ($open_tags as $cat) {
-                    // la 15 es de testeos
-                    if ($cat[0] == 15) continue;
                     $array[$cat[0]] = $cat[1];
                 }
 
@@ -93,8 +91,6 @@ namespace Goteo\Model\Project {
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $open_tags = $query->fetchAll();
                 foreach ($open_tags as $cat) {
-                    // la 15 es de testeos
-                    if ($cat[0] == 15) continue;
                     $array[$cat[0]] = $cat[1];
                 }
 
