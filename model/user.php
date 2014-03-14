@@ -1004,11 +1004,10 @@ namespace Goteo\Model {
                 FROM    user
                 INNER JOIN user_role
                     ON  user_role.user_id = user.id
-                    AND user_role.role_id = 'admin'
+                    AND user_role.role_id IN ('admin', 'superadmin')
                 WHERE user.id = :id
                 LIMIT 1
                 ";
-
             $query = static::query($sql, array(':id' => $id));
             $res = $query->fetchColumn();
             return ($res == $id);
