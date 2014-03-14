@@ -26,7 +26,7 @@ $stories = $this['stories'];
         <?php foreach ($stories as $story) : ?>
             <div class="stories-banner<?php if (!empty($story->post)) echo ' activable'; ?>"<?php if ($story->image instanceof \Goteo\Model\Image) : ?> style="background: url('/data/images/<?php echo $story->image->name; ?>');"<?php endif; ?>>
                 <?php if (!empty($story->post)) : ?><a href="/blog/<?php echo $story->post;?>" class="expand" target="_blank"></a><?php endif; ?>
-                <div class="title_story"><strong><?php echo Text::get('home-stories-header').': '?></strong><span style="text-decoration:underline">Open Data</span></div>
+                <div class="title_story"><strong><?php echo Text::get('home-stories-header').': '?></strong><span style="text-decoration:underline"><?php print_r($story->project->open_tags); ?></span></div>
                 <div class="info">
                    <a href="/blog/<?php echo $story->post;?>"><div id="info_title"><?php echo htmlspecialchars($story->title); ?></div></a>
                    <a href="/blog/<?php echo $story->post;?>"><div id="review"><?php echo htmlspecialchars($story->review); ?></div></a>
