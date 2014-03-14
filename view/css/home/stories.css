@@ -22,6 +22,8 @@ div.stories-banners-container div.stories-banner > div.title_story{
 	
 }
 
+
+
 div.stories-banners-container div.stories-banner > div.info{
 
 	min-width:238px;
@@ -40,6 +42,7 @@ div.stories-banners-container div.stories-banner > div.info{
 	
 }
 
+
 div.stories-banners-container div.stories-banner > div.info_extra{  
 	
 	min-width: 238px;
@@ -55,21 +58,42 @@ div.stories-banners-container div.stories-banner > div.info_extra{
 
 }
 
-div.stories-banners-container div.stories-banner div.info > div#info_title{
+div.stories-banners-container div.stories-banner div.info a > div#info_title{
 
 font-size:18px;
 text-transform: uppercase;
+color:#FFFFFF;
 	
 }
 
+div.stories-banners-container div.stories-banner div.info a {
+ 
+text-decoration:none;
 
-div.stories-banners-container div.stories-banner div.info > div#review{
+}
+
+div.stories-banners-container div.stories-banner div.info a:hover >div#info_title {
+ 
+color:#585a5c;
+
+}
+
+
+div.stories-banners-container div.stories-banner div.info a > div#review{
 
 margin-top:5px; 
 color:#BCE8E8; 
 font-size:15px;
 	
 }
+
+div.stories-banners-container div.stories-banner div.info a:hover >div#review {
+ 
+color:#585a5c;
+
+}
+
+
 
 div.stories-banners-container div.stories-banner div.info > div#line{
 
@@ -145,6 +169,11 @@ div.info div blockquote { margin-left: 0; margin-right: 0; font-style:italic; di
 div.info div blockquote:before { content: "\201C"; }
 div.info div blockquote:after  { content: "\201D"; }
 
-div.info .underline {
+div.info div#description > a {
 text-decoration: underline;
+color:#3E3E41;
+}
+
+div.info div#description > a:hover {
+color:#BCE8E8;
 }
