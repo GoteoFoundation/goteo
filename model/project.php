@@ -20,7 +20,7 @@ namespace Goteo\Model {
             $owner, // User who created it
             $node, // Node this project belongs to
             $nodeData, // Node data
-            $status,
+            $status,   // Project status
             $progress, // puntuation %
             $amount, // Current donated amount
 
@@ -2309,6 +2309,10 @@ namespace Goteo\Model {
             if (!empty($filters['proj_id'])) {
                 $sqlFilter .= " AND project.id = :proj_id";
                 $values[':proj_id'] = $filters['proj_id'];
+            }
+            if (!empty($filters['published'])) {
+                $sqlFilter .= " AND project.published = :published";
+                $values[':published'] = $filters['published'];
             }
             if (!empty($filters['category'])) {
                 $sqlFilter .= " AND project.id IN (
