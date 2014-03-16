@@ -284,6 +284,29 @@ namespace Goteo\Controller\Cron {
                 
             }
             
+            // Obtiene los proyectos que llevan 10 meses con status=4 (proyecto financiado) y
+            // envía un correo a los asesores del proyecto en caso de que no consten aún los retornos colectivos
+            $success_date = date('Y-m-d', strtotime("-10 month"));
+            $projects = Model\Project::getList(array('status' => 4, 'success' => $success_date));
+
+            $filtered_projects = array_filter($projects, 
+                function($project) {
+                    return !Model\Project\Reward::areFulfilled($project->id, 'social');
+                }
+            );
+
+            if ($debug) {
+                echo "Buscando proyectos financiados hace 10 meses ({$success_date}). Encontrados: " . count($projects) . "  <br />";
+                echo "De ellos, no han cumplido con los retornos colectivos: " . count($filtered_projects) . "  <br /><br />";
+            }
+
+            foreach ($filtered_projects as $project) {
+                if ($debug) {
+                    echo "Proyecto {$project->name}, Impulsor: {$project->user->name}, email: {$project->user->email} lleva 10 meses financiado y no constan retornos colectivos.<br />";
+                }
+                Send::toConsultants('commons', $project);
+            }
+
             if ($debug) echo "<br />Auto-tips Listo!<hr />";
 
             return;

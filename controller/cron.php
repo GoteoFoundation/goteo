@@ -657,7 +657,7 @@ namespace Goteo\Controller {
             }
             
             $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
-            if ($debug) echo 'Modo debug activado<br />';
+            if ($debug) echo 'Modo debug activado<hr />';
             
             // lanzamos subcontrolador
             Cron\Verify::process($debug);
@@ -867,7 +867,7 @@ namespace Goteo\Controller {
 //            $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
             $debug = true;
             
-            if ($debug) echo 'Modo debug activado<br />';
+            if ($debug) echo 'Modo debug activado<hr />';
             
             // subcontrolador Auto-tips
             Cron\Daily::Projects($debug);

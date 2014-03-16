@@ -194,6 +194,73 @@ namespace Goteo\Controller\Cron {
             return false;
         }
 
+
+        /**
+         * Al asesor del proyecto, se encarga de sustituir variables en plantilla
+         *
+         * @param $type string Identificador de la plantilla
+         * @param $project Object Proyecto
+         * @return bool
+         */
+        public static function toConsultants ($type, $project) {
+            $tpl = null;
+            
+            if (!isset($project->consultants)) {
+                $project->consultants = Model\Project::getConsultants($project->id);
+            }
+
+            // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a olivier
+            if (empty($project->consultants)) { 
+                $project->consultants = array('olivier' => 'Olivier');
+            }
+
+            /// tipo de envio
+            switch ($type) {
+                case 'commons':
+                    $tpl = 56;
+                    $search  = array('%PROJECTNAME%', '%URL%');
+                    $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id);
+                    break;
+            }
+
+            if (!empty($tpl)) {
+                $errors = array();
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get($tpl);
+                // Sustituimos los datos
+                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
+                $pre_content = \str_replace($search, $replace, $template->text);
+
+                foreach ($project->consultants as $id=>$name) {
+                    $consultant = Model\User::getMini($id);
+
+                    // Sustituimos el nombre del asesor en el cuerpo del e-mail
+                    $content = \str_replace('%USERNAME%', $name, $pre_content);
+
+                    // iniciamos mail
+                    $mailHandler = new Mail();
+                    $mailHandler->to = $consultant->email;
+                    $mailHandler->toName = $name;
+                    
+                    $mailHandler->subject = $subject;
+                    $mailHandler->content = $content;
+                    $mailHandler->html = true;
+                    $mailHandler->template = $template->id;
+                    if ($mailHandler->send($errors)) {
+                        return true;
+                    } else {
+                        echo \trace($errors);
+                        @mail('goteo_fail@doukeshi.org',
+                            'Fallo al enviar email automaticamente al asesor ' . SITE_URL,
+                            'Fallo al enviar email automaticamente al asesor: <pre>' . print_r($mailHandler, true). '</pre>');
+                    }
+                }
+
+            }
+
+            return false;
+        }
+
         /* A los cofinanciadores 
          * Se usa tambien para notificar cuando un proyecto publica una novedad.
          * Por eso añadimos el tercer parámetro, para recibir los datos del post
