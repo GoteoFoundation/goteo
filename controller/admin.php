@@ -253,8 +253,7 @@ namespace Goteo\Controller {
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva Agrupación', 'item' => false),
                     'edit' => array('label' => 'Editando Agrupación', 'item' => true),
-                    'translate' => array('label' => 'Traduciendo Agrupación', 'item' => true),
-                    'keywords' => array('label' => 'Palabras clave', 'item' => false)
+                    'translate' => array('label' => 'Traduciendo Agrupación', 'item' => true)        
                 )
             ),
             'pages' => array(
@@ -283,6 +282,7 @@ namespace Goteo\Controller {
                     'images' => array('label' => 'Imágenes del proyecto', 'item' => true),
                     'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
                     'assign' => array('label' => 'Asignando a una Convocatoria el proyecto', 'item' => true),
+                    'open_tags' => array('label' => 'Asignando una agrupación al proyecto', 'item' => true),
                     'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true),
                     'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true),
                     'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true)
@@ -742,7 +742,7 @@ namespace Goteo\Controller {
                         $menu['projects']['options']['transcalls'] = $options['transcalls']; // traducción de convocatorias    
                         $menu['projects']['options']['commons'] = $options['commons']; // gestion de retornos colectivos
                         $menu['projects']['options']['bazar'] = $options['bazar']; // gestion de retornos colectivos
-                        $menu['contents']['options']['open_tags'] = $options['open_tags']; // informes
+                        $menu['contents']['options']['open_tags'] = $options['open_tags']; // gestión de agrupaciones
                     }
 
                     break;

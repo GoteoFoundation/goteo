@@ -437,6 +437,9 @@ namespace Goteo\Model {
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
+                // open_tags
+                $project->open_tags = array_pop(Project\Open_tag::getNames($id, 1));
+
                 // asesores
                 $project->consultants = Project::getConsultants($id);
 
@@ -610,6 +613,83 @@ namespace Goteo\Model {
                 self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($this->id));
             }
             $this->days = $days;
+        }
+
+         /*
+         * Array asociativo de las agrupaciones (open_tags) de un proyecto
+         *  (o todos los que asesoran alguno, si no hay filtro)
+         */
+        public static function getOpen_Tags ($project = null) {
+
+            $list = array();
+
+            $sqlFilter = "";
+            if (!empty($project)) {
+                $sqlFilter .= " WHERE project_open_tag.project = '{$project}'";
+            }
+
+
+            $query = static::query("
+                SELECT
+                    DISTINCT(project_open_tag.open_tag) as open_tag,
+                    open_tag.name as name
+                FROM project_open_tag
+                INNER JOIN open_tag
+                    ON open_tag.id = project_open_tag.open_tag
+                $sqlFilter
+                ORDER BY open_tag.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->open_tag] = $item->name;
+            }
+
+            return $list;
+        }
+
+
+        /*
+         * Asignar una agrupación a un proyecto
+         */
+        public function assignOpen_tag ($open_tag, &$errors = array()) {
+
+            $values = array(':open_tag'=>$open_tag, ':project'=>$this->id);
+
+            try {
+                $sql = "REPLACE INTO project_open_tag (`project`, `open_tag`) VALUES(:project, :open_tag)";
+                if (self::query($sql, $values)) {
+                    
+                    return true;
+                } else {
+                    $errors[] = 'No se ha creado el registro `project_open_tag`';
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido asignar la agrupacion {$open_tag} al proyecto {$this->id}.' . $e->getMessage();
+                return false;
+            }
+
+        }
+
+        /*
+         * Quitarle a un usuario el asesoramiento de un proyecto
+         */
+        public function unassignOpen_tag ($open_tag, &$errors = array()) {
+            $values = array (
+                ':open_tag'=>$open_tag,
+                ':project'=>$this->id,
+            );
+
+            try {
+                if (self::query("DELETE FROM project_open_tag WHERE `project` = :project AND `open_tag` = :open_tag", $values)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar la agrupación {$open_tag} al proyecto {$this->id}. ' . $e->getMessage();
+                return false;
+            }
         }
 
         /*
