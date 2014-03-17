@@ -991,6 +991,28 @@ namespace Goteo\Model {
 			return !empty($_SESSION['user']);
 		}
 
+        /**
+         * Comprueba si el usuario es administrador
+         * @param   type varchar(50)  $id   Usuario admin
+         * @return  type bool true/false
+         */
+        public function isAdmin ($id) {
+
+            $sql = "
+                SELECT
+                    user.id as id
+                FROM    user
+                INNER JOIN user_role
+                    ON  user_role.user_id = user.id
+                    AND user_role.role_id IN ('admin', 'superadmin')
+                WHERE user.id = :id
+                LIMIT 1
+                ";
+            $query = static::query($sql, array(':id' => $id));
+            $res = $query->fetchColumn();
+            return ($res == $id);
+        }
+
 		/**
 		 * Refresca la sesión.
 		 * (Utilizar después de un save)

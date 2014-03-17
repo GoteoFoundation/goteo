@@ -1430,7 +1430,7 @@ namespace Goteo\Model {
                     return false;
                 }
 			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido quitar al usuario ' . $this->user . ' de la administracion de la convocatoria ' . $this->id . '. ' . $e->getMessage();
+                $errors[] = 'No se ha podido quitar al usuario {$user} de la administracion de la convocatoria {$this->id}. ' . $e->getMessage();
                 return false;
 			}
 		}

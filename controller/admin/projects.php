@@ -177,6 +177,22 @@ namespace Goteo\Controller\Admin {
 
                 }
 
+                elseif (isset($_POST['open-tag'])) {
+
+                    $values = array(':project' => $projData->id, ':open_tag' => $_POST['open-tag']);
+                    try {
+                        $sql = "REPLACE INTO project_open_tag (`project`, `open_tag`) VALUES (:project, :open_tag)";
+                        if (Model\Project::query($sql, $values)) {
+                            $log_text = 'El admin %s ha <span class="red">asignado nueva agrupación </span> al proyecto '.$projData->name.' %s';
+                        } else {
+                            $log_text = 'Al admin %s le ha <span class="red">fallado al asignar agrupación </span> al proyecto '.$projData->name.' %s';
+                        }
+                    } catch(\PDOException $e) {
+                        Message::Error("Ha fallado! " . $e->getMessage());
+                    }
+
+                }
+
             }
 
             /*
@@ -185,6 +201,8 @@ namespace Goteo\Controller\Admin {
              * redirect
              *
              */
+            $admins = Model\User::getAdmins();
+
             if (isset($id)) {
                 $project = Model\Project::get($id);
             }
@@ -354,6 +372,21 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if ($action == 'open_tag') {
+                // cambiar el nodo
+                // disponibles
+                $open_all_tags = Model\Project\Open_tag::getAll();
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'open_tag',
+                        'project' => $project,
+                        'open_tags' =>$open_all_tags
+                    )
+                );
+            }
+
 
             if ($action == 'rebase') {
                 // cambiar la id
@@ -367,6 +400,29 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if ($action == 'consultants') {
+                // cambiar el asesor
+                if (isset($_GET['op']) && isset($_GET['user']) &&
+                    (($_GET['op'] == 'assignConsultant' && Model\User::isAdmin($_GET['user'])) || ($_GET['op'] == 'unassignConsultant'))) {
+                    if ($project->$_GET['op']($_GET['user'])) {
+                        // ok
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
+                }
+
+                $project->consultants = Model\Project::getConsultants($project->id);
+
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'consultants',
+                        'project' => $project,
+                        'admins' => $admins
+                    )
+                );
+            }
 
             if ($action == 'assign') {
                 // asignar a una convocatoria solo si
@@ -438,16 +494,17 @@ namespace Goteo\Controller\Admin {
                 throw new Redirection('/admin/projects/list');
             }
 
-
             if (!empty($filters['filtered'])) {
                 $projects = Model\Project::getList($filters, $_SESSION['admin_node']);
             } else {
                 $projects = array();
             }
+
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
             $contracts = Model\Contract::getProjects();
             $calls = Model\Call::getAvailable(true);
+            $open_tags = Model\Project\Open_tag::getAll();
             // la lista de nodos la hemos cargado arriba
             $orders = array(
                 'name' => 'Nombre',
@@ -464,8 +521,10 @@ namespace Goteo\Controller\Admin {
                     'status' => $status,
                     'categories' => $categories,
                     'contracts' => $contracts,
+                    'admins' => $admins,
                     'calls' => $calls,
                     'nodes' => $nodes,
+                    'open_tags' => $open_tags,
                     'orders' => $orders
                 )
             );

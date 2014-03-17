@@ -8,19 +8,21 @@ div.stories-banners-container div.stories-banner{width:940px;height:383px;}
 
 div.stories-banners-container div.stories-banner > div.title_story{
 	z-index:300; 
-	padding:15px; 
+	padding: 12px 20px; 
 	font-size:18px;
 	color:#ee4843; 
 	background-color: rgba(255,255,255,0.8); 
 	color:#58595B; 
-	min-width:248px;
+	min-width:238px;
 	position:absolute;
 	top:35px; 
 	left:35px;
-	max-width: 600px;
-	font-size:15px;
+	max-width: 360px;
+	
 	
 }
+
+
 
 div.stories-banners-container div.stories-banner > div.info{
 
@@ -40,13 +42,15 @@ div.stories-banners-container div.stories-banner > div.info{
 	
 }
 
+
 div.stories-banners-container div.stories-banner > div.info_extra{  
 	
-	min-width: 363px;
+	min-width: 238px;
+	max-width: 328px;
 	margin-top: 5px; 
 	font-weight: bold; 
 	font-size:15px;
-	padding: 10px;
+	padding: 10px 20px;
 	background-color: rgba(255,255,255,0.8); 
 	position:absolute;
 	bottom: 35px;
@@ -54,7 +58,99 @@ div.stories-banners-container div.stories-banner > div.info_extra{
 
 }
 
+div.stories-banners-container div.stories-banner div.info a > div#info_title{
 
+font-size:18px;
+text-transform: uppercase;
+color:#FFFFFF;
+	
+}
+
+div.stories-banners-container div.stories-banner div.info a {
+ 
+text-decoration:none;
+
+}
+
+div.stories-banners-container div.stories-banner div.info a:hover >div#info_title {
+ 
+color:#585a5c;
+
+}
+
+
+div.stories-banners-container div.stories-banner div.info a > div#review{
+
+margin-top:5px; 
+color:#BCE8E8; 
+font-size:15px;
+	
+}
+
+div.stories-banners-container div.stories-banner div.info a:hover >div#review {
+ 
+color:#585a5c;
+
+}
+
+
+
+div.stories-banners-container div.stories-banner div.info > div#line{
+
+border-bottom-style:solid; 
+border-bottom-width:1px; 
+width:15px; 
+margin-top:15px; 
+margin-bottom:15px;
+
+}
+
+div.stories-banners-container div.stories-banner div.info > div#description{
+color:#3E3E41;
+}
+
+div.stories-banners-container div.stories-banner div.info_extra > span#cofinanciadores{
+
+color:#313B96; 
+font-size:11px; 
+position:absolute; 
+bottom:16px;
+
+}
+
+div.stories-banners-container div.stories-banner div.info_extra > strong#ncofinanciadores {
+
+color:#313B96; 
+font-size:20px; 
+margin-left:110px;
+
+}
+
+div.stories-banners-container div.stories-banner div.info_extra > span#obtenido {
+
+color:#96238F; 
+font-size:11px; 
+margin-left:20px;
+
+}
+
+div.stories-banners-container div.stories-banner div.info_extra span#obtenido span{
+
+position:absolute; bottom:16px;
+
+}
+
+div.stories-banners-container div.stories-banner div.info_extra span#obtenido strong{
+
+font-size:20px; margin-left:63px;
+
+}
+
+div.stories-banners-container div.stories-banner div.info_extra span#obtenido img{
+
+vertical-align: text-bottom; margin-left:5px;
+
+}
 div.stories-banners-container div.stories-banner > div.short-desc{margin-top: 25px; margin-left: 50px; line-height:30px;font-size:20px;color:#1f81bb; max-width: 450px;}
 div.stories-banners-container div.stories-banner.active > div.title{}
 div.stories-banners-container div.stories-banner a.expand {padding: 0;position: absolute;width: 940px;height: 156px;z-index: 99;}
@@ -69,6 +165,15 @@ ul.bannerspage li a{display:block;width:8px;height:8px;margin-top:2px; backgroun
 ul.bannerspage li a:hover{ background-color:#808184;  color:#808184}
 ul.bannerspage li.current a{ background-color:#20B3B2 !important;  color:#20B3B2 !important}
 
+div.info div blockquote { margin-left: 0; margin-right: 0; font-style:italic; display: inline;}
+div.info div blockquote:before { content: "\201C"; }
+div.info div blockquote:after  { content: "\201D"; }
 
-div.stories-banners-container div.stories-banner > h2 .title{}
+div.info div#description > a {
+text-decoration: underline;
+color:#3E3E41;
+}
 
+div.info div#description > a:hover {
+color:#BCE8E8;
+}
