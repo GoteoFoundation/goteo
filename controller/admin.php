@@ -247,6 +247,15 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('status' => '', 'admin' => '', 'name' => '')
             ),
+            'open_tags' => array(
+                'label' => 'Agrupaciones',
+                'actions' => array(
+                    'list' => array('label' => 'Listando', 'item' => false),
+                    'add' => array('label' => 'Nueva Agrupación', 'item' => false),
+                    'edit' => array('label' => 'Editando Agrupación', 'item' => true),
+                    'translate' => array('label' => 'Traduciendo Agrupación', 'item' => true)        
+                )
+            ),
             'pages' => array(
                 'label' => 'Páginas',
                 'actions' => array(
@@ -273,6 +282,7 @@ namespace Goteo\Controller {
                     'images' => array('label' => 'Imágenes del proyecto', 'item' => true),
                     'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
                     'assign' => array('label' => 'Asignando a una Convocatoria el proyecto', 'item' => true),
+                    'open_tags' => array('label' => 'Asignando una agrupación al proyecto', 'item' => true),
                     'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true),
                     'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true)
                 ),
@@ -731,6 +741,7 @@ namespace Goteo\Controller {
                         $menu['projects']['options']['transcalls'] = $options['transcalls']; // traducción de convocatorias    
                         $menu['projects']['options']['commons'] = $options['commons']; // gestion de retornos colectivos
                         $menu['projects']['options']['bazar'] = $options['bazar']; // gestion de retornos colectivos
+                        $menu['contents']['options']['open_tags'] = $options['open_tags']; // gestión de agrupaciones
                     }
 
                     break;
@@ -746,6 +757,7 @@ namespace Goteo\Controller {
                                 'categories' => $options['categories'],
                                 'licenses' => $options['licenses'],
                                 'icons' => $options['icons'],
+                                'open_tags' => $options['open_tags'],
                                 'tags' => $options['tags'],
                                 'criteria' => $options['criteria'],
                                 'templates' => $options['templates'],

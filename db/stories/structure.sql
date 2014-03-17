@@ -12,3 +12,8 @@ CREATE TABLE `stories` (
 `post` BIGINT( 20 ) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Historias existosas';
+
+-- post no obligatorio
+ALTER TABLE `stories` CHANGE `post` `post` BIGINT( 20 ) UNSIGNED NULL DEFAULT NULL;
+
+

@@ -168,7 +168,7 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
-            $storyed = Model\Stories::getAll(false, $node);
+            $storyed = Model\Stories::getList($node);
 
             return new View(
                 'view/admin/index.html.php',

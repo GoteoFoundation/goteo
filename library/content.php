@@ -20,6 +20,7 @@ namespace Goteo\Library {
                 'icon'      => 'Tipos de retorno/recompensa',
                 'license'   => 'Licencias',
                 'category'  => 'Categorías',
+                'open_tag'  => 'Agrupaciones',
                 'news'      => 'Noticias',
                 'faq'       => 'Faq',
                 'post'      => 'Blog',
@@ -59,6 +60,10 @@ namespace Goteo\Library {
                     'url' => 'Enlace'
                 ),
                 'category' => array (
+                    'name' => 'Nombre',
+                    'description' => 'Descripción'
+                ),
+                'open_tag' => array (
                     'name' => 'Nombre',
                     'description' => 'Descripción'
                 ),

@@ -176,7 +176,6 @@ namespace Goteo\Controller\Admin {
                     }
 
                 }
-
             }
 
             /*
@@ -354,6 +353,32 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if ($action == 'open_tags') {
+                // cambiar la agrupacion
+
+                if (isset($_GET['op']) && isset($_GET['open_tag']) &&
+                    (($_GET['op'] == 'assignOpen_tag') || ($_GET['op'] == 'unassignOpen_tag'))) {
+                    if ($project->$_GET['op']($_GET['open_tag'])) {
+                        // ok
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
+                }
+
+                $project->open_tags = Model\Project::getOpen_tags($project->id);
+                // disponibles
+                $open_all_tags = Model\Project\Open_tag::getAll();
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'open_tags',
+                        'project' => $project,
+                        'open_tags' =>$open_all_tags
+                    )
+                );
+            }
+
 
             if ($action == 'rebase') {
                 // cambiar la id
@@ -448,6 +473,7 @@ namespace Goteo\Controller\Admin {
             $categories = Model\Project\Category::getAll();
             $contracts = Model\Contract::getProjects();
             $calls = Model\Call::getAvailable(true);
+            $open_tags = Model\Project\Open_tag::getAll();
             // la lista de nodos la hemos cargado arriba
             $orders = array(
                 'name' => 'Nombre',
@@ -466,6 +492,7 @@ namespace Goteo\Controller\Admin {
                     'contracts' => $contracts,
                     'calls' => $calls,
                     'nodes' => $nodes,
+                    'open_tags' => $open_tags,
                     'orders' => $orders
                 )
             );

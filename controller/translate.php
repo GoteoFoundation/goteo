@@ -477,6 +477,13 @@ namespace Goteo\Controller {
                                 'edit' => array('label' => 'Traduciendo Categoría', 'item' => true)
                             )
                         ),
+                        'open_tag' => array(
+                            'label' => 'Agrupaciones',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Traduciendo Agrupación', 'item' => true)
+                            )
+                        ),
                         'license' => array(
                             'label' => 'Licencias',
                             'actions' => array(
