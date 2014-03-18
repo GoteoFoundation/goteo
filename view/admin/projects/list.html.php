@@ -75,7 +75,8 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
             </tr>
             <tr>
                 <td>
-                    <input type="submit" name="filter" value="Buscar">
+                    <label for="proj_id-filter">Id del proyecto:</label><br />
+                    <input id="proj_id-filter" name="proj_id" value="<?php echo $filters['proj_id']; ?>" style="width:250px"/>
                 </td>
                 <td>
                     <label for="order-filter">Ordenar por:</label><br />
@@ -93,6 +94,11 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                         <option value="<?php echo $userId; ?>"<?php if ($filters['consultant'] == $userId) echo ' selected="selected"';?>><?php echo $userName; ?></option>
                     <?php endforeach; ?>
                     </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="filter" value="Buscar">
                 </td>
             </tr>
         </table>
