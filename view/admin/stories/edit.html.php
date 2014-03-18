@@ -43,13 +43,13 @@ $status = Model\Project::status();
 </p>
 
 <p>
-    <label for="story-description">Descripci&oacute;n:</label><br />
-    <textarea id="story-description" name="description" cols="60" rows="2"><?php echo $story->description; ?></textarea>
+    <label for="story-review">Review de Goteo:</label><br />
+    <textarea id="story-review" name="review" cols="60" rows="2"><?php echo $story->review; ?></textarea>
 </p>
 
 <p>
-    <label for="story-review">Review:</label><br />
-    <textarea id="story-review" name="review" cols="60" rows="2"><?php echo $story->review; ?></textarea>
+    <label for="story-description">Feedback impulsor:</label><br />
+    <textarea id="story-description" name="description" cols="60" rows="2"><?php echo $story->description; ?></textarea>
 </p>
 
 <p>
