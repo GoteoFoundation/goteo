@@ -2303,6 +2303,10 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.name LIKE :name";
                 $values[':name'] = "%{$filters['proj_name']}%";
             }
+            if (!empty($filters['proj_id'])) {
+                $sqlFilter .= " AND project.id = :proj_id";
+                $values[':proj_id'] = $filters['proj_id'];
+            }
             if (!empty($filters['category'])) {
                 $sqlFilter .= " AND project.id IN (
                     SELECT project
