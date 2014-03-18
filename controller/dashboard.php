@@ -926,7 +926,7 @@ namespace Goteo\Controller {
             );
 
             // si es un convocador
-            if (ACL::check('/call/create')) {
+            if (isset($_SESSION['user']->roles['caller'])) {
                 $menu['calls'] = array(
                     'label' => Text::get('dashboard-menu-calls'),
                     'options' => array(
