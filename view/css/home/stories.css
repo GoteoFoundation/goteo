@@ -58,7 +58,7 @@ div.stories-banners-container div.stories-banner > div.info_extra{
 
 }
 
-div.stories-banners-container div.stories-banner div.info a > div#info_title{
+div.stories-banners-container div.stories-banner div.info div#info_title{
 
 font-size:18px;
 text-transform: uppercase;
@@ -79,7 +79,7 @@ color:#585a5c;
 }
 
 
-div.stories-banners-container div.stories-banner div.info a > div#review{
+div.stories-banners-container div.stories-banner div.info div#review{
 
 margin-top:5px; 
 color:#BCE8E8; 
@@ -158,10 +158,10 @@ div.stories-banners-container div.stories-banner a.expand {padding: 0;position: 
 
 /* paginación de los banners*/
 
-div#stories-banners-controler{position: absolute;width: 940px; bottom: 8px;z-index:100;overflow:auto;height:auto;text-align:left; margin-left: 31px;}
+div#stories-banners-controler{position: absolute;width: 940px; bottom: 6px;z-index:100;overflow:auto;height:auto;text-align:left; margin-left: 31px;}
 ul.bannerspage{list-style:none; z-index:100;  padding:0;  margin:0; display:inline-block}
 ul.bannerspage li{ cursor:pointer;  display:block;  float:left;  overflow:hidden; margin:0px 4px 5px 4px}
-ul.bannerspage li a{display:block;width:8px;height:8px;margin-top:2px; background-color:#d9cfd2;color:#d9cfd2;}
+ul.bannerspage li a{display:block;width:10px;height:12px; background-color:#d9cfd2;color:#d9cfd2;}
 ul.bannerspage li a:hover{ background-color:#808184;  color:#808184}
 ul.bannerspage li.current a{ background-color:#20B3B2 !important;  color:#20B3B2 !important}
 
