@@ -1526,7 +1526,7 @@ namespace Goteo\Model {
         }
 
         /**
-         * Actualizar los valores de configuración financiera de convocatoria
+         * Actualizar los valores de configuración económica de convocatoria
          *
          * @params conf array of config values
          * @return type booblean
@@ -1534,25 +1534,22 @@ namespace Goteo\Model {
         public function setDropconf ($dropconf = array(), &$errors = array()) {
 
             // verificación 
-            $limits = array('normal', 'unlimited', 'minimum', 'none');
-            $dropconf['amount'] =  is_numeric($conf['applied']) ? $conf['applied'] : null ;
-            $dropconf['maxdrop'] = is_numeric($conf['applied']) ? $conf['applied'] : null ;
-            $dropconf['maxproj'] = is_numeric($conf['applied']) ? $conf['applied'] : null ;
+            $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;
+            $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ;
+            $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ;
 
-
+            
             $fields = array(
-                  'limit1', // tipo limite riego primera ronda
-                  'limit2', // tipo limite riego segunda ronda
-                  'buzz_first', // Solo primer hashtag en el buzz
-                  'buzz_own', // Tweets  propios en el buzz
-                  'buzz_mention', // Menciones en el buzz
-                  'applied' // Para fijar numero de proyectos recibidos
+                  'amount', // presupuesto
+                  'maxdrop', // riego máximo por aporte
+                  'maxproj', // riego máximo por proyecto
+                  'modemaxp', // modalidad de máximo por proyecto
             );
 
             $values = array();
             $set = '';
 
-            foreach ($conf as $key=>$value) {
+            foreach ($dropconf as $key=>$value) {
                 if (in_array($key, $fields)) {
                     $values[":$key"] = $value;
                     if ($set != '') $set .= ', ';
@@ -1561,22 +1558,18 @@ namespace Goteo\Model {
             }
 
             if (!empty($values) && $set != '') {
-                    $values[':call'] = $this->id;
-                    $sql = "REPLACE INTO  call_conf SET `call` = :call, " . $set;
-
+                    $values[':id'] = $this->id;
+                    $sql = "UPDATE `call` SET $set  WHERE id = :id";
                 try {
                     self::query($sql, $values);
                     return true;
 
                 } catch (\PDOException $e) {
-                    $errors[] = "FALLO al gestionar el registro de datos personales " . $e->getMessage();
+                    $errors[] = 'Fallo al publicar la convocatoria. ' . $e->getMessage();
                     return false;
                 }
-            }
-
-
+            }            
         }
-
         
 
         /*
