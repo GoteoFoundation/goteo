@@ -1525,6 +1525,51 @@ namespace Goteo\Model {
 
         }
 
+        /**
+         * Actualizar los valores de configuración económica de convocatoria
+         *
+         * @params conf array of config values
+         * @return type booblean
+         */
+        public function setDropconf ($dropconf = array(), &$errors = array()) {
+
+            // verificación 
+            $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;
+            $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ;
+            $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ;
+
+            
+            $fields = array(
+                  'amount', // presupuesto
+                  'maxdrop', // riego máximo por aporte
+                  'maxproj', // riego máximo por proyecto
+                  'modemaxp', // modalidad de máximo por proyecto
+            );
+
+            $values = array();
+            $set = '';
+
+            foreach ($dropconf as $key=>$value) {
+                if (in_array($key, $fields)) {
+                    $values[":$key"] = $value;
+                    if ($set != '') $set .= ', ';
+                    $set .= "$key = :$key";
+                }
+            }
+
+            if (!empty($values) && $set != '') {
+                    $values[':id'] = $this->id;
+                    $sql = "UPDATE `call` SET $set  WHERE id = :id";
+                try {
+                    self::query($sql, $values);
+                    return true;
+
+                } catch (\PDOException $e) {
+                    $errors[] = 'Fallo al publicar la convocatoria. ' . $e->getMessage();
+                    return false;
+                }
+            }            
+        }
         
 
         /*
