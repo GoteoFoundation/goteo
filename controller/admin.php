@@ -287,7 +287,7 @@ namespace Goteo\Controller {
                     'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true),
                     'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true)
                 ),
-                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '', 'consultant' => '')
+                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '', 'consultant' => '','proj_id' =>'')
             ),
             'promote' => array(
                 'label' => 'Proyectos destacados',

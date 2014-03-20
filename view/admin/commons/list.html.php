@@ -69,6 +69,7 @@ $status = $this['statuses'];
         ?>
 
         <h3><?php echo $project->name; ?> (<?php echo $status[$project->status]; ?>)</h3>
+        <a href="/admin/projects/?proj_id=<?php echo $project->id?>">[Gestionar Proyecto]</a>
         <?php 
         if (empty($project->social_rewards)) {
             echo '<p>Este proyecto no tiene retornos colectivos</p><hr />';
