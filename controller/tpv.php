@@ -167,7 +167,7 @@ namespace Goteo\Controller {
                                     transaction = :transaction
                                 WHERE id = :id";
                         if (Invest::query($sql, $values)) {
-                            Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se a completado correctamente. Proceso controller/tpv');
+                            Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se ha completado correctamente. Proceso controller/tpv');
                         } else {
                             @mail('goteo-tpv-fault@doukeshi.org', 'Error db en comunicacion online', 'En la grabación de referencia, num auth. y estado. Ha fallado: '.$sql.' '.print_r($values, 1).'<hr /><pre>' . print_r($invest, 1) . '</pre>');
                         }
