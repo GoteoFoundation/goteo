@@ -56,7 +56,8 @@ namespace Goteo\Model\Call {
                             project.amount as amount,
                             project.project_location as location,
                             project.subtitle as subtitle,
-                            project.description as description
+                            project.description as description,
+                            project.id REGEXP '[0-9a-f]{5,40}' as draft
                         FROM project
                         INNER JOIN call_project
                             ON  call_project.project = project.id
@@ -77,7 +78,7 @@ namespace Goteo\Model\Call {
                     $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
 
                     $item->user = Model\User::getMini($item->owner);
-                    
+
                     $array[$item->id] = $item;
                 }
 
