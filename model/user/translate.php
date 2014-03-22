@@ -133,7 +133,7 @@ namespace Goteo\Model\User {
          * @param varcahr(50) $id  user identifier
          * @return array of items
          */
-	 	public static function getAvailables ($type = 'project', $node = null) {
+	 	public static function getAvailables ($type = 'project', $node = null, $current = null) {
 
             if (!in_array($type, self::$types)) {
                 return false;
@@ -150,6 +150,10 @@ namespace Goteo\Model\User {
                     if ($type != 'call' && !empty($node)) {
                         $sql .= " AND node = :node";
                         $values[':node'] = $node;
+                    }
+                    if (!empty($current)) {
+                        $sql .= " OR id = :id";
+                        $values[':id'] = $current;
                     }
                 }
                 $query = static::query($sql, $values);
