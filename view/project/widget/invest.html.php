@@ -123,7 +123,7 @@ if ($step == 'start') : ?>
     </div>
 
     <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
-    <div class="reminder"><a href="/faq/investors#q2"><?php echo Text::get('faq-payment-method'); ?></a></div>
+    <div class="reminder"><?php echo Text::html('faq-payment-method'); ?></div>
 
 </div>
 <?php else : ?>
