@@ -23,12 +23,20 @@ $stories = $this['stories'];
 <div id="stories-banners" class="rounded-corners-bottom">
     <div class="stories-banners-container rounded-corners-bottom">
 
-        <?php foreach ($stories as $story) : ?>
-            <div class="stories-banner<?php if (!empty($story->post)) echo ' activable'; ?>"<?php if ($story->image instanceof \Goteo\Model\Image) : ?> style="background: url('/data/images/<?php echo $story->image->name; ?>');"<?php endif; ?>>
-                <?php if (!empty($story->post)) : ?><a href="/blog/<?php echo $story->post;?>" class="expand" target="_blank"></a><?php endif; ?>
+        <?php foreach ($stories as $story) : 
+                if(!empty($story->post))
+                    $vinculo2="/blog/".$story->post;
+                else if(!empty($story->url))
+                    $vinculo1=$vinculo2=$story->url;
+                else
+                    $vinculo1=$vinculo2='/project/'.$story->project->id;
+
+        ?>
+            <div class="stories-banner<?php if (!empty($story->project)) echo ' activable'; ?>"<?php if ($story->image instanceof \Goteo\Model\Image) : ?> style="background: url('/data/images/<?php echo $story->image->name; ?>');"<?php endif; ?>>
+                <?php if (!empty($story->project)) : ?><a href="<?php echo $vinculo1;?>" class="expand" target="_blank"></a><?php endif; ?>
                 <div class="title_story"><strong><?php echo Text::get('home-stories-header').': '?></strong><span style="text-decoration:underline"><?php print_r($story->project->open_tags); ?></span></div>
                 <div class="info">
-                    <?php if (!empty($story->post)) { ?><a href="/blog/<?php echo $story->post;?>" target="_blank"><?php } ?>
+                    <a href="<?php echo $vinculo2;?>" target="_blank">
                         <div id="info_title"><?php echo htmlspecialchars($story->title); ?></div>
                         <div id="review"><?php echo htmlspecialchars($story->review); ?></div>
                     <?php if (!empty($story->post)) { ?></a><?php } ?>
