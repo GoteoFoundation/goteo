@@ -25,18 +25,26 @@ $status = Model\Project::status();
     <input type="hidden" name="id" value="<?php echo $story->id; ?>" />
 
     <input type="hidden" id="item" name="item" value="<?php echo $story->post; ?>" />
+
+<?php if($this['action']=="edit") { ?>
     <input type="hidden" name="project" id="story-project" value="<?php echo $story->project; ?>" size="60" />
+    <h3>    
+        <?php foreach ($projects as $project) : ?>
+                <?php if ($story->project == $project->id) echo $project->name . ' ('. $status[$project->status] . ')'; ?>
+        <?php endforeach; ?>
+    </h3>
 
-<h3>    
-    <?php foreach ($projects as $project) : ?>
-        <?php if($this['action'])="edit") { ?>
-            <?php if ($story->project == $project->id) echo $project->name . ' ('. $status[$project->status] . ')'; 
-            } else {
-            ?>
-            
-
-    <?php endforeach; ?>
-</h3>
+<?php } else { ?>
+    <p>
+        <label for="story-project">Proyecto:</label><br />
+        <select id="story-project" name="project">
+            <option value="" >Seleccionar el proyecto a mostrar en la historia exitosa</option>
+        <?php foreach ($projects as $project) : ?>
+            <option value="<?php echo $project->id; ?>"<?php if ($story->project == $project->id) echo' selected="selected"';?>><?php echo $project->name . ' ('. $status[$project->status] . ')'; ?></option>
+        <?php endforeach; ?>
+        </select>
+    </p>
+<?php } ?>
 
 <div id="text-story">
 <p>
