@@ -24,19 +24,23 @@ $stories = $this['stories'];
     <div class="stories-banners-container rounded-corners-bottom">
 
         <?php foreach ($stories as $story) : 
-                if(!empty($story->post))
-                    $vinculo2="/blog/".$story->post;
-                else if(!empty($story->url))
-                    $vinculo1=$vinculo2=$story->url;
-                else
-                    $vinculo1=$vinculo2='/project/'.$story->project->id;
+                    if(!empty($story->post))
+                        $link_title="/blog/".$story->post;
+                    else if(!empty($story->url))
+                        $link_title=$story->url;
+                    else
+                        $link_title='/project/'.$story->project->id;
+                    if(empty($story->url))
+                        $link_background='/project/'.$story->project->id;
+                    else
+                        $link_background=$story->url;
 
         ?>
             <div class="stories-banner<?php if (!empty($story->project)) echo ' activable'; ?>"<?php if ($story->image instanceof \Goteo\Model\Image) : ?> style="background: url('/data/images/<?php echo $story->image->name; ?>');"<?php endif; ?>>
-                <?php if (!empty($story->project)) : ?><a href="<?php echo $vinculo1;?>" class="expand" target="_blank"></a><?php endif; ?>
+                <a href="<?php echo $link_background;?>" class="expand" target="_blank"></a>
                 <div class="title_story"><strong><?php echo Text::get('home-stories-header').': '?></strong><span style="text-decoration:underline"><?php print_r($story->project->open_tags); ?></span></div>
                 <div class="info">
-                    <a href="<?php echo $vinculo2;?>" target="_blank">
+                    <a href="<?php echo $link_title;?>" target="_blank">
                         <div id="info_title"><?php echo htmlspecialchars($story->title); ?></div>
                         <div id="review"><?php echo htmlspecialchars($story->review); ?></div>
                     <?php if (!empty($story->post)) { ?></a><?php } ?>
