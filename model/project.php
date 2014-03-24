@@ -2456,8 +2456,8 @@ namespace Goteo\Model {
             return $investors;
         }
 
-        /*
-        Método para calcular el mínimo y óptimo de un proyecto
+        /**
+         *  Método para calcular el mínimo y óptimo de un proyecto
         */
         public static function calcCosts($id) {
             $cost_query = self::query("SELECT
