@@ -309,6 +309,9 @@ namespace Goteo\Model {
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
+                // asesores
+                $project->consultants = Project::getConsultants($id);
+
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
 
@@ -2351,7 +2354,11 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
-
+            if (!empty($filters['success'])) {
+                $sqlFilter .= " AND success = :success";
+                $values[':success'] = $filters['success'];
+            }
+            
             //el Order
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
