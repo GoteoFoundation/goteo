@@ -33,7 +33,7 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
 
                 // Checkeo de spam
-//                @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, 1).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, 1).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, 1).'</pre>');
+//                @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, true).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, true).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, true).'</pre>');
 
                 // verificamos referer
                 $referer = SRC_URL.'/contact';

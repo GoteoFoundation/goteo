@@ -253,7 +253,7 @@ namespace Goteo\Model {
 
 				$sql = "REPLACE INTO contract SET " . $set;
 				if (!self::query($sql, $values)) {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     return false;
                 } else {
                     return true;

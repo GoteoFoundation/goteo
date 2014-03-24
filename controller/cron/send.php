@@ -187,7 +187,7 @@ namespace Goteo\Controller\Cron {
                     echo \trace($errors);
                     @mail('goteo_fail@doukeshi.org',
                         'Fallo al enviar email automaticamente al autor ' . SITE_URL,
-                        'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, 1). '</pre>');
+                        'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, true). '</pre>');
                 }
             }
 
@@ -398,7 +398,7 @@ namespace Goteo\Controller\Cron {
                         $anyfail = true;
                         @mail('goteo_fail@doukeshi.org',
                             'Fallo al enviar email automaticamente al amigo ' . SITE_URL,
-                            'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, 1). '</pre>');
+                            'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, true). '</pre>');
                     }
                     unset($mailHandler);
                 }
