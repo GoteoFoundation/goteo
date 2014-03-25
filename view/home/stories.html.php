@@ -43,7 +43,7 @@ $stories = $this['stories'];
                     <a href="<?php echo $link_title;?>" target="_blank">
                         <div id="info_title"><?php echo htmlspecialchars($story->title); ?></div>
                         <div id="review"><?php echo htmlspecialchars($story->review); ?></div>
-                    <?php if (!empty($story->post)) { ?></a><?php } ?>
+                    </a>
                     <div id="line"></div>
                     <div id="description"><blockquote><?php echo htmlspecialchars($story->description).'</blockquote>. '.'<a href="/user/profile/'.$story->project->user->id.'" target="_blank">'.htmlspecialchars($story->project->user->name).'</a>, del proyecto: '.'<a href="/project/'.$story->project->id.'" target="_blank">'.htmlspecialchars($story->project->name).'</a>'; ?></div>
                 </div>
