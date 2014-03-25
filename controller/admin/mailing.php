@@ -173,14 +173,14 @@ namespace Goteo\Controller\Admin {
                             ORDER BY user.name ASC
                             ";
 
-//                        die('<pre>'.$sql . '<br />'.print_r($values, 1).'</pre>');
+//                        die('<pre>'.$sql . '<br />'.print_r($values, true).'</pre>');
 
                     if ($query = Model\User::query($sql, $values)) {
                         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
                             $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
                         }
                     } else {
-                        Message::Error('Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>');
+                        Message::Error('Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, true).'</pre>');
                     }
 
                     // si no hay destinatarios, salta a la lista con mensaje de error

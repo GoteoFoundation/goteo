@@ -225,6 +225,7 @@ namespace Goteo\Controller\Admin {
             // lista de proyectos seleccionados
             if ($action == 'projects') {
                 if (empty($call)) {
+                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
                     throw new Redirection('/admin/calls/list');
                 }
                 $projects   = Model\Call\Project::get($call->id, array('all'=>true));
@@ -268,6 +269,11 @@ namespace Goteo\Controller\Admin {
             }
 
             if ($action == 'admins') {
+                if (empty($call)) {
+                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
+                    throw new Redirection('/admin/calls');
+                }
+
                 if (isset($_GET['op']) && isset($_GET['user']) && in_array($_GET['op'], array('assign', 'unassign'))) {
                     if ($call->$_GET['op']($_GET['user'])) {
                         // ok
@@ -329,7 +335,10 @@ namespace Goteo\Controller\Admin {
             }            
 
             if ($action == 'conf') {
-
+                if (empty($call)) {
+                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
+                    throw new Redirection('/admin/calls');
+                }
                 $conf = $call->getConf();
 
                 return new View(

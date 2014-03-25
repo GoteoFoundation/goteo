@@ -187,16 +187,22 @@ namespace Goteo\Controller\Cron {
                     echo \trace($errors);
                     @mail('goteo_fail@doukeshi.org',
                         'Fallo al enviar email automaticamente al autor ' . SITE_URL,
-                        'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, 1). '</pre>');
+                        'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, true). '</pre>');
                 }
             }
 
             return false;
         }
 
-        /* A los cofinanciadores 
+        /**
+         *  A los cofinanciadores
          * Se usa tambien para notificar cuando un proyecto publica una novedad.
          * Por eso añadimos el tercer parámetro, para recibir los datos del post
+         *
+         * @param $type string
+         * @param $project Object
+         * @param $post Object
+         * @return bool
          */
         static public function toInvestors ($type, $project, $post = null) {
 
@@ -335,8 +341,13 @@ namespace Goteo\Controller\Cron {
 
         }
         
-        /* A los destinatarios de recompensa (regalo)
+        /**
+         * A los destinatarios de recompensa (regalo)
          * solo tipo 'fail' por ahora
+         *
+         * @param $type string (FIXME: sin uso)
+         * @param $project Object
+         * @return bool
          */
         static public function toFriends ($type, $project) {
 
@@ -387,7 +398,7 @@ namespace Goteo\Controller\Cron {
                         $anyfail = true;
                         @mail('goteo_fail@doukeshi.org',
                             'Fallo al enviar email automaticamente al amigo ' . SITE_URL,
-                            'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, 1). '</pre>');
+                            'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, true). '</pre>');
                     }
                     unset($mailHandler);
                 }

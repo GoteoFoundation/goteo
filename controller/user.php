@@ -184,7 +184,7 @@ namespace Goteo\Controller {
                     $oauth->tokens[$oauth->provider]['token'] = $_POST['tokens'][$oauth->provider]['token'];
                 if ($_POST['tokens'][$oauth->provider]['secret'])
                     $oauth->tokens[$oauth->provider]['secret'] = $_POST['tokens'][$oauth->provider]['secret'];
-                //print_r($_POST['tokens']);print_R($oauth->tokens[$oauth->provider]);die;
+                //print_r($_POST['tokens']);print_r($oauth->tokens[$oauth->provider]);die;
                 $user = new Model\User();
                 $user->userid = $_POST['userid'];
                 $user->email = $_POST['email'];
@@ -279,7 +279,7 @@ namespace Goteo\Controller {
 
                 if ($oauth->login()) {
                     //si ok: redireccion de login!
-                    //Message::Info("USER INFO:\n".print_r($oauth->user_data,1));
+                    //Message::Info("USER INFO:\n".print_r($oauth->user_data,true));
                     //si es posible, login en goteo (redirecciona a user/dashboard o a user/confirm)
                     //y fuerza que pueda logear en caso de que no esté activo
                     if (!$oauth->goteoLogin()) {

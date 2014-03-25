@@ -248,7 +248,7 @@ namespace Goteo\Library {
                 }
                 return $texts;
             } catch (\PDOException $e) {
-                throw new Exception($e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Exception($e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -271,7 +271,7 @@ namespace Goteo\Library {
 			if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
 				return true;
 			} else {
-				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
+				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, true) . '</pre>';
 				return false;
 			}
 		}
@@ -293,7 +293,7 @@ namespace Goteo\Library {
 			if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id']))) {
 				return true;
 			} else {
-				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
+				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, true) . '</pre>';
 				return false;
 			}
 		}
