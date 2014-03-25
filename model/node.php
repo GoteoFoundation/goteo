@@ -387,7 +387,7 @@ namespace Goteo\Model {
 				if (self::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     return false;
                 }
 			} catch(\PDOException $e) {

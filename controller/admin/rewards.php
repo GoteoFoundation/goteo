@@ -111,7 +111,7 @@ namespace Goteo\Controller\Admin {
 
             // listado de aportes
             if ($filters['filtered'] == 'yes') {
-                $list = Model\Project\Reward::getChossen($filters);
+                $list = Model\Project\Reward::getChosen($filters);
             } else {
                 $list = array();
             }

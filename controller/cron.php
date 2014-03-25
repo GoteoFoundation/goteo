@@ -522,7 +522,7 @@ namespace Goteo\Controller {
                                             Model\Invest::setDetail($invest->id, 'issue-notify-failed', "Ha fallado al enviar el mail de notificacion de la incidencia al usuario");
                                             @mail('goteo_fail@doukeshi.org',
                                                 'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
-                                                'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, 1). '</pre>');
+                                                'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, true). '</pre>');
                                         }
                                         
                                     }

@@ -171,7 +171,7 @@ namespace Goteo\Model {
 
                 return $this->id;
             } catch (\PDOException $e) {
-                $errors[] = "ERROR al crear una nueva convocatoria<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+                $errors[] = "ERROR al crear una nueva convocatoria<br />$sql<br /><pre>" . print_r($values, true) . "</pre>";
                 \trace($this);
                 die($errors[0]);
                 return false;
@@ -479,7 +479,7 @@ namespace Goteo\Model {
 
                 $sql = "UPDATE `call` SET " . $set . " WHERE id = :id";
                 if (!self::query($sql, $values)) {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     $fail = true;
                 }
 
@@ -631,7 +631,7 @@ namespace Goteo\Model {
                 if (self::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     return false;
                 }
             } catch (\PDOException $e) {

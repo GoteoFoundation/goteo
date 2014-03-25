@@ -2,11 +2,13 @@
 
 use Goteo\Library\Text,
     Goteo\Model,
-    Goteo\Core\Redirection;
+    Goteo\Core\Redirection,
+    Goteo\Library\Message;
 
 $project = $this['project'];
 
 if (!$project instanceof Model\Project) {
+    Message::Error('Instancia de proyecto corrupta');
     throw new Redirection('/admin/projects');
 }
 

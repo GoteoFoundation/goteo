@@ -123,7 +123,7 @@ namespace Goteo\Controller {
         
 
         public function comunication () {
-//            @mail('goteo-tpv-fault@doukeshi.org', 'Comunicacion online', 'Este GET<pre>' . print_r($_GET, 1) . '</pre> y este POST:<pre>' . print_r($_POST, 1) . '</pre>');
+//            @mail('goteo-tpv-fault@doukeshi.org', 'Comunicacion online', 'Este GET<pre>' . print_r($_GET, true) . '</pre> y este POST:<pre>' . print_r($_POST, true) . '</pre>');
             
             if (isset($_POST['Num_operacion'])) {
                 $_POST['invest'] = $id = \substr($_POST['Num_operacion'], 0, -4);
@@ -167,9 +167,9 @@ namespace Goteo\Controller {
                                     transaction = :transaction
                                 WHERE id = :id";
                         if (Invest::query($sql, $values)) {
-                            Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se a completado correctamente. Proceso controller/tpv');
+                            Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se ha completado correctamente. Proceso controller/tpv');
                         } else {
-                            @mail('goteo-tpv-fault@doukeshi.org', 'Error db en comunicacion online', 'En la grabación de referencia, num auth. y estado. Ha fallado: '.$sql.' '.print_r($values, 1).'<hr /><pre>' . print_r($invest, 1) . '</pre>');
+                            @mail('goteo-tpv-fault@doukeshi.org', 'Error db en comunicacion online', 'En la grabación de referencia, num auth. y estado. Ha fallado: '.$sql.' '.print_r($values, true).'<hr /><pre>' . print_r($invest, true) . '</pre>');
                         }
 
                         // si tiene capital riego asociado pasa al mismo estado
@@ -177,7 +177,7 @@ namespace Goteo\Controller {
                             Invest::query("UPDATE invest SET status = 1 WHERE id = :id", array(':id' => $invest->droped));
                         }
                     } catch (\PDOException $e) {
-                        @mail('goteo-tpv-fault@doukeshi.org', 'Error db en comunicacion online', 'En la grabación de referencia, num auth. y estado. Ha dado un PDO::Exception<br /><pre>' . print_r($invest, 1) . '</pre>');
+                        @mail('goteo-tpv-fault@doukeshi.org', 'Error db en comunicacion online', 'En la grabación de referencia, num auth. y estado. Ha dado un PDO::Exception<br /><pre>' . print_r($invest, true) . '</pre>');
                     }
                     $_POST['result'] = 'Transaccion ok';
 
@@ -190,7 +190,7 @@ namespace Goteo\Controller {
                     $Cerr = (string) $_POST['Codigo_error'];
                     $errTxt = self::$errcode[$Cerr];
                     Invest::setDetail($invest->id, 'tpv-response-error', 'El tpv ha comunicado el siguiente Codigo error: '.$Cerr.' - '.$errTxt.'. El aporte a quedado \'En proceso\'. Proceso controller/tpv');
-                    @mail('goteo-tpv-fault@doukeshi.org', 'Error en TPV', 'Codigo error: '.$Cerr.' '.$errTxt.'<br /><pre>' . print_r($_POST, 1) . '</pre>');
+                    @mail('goteo-tpv-fault@doukeshi.org', 'Error en TPV', 'Codigo error: '.$Cerr.' '.$errTxt.'<br /><pre>' . print_r($_POST, true) . '</pre>');
                     $invest->cancel('ERR '.$Cerr);
                     $_POST['result'] = 'Fail';
 
@@ -224,7 +224,7 @@ namespace Goteo\Controller {
                 unset($log);
             } else {
                 echo 'Se esperaban recibir datos de comunicación online del TPV.';
-//                @mail('goteo-tpv-fault@doukeshi.org', 'Comunicacion online sin datos', 'Este GET<pre>' . print_r($_GET, 1) . '</pre> y este POST:<pre>' . print_r($_POST, 1) . '</pre>');
+//                @mail('goteo-tpv-fault@doukeshi.org', 'Comunicacion online sin datos', 'Este GET<pre>' . print_r($_GET, true) . '</pre> y este POST:<pre>' . print_r($_POST, true) . '</pre>');
 //                throw new Redirection('/', Error::BAD_REQUEST);
             }
 
@@ -233,7 +233,7 @@ namespace Goteo\Controller {
 
         public function simulacrum () {
             echo 'Simulacrum<br />';
-            @mail('julian.canaves@gmail.com', 'Test request', 'Recibido este POST:<pre>' . print_r($_POST, 1) . '</pre>');
+            @mail('julian.canaves@gmail.com', 'Test request', 'Recibido este POST:<pre>' . print_r($_POST, true) . '</pre>');
             die;
         }
 

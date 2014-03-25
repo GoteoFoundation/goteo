@@ -309,7 +309,7 @@ namespace Goteo\Model\Project {
             }
         }
         
-        public static function getChossen($filters = array()) {
+        public static function getChosen($filters = array()) {
             try {
                 $array = array();
 

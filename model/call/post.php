@@ -62,7 +62,7 @@ namespace Goteo\Model\Call {
 				if (self::query($sql, $values)) {
     				return true;
                 } else {
-                    $errors[] = "$sql <pre>".print_r($values, 1)."</pre>";
+                    $errors[] = "$sql <pre>".print_r($values, true)."</pre>";
                 }
 			} catch(\PDOException $e) {
 				$errors[] = "La entrada {$this->id} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -90,7 +90,7 @@ namespace Goteo\Model\Call {
                 if (self::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = "$sql <pre>".print_r($values, 1)."</pre>";
+                    $errors[] = "$sql <pre>".print_r($values, true)."</pre>";
                 }
 			} catch(\PDOException $e) {
 				$errors[] = 'No se ha podido quitar la entrada ' . $this->id . ' de la convocatoria ' . $this->call . ' ' . $e->getMessage();

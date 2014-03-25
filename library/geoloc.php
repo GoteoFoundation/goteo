@@ -298,14 +298,14 @@ namespace Goteo\Library {
 /*                
                 echo "Error {$data->status} ".self::$gmaps_api_statuses[$data->status]."<br />
                     URL: {$url}<br />
-                    RESPONSE:<br />" . print_r($data, 1)."<br />";
+                    RESPONSE:<br />" . print_r($data, true)."<br />";
 */                
                 @mail('gmaps_api_fail@doukeshi.org', 'Error en la petición a la api gmaps en ' . SITE_URL, "Error {$data->status} ".self::$gmaps_api_statuses[$data->status]."
                     URL: {$url}
                     INPUT:
-                    " . print_r($input, 1)."
+                    " . print_r($input, true)."
                     RESPONSE:
-                    " . print_r($data, 1));
+                    " . print_r($data, true));
 
                 // si excedemos la cuota, no enviamos más peticiones
                 if ($data->status == 'OVER_QUERY_LIMIT') {

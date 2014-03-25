@@ -447,7 +447,7 @@ namespace Goteo\Controller {
                             Message::Info(Text::get('assign-call-success', $callData->name));
                         } else {
                             Message::Error(Text::get('project-review-confirm_mail-fail'));
-                            \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $_SESSION['user']->email . ' con esta instancia <pre>'.print_r($mailHandler, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
+                            \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $_SESSION['user']->email . ' con esta instancia <pre>'.print_r($mailHandler, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
                         }
 
                         unset($mailHandler);
@@ -463,7 +463,7 @@ namespace Goteo\Controller {
                         $log->doAdmin('project');
                         unset($log);
                     } else {
-                        \mail('goteo_fail@doukeshi.org', 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
+                        \mail('goteo_fail@doukeshi.org', 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
                     }
                 }
 
