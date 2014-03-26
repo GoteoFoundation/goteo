@@ -1,7 +1,8 @@
 <?php
 
 use Goteo\Core\Redirection,
-    Goteo\Library\Message;
+    Goteo\Library\Message,
+    Goteo\Model;
 
 $project = $this['project'];
 
