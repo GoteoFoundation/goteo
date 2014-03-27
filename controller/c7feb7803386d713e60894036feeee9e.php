@@ -7,6 +7,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
+        Goteo\Controller\Cron\Send,
         Goteo\Library\Feed;
 
     class C7feb7803386d713e60894036feeee9e extends \Goteo\Core\Controller {
@@ -46,6 +47,11 @@ namespace Goteo\Controller {
                 die;
             }
             
+            $project_obj = Model\Project::getMini($project);
+            Send::toConsultants('rewardfulfilled', $project_obj);
+            // TODO: Si no está olivier en los asesores
+            @mail('olivier@goteo.org', 'Proyecto ha publicado su retorno colectivo', $log_txt);
+
             if (empty($log_txt)) {
                 $log_txt = \trace($_POST) . \trace($_SESSION) . \trace($_SERVER);
             }

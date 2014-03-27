@@ -220,6 +220,11 @@ namespace Goteo\Controller\Cron {
                     $search  = array('%PROJECTNAME%', '%URL%');
                     $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id);
                     break;
+                case 'rewardfulfilled':
+                    $tpl = XX;
+                    $search  = array('%XX%', '%YY%');
+                    $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id);
+                    break;
             }
 
             if (!empty($tpl)) {
