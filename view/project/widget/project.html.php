@@ -114,9 +114,7 @@ if (isset($this['investor']) && is_object($this['investor'])) {
 
 
     <?php
-    if ((!empty($project->published)) && ($project->published > date('Y-m-d'))) {
-        echo 'Este proyecto se publicará automáticamente el día: ' . $project->published . '<br>';
-    }
+    
     
     /*
      * quitamos los botones
