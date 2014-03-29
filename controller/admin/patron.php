@@ -17,7 +17,11 @@ namespace Goteo\Controller\Admin {
             
             $errors = array();
 
+            // guardar cambios en registro de apadrinamiento
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
+
+                // manteniendo el orden
+                $order = Model\Patron::next($_POST['user'], $node);
 
                 // objeto
                 $promo = new Model\Patron(array(
@@ -28,7 +32,7 @@ namespace Goteo\Controller\Admin {
                     'title' => $_POST['title'],
                     'description' => $_POST['description'],
                     'link' => $_POST['link'],
-                    'order' => $_POST['order'],
+                    'order' => $order,
                     'active' => $_POST['active']
                 ));
 
@@ -90,12 +94,27 @@ namespace Goteo\Controller\Admin {
 				}
 			}
 
+            // aplicar cambio de orden
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['apply_order'])) {
+                foreach ($_POST as $key=>$value) {
+                    $parts = explode('_', $key);
+
+                    if ($parts[0] == 'order') {
+                        if (Model\Patron::setOrder($parts[1], $value)) {
+                            // OK
+                        }
+                    }
+                }
+            }
+
+
             switch ($action) {
                 case 'active':
                     $set = $flag == 'on' ? true : false;
                     Model\Patron::setActive($id, $set);
                     throw new Redirection('/admin/patron');
                     break;
+                /*
                 case 'up':
                     Model\Patron::up($id, $node);
                     throw new Redirection('/admin/patron');
@@ -104,6 +123,7 @@ namespace Goteo\Controller\Admin {
                     Model\Patron::down($id, $node);
                     throw new Redirection('/admin/patron');
                     break;
+                */
                 case 'remove':
                     if (Model\Patron::delete($id)) {
                         $projectData = Model\Project::getMini($id);
@@ -127,8 +147,6 @@ namespace Goteo\Controller\Admin {
                     throw new Redirection('/admin/patron');
                     break;
                 case 'add':
-                    // siguiente orden
-                    $next = Model\Patron::next($node);
 
                     return new View(
                         'view/admin/index.html.php',
@@ -136,9 +154,8 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'patron',
                             'file' => 'edit',
                             'action' => 'add',
-                            'promo' => (object) array('order' => $next),
-                            'available' => Model\Patron::available(null, $node),
-                            'status' => $status
+                            'promo' => (object) array(),
+                            'available' => Model\Patron::available(null, $node)
                         )
                     );
                     break;
@@ -158,15 +175,29 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
-
+            // promos by user
+            $promos  = array();
+            $patrons = array();
             $patroned = Model\Patron::getAll($node);
+
+            foreach ($patroned as $promo) {
+                if (!isset($patrons[$promo->user->id])) {
+                    $patrons[$promo->user->id] = (object) array(
+                        'id' => $promo->user->id,
+                        'name' => $promo->user->name,
+                        'order' => $promo->order
+                    );
+                }
+                $promos[$promo->user->id][] = $promo;
+            }
 
             return new View(
                 'view/admin/index.html.php',
                 array(
                     'folder' => 'patron',
                     'file' => 'list',
-                    'patroned' => $patroned
+                    'patrons' => $patrons,
+                    'promos' => $promos
                 )
             );
             

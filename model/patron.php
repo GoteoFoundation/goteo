@@ -309,8 +309,22 @@ namespace Goteo\Model {
             }
         }
 
+        /* Para reordenar un padrino
+         */
+        public static function setOrder ($id, $num) {
+
+            $sql = "UPDATE patron SET `order` = :num WHERE user = :id";
+            if (self::query($sql, array(':id'=>$id, ':num'=>$num))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+
         /*
-         * Para quitar un proyecto apadrinado
+         * Para quitar un apadrinamiento
          */
         public static function delete ($id) {
             
@@ -323,7 +337,7 @@ namespace Goteo\Model {
 
         }
 
-        /* Para activar/desactivar un recomendado
+        /* Para activar/desactivar un apadrinamiento
          */
         public static function setActive ($id, $active = false) {
 
@@ -338,7 +352,7 @@ namespace Goteo\Model {
 
         /*
          * Para que un proyecto salga antes  (disminuir el order)
-         */
+         *
         public static function up ($id, $node = \GOTEO_NODE) {
             $extra = array (
                     'node' => $node
@@ -346,24 +360,38 @@ namespace Goteo\Model {
             return Check::reorder($id, 'up', 'patron', 'id', 'order', $extra);
         }
 
-        /*
+        *
          * Para que un proyecto salga despues  (aumentar el order)
-         */
+         *
         public static function down ($id, $node = \GOTEO_NODE) {
             $extra = array (
                     'node' => $node
                 );
             return Check::reorder($id, 'down', 'patron', 'id', 'order', $extra);
         }
+*/
 
-        /*
-         *
-         */
-        public static function next ($node = \GOTEO_NODE) {
-            $query = self::query('SELECT MAX(`order`) FROM patron WHERE node = :node'
-                , array(':node'=>$node));
-            $order = $query->fetchColumn(0);
-            return ++$order;
+        // orden para siguiente apadrinamiento
+        public static function next ($user = null, $node = \GOTEO_NODE) {
+            if (isset($user)) {
+                $query = self::query('SELECT `order` FROM patron WHERE user = :user'
+                    , array(':user'=>$user));
+                $order = $query->fetchColumn(0);
+
+                if (empty($order)) {
+                    $query = self::query('SELECT MAX(`order`) FROM patron WHERE node = :node'
+                        , array(':node'=>$node));
+                    $order = $query->fetchColumn(0);
+                    return ++$order;
+                }
+
+                return $order;
+            } else {
+                $query = self::query('SELECT MAX(`order`) FROM patron WHERE node = :node'
+                    , array(':node'=>$node));
+                $order = $query->fetchColumn(0);
+                return ++$order;
+            }
 
         }
 
