@@ -20,7 +20,7 @@ namespace Goteo\Model {
             $owner, // User who created it
             $node, // Node this project belongs to
             $nodeData, // Node data
-            $status,
+            $status,   // Project status
             $progress, // puntuation %
             $amount, // Current donated amount
 
@@ -308,6 +308,9 @@ namespace Goteo\Model {
 				$project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
+
+                // asesores
+                $project->consultants = Project::getConsultants($id);
 
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
@@ -2307,6 +2310,10 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.id = :proj_id";
                 $values[':proj_id'] = $filters['proj_id'];
             }
+            if (!empty($filters['published'])) {
+                $sqlFilter .= " AND project.published = :published";
+                $values[':published'] = $filters['published'];
+            }
             if (!empty($filters['category'])) {
                 $sqlFilter .= " AND project.id IN (
                     SELECT project
@@ -2351,7 +2358,11 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
-
+            if (!empty($filters['success'])) {
+                $sqlFilter .= " AND success = :success";
+                $values[':success'] = $filters['success'];
+            }
+            
             //el Order
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {

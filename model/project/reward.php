@@ -266,7 +266,13 @@ namespace Goteo\Model\Project {
             return $list;
         }
 
-        /* para saber si ha cumplido con recompensas/retornos */
+        /**
+         * Para saber si ha cumplido con recompensas/retornos
+         * @param string $project id de un proyecto
+         * @param string $type individual|social
+         * @return boolean
+         */
+         
         public static function areFulfilled($project, $type = 'individual') {
 
             // diferente segun tipo

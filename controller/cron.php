@@ -621,6 +621,13 @@ namespace Goteo\Controller {
 
             }
 
+            // Publicación automática de campañas:
+            // Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
+            // A esos les cambia el estado a publicado.
+            $projects = Model\Project::getList(array('status' => 2, 'published' => date('Y-m-d') ));
+            foreach ($projects as $project) {
+                $project->publish();
+            }
 
             // desbloqueamos
             if (unlink($block_file)) {
@@ -657,7 +664,7 @@ namespace Goteo\Controller {
             }
             
             $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
-            if ($debug) echo 'Modo debug activado<br />';
+            if ($debug) echo 'Modo debug activado<hr />';
             
             // lanzamos subcontrolador
             Cron\Verify::process($debug);
@@ -867,7 +874,7 @@ namespace Goteo\Controller {
 //            $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
             $debug = true;
             
-            if ($debug) echo 'Modo debug activado<br />';
+            if ($debug) echo 'Modo debug activado<hr />';
             
             // subcontrolador Auto-tips
             Cron\Daily::Projects($debug);
