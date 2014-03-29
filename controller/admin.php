@@ -270,8 +270,9 @@ namespace Goteo\Controller {
                 'label' => 'Padrinos',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
-                    'add' => array('label' => 'Nueva Recomendación', 'item' => false),
-                    'edit' => array('label' => 'Editando Recomendacion', 'item' => true)
+                    'add' => array('label' => 'Nuevo apadrinamiento', 'item' => false),
+                    'edit' => array('label' => 'Editando Apadrinamiento', 'item' => true),
+                    'view' => array('label' => 'Apadrinamientos', 'item' => true)
                 )
             ),
             'projects' => array(

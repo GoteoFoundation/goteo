@@ -56,9 +56,12 @@ namespace Goteo\Controller\Admin {
                             $log->doAdmin('admin');
                             unset($log);
 
+                            throw new Redirection('/admin/patron/view/'.$_POST['user']);
+
                             break;
                         case 'edit':
-                            Message::Info('Apadrinamiento actualizado correctamente');
+                            throw new Redirection('/admin/patron/view/'.$_POST['user']);
+
                             break;
                     }
 				}
@@ -100,9 +103,7 @@ namespace Goteo\Controller\Admin {
                     $parts = explode('_', $key);
 
                     if ($parts[0] == 'order') {
-                        if (Model\Patron::setOrder($parts[1], $value)) {
-                            // OK
-                        }
+                        Model\Patron::setOrder($parts[1], $value);
                     }
                 }
             }
@@ -112,18 +113,14 @@ namespace Goteo\Controller\Admin {
                 case 'active':
                     $set = $flag == 'on' ? true : false;
                     Model\Patron::setActive($id, $set);
-                    throw new Redirection('/admin/patron');
+
+                    if (isset($_GET['user']))
+                        throw new Redirection('/admin/patron/view/'.$_GET['user']);
+                    else
+                        throw new Redirection('/admin/patron/');
+
                     break;
-                /*
-                case 'up':
-                    Model\Patron::up($id, $node);
-                    throw new Redirection('/admin/patron');
-                    break;
-                case 'down':
-                    Model\Patron::down($id, $node);
-                    throw new Redirection('/admin/patron');
-                    break;
-                */
+
                 case 'remove':
                     if (Model\Patron::delete($id)) {
                         $projectData = Model\Project::getMini($id);
@@ -140,13 +137,20 @@ namespace Goteo\Controller\Admin {
                         $log->doAdmin('admin');
                         unset($log);
 
-                        Message::Info('Apadrinamiento quitado correctamente');
                     } else {
                         Message::Error('No se ha podido quitar correctamente el apadrinamiento');
                     }
-                    throw new Redirection('/admin/patron');
+
+                    if (isset($_GET['user']))
+                        throw new Redirection('/admin/patron/view/'.$_GET['user']);
+                    else
+                        throw new Redirection('/admin/patron/');
+
                     break;
+
                 case 'add':
+
+                    $user = (isset($_GET['user'])) ? (object) array('id'=>$_GET['user']) : null;
 
                     return new View(
                         'view/admin/index.html.php',
@@ -154,11 +158,12 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'patron',
                             'file' => 'edit',
                             'action' => 'add',
-                            'promo' => (object) array(),
+                            'promo' => (object) array('user' => $user),
                             'available' => Model\Patron::available(null, $node)
                         )
                     );
                     break;
+
                 case 'edit':
                     $promo = Model\Patron::get($id);
 
@@ -173,10 +178,37 @@ namespace Goteo\Controller\Admin {
                         )
                     );
                     break;
+
+                case 'view':
+                    // promos by user
+                    $promos  = array();
+                    $patrons = array();
+                    $patroned = Model\Patron::getAll($node);
+
+                    foreach ($patroned as $promo) {
+                        if (!isset($patrons[$promo->user->id])) {
+                            $patrons[$promo->user->id] = (object) array(
+                                'id' => $promo->user->id,
+                                'name' => $promo->user->name,
+                                'order' => $promo->order
+                            );
+                        }
+                        $promos[$promo->user->id][] = $promo;
+                    }
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'patron',
+                            'file' => 'view',
+                            'patron' => $patrons[$id],
+                            'promos' => $promos[$id]
+                        )
+                    );
+                    break;
             }
 
             // promos by user
-            $promos  = array();
             $patrons = array();
             $patroned = Model\Patron::getAll($node);
 
@@ -188,7 +220,6 @@ namespace Goteo\Controller\Admin {
                         'order' => $promo->order
                     );
                 }
-                $promos[$promo->user->id][] = $promo;
             }
 
             return new View(
@@ -196,8 +227,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'patron',
                     'file' => 'list',
-                    'patrons' => $patrons,
-                    'promos' => $promos
+                    'patrons' => $patrons
                 )
             );
             
