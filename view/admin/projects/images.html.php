@@ -29,6 +29,10 @@ function the_link($current, $image) {
     return '<input type="text" name="url_image_'.$image.'"  value="'.$current.'" style="width: 100%;"/>';
 }
 
+function the_order($current, $image) {
+    return '<input type="text" name="order_image_'.$image.'"  value="'.$current.'" style="width: 20px;"/>';
+}
+
 ?>
 <script type="text/javascript">
 function move (img, direction, section) {
@@ -52,38 +56,35 @@ function move (img, direction, section) {
         <input type="hidden" id="the_section" name="section" value="" />
         <input type="hidden" id="move_pos" name="move" value="" />
     <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th></th>
-                <th style="width:30px;"></th>
-                <th colspan="2"></th> <!-- posicion -->
-            </tr>
-        </thead>
-
         <tbody>
         <?php foreach ($sections as $sec=>$secName) : 
             if (empty($images[$sec])) continue; 
             ?>
             <tr>
-                <td colspan="5" style="text-align: left;"><h3><?php echo $secName; ?></h3></td>
+                <td colspan="3" style="text-align: left;"><h3><?php echo $secName; ?></h3></td>
+            </tr>
+            <tr>
+                <th>Orden</th>
+                <th></th>
+                <th></th>
             </tr>
             <?php foreach ($images[$sec] as $image) : ?>
             <tr>
+                <td style="width:100px;text-align: center;">
+                    <?php echo the_order($image->order, $image->image); ?>
+                </td>
                 <td style="width:105px;text-align: left;"><img src="<?php echo $image->imageData->getLink(175, 100); ?>" alt="image" /></td>
                 <td>
-                    <table>
-                        <tr>
-                            <td><label>Sección:<br /><?php echo the_section($image->section, $image->image, $sections); ?></label></td>
-                        </tr>
-                        <tr>
-                            <td><label>Enlace:<br /><?php echo the_link($image->url, $image->image); ?></label></td>
-                        </tr>
-                    </table>
+                    <p>
+                        <label>Sección:<br /><?php echo the_section($image->section, $image->image, $sections); ?></label>
+                    </p>
+                    <p>
+                        <label>Enlace:<br /><?php echo the_link($image->url, $image->image); ?></label>
+                    </p>
                 </td>
+            </tr>
+            <tr>
                 <td>&nbsp;</td>
-                <td><a href="#" onclick="move('<?php echo $image->image; ?>', 'up', '<?php echo $image->section; ?>'); return false;">[&uarr;]</a></td>
-                <td><a href="#" onclick="move('<?php echo $image->image; ?>', 'down', '<?php echo $image->section; ?>'); return false;">[&darr;]</a></td>
             </tr>
             <?php endforeach; ?>
         <?php endforeach; ?>

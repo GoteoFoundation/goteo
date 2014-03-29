@@ -105,16 +105,19 @@ namespace Goteo\Controller\Admin {
                 } elseif ($action == 'images') {
                     
                     $todook = true;
-                    
+
+                    /*
+                     *  Ya no movemos con flechas, cambiamos directamente el número de orden
                     if (!empty($_POST['move'])) {
                         $direction = $_POST['action'];
                         Model\Project\Image::$direction($id, $_POST['move'], $_POST['section']);
                     }
+                    */
                     
                     foreach ($_POST as $key=>$value) {
                         $parts = explode('_', $key);
                         
-                        if ($parts[1] == 'image' && in_array($parts[0], array('section', 'url'))) {
+                        if ($parts[1] == 'image' && in_array($parts[0], array('section', 'url', 'order'))) {
                             if (Model\Project\Image::update($id, $parts[2], $parts[0], $value)) {
                                 // OK
                             } else {
