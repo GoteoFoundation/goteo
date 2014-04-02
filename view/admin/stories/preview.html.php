@@ -31,7 +31,7 @@ $story = $this['story'];
 ?>
 
         <div id="sub-header">
-            <div class="breadcrumbs"><?php echo ADMIN_BCPATH." ".$story->id; ?></div>
+            <div class="breadcrumbs"><?php echo ADMIN_BCPATH; ?></div>
         </div>
 
         <div id="main">
