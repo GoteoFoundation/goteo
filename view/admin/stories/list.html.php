@@ -8,7 +8,6 @@ $transNode = ACL::check('/translate/node/'.$node) ? true : false;
 $translator = ACL::check('/translate') ? true : false;
 ?>
 <a href="/admin/stories/add" class="button">Nueva historia exitosa</a>
-<a href="/admin/stories/preview" class="button red">Preview</a>
 
 <div class="widget board">
     <?php if (!empty($this['storyed'])) : ?>
@@ -45,6 +44,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <a href="/translate/stories/edit/<?php echo $story->id; ?>" target="_blank">[Traducir]</a>
                 <?php endif; ?>
                 </td>
+                <td><a href="/admin/stories/preview/<?php echo $story->id; ?>">[Preview]</a></td>
                 <td><a href="/admin/stories/remove/<?php echo $story->id; ?>">[Quitar]</a></td>
             </tr>
             <?php endforeach; ?>

@@ -167,11 +167,12 @@ namespace Goteo\Controller\Admin {
                     );
                     break;
                     case 'preview':
-                            $stories = Model\Stories::getAll(true);
+                            // datos del elemento
+                            $story = Model\Stories::get($id);
                             return new View(
                                 'view/admin/stories/preview.html.php',
                                 array(
-                                    'stories' =>$stories,
+                                    'story' =>$story,
                                     'action' => 'preview'
                                     
                                 )
