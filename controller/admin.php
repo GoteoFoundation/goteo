@@ -356,7 +356,7 @@ namespace Goteo\Controller {
                     'add' => array('label' => 'Nueva Historia', 'item' => false),
                     'edit' => array('label' => 'Editando Historia', 'item' => true),
                     'translate' => array('label' => 'Traduciendo Historia', 'item' => true),
-                    'preview' => array('label' => 'Preview Historia', 'item' => false)
+                    'preview' => array('label' => 'Previsualizando Historia', 'item' => true)
                 )
             ),
             'tags' => array(

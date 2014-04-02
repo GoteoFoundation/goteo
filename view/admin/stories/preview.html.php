@@ -34,29 +34,10 @@ $story = $this['story'];
             <div class="breadcrumbs"><?php echo ADMIN_BCPATH." ".$story->id; ?></div>
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
-
         <div id="main">
 
             <div class="admin-center">
 
-
-            <?php if (isset($_SESSION['user']->roles['superadmin'])) : ?>
-            <div class="widget board">
-                <ul>
-                    <li><a href="/admin/projects">Proyectos</a></li>
-                    <li><a href="/admin/users">Usuarios</a></li>
-                    <li><a href="/admin/accounts">Aportes</a></li>
-                    <li><a href="/admin/calls">Convocatorias</a></li>
-                    <li><a href="/admin/tasks">Tareas</a></li>
-                    <li><a href="/admin/nodes">Nodos</a></li>
-                    <li><a href="/admin/reports">Informes</a></li>
-                    <li><a href="/admin/newsletter">Boletin</a></li>
-                    <li><a href="/admin/locations">GeoLoc.</a></li>
-                </ul>
-            </div>
-
-<?php endif; ?>
 
 <div class="widget stories-home" style="padding:0;">
     
