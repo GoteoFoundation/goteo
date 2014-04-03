@@ -87,7 +87,7 @@ if (!$project instanceof  Goteo\Model\Project) {
             <div id="cofund" class="chart_div"></div>
 
              <?php } else {?>    
-                <h2 style="color:#20b3b2;"><?php echo 'Este proyecto se publicará automáticamente el ' .  date('d-m-Y', strtotime($project->published)) ; ?></h2>
+                <h2 style="color:#20b3b2;"><?php echo 'Este proyecto se publicará automáticamente el día ' .  date('d-m-Y', strtotime($project->published)) ; ?></h2>
            
             <?php }?>
             </div>

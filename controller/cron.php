@@ -636,15 +636,34 @@ namespace Goteo\Controller {
             }
             foreach ($projects as $project) {
                 $res = $project->publish();
-                if ($debug) {
-                    echo '<br/>' . $project->id . ' ';
-                    if ($res) {
-                        echo 'se ha publicado correctamente<br/>';
-                    } else {
-                        echo 'no se ha podido publicar porque hubo un error<br/>';
-                    }
+
+                if ($res) {
+                    $log_text = 'Se ha pasado automáticamente el proyecto %s al estado <span class="red">en Campaña</span>';
+                    if ($debug) echo '<br/>' . $project->id . ' se ha publicado correctamente<br/>';
+                } else {
+                    $log_text = 'El sistema ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
+                    if ($debug) echo '<br/>' . $project->id . ' no se ha podido publicar porque hubo un error<br/>';
                 }
+
+                // Evento Feed
+                $log = new Feed();
+                $log->setTarget($project->id);
+                $log->populate('Publicación automática de un proyecto', '/admin/projects',
+                    \vsprintf($log_text, array(
+                    Feed::item('project', $project->name, $project->id)
+                )));
+                $log->doAdmin('admin');
+
+                Message::Info($log->html);
+                if (!empty($errors)) {
+                    Message::Error(implode('<br />', $errors));
+                }
+
+                $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
+                $log->doPublic('projects');
+                unset($log);
             }
+
 
             if ($debug) echo '<hr/>';
 
