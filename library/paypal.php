@@ -368,9 +368,9 @@ namespace Goteo\Library {
                     if (empty($errorId)) {
                         $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, true) . '</pre>';
                     } elseif (!empty($error_txt)) {
-                        $errors[] = $error_txt;
+                        $errors[$errorId] = $error_txt;
                     } else {
-                        $errors[] = "$action $errorMsg [$errorId]";
+                        $errors[$errorId] = "$action $errorMsg [$errorId]";
                     }
                     
                     Invest::setIssue($invest->id);
