@@ -103,12 +103,13 @@ $filters = $this['filters'];
                 <td><?php echo count($call->projects); ?></td>
             </tr>
             <tr>
-                <td colspan="6"> GESTI&Oacute;N:&nbsp;
+                <td colspan="7"> GESTI&Oacute;N:&nbsp;
                     <a href="/call/edit/<?php echo $call->id; ?>" target="_blank">[Editar]</a>
                     <a href="/admin/users/?id=<?php echo $call->owner; ?>" target="_blank">[Convocador]</a>
                     <a href="<?php echo "/admin/calls/projects/{$call->id}"; ?>">[Proyectos]</a>
                     <?php if (isset($_SESSION['user']->roles['superadmin'])) : ?><a href="<?php echo "/admin/calls/admins/{$call->id}"; ?>">[Administradores]</a><?php endif; ?>
                     <a href="<?php echo "/admin/calls/conf/{$call->id}"; ?>">[Configuraci&oacute;n]</a>
+                    <a href="<?php echo "/admin/calls/dropconf/{$call->id}"; ?>">[Configuraci&oacute;n Económica]</a>
                     <?php if (isset($_SESSION['user']->roles['superadmin']) && $call->status == 1) : ?>
                     &nbsp;|&nbsp;&nbsp;&nbsp;
                     <a href="<?php echo "/admin/calls/delete/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a ELIMINAR comlpetamente, ¿seguro que hacemos eso?');" style="color: red;">[Suprimir]</a>

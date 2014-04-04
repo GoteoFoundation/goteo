@@ -168,6 +168,16 @@ namespace Goteo\Controller\Admin {
                 }
             }
 
+             // si llega post de configuración económica
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['save-dropconf']) && $call instanceof Model\Call ) {
+                if ($call->setDropconf($_POST, $errors)) {
+                    $log_text = 'El admin %s ha <span class="red">cambiado la configuracion financiera</span> de la convocatoria %s';
+                } else {
+                    $log_text = 'Al admin %s le ha <span class="red">fallado al cambiar la configuracion financiera</span> de la convocatoria %s';
+                    Message::Info('Ha dado estos errores:<br/>'.implode('<br />', $errors));
+                }
+            }
+
 
             if (isset($log_text)) {
                 // Evento Feed
@@ -215,6 +225,7 @@ namespace Goteo\Controller\Admin {
             // lista de proyectos seleccionados
             if ($action == 'projects') {
                 if (empty($call)) {
+                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
                     throw new Redirection('/admin/calls/list');
                 }
                 $projects   = Model\Call\Project::get($call->id, array('all'=>true));
@@ -258,6 +269,11 @@ namespace Goteo\Controller\Admin {
             }
 
             if ($action == 'admins') {
+                if (empty($call)) {
+                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
+                    throw new Redirection('/admin/calls');
+                }
+
                 if (isset($_GET['op']) && isset($_GET['user']) && in_array($_GET['op'], array('assign', 'unassign'))) {
                     if ($call->$_GET['op']($_GET['user'])) {
                         // ok
@@ -319,7 +335,10 @@ namespace Goteo\Controller\Admin {
             }            
 
             if ($action == 'conf') {
-
+                if (empty($call)) {
+                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
+                    throw new Redirection('/admin/calls');
+                }
                 $conf = $call->getConf();
 
                 return new View(
@@ -332,7 +351,23 @@ namespace Goteo\Controller\Admin {
                                 'conf' => $conf
                             )
                 );
-            }            
+            }   
+
+            if ($action == 'dropconf') {
+
+                //$dropconf = $call->getConf();
+
+                return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'calls',
+                                'file' => 'dropconf',
+                                'action' => 'list',
+                                'call' => $call,
+                                //'conf' => $conf
+                            )
+                );
+            }                
 
             // si es admin, solo las suyas
             if (isset($_SESSION['user']->roles['admin'])) {

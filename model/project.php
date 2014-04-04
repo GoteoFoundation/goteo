@@ -20,7 +20,7 @@ namespace Goteo\Model {
             $owner, // User who created it
             $node, // Node this project belongs to
             $nodeData, // Node data
-            $status,
+            $status,   // Project status
             $progress, // puntuation %
             $amount, // Current donated amount
 
@@ -228,7 +228,7 @@ namespace Goteo\Model {
 
                 return $this->id;
             } catch (\PDOException $e) {
-                $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+                $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, true) . "</pre>";
                 \trace($this);
                 die($errors[0]);
                 return false;
@@ -308,6 +308,9 @@ namespace Goteo\Model {
 				$project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
+
+                // asesores
+                $project->consultants = Project::getConsultants($id);
 
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
@@ -840,7 +843,7 @@ namespace Goteo\Model {
 
 				$sql = "UPDATE project SET " . $set . " WHERE id = :id";
 				if (!self::query($sql, $values)) {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     $fail = true;
                 }
 
@@ -1031,7 +1034,7 @@ namespace Goteo\Model {
 				if (self::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     return false;
                 }
 			} catch(\PDOException $e) {
@@ -2303,6 +2306,14 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.name LIKE :name";
                 $values[':name'] = "%{$filters['proj_name']}%";
             }
+            if (!empty($filters['proj_id'])) {
+                $sqlFilter .= " AND project.id = :proj_id";
+                $values[':proj_id'] = $filters['proj_id'];
+            }
+            if (!empty($filters['published'])) {
+                $sqlFilter .= " AND project.published = :published";
+                $values[':published'] = $filters['published'];
+            }
             if (!empty($filters['category'])) {
                 $sqlFilter .= " AND project.id IN (
                     SELECT project
@@ -2347,7 +2358,11 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
-
+            if (!empty($filters['success'])) {
+                $sqlFilter .= " AND success = :success";
+                $values[':success'] = $filters['success'];
+            }
+            
             //el Order
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
@@ -2452,8 +2467,8 @@ namespace Goteo\Model {
             return $investors;
         }
 
-        /*
-        Método para calcular el mínimo y óptimo de un proyecto
+        /**
+         *  Método para calcular el mínimo y óptimo de un proyecto
         */
         public static function calcCosts($id) {
             $cost_query = self::query("SELECT

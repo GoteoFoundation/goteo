@@ -27,7 +27,10 @@ $status = $this['statuses'];
             <?php endforeach; ?>
             </select>
         </div>
-        
+
+        <?php /*
+ * estos filtros ya no tienen sentido
+  *
         <div style="float:left;margin:5px;">
             <label for="status-filter">Mostrar por estado del retorno:</label><br />
             <select id="status-filter" name="status" >
@@ -47,6 +50,9 @@ $status = $this['statuses'];
             <?php endforeach; ?>
             </select>
         </div>
+
+         */ ?>
+
         <br clear="both" />
 
         <div style="float:left;margin:5px;">
@@ -61,29 +67,29 @@ $status = $this['statuses'];
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
 <?php elseif (!empty($this['projects'])) : ?>
-    <?php foreach ($this['projects'] as $project) : ?>
-
-        <?php if (!empty($filters['project']) && $project->id != $filters['project']) {
-                continue;
-            }
-        ?>
-
-        <h3><?php echo $project->name; ?> (<?php echo $status[$project->status]; ?>)</h3>
-        <?php 
-        if (empty($project->social_rewards)) {
-            echo '<p>Este proyecto no tiene retornos colectivos</p><hr />';
-            continue; 
-        } else {
-            echo new View('view/project/edit/rewards/commons.html.php', array('project'=>$project, 'icons'=>$this));
-        }
-        ?>
-
-
-        <hr />
-
+    <table>
+        <thead>
+            <tr>
+                <th>Proyecto</th>
+                <th>Estado</th>
+                <th>Cumplidos</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($this['projects'] as $project) : ?>
+            <tr>
+                <td><a href="/admin/projects/?proj_id=<?php echo $project->id?>" target="blank"><?php echo $project->name; ?></a></td>
+                <td><?php echo $status[$project->status]; ?></td>
+                <td style="text-align: center;"><?php echo $project->cumplidos.'/'.count($project->social_rewards); ?></td>
+                <td><a href="/admin/commons/view/<?php echo $project->id?>">[Gestionar]</a></td>
+                <td><a href="/project/edit/<?php echo $project->id?>/rewards" target="blank">[Modificar]</a></td>
+            </tr>
         <?php endforeach; ?>
+        </tbody>
+    </table>
     <?php else : ?>
     <p>No se han encontrado registros</p>
     <?php endif; ?>
 </div>
-<?php echo new View('view/project/edit/rewards/commons.js.php'); ?>

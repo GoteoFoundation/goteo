@@ -122,7 +122,7 @@ namespace Goteo\Model\Contract {
                         $this->id = self::insertId();
                         return true;
                     } else {
-                        $errors[] = "Fallo sql: $query " . print_r($data, 1);
+                        $errors[] = "Fallo sql: $query " . print_r($data, true);
                         return false;
                     }
                 }

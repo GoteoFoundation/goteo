@@ -212,7 +212,8 @@ namespace Goteo\Controller {
 
 
             // segun método
-
+            /*
+            // esto es posible porque el cambio de estado se hace en la comunicación online
             if ($invest->method == 'tpv') {
                 // si el aporte no está en estado "cobrado por goteo" (1) 
                 if ($invest->status != '1') {
@@ -227,6 +228,7 @@ namespace Goteo\Controller {
                         throw new Redirection("/project/{$invest->project}/invest/?confirm=fail");
                 }
             }
+            */
 
             // Paypal solo disponible si activado
             if ($invest->method == 'paypal') {

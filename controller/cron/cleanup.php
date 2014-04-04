@@ -11,7 +11,7 @@ namespace Goteo\Controller\Cron {
         public static function process () {
 
             echo "LIMPIANDO REGISTROS DE IMAGENES QUE NO SE USAN<br />";
-            echo "Tablas: banner, call, node, user, call_banner, call_sponsor, feed, glossary_image, info_image, post, post_image, project, project_image, sponsor, user_vip<br /><br />";
+            echo "Tablas: banner, bazar, call, node, user, call_banner, call_sponsor, feed, glossary_image, info_image, post, post_image, project, project_image, sponsor, user_vip<br /><br />";
             
             // obtenemos arrays de imágenes en uso
             echo 'Imagenes en uso: <br />';

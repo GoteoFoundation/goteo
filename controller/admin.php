@@ -91,7 +91,8 @@ namespace Goteo\Controller {
                     'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true),
                     'admins' => array('label' => 'Asignando administradores de la convocatoria', 'item' => true),
                     'posts' => array('label' => 'Entradas de blog en la convocatoria', 'item' => true),
-                    'conf' => array('label' => 'Configurando la convocatoria', 'item' => true)
+                    'conf' => array('label' => 'Configurando la convocatoria', 'item' => true),
+                    'dropconf' => array('label' => 'Gestionando parte económica de la convocatoria', 'item' => true)
                 ),
                 'filters' => array('status' => '', 'category' => '', 'caller' => '', 'name' => '', 'admin' => '','order' => '')
             ),
@@ -115,7 +116,8 @@ namespace Goteo\Controller {
             'commons' => array(
                 'label' => 'Retornos colectivos',
                 'actions' => array(
-                    'list' => array('label' => 'Listando', 'item' => false)
+                    'list' => array('label' => 'Listando', 'item' => false),
+                    'view' => array('label' => 'Cumplimiento de retornos', 'item' => true)
                 ),
                 'filters' => array('project' => '', 'status' => '', 'icon' => '', 'projStatus'=>'')
             ),
@@ -269,8 +271,9 @@ namespace Goteo\Controller {
                 'label' => 'Padrinos',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
-                    'add' => array('label' => 'Nueva Recomendación', 'item' => false),
-                    'edit' => array('label' => 'Editando Recomendacion', 'item' => true)
+                    'add' => array('label' => 'Nuevo apadrinamiento', 'item' => false),
+                    'edit' => array('label' => 'Editando Apadrinamiento', 'item' => true),
+                    'view' => array('label' => 'Apadrinamientos', 'item' => true)
                 )
             ),
             'projects' => array(
@@ -287,7 +290,7 @@ namespace Goteo\Controller {
                     'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true),
                     'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true)
                 ),
-                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '', 'consultant' => '')
+                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '', 'consultant' => '','proj_id' =>'')
             ),
             'promote' => array(
                 'label' => 'Proyectos destacados',
