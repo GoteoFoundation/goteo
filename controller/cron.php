@@ -527,12 +527,12 @@ namespace Goteo\Controller {
 
                                             @mail('goteo_fail@doukeshi.org',
                                                 'Fallo al ejecutar cargo Paypal ' . SITE_URL,
-                                                'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . \trace($err));
+                                                'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: <pre>' . print_r($err, true). '</pre>');
 
                                         } else {
                                             @mail('goteo_fail@doukeshi.org',
                                                 'Cuenta impulsor no confirmada en paypal ' . SITE_URL,
-                                                'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . \trace($err));
+                                                'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: <pre>' . print_r($err, true). '</pre>');
                                         }
 
                                     }
