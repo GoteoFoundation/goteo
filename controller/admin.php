@@ -117,7 +117,8 @@ namespace Goteo\Controller {
                 'label' => 'Retornos colectivos',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
-                    'view' => array('label' => 'Cumplimiento de retornos', 'item' => true)
+                    'view' => array('label' => 'Cumplimiento de retornos', 'item' => true),
+                    'info' => array('label' => 'Información de contacto', 'item' => true)
                 ),
                 'filters' => array('project' => '', 'status' => '', 'icon' => '', 'projStatus'=>'')
             ),
