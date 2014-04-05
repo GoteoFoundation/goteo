@@ -43,7 +43,7 @@ namespace Goteo\Controller\Admin {
                         'file' => 'info',
                         'project'=>$project,
                         'contact' => $contact,
-                        'status' => $status
+                        'status' => $statuses
                     )
                 );
             }
