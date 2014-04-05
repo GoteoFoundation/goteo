@@ -36,19 +36,19 @@ $deadline = mktime(0, 0, 0,
         <dt>Cuentas:</dt>
         <dd><?php
             if (!empty($contact->twitter)) {
-                echo '<p><a href="'.$contact->twitter.'" target="_blank">Twitter</a></p>';
+                echo '<a href="'.$contact->twitter.'" target="_blank">Twitter</a> ';
             }
             if (!empty($contact->facebook)) {
-                echo '<p><a href="'.$contact->facebook.'" target="_blank">Facebook</a></p>';
+                echo '<a href="'.$contact->facebook.'" target="_blank">Facebook</a> ';
             }
             if (!empty($contact->google)) {
-                echo '<p><a href="'.$contact->google.'" target="_blank">Google++</a></p>';
+                echo '<a href="'.$contact->google.'" target="_blank">Google+</a> ';
             }
             if (!empty($contact->identica)) {
-                echo '<p><a href="'.$contact->identica.'" target="_blank">Identica</a></p>';
+                echo '<a href="'.$contact->identica.'" target="_blank">Identica</a> ';
             }
             if (!empty($contact->linkedin)) {
-                echo '<p><a href="'.$contact->linkedin.'" target="_blank">Linkedin</a></p>';
+                echo '<a href="'.$contact->linkedin.'" target="_blank">Linkedin</a> ';
             }
         ?></dd>
     </dl>
