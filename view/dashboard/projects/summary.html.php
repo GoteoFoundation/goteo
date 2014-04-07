@@ -60,6 +60,7 @@ if (!$project instanceof  Goteo\Model\Project) {
     <div class="widget chart"> 
             <div id="project_selection" style="margin-bottom: 10px"></div>
             <div class="titles">
+            <?php if ((!empty($project->published)) && ($project->published <= date('Y-m-d'))) { ?>
                 <div>
                     <h2>FINANCIACI&OacuteN OBTENIDA</h2>
                 <?php if (empty($this['data']['invests'])) : ?>
@@ -84,6 +85,12 @@ if (!$project instanceof  Goteo\Model\Project) {
                 <h2>COFINANCIADORES</h2>
             </div>
             <div id="cofund" class="chart_div"></div>
+
+             <?php } else {?>    
+                <h2 style="color:#20b3b2;"><?php echo 'Este proyecto se publicará automáticamente el ' .  date('d-m-Y', strtotime($project->published)) ; ?></h2>
+           
+            <?php }?>
+            </div>
     </div>
     
 <script type="text/javascript">
