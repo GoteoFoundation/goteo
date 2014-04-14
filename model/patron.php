@@ -351,6 +351,52 @@ namespace Goteo\Model {
         }
 
         /*
+         * Para quitar un padrino de home
+         */
+        public static function add_home ($id) {
+            
+            $order=next_easy();
+
+            $sql = "INSERT INTO patron_order (id, order,) VALUES (:id, :order)";
+            
+            if (self::query($sql, array(':id'=>$id,':order'=>$sql))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        public static function remove_home ($id) {
+            
+            $sql = "DELETE FROM patron_order WHERE id = :id";
+            if (self::query($sql, array(':id'=>$id))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
+         * Para que salga antes  (disminuir el order)
+         */
+        public static function up ($id) {
+            
+            return Check::reorder($id, 'up', 'patron_order', 'id', 'order');
+        }
+
+        /*
+         * Para que un proyecto salga despues  (aumentar el order)
+         */
+        public static function down ($id, $type = 'home') {
+            $extra = array (
+                    $type => 1
+                );
+            return Check::reorder($id, 'down', 'patron_order', 'id', 'order');
+        }
+
+        /*
          * Para que un proyecto salga antes  (disminuir el order)
          *
         public static function up ($id, $node = \GOTEO_NODE) {
@@ -372,6 +418,14 @@ namespace Goteo\Model {
 */
 
         // orden para siguiente apadrinamiento
+
+        public static function next_easy () {
+            $query = self::query('SELECT MAX(`order`) FROM patron_order');
+            $order = $query->fetchColumn(0);
+            return ++$order;
+
+        }
+
         public static function next ($user = null, $node = \GOTEO_NODE) {
             if (isset($user)) {
                 $query = self::query('SELECT `order` FROM patron WHERE user = :user'

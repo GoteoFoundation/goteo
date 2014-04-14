@@ -20,6 +20,11 @@ function the_order($val, $user)
                         <td><?php echo the_order($user->order, $user->id) ?></td>
                         <td><?php echo $user->name; ?></td>
                         <td><a href="/admin/patron/view/<?php echo $user->id; ?>">[Apadrinamientos]</a></td>
+                        <td><?php if (isset($this['homes'][$post->id])) {
+                        echo '<a href="/admin/blog/remove_home/'.$post->id.'" style="color:red;">[Quitar de portada]</a>';
+                    } elseif ($post->publish) {
+                        echo '<a href="/admin/blog/add_home/'.$post->id.'" style="color:blue;">[Poner en portada]</a>';
+                    } ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
