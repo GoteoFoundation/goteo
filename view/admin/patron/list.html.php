@@ -18,7 +18,6 @@ function the_order($val, $user)
                 <tbody>
                 <?php foreach ($patrons as $user) : ?>
                     <tr>
-                        <td><?php echo the_order($user->order, $user->id) ?></td>
                         <td><?php echo $user->name; ?></td>
                         <td><a href="/admin/patron/view/<?php echo $user->id; ?>">[Apadrinamientos]</a></td>
                         <?php if($user->home) { ?>

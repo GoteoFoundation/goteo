@@ -219,13 +219,13 @@ namespace Goteo\Controller\Admin {
 
                     case 'up':
                    
-                    Model\Post::up($id);
+                    Model\Patron::up($id);
                     throw new Redirection('/admin/patron/reorder');
                     break;
 
                 case 'down':
                    
-                    Model\Post::down($id);
+                    Model\Patron::down($id);
                     
                     throw new Redirection('/admin/patron/reorder');
                     break;

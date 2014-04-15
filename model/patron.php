@@ -72,12 +72,14 @@ namespace Goteo\Model {
                     IFNULL(patron_lang.title, patron.title) as title,
                     IFNULL(patron_lang.description, patron.description) as description,
                     patron.link as link,
-                    patron.order as `order`,
+                    patron_order.order as `order`,
                     patron.active as `active`
                 FROM    patron
                 LEFT JOIN patron_lang
                     ON patron_lang.id = patron.id
                     AND patron_lang.lang = :lang
+                LEFT JOIN patron_order
+                    ON patron_order.id = patron.user
                 INNER JOIN project
                     ON project.id = patron.project
                 WHERE patron.node = :node
@@ -149,6 +151,34 @@ namespace Goteo\Model {
                     WHERE patron.active = 1
                     AND patron.node = :node
                     ORDER BY patron.`order` ASC";
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                if (!in_array($item->id, $list))
+                    $list[$item->id] = $item->id;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Devuelve la lista de patronos que deben estar en home
+         */
+        public static function getInHome($node = \GOTEO_NODE) {
+
+            $list = array();
+
+            $values = array(':node'=>$node);
+
+            $sql = "SELECT
+                        patron.user as id,
+                        patron_order.order as `order`
+                    FROM patron
+                    LEFT JOIN patron_order
+                        ON patron_order.id = patron.user
+                        AND patron_order.order is not NULL
+                    AND patron.node = :node
+                    ORDER BY `order` ASC";                  
+
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 if (!in_array($item->id, $list))
@@ -439,11 +469,11 @@ namespace Goteo\Model {
         // comprobar si un padrino está en home
         public static function in_home ($id) {
 
-         $query = self::query('SELECT `id` FROM patron_order WHERE id = :id'
+         $query = self::query('SELECT `order` FROM patron_order WHERE id = :id'
                     , array(':id'=>$id));
         
-        if($query->fetchColumn()) 
-            return 1;
+        if($order=$query->fetchColumn(0)) 
+            return $order;
         
         else return 0;    
         }
