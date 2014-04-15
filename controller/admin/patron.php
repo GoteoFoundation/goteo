@@ -179,6 +179,57 @@ namespace Goteo\Controller\Admin {
                     );
                     break;
 
+                case 'add_home':
+                      if (Model\Patron::add_home($id)) {
+                        throw new Redirection('/admin/patron');
+                    }
+                    break;
+
+                 case 'remove_home':
+                      if (Model\Patron::remove_home($id)) {
+                        throw new Redirection('/admin/patron');
+                    }
+                    break;
+
+                case 'reorder':
+                    // promos by user
+                    $patrons = array();
+                    $patroned = Model\Patron::getAll($node);
+
+                    foreach ($patroned as $promo) {
+                        if (!isset($patrons[$promo->user->id])&&($promo->home)) {
+                            $patrons[$promo->user->id] = (object) array(
+                                'id' => $promo->user->id,
+                                'name' => $promo->user->name,
+                                'order' => $promo->order,
+                                'home' => $promo->home
+                            );
+                        }
+                    }
+
+                    return new View(
+                        'view/admin/index.html.php',
+                        array(
+                            'folder' => 'patron',
+                            'file' => 'order',
+                            'patrons' => $patrons
+                        )
+                    );
+                    break;
+
+                    case 'up':
+                   
+                    Model\Post::up($id);
+                    throw new Redirection('/admin/patron/reorder');
+                    break;
+
+                case 'down':
+                   
+                    Model\Post::down($id);
+                    
+                    throw new Redirection('/admin/patron/reorder');
+                    break;
+
                 case 'view':
                     // promos by user
                     $promos  = array();
@@ -217,7 +268,8 @@ namespace Goteo\Controller\Admin {
                     $patrons[$promo->user->id] = (object) array(
                         'id' => $promo->user->id,
                         'name' => $promo->user->name,
-                        'order' => $promo->order
+                        'order' => $promo->order,
+                        'home' => $promo->home
                     );
                 }
             }

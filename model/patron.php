@@ -87,6 +87,7 @@ namespace Goteo\Model {
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100, false);
+                $promo->home=self::in_home($promo->user);
                 $promo->user = Model\User::getMini($promo->user);
                 $promo->status = $status[$promo->status];
                 $promos[] = $promo;
@@ -351,21 +352,32 @@ namespace Goteo\Model {
         }
 
         /*
-         * Para quitar un padrino de home
+         * Para poner un padrino en home
          */
         public static function add_home ($id) {
             
-            $order=next_easy();
-
-            $sql = "INSERT INTO patron_order (id, order,) VALUES (:id, :order)";
+            if(!self::in_home($id))
             
-            if (self::query($sql, array(':id'=>$id,':order'=>$sql))) {
-                return true;
-            } else {
-                return false;
+            {
+                $order=self::next_easy();
+
+                $sql = "INSERT INTO patron_order (`id`, `order`) VALUES (:id, :order)";
+                
+                if (self::query($sql, array(':id'=>$id,':order'=>$order))) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
 
+            else
+                return true;
         }
+
+
+        /*
+         * Para quitar un padrino de home
+         */
 
         public static function remove_home ($id) {
             
@@ -389,35 +401,33 @@ namespace Goteo\Model {
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
-        public static function down ($id, $type = 'home') {
-            $extra = array (
-                    $type => 1
-                );
+        public static function down ($id) {
+           
             return Check::reorder($id, 'down', 'patron_order', 'id', 'order');
         }
 
         /*
          * Para que un proyecto salga antes  (disminuir el order)
-         *
+         **
         public static function up ($id, $node = \GOTEO_NODE) {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($id, 'up', 'patron', 'id', 'order', $extra);
+            return Check::reorder($id, 'up', 'patron_order', 'id', 'order', $extra);
         }
 
-        *
+        /*
          * Para que un proyecto salga despues  (aumentar el order)
          *
         public static function down ($id, $node = \GOTEO_NODE) {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($id, 'down', 'patron', 'id', 'order', $extra);
+            return Check::reorder($id, 'down', 'patron_order', 'id', 'order', $extra);
         }
-*/
+        */
 
-        // orden para siguiente apadrinamiento
+        // orden para siguiente padrino
 
         public static function next_easy () {
             $query = self::query('SELECT MAX(`order`) FROM patron_order');
@@ -425,6 +435,20 @@ namespace Goteo\Model {
             return ++$order;
 
         }
+
+        // comprobar si un padrino está en home
+        public static function in_home ($id) {
+
+         $query = self::query('SELECT `id` FROM patron_order WHERE id = :id'
+                    , array(':id'=>$id));
+        
+        if($query->fetchColumn()) 
+            return 1;
+        
+        else return 0;    
+        }
+
+        // orden para siguiente apadrinamiento
 
         public static function next ($user = null, $node = \GOTEO_NODE) {
             if (isset($user)) {
