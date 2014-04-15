@@ -232,10 +232,17 @@ namespace Goteo\Controller\Cron {
 
             /// tipo de envio
             switch ($type) {
-                case 'commons':
+                case 'commons': // template 56, "Mensaje al asesor de un proyecto 10 meses despues de financiado sin haber cumplido"
                     $tpl = 56;
                     $search  = array('%PROJECTNAME%', '%URL%');
                     $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id);
+                    break;
+                case 'rewardfulfilled': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
+                    $tpl = 58;
+                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%RETURN%', '%URL%');
+                    $reward = Model\Project\Reward::get($_POST['reward']);
+                    // También podríamos usar $_SESSION['user']->name
+                    $replace = array($project->name, $project->user->name, $reward->reward, $_POST['value']);
                     break;
             }
 
