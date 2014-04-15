@@ -21,7 +21,7 @@ use Goteo\Library\Text;
             <?php foreach ($this['patrons'] as $user) : ?>
             <tr>
                 <td><?php echo $user->name; ?></td>
-                <td><?php echo $user->home; ?></td>
+                <td><?php echo $user->order; ?></td>
                 <td><a href="/admin/patron/up/<?php echo $user->id ?>">[&uarr;]</a></td>
                 <td><a href="/admin/patron/down/<?php echo $user->id ?>">[&darr;]</a></td>
                 <td><a href="/admin/patron/remove_home/<?php echo $user->id ?>">[Quitar de la Portada]</a></td>

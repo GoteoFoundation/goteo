@@ -197,7 +197,7 @@ namespace Goteo\Controller\Admin {
                     $patroned = Model\Patron::getAll($node);
 
                     foreach ($patroned as $promo) {
-                        if (!isset($patrons[$promo->user->id])&&($promo->home)) {
+                        if (!isset($patrons[$promo->user->id])&&($promo->order)) {
                             $patrons[$promo->user->id] = (object) array(
                                 'id' => $promo->user->id,
                                 'name' => $promo->user->name,

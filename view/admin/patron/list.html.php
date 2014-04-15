@@ -20,7 +20,7 @@ function the_order($val, $user)
                     <tr>
                         <td><?php echo $user->name; ?></td>
                         <td><a href="/admin/patron/view/<?php echo $user->id; ?>">[Apadrinamientos]</a></td>
-                        <?php if($user->home) { ?>
+                        <?php if($user->order) { ?>
                         <td><a href="/admin/patron/remove_home/<?php echo $user->id; ?>" style="color:red;">[Quitar de portada]</a></td>
                         <?php } else { ?>
                         <td><a href="/admin/patron/add_home/<?php echo $user->id; ?>" style="color:blue;">[Poner en portada]</a></td>

@@ -89,7 +89,6 @@ namespace Goteo\Model {
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100, false);
-                $promo->home=self::in_home($promo->user);
                 $promo->user = Model\User::getMini($promo->user);
                 $promo->status = $status[$promo->status];
                 $promos[] = $promo;
@@ -175,7 +174,7 @@ namespace Goteo\Model {
                     FROM patron
                     LEFT JOIN patron_order
                         ON patron_order.id = patron.user
-                        AND patron_order.order is not NULL
+                    WHERE patron_order.order is not null
                     AND patron.node = :node
                     ORDER BY `order` ASC";                  
 
@@ -480,6 +479,7 @@ namespace Goteo\Model {
 
         // orden para siguiente apadrinamiento
 
+        
         public static function next ($user = null, $node = \GOTEO_NODE) {
             if (isset($user)) {
                 $query = self::query('SELECT `order` FROM patron WHERE user = :user'
