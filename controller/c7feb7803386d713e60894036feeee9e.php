@@ -37,6 +37,8 @@ namespace Goteo\Controller {
 
             $log_txt .= "ha marcado el retorno colectivo {$reward} del proyecto {$project} como '{$value}'";
             
+            // TODO: Comprobar los parámetros de usuario por seguridad
+
             $sql = "UPDATE reward SET fulsocial = :val WHERE project = :proj AND type= 'social' AND id = :id";
             if (Model\Project\Reward::query($sql, array(':proj' => $project, ':val' => $value, ':id' => $reward))) {
                 header ('HTTP/1.1 200 Ok');
@@ -47,11 +49,6 @@ namespace Goteo\Controller {
                 die;
             }
             
-            $project_obj = Model\Project::getMini($project);
-            Send::toConsultants('rewardfulfilled', $project_obj);
-            // TODO: Si no está olivier en los asesores
-            @mail('olivier@goteo.org', 'Proyecto ha publicado su retorno colectivo', $log_txt);
-
             if (empty($log_txt)) {
                 $log_txt = \trace($_POST) . \trace($_SESSION) . \trace($_SERVER);
             }
@@ -90,6 +87,8 @@ namespace Goteo\Controller {
 
             $log_txt .= "ha marcado el retorno colectivo {$reward} del proyecto {$project} como '{$value}'";
             
+            // TODO: Comprobar los parámetros de usuario por seguridad
+
             $sql = "UPDATE reward SET url = :val WHERE project = :proj AND type= 'social' AND id = :id";
             if (Model\Project\Reward::query($sql, array(':proj' => $project, ':val' => $value, ':id' => $reward))) {
                 header ('HTTP/1.1 200 Ok');
@@ -109,7 +108,16 @@ namespace Goteo\Controller {
             $log->doAdmin('usws');
             unset($log);
             
-            
+            // Enviar correo informativo a los asesores del proyecto. Añadir siempre a Olivier.
+            $project_obj = Model\Project::getMini($project);
+            if (!isset($project->consultants)) {
+                $project_obj->consultants = Model\Project::getConsultants($project);
+            }
+            if (!in_array('olivier', array_keys($project_obj->consultants))) {
+                $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
+            }
+            Send::toConsultants('rewardfulfilled', $project_obj);
+
             die;
         }
         
