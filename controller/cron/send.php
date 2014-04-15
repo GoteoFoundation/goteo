@@ -98,6 +98,23 @@ namespace Goteo\Controller\Cron {
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->num_investors);
                     break;
                 
+                case 'tip_0':
+                    $tpl = 57;
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
+                    if(empty($project->consultants)) {
+                        $consultants = 'Enric Senabre';
+                    } else {
+                        $consultants = array_shift($project->consultants);
+                        foreach ($project->consultants as $userId=>$userName) {
+                            $consultants .= ', ', $userName;
+                        }
+                    }
+
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%NOMBREASESOR%');
+                    $replace = array($project->user->name, $project->name, $consultants);
+                    break;
+
                 // consejos normales
                 case 'tip_1': // template 41, "Difunde, difunde, difunde"
                     $tpl = 41;
@@ -208,7 +225,7 @@ namespace Goteo\Controller\Cron {
                 $project->consultants = Model\Project::getConsultants($project->id);
             }
 
-            // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a olivier
+            // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
             if (empty($project->consultants)) { 
                 $project->consultants = array('olivier' => 'Olivier');
             }
