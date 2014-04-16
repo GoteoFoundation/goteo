@@ -586,7 +586,7 @@ namespace Goteo\Controller {
 
                 if ($debug) echo 'Fin tratamiento Proyecto '.$project->name.'<hr />';
             }
-
+            echo '<hr/>';
 
             // checkeamos campañas activas
             $campaigns = Model\Call::getActive(4);
@@ -635,9 +635,47 @@ namespace Goteo\Controller {
             // Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
             // A esos les cambia el estado a publicado.
             $projects = Model\Project::getList(array('status' => 2, 'published' => date('Y-m-d') ));
-            foreach ($projects as $project) {
-                $project->publish();
+            if ($debug) {
+                echo 'Publicación de proyectos automática: ';
+                if (count($projects) > 0) {
+                    echo 'se van a publicar ' . count($projects) . ' proyectos';
+                } else {
+                    echo 'no hay ningún proyecto para publicar hoy';
+                }
+                echo '.<br/><br/>';
             }
+            foreach ($projects as $project) {
+                $res = $project->publish();
+
+                if ($res) {
+                    $log_text = 'Se ha pasado automáticamente el proyecto %s al estado <span class="red">en Campaña</span>';
+                    if ($debug) echo '<br/>' . $project->id . ' se ha publicado correctamente<br/>';
+                } else {
+                    $log_text = 'El sistema ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
+                    if ($debug) echo '<br/>' . $project->id . ' no se ha podido publicar porque hubo un error<br/>';
+                }
+
+                // Evento Feed
+                $log = new Feed();
+                $log->setTarget($project->id);
+                $log->populate('Publicación automática de un proyecto', '/admin/projects',
+                    \vsprintf($log_text, array(
+                    Feed::item('project', $project->name, $project->id)
+                )));
+                $log->doAdmin('admin');
+
+                Message::Info($log->html);
+                if (!empty($errors)) {
+                    Message::Error(implode('<br />', $errors));
+                }
+
+                $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
+                $log->doPublic('projects');
+                unset($log);
+            }
+
+
+            if ($debug) echo '<hr/>';
 
             // desbloqueamos
             if (unlink($block_file)) {
@@ -650,7 +688,6 @@ namespace Goteo\Controller {
                     echo 'No hay archivo de bloqueo '.$block_file.'!<br />';
                 }
             }
-            
             
             // recogemos el buffer para grabar el log
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';

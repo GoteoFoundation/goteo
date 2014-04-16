@@ -10,7 +10,8 @@ namespace Goteo\Controller\Admin {
         Goteo\Library\Message,
         Goteo\Library\Mail,
 		Goteo\Library\Template,
-        Goteo\Model;
+        Goteo\Model,
+        Goteo\Controller\Cron\Send;
 
     class Projects {
 
@@ -206,6 +207,8 @@ namespace Goteo\Controller\Admin {
                     // poner un proyecto en campaña
                     if ($project->publish($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>';
+                        Send::toOwner('tip_0', $project);
+                        // TODO: Send::toConsultants('proyecto_publicado', $project);
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
                     }

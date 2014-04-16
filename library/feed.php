@@ -415,7 +415,7 @@ namespace Goteo\Library {
                 return false;
             }
 
-
+            // TODO: Restricción UNIQUE en BD?
             // primero, verificar si es unique, no duplicarlo
             if ($this->unique === true) {
                 $query = Model::query("SELECT id FROM feed WHERE url = :url AND scope = :scope AND type = :type",
