@@ -75,6 +75,12 @@ namespace Goteo\Controller\Cron {
                 switch ($project->days) {
                     
                     // NO condicionales
+                    case 0: // Proyecto publicado
+                        $template = 'tip_0';
+                        if ($debug) echo "Envío {$template}<br />";
+                        Send::toOwner($template, $project);
+                        Send::toConsultants($template, $project);
+                        break;
                     case 1: // Difunde, difunde, difunde
                     case 2: // Comienza por lo más próximo
                     case 3: // Una acción a diario, por pequeña que sea
