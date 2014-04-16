@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Library\Feed,
         Goteo\Library\Template,
         Goteo\Library\Mail,
+        Goteo\Library\Message,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;
 
