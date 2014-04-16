@@ -298,7 +298,9 @@ namespace Goteo\Controller\Cron {
 
             $filtered_projects = array_filter($projects, 
                 function($project) {
-                    return !Model\Project\Reward::areFulfilled($project->id, 'social');
+                    $rewards_fulfilled = Model\Project\Reward::areFulfilled($project->id, 'social');
+                    $project_fulfilled = $project->status == 5;
+                    return !($rewards_fulfilled || $project_fulfilled);
                 }
             );
 

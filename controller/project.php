@@ -486,12 +486,21 @@ namespace Goteo\Controller {
                 }
             }
 
-            // mensaje cuando, sin estar en campaña, tiene fecha de publicación, es que la campaña ha sido cancelada
-            if ($project->status < 3 && !empty($project->published)) 
-                Message::Info(Text::get('project-unpublished'));
-            elseif ($project->status < 3) 
+            // mensaje cuando, sin estar en campaña, tiene fecha de publicación
+            if ($project->status < 3 && !empty($project->published)) {
+
+                if ($project->published > date('Y-m-d')) {
+                    // si la fecha es en el futuro, es que se publicará
+                    Message::Info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
+                } else {
+                    // si la fecha es en el pasado, es que la campaña ha sido cancelada
+                    Message::Info(Text::get('project-unpublished'));
+                }
+
+            } elseif ($project->status < 3) {
                 // mensaje de no publicado siempre que no esté en campaña
                 Message::Info(Text::get('project-not_published'));
+            }
 
             
             // solamente se puede ver publicamente si...

@@ -718,6 +718,12 @@ namespace Goteo\Model {
                                 )
                             ) ";
                         break;
+                    case 'consultants': // asesores de proyectos (admins)
+                        $sqlFilter .= " AND id IN (
+                            SELECT DISTINCT(user)
+                            FROM user_project
+                            ) ";
+                        break;
                     case 'lurkers': // colaboran con el proyecto
                         $sqlFilter .= " AND id NOT IN (
                                 SELECT DISTINCT(user)
