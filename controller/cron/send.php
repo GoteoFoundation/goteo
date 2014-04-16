@@ -22,6 +22,9 @@ namespace Goteo\Controller\Cron {
         public static function toOwner ($type, $project) {
             $tpl = null;
             $debug = true;
+            $error_sending = false;
+
+            if ($debug) echo 'toOwner: ';
 
             /// tipo de envio
             switch ($type) {
@@ -192,9 +195,7 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->to = $project->user->email;
                 $mailHandler->toName = $project->user->name;
                 
-                if ($debug) {
-                    echo 'toOwner: ' . $project->user->email . '<br/>';
-                }
+                if ($debug) echo $project->user->email . ', ';
 
                 // si es un proyecto de nodo: reply al mail del nodo
                 // si es de centra: reply a MAIL_GOTEO
@@ -204,17 +205,18 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
                 $mailHandler->template = $template->id;
-                if ($mailHandler->send($errors)) {
-                    return true;
-                } else {
+                if (!$mailHandler->send($errors)) {
                     echo \trace($errors);
                     @mail('goteo_fail@doukeshi.org',
                         'Fallo al enviar email automaticamente al autor ' . SITE_URL,
                         'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, true). '</pre>');
+                    $error_sending = true;
                 }
             }
 
-            return false;
+            if ($debug) echo '<br/>';
+
+            return !$error_sending;
         }
 
         /**
@@ -229,6 +231,8 @@ namespace Goteo\Controller\Cron {
             $error_sending = false;
             $tpl = null;
             
+            if ($debug) echo 'toConsultants: ';
+
             if (!isset($project->consultants)) {
                 $project->consultants = Model\Project::getConsultants($project->id);
             }
@@ -284,9 +288,7 @@ namespace Goteo\Controller\Cron {
                     $mailHandler->to = $consultant->email;
                     $mailHandler->toName = $name;
                     
-                    if ($debug) {
-                        echo 'toConsultants: ' . $consultant->email . '<br/>';
-                    }
+                    if ($debug) echo $consultant->email . ', ';
 
                     $mailHandler->subject = $subject;
                     $mailHandler->content = $content;
@@ -302,6 +304,8 @@ namespace Goteo\Controller\Cron {
                 }
 
             }
+
+            if ($debug) echo '<br/>';
 
             return !$error_sending;
         }
