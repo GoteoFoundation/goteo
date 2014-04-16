@@ -492,39 +492,49 @@ namespace Goteo\Controller {
                                     } else {
                                         $txt_errors = implode('; ', $err);
                                         echo 'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors . '<br />';
-                                        @mail('goteo_fail@doukeshi.org',
-                                            'Fallo al ejecutar cargo Paypal ' . SITE_URL,
-                                            'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors);
                                         if ($debug) echo ' -> ERROR!!';
                                         Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: ' . $txt_errors . '. Proceso cron/execute');
 
-                                        // Notifiacion de incidencia al usuario
-                                        // Obtenemos la plantilla para asunto y contenido
-                                        $template = Template::get(37);
-                                        // Sustituimos los datos
-                                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-                                        $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');
-                                        $replace = array($userData->name, $project->name, SITE_URL . '/project/' . $project->id, $invest->amount, '');
-                                        $content = \str_replace($search, $replace, $template->text);
-                                        // iniciamos mail
-                                        $mailHandler = new Mail();
-                                        $mailHandler->reply = GOTEO_CONTACT_MAIL;
-                                        $mailHandler->replyName = GOTEO_MAIL_NAME;
-                                        $mailHandler->to = $userData->email;
-                                        $mailHandler->toName = $userData->name;
-                                        $mailHandler->subject = $subject;
-                                        $mailHandler->content = $content;
-                                        $mailHandler->html = true;
-                                        $mailHandler->template = $template->id;
-                                        if ($mailHandler->send()) {
-                                            Model\Invest::setDetail($invest->id, 'issue-notified', "Se ha notificado la incidencia al usuario");
-                                        } else {
-                                            Model\Invest::setDetail($invest->id, 'issue-notify-failed', "Ha fallado al enviar el mail de notificacion de la incidencia al usuario");
+                                        //  que el sistema NO lance el mensaje a los cofinanciadores
+                                        // cuando el error lanzado por paypal sea el no estar verificada la cuenta del impulsor
+                                        if (!isset($err[569042])) {
+                                            // Notifiacion de incidencia al usuario
+                                            // Obtenemos la plantilla para asunto y contenido
+                                            $template = Template::get(37);
+                                            // Sustituimos los datos
+                                            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                                            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');
+                                            $replace = array($userData->name, $project->name, SITE_URL . '/project/' . $project->id, $invest->amount, '');
+                                            $content = \str_replace($search, $replace, $template->text);
+                                            // iniciamos mail
+                                            $mailHandler = new Mail();
+                                            $mailHandler->reply = GOTEO_CONTACT_MAIL;
+                                            $mailHandler->replyName = GOTEO_MAIL_NAME;
+                                            $mailHandler->to = $userData->email;
+                                            $mailHandler->toName = $userData->name;
+                                            $mailHandler->subject = $subject;
+                                            $mailHandler->content = $content;
+                                            $mailHandler->html = true;
+                                            $mailHandler->template = $template->id;
+                                            if ($mailHandler->send()) {
+                                                Model\Invest::setDetail($invest->id, 'issue-notified', "Se ha notificado la incidencia al usuario");
+                                            } else {
+                                                Model\Invest::setDetail($invest->id, 'issue-notify-failed', "Ha fallado al enviar el mail de notificacion de la incidencia al usuario");
+                                                @mail('goteo_fail@doukeshi.org',
+                                                    'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
+                                                    'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, true). '</pre>');
+                                            }
+
                                             @mail('goteo_fail@doukeshi.org',
-                                                'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
-                                                'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, true). '</pre>');
+                                                'Fallo al ejecutar cargo Paypal ' . SITE_URL,
+                                                'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: <pre>' . print_r($err, true). '</pre>');
+
+                                        } else {
+                                            @mail('goteo_fail@doukeshi.org',
+                                                'Cuenta impulsor no confirmada en paypal ' . SITE_URL,
+                                                'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: <pre>' . print_r($err, true). '</pre>');
                                         }
-                                        
+
                                     }
                                     break;
                                 case 'tpv':

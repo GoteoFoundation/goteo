@@ -50,7 +50,6 @@ namespace Goteo\Model {
                 $story = $query->fetchObject(__CLASS__);
 
                 $story->image = Image::get($story->image);
-                $story->project = (!empty($story->project)) ? Project::getMedium($story->project) : null;
 
                 return $story;
         }

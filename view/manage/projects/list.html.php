@@ -78,7 +78,16 @@ $filters = $this['filters'];
 </div>
 
     
-<?php foreach ($this['projects'] as $project) : ?>
+<?php foreach ($this['projects'] as $project) :
+
+    // calculo fecha de vencimiento (timestamp de un año despues de financiado)
+    $deadline = mktime(0, 0, 0,
+        date('m', strtotime($project->success)),
+        date('d', strtotime($project->success)),
+        date('Y', strtotime($project->success)) + 1
+    );
+
+?>
 <a name="<?php echo $project->id; ?>"></a>
 <div class="widget board">
     <table>
@@ -122,6 +131,7 @@ $filters = $this['filters'];
                     <strong>Publicado el</strong> <?php echo date('d-m-Y', strtotime($project->published)); ?>&nbsp;&nbsp;&nbsp;&nbsp;
                     <strong>Final primera:</strong> <?php echo date('d-m-Y', strtotime($project->passed)); ?>&nbsp;&nbsp;&nbsp;&nbsp;
                     <strong>Final segunda:</strong> <?php echo date('d-m-Y', strtotime($project->success)); ?>
+                    <strong>Vencimiento contrato:</strong> <?php echo date('d-m-Y', $deadline); ?>
                     </p>
                 </td>
             </tr>

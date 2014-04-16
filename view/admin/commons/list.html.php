@@ -73,18 +73,32 @@ $status = $this['statuses'];
                 <th>Proyecto</th>
                 <th>Estado</th>
                 <th>Cumplidos</th>
-                <th></th>
+                <th>Vencimiento</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($this['projects'] as $project) : ?>
+        <?php foreach ($this['projects'] as $project) :
+
+            // calculo fecha de vencimiento (timestamp de un año despues de financiado)
+            $deadline = mktime(0, 0, 0,
+                date('m', strtotime($project->success)),
+                date('d', strtotime($project->success)),
+                date('Y', strtotime($project->success)) + 1
+            );
+
+            ?>
             <tr>
-                <td><a href="/admin/projects/?proj_id=<?php echo $project->id?>" target="blank"><?php echo $project->name; ?></a></td>
+                <td><a href="/project/<?php echo $project->id?>" target="blank"><?php echo $project->name; ?></a></td>
                 <td><?php echo $status[$project->status]; ?></td>
                 <td style="text-align: center;"><?php echo $project->cumplidos.'/'.count($project->social_rewards); ?></td>
-                <td><a href="/admin/commons/view/<?php echo $project->id?>">[Gestionar]</a></td>
-                <td><a href="/project/edit/<?php echo $project->id?>/rewards" target="blank">[Modificar]</a></td>
+                <td><?php echo date('d-m-Y', $deadline); ?></td>
+                <td>
+                    <a href="/admin/commons/view/<?php echo $project->id?>">[Gestionar]</a>&nbsp;
+                    <a href="/admin/commons/info/<?php echo $project->id?>">[Ver Contacto]</a>&nbsp;
+                    <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/commons/fulfill/{$project->id}"; ?>" onclick="return confirm('Se va a cambiar el estado del proyecto, ok?');">[Cumplido]</a>&nbsp;<?php endif; ?>
+                    <a href="/admin/projects/?proj_id=<?php echo $project->id?>" target="blank">[Admin]</a>
+                </td>
             </tr>
         <?php endforeach; ?>
         </tbody>

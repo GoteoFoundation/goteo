@@ -223,6 +223,16 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'enable':
                     // si no esta en edicion, recuperarlo
+
+                    // Si el proyecto no tiene asesor, asignar al admin que lo ha pasado a negociación
+                    // No funciona con el usuario root
+                    if ((empty($project->consultants)) && $_SESSION['user']->id != 'root') {
+                        if ($project->assignConsultant($_SESSION['user']->id, $errors)) {
+                            $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
+                            Message::Info($msg);
+                        }
+                    }
+
                     if ($project->enable($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Edicion</span>';
                     } else {
