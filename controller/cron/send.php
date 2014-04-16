@@ -101,7 +101,7 @@ namespace Goteo\Controller\Cron {
                 case 'tip_0':
                     $tpl = 57;
 
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
                     if(empty($project->consultants)) {
                         $consultants = 'Enric Senabre';
                     } else {
@@ -111,8 +111,8 @@ namespace Goteo\Controller\Cron {
                         }
                     }
 
-                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%NOMBREASESOR%');
-                    $replace = array($project->user->name, $project->name, $consultants);
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
                     break;
 
                 // consejos normales
@@ -225,17 +225,34 @@ namespace Goteo\Controller\Cron {
                 $project->consultants = Model\Project::getConsultants($project->id);
             }
 
-            // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
-            if (empty($project->consultants)) { 
-                $project->consultants = array('olivier' => 'Olivier');
-            }
-
             /// tipo de envio
             switch ($type) {
                 case 'commons':
                     $tpl = 56;
                     $search  = array('%PROJECTNAME%', '%URL%');
                     $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id);
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
+                    if (empty($project->consultants)) { 
+                        $project->consultants = array('olivier' => 'Olivier');
+                    }
+                    break;
+
+                case 'tip_0':
+                    $tpl = 57;
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
+                    if (empty($project->consultants)) { 
+                        $project->consultants = array('esenabre' => 'Enric Senabre');
+                    }
+
+                    $consultants = array_shift($project->consultants);
+                    foreach ($project->consultants as $userId=>$userName) {
+                        $consultants .= ', ' . $userName;
+                    }
+
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
                     break;
             }
 
