@@ -208,7 +208,7 @@ namespace Goteo\Controller\Admin {
                     if ($project->publish($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>';
                         Send::toOwner('tip_0', $project);
-                        // TODO: Send::toConsultants('proyecto_publicado', $project);
+                        Send::toConsultants('tip_0', $project);
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
                     }
