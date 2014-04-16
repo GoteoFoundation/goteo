@@ -107,7 +107,7 @@ namespace Goteo\Controller\Cron {
                     } else {
                         $consultants = array_shift($project->consultants);
                         foreach ($project->consultants as $userId=>$userName) {
-                            $consultants .= ', ', $userName;
+                            $consultants .= ', ' . $userName;
                         }
                     }
 
