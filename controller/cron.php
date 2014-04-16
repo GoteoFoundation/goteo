@@ -7,7 +7,6 @@ namespace Goteo\Controller {
         Goteo\Library\Feed,
         Goteo\Library\Template,
         Goteo\Library\Mail,
-        Goteo\Library\Message,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;
 
@@ -650,25 +649,17 @@ namespace Goteo\Controller {
 
                 if ($res) {
                     $log_text = 'Se ha pasado automáticamente el proyecto %s al estado <span class="red">en Campaña</span>';
-                    if ($debug) echo '<br/>' . $project->id . ' se ha publicado correctamente<br/>';
                 } else {
                     $log_text = 'El sistema ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
-                    if ($debug) echo '<br/>' . $project->id . ' no se ha podido publicar porque hubo un error<br/>';
                 }
+                $log_text = \vsprintf($log_text, array(Feed::item('project', $project->name, $project->id)));
+                if ($debug) echo $log_text;
 
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($project->id);
-                $log->populate('Publicación automática de un proyecto', '/admin/projects',
-                    \vsprintf($log_text, array(
-                    Feed::item('project', $project->name, $project->id)
-                )));
+                $log->populate('Publicación automática de un proyecto', '/admin/projects', $log_text);
                 $log->doAdmin('admin');
-
-                Message::Info($log->html);
-                if (!empty($errors)) {
-                    Message::Error(implode('<br />', $errors));
-                }
 
                 $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
                 $log->doPublic('projects');
