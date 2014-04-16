@@ -10,14 +10,14 @@
             <th style="width: 300px;">Retorno</th>
             <th style="width: 110px;">Tipo</th>
             <th style="width: 100px;">Estado</th>
-            <th style="width: 145px;"></th>
+            <th style="width: 145px;">Licencia</th>
         </tr>
     </thead>
 
     <tbody>
         <?php foreach ($this['project']->social_rewards as $reward) : ?>
         <tr>
-            <td><?php echo $reward->reward; ?></td>
+            <td style="color: #20B2B3;"><?php echo $reward->reward; ?></td>
             <td><?php echo $this['icons'][$reward->icon]; ?></td>
             <?php if (!$reward->fulsocial) : ?>
             <td>
@@ -32,6 +32,12 @@
                 </div>
             </td>
             <?php endif; ?>
+            <td><?php echo $reward->license; ?></td>
+        </tr>
+         <tr>
+            <td colspan="3">
+                <?php echo $reward->description; ?>
+            </td>
         </tr>
         <tr>
             <td colspan="4">

@@ -10,7 +10,8 @@ namespace Goteo\Controller\Admin {
         Goteo\Library\Message,
         Goteo\Library\Mail,
 		Goteo\Library\Template,
-        Goteo\Model;
+        Goteo\Model,
+        Goteo\Controller\Cron\Send;
 
     class Projects {
 
@@ -105,16 +106,19 @@ namespace Goteo\Controller\Admin {
                 } elseif ($action == 'images') {
                     
                     $todook = true;
-                    
+
+                    /*
+                     *  Ya no movemos con flechas, cambiamos directamente el número de orden
                     if (!empty($_POST['move'])) {
                         $direction = $_POST['action'];
                         Model\Project\Image::$direction($id, $_POST['move'], $_POST['section']);
                     }
+                    */
                     
                     foreach ($_POST as $key=>$value) {
                         $parts = explode('_', $key);
                         
-                        if ($parts[1] == 'image' && in_array($parts[0], array('section', 'url'))) {
+                        if ($parts[1] == 'image' && in_array($parts[0], array('section', 'url', 'order'))) {
                             if (Model\Project\Image::update($id, $parts[2], $parts[0], $value)) {
                                 // OK
                             } else {
@@ -203,6 +207,8 @@ namespace Goteo\Controller\Admin {
                     // poner un proyecto en campaña
                     if ($project->publish($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>';
+                        Send::toOwner('tip_0', $project);
+                        Send::toConsultants('tip_0', $project);
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
                     }

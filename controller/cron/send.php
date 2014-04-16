@@ -21,7 +21,11 @@ namespace Goteo\Controller\Cron {
          */
         public static function toOwner ($type, $project) {
             $tpl = null;
-            
+            $debug = true;
+            $error_sending = false;
+
+            if ($debug) echo 'toOwner: ';
+
             /// tipo de envio
             switch ($type) {
                 // Estos son avisos de final de ronda
@@ -98,6 +102,24 @@ namespace Goteo\Controller\Cron {
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->num_investors);
                     break;
                 
+                case 'tip_0':
+                    $tpl = 57;
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
+                    if(empty($project->consultants)) {
+                        $consultants = 'Enric Senabre';
+                    } else {
+                        $consultants_copy = $project->consultants;
+                        $consultants = array_shift($consultants_copy);
+                        foreach ($consultants_copy as $userId=>$userName) {
+                            $consultants .= ', ' . $userName;
+                        }
+                    }
+
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
+                    break;
+
                 // consejos normales
                 case 'tip_1': // template 41, "Difunde, difunde, difunde"
                     $tpl = 41;
@@ -173,6 +195,8 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->to = $project->user->email;
                 $mailHandler->toName = $project->user->name;
                 
+                if ($debug) echo $project->user->email . ', ';
+
                 // si es un proyecto de nodo: reply al mail del nodo
                 // si es de centra: reply a MAIL_GOTEO
                 $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : \GOTEO_CONTACT_MAIL;
@@ -181,17 +205,18 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
                 $mailHandler->template = $template->id;
-                if ($mailHandler->send($errors)) {
-                    return true;
-                } else {
+                if (!$mailHandler->send($errors)) {
                     echo \trace($errors);
                     @mail('goteo_fail@doukeshi.org',
                         'Fallo al enviar email automaticamente al autor ' . SITE_URL,
                         'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, true). '</pre>');
+                    $error_sending = true;
                 }
             }
 
-            return false;
+            if ($debug) echo '<br/>';
+
+            return !$error_sending;
         }
 
         /**
@@ -202,15 +227,14 @@ namespace Goteo\Controller\Cron {
          * @return bool
          */
         public static function toConsultants ($type, $project) {
+            $debug = true;
+            $error_sending = false;
             $tpl = null;
             
+            if ($debug) echo 'toConsultants: ';
+
             if (!isset($project->consultants)) {
                 $project->consultants = Model\Project::getConsultants($project->id);
-            }
-
-            // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a olivier
-            if (empty($project->consultants)) { 
-                $project->consultants = array('olivier' => 'Olivier');
             }
 
             /// tipo de envio
@@ -219,6 +243,29 @@ namespace Goteo\Controller\Cron {
                     $tpl = 56;
                     $search  = array('%PROJECTNAME%', '%URL%');
                     $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id);
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
+                    if (empty($project->consultants)) { 
+                        $project->consultants = array('olivier' => 'Olivier');
+                    }
+                    break;
+
+                case 'tip_0':
+                    $tpl = 57;
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
+                    if (empty($project->consultants)) { 
+                        $project->consultants = array('esenabre' => 'Enric Senabre');
+                    }
+                    $consultants_copy = $project->consultants;
+
+                    $consultants = array_shift($consultants_copy);
+                    foreach ($consultants_copy as $userId=>$userName) {
+                        $consultants .= ', ' . $userName;
+                    }
+
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
                     break;
             }
 
@@ -241,23 +288,26 @@ namespace Goteo\Controller\Cron {
                     $mailHandler->to = $consultant->email;
                     $mailHandler->toName = $name;
                     
+                    if ($debug) echo $consultant->email . ', ';
+
                     $mailHandler->subject = $subject;
                     $mailHandler->content = $content;
                     $mailHandler->html = true;
                     $mailHandler->template = $template->id;
-                    if ($mailHandler->send($errors)) {
-                        return true;
-                    } else {
+                    if (!$mailHandler->send($errors)) {
                         echo \trace($errors);
                         @mail('goteo_fail@doukeshi.org',
                             'Fallo al enviar email automaticamente al asesor ' . SITE_URL,
                             'Fallo al enviar email automaticamente al asesor: <pre>' . print_r($mailHandler, true). '</pre>');
+                        $error_sending = true;
                     }
                 }
 
             }
 
-            return false;
+            if ($debug) echo '<br/>';
+
+            return !$error_sending;
         }
 
         /**

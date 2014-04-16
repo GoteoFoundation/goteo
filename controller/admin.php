@@ -116,7 +116,8 @@ namespace Goteo\Controller {
             'commons' => array(
                 'label' => 'Retornos colectivos',
                 'actions' => array(
-                    'list' => array('label' => 'Listando', 'item' => false)
+                    'list' => array('label' => 'Listando', 'item' => false),
+                    'view' => array('label' => 'Cumplimiento de retornos', 'item' => true)
                 ),
                 'filters' => array('project' => '', 'status' => '', 'icon' => '', 'projStatus'=>'')
             ),
@@ -270,8 +271,9 @@ namespace Goteo\Controller {
                 'label' => 'Padrinos',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
-                    'add' => array('label' => 'Nueva Recomendación', 'item' => false),
-                    'edit' => array('label' => 'Editando Recomendacion', 'item' => true)
+                    'add' => array('label' => 'Nuevo apadrinamiento', 'item' => false),
+                    'edit' => array('label' => 'Editando Apadrinamiento', 'item' => true),
+                    'view' => array('label' => 'Apadrinamientos', 'item' => true)
                 )
             ),
             'projects' => array(
@@ -356,7 +358,8 @@ namespace Goteo\Controller {
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva Historia', 'item' => false),
                     'edit' => array('label' => 'Editando Historia', 'item' => true),
-                    'translate' => array('label' => 'Traduciendo Historia', 'item' => true)
+                    'translate' => array('label' => 'Traduciendo Historia', 'item' => true),
+                    'preview' => array('label' => 'Previsualizando Historia', 'item' => true)
                 )
             ),
             'tags' => array(

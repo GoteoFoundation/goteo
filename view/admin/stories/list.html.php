@@ -20,6 +20,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <th><!-- Bajar --></th>
                 <th><!-- Editar--></th>
                 <th><!-- Traducir--></th>
+                <th><!-- Preview--></th>
                 <th><!-- Quitar--></th>
             </tr>
         </thead>
@@ -44,6 +45,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <a href="/translate/stories/edit/<?php echo $story->id; ?>" target="_blank">[Traducir]</a>
                 <?php endif; ?>
                 </td>
+                <td><a href="/admin/stories/preview/<?php echo $story->id; ?>" target="_blank">[Preview]</a></td>
                 <td><a href="/admin/stories/remove/<?php echo $story->id; ?>">[Quitar]</a></td>
             </tr>
             <?php endforeach; ?>

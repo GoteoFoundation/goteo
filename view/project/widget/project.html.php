@@ -114,6 +114,8 @@ if (isset($this['investor']) && is_object($this['investor'])) {
 
 
     <?php
+    
+    
     /*
      * quitamos los botones
      *
