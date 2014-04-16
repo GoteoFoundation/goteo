@@ -21,7 +21,8 @@ namespace Goteo\Controller\Cron {
          */
         public static function toOwner ($type, $project) {
             $tpl = null;
-            
+            $debug = true;
+
             /// tipo de envio
             switch ($type) {
                 // Estos son avisos de final de ronda
@@ -105,8 +106,9 @@ namespace Goteo\Controller\Cron {
                     if(empty($project->consultants)) {
                         $consultants = 'Enric Senabre';
                     } else {
-                        $consultants = array_shift($project->consultants);
-                        foreach ($project->consultants as $userId=>$userName) {
+                        $consultants_copy = $project->consultants;
+                        $consultants = array_shift($consultants_copy);
+                        foreach ($consultants_copy as $userId=>$userName) {
                             $consultants .= ', ' . $userName;
                         }
                     }
@@ -190,6 +192,10 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->to = $project->user->email;
                 $mailHandler->toName = $project->user->name;
                 
+                if ($debug) {
+                    echo 'toOwner: ' . $project->user->email . '<br/>';
+                }
+
                 // si es un proyecto de nodo: reply al mail del nodo
                 // si es de centra: reply a MAIL_GOTEO
                 $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : \GOTEO_CONTACT_MAIL;
@@ -219,6 +225,8 @@ namespace Goteo\Controller\Cron {
          * @return bool
          */
         public static function toConsultants ($type, $project) {
+            $debug = true;
+            $error_sending = false;
             $tpl = null;
             
             if (!isset($project->consultants)) {
@@ -245,9 +253,10 @@ namespace Goteo\Controller\Cron {
                     if (empty($project->consultants)) { 
                         $project->consultants = array('esenabre' => 'Enric Senabre');
                     }
+                    $consultants_copy = $project->consultants;
 
-                    $consultants = array_shift($project->consultants);
-                    foreach ($project->consultants as $userId=>$userName) {
+                    $consultants = array_shift($consultants_copy);
+                    foreach ($consultants_copy as $userId=>$userName) {
                         $consultants .= ', ' . $userName;
                     }
 
@@ -275,23 +284,26 @@ namespace Goteo\Controller\Cron {
                     $mailHandler->to = $consultant->email;
                     $mailHandler->toName = $name;
                     
+                    if ($debug) {
+                        echo 'toConsultants: ' . $consultant->email . '<br/>';
+                    }
+
                     $mailHandler->subject = $subject;
                     $mailHandler->content = $content;
                     $mailHandler->html = true;
                     $mailHandler->template = $template->id;
-                    if ($mailHandler->send($errors)) {
-                        return true;
-                    } else {
+                    if (!$mailHandler->send($errors)) {
                         echo \trace($errors);
                         @mail('goteo_fail@doukeshi.org',
                             'Fallo al enviar email automaticamente al asesor ' . SITE_URL,
                             'Fallo al enviar email automaticamente al asesor: <pre>' . print_r($mailHandler, true). '</pre>');
+                        $error_sending = true;
                     }
                 }
 
             }
 
-            return false;
+            return !$error_sending;
         }
 
         /**
