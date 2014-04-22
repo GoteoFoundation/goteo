@@ -255,13 +255,13 @@ namespace Goteo\Controller\Cron {
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
                     if (empty($project->consultants)) { 
-                        $project->consultants = array('esenabre' => 'Enric Senabre');
-                    }
-                    $consultants_copy = $project->consultants;
-
-                    $consultants = array_shift($consultants_copy);
-                    foreach ($consultants_copy as $userId=>$userName) {
-                        $consultants .= ', ' . $userName;
+                        $consultants = array('esenabre' => 'Enric Senabre');
+                    } else {
+                        $consultants_copy = $project->consultants;
+                        $consultants = array_shift($consultants_copy);
+                        foreach ($consultants_copy as $userId=>$userName) {
+                            $consultants .= ', ' . $userName;
+                        }
                     }
 
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
