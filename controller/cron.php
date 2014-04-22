@@ -71,8 +71,8 @@ namespace Goteo\Controller {
             
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña,
-            // (publicados hace más de 40 días que no tengan fecha de pase)
-            // o (publicados hace mas de 80 días que no tengan fecha de exito)
+            // (publicados hace más de PRIMERA_RONDA días que no tengan fecha de pase)
+            // o (publicados hace mas de SEGUNDA_RONDA días que no tengan fecha de exito)
             $projects = Model\Project::getActive();
 
             if ($debug) echo 'Comenzamos con los proyectos en campaña (esto está en '.\LANG.')<br /><br />';
@@ -132,9 +132,9 @@ namespace Goteo\Controller {
                 }
                 if ($debug) echo 'Ha alcanzado el '.$per_amount.' &#37; del minimo<br />';
 
-                // los dias que lleva el proyecto  (ojo que los financiados llevaran mas de 80 dias)
+                // los dias que lleva el proyecto (ojo que los financiados llevaran mas de SEGUNDA_RONDA dias)
                 $days = $project->daysActive();
-                if ($debug) echo 'Lleva '.$days.'  dias desde la publicacion<br />';
+                if ($debug) echo 'Lleva '.$days.' dias desde la publicacion<br />';
 
                 /* Verificar si enviamos aviso */
                 $rest = $project->days;
@@ -167,12 +167,12 @@ namespace Goteo\Controller {
                     }
                 }
 
-                //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
-                // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
-                if ($days >= 40) {
+                //  (financiado a los SEGUNDA_RONDA días o cancelado si a los PRIMERA_RONDA dias no llega al minimo)
+                // si ha llegado a los PRIMERA_RONDA dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
+                if ($days >= PRIMERA_RONDA) {
                     // si no ha alcanzado el mínimo, pasa a estado caducado
                     if ($project->amount < $project->mincost) {
-                        if ($debug) echo 'Ha llegado a los 40 dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
+                        if ($debug) echo 'Ha llegado a los PRIMERA_RONDA dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
 
                         echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
                         echo 'No ha conseguido el minimo, cancelamos todos los aportes y lo caducamos:';
@@ -222,12 +222,12 @@ namespace Goteo\Controller {
                         
                         echo '<br />';
                     } else {
-                        // tiene hasta 80 días para conseguir el óptimo (o más)
-                        if ($days >= 80) {
-                            if ($debug) echo 'Ha llegado a los 80 dias de campaña (final de segunda ronda)<br />';
+                        // tiene hasta SEGUNDA_RONDA días para conseguir el óptimo (o más)
+                        if ($days >= SEGUNDA_RONDA) {
+                            if ($debug) echo 'Ha llegado a los SEGUNDA_RONDA dias de campaña (final de segunda ronda)<br />';
 
                             echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
-                            echo 'Ha llegado a los 80 días: financiado. ';
+                            echo 'Ha llegado a los SEGUNDA_RONDA días: financiado. ';
 
                             $execute = true; // ejecutar los cargos de la segunda ronda
 
@@ -282,7 +282,7 @@ namespace Goteo\Controller {
                             echo '<br />';
                         } elseif (empty($project->passed)) {
 
-                            if ($debug) echo 'Ha llegado a los 40 dias de campaña, pasa a segunda ronda<br />';
+                            if ($debug) echo 'Ha llegado a los PRIMERA_RONDA dias de campaña, pasa a segunda ronda<br />';
 
                             echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
                             echo 'El proyecto supera la primera ronda: marcamos fecha';
@@ -344,7 +344,7 @@ namespace Goteo\Controller {
                             }
                             
                         } else {
-                            if ($debug) echo 'Lleva más de 40 dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
+                            if ($debug) echo 'Lleva más de PRIMERA_RONDA dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
                             if ($debug) echo $project->name . ': lleva recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . ' y paso a segunda ronda el '.$project->passed.'<br />';
                         }
                     }

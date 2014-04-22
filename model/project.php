@@ -103,11 +103,11 @@ namespace Goteo\Model {
 
             //Obtenido, Días, Cofinanciadores
             $invested = 0, //cantidad de inversión
-            $days = 0, //para 40 desde la publicación o para 80 si no está caducado
+            $days = 0, //para PRIMERA_RONDA días desde la publicación o para SEGUNDA_RONDA días si no está caducado
             $investors = array(), // aportes individuales a este proyecto
             $num_investors = 0, // numero de usuarios que han aportado
 
-            $round = 0, // para ver si ya está en la fase de los 40 a los 80
+            $round = 0, // para ver si ya está en la segunda fase
             $passed = null, // para ver si hemos hecho los eventos de paso a segunda ronda
             $willpass = null, // fecha final de primera ronda
 
@@ -340,10 +340,10 @@ namespace Goteo\Model {
                 $project->setDays();
                 $project->setTagmark();
 
-                // fecha final primera ronda (fecha campaña + 40)
+                // fecha final primera ronda (fecha campaña + PRIMERA_RONDA)
                 if (!empty($project->published)) {
                     $ptime = strtotime($project->published);
-                    $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+40, date('Y', $ptime)));
+                    $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+PRIMERA_RONDA, date('Y', $ptime)));
                 }
 
                 // podría estar asignado a alguna convocatoria
@@ -588,14 +588,14 @@ namespace Goteo\Model {
                 // tiempo de campaña
                 if ($this->status == 3) {
                     $days = $this->daysActive();
-                    if ($days > 81) {
+                    if ($days > SEGUNDA_RONDA+1) {
                         $this->round = 0;
                         $days = 0;
-                    } elseif ($days >= 40) {
-                        $days = 80 - $days;
+                    } elseif ($days >= PRIMERA_RONDA) {
+                        $days = SEGUNDA_RONDA - $days;
                         $this->round = 2;
                     } else {
-                        $days = 40 - $days;
+                        $days = PRIMERA_RONDA - $days;
                         $this->round = 1;
                     }
 
@@ -705,7 +705,7 @@ namespace Goteo\Model {
          */
         private function setTagmark() {
             // a ver que banderolo le toca
-            // "financiado" al final de de los 80 dias
+            // "financiado" al final de los SEGUNDA_RONDA dias
             if ($this->status == 4) :
                 $this->tagmark = 'gotit';
             // "en marcha" cuando llega al optimo en primera o segunda ronda
@@ -1964,10 +1964,10 @@ namespace Goteo\Model {
             $days = $query->fetchColumn(0);
             $days--;
 
-            if ($days > 40) {
-                $rest = 80 - $days; //en segunda ronda
+            if ($days > PRIMERA_RONDA) {
+                $rest = SEGUNDA_RONDA - $days; //en segunda ronda
             } else {
-                $rest = 40 - $days; // en primera ronda
+                $rest = PRIMERA_RONDA - $days; // en primera ronda
             }
 
             return $rest;

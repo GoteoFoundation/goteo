@@ -20,7 +20,7 @@ namespace Goteo\Library {
          * Método para crear un preapproval para un aporte
          * va a mandar al usuario a paypal para que confirme
          *
-         * @TODO poner límite máximo de dias a lo que falte para los 40/80 dias para evitar las cancelaciones
+         * @TODO poner límite máximo de dias a lo que falte para los PRIMERA_RONDA/SEGUNDA_RONDA dias para evitar las cancelaciones
          */
         public static function preapproval($invest, &$errors = array()) {
             
@@ -592,7 +592,7 @@ namespace Goteo\Library {
 
 
         /*
-         * Llamada para cancelar un preapproval (si llega a los 40 sin conseguir el mínimo)
+         * Llamada para cancelar un preapproval (si llega a los PRIMERA_RONDA sin conseguir el mínimo)
          * recibe la instancia del aporte
          */
         public static function cancelPreapproval ($invest, &$errors = array(), $fail = false) {
