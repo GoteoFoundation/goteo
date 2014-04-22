@@ -85,7 +85,7 @@ namespace Goteo\Controller {
                 die;
             }
 
-            $log_txt .= "ha marcado el retorno colectivo {$reward} del proyecto {$project} como '{$value}'";
+            $log_txt .= "ha puesto la url de localización del retorno colectivo {$reward} del proyecto {$project} a '{$value}'";
             
             // TODO: Comprobar los parámetros de usuario por seguridad
 
