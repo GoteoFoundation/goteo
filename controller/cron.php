@@ -655,6 +655,9 @@ namespace Goteo\Controller {
                 $log_text = \vsprintf($log_text, array(Feed::item('project', $project->name, $project->id)));
                 if ($debug) echo $log_text;
 
+                // galeria
+                $project->gallery = Project\Image::getGallery($project->id);
+
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($project->id);
