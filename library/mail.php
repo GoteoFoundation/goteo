@@ -296,6 +296,7 @@ namespace Goteo\Library {
         /**
          *
          * @param array $filters    user (nombre o email),  template
+         * FIXME: No funciona cuando las fechas desde y hasta son iguales.
          */
         public static function getSended($filters = array(), $node = null, $limit = 9) {
 
