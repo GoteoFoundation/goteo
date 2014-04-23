@@ -48,8 +48,17 @@ namespace Goteo\Controller {
                 $blog->posts = Model\Blog\Post::getList($filters);
             }
 
-            if (isset($post) && !isset($blog->posts[$post]) && $_GET['preview'] != $_SESSION['user']->id) {
-                throw new \Goteo\Core\Redirection('/blog');
+            if (isset($post) && !isset($blog->posts[$post])) {
+                // para ver entradas de novedades de proyecto
+                $blog->posts[$post] = Model\Blog\Post::get($post);
+
+                // si preview
+                if (!$blog->posts[$post]->publish &&
+                    ( $_GET['preview'] != $_SESSION['user']->id
+                        || !isset($_GET['preview'])
+                        )
+                    )
+                    throw new \Goteo\Core\Redirection('/blog');
             }
 
             // segun eso montamos la vista
