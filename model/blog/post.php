@@ -51,7 +51,9 @@ namespace Goteo\Model\Blog {
                         post.home as home,
                         post.footer as footer,
                         post.author as author,
-                        CONCAT(blog.type, '-', blog.owner) as owner
+                        CONCAT(blog.type, '-', blog.owner) as owner,
+                        blog.type as owner_type,
+                        blog.owner as owner_id
                     FROM    post
                     INNER JOIN blog
                         ON  blog.id = post.blog
@@ -79,7 +81,13 @@ namespace Goteo\Model\Blog {
                 $post->tags = Post\Tag::getAll($id);
 
                 // autor
-                if (!empty($post->author)) $post->user = User::getMini($post->author);
+                if (!empty($post->author)) {
+                    $post->user = User::getMini($post->author);
+                } else if ($post->owner_type == 'project') {
+                    $post->project = Project::getMini($post->owner_id);
+                    $post->user = $post->project->user;
+                    $post->author = $post->project->user->id;
+                }
                 
                 return $post;
         }
