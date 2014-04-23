@@ -19,21 +19,9 @@ namespace Goteo\Controller {
 
         // Array de usuarios con permisos especiales
         static public $supervisors = array(
-            'id-usuario-supervisor' => array(
+            'contratos' => array(
                 // paneles de admin permitidos
-                'base',
-                'blog',
-                'texts',
-                'faq',
-                'pages',
-                'licenses',
-                'icons',
-                'tags',
-                'criteria',
-                'templates',
-                'glossary',
-                'info',
-                'mailing' // para testeo newsletter
+                'commons'
             )
         );
         // Array de los gestores que existen
