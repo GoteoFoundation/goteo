@@ -29,7 +29,7 @@ $deadline = mktime(0, 0, 0,
 
     <dl>
         <dt>Telefono:</dt>
-        <dd><?php echo $contract->phone ?></dd>
+        <dd><?php echo $contact->phone ?></dd>
     </dl>
 
     <dl>
