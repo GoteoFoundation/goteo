@@ -465,10 +465,21 @@ namespace Goteo\Library {
         /*
          * Devuelve array de urls para compartir en redes sociales
          */
-        static public function shareLinks ($url, $title) {
+        static public function shareLinks ($url, $title, $user_twitter = null) {
+
+            $author_twitter = str_replace(
+                        array(
+                            'https://',
+                            'http://',
+                            'www.',
+                            'twitter.com/',
+                            '#!/',
+                            '@'
+                        ), '', $user_twitter);
+            $author = !empty($author_twitter) ? ' '.self::get('regular-by').' @'.$author_twitter.' ' : '';
 
             $urls = array(
-                'twitter' => 'http://twitter.com/home?status=' . rawurlencode($title . ': ' . $url . ' #Goteo'),
+                'twitter' => 'http://twitter.com/home?status=' . rawurlencode($title . $author.': ' . $url . ' #Goteo'),
                 'facebook' => 'http://facebook.com/sharer.php?u=' . rawurlencode($url . '&t=' . rawurlencode($title))
             );
 
