@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
+        Goteo\Controller\Cron\Send,
         Goteo\Library\Text,
         Goteo\Library\Check,
         Goteo\Library\Mail,
@@ -159,8 +160,6 @@ namespace Goteo\Controller {
                     $project->okeys['overview']['image'] = null;
                 }
 
-                
-
                 // si estan enviando el proyecto a revisión
                 if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
                     $errors = array();
@@ -192,34 +191,11 @@ namespace Goteo\Controller {
                         unset($mailHandler);
 
                         // email al autor
-                        // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(8);
-
-                        // Sustituimos los datos
-                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-
-                        // En el contenido:
-                        $search  = array('%USERNAME%', '%PROJECTNAME%');
-                        $replace = array($project->user->name, $project->name);
-                        $content = \str_replace($search, $replace, $template->text);
-
-
-                        $mailHandler = new Mail();
-
-                        $mailHandler->to = $project->user->email;
-                        $mailHandler->toName = $project->user->name;
-                        $mailHandler->subject = $subject;
-                        $mailHandler->content = $content;
-                        $mailHandler->html = true;
-                        $mailHandler->template = $template->id;
-                        if ($mailHandler->send($errors)) {
+                        if (Send::toOwner('project_to_review', $project)) {
                             Message::Info(Text::get('project-review-confirm_mail-success'));
                         } else {
                             Message::Error(Text::get('project-review-confirm_mail-fail'));
-                            Message::Error(implode('<br />', $errors));
                         }
-
-                        unset($mailHandler);
 
                         // Evento Feed
                         $log = new Feed();

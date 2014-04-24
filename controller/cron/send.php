@@ -6,10 +6,9 @@
 namespace Goteo\Controller\Cron {
 
     use Goteo\Model,
-    	Goteo\Core\View,
+        Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Library\Text,
-        Goteo\Library\Feed,
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Core\Error;
@@ -106,6 +105,12 @@ namespace Goteo\Controller\Cron {
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->num_investors);
                     break;
                 
+                case 'project_to_review': // template 8, "Confirmacion de proyecto enviado"
+                    $tpl = 8;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%');
+                    $replace = array($project->user->name, $project->name);
+                    break;
+
                 case 'tip_0':
                     $tpl = 57;
 
