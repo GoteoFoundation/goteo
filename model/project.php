@@ -313,6 +313,11 @@ namespace Goteo\Model {
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
 
+                // extra conf
+                $project_conf = Project\Conf::get($id);
+                $project->days_round1 = $project_conf->days_round1;
+                $project->days_round2 = $project_conf->days_round2;
+
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
@@ -343,7 +348,7 @@ namespace Goteo\Model {
                 // fecha final primera ronda (fecha campaña + PRIMERA_RONDA)
                 if (!empty($project->published)) {
                     $ptime = strtotime($project->published);
-                    $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+PRIMERA_RONDA, date('Y', $ptime)));
+                    $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+$project->days_round1, date('Y', $ptime)));
                 }
 
                 // podría estar asignado a alguna convocatoria
@@ -588,14 +593,14 @@ namespace Goteo\Model {
                 // tiempo de campaña
                 if ($this->status == 3) {
                     $days = $this->daysActive();
-                    if ($days > SEGUNDA_RONDA+1) {
+                    if ($days > $project->days_round1+1) {
                         $this->round = 0;
                         $days = 0;
-                    } elseif ($days >= PRIMERA_RONDA) {
-                        $days = SEGUNDA_RONDA - $days;
+                    } elseif ($days >= $project->days_round1) {
+                        $days = $project->days_round2 - $days;
                         $this->round = 2;
                     } else {
-                        $days = PRIMERA_RONDA - $days;
+                        $days = $project->days_round1 - $days;
                         $this->round = 1;
                     }
 
@@ -1964,10 +1969,13 @@ namespace Goteo\Model {
             $days = $query->fetchColumn(0);
             $days--;
 
-            if ($days > PRIMERA_RONDA) {
-                $rest = SEGUNDA_RONDA - $days; //en segunda ronda
+            $days_round1 = \Project\Conf::getRound1Days($id);
+            $days_round2 = \Project\Conf::getRound2Days($id);
+
+            if ($days > days_round1) {
+                $rest = days_round2 - $days; //en segunda ronda
             } else {
-                $rest = PRIMERA_RONDA - $days; // en primera ronda
+                $rest = days_round1 - $days; // en primera ronda
             }
 
             return $rest;
@@ -2232,6 +2240,11 @@ namespace Goteo\Model {
                 $the_proj->days = (int) $proj->dias - 1;
                 $the_proj->patrons = Patron::numRecos($proj->id);
                 
+                // extra conf
+                $project_conf = Project\Conf::get($id);
+                $the_proj->days_round1 = $project_conf->days_round1;
+                $the_proj->days_round2 = $project_conf->days_round2;
+
                 $projects[] = $the_proj;
             }
             return $projects;

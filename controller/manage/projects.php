@@ -330,10 +330,12 @@ namespace Goteo\Controller\Manage {
                 // si aun no tiene fechas hay que calcularlas
                 $the_date = strtotime($the_proj->published);
                 if (empty($the_proj->passed)) {
-                    $the_proj->passed = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+PRIMERA_RONDA, date('Y', $the_date)));
+                    $days_round1 = Project\Conf::getRound1Days($proj['id']);
+                    $the_proj->passed = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$days_round1, date('Y', $the_date)));
                 }
                 if (empty($the_proj->success)) {
-                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+SEGUNDA_RONDA, date('Y', $the_date)));
+                    $days_round2 = Project\Conf::getRound2Days($proj['id']);
+                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$days_round2, date('Y', $the_date)));
                 }
                 
                 // preparamos los flags

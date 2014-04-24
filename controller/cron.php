@@ -169,10 +169,10 @@ namespace Goteo\Controller {
 
                 //  (financiado a los SEGUNDA_RONDA días o cancelado si a los PRIMERA_RONDA dias no llega al minimo)
                 // si ha llegado a los PRIMERA_RONDA dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
-                if ($days >= PRIMERA_RONDA) {
+                if ($days >= $project->days_round1) {
                     // si no ha alcanzado el mínimo, pasa a estado caducado
                     if ($project->amount < $project->mincost) {
-                        if ($debug) echo 'Ha llegado a los PRIMERA_RONDA dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
+                        if ($debug) echo 'Ha llegado a los ' . $project->days_round1 . ' dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
 
                         echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
                         echo 'No ha conseguido el minimo, cancelamos todos los aportes y lo caducamos:';
@@ -282,7 +282,7 @@ namespace Goteo\Controller {
                             echo '<br />';
                         } elseif (empty($project->passed)) {
 
-                            if ($debug) echo 'Ha llegado a los PRIMERA_RONDA dias de campaña, pasa a segunda ronda<br />';
+                            if ($debug) echo 'Ha llegado a los ' . $project->days_round1 . ' dias de campaña, pasa a segunda ronda<br />';
 
                             echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
                             echo 'El proyecto supera la primera ronda: marcamos fecha';
@@ -344,7 +344,7 @@ namespace Goteo\Controller {
                             }
                             
                         } else {
-                            if ($debug) echo 'Lleva más de PRIMERA_RONDA dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
+                            if ($debug) echo 'Lleva más de ' . $project->days_round1 . ' dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
                             if ($debug) echo $project->name . ': lleva recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . ' y paso a segunda ronda el '.$project->passed.'<br />';
                         }
                     }

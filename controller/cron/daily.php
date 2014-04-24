@@ -67,7 +67,7 @@ namespace Goteo\Controller\Cron {
             foreach ($projects as $project) {
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
                 // FIXME: la segunda condicion del if
-                if ($project->days > PRIMERA_RONDA + 2 || $project->days > 360) {
+                if ($project->days > $project->days_round1 + 2 || $project->days > 360) {
                     // if ($debug) echo "Proyecto <strong>{$project->name}</strong> SKIP<br/>"; // no necesitamos este feedback
                     continue;
                 }
@@ -76,7 +76,7 @@ namespace Goteo\Controller\Cron {
                 
                 // primero los que no se bloquean
                 //Solicitud de datos del contrato
-                if ($project->days == PRIMERA_RONDA + 1) {
+                if ($project->days == $project->days_round1 + 1) {
                     // si ha superado el mínimo
                     if ($project->invested >= $project->mincost) {
                         if ($debug) echo "Solicitud de datos contrato<br />";

@@ -8,12 +8,16 @@
  */
 namespace Goteo\Model\Project {
 
+    use Goteo\Library\Text;
+
     class Conf extends \Goteo\Core\Model {
 
         public
             $project,
             $noinvest, // no se pueden hacer más aportes
-            $watch;
+            $watch,
+            $days_round1,
+            $days_round2;
 
         /**
          * Get the conf for a project
@@ -24,8 +28,13 @@ namespace Goteo\Model\Project {
 
             try {
                 $query = static::query("SELECT * FROM project_conf WHERE project = ?", array($id));
-                $conf = $query->fetchObject(__CLASS__);
-                return $conf;
+                $project_conf = $query->fetchObject(__CLASS__);
+
+                if (!$project_conf instanceof \Goteo\Model\Project\Conf) {
+                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
+                }
+
+                return $project_conf;
 
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
@@ -47,7 +56,7 @@ namespace Goteo\Model\Project {
                 $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch);
 				return self::query($sql, $values);
 			} catch(\PDOException $e) {
-				$errors[] = "Las cuentas no se han asignado correctamente. Por favor, revise los datos." . $e->getMessage();
+				$errors[] = "La configuración del proyecto no se ha guardado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
 			}
 
@@ -60,6 +69,26 @@ namespace Goteo\Model\Project {
                 $query = static::query("SELECT noinvest FROM project_conf WHERE project = ?", array($id));
                 $conf = $query->fetchColumn();
                 return (!empty($conf));
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+        public static function getRound1Days($id) {
+
+            try {
+                $query = static::query("SELECT days_round1 FROM project_conf WHERE project = ?", array($id));
+                return $query->fetchColumn();
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+         public static function getRound2Days($id) {
+
+            try {
+                $query = static::query("SELECT days_round2 FROM project_conf WHERE project = ?", array($id));
+                return $query->fetchColumn();
             } catch(\PDOException $e) {
                 return false;
             }
