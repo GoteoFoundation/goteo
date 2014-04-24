@@ -15,12 +15,12 @@ namespace Goteo\Controller\Cron {
         /**
          * Al autor del proyecto, se encarga de substituir variables en plantilla
          *
-         * @param $type string
-         * @param $project Object
+         * @param $type string Identificador de la plantilla
+         * @param $project Object El proyecto que está relacionado con el envío del email
          * @return bool
          */
         public static function toOwner ($type, $project) {
-            $tpl = null;
+            $tpl = null; // Número de la plantilla que se obtendrá a partir del identificador
             $debug = true;
             $error_sending = false;
 
@@ -255,13 +255,13 @@ namespace Goteo\Controller\Cron {
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
                     if (empty($project->consultants)) { 
-                        $project->consultants = array('esenabre' => 'Enric Senabre');
-                    }
-                    $consultants_copy = $project->consultants;
-
-                    $consultants = array_shift($consultants_copy);
-                    foreach ($consultants_copy as $userId=>$userName) {
-                        $consultants .= ', ' . $userName;
+                        $consultants = array('esenabre' => 'Enric Senabre');
+                    } else {
+                        $consultants_copy = $project->consultants;
+                        $consultants = array_shift($consultants_copy);
+                        foreach ($consultants_copy as $userId=>$userName) {
+                            $consultants .= ', ' . $userName;
+                        }
                     }
 
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
