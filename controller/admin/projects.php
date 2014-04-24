@@ -505,7 +505,6 @@ namespace Goteo\Controller\Admin {
                     Message::Error('Ha fallado al cortar el grifo al proyecto <strong>'.$project->name.'</strong>');
                 }
 
-
                 throw new Redirection('/admin/projects/list');
             }
 
