@@ -83,13 +83,12 @@ div.stories-banners-container div.stories-banner div.info div#review{
 
 margin-top:5px; 
 color:#BCE8E8; 
-font-size:15px;
-	
+font-size:15px;	
 }
 
 div.stories-banners-container div.stories-banner div.info a:hover >div#review {
  
-color:#585a5c;
+color:#FFFFFF;
 
 }
 
@@ -113,8 +112,9 @@ div.stories-banners-container div.stories-banner div.info_extra > span#cofinanci
 
 color:#313B96; 
 font-size:11px; 
-position:absolute; 
-bottom:16px;
+vertical-align: middle;
+/*position:absolute; 
+bottom:16px;*/
 
 }
 
@@ -122,7 +122,8 @@ div.stories-banners-container div.stories-banner div.info_extra > strong#ncofina
 
 color:#313B96; 
 font-size:20px; 
-margin-left:110px;
+vertical-align: middle;
+margin-left:10px;
 
 }
 
@@ -131,24 +132,28 @@ div.stories-banners-container div.stories-banner div.info_extra > span#obtenido 
 color:#96238F; 
 font-size:11px; 
 margin-left:20px;
+vertical-align: middle;
 
 }
 
 div.stories-banners-container div.stories-banner div.info_extra span#obtenido span{
 
-position:absolute; bottom:16px;
+/*position:absolute; bottom:16px;*/
 
 }
 
 div.stories-banners-container div.stories-banner div.info_extra span#obtenido strong{
 
-font-size:20px; margin-left:63px;
+vertical-align: middle;
+font-size:20px; 
+margin-left:10px;
 
 }
 
 div.stories-banners-container div.stories-banner div.info_extra span#obtenido img{
 
-vertical-align: text-bottom; margin-left:5px;
+/*vertical-align: text-bottom; margin-left:5px;*/
+vertical-align: middle;
 
 }
 div.stories-banners-container div.stories-banner > div.short-desc{margin-top: 25px; margin-left: 50px; line-height:30px;font-size:20px;color:#1f81bb; max-width: 450px;}

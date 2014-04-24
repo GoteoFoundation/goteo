@@ -23,13 +23,15 @@ else
         <div class="info">
             <a href="<?php echo $link_title;?>" target="_blank">
                 <div id="info_title"><?php echo htmlspecialchars($story->title); ?></div>
+            </a>
+            <a href="<?php echo $link_title;?>" target="_blank">
                 <div id="review"><?php echo htmlspecialchars($story->review); ?></div>
             </a>
             <div id="line"></div>
             <div id="description"><blockquote><?php echo htmlspecialchars($story->description).'</blockquote>. '.'<a href="/user/profile/'.$story->project->user->id.'" target="_blank">'.htmlspecialchars($story->project->user->name).'</a>, del proyecto: '.'<a href="/project/'.$story->project->id.'" target="_blank">'.htmlspecialchars($story->project->name).'</a>'; ?></div>
         </div>
         <div class="info_extra">
-            <span id="cofinanciadores"><?php echo  mb_strtoupper(Text::get('project-view-metter-investors'));?></span> <strong id="ncofinanciadores"><?php echo $story->project->num_investors;?></strong>
-            <span id="obtenido"><span><?php echo  mb_strtoupper(Text::get('project-view-metter-got'));?></span><strong><?php echo $story->project->amount;?></strong><img src="/view/css/euro/violet/xl.png" width="20"/></span>
+            <span id="cofinanciadores"><?php echo  mb_strtoupper(Text::get('project-view-metter-investors'));?></span> <strong id="ncofinanciadores"><?php /*echo $story->project->num_investors;*/?>210</strong>
+            <span id="obtenido"><span><?php echo  mb_strtoupper(Text::get('project-view-metter-got'));?></span><strong><?php /*echo $story->project->amount;*/?>7641</strong><img src="/view/css/euro/violet/xl.png" width="20"/></span>
         </div>            
     </div>                                   
