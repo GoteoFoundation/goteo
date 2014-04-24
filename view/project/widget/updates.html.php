@@ -43,7 +43,7 @@ $level = (int) $this['level'] ?: 3;
     <?php if ($action == 'post') : ?>
     <div class="post widget">
         <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'post', 'url' => '/project/'.$project->id.'/updates/')); ?>
-        <?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/project/'.$project->id.'/updates/' . $post->id, $post->title.'project', $project->user->twitter))); ?>
+        <?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/project/'.$project->id.'/updates/' . $post->id, $post->title, $project->user->twitter))); ?>
     </div>
     <?php echo new View('view/blog/comments.html.php', array('post' => $post->id, 'owner' => $project->owner)); ?>
     <?php echo new View('view/blog/sendComment.html.php', array('post' => $post->id, 'project' => $project->id)); ?>
