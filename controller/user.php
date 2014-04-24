@@ -915,6 +915,52 @@ namespace Goteo\Controller {
             );
         }
 
+        /*
+         * Método para bloquear el envío de newsletter
+         *
+         * token es un
+         *
+         */
+        public function unsuscribe($token = null) {
+
+            $errors = array();
+            // si el token mola, lo doy de baja
+            if (!empty($token)) {
+                $token = base64_decode($token);
+                $parts = explode('¬', $token);
+                if (count($parts) > 1) {
+                    $query = Model\User::query('SELECT id FROM user WHERE email = ?', array($parts[1]));
+                    if ($id = $query->fetchColumn()) {
+                        if (!empty($id)) {
+                            // el token coincide con el email y he obtenido una id
+                            Model\User::setPreferences($id, array('mailing'=>1), $errors);
+
+                            if (empty($errors)) {
+                                $message = Text::get('unsuscribe-request-success');
+                            } else {
+                                $error = implode('<br />', $errors);
+                            }
+                        }
+                    } else {
+                        $error = Text::get('leave-token-incorrect');
+                    }
+                } else {
+                    $error = Text::get('leave-token-incorrect');
+                }
+            } else {
+                $error = Text::get('leave-request-fail');
+            }
+
+            return new View(
+                'view/user/unsuscribe.html.php',
+                array(
+                    'error' => $error,
+                    'message' => $message
+                )
+            );
+        }
+
+
     }
 
 }
