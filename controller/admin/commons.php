@@ -117,7 +117,8 @@ namespace Goteo\Controller\Admin {
                     'statuses' => $statuses,
                     'projStatus' => $projStatus,
                     'status' => $status,
-                    'icons' => $icons
+                    'icons' => $icons,
+                    'autocomplete' => true
                 )
             );
 

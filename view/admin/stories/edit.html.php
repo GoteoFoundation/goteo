@@ -14,7 +14,6 @@ foreach ($this['items'] as $iId=>$iObj) {
     if ($iId == $story->post) $preVal = "$el_val";
 }
 
-print_r($items);
 // proyectos disponibles
 // si tenemos ya proyecto seleccionado lo incluimos
 $projects = Model\Stories::available($story->project);
