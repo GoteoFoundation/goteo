@@ -4,6 +4,15 @@ use Goteo\Core\View,
 
 $filters = $this['filters'];
 $status = $this['statuses'];
+
+$items = array();
+
+foreach ($this['projects'] as $project) {
+    $items[] = '{ value: "'.$project->name.'", id: "'.$project->id.'" }';
+        if($filters['project'] === $project->name) $preval=$project->name;
+}
+
+
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/commons" method="get">
@@ -19,6 +28,11 @@ $status = $this['statuses'];
         </div>
 
         <div style="float:left;margin:5px;">
+            <label for="projects-filter">Post: (autocomplete título o numero)</label><br />
+            <input type="text" name="project" id="projects-filter" value="<?php if ($filters['project'] === $preval) echo $preval;?>" size="60" />
+        </div>
+
+        <!--<div style="float:left;margin:5px;">
             <label for="projects-filter">Proyecto:</label><br />
             <select id="projects-filter" name="project" >
                 <option value="">Todos los proyectos</option>
@@ -26,7 +40,7 @@ $status = $this['statuses'];
                 <option value="<?php echo $project->id; ?>"<?php if ($filters['project'] === $project->id) echo ' selected="selected"';?> status="<?php echo $project->status; ?>"><?php echo $project->name; ?></option>
             <?php endforeach; ?>
             </select>
-        </div>
+        </div>-->
 
         <?php /*
  * estos filtros ya no tienen sentido
@@ -107,3 +121,21 @@ $status = $this['statuses'];
     <p>No se han encontrado registros</p>
     <?php endif; ?>
 </div>
+
+<script type="text/javascript">
+$(function () {
+
+    var items = [<?php echo implode(', ', $items); ?>];
+
+    /* Autocomplete para elementos */
+    $( "#projects-filter" ).autocomplete({
+      source: items,
+      minLength: 1,
+      autoFocus: true,
+      select: function( event, ui) {
+                $("#item").val(ui.item.id);
+            }
+    });
+
+});
+</script>
