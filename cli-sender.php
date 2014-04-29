@@ -89,7 +89,7 @@ if ($mailing->blocked) {
 }
 
 // voy a parar aquí, antes del bloqueo
-if ($debug) echo "dbg: mailing:\n=====\n".print_r($mailing,1)."\n=====\n";
+if ($debug) echo "dbg: mailing:\n=====\n".print_r($mailing,true)."\n=====\n";
 
 if (!$fail) {
     if ($debug) echo "dbg: bloqueo este registro\n";

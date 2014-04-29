@@ -20,7 +20,7 @@ namespace Goteo\Model {
             $owner, // User who created it
             $node, // Node this project belongs to
             $nodeData, // Node data
-            $status,
+            $status,   // Project status
             $progress, // puntuation %
             $amount, // Current donated amount
 
@@ -228,7 +228,7 @@ namespace Goteo\Model {
 
                 return $this->id;
             } catch (\PDOException $e) {
-                $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+                $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, true) . "</pre>";
                 \trace($this);
                 die($errors[0]);
                 return false;
@@ -308,6 +308,9 @@ namespace Goteo\Model {
 				$project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
+
+                // asesores
+                $project->consultants = Project::getConsultants($id);
 
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
@@ -840,7 +843,7 @@ namespace Goteo\Model {
 
 				$sql = "UPDATE project SET " . $set . " WHERE id = :id";
 				if (!self::query($sql, $values)) {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     $fail = true;
                 }
 
@@ -1031,7 +1034,7 @@ namespace Goteo\Model {
 				if (self::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     return false;
                 }
 			} catch(\PDOException $e) {
@@ -2303,6 +2306,14 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.name LIKE :name";
                 $values[':name'] = "%{$filters['proj_name']}%";
             }
+            if (!empty($filters['proj_id'])) {
+                $sqlFilter .= " AND project.id = :proj_id";
+                $values[':proj_id'] = $filters['proj_id'];
+            }
+            if (!empty($filters['published'])) {
+                $sqlFilter .= " AND project.published = :published";
+                $values[':published'] = $filters['published'];
+            }
             if (!empty($filters['category'])) {
                 $sqlFilter .= " AND project.id IN (
                     SELECT project
@@ -2347,7 +2358,11 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
-
+            if (!empty($filters['success'])) {
+                $sqlFilter .= " AND success = :success";
+                $values[':success'] = $filters['success'];
+            }
+            
             //el Order
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
@@ -2380,6 +2395,88 @@ namespace Goteo\Model {
                 $the_proj = self::getMedium($proj['id']);
                 $the_proj->draft = $proj['draft'];
                 $projects[] = $the_proj;
+            }
+            return $projects;
+        }
+
+        /**
+         * Saca una lista de proyectos, solo datos simples
+         *
+         * @param string node id
+         * @return array of items , not instances of this class.
+         */
+        public static function getMiniList($filters = array(), $node = null) {
+
+            $projects = array();
+
+            $values = array();
+
+
+            // los filtros
+            $sqlFilter = "";
+            $sqlOrder = '';
+
+            if (!empty($filters['multistatus'])) {
+                $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
+            }
+            if ($filters['status'] > -1) {
+                $sqlFilter .= " AND project.status = :status";
+                $values[':status'] = $filters['status'];
+            } elseif ($filters['status'] == -2) {
+                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{5,40}')";
+            } else {
+                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+            }
+            if (!empty($filters['proj_name'])) {
+                $sqlFilter .= " AND project.name LIKE :name";
+                $values[':name'] = "%{$filters['proj_name']}%";
+            }
+            if (!empty($filters['proj_id'])) {
+                $sqlFilter .= " AND project.id = :proj_id";
+                $values[':proj_id'] = $filters['proj_id'];
+            }
+            if (!empty($filters['node'])) {
+                $sqlFilter .= " AND project.node = :node";
+                $values[':node'] = $filters['node'];
+            } elseif (!empty($node) && $node != \GOTEO_NODE) {
+                $sqlFilter .= " AND project.node = :node";
+                $values[':node'] = $node;
+            }
+
+            //el Order
+            if (!empty($filters['order'])) {
+                switch ($filters['order']) {
+                    case 'success':
+                        $sqlOrder .= " ORDER BY project.success ASC";
+                    break;
+                    case 'name':
+                        $sqlOrder .= " ORDER BY project.name ASC";
+                    break;
+                    default:
+                        $sqlOrder .= " ORDER BY {$filters['order']}";
+                    break;
+                }
+            }
+
+            // la select
+            $sql = "SELECT
+                        project.id,
+                        project.name,
+                        project.status,
+                        project.published,
+                        project.success,
+                        project.owner,
+                        project.node
+                    FROM project
+                    WHERE project.id != ''
+                        $sqlFilter
+                        $sqlOrder
+                    LIMIT 999
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+                $projects[] = $proj;
             }
             return $projects;
         }
@@ -2428,6 +2525,36 @@ namespace Goteo\Model {
         }
 
         /**
+         *  Saca las vias de contacto para un proyecto
+         */
+        public static function getContact($id) {
+
+            $sql = "
+                SELECT
+                    project.name as project_name,
+                    project.success as success_date,
+                    user.name as owner_name,
+                    project.contract_name as contract_name,
+                    user.email as owner_email,
+                    project.contract_email as contract_email,
+                    project.phone as phone,
+                    user.twitter as twitter,
+                    user.facebook as facebook,
+                    user.google as google,
+                    user.identica as identica,
+                    user.linkedin as linkedin
+                FROM project
+                INNER JOIN user
+                    ON user.id = project.owner
+                WHERE project.id = :id
+            ";
+
+            $query = self::query($sql, array(':id' => $id));
+            $contact = $query->fetchObject();
+            return $contact;
+        }
+
+        /**
          *  Metodo para obtener cofinanciadores agregados por usuario
          *  y sin convocadores
          */
@@ -2452,8 +2579,8 @@ namespace Goteo\Model {
             return $investors;
         }
 
-        /*
-        Método para calcular el mínimo y óptimo de un proyecto
+        /**
+         *  Método para calcular el mínimo y óptimo de un proyecto
         */
         public static function calcCosts($id) {
             $cost_query = self::query("SELECT

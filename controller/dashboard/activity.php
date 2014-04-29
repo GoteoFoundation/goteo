@@ -137,7 +137,7 @@ namespace Goteo\Controller\Dashboard {
 
                 if ($debug) {
                     echo 'FIN';
-                    echo '<hr><pre>' . print_r($pdf, 1) . '</pre>';
+                    echo '<hr><pre>' . print_r($pdf, true) . '</pre>';
                 } else {
                     $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
                     $donation->setPdf($filename);

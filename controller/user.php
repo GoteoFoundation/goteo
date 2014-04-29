@@ -184,7 +184,7 @@ namespace Goteo\Controller {
                     $oauth->tokens[$oauth->provider]['token'] = $_POST['tokens'][$oauth->provider]['token'];
                 if ($_POST['tokens'][$oauth->provider]['secret'])
                     $oauth->tokens[$oauth->provider]['secret'] = $_POST['tokens'][$oauth->provider]['secret'];
-                //print_r($_POST['tokens']);print_R($oauth->tokens[$oauth->provider]);die;
+                //print_r($_POST['tokens']);print_r($oauth->tokens[$oauth->provider]);die;
                 $user = new Model\User();
                 $user->userid = $_POST['userid'];
                 $user->email = $_POST['email'];
@@ -279,7 +279,7 @@ namespace Goteo\Controller {
 
                 if ($oauth->login()) {
                     //si ok: redireccion de login!
-                    //Message::Info("USER INFO:\n".print_r($oauth->user_data,1));
+                    //Message::Info("USER INFO:\n".print_r($oauth->user_data,true));
                     //si es posible, login en goteo (redirecciona a user/dashboard o a user/confirm)
                     //y fuerza que pueda logear en caso de que no esté activo
                     if (!$oauth->goteoLogin()) {
@@ -914,6 +914,52 @@ namespace Goteo\Controller {
                             )
             );
         }
+
+        /*
+         * Método para bloquear el envío de newsletter
+         *
+         * token es un
+         *
+         */
+        public function unsuscribe($token = null) {
+
+            $errors = array();
+            // si el token mola, lo doy de baja
+            if (!empty($token)) {
+                $token = base64_decode($token);
+                $parts = explode('¬', $token);
+                if (count($parts) > 1) {
+                    $query = Model\User::query('SELECT id FROM user WHERE email = ?', array($parts[1]));
+                    if ($id = $query->fetchColumn()) {
+                        if (!empty($id)) {
+                            // el token coincide con el email y he obtenido una id
+                            Model\User::setPreferences($id, array('mailing'=>1), $errors);
+
+                            if (empty($errors)) {
+                                $message = Text::get('unsuscribe-request-success');
+                            } else {
+                                $error = implode('<br />', $errors);
+                            }
+                        }
+                    } else {
+                        $error = Text::get('leave-token-incorrect');
+                    }
+                } else {
+                    $error = Text::get('leave-token-incorrect');
+                }
+            } else {
+                $error = Text::get('leave-request-fail');
+            }
+
+            return new View(
+                'view/user/unsuscribe.html.php',
+                array(
+                    'error' => $error,
+                    'message' => $message
+                )
+            );
+        }
+
 
     }
 

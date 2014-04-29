@@ -259,7 +259,7 @@ namespace Goteo\Library {
                 }
                 return $list;
             } catch (\PDOException $e) {
-                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -301,7 +301,7 @@ namespace Goteo\Library {
                 }
                 return $list;
             } catch (\PDOException $e) {
-                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -386,7 +386,7 @@ namespace Goteo\Library {
                 return $list;
             } catch (\PDOException $e) {
                 return array();
-                @\mail('goteo_fail@doukeshi.org', 'ERROR SQL en Feed::getItems', 'FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                @\mail('goteo_fail@doukeshi.org', 'ERROR SQL en Feed::getItems', 'FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -407,7 +407,7 @@ namespace Goteo\Library {
             if (empty($this->html)) {
                 @mail('goteo_fail@doukeshi.org',
                     'Evento feed sin html: ' . SITE_URL,
-                    "Feed sin contenido html<hr /><pre>" . print_r($this, 1) . "</pre>");
+                    "Feed sin contenido html<hr /><pre>" . print_r($this, true) . "</pre>");
                 return false;
             }
 
@@ -415,7 +415,7 @@ namespace Goteo\Library {
                 return false;
             }
 
-
+            // TODO: Restricción UNIQUE en BD?
             // primero, verificar si es unique, no duplicarlo
             if ($this->unique === true) {
                 $query = Model::query("SELECT id FROM feed WHERE url = :url AND scope = :scope AND type = :type",
@@ -454,14 +454,14 @@ namespace Goteo\Library {
                 } else {
                     @mail('goteo_fail@doukeshi.org',
                         'Fallo al hacer evento feed: ' . SITE_URL,
-                        "Ha fallado Feed<br /> {$sql} con <pre>" . print_r($values, 1) . "</pre><hr /><pre>" . print_r($this, 1) . "</pre>");
+                        "Ha fallado Feed<br /> {$sql} con <pre>" . print_r($values, true) . "</pre><hr /><pre>" . print_r($this, true) . "</pre>");
                     return false;
                 }
 
 			} catch(\PDOException $e) {
                     @mail('goteo_fail@doukeshi.org',
                         'PDO Exception evento feed: ' . SITE_URL,
-                        "Ha fallado Feed PDO Exception<br /> {$sql} con " . $e->getMessage() . "<hr /><pre>" . print_r($this, 1) . "</pre>");
+                        "Ha fallado Feed PDO Exception<br /> {$sql} con " . $e->getMessage() . "<hr /><pre>" . print_r($this, true) . "</pre>");
                 return false;
 			}
 

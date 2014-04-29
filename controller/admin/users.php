@@ -398,7 +398,8 @@ namespace Goteo\Controller\Admin {
                     $types = array(
                         'creators' => 'Impulsores', // que tienen algun proyecto 
                         'investors' => 'Cofinanciadores', // que han aportado a algun proyecto en campaña, financiado, archivado o caso de éxito
-                        'supporters' => 'Colaboradores' // que han enviado algun mensaje en respuesta a un mensaje de colaboración
+                        'supporters' => 'Colaboradores', // que han enviado algun mensaje en respuesta a un mensaje de colaboración
+                        'consultants' => 'Asesores'
                         // hay demasiados de estos... 'lurkers' => 'Mirones'
                     );
                     $orders = array(

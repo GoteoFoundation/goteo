@@ -67,7 +67,7 @@ namespace Goteo\Controller\Manage {
                     if ($mailHandler->send($errors)) {
                         // ok
                     } else {
-                        \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al marcar contrato Listo para imprimir', 'Contrato Listo para imprimir, proyecto '.$project->name.'. Mandarle a mano. <pre>'.print_r($errors,1).'</pre>');
+                        \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al marcar contrato Listo para imprimir', 'Contrato Listo para imprimir, proyecto '.$project->name.'. Mandarle a mano. <pre>'.print_r($errors,true).'</pre>');
                     }
 
                     unset($mailHandler);

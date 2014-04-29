@@ -7,6 +7,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
+        Goteo\Controller\Cron\Send,
         Goteo\Library\Feed;
 
     class C7feb7803386d713e60894036feeee9e extends \Goteo\Core\Controller {
@@ -36,6 +37,8 @@ namespace Goteo\Controller {
 
             $log_txt .= "ha marcado el retorno colectivo {$reward} del proyecto {$project} como '{$value}'";
             
+            // TODO: Comprobar los parámetros de usuario por seguridad
+
             $sql = "UPDATE reward SET fulsocial = :val WHERE project = :proj AND type= 'social' AND id = :id";
             if (Model\Project\Reward::query($sql, array(':proj' => $project, ':val' => $value, ':id' => $reward))) {
                 header ('HTTP/1.1 200 Ok');
@@ -82,8 +85,10 @@ namespace Goteo\Controller {
                 die;
             }
 
-            $log_txt .= "ha marcado el retorno colectivo {$reward} del proyecto {$project} como '{$value}'";
+            $log_txt .= "ha puesto la url de localización del retorno colectivo {$reward} del proyecto {$project} a '{$value}'";
             
+            // TODO: Comprobar los parámetros de usuario por seguridad
+
             $sql = "UPDATE reward SET url = :val WHERE project = :proj AND type= 'social' AND id = :id";
             if (Model\Project\Reward::query($sql, array(':proj' => $project, ':val' => $value, ':id' => $reward))) {
                 header ('HTTP/1.1 200 Ok');
@@ -103,7 +108,16 @@ namespace Goteo\Controller {
             $log->doAdmin('usws');
             unset($log);
             
-            
+            // Enviar correo informativo a los asesores del proyecto. Añadir siempre a Olivier.
+            $project_obj = Model\Project::getMini($project);
+            if (!isset($project->consultants)) {
+                $project_obj->consultants = Model\Project::getConsultants($project);
+            }
+            if (!in_array('olivier', array_keys($project_obj->consultants))) {
+                $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
+            }
+            Send::toConsultants('rewardfulfilled', $project_obj);
+
             die;
         }
         

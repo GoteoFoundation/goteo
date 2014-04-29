@@ -231,9 +231,10 @@ namespace Goteo\Library {
                 $the_mail = $this->to;
             }
 
+            // token para el sinoves
+            $token = md5(uniqid()) . '¬' . $the_mail  . '¬' . $sendId;
+
             if (!empty($sendId)) {
-                // token para el sinoves
-                $token = md5(uniqid()) . '¬' . $the_mail  . '¬' . $sendId;
                 $viewData['sinoves'] = $this->url . '/mail/' . base64_encode($token) . '/?email=' . $this->to;
             } else {
                 $viewData['sinoves'] = $this->url . '/contact';
@@ -248,7 +249,7 @@ namespace Goteo\Library {
             } else {
                 // para plantilla boletin
                 if ($this->template == 33) {
-                    $viewData['baja'] = $this->url . '/user/leave/?unsuscribe=newsletter&email=' . $this->to;
+                    $viewData['baja'] = $this->url . '/user/unsuscribe/' . base64_encode($token);
                     return new View (GOTEO_PATH.'view/email/newsletter.html.php', $viewData);
                 } elseif (!empty($this->node) && $this->node != GOTEO_NODE) {
                     return new View (GOTEO_PATH.'nodesys/'.$this->node.'/view/email/default.html.php', $viewData);
@@ -296,6 +297,7 @@ namespace Goteo\Library {
         /**
          *
          * @param array $filters    user (nombre o email),  template
+         * FIXME: No funciona cuando las fechas desde y hasta son iguales.
          */
         public static function getSended($filters = array(), $node = null, $limit = 9) {
 

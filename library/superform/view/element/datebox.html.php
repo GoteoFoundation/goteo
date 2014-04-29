@@ -10,7 +10,7 @@
             format: 'Y-m-d',
             date: '<?php echo $this['value'] ?>',
             current: '<?php echo $this['value'] ?>',
-            starts: 0,
+            starts: 1,
             position: 'bottom',      
             eventName: 'click',
             onBeforeShow: function(){
@@ -22,9 +22,9 @@
                     dp.focus();
             },
             locale: {
-                days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábad', 'Domingo'],
-                daysShort: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-                daysMin: ['L', 'M', 'X', 'J', 'V', 'S', 'D'],
+                days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                daysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                daysMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
                 months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                 week: []

@@ -58,7 +58,7 @@ namespace Goteo\Controller\Cron {
             foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
                 @mail('goteo_fail@doukeshi.org',
                     'Aporte Incompleto con numero de autorización. En ' . SITE_URL,
-                    'Aporte Incompleto con numero de autorización: <pre>' . print_r($row, 1). '</pre>');
+                    'Aporte Incompleto con numero de autorización: <pre>' . print_r($row, true). '</pre>');
             }
             
             

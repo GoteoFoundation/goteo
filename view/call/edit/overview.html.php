@@ -279,18 +279,6 @@ $superform = array(
             'value'     => $call->scope
         ),
 
-        'amount' => array(
-            'type'      => 'textbox',
-            'required'  => true,
-            'title'     => Text::get('call-field-amount'),
-            'size'      => 8,
-            'class'     => 'amount',
-            'hint'      => Text::get('tooltip-call-amount'),
-            'errors'    => !empty($errors['amount']) ? array($errors['amount']) : array(),
-            'ok'        => !empty($okeys['amount']) ? array($okeys['amount']) : array(),
-            'value'     => $call->amount
-        ),
-
         'resources' => array(
             'type'      => 'textarea',
             'title'     => Text::get('call-field-resources'),
@@ -310,42 +298,6 @@ $superform = array(
             'errors'    => !empty($errors['days']) ? array($errors['days']) : array(),
             'ok'        => !empty($okeys['days']) ? array($okeys['days']) : array(),
             'value'     => $call->days
-        ),
-
-        'maxdrop' => array(
-            'type'      => 'textbox',
-            'required'  => false,
-            'title'     => Text::get('call-field-maxdrop'),
-            'size'      => 8,
-            'class'     => 'amount',
-            'hint'      => Text::get('tooltip-call-maxdrop'),
-            'errors'    => !empty($errors['maxdrop']) ? array($errors['maxdrop']) : array(),
-            'ok'        => !empty($okeys['maxdrop']) ? array($okeys['maxdrop']) : array(),
-            'value'     => $call->maxdrop
-        ),
-
-        'maxproj' => array(
-            'type'      => 'textbox',
-            'required'  => false,
-            'title'     => Text::get('call-field-maxproj'),
-            'size'      => 8,
-            'class'     => 'days',
-            'hint'      => Text::get('tooltip-call-maxproj'),
-            'errors'    => !empty($errors['maxproj']) ? array($errors['maxproj']) : array(),
-            'ok'        => !empty($okeys['maxproj']) ? array($okeys['maxproj']) : array(),
-            'value'     => $call->maxproj
-        ),
-
-        'modemaxp' => array(
-            'title'     => Text::get('call-field-modemaxp'),
-            'type'      => 'slider',
-            'required'  => false,
-            'options'   => $maxp_modes,
-            'class'     => 'inline scope cols_2',
-            'hint'      => Text::get('tooltip-call-modemaxp'),
-            'errors'    => !empty($errors['modemaxp']) ? array($errors['modemaxp']) : array(),
-            'ok'        => !empty($okeys['modemaxp']) ? array($okeys['modemaxp']) : array(),
-            'value'     => $call->modemaxp
         ),
 
         'footer' => array(

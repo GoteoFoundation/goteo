@@ -699,7 +699,7 @@ namespace Goteo\Model {
                             FROM project
                             ) ";
                         break;
-                    case 'investos': // aportan correctamente a proyectos
+                    case 'investors': // aportan correctamente a proyectos
                         $sqlFilter .= " AND id IN (
                             SELECT DISTINCT(user)
                             FROM invest
@@ -716,6 +716,12 @@ namespace Goteo\Model {
                                 WHERE thread IS NULL
                                 AND blocked = 1
                                 )
+                            ) ";
+                        break;
+                    case 'consultants': // asesores de proyectos (admins)
+                        $sqlFilter .= " AND id IN (
+                            SELECT DISTINCT(user)
+                            FROM user_project
                             ) ";
                         break;
                     case 'lurkers': // colaboran con el proyecto
@@ -869,6 +875,7 @@ namespace Goteo\Model {
 
         /*
          * Listado simple de los usuarios Administradores
+         * @param boolean $availableonly si es true, solo devuelve los administradores que no tienen asignado ningún nodo
          */
         public static function getAdmins($availableonly = false) {
 

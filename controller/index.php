@@ -69,7 +69,7 @@ namespace Goteo\Controller {
 
             // padrinos
             if (isset($order['patrons'])) {
-                $patrons  = Patron::getActiveVips();
+                $patrons  = Patron::getInHome();
 
                 foreach ($patrons as $key=>$userId) {
                     try {
@@ -156,7 +156,7 @@ namespace Goteo\Controller {
 
             // padrinos
             if (isset($order['patrons'])) {
-                $patrons  =  Patron::getActiveVips(NODE_ID);
+                $patrons  =  $patrons = Patron::getInHome();
 
                 foreach ($patrons as $key=>$userId) {
                     try {

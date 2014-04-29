@@ -90,7 +90,7 @@ namespace Goteo\Library {
                 }
                 return $pages;
             } catch (\PDOException $e) {
-                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -130,7 +130,7 @@ namespace Goteo\Library {
                 }
                 return $pages;
             } catch (\PDOException $e) {
-                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -185,7 +185,7 @@ namespace Goteo\Library {
 				if (Model::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, 1) . "</pre>";
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, true) . "</pre>";
                     return false;
                 }
                 
@@ -216,7 +216,7 @@ namespace Goteo\Library {
 				if (Model::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, 1) . "</pre>";
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, true) . "</pre>";
                     return false;
                 }
 
@@ -251,7 +251,7 @@ namespace Goteo\Library {
 				if (Model::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, 1) . "</pre>";
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, true) . "</pre>";
                     return false;
                 }
 
