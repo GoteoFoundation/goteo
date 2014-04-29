@@ -10,6 +10,7 @@ namespace Goteo\Model {
             $id,
             $name,
             $description,
+            $post,
             $used; // numero de proyectos que usan la agrupacion
 
         /*
@@ -20,7 +21,8 @@ namespace Goteo\Model {
                     SELECT
                         open_tag.id,
                         IFNULL(open_tag_lang.name, open_tag.name) as name,
-                        IFNULL(open_tag_lang.description, open_tag.description) as description
+                        IFNULL(open_tag_lang.description, open_tag.description) as description,
+                        open_tag.post as post
                     FROM    open_tag
                     LEFT JOIN open_tag_lang
                         ON  open_tag_lang.id = open_tag.id
@@ -45,6 +47,7 @@ namespace Goteo\Model {
                     open_tag.id as id,
                     IFNULL(open_tag_lang.name, open_tag.name) as name,
                     IFNULL(open_tag_lang.description, open_tag.description) as description,
+                    open_tag.post as post,
                     (   SELECT 
                             COUNT(project_open_tag.project)
                         FROM project_open_tag
@@ -116,7 +119,8 @@ namespace Goteo\Model {
             $fields = array(
                 'id',
                 'name',
-                'description'
+                'description',
+                'post'
                 );
 
             $set = '';
