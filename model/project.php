@@ -438,7 +438,7 @@ namespace Goteo\Model {
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
                 // open_tags
-                $project->open_tags = array_pop(Project\Open_tag::getNames($id, 1));
+                $project->open_tags = Project\Open_tag::getNames($id, 1);
 
                 // asesores
                 $project->consultants = Project::getConsultants($id);
