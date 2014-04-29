@@ -77,7 +77,8 @@ namespace Goteo\Model\Project {
 
                 $sql = "SELECT 
                             open_tag.id,
-                            IFNULL(open_tag_lang.name, open_tag.name) as name
+                            IFNULL(open_tag_lang.name, open_tag.name) as name,
+                            open_tag.post as post
                         FROM open_tag
                         LEFT JOIN open_tag_lang
                             ON  open_tag_lang.id = open_tag.id
@@ -92,6 +93,7 @@ namespace Goteo\Model\Project {
                 $open_tags = $query->fetchAll();
                 foreach ($open_tags as $cat) {
                     $array[$cat[0]] = $cat[1];
+                    $array[post] = $cat[2];
                 }
 
                 return $array;
