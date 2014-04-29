@@ -22,6 +22,17 @@ div.stories-banners-container div.stories-banner > div.title_story{
 	
 }
 
+div.stories-banners-container div.stories-banner div.title_story > a{
+	color: #58595B;
+	font-size: 18px;
+	text-decoration: none;
+	
+}
+
+div.stories-banners-container div.stories-banner div.title_story > a:hover{
+		text-decoration:underline;
+}
+
 
 
 div.stories-banners-container div.stories-banner > div.info{
@@ -60,36 +71,35 @@ div.stories-banners-container div.stories-banner > div.info_extra{
 
 div.stories-banners-container div.stories-banner div.info div#info_title{
 
-font-size:18px;
-text-transform: uppercase;
-color:#FFFFFF;
+	font-size:18px;
+	text-transform: uppercase;
+	color:#FFFFFF;
 	
 }
 
 div.stories-banners-container div.stories-banner div.info a {
  
-text-decoration:none;
+	text-decoration:none;
 
 }
 
 div.stories-banners-container div.stories-banner div.info a:hover >div#info_title {
  
-color:#585a5c;
+	color:#585a5c;
 
 }
 
 
 div.stories-banners-container div.stories-banner div.info div#review{
 
-margin-top:5px; 
-color:#BCE8E8; 
-font-size:15px;
-	
+	margin-top:5px; 
+	color:#BCE8E8; 
+	font-size:15px;	
 }
 
 div.stories-banners-container div.stories-banner div.info a:hover >div#review {
  
-color:#585a5c;
+	color:#FFFFFF;
 
 }
 
@@ -97,58 +107,62 @@ color:#585a5c;
 
 div.stories-banners-container div.stories-banner div.info > div#line{
 
-border-bottom-style:solid; 
-border-bottom-width:1px; 
-width:15px; 
-margin-top:15px; 
-margin-bottom:15px;
+	border-bottom-style:solid; 
+	border-bottom-width:1px; 
+	width:15px; 
+	margin-top:15px; 
+	margin-bottom:15px;
 
 }
 
 div.stories-banners-container div.stories-banner div.info > div#description{
-color:#3E3E41;
+
+	color:#3E3E41;
 }
 
 div.stories-banners-container div.stories-banner div.info_extra > span#cofinanciadores{
 
-color:#313B96; 
-font-size:11px; 
-position:absolute; 
-bottom:16px;
+	color:#313B96; 
+	font-size:11px; 
+	vertical-align: middle;
 
 }
 
 div.stories-banners-container div.stories-banner div.info_extra > strong#ncofinanciadores {
 
-color:#313B96; 
-font-size:20px; 
-margin-left:110px;
+	color:#313B96; 
+	font-size:20px; 
+	vertical-align: middle;
+	margin-left:10px;
 
 }
 
 div.stories-banners-container div.stories-banner div.info_extra > span#obtenido {
 
-color:#96238F; 
-font-size:11px; 
-margin-left:20px;
+	color:#96238F; 
+	font-size:11px; 
+	margin-left:20px;
 
 }
 
 div.stories-banners-container div.stories-banner div.info_extra span#obtenido span{
 
-position:absolute; bottom:16px;
+	vertical-align: middle;
 
 }
 
 div.stories-banners-container div.stories-banner div.info_extra span#obtenido strong{
 
-font-size:20px; margin-left:63px;
+	vertical-align: middle;
+	font-size:20px; 
+	margin-left:10px;
 
 }
 
 div.stories-banners-container div.stories-banner div.info_extra span#obtenido img{
 
-vertical-align: text-bottom; margin-left:5px;
+	vertical-align: middle;
+	margin-left: 5px
 
 }
 div.stories-banners-container div.stories-banner > div.short-desc{margin-top: 25px; margin-left: 50px; line-height:30px;font-size:20px;color:#1f81bb; max-width: 450px;}
@@ -170,10 +184,14 @@ div.info div blockquote:before { content: "\201C"; }
 div.info div blockquote:after  { content: "\201D"; }
 
 div.info div#description > a {
-text-decoration: underline;
-color:#3E3E41;
+
+	text-decoration: underline;
+	color:#3E3E41;
+
 }
 
 div.info div#description > a:hover {
-color:#BCE8E8;
+
+	color:#BCE8E8;
+
 }

@@ -4,7 +4,9 @@ namespace Goteo\Controller\Admin {
 
     use Goteo\Core\View,
         Goteo\Core\Redirection,
-        Goteo\Core\Error;
+        Goteo\Core\Error,
+        Goteo\Library\Message,
+        Goteo\Model;
 
     class Open_tags {
 
@@ -15,110 +17,112 @@ namespace Goteo\Controller\Admin {
 
             $errors = array();
 
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                    $el_item = $_POST['item'];
+                    error_log($el_item);
+                    if (!empty($el_item)) {
+                        $post = $el_item;
+                    } else {
+                        $post = null;
+                    }
+
+                    // objeto
+                    $open_tag = new Model\Open_tag(array(
+                        'id' => $_POST['id'],
+                        'name' => $_POST['name'],
+                        'description' => $_POST['description'],
+                        'order' => $_POST['order'],
+                        'post' => $post
+                    ));
+
+                    if ($open_tag->save($errors)) {
+                        Message::Info('Datos guardados');
+
+                        throw new Redirection('/admin/open_tags');
+                    }     
+            
+                    else {
+                    Message::Error(implode('<br />', $errors));
+
+                    // otros elementos disponibles
+                    $items = Model\Post::getAutocomplete();
+
+                    switch ($_POST['action']) {
+                        case 'add':
+                            return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'open_tags',
+                                    'file' => 'edit',
+                                    'action' => 'add',
+                                    'open_tag' => $open_tag,
+                                    'items' => $items,
+                                    'autocomplete' => true
+                                )
+                            );
+                            break;
+                        case 'edit':
+                            return new View(
+                                'view/admin/index.html.php',
+                                array(
+                                    'folder' => 'open_tags',
+                                    'file' => 'edit',
+                                    'action' => 'edit',
+                                    'story' => $open_tag,
+                                    'items' => $items,
+                                    'autocomplete' => true
+                                )
+                            );
+                            break;
+                    }
+                }
+            }
+
+
+
+
             switch ($action) {
-                case 'add':
-                    if (isset($_GET['word'])) {
-                        $item = (object) array('name'=>$_GET['word']);
-                    } else {
-                        $item = (object) array();
-                    }
-                    return new View(
-                        'view/admin/index.html.php',
-                        array(
-                            'folder' => 'base',
-                            'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Añadir'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Agrupación',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            )
-                        )
-                    );
-
-                    break;
+                
                 case 'edit':
+                
+                    $open_tag = Model\Open_tag::get($id);
+                        // elementos disponibles
+                        $items = Model\Post::getAutocomplete();
 
-                    // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+                        return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'open_tags',
+                                'file' => 'edit',
+                                'action' => 'edit',
+                                'open_tag' => $open_tag,
+                                'items' => $items,
+                                'autocomplete' => true
+                            )
+                        );
 
-                        // instancia
-                        $item = new $model(array(
-                            'id' => $_POST['id'],
-                            'name' => $_POST['name'],
-                            'description' => $_POST['description']
-                        ));
+                    break;
 
-                        if ($item->save($errors)) {
-                            throw new Redirection($url);
-                        } else {
-                            Message::Error(implode('<br />', $errors));
-                        }
-                    } else {
-                        $item = $model::get($id);
-                    }
+                case 'add':
+                    // siguiente orden
+                    $next = Model\Open_tag::next();
+                    // elementos disponibles
+                    $items = Model\Post::getAutocomplete();
 
                     return new View(
                         'view/admin/index.html.php',
                         array(
-                            'folder' => 'base',
+                            'folder' => 'open_tags',
                             'file' => 'edit',
-                            'data' => $item,
-                            'form' => array(
-                                'action' => "$url/edit/$id",
-                                'submit' => array(
-                                    'name' => 'update',
-                                    'label' => 'Guardar'
-                                ),
-                                'fields' => array (
-                                    'id' => array(
-                                        'label' => '',
-                                        'name' => 'id',
-                                        'type' => 'hidden'
-
-                                    ),
-                                    'name' => array(
-                                        'label' => 'Agrupación',
-                                        'name' => 'name',
-                                        'type' => 'text'
-                                    ),
-                                    'description' => array(
-                                        'label' => 'Descripción',
-                                        'name' => 'description',
-                                        'type' => 'textarea',
-                                        'properties' => 'cols="100" rows="2"',
-
-                                    )
-                                )
-
-                            )
+                            'action' => 'add',
+                            'open_tag' => (object) array('order' => $next),
+                            'items' => $items,
+                            'autocomplete' => true
                         )
                     );
+                    break;    
 
-                    break;
                 case 'up':
                     $model::up($id);
                     break;
