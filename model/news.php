@@ -3,7 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Model\Image;;
 
     class News extends \Goteo\Core\Model {
 
@@ -11,7 +12,10 @@ namespace Goteo\Model {
             $id,
             $title,
             $url,
-            $order;
+            $image,
+            $media_name,
+            $order
+            ;
 
         /*
          *  Devuelve datos de un destacado
@@ -23,7 +27,10 @@ namespace Goteo\Model {
                         IFNULL(news_lang.title, news.title) as title,
                         IFNULL(news_lang.description, news.description) as description,
                         news.url as url,
-                        news.order as `order`
+                        news.order as `order`,
+                        news.press_banner as `press_banner`,
+                        news.media_name as `media_name`,
+                        news.image as `image`
                     FROM news
                     LEFT JOIN news_lang
                         ON  news_lang.id = news.id
@@ -48,7 +55,8 @@ namespace Goteo\Model {
                     IFNULL(news_lang.title, news.title) as title,
                     IFNULL(news_lang.description, news.description) as description,
                     news.url as url,
-                    news.order as `order`
+                    news.order as `order`,
+                    news.press_banner as `press_banner`
                 FROM news
                 LEFT JOIN news_lang
                     ON  news_lang.id = news.id
@@ -59,6 +67,9 @@ namespace Goteo\Model {
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 if ($highlights) {
                     $item->title = Text::recorta($item->title, 80);
+                }
+                if (!empty($item->image)) {
+                    $item->image = Image::get($item->image);
                 }
                 $list[] = $item;
             }
@@ -84,11 +95,24 @@ namespace Goteo\Model {
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
+            // Primero la imagenImagen
+            if (is_array($this->image) && !empty($this->image['name'])) {
+                $image = new Image($this->image);
+                if ($image->save($errors)) {
+                    $this->image = $image->id;
+                } else {
+                    \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    $this->image = '';
+                }
+            }
+
             $fields = array(
                 'id',
                 'title',
                 'description',
                 'url',
+                'image',
+                'media_name',
                 'order'
                 );
 
@@ -127,6 +151,56 @@ namespace Goteo\Model {
                 return false;
             }
 
+        }
+
+        /*
+         * Para poner una micronoticia en banner prensa
+         */
+        public static function add_press_banner ($id) {
+            
+            if(!self::in_press_banner($id))
+            
+            {
+                $order=self::next();
+
+                $sql = "UPDATE news SET `press_banner`=1 WHERE id = :id";
+                if (self::query($sql, array(':id'=>$id))) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            else
+                return true;
+        }
+
+
+        /*
+         * Para quitar una micronoticia de banner prensa
+         */
+
+        public static function remove_press_banner ($id) {
+            
+            $sql = "UPDATE news SET `press_banner`=0 WHERE id = :id";
+            if (self::query($sql, array(':id'=>$id))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+         // comprobar si una micronoticia está en el banner de prensa
+        public static function in_press_banner ($id) {
+
+         $query = self::query('SELECT `press_banner` FROM news WHERE id = :id'
+                    , array(':id'=>$id));
+        
+        if($order=$query->fetchColumn(0)) 
+            return $order;
+        
+        else return 0;    
         }
 
         /*
