@@ -14,7 +14,7 @@ namespace Goteo\Controller {
 		public function index ($token) {
 
             if (!empty($token) && !empty($_GET['email'])) {
-                $token = base64_decode($token);
+                $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
                 if(count($parts) > 2 && ($_GET['email'] == $parts[1] || $parts[1] == 'any' ) && !empty($parts[2])) {
                     // cogemos el contenido de la bbdd y lo pintamos aqui tal cual
