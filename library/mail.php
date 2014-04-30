@@ -216,7 +216,10 @@ namespace Goteo\Library {
                     $sendId = Model::insertId();
                     $_SESSION['NEWSLETTER_SENDID'] = $sendId;
                 }
-                $the_mail = 'any';
+                // tokens
+                $sinoves_token = md5(uniqid()) . '¬any¬' . $sendId;
+                $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+
             } else {
                 $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
                 $values = array (
@@ -228,14 +231,13 @@ namespace Goteo\Library {
                 $query = Model::query($sql, $values);
 
                 $sendId = Model::insertId();
-                $the_mail = $this->to;
+                // tokens
+                $leave_token = $sinoves_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+                $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
             }
 
-            // token para el sinoves
-            $token = md5(uniqid()) . '¬' . $the_mail  . '¬' . $sendId;
-
             if (!empty($sendId)) {
-                $viewData['sinoves'] = $this->url . '/mail/' . base64_encode($token) . '/?email=' . $this->to;
+                $viewData['sinoves'] = $this->url . '/mail/' . \mybase64_encode($sinoves_token) . '/?email=' . $this->to;
             } else {
                 $viewData['sinoves'] = $this->url . '/contact';
             }
@@ -249,7 +251,7 @@ namespace Goteo\Library {
             } else {
                 // para plantilla boletin
                 if ($this->template == 33) {
-                    $viewData['baja'] = $this->url . '/user/unsuscribe/' . base64_encode($token);
+                    $viewData['baja'] = $this->url . '/user/unsuscribe/' . \mybase64_encode($leave_token);
                     return new View (GOTEO_PATH.'view/email/newsletter.html.php', $viewData);
                 } elseif (!empty($this->node) && $this->node != GOTEO_NODE) {
                     return new View (GOTEO_PATH.'nodesys/'.$this->node.'/view/email/default.html.php', $viewData);
