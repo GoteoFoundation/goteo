@@ -989,6 +989,16 @@ namespace Goteo\Controller {
                 }
             }
 
+            /*
+             * Tema: certificados todo el año,
+             * el sistema debe poder manejar :
+             *   usuarios con aportes en el año pasado y con aportes en el año actual:
+             *   proyectos que no se financian hasta que pas el año.
+             *
+             *
+             */
+
+
             // si tiene permiso para ir al admin
             if (ACL::check('/admin')) 
                 $menu['activity']['options']['admin'] = Text::get('dashboard-menu-admin_board');

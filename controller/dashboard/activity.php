@@ -70,8 +70,9 @@ namespace Goteo\Controller\Dashboard {
 
                 $donation->edited = 1;
                 $donation->confirmed = 0;
-                $donation->name = $_POST['name'];
-                $donation->nif = $_POST['nif'];
+                $donation->name = $_POST['name']; // limpiar de tildes puntos y guiones, poner en mayusculas
+                $donation->surname = $_POST['surname']; //  limpiar de tildes puntos y guiones, poner en mayusculas
+                $donation->nif = $_POST['nif']; // limpiar de puntos y guiones
                 $donation->address = $_POST['address'];
                 $donation->zipcode = $_POST['zipcode'];
                 $donation->location = $_POST['location'];
@@ -88,16 +89,45 @@ namespace Goteo\Controller\Dashboard {
             }
 
             if ($action == 'confirm') {
+
+                $ok = true;
+
+                // verificar que han rellenado todos los campos
+                if (empty($donation->name)
+                    || empty($donation->surname)
+                    || empty($donation->nif)
+                    || empty($donation->address)
+                    || empty($donation->zipcode)
+                    || empty($donation->location)
+                    || empty($donation->country)
+                ) {
+                    $ok = false;
+                    Message::Error(Text::get('validate-donor-mandatory'));
+                }
+                // nombre
+                // apellidos
+                // nif
+                // address
+                // zipcode
+                // location
+                // country
+
                 // verificar que el nif es correcto
                 if (!Check::nif($donation->nif)) {
                     Message::Error(Text::get('validate-project-value-contract_nif'));
-                    throw new Redirection('/dashboard/activity/donor');
-                } else {
-                    // marcamos que los datos estan confirmados
-                    Model\User\Donor::setConfirmed($user->id);
-                    Message::Info(Text::get('dashboard-donor-confirmed'));
-                    throw new Redirection('/dashboard/activity/donor');
+                    $ok = false;
                 }
+
+                if ($ok) {
+                    // marcamos que los datos estan confirmados
+                    if (Model\User\Donor::setConfirmed($user->id)) {
+                        Message::Info(Text::get('dashboard-donor-confirmed'));
+                    } else {
+
+                    }
+                }
+
+                throw new Redirection('/dashboard/activity/donor');
             }
 
             if ($action == 'download') {

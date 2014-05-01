@@ -5,6 +5,18 @@ use Goteo\Core\View,
 
 $donation = $this['donation'];
 
+if ($donation->country == 'spain') {
+    $sel_spain = ' selected="selected"';
+    $sel_other = '';
+} else {
+    $sel_spain = '';
+    $sel_other = ' selected="selected"';
+}
+
+// en el save y en el get se gestiona:
+//   si es españa, los dos primeros numeros del CP
+//   si es extrajero, 99
+
 switch ($this['action']) :
     case 'edit':
 ?>
@@ -15,7 +27,8 @@ switch ($this['action']) :
     
 <form method="post" action="/dashboard/activity/donor/save" class="project" >
     <input type="hidden" name="save" value="donation" />
-    
+    <input type="hidden" name="location" value="<?php echo $donation->location ?>" />
+
 <?php echo new NormalForm(array(
 
     'level'         => 3,
@@ -32,40 +45,42 @@ switch ($this['action']) :
     'elements'      => array(
 
         'name' => array(
-            'title'     => Text::get('personal-field-contract_name'),
+            'title'     => Text::get('personal-field-donor_name').' *',
             'type'      => 'textbox',
             'class'     => '',
             'value'     => $donation->name
         ),
+        'surname' => array(
+            'title'     => Text::get('personal-field-donor_surname').' *',
+            'type'      => 'textbox',
+            'class'     => '',
+            'value'     => $donation->surname
+        ),
         'nif' => array(
-            'title'     => Text::get('invest-address-nif-field'),
+            'title'     => Text::get('invest-address-nif-field').' *',
             'type'      => 'textbox',
             'class'     => '',
             'value'     => $donation->nif
         ),
         'address' => array(
-            'title'     => Text::get('invest-address-address-field'),
+            'title'     => Text::get('invest-address-address-field').' *',
             'type'      => 'textbox',
             'class'     => '',
             'value'     => $donation->address
         ),
         'zipcode' => array(
-            'title'     => Text::get('invest-address-zipcode-field'),
+            'title'     => Text::get('invest-address-zipcode-field'.' *'),
             'type'      => 'textbox',
             'class'     => '',
             'value'     => $donation->zipcode
         ),
-        'location' => array(
-            'title'     => Text::get('invest-address-location-field'),
-            'type'      => 'textbox',
-            'class'     => '',
-            'value'     => $donation->location
-        ),
         'country' => array(
-            'title'     => Text::get('invest-address-country-field'),
-            'type'      => 'textbox',
-            'class'     => '',
-            'value'     => $donation->country
+            'title'     => Text::get('donor-address-country-field').' *',
+            'type'      => 'html',
+            'html'     => '<select name="country" id="donor_country">
+            <option value="spain"'.$sel_spain.'>SPAIN</option>
+            <option value="other"'.$sel_other.'>OTHER</option>
+            </select>'
         )
 
     )
