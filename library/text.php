@@ -371,7 +371,8 @@ namespace Goteo\Library {
                 'call_dash' => 'Convocatorias: dashboard',
                 'wof' => 'Wall of friends',
                 'node_public' => 'Nodos',
-                'contract' => 'Formulario Contrato'
+                'contract' => 'Formulario Contrato',
+                'donor' => 'Certificado donantes'
             );
 
             \asort($groups);
