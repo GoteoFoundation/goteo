@@ -18,7 +18,6 @@ namespace Goteo\Model\User {
         $zipcode,
         $location,
         $country,
-        $numproj,
         $year,
         $edited = 0,
         $confirmed = 0,
@@ -35,57 +34,16 @@ namespace Goteo\Model\User {
 
             try {
 
-                // primero saber si es donante
-                // aportes de este año en proyectos financiados (pasada primera ronda)
-                // aportes de año pasado en proyectos que pasaron este año
-                $sql = "SELECT COUNT(invest.id)
-                        FROM invest
-                        INNER JOIN project
-                            ON project.id = invest.project
-                            AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                        WHERE   invest.status IN ('1', '3')
-                        AND invest.user = :id
-                        AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
-                        ";
-                $query = static::query($sql, array(':id' => $id));
-                $donativo = $query->fetchColumn();
-                if (empty($donativo)) {
-                    return false;
+                // si ya ha introducido los datos, sacamos de user_donation
+                $sql = "SELECT * FROM user_donation WHERE user = :id AND year = :year";
+                $query = static::query($sql, array(':id' => $id, ':year' => $year));
+                if ($donation = $query->fetchObject(__CLASS__)) {
+                    return $donation;
                 } else {
-
-                    // si ya ha introducido los datos, sacamos de user_donation
-                    $sql = "SELECT * FROM user_donation WHERE user = :id AND year = '{$year}'";
-                    $query = static::query($sql, array(':id' => $id));
-                    if ($donation = $query->fetchObject(__CLASS__)) {
-                        // actualizamos la cantidad y el numero de proyectos
-                        $sql = "SELECT
-                                    SUM(invest.amount) as amount,
-                                    COUNT(DISTINCT(invest.project)) as numproj,
-                                    CONCAT('{$year}') as year
-                                FROM  invest
-                                INNER JOIN project
-                                    ON project.id = invest.project
-                                    AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                                WHERE   invest.user = :id
-                                AND invest.status IN ('1', '3')
-                                AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
-                                GROUP BY invest.user
-                            ";
-                        $query = static::query($sql, array(':id' => $id));
-                        $data = $query->fetchObject();
-                        $donation->amount = $data->amount;
-                        $donation->numproj = $data->numproj;
-
-                        $donation->location = ($donation->country == 'spain') ? substr($donation->zipcode, 0, 2) : '99';
-
-                        return $donation;
-                    } else {
-                        // sino sacamos de invest_address
-                        $sql = "SELECT  
+                    // sino sacamos de invest_address
+                    $sql = "SELECT
                                     invest.user as user,
-                                    SUM(invest.amount) as amount,
-                                    COUNT(DISTINCT(invest.project)) as numproj,
-                                    CONCAT('{$year}') as year
+                                    SUM(invest.amount) as amount
                                 FROM  invest
                                 INNER JOIN project
                                     ON project.id = invest.project
@@ -97,11 +55,16 @@ namespace Goteo\Model\User {
                                 AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
                                 GROUP BY invest.user
                             ";
-                        $query = static::query($sql, array(':id' => $id));
-                        $donation = $query->fetchObject(__CLASS__);
-                        return $donation;
+                    $query = static::query($sql, array(':id' => $id));
+                    if ($donation = $query->fetchObject(__CLASS__)) {
+                        $donation->year = $year;
+                    } else {
+                        $donation = null;
                     }
+                    return $donation;
                 }
+
+
             } catch (\PDOException $e) {
                 throw new \Goteo\Core\Exception($e->getMessage());
             }
@@ -188,7 +151,7 @@ namespace Goteo\Model\User {
                 $type = '';
                 Check::nif($item->nif, $type);
                 $per = $pt[$type];
-                $nat = $nt[$type]; 
+                $nat = $nt[$type];
 
 // NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
                 $list[] = array($item->nif, '', 
@@ -199,10 +162,21 @@ namespace Goteo\Model\User {
         }
 
         public function validate(&$errors = array()) {
-            if (empty($this->year)) 
-                $this->year = date('Y');
 
             $this->location = ($this->country == 'spain') ? substr($this->zipcode, 0, 2) : '99';
+
+            // limpio nombre y apellidos
+            $this->name = self::idealiza($this->name);
+            $this->name = str_replace('-', ' ', $this->name);
+            $this->name = strtoupper(trim($this->name));
+
+            $this->surname = self::idealiza($this->surname);
+            $this->surname = str_replace('-', ' ', $this->surname);
+            $this->surname = strtoupper(trim($this->surname));
+
+			// quitamos puntos y guiones
+			$this->nif = str_replace(array('_', '.', ' ', '-', ','), '', $this->nif);
+
         }
 
         /*
@@ -210,6 +184,8 @@ namespace Goteo\Model\User {
          */
 
         public function save(&$errors = array()) {
+            $this->validate();
+
 
             $fields = array(
                 'user',
@@ -221,7 +197,6 @@ namespace Goteo\Model\User {
                 'zipcode',
                 'location',
                 'country',
-                'numproj',
                 'year',
                 'edited'
             );
@@ -316,7 +291,7 @@ namespace Goteo\Model\User {
                         AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                     WHERE   invest.status IN ('1', '3')
                     AND invest.user = :id
-                    AND (invest.invested >= '{$year}-01-01' AND invest.invested < '{$year}-01-01')
+                    AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
                     ORDER BY invest.invested ASC
                     ";
 //                    echo($sql . '<br />' . $user);

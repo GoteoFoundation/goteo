@@ -5,7 +5,7 @@ use Goteo\Core\View,
 
 $donation = $this['donation'];
 
-if ($donation->country == 'spain') {
+if ($donation->country == 'spain' || empty($donation->country)) {
     $sel_spain = ' selected="selected"';
     $sel_other = '';
 } else {
@@ -69,7 +69,7 @@ switch ($this['action']) :
             'value'     => $donation->address
         ),
         'zipcode' => array(
-            'title'     => Text::get('invest-address-zipcode-field'.' *'),
+            'title'     => Text::get('invest-address-zipcode-field').' *',
             'type'      => 'textbox',
             'class'     => '',
             'value'     => $donation->zipcode
@@ -92,26 +92,25 @@ switch ($this['action']) :
 <?php
         break;
 
-    case 'view':
+    default:
 ?>
 <div class="widget">
     <h3><?php echo Text::get('dashboard-activity-donor-header'); ?></h3>
-    <p><?php echo Text::get('dashboard-donor-edit_guide') ?></p>
+    <p><?php echo Text::get('dashboard-donor-main_guide') ?></p>
+</div>
+
+<div class="widget">
     <dl>
-        <dt><?php echo Text::get('donor-field-amount') ?></dt>
-        <dd><?php echo \amount_format($donation->amount) ?> &euro;</dd>
+        <dt><?php echo Text::get('donor-field-numproj', $donation->year) ?></dt>
+        <dd><?php
+                foreach ($donation->dates as $invest) {
+                    echo "En fecha <strong>{$invest->date}</strong> un aporte de <strong>{$invest->amount} euros</strong> al proyecto <strong>{$invest->project}</strong><br />";
+                } ?>
+        </dd>
     </dl>
-    <dl>
-        <dt><?php echo Text::get('donor-field-numproj') ?></dt>
-        <dd><?php echo $donation->numproj ?></dd>
-    </dl>
-    <p><?php
-        foreach ($donation->dates as $invest) {
-            echo "En fecha <strong>{$invest->date}</strong> un aporte de <strong>{$invest->amount} euros</strong> al proyecto <strong>{$invest->project}</strong><br />";
-        } ?></p>
     <dl>
         <dt><?php echo Text::get('invest-address-name-field') ?></dt>
-        <dd><?php echo $donation->name ?></dd>
+        <dd><?php if (!empty($donation->name)) echo $donation->surname.', '.$donation->name ?></dd>
     </dl>
     <dl>
         <dt><?php echo Text::get('invest-address-nif-field') ?></dt>
@@ -119,19 +118,7 @@ switch ($this['action']) :
     </dl>
     <dl>
         <dt><?php echo Text::get('invest-address-address-field') ?></dt>
-        <dd><?php echo $donation->address ?></dd>
-    </dl>
-    <dl>
-        <dt><?php echo Text::get('invest-address-zipcode-field') ?></dt>
-        <dd><?php echo $donation->zipcode ?></dd>
-    </dl>
-    <dl>
-        <dt><?php echo Text::get('invest-address-location-field') ?></dt>
-        <dd><?php echo $donation->location ?></dd>
-    </dl>
-    <dl>
-        <dt><?php echo Text::get('invest-address-country-field') ?></dt>
-        <dd><?php echo $donation->country ?></dd>
+        <dd><?php echo "{$donation->address}   {$donation->zipcode}  {$donation->country}"; ?></dd>
     </dl>
 
     <p>
@@ -140,8 +127,8 @@ switch ($this['action']) :
       <?php if ( $donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/download" target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
     </p>
 </div>
-<?php       
-        
+<?php
+
     break;
-    
+
 endswitch;

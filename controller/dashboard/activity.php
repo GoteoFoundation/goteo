@@ -60,7 +60,7 @@ namespace Goteo\Controller\Dashboard {
 
             // ver si es donante, cargando sus datos
             $donation = Model\User\Donor::get($user->id, $year);
-            $donation->dates = Model\User\Donor::getDates($donation->user, $year);
+            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
             $donation->userData = Model\User::getMini($donation->user);
 
             if (!$donation || !$donation instanceof Model\User\Donor) {
@@ -95,14 +95,14 @@ namespace Goteo\Controller\Dashboard {
 
                 $donation->edited = 1;
                 $donation->confirmed = 0;
-                $donation->name = $_POST['name']; // limpiar de tildes puntos y guiones, poner en mayusculas
-                $donation->surname = $_POST['surname']; //  limpiar de tildes puntos y guiones, poner en mayusculas
-                $donation->nif = $_POST['nif']; // limpiar de puntos y guiones
+                $donation->name = $_POST['name'];
+                $donation->surname = $_POST['surname'];
+                $donation->nif = $_POST['nif'];
                 $donation->address = $_POST['address'];
                 $donation->zipcode = $_POST['zipcode'];
                 $donation->location = $_POST['location'];
                 $donation->country = $_POST['country'];
-                $donation->year = $_POST['year'];
+                $donation->year = $year;
 
                 if ($donation->save($errors)) {
                     Message::Info(Text::get('dashboard-donor-saved'));
