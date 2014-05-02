@@ -15,7 +15,7 @@ if (count($news) > 4) :  ?>
     });
 </script>
 <?php endif; ?>
-<div class="widget news">
+<div class="news">
 
     <h2 class="title"><?php echo Text::get('home-news-header'); ?></h2>
 

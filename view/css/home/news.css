@@ -62,6 +62,8 @@ div.newrow a.next:hover {
     background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -72px;
 }
 
-body.home div#main div.widget.news {
-    background-color: #cdcdcd;
+div.news {
+    width: 940px;
+    margin: 0 auto;
+
 }

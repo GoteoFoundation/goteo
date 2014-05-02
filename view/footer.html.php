@@ -23,7 +23,12 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-    <div id="footer">
+    <div id="footer" style="height:auto;">
+        <?php if($bannerPrensa) {?>
+        <div style="background-color:#cdcdcd; height:150px;">
+            <?php echo $bannerPrensa;?> 
+        </div> 
+        <?php }?>
 		<div class="w940">
         	<div class="block categories">
                 <h8 class="title"><?php echo Text::get('footer-header-categories') ?></h8>
