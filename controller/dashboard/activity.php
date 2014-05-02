@@ -81,7 +81,10 @@ namespace Goteo\Controller\Dashboard {
                 $donation->confirmable = true;
             }
 
-
+            $donation->amount = 0;
+            foreach ($donation->dates as $inv) {
+                $donation->amount += $inv->amount;
+            }
 
 
 
