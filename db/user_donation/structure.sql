@@ -20,3 +20,6 @@ ALTER TABLE `user_donation`
 	
 -- el archivo del certificado asociado
 ALTER TABLE `user_donation` ADD `pdf` VARCHAR( 255 ) NULL COMMENT 'nombre del archivo de certificado';
+
+-- Apellido
+ALTER TABLE `user_donation` ADD `surname` VARCHAR( 255 ) NULL COMMENT 'Apellido' AFTER `name` ;
