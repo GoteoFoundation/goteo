@@ -100,7 +100,7 @@ namespace Goteo\Controller\Admin {
                         $current = $_POST['image']; // la actual
                         if (isset($_POST['image-' . $current .  '-remove'])) {
                             $image = Model\Image::get($current);
-                            $image->remove();
+                            $image->remove('news');
                             $item->image = '';
                             $removed = true;
                         }

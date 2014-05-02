@@ -24,7 +24,8 @@ namespace Goteo\Model {
              'drops' => 'Capital Riego',
              'feed' => 'Actividad reciente',
              'patrons' => 'Padrinos',
-             'stories' => 'Historias exitosas'
+             'stories' => 'Historias exitosas',
+             'news' => 'Banner de prensa'
          ),
          $node_items = array(
              'posts' => 'Novedades',
@@ -47,7 +48,8 @@ namespace Goteo\Model {
              'posts' => '/admin/blog',
              'patrons' => '/admin/patron',
              'sponsors' => '/admin/sponsors',
-             'stories' => '/admin/stories'
+             'stories' => '/admin/stories',
+             'news' => '/admin/news'
          );
 
 

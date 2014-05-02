@@ -56,7 +56,8 @@ namespace Goteo\Model {
                     IFNULL(news_lang.description, news.description) as description,
                     news.url as url,
                     news.order as `order`,
-                    news.press_banner as `press_banner`
+                    news.press_banner as `press_banner`,
+                    news.image as `image`
                 FROM news
                 LEFT JOIN news_lang
                     ON  news_lang.id = news.id
