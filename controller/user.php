@@ -783,7 +783,7 @@ namespace Goteo\Controller {
          * @param type string	$token
          */
         public function changeemail($token) {
-            $token = base64_decode($token);
+            $token = \mybase64_decode($token);
             if (count(explode('¬', $token)) > 1) {
                 $query = Model\User::query('SELECT id FROM user WHERE token = ?', array($token));
                 if ($id = $query->fetchColumn()) {
@@ -875,7 +875,7 @@ namespace Goteo\Controller {
 
             // si el token mola, lo doy de baja
             if (!empty($token)) {
-                $token = base64_decode($token);
+                $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
                 if (count($parts) > 1) {
                     $query = Model\User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));
@@ -926,7 +926,7 @@ namespace Goteo\Controller {
             $errors = array();
             // si el token mola, lo doy de baja
             if (!empty($token)) {
-                $token = base64_decode($token);
+                $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
                 if (count($parts) > 1) {
                     $query = Model\User::query('SELECT id FROM user WHERE email = ?', array($parts[1]));
