@@ -50,15 +50,40 @@ namespace Goteo\Controller\Dashboard {
 
             $errors = array();
 
+            $year = date('Y');
+            $month = date('m');
+            $day = date('d');
+            // hasta junio es el año anterior
+            if ($month <= 6) {
+                $year--;
+            }
+
             // ver si es donante, cargando sus datos
-            $donation = Model\User\Donor::get($user->id);
-            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
+            $donation = Model\User\Donor::get($user->id, $year);
+            $donation->dates = Model\User\Donor::getDates($donation->user, $year);
             $donation->userData = Model\User::getMini($donation->user);
 
             if (!$donation || !$donation instanceof Model\User\Donor) {
-                Message::Error(Text::get('dashboard-donor-no_donor'));
+                Message::Error(Text::get('dashboard-donor-no_donor', $year));
                 throw new Redirection('/dashboard/activity');
             }
+
+            // no permitir confirmar a partir del 10 de enero
+            if ($year != date('Y')
+                && ( ($month == 1 && $day > 15) || $month > 1 )
+            ) {
+                $donation->confirmable = false;
+                if ($action == 'confirm') {
+                    Message::Error(Text::get('dashboard-donor-confirm_closed', $year));
+                    throw new Redirection('/dashboard/activity');
+                }
+            } else {
+                $donation->confirmable = true;
+            }
+
+
+
+
 
             if ($action == 'edit' && $donation->confirmed) {
                 Message::Error(Text::get('dashboard-donor-confirmed'));
@@ -77,6 +102,7 @@ namespace Goteo\Controller\Dashboard {
                 $donation->zipcode = $_POST['zipcode'];
                 $donation->location = $_POST['location'];
                 $donation->country = $_POST['country'];
+                $donation->year = $_POST['year'];
 
                 if ($donation->save($errors)) {
                     Message::Info(Text::get('dashboard-donor-saved'));
@@ -120,10 +146,8 @@ namespace Goteo\Controller\Dashboard {
 
                 if ($ok) {
                     // marcamos que los datos estan confirmados
-                    if (Model\User\Donor::setConfirmed($user->id)) {
+                    if (Model\User\Donor::setConfirmed($user->id, $year)) {
                         Message::Info(Text::get('dashboard-donor-confirmed'));
-                    } else {
-
                     }
                 }
 
@@ -132,9 +156,26 @@ namespace Goteo\Controller\Dashboard {
 
             if ($action == 'download') {
 
+                if (!$donation->confirmed) {
+                    Message::Error(Text::get('dashboard-donor-pdf_closed', $year));
+                    throw new Redirection('/dashboard/activity/donor');
+                }
+
                 // verificar que el nif es correcto
                 if (!Check::nif($donation->nif)) {
                     Message::Error(Text::get('validate-project-value-contract_nif'));
+                    throw new Redirection('/dashboard/activity/donor');
+                }
+
+                if (empty($donation->name)
+                    || empty($donation->surname)
+                    || empty($donation->nif)
+                    || empty($donation->address)
+                    || empty($donation->zipcode)
+                    || empty($donation->location)
+                    || empty($donation->country)
+                ) {
+                    Message::Error(Text::get('validate-donor-mandatory'));
                     throw new Redirection('/dashboard/activity/donor');
                 }
 

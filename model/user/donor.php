@@ -25,18 +25,13 @@ namespace Goteo\Model\User {
         $pdf = null,
         $dates = array();
 
-        public static $currYear = 2014; // año fiscal actual
-
-
         /**
          * Get invest data if a user is a donor
          * @param varcahr(50) $id  user identifier
          */
         public static function get($id, $year = null) {
 
-            if (empty($year)) $year = static::$currYear;
-            $year0 = $year;
-            $year1 = $year + 1;
+            if (empty($year)) return null;
 
             try {
 
@@ -50,10 +45,8 @@ namespace Goteo\Model\User {
                             AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                         WHERE   invest.status IN ('1', '3')
                         AND invest.user = :id
-                        AND (
-                            (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
-                            OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
-                        )";
+                        AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
+                        ";
                 $query = static::query($sql, array(':id' => $id));
                 $donativo = $query->fetchColumn();
                 if (empty($donativo)) {
@@ -67,17 +60,15 @@ namespace Goteo\Model\User {
                         // actualizamos la cantidad y el numero de proyectos
                         $sql = "SELECT
                                     SUM(invest.amount) as amount,
-                                    COUNT(DISTINCT(invest.project)) as numproj
+                                    COUNT(DISTINCT(invest.project)) as numproj,
+                                    CONCAT('{$year}') as year
                                 FROM  invest
                                 INNER JOIN project
                                     ON project.id = invest.project
                                     AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                                 WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
-                                AND (
-                                    (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
-                                    OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
-                                )
+                                AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
                                 GROUP BY invest.user
                             ";
                         $query = static::query($sql, array(':id' => $id));
@@ -103,10 +94,7 @@ namespace Goteo\Model\User {
                                 LEFT JOIN invest_address ON invest_address.invest = invest.id
                                 WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
-                                AND (
-                                    (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
-                                    OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
-                                )
+                                AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
                                 GROUP BY invest.user
                             ";
                         $query = static::query($sql, array(':id' => $id));
@@ -139,9 +127,7 @@ namespace Goteo\Model\User {
                     'cif' => '35'
                 );
 
-            $year = empty($filter['year']) ? static::$currYear : $filter['year'];
-            $year0 = $year;
-            $year1 = $year + 1;
+            $year = empty($filter['year']) ? date('Y') : $filter['year'];
 
             $values = array();
 
@@ -154,18 +140,12 @@ namespace Goteo\Model\User {
                 $values[':user'] = "%{$user}%";
             }
 
-            if (!empty($filters['year'])) {
-                $ayear = $filters['year'];
-                $sqlFilter .= " AND DATE_FORMAT(invest.invested,'%Y') = :ayear";
-                $values[':ayear'] = $ayear;
-            }
-
             if (!empty($filters['status'])) {
                 switch ($filters['status']) {
-                    case 'pending': // Pendientes de confirmar
-                        $sqlFilter .= " AND user_donation.user IS NULL";
+                    case 'pending': // Pendientes de revisar
+                        $sqlFilter .= " AND (user_donation.edited IS NULL OR user_donation.edited = 0)";
                         break;
-                    case 'edited': // Revisados
+                    case 'edited': // Revisados no confirmados
                         $sqlFilter .= " AND user_donation.edited = 1 AND (user_donation.confirmed IS NULL OR user_donation.confirmed = 0)";
                         break;
                     case 'confirmed': // Confirmados
@@ -189,26 +169,16 @@ namespace Goteo\Model\User {
                         user_donation.zipcode as zipcode,
                         user_donation.location as location,
                         user_donation.country as country,
-                        IFNULL(user_donation.amount, SUM(invest.amount)) as amount,
-                        IFNULL(user_donation.numproj, COUNT(DISTINCT(invest.project))) as numproj,
+                        user_donation.amount as amount,
+                        user_donation.numproj as numproj,
                         CONCAT('{$year}') as year,
-                        IFNULL(user_donation.user, 'Pendiente') as pending,
                         user_donation.edited as edited,
                         user_donation.confirmed as confirmed,
                         user_donation.pdf as pdf
-                FROM  invest
-                INNER JOIN project
-                    ON project.id = invest.project
-                    AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                INNER JOIN user ON user.id = invest.user
-                LEFT JOIN user_donation ON user_donation.user = invest.user AND user_donation.year = '{$year}'
-                WHERE   invest.status IN ('1', '3')
-                AND (
-                    (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
-                    OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
-                )
+                FROM  user_donation
+                INNER JOIN user ON user.id = user_donation.user
+                WHERE user_donation.year = '{$year}'
                 $sqlFilter
-                GROUP BY invest.user
                 ORDER BY user.email ASC";
 
             $query = self::query($sql, $values);
@@ -230,7 +200,7 @@ namespace Goteo\Model\User {
 
         public function validate(&$errors = array()) {
             if (empty($this->year)) 
-                $this->year = self::$currYear;
+                $this->year = date('Y');
 
             $this->location = ($this->country == 'spain') ? substr($this->zipcode, 0, 2) : '99';
         }
@@ -277,10 +247,8 @@ namespace Goteo\Model\User {
 
         }
 
-        public static function setConfirmed($user) {
+        public static function setConfirmed($user, $year) {
             try {
-                $year = static::$currYear;
-
                 $sql = "UPDATE user_donation SET confirmed = 1 WHERE user = :user AND year = :year";
                 if (self::query($sql, array(':user' => $user, 'year' => $year))) {
                     return true;
@@ -333,11 +301,7 @@ namespace Goteo\Model\User {
         }
 
 
-        static public function getDates ($user, $year = null) {
-
-            if (empty($year)) $year = static::$currYear;
-            $year0 = $year;
-            $year1 = $year + 1;
+        static public function getDates ($user, $year) {
 
             $fechas = array();
 
@@ -352,10 +316,7 @@ namespace Goteo\Model\User {
                         AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
                     WHERE   invest.status IN ('1', '3')
                     AND invest.user = :id
-                    AND (
-                        (invest.invested >= '{$year0}-01-01' AND invest.invested < '{$year1}-01-01') 
-                        OR (invest.invested < '{$year0}-01-01' AND project.passed >= '{$year0}-01-01')
-                    )
+                    AND (invest.invested >= '{$year}-01-01' AND invest.invested < '{$year}-01-01')
                     ORDER BY invest.invested ASC
                     ";
 //                    echo($sql . '<br />' . $user);

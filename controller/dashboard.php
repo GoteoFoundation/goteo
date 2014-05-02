@@ -980,23 +980,32 @@ namespace Goteo\Controller {
             }
 
             // si es donante, ponemos la opción
-            $donante = Model\User\Donor::get($_SESSION['user']->id);
-            if ($donante instanceof Model\User\Donor) {
-                $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
-                // si no ha confirmado
-                if (!$donante->confirmed) {
-                    Message::Info(Text::get('dashboard-donor-remember'));
-                }
-            }
-
             /*
              * Tema: certificados todo el año,
              * el sistema debe poder manejar :
              *   usuarios con aportes en el año pasado y con aportes en el año actual:
              *   proyectos que no se financian hasta que pas el año.
              *
+             *  confirmación de datos del año pasado hasta 15-20 de enero
+             *
+             *  descarga de pdf del año pasado hasta junio
              *
              */
+            $year = date('Y');
+            $month = date('m');
+            // hasta junio es el año anterior
+            if ($month <= 6) {
+                $year--;
+            }
+            $donante = Model\User\Donor::get($_SESSION['user']->id, $year);
+            if ($donante instanceof Model\User\Donor) {
+                $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
+                // si no ha confirmado
+                if ($month > 6 && !$donante->confirmed) {
+                    Message::Info(Text::get('dashboard-donor-remember'));
+                }
+            }
+
 
 
             // si tiene permiso para ir al admin
