@@ -30,8 +30,6 @@ foreach ($story->project->open_tags as $openId => $openData) {
         <div class="info">
             <a href="<?php echo $link_title;?>" target="_blank">
                 <div id="info_title"><?php echo htmlspecialchars($story->title); ?></div>
-            </a>
-            <a href="<?php echo $link_title;?>" target="_blank">
                 <div id="review"><?php echo htmlspecialchars($story->review); ?></div>
             </a>
             <div id="line"></div>
