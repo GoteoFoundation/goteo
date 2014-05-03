@@ -1,5 +1,8 @@
 <?php
 
+// $debug = \defined('CRON_EXEC'); es necesario, ya que funciones como toConsultants() se llaman desde otros sitios (no solo por cron)
+// Hay un AJAX que comprueba si la respuesta es 'OK' y si se escriben datos de depuracion no es válida.
+
 namespace Goteo\Controller\Cron {
 
     use Goteo\Model,
@@ -22,7 +25,7 @@ namespace Goteo\Controller\Cron {
          */
         public static function toOwner ($type, $project) {
             $tpl = null; // Número de la plantilla que se obtendrá a partir del identificador
-            $debug = true;
+            $debug = \defined('CRON_EXEC');
             $error_sending = false;
 
             if ($debug) echo 'toOwner: ';
@@ -228,7 +231,7 @@ namespace Goteo\Controller\Cron {
          * @return bool
          */
         public static function toConsultants ($type, $project) {
-            $debug = true;
+            $debug = \defined('CRON_EXEC');
             $error_sending = false;
             $tpl = null;
             
@@ -334,7 +337,7 @@ namespace Goteo\Controller\Cron {
          */
         static public function toInvestors ($type, $project, $post = null) {
 
-            $debug = false;
+            $debug = \defined('CRON_EXEC');
 
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';
