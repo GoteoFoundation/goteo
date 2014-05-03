@@ -277,10 +277,13 @@ namespace Goteo\Controller\Cron {
                     break;
                 case 'rewardfulfilled': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
                     $tpl = 58;
-                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%RETURN%', '%URL%');
+
+                    $commons_url = SITE_URL . '/admin/commons/view/' . $project->id;
                     $reward = Model\Project\Reward::get($_POST['reward']);
+
                     // También podríamos usar $_SESSION['user']->name
-                    $replace = array($project->name, $project->user->name, $reward->reward, $_POST['value']);
+                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%RETURN%', '%URL%', '%COMMONSURL%');
+                    $replace = array($project->name, $project->user->name, $reward->reward, $_POST['value'], $commons_url);
                     break;
             }
 
