@@ -3,6 +3,7 @@
 namespace Goteo\Controller\Cron {
 
     use Goteo\Model,
+    	Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Library\Text,
         Goteo\Library\Feed,
@@ -241,8 +242,12 @@ namespace Goteo\Controller\Cron {
             switch ($type) {
                 case 'commons': // template 56, "Mensaje al asesor de un proyecto 10 meses despues de financiado sin haber cumplido"
                     $tpl = 56;
-                    $search  = array('%PROJECTNAME%', '%URL%');
-                    $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id);
+
+                    $contact = Model\Project::getContact($project->id);
+                    $info_html = new View('view/admin/commons/contact.html.php', array('contact' => $contact));
+
+                    $search  = array('%PROJECTNAME%', '%URL%', '%INFO%');
+                    $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id, $info_html);
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
                     if (empty($project->consultants)) { 
