@@ -1,8 +1,12 @@
 <?php
 
+// $debug = \defined('CRON_EXEC'); es necesario, ya que funciones como toConsultants() se llaman desde otros sitios (no solo por cron)
+// Hay un AJAX que comprueba si la respuesta es 'OK' y si se escriben datos de depuracion no es válida.
+
 namespace Goteo\Controller\Cron {
 
     use Goteo\Model,
+    	Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Library\Text,
         Goteo\Library\Feed,
@@ -21,7 +25,7 @@ namespace Goteo\Controller\Cron {
          */
         public static function toOwner ($type, $project) {
             $tpl = null; // Número de la plantilla que se obtendrá a partir del identificador
-            $debug = true;
+            $debug = \defined('CRON_EXEC');
             $error_sending = false;
 
             if ($debug) echo 'toOwner: ';
@@ -227,7 +231,7 @@ namespace Goteo\Controller\Cron {
          * @return bool
          */
         public static function toConsultants ($type, $project) {
-            $debug = true;
+            $debug = \defined('CRON_EXEC');
             $error_sending = false;
             $tpl = null;
             
@@ -241,8 +245,12 @@ namespace Goteo\Controller\Cron {
             switch ($type) {
                 case 'commons': // template 56, "Mensaje al asesor de un proyecto 10 meses despues de financiado sin haber cumplido"
                     $tpl = 56;
-                    $search  = array('%PROJECTNAME%', '%URL%');
-                    $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id);
+
+                    $contact = Model\Project::getContact($project->id);
+                    $info_html = new View('view/admin/commons/contact.html.php', array('contact' => $contact));
+
+                    $search  = array('%PROJECTNAME%', '%URL%', '%INFO%');
+                    $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id, $info_html);
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
                     if (empty($project->consultants)) { 
@@ -269,10 +277,13 @@ namespace Goteo\Controller\Cron {
                     break;
                 case 'rewardfulfilled': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
                     $tpl = 58;
-                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%RETURN%', '%URL%');
+
+                    $commons_url = SITE_URL . '/admin/commons/view/' . $project->id;
                     $reward = Model\Project\Reward::get($_POST['reward']);
+
                     // También podríamos usar $_SESSION['user']->name
-                    $replace = array($project->name, $project->user->name, $reward->reward, $_POST['value']);
+                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%RETURN%', '%URL%', '%COMMONSURL%');
+                    $replace = array($project->name, $project->user->name, $reward->reward, $_POST['value'], $commons_url);
                     break;
             }
 
@@ -329,7 +340,7 @@ namespace Goteo\Controller\Cron {
          */
         static public function toInvestors ($type, $project, $post = null) {
 
-            $debug = false;
+            $debug = \defined('CRON_EXEC');
 
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';
