@@ -317,6 +317,7 @@ namespace Goteo\Model {
                 $project_conf = Project\Conf::get($id);
                 $project->days_round1 = $project_conf->days_round1;
                 $project->days_round2 = $project_conf->days_round2;
+                $project->watch = Project\Conf::isWatched($id);
 
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
@@ -461,6 +462,10 @@ namespace Goteo\Model {
                 $project->mincost = $costs->mincost;
                 $project->maxcost = $costs->maxcost;
 
+                // extra conf
+                $project_conf = Project\Conf::get($id);
+                $project->days_round1 = $project_conf->days_round1;
+                $project->days_round2 = $project_conf->days_round2;
                 $project->watch = Project\Conf::isWatched($id);
 
                 $project->setDays();
@@ -473,7 +478,6 @@ namespace Goteo\Model {
                 if (!empty($project->node)) {
                     $project->nodeData = Node::getMini($project->node);
                 }
-
 
                 return $project;
 

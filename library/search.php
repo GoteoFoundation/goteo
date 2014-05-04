@@ -49,7 +49,7 @@ namespace Goteo\Library {
 
         /**
          * Metodo para realizar una busqueda por parametros
-         * @param array multiple $params 'category', 'location', 'reward'
+         * @param array multiple $params 'category', 'location', 'reward', 'query', node', 'status'
          * @param bool showall si true, muestra tambien proyectos en estado de edicion y revision
          * @return array results
          */

@@ -591,6 +591,10 @@ namespace Goteo\Controller\Dashboard {
                 $dates = $row;
             }
 
+            $project_conf = Project\Conf::get($id);
+            $dates->days_round1 = $project_conf->days_round1;
+            $dates->days_round2 = $project_conf->days_round2;
+
             // importes objetivo
             $optimum = $minimum = 0;
             $sql = 'SELECT sum(amount) as amount, required FROM cost WHERE project = ? GROUP BY required';

@@ -223,11 +223,11 @@ namespace Goteo\Controller {
                         echo '<br />';
                     } else {
                         // tiene hasta SEGUNDA_RONDA días para conseguir el óptimo (o más)
-                        if ($days >= SEGUNDA_RONDA) {
-                            if ($debug) echo 'Ha llegado a los SEGUNDA_RONDA dias de campaña (final de segunda ronda)<br />';
+                        if ($days >= $project->days_round2) {
+                            if ($debug) echo 'Ha llegado a los ' . $project->days_round2 . ' días de campaña (final de segunda ronda)<br />';
 
                             echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
-                            echo 'Ha llegado a los SEGUNDA_RONDA días: financiado. ';
+                            echo 'Ha llegado a los ' . $project->days_round2 . ' días: financiado. ';
 
                             $execute = true; // ejecutar los cargos de la segunda ronda
 

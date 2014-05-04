@@ -85,7 +85,7 @@ $url = '';
                 $part = strtotime($project->published);
                 // si primera ronda: published + PRIMERA_RONDA días
                 // si segunda ronda: published + SEGUNDA_RONDA días
-                $plus = PRIMERA_RONDA * $project->round;
+                $plus = $project->days_round1 * $project->round;
                 $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
                 $timeTogo = Check::time_togo($final_day,1);
         ?>
