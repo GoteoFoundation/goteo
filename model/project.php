@@ -589,44 +589,38 @@ namespace Goteo\Model {
         }
 
         /*
-         *  Para calcular los dias y la ronda
+         *  Para calcular la ronda de un proyecto y los dias restantes de campaña
+         *  Este método se llama al instanciar un proyecto con get() o getMedium(), modificando sus atributos $round y $days
          */
         private function setDays() {
-            //para proyectos en campaña o posterior
-            if ($this->status > 2) {
-                // tiempo de campaña
-                if ($this->status == 3) {
-                    $days = $this->daysActive();
-                    if ($days > $project->days_round1+1) {
-                        $this->round = 0;
-                        $days = 0;
-                    } elseif ($days >= $project->days_round1) {
-                        $days = $project->days_round2 - $days;
-                        $this->round = 2;
-                    } else {
-                        $days = $project->days_round1 - $days;
-                        $this->round = 1;
-                    }
 
-                    if ($days < 0) {
-                        // no deberia estar en campaña sino financuiado o caducado
-                        $days = 0;
-                    }
+            if ($this->status == 3) { // En campaña
+                $days = $this->daysActive(); // Tiempo de campaña (días desde la fecha de publicación del proyecto)
 
-                } else {
+                if ($days < $project->days_round1) { // En primera ronda
+                    $this->round = 1;
+                    $daysleft = $project->days_round1 - $days;
+                } elseif ($days >= $project->days_round1 && $days <= $project->days_round2) { // En segunda ronda
+                    $this->round = 2;
+                    $daysleft = $project->days_round2 - $days;
+                } else { // Ha finalizado la segunda ronda
+                    //FIXME: ¿> 81 días? ($days > $project->days_round2+1)
                     $this->round = 0;
-                    $days = 0;
+                    $daysleft = 0;
                 }
 
+                // no deberia estar en campaña sino financiado o caducado
+                if ($daysleft < 0) $daysleft = 0;
 
-            } else {
-                $days = 0;
+            } else { // $this->status != 3
+                $this->round = 0;
+                $daysleft = 0;
             }
 
-            if ($this->days != $days) {
-                self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($this->id));
+            if ($this->days != $daysleft) {
+                self::query("UPDATE project SET days = '{$daysleft}' WHERE id = ?", array($this->id));
+                $this->days = $daysleft;
             }
-            $this->days = $days;
         }
 
          /*
@@ -1942,9 +1936,9 @@ namespace Goteo\Model {
 
 
         /**
-         * Metodo que devuelve los días que lleva de publicación
+         * Método que devuelve los días que lleva en campaña el proyecto (días desde la fecha de publicación)
          *
-         * @return numeric days active from published
+         * @return numeric days active from published field
          */
         public function daysActive() {
             // días desde el published
