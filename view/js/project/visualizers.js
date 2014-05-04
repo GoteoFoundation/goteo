@@ -6,6 +6,7 @@
 //
 // **************
 
+// Make sure the namespace is defined
 if (typeof GOTEO === 'undefined') {
     var GOTEO = { 
         charts : {},
