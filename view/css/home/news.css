@@ -8,6 +8,7 @@ div#slides_news div.arrow-right {
 
 div#slides_news div.slder_news {
     width: 845px;
+    height: 115px;
 }
 
 div#slides_news div.arrow-left {
@@ -23,47 +24,33 @@ div#slides_news div.arrow-right {
 
 div#slides_news div.new{
 
-    display: inline-block;
     width: 185px;
     position: relative;
     text-align: center;
+    display: table;
+    height: 85px;
+    float: left;
+    margin-top: 15px;
+    margin-left: 15px;
 
 }
 
-/* Flechitas de carrousel */
-div.newrow a.prev,
-div.newrow a.next,
-{
-    width: 24px;
-    position:relative;
-    color: white;
-    line-height: 27px;
-    text-indent: 24px;
-    display: inline-block;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-}
-
-
-div.newrow a.prev {
-    background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 0;
-}
-
-div.newrow a.prev:hover{
-    background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -48px;
-}
-
-div.newrow a.next{
-    background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -24px;
-}
-
-div.newrow a.next:hover {
-    background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -72px;
-}
 
 div.news {
     width: 940px;
     margin: 0 auto;
+    display: table;
 
+}
+
+div.newrow a.prev,
+div.newrow a.next {
+    color:#cdcdcd !important;
+}
+
+
+div#slides_news div.new a{ 
+    display: table-cell;
+    vertical-align: middle;
+    position: relative;
 }

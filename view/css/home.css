@@ -20,7 +20,9 @@ body.home div#main div.widget {
 div.patronrow a.prev,
 div.patronrow a.next,
 div.callrow a.prev,
-div.callrow a.next {
+div.callrow a.next,
+div.newrow a.prev,
+div.newrow a.next {
     width: 24px;
     position:relative;
     color: white;
@@ -34,22 +36,29 @@ div.callrow a.next {
 
 
 div.patronrow a.prev,
-div.callrow a.prev {
+div.callrow a.prev,
+div.newrow a.prev
+ {
 	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 0;
 }
 
 div.patronrow a.prev:hover,
-div.callrow a.prev:hover {
+div.callrow a.prev:hover,
+div.newrow a.prev:hover
+ {
 	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
 
 div.patronrow a.next,
-div.callrow a.next {
+div.callrow a.next,
+div.newrow a.next
+ {
 	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -24px;
 }
 
 div.patronrow a.next:hover,
-div.callrow a.next:hover {
+div.callrow a.next:hover,
+div.newrow a.next:hover {
 	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -72px;
 }
 /* Fin de las flechitas de convocatorias y patronos en portada */

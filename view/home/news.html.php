@@ -17,7 +17,7 @@ if (count($news) > 4) :  ?>
 <?php endif; ?>
 <div class="news">
 
-    <h2 class="title"><?php echo Text::get('home-news-header'); ?></h2>
+    <h4 style="text-transform:none; color: #58595b; margin-bottom:20px;padding-top:15px; margin-left:50px; margin-top:0ox; margin-bottom:0;"><?php echo Text::get('home-news-header'); ?></h4>
 
     <div id="slides_news" class="newrow">
         <?php if (count($news) > 4) : ?>

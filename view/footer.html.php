@@ -23,13 +23,13 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-    <div id="footer" style="height:auto;">
+    <div id="footer" style="height:auto; padding-top:0px;">
         <?php if($bannerPrensa) {?>
         <div style="background-color:#cdcdcd; height:150px;">
             <?php echo $bannerPrensa;?> 
         </div> 
         <?php }?>
-		<div class="w940">
+		<div class="w940" style="padding:20px;">
         	<div class="block categories">
                 <h8 class="title"><?php echo Text::get('footer-header-categories') ?></h8>
                 <ul class="scroll-pane">
