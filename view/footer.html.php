@@ -24,7 +24,7 @@ jQuery(document).ready(function($) {
 </script>
 
     <div id="footer">
-        <?php if($bannerPrensa) {?>
+        <?php if($bannerPrensa&&count($this[news])) {?>
         <div id="press_banner">
             <?php echo $bannerPrensa;?> 
         </div> 

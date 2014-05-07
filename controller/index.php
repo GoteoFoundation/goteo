@@ -100,6 +100,14 @@ namespace Goteo\Controller {
 
             $news =  (isset($order['news'])) ? News::getAll(true) : array();
 
+            foreach ($news as $idNew => &$new) {
+                
+                if (!$new->press_banner) {
+                        unset($news[$idNew]);
+                }
+                
+            }
+
             // Banners siempre
             $banners   = Banner::getAll(true);
 
