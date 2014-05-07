@@ -74,9 +74,17 @@ include 'view/header.html.php';
 <div id="main">
 
     <?php foreach ($this['order'] as $item=>$itemData) {
+        
+        if ($item=="news")
+            { 
+                $bannerPrensa = new View("view/home/news.html.php",$this);
+                continue;
+            }
+
         if (!empty($this[$item])) echo new View("view/home/{$item}.html.php", $this);
     } ?>
 
 </div>
+
 <?php include 'view/footer.html.php'; ?>
 <?php include 'view/epilogue.html.php'; ?>

@@ -24,7 +24,12 @@ jQuery(document).ready(function($) {
 </script>
 
     <div id="footer">
-		<div class="w940">
+        <?php if($bannerPrensa&&count($this[news])) {?>
+        <div id="press_banner">
+            <?php echo $bannerPrensa;?> 
+        </div> 
+        <?php }?>
+		<div class="w940" style="padding:20px;">
         	<div class="block categories">
                 <h8 class="title"><?php echo Text::get('footer-header-categories') ?></h8>
                 <ul class="scroll-pane">

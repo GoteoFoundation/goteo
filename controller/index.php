@@ -8,6 +8,7 @@ namespace Goteo\Controller {
         Goteo\Model\Project,
         Goteo\Model\Banner,
         Goteo\Model\Stories,
+        Goteo\Model\News,
         Goteo\Model\Call,
         Goteo\Model\Post,  // esto son entradas en portada o en footer
         Goteo\Model\Promote,
@@ -97,6 +98,16 @@ namespace Goteo\Controller {
 
             $stories = (isset($order['stories'])) ? Stories::getAll(true) : array();
 
+            $news =  (isset($order['news'])) ? News::getAll(true) : array();
+
+            foreach ($news as $idNew => &$new) {
+                
+                if (!$new->press_banner) {
+                        unset($news[$idNew]);
+                }
+                
+            }
+
             // Banners siempre
             $banners   = Banner::getAll(true);
 
@@ -123,6 +134,7 @@ namespace Goteo\Controller {
                     'feed'      => $feed,
                     'drops'     => $drops,
                     'patrons'   => $patrons,
+                    'news'      => $news,
                     'order'     => $order
                 )
             );

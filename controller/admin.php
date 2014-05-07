@@ -718,7 +718,8 @@ namespace Goteo\Controller {
                                 'blog' => $options['blog'], // entradas de blog (en la gestion de blog)
                                 'sponsors' => $options['sponsors'], // patrocinadores del nodo
                                 'stories' => $options['stories'],    // historias exitosas
-                                'recent' => $options['recent']
+                                'recent' => $options['recent'],
+                                'news' => $options['news'] // Banner de prensa
                             )
                         )
                     );
