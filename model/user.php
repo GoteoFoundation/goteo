@@ -1118,7 +1118,7 @@ namespace Goteo\Model {
 
                 // En el contenido:
                 $search  = array('%USERNAME%', '%URL%');
-                $replace = array($row->name, SEC_URL . '/user/leave/' . base64_encode($token));
+                $replace = array($row->name, SEC_URL . '/user/leave/' . \mybase64_encode($token));
                 $content = \str_replace($search, $replace, $template->text);
                 // Email de recuperacion
                 $mail = new Mail();
@@ -1173,7 +1173,7 @@ namespace Goteo\Model {
 
                     // En el contenido:
                     $search  = array('%USERNAME%', '%CHANGEURL%');
-                    $replace = array($this->name, $URL . '/user/changeemail/' . base64_encode($token));
+                    $replace = array($this->name, $URL . '/user/changeemail/' . \mybase64_encode($token));
                     $content = \str_replace($search, $replace, $template->text);
 
 

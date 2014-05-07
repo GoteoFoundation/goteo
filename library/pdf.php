@@ -104,7 +104,7 @@ function donativeCert($data) {
     $pdf->Ln($lh);
     $pdf->cell($w1,10,"CIF {$data->ffa->cif}");
     $pdf->cell($s);
-    $pdf->cell(0,10,$data->name);
+    $pdf->cell(0,10,$data->surname.', '.$data->name);
 
     $pdf->Ln($lh);
     $pdf->cell($w1,10,$data->ffa->address);
@@ -114,12 +114,12 @@ function donativeCert($data) {
     $pdf->Ln($lh);
     $pdf->cell($w1,10,"{$data->ffa->zipcode} - {$data->ffa->location} -");
     $pdf->cell($s);
-    $pdf->cell(0,10,$data->address);
+    $pdf->cell(0,10,'');
 
     $pdf->Ln($lh);
     $pdf->cell($w1,10,"Tel. {$data->ffa->phone}");
     $pdf->cell($s);
-    $pdf->cell(0,10,"{$data->zipcode} - {$data->location} ({$data->country})");
+    $pdf->cell(0,10,'');
 
     $pdf->Ln($lh);
     $pdf->cell($w1,10,$data->ffa->email . ' - ' . $data->ffa->site);
