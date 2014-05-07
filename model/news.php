@@ -114,7 +114,8 @@ namespace Goteo\Model {
                 'url',
                 'image',
                 'media_name',
-                'order'
+                'order',
+                'press_banner'
                 );
 
             $set = '';

@@ -84,7 +84,11 @@ namespace Goteo\Controller\Admin {
 
                     // gestionar post
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-                        // instancia
+                        
+                        //compruebo si está en press_banner
+                        $press_banner=$model::in_press_banner($_POST['id']);
+
+                        // instancia  
                         $item = new $model(array(
                             'id'          => $_POST['id'],
                             'title'       => $_POST['title'],
@@ -92,7 +96,8 @@ namespace Goteo\Controller\Admin {
                             'url'         => $_POST['url'],
                             'image'       => $_POST['image'],
                             'media_name'  => $_POST['media_name'],
-                            'order'       => $_POST['order']
+                            'order'       => $_POST['order'],
+                            'press_banner'=> $press_banner
                         ));
 
 
