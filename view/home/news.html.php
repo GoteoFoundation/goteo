@@ -15,9 +15,13 @@ if (count($news) > 4) :  ?>
     });
 </script>
 <?php endif; ?>
+<div class="clip">
+    <img src="/view/css/home/clip.png" width="70" style="position:absolute; left:835px; top:-8px; overflow:visible;"/>
+</div>
+<div class="clip_sup">
+</div>
 <div class="news">
-
-    <h4 style="text-transform:none; color: #58595b; margin-bottom:20px;padding-top:15px; margin-left:50px; margin-top:0ox; margin-bottom:0;"><?php echo Text::get('home-news-header'); ?></h4>
+    <h4 class="title"><?php echo Text::get('home-news-header'); ?></h4>
 
     <div id="slides_news" class="newrow">
         <?php if (count($news) > 4) : ?>

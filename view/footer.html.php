@@ -23,9 +23,9 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-    <div id="footer" style="height:auto; padding-top:0px;">
+    <div id="footer">
         <?php if($bannerPrensa) {?>
-        <div style="background-color:#cdcdcd; height:150px;">
+        <div id="press_banner">
             <?php echo $bannerPrensa;?> 
         </div> 
         <?php }?>
