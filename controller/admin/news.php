@@ -7,6 +7,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
+        Goteo\Library\Message,
         Goteo\Model;
 
     class News {
@@ -57,6 +58,16 @@ namespace Goteo\Controller\Admin {
                                         'type' => 'text',
                                         'properties' => 'size=100'
                                     ),
+                                    'image' => array(
+                                        'label' => 'Imagen',
+                                        'name' => 'image',
+                                        'type' => 'image'
+                                    ),
+                                    'media_name' => array(
+                                        'label' => 'Medio',
+                                        'name' => 'media_name',
+                                        'type' => 'text'
+                                    ), 
                                     'order' => array(
                                         'label' => 'Posición',
                                         'name' => 'order',
@@ -79,8 +90,25 @@ namespace Goteo\Controller\Admin {
                             'title'       => $_POST['title'],
                             'description' => $_POST['description'],
                             'url'         => $_POST['url'],
+                            'image'       => $_POST['image'],
+                            'media_name'  => $_POST['media_name'],
                             'order'       => $_POST['order']
                         ));
+
+
+                    // tratar si quitan la imagen
+                        $current = $_POST['image']; // la actual
+                        if (isset($_POST['image-' . $current .  '-remove'])) {
+                            $image = Model\Image::get($current);
+                            $image->remove('news');
+                            $item->image = '';
+                            $removed = true;
+                        }
+
+                        // tratar la imagen y ponerla en la propiedad image
+                        if(!empty($_FILES['image']['name'])) {
+                            $item->image = $_FILES['image'];
+                        }
 
                         if ($item->save($errors)) {
 
@@ -141,6 +169,16 @@ namespace Goteo\Controller\Admin {
                                         'type' => 'text',
                                         'properties' => 'size=100'
                                     ),
+                                    'image' => array(
+                                        'label' => 'Imagen',
+                                        'name' => 'image',
+                                        'type' => 'image'
+                                    ),
+                                    'media_name' => array(
+                                        'label' => 'Medio',
+                                        'name' => 'media_name',
+                                        'type' => 'text'
+                                    ),
                                     'order' => array(
                                         'label' => 'Posición',
                                         'name' => 'order',
@@ -176,12 +214,24 @@ namespace Goteo\Controller\Admin {
                         throw new Redirection($url);
                     }
                     break;
+
+                case 'add_press_banner':
+                      if (Model\News::add_press_banner($id)) {
+                        throw new Redirection('/admin/news');
+                    }
+                    break;
+
+                 case 'remove_press_banner':
+                      if (Model\News::remove_press_banner($id)) {
+                        throw new Redirection('/admin/news');
+                    }
+                    break; 
             }
 
-            return new View(
+            /*return new View(
                 'view/admin/index.html.php',
                 array(
-                    'folder' => 'base',
+                    'folder' => 'news',
                     'file' => 'list',
                     'model' => 'news',
                     'addbutton' => 'Nueva noticia',
@@ -197,6 +247,15 @@ namespace Goteo\Controller\Admin {
                         'remove' => ''
                     ),
                     'url' => "$url"
+                )
+            );*/
+
+             return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'news',
+                    'file' => 'list',
+                    'news' => $model::getAll()
                 )
             );
             

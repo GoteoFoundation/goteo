@@ -1,7 +1,8 @@
 <?php
 use Goteo\Library\Text,
     Goteo\Model\Blog\Post,
-    Goteo\Core\View;
+    Goteo\Core\View,
+    Goteo\Model\Image;
 
 $bodyClass = 'news';
 
@@ -40,6 +41,9 @@ include 'view/header.html.php';
             <div class="widget news-content-module">
                 <a name="news<?php echo $content->id ?>" />
                 <h3><?php echo $content->title; ?></h3>
+                <?php if($content->image instanceof \Goteo\Model\Image) { ?>
+                    <img src="<?php echo $content->image->getLink(150, 85); ?>" alt="" class="logo_new" />
+                <?php } ?>
                 <blockquote><?php echo $content->description; ?></blockquote>
                 <a href="<?php echo $content->url; ?>"><?php echo $read_more; ?></a>
             </div>
