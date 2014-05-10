@@ -21,10 +21,21 @@ namespace Goteo\Controller {
          */
         public function execute () {
 
+            // debug para supervisar en las fechas clave
+//            $debug = ($_GET['debug'] == 'debug') ? true : false;
+            $debug = true;
+
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $start = $time;
+
+            if ($debug) echo '<strong>cron/execute start</strong><br />';
+
             if (!\defined('CRON_EXEC')) {
                 @mail('goteo_cron@doukeshi.org', 'Se ha lanzado MANUALMENTE el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
-               echo 'Lanzamiento manual a las ' . date ('H:i:s') . ' <br />';
+                echo 'Lanzamiento manual a las ' . date ('H:i:s') . ' <br />';
             } else {
                 echo 'Lanzamiento automatico a las ' . date ('H:i:s') . ' <br />';
             }
@@ -58,10 +69,6 @@ namespace Goteo\Controller {
             }
             echo '<hr />';
             
-            // debug para supervisar en las fechas clave
-//            $debug = ($_GET['debug'] == 'debug') ? true : false;
-            $debug = true;
-
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña,
             // (publicados hace más de 40 días que no tengan fecha de pase)
@@ -631,7 +638,16 @@ namespace Goteo\Controller {
 
             }
 
-            if ($debug) echo '<hr/>';
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
+            if ($debug) {
+                echo '<hr/>';
+                echo "<br /><strong>cron/execute finish (executed in ".$total_time." seconds)</strong><hr />";
+            }
 
             // desbloqueamos
             if (unlink($block_file)) {

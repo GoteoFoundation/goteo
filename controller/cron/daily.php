@@ -15,6 +15,13 @@ namespace Goteo\Controller\Cron {
          */
         public static function Projects ($debug = false) {
 
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $start = $time;
+
+            if ($debug) echo '<strong>cron/daily: Projects() start</strong><br />';
+
             // Publicación automática de campañas:
             // Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
             // A esos les cambia el estado a publicado.
@@ -352,7 +359,13 @@ namespace Goteo\Controller\Cron {
                 Send::toConsultants('commons', $project);
             }
 
-            if ($debug) echo "<br />Auto-tips Listo!<hr />";
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
+            if ($debug) echo "<br /><strong>cron/daily: Projects() finish (executed in ".$total_time." seconds)</strong><hr />";
 
             return;
         }
@@ -364,6 +377,13 @@ namespace Goteo\Controller\Cron {
          */
         public static function Calls ($debug = false) {
             
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $start = $time;
+
+            if ($debug) echo '<strong>cron/daily: Calls() start</strong><br />';
+
             // convocatorias con aplicación abierta
             $calls = Model\Call::getActive(3);
             foreach ($calls as $call) {
@@ -409,8 +429,6 @@ namespace Goteo\Controller\Cron {
                     echo \vsprintf($log_text, array($call->name)).'<br />';
                 }
             }
-
-
 
             // campañas dando dinero
             $campaigns = Model\Call::getActive(4);
@@ -461,7 +479,13 @@ namespace Goteo\Controller\Cron {
                 }
             }
             
-            if ($debug) echo "<br />Calls-control Listo!<hr />";
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
+            if ($debug) echo "<br /><strong>cron/daily: Calls() finish (executed in ".$total_time." seconds)</strong><hr />";
 
             return;
         }
