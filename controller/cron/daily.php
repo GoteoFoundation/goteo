@@ -15,10 +15,53 @@ namespace Goteo\Controller\Cron {
          */
         public static function Projects ($debug = false) {
 
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $start = $time;
+
+            if ($debug) echo '<strong>cron/daily: Projects() start</strong><br />';
+
+            // Publicación automática de campañas:
+            // Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
+            // A esos les cambia el estado a publicado.
+            $projects = Model\Project::getList(array('status' => 2, 'published' => date('Y-m-d') ));
+            if ($debug) {
+                echo 'Publicación de proyectos automática: ';
+                if (count($projects) > 0) {
+                    echo 'se van a publicar ' . count($projects) . ' proyectos';
+                } else {
+                    echo 'no hay ningún proyecto para publicar hoy';
+                }
+                echo '.<br/><br/>';
+            }
+            foreach ($projects as $project) {
+                $res = $project->publish();
+
+                if ($res) {
+                    $log_text = 'Se ha pasado automáticamente el proyecto %s al estado <span class="red">en Campaña</span>';
+                } else {
+                    $log_text = 'El sistema ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
+                }
+                $log_text = \vsprintf($log_text, array(Feed::item('project', $project->name, $project->id)));
+                if ($debug) echo $log_text;
+
+                // galeria
+                $project->gallery = Project\Image::getGallery($project->id);
+
+                // Evento Feed
+                $log = new Feed();
+                $log->setTarget($project->id);
+                $log->populate('Publicación automática de un proyecto', '/admin/projects', $log_text);
+                $log->doAdmin('admin');
+
+                $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
+                $log->doPublic('projects');
+                unset($log);
+            }
+
             // proyectos a notificar
             $projects = Model\Project::review();
-
-            // para cada uno,
             foreach ($projects as $project) {
                 
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
@@ -316,7 +359,13 @@ namespace Goteo\Controller\Cron {
                 Send::toConsultants('commons', $project);
             }
 
-            if ($debug) echo "<br />Auto-tips Listo!<hr />";
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
+            if ($debug) echo "<br /><strong>cron/daily: Projects() finish (executed in ".$total_time." seconds)</strong><hr />";
 
             return;
         }
@@ -328,6 +377,13 @@ namespace Goteo\Controller\Cron {
          */
         public static function Calls ($debug = false) {
             
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $start = $time;
+
+            if ($debug) echo '<strong>cron/daily: Calls() start</strong><br />';
+
             // convocatorias con aplicación abierta
             $calls = Model\Call::getActive(3);
             foreach ($calls as $call) {
@@ -373,8 +429,6 @@ namespace Goteo\Controller\Cron {
                     echo \vsprintf($log_text, array($call->name)).'<br />';
                 }
             }
-
-
 
             // campañas dando dinero
             $campaigns = Model\Call::getActive(4);
@@ -425,7 +479,13 @@ namespace Goteo\Controller\Cron {
                 }
             }
             
-            if ($debug) echo "<br />Calls-control Listo!<hr />";
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
+            if ($debug) echo "<br /><strong>cron/daily: Calls() finish (executed in ".$total_time." seconds)</strong><hr />";
 
             return;
         }
