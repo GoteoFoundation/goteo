@@ -91,9 +91,9 @@ namespace Goteo\Controller\Admin {
 
 
             if (!empty($filters['projStatus'])) {
-                $projects = Model\Project::getMiniList(array('status'=>$filters['projStatus'], 'proj_id'=>$filters['project'], 'order'=>'success'), $_SESSION['admin_node']);
+                $projects = Model\Project::getMiniList(array('status'=>$filters['projStatus'], 'proj_name'=>$filters['project'], 'order'=>'success'), $_SESSION['admin_node']);
             } else {
-                $projects = Model\Project::getMiniList(array('multistatus'=>"4,5", 'proj_id'=>$filters['project'], 'order'=>'success'), $_SESSION['admin_node']);
+                $projects = Model\Project::getMiniList(array('multistatus'=>"4,5", 'proj_name'=>$filters['project'], 'order'=>'success'), $_SESSION['admin_node']);
             }
 
             foreach ($projects as $kay=>&$project) {

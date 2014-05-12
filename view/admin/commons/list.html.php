@@ -1,10 +1,20 @@
 <?php
-use Goteo\Core\View,
-    Goteo\Library\Text;
+use Goteo\Library\Text;
+
+// paginacion
+require_once 'library/pagination/pagination.php';
 
 $filters = $this['filters'];
 $status = $this['statuses'];
 
+$the_filters = '';
+foreach ($filters as $key=>$value) {
+    $the_filters .= "&{$key}={$value}";
+}
+
+$pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
+
+//para autocomplete
 $items = array();
 
 foreach ($this['projects'] as $project) {
@@ -28,19 +38,9 @@ foreach ($this['projects'] as $project) {
         </div>
 
         <div style="float:left;margin:5px;">
-            <label for="projects-filter">Post: (autocomplete título o numero)</label><br />
+            <label for="projects-filter">Proyecto: (autocomplete nombre)</label><br />
             <input type="text" name="project" id="projects-filter" value="<?php if ($filters['project'] === $preval) echo $preval;?>" size="60" />
         </div>
-
-        <!--<div style="float:left;margin:5px;">
-            <label for="projects-filter">Proyecto:</label><br />
-            <select id="projects-filter" name="project" >
-                <option value="">Todos los proyectos</option>
-            <?php foreach ($this['projects'] as $project) : ?>
-                <option value="<?php echo $project->id; ?>"<?php if ($filters['project'] === $project->id) echo ' selected="selected"';?> status="<?php echo $project->status; ?>"><?php echo $project->name; ?></option>
-            <?php endforeach; ?>
-            </select>
-        </div>-->
 
         <?php /*
  * estos filtros ya no tienen sentido
@@ -92,7 +92,7 @@ foreach ($this['projects'] as $project) {
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($this['projects'] as $project) :
+        <?php  while ($project = $pagedResults->fetchPagedRow()) :
 
             // calculo fecha de vencimiento (timestamp de un año despues de financiado)
             $deadline = mktime(0, 0, 0,
@@ -114,14 +114,18 @@ foreach ($this['projects'] as $project) {
                     <a href="/admin/projects/?proj_id=<?php echo $project->id?>" target="blank">[Admin]</a>
                 </td>
             </tr>
-        <?php endforeach; ?>
+        <?php endwhile; ?>
         </tbody>
     </table>
+</div>
+ <ul id="pagination">
+    <?php   $pagedResults->setLayout(new DoubleBarLayout());
+        echo $pagedResults->fetchPagedNavigation($the_filters); ?>
+ </ul>
     <?php else : ?>
     <p>No se han encontrado registros</p>
-    <?php endif; ?>
 </div>
-
+    <?php endif; ?>
 <script type="text/javascript">
 $(function () {
 
