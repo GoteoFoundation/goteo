@@ -410,7 +410,6 @@ namespace Goteo\Controller\Cron {
             if ($debug) {
                 echo "Template: $tpl<br />";
                 echo str_replace('?',"'{$project->id}'",$sql);
-                die;
             }
             if ($query = Model\Invest::query($sql, array($project->id))) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
