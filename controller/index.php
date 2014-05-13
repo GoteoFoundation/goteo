@@ -102,9 +102,10 @@ namespace Goteo\Controller {
 
             foreach ($news as $idNew => &$new) {
                 
-                if (!$new->press_banner) {
+                //comprobamos si esta activo el campo banner prensa y si tiene imagen asociada
+
+                if ((!$new->press_banner)||(!$new->image instanceof \Goteo\Model\Image))
                         unset($news[$idNew]);
-                }
                 
             }
 
