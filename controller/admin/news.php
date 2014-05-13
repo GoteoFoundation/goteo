@@ -69,9 +69,9 @@ namespace Goteo\Controller\Admin {
                                         'type' => 'text'
                                     ), 
                                     'order' => array(
-                                        'label' => 'Posición',
+                                        'label' => '',
                                         'name' => 'order',
-                                        'type' => 'text'
+                                        'type' => 'hidden'
                                     )
                                 )
 
@@ -185,9 +185,9 @@ namespace Goteo\Controller\Admin {
                                         'type' => 'text'
                                     ),
                                     'order' => array(
-                                        'label' => 'Posición',
+                                        'label' => '',
                                         'name' => 'order',
-                                        'type' => 'text'
+                                        'type' => 'hidden'
                                     )
                                 )
 
