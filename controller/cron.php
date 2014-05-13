@@ -21,16 +21,27 @@ namespace Goteo\Controller {
          */
         public function execute () {
 
+            // debug para supervisar en las fechas clave
+//            $debug = ($_GET['debug'] == 'debug') ? true : false;
+            $debug = true;
+
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $start = $time;
+
+            if ($debug) echo '<strong>cron/execute start</strong><br />';
+
             if (!\defined('CRON_EXEC')) {
                 @mail('goteo_cron@doukeshi.org', 'Se ha lanzado MANUALMENTE el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
-               echo 'Lanzamiento manual a las ' . date ('H:i:s') . ' <br />';
+                echo 'Lanzamiento manual a las ' . date ('H:i:s') . ' <br />';
             } else {
                 echo 'Lanzamiento automatico a las ' . date ('H:i:s') . ' <br />';
             }
             
-            // a ver si existe el bloqueo
-            $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'.block';
+            // a ver si existe el bloqueo (PARA HOY)
+            $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'_'.date('Ymd').'.block';
             if (file_exists($block_file)) {
                 echo 'Ya existe un archivo de log '.date('Ymd').'_'.__FUNCTION__.'.log<br />';
                 $block_content = \file_get_contents($block_file);
@@ -39,11 +50,11 @@ namespace Goteo\Controller {
                 $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
-                /*
+
                 @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
                         El contenido del bloqueo es: '. $block_content);
-                 */
+
                 die;
             } else {
                 $block = 'Bloqueo del '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
@@ -58,10 +69,6 @@ namespace Goteo\Controller {
             }
             echo '<hr />';
             
-            // debug para supervisar en las fechas clave
-//            $debug = ($_GET['debug'] == 'debug') ? true : false;
-            $debug = true;
-
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña,
             // (publicados hace más de 40 días que no tengan fecha de pase)
@@ -631,46 +638,16 @@ namespace Goteo\Controller {
 
             }
 
-            // Publicación automática de campañas:
-            // Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
-            // A esos les cambia el estado a publicado.
-            $projects = Model\Project::getList(array('status' => 2, 'published' => date('Y-m-d') ));
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
             if ($debug) {
-                echo 'Publicación de proyectos automática: ';
-                if (count($projects) > 0) {
-                    echo 'se van a publicar ' . count($projects) . ' proyectos';
-                } else {
-                    echo 'no hay ningún proyecto para publicar hoy';
-                }
-                echo '.<br/><br/>';
+                echo '<hr/>';
+                echo "<br /><strong>cron/execute finish (executed in ".$total_time." seconds)</strong><hr />";
             }
-            foreach ($projects as $project) {
-                $res = $project->publish();
-
-                if ($res) {
-                    $log_text = 'Se ha pasado automáticamente el proyecto %s al estado <span class="red">en Campaña</span>';
-                } else {
-                    $log_text = 'El sistema ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
-                }
-                $log_text = \vsprintf($log_text, array(Feed::item('project', $project->name, $project->id)));
-                if ($debug) echo $log_text;
-
-                // galeria
-                $project->gallery = Project\Image::getGallery($project->id);
-
-                // Evento Feed
-                $log = new Feed();
-                $log->setTarget($project->id);
-                $log->populate('Publicación automática de un proyecto', '/admin/projects', $log_text);
-                $log->doAdmin('admin');
-
-                $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
-                $log->doPublic('projects');
-                unset($log);
-            }
-
-
-            if ($debug) echo '<hr/>';
 
             // desbloqueamos
             if (unlink($block_file)) {
@@ -682,6 +659,8 @@ namespace Goteo\Controller {
                 } else {
                     echo 'No hay archivo de bloqueo '.$block_file.'!<br />';
                 }
+                @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' no se ha podido desbloquear en ' . SITE_URL,
+                    'No se ha podido eliminar el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
             }
             
             // recogemos el buffer para grabar el log
