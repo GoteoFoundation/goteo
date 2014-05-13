@@ -46,7 +46,7 @@
         <div id="post-gallery<?php echo $post->id ?>" class="post-gallery">
 			<div class="post-gallery-container">
 				<?php $i = 1; foreach ($post->gallery as $image) : ?>
-				<?php if(image instanceof Image) : ?>
+				<?php if($image instanceof Image) : ?>
 						<div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
 							<img src="<?php echo $image->getLink(500, 285); ?>" alt="<?php echo $post->title; ?>" />
 						</div>
