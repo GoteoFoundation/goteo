@@ -114,7 +114,8 @@ namespace Goteo\Model {
                 'url',
                 'image',
                 'media_name',
-                'order'
+                'order',
+                'press_banner'
                 );
 
             $set = '';
@@ -130,9 +131,7 @@ namespace Goteo\Model {
                 $sql = "REPLACE INTO news SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
-
-                Check::reorder($this->id, 'up', 'news');
-
+                
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
