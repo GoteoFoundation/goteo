@@ -2,7 +2,8 @@
 // Vista para pintar una entrada de blog
 // puede ser resumen en la lista o completa
 	use Goteo\Library\Text,
-		Goteo\Model\Blog\Post;
+		Goteo\Model\Blog\Post,
+		Goteo\Model\Image;;
 
     $post = Post::get($this['post'], LANG);
     $level = (int) $this['level'] ?: 3;
@@ -45,10 +46,13 @@
         <div id="post-gallery<?php echo $post->id ?>" class="post-gallery">
 			<div class="post-gallery-container">
 				<?php $i = 1; foreach ($post->gallery as $image) : ?>
-				<div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
-					<img src="<?php echo $image->getLink(500, 285); ?>" alt="<?php echo $post->title; ?>" />
-				</div>
-				<?php $i++; endforeach; ?>
+				<?php if(image instanceof Image) : ?>
+						<div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
+							<img src="<?php echo $image->getLink(500, 285); ?>" alt="<?php echo $post->title; ?>" />
+						</div>
+						<?php $i++; 
+					endif;
+				endforeach; ?>
 			</div>
 			<!-- carrusel de imagenes si hay mas de una -->
                 <a class="prev">prev</a>
