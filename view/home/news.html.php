@@ -10,7 +10,7 @@ if (count($news) > 4) :  ?>
         $('#slides_news').slides({
             container: 'slder_news',
             generatePagination: false,
-            play: 60000
+            play: 30000
         });
     });
 </script>
