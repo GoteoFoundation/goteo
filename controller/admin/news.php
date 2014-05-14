@@ -59,7 +59,7 @@ namespace Goteo\Controller\Admin {
                                         'properties' => 'size=100'
                                     ),
                                     'image' => array(
-                                        'label' => 'Imagen',
+                                        'label' => 'Imagen<br/>(150x85)',
                                         'name' => 'image',
                                         'type' => 'image'
                                     ),
@@ -175,7 +175,7 @@ namespace Goteo\Controller\Admin {
                                         'properties' => 'size=100'
                                     ),
                                     'image' => array(
-                                        'label' => 'Imagen',
+                                        'label' => 'Imagen<br/>(150x85)',
                                         'name' => 'image',
                                         'type' => 'image'
                                     ),
