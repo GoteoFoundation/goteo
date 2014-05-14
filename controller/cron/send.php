@@ -280,6 +280,7 @@ namespace Goteo\Controller\Cron {
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
                     break;
+
                 case 'rewardfulfilled': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
                     $tpl = 58;
 
@@ -289,6 +290,13 @@ namespace Goteo\Controller\Cron {
                     // También podríamos usar $_SESSION['user']->name
                     $search  = array('%PROJECTNAME%', '%USERNAME%', '%RETURN%', '%URL%', '%COMMONSURL%');
                     $replace = array($project->name, $project->user->name, $reward->reward, $_POST['value'], $commons_url);
+                    break;
+
+                case 'project_to_review_consultant': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
+                    $tpl = 59;
+
+                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%');
+                    $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id);
                     break;
             }
 

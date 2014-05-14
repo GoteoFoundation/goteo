@@ -170,28 +170,15 @@ namespace Goteo\Controller {
                             $_SESSION['project'] = $project;
                         }
 
+                        Message::Info(Text::get('project-review-request_mail-success'));
+
                         // email a los de goteo
-                        $mailHandler = new Mail();
-
-                        $mailHandler->reply = $project->user->email;
-                        $mailHandler->replyName = "{$project->user->name}";
-                        $mailHandler->to = \GOTEO_MAIL;
-                        $mailHandler->toName = 'Revisor de proyectos';
-                        $mailHandler->subject = 'Proyecto ' . $project->name . ' enviado a valoración';
-                        $mailHandler->content = '<p>Han enviado un nuevo proyecto a revisión</p><p>El nombre del proyecto es: <span class="message-highlight-blue">'.$project->name.'</span> <br />y se puede ver en <span class="message-highlight-blue"><a href="'.SITE_URL.'/project/'.$project->id.'">'.SITE_URL.'/project/'.$project->id.'</a></span></p>';
-                        $mailHandler->html = true;
-                        $mailHandler->template = 0;
-                        if ($mailHandler->send($errors)) {
-                            Message::Info(Text::get('project-review-request_mail-success'));
-                        } else {
-                            Message::Error(Text::get('project-review-request_mail-fail'));
-                            Message::Error(implode('<br />', $errors));
-                        }
-
-                        unset($mailHandler);
+                        $sent1 = Send::toConsultants('project_to_review_consultant', $project);
 
                         // email al autor
-                        if (Send::toOwner('project_to_review', $project)) {
+                        $sent2 = Send::toOwner('project_to_review', $project);
+
+                        if ($sent1 && $sent2) {
                             Message::Info(Text::get('project-review-confirm_mail-success'));
                         } else {
                             Message::Error(Text::get('project-review-confirm_mail-fail'));
@@ -209,6 +196,9 @@ namespace Goteo\Controller {
                         unset($log);
 
                         throw new Redirection("/dashboard?ok");
+                    } else {
+                        Message::Error(Text::get('project-review-request_mail-fail'));
+                        Message::Error(implode('<br />', $errors));
                     }
                 }
 
