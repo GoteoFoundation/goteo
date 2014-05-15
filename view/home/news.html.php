@@ -10,13 +10,13 @@ if (count($news) > 4) :  ?>
         $('#slides_news').slides({
             container: 'slder_news',
             generatePagination: false,
-            play: 60000
+            play: 30000
         });
     });
 </script>
 <?php endif; ?>
 <div class="clip">
-    <img src="/view/css/home/clip.png" width="70" style="position:absolute; left:835px; top:-8px; overflow:visible;"/>
+    <img src="/view/css/home/clip.png" width="70"/>
 </div>
 <div class="clip_sup">
 </div>
