@@ -11,6 +11,13 @@ div #press_banner div.clip{
     position:relative;
 }
 
+div #press_banner div.clip img{
+    position:absolute; 
+    left:835px; 
+    top:-8px; 
+    overflow:visible;
+}
+
 div #press_banner div.clip_sup{
    height:15px; 
    background-color:#e7e7e7;
