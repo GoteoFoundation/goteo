@@ -56,8 +56,8 @@ namespace Goteo\Model\Project {
             if (!$this->validate($errors)) return false;
 
 			try {
-	            $sql = "REPLACE INTO project_conf (project, noinvest, watch) VALUES(:project, :noinvest, :watch)";
-                $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch);
+	            $sql = "REPLACE INTO project_conf (project, noinvest, watch) VALUES(:project, :noinvest, :watch, :round1, :round2)";
+                $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch, ':round1'=>$this->days_round1, ':round2'=>$this->days_round2);
 				return self::query($sql, $values);
 			} catch(\PDOException $e) {
 				$errors[] = "La configuración del proyecto no se ha guardado correctamente. Por favor, revise los datos." . $e->getMessage();
