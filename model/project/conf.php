@@ -30,14 +30,18 @@ namespace Goteo\Model\Project {
                 $query = static::query("SELECT * FROM project_conf WHERE project = ?", array($id));
                 $project_conf = $query->fetchObject(__CLASS__);
 
+                // Valores por defecto si no existe el proyecto en la tabla
                 if (!$project_conf instanceof \Goteo\Model\Project\Conf) {
-                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
+                    $project_conf = array();
+                    $project->days_round1 = 40;
+                    $project->days_round1 = 80;
+                    $project->watch = 0;
                 }
 
                 return $project_conf;
 
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+                throw new \Goteo\Core\Exception($e->getMessage());
             }
 		}
 
