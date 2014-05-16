@@ -26,7 +26,7 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
-                            'data' => (object) array('order' => $model::next()),
+                            'data' => (object) array('order' => '0'),
                             'form' => array(
                                 'action' => "$url/edit/",
                                 'submit' => array(
