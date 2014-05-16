@@ -105,55 +105,50 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
             <dd class="reached"><strong><?php echo \amount_format($reached) ?> <span class="euro">&euro;</span></strong></dd>
 
             <?php
-            switch ($project->status) {
-                case 1: // en edicion
-                ?>
-            <dt class="days long"><span><?php echo Text::get('project-view-metter-day_created'); ?></span></dt>
-            <dd class="days long"><strong><?php echo date('d / m / Y', strtotime($project->created)) ?></strong></dd>
-                <?php
-                break;
-
-                case 2: // enviado a revision
-                ?>
-            <dt class="days long"><span><?php echo Text::get('project-view-metter-day_updated'); ?></span></dt>
-            <dd class="days long"><strong><?php echo date('d / m / Y', strtotime($project->updated)) ?></strong></dd>
-                <?php
-                break;
-
-                case 4: // financiado
-                case 5: // caso de exito
-                ?>
-            <dt class="days long"><span><?php echo Text::get('project-view-metter-day_success'); ?></span></dt>
-            <dd class="days long"><strong><?php echo date('d / m / Y', strtotime($project->success)) ?></strong></dd>
-                <?php
-                break;
-
-                case 6: // archivado
-                ?>
-            <dt class="days long"><span><?php echo Text::get('project-view-metter-day_closed'); ?></span></dt>
-            <dd class="days long"><strong><?php echo date('d / m / Y', strtotime($project->closed)) ?></strong></dd>
-                <?php
-                break;
-
-                default:
-                    if ($days > 2) :
+            if ($project->status == 3) { // en campaña
+                if ($days > 2) {
+                    $days_left = number_format($days);
+                    $days_left2 = Text::get('regular-days');
+                } else {
+                    $part = strtotime($project->published);
+                    // si primera ronda: published + 40
+                    // si segunda ronda: published + 80
+                    $plus = 40 * $project->round;
+                    $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
+                    $days_left = Check::time_togo($final_day, 1);
+                    $days_left2 = '';
+                }
                 ?>
             <dt class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span></dt>
-            <dd class="days"><strong><?php echo number_format($days) ?></strong> <?php echo Text::get('regular-days'); ?></dd>
-                <?php
-                    else :
-                        $part = strtotime($project->published);
-                        // si primera ronda: published + 40
-                        // si segunda ronda: published + 80
-                        $plus = 40 * $project->round;
-                        $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
-                        $timeTogo = Check::time_togo($final_day,1);
-                ?>
-            <dt class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span></dt>
-            <dd class="days"><strong><?php echo $timeTogo ?></strong></dd>
-                <?php
-                    endif;
-                break;
+            <dd class="days"><strong><?php echo $days_left; ?></strong> <?php echo $days_left2; ?></dd>
+            <?php
+            } else {
+                switch ($project->status) {
+                    case 1: // en edicion
+                        $text = 'project-view-metter-day_created';
+                        $date = $project->created;
+                        break;
+
+                    case 2: // pendiente de valoración
+                        $text = 'project-view-metter-day_updated';
+                        $date = $project->updated;
+                        break;
+
+                    case 4: // financiado
+                    case 5: // retorno cumplido
+                        $text = 'project-view-metter-day_success';
+                        $date = $project->success;
+                        break;
+
+                    case 6: // archivado
+                        $text = 'project-view-metter-day_closed';
+                        $date = $project->closed;
+                        break;
+                }
+            ?>
+            <dt class="days long"><span><?php echo Text::get($text); ?></span></dt>
+            <dd class="days long"><strong><?php echo date('d / m / Y', strtotime($date)) ?></strong></dd>
+            <?php
             }
             ?>
 
