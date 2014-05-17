@@ -17,7 +17,9 @@ namespace Goteo\Controller\Cron {
 
         // array de proyectos que deben ser monitorizados
         public static $monitorize = array(
-            'id-de-proyecto-a-monitorizar'
+            'id-de-proyecto-a-monitorizar',
+            'olivierada', // prueba en local Julian
+            'canalalpha' // para prueba en beta, el impulsor 'geraldo' tiene puesto idioma inglés
         );
 
         // array de emails monitorizadores
@@ -208,8 +210,10 @@ namespace Goteo\Controller\Cron {
 
             if (!empty($tpl)) {
                 $errors = array();
+
                 // Obtenemos la plantilla para asunto y contenido (en el idioma del usuario)
                 $template = Template::get($tpl, $project->user->lang);
+
                 // Sustituimos los datos
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
                 $content = \str_replace($search, $replace, $template->text);
