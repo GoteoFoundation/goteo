@@ -47,7 +47,7 @@ namespace Goteo\Controller\Cron {
                 if ($debug) echo $log_text;
 
                 // galeria
-                $project->gallery = Project\Image::getGallery($project->id);
+                $project->gallery = Model\Project\Image::getGallery($project->id);
 
                 // Evento Feed
                 $log = new Feed();
