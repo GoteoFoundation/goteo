@@ -173,7 +173,7 @@ namespace Goteo\Library {
                 }
                 
 			} catch(\PDOException $e) {
-                $errors[] = 'Error sql al grabar el contenido de la palntilla. ' . $e->getMessage();
+                $errors[] = 'Error sql al grabar el contenido de la plantilla. ' . $e->getMessage();
                 return false;
 			}
 
