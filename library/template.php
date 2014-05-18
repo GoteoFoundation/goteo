@@ -20,13 +20,15 @@ namespace Goteo\Library {
         static public function get ($id, $lang = \LANG) {
 
             //@PIÑON que saque el texto en inglés cuando sea en francés y la plantilla no esté traducida
-            if ($lang == 'fr') {
+            if ($lang != 'es') {
+                // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
+                $default_lang = (in_array($lang, array('ca', 'gl', 'eu', 'en'))) ? 'es' : 'en';
                 $traducidas = array();
-                $qaux = Model::query("SELECT id  FROM template_lang WHERE lang = 'fr'");
+                $qaux = Model::query("SELECT id FROM template_lang WHERE lang = :lang", array(':lang' => $lang));
                 foreach ($qaux->fetchAll(\PDO::FETCH_OBJ) as $trans) {
                     $traducidas[] = $trans->id;
                 }
-                if (!in_array($id, $traducidas)) $lang = 'en';
+                if (!in_array($id, $traducidas)) $lang = $default_lang;
             }
             
             // buscamos la página para este nodo en este idioma
