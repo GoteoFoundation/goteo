@@ -15,6 +15,23 @@ namespace Goteo\Controller\Cron {
 
     class Send {
 
+        // array de proyectos que deben ser monitorizados
+        public static $monitorize = array(
+            'id-de-proyecto-a-monitorizar',
+            'basic-income-and-peer-production', // proyecto real, inicio campaña 19/05/2014
+            'olivierada', // prueba en local Julian
+            'canalalpha' // para prueba en beta, el impulsor 'geraldo' tiene puesto idioma inglés
+        );
+
+        // array de emails monitorizadores
+        public static $monitors = array(
+            'enric@goteo.org',
+            'olivier@goteo.org',
+            'monitorizing@goteo.org',
+            'monitorizing@doukeshi.org',
+            'pablo@anche.no'
+        );
+
         /**
          * Al autor del proyecto, se encarga de substituir variables en plantilla
          *
@@ -194,8 +211,10 @@ namespace Goteo\Controller\Cron {
 
             if (!empty($tpl)) {
                 $errors = array();
-                // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get($tpl);
+
+                // Obtenemos la plantilla para asunto y contenido (en el idioma del usuario)
+                $template = Template::get($tpl, $project->user->lang);
+
                 // Sustituimos los datos
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
                 $content = \str_replace($search, $replace, $template->text);
@@ -203,7 +222,11 @@ namespace Goteo\Controller\Cron {
                 $mailHandler = new Mail();
                 $mailHandler->to = $project->user->email;
                 $mailHandler->toName = $project->user->name;
-                
+
+                // añadido monitorización
+                if (in_array($project->id, self::$monitorize))
+                    $mailHandler->bcc = self::$monitors;
+
                 if ($debug) echo $project->user->email . ', ';
 
                 // si es un proyecto de nodo: reply al mail del nodo
