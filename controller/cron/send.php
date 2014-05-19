@@ -18,6 +18,7 @@ namespace Goteo\Controller\Cron {
         // array de proyectos que deben ser monitorizados
         public static $monitorize = array(
             'id-de-proyecto-a-monitorizar',
+            'basic-income-and-peer-production', // proyecto real, inicio campaña 19/05/2014
             'olivierada', // prueba en local Julian
             'canalalpha' // para prueba en beta, el impulsor 'geraldo' tiene puesto idioma inglés
         );
