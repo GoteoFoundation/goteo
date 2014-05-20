@@ -1238,14 +1238,6 @@ namespace Goteo\Model {
                  $okeys['overview']['subtitle'] = 'ok';
             }
 
-            if (empty($this->gallery) && empty($errors['overview']['image'])) {
-                $errors['overview']['image'] .= Text::get('mandatory-project-field-image');
-            } else {
-                 $okeys['overview']['image'] = (empty($errors['overview']['image'])) ? 'ok' : null;
-                 ++$score;
-                 if (count($this->gallery) >= 2) ++$score;
-            }
-
             if (empty($this->description)) {
                 $errors['overview']['description'] = Text::get('mandatory-project-field-description');
             } elseif (!Check::words($this->description, 80)) {
@@ -1302,6 +1294,16 @@ namespace Goteo\Model {
                  $okeys['overview']['project_location'] = 'ok';
                  ++$score;
             }
+
+            // paso 3b: imágenes
+            if (empty($this->gallery) && empty($errors['images']['image'])) {
+                $errors['images']['image'] .= Text::get('mandatory-project-field-image');
+            } else {
+                $okeys['images']['image'] = (empty($errors['images']['image'])) ? 'ok' : null;
+                ++$score;
+                if (count($this->gallery) >= 2) ++$score;
+            }
+
 
             $this->setScore($score, 13);
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
@@ -2713,6 +2715,7 @@ namespace Goteo\Model {
                 'userProfile'  => array(),  // Errores en el paso 1
                 'userPersonal' => array(),  // Errores en el paso 2
                 'overview'     => array(),  // Errores en el paso 3
+                'images'       => array(),  // Errores en el paso 3b
                 'costs'        => array(),  // Errores en el paso 4
                 'rewards'      => array(),  // Errores en el paso 5
                 'supports'     => array()   // Errores en el paso 6
