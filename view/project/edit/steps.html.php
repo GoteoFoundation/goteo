@@ -31,9 +31,14 @@ $errors = $this['errors'] ?>
                             <strong class="number">3</strong></button>                            
                         </span>
 
+                        <span class="step on-on<?php if ($this['step'] === 'images') echo ' active'; else echo ' activable'; ?>">
+                            <button type="submit" name="view-step-images" value="<?php echo Text::get('step-3b'); ?>"><?php echo Text::get('step-3b'); ?>
+                            <strong class="number">3'</strong></button>
+                        </span>
+
                         <span class="step on-on<?php if ($this['step'] === 'costs') echo ' active'; else echo ' activable'; ?>">
                             <button type="submit" name="view-step-costs" value="<?php echo Text::get('step-4'); ?>"><?php echo Text::get('step-4'); ?>
-                            <strong class="number">4</strong></button>                            
+                            <strong class="number">4</strong></button>
                         </span>
 
                         <span class="step on-on<?php if ($this['step'] === 'rewards') echo ' active'; else echo ' activable'; ?>">

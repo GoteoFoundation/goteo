@@ -73,6 +73,7 @@ namespace Goteo\Controller {
                      'userProfile'  => 'userProfile',
                      'userPersonal' => 'userPersonal',
                      'overview'     => 'overview',
+                     'images'       => 'images',
                      'costs'        => 'costs',
                      'rewards'      => 'rewards',
                      'supports'     => 'supports'
@@ -108,6 +109,10 @@ namespace Goteo\Controller {
                     'overview' => array(
                         'name' => Text::get('step-3'),
                         'title' => Text::get('step-overview')
+                    ),
+                    'images' => array(
+                        'name' => Text::get('step-3b'),
+                        'title' => Text::get('step-images')
                     ),
                     'costs'=> array(
                         'name' => Text::get('step-4'),
@@ -156,8 +161,8 @@ namespace Goteo\Controller {
                 
                 // hay que mostrar errores en la imagen
                 if (!empty($errors['image'])) {
-                    $project->errors['overview']['image'] = $errors['image'];
-                    $project->okeys['overview']['image'] = null;
+                    $project->errors['images']['image'] = $errors['image'];
+                    $project->okeys['images']['image'] = null;
                 }
 
                 // si estan enviando el proyecto a revisión
@@ -252,6 +257,10 @@ namespace Goteo\Controller {
                     $viewData['categories'] = Model\Project\Category::getAll();
 //                    $viewData['currently'] = Model\Project::currentStatus();
 //                    $viewData['scope'] = Model\Project::scope();
+                    break;
+
+                case 'images':
+
                     break;
 
                 case 'costs':
@@ -805,19 +814,6 @@ namespace Goteo\Controller {
                     $project->$field = $_POST[$field];
 //                }
             }
-            
-            // tratar la imagen que suben
-            if (isset($_FILES['image_upload']) && $_FILES['image_upload']['error'] != UPLOAD_ERR_NO_FILE) {
-                $project->image = $_FILES['image_upload'];
-            }
-
-            // tratar las imagenes que quitan
-            foreach ($project->gallery as $key=>$image) {
-                if (!empty($_POST["gallery-{$image->id}-remove"])) {
-                    $image->remove('project');
-                    unset($project->gallery[$key]);
-                }
-            }
 
             // Media
             if (!empty($project->media)) {
@@ -849,6 +845,32 @@ namespace Goteo\Controller {
             }
 
             $quedan = $project->categories; // truki para xdebug
+
+            return true;
+        }
+
+        /*
+         * Paso 3b - IMÁGENES
+         */
+
+        private function process_images(&$project, &$errors) {
+            if (!isset($_POST['process_images'])) {
+                return false;
+            }
+
+
+            // tratar la imagen que suben
+            if (isset($_FILES['image_upload']) && $_FILES['image_upload']['error'] != UPLOAD_ERR_NO_FILE) {
+                $project->image = $_FILES['image_upload'];
+            }
+
+            // tratar las imagenes que quitan
+            foreach ($project->gallery as $key=>$image) {
+                if (!empty($_POST["gallery-{$image->id}-remove"])) {
+                    $image->remove('project');
+                    unset($project->gallery[$key]);
+                }
+            }
 
             return true;
         }
