@@ -504,6 +504,16 @@ namespace Goteo\Controller\Admin {
                 throw new Redirection('/admin/projects/list');
             }
 
+            // Vigilar
+            if ($action == 'watch') {
+                Model\Project\Conf::watch($project->id);
+            }
+
+            // Dejar de vigilar
+            if ($action == 'unwatch') {
+                Model\Project\Conf::unwatch($project->id);
+            }
+
             if (!empty($filters['filtered'])) {
                 $projects = Model\Project::getList($filters, $_SESSION['admin_node']);
             } else {

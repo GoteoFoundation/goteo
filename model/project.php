@@ -458,6 +458,12 @@ namespace Goteo\Model {
                 $project->mincost = $costs->mincost;
                 $project->maxcost = $costs->maxcost;
 
+                try {
+                    $project_conf = Project\Conf::get($id);
+                    $project->watch = $project_conf->watch;
+                } catch(\Goteo\Core\Error $e) {
+                    $project->watch = 0;
+                }
 
                 $project->setDays();
                 $project->setTagmark();
