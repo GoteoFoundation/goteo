@@ -6,7 +6,8 @@ namespace Goteo\Model\Project {
 
         public
             $project,
-            $noinvest; // no se pueden hacer más aportes
+            $noinvest, // no se pueden hacer más aportes
+            $watch;
 
 
         /**
@@ -26,7 +27,10 @@ namespace Goteo\Model\Project {
             }
 		}
 
-		public function validate(&$errors = array()) {
+        public function validate(&$errors = array()) {
+            // TODO
+            //if (!in_array($this->watch, array('0','1'))) return false;
+
             return true;
         }
 
@@ -34,8 +38,8 @@ namespace Goteo\Model\Project {
             if (!$this->validate($errors)) return false;
 
 			try {
-	            $sql = "REPLACE INTO project_conf (project, noinvest) VALUES(:project, :noinvest)";
-                $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest);
+	            $sql = "REPLACE INTO project_conf (project, noinvest, watch) VALUES(:project, :noinvest, :watch)";
+                $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch);
 				self::query($sql, $values);
 				return true;
 			} catch(\PDOException $e) {
@@ -57,6 +61,24 @@ namespace Goteo\Model\Project {
             }
         }
         
+        public static function watch($id) {
+            try {
+                $query = static::query("UPDATE `project_conf` SET watch = '1'  WHERE project = ?", array($id));
+                return $query->fetchColumn();
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+        public static function unwatch($id) {
+            try {
+                $query = static::query("UPDATE `project_conf` SET watch = '0'  WHERE project = ?", array($id));
+                return $query->fetchColumn();
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
 	}
     
 }
