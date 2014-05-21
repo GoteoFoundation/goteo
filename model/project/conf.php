@@ -17,7 +17,8 @@ namespace Goteo\Model\Project {
             $noinvest, // no se pueden hacer más aportes
             $watch,
             $days_round1,
-            $days_round2;
+            $days_round2,
+            $one_round;
 
         /**
          * Get the conf for a project
@@ -32,10 +33,11 @@ namespace Goteo\Model\Project {
 
                 // Valores por defecto si no existe el proyecto en la tabla
                 if (!$project_conf instanceof \Goteo\Model\Project\Conf) {
-                    $project_conf = array();
+                    $project->noinvest = 0;
+                    $project->watch = 0;
                     $project->days_round1 = 40;
                     $project->days_round1 = 80;
-                    $project->watch = 0;
+                    $project->one_round = 0;
                 }
 
                 return $project_conf;
@@ -48,6 +50,8 @@ namespace Goteo\Model\Project {
         public function validate(&$errors = array()) {
             // TODO
             //if (!in_array($this->watch, array('0','1'))) return false;
+            //if (!in_array($this->one_round, array('0','1'))) return false;
+            //if (!in_array($this->noinvest, array('0','1'))) return false;
 
             return true;
         }
@@ -55,16 +59,16 @@ namespace Goteo\Model\Project {
 		public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
-			try {
-	            $sql = "REPLACE INTO project_conf (project, noinvest, watch) VALUES(:project, :noinvest, :watch, :round1, :round2)";
-                $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch, ':round1'=>$this->days_round1, ':round2'=>$this->days_round2);
-				return self::query($sql, $values);
-			} catch(\PDOException $e) {
-				$errors[] = "La configuración del proyecto no se ha guardado correctamente. Por favor, revise los datos." . $e->getMessage();
+            try {
+                $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round) VALUES(:project, :noinvest, :watch, :round1, :round2, :one)";
+                $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch,
+                                ':round1'=>$this->days_round1, ':round2'=>$this->days_round2, ':one'=>$this->one_round);
+                return self::query($sql, $values);
+            } catch(\PDOException $e) {
+                $errors[] = "La configuración del proyecto no se ha guardado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
-			}
-
-		}
+            }
+        }
 
         // comprobar que no se le haya cerrado el grifo
         public static function getNoinvest ($id) {
