@@ -81,6 +81,7 @@ namespace Goteo\Controller\Admin {
                     $project_conf = Model\Project\Conf::get($projData->id);
                     $project_conf->days_round1 = $_POST['round1'];
                     $project_conf->days_round2 = $_POST['round2'];
+                    $project_conf->one_round = isset($_POST['oneround']);
                     if ($project_conf->save($errors)) {
                         Message::Info('Se han actualizado los días de campaña del proyecto ' . $projData->name);
                     } else {
