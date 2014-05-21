@@ -79,6 +79,16 @@ namespace Goteo\Model\Project {
             }
         }
 
+        public static function isWatched($id) {
+            try {
+                $query = static::query("SELECT watch FROM project_conf WHERE project = ?", array($id));
+                $watch = $query->fetchColumn();
+                return ($watch == 1);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
 	}
     
 }
