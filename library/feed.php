@@ -211,7 +211,8 @@ namespace Goteo\Library {
                             feed.image as image,
                             DATE_FORMAT(feed.datetime, '%H:%i %d|%m|%Y') as date,
                             feed.datetime as timer,
-                            feed.html as html
+                            feed.html as html,
+                            feed.target_type
                         FROM feed
                         WHERE feed.scope = :scope
                         $sqlType
@@ -225,7 +226,7 @@ namespace Goteo\Library {
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
                     // si es la columan goteo, vamos a cambiar el html por el del post traducido
-                    if ($type == 'goteo') {
+                    if ($type == 'goteo' && $item->target_type == 'blog') {
                         // primero sacamos la id del post de la url
                         $matches = array();
 
