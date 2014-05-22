@@ -232,8 +232,7 @@ namespace Goteo\Model {
                         ON project.id = review.project
                     INNER JOIN user
                         ON user.id = project.owner
-                    WHERE project.status < 3
-                    AND review.status = 1
+                    WHERE review.status = 1
                     AND user_review.user = ?
                     ORDER BY project.name ASC
                     ";
