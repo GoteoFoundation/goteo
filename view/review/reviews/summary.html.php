@@ -11,7 +11,7 @@ $review = $this['review'];
     <p>El proyecto <strong><?php echo $review->name; ?></strong> de <strong><?php echo $review->owner_name; ?></strong></p>
     <p>La edición del proyecto alcanzó el <strong><?php echo $review->progress; ?>%</strong>, la puntuación actual de la revisión es de <strong><?php echo $review->score; ?>/<?php echo $review->max; ?></strong></p>
     <p><a href="<?php echo '/project/' . $review->project; ?>" target="_blank">Ver el proyecto</a>
-        <br /><a href="<?php echo '/project/edit/' . $review->project; ?>" target="_blank">Abrir la edición del proyecto</a>
+        <?php if ($review->project_status < 3) : ?><br /><a href="<?php echo '/project/edit/' . $review->project; ?>" target="_blank">Abrir la edición del proyecto</a><?php endif; ?>
         <br /><a href="<?php echo '/user/' . $review->owner; ?>" target="_blank">Abrir el perfil del creador</a>
     </p>
 </div>
