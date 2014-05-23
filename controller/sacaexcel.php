@@ -63,7 +63,9 @@ namespace Goteo\Controller {
                     $sql = "SELECT  
                                 invest.id as id,
                                 invest.user as user,
+                                IF(invest_address.name != '', invest_address.name, user.name) as name,
                                 user_prefer.email as noemail,
+                                IF(user_prefer.email = 1, '', user.email) as email,
                                 invest.amount as amount,
                                 IF (invest.issue = 1, 'Incidencia', '') as issue,
                                 IF (invest.anonymous = 1, 'Anonimo', '') as anonymous,
@@ -84,11 +86,6 @@ namespace Goteo\Controller {
 
                     $query = \Goteo\Core\Model::query($sql, array($id));
                     foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
-
-                        // usuario
-                        $user = Model\User::getMini($item->user);
-                        $item->name = $user->name;
-                        $item->email = ($item->noemail) ? '' : $user->email;
 
                         // recompensa
                         $subQuery = \Goteo\Core\Model::query("SELECT reward.reward
