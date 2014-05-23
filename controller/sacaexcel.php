@@ -63,7 +63,7 @@ namespace Goteo\Controller {
                     $sql = "SELECT  
                                 invest.id as id,
                                 invest.user as user,
-                                IFNULL(inves_address.name, user.name) as name,
+                                IFNULL(invest_address.name, user.name) as name,
                                 user_prefer.email as noemail,
                                 IF(user_prefer.email = 1, '', user.email) as email
                                 invest.amount as amount,
