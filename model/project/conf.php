@@ -63,7 +63,8 @@ namespace Goteo\Model\Project {
         
         public static function watch($id) {
             try {
-                $query = static::query("UPDATE `project_conf` SET watch = '1'  WHERE project = ?", array($id));
+                //FIXME: project_conf_valores_on_demand
+                $query = static::query("INSERT INTO project_conf (project, watch) VALUES (?, '1') ON DUPLICATE KEY UPDATE watch='1'", array($id));
                 return $query->fetchColumn();
             } catch(\PDOException $e) {
                 return false;
@@ -72,7 +73,8 @@ namespace Goteo\Model\Project {
 
         public static function unwatch($id) {
             try {
-                $query = static::query("UPDATE `project_conf` SET watch = '0'  WHERE project = ?", array($id));
+                //FIXME: project_conf_valores_on_demand
+                $query = static::query("INSERT INTO project_conf (project, watch) VALUES (?, '0') ON DUPLICATE KEY UPDATE watch='0'", array($id));
                 return $query->fetchColumn();
             } catch(\PDOException $e) {
                 return false;
