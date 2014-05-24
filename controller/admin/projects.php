@@ -507,11 +507,15 @@ namespace Goteo\Controller\Admin {
             // Vigilar
             if ($action == 'watch') {
                 Model\Project\Conf::watch($project->id);
+
+                throw new Redirection('/admin/projects/list');
             }
 
             // Dejar de vigilar
             if ($action == 'unwatch') {
                 Model\Project\Conf::unwatch($project->id);
+
+                throw new Redirection('/admin/projects/list');
             }
 
             if (!empty($filters['filtered'])) {
