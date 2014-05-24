@@ -15,14 +15,6 @@ namespace Goteo\Controller\Cron {
 
     class Send {
 
-        // array de proyectos que deben ser monitorizados
-        public static $monitorize = array(
-            'id-de-proyecto-a-monitorizar',
-            'basic-income-and-peer-production', // proyecto real, inicio campaña 19/05/2014
-            'olivierada', // prueba en local Julian
-            'canalalpha' // para prueba en beta, el impulsor 'geraldo' tiene puesto idioma inglés
-        );
-
         // array de emails monitorizadores
         public static $monitors = array(
             'enric@goteo.org',
@@ -224,7 +216,7 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->toName = $project->user->name;
 
                 // añadido monitorización
-                if (in_array($project->id, self::$monitorize))
+                if (Model\Project\Conf::isWatched($project->id))
                     $mailHandler->bcc = self::$monitors;
 
                 if ($debug) echo $project->user->email . ', ';
