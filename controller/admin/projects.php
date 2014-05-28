@@ -483,6 +483,11 @@ namespace Goteo\Controller\Admin {
                         Message::Error('Ha fallado al enviar el mail a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
                     }
                     unset($mailHandler);
+
+                    // si ha sido un asesor se le cambia el estado al proyecto
+                    if (isset($project->consultants[$_SESSION['user']->id])) {
+                        $project->cancel();
+                    }
                 }
 
                 throw new Redirection('/admin/projects/list');
