@@ -62,13 +62,16 @@ namespace Goteo\Controller\Cron {
 
             // proyectos a notificar
             $projects = Model\Project::review();
+
             foreach ($projects as $project) {
-                
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
                 // FIXME: la segunda condicion del if
-                if ($project->days > 42 || $project->days > 360) continue;
+                if ($project->days > 42 || $project->days > 360) {
+                    if ($debug) echo "Proyecto <strong>{$project->name}</strong> SKIP<br/>";
+                    continue;
+                }
 
-                if ($debug) echo "Proyecto {$project->name}, Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias<br />";
+                if ($debug) echo "Proyecto <strong>{$project->name}</strong>, Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias<br />";
                 
                 // primero los que no se bloquean
                 //Solicitud de datos del contrato
@@ -330,7 +333,7 @@ namespace Goteo\Controller\Cron {
                     
                 }
                 
-                if ($debug) echo "<hr />";
+                if ($debug) echo "<br />";
                 
             }
             
@@ -348,6 +351,7 @@ namespace Goteo\Controller\Cron {
             );
 
             if ($debug) {
+                echo "<hr/>";
                 echo "Buscando proyectos financiados hace 10 meses ({$success_date}). Encontrados: " . count($projects) . "  <br />";
                 echo "De ellos, no han cumplido con los retornos colectivos: " . count($filtered_projects) . "  <br /><br />";
             }

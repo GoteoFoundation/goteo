@@ -15,23 +15,6 @@ namespace Goteo\Controller\Cron {
 
     class Send {
 
-        // array de proyectos que deben ser monitorizados
-        public static $monitorize = array(
-            'id-de-proyecto-a-monitorizar',
-            'basic-income-and-peer-production', // proyecto real, inicio campaña 19/05/2014
-            'olivierada', // prueba en local Julian
-            'canalalpha' // para prueba en beta, el impulsor 'geraldo' tiene puesto idioma inglés
-        );
-
-        // array de emails monitorizadores
-        public static $monitors = array(
-            'enric@goteo.org',
-            'olivier@goteo.org',
-            'monitorizing@goteo.org',
-            'monitorizing@doukeshi.org',
-            'pablo@anche.no'
-        );
-
         /**
          * Al autor del proyecto, se encarga de substituir variables en plantilla
          *
@@ -223,9 +206,24 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->to = $project->user->email;
                 $mailHandler->toName = $project->user->name;
 
-                // añadido monitorización
-                if (in_array($project->id, self::$monitorize))
-                    $mailHandler->bcc = self::$monitors;
+                // vigilancia de proyectos (añade en copia oculta a asesores + otros)
+                if (Model\Project\Conf::isWatched($project->id)) {
+                    $consultants = Model\Project::getConsultants($project->id);
+                    $monitors = array();
+
+                    foreach ($consultants as $id=>$name) {
+                        $user = Model\User::getMini($id);
+                        $monitors[] = $user->email;
+                    }
+
+                    $monitors[] = 'enric@goteo.org';
+                    $monitors[] = 'olivier@goteo.org';
+                    $monitors[] = 'monitorizing@goteo.org';
+                    $monitors[] = 'monitorizing@doukeshi.org';
+                    $monitors[] = 'pablo@anche.no';
+
+                    $mailHandler->bcc = $monitors;
+                }
 
                 if ($debug) echo $project->user->email . ', ';
 

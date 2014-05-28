@@ -458,6 +458,7 @@ namespace Goteo\Model {
                 $project->mincost = $costs->mincost;
                 $project->maxcost = $costs->maxcost;
 
+                $project->watch = Project\Conf::isWatched($id);
 
                 $project->setDays();
                 $project->setTagmark();
