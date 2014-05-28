@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Opciones de configuración especiales para proyectos.
+ * Si el proyecto no tiene una entrada en esta tabla (project_conf), se asumen valores por defecto:
+ *      noinvest = 0
+ *      watch = 0
+ */
 namespace Goteo\Model\Project {
 
     class Conf extends \Goteo\Core\Model {
@@ -8,7 +14,6 @@ namespace Goteo\Model\Project {
             $project,
             $noinvest, // no se pueden hacer más aportes
             $watch;
-
 
         /**
          * Get the conf for a project
@@ -40,8 +45,7 @@ namespace Goteo\Model\Project {
 			try {
 	            $sql = "REPLACE INTO project_conf (project, noinvest, watch) VALUES(:project, :noinvest, :watch)";
                 $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch);
-				self::query($sql, $values);
-				return true;
+				return self::query($sql, $values);
 			} catch(\PDOException $e) {
 				$errors[] = "Las cuentas no se han asignado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
@@ -63,9 +67,9 @@ namespace Goteo\Model\Project {
         
         public static function watch($id) {
             try {
-                //FIXME: project_conf_valores_on_demand
-                $query = static::query("INSERT INTO project_conf (project, watch) VALUES (?, '1') ON DUPLICATE KEY UPDATE watch='1'", array($id));
-                return $query->fetchColumn();
+                $query = "INSERT INTO project_conf (project, watch) VALUES (?, '1') ON DUPLICATE KEY UPDATE watch='1'";
+                $data = array($id);
+                return self::query($query, $data);
             } catch(\PDOException $e) {
                 return false;
             }
@@ -73,9 +77,9 @@ namespace Goteo\Model\Project {
 
         public static function unwatch($id) {
             try {
-                //FIXME: project_conf_valores_on_demand
-                $query = static::query("INSERT INTO project_conf (project, watch) VALUES (?, '0') ON DUPLICATE KEY UPDATE watch='0'", array($id));
-                return $query->fetchColumn();
+                $query = "INSERT INTO project_conf (project, watch) VALUES (?, '0') ON DUPLICATE KEY UPDATE watch='0'";
+                $data = array($id);
+                return self::query($query, $data);
             } catch(\PDOException $e) {
                 return false;
             }

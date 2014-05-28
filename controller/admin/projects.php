@@ -506,14 +506,22 @@ namespace Goteo\Controller\Admin {
 
             // Vigilar
             if ($action == 'watch') {
-                Model\Project\Conf::watch($project->id);
+                if (Model\Project\Conf::watch($project->id)) {
+                    Message::Info('Se ha empezado a vigilar el proyecto <strong>'.$project->name.'</strong>');
+                } else {
+                    Message::Error('Ha fallado la vigilancia del proyecto <strong>'.$project->name.'</strong>');
+                }
 
                 throw new Redirection('/admin/projects/list');
             }
 
             // Dejar de vigilar
             if ($action == 'unwatch') {
-                Model\Project\Conf::unwatch($project->id);
+                if (Model\Project\Conf::unwatch($project->id)) {
+                    Message::Info('Se ha dejado de vigilar el proyecto <strong>'.$project->name.'</strong>');
+                } else {
+                    Message::Error('Ha fallado dejar de vigilar el proyecto <strong>'.$project->name.'</strong>');
+                }
 
                 throw new Redirection('/admin/projects/list');
             }
