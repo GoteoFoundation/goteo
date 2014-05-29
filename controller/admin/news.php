@@ -83,7 +83,7 @@ namespace Goteo\Controller\Admin {
                 case 'edit':
 
                     // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         
                         //compruebo si está en press_banner
                         $press_banner=$model::in_press_banner($_POST['id']);
