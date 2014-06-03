@@ -36,7 +36,7 @@ namespace Goteo\Controller\Admin {
                             $users = Boletin::getReceivers();
                         } elseif ($template == 27 || $template == 38) {
                             // los cofinanciadores de este año
-                            $users = Boletin::getDonors(Donor::$currYear);
+                            $users = Boletin::getDonors(Donor::currYear());
                         }
 
                         // sin idiomas
