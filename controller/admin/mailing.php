@@ -16,12 +16,6 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
-            // año fiscal
-            $year = Model\User\Donor::$currYear;
-            $year0 = $year;
-            $year1 = $year-1;
-            
-
             $errors = array();
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
@@ -135,20 +129,6 @@ namespace Goteo\Controller\Admin {
                         $sqlFilter .= " AND ( user.name LIKE (:name) OR user.email LIKE (:name) ) ";
                         $values[':name'] = '%'.$filters['name'].'%';
                         $_SESSION['mailing']['filters_txt'] .= 'que su nombre o email contenga <strong>\'' . $filters['name'] . '\'</strong> ';
-                    }
-
-                    if (!empty($filters['donant'])) {
-                        if ($filters['type'] == 'investor') {
-                            $sqlFilter .= " AND invest.resign = 1
-                                AND invest.status IN (1, 3)
-                                AND invest.charged >= '{$year0}-01-01'
-                                AND invest.charged < '{$year1}-01-01'
-                                AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                                ";
-                            $_SESSION['mailing']['filters_txt'] .= 'que haya hecho algun donativo ';
-                        } else {
-                            Message::Error('Solo se filtran donantes si se envia "A los: Cofinanciadores"');
-                        }
                     }
 
                     if ($node != \GOTEO_NODE) {

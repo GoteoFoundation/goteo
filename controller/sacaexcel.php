@@ -34,7 +34,7 @@ namespace Goteo\Controller {
                     );
                     
                     if (empty($filters['year']))
-                        $filters['year'] = Model\User\Donor::$currYear;
+                        $filters['year'] = Model\User\Donor::currYear();
 
                     $data = Model\User\Donor::getList($filters);
                     $columns = array(
