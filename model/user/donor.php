@@ -303,6 +303,23 @@ namespace Goteo\Model\User {
             return $fechas;
         }
 
+        /*
+         * Año fiscal actual
+         */
+        static public function currYear() {
+
+            $year = date('Y');
+            $month = date('m');
+            // hasta junio es el año anterior
+            if ($month <= 6) {
+                $year--;
+            }
+
+            return $year;
+        }
+
+
+
     }
 
 }
