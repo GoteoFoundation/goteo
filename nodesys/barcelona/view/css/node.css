@@ -5,4 +5,5 @@ body.node.home div.node-projects ul li.active .title a {color: #F08678 !importan
 div.side_widget > div.button > p > a {background-image: url("/nodesys/barcelona/view/css/arrows.gif") !important;}
 ul.bannerspage li a {background-color: #F4A49A !important; color: #F4A49A !important;}
 div#message {background-color: #F08678 !important;}
-
+div#sub-header-secondary {background-color: #FDEFED;}
+div#message div#message-content input.message-close {background-image: url("/nodesys/barcelona/view/css/message-close.png") !important;}
