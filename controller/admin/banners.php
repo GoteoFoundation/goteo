@@ -70,7 +70,6 @@ namespace Goteo\Controller\Admin {
                                     'file' => 'edit',
                                     'action' => 'add',
                                     'banner' => $banner,
-                                    'status' => $status,
                                     'autocomplete' => true
                                 )
                             );
@@ -124,7 +123,6 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'add',
                             'banner' => (object) array('order' => $next),
-                            'status' => $status,
                             'autocomplete' => true
                         )
                     );
