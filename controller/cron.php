@@ -111,13 +111,6 @@ namespace Goteo\Controller {
                         $mailHandler->send();
                         unset($mailHandler);
 
-                        $task = new Model\Task();
-                        $task->node = \GOTEO_NODE;
-                        $task->text = "Poner la cuenta PayPal al proyecto <strong>{$project->name}</strong> urgentemente!";
-                        $task->url = "/admin/projects/accounts/{$project->id}";
-                        $task->done = null;
-                        $task->saveUnique();
-
                     }
 
                 }
@@ -280,29 +273,10 @@ namespace Goteo\Controller {
                                 $passtime = strtotime($project->passed);
                                 $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
 
-                                /*
-                                 * Ya no hacemos pagos secundarios mediante sistema
-                                $task = new Model\Task();
-                                $task->node = \GOTEO_NODE;
-                                $task->text = "Hacer los pagos secundarios al proyecto <strong>{$project->name}</strong> antes del día <strong>{$limsec}</strong>";
-                                $task->url = "/admin/accounts/?projects={$project->id}";
-                                $task->done = null;
-                                $task->save();
-                                 */
-
-                                // y preparar contrato
-                                $task = new Model\Task();
-                                $task->node = \GOTEO_NODE;
-                                $task->text = date('d/m/Y').": Enviar datos contrato <strong>{$project->name}</strong>, {$project->user->name}";
-                                //@TODO enlace a gestión de contrato
-                                $task->url = "/admin/projects?proj_name={$project->name}";
-                                $task->done = null;
-                                $task->saveUnique();
-                                
                                 // + mail a mercè
                                 @mail(\GOTEO_CONTACT_MAIL,
                                     'Preparar contrato ' . $project->name,
-                                    'El proyecto '.$project->name.' ha pasado la primera ronda, enviarle los datos de contrato. Se ha creado una tarea para esto.');
+                                    'El proyecto '.$project->name.' ha pasado la primera ronda, enviarle los datos de contrato.');
                             }
 
                             echo '<br />';
@@ -362,14 +336,6 @@ namespace Goteo\Controller {
 
                                 //Email de proyecto pasa a segunda ronda a los inversores
                                 Cron\Send::toInvestors('r1_pass', $project);
-                                
-                                // Tarea para hacer los pagos
-                                $task = new Model\Task();
-                                $task->node = \GOTEO_NODE;
-                                $task->text = date('d/m/Y').": Pagar a <strong>{$project->name}</strong>, {$project->user->name}";
-                                $task->url = "/admin/projects/report/{$project->id}";
-                                $task->done = null;
-                                $task->saveUnique();
                                 
                                 // + mail a susana
                                 @mail('susana@goteo.org',
