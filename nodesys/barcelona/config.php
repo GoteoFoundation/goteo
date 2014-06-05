@@ -7,7 +7,7 @@ define('NODE_META_KEYWORDS', utf8_encode('crowdfunding, procomún, commons, soci
 define('NODE_META_AUTHOR', 'Goteo Node System');
 define('NODE_META_COPYRIGHT', 'Platoniq');
 define('NODE_DEFAULT_LANG', 'ca');
-define('NODE_URL', 'http://barcelona.goteo.org');
+define('NODE_URL', 'http://barcelona.devgoteo.org');
 define('NODE_NAME', 'GoteoBarcelona');
 define('NODE_MAIL', 'goteo_barcelona@doukeshi.org');
 define('NODE_ANALYTICS_TRACKER', "<script>
