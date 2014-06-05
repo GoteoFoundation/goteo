@@ -23,7 +23,7 @@ namespace Goteo\Controller\Admin {
                 $banner = new Model\Banner(array(
                     'id' => $_POST['id'],
                     'node' => $node,
-                    'project' => $_POST['project'],
+                    'project' => $_POST['item'],
                     'title' => $_POST['title'],
                     'description' => $_POST['description'],
                     'url' => $_POST['url'],
@@ -70,7 +70,7 @@ namespace Goteo\Controller\Admin {
                                     'file' => 'edit',
                                     'action' => 'add',
                                     'banner' => $banner,
-                                    'status' => $status
+                                    'autocomplete' => true
                                 )
                             );
                             break;
@@ -81,7 +81,8 @@ namespace Goteo\Controller\Admin {
                                     'folder' => 'banners',
                                     'file' => 'edit',
                                     'action' => 'edit',
-                                    'banner' => $banner
+                                    'banner' => $banner,
+                                    'autocomplete' => true
                                 )
                             );
                             break;
@@ -122,7 +123,7 @@ namespace Goteo\Controller\Admin {
                             'file' => 'edit',
                             'action' => 'add',
                             'banner' => (object) array('order' => $next),
-                            'status' => $status
+                            'autocomplete' => true
                         )
                     );
                     break;
@@ -135,7 +136,8 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'banners',
                             'file' => 'edit',
                             'action' => 'edit',
-                            'banner' => $banner
+                            'banner' => $banner,
+                            'autocomplete' => true
                         )
                     );
                     break;
