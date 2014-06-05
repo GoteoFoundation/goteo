@@ -49,7 +49,7 @@ $nodes = Nodesys::activeNodes(\NODE_ID);
 
             </script>
             <?php if (!empty($banners)) : ?><li class="info"><a class="open" id="switch-banner" href="#">&nbsp;</a></li><?php endif; ?>
-            <li class="explore"><a class="button red" href="/discover"><?php echo Text::get('regular-discover'); ?></a></li>
+            <li class="explore"><a class="button <?php echo (\NODE_ID == 'barcelona') ? 'blue' : 'red'; ?>" href="/discover"><?php echo Text::get('regular-discover'); ?></a></li>
             <li class="create"><a class="button aqua" href="/project/create"><?php echo Text::get('regular-create'); ?></a></li>
             <li class="help"><a class="button grey" href="/faq"><?php echo Text::get('node-footer-title-help'); ?></a></li>
             <li class="search">
