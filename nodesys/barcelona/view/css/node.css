@@ -1,1 +1,8 @@
 /* Estilos específicos para el nodo */
+div.content_widget h2 > span.line {background-color: #F08678 !important;}
+body.node.home div.node-projects ul li .categories {background-color: #F08678 !important;}
+body.node.home div.node-projects ul li.active .title a {color: #F08678 !important;}
+div.side_widget > div.button > p > a {background-image: url("/nodesys/barcelona/view/css/arrows.gif") !important;}
+ul.bannerspage li a {background-color: #F4A49A !important; color: #F4A49A !important;}
+div#message {background-color: #F08678 !important;}
+

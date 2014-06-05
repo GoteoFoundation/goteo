@@ -6,8 +6,8 @@ define('NODE_META_DESCRIPTION', utf8_encode('Xarxa social de finançament col·l
 define('NODE_META_KEYWORDS', utf8_encode('crowdfunding, procomún, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres'));
 define('NODE_META_AUTHOR', 'Goteo Node System');
 define('NODE_META_COPYRIGHT', 'Platoniq');
-define('NODE_DEFAULT_LANG', 'es');
-define('NODE_URL', 'http://barcelona.goteo.org');
+define('NODE_DEFAULT_LANG', 'ca');
+define('NODE_URL', 'http://barcelona.devgoteo.org');
 define('NODE_NAME', 'GoteoBarcelona');
 define('NODE_MAIL', 'goteo_barcelona@doukeshi.org');
 define('NODE_ANALYTICS_TRACKER', "<script>
