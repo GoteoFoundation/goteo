@@ -305,9 +305,10 @@ namespace Goteo\Controller {
                     'geoloc' => array('label' => 'Informe usuarios Localizados', 'item' => false),
                     'projects' => array('label' => 'Informe Impulsores', 'item' => true),
                     'calls' => array('label' => 'Informe Convocatorias', 'item' => true),
-                    'donors' => array('label' => 'Informe Donantes', 'item' => false)
+                    'donors' => array('label' => 'Informe Donantes', 'item' => false),
+                    'top' => array('label' => 'Top Cofinanciadores', 'item' => false)
                 ),
-                'filters' => array('report' => '', 'date_from' => '', 'date_until' => '', 'year' => '2013', 'status' => '', 'user' => '')
+                'filters' => array('report' => '', 'date_from' => '', 'date_until' => '', 'year' => '2014', 'status' => '', 'user' => '', 'top'=>'numproj', 'limit'=>25)
             ),
             'reviews' => array(
                 'label' => 'Revisiones',
