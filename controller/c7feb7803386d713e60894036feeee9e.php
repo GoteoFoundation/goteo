@@ -8,7 +8,8 @@ namespace Goteo\Controller {
 
     use Goteo\Model,
         Goteo\Controller\Cron\Send,
-        Goteo\Library\Feed;
+        Goteo\Library\Feed,
+        Goteo\Core\ACL;
 
     class C7feb7803386d713e60894036feeee9e extends \Goteo\Core\Controller {
         
@@ -30,8 +31,16 @@ namespace Goteo\Controller {
                 $log_txt = "El usuario {$user->id} ({$rol}) ";
             } elseif (Model\Project::isMine($project, $user->id)) {
                 $log_txt = "El usuario {$user->id} (impulsor) ";
+            } elseif (ACL::check('/'.strtolower(__CLASS__).'/*')) {
+                $log_txt = "El usuario {$user->name} (permitido) ";
             } else {
                 header ('HTTP/1.1 403 Forbidden');
+                die;
+            }
+
+            if (empty($project) || empty($reward)) {
+                header ('HTTP/1.1 400 Bad request');
+                echo 'Not enough params';
                 die;
             }
 
@@ -80,8 +89,16 @@ namespace Goteo\Controller {
                 $log_txt = "El usuario {$user->id} ({$rol}) ";
             } elseif (Model\Project::isMine($project, $user->id)) {
                 $log_txt = "El usuario {$user->id} (impulsor) ";
+            } elseif (ACL::check('/'.md5('ultra-secret-ws'))) {
+                $log_txt = "El usuario {$user->name} (permitido) ";
             } else {
                 header ('HTTP/1.1 403 Forbidden');
+                die;
+            }
+
+            if (empty($project) || empty($reward)) {
+                header ('HTTP/1.1 400 Bad request');
+                echo 'Not enough params';
                 die;
             }
 

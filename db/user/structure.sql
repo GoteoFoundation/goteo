@@ -34,3 +34,6 @@ ALTER TABLE `user` ADD `lang` VARCHAR( 2 ) NULL DEFAULT NULL;
 -- nodo donde se registró
 ALTER TABLE `user` ADD `node` VARCHAR( 50 ) NULL DEFAULT NULL;
 
+-- total aportado (no estaba este campo en real)
+ALTER TABLE `user` ADD `amount` INT( 7 ) NULL DEFAULT  NULL AFTER `linkedin` ;
+
