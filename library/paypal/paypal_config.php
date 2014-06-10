@@ -50,18 +50,19 @@ define('PROXY_PORT', '808');
 
 /***** 3token API credentials *****************/
 define('API_AUTHENTICATION_MODE','3token');
-define('API_USERNAME', 'goteo_1314917819_biz_api1.gmail.com');
-define('API_PASSWORD', '1314917863');
-define('API_SIGNATURE', 'An5ns1Kso7MWUdW4ErQKJJJ4qi4-A0jpddAN2GLAUit7Ii3-bZGjjerJ');
+// define('API_USERNAME', '---');
+// define('API_PASSWORD', '---');
+// define('API_SIGNATURE', '---');
+require(dirname(dirname(__DIR__ )). '/config/paypal.php');
 
 /**
  * Use the following setting (false) if you are testing or using SDK against live PayPal's production server
- * 
+ *
  */
 define('TRUST_ALL_CONNECTION',false);
 
 /**
- * 
+ *
  * Defines the SDK Version, Request and Response message formats.
  */
 define('SDK_VERSION','PHP_SOAP_SDK_V1.4');
