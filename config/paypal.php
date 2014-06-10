@@ -29,9 +29,12 @@ define('API_BASE_ENDPOINT', 'https://svcs.sandbox.paypal.com/');
 //Chanege to https://svcs.paypal.com/  to go live */
 
 // credenciales
-define('API_USERNAME', 'goteo_1314917819_biz_api1.gmail.com');
-define('API_PASSWORD', '1314917863');
-define('API_SIGNATURE', 'An5ns1Kso7MWUdW4ErQKJJJ4qi4-A0jpddAN2GLAUit7Ii3-bZGjjerJ');
+/***
+* MODIFICAR AQUI CON VALORES PROPIOS
+**/
+define('API_USERNAME', '---biz---');
+define('API_PASSWORD', 'XXXXXXX');
+define('API_SIGNATURE', '----------');
 
 // app id
-define('X_PAYPAL_APPLICATION_ID','APP-80W284485P519543T');
+define('X_PAYPAL_APPLICATION_ID','APP-XXXXXXXXXXXXXX');
