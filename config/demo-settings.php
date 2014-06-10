@@ -15,6 +15,11 @@ define('GOTEO_EASY', null);
 // para compatibilidad
 define('DEVGOTEO_LOCAL', null);
 
+// tipo de entorno: local, beta, real
+define('GOTEO_ENV', 'local');
+
+// nodo central
+define('GOTEO_NODE', 'goteo');
 
 
 // Metadata
@@ -25,12 +30,12 @@ define('GOTEO_META_AUTHOR', '--author--');
 define('GOTEO_META_COPYRIGHT', '--copyright--');
 
 //AWS Credentials
-define("AWS_KEY", "--------------");
-define("AWS_SECRET", "----------------------------------");
-define("AWS_REGION", "eu-west-1");
+define('AWS_KEY', '--------------');
+define('AWS_SECRET', '----------------------------------');
+define('AWS_REGION', 'eu-west-1');
 
 //Mail management: ses, phpmailer
-define("MAIL_HANDLER", "phpmailer");
+define('MAIL_HANDLER', 'phpmailer');
 
 // Database
 define('GOTEO_DB_DRIVER', 'mysql');
@@ -50,11 +55,11 @@ define('GOTEO_DB_PASSWORD', 'db-password');
 
 
 //SELECT queries caching
-//setup it as "files", "memcache"
-define("SQL_CACHE_DRIVER", 'memcache'); //dejar vacia para no activar cache
-define("SQL_CACHE_TIME", 20); //Segundos de cache para las queries SELECT (puede ser sobreescrito por las query->cacheTime())
-define("SQL_CACHE_SERVER", 'localhost'); //Si es memcache, si no será ignorado
-define("SQL_CACHE_PORT", '11211'); //Si es memcache, si no será ignorado
+//setup it as 'files', 'memcache'
+define('SQL_CACHE_DRIVER', 'memcache'); //dejar vacia para no activar cache
+define('SQL_CACHE_TIME', 20); //Segundos de cache para las queries SELECT (puede ser sobreescrito por las query->cacheTime())
+define('SQL_CACHE_SERVER', 'localhost'); //Si es memcache, si no será ignorado
+define('SQL_CACHE_PORT', '11211'); //Si es memcache, si no será ignorado
 
 // Mail
 define('GOTEO_MAIL_FROM', 'noreply@example.com');
@@ -63,7 +68,7 @@ define('GOTEO_MAIL_TYPE', 'smtp');
 define('GOTEO_MAIL_SMTP_AUTH', true);
 define('GOTEO_MAIL_SMTP_SECURE', 'ssl');
 define('GOTEO_MAIL_SMTP_HOST', 'smtp--host');
-define('GOTEO_MAIL_SMTP_PORT', --portnumber--);
+define('GOTEO_MAIL_SMTP_PORT', '--portnumber--');
 define('GOTEO_MAIL_SMTP_USERNAME', 'smtp-usermail');
 define('GOTEO_MAIL_SMTP_PASSWORD', 'smtp-password');
 
@@ -91,26 +96,21 @@ define('SITE_URL', 'http://example.com');
 
 //Sessions
 //session handler: php, dynamodb
-define("SESSION_HANDLER", "php");
+define('SESSION_HANDLER', 'php');
 
 //Files management: s3, file
-define("FILE_HANDLER", "file");
+define('FILE_HANDLER', 'file');
 
 //Log file management: s3, file
-define("LOG_HANDLER", "file");
+define('LOG_HANDLER', 'file');
 
-// tipo de entorno: local, beta, real
-define("GOTEO_ENV", "local");
 
 //S3 bucket
-define("AWS_S3_BUCKET", "static.example.com");
-define("AWS_S3_PREFIX", "");
+define('AWS_S3_BUCKET', 'static.example.com');
+define('AWS_S3_PREFIX', '');
 //bucket para logs
-define("AWS_S3_LOG_BUCKET", "bucket");
-define("AWS_S3_LOG_PREFIX", "applogs/");
-
-// nodo central
-define('GOTEO_NODE', 'goteo');
+define('AWS_S3_LOG_BUCKET', 'bucket');
+define('AWS_S3_LOG_PREFIX', 'applogs/');
 
 // Cron params
 define('CRON_PARAM', '--------------');
@@ -160,5 +160,4 @@ define('RECAPTCHA_PRIVATE_KEY','-----------------------------------');
 /****************************************************
 Google Analytics
 ****************************************************/
-define('GOTEO_ANALYTICS_TRACKER', "
-");
+define('GOTEO_ANALYTICS_TRACKER', '');
