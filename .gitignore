@@ -1,5 +1,6 @@
 /data/
 /nodesys/_*
-local-settings.php
-tmp-settings.php
+config/*
+!config/demo-settings.php
+!config/paypal.php
 .idea
