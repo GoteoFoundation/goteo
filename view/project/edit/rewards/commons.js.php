@@ -8,17 +8,16 @@
     function fulsocial (proj, rew, val) {
         success_text = $.ajax({async: false, type: "POST", data: ({project: proj, reward: rew, value: val}), url: '<?php echo SITE_URL; ?>/c7feb7803386d713e60894036feeee9e/ce8c56139d45ec05e0aa2261c0a48af9'}).responseText;
 
-        if (success_text != 'OK') {
-            alert('No se ha modificado, error en webservice: ' + success_text);
-        } else {
-            if (success_text == 'OK' && val == 1) {
+        if (String(success_text) == 'OK') {
+            if (val == 1) {
                 $("#rew"+rew).html('<span style="color: green; font-weight: bold;">Cumplido</span>&nbsp;<a href="#" onclick="return fulsocial(\''+proj+'\', \''+rew+'\', 0)">[X]</a>');
-            } 
-            if (success_text == 'OK' && val == 0) {
+            } else {
                 $("#rew"+rew).html('<span style="color: red; font-weight: bold;">Pendiente</span>&nbsp;<a href="#" onclick="return fulsocial(\''+proj+'\', \''+rew+'\', 1)">[ok]</a>');
             }
+        } else {
+            alert('No se ha modificado, error en webservice: ' + success_text);
         }
-        
+
         return false;
     }
     
@@ -54,18 +53,16 @@
             var rew = $(this).attr('rew');
             var val = $('#rew'+rew+'url').val();
             success_text = $.ajax({async: false, type: "POST", data: ({project: proj, reward: rew, value: val}), url: '<?php echo SITE_URL; ?>/c7feb7803386d713e60894036feeee9e/d82318a7bec39ac2b78be96b8ec2b76e/'}).responseText;
-            
-            if (success_text != 'OK') {
-                alert('No se ha modificado, error en webservice: ' + success_text);
+
+            if (String(success_text) == 'OK') {
+                $("#divrew"+rew+"url a.rewurl").attr('href', val);
+                $("#divrew"+rew+"url a.rewurl").html(val);
+                $("#divrew"+rew+"urlinput").hide();
+                $("#divrew"+rew+"url").show();
             } else {
-                if (success_text == 'OK') {
-                    $("#divrew"+rew+"url a.rewurl").attr('href', val);
-                    $("#divrew"+rew+"url a.rewurl").html(val);
-                    $("#divrew"+rew+"urlinput").hide();
-                    $("#divrew"+rew+"url").show();
-                } 
+                alert('No se ha modificado, error en webservice: ' + success_text);
             }
-            
+
             event.preventDefault();
         });
     });
