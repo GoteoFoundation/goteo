@@ -58,9 +58,6 @@ namespace Goteo\Controller {
                 die;
             }
             
-            if (empty($log_txt)) {
-                $log_txt = \trace($_POST) . \trace($_SESSION) . \trace($_SERVER);
-            }
             // Evento Feed
             $log = new Feed();
             $log->populate('Gestion retorno cumplido', '/ultra-secret-ws/set-fulsocial', $log_txt);
@@ -102,6 +99,7 @@ namespace Goteo\Controller {
                 die;
             }
 
+            $who_did_it = $log_txt; // para poner en el mail de notificación
             $log_txt .= "ha puesto la url de localización del retorno colectivo {$reward} del proyecto {$project} a '{$value}'";
             
             // TODO: Comprobar los parámetros de usuario por seguridad
@@ -116,9 +114,6 @@ namespace Goteo\Controller {
                 die;
             }
             
-            if (empty($log_txt)) {
-                $log_txt = \trace($_POST) . \trace($_SESSION) . \trace($_SERVER);
-            }
             // Evento Feed
             $log = new Feed();
             $log->populate('Gestion url retorno', '/ultra-secret-ws/set-rewardurl', $log_txt);
@@ -133,6 +128,7 @@ namespace Goteo\Controller {
             if (!in_array('olivier', array_keys($project_obj->consultants))) {
                 $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
             }
+            $project_obj->whodidit = $who_did_it;
             Send::toConsultants('rewardfulfilled', $project_obj);
 
             die;
