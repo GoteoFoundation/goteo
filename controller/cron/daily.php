@@ -4,6 +4,7 @@ namespace Goteo\Controller\Cron {
 
     use Goteo\Model,
         Goteo\Controller\Cron\Send,
+        Goteo\Library\Text,
         Goteo\Library\Feed;
 
     class Daily {
@@ -67,7 +68,7 @@ namespace Goteo\Controller\Cron {
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
                 // FIXME: la segunda condicion del if
                 if ($project->days > 42 || $project->days > 360) {
-                    if ($debug) echo "Proyecto <strong>{$project->name}</strong> SKIP<br/>";
+                    // if ($debug) echo "Proyecto <strong>{$project->name}</strong> SKIP<br/>"; // no necesitamos este feedback
                     continue;
                 }
 

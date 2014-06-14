@@ -1,5 +1,5 @@
 <?php
-// GENERALES
+// Generales
 
 // si proxy y su configuración
 define('USE_PROXY',FALSE);
@@ -22,15 +22,19 @@ define('X_PAYPAL_DEVICE_IPADDRESS','127.0.0.1');
 // tipo de autenticación
 define('API_AUTHENTICATION_MODE','3token');
 
-// SEGUN ENTORNO
+// según entorno
+// beta, sandbox config
 // Endpoint
-define('API_BASE_ENDPOINT', 'https://svcs.paypal.com/');
+define('API_BASE_ENDPOINT', 'https://svcs.sandbox.paypal.com/');
+//Chanege to https://svcs.paypal.com/  to go live */
 
-// credenciales otorgados por PayPal
-define('API_USERNAME', '---');
-define('API_PASSWORD', '---');
-define('API_SIGNATURE', '--');
+// credenciales
+/***
+* MODIFICAR AQUI CON VALORES PROPIOS
+**/
+define('API_USERNAME', '---biz---');
+define('API_PASSWORD', 'XXXXXXX');
+define('API_SIGNATURE', '----------');
 
-// app id paypal
-define('X_PAYPAL_APPLICATION_ID','-APP-');
-
+// app id:  test key
+define('X_PAYPAL_APPLICATION_ID','APP-80W284485P519543T');
