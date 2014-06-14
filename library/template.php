@@ -66,6 +66,11 @@ namespace Goteo\Library {
                 $values = array(':lang' => \LANG);
                 $sqlFilter = '';
                 $and = "WHERE";
+                if (!empty($filters['id'])) {
+                    $sqlFilter .= " $and template.`id` = :id";
+                    $and = "AND";
+                    $values[':id'] = "{$filters['id']}";
+                }
                 if (!empty($filters['group'])) {
                     $sqlFilter .= " $and template.`group` = :group";
                     $and = "AND";

@@ -24,6 +24,10 @@ $filters = $this['filters'];
                     <label for="name-filter">Filtrar por nombre o asunto:</label><br />
                     <input type="text" id ="name-filter" name="name" value ="<?php echo $filters['name']?>" />
                 </td>
+                <td>
+                    <label for="id-filter">Filtrar por id:</label><br />
+                    <input type="text" id ="id-filter" name="id" value ="<?php echo $filters['id']?>" />
+                </td>
             </tr>
             <tr>
                 <td>
