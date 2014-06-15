@@ -27,68 +27,140 @@ namespace Goteo\Controller\Admin {
             foreach ($icons as $key => $icon) {
                 $icons[$key] = $icon->name;
             }
+            $licenses = Model\License::getList();
             $statuses = Model\Project::status();
             $projStatus = array(4=>$statuses[4], 5=>$statuses[5]);
 
+            // Acciones sobre proyecto
+            if (!empty($id)) {
 
-            // ver toda la información de contacto para un proyecto
-            if ($action == 'info' && !empty($id)) {
+                // datos del proyecto
                 $project = Model\Project::getMedium($id);
-                $contact = Model\Project::getContact($id);
 
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'commons',
-                        'file' => 'info',
-                        'project'=>$project,
-                        'contact' => $contact,
-                        'status' => $statuses
-                    )
-                );
-            }
+                switch ($action) {
+                    case 'info':
+                        // ver toda la información de contacto para un proyecto
+                        $contact = Model\Project::getContact($id);
 
-            if ($action == 'view' && !empty($id)) {
-                $project = Model\Project::getMini($id);
-                $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', LANG);
+                        return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'commons',
+                                'file' => 'info',
+                                'project'=>$project,
+                                'contact' => $contact,
+                                'status' => $statuses
+                            )
+                        );
 
-                return new View(
-                    'view/admin/index.html.php',
-                    array(
-                        'folder' => 'commons',
-                        'file' => 'view',
-                        'project'=>$project,
-                        'filters' => $filters,
-                        'statuses' => $statuses,
-                        'status' => $status,
-                        'icons' => $icons
-                    )
-                );
-            }
+                        break;
 
-            if ($action == 'fulfill' && !empty($id)) {
-                $errors = array();
-                $project = Model\Project::getMedium($id);
-                // marcar que el proyecto ha cumplido con los retornos colectivos
-                if ($project->satisfied($errors)) {
-                    // Evento Feed
-                    $log = new Feed();
-                    $log->setTarget($project->id);
-                    $log->populate('Cambio estado de un proyecto desde retornos colectivos', '/admin/projects',
-                        \vsprintf('El admin/revisor %s ha pasado el proyecto %s al estado <span class="red">Retorno cumplido</span>', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                            Feed::item('project', $project->name, $project->id)
-                        )));
-                    $log->doAdmin('admin');
+                    case 'fulfill':
+                        // marcar que el proyecto ha cumplido con los retornos colectivos
+                        $errors = array();
+                        if ($project->satisfied($errors)) {
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->setTarget($project->id);
+                            $log->populate('Cambio estado de un proyecto desde retornos colectivos', '/admin/projects',
+                                \vsprintf('El admin/revisor %s ha pasado el proyecto %s al estado <span class="red">Retorno cumplido</span>', array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('project', $project->name, $project->id)
+                                )));
+                            $log->doAdmin('admin');
 
-                } else {
-                    Message::Error(implode('<br />', $errors));
+                        } else {
+                            Message::Error(implode('<br />', $errors));
+                        }
+
+                        throw new Redirection('/admin/commons');
+                        break;
+
+                    case 'view':
+                        // ver los retornos de un proyecto
+                        $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', LANG);
+
+                        return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'commons',
+                                'file' => 'view',
+                                'project'=>$project,
+                                'statuses' => $statuses,
+                                'status' => $status,
+                                'icons' => $icons,
+                                'licenses' => $licenses
+                            )
+                        );
+                        break;
+
+                    case 'add':
+                    case 'edit':
+                        // editar un retorno colectivo
+                        if (empty($_GET['reward_id'])) {
+                            $reward = new Model\Project\Reward;
+                            $reward->id = '';
+                            $reward->project = $id;
+                        } else {
+                            $reward = Model\Project\Reward::get($_GET['reward_id']);
+                        }
+
+                        $stypes = Model\Project\Reward::icons('social');
+
+                        // si llega post -> procesamos el formulario
+                        if (isset($_POST['social_reward-' . $reward->id . '-reward'])) {
+                            $errors = array();
+
+                            $reward->reward = $_POST['social_reward-' . $reward->id . '-reward'];
+                            $reward->description = $_POST['social_reward-' . $reward->id . '-description'];
+                            $reward->icon = $_POST['social_reward-' . $reward->id . '-icon'];
+                            if ($reward->icon == 'other') {
+                                $reward->other = $_POST['social_reward-' . $reward->id . '-other'];
+                            }
+                            $reward->license = $_POST['social_reward-' . $reward->id . '-' . $reward->icon . '-license'];
+                            $reward->icon_name = $icons[$reward->icon];
+
+                            if ($reward->save($errors)) {
+                                throw new Redirection('/admin/commons/view/'.$id);
+                            } else {
+                                Message::Error(implode('<br />', $errors));
+                            }
+                        }
+
+
+
+                        return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'commons',
+                                'file' => 'edit',
+                                'action' => 'edit',
+                                'project' => $project,
+                                'reward' => $reward,
+                                'statuses' => $statuses,
+                                'status' => $status,
+                                'stypes' => $stypes,
+                                'icons' => $icons,
+                                'licenses' => $licenses
+                            )
+                        );
+                        break;
+
+                    case 'delete':
+                        // eliminar retorno
+                        if (isset($_GET['reward_id'])) {
+                            $errors = array();
+                            $reward = Model\Project\Reward::get($_GET['reward_id']);
+
+                            if(!$reward->remove($errors)) {
+                                Message::Error(implode('<br />', $errors));
+                            }
+                        }
+                        throw new Redirection('/admin/commons/view/'.$id);
+                        break;
                 }
 
-                throw new Redirection('/admin/commons');
             }
-
-
 
             if (!empty($filters['projStatus'])) {
                 $projects = Model\Project::getMiniList(array('status'=>$filters['projStatus'], 'proj_name'=>$filters['project'], 'order'=>'success'), $_SESSION['admin_node']);

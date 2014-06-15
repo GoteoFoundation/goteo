@@ -2,45 +2,45 @@
 /* Esta vista se usa para gestión de retornos colectivos mediante ajax
  * Desde /admin/commons  y desde /dashboard/projects/commons
  * Necesita usar la vista view/project/edit/rewars/commons.js.php
- */ 
+ */
+$licenses = $this['licenses'];
+$project = $this['project'];
 ?>
 <table>
     <thead>
         <tr>
-            <th style="width: 300px;">Retorno</th>
-            <th style="width: 110px;">Tipo</th>
+            <th style="width: 100px;"></th>
+            <th style="width: 600px; text-align: left;">Retorno (tipo)</th>
             <th style="width: 100px;">Estado</th>
-            <th style="width: 145px;">Licencia</th>
         </tr>
     </thead>
 
     <tbody>
-        <?php foreach ($this['project']->social_rewards as $reward) : ?>
+        <?php foreach ($project->social_rewards as $reward) : ?>
         <tr>
-            <td style="color: #20B2B3;"><?php echo $reward->reward; ?></td>
-            <td><?php echo $this['icons'][$reward->icon]; ?></td>
-            <?php if (!$reward->fulsocial) : ?>
+            <td><a href="/admin/commons/edit/<?php echo $project->id; ?>?reward_id=<?php echo $reward->id; ?>">[Editar]</a></td>
+            <td style="color: #20B2B3;"><?php echo $reward->reward; echo ' ('.$this['icons'][$reward->icon].')'; ?></td>
             <td>
-                <div id="<?php echo 'rew'.$reward->id; ?>">
-                    <span style="color: red; font-weight: bold;">Pendiente</span>&nbsp;<a href="#" onclick="return fulsocial(<?php echo "'{$this['project']->id}', '{$reward->id}', 1"; ?>)">[ok]</a>
-                </div>
+                <?php if (!$reward->fulsocial) : ?>
+                    <div id="<?php echo 'rew'.$reward->id; ?>">
+                        <span style="color: red; font-weight: bold;">Pendiente</span>&nbsp;<a href="#" onclick="return fulsocial(<?php echo "'{$this['project']->id}', '{$reward->id}', 1"; ?>)">[ok]</a>
+                    </div>
+                <?php else : ?>
+                    <div id="<?php echo 'rew'.$reward->id; ?>">
+                        <span style="color: green; font-weight: bold;">Cumplido</span>&nbsp;<a href="#" onclick="return fulsocial(<?php echo "'{$this['project']->id}', '{$reward->id}', 0"; ?>)">[X]</a>
+                    </div>
+                <?php endif; ?>
             </td>
-            <?php else : ?>
-            <td>
-                <div id="<?php echo 'rew'.$reward->id; ?>">
-                    <span style="color: green; font-weight: bold;">Cumplido</span>&nbsp;<a href="#" onclick="return fulsocial(<?php echo "'{$this['project']->id}', '{$reward->id}', 0"; ?>)">[X]</a>
-                </div>
-            </td>
-            <?php endif; ?>
-            <td><?php echo $reward->license; ?></td>
         </tr>
          <tr>
-            <td colspan="3">
-                <?php echo $reward->description; ?>
+             <td></td>
+            <td>
+                <?php echo $reward->description; ?><br />Licencia: <a href="<?php echo $licenses[$reward->license]->url; ?>" title="Leer texto licencia" target="_blank"><?php echo $licenses[$reward->license]->name; ?></a>
             </td>
         </tr>
         <tr>
-            <td colspan="4">
+            <td></td>
+            <td>
                 <div id="<?php echo 'divrew'.$reward->id.'url'; ?>">
                     <a href="<?php echo $reward->url; ?>" target="_blank" class="rewurl"><?php echo $reward->url; ?></a>&nbsp;
                     <a href="#" class="doshow" rel="<?php echo $reward->id; ?>">[Url]</a>
@@ -51,8 +51,9 @@
                     <br /><a href="#" class="dohide" rel="<?php echo $reward->id; ?>">(Cancelar)</a></div>
                 </div>
             </td>
+            <td><a href="/admin/commons/delete/<?php echo $project->id; ?>?reward_id=<?php echo $reward->id; ?>" style="color: red; font-weight: bold;" onclick="return confirm('Seguro que eliminamos este retorno?');">[Eliminar]</a></td>
         </tr>
-        <tr><td><br /></td></tr>
+        <tr><td colspan="3"><hr /></td></tr>
         <?php endforeach; ?>
     </tbody>
 
