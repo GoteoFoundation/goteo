@@ -34,3 +34,7 @@ ALTER TABLE `reward` CHANGE `description` `description` TEXT CHARACTER SET utf8 
 
 -- url localización del retorno
 ALTER TABLE `reward` ADD `url` TINYTEXT NULL DEFAULT '' COMMENT 'Localización del Retorno cumplido';
+
+-- orden
+ALTER TABLE `reward` ADD `order` TINYINT NOT NULL DEFAULT '1' COMMENT 'Orden para retornos colectivos';
+
