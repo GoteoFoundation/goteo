@@ -31,7 +31,7 @@ namespace Goteo\Controller {
                 $log_txt = "El usuario {$user->id} ({$rol}) ";
             } elseif (Model\Project::isMine($project, $user->id)) {
                 $log_txt = "El usuario {$user->id} (impulsor) ";
-            } elseif (ACL::check('/'.strtolower(__CLASS__).'/*')) {
+            } elseif (ACL::check('/'.md5('ultra-secret-ws'))) {
                 $log_txt = "El usuario {$user->name} (permitido) ";
             } else {
                 header ('HTTP/1.1 403 Forbidden');

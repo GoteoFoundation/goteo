@@ -310,7 +310,9 @@ namespace Goteo\Controller {
                     foreach ($icons as $key => $icon) {
                         $icons[$key] = $icon->name;
                     }
+                    $licenses = Model\License::getList();
                     $viewData['icons'] = $icons;
+                    $viewData['licenses'] = $licenses;
                     break;
 
                 // listar mensajeadores
