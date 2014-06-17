@@ -347,6 +347,7 @@ namespace Goteo\Controller {
                     $viewData['blog'] = $blog;
                     $viewData['posts'] = $posts;
                     $viewData['post'] = $post;
+                    $viewData['ckeditor'] = true;
                     break;
 
                 // datos de contrato y mensaje segun estado del proceso
