@@ -16,7 +16,6 @@
         $url = '/blog/';
     } else {
         $url = $this['url'];
-        $post->text = nl2br(Text::urlink($post->text));
     }
 ?>
     <?php if (count($post->gallery) > 1) : ?>
