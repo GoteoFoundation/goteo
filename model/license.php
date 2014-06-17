@@ -99,7 +99,41 @@ namespace Goteo\Model {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
 
-        public function validate (&$errors = array()) { 
+        /*
+         * Lista simple de licencias
+         */
+        public static function getList () {
+
+            $list = array();
+            $values = array(':lang'=>\LANG);
+
+            $sql = "
+                SELECT
+                    license.id as id,
+                    IFNULL(license_lang.name, license.name) as name,
+                    IFNULL(license_lang.description, license.description) as description,
+                    IFNULL(license_lang.url, license.url) as url
+                FROM    license
+                LEFT JOIN license_lang
+                    ON  license_lang.id = license.id
+                    AND license_lang.lang = :lang
+                ";
+
+            $sql .= "ORDER BY name ASC
+                ";
+
+            $query = static::query($sql, $values);
+
+            $licenses = $query->fetchAll(\PDO::FETCH_OBJ);
+
+            foreach ($licenses as $license) {
+                $list[$license->id] = $license;
+            }
+
+            return $list;
+        }
+
+        public function validate (&$errors = array()) {
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
                 //Text::get('mandatory-license-name');
@@ -185,8 +219,7 @@ namespace Goteo\Model {
          * Orden para añadirlo al final
          */
         public static function next () {
-            $query = self::query('SELECT MAX(`order`) FROM license'
-                , array(':group'=>$group, ':node'=>$node));
+            $query = self::query('SELECT MAX(`order`) FROM license');
             $order = $query->fetchColumn(0);
             return ++$order;
 
