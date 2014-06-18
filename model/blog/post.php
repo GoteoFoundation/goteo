@@ -80,6 +80,10 @@ namespace Goteo\Model\Blog {
                 //tags
                 $post->tags = Post\Tag::getAll($id);
 
+                //agregamos html si es texto plano
+                if(strip_tags($post->text) == $post->text)
+                    $post->text = nl2br(Text::urlink($post->text));
+
                 // autor
                 if (!empty($post->author)) {
                     $post->user = User::getMini($post->author);
@@ -167,6 +171,10 @@ namespace Goteo\Model\Blog {
                 $post->num_comments = Post\Comment::getCount($post->id);
 
                 $post->tags = Post\Tag::getAll($post->id);
+
+                // agregamos html si es texto plano
+                if(strip_tags($post->text) == $post->text)
+                    $post->text = nl2br(Text::urlink($post->text));
 
                 // reconocimiento de enlaces y saltos de linea
 //                $post->text = nl2br(Text::urlink($post->text));
