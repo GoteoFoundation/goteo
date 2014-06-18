@@ -513,8 +513,9 @@ namespace Goteo\Controller\Dashboard {
 
             //eliminamos etiquetas script y frame
 
-            $post->text = preg_replace("#<script(.*?)</script>#",'',$post->text);
-            $post->text = preg_replace("#<iframe(.*?)</iframe>#",'',$post->text);
+            $post->text = preg_replace('/(<script[\w\W]*<\/script>)/','',$post->text);
+            $post->text = preg_replace('/(<iframe[\w\W]*<\/iframe>)/','',$post->text);
+            $post->text = preg_replace('/(<embed[\w\W]*<\/embed>)/','',$post->text);
 
             if (!empty($post->media)) {
                 $post->media = new Model\Project\Media($post->media);
