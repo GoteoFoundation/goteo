@@ -54,7 +54,10 @@ namespace Goteo\Model\Project {
 		}
 
         /**
-         * Cierra el grifo
+         * Cortar el grifo
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
          */
         public static function closeInvest($id) {
             try {
@@ -67,7 +70,10 @@ namespace Goteo\Model\Project {
         }
 
         /**
-         * Abre el grifo
+         * Abrir el grifo
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
          */
         public static function openInvest($id) {
             try {
@@ -81,12 +87,15 @@ namespace Goteo\Model\Project {
 
         /**
          * Comprobar si el grifo está cerrado
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
          */
-        public static function getNoinvest ($id) {
+        public static function isInvestClosed ($id) {
             try {
                 $query = static::query("SELECT noinvest FROM project_conf WHERE project = ?", array($id));
                 $conf = $query->fetchColumn();
-                return (!empty($conf));
+                return ($conf == 1);
             } catch(\PDOException $e) {
                 return false;
             }
@@ -94,6 +103,9 @@ namespace Goteo\Model\Project {
         
         /**
          * Vigilar un proyecto
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
          */
         public static function watch($id) {
             try {
@@ -107,6 +119,9 @@ namespace Goteo\Model\Project {
 
         /**
          * Dejar de vigilar un proyecto
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
          */
         public static function unwatch($id) {
             try {
@@ -120,6 +135,9 @@ namespace Goteo\Model\Project {
 
         /**
          * Comprobar si el proyecto está siendo vigilado
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
          */
         public static function isWatched($id) {
             try {
