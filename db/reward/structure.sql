@@ -34,3 +34,7 @@ ALTER TABLE `reward` CHANGE `description` `description` TEXT CHARACTER SET utf8 
 
 -- url localización del retorno
 ALTER TABLE `reward` ADD `url` TINYTEXT NULL DEFAULT '' COMMENT 'Localización del Retorno cumplido';
+
+-- Para marcar retornos colectivos adicionales
+ALTER TABLE `reward` ADD `bonus` BOOLEAN NOT NULL DEFAULT '0' COMMENT 'Retorno colectivo adicional';
+
