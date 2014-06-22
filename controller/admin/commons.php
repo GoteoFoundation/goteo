@@ -94,6 +94,7 @@ namespace Goteo\Controller\Admin {
                         );
                         break;
 
+                    // acciones sobre retorno
                     case 'add':
                     case 'edit':
                         // editar un retorno colectivo
@@ -101,6 +102,7 @@ namespace Goteo\Controller\Admin {
                             $reward = new Model\Project\Reward;
                             $reward->id = '';
                             $reward->project = $id;
+                            $reward->bonus = 1;
                         } else {
                             $reward = Model\Project\Reward::get($_GET['reward_id']);
                         }
@@ -141,7 +143,8 @@ namespace Goteo\Controller\Admin {
                                 'status' => $status,
                                 'stypes' => $stypes,
                                 'icons' => $icons,
-                                'licenses' => $licenses
+                                'licenses' => $licenses,
+                                'path' => '/admin/commons'
                             )
                         );
                         break;

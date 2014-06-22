@@ -265,6 +265,12 @@ namespace Goteo\Controller {
                         
                         list($action, $id) = Dashboard\Projects::process_updates($action, $project, $errors);
                         break;
+
+                    // gestión retornos
+                    case 'commons':
+                        // se maneja más abajo según action (add/edit)
+                        break;
+
                 }
             }
 
@@ -306,6 +312,7 @@ namespace Goteo\Controller {
 
                 // gestionar retornos
                 case 'commons':
+
                     $icons = Model\Icon::getAll('social');
                     foreach ($icons as $key => $icon) {
                         $icons[$key] = $icon->name;
@@ -313,6 +320,74 @@ namespace Goteo\Controller {
                     $licenses = Model\License::getList();
                     $viewData['icons'] = $icons;
                     $viewData['licenses'] = $licenses;
+                    // ruta
+                    $viewData['path'] = '/dashboard/projects/commons';
+
+                    switch ($action) {
+                        // acciones sobre retorno
+                        case 'add':
+                        case 'edit':
+                            // editar un retorno colectivo
+                            if (empty($_GET['reward_id'])) {
+                                $reward = new Model\Project\Reward;
+                                $reward->id = '';
+                                $reward->project = $id;
+                                $reward->bonus = 1;
+                            } else {
+                                $reward = Model\Project\Reward::get($_GET['reward_id']);
+
+                                // en dashboard, impulsor solo puede editar retornos bonus y solo cuando proyecto estado 4
+                                if ( $project->status != 4 || !$reward->bonus ) {
+                                    throw new Redirection('/dashboard/projects/commons');
+                                }
+                            }
+
+                            $stypes = Model\Project\Reward::icons('social');
+
+                            // si llega post -> procesamos el formulario
+                            if (isset($_POST['social_reward-' . $reward->id . '-reward'])) {
+                                $errors = array();
+
+                                $reward->reward = $_POST['social_reward-' . $reward->id . '-reward'];
+                                $reward->description = $_POST['social_reward-' . $reward->id . '-description'];
+                                $reward->icon = $_POST['social_reward-' . $reward->id . '-icon'];
+                                if ($reward->icon == 'other') {
+                                    $reward->other = $_POST['social_reward-' . $reward->id . '-other'];
+                                }
+                                $reward->license = $_POST['social_reward-' . $reward->id . '-' . $reward->icon . '-license'];
+                                $reward->icon_name = $icons[$reward->icon];
+
+                                if ($reward->save($errors)) {
+                                    throw new Redirection('/dashboard/projects/commons');
+                                } else {
+                                    Message::Error(implode('<br />', $errors));
+                                }
+                            }
+
+                            $viewData['reward'] = $reward;
+                            $viewData['stypes'] = $stypes;
+
+                            break;
+
+                        case 'delete':
+                            // eliminar retorno
+                            if (isset($_GET['reward_id'])) {
+                                $errors = array();
+                                $reward = Model\Project\Reward::get($_GET['reward_id']);
+
+                                // en dashboard, impulsor solo puede eliminar retornos bonus y solo cuando proyecto estado 4
+                                if ( $project->status != 4 || !$reward->bonus ) {
+                                    throw new Redirection('/dashboard/projects/commons');
+                                }
+
+                                if (!$reward->remove($errors)) {
+                                    Message::Error(implode('<br />', $errors));
+                                }
+                            }
+                            throw new Redirection('/dashboard/projects/commons');
+                            break;
+                    }
+
                     break;
 
                 // listar mensajeadores

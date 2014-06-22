@@ -1,7 +1,7 @@
 <?php 
 /* Esta vista es para el ajax de gestión de retornos colectivos
  * Desde /admin/commons  y desde /dashboard/projects/commons
- * Necesita haber usado la vista view/project/edit/rewars/commons.html.php
+ * Necesita haber usado la vista view/project/edit/rewards/view_commons.html.php
  */ 
 ?>
 <script type="text/javascript">

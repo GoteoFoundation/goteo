@@ -64,7 +64,8 @@ namespace Goteo\Model\Project {
                             reward.units as units,
                             reward.fulsocial as fulsocial,
                             IFNULL(icon_lang.name, icon.name) as icon_name,
-                            url
+                            reward.url,
+                            reward.bonus
                         FROM    reward
                         LEFT JOIN icon
                             ON icon.id = reward.icon
@@ -134,7 +135,8 @@ namespace Goteo\Model\Project {
                 'other',
                 'license',
                 'amount',
-                'units'
+                'units',
+                'bonus'
             );
 
             $set = '';
