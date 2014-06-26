@@ -169,9 +169,7 @@ namespace Goteo\Model {
                  }
             }
 
-
-
-            // cojemos el número de proyecto de este usuario
+            // cogemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
             if ($now = $query->fetchObject())
                 $num = $now->num + 1;
@@ -374,7 +372,7 @@ namespace Goteo\Model {
 		}
 
         /*
-         *  Cargamos los datos mínimos de un proyecto
+         *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
          */
         public static function getMini($id) {
 
@@ -481,6 +479,7 @@ namespace Goteo\Model {
 
         /*
          * Listado simple de todos los proyectos de cierto nodo
+         * @return: strings array
          */
         public static function getAll($node = \GOTEO_NODE) {
 
@@ -505,6 +504,7 @@ namespace Goteo\Model {
         /*
          * Array asociativo de los asesores de un proyecto
          *  (o todos los que asesoran alguno, si no hay filtro)
+         * @return: strings array
          */
         public static function getConsultants ($project = null) {
 
@@ -514,7 +514,6 @@ namespace Goteo\Model {
             if (!empty($project)) {
                 $sqlFilter .= " WHERE user_project.project = '{$project}'";
             }
-
 
             $query = static::query("
                 SELECT
@@ -537,6 +536,7 @@ namespace Goteo\Model {
 
         /*
          * Asignar a un usuario como asesor de un proyecto
+         * @return: boolean
          */
         public function assignConsultant ($user, &$errors = array()) {
 
@@ -559,6 +559,7 @@ namespace Goteo\Model {
 
         /*
          * Quitarle a un usuario el asesoramiento de un proyecto
+         * @return: boolean
          */
         public function unassignConsultant ($user, &$errors = array()) {
             $values = array (
@@ -622,6 +623,7 @@ namespace Goteo\Model {
          /*
          * Array asociativo de las agrupaciones (open_tags) de un proyecto
          *  (o todos los que asesoran alguno, si no hay filtro)
+         * @return: strings array
          */
         public static function getOpen_Tags ($project = null) {
 
@@ -654,6 +656,7 @@ namespace Goteo\Model {
 
         /*
          * Asignar una agrupación a un proyecto
+         * @return: boolean
          */
         public function assignOpen_tag ($open_tag, &$errors = array()) {
 
@@ -677,6 +680,7 @@ namespace Goteo\Model {
 
         /*
          * Quitarle a un usuario el asesoramiento de un proyecto
+         * @return: boolean
          */
         public function unassignOpen_tag ($open_tag, &$errors = array()) {
             $values = array (
@@ -724,6 +728,7 @@ namespace Goteo\Model {
 
         /*
          *  Para validar los campos del proyecto que son NOT NULL en la tabla
+         * @return: boolean
          */
         public function validate(&$errors = array()) {
 
@@ -1001,6 +1006,9 @@ namespace Goteo\Model {
 
         }
 
+        /*
+         * @return: boolean
+         */
         public function saveLang (&$errors = array()) {
 
   			try {
@@ -1439,7 +1447,6 @@ namespace Goteo\Model {
                 $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards-any_error');
             }
 
-            
             $score = $score + $scoreName + $scoreDesc + $scoreLicense;
             $scoreName = $scoreDesc = $scoreAmount = 0;
 
@@ -1475,7 +1482,6 @@ namespace Goteo\Model {
                 } else {
                      $okeys['rewards']['individual_reward-'.$individual->id.'-icon'] = 'ok';
                 }
-
             }
 
             if ($anyerror) {
@@ -1548,9 +1554,9 @@ namespace Goteo\Model {
         }
 
 
-
         /*
          * Listo para revisión
+         * @return: boolean
          */
         public function ready(&$errors = array()) {
 			try {
@@ -1569,6 +1575,7 @@ namespace Goteo\Model {
 
         /*
          * Devuelto al estado de edición
+         * @return: boolean
          */
         public function enable(&$errors = array()) {
 			try {
@@ -1583,6 +1590,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado de publicación
+         * @return: boolean
          */
         public function publish(&$errors = array()) {
 			try {
@@ -1618,6 +1626,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado canecelado
+         * @return: boolean
          */
         public function cancel(&$errors = array()) {
 			try {
@@ -1632,6 +1641,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado caducado
+         * @return: boolean
          */
         public function fail(&$errors = array()) {
 			try {
@@ -1646,6 +1656,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado Financiado
+         * @return: boolean
          */
         public function succeed(&$errors = array()) {
 			try {
@@ -1660,6 +1671,7 @@ namespace Goteo\Model {
 
         /*
          * Marcamos la fecha del paso a segunda ronda
+         * @return: boolean
          */
         public function passed(&$errors = array()) {
 			try {
@@ -1674,6 +1686,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado Retorno cumplido
+         * @return: boolean
          */
         public function satisfied(&$errors = array()) {
 			try {
@@ -1688,6 +1701,7 @@ namespace Goteo\Model {
 
         /*
          * Devuelve a estado financiado (por retorno pendiente) pero no modifica fecha
+         * @return: boolean
          */
         public function rollback(&$errors = array()) {
 			try {
@@ -1702,6 +1716,7 @@ namespace Goteo\Model {
 
         /*
          * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
+         * @return: boolean
          */
         public function delete(&$errors = array()) {
 
@@ -1742,6 +1757,7 @@ namespace Goteo\Model {
         /*
          * Para cambiar el id temporal a idealiza
          * solo si es md5
+         * @return: boolean
          */
         public function rebase($newid = null) {
             try {
@@ -1862,9 +1878,6 @@ namespace Goteo\Model {
                     } else {
                         throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
                     }
-                    
-                    
-                    
                 }
 
                 return true;
@@ -1899,6 +1912,7 @@ namespace Goteo\Model {
             }
         }
 
+
         /*
          *  Para actualizar el minimo/optimo de costes
          */
@@ -1916,7 +1930,6 @@ namespace Goteo\Model {
                 }
             }
         }
-
 
 
         /**
@@ -1962,6 +1975,7 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos de un usuario
+         * @return: array of Model\Project
          */
         public static function ofmine($owner, $published = false)
         {
@@ -1984,6 +1998,7 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos publicados
+         * @return: array of Model\Project
          */
         public static function published($type = 'all', $limit = null, $mini = false)
         {
@@ -2195,7 +2210,7 @@ namespace Goteo\Model {
          * 
          * solo carga datos necesarios para cron/daily
          * 
-         * @return array de instancias parciales de proyecto
+         * @return array de instancias parciales de proyecto (getMedium)
          */
         public static function review()
         {
@@ -2224,6 +2239,7 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos en campaña (para ser revisados por el cron/execute)
+         * @return: array of Model\Project (full instance (get))
          */
         public static function getActive()
         {
@@ -2529,6 +2545,7 @@ namespace Goteo\Model {
 
         /**
          *  Saca las vias de contacto para un proyecto
+         * @return: Model\Project
          */
         public static function getContact($id) {
 
@@ -2560,6 +2577,7 @@ namespace Goteo\Model {
         /**
          *  Metodo para obtener cofinanciadores agregados por usuario
          *  y sin convocadores
+         * @return: array of arrays
          */
         public function agregateInvestors () {
             $investors = array();
@@ -2606,6 +2624,7 @@ namespace Goteo\Model {
 
         /*
          * Para saber si ha conseguido el mínimo
+         * @return: boolean
          */
         public static function isSuccessful($id) {
             $sql = "SELECT
@@ -2632,6 +2651,7 @@ namespace Goteo\Model {
 
         /*
          * Para saber si un usuario es el impulsor
+         * @return: boolean
          */
         public static function isMine($id, $user) {
             $sql = "SELECT id, owner FROM project WHERE id = :id AND owner = :owner";
@@ -2709,7 +2729,9 @@ namespace Goteo\Model {
                 6=>Text::get('form-project_waitfor-expired'));
         }
 
-
+        /*
+         * @return: empty errors structure
+         */
         public static function blankErrors() {
             // para guardar los fallos en los datos
             $errors = array(
