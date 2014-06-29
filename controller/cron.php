@@ -12,23 +12,21 @@ namespace Goteo\Controller {
 
     class Cron extends \Goteo\Core\Controller {
         
+        /**
+         *
+         */
         public function index () {
             die('bad request');
         }
 
-        /*
+        /**
          *  Proceso que ejecuta los cargos, cambia estados, lanza eventos de cambio de ronda
          */
         public function execute () {
-
             // debug para supervisar en las fechas clave
-//            $debug = ($_GET['debug'] == 'debug') ? true : false;
+            // $debug = ($_GET['debug'] == 'debug') ? true : false;
             $debug = true;
-
-            $time = microtime();
-            $time = explode(' ', $time);
-            $time = $time[1] + $time[0];
-            $start = $time;
+            $start = get_microtime();
 
             if ($debug) echo '<strong>cron/execute start</strong><br />';
 
@@ -39,181 +37,24 @@ namespace Goteo\Controller {
             } else {
                 echo 'Lanzamiento automatico a las ' . date ('H:i:s') . ' <br />';
             }
-            
+
             // a ver si existe el bloqueo (PARA HOY)
             $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'_'.date('Ymd').'.block';
-            if (file_exists($block_file)) {
-                echo 'Ya existe un archivo de log '.date('Ymd').'_'.__FUNCTION__.'.log<br />';
-                $block_content = \file_get_contents($block_file);
-                echo 'El contenido del bloqueo es: '.$block_content;
-                // lo escribimos en el log
-                $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
-                \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
-                \chmod($log_file, 0777);
+            cron_lock($block_file, 'execute');
 
-                @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
-                    'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
-                        El contenido del bloqueo es: '. $block_content);
-
-                die;
-            } else {
-                $block = 'Bloqueo del '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
-                if (\file_put_contents($block_file, $block, FILE_APPEND)) {
-                    \chmod($block_file, 0777);
-                    echo $block;
-                } else {
-                    echo 'No se ha podido crear el archivo de bloqueo<br />';
-                    @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' no se ha podido bloquear en ' . SITE_URL,
-                        'No se ha podido crear el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
-                }
-            }
             echo '<hr />';
-            
+
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña,
             // (publicados hace más de 40 días que no tengan fecha de pase)
             // o (publicados hace mas de 80 días que no tengan fecha de exito)
-            $projects = Model\Project::getActive();
-
             if ($debug) echo 'Comenzamos con los proyectos en campaña (esto está en '.\LANG.')<br /><br />';
 
+            $projects = Model\Project::getActive();
             foreach ($projects as $project) {
-
-                if ($debug) echo 'Proyecto '.$project->name.'<br />';
-
-                // a ver si tiene cuenta paypal
-                $projectAccount = Model\Project\Account::get($project->id);
-
-                if (empty($projectAccount->paypal)) {
-                    if ($debug) echo 'No tiene cuenta PayPal<br />';
-                    cron_warn_no_paypal_account($project);
-                }
-
-                $log_text = null;
-                $execute = false;
-                $cancelAll = false;
-
-                // porcentaje alcanzado
-                if ($project->mincost > 0) {
-                    $per_amount = \floor(($project->amount / $project->mincost) * 100);
-                } else {
-                    $per_amount = 0;
-                }
-
-                // los dias que lleva el proyecto  (ojo que los financiados llevaran mas de 80 dias)
-                $days = $project->daysActive();
-
-                if ($debug) {
-                    echo 'Mínimo: '.$project->mincost.' &euro; <br />';
-                    echo 'Obtenido: '.$project->amount.' &euro;<br />';
-                    echo 'Ha alcanzado el '.$per_amount.' &#37; del minimo<br />';
-                    echo 'Lleva '.$days.'  días desde la publicacion<br />';
-                    echo 'Quedan '.$project->days.' días para el final de la '.$project->round.'a ronda<br />';
-                }
-
-                // a los 5, 3, 2, y 1 dia para finalizar ronda
-                if ($project->round > 0 && in_array((int) $project->days, array(5, 3, 2, 1))) {
-                    if ($debug) echo 'Feed publico cuando quedan 5, 3, 2, 1 dias<br />';
-                    cron_feed_project_finishing($project);
-                }
-
-                //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
-                // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
-                if ($days >= 40) {
-                    // si no ha alcanzado el mínimo, pasa a estado caducado
-                    if ($project->amount < $project->mincost) {
-                        if ($debug) echo 'Ha llegado a los 40 dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
-
-                        $cancelAll = true;
-                        cron_project_has_failed($project, $per_amount);
-
-                    } else {
-                        // tiene hasta 80 días para conseguir el óptimo (o más)
-                        if ($days >= 80) {
-
-                            if ($debug) echo 'Ha llegado a los 80 dias de campaña (final de segunda ronda)<br />';
-                            $execute = true; // ejecutar los cargos de la segunda ronda
-                            cron_project_has_finished_second_round($project, $per_amount);
-
-                        } elseif (empty($project->passed)) {
-
-                            if ($debug) echo 'Ha llegado a los 40 dias de campaña, pasa a segunda ronda<br />';
-                            $execute = true; // ejecutar los cargos de la primera ronda
-                            cron_project_has_finished_first_round($project, $per_amount);
-                            
-                        } else {
-                            if ($debug) {
-                                echo 'Lleva más de 40 dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
-                                echo $project->name . ': lleva recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . ' y paso a segunda ronda el '.$project->passed.'<br />';
-                            }
-                        }
-                    }
-                }
-
-                echo '<br />';
-
-                // Tratamiento de los aportes
-                // Se ejecuta dos veces: cuando el proyecto ha superado la primera y la segunda ronda
-                // Se cancela cuando el proyecto no ha superado el mínimo de la primera ronda
-                if ($cancelAll || $execute) {
-                    if ($debug) {
-                        echo '::::::Comienza tratamiento de aportes:::::::<br />';
-                        echo 'Execute=' . (string) $execute . '  CancelAll=' . (string) $cancelAll . '<br />';
-                    }
-
-                    // tratamiento de aportes penddientes
-                    $query = \Goteo\Core\Model::query("
-                        SELECT  *
-                        FROM  invest
-                        WHERE   invest.project = ?
-                        AND     (invest.status = 0
-                            OR (invest.method = 'tpv'
-                                AND invest.status = 1
-                            )
-                            OR (invest.method = 'cash'
-                                AND invest.status = 1
-                            )
-                        )
-                        AND (invest.campaign IS NULL OR invest.campaign = 0)
-                        ", array($project->id));
-                    $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
-
-                    foreach ($project->invests as $key=>$invest) {
-                        $errors = array();
-                        $log_text = null;
-                        
-                        $userData = Model\User::getMini($invest->user);
-
-                        if ($invest->invested == date('Y-m-d')) {
-                            if ($debug) echo 'Aporte ' . $invest->id . ' es de hoy.<br />';
-                        } elseif ($invest->method != 'cash' && empty($invest->preapproval)) {
-                            //si no tiene preaproval, cancelar
-                            echo 'Aporte ' . $invest->id . ' cancelado por no tener preapproval.<br />';
-                            $invest->cancel();
-                            Model\Invest::setDetail($invest->id, 'no-preapproval', 'Aporte cancelado porque no tiene preapproval. Proceso cron/execute');
-                            continue;
-                        }
-
-                        if ($cancelAll) {
-                            if ($debug) echo 'Cancelar todo<br />';
-                            cron_cancel_payment($invest, $project, $userData);
-                            continue;
-                        }
-
-                        // si hay que ejecutar
-                        if ($execute && empty($invest->payment)) {
-                            if ($debug) echo 'Ejecutando aporte '.$invest->id.' ['.$invest->method.']';
-                            cron_execute_payment($invest, $project, $userData, $projectAccount);
-                            if ($debug) echo 'Aporte '.$invest->id.' tratado<br />';
-                        }
-
-                    }
-
-                    if ($debug) echo '::Fin tratamiento aportes<br />';
-                }
-
-                if ($debug) echo 'Fin tratamiento Proyecto '.$project->name.'<hr />';
+                cron_process_project($project);
             }
+
             echo '<hr/>';
 
             // Comprobamos convocatorias activas
@@ -224,26 +65,11 @@ namespace Goteo\Controller {
             // ponemos un botón en el panel admin, el feed se generará entonces
             $calls = Model\Call::getActive(4);
             foreach ($calls as $call) {
-                $errors = array();
-
-                // tiene que tener presupuesto
-                if (empty($call->amount)) {
-                    continue;
-                }
-
-                // si le quedan cero
-                // -> terminar la campaña exitosamente
-                if ($call->rest == 0 && !empty($call->amount))  {
-                    cron_call_has_finished($call, $errors);
-                }
-
+                cron_process_call($call);
             }
             */
 
-            $time = microtime();
-            $time = explode(' ', $time);
-            $time = $time[1] + $time[0];
-            $finish = $time;
+            $finish = get_microtime();
             $total_time = round(($finish - $start), 4);
 
             if ($debug) {
@@ -252,19 +78,8 @@ namespace Goteo\Controller {
             }
 
             // desbloqueamos
-            if (unlink($block_file)) {
-                echo 'Cron '. __FUNCTION__ .' desbloqueado<br />';
-            } else {
-                echo 'ALERT! Cron '. __FUNCTION__ .' no se ha podido desbloquear<br />';
-                if(file_exists($block_file)) {
-                    echo 'El archivo '.$block_file.' aun existe!<br />';
-                } else {
-                    echo 'No hay archivo de bloqueo '.$block_file.'!<br />';
-                }
-                @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' no se ha podido desbloquear en ' . SITE_URL,
-                    'No se ha podido eliminar el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
-            }
-            
+            cron_unlock($block_file, 'execute');
+
             // recogemos el buffer para grabar el log
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
@@ -484,7 +299,7 @@ namespace Goteo\Controller {
          *  - Que lleven 3 meses sin decir nada (?), envia cada 15 dias
          *  - Que hayan pasado dos meses desde que se dio por financiado, cada 15 dias
          *
-         *  teiene en cuenta que se envía cada tantos días
+         *  tiene en cuenta que se envía cada tantos días
          */
         
         public function daily () {
@@ -515,7 +330,8 @@ namespace Goteo\Controller {
             }
         }
 
-        /*
+
+        /**
          *  Proceso que arregla las extensiones de los archivos de imágenes
          */
         public function imgrename () {
@@ -526,6 +342,216 @@ namespace Goteo\Controller {
             } else {
                 Cron\Imgrename::process();
                 die();
+            }
+        }
+
+
+        /**
+         *
+         */
+        private function cron_process_call($call) {
+            // tiene que tener presupuesto
+            if (empty($call->amount)) {
+                continue;
+            }
+
+            // si le quedan cero
+            // -> terminar la campaña exitosamente
+            if ($call->rest == 0 && !empty($call->amount))  {
+                cron_call_has_finished($call);
+            }
+        }
+
+
+        /**
+         *
+         */
+        private function cron_process_project($project) {
+            if ($debug) echo 'Proyecto '.$project->name.'<br />';
+
+            // a ver si tiene cuenta paypal
+            $projectAccount = Model\Project\Account::get($project->id);
+
+            if (empty($projectAccount->paypal)) {
+                if ($debug) echo 'No tiene cuenta PayPal<br />';
+                cron_warn_no_paypal_account($project);
+            }
+
+            $log_text = null;
+            $execute = false;
+            $cancelAll = false;
+
+            // porcentaje alcanzado
+            if ($project->mincost > 0) {
+                $per_amount = \floor(($project->amount / $project->mincost) * 100);
+            } else {
+                $per_amount = 0;
+            }
+
+            // los dias que lleva el proyecto  (ojo que los financiados llevaran mas de 80 dias)
+            $days = $project->daysActive();
+
+            if ($debug) {
+                echo 'Mínimo: '.$project->mincost.' &euro; <br />';
+                echo 'Obtenido: '.$project->amount.' &euro;<br />';
+                echo 'Ha alcanzado el '.$per_amount.' &#37; del minimo<br />';
+                echo 'Lleva '.$days.'  días desde la publicacion<br />';
+                echo 'Quedan '.$project->days.' días para el final de la '.$project->round.'a ronda<br />';
+            }
+
+            // a los 5, 3, 2, y 1 dia para finalizar ronda
+            if ($project->round > 0 && in_array((int) $project->days, array(5, 3, 2, 1))) {
+                if ($debug) echo 'Feed publico cuando quedan 5, 3, 2, 1 dias<br />';
+                cron_feed_project_finishing($project);
+            }
+
+            //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
+            // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
+            if ($days >= 40) {
+                // si no ha alcanzado el mínimo, pasa a estado caducado
+                if ($project->amount < $project->mincost) {
+                    if ($debug) echo 'Ha llegado a los 40 dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
+
+                    $cancelAll = true;
+                    cron_project_has_failed($project, $per_amount);
+
+                } else {
+                    // tiene hasta 80 días para conseguir el óptimo (o más)
+                    if ($days >= 80) {
+
+                        if ($debug) echo 'Ha llegado a los 80 dias de campaña (final de segunda ronda)<br />';
+                        $execute = true; // ejecutar los cargos de la segunda ronda
+                        cron_project_has_finished_second_round($project, $per_amount);
+
+                    } elseif (empty($project->passed)) {
+
+                        if ($debug) echo 'Ha llegado a los 40 dias de campaña, pasa a segunda ronda<br />';
+                        $execute = true; // ejecutar los cargos de la primera ronda
+                        cron_project_has_finished_first_round($project, $per_amount);
+
+                    } else {
+                        if ($debug) {
+                            echo 'Lleva más de 40 dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
+                            echo $project->name . ': lleva recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . ' y paso a segunda ronda el '.$project->passed.'<br />';
+                        }
+                    }
+                }
+            }
+
+            echo '<br />';
+
+            // Tratamiento de los aportes del proyecto actual
+            // Si se ha marcado como ejecutar es que ha superado la primera o la segunda ronda (se ejecutará dos veces en cada proyecto)
+            // Si se ha marcado como cancelar es que el proyecto no ha superado el mínimo en la primera ronda
+            if ($cancelAll || $execute) {
+                if ($debug) {
+                    echo '::::::Comienza tratamiento de aportes:::::::<br />';
+                    echo 'Execute=' . (string) $execute . '  CancelAll=' . (string) $cancelAll . '<br />';
+                }
+
+                // tratamiento de aportes pendientes
+                $query = \Goteo\Core\Model::query("
+                    SELECT  *
+                    FROM  invest
+                    WHERE   invest.project = ?
+                    AND     (invest.status = 0
+                        OR (invest.method = 'tpv'
+                            AND invest.status = 1
+                        )
+                        OR (invest.method = 'cash'
+                            AND invest.status = 1
+                        )
+                    )
+                    AND (invest.campaign IS NULL OR invest.campaign = 0)
+                    ", array($project->id));
+                $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+
+                // Comprueba
+                foreach ($project->invests as $key=>$invest) {
+                    $errors = array();
+                    $log_text = null;
+
+                    $userData = Model\User::getMini($invest->user);
+
+                    if ($invest->invested == date('Y-m-d')) {
+                        if ($debug) echo 'Aporte ' . $invest->id . ' es de hoy.<br />';
+                    } elseif ($invest->method != 'cash' && empty($invest->preapproval)) {
+                        //si no tiene preaproval, cancelar
+                        echo 'Aporte ' . $invest->id . ' cancelado por no tener preapproval.<br />';
+                        $invest->cancel();
+                        Model\Invest::setDetail($invest->id, 'no-preapproval', 'Aporte cancelado porque no tiene preapproval. Proceso cron/execute');
+                        continue;
+                    }
+
+                    if ($cancelAll) {
+                        if ($debug) echo 'Cancelar todo<br />';
+                        cron_cancel_payment($invest, $project, $userData);
+                        continue;
+                    }
+
+                    // si hay que ejecutar
+                    if ($execute && empty($invest->payment)) {
+                        if ($debug) echo 'Ejecutando aporte '.$invest->id.' ['.$invest->method.']';
+                        cron_execute_payment($invest, $project, $userData, $projectAccount);
+                        if ($debug) echo 'Aporte '.$invest->id.' tratado<br />';
+                    }
+
+                }
+
+                if ($debug) echo '::Fin tratamiento aportes<br />';
+            }
+
+            if ($debug) echo 'Fin tratamiento Proyecto '.$project->name.'<hr />';
+        }
+
+        /**
+         * Unlock
+         */
+        private function cron_lock($block_file, $cron_name) {
+            if (file_exists($block_file)) {
+                $block_content = \file_get_contents($block_file);
+                echo 'Ya existe un archivo de log '.date('Ymd').'_'.$cron_name.'.log<br />';
+                echo 'El contenido del bloqueo es: '.$block_content;
+
+                // lo escribimos en el log
+                $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.$cron_name.'.log';
+                \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
+                \chmod($log_file, 0777);
+
+                @mail('goteo_cron@doukeshi.org', 'Cron '. $cron_name .' bloqueado en ' . SITE_URL,
+                    'Se ha encontrado con que el cron '. $cron_name .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
+                        El contenido del bloqueo es: '. $block_content);
+
+                die;
+            } else {
+                $block = 'Bloqueo del '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
+                if (\file_put_contents($block_file, $block, FILE_APPEND)) {
+                    \chmod($block_file, 0777);
+                    echo $block;
+                } else {
+                    echo 'No se ha podido crear el archivo de bloqueo<br />';
+                    @mail('goteo_cron@doukeshi.org', 'Cron '. $cron_name .' no se ha podido bloquear en ' . SITE_URL,
+                        'No se ha podido crear el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
+                }
+            }
+        }
+
+
+        /**
+         * Unlock
+         */
+        private function cron_unlock($block_file, $cron_name) {
+            if (unlink($block_file)) {
+                echo 'Cron '. $cron_name .' desbloqueado<br />';
+            } else {
+                echo 'ALERT! Cron '. $cron_name .' no se ha podido desbloquear<br />';
+                if(file_exists($block_file)) {
+                    echo 'El archivo '.$block_file.' aun existe!<br />';
+                } else {
+                    echo 'No hay archivo de bloqueo '.$block_file.'!<br />';
+                }
+                @mail('goteo_cron@doukeshi.org', 'Cron '. $cron_name .' no se ha podido desbloquear en ' . SITE_URL,
+                    'No se ha podido eliminar el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
             }
         }
 
@@ -921,8 +947,10 @@ namespace Goteo\Controller {
         /**
          * Una convocatoria ha finalizado
          */
-        private function cron_call_has_finished($call, &$errors) {
+        private function cron_call_has_finished($call) {
+            $errors = array();
             echo 'La convocatoria '.$call->name.': ';
+
             if ($call->checkSuccess($errors)) {
                 if ($call->succeed($errors)) {
                     echo 'Ha terminado exitosamente.<br />';
@@ -948,6 +976,16 @@ namespace Goteo\Controller {
             } else {
                 echo 'Le queda algun proyecto en primera ronda.<br />';
             }
+        }
+
+        /**
+         * Función para calcular lo que tarda el cron
+         */
+        private function get_microtime() {
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            return $time;
         }
     }
 
