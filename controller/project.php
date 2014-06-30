@@ -463,7 +463,7 @@ namespace Goteo\Controller {
 
             // retornos adicionales (bonus)
             $project->bonus_rewards = array();
-            foreach ($project->social_rewards as $key => $reward ) {
+            foreach ($project->social_rewards as $key => &$reward ) {
 
 
                 if ($reward->bonus) {
