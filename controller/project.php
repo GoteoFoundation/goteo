@@ -461,6 +461,17 @@ namespace Goteo\Controller {
                 }
             }
 
+            // retornos adicionales (bonus)
+            $project->bonus_rewards = array();
+            foreach ($project->social_rewards as $key => $reward ) {
+
+
+                if ($reward->bonus) {
+                    $project->bonus_rewards[$key] = $reward;
+                    unset($project->social_rewards[$key]);
+                }
+            }
+
             // mensaje cuando, sin estar en campaña, tiene fecha de publicación
             if ($project->status < 3 && !empty($project->published)) {
 
