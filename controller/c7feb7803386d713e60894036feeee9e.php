@@ -6,6 +6,7 @@
  */
 namespace Goteo\Controller {
 
+    use Goteo\Library\Check;
     use Goteo\Model,
         Goteo\Controller\Cron\Send,
         Goteo\Library\Feed,
@@ -129,7 +130,9 @@ namespace Goteo\Controller {
                 $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
             }
             $project_obj->whodidit = $who_did_it;
-            Send::toConsultants('rewardfulfilled', $project_obj);
+            if (!empty($value)) {
+                Send::toConsultants('rewardfulfilled', $project_obj);
+            }
 
             die;
         }
