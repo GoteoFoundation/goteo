@@ -10,3 +10,4 @@ div#message div#message-content input.message-close {background-image: url("/nod
 div.discover-arrow-left a.discover-arrow {background-image: url("/nodesys/barcelona/view/css/arrowslider-sprt.png") !important;}
 div.navi-bar ul.navi li > a:hover {background-color: #D7CCCD !important;}
 div#about ul li.active a, div#wrapper ul.lang li.active a, div#header div#about ul li#lang a {color: #F08678 !important;}
+div#sub-header-secondary > div > ul.share-goteo li a {background-color: #fdefed !important;}
