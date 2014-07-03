@@ -195,7 +195,8 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                     <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}"; ?>" onclick="return confirm('El proyecto pasara a ser un caso de éxito, ok?');">[Retorno Cumplido]</a><?php endif; ?>
                     <?php if ($project->status == 5) : ?><a href="<?php echo "/admin/projects/unfulfill/{$project->id}"; ?>" onclick="return confirm('Lo echamos un paso atras, ok?');">[Retorno Pendiente]</a><?php endif; ?>
                     <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/cancel/{$project->id}"; ?>" onclick="return confirm('El proyecto va a desaparecer del admin, solo se podra recuperar desde la base de datos, Ok?');">[Descartar]</a><?php endif; ?>
-                    <?php if ($project->status == 3) : ?><a href="<?php echo "/admin/projects/noinvest/{$project->id}"; ?>" onclick="return confirm('No se podrá aportar más pero sigue técnicamente en campaña hasta final de ronda, ok?');">[Cortar el grifo]</a><?php endif; ?>
+                    <?php if ($project->status == 3 && ! $project->noinvest) : ?><a href="<?php echo "/admin/projects/noinvest/{$project->id}"; ?>" onclick="return confirm('No se podrá aportar más pero sigue técnicamente en campaña hasta final de ronda, ok?');">[Cortar el grifo]</a><?php endif; ?>
+                    <?php if ($project->status == 3 && $project->noinvest) : echo "[El grifo está cerrado]"; endif; ?>
                     <?php if ($project->watch) { ?>
                     <a href="<?php echo "/admin/projects/unwatch/{$project->id}"; ?>">[Dejar de vigilar]</a>
                     <?php } else { ?>
