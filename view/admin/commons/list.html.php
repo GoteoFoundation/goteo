@@ -18,7 +18,7 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
 $items = array();
 
 foreach ($this['projects'] as $project) {
-    $items[] = '{ value: "'.$project->name.'", id: "'.$project->id.'" }';
+    $items[] = '{ value: "'.str_replace('"','\"',$project->name).'", id: "'.$project->id.'" }';
         if($filters['project'] === $project->name) $preval=$project->name;
 }
 
