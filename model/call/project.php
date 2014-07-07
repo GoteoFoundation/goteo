@@ -274,7 +274,7 @@ namespace Goteo\Model\Call {
                     $call->conf = ($project->round > 0) ? $call->getConf('limit'.$project->round) : 'none';
                     
                     // calcular el obtenido por este proyecto, si no lo tenemos
-                    $call->project_got = (!isset($thisGote)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
+                    $call->project_got = (!isset($thisGot)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
 
                     // limite por proyecto
                     if (empty($call->maxproj)) {
