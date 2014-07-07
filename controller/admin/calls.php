@@ -243,14 +243,11 @@ namespace Goteo\Controller\Admin {
                     $project->mincost = $costs->mincost;
                     $project->maxcost = $costs->maxcost;
 
-                    // calculamos en base a primera ronda (ficticio para antes de campaña)
-                    $project->round = 1;
-
                     // le ponemos lo conseguido
                     $project->invested = $project->amount_call + $project->amount_users;
 
                     // y su máximo por proyecto
-                    $called = Model\Call\Project::called($project, $thisCall, $thisGot);
+                    $called = Model\Call\Project::called($project, $call, $project->amount_call);
                     $project->maxproj = $called->maxproj;
                 }
 
