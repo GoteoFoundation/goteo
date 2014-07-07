@@ -35,6 +35,7 @@ namespace Goteo\Model\Project {
         public function validate(&$errors = array()) {
             // TODO
             //if (!in_array($this->watch, array('0','1'))) return false;
+            //if (!in_array($this->noinvest, array('0','1'))) return false;
 
             return true;
         }
@@ -50,21 +51,62 @@ namespace Goteo\Model\Project {
 				$errors[] = "Las cuentas no se han asignado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
 			}
-
 		}
 
-        // comprobar que no se le haya cerrado el grifo
-        public static function getNoinvest ($id) {
+        /**
+         * Cortar el grifo
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
+        public static function closeInvest($id) {
+            try {
+                $query = "INSERT INTO project_conf (project, noinvest) VALUES (?, '1') ON DUPLICATE KEY UPDATE noinvest='1'";
+                $data = array($id);
+                return self::query($query, $data);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
 
+        /**
+         * Abrir el grifo
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
+        public static function openInvest($id) {
+            try {
+                $query = "INSERT INTO project_conf (project, noinvest) VALUES (?, '0') ON DUPLICATE KEY UPDATE noinvest='0'";
+                $data = array($id);
+                return self::query($query, $data);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+        /**
+         * Comprobar si el grifo está cerrado
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
+        public static function isInvestClosed ($id) {
             try {
                 $query = static::query("SELECT noinvest FROM project_conf WHERE project = ?", array($id));
                 $conf = $query->fetchColumn();
-                return (!empty($conf));
+                return ($conf == 1);
             } catch(\PDOException $e) {
                 return false;
             }
         }
         
+        /**
+         * Vigilar un proyecto
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
         public static function watch($id) {
             try {
                 $query = "INSERT INTO project_conf (project, watch) VALUES (?, '1') ON DUPLICATE KEY UPDATE watch='1'";
@@ -75,6 +117,12 @@ namespace Goteo\Model\Project {
             }
         }
 
+        /**
+         * Dejar de vigilar un proyecto
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
         public static function unwatch($id) {
             try {
                 $query = "INSERT INTO project_conf (project, watch) VALUES (?, '0') ON DUPLICATE KEY UPDATE watch='0'";
@@ -85,6 +133,12 @@ namespace Goteo\Model\Project {
             }
         }
 
+        /**
+         * Comprobar si el proyecto está siendo vigilado
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
         public static function isWatched($id) {
             try {
                 $query = static::query("SELECT watch FROM project_conf WHERE project = ?", array($id));

@@ -135,13 +135,14 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar los datos de contrato
         public function edit ($id, $step = 'promoter') {
+
             $contract = Model\Contract::get($id);
             
             // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados
             if ($contract->project_user != $_SESSION['user']->id // no es su proyecto
-                && $contract->status->owner
-                && !isset($_SESSION['user']->roles['gestor']) // no es un gestor
-                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
+                && $contract->status->owner // cerrado por
+                && !isset($_SESSION['user']->roles['manager'])
+                && !isset($_SESSION['user']->roles['superadmin']) // no es un gestor ni superadmin
                 ) {
                 // le mostramos el pdf
                 throw new Redirection('/contract/'.$id);
