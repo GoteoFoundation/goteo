@@ -52,14 +52,13 @@ namespace Goteo\Controller {
 
             $projects = Model\Project::getActive();
             foreach ($projects as $project) {
-                cron_process_project($project);
+                cron_process_project($project, $debug);
             }
 
             echo '<hr/>';
 
-            // Comprobamos convocatorias activas
-
             /*
+            // Comprobamos convocatorias activas
             // Julian: 06/07/2014  ya no hacemos este cambio de estado automático
             // el cambio de estado lo controlará el convocador (o admin responsable)
             // ponemos un botón en el panel admin, el feed se generará entonces
@@ -366,7 +365,7 @@ namespace Goteo\Controller {
         /**
          *
          */
-        private function cron_process_project($project) {
+        private function cron_process_project($project, $debug=false) {
             if ($debug) echo 'Proyecto '.$project->name.'<br />';
 
             // a ver si tiene cuenta paypal
