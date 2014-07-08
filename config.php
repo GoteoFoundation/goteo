@@ -64,8 +64,10 @@ define('GOTEO_DATA_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data' . DIR
  * Carga de configuración local si existe
  * Si no se carga el real (si existe)
 **/
-if (file_exists('config/settings.php')) //en .gitignore
-    require 'config/settings.php';
-else
-    die('<h2>No se encuentra el archivo de configuraci&oacute;n <code><strong>config/settings.php</strong></code>, debes crear este archivo en el subdirectorio config/.</h2><p>Puedes usar el siguiente c&oacute;digo modificado con los credenciales adecuados.</p>' . highlight_string(file_get_contents('config/demo-settings.php'), true) );
-
+$config_file = GOTEO_PATH . 'config/settings.php';
+if (file_exists($config_file)) { //en .gitignore
+    require $config_file;
+} else {
+    $demo_config_file = GOTEO_PATH . 'config/demo-settings.php';
+    die('<h2>No se encuentra el archivo de configuraci&oacute;n <code><strong>config/settings.php</strong></code>, debes crear este archivo en el subdirectorio config/.</h2><p>Puedes usar el siguiente c&oacute;digo modificado con los credenciales adecuados.</p>' . highlight_string(file_get_contents($demo_config_file), true) );
+}
