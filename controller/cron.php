@@ -471,11 +471,8 @@ namespace Goteo\Controller {
                     if ($cancelAll) {
                         if ($debug) echo 'Cancelar todo<br />';
                         cron_cancel_payment($invest, $project, $userData);
-                        continue;
-                    }
-
-                    // si hay que ejecutar
-                    if ($execute && empty($invest->payment)) {
+                    } elseif ($execute && empty($invest->payment)) {
+                        // si hay que ejecutar
                         if ($debug) echo 'Ejecutando aporte '.$invest->id.' ['.$invest->method.']';
                         cron_execute_payment($invest, $project, $userData, $projectAccount);
                         if ($debug) echo 'Aporte '.$invest->id.' tratado<br />';
