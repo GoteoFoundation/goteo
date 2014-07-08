@@ -449,21 +449,7 @@ namespace Goteo\Controller {
                 }
 
                 // tratamiento de aportes pendientes
-                $query = \Goteo\Core\Model::query("
-                    SELECT  *
-                    FROM  invest
-                    WHERE   invest.project = ?
-                    AND     (invest.status = 0
-                        OR (invest.method = 'tpv'
-                            AND invest.status = 1
-                        )
-                        OR (invest.method = 'cash'
-                            AND invest.status = 1
-                        )
-                    )
-                    AND (invest.campaign IS NULL OR invest.campaign = 0)
-                    ", array($project->id));
-                $project->invests = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+                $project->invests = Model\Invest::getPending($project->id);
 
                 // Comprueba
                 foreach ($project->invests as $key=>$invest) {

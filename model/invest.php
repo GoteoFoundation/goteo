@@ -1672,9 +1672,29 @@ namespace Goteo\Model {
                 $list[] = $item;
             }
             return $list;
-
-
          }
+
+        /**
+         * Tratamiento de aportes pendientes en cron/execute
+         */
+        public static function getPending($id) {
+            $query = \Goteo\Core\Model::query("
+                SELECT  *
+                FROM  invest
+                WHERE   invest.project = ?
+                AND     (invest.status = 0
+                    OR (invest.method = 'tpv'
+                        AND invest.status = 1
+                    )
+                    OR (invest.method = 'cash'
+                        AND invest.status = 1
+                    )
+                )
+                AND (invest.campaign IS NULL OR invest.campaign = 0)
+                ", array($id));
+
+            return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+        }
 
     }
     
