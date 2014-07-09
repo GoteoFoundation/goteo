@@ -534,15 +534,18 @@ namespace Goteo\Controller {
 
                 $is_author   = false; // si es autor de un proyecto publicado
                 $is_investor = false; // si es cofinanciador
-                $is_messeger = false; // si es participante
+                $is_messeger = false; // si es mensajeado
+                $is_participant = false; // si es participante
 
-                // si el usuario logueado es impulsor (autro de proyecto publicado
+                // si el usuario logueado es impulsor (autor de proyecto publicado
                 $user_created = Model\Project::ofmine($_SESSION['user']->id, true);
                 if (!empty($user_created)) {
                     $is_author = true;
                 }
 
-                // si el usuario del perfil es cofin. o partic.
+                //@TODO: Hay que revisar las siguientes verificaciones y optimizar
+
+                // si el usuario del perfil es cofinanciador o participante
                 // proyectos que es cofinanciador este usuario (el del perfil)
                 $user_invested = Model\User::invested($id, true);
                 foreach ($user_invested as $a_project) {
@@ -554,15 +557,15 @@ namespace Goteo\Controller {
 
                 // proyectos que es participante este usuario (el del perfil) (que ha enviado algún mensaje)
                 $user_messeged = Model\Message::getMesseged($id, true);
-                foreach ($user_messeged as $a_project) {
-                    if ($a_project->owner == $_SESSION['user']->id) {
+                foreach ($user_messeged as $a_msg) {
+                    if ($a_msg->owner == $_SESSION['user']->id) {
                         $is_messeger = true;
                         break;
                     }
                 }
 
 
-                // si el usuario logueado es el usuario cofin./partic.
+                // si el usuario logueado es el usuario cofinanciador/participante
                 // si el usuario del perfil es impulsor de un proyecto cofinanciado o en el que ha participado
                 // proyectos que es cofinanciador el usuario logueado
                 $user_invested = Model\User::invested($_SESSION['user']->id, true);
@@ -577,12 +580,12 @@ namespace Goteo\Controller {
                 $user_messeged = Model\Message::getMesseged($_SESSION['user']->id, true);
                 foreach ($user_messeged as $a_project) {
                     if ($a_project->owner == $id) {
-                        $is_messeger = true;
+                        $is_participant = true;
                         break;
                     }
                 }
 
-                if (!$is_investor && !$is_messeger && !$is_author) {
+                if (!$is_investor && !$is_messeger && !$is_author && !$is_participant) {
                     Message::Info(Text::get('user-message-restricted'));
                     throw new Redirection('/user/profile/' . $id);
                 } else {
