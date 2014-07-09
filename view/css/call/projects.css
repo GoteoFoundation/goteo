@@ -93,6 +93,7 @@
 #project-list li .title a {
     text-transform: uppercase;
     text-decoration: none;
+    display: table;
 }
 
 #project-list li.active .title a {
@@ -209,6 +210,7 @@ a.expand {
 #project-list li div.image div.tagmark span.small {
     font-size: 8px !important;
     line-height: normal;
+    display: table;
 }
 
 /* Dos lineas para el en marcha y aun puedes */
