@@ -20,16 +20,15 @@ $allow = array(
 
 $languages = Lang::getall(true);
 
-if($preferences->comlang)
-    $selected=false;
-else
-    $selected=true;
+$langs[] =  array(
+        'value'     => '',
+        'label'     => 'No seleccionado',
+        );
 
 foreach ($languages as $value => $objet) {
     $langs[] =  array(
         'value'     => $value,
         'label'     => $objet->name,
-        'selected'   => in_array($value, $preferences->comlang)
         );
 }
 
@@ -98,7 +97,8 @@ echo new NormalForm(array(
             'title'     => Text::get('regular-lang'),
             'type'      => 'select',
             'options'   => $langs,
-            'class'     => 'currently cols_' . count($allow)
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => $preferences->comlang
         )
 
     )
