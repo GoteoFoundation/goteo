@@ -1,7 +1,8 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\NormalForm;
+    Goteo\Library\NormalForm,
+    Goteo\Library\Lang;
 
 $errors = $this['errors'];
 $preferences = $this['preferences'];
@@ -17,6 +18,20 @@ $allow = array(
         )
 );
 
+$languages = Lang::getall(true);
+
+if($preferences->comlang)
+    $selected=false;
+else
+    $selected=true;
+
+foreach ($languages as $value => $objet) {
+    $langs[] =  array(
+        'value'     => $value,
+        'label'     => $objet->name,
+        'selected'   => in_array($value, $preferences->comlang)
+        );
+}
 
 ?>
 <form method="post" action="/dashboard/profile/preferences" class="project" >
@@ -78,6 +93,12 @@ echo new NormalForm(array(
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
             'value'     => (int) $preferences->tips
+        ),
+         'comlang' => array(
+            'title'     => Text::get('regular-lang'),
+            'type'      => 'select',
+            'options'   => $langs,
+            'class'     => 'currently cols_' . count($allow)
         )
 
     )
