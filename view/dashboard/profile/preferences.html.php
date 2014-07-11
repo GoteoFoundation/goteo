@@ -18,12 +18,8 @@ $allow = array(
         )
 );
 
+//Obtenemos todos los idiomas activos
 $languages = Lang::getall(true);
-
-$langs[] =  array(
-        'value'     => '',
-        'label'     => 'No seleccionado',
-        );
 
 foreach ($languages as $value => $objet) {
     $langs[] =  array(
@@ -51,6 +47,13 @@ echo new NormalForm(array(
     ),
     'elements'      => array(
 
+         'comlang' => array(
+            'title'     => Text::get('regular-lang'),
+            'type'      => 'select',
+            'options'   => $langs,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => $preferences->comlang
+        ),
         'updates' => array(
             'title'     => Text::get('user-preferences-updates'),
             'type'      => 'slider',
@@ -92,15 +95,7 @@ echo new NormalForm(array(
             'options'   => $allow,
             'class'     => 'currently cols_' . count($allow),
             'value'     => (int) $preferences->tips
-        ),
-         'comlang' => array(
-            'title'     => Text::get('regular-lang'),
-            'type'      => 'select',
-            'options'   => $langs,
-            'class'     => 'currently cols_' . count($allow),
-            'value'     => $preferences->comlang
         )
-
     )
 
 ));
