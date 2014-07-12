@@ -142,6 +142,27 @@ $data    = $this['data'];
 <div class="widget board">
 <?php if (!empty($data)) : ?>
     
+    <?php if (in_array($filters['report'], array('money', 'projects'))) {
+            if (!empty($filters['date_from'])) {
+                $inicio = $filters['date_from'];
+            } else {
+                $inicio = "el inicio de Goteo";
+            }
+
+            if (!empty($filters['date_until'])) {
+                $fin = $filters['date_until'];
+            } else {
+                $fin = "hasta hoy";
+            }
+
+            if ((empty($filters['date_from'])) && empty($filters['date_until'])) {
+                $period = "todos los datos, desde el inicio de Goteo hasta hoy";
+            } else {
+                $period = "período comprendido entre " . $inicio . " y " . $fin;
+            }
+    ?>
+    <p>El siguiente informe se ha calculado para: <?php echo $period; ?>.</p>
+    <?php } ?>
     <table>
         <thead>
             <tr>
