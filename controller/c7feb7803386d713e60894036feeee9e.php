@@ -29,11 +29,11 @@ namespace Goteo\Controller {
             // si es usuario, mirar si es el dueño del proyecto
             if (isset($user->roles['admin']) || isset($user->roles['superadmin'])) {
                 $rol = (isset($user->roles['superadmin'])) ? 'superadmin' : 'admin';
-                $log_txt = "El usuario {$user->id} ({$rol}) ";
+                $log_txt = "El {$rol} {$user->id} ";
             } elseif (Model\Project::isMine($project, $user->id)) {
-                $log_txt = "El usuario {$user->id} (impulsor) ";
+                $log_txt = "El usuario impulsor {$user->id} ";
             } elseif (ACL::check('/'.md5('ultra-secret-ws'))) {
-                $log_txt = "El usuario {$user->name} (permitido) ";
+                $log_txt = "El usuario permitido {$user->name} ";
             } else {
                 header ('HTTP/1.1 403 Forbidden');
                 die;
@@ -65,7 +65,6 @@ namespace Goteo\Controller {
             $log->doAdmin('usws');
             unset($log);
             
-            
             die;
         }
         
@@ -83,12 +82,15 @@ namespace Goteo\Controller {
             // si es admin, ok
             // si es usuario, mirar si es el dueño del proyecto
             if (isset($user->roles['admin']) || isset($user->roles['superadmin'])) {
-                $rol = (isset($user->roles['superadmin'])) ? 'superadmin' : 'admin';
-                $log_txt = "El usuario {$user->id} ({$rol}) ";
+                $rol = "el ";
+                $rol .= (isset($user->roles['superadmin'])) ? 'superadmin' : 'admin';
+                $who = $user->id;
             } elseif (Model\Project::isMine($project, $user->id)) {
-                $log_txt = "El usuario {$user->id} (impulsor) ";
+                $rol = "el usuario impulsor";
+                $who = $user->id;
             } elseif (ACL::check('/'.md5('ultra-secret-ws'))) {
-                $log_txt = "El usuario {$user->name} (permitido) ";
+                $rol = "el usuario permitido";
+                $who = $user->name;
             } else {
                 header ('HTTP/1.1 403 Forbidden');
                 die;
@@ -100,11 +102,18 @@ namespace Goteo\Controller {
                 die;
             }
 
-            $who_did_it = $log_txt; // para poner en el mail de notificación
-            $log_txt .= "ha puesto la url de localización del retorno colectivo {$reward} del proyecto {$project} a '{$value}'";
-            
-            // TODO: Comprobar los parámetros de usuario por seguridad
+            if (strpos($value, 'http') !== 0) {
+                $value = 'http://' . $value;
+            }
 
+            $isValidUrl = filter_var($value, FILTER_VALIDATE_URL);
+            if (empty($value) || !$isValidUrl) {
+                header ('HTTP/1.1 400 Bad request');
+                echo 'Invalid url';
+                die;
+            }
+
+            // TODO: Comprobar los parámetros de usuario por seguridad
             $sql = "UPDATE reward SET url = :val WHERE project = :proj AND type= 'social' AND id = :id";
             if (Model\Project\Reward::query($sql, array(':proj' => $project, ':val' => $value, ':id' => $reward))) {
                 header ('HTTP/1.1 200 Ok');
@@ -115,6 +124,8 @@ namespace Goteo\Controller {
                 die;
             }
             
+            $log_txt = $rol . " " . $who . " ha puesto la url de localización del retorno colectivo {$reward} del proyecto {$project} a '{$value}'";
+
             // Evento Feed
             $log = new Feed();
             $log->populate('Gestion url retorno', '/ultra-secret-ws/set-rewardurl', $log_txt);
@@ -129,10 +140,9 @@ namespace Goteo\Controller {
             if (!in_array('olivier', array_keys($project_obj->consultants))) {
                 $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
             }
-            $project_obj->whodidit = $who_did_it;
-            if (!empty($value)) {
-                Send::toConsultants('rewardfulfilled', $project_obj);
-            }
+            $project_obj->whodidit = $who;
+            $project_obj->whorole = $rol;
+            Send::toConsultants('rewardfulfilled', $project_obj);
 
             die;
         }

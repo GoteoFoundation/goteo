@@ -1,10 +1,27 @@
 <?php 
 /* Esta vista es para el ajax de gestión de retornos colectivos
- * Desde /admin/commons  y desde /dashboard/projects/commons
+ * Desde /admin/commons y desde /dashboard/projects/commons
  * Necesita haber usado la vista view/project/edit/rewards/view_commons.html.php
  */ 
 ?>
 <script type="text/javascript">
+
+    // Versión mejorada de:
+    // https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
+    function ValidURL(str) {
+        var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
+            '((([a-z0-9\d]([a-z0-9\d-]*[a-z0-9\d])*)\.)+[a-z]{2,}|'+ // domain name
+            '((\d{1,3}\.){3}\d{1,3}))'+ // OR ip (v4) address
+            '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\d%_.~+=-]*)?'+ // query string
+            '(\#[-a-z\d_]*)?$','i'); // fragment locater
+        if(!pattern.test(str)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     function fulsocial (proj, rew, val) {
         success_text = $.ajax({async: false, type: "POST", data: ({project: proj, reward: rew, value: val}), url: '<?php echo SITE_URL; ?>/c7feb7803386d713e60894036feeee9e/ce8c56139d45ec05e0aa2261c0a48af9'}).responseText;
 
@@ -25,7 +42,6 @@
         
         // al filtrar por estado de proyecto
         $("#projStatus-filter").change(function(){
-            
             $("#filter-form").submit();
         });
         
@@ -52,6 +68,23 @@
             var proj = $(this).attr('proj');
             var rew = $(this).attr('rew');
             var val = $('#rew'+rew+'url').val();
+
+            if (val.length === 0 || !val.trim()) {
+                $('#rew'+rew+'url').focus();
+                return;
+            }
+
+            if (!ValidURL(val)) {
+                alert('La URL introducida no es válida. Por favor compruébela de nuevo.');
+                $('#rew'+rew+'url').focus();
+                return;
+            }
+
+            if (val.indexOf('http') != 0) {
+                val = 'http://' + val;
+                $('#rew'+rew+'url').val(val);
+            }
+
             success_text = $.ajax({async: false, type: "POST", data: ({project: proj, reward: rew, value: val}), url: '<?php echo SITE_URL; ?>/c7feb7803386d713e60894036feeee9e/d82318a7bec39ac2b78be96b8ec2b76e/'}).responseText;
 
             if (String(success_text).trim() == 'OK') {
@@ -66,7 +99,5 @@
             event.preventDefault();
         });
     });
-    
-    
     
 </script>
