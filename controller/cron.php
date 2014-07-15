@@ -720,6 +720,7 @@ namespace Goteo\Controller {
         }
 
         /*
+         * DEPRECATED. No se usa ya.
          * Realiza los pagos secundarios al proyecto
          *
          * Esto son los aportes de tipo paypal, ejecutados (status 1), que tengan payment code
