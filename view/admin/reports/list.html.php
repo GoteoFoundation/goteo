@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
 $reports = $this['reports'];
 $filters = $this['filters'];
