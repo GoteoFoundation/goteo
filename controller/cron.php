@@ -26,7 +26,7 @@ namespace Goteo\Controller {
             // debug para supervisar en las fechas clave
             // $debug = ($_GET['debug'] == 'debug') ? true : false;
             $debug = true;
-            $start = get_microtime();
+            $start = $this->get_microtime();
 
             if ($debug) echo '<strong>cron/execute start</strong><br />';
 
@@ -40,7 +40,7 @@ namespace Goteo\Controller {
 
             // a ver si existe el bloqueo (PARA HOY)
             $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'_'.date('Ymd').'.block';
-            cron_lock($block_file, 'execute');
+            $this->cron_lock($block_file, 'execute');
 
             echo '<hr />';
 
@@ -52,7 +52,7 @@ namespace Goteo\Controller {
 
             $projects = Model\Project::getActive();
             foreach ($projects as $project) {
-                cron_process_project($project, $debug);
+                $this->cron_process_project($project, $debug);
             }
 
             echo '<hr/>';
@@ -64,11 +64,11 @@ namespace Goteo\Controller {
             // ponemos un botón en el panel admin, el feed se generará entonces
             $calls = Model\Call::getActive(4);
             foreach ($calls as $call) {
-                cron_process_call($call);
+                $this->cron_process_call($call);
             }
             */
 
-            $finish = get_microtime();
+            $finish = $this->get_microtime();
             $total_time = round(($finish - $start), 4);
 
             if ($debug) {
@@ -77,7 +77,7 @@ namespace Goteo\Controller {
             }
 
             // desbloqueamos
-            cron_unlock($block_file, 'execute');
+            $this->cron_unlock($block_file, 'execute');
 
             // recogemos el buffer para grabar el log
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
@@ -357,7 +357,7 @@ namespace Goteo\Controller {
             // si le quedan cero
             // -> terminar la campaña exitosamente
             if ($call->rest == 0 && !empty($call->amount))  {
-                cron_call_has_finished($call);
+                $this->cron_call_has_finished($call);
             }
         }
 
@@ -373,7 +373,7 @@ namespace Goteo\Controller {
 
             if (empty($projectAccount->paypal)) {
                 if ($debug) echo 'No tiene cuenta PayPal<br />';
-                cron_warn_no_paypal_account($project);
+                $this->cron_warn_no_paypal_account($project);
             }
 
             $log_text = null;
@@ -401,7 +401,7 @@ namespace Goteo\Controller {
             // a los 5, 3, 2, y 1 dia para finalizar ronda
             if ($project->round > 0 && in_array((int) $project->days, array(5, 3, 2, 1))) {
                 if ($debug) echo 'Feed publico cuando quedan 5, 3, 2, 1 dias<br />';
-                cron_feed_project_finishing($project);
+                $this->cron_feed_project_finishing($project);
             }
 
             //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
@@ -412,7 +412,7 @@ namespace Goteo\Controller {
                     if ($debug) echo 'Ha llegado a los 40 dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
 
                     $cancelAll = true;
-                    cron_project_has_failed($project, $per_amount);
+                    $this->cron_project_has_failed($project, $per_amount);
 
                 } else {
                     // tiene hasta 80 días para conseguir el óptimo (o más)
@@ -420,13 +420,13 @@ namespace Goteo\Controller {
 
                         if ($debug) echo 'Ha llegado a los 80 dias de campaña (final de segunda ronda)<br />';
                         $execute = true; // ejecutar los cargos de la segunda ronda
-                        cron_project_has_finished_second_round($project, $per_amount);
+                        $this->cron_project_has_finished_second_round($project, $per_amount);
 
                     } elseif (empty($project->passed)) {
 
                         if ($debug) echo 'Ha llegado a los 40 dias de campaña, pasa a segunda ronda<br />';
                         $execute = true; // ejecutar los cargos de la primera ronda
-                        cron_project_has_finished_first_round($project, $per_amount);
+                        $this->cron_project_has_finished_first_round($project, $per_amount);
 
                     } else {
                         if ($debug) {
@@ -470,11 +470,11 @@ namespace Goteo\Controller {
 
                     if ($cancelAll) {
                         if ($debug) echo 'Cancelar todo<br />';
-                        cron_cancel_payment($invest, $project, $userData);
+                        $this->cron_cancel_payment($invest, $project, $userData);
                     } elseif ($execute && empty($invest->payment)) {
                         // si hay que ejecutar
                         if ($debug) echo 'Ejecutando aporte '.$invest->id.' ['.$invest->method.']';
-                        cron_execute_payment($invest, $project, $userData, $projectAccount);
+                        $this->cron_execute_payment($invest, $project, $userData, $projectAccount);
                         if ($debug) echo 'Aporte '.$invest->id.' tratado<br />';
                     }
 
