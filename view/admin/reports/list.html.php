@@ -1,6 +1,7 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Core\View;
 
 $reports = $this['reports'];
 $filters = $this['filters'];
@@ -33,81 +34,12 @@ $data    = $this['data'];
 
         <div style="float:left;margin:5px;display: none;" id="date-filter-from">
             <label for="date-filter-from">Fecha desde</label><br />
-            <input type="text" name="date_from" value ="<?php echo $filters['date_from']?>" />
-
-            <script type="text/javascript" src="http://resources.devgoteo.org/view/js/datepicker.min.js"></script>
-            <script type="text/javascript">
-
-                (function () {
-
-                    var dp = $('#date-filter-from input');
-
-                    dp.DatePicker({
-                        format: 'Y-m-d',
-                        date: '',
-                        current: '',
-                        starts: 0,
-                        position: 'bottom',
-                        eventName: 'click',
-                        onBeforeShow: function(){
-                            dp.DatePickerSetDate(dp.val(), true);
-                        },
-                        onChange: function(formatted, dates){
-                                dp.val(formatted);
-                                dp.DatePickerHide();
-                                dp.focus();
-                        },
-                        locale: {
-                            days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábad', 'Domingo'],
-                            daysShort: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-                            daysMin: ['L', 'M', 'X', 'J', 'V', 'S', 'D'],
-                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                            week: []
-                        }
-                    });
-
-                })();
-            </script>
+            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_from'], 'id'=>'date-filter-from', 'name'=>'date_from')); ?>
         </div>
 
         <div style="float:left;margin:5px;display: none;" id="date-filter-until">
             <label for="date-filter-until">Fecha hasta</label><br />
-            <input type="text" name="date_until" value ="<?php echo $filters['date_until']?>" />
-
-            <script type="text/javascript">
-
-                (function () {
-
-                    var dp = $('#date-filter-until input');
-
-                    dp.DatePicker({
-                        format: 'Y-m-d',
-                        date: '',
-                        current: '',
-                        starts: 0,
-                        position: 'bottom',
-                        eventName: 'click',
-                        onBeforeShow: function(){
-                            dp.DatePickerSetDate(dp.val(), true);
-                        },
-                        onChange: function(formatted, dates){
-                                dp.val(formatted);
-                                dp.DatePickerHide();
-                                dp.focus();
-                        },
-                        locale: {
-                            days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábad', 'Domingo'],
-                            daysShort: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-                            daysMin: ['L', 'M', 'X', 'J', 'V', 'S', 'D'],
-                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                            week: []
-                        }
-                    });
-
-                })();
-            </script>
+            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_until'], 'id'=>'date-filter-until', 'name'=>'date_until')); ?>
         </div>
 
         <br clear="both" />
@@ -142,6 +74,27 @@ $data    = $this['data'];
 <div class="widget board">
 <?php if (!empty($data)) : ?>
     
+    <?php if (in_array($filters['report'], array('money', 'projects'))) {
+            if (!empty($filters['date_from'])) {
+                $inicio = $filters['date_from'];
+            } else {
+                $inicio = "el inicio de Goteo";
+            }
+
+            if (!empty($filters['date_until'])) {
+                $fin = $filters['date_until'];
+            } else {
+                $fin = "hasta hoy";
+            }
+
+            if ((empty($filters['date_from'])) && empty($filters['date_until'])) {
+                $period = "todos los datos, desde el inicio de Goteo hasta hoy";
+            } else {
+                $period = "período comprendido entre " . $inicio . " y " . $fin;
+            }
+    ?>
+    <p>El siguiente informe se ha calculado para: <?php echo $period; ?>.</p>
+    <?php } ?>
     <table>
         <thead>
             <tr>
