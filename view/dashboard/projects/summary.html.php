@@ -60,27 +60,27 @@ if (!$project instanceof  Goteo\Model\Project) {
             <div id="project_selection" style="margin-bottom: 10px"></div>
             <div class="titles">
                 <div>
-                    <h2>FINANCIACI&OacuteN OBTENIDA</h2>
+                    <h2><?php echo Text::get('dashboard-chart-invested'); ?></h2>
                 <?php if (empty($this['data']['invests'])) : ?>
-                    <div id="funded" class="obtenido number">No hay aportes.</div>
+                    <div id="funded" class="obtenido number"><?php echo Text::get('dashboard-chart-no-invested'); ?></div>
                 <?php else : ?>
                     <div id="funded" class="obtenido number"><?php echo \amount_format($project->invested); ?> &euro;</div>
-                    <div id="de" class="de">de</div>
+                    <div id="de" class="de"><?php echo Text::get('regular-of'); ?></div>
                     <div id="minimum" class="minimum number"><?php echo \amount_format($project->mincost); ?> &euro;</div>
                     <div id="euros" class="euros">
-                         (<div style='color: #bb70b6; display: inline'><?php echo \amount_format($project->maxcost); ?> &euro;</div> &oacuteptimo)
+                         (<div style='color: #bb70b6; display: inline'><?php echo \amount_format($project->maxcost); ?> &euro;</div> <?php echo Text::get('dashboard-chart-optimum'); ?>)
                     </div>
                 <?php endif; ?>
                 </div>
                 <?php if ($project->status == 3) : ?>
                 <div class="quedan">
-                    <div style="font-weight: normal; font-size: 12px">QUEDAN<h2 id="dias" style="display:inline; margin:0px 5px"><?php $project->days; ?></h2>D&IacuteAS</div>
+                    <div style="font-weight: normal; font-size: 12px"><?php echo \vsprintf(Text::get('dashboard-chart-days') , array('<h2 id="dias" style="display:inline; margin:0px 5px">'.$project->days.'</h2>')); ?></div>
                 </div>
                 <?php endif; ?>
             </div>
             <div id="funds" class="chart_div"></div>
             <div>
-                <h2>COFINANCIADORES</h2>
+                <h2><?php echo Text::get('dashboard-chart-investors'); ?></h2>
             </div>
             <div id="cofund" class="chart_div"></div>
     </div>
