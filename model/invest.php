@@ -415,13 +415,14 @@ namespace Goteo\Model {
 
                 // tabla para obtener aportaciones por nodo
 
-                $sql = "REPLACE INTO invest_node (project_id, project_node, user_id, user_node, invest_id) VALUES (:pid, :pnode, :uid, :unode, :iid)";
+                $sql = "REPLACE INTO invest_node (project_id, project_node, user_id, user_node, invest_id, invest_node) VALUES (:pid, :pnode, :uid, :unode, :iid, :inode)";
                 self::query($sql, array(
                     ':pid' => $this->project,
                     ':pnode' => Project::getMini($this->project)->node,
                     ':uid' => $this->user,
                     ':unode' => User::getMini($this->user)->node,
-                    ':iid' => $this->id)
+                    ':iid' => $this->id,
+                    ':inode' => NODE_ID)
                 );
 
                 // y las recompensas
