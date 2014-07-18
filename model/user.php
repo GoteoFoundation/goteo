@@ -587,7 +587,7 @@ namespace Goteo\Model {
             }
         }
 
-        // version mini de get para sacar nombre i mail
+        // version mini de get para sacar nombre, avatar, email, idioma y nodo
         public static function getMini ($id) {
             try {
                 $query = static::query("

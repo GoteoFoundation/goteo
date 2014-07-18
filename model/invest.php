@@ -309,9 +309,6 @@ namespace Goteo\Model {
             return $list;
         }
 
-
-
-
         public function validate (&$errors = array()) { 
             if (!is_numeric($this->amount))
                 $errors[] = 'La cantidad no es correcta';
@@ -416,6 +413,17 @@ namespace Goteo\Model {
 
                 }
 
+                // tabla para obtener aportaciones por nodo
+
+                $sql = "REPLACE INTO invest_node (project_id, project_node, user_id, user_node, invest_id) VALUES (:pid, :pnode, :uid, :unode, :iid)";
+                self::query($sql, array(
+                    ':pid' => $this->project,
+                    ':pnode' => Project::getMini($this->project)->node,
+                    ':uid' => $this->user,
+                    ':unode' => User::getMini($this->user)->node,
+                    ':iid' => $this->id)
+                );
+
                 // y las recompensas
                 foreach ($this->rewards as $reward) {
                     $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
@@ -445,6 +453,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch(\PDOException $e) {
+                // TODO: Revertir últimas transacciones
                 $errors[] = "El aporte no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
             }
