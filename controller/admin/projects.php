@@ -505,6 +505,17 @@ namespace Goteo\Controller\Admin {
                 throw new Redirection('/admin/projects/list');
             }
 
+            // abrir el grifo
+            if ($action == 'openinvest') {
+                if (Model\Project\Conf::openInvest($project->id)) {
+                    Message::Info('Se ha abierto el grifo al proyecto <strong>'.$project->name.'</strong>');
+                } else {
+                    Message::Error('Ha fallado al abrir el grifo al proyecto <strong>'.$project->name.'</strong>');
+                }
+
+                throw new Redirection('/admin/projects/list');
+            }
+
             // Vigilar
             if ($action == 'watch') {
                 if (Model\Project\Conf::watch($project->id)) {
