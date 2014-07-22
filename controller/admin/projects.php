@@ -257,37 +257,6 @@ namespace Goteo\Controller\Admin {
                     break;
             }
 
-            if (isset($log_text)) {
-                // Evento Feed
-                $log = new Feed();
-                $log->setTarget($project->id);
-                $log->populate('Cambio estado/fechas/cuentas/nodo de un proyecto desde el admin', '/admin/projects',
-                    \vsprintf($log_text, array(
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                    Feed::item('project', $project->name, $project->id)
-                )));
-                $log->doAdmin('admin');
-
-                Message::Info($log->html);
-                if (!empty($errors)) {
-                    Message::Error(implode('<br />', $errors));
-                }
-
-                if ($action == 'publish') {
-                    // si es publicado, hay un evento publico
-                    $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
-                    $log->doPublic('projects');
-                }
-
-                unset($log);
-
-                if (empty($redir)) {
-                    throw new Redirection('/admin/projects/list');
-                } else {
-                    throw new Redirection($redir);
-                }
-            }
-
             if ($action == 'report') {
                 // informe financiero
                 // Datos para el informe de transacciones correctas
@@ -497,46 +466,82 @@ namespace Goteo\Controller\Admin {
             // cortar el grifo
             if ($action == 'noinvest') {
                 if (Model\Project\Conf::closeInvest($project->id)) {
-                    Message::Info('Se ha cortado el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    //Message::Info('Se ha cortado el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'El admin %s ha <span class="red">cortado el grifo</span> al proyecto %s';
                 } else {
-                    Message::Error('Ha fallado al cortar el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    //Message::Error('Ha fallado al cortar el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado al cortar el grifo</span> al proyecto %s';
                 }
-
-                throw new Redirection('/admin/projects/list');
             }
 
             // abrir el grifo
             if ($action == 'openinvest') {
                 if (Model\Project\Conf::openInvest($project->id)) {
-                    Message::Info('Se ha abierto el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    //Message::Info('Se ha abierto el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'El admin %s ha <span class="red">abierto el grifo</span> al proyecto %s';
                 } else {
-                    Message::Error('Ha fallado al abrir el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    //Message::Error('Ha fallado al abrir el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado al abrir el grifo</span> al proyecto %s';
                 }
-
-                throw new Redirection('/admin/projects/list');
             }
 
             // Vigilar
             if ($action == 'watch') {
                 if (Model\Project\Conf::watch($project->id)) {
-                    Message::Info('Se ha empezado a vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    //Message::Info('Se ha empezado a vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'El admin %s ha empezado a <span class="red">vigilar</span> el proyecto %s';
                 } else {
-                    Message::Error('Ha fallado la vigilancia del proyecto <strong>'.$project->name.'</strong>');
+                    //Message::Error('Ha fallado la vigilancia del proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado la vigilancia</span> el proyecto %s';
                 }
-
-                throw new Redirection('/admin/projects/list');
             }
 
             // Dejar de vigilar
             if ($action == 'unwatch') {
                 if (Model\Project\Conf::unwatch($project->id)) {
-                    Message::Info('Se ha dejado de vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    //Message::Info('Se ha dejado de vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'El admin %s ha <span class="red">dejado de vigilar</span> el proyecto %s';
                 } else {
-                    Message::Error('Ha fallado dejar de vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    //Message::Error('Ha fallado dejar de vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado dejar de vigilar</span> el proyecto %s';
+                }
+            }
+
+
+            // Feed
+            if (isset($log_text)) {
+                // Evento Feed
+                $log = new Feed();
+                $log->setTarget($project->id);
+                $log->populate('Acción sobre un proyecto desde el admin', '/admin/projects',
+                    \vsprintf($log_text, array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('project', $project->name, $project->id)
+                    )));
+                $log->doAdmin('admin');
+
+                Message::Info($log->html);
+                if (!empty($errors)) {
+                    Message::Error(implode('<br />', $errors));
                 }
 
-                throw new Redirection('/admin/projects/list');
+                if ($action == 'publish') {
+                    // si es publicado, hay un evento publico
+                    $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
+                    $log->doPublic('projects');
+                }
+
+                unset($log);
+
+                if (empty($redir)) {
+                    throw new Redirection('/admin/projects/list');
+                } else {
+                    throw new Redirection($redir);
+                }
             }
+
+
+
 
             if (!empty($filters['filtered'])) {
                 $projects = Model\Project::getList($filters, $_SESSION['admin_node']);
