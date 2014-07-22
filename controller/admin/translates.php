@@ -145,8 +145,13 @@ namespace Goteo\Controller\Admin {
 
                     if ($action == 'send') {
                         // Informar al autor de que la traduccion está habilitada
+
+                        //  idioma de preferencia
+                        $prefer = Model\User::getPreferences($project->user->id);
+                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+
                         // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(26);
+                        $template = Template::get(26, $comlang);
                         // Sustituimos los datos
                         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                         $search  = array('%OWNERNAME%', '%PROJECTNAME%', '%SITEURL%');

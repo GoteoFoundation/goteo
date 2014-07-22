@@ -97,16 +97,19 @@ namespace Goteo\Controller {
 
                         // Si no tiene estas notiicaciones bloqueadas en sus preferencias
                         $sql = "
-                            SELECT user_prefer.threads
+                            SELECT
+                              user_prefer.threads as spam,
+                              user_prefer.comlang as lang
                             FROM user_prefer
                             WHERE user = :user
                             ";
                         $query = Model\Project::query($sql, array(':user' => $thread->user->id));
-                        $spam = $query->fetchColumn(0);
-                        if (!$spam) {
+                        $prefer = $query->fetchObject();
+                        if (!$prefer->spam) {
                             // Mail al autor del thread
+                            $comlang = !empty($prefer->lang) ? $prefer->lang : $thread->user->lang;
                             // Obtenemos la plantilla para asunto y contenido
-                            $template = Template::get(12);
+                            $template = Template::get(12, $comlang);
 
                             // Sustituimos los datos
                             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
@@ -132,8 +135,13 @@ namespace Goteo\Controller {
                         }
                     } else {
                         // mensaje al autor del proyecto
+
+                        //  idioma de preferencia
+                        $prefer = Model\User::getPreferences($projectData->user->id);
+                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
+
                         // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(30);
+                        $template = Template::get(30, $comlang);
 
                         // Sustituimos los datos
                         $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
@@ -207,8 +215,12 @@ namespace Goteo\Controller {
 
                 $msg_content = \nl2br(\strip_tags($_POST['message']));
 
+                //  idioma de preferencia
+                $prefer = Model\User::getPreferences($ownerData->id);
+                $comlang = !empty($prefer->comlang) ? $prefer->comlang : $ownerData->lang;
+
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(3);
+                $template = Template::get(3, $comlang);
 
                 // Sustituimos los datos
                 // En el asunto: %PROJECTNAME% por $project->name
@@ -229,8 +241,6 @@ namespace Goteo\Controller {
 
                 $mailHandler->to = $ownerData->email;
                 $mailHandler->toName = $ownerData->name;
-                // blind copy a goteo desactivado durante las verificaciones
-//              $mailHandler->bcc = 'comunicaciones@goteo.org';
                 $mailHandler->subject = $subject;
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
@@ -282,8 +292,12 @@ namespace Goteo\Controller {
                 $msg_content = \nl2br(\strip_tags($_POST['message']));
 
 
+                //  idioma de preferencia
+                $prefer = Model\User::getPreferences($user->id);
+                $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
+
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(4);
+                $template = Template::get(4, $comlang);
 
                 // Sustituimos los datos
                 if (isset($_POST['subject']) && !empty($_POST['subject'])) {
@@ -389,8 +403,13 @@ namespace Goteo\Controller {
                     unset($log);
 
                     //Notificación al autor del proyecto
+
+                    //  idioma de preferencia
+                    $prefer = Model\User::getPreferences($projectData->user->id);
+                    $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
+
                     // Obtenemos la plantilla para asunto y contenido
-                    $template = Template::get(31);
+                    $template = Template::get(31, $comlang);
 
                     // Sustituimos los datos
                     $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
