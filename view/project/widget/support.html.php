@@ -7,9 +7,13 @@ $level = (int) $this['level'] ?: 3;
 
 $project = $this['project'];
 
-// veamos si tiene el grifo cerrado
-if (Goteo\Model\Project\Conf::isInvestClosed($project->id))
-    $project->status = 4;
+// veamos si tiene el grifo cerrado mientras continua en campaña
+if ($project->status == 3 && $project->noinvest) {
+    $project->tagmark = null; // sin banderolo
+    $project->status = null; // sin estado (para termometro)
+    $project->round = null; // no mostrar ronda
+
+}
 ?>
 <div class="widget project-support collapsable" id="project-support">
 

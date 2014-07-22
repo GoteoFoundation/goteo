@@ -337,6 +337,8 @@ namespace Goteo\Model {
                 }
                 $project->num_messegers = count($messegers);
 
+                $project->noinvest = Project\Conf::isInvestClosed($id);
+
                 $project->setDays();
                 $project->setTagmark();
 

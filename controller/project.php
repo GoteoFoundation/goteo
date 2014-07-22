@@ -540,7 +540,7 @@ namespace Goteo\Controller {
                         throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
                     }
 
-                    if (Model\Project\Conf::isInvestClosed($id)) {
+                    if ($project->noinvest) {
                         Message::Error(Text::get('investing_closed'));
                         throw new Redirection('/project/'.$id);
                     }
