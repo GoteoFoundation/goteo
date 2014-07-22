@@ -398,8 +398,13 @@ namespace Goteo\Controller {
 
                         $callData = Model\Call::getMini($call);
                         // email al autor
+
+                        //  idioma de preferencia del usuario
+                        $prefer = Model\User::getPreferences($_SESSION['user']->id);
+                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $_SESSION['user']->lang;
+
                         // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(39);
+                        $template = Template::get(39, $comlang);
 
                         // Sustituimos los datos
                         $subject = str_replace('%CALLNAME%', $callData->name, $template->title);

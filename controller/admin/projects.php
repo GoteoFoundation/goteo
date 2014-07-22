@@ -462,8 +462,13 @@ namespace Goteo\Controller\Admin {
                 if (empty($project)) {
                     Message::Error('No hay proyecto sobre el que operar');
                 } else {
+
+                    //  idioma de preferencia
+                    $prefer = Model\User::getPreferences($project->user->id);
+                    $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+
                     // Obtenemos la plantilla para asunto y contenido
-                    $template = Template::get(40);
+                    $template = Template::get(40, $comlang);
                     // Sustituimos los datos
                     $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                     $search  = array('%USERNAME%', '%PROJECTNAME%');

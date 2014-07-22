@@ -301,21 +301,26 @@ namespace Goteo\Controller {
 
 
             // email de agradecimiento al cofinanciador
+
+            //  idioma de preferencia
+            $prefer = Model\User::getPreferences($_SESSION['user']->id);
+            $comlang = !empty($prefer->comlang) ? $prefer->comlang : $_SESSION['user']->lang;
+
             // primero monto el texto de recompensas
             //@TODO el concepto principal sería 'renuncia' (porque todos los aportes son donativos)
             if ($invest->resign) {
                 // Plantilla de donativo segun la ronda
                 if ($projectData->round == 2) {
-                    $template = Template::get(36); // en segunda ronda
+                    $template = Template::get(36, $comlang); // en segunda ronda
                 } else {
-                    $template = Template::get(28); // en primera ronda
+                    $template = Template::get(28, $comlang); // en primera ronda
                 }
             } else {
                 // plantilla de agradecimiento segun la ronda
                 if ($projectData->round == 2) {
-                    $template = Template::get(34); // en segunda ronda
+                    $template = Template::get(34, $comlang); // en segunda ronda
                 } else {
-                    $template = Template::get(10); // en primera ronda
+                    $template = Template::get(10, $comlang); // en primera ronda
                 }
             }
 
@@ -388,9 +393,13 @@ namespace Goteo\Controller {
             }
 
 
-
             // Notificación al autor
-            $template = Template::get(29);
+
+            //  idioma de preferencia
+            $prefer = Model\User::getPreferences($projectData->user->id);
+            $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
+
+            $template = Template::get(29, $comlang);
             // Sustituimos los datos
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 

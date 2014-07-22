@@ -195,8 +195,12 @@ namespace Goteo\Controller\Cron {
             if (!empty($tpl)) {
                 $errors = array();
 
-                // Obtenemos la plantilla para asunto y contenido (en el idioma del usuario)
-                $template = Template::get($tpl, $project->user->lang);
+                //  idioma de preferencia del usuario
+                $prefer = Model\User::getPreferences($project->user->id);
+                $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get($tpl, $comlang);
 
                 // Sustituimos los datos
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
@@ -429,7 +433,7 @@ namespace Goteo\Controller\Cron {
                     invest.user as id,
                     user.name as name,
                     user.email as email,
-                    IFNULL(user.lang, 'es') as lang
+                    IFNULL(user_prefer.comlang, IFNULL(user.lang, 'es')) as lang
                 FROM  invest
                 INNER JOIN user
                     ON user.id = invest.user
