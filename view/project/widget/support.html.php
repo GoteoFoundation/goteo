@@ -9,10 +9,9 @@ $project = $this['project'];
 
 // veamos si tiene el grifo cerrado mientras continua en campaña
 if ($project->status == 3 && $project->noinvest) {
-    $project->tagmark = null; // sin banderolo
-    $project->status = null; // sin estado (para termometro)
+    $project->tagmark = 'gotit'; // banderolo financiado
+    $project->status = null; // para termometro, sin fecha de financiación
     $project->round = null; // no mostrar ronda
-
 }
 ?>
 <div class="widget project-support collapsable" id="project-support">
