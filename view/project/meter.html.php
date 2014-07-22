@@ -122,7 +122,7 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
             <dt class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span></dt>
             <dd class="days"><strong><?php echo $days_left; ?></strong> <?php echo $days_left2; ?></dd>
             <?php
-            } else {
+            } elseif (!empty($project->status)) {
                 switch ($project->status) {
                     case 1: // en edicion
                         $text = 'project-view-metter-day_created';
