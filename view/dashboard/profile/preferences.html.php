@@ -48,7 +48,7 @@ echo new NormalForm(array(
     'elements'      => array(
 
          'comlang' => array(
-            'title'     => Text::get('regular-lang'),
+            'title'     => Text::get('user-preferences-comlang'),
             'type'      => 'select',
             'options'   => $langs,
             'class'     => 'currently cols_' . count($allow),
