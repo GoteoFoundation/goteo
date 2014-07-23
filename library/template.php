@@ -36,6 +36,7 @@ namespace Goteo\Library {
 			$sql = "SELECT  template.id as id,
                             template.name as name,
                             template.group as `group`,
+                            template_lang.lang as `lang`,
                             template.purpose as purpose,
                             IFNULL(template_lang.title, template.title) as title,
                             IFNULL(template_lang.text, template.text) as text
