@@ -33,7 +33,14 @@ foreach ($story->project->open_tags as $openId => $openData) {
                 <div id="review"><?php echo htmlspecialchars($story->review); ?></div>
             </a>
             <div id="line"></div>
-            <div id="description"><blockquote><?php echo htmlspecialchars($story->description).'</blockquote>. '.'<a href="/user/profile/'.$story->project->user->id.'" target="_blank">'.htmlspecialchars($story->project->user->name).'</a>, del proyecto: '.'<a href="/project/'.$story->project->id.'" target="_blank">'.htmlspecialchars($story->project->name).'</a>'; ?></div>
+            <div id="description"><blockquote>
+                <?php
+                    echo htmlspecialchars($story->description).'</blockquote>. ';
+                    echo Text::get('stories-user-project',
+                        '<a href="/user/profile/'.$story->project->user->id.'" target="_blank">'.htmlspecialchars($story->project->user->name).'</a>', '<a href="/project/'.$story->project->id.'" target="_blank">'.htmlspecialchars($story->project->name).'</a>'
+                    );
+                ?>
+            </div>
         </div>
         <div class="info_extra">
             <span id="cofinanciadores"><?php echo  mb_strtoupper(Text::get('project-view-metter-investors'));?></span> <strong id="ncofinanciadores"><?php echo $story->project->num_investors;?></strong>
