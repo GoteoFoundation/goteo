@@ -9,7 +9,7 @@ define('NODE_META_COPYRIGHT', 'Platoniq');
 define('NODE_DEFAULT_LANG', 'ca');
 define('NODE_URL', 'http://barcelona.goteo.org');
 define('NODE_NAME', 'GoteoBarcelona');
-define('NODE_MAIL', 'goteo_barcelona@doukeshi.org');
+define('NODE_MAIL', 'barcelona@goteo.org');
 define('NODE_ANALYTICS_TRACKER', "<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
