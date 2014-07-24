@@ -143,6 +143,20 @@ namespace Goteo\Core {
             return $id;
         }
 
+          /**
+         * Devuelve el idioma por defecto(de soporte) para un idioma determinado, a la hora de obtener algún tipo de texto.
+         *
+         * @param string $lang
+         * @return  string $default_lang
+         */
+        public static function default_lang($lang) {
+            // Si el idioma se habla en España y no está disponible, usar 'es' y sino usar 'en' por defecto
+            $default_lang = (in_array($lang, array('es','ca', 'gl', 'eu', 'en'))) ? 'es' : 'en';
+            
+            return $default_lang;
+
+        }
+
     }
 
 }
