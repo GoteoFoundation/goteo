@@ -187,9 +187,9 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'send':
 
-//                    die(\trace($_POST));
-
                     $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+
+                    $comlang = (isset($_POST['lang'])) ? $_POST['lang'] : \LANG;
                     
                     // Enviando contenido recibido a destinatarios recibidos
                     $receivers = array();
@@ -214,12 +214,13 @@ namespace Goteo\Controller\Admin {
 
                     // montamos el mailing
                     // - se crea un registro de tabla mail
-                    $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+                    $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
                     $values = array (
                         ':email' => 'any',
                         ':html' => $content,
                         ':template' => $templateId,
-                        ':node' => $node
+                        ':node' => $node,
+                        ':lang' => $comlang
                     );
                     $query = \Goteo\Core\Model::query($sql, $values);
                     $mailId = \Goteo\Core\Model::insertId();
