@@ -23,7 +23,8 @@ namespace Goteo\Library {
             $attachments = array(),
             $html = true,
             $massive = false,
-            $template = null;
+            $template = null,
+            $lang = null;
 
         /**
          * Constructor.
@@ -204,12 +205,13 @@ namespace Goteo\Library {
                 if (!empty($_SESSION['NEWSLETTER_SENDID']) ) {
                     $sendId = $_SESSION['NEWSLETTER_SENDID'];
                 } else {
-                    $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+                    $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
                     $values = array (
                         ':email' => 'any',
                         ':html' => $this->content,
                         ':template' => $this->template,
-                        ':node' => $_SESSION['admin_node']
+                        ':node' => $_SESSION['admin_node'],
+                        ':lang' => $this->lang
                     );
                     $query = Model::query($sql, $values);
 
@@ -221,12 +223,13 @@ namespace Goteo\Library {
                 $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
 
             } else {
-                $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+                $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
                 $values = array (
                     ':email' => $this->to,
                     ':html' => $this->content,
                     ':template' => $this->template,
-                    ':node' => $_SESSION['admin_node']
+                    ':node' => $_SESSION['admin_node'],
+                    ':lang' => $this->lang
                 );
                 $query = Model::query($sql, $values);
 
