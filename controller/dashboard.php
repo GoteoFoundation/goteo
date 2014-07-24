@@ -182,6 +182,10 @@ namespace Goteo\Controller {
                     break;
                 case 'preferences':
                     $viewData['preferences'] = Model\User::getPreferences($user->id);
+
+                    //Si no hay un idioma preferido para notificaciones
+                    if(!$viewData['preferences']->comlang)
+                        $viewData['preferences']->comlang=LANG;
                     break;
             }
 

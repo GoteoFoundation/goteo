@@ -221,7 +221,8 @@ namespace Goteo\Controller\Dashboard {
                 'rounds',
                 'mailing',
                 'email',
-                'tips'
+                'tips' ,
+                'comlang'
             );
 
             $preferences = array();

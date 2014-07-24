@@ -195,8 +195,12 @@ namespace Goteo\Controller\Cron {
             if (!empty($tpl)) {
                 $errors = array();
 
-                // Obtenemos la plantilla para asunto y contenido (en el idioma del usuario)
-                $template = Template::get($tpl, $project->user->lang);
+                //  idioma de preferencia del usuario
+                $prefer = Model\User::getPreferences($project->user->id);
+                $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get($tpl, $comlang);
 
                 // Sustituimos los datos
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
@@ -424,12 +428,14 @@ namespace Goteo\Controller\Cron {
             $receivers = array();
 
             // para cada inversor que no tenga bloqueado esta notificacion
+            // sacamos idioma de preferencia
+            // Y esto también tendía que mirar idioma alternativo al de preferencia
             $sql = "
                 SELECT
                     invest.user as id,
                     user.name as name,
                     user.email as email,
-                    IFNULL(user.lang, 'es') as lang
+                    IFNULL(user_prefer.comlang, IFNULL(user.lang, 'es')) as lang
                 FROM  invest
                 INNER JOIN user
                     ON user.id = invest.user
@@ -465,11 +471,12 @@ namespace Goteo\Controller\Cron {
             // sacamos la plantilla en cada idioma
             // $template_lang['es'] = Template::get($tpl, 'es');
 
-            // Luego, un mailing para cada idioma
+            // Luego, un mailing para cada idioma (como al enviar boletín)
 
+            $comlang = \LANG;
 
             // Obtenemos la plantilla para asunto y contenido
-            $template = Template::get($tpl);
+            $template = Template::get($tpl, $comlang);
             
 
             // - subject
@@ -488,12 +495,13 @@ namespace Goteo\Controller\Cron {
 
 
             // - se crea un registro de tabla mail
-            $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
             $values = array (
                 ':email' => 'any',
                 ':html' => $content,
                 ':template' => $tpl,
-                ':node' => \GOTEO_NODE
+                ':node' => \GOTEO_NODE,
+                ':lang' => $comlang
             );
             $query = \Goteo\Core\Model::query($sql, $values);
             $mailId = \Goteo\Core\Model::insertId();

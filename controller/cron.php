@@ -81,6 +81,8 @@ namespace Goteo\Controller {
 
                 if ($debug) echo 'Proyecto '.$project->name.'<br />';
 
+                /*
+                 * YA da igual si el proyecto no tiene cuenta paypal
                 // a ver si tiene cuenta paypal
                 $projectAccount = Model\Project\Account::get($project->id);
 
@@ -114,6 +116,7 @@ namespace Goteo\Controller {
                     }
 
                 }
+                */
 
                 $log_text = null;
 
@@ -472,8 +475,13 @@ namespace Goteo\Controller {
                                         // cuando el error lanzado por paypal sea el no estar verificada la cuenta del impulsor
                                         if (!isset($err[569042])) {
                                             // Notifiacion de incidencia al usuario
+
+                                            //  idioma de preferencia del usuario
+                                            $prefer = Model\User::getPreferences($userData->id);
+                                            $comlang = !empty($prefer->comlang) ? $prefer->comlang : $userData->lang;
+
                                             // Obtenemos la plantilla para asunto y contenido
-                                            $template = Template::get(37);
+                                            $template = Template::get(37, $comlang);
                                             // Sustituimos los datos
                                             $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                                             $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');

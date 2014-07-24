@@ -19,6 +19,10 @@ namespace Goteo\Library {
 
         static public function get ($id, $lang = \LANG) {
 
+            // por si llega idioma vacio
+            if (empty($lang))
+                $lang = \LANG;
+
             // Devolver la plantilla en inglés cuando la plantilla no esté traducida en idioma no-español
             if ($lang != 'es') {
                 // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
@@ -36,6 +40,7 @@ namespace Goteo\Library {
 			$sql = "SELECT  template.id as id,
                             template.name as name,
                             template.group as `group`,
+                            template_lang.lang as `lang`,
                             template.purpose as purpose,
                             IFNULL(template_lang.title, template.title) as title,
                             IFNULL(template_lang.text, template.text) as text

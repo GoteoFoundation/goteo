@@ -532,6 +532,7 @@ namespace Goteo\Model {
                         user.id as id,
                         user.email as email,
                         user.name as name,
+                        IFNULL(user.lang, 'es') as lang,
                         user.location as location,
                         user.avatar as avatar,
                         IFNULL(user_lang.about, user.about) as about,
@@ -1369,7 +1370,8 @@ namespace Goteo\Model {
                                       rounds,
                                       mailing,
                                       email,
-                                      tips
+                                      tips,
+                                      comlang
                                   FROM user_prefer
                                   WHERE user = ?'
                 , array($id));

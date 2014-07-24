@@ -290,8 +290,12 @@ namespace Goteo\Controller\Dashboard {
                 Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa));
             }
 
+            //  idioma de preferencia
+            $prefer = Model\User::getPreferences($project->user->id);
+            $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+
             // Obtenemos la plantilla para asunto y contenido
-            $template = Template::get(2);
+            $template = Template::get(2, $comlang);
 
             // Sustituimos los datos
             if (!empty($_POST['subject'])) {
@@ -325,12 +329,13 @@ namespace Goteo\Controller\Dashboard {
             // - 
 
             // - se crea un registro de tabla mail
-            $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
             $values = array (
                 ':email' => 'any',
                 ':html' => $content,
                 ':template' => $template->id,
-                ':node' => \GOTEO_NODE
+                ':node' => \GOTEO_NODE,
+                ':lang' => $comlang
             );
             $query = \Goteo\Core\Model::query($sql, $values);
             $mailId = \Goteo\Core\Model::insertId();
