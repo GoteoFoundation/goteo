@@ -6,7 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Text,
-        Goteo\Model\User\Donor,
+        Goteo\Model,
         Goteo\Library\Message,
 		Goteo\Library\Template,
         Goteo\Library\Newsletter as Boletin,
@@ -36,7 +36,7 @@ namespace Goteo\Controller\Admin {
                             $users = Boletin::getReceivers();
                         } elseif ($template == 27 || $template == 38) {
                             // los cofinanciadores de este año
-                            $users = Boletin::getDonors(Donor::currYear());
+                            $users = Boletin::getDonors(Model\User\Donor::currYear());
                         }
 
                         // sin idiomas
@@ -47,14 +47,13 @@ namespace Goteo\Controller\Admin {
                             // separamos destinatarios en idiomas
                             $receivers = array();
                             foreach ($users as $usr) {
-                                if (empty($usr->lang) || $usr->lang == LANG) {
-                                    $receivers[LANG][] = $usr;
-                                } else {
-                                    $receivers[$usr->lang][] = $usr;
-                                }
+                                // idioma de preferencia
+                                $prefer = Model\User::getPreferences($usr->user);
+                                $comlang = !empty($prefer->comlang) ? $prefer->comlang : $usr->lang;
+                                if (empty($comlang)) $comlang = LANG;
+                                $receivers[$comlang][$usr->user] = $usr;
                             }
                         }
-
 
                         // idiomas que vamos a enviar
                         $langs = array_keys($receivers);
@@ -76,12 +75,13 @@ namespace Goteo\Controller\Admin {
                             $subject = $tpl->title;
 
                             // creamos instancia
-                            $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+                            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
                             $values = array (
                                 ':email' => 'any',
                                 ':html' => $content,
                                 ':template' => $template,
-                                ':node' => $node 
+                                ':node' => $node,
+                                ':lang' => $lang
                             );
                             $query = \Goteo\Core\Model::query($sql, $values);
                             $mailId = \Goteo\Core\Model::insertId();
