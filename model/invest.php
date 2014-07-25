@@ -415,12 +415,18 @@ namespace Goteo\Model {
 
                 // tabla para obtener aportaciones por nodo
 
+                // FIX: aseguramos que no hay ningun valor nulo
+                $pnode = Project::getMini($this->project)->node;
+                if ($pnode === NULL) $pnode = \GOTEO_NODE;
+                $unode = User::getMini($this->user)->node;
+                if ($unode === NULL) $unode = \GOTEO_NODE;
+
                 $sql = "REPLACE INTO invest_node (project_id, project_node, user_id, user_node, invest_id, invest_node) VALUES (:pid, :pnode, :uid, :unode, :iid, :inode)";
                 self::query($sql, array(
                     ':pid' => $this->project,
-                    ':pnode' => Project::getMini($this->project)->node,
+                    ':pnode' => $pnode,
                     ':uid' => $this->user,
-                    ':unode' => User::getMini($this->user)->node,
+                    ':unode' => $unode,
                     ':iid' => $this->id,
                     ':inode' => NODE_ID)
                 );
