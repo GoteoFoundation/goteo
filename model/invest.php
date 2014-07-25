@@ -417,9 +417,9 @@ namespace Goteo\Model {
 
                 // FIX: aseguramos que no hay ningun valor nulo
                 $pnode = Project::getMini($this->project)->node;
-                if ($pnode === NULL) $pnode = \GOTEO_NODE;
+                if (empty($pnode)) $pnode = \GOTEO_NODE;
                 $unode = User::getMini($this->user)->node;
-                if ($unode === NULL) $unode = \GOTEO_NODE;
+                if (empty($unode)) $unode = \GOTEO_NODE;
 
                 $sql = "REPLACE INTO invest_node (project_id, project_node, user_id, user_node, invest_id, invest_node) VALUES (:pid, :pnode, :uid, :unode, :iid, :inode)";
                 self::query($sql, array(
