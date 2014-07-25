@@ -380,7 +380,7 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del proyecto en la instancia
-				$query = self::query("SELECT id, name, owner, comment, lang, status FROM project WHERE id = ?", array($id));
+				$query = self::query("SELECT id, name, owner, comment, lang, status, node FROM project WHERE id = ?", array($id));
 				$project = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
 
                 // owner

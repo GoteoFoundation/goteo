@@ -82,15 +82,22 @@ namespace Goteo\Controller\Admin {
         );
         
         
-        
-        
-        
         public static function process ($action = 'list', $id = null, $filters = array(), $subaction = '') {
 
             // multiples usos
             $nodes = Model\Node::getList();
+            $admin_subnode = false;
 
-            $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
+            if (isset($_SESSION['admin_node'])) {
+                $node = $_SESSION['admin_node'];
+                if ($node != \GOTEO_NODE) {
+                    // Fuerza el filtro de nodo para que el admin de un nodo no pueda cambiarlo
+                    $filters['node'] = $_SESSION['admin_node'];
+                    $admin_subnode = true;
+                }
+            } else {
+                $node = \GOTEO_NODE;
+            }
 
             $errors = array();
 
@@ -384,10 +391,11 @@ namespace Goteo\Controller\Admin {
                 case 'list':
                 default:
                     if (!empty($filters['filtered'])) {
-                        $users = Model\User::getAll($filters, $node);
+                        $users = Model\User::getAll($filters, $admin_subnode);
                     } else {
                         $users = array();
                     }
+
                     $status = array(
                                 'active' => 'Activo',
                                 'inactive' => 'Inactivo'
