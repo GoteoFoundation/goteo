@@ -588,7 +588,7 @@ namespace Goteo\Model {
             }
         }
 
-        // version mini de get para sacar nombre i mail
+        // version mini de get para sacar nombre, avatar, email, idioma y nodo
         public static function getMini ($id) {
             try {
                 $query = static::query("
@@ -619,10 +619,10 @@ namespace Goteo\Model {
          * Lista de usuarios.
          *
          * @param  array $filters  Filtros
-         * @param  string $node    true|false
+         * @param  boolean $subnode Filtra además por...
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($filters = array(), $node = null) {
+        public static function getAll ($filters = array(), $subnode = false) {
 
             $values = array();
 
@@ -659,26 +659,20 @@ namespace Goteo\Model {
             }
 
             // un admin de central puede filtrar usuarios de nodo
-            if (!empty($filters['node'])) {
-                $sqlFilter .= " AND node = :node";
-                $values[':node'] = $filters['node'];
-            } elseif (!empty($node) && $node != \GOTEO_NODE) {
-                // un admin de nodo puede ver sus usuarios y los que hayan aportado a sus proyectos
-                /*
+            if($subnode) {
                 $sqlFilter .= " AND (node = :node
                     OR id IN (
-                        SELECT user
-                        FROM invest
-                        INNER JOIN project
-                            ON project.id = invest.project
-                            AND project.node = :node
-                        GROUP BY invest.user
-                        )
-                    )";
-                $values[':node'] = $node;
-                 * 
-                 */
+                        SELECT user_id
+                        FROM invest_node
+                        WHERE project_node = :node
+                    )
+                )";
+                $values[':node'] = $filters['node'];
+            } elseif (!empty($filters['node'])) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $filters['node'];
             }
+
             if (!empty($filters['project'])) {
                 $subFilter = $filters['project'] == 'any' ? '' : 'invest.project = :project AND';
                 $sqlFilter .= " AND id IN (
@@ -778,11 +772,12 @@ namespace Goteo\Model {
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter
-                   $sqlOrder
+                    $sqlOrder
                     LIMIT 999
                     ";
             
             $query = self::query($sql, $values);
+
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
 
                 $query = static::query("
