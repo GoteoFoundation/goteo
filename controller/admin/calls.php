@@ -12,6 +12,9 @@ namespace Goteo\Controller\Admin {
 
     class Calls {
 
+        /**
+         * @param action: (review | open | publish | cancel | enable | complete | delete)
+         */
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $errors = array();
@@ -197,11 +200,24 @@ namespace Goteo\Controller\Admin {
                     case 'open': // se ha abierto para recibir proyectos
                         $log->populate($call->name, '/call/'.$call->id, Text::html('feed-new_call-opened'), $call->logo);
                         $log->doPublic();
-                    break;
+                        break;
                     case 'publish': // ha iniciado la campaña
                         $log->populate($call->name, '/call/'.$call->id, Text::html('feed-new_call-published'), $call->logo);
                         $log->doPublic();
-                    break;
+                        break;
+                    case 'complete':
+                        $log->unique = true;
+                        $log->populate('Campaña terminada (cron)', '/admin/calls/'.$call->id,
+                            \vsprintf('La campaña %s ha terminado con exito', array(
+                                Feed::item('call', $call->name, $call->id))
+                            ));
+                        $log->doAdmin('call');
+                        $log->populate($call->name, '/call/'.$call->id,
+                            \vsprintf('La campaña %s ha terminado con éxito', array(
+                                Feed::item('call', $call->name, $call->id))
+                            ), $call->logo);
+                        $log->doPublic('projects');
+                        break;
                 }
                 unset($log);
 

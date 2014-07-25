@@ -575,7 +575,6 @@ namespace Goteo\Controller {
             // Julian: 06/07/2014  ya no hacemos este cambio de estado automático
             // el cambio de estado lo controlará el convocador (o admin responsable)
             // ponemos un botón en el panel admin, el feed se generará entonces
-            // este código comentado está en conflicto con la rama limpieza_cron (refactorización del cron/execute)
             $campaigns = Model\Call::getActive(4);
             foreach ($campaigns as $campaign) {
                 $errors = array();
