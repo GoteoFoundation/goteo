@@ -24,12 +24,12 @@ namespace Goteo\Core {
                 }
             } elseif($user instanceof User) {
                 $id = $user->id;
-            } else if($user = Model\User::get($user)) {
+            } else if($user = User::get($user)) {
                 $id = $user->id;
             }
             $roles = $user->roles;
             array_walk($roles, function (&$role) { $role = $role->id; });
-            $query = Model::query("
+            $query = User::query("
                 SELECT
                     acl.allow
                 FROM acl
@@ -69,7 +69,7 @@ namespace Goteo\Core {
             VALUES				(:node, :role, :user, :url, :allow)
             ";
 
-            $query = Model::query($sql, array(
+            $query = User::query($sql, array(
                 ':node'  => $node,
             	':role'  => $role,
                 ':user'	 => $user,
@@ -95,9 +95,9 @@ namespace Goteo\Core {
                     ':url' => $url
                 );
                 $sql = "SELECT id FROM acl WHERE user_id = :user AND url = :url AND allow = 1";
-                $query = Model::query($sql, $values);
+                $query = User::query($sql, $values);
                 if ($query->rowCount() > 0)
-                    return (bool) Model::query("DELETE FROM acl WHERE user_id = :user AND url = :url", $values);
+                    return (bool) User::query("DELETE FROM acl WHERE user_id = :user AND url = :url", $values);
             }
 
             return static::addperms($url, $node, $role, $user, false);

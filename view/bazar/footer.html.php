@@ -6,7 +6,7 @@ $share = $this['share'];
 
 <footer>
 	<section class="logo">
-    	<a href="<?php echo (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL; ?>" class="logo"><img src="/view/bazar/img/logo.svg" /></a>
+    	<a href="<?php echo SITE_URL; ?>" class="logo"><img src="/view/bazar/img/logo.svg" /></a>
 	</section>
 	<section class="logo2">
     	<img src="/view/bazar/img/logo.svg" />

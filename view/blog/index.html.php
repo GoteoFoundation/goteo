@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Model\Image,
     Goteo\Model\Blog\Post;
 
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 
 $blog = $this['blog'];
 $posts = $blog->posts;

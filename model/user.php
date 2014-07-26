@@ -122,7 +122,7 @@ namespace Goteo\Model {
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;
 					else {
-                        $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+                        $URL = \SITE_URL;
 						// Obtenemos la plantilla para asunto y contenido
 						$template = Template::get(5);
 
@@ -1036,7 +1036,7 @@ namespace Goteo\Model {
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
 		public static function recover ($email = null) {
-            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            $URL = \SITE_URL;
             $query = self::query("
                     SELECT
                         id,
@@ -1087,7 +1087,7 @@ namespace Goteo\Model {
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
 		public static function leaving ($email, $message = null) {
-            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            $URL = \SITE_URL;
             $query = self::query("
                     SELECT
                         id,
@@ -1156,7 +1156,7 @@ namespace Goteo\Model {
     	 * @return type bool
     	 */
     	private function setToken ($token) {
-            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            $URL = \SITE_URL;
             if(count($tmp = explode('¬', $token)) > 1) {
                 $email = $tmp[1];
                 if(Check::mail($email)) {

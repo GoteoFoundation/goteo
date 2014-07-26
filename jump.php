@@ -13,6 +13,14 @@
  *  - path = /project/... + (?)asdf=asdf + (#)asdf
  *              path             query        fragment
  */
+if (!isset($_GET['action'])
+    || !in_array($_GET['action'], array('go', 'come'))
+    || ($_GET['action'] == 'go' && !isset($_GET['url']))
+    || ($_GET['action'] == 'come' && !isset($_GET['sesid']))
+) {
+    header("HTTP/1.1 400 Bad request");
+    die('Bad request');
+}
 
 switch ($_GET['action']) {
     case 'go': // Vamos a otro nodo:
@@ -24,24 +32,26 @@ switch ($_GET['action']) {
         // descomponer el destino con parse_url()
         $parts = parse_url($_GET['url']);
         // recomponer y montar el destino
+        $scheme = isset($parts['scheme']) ? $parts['scheme'] : 'http';
         $host = $parts['host'];
         $path = isset($parts['path']) ? $parts['path'] : '';
         $query = isset($parts['query']) ? '?'.$parts['query'] : '';
         $fragment = isset($parts['fragment']) ? '#'.$parts['fragment'] : '';
         $dest = "$path$query$fragment";
+
+        if (empty($dest)) {
+            header("HTTP/1.1 400 Bad request");
+            die('Bad request');
+        }
+
         // montar la url del script de llegada:   http://nodo.goteo.org/jumpo.php?action=come&sesid=...&path=...
-        $url = "http://{$host}/jump.php?action=come&sesid={$sesid}&path=".urlencode($dest);
+        $url = "{$scheme}://{$host}/jump.php?action=come&sesid={$sesid}&path=".urlencode($dest);
         // Saltar con header('Location: ');
         header("Location: $url");
         die;
         break;
 
     case 'come': // Venimos de otro nodo:
-        // verificar el sesid
-        if (!isset($_GET['sesid'])) {
-            header('Location: /');
-            die;
-        }
         // nombrar sesion
         session_name('goteo');
         // aplicar con session_id($sesid)
@@ -54,9 +64,6 @@ switch ($_GET['action']) {
         die;
 
         break;
-
-    default:
-        die('Unknown action');
 }
 
 

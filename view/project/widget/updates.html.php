@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Model\Blog\Post;
 
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 
 $project = $this['project'];
 $blog    = $this['blog'];
