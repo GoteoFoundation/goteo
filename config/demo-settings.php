@@ -92,7 +92,7 @@ define('AWS_SNS_COMPLAINTS_TOPIC', 'amazon-ses-complaints');
 define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
-define('SITE_URL', 'http://example.com');
+define('GOTEO_URL', 'http://example.com');
 
 //Sessions
 //session handler: php, dynamodb

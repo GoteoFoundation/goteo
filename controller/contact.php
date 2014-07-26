@@ -35,11 +35,13 @@ namespace Goteo\Controller {
                 // Checkeo de spam
 //                @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, true).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, true).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, true).'</pre>');
 
-                // verificamos referer
-                $referer = SRC_URL.'/contact';
+                // Ya no verificamos referer
+                //@FIXME: Esto no va a funcionar porque SRC_URL va con // sin protocolo
+                // $referer = SRC_URL.'/contact';
+                //  || $_SERVER['HTTP_REFERER']!=$referer
                 
                 // verificamos token
-                if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token'] || $_SERVER['HTTP_REFERER']!=$referer) {
+                if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token']) {
                     header("HTTP/1.1 400 Bad request");
                     die('Token incorrect');
                 }
