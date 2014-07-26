@@ -15,8 +15,8 @@
  */
 if (!isset($_GET['action'])
     || !in_array($_GET['action'], array('go', 'come'))
-    || ($_GET['action'] == 'go' && !isset($_GET['url']))
-    || ($_GET['action'] == 'come' && !isset($_GET['sesid']))
+    || ( $_GET['action'] == 'go' && (!isset($_GET['url']) || empty($_GET['url']) ) )
+    || ( $_GET['action'] == 'come' && (!isset($_GET['sesid']) || empty($_GET['sesid']) ) )
 ) {
     header("HTTP/1.1 400 Bad request");
     die('Bad request');
@@ -34,15 +34,13 @@ switch ($_GET['action']) {
         // recomponer y montar el destino
         $scheme = isset($parts['scheme']) ? $parts['scheme'] : 'http';
         $host = $parts['host'];
+        // si no hay dominio nada
+        if (empty($host)) header('Location: /');
+
         $path = isset($parts['path']) ? $parts['path'] : '';
         $query = isset($parts['query']) ? '?'.$parts['query'] : '';
         $fragment = isset($parts['fragment']) ? '#'.$parts['fragment'] : '';
         $dest = "$path$query$fragment";
-
-        if (empty($dest)) {
-            header("HTTP/1.1 400 Bad request");
-            die('Bad request');
-        }
 
         // montar la url del script de llegada:   http://nodo.goteo.org/jumpo.php?action=come&sesid=...&path=...
         $url = "{$scheme}://{$host}/jump.php?action=come&sesid={$sesid}&path=".urlencode($dest);
