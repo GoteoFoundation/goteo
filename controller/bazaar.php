@@ -22,7 +22,7 @@ namespace Goteo\Controller {
 
             list($page->txt1, $page->txt2, $page->txt3) = explode('<hr />', $page->content);
 
-            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            $URL = \SITE_URL;
             $page->url = $URL.'/bazaar';
             $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 

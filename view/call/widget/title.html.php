@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $call = $this['call'];
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 ?>
 
 <div id="title">

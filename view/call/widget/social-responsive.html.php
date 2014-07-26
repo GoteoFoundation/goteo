@@ -6,7 +6,7 @@ use Goteo\Library\Text,
 $call = $this['call'];
 $social = $this['social'];
 
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 $share_url = $URL . '/call/' . $call->id;
 if (LANG != 'es')
     $share_url .= '?lang=' . LANG;

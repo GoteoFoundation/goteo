@@ -9,7 +9,7 @@ $the_project = Project::getMedium($project->id);
 $level = (int) $this['level'] ?: 3;
 
 $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 
 $url = $URL . '/widget/project/' . $project->id;
 $widget_code = Text::widget($url . $lsuf);

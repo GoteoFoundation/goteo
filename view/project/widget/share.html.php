@@ -5,7 +5,7 @@ use Goteo\Library\Text,
 $project = $this['project'];
 $level = (int) $this['level'] ?: 3;
 
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 $share_url = $URL . '/project/' . $project->id;
 if (LANG != 'es')
     $share_url .= '?lang=' . LANG;

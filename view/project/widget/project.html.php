@@ -6,7 +6,7 @@ use Goteo\Core\View,
     Goteo\Model\Invest,
     Goteo\Model\Image;
 
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 
 $project = $this['project'];
 $level = $this['level'] ?: 3;
