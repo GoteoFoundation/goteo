@@ -34,6 +34,8 @@ namespace Goteo\Model {
             $twitter,
             $identica,
             $linkedin,
+            $amount,
+            $worth,
             $created,
             $modified,
             $interests = array(),
@@ -66,14 +68,10 @@ namespace Goteo\Model {
             if($name == "token") {
 	            return $this->getToken();
 	        }
+	        if($name == "num_supported_projs")
+	            return $this->getSupportedProjs();
 	        if($name == "support") {
 	            return $this->getSupport();
-	        }
-	        if($name == "worth") {
-	            return $this->getWorth();
-	        }
-	        if($name == "amount") {
-	            return $this->getAmount();
 	        }
 	        if($name == "projects") {
 	            return $this->getProjects();
@@ -629,6 +627,7 @@ namespace Goteo\Model {
             $users = array();
 
             $sqlFilter = "";
+            $sqlOrder = "";
             if (!empty($filters['id'])) {
                 $sqlFilter .= " AND id = :id";
                 $values[':id'] = $filters['id'];
@@ -792,8 +791,9 @@ namespace Goteo\Model {
                 }
 
                 $user->namount = (int) $user->amount;
-                $user->nprojs = (int) count($user->support['projects']);
-                
+                $user->nprojs = $user->num_supported_projs;
+                //$user->nprojs = (int) count($user->support['projects']);
+
                 $users[] = $user;
             }
             return $users;
@@ -1234,20 +1234,29 @@ namespace Goteo\Model {
             return array('projects' => $projects, 'amount' => $invest[0], 'invests' => $invest[1]);
         }
 
+        /*
+         * Simple, número de proyectos cofinanciados (
+         */
+    	private function getSupportedProjs () {
+            $query = self::query("SELECT COUNT(DISTINCT(project)) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($this->id));
+            return $query->fetchColumn();
+        }
+
 	    /**
-    	 * Nivel actual de meritocracia. (1-5)
-    	 * [Recalcula y actualiza el registro en db]
-    	 *
-    	 * @return type int	Worth::id
+    	 * Recalcula y actualiza el nivel de meritocracia
+    	 * Segun el actual importe cofinanciado por el usuario
+         *
+         * @param $amount int
+    	 * @return result boolean
     	 */
-    	private function getWorth () {
-            $query = self::query('SELECT id FROM worthcracy WHERE amount <= ? ORDER BY amount DESC LIMIT 1', array($this->support['amount']));
+    	public static function updateWorth ($userId, $amount) {
+            $query = self::query('SELECT id FROM worthcracy WHERE amount <= ? ORDER BY amount DESC LIMIT 1', array($amount));
             $worth = $query->fetchColumn();
-    	    $query = self::query('SELECT worth FROM user WHERE id = ?', array($this->id));
-            if($worth !== $query->fetchColumn()) {
-                self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $this->id, ':worth' => $worth));
+            if (self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $userId, ':worth' => $worth))) {
+                return true;
+            } else {
+                return false;
             }
-            return $worth;
         }
 
         /**
@@ -1262,13 +1271,16 @@ namespace Goteo\Model {
         }
 
         /**
-    	 * Cantidad aportada
+    	 * Actualiza Cantidad aportada
     	 *
+         * @param user string Id del usuario
     	 * @return type int	Count(id)
     	 */
-    	private function getAmount () {
-            $query = self::query("SELECT SUM(invest.amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($this->id));
-            $amount = $query->fetchColumn(0);
+    	public static function updateAmount ($userId) {
+            $query = self::query("SELECT SUM(invest.amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($userId));
+            $amount = $query->fetchColumn();
+            self::query('UPDATE user SET amount = :amount WHERE id = :id', array(':id' => $userId, ':amount' => $amount));
+
             return $amount;
         }
 

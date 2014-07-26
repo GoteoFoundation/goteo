@@ -13,3 +13,8 @@ CREATE TABLE `patron` (
 ALTER TABLE `patron` ADD `active` INT(1) NOT NULL DEFAULT '0' AFTER `order`;
 ALTER TABLE `patron` ADD `title` TINYTEXT NULL AFTER `user`;
 ALTER TABLE `patron` ADD `description` TEXT NULL AFTER `title`;
+
+-- el id como primary key mejor
+ALTER TABLE `patron`
+	DROP KEY `id` ,
+	ADD PRIMARY KEY(`id`) ;
