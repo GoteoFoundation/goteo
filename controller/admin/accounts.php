@@ -621,6 +621,7 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            // default: action == 'list'
             // listado de aportes
             if ($filters['filtered'] == 'yes') {
                 $list = Model\Invest::getList($filters, null, 999);
@@ -628,7 +629,7 @@ namespace Goteo\Controller\Admin {
                 $list = array();
             }
 
-             $viewData = array(
+            $viewData = array(
                     'folder' => 'accounts',
                     'file' => 'list',
                     'list'          => $list,

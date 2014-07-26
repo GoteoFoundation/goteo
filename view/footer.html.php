@@ -24,7 +24,12 @@ jQuery(document).ready(function($) {
 </script>
 
     <div id="footer">
-		<div class="w940">
+        <?php if($bannerPrensa&&count($this[news])) {?>
+        <div id="press_banner">
+            <?php echo $bannerPrensa;?> 
+        </div> 
+        <?php }?>
+		<div class="w940" style="padding:20px;">
         	<div class="block categories">
                 <h8 class="title"><?php echo Text::get('footer-header-categories') ?></h8>
                 <ul class="scroll-pane">
@@ -42,6 +47,7 @@ jQuery(document).ready(function($) {
                     <li><a href="/discover/view/outdate"><?php echo Text::get('discover-group-outdate-header') ?></a></li>
                     <li><a href="/discover/view/recent"><?php echo Text::get('discover-group-recent-header') ?></a></li>
                     <li><a href="/discover/view/success"><?php echo Text::get('discover-group-success-header') ?></a></li>
+                    <li><a href="/discover/view/fulfilled"><?php echo Text::get('discover-group-fulfilled-header') ?></a></li>
                     <li><a href="/discover/view/archive"><?php echo Text::get('discover-group-archive-header') ?></a></li>
                     <li><a href="/project/create"><?php echo Text::get('regular-create') ?></a></li>
                 </ul>

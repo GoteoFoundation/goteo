@@ -43,10 +43,13 @@ include 'view/call/header.html.php';
             <p class="subtitle" style="color: #58595b; font-size: 12px;"><?php echo $call->subtitle ?></p>
 
             <?php echo new View('view/call/widget/stats.html.php', $this); ?>
+            
         </div>
         <?php echo new View('view/call/widget/buzz.html.php', $this); ?>
     </div>
 
+    <?php echo new View('view/call/widget/social-responsive.html.php', $this) ?>
+    
     <?php echo new View('view/call/bottom.html.php', $this); ?>
 </div>
 

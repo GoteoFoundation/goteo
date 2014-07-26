@@ -21,16 +21,27 @@ namespace Goteo\Controller {
          */
         public function execute () {
 
+            // debug para supervisar en las fechas clave
+//            $debug = ($_GET['debug'] == 'debug') ? true : false;
+            $debug = true;
+
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $start = $time;
+
+            if ($debug) echo '<strong>cron/execute start</strong><br />';
+
             if (!\defined('CRON_EXEC')) {
                 @mail('goteo_cron@doukeshi.org', 'Se ha lanzado MANUALMENTE el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
-               echo 'Lanzamiento manual a las ' . date ('H:i:s') . ' <br />';
+                echo 'Lanzamiento manual a las ' . date ('H:i:s') . ' <br />';
             } else {
                 echo 'Lanzamiento automatico a las ' . date ('H:i:s') . ' <br />';
             }
             
-            // a ver si existe el bloqueo
-            $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'.block';
+            // a ver si existe el bloqueo (PARA HOY)
+            $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'_'.date('Ymd').'.block';
             if (file_exists($block_file)) {
                 echo 'Ya existe un archivo de log '.date('Ymd').'_'.__FUNCTION__.'.log<br />';
                 $block_content = \file_get_contents($block_file);
@@ -39,11 +50,11 @@ namespace Goteo\Controller {
                 $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
-                /*
+
                 @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
                         El contenido del bloqueo es: '. $block_content);
-                 */
+
                 die;
             } else {
                 $block = 'Bloqueo del '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
@@ -58,10 +69,6 @@ namespace Goteo\Controller {
             }
             echo '<hr />';
             
-            // debug para supervisar en las fechas clave
-//            $debug = ($_GET['debug'] == 'debug') ? true : false;
-            $debug = true;
-
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña,
             // (publicados hace más de 40 días que no tengan fecha de pase)
@@ -74,6 +81,8 @@ namespace Goteo\Controller {
 
                 if ($debug) echo 'Proyecto '.$project->name.'<br />';
 
+                /*
+                 * YA da igual si el proyecto no tiene cuenta paypal
                 // a ver si tiene cuenta paypal
                 $projectAccount = Model\Project\Account::get($project->id);
 
@@ -104,16 +113,10 @@ namespace Goteo\Controller {
                         $mailHandler->send();
                         unset($mailHandler);
 
-                        $task = new Model\Task();
-                        $task->node = \GOTEO_NODE;
-                        $task->text = "Poner la cuenta PayPal al proyecto <strong>{$project->name}</strong> urgentemente!";
-                        $task->url = "/admin/projects/accounts/{$project->id}";
-                        $task->done = null;
-                        $task->saveUnique();
-
                     }
 
                 }
+                */
 
                 $log_text = null;
 
@@ -273,29 +276,10 @@ namespace Goteo\Controller {
                                 $passtime = strtotime($project->passed);
                                 $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
 
-                                /*
-                                 * Ya no hacemos pagos secundarios mediante sistema
-                                $task = new Model\Task();
-                                $task->node = \GOTEO_NODE;
-                                $task->text = "Hacer los pagos secundarios al proyecto <strong>{$project->name}</strong> antes del día <strong>{$limsec}</strong>";
-                                $task->url = "/admin/accounts/?projects={$project->id}";
-                                $task->done = null;
-                                $task->save();
-                                 */
-
-                                // y preparar contrato
-                                $task = new Model\Task();
-                                $task->node = \GOTEO_NODE;
-                                $task->text = date('d/m/Y').": Enviar datos contrato <strong>{$project->name}</strong>, {$project->user->name}";
-                                //@TODO enlace a gestión de contrato
-                                $task->url = "/admin/projects?proj_name={$project->name}";
-                                $task->done = null;
-                                $task->saveUnique();
-                                
                                 // + mail a mercè
                                 @mail(\GOTEO_CONTACT_MAIL,
                                     'Preparar contrato ' . $project->name,
-                                    'El proyecto '.$project->name.' ha pasado la primera ronda, enviarle los datos de contrato. Se ha creado una tarea para esto.');
+                                    'El proyecto '.$project->name.' ha pasado la primera ronda, enviarle los datos de contrato.');
                             }
 
                             echo '<br />';
@@ -355,14 +339,6 @@ namespace Goteo\Controller {
 
                                 //Email de proyecto pasa a segunda ronda a los inversores
                                 Cron\Send::toInvestors('r1_pass', $project);
-                                
-                                // Tarea para hacer los pagos
-                                $task = new Model\Task();
-                                $task->node = \GOTEO_NODE;
-                                $task->text = date('d/m/Y').": Pagar a <strong>{$project->name}</strong>, {$project->user->name}";
-                                $task->url = "/admin/projects/report/{$project->id}";
-                                $task->done = null;
-                                $task->saveUnique();
                                 
                                 // + mail a susana
                                 @mail('susana@goteo.org',
@@ -492,39 +468,54 @@ namespace Goteo\Controller {
                                     } else {
                                         $txt_errors = implode('; ', $err);
                                         echo 'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors . '<br />';
-                                        @mail('goteo_fail@doukeshi.org',
-                                            'Fallo al ejecutar cargo Paypal ' . SITE_URL,
-                                            'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: ' . $txt_errors);
                                         if ($debug) echo ' -> ERROR!!';
                                         Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: ' . $txt_errors . '. Proceso cron/execute');
 
-                                        // Notifiacion de incidencia al usuario
-                                        // Obtenemos la plantilla para asunto y contenido
-                                        $template = Template::get(37);
-                                        // Sustituimos los datos
-                                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-                                        $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');
-                                        $replace = array($userData->name, $project->name, SITE_URL . '/project/' . $project->id, $invest->amount, '');
-                                        $content = \str_replace($search, $replace, $template->text);
-                                        // iniciamos mail
-                                        $mailHandler = new Mail();
-                                        $mailHandler->reply = GOTEO_CONTACT_MAIL;
-                                        $mailHandler->replyName = GOTEO_MAIL_NAME;
-                                        $mailHandler->to = $userData->email;
-                                        $mailHandler->toName = $userData->name;
-                                        $mailHandler->subject = $subject;
-                                        $mailHandler->content = $content;
-                                        $mailHandler->html = true;
-                                        $mailHandler->template = $template->id;
-                                        if ($mailHandler->send()) {
-                                            Model\Invest::setDetail($invest->id, 'issue-notified', "Se ha notificado la incidencia al usuario");
-                                        } else {
-                                            Model\Invest::setDetail($invest->id, 'issue-notify-failed', "Ha fallado al enviar el mail de notificacion de la incidencia al usuario");
+                                        //  que el sistema NO lance el mensaje a los cofinanciadores
+                                        // cuando el error lanzado por paypal sea el no estar verificada la cuenta del impulsor
+                                        if (!isset($err[569042])) {
+                                            // Notifiacion de incidencia al usuario
+
+                                            //  idioma de preferencia del usuario
+                                            $prefer = Model\User::getPreferences($userData->id);
+                                            $comlang = !empty($prefer->comlang) ? $prefer->comlang : $userData->lang;
+
+                                            // Obtenemos la plantilla para asunto y contenido
+                                            $template = Template::get(37, $comlang);
+                                            // Sustituimos los datos
+                                            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+                                            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');
+                                            $replace = array($userData->name, $project->name, SITE_URL . '/project/' . $project->id, $invest->amount, '');
+                                            $content = \str_replace($search, $replace, $template->text);
+                                            // iniciamos mail
+                                            $mailHandler = new Mail();
+                                            $mailHandler->reply = GOTEO_CONTACT_MAIL;
+                                            $mailHandler->replyName = GOTEO_MAIL_NAME;
+                                            $mailHandler->to = $userData->email;
+                                            $mailHandler->toName = $userData->name;
+                                            $mailHandler->subject = $subject;
+                                            $mailHandler->content = $content;
+                                            $mailHandler->html = true;
+                                            $mailHandler->template = $template->id;
+                                            if ($mailHandler->send()) {
+                                                Model\Invest::setDetail($invest->id, 'issue-notified', "Se ha notificado la incidencia al usuario");
+                                            } else {
+                                                Model\Invest::setDetail($invest->id, 'issue-notify-failed', "Ha fallado al enviar el mail de notificacion de la incidencia al usuario");
+                                                @mail('goteo_fail@doukeshi.org',
+                                                    'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
+                                                    'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, true). '</pre>');
+                                            }
+
                                             @mail('goteo_fail@doukeshi.org',
-                                                'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
-                                                'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, 1). '</pre>');
+                                                'Fallo al ejecutar cargo Paypal ' . SITE_URL,
+                                                'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: <pre>' . print_r($err, true). '</pre>');
+
+                                        } else {
+                                            @mail('goteo_fail@doukeshi.org',
+                                                'Cuenta impulsor no confirmada en paypal ' . SITE_URL,
+                                                'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: <pre>' . print_r($err, true). '</pre>');
                                         }
-                                        
+
                                     }
                                     break;
                                 case 'tpv':
@@ -576,9 +567,14 @@ namespace Goteo\Controller {
 
                 if ($debug) echo 'Fin tratamiento Proyecto '.$project->name.'<hr />';
             }
-
+            echo '<hr/>';
 
             // checkeamos campañas activas
+
+            /*
+            // Julian: 06/07/2014  ya no hacemos este cambio de estado automático
+            // el cambio de estado lo controlará el convocador (o admin responsable)
+            // ponemos un botón en el panel admin, el feed se generará entonces
             $campaigns = Model\Call::getActive(4);
             foreach ($campaigns as $campaign) {
                 $errors = array();
@@ -620,7 +616,18 @@ namespace Goteo\Controller {
                 }
 
             }
+            */
 
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
+            if ($debug) {
+                echo '<hr/>';
+                echo "<br /><strong>cron/execute finish (executed in ".$total_time." seconds)</strong><hr />";
+            }
 
             // desbloqueamos
             if (unlink($block_file)) {
@@ -632,8 +639,9 @@ namespace Goteo\Controller {
                 } else {
                     echo 'No hay archivo de bloqueo '.$block_file.'!<br />';
                 }
+                @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' no se ha podido desbloquear en ' . SITE_URL,
+                    'No se ha podido eliminar el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
             }
-            
             
             // recogemos el buffer para grabar el log
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
@@ -657,7 +665,7 @@ namespace Goteo\Controller {
             }
             
             $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
-            if ($debug) echo 'Modo debug activado<br />';
+            if ($debug) echo 'Modo debug activado<hr />';
             
             // lanzamos subcontrolador
             Cron\Verify::process($debug);
@@ -867,7 +875,7 @@ namespace Goteo\Controller {
 //            $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
             $debug = true;
             
-            if ($debug) echo 'Modo debug activado<br />';
+            if ($debug) echo 'Modo debug activado<hr />';
             
             // subcontrolador Auto-tips
             Cron\Daily::Projects($debug);

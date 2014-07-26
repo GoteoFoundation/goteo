@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
+        Goteo\Controller\Cron\Send,
         Goteo\Library\Text,
         Goteo\Library\Check,
         Goteo\Library\Mail,
@@ -77,6 +78,7 @@ namespace Goteo\Controller {
                      'userProfile'  => 'userProfile',
                      'userPersonal' => 'userPersonal',
                      'overview'     => 'overview',
+                     'images'       => 'images',
                      'costs'        => 'costs',
                      'rewards'      => 'rewards',
                      'supports'     => 'supports'
@@ -112,6 +114,10 @@ namespace Goteo\Controller {
                     'overview' => array(
                         'name' => Text::get('step-3'),
                         'title' => Text::get('step-overview')
+                    ),
+                    'images' => array(
+                        'name' => Text::get('step-3b'),
+                        'title' => Text::get('step-images')
                     ),
                     'costs'=> array(
                         'name' => Text::get('step-4'),
@@ -160,11 +166,9 @@ namespace Goteo\Controller {
 
                 // hay que mostrar errores en la imagen
                 if (!empty($errors['image'])) {
-                    $project->errors['overview']['image'] = $errors['image'];
-                    $project->okeys['overview']['image'] = null;
+                    $project->errors['images']['image'] = $errors['image'];
+                    $project->okeys['images']['image'] = null;
                 }
-
-
 
                 // si estan enviando el proyecto a revisión
                 if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
@@ -176,55 +180,19 @@ namespace Goteo\Controller {
                             $_SESSION['project'] = $project;
                         }
 
+                        Message::Info(Text::get('project-review-request_mail-success'));
+
                         // email a los de goteo
-                        $mailHandler = new Mail();
-
-                        $mailHandler->reply = $project->user->email;
-                        $mailHandler->replyName = "{$project->user->name}";
-                        $mailHandler->to = \GOTEO_MAIL;
-                        $mailHandler->toName = 'Revisor de proyectos';
-                        $mailHandler->subject = 'Proyecto ' . $project->name . ' enviado a valoración';
-                        $mailHandler->content = '<p>Han enviado un nuevo proyecto a revisión</p><p>El nombre del proyecto es: <span class="message-highlight-blue">'.$project->name.'</span> <br />y se puede ver en <span class="message-highlight-blue"><a href="'.SITE_URL.'/project/'.$project->id.'">'.SITE_URL.'/project/'.$project->id.'</a></span></p>';
-                        $mailHandler->html = true;
-                        $mailHandler->template = 0;
-                        if ($mailHandler->send($errors)) {
-                            Message::Info(Text::get('project-review-request_mail-success'));
-                        } else {
-                            Message::Error(Text::get('project-review-request_mail-fail'));
-                            Message::Error(implode('<br />', $errors));
-                        }
-
-                        unset($mailHandler);
+                        $sent1 = Send::toConsultants('project_to_review_consultant', $project);
 
                         // email al autor
-                        // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(8);
+                        $sent2 = Send::toOwner('project_to_review', $project);
 
-                        // Sustituimos los datos
-                        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-
-                        // En el contenido:
-                        $search  = array('%USERNAME%', '%PROJECTNAME%');
-                        $replace = array($project->user->name, $project->name);
-                        $content = \str_replace($search, $replace, $template->text);
-
-
-                        $mailHandler = new Mail();
-
-                        $mailHandler->to = $project->user->email;
-                        $mailHandler->toName = $project->user->name;
-                        $mailHandler->subject = $subject;
-                        $mailHandler->content = $content;
-                        $mailHandler->html = true;
-                        $mailHandler->template = $template->id;
-                        if ($mailHandler->send($errors)) {
+                        if ($sent1 && $sent2) {
                             Message::Info(Text::get('project-review-confirm_mail-success'));
                         } else {
                             Message::Error(Text::get('project-review-confirm_mail-fail'));
-                            Message::Error(implode('<br />', $errors));
                         }
-
-                        unset($mailHandler);
 
                         // Evento Feed
                         $log = new Feed();
@@ -238,6 +206,9 @@ namespace Goteo\Controller {
                         unset($log);
 
                         throw new Redirection("/dashboard?ok");
+                    } else {
+                        Message::Error(Text::get('project-review-request_mail-fail'));
+                        Message::Error(implode('<br />', $errors));
                     }
                 }
 
@@ -291,6 +262,10 @@ namespace Goteo\Controller {
                     $viewData['categories'] = Model\Project\Category::getAll();
 //                    $viewData['currently'] = Model\Project::currentStatus();
 //                    $viewData['scope'] = Model\Project::scope();
+                    break;
+
+                case 'images':
+
                     break;
 
                 case 'costs':
@@ -428,8 +403,13 @@ namespace Goteo\Controller {
 
                         $callData = Model\Call::getMini($call);
                         // email al autor
+
+                        //  idioma de preferencia del usuario
+                        $prefer = Model\User::getPreferences($_SESSION['user']->id);
+                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $_SESSION['user']->lang;
+
                         // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(39);
+                        $template = Template::get(39, $comlang);
 
                         // Sustituimos los datos
                         $subject = str_replace('%CALLNAME%', $callData->name, $template->title);
@@ -452,7 +432,7 @@ namespace Goteo\Controller {
                             Message::Info(Text::get('assign-call-success', $callData->name));
                         } else {
                             Message::Error(Text::get('project-review-confirm_mail-fail'));
-                            \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $_SESSION['user']->email . ' con esta instancia <pre>'.print_r($mailHandler, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
+                            \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $_SESSION['user']->email . ' con esta instancia <pre>'.print_r($mailHandler, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
                         }
 
                         unset($mailHandler);
@@ -468,7 +448,7 @@ namespace Goteo\Controller {
                         $log->doAdmin('project');
                         unset($log);
                     } else {
-                        \mail('goteo_fail@doukeshi.org', 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, 1).'</pre> y ha dado estos errores: <pre>' . print_r($errors, 1) . '</pre>');
+                        \mail('goteo_fail@doukeshi.org', 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
                     }
                 }
 
@@ -491,12 +471,32 @@ namespace Goteo\Controller {
                 }
             }
 
-            // mensaje cuando, sin estar en campaña, tiene fecha de publicación, es que la campaña ha sido cancelada
-            if ($project->status < 3 && !empty($project->published))
-                Message::Info(Text::get('project-unpublished'));
-            elseif ($project->status < 3)
+            // retornos adicionales (bonus)
+            $project->bonus_rewards = array();
+            foreach ($project->social_rewards as $key => &$reward ) {
+
+
+                if ($reward->bonus) {
+                    $project->bonus_rewards[$key] = $reward;
+                    unset($project->social_rewards[$key]);
+                }
+            }
+
+            // mensaje cuando, sin estar en campaña, tiene fecha de publicación
+            if ($project->status < 3 && !empty($project->published)) {
+
+                if ($project->published > date('Y-m-d')) {
+                    // si la fecha es en el futuro, es que se publicará
+                    Message::Info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
+                } else {
+                    // si la fecha es en el pasado, es que la campaña ha sido cancelada
+                    Message::Info(Text::get('project-unpublished'));
+                }
+
+            } elseif ($project->status < 3) {
                 // mensaje de no publicado siempre que no esté en campaña
                 Message::Info(Text::get('project-not_published'));
+            }
 
 
             // solamente se puede ver publicamente si...
@@ -550,7 +550,7 @@ namespace Goteo\Controller {
                         throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
                     }
 
-                    if (Model\Project\Conf::getNoinvest($id)) {
+                    if ($project->noinvest) {
                         Message::Error(Text::get('investing_closed'));
                         throw new Redirection('/project/'.$id);
                     }
@@ -785,7 +785,7 @@ namespace Goteo\Controller {
             $bankacc = (!empty($_POST['bank'])) ? $_POST['bank'] : '';
 
             // primero checkeamos si la cuenta Paypal es tipo email
-            if (!Check::mail($ppacc)) {
+            if (!isset($project->called) && !empty($ppacc) && !Check::mail($ppacc)) {
                 $project->errors['userPersonal']['paypal'] = Text::get('validate-project-paypal_account');
             } else {
                 $project->okeys['userPersonal']['paypal'] = true;
@@ -836,19 +836,6 @@ namespace Goteo\Controller {
 //                }
             }
 
-            // tratar la imagen que suben
-            if (isset($_FILES['image_upload']) && $_FILES['image_upload']['error'] != UPLOAD_ERR_NO_FILE) {
-                $project->image = $_FILES['image_upload'];
-            }
-
-            // tratar las imagenes que quitan
-            foreach ($project->gallery as $key=>$image) {
-                if (!empty($_POST["gallery-{$image->id}-remove"])) {
-                    $image->remove('project');
-                    unset($project->gallery[$key]);
-                }
-            }
-
             // Media
             if (!empty($project->media)) {
                 $project->media = new Model\Project\Media($project->media);
@@ -879,6 +866,32 @@ namespace Goteo\Controller {
             }
 
             $quedan = $project->categories; // truki para xdebug
+
+            return true;
+        }
+
+        /*
+         * Paso 3b - IMÁGENES
+         */
+
+        private function process_images(&$project, &$errors) {
+            if (!isset($_POST['process_images'])) {
+                return false;
+            }
+
+
+            // tratar la imagen que suben
+            if (isset($_FILES['image_upload']) && $_FILES['image_upload']['error'] != UPLOAD_ERR_NO_FILE) {
+                $project->image = $_FILES['image_upload'];
+            }
+
+            // tratar las imagenes que quitan
+            foreach ($project->gallery as $key=>$image) {
+                if (!empty($_POST["gallery-{$image->id}-remove"])) {
+                    $image->remove('project');
+                    unset($project->gallery[$key]);
+                }
+            }
 
             return true;
         }

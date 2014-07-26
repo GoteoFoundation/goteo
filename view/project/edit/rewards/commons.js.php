@@ -1,24 +1,40 @@
 <?php 
 /* Esta vista es para el ajax de gestión de retornos colectivos
- * Desde /admin/commons  y desde /dashboard/projects/commons
- * Necesita haber usado la vista view/project/edit/rewars/commons.html.php
+ * Desde /admin/commons y desde /dashboard/projects/commons
+ * Necesita haber usado la vista view/project/edit/rewards/view_commons.html.php
  */ 
 ?>
 <script type="text/javascript">
+
+    // Versión mejorada de:
+    // https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
+    function ValidURL(str) {
+        var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
+            '((([a-z0-9\d]([a-z0-9\d-]*[a-z0-9\d])*)\.)+[a-z]{2,}|'+ // domain name
+            '((\d{1,3}\.){3}\d{1,3}))'+ // OR ip (v4) address
+            '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\d%_.~+=-]*)?'+ // query string
+            '(\#[-a-z\d_]*)?$','i'); // fragment locater
+        if(!pattern.test(str)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     function fulsocial (proj, rew, val) {
         success_text = $.ajax({async: false, type: "POST", data: ({project: proj, reward: rew, value: val}), url: '<?php echo SITE_URL; ?>/c7feb7803386d713e60894036feeee9e/ce8c56139d45ec05e0aa2261c0a48af9'}).responseText;
 
-        if (success_text != 'OK') {
-            alert('No se ha modificado, error en webservice: ' + success_text);
-        } else {
-            if (success_text == 'OK' && val == 1) {
+        if (String(success_text).trim() == 'OK') {
+            if (val == 1) {
                 $("#rew"+rew).html('<span style="color: green; font-weight: bold;">Cumplido</span>&nbsp;<a href="#" onclick="return fulsocial(\''+proj+'\', \''+rew+'\', 0)">[X]</a>');
-            } 
-            if (success_text == 'OK' && val == 0) {
+            } else {
                 $("#rew"+rew).html('<span style="color: red; font-weight: bold;">Pendiente</span>&nbsp;<a href="#" onclick="return fulsocial(\''+proj+'\', \''+rew+'\', 1)">[ok]</a>');
             }
+        } else {
+            alert('No se ha modificado, error en webservice: *' + success_text + '*');
         }
-        
+
         return false;
     }
     
@@ -26,7 +42,6 @@
         
         // al filtrar por estado de proyecto
         $("#projStatus-filter").change(function(){
-            
             $("#filter-form").submit();
         });
         
@@ -53,23 +68,36 @@
             var proj = $(this).attr('proj');
             var rew = $(this).attr('rew');
             var val = $('#rew'+rew+'url').val();
-            success_text = $.ajax({async: false, type: "POST", data: ({project: proj, reward: rew, value: val}), url: '<?php echo SITE_URL; ?>/c7feb7803386d713e60894036feeee9e/d82318a7bec39ac2b78be96b8ec2b76e/'}).responseText;
-            
-            if (success_text != 'OK') {
-                alert('No se ha modificado, error en webservice: ' + success_text);
-            } else {
-                if (success_text == 'OK') {
-                    $("#divrew"+rew+"url a.rewurl").attr('href', val);
-                    $("#divrew"+rew+"url a.rewurl").html(val);
-                    $("#divrew"+rew+"urlinput").hide();
-                    $("#divrew"+rew+"url").show();
-                } 
+
+            if (val.length === 0 || !val.trim()) {
+                $('#rew'+rew+'url').focus();
+                return;
             }
-            
+
+            if (!ValidURL(val)) {
+                alert('La URL introducida no es válida. Por favor compruébela de nuevo.');
+                $('#rew'+rew+'url').focus();
+                return;
+            }
+
+            if (val.indexOf('http') != 0) {
+                val = 'http://' + val;
+                $('#rew'+rew+'url').val(val);
+            }
+
+            success_text = $.ajax({async: false, type: "POST", data: ({project: proj, reward: rew, value: val}), url: '<?php echo SITE_URL; ?>/c7feb7803386d713e60894036feeee9e/d82318a7bec39ac2b78be96b8ec2b76e/'}).responseText;
+
+            if (String(success_text).trim() == 'OK') {
+                $("#divrew"+rew+"url a.rewurl").attr('href', val);
+                $("#divrew"+rew+"url a.rewurl").html(val);
+                $("#divrew"+rew+"urlinput").hide();
+                $("#divrew"+rew+"url").show();
+            } else {
+                alert('No se ha modificado, error en webservice: *' + success_text + '*');
+            }
+
             event.preventDefault();
         });
     });
-    
-    
     
 </script>

@@ -1,8 +1,12 @@
 <?php
+
+use \Goteo\Library\Text;
+
 if (NODE_ID != GOTEO_NODE) {
     include 'view/node/prologue.html.php';
     return;
 }
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,7 +15,7 @@ if (NODE_ID != GOTEO_NODE) {
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php echo GOTEO_META_TITLE ?></title>
         <link rel="icon" type="image/png" href="/myicon.png" />
-        <meta name="description" content="La plataforma crowdfunding que recibe aportaciones más generosas. Sólo ubicamos proyectos abiertos, contamos con una gran comunidad que puede ayudar a hacer realidad tu proyecto" />
+        <meta name="description" content="<?php  echo Text::get('meta-description-index');?>" />
         <meta name="keywords" content="<?php echo GOTEO_META_KEYWORDS ?>" />
         <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
         <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
@@ -34,7 +38,7 @@ if (NODE_ID != GOTEO_NODE) {
         <meta property="og:title" content="Goteo.org" />
         <meta property="og:description" content="<?php echo utf8_decode(GOTEO_META_DESCRIPTION) ?>" />
         <meta property="og:image" content="<?php echo SRC_URL ?>/goteo_logo.png" />
-        <meta property="og:url" content="<?php echo SRC_URL ?>" />
+        <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.min.css" />
       <!--[if IE]>
@@ -84,6 +88,9 @@ if (NODE_ID != GOTEO_NODE) {
         <?php if (isset($jsreq_autocomplete)) : ?>
             <link href="<?php echo SRC_URL ?>/view/css/jquery-ui-1.10.3.autocomplete.min.css" rel="stylesheet" />
             <script src="<?php echo SRC_URL ?>/view/js/jquery-ui-1.10.3.autocomplete.min.js"></script>
+        <?php endif; ?>
+        <?php if (isset($jsreq_ckeditor)) : ?>
+           <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
         <?php endif; ?>
 
 <script type="text/javascript">

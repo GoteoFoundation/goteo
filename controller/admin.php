@@ -19,21 +19,9 @@ namespace Goteo\Controller {
 
         // Array de usuarios con permisos especiales
         static public $supervisors = array(
-            'id-usuario-supervisor' => array(
+            'contratos' => array(
                 // paneles de admin permitidos
-                'base',
-                'blog',
-                'texts',
-                'faq',
-                'pages',
-                'licenses',
-                'icons',
-                'tags',
-                'criteria',
-                'templates',
-                'glossary',
-                'info',
-                'mailing' // para testeo newsletter
+                'commons'
             )
         );
         // Array de los gestores que existen
@@ -91,7 +79,8 @@ namespace Goteo\Controller {
                     'projects' => array('label' => 'Gestionando proyectos de la convocatoria', 'item' => true),
                     'admins' => array('label' => 'Asignando administradores de la convocatoria', 'item' => true),
                     'posts' => array('label' => 'Entradas de blog en la convocatoria', 'item' => true),
-                    'conf' => array('label' => 'Configurando la convocatoria', 'item' => true)
+                    'conf' => array('label' => 'Configurando la convocatoria', 'item' => true),
+                    'dropconf' => array('label' => 'Gestionando parte económica de la convocatoria', 'item' => true)
                 ),
                 'filters' => array('status' => '', 'category' => '', 'caller' => '', 'name' => '', 'admin' => '','order' => '')
             ),
@@ -115,7 +104,11 @@ namespace Goteo\Controller {
             'commons' => array(
                 'label' => 'Retornos colectivos',
                 'actions' => array(
-                    'list' => array('label' => 'Listando', 'item' => false)
+                    'list' => array('label' => 'Listando', 'item' => false),
+                    'view' => array('label' => 'Gestión de retornos', 'item' => true),
+                    'info' => array('label' => 'Información de contacto', 'item' => true),
+                    'add' => array('label' => 'Nuevo retorno', 'item' => false),
+                    'edit' => array('label' => 'Editando retorno', 'item' => true)
                 ),
                 'filters' => array('project' => '', 'status' => '', 'icon' => '', 'projStatus'=>'')
             ),
@@ -247,6 +240,15 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('status' => '', 'admin' => '', 'name' => '')
             ),
+            'open_tags' => array(
+                'label' => 'Agrupaciones',
+                'actions' => array(
+                    'list' => array('label' => 'Listando', 'item' => false),
+                    'add' => array('label' => 'Nueva Agrupación', 'item' => false),
+                    'edit' => array('label' => 'Editando Agrupación', 'item' => true),
+                    'translate' => array('label' => 'Traduciendo Agrupación', 'item' => true)        
+                )
+            ),
             'pages' => array(
                 'label' => 'Páginas',
                 'actions' => array(
@@ -260,8 +262,10 @@ namespace Goteo\Controller {
                 'label' => 'Padrinos',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
-                    'add' => array('label' => 'Nueva Recomendación', 'item' => false),
-                    'edit' => array('label' => 'Editando Recomendacion', 'item' => true)
+                    'add' => array('label' => 'Nuevo apadrinamiento', 'item' => false),
+                    'edit' => array('label' => 'Editando Apadrinamiento', 'item' => true),
+                    'view' => array('label' => 'Apadrinamientos', 'item' => true),
+                    'reorder' => array('label' => 'Ordenando los padrinos en Portada', 'item' => false)
                 )
             ),
             'projects' => array(
@@ -273,10 +277,12 @@ namespace Goteo\Controller {
                     'images' => array('label' => 'Imágenes del proyecto', 'item' => true),
                     'move' => array('label' => 'Moviendo a otro Nodo el proyecto', 'item' => true),
                     'assign' => array('label' => 'Asignando a una Convocatoria el proyecto', 'item' => true),
+                    'open_tags' => array('label' => 'Asignando una agrupación al proyecto', 'item' => true),
                     'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true),
-                    'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true)
+                    'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true),
+                    'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true)
                 ),
-                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '')
+                'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '', 'consultant' => '','proj_id' =>'')
             ),
             'promote' => array(
                 'label' => 'Proyectos destacados',
@@ -301,9 +307,10 @@ namespace Goteo\Controller {
                     'geoloc' => array('label' => 'Informe usuarios Localizados', 'item' => false),
                     'projects' => array('label' => 'Informe Impulsores', 'item' => true),
                     'calls' => array('label' => 'Informe Convocatorias', 'item' => true),
-                    'donors' => array('label' => 'Informe Donantes', 'item' => false)
+                    'donors' => array('label' => 'Informe Donantes', 'item' => false),
+                    'top' => array('label' => 'Top Cofinanciadores', 'item' => false)
                 ),
-                'filters' => array('report' => '', 'date_from' => '', 'date_until' => '', 'year' => '2013', 'status' => '', 'user' => '')
+                'filters' => array('report' => '', 'date_from' => '', 'date_until' => '', 'year' => '2014', 'status' => '', 'user' => '', 'top'=>'numproj', 'limit'=>25)
             ),
             'reviews' => array(
                 'label' => 'Revisiones',
@@ -344,7 +351,8 @@ namespace Goteo\Controller {
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva Historia', 'item' => false),
                     'edit' => array('label' => 'Editando Historia', 'item' => true),
-                    'translate' => array('label' => 'Traduciendo Historia', 'item' => true)
+                    'translate' => array('label' => 'Traduciendo Historia', 'item' => true),
+                    'preview' => array('label' => 'Previsualizando Historia', 'item' => true)
                 )
             ),
             'tags' => array(
@@ -372,7 +380,7 @@ namespace Goteo\Controller {
                     'edit' => array('label' => 'Editando Plantilla', 'item' => true),
                     'translate' => array('label' => 'Traduciendo Plantilla', 'item' => true)
                 ),
-                'filters' => array('group' => '', 'name' => '')
+                'filters' => array('id'=>'', 'group' => '', 'name' => '')
             ),
             'texts' => array(
                 'label' => 'Textos interficie',
@@ -717,7 +725,8 @@ namespace Goteo\Controller {
                                 'blog' => $options['blog'], // entradas de blog (en la gestion de blog)
                                 'sponsors' => $options['sponsors'], // patrocinadores del nodo
                                 'stories' => $options['stories'],    // historias exitosas
-                                'recent' => $options['recent']
+                                'recent' => $options['recent'],
+                                'news' => $options['news'] // Banner de prensa
                             )
                         )
                     );
@@ -735,6 +744,7 @@ namespace Goteo\Controller {
                         $menu['projects']['options']['transcalls'] = $options['transcalls']; // traducción de convocatorias
                         $menu['projects']['options']['commons'] = $options['commons']; // gestion de retornos colectivos
                         $menu['projects']['options']['bazar'] = $options['bazar']; // gestion de retornos colectivos
+                        $menu['contents']['options']['open_tags'] = $options['open_tags']; // gestión de agrupaciones
                     }
 
                     break;
@@ -750,6 +760,7 @@ namespace Goteo\Controller {
                                 'categories' => $options['categories'],
                                 'licenses' => $options['licenses'],
                                 'icons' => $options['icons'],
+                                'open_tags' => $options['open_tags'],
                                 'tags' => $options['tags'],
                                 'criteria' => $options['criteria'],
                                 'templates' => $options['templates'],

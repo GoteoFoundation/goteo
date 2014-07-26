@@ -4,6 +4,7 @@ namespace Goteo\Controller\Cron {
 
     use Goteo\Model,
         Goteo\Controller\Cron\Send,
+        Goteo\Library\Text,
         Goteo\Library\Feed;
 
     class Daily {
@@ -15,16 +16,63 @@ namespace Goteo\Controller\Cron {
          */
         public static function Projects ($debug = false) {
 
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $start = $time;
+
+            if ($debug) echo '<strong>cron/daily: Projects() start</strong><br />';
+
+            // Publicación automática de campañas:
+            // Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
+            // A esos les cambia el estado a publicado.
+            $projects = Model\Project::getList(array('status' => 2, 'published' => date('Y-m-d') ));
+            if ($debug) {
+                echo 'Publicación de proyectos automática: ';
+                if (count($projects) > 0) {
+                    echo 'se van a publicar ' . count($projects) . ' proyectos';
+                } else {
+                    echo 'no hay ningún proyecto para publicar hoy';
+                }
+                echo '.<br/><br/>';
+            }
+            foreach ($projects as $project) {
+                $res = $project->publish();
+
+                if ($res) {
+                    $log_text = 'Se ha pasado automáticamente el proyecto %s al estado <span class="red">en Campaña</span>';
+                } else {
+                    $log_text = 'El sistema ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
+                }
+                $log_text = \vsprintf($log_text, array(Feed::item('project', $project->name, $project->id)));
+                if ($debug) echo $log_text;
+
+                // galeria
+                $project->gallery = Model\Project\Image::getGallery($project->id);
+
+                // Evento Feed
+                $log = new Feed();
+                $log->setTarget($project->id);
+                $log->populate('Publicación automática de un proyecto', '/admin/projects', $log_text);
+                $log->doAdmin('admin');
+
+                $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
+                $log->doPublic('projects');
+                unset($log);
+            }
+
             // proyectos a notificar
             $projects = Model\Project::review();
 
-            // para cada uno,
             foreach ($projects as $project) {
-                
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
-                if ($project->days > 42 || $project->days > 360) continue;
+                // FIXME: la segunda condicion del if
+                if ($project->days > 42 || $project->days > 360) {
+                    // if ($debug) echo "Proyecto <strong>{$project->name}</strong> SKIP<br/>"; // no necesitamos este feedback
+                    continue;
+                }
 
-                if ($debug) echo "Proyecto {$project->name}, Impulsor:  {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias<br />";
+                if ($debug) echo "Proyecto <strong>{$project->name}</strong>, Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias<br />";
                 
                 // primero los que no se bloquean
                 //Solicitud de datos del contrato
@@ -74,6 +122,12 @@ namespace Goteo\Controller\Cron {
                 switch ($project->days) {
                     
                     // NO condicionales
+                    case 0: // Proyecto publicado
+                        $template = 'tip_0';
+                        if ($debug) echo "Envío {$template}<br />";
+                        Send::toOwner($template, $project);
+                        Send::toConsultants($template, $project);
+                        break;
                     case 1: // Difunde, difunde, difunde
                     case 2: // Comienza por lo más próximo
                     case 3: // Una acción a diario, por pequeña que sea
@@ -104,7 +158,7 @@ namespace Goteo\Controller\Cron {
                         break;
                     
                     // comprobación periódica pero solo un envío
-                    case 7: // Apóyate en quienes te van apoyando ,  si más de 20 cofinanciadores
+                    case 7: // Apóyate en quienes te van apoyando, si más de 20 cofinanciadores
                         // o en cuanto llegue a 20 backers (en fechas libres)
                     case 14: 
                     case 17: 
@@ -227,7 +281,7 @@ namespace Goteo\Controller\Cron {
                 
                 // Avisos periodicos 
                 // si lleva más de 15 días: si no se han publicado novedades en la última semana 
-                // Ojo! que si no a enviado ninguna no lanza este sino la de cada 6 días
+                // Ojo! que si no ha enviado ninguna no lanza este sino la de cada 6 días
                 if (!$avisado && $project->days > 15) {
                     if ($debug) echo "ya lleva una quincena de campaña, verificamos novedades<br />";
                     
@@ -280,11 +334,43 @@ namespace Goteo\Controller\Cron {
                     
                 }
                 
-                if ($debug) echo "<hr />";
+                if ($debug) echo "<br />";
                 
             }
             
-            if ($debug) echo "<br />Auto-tips Listo!<hr />";
+            // Obtiene los proyectos que llevan 10 meses con status=4 (proyecto financiado) y
+            // envía un correo a los asesores del proyecto en caso de que no consten aún los retornos colectivos
+            $success_date = date('Y-m-d', strtotime("-10 month"));
+            $projects = Model\Project::getList(array('status' => 4, 'success' => $success_date));
+
+            $filtered_projects = array_filter($projects, 
+                function($project) {
+                    $rewards_fulfilled = Model\Project\Reward::areFulfilled($project->id, 'social');
+                    $project_fulfilled = $project->status == 5;
+                    return !($rewards_fulfilled || $project_fulfilled);
+                }
+            );
+
+            if ($debug) {
+                echo "<hr/>";
+                echo "Buscando proyectos financiados hace 10 meses ({$success_date}). Encontrados: " . count($projects) . "  <br />";
+                echo "De ellos, no han cumplido con los retornos colectivos: " . count($filtered_projects) . "  <br /><br />";
+            }
+
+            foreach ($filtered_projects as $project) {
+                if ($debug) {
+                    echo "Proyecto {$project->name}, Impulsor: {$project->user->name}, email: {$project->user->email} lleva 10 meses financiado y no constan retornos colectivos.<br />";
+                }
+                Send::toConsultants('commons', $project);
+            }
+
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
+            if ($debug) echo "<br /><strong>cron/daily: Projects() finish (executed in ".$total_time." seconds)</strong><hr />";
 
             return;
         }
@@ -296,6 +382,13 @@ namespace Goteo\Controller\Cron {
          */
         public static function Calls ($debug = false) {
             
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $start = $time;
+
+            if ($debug) echo '<strong>cron/daily: Calls() start</strong><br />';
+
             // convocatorias con aplicación abierta
             $calls = Model\Call::getActive(3);
             foreach ($calls as $call) {
@@ -341,8 +434,6 @@ namespace Goteo\Controller\Cron {
                     echo \vsprintf($log_text, array($call->name)).'<br />';
                 }
             }
-
-
 
             // campañas dando dinero
             $campaigns = Model\Call::getActive(4);
@@ -393,7 +484,13 @@ namespace Goteo\Controller\Cron {
                 }
             }
             
-            if ($debug) echo "<br />Calls-control Listo!<hr />";
+            $time = microtime();
+            $time = explode(' ', $time);
+            $time = $time[1] + $time[0];
+            $finish = $time;
+            $total_time = round(($finish - $start), 4);
+
+            if ($debug) echo "<br /><strong>cron/daily: Calls() finish (executed in ".$total_time." seconds)</strong><hr />";
 
             return;
         }

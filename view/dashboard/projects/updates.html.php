@@ -88,6 +88,31 @@ if ($this['action'] == 'none') return;
         }
     ?>
 
+<script type="text/javascript">
+
+$(document).ready(function(){
+    // Lanza wysiwyg contenido
+    CKEDITOR.replace('text_editor', {
+        toolbar: 'Full',
+        toolbar_Full: [
+                ['Source','-'],
+                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                '/',
+                ['Bold','Italic','Underline','Strike'],
+                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                ['Link','Unlink','Anchor'],
+                ['Image','Format','FontSize'],
+              ],
+        skin: 'kama',
+        language: 'es',
+        height: '300px',
+        width: '630px'
+    });
+});
+</script>
+
     <form method="post" action="/dashboard/projects/updates/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
 
     <?php echo new SuperForm(array(

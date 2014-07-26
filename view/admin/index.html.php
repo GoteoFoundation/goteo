@@ -103,7 +103,11 @@ include 'view/header.html.php';
             <?php endif; ?>
         </div>
     <?php
-        // Lateral de acctividad reciente
+        // Lateral de acctividad reciente (solo admins y superadmines)
+
+           if (isset($_SESSION['user']->roles['admin'])
+            || isset($_SESSION['user']->roles['superadmin'])
+            || isset($_SESSION['user']->roles['root'])) :
     ?>
             <div class="admin-side">
                 <a name="feed"></a>
@@ -149,7 +153,12 @@ include 'view/header.html.php';
             </div>
 
 
-        <?php endif; ?>
+        <?php
+                endif;
+
+
+            endif;
+            ?>
 
             </div> <!-- fin center -->
 

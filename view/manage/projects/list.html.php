@@ -21,7 +21,7 @@ $filters = $this['filters'];
         
         <div style="float:left;margin:5px;">
             <label for="node-filter">Del nodo:</label><br />
-            <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
+            <select id="node-filter" name="node">
                 <option value="">Cualquier nodo</option>
             <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
                 <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
@@ -33,7 +33,7 @@ $filters = $this['filters'];
         
         <div style="float:left;margin:5px;">
             <label for="projects-filter">Estado de campa&ntilde;a</label><br />
-            <select id="projects-filter" name="projectStatus" onchange="document.getElementById('filter-form').submit();">
+            <select id="projects-filter" name="projectStatus">
                 <option value="all"<?php echo ($filters['projectStatus'] == 'all') ? ' selected="selected"' : ''; ?>>En campaña o financiados</option>
             <?php foreach ($this['projectStatus'] as $statusId=>$statusName) : ?>
                 <option value="<?php echo $statusId; ?>"<?php if ($filters['projectStatus'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
@@ -42,7 +42,7 @@ $filters = $this['filters'];
         </div>
         <div style="float:left;margin:5px;">
             <label for="contract-filter">Estado de proceso de contrato</label><br />
-            <select id="contract-filter" name="contractStatus" onchange="document.getElementById('filter-form').submit();">
+            <select id="contract-filter" name="contractStatus">
                 <option value="all"<?php echo ($filters['contractStatus'] == 'all') ? ' selected="selected"' : ''; ?>>En cualquier estado</option>
             <?php foreach ($this['contractStatus'] as $statusId=>$statusName) : ?>
                 <option value="<?php echo $statusId; ?>"<?php if ($filters['contractStatus'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
@@ -52,7 +52,7 @@ $filters = $this['filters'];
         
         <div style="float:left;margin:5px;">
             <label for="order-filter">Ordenar por:</label><br />
-            <select id="order-filter" name="order" onchange="document.getElementById('filter-form').submit();">
+            <select id="order-filter" name="order">
             <?php foreach ($this['orders'] as $orderId=>$orderName) : ?>
                 <option value="<?php echo $orderId; ?>"<?php if ($filters['order'] == $orderId) echo ' selected="selected"';?>><?php echo $orderName; ?></option>
             <?php endforeach; ?>
@@ -78,7 +78,16 @@ $filters = $this['filters'];
 </div>
 
     
-<?php foreach ($this['projects'] as $project) : ?>
+<?php foreach ($this['projects'] as $project) :
+
+    // calculo fecha de vencimiento (timestamp de un año despues de financiado)
+    $deadline = mktime(0, 0, 0,
+        date('m', strtotime($project->success)),
+        date('d', strtotime($project->success)),
+        date('Y', strtotime($project->success)) + 1
+    );
+
+?>
 <a name="<?php echo $project->id; ?>"></a>
 <div class="widget board">
     <table>
@@ -122,6 +131,7 @@ $filters = $this['filters'];
                     <strong>Publicado el</strong> <?php echo date('d-m-Y', strtotime($project->published)); ?>&nbsp;&nbsp;&nbsp;&nbsp;
                     <strong>Final primera:</strong> <?php echo date('d-m-Y', strtotime($project->passed)); ?>&nbsp;&nbsp;&nbsp;&nbsp;
                     <strong>Final segunda:</strong> <?php echo date('d-m-Y', strtotime($project->success)); ?>
+                    <strong>Vencimiento contrato:</strong> <?php echo date('d-m-Y', $deadline); ?>
                     </p>
                 </td>
             </tr>
@@ -154,17 +164,9 @@ $filters = $this['filters'];
                     <p>
                         <strong>M&iacute;nimo: </strong><?php echo $project->mincost; ?>&euro;&nbsp;&nbsp;&nbsp;
                         <strong>&Oacute;ptimo: </strong><?php echo $project->maxcost; ?>&euro;&nbsp;&nbsp;&nbsp;
-                        <strong>Conseguido: </strong><?php echo $project->invested; ?>&euro;
+                        <strong>Conseguido: </strong><?php echo $project->invested; ?>&euro;&nbsp;&nbsp;&nbsp
+                        <?php if (!empty($project->issues)) : ?><strong>Incidencias: </strong><?php echo $project->issues; ?>&euro; <a href="/admin/accounts/?projects=<?php echo $project->id; ?>&issue=show" target="_blank" title="Ver aportes con incidencia">[Ver]</a><?php endif; ?>
                     </p>
-                    
-                    <?php if (!empty($project->issues)) : ?>
-                    INCIDENCIAS:<br />
-                    -----<br />
-                    -----<br />
-                    -----<br />
-                    -----<br />
-                    -----<br />
-                    <?php endif; ?>
                 </td>
             </tr>
         </tbody>

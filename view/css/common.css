@@ -161,6 +161,7 @@ a.button.weak:hover {
     background: #b5161e url('button/red.png') repeat-x top;
 }
 
+/* boton dissabled */
 input.disabled[type="submit"],
 input.disabled[type="reset"],
 button.disabled,
@@ -177,7 +178,9 @@ a.button.disabled:hover {
     background: #CCCCCC;
     cursor: default;
 }
+/* fin boton dissabled */
 
+/* botón verde */
 input.green[type="submit"],
 input.green[type="reset"],
 button.green,
@@ -199,6 +202,32 @@ button.green:hover,
 a.button.green:hover {
     background: #00b05b url('button/green-active.png') repeat-x top;
 }
+/* fin botón verde */
+
+/* botón azul */
+input.blue[type="submit"],
+input.blue[type="reset"],
+button.blue,
+a.button.blue {
+    background: #008ac0 url('button/blue.png') repeat-x top;
+    color: white;
+}
+
+input.blue[type="submit"]:active,
+input.blue[type="reset"]:active,
+button.blue:active,
+a.button.blue:active {
+    background: #008ac0 url('button/blue-active.png') repeat-x top;
+}
+
+input.blue[type="submit"]:hover,
+input.blue[type="reset"]:hover,
+button.blue:hover,
+a.button.blue:hover {
+    background: #008ac0 url('button/blue-active.png') repeat-x top;
+}
+/* fin botón azul */
+
 
 h1, h2, h3, h4, h5, h6, h7, h8 {
     font-weight: bold;        

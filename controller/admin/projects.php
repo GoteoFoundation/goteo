@@ -10,7 +10,8 @@ namespace Goteo\Controller\Admin {
         Goteo\Library\Message,
         Goteo\Library\Mail,
 		Goteo\Library\Template,
-        Goteo\Model;
+        Goteo\Model,
+        Goteo\Controller\Cron\Send;
 
     class Projects {
 
@@ -105,16 +106,19 @@ namespace Goteo\Controller\Admin {
                 } elseif ($action == 'images') {
                     
                     $todook = true;
-                    
+
+                    /*
+                     *  Ya no movemos con flechas, cambiamos directamente el número de orden
                     if (!empty($_POST['move'])) {
                         $direction = $_POST['action'];
                         Model\Project\Image::$direction($id, $_POST['move'], $_POST['section']);
                     }
+                    */
                     
                     foreach ($_POST as $key=>$value) {
                         $parts = explode('_', $key);
                         
-                        if ($parts[1] == 'image' && in_array($parts[0], array('section', 'url'))) {
+                        if ($parts[1] == 'image' && in_array($parts[0], array('section', 'url', 'order'))) {
                             if (Model\Project\Image::update($id, $parts[2], $parts[0], $value)) {
                                 // OK
                             } else {
@@ -176,7 +180,6 @@ namespace Goteo\Controller\Admin {
                     }
 
                 }
-
             }
 
             /*
@@ -185,6 +188,8 @@ namespace Goteo\Controller\Admin {
              * redirect
              *
              */
+            $admins = Model\User::getAdmins();
+
             if (isset($id)) {
                 $project = Model\Project::get($id);
             }
@@ -202,6 +207,8 @@ namespace Goteo\Controller\Admin {
                     // poner un proyecto en campaña
                     if ($project->publish($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>';
+                        Send::toOwner('tip_0', $project);
+                        Send::toConsultants('tip_0', $project);
                     } else {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>';
                     }
@@ -216,6 +223,16 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'enable':
                     // si no esta en edicion, recuperarlo
+
+                    // Si el proyecto no tiene asesor, asignar al admin que lo ha pasado a negociación
+                    // No funciona con el usuario root
+                    if ((empty($project->consultants)) && $_SESSION['user']->id != 'root') {
+                        if ($project->assignConsultant($_SESSION['user']->id, $errors)) {
+                            $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
+                            Message::Info($msg);
+                        }
+                    }
+
                     if ($project->enable($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Edicion</span>';
                     } else {
@@ -238,37 +255,6 @@ namespace Goteo\Controller\Admin {
                         $log_text = 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Financiado</span>';
                     }
                     break;
-            }
-
-            if (isset($log_text)) {
-                // Evento Feed
-                $log = new Feed();
-                $log->setTarget($project->id);
-                $log->populate('Cambio estado/fechas/cuentas/nodo de un proyecto desde el admin', '/admin/projects',
-                    \vsprintf($log_text, array(
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                    Feed::item('project', $project->name, $project->id)
-                )));
-                $log->doAdmin('admin');
-
-                Message::Info($log->html);
-                if (!empty($errors)) {
-                    Message::Error(implode('<br />', $errors));
-                }
-
-                if ($action == 'publish') {
-                    // si es publicado, hay un evento publico
-                    $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
-                    $log->doPublic('projects');
-                }
-
-                unset($log);
-
-                if (empty($redir)) {
-                    throw new Redirection('/admin/projects/list');
-                } else {
-                    throw new Redirection($redir);
-                }
             }
 
             if ($action == 'report') {
@@ -354,6 +340,32 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if ($action == 'open_tags') {
+                // cambiar la agrupacion
+
+                if (isset($_GET['op']) && isset($_GET['open_tag']) &&
+                    (($_GET['op'] == 'assignOpen_tag') || ($_GET['op'] == 'unassignOpen_tag'))) {
+                    if ($project->$_GET['op']($_GET['open_tag'])) {
+                        // ok
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
+                }
+
+                $project->open_tags = Model\Project::getOpen_tags($project->id);
+                // disponibles
+                $open_all_tags = Model\Project\Open_tag::getAll();
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'open_tags',
+                        'project' => $project,
+                        'open_tags' =>$open_all_tags
+                    )
+                );
+            }
+
 
             if ($action == 'rebase') {
                 // cambiar la id
@@ -367,6 +379,29 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
+            if ($action == 'consultants') {
+                // cambiar el asesor
+                if (isset($_GET['op']) && isset($_GET['user']) &&
+                    (($_GET['op'] == 'assignConsultant' && Model\User::isAdmin($_GET['user'])) || ($_GET['op'] == 'unassignConsultant'))) {
+                    if ($project->$_GET['op']($_GET['user'])) {
+                        // ok
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
+                }
+
+                $project->consultants = Model\Project::getConsultants($project->id);
+
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'consultants',
+                        'project' => $project,
+                        'admins' => $admins
+                    )
+                );
+            }
 
             if ($action == 'assign') {
                 // asignar a una convocatoria solo si
@@ -396,8 +431,13 @@ namespace Goteo\Controller\Admin {
                 if (empty($project)) {
                     Message::Error('No hay proyecto sobre el que operar');
                 } else {
+
+                    //  idioma de preferencia
+                    $prefer = Model\User::getPreferences($project->user->id);
+                    $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+
                     // Obtenemos la plantilla para asunto y contenido
-                    $template = Template::get(40);
+                    $template = Template::get(40, $comlang);
                     // Sustituimos los datos
                     $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                     $search  = array('%USERNAME%', '%PROJECTNAME%');
@@ -417,6 +457,11 @@ namespace Goteo\Controller\Admin {
                         Message::Error('Ha fallado al enviar el mail a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
                     }
                     unset($mailHandler);
+
+                    // si ha sido un asesor se le cambia el estado al proyecto
+                    if (isset($project->consultants[$_SESSION['user']->id])) {
+                        $project->cancel();
+                    }
                 }
 
                 throw new Redirection('/admin/projects/list');
@@ -425,18 +470,82 @@ namespace Goteo\Controller\Admin {
 
             // cortar el grifo
             if ($action == 'noinvest') {
-
-                $values = array(':project' => $project->id);
-                $sql = "REPLACE INTO project_conf (`project`, `noinvest`) VALUES (:project, 1)";
-                if (Model\Project::query($sql, $values)) {
-                    Message::Info('Se ha cortado el grifo al proyecto <strong>'.$project->name.'</strong>');
+                if (Model\Project\Conf::closeInvest($project->id)) {
+                    //Message::Info('Se ha cortado el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'El admin %s ha <span class="red">cortado el grifo</span> al proyecto %s';
                 } else {
-                    Message::Error('Ha fallado al cortar el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    //Message::Error('Ha fallado al cortar el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado al cortar el grifo</span> al proyecto %s';
+                }
+            }
+
+            // abrir el grifo
+            if ($action == 'openinvest') {
+                if (Model\Project\Conf::openInvest($project->id)) {
+                    //Message::Info('Se ha abierto el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'El admin %s ha <span class="red">abierto el grifo</span> al proyecto %s';
+                } else {
+                    //Message::Error('Ha fallado al abrir el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado al abrir el grifo</span> al proyecto %s';
+                }
+            }
+
+            // Vigilar
+            if ($action == 'watch') {
+                if (Model\Project\Conf::watch($project->id)) {
+                    //Message::Info('Se ha empezado a vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'El admin %s ha empezado a <span class="red">vigilar</span> el proyecto %s';
+                } else {
+                    //Message::Error('Ha fallado la vigilancia del proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado la vigilancia</span> el proyecto %s';
+                }
+            }
+
+            // Dejar de vigilar
+            if ($action == 'unwatch') {
+                if (Model\Project\Conf::unwatch($project->id)) {
+                    //Message::Info('Se ha dejado de vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'El admin %s ha <span class="red">dejado de vigilar</span> el proyecto %s';
+                } else {
+                    //Message::Error('Ha fallado dejar de vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado dejar de vigilar</span> el proyecto %s';
+                }
+            }
+
+
+            // Feed
+            if (isset($log_text)) {
+                // Evento Feed
+                $log = new Feed();
+                $log->setTarget($project->id);
+                $log->populate('Acción sobre un proyecto desde el admin', '/admin/projects',
+                    \vsprintf($log_text, array(
+                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('project', $project->name, $project->id)
+                    )));
+                $log->doAdmin('admin');
+
+                Message::Info($log->html);
+                if (!empty($errors)) {
+                    Message::Error(implode('<br />', $errors));
                 }
 
+                if ($action == 'publish') {
+                    // si es publicado, hay un evento publico
+                    $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
+                    $log->doPublic('projects');
+                }
 
-                throw new Redirection('/admin/projects/list');
+                unset($log);
+
+                if (empty($redir)) {
+                    throw new Redirection('/admin/projects/list');
+                } else {
+                    throw new Redirection($redir);
+                }
             }
+
+
 
 
             if (!empty($filters['filtered'])) {
@@ -444,10 +553,12 @@ namespace Goteo\Controller\Admin {
             } else {
                 $projects = array();
             }
+
             $status = Model\Project::status();
             $categories = Model\Project\Category::getAll();
             $contracts = Model\Contract::getProjects();
             $calls = Model\Call::getAvailable(true);
+            $open_tags = Model\Project\Open_tag::getAll();
             // la lista de nodos la hemos cargado arriba
             $orders = array(
                 'name' => 'Nombre',
@@ -464,8 +575,10 @@ namespace Goteo\Controller\Admin {
                     'status' => $status,
                     'categories' => $categories,
                     'contracts' => $contracts,
+                    'admins' => $admins,
                     'calls' => $calls,
                     'nodes' => $nodes,
+                    'open_tags' => $open_tags,
                     'orders' => $orders
                 )
             );

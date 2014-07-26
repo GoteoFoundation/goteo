@@ -2,7 +2,8 @@
 // Vista para pintar una entrada de blog
 // puede ser resumen en la lista o completa
 	use Goteo\Library\Text,
-		Goteo\Model\Blog\Post;
+		Goteo\Model\Blog\Post,
+		Goteo\Model\Image;;
 
     $post = Post::get($this['post'], LANG);
     $level = (int) $this['level'] ?: 3;
@@ -15,7 +16,6 @@
         $url = '/blog/';
     } else {
         $url = $this['url'];
-        $post->text = nl2br(Text::urlink($post->text));
     }
 ?>
     <?php if (count($post->gallery) > 1) : ?>
@@ -31,7 +31,8 @@
 		</script>
     <?php endif; ?>
 	<h<?php echo $level + 1?>><a href="<?php echo $url.$post->id; ?>"><?php echo $post->title; ?></a></h<?php echo $level + 1?>>
-	<?php if (!empty($post->author)) : ?><span class="categories"><?php echo Text::get('regular-by') ?> <a href="/blog/?author=<?php echo $post->author; ?>"><?php echo $post->user->name; ?></a></span><?php endif; ?>
+	<?php if (!empty($post->author) && $post->owner_type != 'project') : ?><span class="categories"><?php echo Text::get('regular-by') ?> <a href="/blog/?author=<?php echo $post->author; ?>"><?php echo $post->user->name; ?></a></span><?php endif; ?>
+	<?php if (!empty($post->author) && $post->owner_type == 'project') : ?><span class="categories"><?php echo Text::get('regular-by') ?> <a href="/project/<?php echo $post->owner_id; ?>/updates"><?php echo $post->user->name; ?></a></span><?php endif; ?>
 	<span class="date"><?php echo $post->fecha; ?></span>
 	<?php if (!empty($post->tags)) : $sep = '';?>
 		<span class="categories">
@@ -44,10 +45,13 @@
         <div id="post-gallery<?php echo $post->id ?>" class="post-gallery">
 			<div class="post-gallery-container">
 				<?php $i = 1; foreach ($post->gallery as $image) : ?>
-				<div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
-					<img src="<?php echo $image->getLink(500, 285); ?>" alt="<?php echo $post->title; ?>" />
-				</div>
-				<?php $i++; endforeach; ?>
+				<?php if($image instanceof Image) : ?>
+						<div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
+							<img src="<?php echo $image->getLink(500, 285); ?>" alt="<?php echo $post->title; ?>" />
+						</div>
+						<?php $i++; 
+					endif;
+				endforeach; ?>
 			</div>
 			<!-- carrusel de imagenes si hay mas de una -->
                 <a class="prev">prev</a>

@@ -20,7 +20,7 @@ namespace Goteo\Model {
             $owner, // User who created it
             $node, // Node this project belongs to
             $nodeData, // Node data
-            $status,
+            $status,   // Project status
             $progress, // puntuation %
             $amount, // Current donated amount
 
@@ -176,9 +176,7 @@ namespace Goteo\Model {
                  }
             }
 
-
-
-            // cojemos el número de proyecto de este usuario
+            // cogemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
             if ($now = $query->fetchObject())
                 $num = $now->num + 1;
@@ -235,7 +233,7 @@ namespace Goteo\Model {
 
                 return $this->id;
             } catch (\PDOException $e) {
-                $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>";
+                $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, true) . "</pre>";
                 \trace($this);
                 die($errors[0]);
                 return false;
@@ -316,6 +314,9 @@ namespace Goteo\Model {
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
+                // asesores
+                $project->consultants = Project::getConsultants($id);
+
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
 
@@ -343,6 +344,8 @@ namespace Goteo\Model {
                     $messegers[$msg->user] = $msg->user;
                 }
                 $project->num_messegers = count($messegers);
+
+                $project->noinvest = Project\Conf::isInvestClosed($id);
 
                 $project->setDays();
                 $project->setTagmark();
@@ -379,13 +382,13 @@ namespace Goteo\Model {
 		}
 
         /*
-         *  Cargamos los datos mínimos de un proyecto
+         *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
          */
         public static function getMini($id) {
 
             try {
 				// metemos los datos del proyecto en la instancia
-				$query = self::query("SELECT id, name, owner, comment, lang, status FROM project WHERE id = ?", array($id));
+				$query = self::query("SELECT id, name, owner, comment, lang, status, node FROM project WHERE id = ?", array($id));
 				$project = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
 
                 // owner
@@ -445,6 +448,12 @@ namespace Goteo\Model {
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
+                // open_tags
+                $project->open_tags = Project\Open_tag::getNames($id, 1);
+
+                // asesores
+                $project->consultants = Project::getConsultants($id);
+
                 if(empty($project->amount)) {
                     $project->amount = Invest::invested($id);
                 }
@@ -463,6 +472,8 @@ namespace Goteo\Model {
                     $project->maxcost = $costs->maxcost;
                 }
 
+                $project->watch = Project\Conf::isWatched($id);
+                $project->noinvest = Project\Conf::isInvestClosed($id);
 
                 $project->setDays();
                 $project->setTagmark();
@@ -485,6 +496,7 @@ namespace Goteo\Model {
 
         /*
          * Listado simple de todos los proyectos de cierto nodo
+         * @return: strings array
          */
         public static function getAll($node = \GOTEO_NODE) {
 
@@ -504,6 +516,84 @@ namespace Goteo\Model {
             }
 
             return $list;
+        }
+
+        /*
+         * Array asociativo de los asesores de un proyecto
+         *  (o todos los que asesoran alguno, si no hay filtro)
+         * @return: strings array
+         */
+        public static function getConsultants ($project = null) {
+
+            $list = array();
+
+            $sqlFilter = "";
+            if (!empty($project)) {
+                $sqlFilter .= " WHERE user_project.project = '{$project}'";
+            }
+
+            $query = static::query("
+                SELECT
+                    DISTINCT(user_project.user) as consultant,
+                    user.name as name
+                FROM user_project
+                INNER JOIN user
+                    ON user.id = user_project.user
+                $sqlFilter
+                ORDER BY user.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->consultant] = $item->name;
+            }
+
+            return $list;
+        }
+
+
+        /*
+         * Asignar a un usuario como asesor de un proyecto
+         * @return: boolean
+         */
+        public function assignConsultant ($user, &$errors = array()) {
+
+            $values = array(':user'=>$user, ':project'=>$this->id);
+
+            try {
+                $sql = "REPLACE INTO user_project (`user`, `project`) VALUES(:user, :project)";
+                if (self::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = 'No se ha creado el registro `user_project`';
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido asignar al usuario {$user} como asesor del proyecto {$this->id}.' . $e->getMessage();
+                return false;
+            }
+
+        }
+
+        /*
+         * Quitarle a un usuario el asesoramiento de un proyecto
+         * @return: boolean
+         */
+        public function unassignConsultant ($user, &$errors = array()) {
+            $values = array (
+                ':user'=>$user,
+                ':project'=>$this->id,
+            );
+
+            try {
+                if (self::query("DELETE FROM user_project WHERE `project` = :project AND `user` = :user", $values)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar al usuario {$user} del asesoramiento del proyecto {$this->id}. ' . $e->getMessage();
+                return false;
+            }
         }
 
         /*
@@ -547,6 +637,86 @@ namespace Goteo\Model {
             $this->days = $days;
         }
 
+         /*
+         * Array asociativo de las agrupaciones (open_tags) de un proyecto
+         *  (o todos los que asesoran alguno, si no hay filtro)
+         * @return: strings array
+         */
+        public static function getOpen_Tags ($project = null) {
+
+            $list = array();
+
+            $sqlFilter = "";
+            if (!empty($project)) {
+                $sqlFilter .= " WHERE project_open_tag.project = '{$project}'";
+            }
+
+
+            $query = static::query("
+                SELECT
+                    DISTINCT(project_open_tag.open_tag) as open_tag,
+                    open_tag.name as name
+                FROM project_open_tag
+                INNER JOIN open_tag
+                    ON open_tag.id = project_open_tag.open_tag
+                $sqlFilter
+                ORDER BY open_tag.name ASC
+                ");
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->open_tag] = $item->name;
+            }
+
+            return $list;
+        }
+
+
+        /*
+         * Asignar una agrupación a un proyecto
+         * @return: boolean
+         */
+        public function assignOpen_tag ($open_tag, &$errors = array()) {
+
+            $values = array(':open_tag'=>$open_tag, ':project'=>$this->id);
+
+            try {
+                $sql = "REPLACE INTO project_open_tag (`project`, `open_tag`) VALUES(:project, :open_tag)";
+                if (self::query($sql, $values)) {
+                    
+                    return true;
+                } else {
+                    $errors[] = 'No se ha creado el registro `project_open_tag`';
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido asignar la agrupacion {$open_tag} al proyecto {$this->id}.' . $e->getMessage();
+                return false;
+            }
+
+        }
+
+        /*
+         * Quitarle a un usuario el asesoramiento de un proyecto
+         * @return: boolean
+         */
+        public function unassignOpen_tag ($open_tag, &$errors = array()) {
+            $values = array (
+                ':open_tag'=>$open_tag,
+                ':project'=>$this->id,
+            );
+
+            try {
+                if (self::query("DELETE FROM project_open_tag WHERE `project` = :project AND `open_tag` = :open_tag", $values)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar la agrupación {$open_tag} al proyecto {$this->id}. ' . $e->getMessage();
+                return false;
+            }
+        }
+
         /*
          *  Para ver que tagmark le toca
          */
@@ -575,6 +745,7 @@ namespace Goteo\Model {
 
         /*
          *  Para validar los campos del proyecto que son NOT NULL en la tabla
+         * @return: boolean
          */
         public function validate(&$errors = array()) {
 
@@ -695,7 +866,7 @@ namespace Goteo\Model {
 
 				$sql = "UPDATE project SET " . $set . " WHERE id = :id";
 				if (!self::query($sql, $values)) {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     $fail = true;
                 }
 
@@ -852,6 +1023,9 @@ namespace Goteo\Model {
 
         }
 
+        /*
+         * @return: boolean
+         */
         public function saveLang (&$errors = array()) {
 
   			try {
@@ -886,7 +1060,7 @@ namespace Goteo\Model {
 				if (self::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = $sql . '<pre>' . print_r($values, 1) . '</pre>';
+                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     return false;
                 }
 			} catch(\PDOException $e) {
@@ -1090,14 +1264,6 @@ namespace Goteo\Model {
                  $okeys['overview']['subtitle'] = 'ok';
             }
 
-            if (empty($this->gallery) && empty($errors['overview']['image'])) {
-                $errors['overview']['image'] .= Text::get('mandatory-project-field-image');
-            } else {
-                 $okeys['overview']['image'] = (empty($errors['overview']['image'])) ? 'ok' : null;
-                 ++$score;
-                 if (count($this->gallery) >= 2) ++$score;
-            }
-
             if (empty($this->description)) {
                 $errors['overview']['description'] = Text::get('mandatory-project-field-description');
             } elseif (!Check::words($this->description, 80)) {
@@ -1154,6 +1320,16 @@ namespace Goteo\Model {
                  $okeys['overview']['project_location'] = 'ok';
                  ++$score;
             }
+
+            // paso 3b: imágenes
+            if (empty($this->gallery) && empty($errors['images']['image'])) {
+                $errors['images']['image'] .= Text::get('mandatory-project-field-image');
+            } else {
+                $okeys['images']['image'] = (empty($errors['images']['image'])) ? 'ok' : null;
+                ++$score;
+                if (count($this->gallery) >= 2) ++$score;
+            }
+
 
             $this->setScore($score, 13);
             /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
@@ -1288,7 +1464,6 @@ namespace Goteo\Model {
                 $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards-any_error');
             }
 
-
             $score = $score + $scoreName + $scoreDesc + $scoreLicense;
             $scoreName = $scoreDesc = $scoreAmount = 0;
 
@@ -1324,7 +1499,6 @@ namespace Goteo\Model {
                 } else {
                      $okeys['rewards']['individual_reward-'.$individual->id.'-icon'] = 'ok';
                 }
-
             }
 
             if ($anyerror) {
@@ -1397,9 +1571,9 @@ namespace Goteo\Model {
         }
 
 
-
         /*
          * Listo para revisión
+         * @return: boolean
          */
         public function ready(&$errors = array()) {
 			try {
@@ -1418,6 +1592,7 @@ namespace Goteo\Model {
 
         /*
          * Devuelto al estado de edición
+         * @return: boolean
          */
         public function enable(&$errors = array()) {
 			try {
@@ -1432,6 +1607,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado de publicación
+         * @return: boolean
          */
         public function publish(&$errors = array()) {
 			try {
@@ -1467,6 +1643,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado canecelado
+         * @return: boolean
          */
         public function cancel(&$errors = array()) {
 			try {
@@ -1481,6 +1658,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado caducado
+         * @return: boolean
          */
         public function fail(&$errors = array()) {
 			try {
@@ -1495,6 +1673,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado Financiado
+         * @return: boolean
          */
         public function succeed(&$errors = array()) {
 			try {
@@ -1509,6 +1688,7 @@ namespace Goteo\Model {
 
         /*
          * Marcamos la fecha del paso a segunda ronda
+         * @return: boolean
          */
         public function passed(&$errors = array()) {
 			try {
@@ -1523,6 +1703,7 @@ namespace Goteo\Model {
 
         /*
          * Cambio a estado Retorno cumplido
+         * @return: boolean
          */
         public function satisfied(&$errors = array()) {
 			try {
@@ -1537,6 +1718,7 @@ namespace Goteo\Model {
 
         /*
          * Devuelve a estado financiado (por retorno pendiente) pero no modifica fecha
+         * @return: boolean
          */
         public function rollback(&$errors = array()) {
 			try {
@@ -1551,6 +1733,7 @@ namespace Goteo\Model {
 
         /*
          * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
+         * @return: boolean
          */
         public function delete(&$errors = array()) {
 
@@ -1591,6 +1774,7 @@ namespace Goteo\Model {
         /*
          * Para cambiar el id temporal a idealiza
          * solo si es md5
+         * @return: boolean
          */
         public function rebase($newid = null) {
             try {
@@ -1629,7 +1813,7 @@ namespace Goteo\Model {
                             return false;
                         }
                     } else {
-                        throw new \Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
+                        throw new \Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ');
                     }
                 } elseif (!empty ($newid)) {
 //                   echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
@@ -1711,9 +1895,6 @@ namespace Goteo\Model {
                     } else {
                         throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
                     }
-
-
-
                 }
 
                 return true;
@@ -1748,6 +1929,7 @@ namespace Goteo\Model {
             }
         }
 
+
         /*
          *  Para actualizar el minimo/optimo de costes
          */
@@ -1765,7 +1947,6 @@ namespace Goteo\Model {
                 }
             }
         }
-
 
 
         /**
@@ -1821,6 +2002,7 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos de un usuario
+         * @return: array of Model\Project
          */
         public static function ofmine($owner, $published = false)
         {
@@ -1843,6 +2025,7 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos publicados
+         * @return: array of Model\Project
          */
         public static function published($type = 'all', $limit = null, $mini = false)
         {
@@ -2054,7 +2237,7 @@ namespace Goteo\Model {
          *
          * solo carga datos necesarios para cron/daily
          *
-         * @return array de instancias parciales de proyecto
+         * @return array de instancias parciales de proyecto (getMedium)
          */
         public static function review()
         {
@@ -2083,6 +2266,7 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos en campaña (para ser revisados por el cron/execute)
+         * @return: array of Model\Project (full instance (get))
          */
         public static function getActive()
         {
@@ -2138,31 +2322,46 @@ namespace Goteo\Model {
             }
 
             $sqlFilter = "";
+            $sqlConsultantFilter = "";
+
+            if ((!empty($filters['consultant'])) && ($filters['consultant'] != -1)) {
+                $sqlFilter .= " AND user_project.user = :consultant";
+                $values[':consultant'] = $filters['consultant'];
+                $sqlConsultantFilter = " INNER JOIN user_project ON user_project.project = project.id";
+            }
             if (!empty($filters['multistatus'])) {
-                $sqlFilter .= " AND status IN ({$filters['multistatus']})";
+                $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
             }
             if ($filters['status'] > -1) {
-                $sqlFilter .= " AND status = :status";
+                $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
             } elseif ($filters['status'] == -2) {
-                $sqlFilter .= " AND (status = 1  AND id NOT REGEXP '[0-9a-f]{5,40}')";
+                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{5,40}')";
             } else {
-                $sqlFilter .= " AND (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{5,40}') )";
+                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
             }
             if (!empty($filters['owner'])) {
-                $sqlFilter .= " AND owner = :owner";
+                $sqlFilter .= " AND project.owner = :owner";
                 $values[':owner'] = $filters['owner'];
             }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND owner IN ('".implode("','", $owners)."')";
+                $sqlFilter .= " AND project.owner IN ('".implode("','", $owners)."')";
 //                $values[':user'] = "%{$filters['name']}%";
             }
             if (!empty($filters['proj_name'])) {
-                $sqlFilter .= " AND name LIKE :name";
+                $sqlFilter .= " AND project.name LIKE :name";
                 $values[':name'] = "%{$filters['proj_name']}%";
             }
+            if (!empty($filters['proj_id'])) {
+                $sqlFilter .= " AND project.id = :proj_id";
+                $values[':proj_id'] = $filters['proj_id'];
+            }
+            if (!empty($filters['published'])) {
+                $sqlFilter .= " AND project.published = :published";
+                $values[':published'] = $filters['published'];
+            }
             if (!empty($filters['category'])) {
-                $sqlFilter .= " AND id IN (
+                $sqlFilter .= " AND project.id IN (
                     SELECT project
                     FROM project_category
                     WHERE category = :category
@@ -2175,19 +2374,19 @@ namespace Goteo\Model {
 
                     //en cualquier convocatoria
                     case 'all':
-                        $sqlFilter .= " AND id IN (
+                        $sqlFilter .= " AND project.id IN (
                         SELECT project
                         FROM call_project)";
                         break;
                     //en ninguna convocatoria
                     case 'none':
-                        $sqlFilter .= " AND id NOT IN (
+                        $sqlFilter .= " AND project.id NOT IN (
                         SELECT project
                         FROM call_project)";
                         break;
                     //filtro en esta convocatoria
                     default:
-                        $sqlFilter .= " AND id IN (
+                        $sqlFilter .= " AND project.id IN (
                         SELECT project
                         FROM call_project
                         WHERE `call` = :called
@@ -2199,21 +2398,25 @@ namespace Goteo\Model {
 
             }
             if (!empty($filters['node'])) {
-                $sqlFilter .= " AND node = :node";
+                $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $filters['node'];
             } elseif (!empty($node) && $node != \GOTEO_NODE) {
-                $sqlFilter .= " AND node = :node";
+                $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
-
+            if (!empty($filters['success'])) {
+                $sqlFilter .= " AND success = :success";
+                $values[':success'] = $filters['success'];
+            }
+            
             //el Order
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
                     case 'updated':
-                        $sqlOrder .= " ORDER BY updated DESC";
+                        $sqlOrder .= " ORDER BY project.updated DESC";
                     break;
                     case 'name':
-                        $sqlOrder .= " ORDER BY name ASC";
+                        $sqlOrder .= " ORDER BY project.name ASC";
                     break;
                     default:
                         $sqlOrder .= " ORDER BY {$filters['order']}";
@@ -2223,10 +2426,11 @@ namespace Goteo\Model {
 
             // la select
             $sql = "SELECT
-                        id,
-                        id REGEXP '[0-9a-f]{5,40}' as draft
+                        project.id,
+                        project.id REGEXP '[0-9a-f]{5,40}' as draft
                     FROM project
-                    WHERE id != ''
+                    $sqlConsultantFilter
+                    WHERE project.id != ''
                         $sqlFilter
                         $sqlOrder
                     LIMIT 999
@@ -2237,6 +2441,88 @@ namespace Goteo\Model {
                 $the_proj = self::getMedium($proj['id']);
                 $the_proj->draft = $proj['draft'];
                 $projects[] = $the_proj;
+            }
+            return $projects;
+        }
+
+        /**
+         * Saca una lista de proyectos, solo datos simples
+         *
+         * @param string node id
+         * @return array of items , not instances of this class.
+         */
+        public static function getMiniList($filters = array(), $node = null) {
+
+            $projects = array();
+
+            $values = array();
+
+
+            // los filtros
+            $sqlFilter = "";
+            $sqlOrder = '';
+
+            if (!empty($filters['multistatus'])) {
+                $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
+            }
+            if ($filters['status'] > -1) {
+                $sqlFilter .= " AND project.status = :status";
+                $values[':status'] = $filters['status'];
+            } elseif ($filters['status'] == -2) {
+                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{5,40}')";
+            } else {
+                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+            }
+            if (!empty($filters['proj_name'])) {
+                $sqlFilter .= " AND project.name LIKE :name";
+                $values[':name'] = "%{$filters['proj_name']}%";
+            }
+            if (!empty($filters['proj_id'])) {
+                $sqlFilter .= " AND project.id = :proj_id";
+                $values[':proj_id'] = $filters['proj_id'];
+            }
+            if (!empty($filters['node'])) {
+                $sqlFilter .= " AND project.node = :node";
+                $values[':node'] = $filters['node'];
+            } elseif (!empty($node) && $node != \GOTEO_NODE) {
+                $sqlFilter .= " AND project.node = :node";
+                $values[':node'] = $node;
+            }
+
+            //el Order
+            if (!empty($filters['order'])) {
+                switch ($filters['order']) {
+                    case 'success':
+                        $sqlOrder .= " ORDER BY project.success ASC";
+                    break;
+                    case 'name':
+                        $sqlOrder .= " ORDER BY project.name ASC";
+                    break;
+                    default:
+                        $sqlOrder .= " ORDER BY {$filters['order']}";
+                    break;
+                }
+            }
+
+            // la select
+            $sql = "SELECT
+                        project.id,
+                        project.name,
+                        project.status,
+                        project.published,
+                        project.success,
+                        project.owner,
+                        project.node
+                    FROM project
+                    WHERE project.id != ''
+                        $sqlFilter
+                        $sqlOrder
+                    LIMIT 999
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+                $projects[] = $proj;
             }
             return $projects;
         }
@@ -2285,8 +2571,40 @@ namespace Goteo\Model {
         }
 
         /**
+         *  Saca las vias de contacto para un proyecto
+         * @return: Model\Project
+         */
+        public static function getContact($id) {
+
+            $sql = "
+                SELECT
+                    project.name as project_name,
+                    project.success as success_date,
+                    user.name as owner_name,
+                    project.contract_name as contract_name,
+                    user.email as owner_email,
+                    project.contract_email as contract_email,
+                    project.phone as phone,
+                    user.twitter as twitter,
+                    user.facebook as facebook,
+                    user.google as google,
+                    user.identica as identica,
+                    user.linkedin as linkedin
+                FROM project
+                INNER JOIN user
+                    ON user.id = project.owner
+                WHERE project.id = :id
+            ";
+
+            $query = self::query($sql, array(':id' => $id));
+            $contact = $query->fetchObject();
+            return $contact;
+        }
+
+        /**
          *  Metodo para obtener cofinanciadores agregados por usuario
          *  y sin convocadores
+         * @return: array of arrays
          */
         public function agregateInvestors () {
             $investors = array();
@@ -2343,6 +2661,7 @@ namespace Goteo\Model {
 
         /*
          * Para saber si ha conseguido el mínimo
+         * @return: boolean
          */
         public static function isSuccessful($id) {
             $sql = "SELECT
@@ -2369,6 +2688,7 @@ namespace Goteo\Model {
 
         /*
          * Para saber si un usuario es el impulsor
+         * @return: boolean
          */
         public static function isMine($id, $user) {
             $sql = "SELECT id, owner FROM project WHERE id = :id AND owner = :owner";
@@ -2446,13 +2766,16 @@ namespace Goteo\Model {
                 6=>Text::get('form-project_waitfor-expired'));
         }
 
-
+        /*
+         * @return: empty errors structure
+         */
         public static function blankErrors() {
             // para guardar los fallos en los datos
             $errors = array(
                 'userProfile'  => array(),  // Errores en el paso 1
                 'userPersonal' => array(),  // Errores en el paso 2
                 'overview'     => array(),  // Errores en el paso 3
+                'images'       => array(),  // Errores en el paso 3b
                 'costs'        => array(),  // Errores en el paso 4
                 'rewards'      => array(),  // Errores en el paso 5
                 'supports'     => array()   // Errores en el paso 6

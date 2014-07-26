@@ -51,7 +51,7 @@ img a {
 <div style="font-size:11px; padding-bottom:10px;"><?php echo utf8_encode('Síguenos en:') ?><br />
   <span><a href="<?php echo Text::get('social-account-facebook') ?>" style="color:#233E99; text-decoration:none;">facebook</a></span> | <span><a href="<?php echo Text::get('social-account-twitter') ?>" style="color:#00AEEF; text-decoration:none;">twitter</a></span> |  <span><a href="<?php echo Text::get('social-account-identica') ?>" style="color:#C42F31; text-decoration:none;">identica</a></span> | <span><a rel="alternate" type="application/rss+xml" title="RSS" href="<?php echo SITE_URL. '/rss' ?>" style="color:#F15A29; text-decoration:none;">RSS</a></span></div>
 
-<div style="width:630px;font-size:11px; text-align:right; padding-bottom:10px; padding-top:10px; border-top: 1px solid #20B3B2;"><?php echo Text::get('newsletter-block'); ?></div> <!-- enlace color:#20B3B2; text-decoration:none; -->
+<div style="width:630px;font-size:11px; text-align:right; padding-bottom:10px; padding-top:10px; border-top: 1px solid #20B3B2;"><?php echo Text::html('newsletter-block', $this['baja']); ?></div> <!-- enlace color:#20B3B2; text-decoration:none; -->
 
 </div>
 

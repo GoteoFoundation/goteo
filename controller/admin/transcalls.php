@@ -123,9 +123,13 @@ namespace Goteo\Controller\Admin {
 
                     if ($action == 'send') {
                         // Informar al autor de que la traduccion está habilitada
-                        // Obtenemos la plantilla para asunto y contenido
 
-                        $template = Template::get(32);
+                        //  idioma de preferencia
+                        $prefer = Model\User::getPreferences($call->user->id);
+                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $call->user->lang;
+
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(32, $comlang);
                         // Sustituimos los datos
                         $subject = str_replace('%CALLNAME%', $call->name, $template->title);
                         $search  = array('%OWNERNAME%', '%CALLNAME%', '%SITEURL%');

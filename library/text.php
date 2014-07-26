@@ -248,7 +248,7 @@ namespace Goteo\Library {
                 }
                 return $texts;
             } catch (\PDOException $e) {
-                throw new Exception($e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Exception($e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -271,7 +271,7 @@ namespace Goteo\Library {
 			if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
 				return true;
 			} else {
-				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
+				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, true) . '</pre>';
 				return false;
 			}
 		}
@@ -293,7 +293,7 @@ namespace Goteo\Library {
 			if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id']))) {
 				return true;
 			} else {
-				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, 1) . '</pre>';
+				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, true) . '</pre>';
 				return false;
 			}
 		}
@@ -371,7 +371,8 @@ namespace Goteo\Library {
                 'call_dash' => 'Convocatorias: dashboard',
                 'wof' => 'Wall of friends',
                 'node_public' => 'Nodos',
-                'contract' => 'Formulario Contrato'
+                'contract' => 'Formulario Contrato',
+                'donor' => 'Certificado donantes'
             );
 
             \asort($groups);
@@ -465,10 +466,21 @@ namespace Goteo\Library {
         /*
          * Devuelve array de urls para compartir en redes sociales
          */
-        static public function shareLinks ($url, $title) {
+        static public function shareLinks ($url, $title, $user_twitter = null) {
+
+            $author_twitter = str_replace(
+                        array(
+                            'https://',
+                            'http://',
+                            'www.',
+                            'twitter.com/',
+                            '#!/',
+                            '@'
+                        ), '', $user_twitter);
+            $author = !empty($author_twitter) ? ' '.self::get('regular-by').' @'.$author_twitter.' ' : '';
 
             $urls = array(
-                'twitter' => 'http://twitter.com/home?status=' . rawurlencode($title . ': ' . $url . ' #Goteo'),
+                'twitter' => 'http://twitter.com/home?status=' . rawurlencode($title . $author.': ' . $url . ' #Goteo'),
                 'facebook' => 'http://facebook.com/sharer.php?u=' . rawurlencode($url . '&t=' . rawurlencode($title))
             );
 

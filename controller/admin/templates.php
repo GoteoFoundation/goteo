@@ -61,6 +61,9 @@ namespace Goteo\Controller\Admin {
                         )
                     );
                     break;
+                default:
+                    Message::Error('No se ha especificado una acción válida para plantillas en la URL');
+                    throw new Redirection('/admin/templates');
             }
 
         }

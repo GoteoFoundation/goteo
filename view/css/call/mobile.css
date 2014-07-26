@@ -1,5 +1,5 @@
 /* Mobile (max-width:400px) */
-#header, #footer {display:none;}
+           #footer {display:none;}
            
            div#main {
             width: 100%;
@@ -48,7 +48,7 @@
 
            
 
-           #social {
+           #social, div#side.twitter {
             display: none;
            }
 
@@ -145,4 +145,122 @@
             width:30% !important;
            }
 
+            #title {
+              margin-top: 6px;
+             }
 
+            #header{
+            position:relative;
+            }
+
+            div#super-header ul > li.campanya, div#super-header div#rightside ul.menu-right > li.login, div#super-header div#rightside ul.menu-right > li.capital {
+              display:none;
+            }
+
+            #super-header {
+              width: 100%;
+            }
+
+            div#super-header div#rightside {
+              width:65%;
+            }
+
+             #social-responsive {
+              display: block;
+              width:100%;
+              background: #FFFFFF;
+              margin-top: 6px;
+            }
+
+            #social-responsive #social {
+              width: 100%;
+              background: #FFFFFF;
+              margin-bottom: 6px;
+
+            }
+
+            #social-logo ul {
+              width: 40%;
+              margin-left: 5%;
+            }
+
+            #social-logo a#capital {
+              width: 91px;
+              height: 122px;  
+              display: block;
+              text-indent: -10000px;
+              background: url('/view/css/call/logo-capital_medium.png') no-repeat;
+              float: left;
+              margin: 10px 0 0 0;
+            }
+
+            #social-logo li.email {
+              display: none;
+            }
+
+            #social-actions h2 {
+              display: none;
+            }
+
+            #social-actions .fb-like {
+              float:left !important;
+              clear:left;
+              margin-top: 10px;
+            }
+
+            div#header ul > li.dashboard {
+              display: none !important;
+              
+            }
+            #social-actions .twitter-share-button {
+              float:left;
+              margin-top: 10px;
+            }
+
+             #sponsors-responsive {
+              display: block;
+              width: 100%;
+              margin-top: 6px; 
+              margin-bottom: 10px; 
+                     
+            }
+
+            #supporters-sponsors .title {
+              margin-left: 15px;
+              color: #666;
+              font-size: 16px;
+
+            }
+
+            .sponsor{
+              float:left; 
+              width:40%;
+              margin-right: 10px;
+              margin-top: 20px;
+            }
+            .float-none {
+              float:none !important;
+            }
+
+            #social-logo li.linkedin {
+              margin-top: 5px;
+            }
+
+            #call-supporters {
+              margin-bottom: 15px;
+            }
+           
+
+            div#header div#menu {
+
+              width: 30%;
+              margin-left: 5%;
+            }
+
+            #supporters-sponsors #supporters {
+              width: 95%;
+            }
+
+            #supporters-sponsors .title {
+              margin-left:0px;
+            }

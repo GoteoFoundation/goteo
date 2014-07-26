@@ -233,7 +233,7 @@ div#main ul#list>li {
 }
 
 
-.connect_widget_not_connected_text {
+.connect_widget_not_connected_text, .connect_widget_connected_text {
   display:none !important;
 }
  
@@ -1116,4 +1116,8 @@ table.info-table tfoot tr > * {
 
 .info .freetext .button {
 	margin: 15px 0;
+}
+
+#social-responsive, #sponsors-responsive {
+	display: none;
 }

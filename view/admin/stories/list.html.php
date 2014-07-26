@@ -14,13 +14,13 @@ $translator = ACL::check('/translate') ? true : false;
     <table>
         <thead>
             <tr>
-                <th><?php echo ($node == \GOTEO_NODE) ? 'Proyecto' : 'Título'; ?></th>
-                <th>Estado</th> <!-- status -->
+                <th></th>
                 <th>Posición</th> <!-- order -->
                 <th><!-- Subir --></th>
                 <th><!-- Bajar --></th>
                 <th><!-- Editar--></th>
                 <th><!-- Traducir--></th>
+                <th><!-- Preview--></th>
                 <th><!-- Quitar--></th>
             </tr>
         </thead>
@@ -31,7 +31,6 @@ $translator = ACL::check('/translate') ? true : false;
                 ?>
             <tr>
                 <td><?php echo ($story->active) ? '<strong>'.$story_title.'</strong>' : $story_title; ?></td>
-                <td><?php echo $story->status; ?></td>
                 <td><?php echo $story->order; ?></td>
                 <td><a href="/admin/stories/up/<?php echo $story->id; ?>">[&uarr;]</a></td>
                 <td><a href="/admin/stories/down/<?php echo $story->id; ?>">[&darr;]</a></td>
@@ -46,6 +45,7 @@ $translator = ACL::check('/translate') ? true : false;
                 <a href="/translate/stories/edit/<?php echo $story->id; ?>" target="_blank">[Traducir]</a>
                 <?php endif; ?>
                 </td>
+                <td><a href="/admin/stories/preview/<?php echo $story->id; ?>" target="_blank">[Preview]</a></td>
                 <td><a href="/admin/stories/remove/<?php echo $story->id; ?>">[Quitar]</a></td>
             </tr>
             <?php endforeach; ?>

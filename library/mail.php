@@ -23,7 +23,8 @@ namespace Goteo\Library {
             $attachments = array(),
             $html = true,
             $massive = false,
-            $template = null;
+            $template = null,
+            $lang = null;
 
         /**
          * Constructor.
@@ -204,37 +205,42 @@ namespace Goteo\Library {
                 if (!empty($_SESSION['NEWSLETTER_SENDID']) ) {
                     $sendId = $_SESSION['NEWSLETTER_SENDID'];
                 } else {
-                    $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+                    $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
                     $values = array (
                         ':email' => 'any',
                         ':html' => $this->content,
                         ':template' => $this->template,
-                        ':node' => $_SESSION['admin_node']
+                        ':node' => $_SESSION['admin_node'],
+                        ':lang' => $this->lang
                     );
                     $query = Model::query($sql, $values);
 
                     $sendId = Model::insertId();
                     $_SESSION['NEWSLETTER_SENDID'] = $sendId;
                 }
-                $the_mail = 'any';
+                // tokens
+                $sinoves_token = md5(uniqid()) . '¬any¬' . $sendId;
+                $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+
             } else {
-                $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+                $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
                 $values = array (
                     ':email' => $this->to,
                     ':html' => $this->content,
                     ':template' => $this->template,
-                    ':node' => $_SESSION['admin_node']
+                    ':node' => $_SESSION['admin_node'],
+                    ':lang' => $this->lang
                 );
                 $query = Model::query($sql, $values);
 
                 $sendId = Model::insertId();
-                $the_mail = $this->to;
+                // tokens
+                $leave_token = $sinoves_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+                $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
             }
 
             if (!empty($sendId)) {
-                // token para el sinoves
-                $token = md5(uniqid()) . '¬' . $the_mail  . '¬' . $sendId;
-                $viewData['sinoves'] = $this->url . '/mail/' . base64_encode($token) . '/?email=' . $this->to;
+                $viewData['sinoves'] = $this->url . '/mail/' . \mybase64_encode($sinoves_token) . '/?email=' . $this->to;
             } else {
                 $viewData['sinoves'] = $this->url . '/contact';
             }
@@ -248,7 +254,7 @@ namespace Goteo\Library {
             } else {
                 // para plantilla boletin
                 if ($this->template == 33) {
-                    $viewData['baja'] = $this->url . '/user/leave/?unsuscribe=newsletter&email=' . $this->to;
+                    $viewData['baja'] = $this->url . '/user/unsuscribe/' . \mybase64_encode($leave_token);
                     return new View (GOTEO_PATH.'view/email/newsletter.html.php', $viewData);
                 } elseif (!empty($this->node) && $this->node != GOTEO_NODE) {
                     return new View (GOTEO_PATH.'nodesys/'.$this->node.'/view/email/default.html.php', $viewData);
@@ -296,6 +302,7 @@ namespace Goteo\Library {
         /**
          *
          * @param array $filters    user (nombre o email),  template
+         * FIXME: No funciona cuando las fechas desde y hasta son iguales.
          */
         public static function getSended($filters = array(), $node = null, $limit = 9) {
 

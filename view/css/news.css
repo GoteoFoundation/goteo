@@ -40,3 +40,8 @@ div.widget.news-sidebar-module ul#news-side-posts li a{
 }
 /* end of Sidebar styles */
 
+img.logo_new{
+    margin-top: 13px;
+    margin-bottom: 7px;
+    margin-left: 18px;
+}

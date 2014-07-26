@@ -72,12 +72,14 @@ namespace Goteo\Model {
                     IFNULL(patron_lang.title, patron.title) as title,
                     IFNULL(patron_lang.description, patron.description) as description,
                     patron.link as link,
-                    patron.order as `order`,
+                    patron_order.order as `order`,
                     patron.active as `active`
                 FROM    patron
                 LEFT JOIN patron_lang
                     ON patron_lang.id = patron.id
                     AND patron_lang.lang = :lang
+                LEFT JOIN patron_order
+                    ON patron_order.id = patron.user
                 INNER JOIN project
                     ON project.id = patron.project
                 WHERE patron.node = :node
@@ -209,6 +211,34 @@ namespace Goteo\Model {
                     $user->num_patron_active = $nums->num_patron_active;
                 }
                 $list[$item->id] = $user;
+            }
+
+            return $list;
+        }
+
+        /*
+         * Devuelve la lista de patronos que deben estar en home
+         */
+        public static function getInHome($node = \GOTEO_NODE) {
+
+            $list = array();
+
+            $values = array(':node'=>$node);
+
+            $sql = "SELECT
+                        patron.user as id,
+                        patron_order.order as `order`
+                    FROM patron
+                    LEFT JOIN patron_order
+                        ON patron_order.id = patron.user
+                    WHERE patron_order.order is not null
+                    AND patron.node = :node
+                    ORDER BY `order` ASC";                  
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                if (!in_array($item->id, $list))
+                    $list[$item->id] = $item->id;
             }
 
             return $list;
@@ -367,8 +397,22 @@ namespace Goteo\Model {
             }
         }
 
+        /* Para reordenar un padrino
+         */
+        public static function setOrder ($id, $num) {
+
+            $sql = "UPDATE patron SET `order` = :num WHERE user = :id";
+            if (self::query($sql, array(':id'=>$id, ':num'=>$num))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+
         /*
-         * Para quitar un proyecto apadrinado
+         * Para quitar un apadrinamiento
          */
         public static function delete ($id) {
 
@@ -385,7 +429,7 @@ namespace Goteo\Model {
             return false;
         }
 
-        /* Para activar/desactivar un recomendado
+        /* Para activar/desactivar un apadrinamiento
          */
         public static function setActive ($id, $active = false) {
             $query = self::query("SELECT user FROM patron WHERE id = :id", array(':id' => $id));
@@ -403,33 +447,125 @@ namespace Goteo\Model {
 
 
         /*
-         * Para que un proyecto salga antes  (disminuir el order)
+         * Para poner un padrino en home
          */
-        public static function up ($id, $node = \GOTEO_NODE) {
-            $extra = array (
-                    'node' => $node
-                );
-            return Check::reorder($id, 'up', 'patron', 'id', 'order', $extra);
+        public static function add_home ($id) {
+            
+            if(!self::in_home($id))
+            
+            {
+                $order=self::next_easy();
+
+                $sql = "INSERT INTO patron_order (`id`, `order`) VALUES (:id, :order)";
+                
+                if (self::query($sql, array(':id'=>$id,':order'=>$order))) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            else
+                return true;
+        }
+
+
+        /*
+         * Para quitar un padrino de home
+         */
+
+        public static function remove_home ($id) {
+            
+            $sql = "DELETE FROM patron_order WHERE id = :id";
+            if (self::query($sql, array(':id'=>$id))) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
+         * Para que salga antes  (disminuir el order)
+         */
+        public static function up ($id) {
+            
+            return Check::reorder($id, 'up', 'patron_order', 'id', 'order');
         }
 
         /*
          * Para que un proyecto salga despues  (aumentar el order)
          */
+        public static function down ($id) {
+           
+            return Check::reorder($id, 'down', 'patron_order', 'id', 'order');
+        }
+
+        /*
+         * Para que un proyecto salga antes  (disminuir el order)
+         **
+        public static function up ($id, $node = \GOTEO_NODE) {
+            $extra = array (
+                    'node' => $node
+                );
+            return Check::reorder($id, 'up', 'patron_order', 'id', 'order', $extra);
+        }
+
+        /*
+         * Para que un proyecto salga despues  (aumentar el order)
+         *
         public static function down ($id, $node = \GOTEO_NODE) {
             $extra = array (
                     'node' => $node
                 );
-            return Check::reorder($id, 'down', 'patron', 'id', 'order', $extra);
+            return Check::reorder($id, 'down', 'patron_order', 'id', 'order', $extra);
         }
+        */
 
-        /*
-         *
-         */
-        public static function next ($node = \GOTEO_NODE) {
-            $query = self::query('SELECT MAX(`order`) FROM patron WHERE node = :node'
-                , array(':node'=>$node));
+        // orden para siguiente padrino
+
+        public static function next_easy () {
+            $query = self::query('SELECT MAX(`order`) FROM patron_order');
             $order = $query->fetchColumn(0);
             return ++$order;
+
+        }
+
+        // comprobar si un padrino está en home
+        public static function in_home ($id) {
+
+         $query = self::query('SELECT `order` FROM patron_order WHERE id = :id'
+                    , array(':id'=>$id));
+        
+        if($order=$query->fetchColumn(0)) 
+            return $order;
+        
+        else return 0;    
+        }
+
+        // orden para siguiente apadrinamiento
+
+        
+        public static function next ($user = null, $node = \GOTEO_NODE) {
+            if (isset($user)) {
+                $query = self::query('SELECT `order` FROM patron WHERE user = :user'
+                    , array(':user'=>$user));
+                $order = $query->fetchColumn(0);
+
+                if (empty($order)) {
+                    $query = self::query('SELECT MAX(`order`) FROM patron WHERE node = :node'
+                        , array(':node'=>$node));
+                    $order = $query->fetchColumn(0);
+                    return ++$order;
+                }
+
+                return $order;
+            } else {
+                $query = self::query('SELECT MAX(`order`) FROM patron WHERE node = :node'
+                    , array(':node'=>$node));
+                $order = $query->fetchColumn(0);
+                return ++$order;
+            }
 
         }
 

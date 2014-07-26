@@ -48,6 +48,7 @@ namespace Goteo\Model\Call {
                     $and = "AND";
                 }
 
+
                 $sql = "SELECT
                             project.id as id,
                             project.name as name,
@@ -58,7 +59,9 @@ namespace Goteo\Model\Call {
                             project.maxcost as maxcost,
                             project.project_location as location,
                             project.subtitle as subtitle,
-                            project.description as description
+                            project.description as description,
+                            project.id REGEXP '[0-9a-f]{5,40}' as draft,
+                            IF(project.passed IS NULL, 1, 2) as round
                         FROM project
                         INNER JOIN call_project
                             ON  call_project.project = project.id
@@ -173,7 +176,7 @@ namespace Goteo\Model\Call {
 				if (self::query($sql, $values)) {
     				return true;
                 } else {
-                    $errors[] = "$sql <pre>".print_r($values, 1)."</pre>";
+                    $errors[] = "$sql <pre>".print_r($values, true)."</pre>";
                 }
 			} catch(\PDOException $e) {
 				$errors[] = "La proyecto {$project} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -201,7 +204,7 @@ namespace Goteo\Model\Call {
                 if (self::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = "$sql <pre>".print_r($values, 1)."</pre>";
+                    $errors[] = "$sql <pre>".print_r($values, true)."</pre>";
                 }
 			} catch(\PDOException $e) {
 				$errors[] = 'No se ha podido quitar el proyecto ' . $this->id . ' de la convocatoria ' . $this->call . ' ' . $e->getMessage();
@@ -275,7 +278,7 @@ namespace Goteo\Model\Call {
                     $call->conf = ($project->round > 0) ? $call->getConf('limit'.$project->round) : 'none';
 
                     // calcular el obtenido por este proyecto, si no lo tenemos
-                    $call->project_got = (!isset($thisGote)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
+                    $call->project_got = (!isset($thisGot)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
 
                     // limite por proyecto
                     if (empty($call->maxproj)) {

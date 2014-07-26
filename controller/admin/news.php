@@ -7,6 +7,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
+        Goteo\Library\Message,
         Goteo\Model;
 
     class News {
@@ -25,7 +26,7 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
-                            'data' => (object) array('order' => $model::next()),
+                            'data' => (object) array('order' => '0'),
                             'form' => array(
                                 'action' => "$url/edit/",
                                 'submit' => array(
@@ -57,10 +58,20 @@ namespace Goteo\Controller\Admin {
                                         'type' => 'text',
                                         'properties' => 'size=100'
                                     ),
-                                    'order' => array(
-                                        'label' => 'Posición',
-                                        'name' => 'order',
+                                    'image' => array(
+                                        'label' => 'Imagen<br/>(150x85)',
+                                        'name' => 'image',
+                                        'type' => 'image'
+                                    ),
+                                    'media_name' => array(
+                                        'label' => 'Medio',
+                                        'name' => 'media_name',
                                         'type' => 'text'
+                                    ), 
+                                    'order' => array(
+                                        'label' => '',
+                                        'name' => 'order',
+                                        'type' => 'hidden'
                                     )
                                 )
 
@@ -72,15 +83,37 @@ namespace Goteo\Controller\Admin {
                 case 'edit':
 
                     // gestionar post
-                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-                        // instancia
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        
+                        //compruebo si está en press_banner
+                        $press_banner=$model::in_press_banner($_POST['id']);
+
+                        // instancia  
                         $item = new $model(array(
                             'id'          => $_POST['id'],
                             'title'       => $_POST['title'],
                             'description' => $_POST['description'],
                             'url'         => $_POST['url'],
-                            'order'       => $_POST['order']
+                            'image'       => $_POST['image'],
+                            'media_name'  => $_POST['media_name'],
+                            'order'       => $_POST['order'],
+                            'press_banner'=> $press_banner
                         ));
+
+
+                    // tratar si quitan la imagen
+                        $current = $_POST['image']; // la actual
+                        if (isset($_POST['image-' . $current .  '-remove'])) {
+                            $image = Model\Image::get($current);
+                            $image->remove('news');
+                            $item->image = '';
+                            $removed = true;
+                        }
+
+                        // tratar la imagen y ponerla en la propiedad image
+                        if(!empty($_FILES['image']['name'])) {
+                            $item->image = $_FILES['image'];
+                        }
 
                         if ($item->save($errors)) {
 
@@ -141,10 +174,20 @@ namespace Goteo\Controller\Admin {
                                         'type' => 'text',
                                         'properties' => 'size=100'
                                     ),
-                                    'order' => array(
-                                        'label' => 'Posición',
-                                        'name' => 'order',
+                                    'image' => array(
+                                        'label' => 'Imagen<br/>(150x85)',
+                                        'name' => 'image',
+                                        'type' => 'image'
+                                    ),
+                                    'media_name' => array(
+                                        'label' => 'Medio',
+                                        'name' => 'media_name',
                                         'type' => 'text'
+                                    ),
+                                    'order' => array(
+                                        'label' => '',
+                                        'name' => 'order',
+                                        'type' => 'hidden'
                                     )
                                 )
 
@@ -176,12 +219,24 @@ namespace Goteo\Controller\Admin {
                         throw new Redirection($url);
                     }
                     break;
+
+                case 'add_press_banner':
+                      if (Model\News::add_press_banner($id)) {
+                        throw new Redirection('/admin/news');
+                    }
+                    break;
+
+                 case 'remove_press_banner':
+                      if (Model\News::remove_press_banner($id)) {
+                        throw new Redirection('/admin/news');
+                    }
+                    break; 
             }
 
-            return new View(
+            /*return new View(
                 'view/admin/index.html.php',
                 array(
-                    'folder' => 'base',
+                    'folder' => 'news',
                     'file' => 'list',
                     'model' => 'news',
                     'addbutton' => 'Nueva noticia',
@@ -197,6 +252,15 @@ namespace Goteo\Controller\Admin {
                         'remove' => ''
                     ),
                     'url' => "$url"
+                )
+            );*/
+
+             return new View(
+                'view/admin/index.html.php',
+                array(
+                    'folder' => 'news',
+                    'file' => 'list',
+                    'news' => $model::getAll()
                 )
             );
             

@@ -6,7 +6,7 @@ use Goteo\Core\View,
     Goteo\Model\Invest,
     Goteo\Model\Image;
 
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 
 $project = $this['project'];
 $level = $this['level'] ?: 3;
@@ -27,6 +27,12 @@ if (isset($this['investor']) && is_object($this['investor'])) {
     if (empty($invest->total)) unset($this['investor']);
 }
 
+// veamos si tiene el grifo cerrado mientras continua en campaña
+if ($project->status == 3 && $project->noinvest) {
+    $project->tagmark = 'gotit'; // banderolo financiado
+    $project->status = null; // para termometro, sin fecha de financiación
+    $project->round = null; // no mostrar ronda
+}
 ?>
 
 <div class="widget project activable<?php if (isset($this['balloon'])) echo ' balloon' ?>">
@@ -114,6 +120,8 @@ if (isset($this['investor']) && is_object($this['investor'])) {
 
 
     <?php
+    
+    
     /*
      * quitamos los botones
      *

@@ -166,9 +166,23 @@ namespace Goteo\Controller\Admin {
                         )
                     );
                     break;
+                    case 'preview':
+                            // datos del elemento
+                            $story = Model\Stories::get($id);
+                            $story->project = (!empty($story->project)) ? Model\Project::getMedium($story->project) : null;
+
+                            return new View(
+                                'view/admin/stories/preview.html.php',
+                                array(
+                                    'story' =>$story,
+                                    'action' => 'preview'
+                                    
+                                )
+                            );
+                            break;    
             }
 
-            $storyed = Model\Stories::getAll(false, $node);
+            $storyed = Model\Stories::getList($node);
 
             return new View(
                 'view/admin/index.html.php',

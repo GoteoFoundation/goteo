@@ -8,18 +8,6 @@ $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
 
-$images = array();
-foreach ($project->gallery as $image) {
-    $images[] = array(
-        'type'  => 'html',
-        'class' => 'inline gallery-image',
-        'html'  => is_object($image) ?
-                   $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove" onclick="document.getElementById(\'proj-superform\').action += \'#images\';"></button>' :
-                   ''
-    );
-
-}
-
 $categories = array();
 
 foreach ($this['categories'] as $value => $label) {
@@ -50,6 +38,7 @@ foreach ($this['scope'] as $value => $label) {
         );
 }
  */
+
 
 // media del proyecto
 if (!empty($project->media->url)) {
@@ -82,7 +71,6 @@ if (!empty($project->video->url)) {
         'class' => 'inline'
     );
 }
-
 // nueva sección de contenido recompensas
 if ( isset($_SESSION['user']->roles['admin'])
   || isset($_SESSION['user']->roles['superadmin'])
@@ -105,8 +93,6 @@ if ( isset($_SESSION['user']->roles['admin'])
         'value' => $project->reward
     );
 }
-
-
 
 
 $superform = array(
@@ -147,32 +133,7 @@ $superform = array(
             'html' => '<a name="images"></a>'
         ),
         
-        'images' => array(        
-            'title'     => Text::get('overview-fields-images-title'),
-            'type'      => 'group',
-            'required'  => true,
-            'hint'      => Text::get('tooltip-project-image'),
-            'errors'    => !empty($errors['image']) ? array($errors['image']) : array(),
-            'ok'        => !empty($okeys['image']) ? array($okeys['image']) : array(),
-            'class'     => 'images',
-            'children'  => array(
-                'image_upload'    => array(
-                    'type'  => 'file',
-                    'label' => Text::get('form-image_upload-button'),
-                    'class' => 'inline image_upload',
-                    'hint'  => Text::get('tooltip-project-image'),
-                    'onclick' => "document.getElementById('proj-superform').action += '#images';"
-                )
-            )
-        ),        
-        'gallery' => array(
-            'type'  => 'group',
-            'title' => Text::get('overview-field-image_gallery'),
-            'class' => 'inline',
-            'children'  => $images
-        ),
-
-        'description' => array(            
+        'description' => array(
             'type'      => 'textarea',
             'title'     => Text::get('overview-field-description'),
             'required'  => true,
@@ -385,7 +346,7 @@ $superform = array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-costs',
+                            'name'  => 'view-step-images',
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

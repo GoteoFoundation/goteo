@@ -12,6 +12,9 @@ namespace Goteo\Controller\Admin {
 
     class Calls {
 
+        /**
+         * @param action: (review | open | publish | cancel | enable | complete | delete)
+         */
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $errors = array();
@@ -168,6 +171,16 @@ namespace Goteo\Controller\Admin {
                 }
             }
 
+             // si llega post de configuración económica
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['save-dropconf']) && $call instanceof Model\Call ) {
+                if ($call->setDropconf($_POST, $errors)) {
+                    $log_text = 'El admin %s ha <span class="red">cambiado la configuracion financiera</span> de la convocatoria %s';
+                } else {
+                    $log_text = 'Al admin %s le ha <span class="red">fallado al cambiar la configuracion financiera</span> de la convocatoria %s';
+                    Message::Info('Ha dado estos errores:<br/>'.implode('<br />', $errors));
+                }
+            }
+
 
             if (isset($log_text)) {
                 // Evento Feed
@@ -187,11 +200,24 @@ namespace Goteo\Controller\Admin {
                     case 'open': // se ha abierto para recibir proyectos
                         $log->populate($call->name, '/call/'.$call->id, Text::html('feed-new_call-opened'), $call->logo);
                         $log->doPublic();
-                    break;
+                        break;
                     case 'publish': // ha iniciado la campaña
                         $log->populate($call->name, '/call/'.$call->id, Text::html('feed-new_call-published'), $call->logo);
                         $log->doPublic();
-                    break;
+                        break;
+                    case 'complete':
+                        $log->unique = true;
+                        $log->populate('Campaña terminada (cron)', '/admin/calls/'.$call->id,
+                            \vsprintf('La campaña %s ha terminado con exito', array(
+                                Feed::item('call', $call->name, $call->id))
+                            ));
+                        $log->doAdmin('call');
+                        $log->populate($call->name, '/call/'.$call->id,
+                            \vsprintf('La campaña %s ha terminado con éxito', array(
+                                Feed::item('call', $call->name, $call->id))
+                            ), $call->logo);
+                        $log->doPublic('projects');
+                        break;
                 }
                 unset($log);
 
@@ -215,9 +241,11 @@ namespace Goteo\Controller\Admin {
             // lista de proyectos seleccionados
             if ($action == 'projects') {
                 if (empty($call)) {
+                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
                     throw new Redirection('/admin/calls/list');
                 }
-                $projects   = Model\Call\Project::get($call->id, array('all'=>true));
+                $filters = ($call->status > 3) ? array('published'=>true) : array('all'=>true);
+                $projects   = Model\Call\Project::get($call->id, $filters);
                 $status     = Model\Project::status();
                 // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
                 //$available  = Model\Call\Project::getAvailable($call->id);
@@ -234,15 +262,11 @@ namespace Goteo\Controller\Admin {
                         // print_r($costs);die;
                     }
 
-
-                    // calculamos en base a primera ronda (ficticio para antes de campaña)
-                    $project->round = 1;
-
                     // le ponemos lo conseguido
                     $project->invested = $project->amount_call + $project->amount_users;
 
                     // y su máximo por proyecto
-                    $called = Model\Call\Project::called($project, $thisCall, $thisGot);
+                    $called = Model\Call\Project::called($project, $call, $project->amount_call);
                     $project->maxproj = $called->maxproj;
                 }
 
@@ -262,6 +286,11 @@ namespace Goteo\Controller\Admin {
             }
 
             if ($action == 'admins') {
+                if (empty($call)) {
+                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
+                    throw new Redirection('/admin/calls');
+                }
+
                 if (isset($_GET['op']) && isset($_GET['user']) && in_array($_GET['op'], array('assign', 'unassign'))) {
                     if ($call->$_GET['op']($_GET['user'])) {
                         // ok
@@ -323,7 +352,10 @@ namespace Goteo\Controller\Admin {
             }
 
             if ($action == 'conf') {
-
+                if (empty($call)) {
+                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
+                    throw new Redirection('/admin/calls');
+                }
                 $conf = $call->getConf();
 
                 return new View(
@@ -337,6 +369,22 @@ namespace Goteo\Controller\Admin {
                             )
                 );
             }
+
+            if ($action == 'dropconf') {
+
+                //$dropconf = $call->getConf();
+
+                return new View(
+                            'view/admin/index.html.php',
+                            array(
+                                'folder' => 'calls',
+                                'file' => 'dropconf',
+                                'action' => 'list',
+                                'call' => $call,
+                                //'conf' => $conf
+                            )
+                );
+            }                
 
             // si es admin, solo las suyas
             if (isset($_SESSION['user']->roles['admin'])) {

@@ -182,7 +182,7 @@ namespace Goteo\Core {
             //si no hay cache se comporta igual
             if($this->debug) $t = microtime(true);
             $this->execute = parent::execute($input_parameters);
-            if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $query ." | ". print_r($input_parameters,1);
+            if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $query ." | ". print_r($input_parameters,true);
             return $this->execute;
         }
 
@@ -197,7 +197,7 @@ namespace Goteo\Core {
 
                     if($this->debug) $t = microtime(true);
                     $this->execute =  parent::execute($params);
-                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $this->queryString ." | ". print_r($this->input_parameters,1);
+                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $this->queryString ." | ". print_r($this->input_parameters,true);
                 }
                 return $this->execute;
             } catch (\PDOException $e) {
@@ -226,7 +226,7 @@ namespace Goteo\Core {
                 if($value !== null) {
                     //incrementar queries cacheadas
                     self::$query_stats[$this->dbh->type][1]++;
-                    if($this->debug>1) self::$queries[$this->dbh->type][1][] = self::$query_stats[$this->dbh->type][1]. ": " . $this->queryString ." | ". print_r($this->input_parameters,1);
+                    if($this->debug>1) self::$queries[$this->dbh->type][1][] = self::$query_stats[$this->dbh->type][1]. ": " . $this->queryString ." | ". print_r($this->input_parameters,true);
 
                     // echo "[cached [$method $class_name] cache time: [{$this->cache_time}s]";
 

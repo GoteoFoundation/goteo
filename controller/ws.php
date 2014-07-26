@@ -70,7 +70,7 @@ EOD;
                 echo "Criterio: {$criteria}<br />";
                 echo "Valor: {$value}<br />";
                 echo "Resulta: $result<br />";
-                echo "<pre>".print_r($new_score, 1)."</pre>";
+                echo "<pre>".print_r($new_score, true)."</pre>";
                  *
                  */
                 die;

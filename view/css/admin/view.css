@@ -158,8 +158,15 @@ body.admin div#main div.admin-center div.superform div.elements > ol > li.busy >
     background: none !important;
 }
 
+/*Para la gestión económica de convocatorias */
+
+body.admin div#main div.admin-center div.superform.gestion_financiera{
+    width:100%;
+}
+
 /* Reestilando botones */
 body.admin div#main div.admin-center input[type="submit"],
 body.admin div#main div.admin-center a.button {
     padding: 0.2em 0.4em !important;
 }
+

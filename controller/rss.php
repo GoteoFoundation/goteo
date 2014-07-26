@@ -15,8 +15,8 @@ namespace Goteo\Controller {
             $tags = Model\Blog\Post\Tag::getAll();
 
             /*
-            echo '<pre>'.print_r($tags, 1).'</pre>';
-            echo '<pre>'.print_r($blog->posts, 1).'</pre>';
+            echo '<pre>'.print_r($tags, true).'</pre>';
+            echo '<pre>'.print_r($blog->posts, true).'</pre>';
             die;
              * 
              */

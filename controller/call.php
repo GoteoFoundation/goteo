@@ -18,6 +18,12 @@ namespace Goteo\Controller {
 
         public function index($id, $show = 'index') {
             if ($id !== null) {
+
+                //#TODO:  publicada en aplicación cerrada, pasará a configuración
+//                define('CALL_NOAPPLY', true);
+//                if ($show == 'apply') $show = 'info';
+
+
                 if ($show == 'apply') {
                     // Preparamos la sesión para que al crear proyecto se asigne a esta convocatoria
                     $this->apply($id);

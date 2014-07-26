@@ -13,3 +13,6 @@ ALTER TABLE `user_prefer` ADD `email` INT( 1 ) NOT NULL DEFAULT '0';
 
 -- bloquear consejos de difusión
 ALTER TABLE `user_prefer` ADD `tips` INT( 1 ) NOT NULL DEFAULT '0';
+
+-- campo para seleccionar el idioma en que se reciben las notificaciones
+ALTER TABLE `user_prefer` ADD `comlang` varchar(2) DEFAULT NULL;

@@ -19,20 +19,28 @@ namespace Goteo\Library {
 
         static public function get ($id, $lang = \LANG) {
 
-            //@PIÑON que saque el texto en inglés cuando sea en francés y la plantilla no esté traducida
-            if ($lang == 'fr') {
-                $traducidas = array();
-                $qaux = Model::query("SELECT id  FROM template_lang WHERE lang = 'fr'");
-                foreach ($qaux->fetchAll(\PDO::FETCH_OBJ) as $trans) {
-                    $traducidas[] = $trans->id;
-                }
-                if (!in_array($id, $traducidas)) $lang = 'en';
+            // por si llega idioma vacio
+            if (empty($lang))
+                $lang = \LANG;
+
+            // Devolver la plantilla en inglés cuando la plantilla no esté traducida en idioma no-español
+            if ($lang != 'es') {
+                // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
+                $default_lang = (in_array($lang, array('ca', 'gl', 'eu', 'en'))) ? 'es' : 'en';
+                $qaux = Model::query(
+                    "SELECT id FROM template_lang WHERE id = :id AND lang = :lang",
+                    array(':id' => $id, ':lang' => $lang)
+                );
+                $ok = $qaux->fetchColumn();
+                if ($ok != $id)
+                    $lang = $default_lang;
             }
-            
-            // buscamos la página para este nodo en este idioma
+
+            // buscamos la plantilla en ese idioma
 			$sql = "SELECT  template.id as id,
                             template.name as name,
                             template.group as `group`,
+                            template_lang.lang as `lang`,
                             template.purpose as purpose,
                             IFNULL(template_lang.title, template.title) as title,
                             IFNULL(template_lang.text, template.text) as text
@@ -63,6 +71,11 @@ namespace Goteo\Library {
                 $values = array(':lang' => \LANG);
                 $sqlFilter = '';
                 $and = "WHERE";
+                if (!empty($filters['id'])) {
+                    $sqlFilter .= " $and template.`id` = :id";
+                    $and = "AND";
+                    $values[':id'] = "{$filters['id']}";
+                }
                 if (!empty($filters['group'])) {
                     $sqlFilter .= " $and template.`group` = :group";
                     $and = "AND";
@@ -94,7 +107,7 @@ namespace Goteo\Library {
                 }
                 return $templates;
             } catch (\PDOException $e) {
-                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -118,7 +131,7 @@ namespace Goteo\Library {
                 }
                 return $templates;
             } catch (\PDOException $e) {
-                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, 1) . "</pre>");
+                throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -168,12 +181,12 @@ namespace Goteo\Library {
 				if (Model::query($sql, $values)) {
                     return true;
                 } else {
-                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, 1) . "</pre>";
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, true) . "</pre>";
                     return false;
                 }
                 
 			} catch(\PDOException $e) {
-                $errors[] = 'Error sql al grabar el contenido de la palntilla. ' . $e->getMessage();
+                $errors[] = 'Error sql al grabar el contenido de la plantilla. ' . $e->getMessage();
                 return false;
 			}
 

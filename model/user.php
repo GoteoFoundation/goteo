@@ -120,7 +120,7 @@ namespace Goteo\Model {
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;
 					else {
-                        $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+                        $URL = \SITE_URL;
 						// Obtenemos la plantilla para asunto y contenido
 						$template = Template::get(5);
 
@@ -530,6 +530,7 @@ namespace Goteo\Model {
                         user.id as id,
                         user.email as email,
                         user.name as name,
+                        IFNULL(user.lang, 'es') as lang,
                         user.location as location,
                         user.avatar as avatar,
                         IFNULL(user_lang.about, user.about) as about,
@@ -585,7 +586,7 @@ namespace Goteo\Model {
             }
         }
 
-        // version mini de get para sacar nombre i mail
+        // version mini de get para sacar nombre, avatar, email, idioma y nodo
         public static function getMini ($id) {
             try {
                 $query = static::query("
@@ -616,10 +617,10 @@ namespace Goteo\Model {
          * Lista de usuarios.
          *
          * @param  array $filters  Filtros
-         * @param  string $node    true|false
+         * @param  boolean $subnode Filtra además por...
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($filters = array(), $node = null) {
+        public static function getAll ($filters = array(), $subnode = false) {
 
             $values = array();
 
@@ -657,26 +658,20 @@ namespace Goteo\Model {
             }
 
             // un admin de central puede filtrar usuarios de nodo
-            if (!empty($filters['node'])) {
-                $sqlFilter .= " AND node = :node";
-                $values[':node'] = $filters['node'];
-            } elseif (!empty($node) && $node != \GOTEO_NODE) {
-                // un admin de nodo puede ver sus usuarios y los que hayan aportado a sus proyectos
-                /*
+            if($subnode) {
                 $sqlFilter .= " AND (node = :node
                     OR id IN (
-                        SELECT user
-                        FROM invest
-                        INNER JOIN project
-                            ON project.id = invest.project
-                            AND project.node = :node
-                        GROUP BY invest.user
-                        )
-                    )";
-                $values[':node'] = $node;
-                 * 
-                 */
+                        SELECT user_id
+                        FROM invest_node
+                        WHERE project_node = :node
+                    )
+                )";
+                $values[':node'] = $filters['node'];
+            } elseif (!empty($filters['node'])) {
+                $sqlFilter .= " AND node = :node";
+                $values[':node'] = $filters['node'];
             }
+
             if (!empty($filters['project'])) {
                 $subFilter = $filters['project'] == 'any' ? '' : 'invest.project = :project AND';
                 $sqlFilter .= " AND id IN (
@@ -698,7 +693,7 @@ namespace Goteo\Model {
                             FROM project
                             ) ";
                         break;
-                    case 'investos': // aportan correctamente a proyectos
+                    case 'investors': // aportan correctamente a proyectos
                         $sqlFilter .= " AND id IN (
                             SELECT DISTINCT(user)
                             FROM invest
@@ -715,6 +710,12 @@ namespace Goteo\Model {
                                 WHERE thread IS NULL
                                 AND blocked = 1
                                 )
+                            ) ";
+                        break;
+                    case 'consultants': // asesores de proyectos (admins)
+                        $sqlFilter .= " AND id IN (
+                            SELECT DISTINCT(user)
+                            FROM user_project
                             ) ";
                         break;
                     case 'lurkers': // colaboran con el proyecto
@@ -770,11 +771,12 @@ namespace Goteo\Model {
                     FROM user
                     WHERE id != 'root'
                         $sqlFilter
-                   $sqlOrder
+                    $sqlOrder
                     LIMIT 999
                     ";
             
             $query = self::query($sql, $values);
+
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
 
                 $query = static::query("
@@ -869,6 +871,7 @@ namespace Goteo\Model {
 
         /*
          * Listado simple de los usuarios Administradores
+         * @param boolean $availableonly si es true, solo devuelve los administradores que no tienen asignado ningún nodo
          */
         public static function getAdmins($availableonly = false) {
 
@@ -991,6 +994,28 @@ namespace Goteo\Model {
 			return !empty($_SESSION['user']);
 		}
 
+        /**
+         * Comprueba si el usuario es administrador
+         * @param   type varchar(50)  $id   Usuario admin
+         * @return  type bool true/false
+         */
+        public function isAdmin ($id) {
+
+            $sql = "
+                SELECT
+                    user.id as id
+                FROM    user
+                INNER JOIN user_role
+                    ON  user_role.user_id = user.id
+                    AND user_role.role_id IN ('admin', 'superadmin')
+                WHERE user.id = :id
+                LIMIT 1
+                ";
+            $query = static::query($sql, array(':id' => $id));
+            $res = $query->fetchColumn();
+            return ($res == $id);
+        }
+
 		/**
 		 * Refresca la sesión.
 		 * (Utilizar después de un save)
@@ -1011,7 +1036,7 @@ namespace Goteo\Model {
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
 		public static function recover ($email = null) {
-            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            $URL = \SITE_URL;
             $query = self::query("
                     SELECT
                         id,
@@ -1062,7 +1087,7 @@ namespace Goteo\Model {
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
 		public static function leaving ($email, $message = null) {
-            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            $URL = \SITE_URL;
             $query = self::query("
                     SELECT
                         id,
@@ -1070,8 +1095,6 @@ namespace Goteo\Model {
                         email
                     FROM user
                     WHERE BINARY email = :email
-                    AND active = 1
-                    AND hide = 0
                     ",
 				array(
 					':email'    => trim($email)
@@ -1091,7 +1114,7 @@ namespace Goteo\Model {
 
                 // En el contenido:
                 $search  = array('%USERNAME%', '%URL%');
-                $replace = array($row->name, SEC_URL . '/user/leave/' . base64_encode($token));
+                $replace = array($row->name, SEC_URL . '/user/leave/' . \mybase64_encode($token));
                 $content = \str_replace($search, $replace, $template->text);
                 // Email de recuperacion
                 $mail = new Mail();
@@ -1133,7 +1156,7 @@ namespace Goteo\Model {
     	 * @return type bool
     	 */
     	private function setToken ($token) {
-            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            $URL = \SITE_URL;
             if(count($tmp = explode('¬', $token)) > 1) {
                 $email = $tmp[1];
                 if(Check::mail($email)) {
@@ -1146,7 +1169,7 @@ namespace Goteo\Model {
 
                     // En el contenido:
                     $search  = array('%USERNAME%', '%CHANGEURL%');
-                    $replace = array($this->name, $URL . '/user/changeemail/' . base64_encode($token));
+                    $replace = array($this->name, $URL . '/user/changeemail/' . \mybase64_encode($token));
                     $content = \str_replace($search, $replace, $template->text);
 
 
@@ -1354,7 +1377,8 @@ namespace Goteo\Model {
                                       rounds,
                                       mailing,
                                       email,
-                                      tips
+                                      tips,
+                                      comlang
                                   FROM user_prefer
                                   WHERE user = ?'
                 , array($id));

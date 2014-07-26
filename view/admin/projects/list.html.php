@@ -75,7 +75,8 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
             </tr>
             <tr>
                 <td>
-                    <input type="submit" name="filter" value="Buscar">
+                    <label for="proj_id-filter">Id del proyecto:</label><br />
+                    <input id="proj_id-filter" name="proj_id" value="<?php echo $filters['proj_id']; ?>" style="width:250px"/>
                 </td>
                 <td>
                     <label for="order-filter">Ordenar por:</label><br />
@@ -84,6 +85,20 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                         <option value="<?php echo $orderId; ?>"<?php if ($filters['order'] == $orderId) echo ' selected="selected"';?>><?php echo $orderName; ?></option>
                     <?php endforeach; ?>
                     </select>
+                </td>
+                <td>
+                    <label for="consultant-filter">Asesorado por:</label><br />
+                    <select id="consultant-filter" name="consultant" onchange="document.getElementById('filter-form').submit();">
+                        <option value="-1"<?php if ($filters['consultant'] == -1) echo ' selected="selected"';?>>Cualquier admin</option>
+                    <?php foreach ($this['admins'] as $userId=>$userName) : ?>
+                        <option value="<?php echo $userId; ?>"<?php if ($filters['consultant'] == $userId) echo ' selected="selected"';?>><?php echo $userName; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="filter" value="Buscar">
                 </td>
             </tr>
         </table>
@@ -129,8 +144,23 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
             </tr>
             <tr>
                 <td colspan="7"><?php 
-                    if ($project->status < 3)  echo "Información al <strong>{$project->progress}%</strong>";
-                    if ($project->status == 3 && $project->round > 0) echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;<strong>Conseguido:</strong> ".\amount_format($project->invested)."€&nbsp;&nbsp;&nbsp;<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messegers}"; 
+                    if ($project->status < 3) {
+                        echo "Información al <strong>{$project->progress}%</strong>";
+                    } elseif ($project->status == 3 && $project->round > 0) {
+                        echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;";
+                        echo "<strong>Conseguido:</strong> ".\amount_format($project->invested)."€&nbsp;&nbsp;&nbsp;";
+                        echo "<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messegers}";
+
+                    }
+
+                    $consultants = array_values($project->consultants);
+                    if (!empty($consultants)) {
+                        if (($project->status < 3) ||  ($project->status == 3 && $project->round > 0)) {
+                            echo " | ";
+                        }
+                        echo "Asesorado por: " . implode(", ", $consultants);
+                    }
+
                 ?></td>
             </tr>
             <tr>
@@ -155,15 +185,23 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                     <a href="<?php echo "/admin/projects/dates/{$project->id}"; ?>">[Fechas]</a>
                     <a href="<?php echo "/admin/projects/accounts/{$project->id}"; ?>">[Cuentas]</a>
                     <a href="<?php echo "/admin/projects/move/{$project->id}"; ?>">[Nodo]</a>
+                    <a href="<?php echo "/admin/projects/open_tags/{$project->id}"; ?>">[Agrupación]</a>
                     <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}"; ?>" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Id]</a><?php endif; ?>
+                    <a href="<?php echo "/admin/projects/consultants/{$project->id}"; ?>">[Asesor]</a>
                     &nbsp;|&nbsp;
                     <?php if ($project->status < 2) : ?><a href="<?php echo "/admin/projects/review/{$project->id}"; ?>" onclick="return confirm('El creador no podrá editarlo más, ok?');">[A revisión]</a><?php endif; ?>
                     <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}"; ?>" onclick="return confirm('El proyecto va a comenzar los 40 dias de la primera ronda de campaña, ¿comenzamos?');">[Publicar]</a><?php endif; ?>
-                    <?php if ($project->status != 1) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}"; ?>" onclick="return confirm('Mucho Ojo! si el proyecto esta en campaña, ¿Reabrimos la edicion?');">[Reabrir edición]</a><?php endif; ?>
+                    <?php if ($project->status > 1 && $project->status < 4) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}"; ?>" <?php if ($project->status == 3) : ?>onclick="return confirm('ALERTA!! El proyecto esta en campaña! Con esto lo vamos a despublicar ¿Ok?');"<?php endif; ?>>[A negociación]</a><?php endif; ?>
                     <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}"; ?>" onclick="return confirm('El proyecto pasara a ser un caso de éxito, ok?');">[Retorno Cumplido]</a><?php endif; ?>
                     <?php if ($project->status == 5) : ?><a href="<?php echo "/admin/projects/unfulfill/{$project->id}"; ?>" onclick="return confirm('Lo echamos un paso atras, ok?');">[Retorno Pendiente]</a><?php endif; ?>
                     <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/cancel/{$project->id}"; ?>" onclick="return confirm('El proyecto va a desaparecer del admin, solo se podra recuperar desde la base de datos, Ok?');">[Descartar]</a><?php endif; ?>
-                    <?php if ($project->status == 3) : ?><a href="<?php echo "/admin/projects/noinvest/{$project->id}"; ?>" onclick="return confirm('No se podrá aportar más pero sigue técnicamente en campaña hasta final de ronda, ok?');">[Cortar el grifo]</a><?php endif; ?>
+                    <?php if ($project->status == 3 && ! $project->noinvest) : ?><a href="<?php echo "/admin/projects/noinvest/{$project->id}"; ?>" onclick="return confirm('No se podrá aportar más pero sigue técnicamente en campaña hasta final de ronda, ok?');">[Cortar el grifo]</a><?php endif; ?>
+                    <?php if ($project->status == 3 && $project->noinvest) : ?><a href="<?php echo "/admin/projects/openinvest/{$project->id}"; ?>" onclick="return confirm('Seguro que quieres abrirle el grifo de nuevo a este proyecto?');">[Abrir el grifo]</a><?php endif; ?>
+                    <?php if ($project->watch) { ?>
+                    <a href="<?php echo "/admin/projects/unwatch/{$project->id}"; ?>">[Dejar de vigilar]</a>
+                    <?php } else { ?>
+                    <a href="<?php echo "/admin/projects/watch/{$project->id}"; ?>">[Vigilar]</a>
+                    <?php } ?>
                 </td>
             </tr>
             <tr>
@@ -175,6 +213,7 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                     <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
                     <a href="/admin/projects/images/<?php echo $project->id; ?>">[Organizar imágenes]</a>
                     <?php if (in_array($project->status, array('1', '2', '3')) && !isset($project->called)) : ?><a href="<?php echo "/admin/projects/assign/{$project->id}"; ?>">[Asignarlo a una convocatoria]</a><?php endif; ?>
+                    <?php if ($project->status == 4 || $project->status == 5) : ?><a href="/admin/commons?project=<?php echo $project->id; ?>">[Retornos colectivos]</a><?php endif; ?>
                     <?php if (isset($this['contracts'][$project->id])) : ?><a href="<?php echo "/admin/contracts/preview/{$project->id}"; ?>">[Contrato]</a><?php endif; ?>
                     <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/projects/reject/{$project->id}"; ?>" onclick="return confirm('Se va a enviar un mail automáticamente pero no cambiará el estado, ok?');">[Rechazo express]</a><?php endif; ?>
                 </td>

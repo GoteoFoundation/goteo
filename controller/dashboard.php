@@ -182,6 +182,10 @@ namespace Goteo\Controller {
                     break;
                 case 'preferences':
                     $viewData['preferences'] = Model\User::getPreferences($user->id);
+
+                    //Si no hay un idioma preferido para notificaciones
+                    if(!$viewData['preferences']->comlang)
+                        $viewData['preferences']->comlang=LANG;
                     break;
             }
 
@@ -265,6 +269,12 @@ namespace Goteo\Controller {
                         
                         list($action, $id) = Dashboard\Projects::process_updates($action, $project, $errors);
                         break;
+
+                    // gestión retornos
+                    case 'commons':
+                        // se maneja más abajo según action (add/edit)
+                        break;
+
                 }
             }
 
@@ -306,11 +316,82 @@ namespace Goteo\Controller {
 
                 // gestionar retornos
                 case 'commons':
+
                     $icons = Model\Icon::getAll('social');
                     foreach ($icons as $key => $icon) {
                         $icons[$key] = $icon->name;
                     }
+                    $licenses = Model\License::getList();
                     $viewData['icons'] = $icons;
+                    $viewData['licenses'] = $licenses;
+                    // ruta
+                    $viewData['path'] = '/dashboard/projects/commons';
+
+                    switch ($action) {
+                        // acciones sobre retorno
+                        case 'add':
+                        case 'edit':
+                            // editar un retorno colectivo
+                            if (empty($_GET['reward_id'])) {
+                                $reward = new Model\Project\Reward;
+                                $reward->id = '';
+                                $reward->project = $id;
+                                $reward->bonus = 1;
+                            } else {
+                                $reward = Model\Project\Reward::get($_GET['reward_id']);
+
+                                // en dashboard, impulsor solo puede editar retornos bonus y solo cuando proyecto estado 4
+                                if ( $project->status != 4 || !$reward->bonus ) {
+                                    throw new Redirection('/dashboard/projects/commons');
+                                }
+                            }
+
+                            $stypes = Model\Project\Reward::icons('social');
+
+                            // si llega post -> procesamos el formulario
+                            if (isset($_POST['social_reward-' . $reward->id . '-reward'])) {
+                                $errors = array();
+
+                                $reward->reward = $_POST['social_reward-' . $reward->id . '-reward'];
+                                $reward->description = $_POST['social_reward-' . $reward->id . '-description'];
+                                $reward->icon = $_POST['social_reward-' . $reward->id . '-icon'];
+                                if ($reward->icon == 'other') {
+                                    $reward->other = $_POST['social_reward-' . $reward->id . '-other'];
+                                }
+                                $reward->license = $_POST['social_reward-' . $reward->id . '-' . $reward->icon . '-license'];
+                                $reward->icon_name = $icons[$reward->icon];
+
+                                if ($reward->save($errors)) {
+                                    throw new Redirection('/dashboard/projects/commons');
+                                } else {
+                                    Message::Error(implode('<br />', $errors));
+                                }
+                            }
+
+                            $viewData['reward'] = $reward;
+                            $viewData['stypes'] = $stypes;
+
+                            break;
+
+                        case 'delete':
+                            // eliminar retorno
+                            if (isset($_GET['reward_id'])) {
+                                $errors = array();
+                                $reward = Model\Project\Reward::get($_GET['reward_id']);
+
+                                // en dashboard, impulsor solo puede eliminar retornos bonus y solo cuando proyecto estado 4
+                                if ( $project->status != 4 || !$reward->bonus ) {
+                                    throw new Redirection('/dashboard/projects/commons');
+                                }
+
+                                if (!$reward->remove($errors)) {
+                                    Message::Error(implode('<br />', $errors));
+                                }
+                            }
+                            throw new Redirection('/dashboard/projects/commons');
+                            break;
+                    }
+
                     break;
 
                 // listar mensajeadores
@@ -347,6 +428,7 @@ namespace Goteo\Controller {
                     $viewData['blog'] = $blog;
                     $viewData['posts'] = $posts;
                     $viewData['post'] = $post;
+                    $viewData['ckeditor'] = true;
                     break;
 
                 // datos de contrato y mensaje segun estado del proceso
@@ -926,7 +1008,7 @@ namespace Goteo\Controller {
             );
 
             // si es un convocador
-            if (ACL::check('/call/create')) {
+            if (isset($_SESSION['user']->roles['caller'])) {
                 $menu['calls'] = array(
                     'label' => Text::get('dashboard-menu-calls'),
                     'options' => array(
@@ -980,14 +1062,33 @@ namespace Goteo\Controller {
             }
 
             // si es donante, ponemos la opción
-            $donante = Model\User\Donor::get($_SESSION['user']->id);
+            /*
+             * Tema: certificados todo el año,
+             * el sistema debe poder manejar :
+             *   usuarios con aportes en el año pasado y con aportes en el año actual:
+             *   proyectos que no se financian hasta que pas el año.
+             *
+             *  confirmación de datos del año pasado hasta 15-20 de enero
+             *
+             *  descarga de pdf del año pasado hasta junio
+             *
+             */
+            $year = date('Y');
+            $month = date('m');
+            // hasta junio es el año anterior
+            if ($month <= 6) {
+                $year--;
+            }
+            $donante = Model\User\Donor::get($_SESSION['user']->id, $year);
             if ($donante instanceof Model\User\Donor) {
                 $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
                 // si no ha confirmado
-                if (!$donante->confirmed) {
+                if ($year == date('Y') && !$donante->confirmed) {
                     Message::Info(Text::get('dashboard-donor-remember'));
                 }
             }
+
+
 
             // si tiene permiso para ir al admin
             if (ACL::check('/admin')) 

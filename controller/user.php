@@ -37,7 +37,7 @@ namespace Goteo\Controller {
         public function login($username = '') {
 
 /*
-
+            // esto debería verificar que esté instalado el certificado SSL
             if (GOTEO_ENV != 'local' && $_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['HTTPS'] !== 'on') {
                 $ret = (!empty($_REQUEST['return'])) ? '?return='.$_REQUEST['return'] : '';
                 throw new Redirection(SEC_URL.'/user/login'.$ret);
@@ -184,7 +184,7 @@ namespace Goteo\Controller {
                     $oauth->tokens[$oauth->provider]['token'] = $_POST['tokens'][$oauth->provider]['token'];
                 if ($_POST['tokens'][$oauth->provider]['secret'])
                     $oauth->tokens[$oauth->provider]['secret'] = $_POST['tokens'][$oauth->provider]['secret'];
-                //print_r($_POST['tokens']);print_R($oauth->tokens[$oauth->provider]);die;
+                //print_r($_POST['tokens']);print_r($oauth->tokens[$oauth->provider]);die;
                 $user = new Model\User();
                 $user->userid = $_POST['userid'];
                 $user->email = $_POST['email'];
@@ -279,7 +279,7 @@ namespace Goteo\Controller {
 
                 if ($oauth->login()) {
                     //si ok: redireccion de login!
-                    //Message::Info("USER INFO:\n".print_r($oauth->user_data,1));
+                    //Message::Info("USER INFO:\n".print_r($oauth->user_data,true));
                     //si es posible, login en goteo (redirecciona a user/dashboard o a user/confirm)
                     //y fuerza que pueda logear en caso de que no esté activo
                     if (!$oauth->goteoLogin()) {
@@ -534,15 +534,18 @@ namespace Goteo\Controller {
 
                 $is_author   = false; // si es autor de un proyecto publicado
                 $is_investor = false; // si es cofinanciador
-                $is_messeger = false; // si es participante
+                $is_messeger = false; // si es mensajeado
+                $is_participant = false; // si es participante
 
-                // si el usuario logueado es impulsor (autro de proyecto publicado
+                // si el usuario logueado es impulsor (autor de proyecto publicado
                 $user_created = Model\Project::ofmine($_SESSION['user']->id, true);
                 if (!empty($user_created)) {
                     $is_author = true;
                 }
 
-                // si el usuario del perfil es cofin. o partic.
+                //@TODO: Hay que revisar las siguientes verificaciones y optimizar
+
+                // si el usuario del perfil es cofinanciador o participante
                 // proyectos que es cofinanciador este usuario (el del perfil)
                 $user_invested = Model\User::invested($id, true);
                 foreach ($user_invested as $a_project) {
@@ -554,15 +557,15 @@ namespace Goteo\Controller {
 
                 // proyectos que es participante este usuario (el del perfil) (que ha enviado algún mensaje)
                 $user_messeged = Model\Message::getMesseged($id, true);
-                foreach ($user_messeged as $a_project) {
-                    if ($a_project->owner == $_SESSION['user']->id) {
+                foreach ($user_messeged as $a_msg) {
+                    if ($a_msg->owner == $_SESSION['user']->id) {
                         $is_messeger = true;
                         break;
                     }
                 }
 
 
-                // si el usuario logueado es el usuario cofin./partic.
+                // si el usuario logueado es el usuario cofinanciador/participante
                 // si el usuario del perfil es impulsor de un proyecto cofinanciado o en el que ha participado
                 // proyectos que es cofinanciador el usuario logueado
                 $user_invested = Model\User::invested($_SESSION['user']->id, true);
@@ -577,12 +580,12 @@ namespace Goteo\Controller {
                 $user_messeged = Model\Message::getMesseged($_SESSION['user']->id, true);
                 foreach ($user_messeged as $a_project) {
                     if ($a_project->owner == $id) {
-                        $is_messeger = true;
+                        $is_participant = true;
                         break;
                     }
                 }
 
-                if (!$is_investor && !$is_messeger && !$is_author) {
+                if (!$is_investor && !$is_messeger && !$is_author && !$is_participant) {
                     Message::Info(Text::get('user-message-restricted'));
                     throw new Redirection('/user/profile/' . $id);
                 } else {
@@ -783,7 +786,7 @@ namespace Goteo\Controller {
          * @param type string	$token
          */
         public function changeemail($token) {
-            $token = base64_decode($token);
+            $token = \mybase64_decode($token);
             if (count(explode('¬', $token)) > 1) {
                 $query = Model\User::query('SELECT id FROM user WHERE token = ?', array($token));
                 if ($id = $query->fetchColumn()) {
@@ -875,7 +878,7 @@ namespace Goteo\Controller {
 
             // si el token mola, lo doy de baja
             if (!empty($token)) {
-                $token = base64_decode($token);
+                $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
                 if (count($parts) > 1) {
                     $query = Model\User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));
@@ -914,6 +917,52 @@ namespace Goteo\Controller {
                             )
             );
         }
+
+        /*
+         * Método para bloquear el envío de newsletter
+         *
+         * token es un
+         *
+         */
+        public function unsuscribe($token = null) {
+
+            $errors = array();
+            // si el token mola, lo doy de baja
+            if (!empty($token)) {
+                $token = \mybase64_decode($token);
+                $parts = explode('¬', $token);
+                if (count($parts) > 1) {
+                    $query = Model\User::query('SELECT id FROM user WHERE email = ?', array($parts[1]));
+                    if ($id = $query->fetchColumn()) {
+                        if (!empty($id)) {
+                            // el token coincide con el email y he obtenido una id
+                            Model\User::setPreferences($id, array('mailing'=>1), $errors);
+
+                            if (empty($errors)) {
+                                $message = Text::get('unsuscribe-request-success');
+                            } else {
+                                $error = implode('<br />', $errors);
+                            }
+                        }
+                    } else {
+                        $error = Text::get('leave-token-incorrect');
+                    }
+                } else {
+                    $error = Text::get('leave-token-incorrect');
+                }
+            } else {
+                $error = Text::get('leave-request-fail');
+            }
+
+            return new View(
+                'view/user/unsuscribe.html.php',
+                array(
+                    'error' => $error,
+                    'message' => $message
+                )
+            );
+        }
+
 
     }
 

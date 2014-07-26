@@ -16,12 +16,6 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
-            // año fiscal
-            $year = Model\User\Donor::$currYear;
-            $year0 = $year;
-            $year1 = $year-1;
-            
-
             $errors = array();
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
@@ -137,20 +131,6 @@ namespace Goteo\Controller\Admin {
                         $_SESSION['mailing']['filters_txt'] .= 'que su nombre o email contenga <strong>\'' . $filters['name'] . '\'</strong> ';
                     }
 
-                    if (!empty($filters['donant'])) {
-                        if ($filters['type'] == 'investor') {
-                            $sqlFilter .= " AND invest.resign = 1
-                                AND invest.status IN (1, 3)
-                                AND invest.charged >= '{$year0}-01-01'
-                                AND invest.charged < '{$year1}-01-01'
-                                AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                                ";
-                            $_SESSION['mailing']['filters_txt'] .= 'que haya hecho algun donativo ';
-                        } else {
-                            Message::Error('Solo se filtran donantes si se envia "A los: Cofinanciadores"');
-                        }
-                    }
-
                     if ($node != \GOTEO_NODE) {
                         $sqlFilter .= " AND user.node = :node";
                         $values[':node'] = $node;
@@ -173,14 +153,14 @@ namespace Goteo\Controller\Admin {
                             ORDER BY user.name ASC
                             ";
 
-//                        die('<pre>'.$sql . '<br />'.print_r($values, 1).'</pre>');
+//                        die('<pre>'.$sql . '<br />'.print_r($values, true).'</pre>');
 
                     if ($query = Model\User::query($sql, $values)) {
                         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
                             $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
                         }
                     } else {
-                        Message::Error('Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, 1).'</pre>');
+                        Message::Error('Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, true).'</pre>');
                     }
 
                     // si no hay destinatarios, salta a la lista con mensaje de error
@@ -207,9 +187,9 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'send':
 
-//                    die(\trace($_POST));
+                    $URL = \SITE_URL;
 
-                    $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+                    $comlang = (isset($_POST['lang'])) ? $_POST['lang'] : \LANG;
                     
                     // Enviando contenido recibido a destinatarios recibidos
                     $receivers = array();
@@ -234,12 +214,13 @@ namespace Goteo\Controller\Admin {
 
                     // montamos el mailing
                     // - se crea un registro de tabla mail
-                    $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+                    $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
                     $values = array (
                         ':email' => 'any',
                         ':html' => $content,
                         ':template' => $templateId,
-                        ':node' => $node
+                        ':node' => $node,
+                        ':lang' => $comlang
                     );
                     $query = \Goteo\Core\Model::query($sql, $values);
                     $mailId = \Goteo\Core\Model::insertId();

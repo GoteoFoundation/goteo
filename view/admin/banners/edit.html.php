@@ -17,21 +17,25 @@ if ($node == \GOTEO_NODE) {
 } else {
     $image_size_txt = '940 x 270 (estricto)';
 }
+
+//para autocomplete
+$items = array();
+
+foreach ($projects as $project) {
+    $items[] = '{ value: "'.str_replace('"','\"',$project->name).'", id: "'.$project->id.'" }';
+}
 ?>
 <form method="post" action="/admin/banners" enctype="multipart/form-data">
     <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
     <input type="hidden" name="order" value="<?php echo $banner->order ?>" />
     <input type="hidden" name="id" value="<?php echo $banner->id; ?>" />
+    <input type="hidden" id="item" name="item" value="<?php echo $banner->project;?>" />
 
 <?php if ($node == \GOTEO_NODE) : ?>
-<p>
-    <label for="banner-project">Proyecto:</label><br />
-    <select id="banner-project" name="project">
-        <option value="" >Seleccionar el proyecto a mostrar en el banner</option>
-    <?php foreach ($projects as $project) : ?>
-        <option value="<?php echo $project->id; ?>"<?php if ($banner->project == $project->id) echo' selected="selected"';?>><?php echo $project->name . ' ('. $status[$project->status] . ')'; ?></option>
-    <?php endforeach; ?>
-    </select>
+
+ <p>
+   <label for="banner-project">Proyecto: (autocomplete nombre)</label><br />
+   <input type="text" name="project" id="banner-project" value="<?php echo $banner->name;?>" size="60" />
 </p>
 
 <script type="text/javascript">
@@ -47,6 +51,7 @@ if ($node == \GOTEO_NODE) {
         });
         
     });
+
 </script>
 <?php endif; ?>
 
@@ -86,3 +91,21 @@ if ($node == \GOTEO_NODE) {
 
     <input type="submit" name="save" value="Guardar" />
 </form>
+<script type="text/javascript">
+$(function () {
+
+    var items = [<?php echo implode(', ', $items); ?>];
+
+    /* Autocomplete para elementos */
+    $( "#banner-project" ).autocomplete({
+      source: items,
+      minLength: 1,
+      autoFocus: true,
+      select: function( event, ui) {
+                $("#item").val(ui.item.id);
+                $("#text-banner").hide();
+            }
+    });
+
+});
+</script>

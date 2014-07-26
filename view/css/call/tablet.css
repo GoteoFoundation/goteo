@@ -1,5 +1,5 @@
 /* Tablet (min-width:400px max-width:600px) */
-            #header, #footer {display:none;}
+            #footer {display:none;}
                        
             div#main {
                  width: 100%;
@@ -22,17 +22,16 @@
             div.call-banners-container div.call-banner {
                         width:100%;
                         background-image: none !important;
-                        left:0px !important;
                         margin-left: 15%;
                         margin-right: 15%;
                        }
 
             div.call-banners-container div.call-banner > div.title {
-                        width:70%;
-                        margin-left: 22%;
-                        max-width: 400px;
+                        width:80%;
+                        margin-left: 0;
+                        max-width: 750px;
                        }
-            #social {
+            #banners-social #social, div#side.twitter {
               display:none;
             }
 
@@ -96,4 +95,152 @@
            .freetext {
             margin-right: 5%;
            }
+
+           #header-responsive {
+            display: block;
+            width: 100%;
+            background: #B5DADC;
+            margin: 0;
+            height: 25px;
+            }
            
+            #title {
+              margin-top: 6px;
+             }
+
+            #header{
+            position:relative;
+            }
+
+            div#super-header ul > li.campanya, div#super-header div#rightside ul.menu-right > li.login {
+              display:none;
+            }
+
+            #super-header {
+              width: 100%;
+            }
+
+            
+            div#header div#menu {
+             width:27%;
+            }
+
+            div#super-header div#rightside ul.menu-right > li.capital {
+            padding-left: 1.3%;
+             float:left;
+             width:54%;
+             text-align: center;
+            }
+
+            div#super-header div#rightside {
+              width:72%;
+            }
+
+            #social-responsive {
+              display: block;
+              width:100%;
+              background: #FFFFFF;
+              margin-top: 6px;
+            }
+
+            #social-responsive #social {
+              width: 100%;
+              background: #FFFFFF;
+              margin-bottom: 6px;
+
+            }
+
+            #social-logo ul {
+              width: 40%;
+              margin-left: 5%;
+            }
+
+            #social-logo a#capital {
+              width: 91px;
+              height: 122px;  
+              display: block;
+              text-indent: -10000px;
+              background: url('/view/css/call/logo-capital_medium.png') no-repeat;
+              float: left;
+              margin: 10px 0 0 0;
+            }
+
+            #social-logo li.email {
+              display: none;
+            }
+
+             div#header ul > li.dashboard {
+              display: none !important;
+            }
+
+             .float-none {
+              float:none !important;
+            }
+
+            #sponsors-responsive {
+              display: block;
+              width: 100%;
+              margin-top: 6px; 
+              margin-bottom: 10px; 
+                     
+            }
+
+            #supporters-sponsors .title {
+              margin-left: 15px;
+              color: #666;
+              font-size: 16px;
+
+            }
+
+            .sponsor{
+            float:left; 
+            width:30%;
+            margin-right: 3%;
+            }
+
+            #social-actions .fb-like {
+              float: left !important;
+            }
+
+            #social-actions  {
+              margin-top: 30px;
+            }
+
+            #supporters-sponsors #post div.image {
+            width:35%;
+            }
+
+
+            #supporters-sponsors #post div.content {
+            width: 60%;
+            margin-left: 2%;
+            }
+
+            #supporters-sponsors #post {
+            width: 96.6%;
+            padding: 1% 0 0 1%;
+            max-width: 750px;
+            }
+
+            #supporters-sponsors #post h3 a {
+            
+            width: 100%;
+
+            }
+
+            .slides_control {
+              width:100% !important;
+            }
+
+              div#header div#menu {
+              width: 25%;
+              margin-left: 3%;
+            }
+
+            #supporters-sponsors #supporters {
+              width: 95%;
+            }
+
+            #supporters-sponsors .title {
+              margin-left:0px;
+            }

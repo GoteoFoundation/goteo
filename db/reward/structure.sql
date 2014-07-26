@@ -37,3 +37,9 @@ ALTER TABLE `reward` ADD `url` TINYTEXT NULL DEFAULT '' COMMENT 'Localización d
 
 -- añadido indice para proyecto
 ALTER TABLE `reward` ADD INDEX `project` (`project`);
+-- orden
+ALTER TABLE `reward` ADD `order` TINYINT NOT NULL DEFAULT '1' COMMENT 'Orden para retornos colectivos';
+
+-- Para marcar retornos colectivos adicionales
+ALTER TABLE `reward` ADD `bonus` BOOLEAN NOT NULL DEFAULT '0' COMMENT 'Retorno colectivo adicional';
+

@@ -35,7 +35,7 @@ ALTER TABLE `user` ADD `lang` VARCHAR( 2 ) NULL DEFAULT NULL;
 ALTER TABLE `user` ADD `node` VARCHAR( 50 ) NULL DEFAULT NULL;
 
 -- cantidad aportada en goteo
-ALTER TABLE `user` ADD `amount` INT( 7 ) NULL COMMENT 'Cantidad total aportada' AFTER `linkedin` ;
+ALTER TABLE `user` ADD `amount` INT( 7 ) NULL DEFAULT NULL COMMENT 'Cantidad total aportada' AFTER `linkedin` ;
 
 -- campos de contar patronizaciones
 ALTER TABLE `user`

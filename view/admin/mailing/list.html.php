@@ -64,10 +64,6 @@ $filters = $this['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
-                <td>
-                    <label for="donant-filter">Donantes</label><br />
-                    <input type="checkbox" id="donant-filter" name="donant" value="1" <?php if (!empty($filters['donant'])) echo 'checked="checked"';?> />
-                </td>
             </tr>
             <tr>
                 <td colspan="3"><input type="submit" name="select" value="Buscar destinatarios"></td>

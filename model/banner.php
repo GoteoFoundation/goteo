@@ -199,8 +199,7 @@ namespace Goteo\Model {
                     project.name as name,
                     project.status as status
                 FROM    project
-                WHERE status > 2
-                AND status < 6
+                WHERE status = 3
                 AND project.id NOT IN (SELECT project FROM banner WHERE banner.node = :node AND project IS NOT NULL {$sqlCurr} )
                 ORDER BY name ASC
                 ", array(':node' => $node));

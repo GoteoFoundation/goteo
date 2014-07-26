@@ -10,7 +10,7 @@ $project = $this['project'];
 $wof = new WallFriends($project->id);
 if (!$wof instanceof \Goteo\Library\WallFriends) return;
 
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 $url = $URL.'/widget/wof/'.$project->id.'/580';
 if (LANG != 'es')
     $url .= '?lang='.LANG;

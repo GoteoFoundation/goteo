@@ -18,11 +18,11 @@ namespace {
                    @mail('proxy_alert@doukeshi.org', 'Acceso mediante proxy en '. SITE_URL, 'Detalles: 
 SEVER
 ----------------
-'.print_r($_SERVER, 1).'
+'.print_r($_SERVER, true).'
     
 SESSION
 ----------------
-'.print_r($_SESSION, 1));
+'.print_r($_SESSION, true));
                     */
                    
                    // nos quedamos con la primera parte
@@ -49,7 +49,7 @@ SESSION
     * @param    type mixed  $resource   Recurso
      */
     function trace ($resource = null) {
-        echo '<pre>' . print_r($resource, 1) . '</pre>';
+        echo '<pre>' . print_r($resource, true) . '</pre>';
     }
 
     /**

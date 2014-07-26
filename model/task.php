@@ -18,6 +18,9 @@ namespace Goteo\Model {
 
         /**
          * Obtener los datos de una tarea
+         *
+         * @param   type int    $id         id de la tarea.
+         * @return  type bool   true|false
          */
         static public function get($id) {
             try {
@@ -94,6 +97,7 @@ namespace Goteo\Model {
 
         /**
          * Guardar.
+         *
          * @param   type array  $errors     Errores devueltos pasados por referencia.
          * @return  type bool   true|false
          */
@@ -115,6 +119,7 @@ namespace Goteo\Model {
 
         /**
          * Validar.
+         *
          * @param   type array  $errors     Errores devueltos pasados por referencia.
          * @return  type bool   true|false
          */
@@ -127,6 +132,9 @@ namespace Goteo\Model {
 
         /*
          * Guarda solo si no hay una tarea con esa url
+         *
+         * @param   type array  $errors     Errores devueltos pasados por referencia.
+         * @return  type bool   true|false
          */
         public function saveUnique(&$errors = array()) {
             if (empty($this->node)) {
@@ -145,6 +153,9 @@ namespace Goteo\Model {
 
         /**
          * Este método marca el usuario en el campo Done
+         *
+         * @param   type array  $errors     Errores devueltos pasados por referencia.
+         * @return  type bool   true|false
          */
         public function setDone(&$errors = array()) {
 
@@ -165,7 +176,10 @@ namespace Goteo\Model {
         }
 
         /**
-         * Este método marca el usuario en el campo Done
+         * Borrar una tarea
+         *
+         * @param   type array  $errors     Errores devueltos pasados por referencia.
+         * @return  type bool   true|false
          */
         public function remove(&$errors = array()) {
 

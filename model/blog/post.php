@@ -51,7 +51,9 @@ namespace Goteo\Model\Blog {
                         post.home as home,
                         post.footer as footer,
                         post.author as author,
-                        CONCAT(blog.type, '-', blog.owner) as owner
+                        CONCAT(blog.type, '-', blog.owner) as owner,
+                        blog.type as owner_type,
+                        blog.owner as owner_id
                     FROM    post
                     INNER JOIN blog
                         ON  blog.id = post.blog
@@ -78,8 +80,18 @@ namespace Goteo\Model\Blog {
                 //tags
                 $post->tags = Post\Tag::getAll($id);
 
+                //agregamos html si es texto plano
+                if(strip_tags($post->text) == $post->text)
+                    $post->text = nl2br(Text::urlink($post->text));
+
                 // autor
-                if (!empty($post->author)) $post->user = User::getMini($post->author);
+                if (!empty($post->author)) {
+                    $post->user = User::getMini($post->author);
+                } else if ($post->owner_type == 'project') {
+                    $post->project = Project::getMini($post->owner_id);
+                    $post->user = $post->project->user;
+                    $post->author = $post->project->user->id;
+                }
                 
                 return $post;
         }
@@ -159,6 +171,10 @@ namespace Goteo\Model\Blog {
                 $post->num_comments = Post\Comment::getCount($post->id);
 
                 $post->tags = Post\Tag::getAll($post->id);
+
+                // agregamos html si es texto plano
+                if(strip_tags($post->text) == $post->text)
+                    $post->text = nl2br(Text::urlink($post->text));
 
                 // reconocimiento de enlaces y saltos de linea
 //                $post->text = nl2br(Text::urlink($post->text));

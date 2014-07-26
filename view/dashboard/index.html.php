@@ -9,6 +9,10 @@ $user = $_SESSION['user'];
 $option = str_replace(array('call_overview', 'node_overview'), array('overview', 'overview'), $this['option']);
 
 if ($option == 'location') $jsreq_autocomplete = true;
+
+// funcionalidades con ckeditor
+$jsreq_ckeditor = $this['ckeditor'];
+
 include 'view/prologue.html.php';
 include 'view/header.html.php'; ?>
 

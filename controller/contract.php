@@ -135,13 +135,14 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar los datos de contrato
         public function edit ($id, $step = 'promoter') {
+
             $contract = Model\Contract::get($id);
             
             // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados
             if ($contract->project_user != $_SESSION['user']->id // no es su proyecto
-                && $contract->status->owner
-                && !isset($_SESSION['user']->roles['gestor']) // no es un gestor
-                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
+                && $contract->status->owner // cerrado por
+                && !isset($_SESSION['user']->roles['manager'])
+                && !isset($_SESSION['user']->roles['superadmin']) // no es un gestor ni superadmin
                 ) {
                 // le mostramos el pdf
                 throw new Redirection('/contract/'.$id);
@@ -392,10 +393,12 @@ namespace Goteo\Controller {
                     $contract->status = Model\Contract::getStatus($contract->project);
 
                     // + mail a mercè
-                    @mail(\GOTEO_CONTACT_MAIL,
-                        'Datos contrato ' . $contract->project_name,
-                        'El proyecto '.$contract->project_name.' ha cerrado su formulario de contrato. Puedes revisar los datos en http://goteo.org/manage/projects?filtered=yes&name=&proj_name='.substr($contract->project_name, 0, 10).'');
-                    
+                    mail(\GOTEO_CONTACT_MAIL,
+                        'Han cerrado los datos del contrato de ' . $contract->project_name,
+                        'El formulario de contrato del proyecto proyecto '.$contract->project_name.' está listo para ser revisaro.
+                        Gestionar: http://goteo.org/manage/projects?filtered=yes&name=&proj_name='.substr($contract->project_name, 0, 10).'
+                        Ver contrato: http://goteo.org/contract/'.$contract->project.'');
+
                     return true;
 
                 } else {

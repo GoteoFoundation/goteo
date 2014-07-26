@@ -1,11 +1,14 @@
 <?php
 
+// $debug = \defined('CRON_EXEC'); es necesario, ya que funciones como toConsultants() se llaman desde otros sitios (no solo por cron)
+// Hay un AJAX que comprueba si la respuesta es 'OK' y si se escriben datos de depuracion no es válida.
+
 namespace Goteo\Controller\Cron {
 
     use Goteo\Model,
+        Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Library\Text,
-        Goteo\Library\Feed,
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Core\Error;
@@ -15,13 +18,17 @@ namespace Goteo\Controller\Cron {
         /**
          * Al autor del proyecto, se encarga de substituir variables en plantilla
          *
-         * @param $type string
-         * @param $project Object
+         * @param $type string Identificador de la plantilla
+         * @param $project Object El proyecto que está relacionado con el envío del email
          * @return bool
          */
         public static function toOwner ($type, $project) {
-            $tpl = null;
-            
+            $tpl = null; // Número de la plantilla que se obtendrá a partir del identificador
+            $debug = \defined('CRON_EXEC');
+            $error_sending = false;
+
+            if ($debug) echo 'toOwner: ';
+
             /// tipo de envio
             switch ($type) {
                 // Estos son avisos de final de ronda
@@ -98,6 +105,30 @@ namespace Goteo\Controller\Cron {
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->num_investors);
                     break;
                 
+                case 'project_to_review': // template 8, "Confirmacion de proyecto enviado"
+                    $tpl = 8;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%');
+                    $replace = array($project->user->name, $project->name);
+                    break;
+
+                case 'tip_0':
+                    $tpl = 57;
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
+                    if(empty($project->consultants)) {
+                        $consultants = 'Enric Senabre';
+                    } else {
+                        $consultants_copy = $project->consultants;
+                        $consultants = array_shift($consultants_copy);
+                        foreach ($consultants_copy as $userId=>$userName) {
+                            $consultants .= ', ' . $userName;
+                        }
+                    }
+
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
+                    break;
+
                 // consejos normales
                 case 'tip_1': // template 41, "Difunde, difunde, difunde"
                     $tpl = 41;
@@ -163,8 +194,14 @@ namespace Goteo\Controller\Cron {
 
             if (!empty($tpl)) {
                 $errors = array();
+
+                //  idioma de preferencia del usuario
+                $prefer = Model\User::getPreferences($project->user->id);
+                $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get($tpl);
+                $template = Template::get($tpl, $comlang);
+
                 // Sustituimos los datos
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
                 $content = \str_replace($search, $replace, $template->text);
@@ -172,7 +209,28 @@ namespace Goteo\Controller\Cron {
                 $mailHandler = new Mail();
                 $mailHandler->to = $project->user->email;
                 $mailHandler->toName = $project->user->name;
-                
+
+                // vigilancia de proyectos (añade en copia oculta a asesores + otros)
+                if (Model\Project\Conf::isWatched($project->id)) {
+                    $consultants = Model\Project::getConsultants($project->id);
+                    $monitors = array();
+
+                    foreach ($consultants as $id=>$name) {
+                        $user = Model\User::getMini($id);
+                        $monitors[] = $user->email;
+                    }
+
+                    $monitors[] = 'enric@goteo.org';
+                    $monitors[] = 'olivier@goteo.org';
+                    $monitors[] = 'monitorizing@goteo.org';
+                    $monitors[] = 'monitorizing@doukeshi.org';
+                    $monitors[] = 'pablo@anche.no';
+
+                    $mailHandler->bcc = $monitors;
+                }
+
+                if ($debug) echo $project->user->email . ', ';
+
                 // si es un proyecto de nodo: reply al mail del nodo
                 // si es de centra: reply a MAIL_GOTEO
                 $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : \GOTEO_CONTACT_MAIL;
@@ -181,26 +239,146 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
                 $mailHandler->template = $template->id;
-                if ($mailHandler->send($errors)) {
-                    return true;
-                } else {
+                if (!$mailHandler->send($errors)) {
                     echo \trace($errors);
                     @mail('goteo_fail@doukeshi.org',
                         'Fallo al enviar email automaticamente al autor ' . SITE_URL,
-                        'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, 1). '</pre>');
+                        'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, true). '</pre>');
+                    $error_sending = true;
                 }
             }
 
-            return false;
+            if ($debug) echo '<br/>';
+
+            return !$error_sending;
         }
 
-        /* A los cofinanciadores 
+        /**
+         * Al asesor del proyecto, se encarga de sustituir variables en plantilla
+         *
+         * @param $type string Identificador de la plantilla
+         * @param $project Object Proyecto
+         * @return bool
+         */
+        public static function toConsultants ($type, $project) {
+            $debug = \defined('CRON_EXEC');
+            $error_sending = false;
+            $tpl = null;
+            
+            if ($debug) echo 'toConsultants: ';
+
+            if (!isset($project->consultants)) {
+                $project->consultants = Model\Project::getConsultants($project->id);
+            }
+
+            /// tipo de envio
+            switch ($type) {
+                case 'commons': // template 56, "Mensaje al asesor de un proyecto 10 meses despues de financiado sin haber cumplido"
+                    $tpl = 56;
+
+                    $contact = Model\Project::getContact($project->id);
+                    $info_html = new View('view/admin/commons/contact.html.php', array('contact' => $contact));
+
+                    $search  = array('%PROJECTNAME%', '%URL%', '%INFO%');
+                    $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id, $info_html);
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
+                    if (empty($project->consultants)) { 
+                        $project->consultants = array('olivier' => 'Olivier');
+                    }
+                    break;
+
+                case 'tip_0':
+                    $tpl = 57;
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
+                    if (empty($project->consultants)) { 
+                        $consultants = array('esenabre' => 'Enric Senabre');
+                    } else {
+                        $consultants_copy = $project->consultants;
+                        $consultants = array_shift($consultants_copy);
+                        foreach ($consultants_copy as $userId=>$userName) {
+                            $consultants .= ', ' . $userName;
+                        }
+                    }
+
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
+                    break;
+
+                case 'rewardfulfilled': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
+                    $tpl = 58;
+
+                    $commons_url = SITE_URL . '/admin/commons/view/' . $project->id;
+                    $reward = Model\Project\Reward::get($_POST['reward']);
+
+                    // También podríamos usar $_SESSION['user']->name
+                    $search  = array('%PROJECTNAME%', '%WHO%', '%WHOROLE%', '%RETURN%', '%URL%', '%COMMONSURL%');
+                    $replace = array($project->name, $project->whodidit, $project->whorole, $reward->reward, $_POST['value'], $commons_url);
+                    break;
+
+                case 'project_to_review_consultant': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
+                    $tpl = 59;
+
+                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%');
+                    $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id);
+                    break;
+            }
+
+            if (!empty($tpl)) {
+                $errors = array();
+                // Obtenemos la plantilla para asunto y contenido
+                $template = Template::get($tpl);
+                // Sustituimos los datos
+                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
+                $pre_content = \str_replace($search, $replace, $template->text);
+
+                foreach ($project->consultants as $id=>$name) {
+                    $consultant = Model\User::getMini($id);
+
+                    // Sustituimos el nombre del asesor en el cuerpo del e-mail
+                    $content = \str_replace('%USERNAME%', $name, $pre_content);
+
+                    // iniciamos mail
+                    $mailHandler = new Mail();
+                    $mailHandler->to = $consultant->email;
+                    $mailHandler->toName = $name;
+                    
+                    if ($debug) echo $consultant->email . ', ';
+
+                    $mailHandler->subject = $subject;
+                    $mailHandler->content = $content;
+                    $mailHandler->html = true;
+                    $mailHandler->template = $template->id;
+                    if (!$mailHandler->send($errors)) {
+                        echo \trace($errors);
+                        @mail('goteo_fail@doukeshi.org',
+                            'Fallo al enviar email automaticamente al asesor ' . SITE_URL,
+                            'Fallo al enviar email automaticamente al asesor: <pre>' . print_r($mailHandler, true). '</pre>');
+                        $error_sending = true;
+                    }
+                }
+
+            }
+
+            if ($debug) echo '<br/>';
+
+            return !$error_sending;
+        }
+
+        /**
+         *  A los cofinanciadores
          * Se usa tambien para notificar cuando un proyecto publica una novedad.
          * Por eso añadimos el tercer parámetro, para recibir los datos del post
+         *
+         * @param $type string
+         * @param $project Object
+         * @param $post Object
+         * @return bool
          */
         static public function toInvestors ($type, $project, $post = null) {
 
-            $debug = false;
+            $debug = \defined('CRON_EXEC');
 
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';
@@ -250,12 +428,14 @@ namespace Goteo\Controller\Cron {
             $receivers = array();
 
             // para cada inversor que no tenga bloqueado esta notificacion
+            // sacamos idioma de preferencia
+            // Y esto también tendía que mirar idioma alternativo al de preferencia
             $sql = "
                 SELECT
                     invest.user as id,
                     user.name as name,
                     user.email as email,
-                    IFNULL(user.lang, 'es') as lang
+                    IFNULL(user_prefer.comlang, IFNULL(user.lang, 'es')) as lang
                 FROM  invest
                 INNER JOIN user
                     ON user.id = invest.user
@@ -270,7 +450,6 @@ namespace Goteo\Controller\Cron {
             if ($debug) {
                 echo "Template: $tpl<br />";
                 echo str_replace('?',"'{$project->id}'",$sql);
-                die;
             }
             if ($query = Model\Invest::query($sql, array($project->id))) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
@@ -292,11 +471,12 @@ namespace Goteo\Controller\Cron {
             // sacamos la plantilla en cada idioma
             // $template_lang['es'] = Template::get($tpl, 'es');
 
-            // Luego, un mailing para cada idioma
+            // Luego, un mailing para cada idioma (como al enviar boletín)
 
+            $comlang = \LANG;
 
             // Obtenemos la plantilla para asunto y contenido
-            $template = Template::get($tpl);
+            $template = Template::get($tpl, $comlang);
             
 
             // - subject
@@ -315,12 +495,13 @@ namespace Goteo\Controller\Cron {
 
 
             // - se crea un registro de tabla mail
-            $sql = "INSERT INTO mail (id, email, html, template, node) VALUES ('', :email, :html, :template, :node)";
+            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
             $values = array (
                 ':email' => 'any',
                 ':html' => $content,
                 ':template' => $tpl,
-                ':node' => \GOTEO_NODE
+                ':node' => \GOTEO_NODE,
+                ':lang' => $comlang
             );
             $query = \Goteo\Core\Model::query($sql, $values);
             $mailId = \Goteo\Core\Model::insertId();
@@ -335,8 +516,13 @@ namespace Goteo\Controller\Cron {
 
         }
         
-        /* A los destinatarios de recompensa (regalo)
+        /**
+         * A los destinatarios de recompensa (regalo)
          * solo tipo 'fail' por ahora
+         *
+         * @param $type string (FIXME: sin uso)
+         * @param $project Object
+         * @return bool
          */
         static public function toFriends ($type, $project) {
 
@@ -387,7 +573,7 @@ namespace Goteo\Controller\Cron {
                         $anyfail = true;
                         @mail('goteo_fail@doukeshi.org',
                             'Fallo al enviar email automaticamente al amigo ' . SITE_URL,
-                            'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, 1). '</pre>');
+                            'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, true). '</pre>');
                     }
                     unset($mailHandler);
                 }

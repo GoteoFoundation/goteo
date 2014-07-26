@@ -84,7 +84,7 @@ $filters = $this['filters'];
                 <tr>
                     <th>Convocatoria</th> <!-- edit -->
                     <th>Creador</th> <!-- mailto -->
-                    <th>Apertura aplicacion</th> <!-- aplicacion de proyuectos -->
+                    <th>Apertura aplicacion</th> <!-- aplicacion de proyectos -->
                     <th>Estado</th>
                     <th>Presupuesto</th>
                     <th>Restante</th>
@@ -103,12 +103,13 @@ $filters = $this['filters'];
                 <td><?php echo count($call->projects); ?></td>
             </tr>
             <tr>
-                <td colspan="6"> GESTI&Oacute;N:&nbsp;
+                <td colspan="7"> GESTI&Oacute;N:&nbsp;
                     <a href="/call/edit/<?php echo $call->id; ?>" target="_blank">[Editar]</a>
                     <a href="/admin/users/?id=<?php echo $call->owner; ?>" target="_blank">[Convocador]</a>
                     <a href="<?php echo "/admin/calls/projects/{$call->id}"; ?>">[Proyectos]</a>
                     <?php if (isset($_SESSION['user']->roles['superadmin'])) : ?><a href="<?php echo "/admin/calls/admins/{$call->id}"; ?>">[Administradores]</a><?php endif; ?>
                     <a href="<?php echo "/admin/calls/conf/{$call->id}"; ?>">[Configuraci&oacute;n]</a>
+                    <a href="<?php echo "/admin/calls/dropconf/{$call->id}"; ?>">[Configuraci&oacute;n Económica]</a>
                     <?php if (isset($_SESSION['user']->roles['superadmin']) && $call->status == 1) : ?>
                     &nbsp;|&nbsp;&nbsp;&nbsp;
                     <a href="<?php echo "/admin/calls/delete/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a ELIMINAR comlpetamente, ¿seguro que hacemos eso?');" style="color: red;">[Suprimir]</a>
@@ -125,6 +126,7 @@ $filters = $this['filters'];
                     <?php if (isset($_SESSION['user']->roles['translator'])) : ?><a href="<?php echo "/dashboard/translates"; ?>" target="_blank">[Abrir Mis Traducciones]</a><?php endif; ?>
                 </td>
             </tr>
+            <?php if (($call->status != 5) && ($call->status != 6)) { ?>
             <tr>
                 <td colspan="6">
                     PROCESO:&nbsp;
@@ -132,9 +134,10 @@ $filters = $this['filters'];
                     <?php if ($call->status < 3) : ?><a href="<?php echo "/admin/calls/open/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a comenzar a recibir la inscripción de proyectos, ok?');">[Abrir aplicacion]</a><?php endif; ?>
                     <?php if ($call->status < 4) : ?><a href="<?php echo "/admin/calls/publish/{$call->id}"; ?>" onclick="return confirm('La convocatoria va a comenzar a repartir dinero a los proyectos seleccionados, ok?');">[Publicar]</a><?php endif; ?>
                     <?php if ($call->status > 1 && $call->status < 4) : ?><a href="<?php echo "/admin/calls/enable/{$call->id}"; ?>" onclick="return confirm('Ojo si la convocatoria está publicandose ahora mismo... ¿seguimos?');">[Reabrir edición]</a><?php endif; ?>
-                    <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/complete/{$call->id}"; ?>" onclick="return confirm('Significa que no se repartirá más dinero, ok?');">[Finalizar]</a><?php endif; ?>
-                    <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/cancel/{$call->id}"; ?>" onclick="return confirm('La convocatoria se va a CANCELAR (no completada), ¿seguro que hacemos eso?');">[Cerrar]</a><?php endif; ?>
+                    <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/complete/{$call->id}"; ?>" onclick="return confirm('Significa que no se repartirá más dinero, ok?');">[Completar]</a><?php endif; ?>
+                    <?php if ($call->status == 4) : ?><a href="<?php echo "/admin/calls/cancel/{$call->id}"; ?>" onclick="return confirm('La convocatoria se va a CANCELAR (no completada), ¿seguro que hacemos eso?');">[Cancelar]</a><?php endif; ?>
             </tr>
+            <?php } ?>
         </tbody>
     </table>
     </div>            

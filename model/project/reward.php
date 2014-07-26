@@ -64,7 +64,8 @@ namespace Goteo\Model\Project {
                             reward.units as units,
                             reward.fulsocial as fulsocial,
                             IFNULL(icon_lang.name, icon.name) as icon_name,
-                            url
+                            reward.url,
+                            reward.bonus
                         FROM    reward
                         LEFT JOIN icon
                             ON icon.id = reward.icon
@@ -79,7 +80,10 @@ namespace Goteo\Model\Project {
                         $sqlFilter
                         ";
 
-                $sql .= " ORDER BY reward.id ASC";
+                if ($type == 'social')
+                    $sql .= " ORDER BY reward.order ASC";
+                else
+                    $sql .= " ORDER BY reward.id ASC";
 
                 $query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
@@ -100,6 +104,11 @@ namespace Goteo\Model\Project {
             // Estos son errores que no permiten continuar
             if (empty($this->project))
                 $errors[] = 'No hay proyecto al que asignar la recompensa/rettorno';
+
+            // hotfix
+            if (empty($this->bonus))
+                $this->bonus = false;
+
             //Text::get('validate-reward-noproject');
             /*
               if (empty($this->reward))
@@ -131,7 +140,8 @@ namespace Goteo\Model\Project {
                 'other',
                 'license',
                 'amount',
-                'units'
+                'units',
+                'bonus'
             );
 
             $set = '';
@@ -266,7 +276,13 @@ namespace Goteo\Model\Project {
             return $list;
         }
 
-        /* para saber si ha cumplido con recompensas/retornos */
+        /**
+         * Para saber si ha cumplido con recompensas/retornos
+         * @param string $project id de un proyecto
+         * @param string $type individual|social
+         * @return boolean
+         */
+         
         public static function areFulfilled($project, $type = 'individual') {
 
             // diferente segun tipo
@@ -303,7 +319,7 @@ namespace Goteo\Model\Project {
             }
         }
         
-        public static function getChossen($filters = array()) {
+        public static function getChosen($filters = array()) {
             try {
                 $array = array();
 
