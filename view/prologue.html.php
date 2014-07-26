@@ -38,7 +38,7 @@ if (NODE_ID != GOTEO_NODE) {
         <meta property="og:title" content="Goteo.org" />
         <meta property="og:description" content="<?php echo utf8_decode(GOTEO_META_DESCRIPTION) ?>" />
         <meta property="og:image" content="<?php echo SRC_URL ?>/goteo_logo.png" />
-        <meta property="og:url" content="<?php echo SRC_URL ?>" />
+        <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.min.css" />
       <!--[if IE]>
