@@ -12,9 +12,6 @@ define('GOTEO_MAINTENANCE', null);
 //Estoy en alto rendimiento
 define('GOTEO_EASY', null);
 
-// para compatibilidad
-define('DEVGOTEO_LOCAL', null);
-
 // tipo de entorno: local, beta, real
 define('GOTEO_ENV', 'local');
 
@@ -93,6 +90,8 @@ define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
 define('GOTEO_URL', 'http://example.com');
+// ssl
+define('GOTEO_SSL', false);
 
 //Sessions
 //session handler: php, dynamodb
