@@ -69,7 +69,7 @@ $nodes = Nodesys::activeNodes();
             </li>            
             <?php else: ?>            
             <li class="login">
-                <a href="/user/login"><?php echo Text::get('regular-login'); ?></a>
+                <a href="<?php echo SEC_URL; ?>/user/login"><?php echo Text::get('regular-login'); ?></a>
             </li>
             
             <?php endif ?>
