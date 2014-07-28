@@ -16,6 +16,24 @@ namespace Goteo\Model {
          *  Devuelve datos de una categoria
          */
         public static function get ($id) {
+
+
+                $lang = \LANG;
+
+                // Devolver inglés cuando la no esté traducido en idioma no-español
+                if ($lang != 'es') {
+                    // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
+                    $default_lang = self::default_lang($lang);
+
+                    $qaux = static::query(
+                        "SELECT id FROM category_lang WHERE id = :id AND lang = :lang",
+                        array(':id' => $id, ':lang' => $lang)
+                    );
+                    $ok = $qaux->fetchColumn();
+                    if ($ok != $id)
+                        $lang = $default_lang;
+                }        
+
                 $query = static::query("
                     SELECT
                         category.id,
@@ -26,7 +44,7 @@ namespace Goteo\Model {
                         ON  category_lang.id = category.id
                         AND category_lang.lang = :lang
                     WHERE category.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
                 $category = $query->fetchObject(__CLASS__);
 
                 return $category;
@@ -38,10 +56,15 @@ namespace Goteo\Model {
          */
         public static function getAll () {
 
+            $lang=\LANG;
+
             $list = array();
 
-            $sql = "
-                SELECT
+             if(self::default_lang($lang)=='es')
+                {          
+                    // Español como alternativa
+
+                    $sql ="SELECT
                     category.id as id,
                     IFNULL(category_lang.name, category.name) as name,
                     IFNULL(category_lang.description, category.description) as description,
@@ -61,7 +84,37 @@ namespace Goteo\Model {
                     ON  category_lang.id = category.id
                     AND category_lang.lang = :lang
                 ORDER BY `order` ASC
-                ";
+                        ";
+                }
+            else
+                {
+                    // Inglés como alternativa
+
+                    $sql ="SELECT
+                    category.id as id,
+                    IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name,
+                    IFNULL(category_lang.description, IFNULL(eng.description, category.description)) as description,
+                    (   SELECT 
+                            COUNT(project_category.project)
+                        FROM project_category
+                        WHERE project_category.category = category.id
+                    ) as numProj,
+                    (   SELECT
+                            COUNT(user_interest.user)
+                        FROM user_interest
+                        WHERE user_interest.interest = category.id
+                    ) as numUser,
+                    category.order as `order`
+                FROM    category
+                LEFT JOIN category_lang
+                    ON  category_lang.id = category.id
+                    AND category_lang.lang = :lang
+                LEFT JOIN category_lang as eng
+                    ON  eng.id = category.id
+                    AND eng.lang = 'en'
+                ORDER BY `order` ASC
+                        ";
+                }
 
             $query = static::query($sql, array(':lang'=>\LANG));
 
@@ -79,9 +132,15 @@ namespace Goteo\Model {
          * @return array
          */
 		public static function getList () {
+
+            $lang=\LANG;
             $array = array ();
             try {
-                $sql = "SELECT 
+                 if(self::default_lang($lang)=='es')
+                {          
+                    // Español como alternativa
+
+                    $sql ="SELECT 
                             category.id as id,
                             IFNULL(category_lang.name, category.name) as name
                         FROM category
@@ -89,7 +148,27 @@ namespace Goteo\Model {
                             ON  category_lang.id = category.id
                             AND category_lang.lang = :lang
                         GROUP BY category.id
-                        ORDER BY category.order ASC";
+                        ORDER BY category.order ASC
+                        ";
+                }
+            else
+                {
+                    // Inglés como alternativa
+
+                    $sql ="SELECT 
+                            category.id as id,
+                            IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name
+                        FROM category
+                        LEFT JOIN category_lang
+                            ON  category_lang.id = category.id
+                            AND category_lang.lang = :lang
+                        LEFT JOIN category_lang as eng
+                            ON  eng.id = category.id
+                            AND eng.lang = 'en'    
+                        GROUP BY category.id
+                        ORDER BY category.order ASC
+                        ";
+                }
 
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $categories = $query->fetchAll();

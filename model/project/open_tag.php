@@ -36,18 +36,43 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getAll () {
+
+            $lang = \LANG;
+
             $array = array ();
             try {
-                $sql = "
-                    SELECT
-                        open_tag.id as id,
-                        IFNULL(open_tag_lang.name, open_tag.name) as name
-                    FROM    open_tag
-                    LEFT JOIN open_tag_lang
-                        ON  open_tag_lang.id = open_tag.id
-                        AND open_tag_lang.lang = :lang
-                    ORDER BY name ASC
-                    ";
+               
+                if(self::default_lang($lang)=='es')
+                {          
+                    // Español como alternativa
+
+                    $sql = "SELECT
+                                open_tag.id as id,
+                                IFNULL(open_tag_lang.name, open_tag.name) as name
+                            FROM    open_tag
+                            LEFT JOIN open_tag_lang
+                                ON  open_tag_lang.id = open_tag.id
+                                AND open_tag_lang.lang = :lang
+                            ORDER BY name ASC
+                            ";
+                }
+                else
+                {
+                    // Inglés como alternativa
+
+                    $sql = "SELECT 
+                                open_tag.id as id,
+                                IFNULL(open_tag_lang.name, IFNULL(eng.name,open_tag.name)) as name
+                            FROM open_tag
+                            LEFT JOIN open_tag_lang
+                                ON  open_tag_lang.id = open_tag.id
+                                AND open_tag_lang.lang = :lang
+                            LEFT JOIN open_tag_lang as eng
+                                ON  eng.id = open_tag.id
+                                AND eng.lang = 'en'
+                            ORDER BY name ASC
+                            ";
+                }
 
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $open_tags = $query->fetchAll();
