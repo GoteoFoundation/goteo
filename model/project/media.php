@@ -11,7 +11,7 @@ namespace Goteo\Model\Project {
             $url = '';
 
         public function __construct ($url) {
-            $this->url = $url;
+            $this->url = (\HTTPS_ON) ? str_replace('http://', 'https://', $url) : $url;
         }
 
         protected static function getYouTubeCode ($video, $https = false, $autoplay=false) {
