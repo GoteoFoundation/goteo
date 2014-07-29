@@ -228,11 +228,11 @@ namespace Goteo\Library {
 		}
 
         /**
-         * PAra actualizar solamente el contenido
+         * Para actualizar solamente el contenido
          * @param <type> $errors
          * @return <type>
          */
-		public function update($id, $lang, $node, $name, $description, $content, &$errors = array()) {
+		public static function update($id, $lang, $node, $name, $description, $content, &$errors = array()) {
   			try {
                 $values = array(
                     ':page' => $id,
