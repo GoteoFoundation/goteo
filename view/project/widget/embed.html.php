@@ -3,7 +3,7 @@
         Goteo\Library\Text,
         Goteo\Model\Project;
 
-    $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+    $URL = \SITE_URL;
     $project = Project::getMedium($this['project']->id);
 	$url = $URL . '/widget/project/' . $this['project']->id;
     if (LANG != 'es')
