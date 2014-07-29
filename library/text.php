@@ -214,6 +214,7 @@ namespace Goteo\Library {
             $sql = "SELECT
                         purpose.text as id,
                         IFNULL(text.text,purpose.purpose) as text,
+                        purpose.purpose as original,
                         IF(text.text IS NULL, 1, 0) as pendiente,
                         purpose.`group` as `group`
                     FROM purpose
@@ -221,7 +222,7 @@ namespace Goteo\Library {
                         ON text.id = purpose.text
                         AND text.lang = :lang
                     WHERE purpose.text != ''
-                    ";
+                    "; // // OR text.pending = 1
             if (!empty($filters['idfilter'])) {
                 $sql .= " AND purpose.text LIKE :idfilter";
                 $values[':idfilter'] = "%{$filters['idfilter']}%";

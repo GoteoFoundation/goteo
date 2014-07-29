@@ -8,6 +8,7 @@ namespace Goteo\Controller\Translate {
         Goteo\Library\Feed,
         Goteo\Library\Message,
         Goteo\Library\Content,
+        Goteo\Library\Text,
         Goteo\Library\Lang;
 
     class Tables
@@ -23,12 +24,13 @@ namespace Goteo\Controller\Translate {
             foreach ($fields as $field) {
                 if (isset($_GET[$field])) {
                     $filters[$field] = $_GET[$field];
-                    $_SESSION['translate_filters']['contents'][$field] = (string)$_GET[$field];
-                } elseif (!empty($_SESSION['translate_filters']['contents'][$field])) {
+                    $_SESSION['translate_filters']['tables'][$field] = (string)$_GET[$field];
+                } elseif (!empty($_SESSION['translate_filters']['tables'][$field])) {
                     // si no lo tenemos en el get, cogemos de la sesion pero no lo pisamos
-                    $filters[$field] = $_SESSION['translate_filters']['contents'][$field];
+                    $filters[$field] = $_SESSION['translate_filters']['tables'][$field];
                 }
             }
+            $filters['table'] = $table;
 
             $filter = "?type={$filters['type']}&text={$filters['text']}&pending={$filters['pending']}";
 
@@ -86,14 +88,49 @@ namespace Goteo\Controller\Translate {
                 }
             }
 
-            // sino, mostramos la lista
+            // lista
+            if ($action == 'list') {
+                // contamos el número de palabras
+                $nwords = 0;
+                $data = Content::getAll($filters, $_SESSION['translate_lang']);
+
+                //recolocamos los post para la paginacion
+                $list = array();
+                foreach ($data['pending'] as $key => $item) {
+                    $item->pendiente = 1;
+                    $nwords += Text::wcount($item->original); // si es pendiente contamos las palabras del original
+                    $list[] = $item;
+                }
+
+                foreach ($data['ready'] as $key => $item) {
+                    $item->pendiente = 0;
+                    $nwords += Text::wcount($item->value);
+                    $list[] = $item;
+                }
+
+                // valores de filtro
+                $types = Content::$fields[$table]; // por tipo de campo
+            }
+
+            // edición
+            if ($action == 'edit') {
+
+                $content = Content::get($table, $id, $_SESSION['translate_lang']);
+
+            }
+
+
             return new View(
                 'view/translate/index.html.php',
                 array(
-                    'section' => 'contents',
+                    'section' => 'tables',
                     'action' => $action,
                     'table' => $table,
                     'id' => $id,
+                    'content' => $content,
+                    'list' => $list,
+                    'types' => $types,
+                    'nwords' => $nwords,
                     'filter' => $filter,
                     'filters' => $filters,
                     'errors' => $errors

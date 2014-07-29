@@ -34,7 +34,7 @@ namespace Goteo\Controller {
                 }
             }
 
-            if ($table == '') {
+            if (empty($table)) {
                 return new View('view/translate/index.html.php', array('menu'=>self::menu()));
             }
 
@@ -42,7 +42,7 @@ namespace Goteo\Controller {
             if (in_array($table, array("news", "promote", "stories", "patron"))) {
                 $section = 'home';
             } else {
-                $section = 'contents';
+                $section = 'tables';
             }
 
             // muy especial para traducción de nodo

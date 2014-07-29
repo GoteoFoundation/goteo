@@ -7,25 +7,15 @@ $bodyClass = 'admin';
 // paginacion
 require_once 'library/pagination/pagination.php';
 
-// no cache para textos
-define('GOTEO_ADMIN_NOCACHE', true);
-
 $filter = $this['filter'];
-
-$data = Text::getAll($this['filters'], $_SESSION['translate_lang']);
-
-// contamos el número de palabras
-$nwords = 0;
-foreach ($data as $key => $reg) {
-    $nwords += Text::wcount($reg->text);
-}
-
-$pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$groups = $this['groups'];
+$nwords = $this['nwords'];
+$data   = $this['data'];
 
 // valores de filtro
-$groups    = Text::groups();
+$pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
-// metemos el todos
+// metemos la agrupación 'todos'
 \array_unshift($groups, 'Todas las agrupaciones');
 ?>
 <!-- Filtros -->

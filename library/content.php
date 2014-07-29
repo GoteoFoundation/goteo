@@ -193,8 +193,9 @@ namespace Goteo\Library {
 
                     foreach (self::$fields[$table] as $field=>$fieldName) {
                         $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field,
+                                {$table}.$field as {$field}_original,
                                 IF({$table}_lang.$field IS NULL, 0, 1) as {$field}ready,
-                                ";
+                                "; // OR {$table}_lang.pending = 1
                         $primercampo = ($primercampo == '') ?: "{$field}ready";
                     }
 
@@ -235,7 +236,7 @@ namespace Goteo\Library {
                             ";
                     }
 
-                    // pendientes de traducir
+                    // pendientes de traducir (sin valor o con campo pending)
                     if (!empty($filters['pending'])) {
                         $sql .= " HAVING $primercampo = 0";
                     }
@@ -248,12 +249,14 @@ namespace Goteo\Library {
                     echo '<br /><br />';
                      *
                      */
-                    
+
                     $query = Model::query($sql, $values);
                     foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $content) {
 
                         foreach (self::$fields[$table] as $field=>$fieldName) {
                             if (!empty($filters['type']) && $field != $filters['type']) continue;
+
+                            $origField = "{$field}_original";
 
                             $data = array(
                                 'table' => $table,
@@ -261,7 +264,8 @@ namespace Goteo\Library {
                                 'id' => $content->id,
                                 'field' => $field,
                                 'fieldName' => $fieldName,
-                                'value' => $content->$field
+                                'value' => $content->$field,
+                                'original' => $content->$origField
                             );
 
                             $campoready = $field . 'ready';

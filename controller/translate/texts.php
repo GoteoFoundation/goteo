@@ -15,6 +15,9 @@ namespace Goteo\Controller\Translate {
 
         public static function process($action = 'list', $id = null, &$errors = array())
         {
+            // dont use cached texts
+            define('GOTEO_ADMIN_NOCACHE', true);
+
 
             // comprobamos los filtros
             $filters = array();
@@ -78,12 +81,38 @@ namespace Goteo\Controller\Translate {
             }
 
             // sino, mostramos la lista
+            if ($action == 'list') {
+                $groups = Text::groups();
+
+                $data = Text::getAll($filters, $_SESSION['translate_lang']);
+
+                // contamos el número de palabras (si pendiente, contamos el original)
+                $nwords = 0;
+                foreach ($data as $key => $reg) {
+                    $nwords += Text::wcount( ($reg->pending) ? $reg->original : $reg->text );
+                }
+            }
+
+
+            if ($action == 'edit') {
+                $text = new stdClass();
+
+                $text->id = $id;
+                $text->purpose = Text::getPurpose($id);
+                $text->text = Text::getTrans($id);
+            }
+
+
             return new View(
                 'view/translate/index.html.php',
                 array(
                     'section' => 'texts',
                     'action' => $action,
                     'id' => $id,
+                    'text' => $text,
+                    'data' => $data,
+                    'nwords' => $nwords,
+                    'groups' => $groups,
                     'filter' => $filter,
                     'filters' => $filters,
                     'errors' => $errors

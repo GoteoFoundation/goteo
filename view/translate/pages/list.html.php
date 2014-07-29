@@ -2,14 +2,10 @@
 use Goteo\Library\Page,
     Goteo\Model\Node;
 
-$nodes = Node::getList();
-$node = (empty($_SESSION['admin_node'])) ? \GOTEO_NODE : $_SESSION['admin_node'];
-
-$pages = Page::getAll($_SESSION['translate_lang'], $node);
 ?>
 <div class="widget board">
     <?php if ($node != \GOTEO_NODE) : ?>
-    <h3>Traduciendo páginas del nodo <?php echo $nodes[$node]; ?></h3>
+    <h3>Traduciendo páginas del nodo <?php echo ucfirst($node); ?></h3>
     <?php endif; ?>
     <table>
         <thead>

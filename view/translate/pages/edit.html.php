@@ -4,22 +4,11 @@ use Goteo\Library\Text,
     Goteo\Library\Page,
     Goteo\Model\Node;
 
-$nodes = Node::getList();
-$node = (empty($_SESSION['admin_node'])) ? \GOTEO_NODE : $_SESSION['admin_node'];
-
-if (isset($_SESSION['translate_node'])) {
-    if (is_object($_SESSION['translate_node'])) {
-        $node = $_SESSION['translate_node']->id;
-    } else {
-        $node = $_SESSION['translate_node'];
-    }
-}
-
-$page = Page::get($this['id'], $node, $_SESSION['translate_lang']);
-$original = Page::get($this['id'], $node, \GOTEO_DEFAULT_LANG);
-
 $bodyClass = 'admin';
 
+$node = $this['node'];
+$page = $this['page'];
+$original = $this['original'];
 ?>
 <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
 
@@ -49,7 +38,7 @@ $(document).ready(function(){
 
 <div class="widget board">
     <?php if ($node != \GOTEO_NODE) : ?>
-    <h3>Traduciendo el nodo <?php echo $nodes[$node]; ?></h3>
+    <h3>Traduciendo el nodo <?php echo ucfirst($node); ?></h3>
     <?php endif; ?>
     <h3 class="title"><?php echo $original->name; ?></h3>
 

@@ -9,7 +9,7 @@ namespace Goteo\Controller\Translate {
         {
 
             $menu = array(
-                'contents' => array(
+                'tables' => array(
                     'label' => 'Gestión de Textos y Traducciones',
                     'options' => array(
                         'banner' => array(

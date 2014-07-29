@@ -14,7 +14,7 @@ namespace Goteo\Controller\Translate {
     {
 
         // this method is to process node translating its own pages from dashboard,
-        // regular page translation are handled by Translate\Contents
+        // regular page translation are handled by Translate\Tables
         public static function process($action = 'list', $id = null, &$errors = array())
         {
 
@@ -64,13 +64,60 @@ namespace Goteo\Controller\Translate {
             }
 
 
-            // sino, mostramos la lista
+            // lista
+            if ($action == 'list') {
+                // contamos el número de palabras
+                $nwords = 0;
+
+                $node = (empty($_SESSION['admin_node'])) ? \GOTEO_NODE : $_SESSION['admin_node'];
+                $pages = Page::getAll($_SESSION['translate_lang'], $node);
+
+                //recolocamos los post para la paginacion
+                /*
+                $list = array();
+                foreach ($data['pending'] as $key => $item) {
+                    $item->pendiente = 1;
+                    $nwords += Text::wcount($item->original); // si es pendiente contamos las palabras del original
+                    $list[] = $item;
+                }
+
+                foreach ($data['ready'] as $key => $item) {
+                    $item->pendiente = 0;
+                    $nwords += Text::wcount($item->value);
+                    $list[] = $item;
+                }
+                */
+            }
+
+            // edición
+            if ($action == 'edit') {
+
+                $node = (empty($_SESSION['admin_node'])) ? \GOTEO_NODE : $_SESSION['admin_node'];
+
+                if (isset($_SESSION['translate_node'])) {
+                    if (is_object($_SESSION['translate_node'])) {
+                        $node = $_SESSION['translate_node']->id;
+                    } else {
+                        $node = $_SESSION['translate_node'];
+                    }
+                }
+
+                $page = Page::get($id, $node, $_SESSION['translate_lang']);
+                $original = Page::get($id, $node, \GOTEO_DEFAULT_LANG);
+
+
+            }
+
             return new View(
                 'view/translate/index.html.php',
                 array(
                     'section' => 'pages',
                     'action' => $action,
+                    'pages' => $pages,
                     'id' => $id,
+                    'node' => $node,
+                    'page' => $page,
+                    'original' => $original,
                     'errors' => $errors
                 )
             );

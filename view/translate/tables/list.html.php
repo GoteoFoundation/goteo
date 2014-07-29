@@ -10,29 +10,14 @@ require_once 'library/pagination/pagination.php';
 
 $filter = $this['filter'];
 $table  = $this['table'];
-$this['filters']['table'] = $table;
-
-$data = Content::getAll($this['filters'], $_SESSION['translate_lang']);
-
-//recolocamos los post para la paginacion
-$list = array();
-foreach ($data['pending'] as $key=>$item) {
-    $item->pendiente = 1;
-    $list[] = $item;
-}
-foreach ($data['ready'] as $key=>$item) {
-    $item->pendiente = 0;
-    $list[] = $item;
-}
+$list  = $this['list'];
+$nwords  = $this['nwords'];
+$types  = $this['types'];
 
 $pagedResults = new \Paginated($list, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
-// valores de filtro
-$types = Content::$fields[$table]; // por tipo de campo
-
 // metemos el todos
 \array_unshift($types, 'Todos los tipos');
-
 ?>
 <!-- Filtro -->
 <div class="widget board">
@@ -64,7 +49,7 @@ $types = Content::$fields[$table]; // por tipo de campo
 </div>
 
 <!-- lista -->
-<?php if (!empty($data)) : ?>
+<?php if (!empty($list)) : ?>
 <div class="widget board">
     N&uacute;mero de palabras: <?php echo $nwords; ?>
 </div>
