@@ -12,6 +12,9 @@ namespace Goteo\Model\Blog\Post {
          *  Devuelve datos de una comentario
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'tag_lang', \LANG);
                 $query = static::query("
                     SELECT
                         tag.id as id,
@@ -21,7 +24,7 @@ namespace Goteo\Model\Blog\Post {
                         ON  tag_lang.id = tag.id
                         AND tag_lang.lang = :lang
                     WHERE tag.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
 
                 return $query->fetchObject(__CLASS__);
         }
@@ -36,14 +39,26 @@ namespace Goteo\Model\Blog\Post {
 
             $values = array(':lang'=>\LANG);
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(tag_lang.name, tag.name) as name";
+                }
+            else {
+                $different_select=" IFNULL(tag_lang.name, IFNULL(eng.name, tag.name)) as name";
+
+                $eng_join=" LEFT JOIN tag_lang as eng
+                                ON  eng.id = tag.id
+                                AND eng.lang = 'en'";
+                }
+
             $sql = "
                 SELECT
                     tag.id as id,
-                    IFNULL(tag_lang.name, tag.name) as name
+                    $different_select
                 FROM    tag
                 LEFT JOIN tag_lang
                     ON  tag_lang.id = tag.id
                     AND tag_lang.lang = :lang
+                $eng_join
                 ";
             
             if (!empty($post)) {
@@ -72,10 +87,21 @@ namespace Goteo\Model\Blog\Post {
 
             $list = array();
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(tag_lang.name, tag.name) as name";
+                }
+            else {
+                $different_select=" IFNULL(tag_lang.name, IFNULL(eng.name, tag.name)) as name";
+
+                $eng_join=" LEFT JOIN tag_lang as eng
+                                ON  eng.id = tag.id
+                                AND eng.lang = 'en'";
+                }
+
             $sql = "
                 SELECT
                     tag.id as id,
-                    IFNULL(tag_lang.name, tag.name) as name,
+                    $different_select,
                     (   SELECT
                         COUNT(post_tag.post)
                         FROM post_tag
@@ -85,6 +111,7 @@ namespace Goteo\Model\Blog\Post {
                 LEFT JOIN tag_lang
                     ON  tag_lang.id = tag.id
                     AND tag_lang.lang = :lang
+                $eng_join
                 ORDER BY tag.name ASC";
 
             $query = static::query($sql, array(':lang'=>\LANG));
