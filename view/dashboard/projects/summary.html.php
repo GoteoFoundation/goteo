@@ -5,7 +5,7 @@ use Goteo\Core\View,
 
 $project = $this['project'];
 
-$http = (\HTTP_ON) ? 'https' : 'http' ;
+$http = (\HTTPS_ON) ? 'https' : 'http' ;
 
 if (!$project instanceof  Goteo\Model\Project) {
     return;
