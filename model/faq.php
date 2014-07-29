@@ -19,6 +19,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un destacado
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'faq_lang', \LANG);
+
                 $query = static::query("
                     SELECT
                         faq.id as id,
@@ -32,7 +36,7 @@ namespace Goteo\Model {
                         ON  faq_lang.id = faq.id
                         AND faq_lang.lang = :lang
                     WHERE faq.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
                 $faq = $query->fetchObject(__CLASS__);
 
                 return $faq;
@@ -45,90 +49,31 @@ namespace Goteo\Model {
 
             $values = array(':section' => $section, ':lang' => \LANG);
 
-            // piñonaco para sacar alternativos mientras traducen
-            switch (\LANG) {
-                case 'es':
-                    // en español, sacar directamente el original
-                    $sql = "
-                        SELECT
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(faq_lang.title, faq.title) as title,
+                                    IFNULL(faq_lang.description, faq.description) as description";
+                }
+                else {
+                    $different_select=" IFNULL(faq_lang.title, IFNULL(eng.title, faq.title)) as title,
+                                        IFNULL(faq_lang.description, IFNULL(eng.title, faq.description)) as description";
+                    $eng_join=" LEFT JOIN faq_lang as eng
+                                    ON  eng.id = faq.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT
                             faq.id as id,
                             faq.node as node,
                             faq.section as section,
-                            faq.title as title,
-                            faq.description as description,
-                            faq.order as `order`
-                        FROM faq
-                        WHERE faq.section = :section
-                        ORDER BY `order` ASC
-                        ";
-
-                    unset($values[':lang']);
-                    
-                    break;
-
-                case 'en':
-                    // en inglés hay menos preguntas, no sacar original
-                    $sql = "
-                        SELECT
-                            faq.id as id,
-                            faq.node as node,
-                            faq.section as section,
-                            faq_lang.title as title,
-                            faq_lang.description as description,
+                            $different_select,
                             faq.order as `order`
                         FROM faq
                         LEFT JOIN faq_lang
                             ON  faq_lang.id = faq.id
                             AND faq_lang.lang = :lang
+                        $eng_join
                         WHERE faq.section = :section
-                        ORDER BY `order` ASC
-                        ";
-
-                    break;
-
-                case 'fr':
-                    // en francés, sacar el ingles como original
-                    $sql = "
-                        SELECT
-                            faq.id as id,
-                            faq.node as node,
-                            faq.section as section,
-                            IFNULL(faq_lang.title, faq_en.title) as title,
-                            IFNULL(faq_lang.description, faq_en.description) as description,
-                            faq.order as `order`
-                        FROM faq
-                        LEFT JOIN faq_lang
-                            ON  faq_lang.id = faq.id
-                            AND faq_lang.lang = :lang
-                        LEFT JOIN faq_lang as faq_en
-                            ON  faq_en.id = faq.id
-                            AND faq_en.lang = 'en'
-                        WHERE faq.section = :section
-                        ORDER BY `order` ASC
-                        ";
-
-                    break;
-
-                default:
-                    // en catalan y por defecto, sacar los originales en español
-                    $sql = "
-                        SELECT
-                            faq.id as id,
-                            faq.node as node,
-                            faq.section as section,
-                            IFNULL(faq_lang.title, faq.title) as title,
-                            IFNULL(faq_lang.description, faq.description) as description,
-                            faq.order as `order`
-                        FROM faq
-                        LEFT JOIN faq_lang
-                            ON  faq_lang.id = faq.id
-                            AND faq_lang.lang = :lang
-                        WHERE faq.section = :section
-                        ORDER BY `order` ASC
-                        ";
-                    
-                    break;
-            }
+                        ORDER BY `order` ASC";      
             
             $query = static::query($sql, $values);
             
