@@ -43,12 +43,10 @@ namespace Goteo\Model {
          * @TODO añadir el numero de usos
          */
         public static function getAll () {
-
-            $lang = \LANG;
             
             $list = array();
 
-            if(self::default_lang($lang)=='es') {
+            if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name,
                                     IFNULL(open_tag_lang.description, open_tag.description) as description";
                 }
@@ -92,14 +90,12 @@ namespace Goteo\Model {
          * @return array
          */
 		public static function getList () {
-            
-            $lang = \LANG;
 
             $array = array ();
 
             try {
 
-                if(self::default_lang($lang)=='es') {
+                if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
                 }
                 else {

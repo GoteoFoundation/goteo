@@ -64,7 +64,7 @@ namespace Goteo\Model {
 
             $promos = array();
 
-            if(self::default_lang($lang)=='es') {
+            if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(bazar_lang.title, bazar.title) as title,
                                     IFNULL(bazar_lang.description, bazar.description) as description";
                 }

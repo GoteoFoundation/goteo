@@ -64,13 +64,13 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND banner.active = 1" : '';
 
-            if(self::default_lang($lang)=='es') {
+            if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(banner_lang.title, banner.title) as title,
-                                    IFNULL(banner_lang.description, banner.description) as description,";
+                                    IFNULL(banner_lang.description, banner.description) as description";
                 }
                 else {
                     $different_select=" IFNULL(banner_lang.title, IFNULL(eng.title, banner.title)) as title,
-                                        IFNULL(banner_lang.description, IFNULL(eng.description, banner.description)) as description,";
+                                        IFNULL(banner_lang.description, IFNULL(eng.description, banner.description)) as description";
                     $eng_join=" LEFT JOIN banner_lang as eng
                                     ON  eng.id = banner.id
                                     AND eng.lang = 'en'";
@@ -98,7 +98,7 @@ namespace Goteo\Model {
                     $sqlFilter
                     ORDER BY `order` ASC";
 
-            $query = static::query($sql array(':node' => $node, ':lang' => \LANG));
+            $query = static::query($sql, array(':node' => $node, ':lang' => \LANG));
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
                 $banner->image = !empty($banner->image) ? Image::get($banner->image) : null;

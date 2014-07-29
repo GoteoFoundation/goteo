@@ -37,12 +37,10 @@ namespace Goteo\Model\Project {
          */
 		public static function getAll () {
 
-            $lang = \LANG;
-
             $array = array ();
             try {
                
-                if(self::default_lang($lang)=='es') {
+                if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
                 }
                 else {
@@ -81,8 +79,6 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getNames ($project = null, $limit = null) {
-
-            $lang = \LANG;
             
             $array = array ();
             
@@ -92,7 +88,7 @@ namespace Goteo\Model\Project {
                     $sqlFilter = " WHERE open_tag.id IN (SELECT open_tag FROM project_open_tag WHERE project = '$project')";
                 }
 
-                if(self::default_lang($lang)=='es') {
+                if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
                 }
                 else {

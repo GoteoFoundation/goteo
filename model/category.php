@@ -42,11 +42,9 @@ namespace Goteo\Model {
          */
         public static function getAll () {
 
-            $lang=\LANG;
-
             $list = array();
 
-            if(self::default_lang($lang)=='es') {
+            if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(category_lang.name, category.name) as name,
                                     IFNULL(category_lang.description, category.description) as description";
             }
@@ -96,10 +94,9 @@ namespace Goteo\Model {
          */
 		public static function getList () {
 
-            $lang=\LANG;
             $array = array ();
             try {
-                if(self::default_lang($lang)=='es') {
+                if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(category_lang.name, category.name) as name";
                 }
                 else {

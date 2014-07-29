@@ -60,8 +60,8 @@ namespace Goteo\Model\User {
                     FROM    category
                     LEFT JOIN category_lang
                         ON  category_lang.id = category.id
-                        AND category_lang.lang = :lang"
-                    $eng_join
+                        AND category_lang.lang = :lang
+                    $eng_join"
                         ;
 
                 if (!empty($user)) {

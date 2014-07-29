@@ -44,13 +44,11 @@ namespace Goteo\Model {
          */
         public static function getAll ($group = '') {
 
-            $lang=\LANG;
-
             $values = array(':lang'=>\LANG);
 
             $icons = array();
 
-            if(self::default_lang($lang)=='es') {
+            if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(icon_lang.name, icon.name) as name,
                                     IFNULL(icon_lang.description, icon.description) as description";
             }
@@ -96,14 +94,12 @@ namespace Goteo\Model {
          * Lista de iconos que se usen en proyectos 
          */
         public static function getList ($group = '') {
-
-            $lang = \LANG;
             
             $values = array(':lang'=>\LANG);
 
             $icons = array();
 
-            if(self::default_lang($lang)=='es') {
+            if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(icon_lang.name, icon.name) as name";
             }
             else {
