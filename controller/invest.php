@@ -324,7 +324,7 @@ namespace Goteo\Controller {
                 }
             }
 
-            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            $URL = \SITE_URL;
             
             // Dirección en el mail (y version para regalo)
             $txt_address = Text::get('invest-address-address-field') . ' ' . $invest->address->address;

@@ -21,9 +21,6 @@ if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance
     header('Location: /about/maintenance');
 }
 
-// Include path
-//set_include_path(GOTEO_PATH . PATH_SEPARATOR . '.');
-
 // Autoloader
 spl_autoload_register(
 
@@ -59,6 +56,12 @@ set_error_handler (
 
 );
 
+/**
+ * Sesión.
+ */
+session_name('goteo');
+session_start();
+
 /* Sistema nodos */
 // Get Node and check it
 $host = strtok($_SERVER['HTTP_HOST'], '.');
@@ -73,58 +76,46 @@ $conf_file = 'nodesys/'.NODE_ID.'/config.php';
 if (file_exists($conf_file)) {
     require_once $conf_file;
 }
-// temporal hasta activar certificado
-    if (defined('NODE_URL')) {
-        define('SRC_URL', NODE_URL);
-    define('SEC_URL', NODE_URL);
-    }
-    else {
-        define('SRC_URL', SITE_URL);
-    define('SEC_URL', SRC_URL);
-    }
-/*
-// url segura
-if (\DEVGOTEO_LOCAL) {
-
-    // en local la url es normal
-    if (defined('NODE_URL')) {
-        define('SEC_URL', NODE_URL);
-    }
-    else {
-        define('SEC_URL', SITE_URL);
-    }
-    define('SRC_URL', SEC_URL);
-    $_SERVER['HTTPS'] = 'on';
-
-} else {
-
-    if (defined('NODE_URL')) {
-        define('SEC_URL', str_replace('http://', 'https://', NODE_URL));
-    }
-    else {
-        define('SEC_URL', str_replace('http://', 'https://', SITE_URL));
-    }
-    if ($_SERVER['HTTPS'] === 'on') {
-        define('SRC_URL', SEC_URL);
-    } else {
-        if (defined('NODE_URL')) {
-            define('SRC_URL', NODE_URL);
-        }
-        else {
-            define('SRC_URL', SITE_URL);
-        }
-    }
-
-}
-
-*/
 /* Fin inicializacion nodo */
 
-/**
- * Sesión.
- */
-session_name('goteo');
-session_start();
+/* Iniciación constantes *_URL */
+
+// Verificar settings
+if (defined('SITE_URL') || !defined('GOTEO_URL'))
+    die('En los settings hay que definir la constante GOTEO_URL en vez de SITE_URL.');
+
+// if ssl enabled
+$SSL = (defined('GOTEO_SSL') && GOTEO_SSL === true );
+
+// segun sea nodo o central
+$SITE_URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : GOTEO_URL;
+$raw_url = str_replace('http:', '', $SITE_URL);
+
+// SRC_URL  (sin protocolo)
+define('SRC_URL', $raw_url);
+
+// SEC_URL (siempre https, si ssl activado)
+define('SEC_URL', ($SSL) ? 'https:'.$raw_url : $SITE_URL);
+
+// SITE_URL, según si estamos en entorno seguro o si el usuario esta autenticado
+if ($_SERVER['HTTPS'] === 'on' || $_SESSION['user'] instanceof \Goteo\Model\User) {
+    define('SITE_URL', SEC_URL);
+} else {
+    define('SITE_URL', $SITE_URL);
+}
+
+// si el usuario ya está validado debemos mantenerlo en entorno seguro
+// usamos la funcionalidad de salto entre nodos para mantener la sesión
+if ($SSL
+    && $_SESSION['user'] instanceof \Goteo\Model\User
+    && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on')
+) {
+    $jump = '/jump.php?action=go&url='.urlencode(SEC_URL.$_SERVER['REQUEST_URI']);
+    header('Location: '.$jump);
+    die;
+}
+/* Fin inicializacion constantes *_URL */
+
 
 // Get URI without query string
 $uri = strtok($_SERVER['REQUEST_URI'], '?');

@@ -187,7 +187,7 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'send':
 
-                    $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+                    $URL = \SITE_URL;
 
                     $comlang = (isset($_POST['lang'])) ? $_POST['lang'] : \LANG;
                     

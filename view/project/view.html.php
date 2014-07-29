@@ -36,7 +36,7 @@ if (!empty($blog->posts)) {
     $updates = '';
 }
 
-$URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+$URL = \SITE_URL;
 
 $bodyClass = 'project-show';
 

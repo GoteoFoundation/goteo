@@ -31,7 +31,7 @@ namespace Goteo\Model\Project {
          */
 	 	public static function get ($id, $section = null) {
             
-            $URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : SITE_URL;
+            $URL = \SITE_URL;
             
             
             $array = array ();
@@ -56,7 +56,7 @@ namespace Goteo\Model\Project {
                 foreach ($images as $image) {
                     $image->imageData = Model\Image::get($image->image);
                     if (!empty($image->url)) {
-                        $image->link = (substr($image->url, 0, strlen('http://')) == 'http://') ? $image->url : $URL.'/'.$image->url;
+                        $image->link = (substr($image->url, 0, strlen('http')) == 'http') ? $image->url : SRC_URL.'/'.$image->url;
                     }
                     
                     $array[] = $image;
