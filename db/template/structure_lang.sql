@@ -5,3 +5,7 @@ CREATE TABLE `template_lang` (
   `text` text NULL,
  UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+-- pendiente de traducir
+ALTER TABLE `template_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';

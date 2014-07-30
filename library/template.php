@@ -192,6 +192,30 @@ namespace Goteo\Library {
 
 		}
 
+		/*
+		 *  Esto se usar para marcar como pendiente de traducir
+		 */
+		public static function setPending($id, &$errors = array()) {
+  			try {
+                $values = array(':id'=>$id);
+				$sql = "UPDATE template_lang
+				            SET pending = 1
+				            WHERE id = :id
+                        ";
+				if (Model::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, true) . "</pre>";
+                    return false;
+                }
+
+			} catch(\PDOException $e) {
+                $errors[] = 'Error sql al grabar el contenido de la plantilla. ' . $e->getMessage();
+                return false;
+			}
+
+		}
+
         /*
          * Grupos de textos
          */
