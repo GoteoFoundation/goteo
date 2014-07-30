@@ -34,11 +34,12 @@ namespace Goteo\Model\Project {
             try {
                 $array = array();
 
+                $icons = Icon::getList();
+
                 $values = array(
                     ':project' => $project,
                     ':type' => $type,
-                    ':lang' => $lang,
-                    ':web_lang' => \LANG
+                    ':lang' => $lang
                 );
 
                 $sqlFilter = "";
@@ -63,18 +64,12 @@ namespace Goteo\Model\Project {
                             reward.amount as amount,
                             reward.units as units,
                             reward.fulsocial as fulsocial,
-                            IFNULL(icon_lang.name, icon.name) as icon_name,
                             reward.url,
                             reward.bonus
                         FROM    reward
-                        LEFT JOIN icon
-                            ON icon.id = reward.icon
                         LEFT JOIN reward_lang
                             ON  reward_lang.id = reward.id
                             AND reward_lang.lang = :lang
-                        LEFT JOIN icon_lang
-                            ON  icon_lang.id = icon.id
-                            AND icon_lang.lang = :web_lang
                         WHERE   project = :project
                             AND type= :type
                         $sqlFilter
@@ -90,6 +85,9 @@ namespace Goteo\Model\Project {
 
                     if ($item->icon == 'other' && !empty($item->other)) {
                         $item->icon_name = $item->other;
+                    }
+                    else {
+                        $item->icon_name = $icons[$item->icon]->name;
                     }
 
                     $array[$item->id] = $item;
