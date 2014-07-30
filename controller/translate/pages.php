@@ -8,6 +8,7 @@ namespace Goteo\Controller\Translate {
         Goteo\Library\Feed,
         Goteo\Library\Message,
         Goteo\Library\Page,
+        Goteo\Library\Text,
         Goteo\Library\Lang;
 
     class Pages
@@ -92,20 +93,20 @@ namespace Goteo\Controller\Translate {
                 $pages = Page::getAll($filters, $_SESSION['translate_lang']);
 
                 //recolocamos los post para la paginacion
-                /*
-                $list = array();
-                foreach ($data['pending'] as $key => $item) {
-                    $item->pendiente = 1;
-                    $nwords += Text::wcount($item->original); // si es pendiente contamos las palabras del original
-                    $list[] = $item;
-                }
+                foreach ($pages as $page) {
+                    // si es pendiente contamos las palabras del original
+                    if ($page->pendiente) {
+                        $nwords += Text::wcount($page->original_name);
+                        $nwords += Text::wcount($page->original_description);
+                        $nwords += Text::wcount($page->original_content);
+                    }
+                    else {
+                        $nwords += Text::wcount($page->name);
+                        $nwords += Text::wcount($page->description);
+                        $nwords += Text::wcount($page->content);
+                    }
 
-                foreach ($data['ready'] as $key => $item) {
-                    $item->pendiente = 0;
-                    $nwords += Text::wcount($item->value);
-                    $list[] = $item;
                 }
-                */
             }
 
             // edición
@@ -138,6 +139,7 @@ namespace Goteo\Controller\Translate {
                     'node' => $node,
                     'page' => $page,
                     'original' => $original,
+                    'nwords' => $nwords,
                     'filter' => $filter,
                     'filters' => $filters,
                     'errors' => $errors

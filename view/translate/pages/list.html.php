@@ -4,6 +4,7 @@ use Goteo\Library\Page,
 
 $filter = $this['filter'];
 $pages = $this['pages'];
+$nwords = $this['nwords'];
 
 ?>
 <!-- Filtros -->
@@ -22,6 +23,12 @@ $pages = $this['pages'];
         <br clear="both" />
         <input type="submit" name="filter" value="Buscar">
     </form>
+</div>
+
+<!-- lista -->
+<?php if (!empty($pages)) : ?>
+<div class="widget board">
+    N&uacute;mero de palabras: <?php echo $nwords; ?>
 </div>
 
 <div class="widget board">
@@ -44,3 +51,6 @@ $pages = $this['pages'];
         </tbody>
     </table>
 </div>
+<?php else : ?>
+    <p>No se han encontrado registros</p>
+<?php endif; ?>

@@ -89,6 +89,10 @@ namespace Goteo\Library {
                             IFNULL(page_node.name, IFNULL(original.name, page.name)) as name,
                             IFNULL(page_node.description, IFNULL(original.description, page.description)) as description,
                             IF(page_node.content IS NULL OR page_node.pending = 1, 1, 0) as pendiente,
+                            page_node.content as content,
+                            original.content as original_content,
+                            original.name as original_name,
+                            original.description as original_description,
                             page.url as url
                         FROM page
                         LEFT JOIN page_node
