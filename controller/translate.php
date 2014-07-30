@@ -102,7 +102,7 @@ namespace Goteo\Controller {
                     throw new Redirection("/translate/$section/$action/$id/$extraAction/$extraId");
                 }
 
-                $filter = "?type={$_GET['type']}&text={$_GET['text']}";
+                $filter = "?type={$_GET['type']}&text={$_GET['text']}&pending={$_GET['pending']}";
 
                 throw new Redirection("/translate/$section/$action/$id/$filter&page=".$_GET['page']);
             } else {

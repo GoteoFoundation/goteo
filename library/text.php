@@ -215,14 +215,16 @@ namespace Goteo\Library {
                         purpose.text as id,
                         IFNULL(text.text,purpose.purpose) as text,
                         purpose.purpose as original,
-                        IF(text.text IS NULL, 1, 0) as pendiente,
+                        IF(text.text IS NULL
+                          OR
+                          text.pending = 1, 1, 0) as pendiente,
                         purpose.`group` as `group`
                     FROM purpose
                     LEFT JOIN text
                         ON text.id = purpose.text
                         AND text.lang = :lang
                     WHERE purpose.text != ''
-                    "; // // OR text.pending = 1
+                    "; // //
             if (!empty($filters['idfilter'])) {
                 $sql .= " AND purpose.text LIKE :idfilter";
                 $values[':idfilter'] = "%{$filters['idfilter']}%";
@@ -297,6 +299,24 @@ namespace Goteo\Library {
 				$errors[] = 'Error al insertar los datos <pre>' . print_r($data, true) . '</pre>';
 				return false;
 			}
+		}
+
+		/*
+		 *  Esto se usa para marcar todas las traducciones de un texto como pendientes
+		 */
+		public static function setPending($id, &$errors = array()) {
+            $sql = "UPDATE `text` SET
+                            `pending` = 1
+                            WHERE `id` = :id
+                    ";
+            try {
+                Model::query($sql, array(':id' => $id));
+                return true;
+
+            } catch (Exception $e) {
+                $errors[] = 'Error al marcar traducción pendiente. ' . $e->getMessage();
+                return false;
+            }
 		}
 
         /*
