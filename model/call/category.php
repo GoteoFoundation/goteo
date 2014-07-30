@@ -42,7 +42,6 @@ namespace Goteo\Model\Call {
             $array = array ();
 
             try {
-
                 if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(category_lang.name, category.name) as name";
                 }
@@ -63,7 +62,6 @@ namespace Goteo\Model\Call {
                     $eng_join
                     ORDER BY name ASC
                         ";
-                }
 
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $categories = $query->fetchAll();
