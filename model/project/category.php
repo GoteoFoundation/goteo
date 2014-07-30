@@ -90,7 +90,7 @@ namespace Goteo\Model\Project {
                     $sqlFilter = " WHERE category.id IN (SELECT category FROM project_category WHERE project = '$project')";
                 }
 
-                 if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(category_lang.name, category.name) as name";
                 }
                 else {

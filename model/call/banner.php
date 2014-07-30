@@ -47,11 +47,21 @@ namespace Goteo\Model\Call {
 
             $list = array();
 
+            if(self::default_lang($lang)=='es') {
+                $different_select=" IFNULL(call_banner_lang.name, call_banner.name) as name";
+                }
+            else {
+                    $different_select=" IFNULL(call_banner_lang.name, IFNULL(eng.name, call_banner.name)) as name";
+                    $eng_join=" LEFT JOIN call_banner_lang as eng
+                                    ON  eng.id = call_banner.id
+                                    AND eng.lang = 'en'";
+                }            
+
             $sql = static::query("
                 SELECT
                     call_banner.id,
                     call_banner.call,
-                    IFNULL(call_banner_lang.name, call_banner.name) as name,
+                    $different_select,
                     call_banner.url,
                     call_banner.image,
                     call_banner.order
@@ -59,6 +69,7 @@ namespace Goteo\Model\Call {
                 LEFT JOIN call_banner_lang
                     ON  call_banner_lang.id = call_banner.id
                     AND call_banner_lang.lang = :lang
+                $eng_join
                 WHERE call_banner.call = :call
                 ORDER BY call_banner.order ASC, call_banner.id ASC
                 ", array(':call'=>$call, ':lang'=>$lang));
@@ -77,11 +88,21 @@ namespace Goteo\Model\Call {
 
             $list = array();
 
+            if(self::default_lang($lang)=='es') {
+                $different_select=" IFNULL(call_banner_lang.name, call_banner.name) as name";
+                }
+            else {
+                $different_select=" IFNULL(call_banner_lang.name, IFNULL(eng.name, call_banner.name)) as name";
+                $eng_join=" LEFT JOIN call_banner_lang as eng
+                                ON  eng.id = call_banner.id
+                                AND eng.lang = 'en'";
+                }
+
             $sql = static::query("
                 SELECT
                     call_banner.id,
                     call_banner.call,
-                    IFNULL(call_banner_lang.name, call_banner.name) as name,
+                    $different_select,
                     call_banner.url,
                     call_banner.image,
                     call_banner.order
@@ -89,6 +110,7 @@ namespace Goteo\Model\Call {
                 LEFT JOIN call_banner_lang
                     ON  call_banner_lang.id = call_banner.id
                     AND call_banner_lang.lang = :lang
+                $eng_join
                 WHERE call_banner.call = :call
                 ORDER BY call_banner.order ASC, call_banner.id ASC
                 ", array(':call'=>$call, ':lang'=>$lang));

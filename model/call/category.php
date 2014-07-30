@@ -42,34 +42,25 @@ namespace Goteo\Model\Call {
             $array = array ();
 
             try {
-                 if(self::default_lang($lang)=='es')
-                {          
-                    // Español como alternativa
 
-                    $sql ="SELECT
-                        category.id as id,
-                        IFNULL(category_lang.name, category.name) as name
-                    FROM    category
-                    LEFT JOIN category_lang
-                        ON  category_lang.id = category.id
-                        AND category_lang.lang = :lang
-                    ORDER BY name ASC
-                        ";
+                if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(category_lang.name, category.name) as name";
                 }
-            else
-                {
-                    // Inglés como alternativa
+                else {
+                    $different_select=" IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name";
+                    $eng_join=" LEFT JOIN category_lang as eng
+                                    ON  eng.id = category.id
+                                    AND eng.lang = 'en'";
+                }
 
-                    $sql ="SELECT
+                $sql="SELECT
                         category.id as id,
-                        IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name
+                        $different_select
                     FROM    category
                     LEFT JOIN category_lang
                         ON  category_lang.id = category.id
                         AND category_lang.lang = :lang
-                    LEFT JOIN category_lang as eng
-                        ON  eng.id = category.id
-                        AND eng.lang = 'en'
+                    $eng_join
                     ORDER BY name ASC
                         ";
                 }
@@ -104,39 +95,27 @@ namespace Goteo\Model\Call {
                     $sqlFilter = " WHERE category.id IN (SELECT category FROM call_category WHERE `call` = '$call')";
                 }
 
-                 if(self::default_lang($lang)=='es')
-                {          
-                    // Español como alternativa
+                if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(category_lang.name, category.name) as name";
+                }
+                else {
+                    $different_select=" IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name";
+                    $eng_join=" LEFT JOIN category_lang as eng
+                                    ON  eng.id = category.id
+                                    AND eng.lang = 'en'";
+                }
 
-                    $sql ="SELECT 
+                $sql="SELECT 
                             category.id,
-                            IFNULL(category_lang.name, category.name) as name
+                            $different_select
                         FROM category
                         LEFT JOIN category_lang
                             ON  category_lang.id = category.id
                             AND category_lang.lang = :lang
+                        $eng_join
                         $sqlFilter
                         ORDER BY `order` ASC
                         ";
-                }
-            else
-                {
-                    // Inglés como alternativa
-
-                    $sql ="SELECT 
-                            category.id,
-                            IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name
-                        FROM category
-                        LEFT JOIN category_lang
-                            ON  category_lang.id = category.id
-                            AND category_lang.lang = :lang
-                        LEFT JOIN category_lang as eng
-                            ON  eng.id = category.id
-                            AND eng.lang = 'en'
-                        $sqlFilter
-                        ORDER BY `order` ASC
-                        ";
-                }
                
                 if (!empty($limit)) {
                     $sql .= "LIMIT $limit";

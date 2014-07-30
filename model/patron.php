@@ -71,8 +71,8 @@ namespace Goteo\Model {
                                     IFNULL(patron_lang.description, patron.description) as description";
                 }
             else {
-                $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title) as title,
-                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description) as description";
+                $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title)) as title,
+                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description)) as description";
                 $eng_join=" LEFT JOIN patron_lang as eng
                                 ON  eng.id = patron.id
                                 AND eng.lang = 'en'";
@@ -134,8 +134,8 @@ namespace Goteo\Model {
                                     IFNULL(patron_lang.description, patron.description) as description";
                 }
             else {
-                $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title) as title,
-                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description) as description";
+                $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title)) as title,
+                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description)) as description";
                 $eng_join=" LEFT JOIN patron_lang as eng
                                 ON  eng.id = patron.id
                                 AND eng.lang = 'en'";

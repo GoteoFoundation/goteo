@@ -52,14 +52,26 @@ namespace Goteo\Model\Project {
                     $values[':icon'] = $icon;
                 }
 
+                if(self::default_lang($lang)=='es') {
+                    $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward,
+                                        IFNULL(reward_lang.description, reward.description) as description,
+                                        IFNULL(reward_lang.other, reward.other) as other";
+                    }
+                else {
+                        $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward,
+                                            IFNULL(reward_lang.description, IFNULL(eng.description, reward.description)) as description,
+                                            IFNULL(reward_lang.other, IFNULL(eng.other, reward.other)) as other";
+                        $eng_join=" LEFT JOIN reward_lang as eng
+                                        ON  eng.id = reward.id
+                                        AND eng.lang = 'en'";
+                    }                
+
                 $sql = "SELECT
                             reward.id as id,
                             reward.project as project,
-                            IFNULL(reward_lang.reward, reward.reward) as reward,
-                            IFNULL(reward_lang.description, reward.description) as description,
+                            $different_select,
                             reward.type as type,
                             reward.icon as icon,
-                            IFNULL(reward_lang.other, reward.other) as other,
                             reward.license as license,
                             reward.amount as amount,
                             reward.units as units,
@@ -70,6 +82,7 @@ namespace Goteo\Model\Project {
                         LEFT JOIN reward_lang
                             ON  reward_lang.id = reward.id
                             AND reward_lang.lang = :lang
+                        $eng_join
                         WHERE   project = :project
                             AND type= :type
                         $sqlFilter
