@@ -82,7 +82,8 @@ namespace Goteo\Model\Project {
 
             if (!empty($this->url)) {
 
-                if ($universalSubtitles) {
+                // por el momento, universal subtitles es incompatible con ssl
+                if ($universalSubtitles && !$https) {
                     return '<script type="text/javascript" src="'
                     . ($https ? 'https' : 'http') . '://s3.amazonaws.com/s3.www.universalsubtitles.org/embed.js">
 ({
