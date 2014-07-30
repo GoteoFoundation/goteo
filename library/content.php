@@ -194,8 +194,8 @@ namespace Goteo\Library {
                     foreach (self::$fields[$table] as $field=>$fieldName) {
                         $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field,
                                 {$table}.$field as {$field}_original,
-                                IF({$table}_lang.$field IS NULL, 0, 1) as {$field}ready,
-                                "; // OR {$table}_lang.pending = 1
+                                IF({$table}_lang.$field IS NULL OR {$table}_lang.pending = 1, 0, 1) as {$field}ready,
+                                ";
                         $primercampo = ($primercampo == '') ?: "{$field}ready";
                     }
 
