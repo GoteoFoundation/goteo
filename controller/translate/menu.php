@@ -48,14 +48,14 @@ namespace Goteo\Controller\Translate {
                             )
                         ),
                         'pages' => array(
-                            'label' => 'Contenidos institucionales',
+                            'label' => 'Páginas',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'edit' => array('label' => 'Traduciendo contenido de Página', 'item' => true)
                             )
                         ),
                         'category' => array(
-                            'label' => 'Categorias e Intereses',
+                            'label' => 'Categorias',
                             'actions' => array(
                                 'list' => array('label' => 'Listando', 'item' => false),
                                 'edit' => array('label' => 'Traduciendo Categoría', 'item' => true)

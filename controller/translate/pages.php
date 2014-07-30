@@ -18,6 +18,22 @@ namespace Goteo\Controller\Translate {
         public static function process($action = 'list', $id = null, &$errors = array())
         {
 
+            // comprobamos los filtros
+            $filters = array();
+            $fields = array('text', 'pending');
+            if (!isset($_GET['pending'])) $_GET['pending'] = 0;
+            foreach ($fields as $field) {
+                if (isset($_GET[$field])) {
+                    $filters[$field] = $_GET[$field];
+                    $_SESSION['translate_filters']['texts'][$field] = (string)$_GET[$field];
+                } elseif (!empty($_SESSION['translate_filters']['texts'][$field])) {
+                    // si no lo tenemos en el get, cogemos de la sesion pero no lo pisamos
+                    $filters[$field] = $_SESSION['translate_filters']['texts'][$field];
+                }
+            }
+
+            $filter = "?text={$filters['text']}&pending={$filters['pending']}";
+
             // si llega post, vamos a guardar los cambios
             if ($action == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
                 if (Page::update($id, $_POST['lang'], $_POST['node'], $_POST['name'], $_POST['description'], $_POST['content'], $errors)) {
@@ -40,7 +56,11 @@ namespace Goteo\Controller\Translate {
                     Message::Info('Contenido de la Pagina <strong>' . $id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
 
                     if ($_POST['node'] != \GOTEO_NODE) {
-                        throw new Redirection('/dashboard/translates/pages');
+                        if (isset($_SESSION['translate_node'])) {
+                            throw new Redirection('/dashboard/translates/pages');
+                        } else {
+                            throw new Redirection('/admin/pages');
+                        }
                     }
 
                     throw new Redirection("/translate/pages");
@@ -69,8 +89,7 @@ namespace Goteo\Controller\Translate {
                 // contamos el número de palabras
                 $nwords = 0;
 
-                $node = (empty($_SESSION['admin_node'])) ? \GOTEO_NODE : $_SESSION['admin_node'];
-                $pages = Page::getAll($_SESSION['translate_lang'], $node);
+                $pages = Page::getAll($filters, $_SESSION['translate_lang']);
 
                 //recolocamos los post para la paginacion
                 /*
@@ -92,15 +111,16 @@ namespace Goteo\Controller\Translate {
             // edición
             if ($action == 'edit') {
 
-                $node = (empty($_SESSION['admin_node'])) ? \GOTEO_NODE : $_SESSION['admin_node'];
-
                 if (isset($_SESSION['translate_node'])) {
                     if (is_object($_SESSION['translate_node'])) {
                         $node = $_SESSION['translate_node']->id;
                     } else {
                         $node = $_SESSION['translate_node'];
                     }
+                } else {
+                    $node = \GOTEO_NODE;
                 }
+
 
                 $page = Page::get($id, $node, $_SESSION['translate_lang']);
                 $original = Page::get($id, $node, \GOTEO_DEFAULT_LANG);
@@ -118,6 +138,8 @@ namespace Goteo\Controller\Translate {
                     'node' => $node,
                     'page' => $page,
                     'original' => $original,
+                    'filter' => $filter,
+                    'filters' => $filters,
                     'errors' => $errors
                 )
             );

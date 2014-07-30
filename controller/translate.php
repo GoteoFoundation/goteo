@@ -20,10 +20,24 @@ namespace Goteo\Controller {
          */
         public function index ($table = '', $action = 'list', $id = null, $auxAction = 'list', $contentId = null) {
 
-            $_SESSION['user']->translangs = Model\User\Translate::getLangs($_SESSION['user']->id);
-            if (empty($_SESSION['user']->translangs)) {
-                Message::Error('No tienes ningún idioma, contacta con el administrador');
-                throw new Redirection('/dashboard');
+            // si es un admin le damos todos los idiomas para traducir
+            if (isset($_SESSION['user']->roles['admin'])) {
+
+                $langs = Lang::getAll();
+                foreach ($langs as &$lang) {
+                    $lang = $lang->name;
+                }
+                $_SESSION['user']->translangs = $langs;
+
+            } else {
+
+                $_SESSION['user']->translangs = Model\User\Translate::getLangs($_SESSION['user']->id);
+                if (empty($_SESSION['user']->translangs) ) {
+
+                    Message::Error('No tienes ningún idioma, contacta con el administrador');
+                    throw new Redirection('/dashboard');
+                }
+
             }
 
             if (empty($_SESSION['translate_lang']) || !isset($_SESSION['user']->translangs[$_SESSION['translate_lang']])) {
@@ -168,7 +182,7 @@ namespace Goteo\Controller {
 
                 if (empty($BC['option'])) {
                     if (!empty($BC['node'])) {
-                        $path = 'Traduciendo nodo <strong>'.$BC['node'].'</strong>';
+                        $path = 'Traduciendo nodo <strong>'.ucfirst($BC['node']).'</strong>';
                     } else {
                         $path = '<strong>Traductor</strong>';
                     }

@@ -32,12 +32,12 @@ $pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] :
         
         <div style="float:left;margin:5px;">
             <label for="filter-text">Texto:</label><br />
-            <input name="text" value="<?php echo (string) $this['filters']['text']; ?>" />
+            <input id="filter-text" name="text" value="<?php echo (string) $this['filters']['text']; ?>" />
         </div>
         
         <div style="float:left;margin:5px;">
             <label for="filter-pending">Solo pendientes:</label><br />
-            <input type="checkbox" name="pending" value="1" <?php if ($this['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
+            <input id="filter-pending" type="checkbox" name="pending" value="1" <?php if ($this['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
         </div>
            
         <br clear="both" />
@@ -65,7 +65,7 @@ $pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] :
         <tbody>
         <?php while ($item = $pagedResults->fetchPagedRow()) : ?>
             <tr>
-                <td width="5%"><a title="Registro <?php echo $item->id ?>" href='/translate/texts/edit/<?php echo $item->id . $filter . '&page=' . $_GET['page']?>' <?php if ($item->pendiente == 1) echo 'style="color:red;"'; ?>>[Edit]</a></td>
+                <td width="5%"><a title="Registro <?php echo $item->id ?>" href='/translate/texts/edit/<?php echo $item->id . $filter . '&page=' . $_GET['page']?>' <?php if ($item->pendiente == 1) echo 'style="color:red;"'; ?>>[Translate]</a></td>
                 <td width="70%"><?php if ($item->pendiente == 1) echo '* '; ?><?php echo $item->text ?></td>
                 <td width="25%"><?php echo $groups[$item->group] ?></td>
                 <td></td>

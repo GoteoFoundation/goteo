@@ -6,8 +6,10 @@ $translator = ACL::check('/translate') ? true : false;
 $node = $this['node'];
 $transNode = ACL::check('/translate/node/'.$node) ? true : false;
 ?>
-<?php if (!isset($_SESSION['admin_node'])) : ?>
+<?php if ($node == \GOTEO_NODE) : ?>
 <a href="/admin/pages/add" class="button">Nueva P&aacute;gina</a>
+<?php elseif (!empty($node)) : ?>
+<a href="/translate/node/<?php echo $node; ?>/page/list" class="button">Traducir páginas</a>
 <?php endif; ?>
 
 <div class="widget board">
@@ -31,10 +33,7 @@ $transNode = ACL::check('/translate/node/'.$node) ? true : false;
                 <td><a href="<?php echo $page->url; ?>" target="_blank">[Ver]</a></td>
                 <td>
                 <?php if ($translator && $node == \GOTEO_NODE) : ?>
-                <a href="/translate/pages/edit/<?php echo $page->id; ?>" >[Traducir]</a>
-                <?php endif; ?>
-                <?php if ($transNode && $node != \GOTEO_NODE) : ?>
-                <a href="/translate/node/<?php echo $node ?>/page/edit/<?php echo $page->id; ?>" target="_blank">[Traducir]</a>
+                    <a href="/translate/pages/edit/<?php echo $page->id; ?>" >[Traducir]</a>
                 <?php endif; ?>
                 </td>
             </tr>

@@ -62,7 +62,7 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de páginas
 		 */
-		public static function getAll($lang = \LANG, $node = \GOTEO_NODE) {
+		public static function getAll($filters = array(), $lang = \LANG, $node = \GOTEO_NODE) {
             $pages = array();
 
             try {
@@ -70,7 +70,18 @@ namespace Goteo\Library {
                 $values = array(':lang' => $lang, ':node' => $node);
 
                 if ($node != \GOTEO_NODE) {
-                    $sqlFilter .= " WHERE page.id IN ('about', 'contact', 'press', 'service')";
+                    $sqlFilters .= " AND page.id IN ('about', 'contact', 'press', 'service')";
+                }
+
+                if (!empty($filters['text'])) {
+                    $sqlFilters .= " AND ( page_node.name LIKE :text
+                        OR  page_node.description LIKE :text
+                        OR  page_node.content LIKE :text)";
+                    $values[':text'] = "%{$filters['text']}%";
+                }
+                // pendientes de traducir
+                if (!empty($filters['pending'])) {
+                    $sqlFilters .= " HAVING pendiente = 1";
                 }
 
                 $sql = "SELECT
@@ -88,7 +99,8 @@ namespace Goteo\Library {
                             ON  original.page = page.id
                             AND original.node = :node
                             AND original.lang = 'es'
-                        $sqlFilter
+                        WHERE page.url IS NOT NULL
+                        $sqlFilters
                         ORDER BY pendiente DESC, name ASC
                         ";
 
