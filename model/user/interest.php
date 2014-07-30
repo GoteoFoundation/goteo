@@ -40,18 +40,30 @@ namespace Goteo\Model\User {
          */
 		public static function getAll ($user = null) {
             $array = array ();
+
             try {
                 $values = array(':lang'=>\LANG);
-                $sql = "
-                    SELECT
+
+                if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(category_lang.name, category.name) as name";
+                }
+                else {
+                    $different_select=" IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name";
+                    $eng_join=" LEFT JOIN category_lang as eng
+                                    ON  eng.id = category.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT
                         category.id as id,
-                        IFNULL(category_lang.name, category.name) as name
+                        $different_select
                     FROM    category
                     LEFT JOIN category_lang
                         ON  category_lang.id = category.id
                         AND category_lang.lang = :lang
+                    $eng_join"
+                        ;
 
-                        ";
                 if (!empty($user)) {
                     $sql .= "INNER JOIN user_interest
                                 ON  user_interest.interest = category.id

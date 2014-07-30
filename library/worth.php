@@ -11,7 +11,10 @@ namespace Goteo\Library {
          */
 		public static function get ($id) {
 
-            $values = array(':id'=>$id, ':lang' => \LANG);
+            //Obtenemos el idioma de soporte
+            $lang=Model::default_lang_by_id($id, 'worthcracy_lang', \LANG);
+
+            $values = array(':id'=>$id, ':lang' => $lang);
             $sql = "SELECT
                         worthcracy.id as id,
                         IFNULL(worthcracy_lang.name, worthcracy.name) as name
@@ -54,14 +57,26 @@ namespace Goteo\Library {
 		public static function getAll () {
             $array = array();
             $values = array(':lang' => \LANG);
+
+            if(Model::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(worthcracy_lang.name, worthcracy.name) as name";
+                }
+            else {
+                    $different_select=" IFNULL(worthcracy_lang.name, IFNULL(eng.name, worthcracy.name)) as name";
+                    $eng_join=" LEFT JOIN worthcracy_lang as eng
+                                    ON  eng.id = worthcracy.id
+                                    AND eng.lang = 'en'";
+                }
+
             $sql = "SELECT
                         worthcracy.id as id,
-                        IFNULL(worthcracy_lang.name, worthcracy.name) as name,
+                        $different_select,
                         worthcracy.amount as amount
                     FROM worthcracy
                     LEFT JOIN worthcracy_lang
                         ON  worthcracy_lang.id = worthcracy.id
                         AND worthcracy_lang.lang = :lang
+                    $eng_join
                     ORDER BY worthcracy.amount ASC
                     ";
 
@@ -119,13 +134,25 @@ namespace Goteo\Library {
                 return $amount;
 
             $values = array(':amount'=>$amount, ':lang' => \LANG);
+
+            if(Model::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(worthcracy_lang.name, worthcracy.name) as name";
+                }
+            else {
+                $different_select=" IFNULL(worthcracy_lang.name, IFNULL(eng.name, worthcracy.name)) as name";
+                $eng_join=" LEFT JOIN worthcracy_lang as eng
+                                   ON  eng.id = worthcracy.id
+                                   AND eng.lang = 'en'";       
+                }
+
             $sql = "SELECT
-                        IFNULL(worthcracy_lang.name, worthcracy.name) as name,
+                        $different_select,
                         worthcracy.amount as amount
                     FROM worthcracy
                     LEFT JOIN worthcracy_lang
                         ON  worthcracy_lang.id = worthcracy.id
                         AND worthcracy_lang.lang = :lang
+                    $eng_join
                     WHERE worthcracy.amount > :amount
                     ";
 
@@ -144,13 +171,25 @@ namespace Goteo\Library {
                 return false;
             
             $values = array(':amount'=>$amount, ':lang' => \LANG);
+
+             if(Model::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(worthcracy_lang.name, worthcracy.name) as name";
+                }
+            else {
+                $different_select=" IFNULL(worthcracy_lang.name, IFNULL(eng.name, worthcracy.name)) as name";
+                $eng_join=" LEFT JOIN worthcracy_lang as eng
+                                   ON  eng.id = worthcracy.id
+                                   AND eng.lang = 'en'";       
+                }
+
             $sql = "SELECT
                         worthcracy.id as id,
-                        IFNULL(worthcracy_lang.name, worthcracy.name) as name
+                        $different_select
                     FROM worthcracy
                     LEFT JOIN worthcracy_lang
                         ON  worthcracy_lang.id = worthcracy.id
                         AND worthcracy_lang.lang = :lang
+                    $eng_join
                     WHERE worthcracy.amount <= :amount
                     ORDER BY worthcracy.amount DESC
                     LIMIT 1

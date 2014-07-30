@@ -23,6 +23,10 @@ namespace Goteo\Model {
          * @return  type object         Objeto
          */
         static public function get ($id, $lang = null) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'node_lang', $lang);
+
                 $sql = static::query("
                     SELECT
                         node.id as id,

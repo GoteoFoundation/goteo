@@ -18,6 +18,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un destacado
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'criteria_lang', \LANG);
+
                 $query = static::query("
                     SELECT
                         criteria.id as id,
@@ -30,7 +34,7 @@ namespace Goteo\Model {
                         ON  criteria_lang.id = criteria.id
                         AND criteria_lang.lang = :lang
                     WHERE criteria.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
                 $criteria = $query->fetchObject(__CLASS__);
 
                 return $criteria;
@@ -41,20 +45,32 @@ namespace Goteo\Model {
          */
         public static function getAll ($section = 'project') {
 
-            $query = static::query("
-                SELECT
-                    criteria.id as id,
-                    criteria.section as section,
-                    IFNULL(criteria_lang.title, criteria.title) as title,
-                    IFNULL(criteria_lang.description, criteria.description) as description,
-                    criteria.order as `order`
-                FROM    criteria
-                LEFT JOIN criteria_lang
-                    ON  criteria_lang.id = criteria.id
-                    AND criteria_lang.lang = :lang
-                WHERE criteria.section = :section
-                ORDER BY `order` ASC, title ASC
-                ", array(':section' => $section, ':lang'=>\LANG));
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(criteria_lang.title, criteria.title) as title,
+                                    IFNULL(criteria_lang.description, criteria.description) as description";
+                }
+                else {
+                    $different_select=" IFNULL(criteria_lang.title, criteria.title) as title,
+                                        IFNULL(criteria_lang.description, IFNULL(eng.description, criteria.description)) as description";
+                    $eng_join=" LEFT JOIN criteria_lang as eng
+                                    ON  eng.id = criteria.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT
+                            criteria.id as id,
+                            criteria.section as section,
+                            $different_select,
+                            criteria.order as `order`
+                        FROM    criteria
+                        LEFT JOIN criteria_lang
+                            ON  criteria_lang.id = criteria.id
+                            AND criteria_lang.lang = :lang
+                        $eng_join
+                        WHERE criteria.section = :section
+                        ORDER BY `order` ASC, title ASC";
+                               
+            $query = static::query($sql, array(':section' => $section, ':lang'=>\LANG));
             
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }

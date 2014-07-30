@@ -160,30 +160,28 @@ namespace Goteo\Core {
           /**
          * Comprueba para una entrada individual el idioma por defecto(de soporte) para un idioma determinado.
          *
-         * @param string $id, string $table
+         * @param string $id, string $table, string $lang
          * @return  string $lang
          */
-         /*public static function default_lang_by_id($id, $table) {
+         public static function default_lang_by_id($id, $table, $lang) {
           
-          $lang = \LANG;
-
-            // Devolver inglés cuando la no esté traducido en idioma no-español
-                        if ($lang != 'es') {
+            // Devolver inglés cuando no esté traducido en idioma no-español
+                if ($lang != 'es') {
                             // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
                             $default_lang = self::default_lang($lang);
 
                             $qaux = static::query(
-                                "SELECT id FROM :table WHERE id = :id AND lang = :lang",
-                                array(':table' => $table, ':id' => $id, ':lang' => $lang)
+                                "SELECT id FROM `{$table}` WHERE id = :id AND lang = :lang",
+                                array(':id' => $id, ':lang' => $lang)
                             );
                             $ok = $qaux->fetchColumn();
                             if ($ok != $id)
                                 $lang = $default_lang;
                         }                   
 
-                        return $lang;
+                        return $lang;        
 
-        }*/
+        }
 
             
 

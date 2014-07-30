@@ -21,6 +21,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un destacado
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'promote_lang', \LANG);
+
                 $query = static::query("
                     SELECT  
                         promote.id as id,
@@ -38,7 +42,7 @@ namespace Goteo\Model {
                     INNER JOIN project
                         ON project.id = promote.project
                     WHERE promote.id = :id
-                    ", array(':id'=>$id, ':lang'=>\LANG));
+                    ", array(':id'=>$id, ':lang'=>$lang));
                 $promote = $query->fetchObject(__CLASS__);
 
                 return $promote;
@@ -56,20 +60,32 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(promote_lang.title, promote.title) as title,
+                                    IFNULL(promote_lang.description, promote.description) as description";
+                }
+            else {
+                    $different_select=" IFNULL(promote_lang.title, IFNULL(eng.title, promote.title)) as title,
+                                        IFNULL(promote_lang.description, IFNULL(eng.description, promote.description)) as description";
+                    $eng_join=" LEFT JOIN promote_lang as eng
+                                    ON  eng.id = promote.id
+                                    AND eng.lang = 'en'";
+                }
+
             $query = static::query("
                 SELECT
                     promote.id as id,
                     promote.project as project,
                     project.name as name,
                     project.status as status,
-                    IFNULL(promote_lang.title, promote.title) as title,
-                    IFNULL(promote_lang.description, promote.description) as description,
+                    $different_select,
                     promote.order as `order`,
                     promote.active as `active`
                 FROM    promote
                 LEFT JOIN promote_lang
                     ON promote_lang.id = promote.id
                     AND promote_lang.lang = :lang
+                $eng_join
                 INNER JOIN project
                     ON project.id = promote.project
                 WHERE promote.node = :node

@@ -17,6 +17,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un destacado
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'license_lang', \LANG);
+
                 $query = static::query("
                     SELECT
                         license.id as id,
@@ -30,7 +34,7 @@ namespace Goteo\Model {
                         ON  license_lang.id = license.id
                         AND license_lang.lang = :lang
                     WHERE license.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
                 $license = $query->fetchObject(__CLASS__);
 
                 $query = static::query("
@@ -55,18 +59,30 @@ namespace Goteo\Model {
 
             // icon es si esta en relacion en icon_license
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(license_lang.name, license.name) as name,
+                                    IFNULL(license_lang.description, license.description) as description,
+                                    IFNULL(license_lang.url, license.url) as url";
+                }
+            else {
+                $different_select=" IFNULL(license_lang.name, IFNULL(eng.name, license.name)) as name,
+                                    IFNULL(license_lang.description, IFNULL(eng.description, license.description)) as description,
+                                    IFNULL(license_lang.url, IFNULL(eng.url, license.url)) as url";
+                $eng_join=" LEFT JOIN license_lang as eng
+                                    ON  eng.id = license.id
+                                    AND eng.lang = 'en'";       
+                }
             $sql = "
                 SELECT
                     license.id as id,
-                    IFNULL(license_lang.name, license.name) as name,
-                    IFNULL(license_lang.description, license.description) as description,
-                    IFNULL(license_lang.url, license.url) as url,
+                    $different_select,
                     license.group as `group`,
                     license.order as `order`
                 FROM    license
                 LEFT JOIN license_lang
                     ON  license_lang.id = license.id
                     AND license_lang.lang = :lang
+                $eng_join
                 ";
 
             if (!empty($icon)) {
@@ -107,16 +123,29 @@ namespace Goteo\Model {
             $list = array();
             $values = array(':lang'=>\LANG);
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(license_lang.name, license.name) as name,
+                                    IFNULL(license_lang.description, license.description) as description,
+                                    IFNULL(license_lang.url, license.url) as url";
+                }
+            else {
+                $different_select=" IFNULL(license_lang.name, IFNULL(eng.name, license.name)) as name,
+                                    IFNULL(license_lang.description, IFNULL(eng.description, license.description)) as description,
+                                    IFNULL(license_lang.url, IFNULL(eng.url, license.url)) as url";
+                $eng_join=" LEFT JOIN license_lang as eng
+                                    ON  eng.id = license.id
+                                    AND eng.lang = 'en'";       
+                }
+
             $sql = "
                 SELECT
                     license.id as id,
-                    IFNULL(license_lang.name, license.name) as name,
-                    IFNULL(license_lang.description, license.description) as description,
-                    IFNULL(license_lang.url, license.url) as url
+                    $different_select
                 FROM    license
                 LEFT JOIN license_lang
                     ON  license_lang.id = license.id
                     AND license_lang.lang = :lang
+                    $eng_join
                 ";
 
             $sql .= "ORDER BY name ASC

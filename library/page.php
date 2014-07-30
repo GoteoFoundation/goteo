@@ -21,33 +21,41 @@ namespace Goteo\Library {
 
         static public function get ($id, $node = \GOTEO_NODE, $lang = \LANG) {
 
+            //idioma de soporte
+            $default_lang=Model::default_lang($lang);
+
             // buscamos la página para este nodo en este idioma
 			$sql = "SELECT  page.id as id,
-                            IFNULL(page_node.name, IFNULL(original.name, page.name)) as name,
-                            IFNULL(page_node.description, IFNULL(original.description, page.description)) as description,
+                            IFNULL(page_node.name, IFNULL(default_lang.name, page.name)) as name,
+                            IFNULL(page_node.description, IFNULL(default_lang.description, page.description)) as description,
                             page.url as url,
                             IFNULL(page_node.lang, '$lang') as lang,
                             IFNULL(page_node.node, '$node') as node,
-                            IFNULL(page_node.content, original.content) as content
+                            IFNULL(page_node.content, IFNULL(default_lang.content, NULL)) as content
                      FROM page
                      LEFT JOIN page_node
                         ON  page_node.page = page.id
                         AND page_node.lang = :lang
                         AND page_node.node = :node
-                     LEFT JOIN page_node as original
-                        ON  original.page = page.id
-                        AND original.node = :node
-                        AND original.lang = 'es'
+                     LEFT JOIN page_node as default_lang
+                        ON  default_lang.page = page.id
+                        AND default_lang.node = :node
+                        AND default_lang.lang = :default_lang
                      WHERE page.id = :id
                 ";
 
 			$query = Model::query($sql, array(
                                             ':id' => $id,
                                             ':lang' => $lang,
-                                            ':node' => $node
+                                            ':node' => $node,
+                                            ':default_lang' =>$default_lang
                                         )
                                     );
 			$page = $query->fetchObject(__CLASS__);
+
+            if((empty($page->content))&&($node!=\GOTEO_NODE))
+                $page=self::get($id, \GOTEO_NODE, $lang);
+
             return $page;
 		}
 

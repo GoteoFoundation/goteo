@@ -18,21 +18,8 @@ namespace Goteo\Model {
          */
         public static function get ($id) {
 
-                $lang = \LANG;
-
-                // Devolver inglés cuando la no esté traducido en idioma no-español
-                if ($lang != 'es') {
-                    // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
-                    $default_lang = self::default_lang($lang);
-
-                    $qaux = static::query(
-                        "SELECT id FROM icon_lang WHERE id = :id AND lang = :lang",
-                        array(':id' => $id, ':lang' => $lang)
-                    );
-                    $ok = $qaux->fetchColumn();
-                    if ($ok != $id)
-                        $lang = $default_lang;
-                }        
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'icon_lang', \LANG);        
 
                 $query = static::query("
                     SELECT
@@ -57,45 +44,31 @@ namespace Goteo\Model {
          */
         public static function getAll ($group = '') {
 
-            $lang=\LANG;
-
             $values = array(':lang'=>\LANG);
 
             $icons = array();
 
-             if(self::default_lang($lang)=='es')
-                {          
-                    // Español como alternativa
-
-                    $sql ="SELECT
-                            icon.id as id,
-                            IFNULL(icon_lang.name, icon.name) as name,
-                            IFNULL(icon_lang.description, icon.description) as description,
-                            icon.group as `group`
-                        FROM    icon
-                        LEFT JOIN  icon_lang
-                            ON  icon_lang.id = icon.id
-                            AND icon_lang.lang = :lang
-                        ";
-                }
-            else
-                {
-                    // Inglés como alternativa
-
-                    $sql ="SELECT
-                            icon.id as id,
-                            IFNULL(icon_lang.name, IFNULL(eng.name, icon.name)) as name,
-                            IFNULL(icon_lang.description, IFNULL(eng.description, icon.description)) as description,
-                            icon.group as `group`
-                        FROM    icon
-                        LEFT JOIN  icon_lang
-                            ON  icon_lang.id = icon.id
-                            AND icon_lang.lang = :lang
-                        LEFT JOIN  icon_lang as eng
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(icon_lang.name, icon.name) as name,
+                                    IFNULL(icon_lang.description, icon.description) as description";
+            }
+            else {
+                $different_select=" IFNULL(icon_lang.name, IFNULL(eng.name, icon.name)) as name,
+                                    IFNULL(icon_lang.description, IFNULL(eng.description, icon.description)) as description";
+                $eng_join=" LEFT JOIN  icon_lang as eng
                             ON  eng.id = icon.id
-                            AND eng.lang = 'en'
-                        ";
-                }
+                            AND eng.lang = 'en'";
+            }
+
+            $sql="SELECT
+                    icon.id as id,
+                    icon.group as `group`,
+                    $different_select
+                    FROM icon
+                    LEFT JOIN  icon_lang
+                        ON  icon_lang.id = icon.id
+                        AND icon_lang.lang = :lang
+                    $eng_join";
 
             if ($group != '') {
                 // de un grupo o de todos
@@ -121,47 +94,31 @@ namespace Goteo\Model {
          * Lista de iconos que se usen en proyectos 
          */
         public static function getList ($group = '') {
-
-            $lang = \LANG;
             
             $values = array(':lang'=>\LANG);
 
             $icons = array();
 
-            if(self::default_lang($lang)=='es')
-                {          
-                    // Español como alternativa
-
-                    $sql ="SELECT
-                            icon.id,
-                            IFNULL(icon_lang.name, icon.name) as name
-                        FROM    icon
-                        LEFT JOIN  icon_lang
-                            ON  icon_lang.id = icon.id
-                            AND icon_lang.lang = :lang
-                        INNER JOIN reward
-                            ON icon.id = reward.icon
-                        ";
-                }
-            else
-                {
-                    // Inglés como alternativa
-
-                    $sql ="SELECT
-                            icon.id,
-                            IFNULL(icon_lang.name, IFNULL(eng.name, icon.name)) as name
-                        FROM    icon
-                        LEFT JOIN  icon_lang
-                            ON  icon_lang.id = icon.id
-                            AND icon_lang.lang = :lang
-                        LEFT JOIN  icon_lang as eng
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(icon_lang.name, icon.name) as name";
+            }
+            else {
+                $different_select=" IFNULL(icon_lang.name, IFNULL(eng.name, icon.name)) as name";
+                $eng_join=" LEFT JOIN  icon_lang as eng
                             ON  eng.id = icon.id
-                            AND eng.lang = 'en'   
-                        INNER JOIN reward
-                            ON icon.id = reward.icon
-                        ";
-                }
+                            AND eng.lang = 'en'";
+            }
 
+            $sql="SELECT
+                    icon.id,
+                    $different_select
+                FROM    icon
+                LEFT JOIN  icon_lang
+                    ON  icon_lang.id = icon.id
+                    AND icon_lang.lang = :lang
+                $eng_join
+                INNER JOIN reward
+                    ON icon.id = reward.icon";
 
             if ($group != '') {
                 // de un grupo o de todos
