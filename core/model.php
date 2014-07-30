@@ -183,7 +183,20 @@ namespace Goteo\Core {
 
         }
 
-            
+        /*
+         *   Metodo para marcar como pendiente todas las traducciones de cierto registro
+         */
+        public static function setPending($id, $table) {
+
+            try {
+                static::query("UPDATE `{$table}_lang` SET `pending` = 1 WHERE id = :id", array(':id' => $id));
+                return true;
+            } catch (\Exception $e) {
+                return false;
+            }
+
+        }
+
 
     }
 

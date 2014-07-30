@@ -18,11 +18,12 @@ use Goteo\Library\Text;
             <textarea id="tpltext" name="text" cols="100" rows="20"><?php echo $this['template']->text; ?></textarea>
         </p>
 
+        <input type="submit" name="save" value="Guardar" />
+
         <p>
-            <label for="tplpending">Marcar como pendiente de traducir</label>
-            <input type="checkbox" name="pending" value="1" <?php if ($this['template']->pending) echo ' checked="checked"'; ?>" />
+            <label for="mark-pending">Marcar como pendiente de traducir</label>
+            <input id="mark-pending" type="checkbox" name="pending" value="1" />
         </p>
 
-        <input type="submit" name="save" value="Guardar" />
     </form>
 </div>

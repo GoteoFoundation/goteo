@@ -46,11 +46,12 @@ $(document).ready(function(){
             <textarea id="richtext_content" name="content" cols="100" rows="20"><?php echo $this['page']->content; ?></textarea>
         </p>
 
+        <input type="submit" name="save" value="Guardar" />
+
         <p>
-            <label for="page-pending">Marcar como pendiente de traducir</label>
-            <input id="page-pending" type="checkbox" name="pending" value="1" <?php if ($this['page']->pending) echo ' checked="checked"'; ?>" />
+            <label for="mark-pending">Marcar como pendiente de traducir</label>
+            <input id="mark-pending" type="checkbox" name="pending" value="1" />
         </p>
 
-        <input type="submit" name="save" value="Guardar" />
     </form>
 </div>

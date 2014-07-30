@@ -85,6 +85,7 @@ namespace Goteo\Controller\Admin {
                             Message::Info('El texto ha sido actualizado');
 
                             // tratar si han marcado pendiente de traducir
+                            // no usamos Core\Model porque no es tabla _lang
                             if (isset($_POST['pending']) && $_POST['pending'] == 1) {
                                 $ok = Text::setPending($id, $errors);
                                 if (!$ok) {
@@ -128,11 +129,6 @@ namespace Goteo\Controller\Admin {
                                         'name' => 'text',
                                         'type' => 'textarea',
                                         'properties' => 'cols="100" rows="6"',
-                                    ),
-                                    'pending' => array(
-                                        'label' => 'Marcar como pendiente de traducir',
-                                        'name' => 'pending',
-                                        'type' => 'checkbox'
                                     )
                                 )
 

@@ -40,7 +40,13 @@ foreach ($this['items'] as $iId=>$iObj) {
 
 
     <input type="submit" name="save" value="Guardar" />
-    </form>
+
+    <p>
+        <label for="mark-pending">Marcar como pendiente de traducir</label>
+        <input id="mark-pending" type="checkbox" name="pending" value="1" />
+    </p>
+
+</form>
 <script type="text/javascript">
 $(function () {
 
