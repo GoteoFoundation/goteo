@@ -95,7 +95,7 @@ namespace Goteo\Controller\Translate {
 
 
             if ($action == 'edit') {
-                $text = new stdClass();
+                $text = new \stdClass();
 
                 $text->id = $id;
                 $text->purpose = Text::getPurpose($id);

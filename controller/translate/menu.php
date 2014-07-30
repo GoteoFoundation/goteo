@@ -19,6 +19,13 @@ namespace Goteo\Controller\Translate {
                                 'edit' => array('label' => 'Traduciendo Banner', 'item' => true)
                             )
                         ),
+                        'bazar' => array(
+                            'label' => 'Bazaar',
+                            'actions' => array(
+                                'list' => array('label' => 'Listando', 'item' => false),
+                                'edit' => array('label' => 'Traduciendo Bazaar', 'item' => true)
+                            )
+                        ),
                         'post' => array(
                             'label' => 'Blog',
                             'actions' => array(
