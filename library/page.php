@@ -69,7 +69,7 @@ namespace Goteo\Library {
                             page.id as id,
                             IFNULL(page_node.name, IFNULL(original.name, page.name)) as name,
                             IFNULL(page_node.description, IFNULL(original.description, page.description)) as description,
-                            IF(page_node.content IS NULL, 1, 0) as pendiente,
+                            IF(page_node.content IS NULL OR page_node.pending = 1, 1, 0) as pendiente,
                             page.url as url
                         FROM page
                         LEFT JOIN page_node
@@ -257,6 +257,35 @@ namespace Goteo\Library {
 
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el contenido de la pagina. ' . $e->getMessage();
+                return false;
+			}
+
+		}
+
+        /**
+         * Para marcar todas las traducciones de una página como pendiente de traducir
+         */
+		public static function setPending($id, $node = \GOTEO_NODE, &$errors = array()) {
+  			try {
+                $values = array(
+                    ':page' => $id,
+                    ':node' => $node
+                );
+
+				$sql = "UPDATE page_node
+				            SET pending = 1
+				            WHERE page = :page
+				            AND node = :node
+                        ";
+				if (Model::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, true) . "</pre>";
+                    return false;
+                }
+
+			} catch(\PDOException $e) {
+                $errors[] = 'Error sql al marcar como pendiente la traducción de la pagina '.$id.' del nodo '.$node.'. ' . $e->getMessage();
                 return false;
 			}
 
