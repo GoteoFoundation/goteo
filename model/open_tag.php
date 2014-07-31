@@ -17,6 +17,10 @@ namespace Goteo\Model {
          *  Devuelve datos de una agrupacion
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'open_tag_lang', \LANG);
+
                 $query = static::query("
                     SELECT
                         open_tag.id,
@@ -28,7 +32,7 @@ namespace Goteo\Model {
                         ON  open_tag_lang.id = open_tag.id
                         AND open_tag_lang.lang = :lang
                     WHERE open_tag.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
                 $open_tag = $query->fetchObject(__CLASS__);
 
                 return $open_tag;
@@ -39,27 +43,36 @@ namespace Goteo\Model {
          * @TODO añadir el numero de usos
          */
         public static function getAll () {
-
+            
             $list = array();
 
-            $sql = "
-                SELECT
-                    open_tag.id as id,
-                    IFNULL(open_tag_lang.name, open_tag.name) as name,
-                    IFNULL(open_tag_lang.description, open_tag.description) as description,
-                    open_tag.post as post,
-                    (   SELECT 
-                            COUNT(project_open_tag.project)
-                        FROM project_open_tag
-                        WHERE project_open_tag.open_tag = open_tag.id
-                    ) as numProj,
-                    open_tag.order as `order`
-                FROM    open_tag
-                LEFT JOIN open_tag_lang
-                    ON  open_tag_lang.id = open_tag.id
-                    AND open_tag_lang.lang = :lang
-                ORDER BY `order` ASC
-                ";
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name,
+                                    IFNULL(open_tag_lang.description, open_tag.description) as description";
+                }
+                else {
+                    $different_select=" IFNULL(open_tag_lang.name, IFNULL(eng.name, open_tag.name)) as name,
+                                        IFNULL(open_tag_lang.description, IFNULL(eng.description, open_tag.description)) as description";
+                    $eng_join=" LEFT JOIN open_tag_lang as eng
+                                    ON  eng.id = open_tag.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT
+                         open_tag.id as id,
+                                $different_select,
+                                open_tag.post as post,
+                                (   SELECT 
+                                        COUNT(project_open_tag.project)
+                                    FROM project_open_tag
+                                    WHERE project_open_tag.open_tag = open_tag.id
+                                ) as numProj,
+                                open_tag.order as `order`
+                            FROM    open_tag
+                            LEFT JOIN open_tag_lang
+                                ON  open_tag_lang.id = open_tag.id
+                                AND open_tag_lang.lang = :lang
+                            ORDER BY `order` ASC";       
 
             $query = static::query($sql, array(':lang'=>\LANG));
 
@@ -77,17 +90,32 @@ namespace Goteo\Model {
          * @return array
          */
 		public static function getList () {
+
             $array = array ();
+
             try {
-                $sql = "SELECT 
-                            open_tag.id as id,
-                            IFNULL(open_tag_lang.name, open_tag.name) as name
+
+                if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
+                }
+                else {
+                    $different_select=" IFNULL(open_tag_lang.name, IFNULL(eng.name,open_tag.name)) as name";
+                    $eng_join=" LEFT JOIN open_tag_lang as eng
+                                    ON  eng.id = open_tag.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT 
+                            open_tag.id,
+                            $different_select
                         FROM open_tag
                         LEFT JOIN open_tag_lang
                             ON  open_tag_lang.id = open_tag.id
                             AND open_tag_lang.lang = :lang
+                        $eng_join
                         GROUP BY open_tag.id
-                        ORDER BY open_tag.order ASC";
+                        ORDER BY open_tag.order ASC
+                        ";
 
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $open_tags = $query->fetchAll();

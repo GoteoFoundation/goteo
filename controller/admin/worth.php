@@ -34,11 +34,18 @@ namespace Goteo\Controller\Admin {
                         \vsprintf("El admin %s ha %s el nivel de meritocrácia %s", array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                             Feed::item('relevant', 'Modificado'),
-                            Feed::item('project', $icon->name)
+                            Feed::item('project', $data->name)
                     )));
                     $log->doAdmin('admin');
                     unset($log);
-				}
+
+                    // tratar si han marcado pendiente de traducir
+                    if (isset($_POST['pending']) && $_POST['pending'] == 1
+                        && !\Goteo\Core\Model::setPending($data->id, 'worth')) {
+                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                    }
+
+                }
 				else {
                     Message::Error(implode('<br />', $errors));
 

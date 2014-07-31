@@ -42,8 +42,8 @@ namespace Goteo\Controller\Admin {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (empty($_POST['blog'])) {
-                        Message::Error('Hemos perdido de vista su blog!!!');
-                        break;
+                        Message::Error('Hemos perdido de vista el blog!!!');
+                        throw new Redirection('/admin/blog');
                     }
 
                     $editing = false;
@@ -148,6 +148,12 @@ namespace Goteo\Controller\Admin {
                         } else {
                             //sino lo quitamos
                             \Goteo\Core\Model::query("DELETE FROM feed WHERE url = '/blog/{$post->id}' AND scope = 'public' AND type = 'goteo'");
+                        }
+
+                        // tratar si han marcado pendiente de traducir
+                        if (isset($_POST['pending']) && $_POST['pending'] == 1
+                            && !Model\Blog\Post::setPending($post->id, 'post')) {
+                            Message::Error('NO se ha marcado como pendiente de traducir!');
                         }
 
                     } else {

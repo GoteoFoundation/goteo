@@ -34,11 +34,12 @@ namespace Goteo\Model\Project {
             try {
                 $array = array();
 
+                $icons = Icon::getList();
+
                 $values = array(
                     ':project' => $project,
                     ':type' => $type,
-                    ':lang' => $lang,
-                    ':web_lang' => \LANG
+                    ':lang' => $lang
                 );
 
                 $sqlFilter = "";
@@ -51,30 +52,37 @@ namespace Goteo\Model\Project {
                     $values[':icon'] = $icon;
                 }
 
+                if(self::default_lang($lang)=='es') {
+                    $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward,
+                                        IFNULL(reward_lang.description, reward.description) as description,
+                                        IFNULL(reward_lang.other, reward.other) as other";
+                    }
+                else {
+                        $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward,
+                                            IFNULL(reward_lang.description, IFNULL(eng.description, reward.description)) as description,
+                                            IFNULL(reward_lang.other, IFNULL(eng.other, reward.other)) as other";
+                        $eng_join=" LEFT JOIN reward_lang as eng
+                                        ON  eng.id = reward.id
+                                        AND eng.lang = 'en'";
+                    }                
+
                 $sql = "SELECT
                             reward.id as id,
                             reward.project as project,
-                            IFNULL(reward_lang.reward, reward.reward) as reward,
-                            IFNULL(reward_lang.description, reward.description) as description,
+                            $different_select,
                             reward.type as type,
                             reward.icon as icon,
-                            IFNULL(reward_lang.other, reward.other) as other,
                             reward.license as license,
                             reward.amount as amount,
                             reward.units as units,
                             reward.fulsocial as fulsocial,
-                            IFNULL(icon_lang.name, icon.name) as icon_name,
                             reward.url,
                             reward.bonus
                         FROM    reward
-                        LEFT JOIN icon
-                            ON icon.id = reward.icon
                         LEFT JOIN reward_lang
                             ON  reward_lang.id = reward.id
                             AND reward_lang.lang = :lang
-                        LEFT JOIN icon_lang
-                            ON  icon_lang.id = icon.id
-                            AND icon_lang.lang = :web_lang
+                        $eng_join
                         WHERE   project = :project
                             AND type= :type
                         $sqlFilter
@@ -90,6 +98,9 @@ namespace Goteo\Model\Project {
 
                     if ($item->icon == 'other' && !empty($item->other)) {
                         $item->icon_name = $item->other;
+                    }
+                    else {
+                        $item->icon_name = $icons[$item->icon]->name;
                     }
 
                     $array[$item->id] = $item;

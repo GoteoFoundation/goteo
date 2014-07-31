@@ -8,3 +8,6 @@ CREATE TABLE IF NOT EXISTS `reward_lang` (
 
 -- alter
 ALTER TABLE `reward_lang` ADD `other` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- pendiente de traducir
+ALTER TABLE `reward_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';

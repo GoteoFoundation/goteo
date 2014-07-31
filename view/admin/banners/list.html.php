@@ -8,6 +8,9 @@ $transNode = ACL::check('/translate/node/'.$node) ? true : false;
 $translator = ACL::check('/translate') ? true : false;
 ?>
 <a href="/admin/banners/add" class="button">Nuevo banner</a>
+<?php if (!empty($node) && $node != \GOTEO_NODE) : ?>
+<a href="/translate/node/<?php echo $node; ?>/banner/list" class="button">Traducir banners</a>
+<?php endif; ?>
 
 <div class="widget board">
     <?php if (!empty($this['bannered'])) : ?>

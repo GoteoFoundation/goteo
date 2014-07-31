@@ -36,18 +36,29 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getAll () {
+
             $array = array ();
             try {
-                $sql = "
-                    SELECT
-                        open_tag.id as id,
-                        IFNULL(open_tag_lang.name, open_tag.name) as name
-                    FROM    open_tag
-                    LEFT JOIN open_tag_lang
-                        ON  open_tag_lang.id = open_tag.id
-                        AND open_tag_lang.lang = :lang
-                    ORDER BY name ASC
-                    ";
+               
+                if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
+                }
+                else {
+                    $different_select=" IFNULL(open_tag_lang.name, IFNULL(eng.name,open_tag.name))";
+                    $eng_join=" LEFT JOIN open_tag_lang as eng
+                                    ON  eng.id = open_tag.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT
+                            open_tag.id as id,
+                            $different_select
+                        FROM    open_tag
+                        LEFT JOIN open_tag_lang
+                            ON  open_tag_lang.id = open_tag.id
+                            AND open_tag_lang.lang = :lang
+                        $eng_join
+                        ORDER BY name ASC ";
 
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $open_tags = $query->fetchAll();
@@ -68,24 +79,37 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getNames ($project = null, $limit = null) {
+            
             $array = array ();
+            
             try {
                 $sqlFilter = "";
                 if (!empty($project)) {
                     $sqlFilter = " WHERE open_tag.id IN (SELECT open_tag FROM project_open_tag WHERE project = '$project')";
                 }
 
-                $sql = "SELECT 
+                if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
+                }
+                else {
+                    $different_select=" IFNULL(open_tag_lang.name, IFNULL(eng.name,open_tag.name)) as name";
+                    $eng_join=" LEFT JOIN open_tag_lang as eng
+                                    ON  eng.id = open_tag.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT 
                             open_tag.id,
-                            IFNULL(open_tag_lang.name, open_tag.name) as name,
+                            $different_select,
                             open_tag.post as post
                         FROM open_tag
                         LEFT JOIN open_tag_lang
                             ON  open_tag_lang.id = open_tag.id
                             AND open_tag_lang.lang = :lang
+                        $eng_join
                         $sqlFilter
-                        ORDER BY `order` ASC
-                        ";
+                        ORDER BY `order` ASC ";
+               
                 if (!empty($limit)) {
                     $sql .= "LIMIT $limit";
                 }

@@ -29,6 +29,13 @@ namespace Goteo\Controller\Admin {
                         $template->text  = $_POST['text'];
                         if ($template->save($errors)) {
                             Message::Info('La plantilla se ha actualizado correctamente');
+
+                            // tratar si han marcado pendiente de traducir
+                            if (isset($_POST['pending']) && $_POST['pending'] == 1
+                                && !\Goteo\Core\Model::setPending($id, 'template')) {
+                                Message::Error('NO se ha marcado como pendiente de traducir!');
+                            }
+
                             throw new Redirection("/admin/templates");
                         } else {
                             Message::Error(implode('<br />', $errors));

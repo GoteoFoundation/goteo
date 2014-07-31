@@ -61,7 +61,7 @@ $(document).ready(function(){
 });
 </script>
 
-<form method="post" action="/admin/info/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
+<form method="post" action="/admin/info/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data" style="margin-bottom: 20px;">
 
     <?php echo new NormalForm(array(
 
@@ -75,6 +75,11 @@ $(document).ready(function(){
                 'name'  => 'save-post',
                 'label' => Text::get('regular-save'),
                 'class' => 'next'
+            ),
+            'pending' => array(
+                'type'  => 'checkbox',
+                'name'  => 'pending',
+                'label' => Text::get('mark-pending'),
             )
         ),
         'elements'      => array(

@@ -10,29 +10,14 @@ require_once 'library/pagination/pagination.php';
 
 $filter = $this['filter'];
 $table  = $this['table'];
-$this['filters']['table'] = $table;
-
-$data = Content::getAll($this['filters'], $_SESSION['translate_lang']);
-
-//recolocamos los post para la paginacion
-$list = array();
-foreach ($data['pending'] as $key=>$item) {
-    $item->pendiente = 1;
-    $list[] = $item;
-}
-foreach ($data['ready'] as $key=>$item) {
-    $item->pendiente = 0;
-    $list[] = $item;
-}
+$list  = $this['list'];
+$nwords  = $this['nwords'];
+$types  = $this['types'];
 
 $pagedResults = new \Paginated($list, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
-// valores de filtro
-$types = Content::$fields[$table]; // por tipo de campo
-
 // metemos el todos
 \array_unshift($types, 'Todos los tipos');
-
 ?>
 <!-- Filtro -->
 <div class="widget board">
@@ -50,12 +35,12 @@ $types = Content::$fields[$table]; // por tipo de campo
         
         <div style="float:left;margin:5px;">
             <label for="filter-text">Buscar texto:</label><br />
-            <input name="text" value="<?php echo (string) $this['filters']['text']; ?>" />
+            <input id="filter-text" name="text" value="<?php echo (string) $this['filters']['text']; ?>" />
         </div>
 
         <div style="float:left;margin:5px;">
             <label for="filter-pending">Solo pendientes:</label><br />
-            <input type="checkbox" name="pending" value="1" <?php if ($this['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
+            <input id="filter-pending" type="checkbox" name="pending" value="1" <?php if ($this['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
         </div>
             
         <br clear="both" />
@@ -64,7 +49,7 @@ $types = Content::$fields[$table]; // por tipo de campo
 </div>
 
 <!-- lista -->
-<?php if (!empty($data)) : ?>
+<?php if (!empty($list)) : ?>
 <div class="widget board">
     N&uacute;mero de palabras: <?php echo $nwords; ?>
 </div>
@@ -84,8 +69,8 @@ $types = Content::$fields[$table]; // por tipo de campo
         <tbody>
         <?php while ($item = $pagedResults->fetchPagedRow()) : ?>
             <tr>
-                <td width="5%"><a title="Registro <?php echo $item->id ?>" href='/translate/<?php echo $table ?>/edit/<?php echo $item->id . $filter . '&page=' . $_GET['page'] ?>' <?php if ($item->pendiente == 1) echo 'style="color:red;"'; ?>>[Edit]</a></td>
-                <td width="75%"><?php if ($item->pendiente == 1) echo '* '; ?><?php echo Text::recorta($item->value, 250) ?></td>
+                <td width="5%"><a title="Registro <?php echo $item->id ?>" href='/translate/<?php echo $table ?>/edit/<?php echo $item->id . $filter . '&page=' . $_GET['page'] ?>' <?php if ($item->pendiente == 1) echo 'style="color:red;"'; ?>>[Translate]</a></td>
+                <td width="75%"><?php if ($item->pendiente == 1) echo '* '; echo Text::recorta($item->value, 250) ?></td>
                 <td><?php echo $item->fieldName ?></td>
                 <td><?php echo $item->id ?></td>
                 <?php if ($table == 'post') : ?>

@@ -4,3 +4,6 @@ CREATE TABLE  `tag_lang` (
 `name` TINYTEXT NULL ,
 UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- pendiente de traducir
+ALTER TABLE `tag_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';

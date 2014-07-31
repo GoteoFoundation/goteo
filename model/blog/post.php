@@ -35,6 +35,10 @@ namespace Goteo\Model\Blog {
          *  Devuelve datos de una entrada
          */
         public static function get ($id, $lang = null) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'post_lang', $lang);
+
                 $query = static::query("
                     SELECT
                         post.id as id,
@@ -105,6 +109,22 @@ namespace Goteo\Model\Blog {
             $list = array();
 
             $values = array(':lang'=>\LANG);
+
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                    IFNULL(post_lang.text, post.text) as `text`,
+                                    IFNULL(post_lang.legend, post.legend) as `legend`,
+                                    IFNULL(post_lang.media, post.media) as `media`";
+                }
+            else {
+                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                        IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`,
+                                        IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`,
+                                        IFNULL(post_lang.media, IFNULL(eng.media, post.media)) as `media`";
+                    $eng_join=" LEFT JOIN post_lang as eng
+                                    ON  eng.id = post.id
+                                    AND eng.lang = 'en'";
+                }            
             
             $sql = "
                 SELECT
@@ -112,11 +132,8 @@ namespace Goteo\Model\Blog {
                     post.blog as blog,
                     blog.type as type,
                     blog.owner as owner,
-                    IFNULL(post_lang.title, post.title) as title,
-                    IFNULL(post_lang.text, post.text) as `text`,
-                    IFNULL(post_lang.legend, post.legend) as `legend`,
+                    $different_select,
                     post.image as `image`,
-                    IFNULL(post_lang.media, post.media) as `media`,
                     DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                     post.publish as publish,
@@ -131,6 +148,7 @@ namespace Goteo\Model\Blog {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                $eng_join
                 ";
             if (!empty($blog)) {
                 $sql .= " WHERE post.blog = :blog
@@ -212,13 +230,25 @@ namespace Goteo\Model\Blog {
 
             $list = array();
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                    IFNULL(post_lang.text, post.text) as `text`,
+                                    IFNULL(post_lang.legend, post.legend) as `legend`";
+                }
+            else {
+                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                        IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`,
+                                        IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`";
+                    $eng_join=" LEFT JOIN post_lang as eng
+                                    ON  eng.id = post.id
+                                    AND eng.lang = 'en'";
+                }                        
+
             $sql = "
                 SELECT
                     post.id as id,
                     post.blog as blog,
-                    IFNULL(post_lang.title, post.title) as title,
-                    IFNULL(post_lang.text, post.text) as `text`,
-                    IFNULL(post_lang.legend, post.legend) as `legend`,
+                    $different_select,
                     post.image as `image`,
                     post.media as `media`,
                     DATE_FORMAT(post.date, '%d-%m-%Y') as fecha,
@@ -234,6 +264,7 @@ namespace Goteo\Model\Blog {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                $eng_join
                 ";
 
             if (in_array($filters['show'], array('all', 'home', 'footer'))) {

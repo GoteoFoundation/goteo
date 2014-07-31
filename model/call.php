@@ -197,6 +197,10 @@ namespace Goteo\Model {
                 if ($lang == $call->lang) {
                     $lang = null;
                 } elseif (!empty($lang)) {
+
+                    //Obtenemos el idioma de soporte
+                    $lang=self::default_lang_by_id($id, 'call_lang', $lang);
+
                     $sql = "
                         SELECT
                             IFNULL(call_lang.name, call.name) as name,

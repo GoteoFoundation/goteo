@@ -83,6 +83,17 @@ namespace Goteo\Controller\Admin {
 
                         if (Text::update($data, $errors)) {
                             Message::Info('El texto ha sido actualizado');
+
+                            // tratar si han marcado pendiente de traducir
+                            // no usamos Core\Model porque no es tabla _lang
+                            if (isset($_POST['pending']) && $_POST['pending'] == 1) {
+                                $ok = Text::setPending($id, $errors);
+                                if (!$ok) {
+                                    Message::Error(implode('<br />', $errors));
+                                }
+                            }
+
+
                             throw new Redirection("/admin/texts");
                         } else {
                             Message::Error(implode('<br />', $errors));
@@ -112,14 +123,12 @@ namespace Goteo\Controller\Admin {
                                         'name' => 'id',
                                         'type' => 'hidden',
                                         'properties' => '',
-
                                     ),
                                     'newtext' => array(
                                         'label' => 'Texto',
                                         'name' => 'text',
                                         'type' => 'textarea',
                                         'properties' => 'cols="100" rows="6"',
-
                                     )
                                 )
 

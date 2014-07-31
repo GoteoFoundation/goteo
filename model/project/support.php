@@ -26,17 +26,29 @@ namespace Goteo\Model\Project {
 		public static function getAll ($project, $lang = null) {
             try {
                 $array = array();
+
+            if(self::default_lang($lang)=='es') {
+                $different_select=" IFNULL(support_lang.support, support.support) as support,
+                            		IFNULL(support_lang.description, support.description) as description";
+                }
+            else {
+                    $different_select=" IFNULL(support_lang.support, IFNULL(eng.support, support.support)) as support,
+                            			IFNULL(support_lang.description, IFNULL(eng.description, support.description)) as description";
+                    $eng_join=" LEFT JOIN support_lang as eng
+                                    ON  eng.id = support.id
+                                    AND eng.lang = 'en'";
+                }
                 $sql = "SELECT
                             support.id as id,
                             support.project as project,
                             support.type as type,
-                            IFNULL(support_lang.support, support.support) as support,
-                            IFNULL(support_lang.description, support.description) as description,
+                            $different_select,
                             support.thread as thread
                         FROM support
                         LEFT JOIN support_lang
                             ON  support_lang.id = support.id
                             AND support_lang.lang = :lang
+                        $eng_join
                         WHERE support.project = :project
                         ORDER BY support.id ASC
                         ";

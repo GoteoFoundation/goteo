@@ -527,6 +527,10 @@ namespace Goteo\Model {
          */
         public static function get ($id, $lang = null) {
             try {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'user_lang', $lang);
+
                 $sql = "
                     SELECT
                         user.id as id,
