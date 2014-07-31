@@ -131,7 +131,7 @@ namespace Goteo\Library {
                     ";
             // Inglés como alternativa
             $sql_en = "SELECT
-                        IFNULL(text.text, eng.text) as `text`
+                        IFNULL(text.text, IFNULL(eng.text, purpose.purpose)) as `text`
                     FROM purpose
                     LEFT JOIN text
                         ON text.id = purpose.text
