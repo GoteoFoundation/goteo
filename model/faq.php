@@ -55,7 +55,7 @@ namespace Goteo\Model {
                 }
                 else {
                     $different_select=" IFNULL(faq_lang.title, IFNULL(eng.title, faq.title)) as title,
-                                        IFNULL(faq_lang.description, IFNULL(eng.title, faq.description)) as description";
+                                        IFNULL(faq_lang.description, IFNULL(eng.description, faq.description)) as description";
                     $eng_join=" LEFT JOIN faq_lang as eng
                                     ON  eng.id = faq.id
                                     AND eng.lang = 'en'";

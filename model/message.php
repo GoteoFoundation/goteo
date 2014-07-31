@@ -66,24 +66,36 @@ namespace Goteo\Model {
 
             $messages = array();
 
-            $query = static::query("
-                SELECT
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(message_lang.message, message.message) as message";
+                }
+            else {
+                    $different_select=" IFNULL(message_lang.message, IFNULL(eng.message, message.message)) as message";
+                    $eng_join=" LEFT JOIN message_lang as eng
+                                    ON  eng.id = message.id
+                                    AND eng.lang = 'en'";
+                }
+
+            $sql="
+                  SELECT
                     message.id as id,
                     message.user as user,
                     message.project as project,
                     message.thread as thread,
                     message.date as date,
-                    IFNULL(message_lang.message, message.message) as message,
+                    $different_select,
                     message.blocked as blocked,
                     message.closed as closed
                 FROM  message
                 LEFT JOIN message_lang
                     ON  message_lang.id = message.id
                     AND message_lang.lang = :lang
+                $eng_join
                 WHERE   message.project = :project
                 AND     message.thread IS NULL
                 ORDER BY date ASC, id ASC
-                ", array(':project'=>$project, ':lang'=>$lang));
+                ";
+            $query = static::query($sql, array(':project'=>$project, ':lang'=>$lang));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
                 // datos del usuario
                 $message->user = User::getMini($message->user);

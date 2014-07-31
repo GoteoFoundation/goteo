@@ -38,14 +38,26 @@ namespace Goteo\Model\Call {
 		public static function getAll () {
             $array = array ();
             try {
+
+                if(self::default_lang(\LANG)=='es') {
+                    $different_select=" IFNULL(icon_lang.name, icon.name) as name";
+                    }
+                else {
+                        $different_select=" IFNULL(icon_lang.name, icon.name) as name";
+                        $eng_join=" LEFT JOIN icon_lang as eng
+                                        ON  eng.id = icon.id
+                                        AND eng.lang = 'en'";
+                    }
+
                 $sql = "
                     SELECT
                         icon.id as id,
-                        IFNULL(icon_lang.name, icon.name) as name
+                        $different_select
                     FROM    icon
                     LEFT JOIN icon_lang
                         ON  icon_lang.id = icon.id
                         AND icon_lang.lang = :lang
+                    $eng_join
                     ORDER BY name ASC
                     ";
 
@@ -75,13 +87,24 @@ namespace Goteo\Model\Call {
                     $sqlFilter = " WHERE icon.id IN (SELECT icon FROM call_icon WHERE `call` = '$call')";
                 }
 
+                if(self::default_lang(\LANG)=='es') {
+                    $different_select=" IFNULL(icon_lang.name, icon.name) as name";
+                    }
+                else {
+                    $different_select=" IFNULL(icon_lang.name, icon.name) as name";
+                    $eng_join=" LEFT JOIN icon_lang as eng
+                                    ON  eng.id = icon.id
+                                    AND eng.lang = 'en'";
+                    }
+
                 $sql = "SELECT 
                             icon.id,
-                            IFNULL(icon_lang.name, icon.name) as name
+                            $different_select
                         FROM icon
                         LEFT JOIN icon_lang
                             ON  icon_lang.id = icon.id
                             AND icon_lang.lang = :lang
+                        $eng_join
                         $sqlFilter
                         ORDER BY `order` ASC
                         ";
