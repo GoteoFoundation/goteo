@@ -43,7 +43,7 @@ namespace Goteo\Model\Call {
                     $different_select=" IFNULL(icon_lang.name, icon.name) as name";
                     }
                 else {
-                        $different_select=" IFNULL(icon_lang.name, icon.name) as name";
+                        $different_select=" IFNULL(icon_lang.name, IFNULL(eng.name, icon.name)) as name";
                         $eng_join=" LEFT JOIN icon_lang as eng
                                         ON  eng.id = icon.id
                                         AND eng.lang = 'en'";
