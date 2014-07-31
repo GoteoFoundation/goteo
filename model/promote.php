@@ -60,7 +60,7 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(promote_lang.title, promote.title) as title,
                                     IFNULL(promote_lang.description, promote.description) as description";
                 }

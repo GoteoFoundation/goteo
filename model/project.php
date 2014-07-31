@@ -251,6 +251,10 @@ namespace Goteo\Model {
                 if ($lang == $project->lang) {
                     $lang = null;
                 } elseif (!empty($lang)) {
+
+                    //Obtenemos el idioma de soporte
+                    $lang=self::default_lang_by_id($id, 'project_lang', $lang); 
+
                     $sql = "
                         SELECT
                             IFNULL(project_lang.description, project.description) as description,
@@ -410,6 +414,10 @@ namespace Goteo\Model {
                 if ($lang == $project->lang) {
                     $lang = null;
                 } elseif (!empty($lang)) {
+
+                    //Obtenemos el idioma de soporte
+                    $lang=self::default_lang_by_id($id, 'project_lang', $lang);
+
                     $sql = "
                         SELECT
                             IFNULL(project_lang.description, project.description) as description,
@@ -682,7 +690,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Quitarle a un usuario el asesoramiento de un proyecto
+         * Quitar un tipo de agrupación a un proyecto
          * @return: boolean
          */
         public function unassignOpen_tag ($open_tag, &$errors = array()) {
