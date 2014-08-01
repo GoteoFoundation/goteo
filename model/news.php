@@ -21,6 +21,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un destacado
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'news_lang', \LANG);
+
                 $sql = static::query("
                     SELECT
                         news.id as id,
@@ -36,7 +40,7 @@ namespace Goteo\Model {
                         ON  news_lang.id = news.id
                         AND news_lang.lang = :lang
                     WHERE news.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
                 $news = $sql->fetchObject(__CLASS__);
 
                 return $news;
@@ -49,11 +53,22 @@ namespace Goteo\Model {
 
             $list = array();
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(news_lang.title, news.title) as title,
+                                    IFNULL(news_lang.description, news.description) as description";
+                }
+            else {
+                    $different_select=" IFNULL(news_lang.title, IFNULL(eng.title, news.title)) as title,
+                                        IFNULL(news_lang.description, IFNULL(eng.description, news.description)) as description";
+                    $eng_join=" LEFT JOIN news_lang as eng
+                                    ON  eng.id = news.id
+                                    AND eng.lang = 'en'";
+                }
+
             $sql = static::query("
                 SELECT
                     news.id as id,
-                    IFNULL(news_lang.title, news.title) as title,
-                    IFNULL(news_lang.description, news.description) as description,
+                    $different_select,
                     news.url as url,
                     news.order as `order`,
                     news.press_banner as `press_banner`,
@@ -62,6 +77,7 @@ namespace Goteo\Model {
                 LEFT JOIN news_lang
                     ON  news_lang.id = news.id
                     AND news_lang.lang = :lang
+                $eng_join
                 ORDER BY `order` ASC, title ASC
                 ", array(':lang'=>\LANG));
             

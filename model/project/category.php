@@ -36,18 +36,30 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getAll () {
+
             $array = array ();
             try {
-                $sql = "
-                    SELECT
+
+                if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(category_lang.name, category.name) as name";
+                }
+                else {
+                    $different_select=" IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name";
+                    $eng_join=" LEFT JOIN category_lang as eng
+                                    ON  eng.id = category.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT
                         category.id as id,
-                        IFNULL(category_lang.name, category.name) as name
+                        $different_select
                     FROM    category
                     LEFT JOIN category_lang
                         ON  category_lang.id = category.id
                         AND category_lang.lang = :lang
+                    $eng_join
                     ORDER BY name ASC
-                    ";
+                        ";
 
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $categories = $query->fetchAll();
@@ -70,6 +82,7 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getNames ($project = null, $limit = null) {
+
             $array = array ();
             try {
                 $sqlFilter = "";
@@ -77,18 +90,31 @@ namespace Goteo\Model\Project {
                     $sqlFilter = " WHERE category.id IN (SELECT category FROM project_category WHERE project = '$project')";
                 }
 
-                $sql = "SELECT 
+                if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(category_lang.name, category.name) as name";
+                }
+                else {
+                    $different_select=" IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name";
+                    $eng_join=" LEFT JOIN category_lang as eng
+                                    ON  eng.id = category.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT 
                             category.id,
-                            IFNULL(category_lang.name, category.name) as name
+                            $different_select
                         FROM category
                         LEFT JOIN category_lang
                             ON  category_lang.id = category.id
                             AND category_lang.lang = :lang
+                        $eng_join
                         $sqlFilter
                         ORDER BY `order` ASC
                         ";
+                 
+
                 if (!empty($limit)) {
-                    $sql .= "LIMIT $limit";
+                    $sql .= " LIMIT $limit";
                 }
                 $query = static::query($sql, array(':lang'=>\LANG));
                 $categories = $query->fetchAll();

@@ -108,16 +108,33 @@ namespace Goteo\Controller\Admin {
                             throw new Redirection('/admin/translates');
                         }
 
+                        $values = array(':id'=>$id);
+
+                        // si nos cambian el idioma del proyecto
+                        if (isset($_POST['lang']) && $_POST['lang'] != $project->lang) {
+                            $new_lang = $_POST['lang'];
+                            $set = ', lang = :lang';
+                            $values[':lang'] = $new_lang;
+                        } else {
+                            $new_lang = null;
+                            $set = '';
+                        }
+
                         // ponemos los datos que llegan
-                        $sql = "UPDATE project SET lang = :lang, translate = 1 WHERE id = :id";
-                        if (Model\Project::query($sql, array(':lang'=>$_POST['lang'], ':id'=>$id))) {
-                            if ($action == 'add') {
-                                Message::Info('El proyecto '.$project->name.' se ha habilitado para traducir');
-                            } else {
-                                Message::Info('Datos de traducción actualizados');
+                        $sql = "UPDATE project SET translate = 1{$set} WHERE id = :id";
+                        if (Model\Project::query($sql, $values)) {
+
+                            // si no existe ya registro project_lang para ese idioma
+                            if (!empty($new_lang)) {
+                                static::autoTranslate($id, $new_lang, $errors);
+                                if (!empty($errors)) {
+                                    Message::Error(implode('<br />', $errors));
+                                }
                             }
 
                             if ($action == 'add') {
+                                Message::Info('El proyecto '.$project->name.' se ha habilitado para traducir');
+
                                 // Evento Feed
                                 $log = new Feed();
                                 $log->setTarget($project->id);
@@ -126,20 +143,20 @@ namespace Goteo\Controller\Admin {
                                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                         Feed::item('relevant', 'Habilitado'),
                                         Feed::item('project', $project->name, $project->id)
-                                )));
+                                    )));
                                 $log->doAdmin('admin');
                                 unset($log);
 
                                 throw new Redirection('/admin/translates/edit/'.$project->id);
+
                             } else {
+                                Message::Info('Datos de traducción actualizados');
+
                                 throw new Redirection('/admin/translates');
                             }
+
                         } else {
-                            if ($action == 'add') {
-                                Message::Error('Ha fallado al habilitar la traducción del proyecto ' . $project->name);
-                            } else {
-                                Message::Error('Ha fallado al actualizar los datos de la traducción');
-                            }
+                            Message::Error('Ha fallado al actualizar la traducción del proyecto ' . $project->name);
                         }
                     }
 
@@ -240,6 +257,83 @@ namespace Goteo\Controller\Admin {
                 )
             );
             
+        }
+
+        /**
+         *
+         *  Este metodo graba registros de traducción con los datos actuales del proyecto para el idioma seleccionado
+         * usamos  saveLang para cada entidad
+         *
+         * @param $id  -  Id del proyecto
+         * @param $lang
+         * @param array $errors
+         */
+        public static function autoTranslate($id, $lang, &$errors = array()) {
+
+            // cogemos los datos del proyecto
+            $project = Model\Project::get($id, null);
+
+            // primero verificamos que no tenga traducido ya ese idioma
+            if (Model\Project::isTranslated($id, $lang)) return null;
+
+
+            // datos del proyecto
+            $project->lang_lang = $lang;
+            $project->description_lang = $project->description;
+            $project->motivation_lang = $project->motivation;
+            $project->video_lang = $project->video;
+            $project->about_lang = $project->about;
+            $project->goal_lang = $project->goal;
+            $project->related_lang = $project->related;
+            $project->reward_lang = $project->reward;
+            $project->keywords_lang = $project->keywords;
+            $project->media_lang = $project->media;
+            $project->subtitle_lang = $project->subtitle;
+            $project->saveLang($errors);
+
+            // costes (cost)
+            foreach ($project->costs as $key => $cost) {
+                $cost->project = $project->id;
+                $cost->lang = $lang;
+                $cost->cost_lang = $cost->cost;
+                $cost->description_lang = $cost->description;
+                $cost->saveLang($errors);
+            }
+
+            // recompensas (reward)
+            foreach ($project->social_rewards as $k => $reward) {
+                $reward->project = $project->id;
+                $reward->lang = $lang;
+                $reward->reward_lang = $reward->reward;
+                $reward->description_lang = $reward->description;
+                $reward->other_lang = $reward->other;
+                $reward->saveLang($errors);
+            }
+            foreach ($project->individual_rewards as $k => $reward) {
+                $reward->project = $project->id;
+                $reward->lang = $lang;
+                $reward->reward_lang = $reward->reward;
+                $reward->description_lang = $reward->description;
+                $reward->other_lang = $reward->other;
+                $reward->saveLang($errors);
+            }
+
+            // colaboraciones (support)
+            foreach ($project->supports as $key => $support) {
+                $support->project = $project->id;
+                $support->lang = $lang;
+                $support->support_lang = $support->support;
+                $support->description_lang = $support->description;
+                $support->saveLang($errors);
+
+                // mensajes (mesajes) asociados a las colaboraciones
+                $msg = Model\Message::get($support->thread);
+                $msg->message_lang = "{$support->support_lang}: {$support->description_lang}";
+                $msg->lang = $lang;
+                $msg->saveLang($errors);
+            }
+
+            return (empty($errors));
         }
 
     }

@@ -94,6 +94,12 @@ namespace Goteo\Controller\Admin {
                         $log->doAdmin('admin');
                         unset($log);
 
+                        // tratar si han marcado pendiente de traducir
+                        if (isset($_POST['pending']) && $_POST['pending'] == 1
+                            && !Model\Info::setPending($post->id, 'post')) {
+                            Message::Error('NO se ha marcado como pendiente de traducir!');
+                        }
+
                     } else {
                         Message::Error(implode('<br />', $errors));
                         Message::Error('Ha habido algun problema al guardar los datos');

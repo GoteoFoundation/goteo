@@ -2,10 +2,9 @@
 use Goteo\Library\Page,
     Goteo\Model\Node;
 
-$nodes = Node::getList();
 $node = $this['node'];
 
-$pages = Page::getAll('es', $node);
+$pages = Page::getAll(array(), 'es', $node);
 ?>
 <div class="widget board">
     <table>

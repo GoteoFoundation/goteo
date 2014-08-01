@@ -93,7 +93,22 @@ namespace Goteo\Controller\Dashboard {
             if ($user->save($errors)) {
                 $log_action = 'Actualizado su perfil';
 //                Message::Info(Text::get('user-profile-saved'));
+
+                // si no español, aplicamos auto traducción
+                if ($user->lang != 'es') {
+                    // primero verificamos que no tenga traducido ya ese idioma
+                    if (!Model\User::isTranslated($user->id, $user->lang)) {
+
+                        $user->about_lang = $user->about;
+                        $user->keywords_lang = $user->keywords;
+                        $user->contribution_lang = $user->contribution;
+                        $user->saveLang($errors);
+
+                    }
+                }
+
                 $user = Model\User::flush();
+
                 return true;
             } else {
                 $log_action = '¡ERROR! al actualizar su perfil';
@@ -243,7 +258,6 @@ namespace Goteo\Controller\Dashboard {
             }
         }
 
-        
     }
 
 }

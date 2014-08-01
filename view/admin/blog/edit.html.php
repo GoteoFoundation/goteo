@@ -86,6 +86,11 @@ $(document).ready(function(){
                 'name'  => 'save-post',
                 'label' => Text::get('regular-save'),
                 'class' => 'next'
+            ),
+            'pending' => array(
+                'type'  => 'checkbox',
+                'name'  => 'pending',
+                'label' => Text::get('mark-pending'),
             )
         ),
         'elements'      => array(

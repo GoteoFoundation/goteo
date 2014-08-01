@@ -56,6 +56,12 @@ namespace Goteo\Controller\Admin {
                         unset($log);
                     }
 
+                    // tratar si han marcado pendiente de traducir
+                    if (isset($_POST['pending']) && $_POST['pending'] == 1
+                        && !Model\Banner::setPending($banner->id, 'banner')) {
+                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                    }
+
                     throw new Redirection('/admin/banners');
 				}
 				else {

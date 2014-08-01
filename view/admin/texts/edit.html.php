@@ -23,5 +23,11 @@ use Goteo\Library\Text;
             <?php endforeach; ?>
         </dl>
         <input type="submit" name="<?php echo $this['form']['submit']['name']; ?>" value="<?php echo $this['form']['submit']['label']; ?>" />
+
+        <p>
+            <label for="mark-pending">Marcar como pendiente de traducir</label>
+            <input id="mark-pending" type="checkbox" name="pending" value="1" />
+        </p>
+
     </form>
 </div>

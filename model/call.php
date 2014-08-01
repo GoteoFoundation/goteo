@@ -185,6 +185,7 @@ namespace Goteo\Model {
         public static function get($id, $lang = null) {
 
             try {
+
                 // metemos los datos del convocatoria en la instancia
                 $query = self::query("SELECT * FROM `call` WHERE id = :id", array(':id' => $id));
                 $call = $query->fetchObject(__CLASS__);
@@ -193,10 +194,12 @@ namespace Goteo\Model {
                     throw new \Goteo\Core\Error('404', Text::html('fatal-error-call'));
                 }
 
-                // si recibimos lang y no es el idioma original del convocatoria, ponemos la traducción y mantenemos para el resto de contenido
-                if ($lang == $call->lang) {
-                    $lang = null;
-                } elseif (!empty($lang)) {
+                if(!empty($lang) && $lang!=$call->lang)
+                {
+
+                    //Obtenemos el idioma de soporte
+                    $lang=self::default_lang_by_id($id, 'call_lang', $lang);
+
                     $sql = "
                         SELECT
                             IFNULL(call_lang.name, call.name) as name,
@@ -218,7 +221,7 @@ namespace Goteo\Model {
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field => $value) {
                         $call->$field = $value;
                     }
-                }
+                }        
 
                 // owner
                 $call->user = User::get($call->owner);

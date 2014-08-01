@@ -19,6 +19,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un banner de proyecto
          */
         public static function get ($id, $lang = null) {
+                
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, "banner_lang", $lang);
+
                 $query = static::query("
                     SELECT  
                         banner.id as id,
@@ -60,29 +64,41 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND banner.active = 1" : '';
 
-            $query = static::query("
-                SELECT
-                    banner.id as id,
-                    banner.node as node,
-                    banner.project as project,
-                    project.name as name,
-                    IFNULL(banner_lang.title, banner.title) as title,
-                    IFNULL(banner_lang.description, banner.description) as description,
-                    banner.url as url,
-                    project.status as status,
-                    banner.image as image,
-                    banner.order as `order`,
-                    banner.active as `active`
-                FROM    banner
-                LEFT JOIN project
-                    ON project.id = banner.project
-                LEFT JOIN banner_lang
-                    ON  banner_lang.id = banner.id
-                    AND banner_lang.lang = :lang
-                WHERE banner.node = :node
-                $sqlFilter
-                ORDER BY `order` ASC
-                ", array(':node' => $node, ':lang' => \LANG));
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(banner_lang.title, banner.title) as title,
+                                    IFNULL(banner_lang.description, banner.description) as description";
+                }
+                else {
+                    $different_select=" IFNULL(banner_lang.title, IFNULL(eng.title, banner.title)) as title,
+                                        IFNULL(banner_lang.description, IFNULL(eng.description, banner.description)) as description";
+                    $eng_join=" LEFT JOIN banner_lang as eng
+                                    ON  eng.id = banner.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT
+                        banner.id as id,
+                        banner.node as node,
+                        banner.project as project,
+                        project.name as name,
+                        $different_select,
+                        banner.url as url,
+                        project.status as status,
+                        banner.image as image,
+                        banner.order as `order`,
+                        banner.active as `active`
+                    FROM    banner
+                    LEFT JOIN project
+                        ON project.id = banner.project
+                    LEFT JOIN banner_lang
+                        ON  banner_lang.id = banner.id
+                        AND banner_lang.lang = :lang
+                    $eng_join
+                    WHERE banner.node = :node
+                    $sqlFilter
+                    ORDER BY `order` ASC";
+
+            $query = static::query($sql, array(':node' => $node, ':lang' => \LANG));
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
                 $banner->image = !empty($banner->image) ? Image::get($banner->image) : null;

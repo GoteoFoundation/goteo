@@ -24,6 +24,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un elemento
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'bazar_lang', \LANG);  
+
                 $query = static::query("
                     SELECT  
                         bazar.id as id,
@@ -41,7 +45,7 @@ namespace Goteo\Model {
                         ON bazar_lang.id = bazar.id
                         AND bazar_lang.lang = :lang
                     WHERE bazar.id = :id
-                    ", array(':id'=>$id, ':lang'=>\LANG));
+                    ", array(':id'=>$id, ':lang'=>$lang));
                 $promo = $query->fetchObject(__CLASS__);
 
                 if (!empty($promo->image))
@@ -60,28 +64,40 @@ namespace Goteo\Model {
 
             $promos = array();
 
-            $query = static::query("
-                SELECT
-                    bazar.id as id,
-                    bazar.reward as reward,
-                    bazar.project as project,
-                    bazar.image as image,
-                    IFNULL(bazar_lang.title, bazar.title) as title,
-                    IFNULL(bazar_lang.description, bazar.description) as description,
-                    bazar.amount as amount,
-                    bazar.image as image,
-                    bazar.order as `order`,
-                    bazar.active as `active`
-                FROM    bazar
-                LEFT JOIN bazar_lang
-                    ON bazar_lang.id = bazar.id
-                    AND bazar_lang.lang = :lang
-                INNER JOIN project
-                    ON project.id = bazar.project
-                    AND project.status = 3
-                WHERE bazar.active = 1
-                ORDER BY `order` ASC, title ASC
-                ", array(':lang'=>\LANG));
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(bazar_lang.title, bazar.title) as title,
+                                    IFNULL(bazar_lang.description, bazar.description) as description";
+                }
+                else {
+                    $different_select=" IFNULL(bazar_lang.title, IFNULL(eng.title, bazar.title)) as title,
+                                        IFNULL(bazar_lang.description, IFNULL(eng.description, bazar.description)) as description";
+                    $eng_join=" LEFT JOIN bazar_lang as eng
+                                    ON  eng.id = bazar.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT
+                        bazar.id as id,
+                        bazar.reward as reward,
+                        bazar.project as project,
+                        bazar.image as image,
+                        $different_select,
+                        bazar.amount as amount,
+                        bazar.image as image,
+                        bazar.order as `order`,
+                        bazar.active as `active`
+                    FROM    bazar
+                    LEFT JOIN bazar_lang
+                        ON bazar_lang.id = bazar.id
+                        AND bazar_lang.lang = :lang
+                    $eng_join
+                    INNER JOIN project
+                        ON project.id = bazar.project
+                        AND project.status = 3
+                    WHERE bazar.active = 1
+                    ORDER BY `order` ASC, title ASC";
+
+            $query = static::query($sql, array(':lang'=>\LANG));
             
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 

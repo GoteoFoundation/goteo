@@ -43,7 +43,14 @@ namespace Goteo\Controller\Admin {
                             Message::Info('Pregunta editado correctamente');
                             break;
                     }
-				} else {
+
+                    // tratar si han marcado pendiente de traducir
+                    if (isset($_POST['pending']) && $_POST['pending'] == 1
+                        && !Model\Faq::setPending($faq->id, 'post')) {
+                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                    }
+
+                } else {
                     Message::Error(implode('<br />', $errors));
 
                     return new View(

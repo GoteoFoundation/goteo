@@ -17,6 +17,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un icono
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'icon_lang', \LANG);        
+
                 $query = static::query("
                     SELECT
                         icon.id as id,
@@ -29,7 +33,7 @@ namespace Goteo\Model {
                         ON  icon_lang.id = icon.id
                         AND icon_lang.lang = :lang
                     WHERE icon.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
                 $icon = $query->fetchObject(__CLASS__);
 
                 return $icon;
@@ -44,17 +48,27 @@ namespace Goteo\Model {
 
             $icons = array();
 
-            $sql = "
-                SELECT
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(icon_lang.name, icon.name) as name,
+                                    IFNULL(icon_lang.description, icon.description) as description";
+            }
+            else {
+                $different_select=" IFNULL(icon_lang.name, IFNULL(eng.name, icon.name)) as name,
+                                    IFNULL(icon_lang.description, IFNULL(eng.description, icon.description)) as description";
+                $eng_join=" LEFT JOIN  icon_lang as eng
+                            ON  eng.id = icon.id
+                            AND eng.lang = 'en'";
+            }
+
+            $sql="SELECT
                     icon.id as id,
-                    IFNULL(icon_lang.name, icon.name) as name,
-                    IFNULL(icon_lang.description, icon.description) as description,
-                    icon.group as `group`
-                FROM    icon
-                LEFT JOIN  icon_lang
-                    ON  icon_lang.id = icon.id
-                    AND icon_lang.lang = :lang
-                ";
+                    icon.group as `group`,
+                    $different_select
+                    FROM icon
+                    LEFT JOIN  icon_lang
+                        ON  icon_lang.id = icon.id
+                        AND icon_lang.lang = :lang
+                    $eng_join";
 
             if ($group != '') {
                 // de un grupo o de todos
@@ -80,22 +94,31 @@ namespace Goteo\Model {
          * Lista de iconos que se usen en proyectos 
          */
         public static function getList ($group = '') {
-
+            
             $values = array(':lang'=>\LANG);
 
             $icons = array();
 
-            $sql = "
-                SELECT
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(icon_lang.name, icon.name) as name";
+            }
+            else {
+                $different_select=" IFNULL(icon_lang.name, IFNULL(eng.name, icon.name)) as name";
+                $eng_join=" LEFT JOIN  icon_lang as eng
+                            ON  eng.id = icon.id
+                            AND eng.lang = 'en'";
+            }
+
+            $sql="SELECT
                     icon.id,
-                    IFNULL(icon_lang.name, icon.name) as name
+                    $different_select
                 FROM    icon
                 LEFT JOIN  icon_lang
                     ON  icon_lang.id = icon.id
                     AND icon_lang.lang = :lang
+                $eng_join
                 INNER JOIN reward
-                    ON icon.id = reward.icon
-                ";
+                    ON icon.id = reward.icon";
 
             if ($group != '') {
                 // de un grupo o de todos

@@ -77,6 +77,15 @@ namespace Goteo\Controller\Admin {
 
                             Message::Info('La página '.$page->name. ' se ha actualizado correctamente');
 
+                            // tratar si han marcado pendiente de traducir
+                            // no usamos Core\Model porque no es tabla _lang
+                            if (isset($_POST['pending']) && $_POST['pending'] == 1) {
+                                $ok = Page::setPending($id, $node, $errors);
+                                if (!$ok) {
+                                    Message::Error(implode('<br />', $errors));
+                                }
+                            }
+
                             throw new Redirection("/admin/pages");
                         } else {
                             Message::Error(implode('<br />', $errors));

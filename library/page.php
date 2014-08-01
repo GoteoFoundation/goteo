@@ -21,40 +21,48 @@ namespace Goteo\Library {
 
         static public function get ($id, $node = \GOTEO_NODE, $lang = \LANG) {
 
+            //idioma de soporte
+            $default_lang=Model::default_lang($lang);
+
             // buscamos la página para este nodo en este idioma
 			$sql = "SELECT  page.id as id,
-                            IFNULL(page_node.name, IFNULL(original.name, page.name)) as name,
-                            IFNULL(page_node.description, IFNULL(original.description, page.description)) as description,
+                            IFNULL(page_node.name, IFNULL(default_lang.name, page.name)) as name,
+                            IFNULL(page_node.description, IFNULL(default_lang.description, page.description)) as description,
                             page.url as url,
                             IFNULL(page_node.lang, '$lang') as lang,
                             IFNULL(page_node.node, '$node') as node,
-                            IFNULL(page_node.content, original.content) as content
+                            IFNULL(page_node.content, IFNULL(default_lang.content, NULL)) as content
                      FROM page
                      LEFT JOIN page_node
                         ON  page_node.page = page.id
                         AND page_node.lang = :lang
                         AND page_node.node = :node
-                     LEFT JOIN page_node as original
-                        ON  original.page = page.id
-                        AND original.node = :node
-                        AND original.lang = 'es'
+                     LEFT JOIN page_node as default_lang
+                        ON  default_lang.page = page.id
+                        AND default_lang.node = :node
+                        AND default_lang.lang = :default_lang
                      WHERE page.id = :id
                 ";
 
 			$query = Model::query($sql, array(
                                             ':id' => $id,
                                             ':lang' => $lang,
-                                            ':node' => $node
+                                            ':node' => $node,
+                                            ':default_lang' =>$default_lang
                                         )
                                     );
 			$page = $query->fetchObject(__CLASS__);
+
+            if((empty($page->content))&&($node!=\GOTEO_NODE))
+                $page=self::get($id, \GOTEO_NODE, $lang);
+
             return $page;
 		}
 
 		/*
 		 *  Metodo para la lista de páginas
 		 */
-		public static function getAll($lang = \LANG, $node = \GOTEO_NODE) {
+		public static function getAll($filters = array(), $lang = \LANG, $node = \GOTEO_NODE) {
             $pages = array();
 
             try {
@@ -62,14 +70,29 @@ namespace Goteo\Library {
                 $values = array(':lang' => $lang, ':node' => $node);
 
                 if ($node != \GOTEO_NODE) {
-                    $sqlFilter .= " WHERE page.id IN ('about', 'contact', 'press', 'service')";
+                    $sqlFilters .= " AND page.id IN ('about', 'contact', 'press', 'service')";
+                }
+
+                if (!empty($filters['text'])) {
+                    $sqlFilters .= " AND ( page_node.name LIKE :text
+                        OR  page_node.description LIKE :text
+                        OR  page_node.content LIKE :text)";
+                    $values[':text'] = "%{$filters['text']}%";
+                }
+                // pendientes de traducir
+                if (!empty($filters['pending'])) {
+                    $sqlFilters .= " HAVING pendiente = 1";
                 }
 
                 $sql = "SELECT
                             page.id as id,
                             IFNULL(page_node.name, IFNULL(original.name, page.name)) as name,
                             IFNULL(page_node.description, IFNULL(original.description, page.description)) as description,
-                            IF(page_node.content IS NULL, 1, 0) as pendiente,
+                            IF(page_node.content IS NULL OR page_node.pending = 1, 1, 0) as pendiente,
+                            page_node.content as content,
+                            original.content as original_content,
+                            original.name as original_name,
+                            original.description as original_description,
                             page.url as url
                         FROM page
                         LEFT JOIN page_node
@@ -80,7 +103,8 @@ namespace Goteo\Library {
                             ON  original.page = page.id
                             AND original.node = :node
                             AND original.lang = 'es'
-                        $sqlFilter
+                        WHERE page.url IS NOT NULL
+                        $sqlFilters
                         ORDER BY pendiente DESC, name ASC
                         ";
 
@@ -228,11 +252,11 @@ namespace Goteo\Library {
 		}
 
         /**
-         * PAra actualizar solamente el contenido
+         * Para actualizar solamente el contenido
          * @param <type> $errors
          * @return <type>
          */
-		public function update($id, $lang, $node, $name, $description, $content, &$errors = array()) {
+		public static function update($id, $lang, $node, $name, $description, $content, &$errors = array()) {
   			try {
                 $values = array(
                     ':page' => $id,
@@ -257,6 +281,35 @@ namespace Goteo\Library {
 
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el contenido de la pagina. ' . $e->getMessage();
+                return false;
+			}
+
+		}
+
+        /**
+         * Para marcar todas las traducciones de una página como pendiente de traducir
+         */
+		public static function setPending($id, $node = \GOTEO_NODE, &$errors = array()) {
+  			try {
+                $values = array(
+                    ':page' => $id,
+                    ':node' => $node
+                );
+
+				$sql = "UPDATE page_node
+				            SET pending = 1
+				            WHERE page = :page
+				            AND node = :node
+                        ";
+				if (Model::query($sql, $values)) {
+                    return true;
+                } else {
+                    $errors[] = "Ha fallado $sql con <pre>" . print_r($values, true) . "</pre>";
+                    return false;
+                }
+
+			} catch(\PDOException $e) {
+                $errors[] = 'Error sql al marcar como pendiente la traducción de la pagina '.$id.' del nodo '.$node.'. ' . $e->getMessage();
                 return false;
 			}
 

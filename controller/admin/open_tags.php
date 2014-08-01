@@ -39,6 +39,12 @@ namespace Goteo\Controller\Admin {
                     if ($open_tag->save($errors)) {
                         Message::Info('Datos guardados');
 
+                        // tratar si han marcado pendiente de traducir
+                        if (isset($_POST['pending']) && $_POST['pending'] == 1
+                            && !Model\Open_tag::setPending($open_tag->id, 'post')) {
+                            Message::Error('NO se ha marcado como pendiente de traducir!');
+                        }
+
                         throw new Redirection('/admin/open_tags');
                     }     
             
