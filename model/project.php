@@ -247,11 +247,8 @@ namespace Goteo\Model {
                     throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
                 }
 
-                // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
-                if ($lang == $project->lang) {
-                    $lang = null;
-                } elseif (!empty($lang)) {
-
+                if(!empty($lang) && $lang!=$project->lang)
+                {
                     //Obtenemos el idioma de soporte
                     $lang=self::default_lang_by_id($id, 'project_lang', $lang); 
 
@@ -266,7 +263,8 @@ namespace Goteo\Model {
                             IFNULL(project_lang.reward, project.reward) as reward,
                             IFNULL(project_lang.keywords, project.keywords) as keywords,
                             IFNULL(project_lang.media, project.media) as media,
-                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle
+                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle,
+                            IFNULL(project_lang.lang, project.lang) as lang
                         FROM project
                         LEFT JOIN project_lang
                             ON  project_lang.id = project.id
@@ -274,6 +272,7 @@ namespace Goteo\Model {
                         WHERE project.id = :id
                         ";
                     $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
+
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
                         $project->$field = $value;
                     }
@@ -411,9 +410,7 @@ namespace Goteo\Model {
                 $project->dontsave = true;
 
                 // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
-                if ($lang == $project->lang) {
-                    $lang = null;
-                } elseif (!empty($lang)) {
+                if(!empty($lang) && $lang!=$project->lang) {
 
                     //Obtenemos el idioma de soporte
                     $lang=self::default_lang_by_id($id, 'project_lang', $lang);
@@ -2757,6 +2754,7 @@ namespace Goteo\Model {
 
             return $errors;
         }
+
     }
 
 }

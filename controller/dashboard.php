@@ -196,7 +196,7 @@ namespace Goteo\Controller {
         /*
          * Seccion, Mis proyectos
          * Opciones:
-         *      'actualizaciones' blog del proyecto (ahora son como mensajes),
+         *      'actualizaciones' blog del proyecto
          *      'editar colaboraciones' para modificar los mensajes de colaboraciones (no puede editar el proyecto y ya estan publicados)
          *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
          *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
@@ -572,7 +572,11 @@ namespace Goteo\Controller {
 
                     $_SESSION['translate_project'] = $project;
                     $project->lang_name = $langs[$project->lang]->name;
-                    unset($viewData['langs'][$project->lang]); // quitamos el idioma original
+
+                    // solo quitamos el idioma original si es 'es' (lo tendremos en la tabla project_lang)
+                    if ($project->lang == 'es')
+                        unset($viewData['langs'][$project->lang]);
+
 //// Control de traduccion de proyecto
                     if ($option == 'updates') {
                         // sus novedades
