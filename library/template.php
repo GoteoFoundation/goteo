@@ -23,18 +23,8 @@ namespace Goteo\Library {
             if (empty($lang))
                 $lang = \LANG;
 
-            // Devolver la plantilla en inglés cuando la plantilla no esté traducida en idioma no-español
-            if ($lang != 'es') {
-                // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
-                $default_lang = (in_array($lang, array('ca', 'gl', 'eu', 'en'))) ? 'es' : 'en';
-                $qaux = Model::query(
-                    "SELECT id FROM template_lang WHERE id = :id AND lang = :lang",
-                    array(':id' => $id, ':lang' => $lang)
-                );
-                $ok = $qaux->fetchColumn();
-                if ($ok != $id)
-                    $lang = $default_lang;
-            }
+            //Obtenemos el idioma de soporte
+            $lang=Model::default_lang_by_id($id, 'template_lang', $lang);
 
             // buscamos la plantilla en ese idioma
 			$sql = "SELECT  template.id as id,
