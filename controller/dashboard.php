@@ -196,7 +196,7 @@ namespace Goteo\Controller {
         /*
          * Seccion, Mis proyectos
          * Opciones:
-         *      'actualizaciones' blog del proyecto (ahora son como mensajes),
+         *      'actualizaciones' blog del proyecto
          *      'editar colaboraciones' para modificar los mensajes de colaboraciones (no puede editar el proyecto y ya estan publicados)
          *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
          *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
