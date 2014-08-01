@@ -63,6 +63,7 @@ namespace Goteo\Model\Project {
                                             IFNULL(reward_lang.other, IFNULL(eng.other, reward.other)) as other";
                         $eng_join=" LEFT JOIN reward_lang as eng
                                         ON  eng.id = reward.id
+                                        AND eng.project = :project
                                         AND eng.lang = 'en'";
                     }                
 
@@ -81,9 +82,10 @@ namespace Goteo\Model\Project {
                         FROM    reward
                         LEFT JOIN reward_lang
                             ON  reward_lang.id = reward.id
+                            AND reward_lang.project = :project
                             AND reward_lang.lang = :lang
                         $eng_join
-                        WHERE   project = :project
+                        WHERE   reward.project = :project
                             AND type= :type
                         $sqlFilter
                         ";
@@ -181,6 +183,7 @@ namespace Goteo\Model\Project {
 
             $fields = array(
                 'id' => 'id',
+                'project'=>'project',
                 'lang' => 'lang',
                 'reward' => 'reward_lang',
                 'description' => 'description_lang',

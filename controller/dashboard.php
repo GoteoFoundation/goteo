@@ -625,6 +625,7 @@ namespace Goteo\Controller {
                                             $cost->cost_lang = $_POST['cost-' . $cost->id . '-cost'];
                                             $cost->description_lang = $_POST['cost-' . $cost->id . '-description'];
                                             $cost->lang = $_SESSION['translate_lang'];
+                                            $cost->project = $project->id;
                                             $cost->saveLang($errors);
                                         }
                                     }
@@ -639,6 +640,7 @@ namespace Goteo\Controller {
                                             $reward->description_lang = $_POST['social_reward-' . $reward->id . '-description'];
                                             $reward->other_lang = $_POST['social_reward-' . $reward->id . '-other'];
                                             $reward->lang = $_SESSION['translate_lang'];
+                                            $reward->project = $project->id;
                                             $reward->saveLang($errors);
                                         }
                                     }
@@ -648,6 +650,7 @@ namespace Goteo\Controller {
                                             $reward->description_lang = $_POST['individual_reward-' . $reward->id . '-description'];
                                             $reward->other_lang = $_POST['individual_reward-' . $reward->id . '-other'];
                                             $reward->lang = $_SESSION['translate_lang'];
+                                            $reward->project = $project->id;
                                             $reward->saveLang($errors);
                                         }
                                     }
@@ -663,6 +666,7 @@ namespace Goteo\Controller {
                                             $support->support_lang = $_POST['support-' . $support->id . '-support'];
                                             $support->description_lang = $_POST['support-' . $support->id . '-description'];
                                             $support->lang = $_SESSION['translate_lang'];
+                                            $support->project = $project->id;
                                             $support->saveLang($errors);
 
                                             // actualizar el Mensaje correspondiente, solamente actualizar

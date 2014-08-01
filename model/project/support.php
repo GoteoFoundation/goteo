@@ -36,6 +36,7 @@ namespace Goteo\Model\Project {
                             			IFNULL(support_lang.description, IFNULL(eng.description, support.description)) as description";
                     $eng_join=" LEFT JOIN support_lang as eng
                                     ON  eng.id = support.id
+                                    AND eng.project = :project
                                     AND eng.lang = 'en'";
                 }
                 $sql = "SELECT
@@ -47,6 +48,7 @@ namespace Goteo\Model\Project {
                         FROM support
                         LEFT JOIN support_lang
                             ON  support_lang.id = support.id
+                            AND support_lang.project = :project
                             AND support_lang.lang = :lang
                         $eng_join
                         WHERE support.project = :project
@@ -123,6 +125,7 @@ namespace Goteo\Model\Project {
 		public function saveLang (&$errors = array()) {
 			$fields = array(
 				'id'=>'id',
+                'project'=>'project',
 				'lang'=>'lang',
 				'support'=>'support_lang',
 				'description'=>'description_lang'
