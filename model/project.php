@@ -247,7 +247,7 @@ namespace Goteo\Model {
                     throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
                 }
 
-                if($lang!=$project->lang)
+                if(!empty($lang) && $lang!=$project->lang)
                 {
                     //Obtenemos el idioma de soporte
                     $lang=self::default_lang_by_id($id, 'project_lang', $lang); 
