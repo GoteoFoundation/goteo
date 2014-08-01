@@ -81,11 +81,11 @@ namespace Goteo\Controller {
 
                 if ($debug) echo 'Proyecto '.$project->name.'<br />';
 
-                /*
-                 * YA da igual si el proyecto no tiene cuenta paypal
-                // a ver si tiene cuenta paypal
+                // cuenta paypal
                 $projectAccount = Model\Project\Account::get($project->id);
 
+                /*
+                 * YA no avisamos si el proyecto no tiene cuenta paypal
                 if (empty($projectAccount->paypal)) {
 
                     if ($debug) echo 'No tiene cuenta PayPal<br />';
