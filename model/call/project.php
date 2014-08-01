@@ -48,6 +48,7 @@ namespace Goteo\Model\Call {
                     $and = "AND";
                 }
 
+
                 $sql = "SELECT
                             project.id as id,
                             project.name as name,
@@ -57,7 +58,8 @@ namespace Goteo\Model\Call {
                             project.project_location as location,
                             project.subtitle as subtitle,
                             project.description as description,
-                            project.id REGEXP '[0-9a-f]{5,40}' as draft
+                            project.id REGEXP '[0-9a-f]{5,40}' as draft,
+                            IF(project.passed IS NULL, 1, 2) as round
                         FROM project
                         INNER JOIN call_project
                             ON  call_project.project = project.id
@@ -274,7 +276,7 @@ namespace Goteo\Model\Call {
                     $call->conf = ($project->round > 0) ? $call->getConf('limit'.$project->round) : 'none';
                     
                     // calcular el obtenido por este proyecto, si no lo tenemos
-                    $call->project_got = (!isset($thisGote)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
+                    $call->project_got = (!isset($thisGot)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
 
                     // limite por proyecto
                     if (empty($call->maxproj)) {

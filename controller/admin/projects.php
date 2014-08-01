@@ -523,10 +523,7 @@ namespace Goteo\Controller\Admin {
 
             // cortar el grifo
             if ($action == 'noinvest') {
-
-                $values = array(':project' => $project->id);
-                $sql = "REPLACE INTO project_conf (`project`, `noinvest`) VALUES (:project, 1)";
-                if (Model\Project::query($sql, $values)) {
+                if (Model\Project\Conf::closeInvest($project->id)) {
                     Message::Info('Se ha cortado el grifo al proyecto <strong>'.$project->name.'</strong>');
                 } else {
                     Message::Error('Ha fallado al cortar el grifo al proyecto <strong>'.$project->name.'</strong>');

@@ -22,7 +22,7 @@ if ($node == \GOTEO_NODE) {
 $items = array();
 
 foreach ($projects as $project) {
-    $items[] = '{ value: "'.$project->name.'", id: "'.$project->id.'" }';
+    $items[] = '{ value: "'.str_replace('"','\"',$project->name).'", id: "'.$project->id.'" }';
 }
 ?>
 <form method="post" action="/admin/banners" enctype="multipart/form-data">

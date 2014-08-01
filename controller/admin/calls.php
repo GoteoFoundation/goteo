@@ -228,7 +228,8 @@ namespace Goteo\Controller\Admin {
                     Message::Error('No se ha especificado ninguna convocatoria en la URL');
                     throw new Redirection('/admin/calls/list');
                 }
-                $projects   = Model\Call\Project::get($call->id, array('all'=>true));
+                $filters = ($call->status > 3) ? array('published'=>true) : array('all'=>true);
+                $projects   = Model\Call\Project::get($call->id, $filters);
                 $status     = Model\Project::status();
 
                 // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
@@ -242,14 +243,11 @@ namespace Goteo\Controller\Admin {
                     $project->mincost = $costs->mincost;
                     $project->maxcost = $costs->maxcost;
 
-                    // calculamos en base a primera ronda (ficticio para antes de campaña)
-                    $project->round = 1;
-
                     // le ponemos lo conseguido
                     $project->invested = $project->amount_call + $project->amount_users;
 
                     // y su máximo por proyecto
-                    $called = Model\Call\Project::called($project, $thisCall, $thisGot);
+                    $called = Model\Call\Project::called($project, $call, $project->amount_call);
                     $project->maxproj = $called->maxproj;
                 }
 

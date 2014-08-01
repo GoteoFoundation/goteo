@@ -104,6 +104,11 @@ namespace Goteo\Model\Project {
             // Estos son errores que no permiten continuar
             if (empty($this->project))
                 $errors[] = 'No hay proyecto al que asignar la recompensa/rettorno';
+
+            // hotfix
+            if (empty($this->bonus))
+                $this->bonus = false;
+
             //Text::get('validate-reward-noproject');
             /*
               if (empty($this->reward))

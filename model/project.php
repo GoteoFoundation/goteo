@@ -467,6 +467,7 @@ namespace Goteo\Model {
                 $project->days_round1 = $project_conf->days_round1;
                 $project->days_round2 = $project_conf->days_round2;
                 $project->watch = Project\Conf::isWatched($id);
+                $project->noinvest = Project\Conf::isInvestClosed($id);
 
                 $project->setDays();
                 $project->setTagmark();
@@ -2252,6 +2253,7 @@ namespace Goteo\Model {
          * Lista de proyectos en campaña (para ser revisados por el cron/execute)
          * @return: array of Model\Project (full instance (get))
          */
+        // FIXME: >= 35 => >=75. Pôr qué?
         public static function getActive()
         {
             $projects = array();
