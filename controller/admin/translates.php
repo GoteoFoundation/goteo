@@ -290,6 +290,7 @@ namespace Goteo\Controller\Admin {
 
             // costes (cost)
             foreach ($project->costs as $key => $cost) {
+                $cost->project = $project->id;
                 $cost->lang = $lang;
                 $cost->cost_lang = $cost->cost;
                 $cost->description_lang = $cost->description;
@@ -298,30 +299,31 @@ namespace Goteo\Controller\Admin {
 
             // recompensas (reward)
             foreach ($project->social_rewards as $k => $reward) {
+                $reward->project = $project->id;
+                $reward->lang = $lang;
                 $reward->reward_lang = $reward->reward;
                 $reward->description_lang = $reward->description;
                 $reward->other_lang = $reward->other;
-                $reward->lang = $lang;
                 $reward->saveLang($errors);
             }
             foreach ($project->individual_rewards as $k => $reward) {
+                $reward->project = $project->id;
+                $reward->lang = $lang;
                 $reward->reward_lang = $reward->reward;
                 $reward->description_lang = $reward->description;
                 $reward->other_lang = $reward->other;
-                $reward->lang = $lang;
                 $reward->saveLang($errors);
             }
 
             // colaboraciones (support)
             foreach ($project->supports as $key => $support) {
-                // guardamos los datos traducidos
+                $support->project = $project->id;
+                $support->lang = $lang;
                 $support->support_lang = $support->support;
                 $support->description_lang = $support->description;
-                $support->lang = $lang;
                 $support->saveLang($errors);
 
                 // mensajes (mesajes) asociados a las colaboraciones
-                // actualizar el Mensaje correspondiente, solamente actualizar
                 $msg = Model\Message::get($support->thread);
                 $msg->message_lang = "{$support->support_lang}: {$support->description_lang}";
                 $msg->lang = $lang;
