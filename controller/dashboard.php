@@ -572,7 +572,11 @@ namespace Goteo\Controller {
 
                     $_SESSION['translate_project'] = $project;
                     $project->lang_name = $langs[$project->lang]->name;
-                    unset($viewData['langs'][$project->lang]); // quitamos el idioma original
+
+                    // solo quitamos el idioma original si es 'es' (lo tendremos en la tabla project_lang)
+                    if ($project->lang == 'es')
+                        unset($viewData['langs'][$project->lang]);
+
 //// Control de traduccion de proyecto
                     if ($option == 'updates') {
                         // sus novedades
