@@ -215,6 +215,15 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'cancel':
                     // descartar un proyecto por malo
+
+                    // Asignar como asesor al admin que lo ha descartado
+                    if ($_SESSION['user']->id != 'root') {
+                        if ((!isset($project->consultants[$_SESSION['user']->id])) && ($project->assignConsultant($_SESSION['user']->id, $errors))) {
+                            $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
+                            Message::Info($msg);
+                        }
+                    }
+
                     if ($project->cancel($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Descartado</span>';
                     } else {
@@ -458,10 +467,15 @@ namespace Goteo\Controller\Admin {
                     }
                     unset($mailHandler);
 
-                    // si ha sido un asesor se le cambia el estado al proyecto
-                    if (isset($project->consultants[$_SESSION['user']->id])) {
-                        $project->cancel();
+                    // Asignar como asesor al admin que lo ha rechazado
+                    if ($_SESSION['user']->id != 'root') {
+                        if ((!isset($project->consultants[$_SESSION['user']->id])) && ($project->assignConsultant($_SESSION['user']->id, $errors))) {
+                            $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
+                            Message::Info($msg);
+                        }
                     }
+
+                    $project->cancel();
                 }
 
                 throw new Redirection('/admin/projects/list');
