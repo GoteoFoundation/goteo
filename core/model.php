@@ -150,10 +150,14 @@ namespace Goteo\Core {
          * @return  string $default_lang
          */
         public static function default_lang($lang) {
-            // Si el idioma se habla en España y no está disponible, usar 'es' y sino usar 'en' por defecto
-            $default_lang = (in_array($lang, array('es','ca', 'gl', 'eu', 'en', null))) ? 'es' : 'en';
+
+            if(!is_null($lang))
+            {    
+                // Si el idioma se habla en España y no está disponible, usar 'es' y sino usar 'en' por defecto
+                $default_lang = (in_array($lang, array('es','ca', 'gl', 'eu', 'en'))) ? 'es' : 'en';
             
             return $default_lang;
+            }
 
         }
 
