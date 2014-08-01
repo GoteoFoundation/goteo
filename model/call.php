@@ -194,7 +194,7 @@ namespace Goteo\Model {
                     throw new \Goteo\Core\Error('404', Text::html('fatal-error-call'));
                 }
 
-                if($lang!=$call->lang)
+                if(!empty($lang) && $lang!=$call->lang)
                 {
 
                     //Obtenemos el idioma de soporte

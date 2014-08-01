@@ -410,9 +410,7 @@ namespace Goteo\Model {
                 $project->dontsave = true;
 
                 // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
-                if ($lang == $project->lang) {
-                    $lang = null;
-                } elseif (!empty($lang)) {
+                if(!empty($lang) && $lang!=$project->lang) {
 
                     //Obtenemos el idioma de soporte
                     $lang=self::default_lang_by_id($id, 'project_lang', $lang);
@@ -2757,34 +2755,6 @@ namespace Goteo\Model {
             return $errors;
         }
 
-         /*
-         * Siguiente etapa en la vida del proyeto
-         */
-        public static function project_by_lang ($id,$lang) {
-            $sql = "
-                    SELECT
-                        project_lang.description as description,
-                        project_lang.motivation as motivation,
-                        project_lang.video as video,
-                        project_lang.about as about,
-                        project_lang.goal as goal,
-                        project_lang.related as related,
-                        project_lang.reward as reward,
-                        project_lang.keywords as keywords,
-                        project_lang.media as media,
-                        project_lang.subtitle as subtitle,
-                        project_lang.lang as lang
-                    FROM project
-                    LEFT JOIN project_lang
-                        ON  project_lang.id = project.id
-                        AND project_lang.lang = :lang
-                    WHERE project.id = :id
-                    ";
-            $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
-            $project_lang = $query->fetchObject(__CLASS__);
-
-            return $project_lang;
-        }
     }
 
 }
