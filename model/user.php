@@ -1539,6 +1539,25 @@ namespace Goteo\Model {
 
         }
 
+        /*
+         * Para saber si un usuario tiene traducción en cierto idioma
+         * @return: boolean
+         */
+        public static function isTranslated($id, $lang) {
+            $sql = "SELECT id FROM user_lang WHERE id = :id AND lang = :lang";
+            $values = array(
+                ':id' => $id,
+                ':lang' => $lang
+            );
+            $query = static::query($sql, $values);
+            $its = $query->fetchObject();
+            if ($its->id == $id) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
-	}
+
+    }
 }

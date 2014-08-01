@@ -262,6 +262,7 @@ namespace Goteo\Controller\Admin {
         /**
          *
          *  Este metodo graba registros de traducción con los datos actuales del proyecto para el idioma seleccionado
+         * usamos  saveLang para cada entidad
          *
          * @param $id  -  Id del proyecto
          * @param $lang
@@ -272,7 +273,9 @@ namespace Goteo\Controller\Admin {
             // cogemos los datos del proyecto
             $project = Model\Project::get($id, null);
 
-            // y usamos  saveLang para cada entidad
+            // primero verificamos que no tenga traducido ya ese idioma
+            if (Model\Project::isTranslated($id, $lang)) return null;
+
 
             // datos del proyecto
             $project->lang_lang = $lang;
