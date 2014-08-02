@@ -1220,7 +1220,7 @@ namespace Goteo\Model {
             if ($geoloc->save($errors)) {
                 return $loc;
             } else {
-                @mail('geoloc_fail@doukeshi.org', 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
+                @mail(\GOTEO_FAIL_MAIL, 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
                 return false;
             }
     	}

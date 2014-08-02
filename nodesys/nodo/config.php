@@ -7,6 +7,6 @@ define('NODE_META_KEYWORDS', utf8_encode('crowdfunding, procomún, commons, soci
 define('NODE_META_AUTHOR', 'Goteo Node System');
 define('NODE_META_COPYRIGHT', 'Platoniq');
 define('NODE_DEFAULT_LANG', 'es');
-define('NODE_MAIL', 'goteo_testnode@doukeshi.org');
+define('NODE_MAIL', 'goteo_nodo@doukeshi.org');
 define('NODE_URL', 'http://nodo.goteo.org');
 

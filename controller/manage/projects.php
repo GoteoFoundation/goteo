@@ -58,7 +58,7 @@ namespace Goteo\Controller\Manage {
 
                     $mailHandler->to = $project->user->email;
                     $mailHandler->toName = $project->user->name;
-                    $mailHandler->reply = GOTEO_CONTACT_MAIL;
+                    $mailHandler->reply = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
                     $mailHandler->replyName = GOTEO_MAIL_NAME;
                     $mailHandler->subject = 'Contrato listo para imprimir';
                     $mailHandler->content = \Goteo\Controller\Dashboard\Projects::prepare_content('ready');
@@ -67,7 +67,7 @@ namespace Goteo\Controller\Manage {
                     if ($mailHandler->send($errors)) {
                         // ok
                     } else {
-                        \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al marcar contrato Listo para imprimir', 'Contrato Listo para imprimir, proyecto '.$project->name.'. Mandarle a mano. <pre>'.print_r($errors,true).'</pre>');
+                        \mail(\GOTEO_FAIL_MAIL, 'Fallo al enviar mail al marcar contrato Listo para imprimir', 'Contrato Listo para imprimir, proyecto '.$project->name.'. Mandarle a mano. <pre>'.print_r($errors,true).'</pre>');
                     }
 
                     unset($mailHandler);

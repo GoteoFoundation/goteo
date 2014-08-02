@@ -91,7 +91,7 @@ namespace Goteo\Controller\Cron {
                             if ($debug) echo \trace($newloc);
                             if ($debug) echo '<hr />';
                         } else {
-                            @mail('goteo_fail@doukeshi.org',
+                            @mail(\GOTEO_FAIL_MAIL,
                                 'Error al crear localidad automáticamente en cron/geoloc. En ' . SITE_URL,
                                 'ERROR al crear, no se asignará. <br />'. implode('<br />', $errors).'<br />'.\trace($newloc).'<br />');
                             if ($debug) echo 'ERROR al crear, no se asignará. <br />'. implode('<br />', $errors).'<br />';

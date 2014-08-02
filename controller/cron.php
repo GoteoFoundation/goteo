@@ -28,7 +28,7 @@ namespace Goteo\Controller {
             if ($debug) echo '<strong>cron/execute start</strong><br />';
 
             if (!\defined('CRON_EXEC')) {
-                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado MANUALMENTE el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado MANUALMENTE el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
                 echo 'Lanzamiento manual a las ' . date ('H:i:s') . ' <br />';
             } else {
@@ -68,7 +68,7 @@ namespace Goteo\Controller {
          */
         public function verify () {
             if (!\defined('CRON_EXEC')) {
-                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
                echo 'Lanzamiento manual<br />';
             } else {
@@ -99,7 +99,7 @@ namespace Goteo\Controller {
          */
         public function cleanup () {
             if (\defined('CRON_EXEC')) {
-                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
                die;
             } else {
@@ -116,7 +116,7 @@ namespace Goteo\Controller {
             // no necesito email de aviso por el momento
             /*
             if (!\defined('CRON_EXEC')) {
-                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
                echo 'Lanzamiento manual<br />';
             } else {
@@ -150,7 +150,7 @@ namespace Goteo\Controller {
                 die('Este proceso no necesitamos lanzarlo automaticamente');
             }
 
-            @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+            @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                 'Se ha lanzado manualmente el cron '. __FUNCTION__ .' para el proyecto '.$project.' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
             
             // a ver si existe el bloqueo
@@ -164,7 +164,7 @@ namespace Goteo\Controller {
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
                 /*
-                @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
+                @mail(\GOTEO_FAIL_MAIL, 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
                         El contenido del bloqueo es: '. $block_content);
                  */
@@ -176,7 +176,7 @@ namespace Goteo\Controller {
                     echo $block;
                 } else {
                     echo 'No se ha podido crear el archivo de bloqueo<br />';
-                    @mail('goteo_cron@doukeshi.org', 'Cron '. __FUNCTION__ .' no se ha podido bloquear en ' . SITE_URL,
+                    @mail(\GOTEO_FAIL_MAIL, 'Cron '. __FUNCTION__ .' no se ha podido bloquear en ' . SITE_URL,
                         'No se ha podido crear el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
                 }
             }
@@ -278,7 +278,7 @@ namespace Goteo\Controller {
         
         public function daily () {
             if (!\defined('CRON_EXEC')) {
-                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
 //                die('Este proceso no necesitamos lanzarlo manualmente');
             }
@@ -310,7 +310,7 @@ namespace Goteo\Controller {
          */
         public function imgrename () {
             if (\defined('CRON_EXEC')) {
-                @mail('goteo_cron@doukeshi.org', 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
+                @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
                die;
             } else {
@@ -334,7 +334,7 @@ namespace Goteo\Controller {
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
 
-                @mail('goteo_cron@doukeshi.org', 'Cron '. $cron_name .' bloqueado en ' . SITE_URL,
+                @mail(\GOTEO_FAIL_MAIL, 'Cron '. $cron_name .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. $cron_name .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
                         El contenido del bloqueo es: '. $block_content);
 
@@ -346,7 +346,7 @@ namespace Goteo\Controller {
                     echo $block;
                 } else {
                     echo 'No se ha podido crear el archivo de bloqueo<br />';
-                    @mail('goteo_cron@doukeshi.org', 'Cron '. $cron_name .' no se ha podido bloquear en ' . SITE_URL,
+                    @mail(\GOTEO_FAIL_MAIL, 'Cron '. $cron_name .' no se ha podido bloquear en ' . SITE_URL,
                         'No se ha podido crear el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
                 }
             }
@@ -366,7 +366,7 @@ namespace Goteo\Controller {
                 } else {
                     echo 'No hay archivo de bloqueo '.$block_file.'!<br />';
                 }
-                @mail('goteo_cron@doukeshi.org', 'Cron '. $cron_name .' no se ha podido desbloquear en ' . SITE_URL,
+                @mail(\GOTEO_FAIL_MAIL, 'Cron '. $cron_name .' no se ha podido desbloquear en ' . SITE_URL,
                     'No se ha podido eliminar el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
             }
         }

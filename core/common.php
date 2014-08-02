@@ -13,18 +13,6 @@ namespace {
                // en este caso la id del proxy viene en  [HTTP_X_PROXY_ID] y los detalles en HTTP_VIA
                // basta que el servidor sea un poco anónimo para no tener esta info aquí
                if (strpos($ip, ',') > 0) {
-                   // PROXY
-                   /*
-                   @mail('proxy_alert@doukeshi.org', 'Acceso mediante proxy en '. SITE_URL, 'Detalles: 
-SEVER
-----------------
-'.print_r($_SERVER, true).'
-    
-SESSION
-----------------
-'.print_r($_SESSION, true));
-                    */
-                   
                    // nos quedamos con la primera parte
                    $parts = explode(',', $ip);
                    $ip = strim($parts[1]); // temporalmente la segunda para investigar

@@ -6,7 +6,8 @@ namespace Goteo\Controller\Cron {
         Goteo\Library\Text,
         Goteo\Library\Feed,
         Goteo\Library\Template,
-        Goteo\Library\Tpv;
+        Goteo\Library\Tpv,
+        Goteo\Library\Mail;
 
     class Execute {
 
@@ -57,10 +58,10 @@ namespace Goteo\Controller\Cron {
 
                 // mail de aviso
                 $mailHandler = new Mail();
-                $mailHandler->to = \GOTEO_CONTACT_MAIL;
+                $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
                 $mailHandler->toName = 'Goteo.org';
                 $mailHandler->subject = 'El proyecto '.$project->name.' no tiene cuenta PayPal';
-                $mailHandler->content = 'Hola Goteo, el proyecto '.$project->name.' no tiene cuenta PayPal y el proceso automatico no podrá tratar los preaprovals al final de ronda.';
+                $mailHandler->content = 'Hola Goteo, el proyecto '.$project->name.' no tiene cuenta PayPal y el proceso automatico no ha podido ejecutar los preaprovals.';
                 $mailHandler->html = false;
                 $mailHandler->template = null;
                 $mailHandler->send();
@@ -110,7 +111,7 @@ namespace Goteo\Controller\Cron {
             if ($project->fail($errors)) {
                 $log_text = 'El proyecto %s ha %s obteniendo %s';
             } else {
-                @mail('goteo_fail@doukeshi.org',
+                @mail(\GOTEO_FAIL_MAIL,
                     'Fallo al archivar ' . SITE_URL,
                     'Fallo al marcar el proyecto '.$project->name.' como archivado ' . implode(',', $errors));
                 echo 'ERROR::' . implode(',', $errors);
@@ -140,9 +141,9 @@ namespace Goteo\Controller\Cron {
                 unset($log);
 
                 //Email de proyecto fallido al autor, inversores y destinatarios de recompensa
-                Cron\Send::toOwner('fail', $project);
-                Cron\Send::toInvestors('fail', $project);
-                Cron\Send::toFriends('fail', $project);
+                Send::toOwner('fail', $project);
+                Send::toInvestors('fail', $project);
+                Send::toFriends('fail', $project);
             }
         }
 
@@ -159,13 +160,13 @@ namespace Goteo\Controller\Cron {
                 if (Model\Contract::create($project->id, $errors)) {
                     echo ' -> Ok:: se ha creado el registro de contrato';
                 } else {
-                    @mail('goteo_fail@doukeshi.org',
+                    @mail(\GOTEO_FAIL_MAIL,
                         'Fallo al crear registro de contrato ' . SITE_URL,
                         'Fallo al crear registro de contrato para el proyecto '.$project->name.': ' . implode(',', $errors));
                     echo ' -> semi-Ok: se ha actualiuzado el estado del proyecto pero ha fallado al crear el registro de contrato. ERROR: ' . implode(',', $errors);
                 }
             } else {
-                @mail('goteo_fail@doukeshi.org',
+                @mail(\GOTEO_FAIL_MAIL,
                     'Fallo al marcar fecha de paso a segunda ronda ' . SITE_URL,
                     'Fallo al marcar la fecha de paso a segunda ronda para el proyecto '.$project->name.': ' . implode(',', $errors));
                 echo ' -> ERROR::' . implode(',', $errors);
@@ -195,13 +196,19 @@ namespace Goteo\Controller\Cron {
                 unset($log);
 
                 // Email de proyecto pasa a segunda ronda al autor y a los inversores
-                Cron\Send::toOwner('r1_pass', $project);
-                Cron\Send::toInvestors('r1_pass', $project);
+                Send::toOwner('r1_pass', $project);
+                Send::toInvestors('r1_pass', $project);
 
-                // + mail a susana
-                @mail('susana@goteo.org',
-                    'Pagar al proyecto ' . $project->name,
-                    'El proyecto '.$project->name.' ha terminado la segunda ronda, hacer los pagos. Se ha creado una tarea para esto.');
+                // mail de aviso
+                $mailHandler = new Mail();
+                $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
+                $mailHandler->toName = 'Goteo.org';
+                $mailHandler->subject = 'Iniciado contrato ' . $project->name;
+                $mailHandler->content = 'El proyecto '.$project->name.' ha pasado la primera ronda, se ha iniciado el registro de contrato.';
+                $mailHandler->html = false;
+                $mailHandler->template = null;
+                $mailHandler->send();
+                unset($mailHandler);
             }
         }
 
@@ -216,7 +223,7 @@ namespace Goteo\Controller\Cron {
             if ($project->succeed($errors)) {
                 $log_text = 'El proyecto %s ha sido %s obteniendo %s';
             } else {
-                @mail('goteo_fail@doukeshi.org',
+                @mail(\GOTEO_FAIL_MAIL,
                     'Fallo al marcar financiado ' . SITE_URL,
                     'Fallo al marcar el proyecto '.$project->name.' como financiado ' . implode(',', $errors));
                 echo 'ERROR::' . implode(',', $errors);
@@ -245,18 +252,24 @@ namespace Goteo\Controller\Cron {
                 unset($log);
 
                 //Email de proyecto final segunda ronda al autor y a los inversores
-                Cron\Send::toOwner('r2_pass', $project);
-                Cron\Send::toInvestors('r2_pass', $project);
+                Send::toOwner('r2_pass', $project);
+                Send::toInvestors('r2_pass', $project);
 
                 // Tareas para gestionar
                 // calculamos fecha de passed+90 días
                 $passtime = strtotime($project->passed);
                 $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
 
-                // + mail a mercè
-                @mail(\GOTEO_CONTACT_MAIL,
-                    'Preparar contrato ' . $project->name,
-                    'El proyecto '.$project->name.' ha pasado la primera ronda, enviarle los datos de contrato.');
+                // mail de aviso
+                $mailHandler = new Mail();
+                $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
+                $mailHandler->toName = 'Goteo.org';
+                $mailHandler->subject = 'Pagar al proyecto ' . $project->name;
+                $mailHandler->content = 'El proyecto '.$project->name.' ha terminado la segunda ronda, hacer los pagos. Se ha creado una tarea para esto.';
+                $mailHandler->html = false;
+                $mailHandler->template = null;
+                $mailHandler->send();
+                unset($mailHandler);
             }
         }
 
@@ -324,8 +337,10 @@ namespace Goteo\Controller\Cron {
                     if (empty($projectAccount->paypal)) {
                         echo '<br />El proyecto '.$project->name.' no tiene cuenta paypal.<br />';
                         Model\Invest::setDetail($invest->id, 'no-paypal-account', 'El proyecto no tiene cuenta paypal en el momento de ejecutar el preapproval. Proceso cron/execute');
+                        self::cron_warn_no_paypal_account($project);
                         break;
                     }
+
 
                     $invest->account = $projectAccount->paypal;
                     $err = array();
@@ -369,17 +384,17 @@ namespace Goteo\Controller\Cron {
                                 Model\Invest::setDetail($invest->id, 'issue-notified', "Se ha notificado la incidencia al usuario");
                             } else {
                                 Model\Invest::setDetail($invest->id, 'issue-notify-failed', "Ha fallado al enviar el mail de notificacion de la incidencia al usuario");
-                                @mail('goteo_fail@doukeshi.org',
+                                @mail(\GOTEO_FAIL_MAIL,
                                     'Fallo al enviar email de notificacion de incidencia PayPal' . SITE_URL,
                                     'Fallo al enviar email de notificacion de incidencia PayPal: <pre>' . print_r($mailHandler, true). '</pre>');
                             }
 
-                            @mail('goteo_fail@doukeshi.org',
+                            @mail(\GOTEO_FAIL_MAIL,
                                 'Fallo al ejecutar cargo Paypal ' . SITE_URL,
                                 'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: <pre>' . print_r($err, true). '</pre>');
 
                         } else {
-                            @mail('goteo_fail@doukeshi.org',
+                            @mail(\GOTEO_FAIL_MAIL,
                                 'Cuenta impulsor no confirmada en paypal ' . SITE_URL,
                                 'Aporte ' . $invest->id . ': Fallo al ejecutar cargo paypal: <pre>' . print_r($err, true). '</pre>');
                         }
@@ -441,12 +456,12 @@ namespace Goteo\Controller\Cron {
                     $log = new Feed();
                     $log->setTarget($call->id, 'call');
                     $log->unique = true;
-                    $log->populate('Campaña terminada (cron)', '/admin/calls/'.$call->id.'?rest='.$amount,
+                    $log->populate('Campaña terminada (cron)', '/admin/calls/'.$call->id.'?rest='.$call->rest,
                         \vsprintf('La campaña %s ha terminado con exito', array(
                             Feed::item('call', $call->name, $call->id))
                         ));
                     $log->doAdmin('call');
-                    $log->populate($call->name, '/call/'.$call->id.'?rest='.$amount,
+                    $log->populate($call->name, '/call/'.$call->id.'?rest='.$call->rest,
                         \vsprintf('La campaña %s ha terminado con éxito', array(
                             Feed::item('call', $call->name, $call->id))
                         ), $call->logo);
@@ -466,10 +481,6 @@ namespace Goteo\Controller\Cron {
          */
         protected static function cron_process_call($call) {
             // tiene que tener presupuesto
-            if (empty($call->amount)) {
-                continue;
-            }
-
             // si le quedan cero
             // -> terminar la campaña exitosamente
             if ($call->rest == 0 && !empty($call->amount))  {
@@ -486,11 +497,6 @@ namespace Goteo\Controller\Cron {
 
             // a ver si tiene cuenta paypal
             $projectAccount = Model\Project\Account::get($project->id);
-
-            if (empty($projectAccount->paypal)) {
-                if ($debug) echo 'No tiene cuenta PayPal<br />';
-                self::cron_warn_no_paypal_account($project);
-            }
 
             $log_text = null;
             $execute = false;
