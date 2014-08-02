@@ -76,6 +76,17 @@ namespace Goteo\Controller\Admin {
                         Message::Error(implode('<br />', $errors));
                     }
 
+                } elseif (isset($_POST['save-rounds'])) {
+
+                    $project_conf = Model\Project\Conf::get($projData->id);
+                    $project_conf->days_round1 = $_POST['round1'];
+                    $project_conf->days_round2 = $_POST['round2'];
+                    $project_conf->one_round = isset($_POST['oneround']);
+                    if ($project_conf->save($errors)) {
+                        Message::Info('Se han actualizado los días de campaña del proyecto ' . $projData->name);
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
                 } elseif (isset($_POST['save-node'])) {
 
                     if (!isset($nodes[$_POST['node']])) {
@@ -297,6 +308,22 @@ namespace Goteo\Controller\Admin {
                         'file' => 'accounts',
                         'project' => $project,
                         'accounts' => $accounts
+                    )
+                );
+            }
+
+            if ($action == 'rounds') {
+
+                $conf = Model\Project\Conf::get($project->id);
+
+                // cambiar fechas
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'rounds',
+                        'project' => $project,
+                        'conf' => $conf
                     )
                 );
             }

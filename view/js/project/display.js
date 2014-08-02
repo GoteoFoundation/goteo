@@ -34,12 +34,12 @@ GOTEO.getDates = function(dates) {
     // Possible combinations of states, returns deadline
     if (!dates.passed && !dates.success && !dates.closed) {
         // Active project
-        GOTEO.dates.deadline = d3.time.day.offset(GOTEO.dates.start_date, 40);
+        GOTEO.dates.deadline = d3.time.day.offset(GOTEO.dates.start_date, dates.days_round1);
     } else if (dates.passed && !dates.success) {
         // Active project, after first deadline
         GOTEO.dates.passed_minimum = true;
         GOTEO.dates.first_deadline = format.parse(dates.passed);
-        GOTEO.dates.deadline = d3.time.day.offset(GOTEO.dates.start_date, 80);
+        GOTEO.dates.deadline = d3.time.day.offset(GOTEO.dates.start_date, dates.days_round2);
     } else if (dates.success) {
         // Succeeded, not active any more
         GOTEO.dates.passed_minimum = (dates.passed) ? true : false;
@@ -51,7 +51,7 @@ GOTEO.getDates = function(dates) {
     }
     GOTEO.dates.today = d3.min([d3.time.day.offset(GOTEO.dates.deadline, 1), d3.time.day(new Date())]);
     GOTEO.dates.day_number = Math.floor((GOTEO.dates.today - GOTEO.dates.start_date) / 86400000);
-    GOTEO.dates.total_days = (dates.passed) ? 80 : 40;
+    GOTEO.dates.total_days = (dates.passed) ? dates.days_round2 : dates.days_round1;
     GOTEO.dates.days_left = (GOTEO.dates.finished || GOTEO.dates.total_days <= GOTEO.dates.day_number) ? 0 : GOTEO.dates.total_days - GOTEO.dates.day_number;
 }
 
