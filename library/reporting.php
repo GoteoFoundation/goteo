@@ -627,6 +627,18 @@ namespace Goteo\Library {
                                         AND invest.status IN (0, 1, 3, 4)
                                         "
                         ),
+                         array(
+                            'label' => 'Porcentaje cofinanciadores que renuncian a recompensa',
+                            'sql'   => "SELECT COUNT(invest.id) / 
+                                        (SELECT COUNT(DISTINCT(invest.user))
+                                                FROM invest
+                                                WHERE invest.status IN (0, 1, 3, 4)) * 100 as percent
+                                        FROM invest
+                                        WHERE invest.resign = 1
+                                        AND invest.status IN (0, 1, 3, 4)
+                                        "
+
+                        ),
                         array(
                             'label' => 'Recompensa elegida de menos de 15 euros',
                             'sql'   => "SELECT SUM(amourew)
