@@ -5,7 +5,7 @@ use Goteo\Core\View,
     Goteo\Library\Text;
 
 $user = $this['user'];
-$recos = Patron::getList($user->id);
+
 ?>
 <div class="patron">
         <a class="expand" href="/user/profile/<?php echo htmlspecialchars($user->id) ?>"></a>
@@ -14,6 +14,6 @@ $recos = Patron::getList($user->id);
         </div>
         <div class="reco">
             <span class="name"><?php echo $user->name; ?></span><br />
-            <?php echo Text::html('profile-patron-header', count($recos)) ?>
+            <?php echo Text::html('profile-patron-header', $user->num_patron_active) ?>
         </div>
 </div>

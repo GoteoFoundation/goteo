@@ -22,7 +22,7 @@ namespace Goteo\Controller {
         Goteo\Library\Page; // para sacar el contenido de about
 
     class Index extends \Goteo\Core\Controller {
-        
+
         public function index () {
 
             if (NODE_ID != GOTEO_NODE) {
@@ -40,7 +40,7 @@ namespace Goteo\Controller {
             if (defined('GOTEO_EASY') && \GOTEO_EASY === true && isset($order['feed'])) {
                 unset($order['feed']);
             }
-            
+
             // entradas de blog
             if (isset($order['posts'])) {
                 // entradas en portada
@@ -50,7 +50,8 @@ namespace Goteo\Controller {
             // Proyectos destacados
             if (isset($order['promotes'])) {
                 $promotes  = Promote::getAll(true);
-
+/*
+                //demasiadas queries con esto
                 foreach ($promotes as $key => &$promo) {
                     try {
                         $promo->projectData = Project::getMedium($promo->project, LANG);
@@ -58,20 +59,22 @@ namespace Goteo\Controller {
                         unset($promotes[$key]);
                     }
                 }
+*/
             }
 
             // capital riego
             if (isset($order['drops'])) {
                 $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
                 $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
-                
+
                 $drops = (!empty($calls) || !empty($campaigns)) ? true : false;
             }
 
             // padrinos
             if (isset($order['patrons'])) {
                 $patrons  = Patron::getInHome();
-
+/*
+                //aqui también tenemos una infinidad de queries
                 foreach ($patrons as $key=>$userId) {
                     try {
                         $userData = User::getMini($userId);
@@ -84,9 +87,8 @@ namespace Goteo\Controller {
                         unset($patrons[$userId]);
                     }
                 }
-
+*/
             }
-
             // actividad reciente
             if (isset($order['feed'])) {
                 $feed = array();
@@ -112,8 +114,9 @@ namespace Goteo\Controller {
             // Banners siempre
             $banners   = Banner::getAll(true);
 
+/*          //esto genera una infinidad de queries:
             foreach ($banners as $id => &$banner) {
-                
+
                 if (!empty($banner->project)) {
                     try {
                         $banner->project = Project::get($banner->project, LANG);
@@ -121,9 +124,9 @@ namespace Goteo\Controller {
                         unset($banners[$id]);
                     }
                 }
-                
-            }
 
+            }
+*/
             return new View('view/index.html.php',
                 array(
                     'banners'   => $banners,
@@ -139,7 +142,7 @@ namespace Goteo\Controller {
                     'order'     => $order
                 )
             );
-            
+
         }
 
         public static function node_index ($page = 'index') {
@@ -158,6 +161,8 @@ namespace Goteo\Controller {
             if (isset($order['promotes']) || isset($side_order['searcher'])) {
                 $promotes  = Promote::getAll(true, NODE_ID);
 
+/*
+                //demasiadas queries con esto
                 foreach ($promotes as $key => &$promo) {
                     try {
                         $promo->projectData = Project::getMedium($promo->project, LANG);
@@ -165,12 +170,13 @@ namespace Goteo\Controller {
                         unset($promotes[$key]);
                     }
                 }
+*/
             }
 
             // padrinos
             if (isset($order['patrons'])) {
                 $patrons  =  $patrons = Patron::getInHome();
-
+/*
                 foreach ($patrons as $key=>$userId) {
                     try {
                         $userData = User::getMini($userId);
@@ -183,11 +189,11 @@ namespace Goteo\Controller {
                         unset($patrons[$userId]);
                     }
                 }
-
+*/
             }
 
-            
-            
+
+
             // Laterales
             // ---------------------
             if (isset($side_order['searcher'])) {
@@ -297,7 +303,7 @@ namespace Goteo\Controller {
                         'promotes' => $promotes,
                         'calls'    => array('calls'=>$calls, 'campaigns'=>$campaigns),
                         'patrons' => $patrons,
-                    
+
                     // laterales
                     'side_order' => $side_order,
                         'searcher' => $searcher,
@@ -321,5 +327,5 @@ namespace Goteo\Controller {
         }
 
     }
-    
+
 }

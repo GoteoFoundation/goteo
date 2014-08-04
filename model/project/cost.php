@@ -4,7 +4,7 @@ namespace Goteo\Model\Project {
 
     use Goteo\Core\Error,
         Goteo\Library\Text;
-    
+
     class Cost extends \Goteo\Core\Model {
 
         public
@@ -129,6 +129,8 @@ namespace Goteo\Model\Project {
 				$sql = "REPLACE INTO cost SET " . $set;
 				self::query($sql, $values);
             	if (empty($this->id)) $this->id = self::insertId();
+            	//aqui actualizar los costes en la tabla project
+            	\Goteo\Model\Project::calcCosts($this->project);
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = "El coste {$this->cost} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -158,7 +160,7 @@ namespace Goteo\Model\Project {
 			try {
 				$sql = "REPLACE INTO cost_lang SET " . $set;
 				self::query($sql, $values);
-            	
+
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = "El coste {$this->cost} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -182,6 +184,8 @@ namespace Goteo\Model\Project {
 
             try {
                 self::query("DELETE FROM cost WHERE id = :id AND project = :project", $values);
+                //aqui actualizar los costes en la tabla project
+                \Goteo\Model\Project::calcCosts($this->project);
 				return true;
 			} catch (\PDOException $e) {
                 $errors[] = 'No se ha podido quitar el coste del proyecto ' . $this->project . ' ' . $e->getMessage();

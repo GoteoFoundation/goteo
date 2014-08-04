@@ -14,7 +14,7 @@ namespace Goteo\Controller\Admin {
         public static function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-            
+
             $errors = array();
 
             // guardar cambios en registro de apadrinamiento
@@ -281,7 +281,7 @@ namespace Goteo\Controller\Admin {
                     'patrons' => $patrons
                 )
             );
-            
+
         }
 
     }

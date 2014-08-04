@@ -49,7 +49,7 @@ namespace Goteo\Model {
                     ", array(':id' => $id, ':lang'=>$lang));
 
                 $post = $query->fetchObject(__CLASS__);
-                
+
                 // galeria
                 $post->gallery = Image::getAll($id, 'post');
                 $post->image = $post->gallery[0];
@@ -134,9 +134,9 @@ namespace Goteo\Model {
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
                 ";
-            
+
             $query = static::query($sql, $values);
-                
+
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
@@ -145,7 +145,7 @@ namespace Goteo\Model {
                 $post->media = new Media($post->media);
 
                 $post->type = $post->home == 1 ? 'home' : 'footer';
-                
+
                 // datos del autor
                 switch ($post->owner_type) {
                     case 'project':
@@ -153,8 +153,11 @@ namespace Goteo\Model {
                         $post->author = $proj_blog->owner;
                         $post->user   = $proj_blog->user;
                         $post->owner_name = $proj_blog->name;
-                        $sql = "UPDATE post SET author = '.$proj_blog->owner.' WHERE post.id = ?";
-                        self::query($sql, array($post->id));
+                        //esto solo hacerlo si hace falta
+                        if($post->author != $proj_blog->owner) {
+                            $sql = "UPDATE post SET author = '.$proj_blog->owner.' WHERE post.id = ?";
+                            self::query($sql, array($post->id));
+                        }
                         break;
 
                     case 'node':
@@ -162,7 +165,7 @@ namespace Goteo\Model {
                         /*
                         $node_blog = Node::get($post->owner_id);
                         $post->owner_name = $node_blog->name;
-                         * 
+                         *
                          */
                         break;
                 }
@@ -270,7 +273,7 @@ namespace Goteo\Model {
             return $list;
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->title))
                 $errors[] = 'Falta título';
                 //Text::get('mandatory-post-title');
@@ -338,7 +341,7 @@ namespace Goteo\Model {
             foreach ($fields as $field) {
                 if (!isset ($this->$field))
                     continue;
-                
+
                 if ($set != '') $set .= ", ";
                 $set .= "`$field` = :$field ";
                 $values[":$field"] = $this->$field;
@@ -364,7 +367,7 @@ namespace Goteo\Model {
          * Para quitar una entrada
          */
         public static function remove ($id, $from = null) {
-            
+
             if (!in_array($from, array('home', 'footer'))) {
                 return false;
             }
@@ -495,5 +498,5 @@ namespace Goteo\Model {
         }
 
     }
-    
+
 }
