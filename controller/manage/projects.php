@@ -58,7 +58,7 @@ namespace Goteo\Controller\Manage {
 
                     $mailHandler->to = $project->user->email;
                     $mailHandler->toName = $project->user->name;
-                    $mailHandler->reply = GOTEO_CONTACT_MAIL;
+                    $mailHandler->reply = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
                     $mailHandler->replyName = GOTEO_MAIL_NAME;
                     $mailHandler->subject = 'Contrato listo para imprimir';
                     $mailHandler->content = \Goteo\Controller\Dashboard\Projects::prepare_content('ready');
@@ -67,7 +67,7 @@ namespace Goteo\Controller\Manage {
                     if ($mailHandler->send($errors)) {
                         // ok
                     } else {
-                        \mail('goteo_fail@doukeshi.org', 'Fallo al enviar mail al marcar contrato Listo para imprimir', 'Contrato Listo para imprimir, proyecto '.$project->name.'. Mandarle a mano. <pre>'.print_r($errors,true).'</pre>');
+                        \mail(\GOTEO_FAIL_MAIL, 'Fallo al enviar mail al marcar contrato Listo para imprimir', 'Contrato Listo para imprimir, proyecto '.$project->name.'. Mandarle a mano. <pre>'.print_r($errors,true).'</pre>');
                     }
 
                     unset($mailHandler);
@@ -330,10 +330,12 @@ namespace Goteo\Controller\Manage {
                 // si aun no tiene fechas hay que calcularlas
                 $the_date = strtotime($the_proj->published);
                 if (empty($the_proj->passed)) {
-                    $the_proj->passed = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+40, date('Y', $the_date)));
+                    $days_round1 = Project\Conf::getRound1Days($proj['id']);
+                    $the_proj->passed = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$days_round1, date('Y', $the_date)));
                 }
                 if (empty($the_proj->success)) {
-                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+80, date('Y', $the_date)));
+                    $days_round2 = Project\Conf::getRound2Days($proj['id']);
+                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$days_round2, date('Y', $the_date)));
                 }
                 
                 // preparamos los flags

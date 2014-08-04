@@ -223,7 +223,7 @@ namespace Goteo\Controller\Cron {
                     $monitors[] = 'enric@goteo.org';
                     $monitors[] = 'olivier@goteo.org';
                     $monitors[] = 'monitorizing@goteo.org';
-                    $monitors[] = 'monitorizing@doukeshi.org';
+                    $monitors[] = 'dev@goteo.org';
                     $monitors[] = 'pablo@anche.no';
 
                     $mailHandler->bcc = $monitors;
@@ -241,8 +241,8 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->template = $template->id;
                 if (!$mailHandler->send($errors)) {
                     echo \trace($errors);
-                    @mail('goteo_fail@doukeshi.org',
-                        'Fallo al enviar email automaticamente al autor ' . SITE_URL,
+                    @mail(\GOTEO_FAIL_MAIL,
+                        'Fallo al enviar email automaticamente al autor en ' . SITE_URL,
                         'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, true). '</pre>');
                     $error_sending = true;
                 }
@@ -352,7 +352,7 @@ namespace Goteo\Controller\Cron {
                     $mailHandler->template = $template->id;
                     if (!$mailHandler->send($errors)) {
                         echo \trace($errors);
-                        @mail('goteo_fail@doukeshi.org',
+                        @mail(\GOTEO_FAIL_MAIL,
                             'Fallo al enviar email automaticamente al asesor ' . SITE_URL,
                             'Fallo al enviar email automaticamente al asesor: <pre>' . print_r($mailHandler, true). '</pre>');
                         $error_sending = true;
@@ -378,7 +378,8 @@ namespace Goteo\Controller\Cron {
          */
         static public function toInvestors ($type, $project, $post = null) {
 
-            $debug = \defined('CRON_EXEC');
+            // activar debug para mostrar menajes en el log
+            $debug = false;
 
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';
@@ -571,7 +572,7 @@ namespace Goteo\Controller\Cron {
 
                     } else {
                         $anyfail = true;
-                        @mail('goteo_fail@doukeshi.org',
+                        @mail(\GOTEO_FAIL_MAIL,
                             'Fallo al enviar email automaticamente al amigo ' . SITE_URL,
                             'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, true). '</pre>');
                     }

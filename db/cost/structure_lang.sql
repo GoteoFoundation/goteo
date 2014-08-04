@@ -8,3 +8,10 @@ CREATE TABLE IF NOT EXISTS `cost_lang` (
 
 -- pendiente de traducir
 ALTER TABLE `cost_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+
+-- indice proyecto
+ALTER TABLE `cost_lang` ADD `project` VARCHAR( 50 ) NOT NULL AFTER `id` ,
+ADD INDEX ( `project` );
+
+-- rellenar este campo
+UPDATE cost_lang SET cost_lang.project = (SELECT cost.project FROM cost WHERE cost.id = cost_lang.id);

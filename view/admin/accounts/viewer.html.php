@@ -3,7 +3,7 @@
 use Goteo\Core\View;
 
 $date = !empty($_GET['date']) ? $_GET['date'] : date('Y-m-d');
-$type = in_array($_GET['type'], array('invest', 'execute', 'daily', 'dopay', 'verify')) ? $_GET['type'] : 'invest';
+$type = in_array($_GET['type'], array('invest', 'execute', 'daily', 'verify')) ? $_GET['type'] : 'invest';
 if (!empty($_GET['date']) && !empty($_GET['type'])) {
     $showlog = true;
     if ($type == 'invest') {
@@ -30,7 +30,6 @@ if (!empty($_GET['date']) && !empty($_GET['type'])) {
                 <option value="execute"<?php if ($type == 'execute') echo ' selected="selected"';?>>Cargos</option>
                 <option value="verify"<?php if ($type == 'verify') echo ' selected="selected"';?>>Verificaciones</option>
                 <option value="daily"<?php if ($type == 'daily') echo ' selected="selected"';?>>Avisos</option>
-                <option value="dopay"<?php if ($type == 'dopay') echo ' selected="selected"';?>>Pagos</option>
             </select>
         </div>
         <div style="float:left;margin:5px;" id="hdate">

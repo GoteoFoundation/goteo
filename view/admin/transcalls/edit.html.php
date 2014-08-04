@@ -1,10 +1,8 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Library\Lang;
+use Goteo\Library\Text;
 
 $call = $this['call'];
-$langs = Lang::getAll();
 
 $filters = $this['filters'];
 ?>
@@ -55,27 +53,18 @@ function assign() {
         <a href="/admin/transcalls/send/<?php echo $call->id; ?>" class="button green" onclick="return confirm('Se va a enviar un email automaticamente, ok?')">Avisar al convocador</a>
         <hr />
 <?php endif; ?>
-        
+
+    <?php if ($this['action'] == 'add') : ?>
     <form method="post" action="/admin/transcalls/<?php echo $this['action']; ?>/<?php echo $call->id; ?>">
 
         <table>
             <tr>
-                <td><?php if ($this['action'] == 'add') : ?>
+                <td>
                     <label for="add-proj">Convocatoria que habilitamos</label><br />
                     <select id="add-proj" name="call">
                         <option value="">Selecciona la convocatoria</option>
                         <?php foreach ($this['availables'] as $call) : ?>
                             <option value="<?php echo $call->id; ?>"<?php if ($_GET['call'] == $call->id) echo ' selected="selected"';?>><?php echo $call->name; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                <?php else : ?>
-                    <input type="hidden" name="call" value="<?php echo $call->id; ?>" />
-                <?php endif; ?></td>
-                <td><!-- Idioma original -->
-                    <label for="orig-lang">Idioma original de la convocatoria</label><br />
-                    <select id="orig-lang" name="lang">
-                        <?php foreach ($langs as $item) : ?>
-                            <option value="<?php echo $item->id; ?>"<?php if ($call->lang == $item->id || (empty($call->lang) && $item->id == 'es' )) echo ' selected="selected"';?>><?php echo $item->name; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </td>
@@ -85,4 +74,6 @@ function assign() {
 
        <input type="submit" name="save" value="Guardar" />
     </form>
+    <?php endif; ?>
+
 </div>

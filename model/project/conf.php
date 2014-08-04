@@ -8,12 +8,17 @@
  */
 namespace Goteo\Model\Project {
 
+    use Goteo\Library\Text;
+
     class Conf extends \Goteo\Core\Model {
 
         public
             $project,
             $noinvest, // no se pueden hacer más aportes
-            $watch;
+            $watch,
+            $days_round1,
+            $days_round2,
+            $one_round;
 
         /**
          * Get the conf for a project
@@ -24,17 +29,28 @@ namespace Goteo\Model\Project {
 
             try {
                 $query = static::query("SELECT * FROM project_conf WHERE project = ?", array($id));
-                $conf = $query->fetchObject(__CLASS__);
-                return $conf;
+                $project_conf = $query->fetchObject(__CLASS__);
+
+                // Valores por defecto si no existe el proyecto en la tabla
+                if (!$project_conf instanceof \Goteo\Model\Project\Conf) {
+                    $project->noinvest = 0;
+                    $project->watch = 0;
+                    $project->days_round1 = 40;
+                    $project->days_round1 = 80;
+                    $project->one_round = 0;
+                }
+
+                return $project_conf;
 
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+                throw new \Goteo\Core\Exception($e->getMessage());
             }
 		}
 
         public function validate(&$errors = array()) {
             // TODO
             //if (!in_array($this->watch, array('0','1'))) return false;
+            //if (!in_array($this->one_round, array('0','1'))) return false;
             //if (!in_array($this->noinvest, array('0','1'))) return false;
 
             return true;
@@ -43,16 +59,16 @@ namespace Goteo\Model\Project {
 		public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
-			try {
-	            $sql = "REPLACE INTO project_conf (project, noinvest, watch) VALUES(:project, :noinvest, :watch)";
-                $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch);
-				return self::query($sql, $values);
-			} catch(\PDOException $e) {
-				$errors[] = "Las cuentas no se han asignado correctamente. Por favor, revise los datos." . $e->getMessage();
+            try {
+                $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round) VALUES(:project, :noinvest, :watch, :round1, :round2, :one)";
+                $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch,
+                                ':round1'=>$this->days_round1, ':round2'=>$this->days_round2, ':one'=>$this->one_round);
+                return self::query($sql, $values);
+            } catch(\PDOException $e) {
+                $errors[] = "La configuración del proyecto no se ha guardado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
-			}
-		}
-
+            }
+        }
         /**
          * Cortar el grifo
          *
@@ -96,6 +112,26 @@ namespace Goteo\Model\Project {
                 $query = static::query("SELECT noinvest FROM project_conf WHERE project = ?", array($id));
                 $conf = $query->fetchColumn();
                 return ($conf == 1);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+        public static function getRound1Days($id) {
+
+            try {
+                $query = static::query("SELECT days_round1 FROM project_conf WHERE project = ?", array($id));
+                return $query->fetchColumn();
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+         public static function getRound2Days($id) {
+
+            try {
+                $query = static::query("SELECT days_round2 FROM project_conf WHERE project = ?", array($id));
+                return $query->fetchColumn();
             } catch(\PDOException $e) {
                 return false;
             }

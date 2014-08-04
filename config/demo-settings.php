@@ -70,8 +70,9 @@ define('GOTEO_MAIL_SMTP_USERNAME', 'smtp-usermail');
 define('GOTEO_MAIL_SMTP_PASSWORD', 'smtp-password');
 
 define('GOTEO_MAIL', 'info@example.com');
-define('GOTEO_CONTACT_MAIL', 'info@example.com');
-define('GOTEO_FAIL_MAIL', 'fail@example.com');
+define('GOTEO_CONTACT_MAIL', 'info@example.com'); // consulting head
+define('GOTEO_MANAGER_MAIL', 'manager@example.com'); // accounts manager
+define('GOTEO_FAIL_MAIL', 'dev@example.com'); // dev head
 define('GOTEO_LOG_MAIL', 'sitelog@example.com');
 
 //Quota de envio máximo para goteo en 24 horas

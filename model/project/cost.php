@@ -40,6 +40,7 @@ namespace Goteo\Model\Project {
                         					IFNULL(cost_lang.description, IFNULL(eng.description, cost.description)) as description";
 	                    $eng_join=" LEFT JOIN cost_lang as eng
 	                                    ON  eng.id = cost.id
+                                        AND eng.project = :project
 	                                    AND eng.lang = 'en'";
 	                }                
 
@@ -56,6 +57,7 @@ namespace Goteo\Model\Project {
                     FROM cost
                     LEFT JOIN cost_lang
                         ON  cost_lang.id = cost.id
+                        AND cost_lang.project = :project
                         AND cost_lang.lang = :lang
                     $eng_join
                     WHERE cost.project = :project
@@ -138,6 +140,7 @@ namespace Goteo\Model\Project {
 
 			$fields = array(
 				'id'=>'id',
+				'project'=>'project',
 				'lang'=>'lang',
 				'cost'=>'cost_lang',
 				'description'=>'description_lang'

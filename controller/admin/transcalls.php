@@ -89,11 +89,9 @@ namespace Goteo\Controller\Admin {
                     // se guarda el idioma original y si la traducción está abierta o cerrada
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
 
-                        echo \trace($_POST);
-
                         // ponemos los datos que llegan
-                        $sql = "UPDATE `call` SET lang = :lang, translate = 1 WHERE id = :id";
-                        if (Model\Project::query($sql, array(':lang'=>$_POST['lang'], ':id'=>$id))) {
+                        $sql = "UPDATE `call` SET translate = 1 WHERE id = :id";
+                        if (Model\Project::query($sql, array(':id'=>$id))) {
                             if ($action == 'add') {
                                 Message::Info('La convocatoria '.$call->name.' se ha habilitado para traducir');
                             } else {

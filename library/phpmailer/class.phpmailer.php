@@ -411,8 +411,11 @@ class PHPMailer {
           if (strpos($address, 'goteo.org') !== false ||
               strpos($address, 'platoniq.net') !== false ||
               strpos($address, 'microstudi.net') !== false ||
-              strpos($address, 'pelousse.com') !== false ||
+              strpos($address, 'doukeshi.org') !== false ||
               strpos($address, 'julian.canaves@gmail.com') !== false ||
+              strpos($address, 'pablo@anche.no') !== false ||
+              strpos($address, 'javicarrillo83@gmail.com') !== false ||
+              strpos($address, 'ivan@microstudi.net') !== false ||
               strpos($address, 'esenabre@gmail.com') !== false ||
               strpos($address, 'olivierschulbaum@gmail.com') !== false
               ) {

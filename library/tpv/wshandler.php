@@ -196,8 +196,8 @@ function tpvcall($data, $endpoint)
     $logger->close();
     
     if (curl_errno($ch)) {
-        @mail('goteo_handler_fail@doukeshi.org',
-            'Ha fallado el handler de tpv ' . SITE_URL,
+        @mail(\GOTEO_FAIL_MAIL,
+            'Ha fallado el handler de tpv en ' . SITE_URL,
             'curl_error: ' . curl_errno($ch) . '<br />' . curl_error($ch) . '<hr /><pre>'.print_r($data, true).'</pre>');
         return null;
      } else {

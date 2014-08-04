@@ -120,29 +120,28 @@ namespace Goteo\Library {
 			// buscamos el texto en la tabla
             $values = array(':id'=>$id, ':lang' => $lang);
 
-            // Español de purpose como alternativa
-            $sql_es = "SELECT
-                        IFNULL(text.text,purpose.purpose) as `text`
+             if(Model::default_lang($lang)=='es') {
+                $different_select=" IFNULL(text.text,purpose.purpose) as `text`";
+                }
+            else {
+                    $different_select=" IFNULL(text.text, IFNULL(eng.text, purpose.purpose)) as `text`";
+                    $eng_join=" LEFT JOIN text as eng
+                                    ON  eng.id = purpose.text
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="
+                    SELECT
+                        $different_select
                     FROM purpose
                     LEFT JOIN text
                         ON text.id = purpose.text
                         AND text.lang = :lang
+                    $eng_join
                     WHERE purpose.text = :id
-                    ";
-            // Inglés como alternativa
-            $sql_en = "SELECT
-                        IFNULL(text.text, IFNULL(eng.text, purpose.purpose)) as `text`
-                    FROM purpose
-                    LEFT JOIN text
-                        ON text.id = purpose.text
-                        AND text.lang = :lang
-                    LEFT JOIN text as eng
-                        ON  eng.id = purpose.text
-                        AND eng.lang = 'en'
-                    WHERE purpose.text = :id
-                    ";
-            // idiomas no españoles usan alternativa en inglés
-            $sql = (in_array($lang, array('es','ca', 'gl', 'eu', 'en'))) ? $sql_es : $sql_en;
+                    
+                    ";          
+
             $query = Model::query($sql, $values);
             //el cache de idiomas lo mantenemos hasta una hora
             $query->cacheTime(3600);

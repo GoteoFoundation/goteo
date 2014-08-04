@@ -8,3 +8,10 @@ CREATE TABLE IF NOT EXISTS `support_lang` (
 
 -- pendiente de traducir
 ALTER TABLE `support_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+
+-- indice proyecto
+ALTER TABLE `support_lang` ADD `project` VARCHAR( 50 ) NOT NULL AFTER `id` ,
+ADD INDEX ( `project` );
+
+-- rellenar este campo
+UPDATE support_lang SET support_lang.project = (SELECT support.project FROM support WHERE support.id = support_lang.id);
