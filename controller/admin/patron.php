@@ -37,34 +37,33 @@ namespace Goteo\Controller\Admin {
                 ));
 
 				if ($promo->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            Message::Info('Proyecto apadrinado correctamente');
+                    if ($_POST['action'] == 'add') {
+                        Message::Info('Proyecto apadrinado correctamente');
 
-                            $projectData = Model\Project::getMini($_POST['project']);
-                            $userData = Model\User::getMini($_POST['user']);
+                        $projectData = Model\Project::getMini($_POST['project']);
+                        $userData = Model\User::getMini($_POST['user']);
 
-                            // Evento Feed
-                            $log = new Feed();
-                            $log->setTarget($projectData->id);
-                            $log->populate('nuevo proyecto apadrinado (admin)', '/admin/patron',
-                                \vsprintf('El admin %s ha hecho al usuario %s padrino del proyecto %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('user', $userData->name, $userData->id),
-                                    Feed::item('project', $projectData->name, $projectData->id)
-                            )));
-                            $log->doAdmin('admin');
-                            unset($log);
-
-                            throw new Redirection('/admin/patron/view/'.$_POST['user']);
-
-                            break;
-                        case 'edit':
-                            throw new Redirection('/admin/patron/view/'.$_POST['user']);
-
-                            break;
+                        // Evento Feed
+                        $log = new Feed();
+                        $log->setTarget($projectData->id);
+                        $log->populate('nuevo proyecto apadrinado (admin)', '/admin/patron',
+                            \vsprintf('El admin %s ha hecho al usuario %s padrino del proyecto %s', array(
+                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', $userData->name, $userData->id),
+                                Feed::item('project', $projectData->name, $projectData->id)
+                        )));
+                        $log->doAdmin('admin');
+                        unset($log);
                     }
-				}
+
+                    // tratar si han marcado pendiente de traducir
+                    if (isset($_POST['pending']) && $_POST['pending'] == 1
+                        && !Model\Patron::setPending($promo->id, 'post')) {
+                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                    }
+
+                    throw new Redirection('/admin/patron/view/'.$_POST['user']);
+                }
 				else {
                     Message::Error('El registro no se ha grabado correctamente. '. implode(', ', $errors));
                     switch ($_POST['action']) {

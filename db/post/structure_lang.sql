@@ -9,3 +9,6 @@ CREATE TABLE IF NOT EXISTS `post_lang` (
 -- alters
 ALTER TABLE `post_lang` ADD `legend` TEXT NULL ;
 ALTER TABLE `post_lang` ADD `media` TINYTEXT NULL ;
+
+-- pendiente de traducir
+ALTER TABLE `post_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';

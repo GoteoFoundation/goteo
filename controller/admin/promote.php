@@ -31,30 +31,28 @@ namespace Goteo\Controller\Admin {
                 ));
 
 				if ($promo->save($errors)) {
-                    switch ($_POST['action']) {
-                        case 'add':
-                            Message::Info('Proyecto destacado correctamente');
+                    if ($_POST['action'] == 'add') {
+                        $projectData = Model\Project::getMini($_POST['project']);
 
-                            $projectData = Model\Project::getMini($_POST['project']);
+                        if ($node == \GOTEO_NODE) {
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->setTarget($projectData->id);
+                            $log->populate('nuevo proyecto destacado en portada (admin)', '/admin/promote',
+                                \vsprintf('El admin %s ha %s el proyecto %s', array(
+                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('relevant', 'Destacado en portada', '/'),
+                                    Feed::item('project', $projectData->name, $projectData->id)
+                            )));
+                            $log->doAdmin('admin');
+                            unset($log);
+                        }
+                    }
 
-                            if ($node == \GOTEO_NODE) {
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($projectData->id);
-                                $log->populate('nuevo proyecto destacado en portada (admin)', '/admin/promote',
-                                    \vsprintf('El admin %s ha %s el proyecto %s', array(
-                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                        Feed::item('relevant', 'Destacado en portada', '/'),
-                                        Feed::item('project', $projectData->name, $projectData->id)
-                                )));
-                                $log->doAdmin('admin');
-                                unset($log);
-                            }
-
-                            break;
-                        case 'edit':
-                            Message::Info('Destacado actualizado correctamente');
-                            break;
+                    // tratar si han marcado pendiente de traducir
+                    if (isset($_POST['pending']) && $_POST['pending'] == 1
+                        && !Model\Promote::setPending($promo->id, 'post')) {
+                        Message::Error('NO se ha marcado como pendiente de traducir!');
                     }
 
                     throw new Redirection('/admin/promote');

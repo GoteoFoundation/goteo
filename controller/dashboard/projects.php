@@ -518,9 +518,9 @@ namespace Goteo\Controller\Dashboard {
 
             //eliminamos etiquetas script y frame
 
-            $post->text = preg_replace('/(<script[\w\W]*<\/script>)/','',$post->text);
-            $post->text = preg_replace('/(<iframe[\w\W]*<\/iframe>)/','',$post->text);
-            $post->text = preg_replace('/(<embed[\w\W]*<\/embed>)/','',$post->text);
+            $post->text = preg_replace('/(<script[\w\W]*<\/script>)/i','',$post->text);
+            $post->text = preg_replace('/(<iframe[\w\W]*<\/iframe>)/i','',$post->text);
+            $post->text = preg_replace('/(<embed[\w\W]*<\/embed>)/i','',$post->text);
 
             if (!empty($post->media)) {
                 $post->media = new Model\Project\Media($post->media);
@@ -595,6 +595,10 @@ namespace Goteo\Controller\Dashboard {
             foreach ($result->fetchAll(\PDO::FETCH_ASSOC) as $row){
                 $dates = $row;
             }
+
+            $project_conf = Project\Conf::get($id);
+            $dates->days_round1 = $project_conf->days_round1;
+            $dates->days_round2 = $project_conf->days_round2;
 
             // importes objetivo
             $optimum = $minimum = 0;

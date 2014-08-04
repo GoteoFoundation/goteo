@@ -18,11 +18,22 @@ namespace Goteo\Model {
 
             $list = array();
 
+             if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(category_lang.name, category.name) as name,
+                                    IFNULL(category_lang.description, category.description) as description";
+                }
+            else {
+                    $different_select=" IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name,
+                                        IFNULL(category_lang.description, IFNULL(eng.description, category.description)) as description";
+                    $eng_join=" LEFT JOIN category_lang as eng
+                                    ON  eng.id = category.id
+                                    AND eng.lang = 'en'";
+                }
+
             $sql = "
                 SELECT
                     category.id as id,
-                    IFNULL(category_lang.name, category.name) as name,
-                    IFNULL(category_lang.description, category.description) as description,
+                    $different_select,
                     (   SELECT
                             COUNT(user_interest.user)
                         FROM user_interest
@@ -33,6 +44,7 @@ namespace Goteo\Model {
                 LEFT JOIN category_lang
                     ON  category_lang.id = category.id
                     AND category_lang.lang = :lang
+                $eng_join
                 ORDER BY `order` ASC";
 
             $query = static::query($sql, array(':lang'=>\LANG));

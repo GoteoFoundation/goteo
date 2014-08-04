@@ -24,6 +24,8 @@ $pagedResults = new \Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET[
 <?php if ($node == \GOTEO_NODE) : ?>
 &nbsp;&nbsp;&nbsp;
 <a href="/admin/blog/footer" class="button">Ordenar el footer</a>
+<?php elseif (!empty($node)) : ?>
+<a href="/translate/node/<?php echo $node; ?>/post/list" class="button">Traducir entradas</a>
 <?php endif; ?>
 
 <div class="widget board">

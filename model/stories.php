@@ -25,6 +25,10 @@ namespace Goteo\Model {
          *  Devuelve datos de una historia exitosa
          */
         public static function get ($id, $lang = null) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'stories_lang', $lang);
+
                 $query = static::query("
                     SELECT
                         stories.id as id,
@@ -66,14 +70,26 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND stories.active = 1" : '';
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(stories_lang.title, stories.title) as title,
+                                    IFNULL(stories_lang.description, stories.description) as description,
+                                    IFNULL(stories_lang.review, stories.review) as review";
+                }
+            else {
+                    $different_select=" IFNULL(stories_lang.title, IFNULL(eng.title, stories.title)) as title,
+                                        IFNULL(stories_lang.description, IFNULL(eng.description, stories.description)) as description,
+                                        IFNULL(stories_lang.review, IFNULL(eng.review, stories.review)) as review";
+                    $eng_join=" LEFT JOIN stories_lang as eng
+                                    ON  eng.id = stories.id
+                                    AND eng.lang = 'en'";
+                }
+
             $query = static::query("
                 SELECT
                     stories.id as id,
                     stories.node as node,
                     stories.project as project,
-                    IFNULL(stories_lang.title, stories.title) as title,
-                    IFNULL(stories_lang.description, stories.description) as description,
-                    IFNULL(stories_lang.review, stories.review) as review,
+                    $different_select,
                     stories.url as url,
                     stories.image as image,
                     stories.order as `order`,
@@ -83,6 +99,7 @@ namespace Goteo\Model {
                 LEFT JOIN stories_lang
                     ON  stories_lang.id = stories.id
                     AND stories_lang.lang = :lang
+                $eng_join
                 WHERE stories.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC

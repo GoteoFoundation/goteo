@@ -97,8 +97,14 @@ define('SRC_URL', $raw_url);
 // SEC_URL (siempre https, si ssl activado)
 define('SEC_URL', ($SSL) ? 'https:'.$raw_url : $SITE_URL);
 
+// si estamos en entorno seguro
+define('HTTPS_ON', ($_SERVER['HTTPS'] === 'on'));
+
 // SITE_URL, según si estamos en entorno seguro o si el usuario esta autenticado
-if ($_SERVER['HTTPS'] === 'on' || $_SESSION['user'] instanceof \Goteo\Model\User) {
+if ($SSL
+    && (\HTTPS_ON
+        || $_SESSION['user'] instanceof \Goteo\Model\User)
+    ) {
     define('SITE_URL', SEC_URL);
 } else {
     define('SITE_URL', $SITE_URL);
@@ -108,7 +114,7 @@ if ($_SERVER['HTTPS'] === 'on' || $_SESSION['user'] instanceof \Goteo\Model\User
 // usamos la funcionalidad de salto entre nodos para mantener la sesión
 if ($SSL
     && $_SESSION['user'] instanceof \Goteo\Model\User
-    && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on')
+    && !\HTTPS_ON
 ) {
     $jump = '/jump.php?action=go&url='.urlencode(SEC_URL.$_SERVER['REQUEST_URI']);
     header('Location: '.$jump);

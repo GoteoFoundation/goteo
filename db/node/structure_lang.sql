@@ -5,3 +5,6 @@ CREATE TABLE IF NOT EXISTS `node_lang` (
 `description` text COLLATE utf8_general_ci DEFAULT NULL,
  UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- pendiente de traducir
+ALTER TABLE `node_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';

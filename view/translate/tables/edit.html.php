@@ -7,8 +7,7 @@ $bodyClass = 'admin';
 
 $table = $this['table'];
 $id = $this['id'];
-
-$content = Content::get($table, $id, $_SESSION['translate_lang']);
+$content = $this['content'];
 
 $sizes = array(
     'title'       => 'cols="100" rows="2"',

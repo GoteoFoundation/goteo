@@ -22,6 +22,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un recomendado
          */
         public static function get ($id, $node = \GOTEO_NODE) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'patron_lang', \LANG);
+
                 $query = static::query("
                     SELECT
                         patron.id as id,
@@ -42,7 +46,7 @@ namespace Goteo\Model {
                         ON project.id = patron.project
                     WHERE patron.id = :id
                     AND patron.node = :node
-                    ", array(':id'=>$id, ':node'=>$node, ':lang'=>\LANG));
+                    ", array(':id'=>$id, ':node'=>$node, ':lang'=>$lang));
                 $patron = $query->fetchObject(__CLASS__);
                 $patron->user = Model\User::getMini($patron->user);
 
@@ -62,15 +66,26 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND patron.active = 1" : '';
 
-            $query = static::query("
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(patron_lang.title, patron.title) as title,
+                                    IFNULL(patron_lang.description, patron.description) as description";
+                }
+            else {
+                $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title)) as title,
+                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description)) as description";
+                $eng_join=" LEFT JOIN patron_lang as eng
+                                ON  eng.id = patron.id
+                                AND eng.lang = 'en'";
+                }
+
+            $sql="
                 SELECT
                     patron.id as id,
                     patron.project as project,
                     project.name as name,
                     project.status as status,
                     patron.user as user,
-                    IFNULL(patron_lang.title, patron.title) as title,
-                    IFNULL(patron_lang.description, patron.description) as description,
+                    $different_select,
                     patron.link as link,
                     patron_order.order as `order`,
                     patron.active as `active`
@@ -78,6 +93,7 @@ namespace Goteo\Model {
                 LEFT JOIN patron_lang
                     ON patron_lang.id = patron.id
                     AND patron_lang.lang = :lang
+                $eng_join
                 LEFT JOIN patron_order
                     ON patron_order.id = patron.user
                 INNER JOIN project
@@ -85,7 +101,9 @@ namespace Goteo\Model {
                 WHERE patron.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC, name ASC
-                ", array(':node' => $node, ':lang'=>\LANG));
+                ";
+
+            $query = static::query($sql, array(':node' => $node, ':lang'=>\LANG));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100, false);
@@ -111,14 +129,26 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND patron.active = 1" : '';
 
+             if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(patron_lang.title, patron.title) as title,
+                                    IFNULL(patron_lang.description, patron.description) as description";
+                }
+            else {
+                $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title)) as title,
+                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description)) as description";
+                $eng_join=" LEFT JOIN patron_lang as eng
+                                ON  eng.id = patron.id
+                                AND eng.lang = 'en'";
+                }
+
             $sql = "SELECT
                         project,
-                        IFNULL(patron_lang.title, patron.title) as title,
-                        IFNULL(patron_lang.description, patron.description) as description
+                        $different_select
                     FROM patron
                     LEFT JOIN patron_lang
                         ON patron_lang.id = patron.id
                         AND patron_lang.lang = :lang
+                    $eng_join
                     WHERE user = :user
                     $sqlFilter
                     ORDER BY `order` ASC";

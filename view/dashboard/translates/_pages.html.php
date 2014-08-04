@@ -1,4 +1,5 @@
 <?php
+/// esto se usa ???
 use Goteo\Library\Page;
 
 $node = $this['node'];

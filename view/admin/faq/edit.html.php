@@ -59,5 +59,11 @@ jQuery(document).ready(function ($) {
 
 
         <input type="submit" name="save" value="Guardar" />
+
+        <p>
+            <label for="mark-pending">Marcar como pendiente de traducir</label>
+            <input id="mark-pending" type="checkbox" name="pending" value="1" />
+        </p>
+
     </form>
 </div>

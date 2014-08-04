@@ -31,12 +31,24 @@ namespace Goteo\Model\Project {
             try {
                 $array = array();
 
+	            if(self::default_lang($lang)=='es') {
+	                $different_select=" IFNULL(cost_lang.cost, cost.cost) as cost,
+                        				IFNULL(cost_lang.description, cost.description) as description";
+	                }
+	            else {
+	                    $different_select=" IFNULL(cost_lang.cost, IFNULL(eng.cost, cost.cost)) as cost,
+                        					IFNULL(cost_lang.description, IFNULL(eng.description, cost.description)) as description";
+	                    $eng_join=" LEFT JOIN cost_lang as eng
+	                                    ON  eng.id = cost.id
+                                        AND eng.project = :project
+	                                    AND eng.lang = 'en'";
+	                }                
+
                 $sql = "
                     SELECT
                         cost.id as id,
                         cost.project as project,
-                        IFNULL(cost_lang.cost, cost.cost) as cost,
-                        IFNULL(cost_lang.description, cost.description) as description,
+                        $different_select,
                         cost.type as type,
                         cost.amount as amount,
                         cost.required as required,
@@ -45,7 +57,9 @@ namespace Goteo\Model\Project {
                     FROM cost
                     LEFT JOIN cost_lang
                         ON  cost_lang.id = cost.id
+                        AND cost_lang.project = :project
                         AND cost_lang.lang = :lang
+                    $eng_join
                     WHERE cost.project = :project
                     ORDER BY cost.id ASC";
 
@@ -128,6 +142,7 @@ namespace Goteo\Model\Project {
 
 			$fields = array(
 				'id'=>'id',
+				'project'=>'project',
 				'lang'=>'lang',
 				'cost'=>'cost_lang',
 				'description'=>'description_lang'

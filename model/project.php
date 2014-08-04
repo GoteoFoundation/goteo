@@ -103,11 +103,11 @@ namespace Goteo\Model {
 
             //Obtenido, Días, Cofinanciadores
             $invested = 0, //cantidad de inversión
-            $days = 0, //para 40 desde la publicación o para 80 si no está caducado
+            $days = 0, //para PRIMERA_RONDA días desde la publicación o para SEGUNDA_RONDA días si no está caducado
             $investors = array(), // aportes individuales a este proyecto
             $num_investors = 0, // numero de usuarios que han aportado
 
-            $round = 0, // para ver si ya está en la fase de los 40 a los 80
+            $round = 0, // para ver si ya está en la segunda fase
             $passed = null, // para ver si hemos hecho los eventos de paso a segunda ronda
             $willpass = null, // fecha final de primera ronda
 
@@ -254,10 +254,11 @@ namespace Goteo\Model {
                     throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
                 }
 
-                // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
-                if ($lang == $project->lang) {
-                    $lang = null;
-                } elseif (!empty($lang)) {
+                if(!empty($lang) && $lang!=$project->lang)
+                {
+                    //Obtenemos el idioma de soporte
+                    $lang=self::default_lang_by_id($id, 'project_lang', $lang); 
+
                     $sql = "
                         SELECT
                             IFNULL(project_lang.description, project.description) as description,
@@ -269,7 +270,8 @@ namespace Goteo\Model {
                             IFNULL(project_lang.reward, project.reward) as reward,
                             IFNULL(project_lang.keywords, project.keywords) as keywords,
                             IFNULL(project_lang.media, project.media) as media,
-                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle
+                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle,
+                            IFNULL(project_lang.lang, project.lang) as lang
                         FROM project
                         LEFT JOIN project_lang
                             ON  project_lang.id = project.id
@@ -277,6 +279,7 @@ namespace Goteo\Model {
                         WHERE project.id = :id
                         ";
                     $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
+
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
                         $project->$field = $value;
                     }
@@ -320,6 +323,12 @@ namespace Goteo\Model {
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
 
+                // extra conf
+                $project_conf = Project\Conf::get($id);
+                $project->days_round1 = $project_conf->days_round1;
+                $project->days_round2 = $project_conf->days_round2;
+                $project->watch = Project\Conf::isWatched($id);
+
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
@@ -350,10 +359,10 @@ namespace Goteo\Model {
                 $project->setDays();
                 $project->setTagmark();
 
-                // fecha final primera ronda (fecha campaña + 40)
+                // fecha final primera ronda (fecha campaña + PRIMERA_RONDA)
                 if (!empty($project->published)) {
                     $ptime = strtotime($project->published);
-                    $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+40, date('Y', $ptime)));
+                    $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+$project->days_round1, date('Y', $ptime)));
                 }
 
                 // podría estar asignado a alguna convocatoria
@@ -415,9 +424,11 @@ namespace Goteo\Model {
                 $project->dontsave = true;
 
                 // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
-                if ($lang == $project->lang) {
-                    $lang = null;
-                } elseif (!empty($lang)) {
+                if(!empty($lang) && $lang!=$project->lang) {
+
+                    //Obtenemos el idioma de soporte
+                    $lang=self::default_lang_by_id($id, 'project_lang', $lang);
+
                     $sql = "
                         SELECT
                             IFNULL(project_lang.description, project.description) as description,
@@ -472,6 +483,10 @@ namespace Goteo\Model {
                     $project->maxcost = $costs->maxcost;
                 }
 
+                // extra conf
+                $project_conf = Project\Conf::get($id);
+                $project->days_round1 = $project_conf->days_round1;
+                $project->days_round2 = $project_conf->days_round2;
                 $project->watch = Project\Conf::isWatched($id);
                 $project->noinvest = Project\Conf::isInvestClosed($id);
 
@@ -485,7 +500,6 @@ namespace Goteo\Model {
                 if (!empty($project->node)) {
                     $project->nodeData = Node::getMini($project->node);
                 }
-
 
                 return $project;
 
@@ -597,44 +611,38 @@ namespace Goteo\Model {
         }
 
         /*
-         *  Para calcular los dias y la ronda
+         *  Para calcular la ronda de un proyecto y los dias restantes de campaña
+         *  Este método se llama al instanciar un proyecto con get() o getMedium(), modificando sus atributos $round y $days
          */
         public function setDays() {
-            //para proyectos en campaña o posterior
-            if ($this->status > 2) {
-                // tiempo de campaña
-                if ($this->status == 3) {
-                    $days = $this->daysActive();
-                    if ($days > 81) {
-                        $this->round = 0;
-                        $days = 0;
-                    } elseif ($days >= 40) {
-                        $days = 80 - $days;
-                        $this->round = 2;
-                    } else {
-                        $days = 40 - $days;
-                        $this->round = 1;
-                    }
 
-                    if ($days < 0) {
-                        // no deberia estar en campaña sino financuiado o caducado
-                        $days = 0;
-                    }
+            if ($this->status == 3) { // En campaña
+                $days = $this->daysActive(); // Tiempo de campaña (días desde la fecha de publicación del proyecto)
 
-                } else {
+                if ($days < $project->days_round1) { // En primera ronda
+                    $this->round = 1;
+                    $daysleft = $project->days_round1 - $days;
+                } elseif ($days >= $project->days_round1 && $days <= $project->days_round2) { // En segunda ronda
+                    $this->round = 2;
+                    $daysleft = $project->days_round2 - $days;
+                } else { // Ha finalizado la segunda ronda
+                    //FIXME: ¿> 81 días? ($days > $project->days_round2+1)
                     $this->round = 0;
-                    $days = 0;
+                    $daysleft = 0;
                 }
 
+                // no deberia estar en campaña sino financiado o caducado
+                if ($daysleft < 0) $daysleft = 0;
 
-            } else {
-                $days = 0;
+            } else { // $this->status != 3
+                $this->round = 0;
+                $daysleft = 0;
             }
 
-            if ($this->days != $days) {
-                self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($this->id));
+            if ($this->days != $daysleft) {
+                self::query("UPDATE project SET days = '{$daysleft}' WHERE id = ?", array($this->id));
+                $this->days = $daysleft;
             }
-            $this->days = $days;
         }
 
          /*
@@ -696,7 +704,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Quitarle a un usuario el asesoramiento de un proyecto
+         * Quitar un tipo de agrupación a un proyecto
          * @return: boolean
          */
         public function unassignOpen_tag ($open_tag, &$errors = array()) {
@@ -722,7 +730,7 @@ namespace Goteo\Model {
          */
         public function setTagmark() {
             // a ver que banderolo le toca
-            // "financiado" al final de de los 80 dias
+            // "financiado" al final de los SEGUNDA_RONDA dias
             if ($this->status == 4) :
                 $this->tagmark = 'gotit';
             // "en marcha" cuando llega al optimo en primera o segunda ronda
@@ -1950,9 +1958,9 @@ namespace Goteo\Model {
 
 
         /**
-         * Metodo que devuelve los días que lleva de publicación
+         * Método que devuelve los días que lleva en campaña el proyecto (días desde la fecha de publicación)
          *
-         * @return numeric days active from published
+         * @return numeric days active from published field
          */
         public function daysActive() {
             // se puede hacer sin consultar la base de datos
@@ -1991,10 +1999,13 @@ namespace Goteo\Model {
             $days = $query->fetchColumn(0);
             $days--;
 
-            if ($days > 40) {
-                $rest = 80 - $days; //en segunda ronda
+            $days_round1 = \Project\Conf::getRound1Days($id);
+            $days_round2 = \Project\Conf::getRound2Days($id);
+
+            if ($days > days_round1) {
+                $rest = days_round2 - $days; //en segunda ronda
             } else {
-                $rest = 40 - $days; // en primera ronda
+                $rest = days_round1 - $days; // en primera ronda
             }
 
             return $rest;
@@ -2259,6 +2270,11 @@ namespace Goteo\Model {
                 $the_proj->days = (int) $proj->dias - 1;
                 $the_proj->patrons = Patron::numRecos($proj->id);
 
+                // extra conf
+                $project_conf = Project\Conf::get($id);
+                $the_proj->days_round1 = $project_conf->days_round1;
+                $the_proj->days_round2 = $project_conf->days_round2;
+
                 $projects[] = $the_proj;
             }
             return $projects;
@@ -2268,6 +2284,7 @@ namespace Goteo\Model {
          * Lista de proyectos en campaña (para ser revisados por el cron/execute)
          * @return: array of Model\Project (full instance (get))
          */
+        // FIXME: >= 35 => >=75. Pôr qué?
         public static function getActive()
         {
             $projects = array();
@@ -2706,6 +2723,25 @@ namespace Goteo\Model {
         }
 
         /*
+         * Para saber si un proyecto tiene traducción en cierto idioma
+         * @return: boolean
+         */
+        public static function isTranslated($id, $lang) {
+            $sql = "SELECT id FROM project_lang WHERE id = :id AND lang = :lang";
+            $values = array(
+                ':id' => $id,
+                ':lang' => $lang
+            );
+            $query = static::query($sql, $values);
+            $its = $query->fetchObject();
+            if ($its->id == $id) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /*
          * Estados de desarrollo del propyecto
          */
         public static function currentStatus () {
@@ -2783,6 +2819,7 @@ namespace Goteo\Model {
 
             return $errors;
         }
+
     }
 
 }

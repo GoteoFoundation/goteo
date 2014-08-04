@@ -25,6 +25,10 @@ namespace Goteo\Model {
          *  Devuelve datos de una entrada
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'info_lang', \LANG);
+
                 $query = static::query("
                     SELECT
                         info.id as id,
@@ -40,7 +44,7 @@ namespace Goteo\Model {
                         ON  info_lang.id = info.id
                         AND info_lang.lang = :lang
                     WHERE info.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
 
                 $info = $query->fetchObject(__CLASS__);
 
@@ -63,21 +67,34 @@ namespace Goteo\Model {
 
             $list = array();
 
-            $sql = "
-                SELECT
-                    info.id as id,
-                    IFNULL(info_lang.title, info.title) as title,
-                    IFNULL(info_lang.text, info.text) as `text`,
-                    IFNULL(info_lang.legend, info.legend) as `legend`,
-                    info.media as `media`,
-                    info.publish as `publish`,
-                    info.order as `order`
-                FROM    info
-                LEFT JOIN info_lang
-                    ON  info_lang.id = info.id
-                    AND info_lang.lang = :lang
-                WHERE info.node = :node
-                ";
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(info_lang.title, info.title) as title,
+                                    IFNULL(info_lang.text, info.text) as `text`,
+                                    IFNULL(info_lang.legend, info.legend) as `legend`";
+                }
+            else {
+                    $different_select=" IFNULL(info_lang.title, IFNULL(eng.title, info.title)) as title,
+                                        IFNULL(info_lang.text, IFNULL(eng.text, info.text)) as `text`,
+                                        IFNULL(info_lang.legend, IFNULL(eng.legend, info.legend)) as `legend`";
+                    $eng_join=" LEFT JOIN info_lang as eng
+                                    ON  eng.id = info.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="
+                    SELECT
+                        info.id as id,
+                        $different_select,
+                        info.media as `media`,
+                        info.publish as `publish`,
+                        info.order as `order`
+                    FROM    info
+                    LEFT JOIN info_lang
+                        ON  info_lang.id = info.id
+                        AND info_lang.lang = :lang
+                    $eng_join
+                    WHERE info.node = :node
+                    ";          
 
             if ($published == true) {
                 $sql .= " AND info.publish = 1";

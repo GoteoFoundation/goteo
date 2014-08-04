@@ -19,6 +19,10 @@ namespace Goteo\Model {
          *  Devuelve datos de un banner de proyecto
          */
         public static function get ($id, $lang = null) {
+                
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, "banner_lang", $lang);
+
                 $query = static::query("
                     SELECT
                         banner.id as id,
@@ -50,7 +54,7 @@ namespace Goteo\Model {
 
         /**
          * Lista de proyectos en banners
-         * La funciÃ³n Banner::getAll esta en los archivos:
+         * La función Banner::getAll esta en los archivos:
          * controller/index.php OK
          * controller/admin/banners.php (PARECE OK, FALTA COMPROBAR en el admin: parece que se usa en view/admin/banners/list.html.php pero solo usa los campos de la tabla banner)
          * view/node/header.html.php (PARECE OK, FALTA COMPROBAR en el nodo, parece que se usa en view/node/banners.html.php campos: url, title, description, image->name )
@@ -64,41 +68,53 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND banner.active = 1" : '';
 
-            $query = static::query("
-                SELECT
-                    banner.id as id,
-                    banner.node as node,
-                    banner.project as project,
-                    project.name as name,
-                    IFNULL(banner_lang.title, banner.title) as title,
-                    IFNULL(banner_lang.description, banner.description) as description,
-                    banner.url as url,
-                    project.status as status,
-                    project.name as project_name,
-                    project.days as project_days,
-                    project.amount as project_amount,
-                    project.mincost as project_mincost,
-                    project.maxcost as project_maxcost,
-                    user.name as project_user_name,
-                    banner.image as image,
-                    banner.order as `order`,
-                    banner.active as `active`,
-                    image.id AS image_id,
-                    image.name AS image_name
-                FROM    banner
-                LEFT JOIN project
-                    ON project.id = banner.project
-                LEFT JOIN user
-                    ON user.id = project.owner
-                LEFT JOIN image
-                    ON image.id = banner.image
-                LEFT JOIN banner_lang
-                    ON  banner_lang.id = banner.id
-                    AND banner_lang.lang = :lang
-                WHERE banner.node = :node
-                $sqlFilter
-                ORDER BY `order` ASC
-                ", array(':node' => $node, ':lang' => \LANG));
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(banner_lang.title, banner.title) as title,
+                                    IFNULL(banner_lang.description, banner.description) as description";
+                }
+                else {
+                    $different_select=" IFNULL(banner_lang.title, IFNULL(eng.title, banner.title)) as title,
+                                        IFNULL(banner_lang.description, IFNULL(eng.description, banner.description)) as description";
+                    $eng_join=" LEFT JOIN banner_lang as eng
+                                    ON  eng.id = banner.id
+                                    AND eng.lang = 'en'";
+                }
+
+                $sql="SELECT
+                        banner.id as id,
+                        banner.node as node,
+                        banner.project as project,
+                        project.name as name,
+                        $different_select,
+                        banner.url as url,
+                        project.status as status,
+	                    project.name as project_name,
+	                    project.days as project_days,
+	                    project.amount as project_amount,
+	                    project.mincost as project_mincost,
+	                    project.maxcost as project_maxcost,
+	                    user.name as project_user_name,
+                        banner.image as image,
+                        banner.order as `order`,
+                        banner.active as `active`,
+                    	image.id AS image_id,
+                    	image.name AS image_name
+                    FROM    banner
+                    LEFT JOIN project
+                        ON project.id = banner.project
+	                LEFT JOIN user
+	                    ON user.id = project.owner
+	                LEFT JOIN image
+	                    ON image.id = banner.image
+                    LEFT JOIN banner_lang
+                        ON  banner_lang.id = banner.id
+                        AND banner_lang.lang = :lang
+                    $eng_join
+                    WHERE banner.node = :node
+                    $sqlFilter
+                    ORDER BY `order` ASC";
+
+            $query = static::query($sql, array(':node' => $node, ':lang' => \LANG));
 
             $used_projects = array();
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
@@ -131,7 +147,7 @@ namespace Goteo\Model {
 
             // rewards es un array, podemo llamarlo directamente para los proyectos implicados
             // REWARDS: la vista banner.html.php usa: (id, reward, icon, license)
-            // Nota: aÃ±adido el campo "project" en la tabla "reward" como indice para acelerar las busquedas
+            // Nota: añadido el campo "project" en la tabla "reward" como indice para acelerar las busquedas
             $query = static::query("
                 SELECT
                 reward.id,
@@ -146,7 +162,7 @@ namespace Goteo\Model {
                 WHERE
                 project IN ('" . implode("','", array_keys($used_projects)) . "')
                 AND type = :type", array('lang' => \LANG, 'type' => 'social'));
-            //aÃ±adir a cada banner:
+            //añadir a cada banner:
             foreach($query->fetchAll(\PDO::FETCH_CLASS) as $reward){
                 $banners[$used_projects[$reward->project]]->project_social_rewards[$reward->id] = $reward;
             }

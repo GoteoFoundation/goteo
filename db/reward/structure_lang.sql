@@ -8,3 +8,13 @@ CREATE TABLE IF NOT EXISTS `reward_lang` (
 
 -- alter
 ALTER TABLE `reward_lang` ADD `other` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- pendiente de traducir
+ALTER TABLE `reward_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+
+-- indice proyecto
+ALTER TABLE `reward_lang` ADD `project` VARCHAR( 50 ) NOT NULL AFTER `id` ,
+ADD INDEX ( `project` );
+
+-- rellenar este campo
+UPDATE reward_lang SET reward_lang.project = (SELECT reward.project FROM reward WHERE reward.id = reward_lang.id);

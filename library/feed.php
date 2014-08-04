@@ -387,7 +387,7 @@ namespace Goteo\Library {
                 return $list;
             } catch (\PDOException $e) {
                 return array();
-                @\mail('goteo_fail@doukeshi.org', 'ERROR SQL en Feed::getItems', 'FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
+                @\mail(\GOTEO_FAIL_MAIL, 'ERROR SQL en Feed::getItems', 'FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -406,7 +406,7 @@ namespace Goteo\Library {
 		public function add() {
 
             if (empty($this->html)) {
-                @mail('goteo_fail@doukeshi.org',
+                @mail(\GOTEO_FAIL_MAIL,
                     'Evento feed sin html: ' . SITE_URL,
                     "Feed sin contenido html<hr /><pre>" . print_r($this, true) . "</pre>");
                 return false;
@@ -453,14 +453,14 @@ namespace Goteo\Library {
 				if (Model::query($sql, $values)) {
                     return true;
                 } else {
-                    @mail('goteo_fail@doukeshi.org',
+                    @mail(\GOTEO_FAIL_MAIL,
                         'Fallo al hacer evento feed: ' . SITE_URL,
                         "Ha fallado Feed<br /> {$sql} con <pre>" . print_r($values, true) . "</pre><hr /><pre>" . print_r($this, true) . "</pre>");
                     return false;
                 }
 
 			} catch(\PDOException $e) {
-                    @mail('goteo_fail@doukeshi.org',
+                    @mail(\GOTEO_FAIL_MAIL,
                         'PDO Exception evento feed: ' . SITE_URL,
                         "Ha fallado Feed PDO Exception<br /> {$sql} con " . $e->getMessage() . "<hr /><pre>" . print_r($this, true) . "</pre>");
                 return false;

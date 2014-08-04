@@ -8,7 +8,7 @@ $actual = Lang::get($_SESSION['translate_lang']);
 
 $section = isset($this['table']) ? $this['table'] : $this['section'];
 // retorno especial para traduccion de nodo
-if (isset($this['node'])) {
+if (isset($this['node']) && $this['node'] != \GOTEO_NODE) {
     $return = '/translate/select/'.$section.'/'.$this['node'].'/'.$this['option'];
     if ($this['option'] == 'data') {
         $return .= '/edit/'.$this['node'];

@@ -196,7 +196,7 @@ namespace Goteo\Controller {
         /*
          * Seccion, Mis proyectos
          * Opciones:
-         *      'actualizaciones' blog del proyecto (ahora son como mensajes),
+         *      'actualizaciones' blog del proyecto
          *      'editar colaboraciones' para modificar los mensajes de colaboraciones (no puede editar el proyecto y ya estan publicados)
          *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
          *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
@@ -572,7 +572,11 @@ namespace Goteo\Controller {
 
                     $_SESSION['translate_project'] = $project;
                     $project->lang_name = $langs[$project->lang]->name;
-                    unset($viewData['langs'][$project->lang]); // quitamos el idioma original
+
+                    // solo quitamos el idioma original si es 'es' (lo tendremos en la tabla project_lang)
+                    if ($project->lang == 'es')
+                        unset($viewData['langs'][$project->lang]);
+
 //// Control de traduccion de proyecto
                     if ($option == 'updates') {
                         // sus novedades
@@ -621,6 +625,7 @@ namespace Goteo\Controller {
                                             $cost->cost_lang = $_POST['cost-' . $cost->id . '-cost'];
                                             $cost->description_lang = $_POST['cost-' . $cost->id . '-description'];
                                             $cost->lang = $_SESSION['translate_lang'];
+                                            $cost->project = $project->id;
                                             $cost->saveLang($errors);
                                         }
                                     }
@@ -635,6 +640,7 @@ namespace Goteo\Controller {
                                             $reward->description_lang = $_POST['social_reward-' . $reward->id . '-description'];
                                             $reward->other_lang = $_POST['social_reward-' . $reward->id . '-other'];
                                             $reward->lang = $_SESSION['translate_lang'];
+                                            $reward->project = $project->id;
                                             $reward->saveLang($errors);
                                         }
                                     }
@@ -644,6 +650,7 @@ namespace Goteo\Controller {
                                             $reward->description_lang = $_POST['individual_reward-' . $reward->id . '-description'];
                                             $reward->other_lang = $_POST['individual_reward-' . $reward->id . '-other'];
                                             $reward->lang = $_SESSION['translate_lang'];
+                                            $reward->project = $project->id;
                                             $reward->saveLang($errors);
                                         }
                                     }
@@ -659,6 +666,7 @@ namespace Goteo\Controller {
                                             $support->support_lang = $_POST['support-' . $support->id . '-support'];
                                             $support->description_lang = $_POST['support-' . $support->id . '-description'];
                                             $support->lang = $_SESSION['translate_lang'];
+                                            $support->project = $project->id;
                                             $support->saveLang($errors);
 
                                             // actualizar el Mensaje correspondiente, solamente actualizar

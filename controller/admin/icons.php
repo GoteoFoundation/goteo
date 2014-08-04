@@ -49,7 +49,14 @@ namespace Goteo\Controller\Admin {
 
                             break;
                     }
-				}
+
+                    // tratar si han marcado pendiente de traducir
+                    if (isset($_POST['pending']) && $_POST['pending'] == 1
+                        && !Model\Icon::setPending($icon->id, 'post')) {
+                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                    }
+
+                }
 				else {
                     Message::Error(implode('<br />', $errors));
                     

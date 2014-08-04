@@ -13,6 +13,9 @@ $_SESSION['msg_token'] = uniqid(rand(), true);
 // recaptcha
 require_once 'library/recaptchalib.php';
 
+$RECAPTCHA = (\HTTPS_ON) ? RECAPTCHA_API_SECURE_SERVER : RECAPTCHA_API_SERVER;
+$RECAPTCHA .= '/challenge?k='. RECAPTCHA_PUBLIC_KEY;
+
 include 'view/prologue.html.php';
 include 'view/header.html.php';
 ?>
@@ -98,7 +101,7 @@ include 'view/header.html.php';
                     </table>
                     <!--reCAPTCHA -->
                     <div id="recaptcha_image"></div><a href="javascript:Recaptcha.reload()"><?php echo Text::get('contact-captcha-refresh'); ?></a>
-                    <script type="text/javascript" src="<?php echo RECAPTCHA_API_SERVER . '/challenge?k='. RECAPTCHA_PUBLIC_KEY; ?>"></script>
+                    <script type="text/javascript" src="<?php echo $RECAPTCHA; ?>"></script>
                     <br />
                     <!-- fin reCAPTCHA -->
 

@@ -26,6 +26,10 @@ namespace Goteo\Model {
          *  Devuelve datos de una entrada
          */
         public static function get ($id) {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'post_lang', \LANG);
+
                 $query = static::query("
                     SELECT
                         post.id as id,
@@ -42,7 +46,7 @@ namespace Goteo\Model {
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
                     WHERE post.id = :id
-                    ", array(':id' => $id, ':lang'=>\LANG));
+                    ", array(':id' => $id, ':lang'=>$lang));
 
                 $post = $query->fetchObject(__CLASS__);
 
@@ -92,12 +96,23 @@ namespace Goteo\Model {
                 $sqlField = "(SELECT `order` FROM post_node WHERE node = :node AND post = post.id) as `order`,";
             }
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                    IFNULL(post_lang.text, post.text) as `text`";
+                }
+            else {
+                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                        IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`";
+                    $eng_join=" LEFT JOIN post_lang as eng
+                                    ON  eng.id = post.id
+                                    AND eng.lang = 'en'";
+                }
+
             $sql = "
                 SELECT
                     post.id as id,
                     post.blog as blog,
-                    IFNULL(post_lang.title, post.title) as title,
-                    IFNULL(post_lang.text, post.text) as `text`,
+                    $different_select,
                     post.image as `image`,
                     post.media as `media`,
                     $sqlField
@@ -115,6 +130,7 @@ namespace Goteo\Model {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                $eng_join
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
                 ";
@@ -187,11 +203,20 @@ namespace Goteo\Model {
                 $values[':node'] = $node;
             }
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(post_lang.title, post.title) as title";
+                }
+            else {
+                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title";
+                    $eng_join=" LEFT JOIN post_lang as eng
+                                    ON  eng.id = post.id
+                                    AND eng.lang = 'en'"; 
+                }           
 
             $sql = "
                 SELECT
                     post.id as id,
-                    IFNULL(post_lang.title, post.title) as title,
+                    $different_select,
                     post.order as `order`
                 FROM    post
                 INNER JOIN blog
@@ -199,6 +224,7 @@ namespace Goteo\Model {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                $eng_join
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
                 ";
@@ -218,14 +244,26 @@ namespace Goteo\Model {
          */
         public static function getAutocomplete () {
             $list = array();
+
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(post_lang.title, post.title) as title";
+                }
+            else {
+                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title";
+                    $eng_join=" LEFT JOIN post_lang as eng
+                                    ON  eng.id = post.id
+                                    AND eng.lang = 'en'";            
+                 }
+
             $query = static::query("
                 SELECT
                     post.id as id,
-                    IFNULL(post_lang.title, post.title) as title
+                    $different_select
                 FROM    post
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                $eng_join
                 ", array(':lang'=>\LANG));
 
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $post) {

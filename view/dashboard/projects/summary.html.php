@@ -5,6 +5,8 @@ use Goteo\Core\View,
 
 $project = $this['project'];
 
+$http = (\HTTPS_ON) ? 'https' : 'http' ;
+
 if (!$project instanceof  Goteo\Model\Project) {
     return;
 }
@@ -42,10 +44,9 @@ if (!$project instanceof  Goteo\Model\Project) {
 
 <?php if (in_array($project->status, array(3, 4, 5))) : ?>
 <!-- librerias externas -->
-<!--    <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>  -->
-    <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
-    <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-    <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
+    <script language="javascript" type="text/javascript" src="<?php echo $http; ?>://cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
+    <script language="javascript" type="text/javascript" src="<?php echo $http; ?>://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script language="javascript" type="text/javascript" src="<?php echo $http; ?>://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
 
     <!-- funciones para la visualización -->
     <script language="javascript" type="text/javascript" src="/view/js/project/chart.js"></script>

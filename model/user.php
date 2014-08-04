@@ -525,6 +525,10 @@ namespace Goteo\Model {
          */
         public static function get ($id, $lang = null) {
             try {
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'user_lang', $lang);
+
                 $sql = "
                     SELECT
                         user.id as id,
@@ -1216,7 +1220,7 @@ namespace Goteo\Model {
             if ($geoloc->save($errors)) {
                 return $loc;
             } else {
-                @mail('geoloc_fail@doukeshi.org', 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
+                @mail(\GOTEO_FAIL_MAIL, 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
                 return false;
             }
     	}
@@ -1547,6 +1551,25 @@ namespace Goteo\Model {
 
         }
 
+        /*
+         * Para saber si un usuario tiene traducción en cierto idioma
+         * @return: boolean
+         */
+        public static function isTranslated($id, $lang) {
+            $sql = "SELECT id FROM user_lang WHERE id = :id AND lang = :lang";
+            $values = array(
+                ':id' => $id,
+                ':lang' => $lang
+            );
+            $query = static::query($sql, $values);
+            $its = $query->fetchObject();
+            if ($its->id == $id) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
-	}
+
+    }
 }
