@@ -54,7 +54,7 @@ namespace Goteo\Model {
 
         /**
          * Lista de proyectos en banners
-         * La función Banner::getAll esta en los archivos:
+         * La funciï¿½n Banner::getAll esta en los archivos:
          * controller/index.php OK
          * controller/admin/banners.php (PARECE OK, FALTA COMPROBAR en el admin: parece que se usa en view/admin/banners/list.html.php pero solo usa los campos de la tabla banner)
          * view/node/header.html.php (PARECE OK, FALTA COMPROBAR en el nodo, parece que se usa en view/node/banners.html.php campos: url, title, description, image->name )
@@ -147,7 +147,7 @@ namespace Goteo\Model {
 
             // rewards es un array, podemo llamarlo directamente para los proyectos implicados
             // REWARDS: la vista banner.html.php usa: (id, reward, icon, license)
-            // Nota: añadido el campo "project" en la tabla "reward" como indice para acelerar las busquedas
+            // Nota: aÃ±adido el campo "project" en la tabla "reward" como indice para acelerar las busquedas
             $query = static::query("
                 SELECT
                 reward.id,
@@ -159,10 +159,11 @@ namespace Goteo\Model {
                 LEFT JOIN reward_lang
                     ON  reward_lang.id = reward.id
                     AND reward_lang.lang = :lang
+                    AND reward_lang.project = reward.project
                 WHERE
-                project IN ('" . implode("','", array_keys($used_projects)) . "')
+                reward.project IN ('" . implode("','", array_keys($used_projects)) . "')
                 AND type = :type", array('lang' => \LANG, 'type' => 'social'));
-            //añadir a cada banner:
+            //aÃ±adir a cada banner:
             foreach($query->fetchAll(\PDO::FETCH_CLASS) as $reward){
                 $banners[$used_projects[$reward->project]]->project_social_rewards[$reward->id] = $reward;
             }
