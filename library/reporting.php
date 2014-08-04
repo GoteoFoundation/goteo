@@ -636,7 +636,9 @@ namespace Goteo\Library {
                                         FROM invest
                                         WHERE invest.resign = 1
                                         AND invest.status IN (0, 1, 3, 4)
-                                        "
+                                        ",
+                             'unit'   => '%',
+                             'format'   => '2dec'
 
                         ),
                         array(
