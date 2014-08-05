@@ -45,6 +45,7 @@ namespace Goteo\Model {
                     LEFT JOIN post_lang
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
+                        AND post_lang.blog = post.blog
                     WHERE post.id = :id
                     ", array(':id' => $id, ':lang'=>$lang));
 
@@ -130,6 +131,7 @@ namespace Goteo\Model {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                    AND post_lang.blog = post.blog
                 $eng_join
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
@@ -224,6 +226,7 @@ namespace Goteo\Model {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                    AND post_lang.blog = post.blog
                 $eng_join
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
@@ -263,6 +266,7 @@ namespace Goteo\Model {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                    AND post_lang.blog = post.blog
                 $eng_join
                 ", array(':lang'=>\LANG));
 
