@@ -128,6 +128,11 @@ namespace Goteo\Library {
                         {$table}.id as id,
                         ";
 
+            if ($table == 'post') {
+                $sql .= "{$table}.blog as blog,
+                        ";
+            }
+
             foreach (self::$fields[$table] as $field=>$fieldName) {
                 $sql .= "IFNULL({$table}_lang.$field, {$table}.$field) as $field,
                          {$table}.$field as original_$field,
@@ -315,6 +320,11 @@ namespace Goteo\Library {
                     ':id' => $data['id'],
                     ':lang' => $data['lang']
                 );
+
+                if ($data['table'] == 'post') {
+                    $set .= ', `blog` = :blog';
+                    $values[':blog'] = $data['blog'];
+                }
 
                 foreach (self::$fields[$data['table']] as $field=>$fieldDesc) {
                     if ($set != '') $set .= ", ";
