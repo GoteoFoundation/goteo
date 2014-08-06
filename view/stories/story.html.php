@@ -29,11 +29,11 @@ foreach ($story->project->open_tags as $openId => $openData) {
     <div class="title_story"><strong><?php echo Text::get('home-stories-header').': '?></strong><?php echo $open_tags; ?></div>
         <div class="info">
             <a href="<?php echo $link_title;?>" target="_blank">
-                <div id="info_title"><?php echo htmlspecialchars($story->title); ?></div>
-                <div id="review"><?php echo htmlspecialchars($story->review); ?></div>
+                <div class="info_title"><?php echo htmlspecialchars($story->title); ?></div>
+                <div class="review"><?php echo htmlspecialchars($story->review); ?></div>
             </a>
-            <div id="line"></div>
-            <div id="description"><blockquote>
+            <div class="line"></div>
+            <div class="description"><blockquote>
                 <?php
                     echo htmlspecialchars($story->description).'</blockquote>. ';
                     echo Text::get('stories-user-project',
@@ -43,7 +43,7 @@ foreach ($story->project->open_tags as $openId => $openData) {
             </div>
         </div>
         <div class="info_extra">
-            <span id="cofinanciadores"><?php echo  mb_strtoupper(Text::get('project-view-metter-investors'));?></span> <strong id="ncofinanciadores"><?php echo $story->project->num_investors;?></strong>
-            <span id="obtenido"><span><?php echo  mb_strtoupper(Text::get('project-view-metter-got'));?></span><strong><?php echo $story->project->amount;?></strong><img src="/view/css/euro/violet/xl.png" width="20"/></span>
+            <span class="cofinanciadores"><?php echo  mb_strtoupper(Text::get('project-view-metter-investors'));?></span> <strong class="ncofinanciadores"><?php echo $story->project->num_investors;?></strong>
+            <span class="obtenido"><span><?php echo  mb_strtoupper(Text::get('project-view-metter-got'));?></span><strong><?php echo $story->project->amount;?></strong><img src="/view/css/euro/violet/xl.png" width="20"/></span>
         </div>            
     </div>                                   

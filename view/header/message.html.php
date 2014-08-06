@@ -11,7 +11,7 @@ unset($_SESSION['messages']);
 </script>
     <div id="message">
     	<div id="message-content">
-        	<input type="button" class="message-close" >
+        	<input type="button" class="message-close" />
             <ul>
     <?php foreach($messages as $message): ?>
                 <li>
