@@ -327,6 +327,7 @@ namespace Goteo\Model {
                 $project_conf = Project\Conf::get($id);
                 $project->days_round1 = $project_conf->days_round1;
                 $project->days_round2 = $project_conf->days_round2;
+                $project->one_round = $project_conf->one_round;
                 $project->watch = Project\Conf::isWatched($id);
 
                 //-----------------------------------------------------------------
@@ -883,6 +884,12 @@ namespace Goteo\Model {
                 // cada una con sus save, sus new y sus remove
                 // quitar las que tiene y no vienen
                 // añadir las que vienen y no tiene
+
+                // project_conf
+                // FIXME: Salvar al completo? / No machacar con valores vacíos
+                $conf = Project\Conf::get($this->id);
+                $conf->one_round = $this->one_round;
+                $conf->save();
 
                 //categorias
                 $tiene = Project\Category::get($this->id);

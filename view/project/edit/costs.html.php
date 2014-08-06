@@ -185,6 +185,19 @@ echo new SuperForm(array(
             'value' => 'costs'
         ),
 
+        'rounds' => array(
+            'type'      => 'checkbox',
+            'class'     => 'inline cols_1',
+            'required'  => false,
+            'name'      => 'one_round',
+            'label'     => Text::get('project-rounds'),
+            'hint'      => Text::get('tooltip-project-rounds'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'checked'   => (bool) $project->one_round,
+            'value'     => 1
+        ),
+
         'costs' => array(
             'type'      => 'group',
             'required'  => true,
