@@ -32,8 +32,8 @@ namespace Goteo\Model\Project {
                 $project_conf = $query->fetchObject(__CLASS__);
 
                 // Valores por defecto si no existe el proyecto en la tabla
-                if (!$project_conf instanceof __CLASS__) {
-                    $project_conf = new __CLASS__;
+                if (!$project_conf instanceof self) {
+                    $project_conf = new self;
                     $project_conf->noinvest = 0;
                     $project_conf->watch = 0;
                     $project_conf->days_round1 = 40;
