@@ -280,7 +280,8 @@ namespace Goteo\Controller {
                     'open_tags' => array('label' => 'Asignando una agrupación al proyecto', 'item' => true),
                     'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true),
                     'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true),
-                    'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true)
+                    'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true),
+                    'config' => array('label' => 'Configuración de campaña del proyecto', 'item' => true)
                 ),
                 'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '', 'consultant' => '','proj_id' =>'')
             ),
