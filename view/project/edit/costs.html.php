@@ -185,19 +185,6 @@ echo new SuperForm(array(
             'value' => 'costs'
         ),
 
-        'rounds' => array(
-            'type'      => 'checkbox',
-            'class'     => 'inline cols_1',
-            'required'  => false,
-            'name'      => 'one_round',
-            'label'     => Text::get('project-rounds'),
-            'hint'      => Text::get('tooltip-project-rounds'),
-            'errors'    => array(),
-            'ok'        => array(),
-            'checked'   => (bool) $project->one_round,
-            'value'     => 1
-        ),
-
         'costs' => array(
             'type'      => 'group',
             'required'  => true,
@@ -245,7 +232,20 @@ echo new SuperForm(array(
             'hint'      => Text::get('tooltip-project-schedule'),
             'html'      => new View('view/project/widget/schedule.html.php', array('project' => $project))
         ),
-        
+
+        'rounds' => array(
+            'type'      => 'checkbox',
+            'class'     => 'cols_1',
+            'required'  => false,
+            'name'      => 'one_round',
+            'label'     => Text::get('project-rounds'),
+            'hint'      => Text::get('tooltip-project-rounds'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'checked'   => (bool) $project->one_round,
+            'value'     => 1
+        ),
+
         'footer' => array(
             'type'      => 'group',
             'children'  => array(
