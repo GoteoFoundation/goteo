@@ -186,6 +186,22 @@ namespace Goteo\Model\Project {
             }
         }
 
+        /**
+         * Comprobar si el proyecto es de ronda única
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
+        public static function isOneRound($id) {
+            try {
+                $query = static::query("SELECT one_round FROM project_conf WHERE project = ?", array($id));
+                $watch = $query->fetchColumn();
+                return ($watch == 1);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
 	}
     
 }
