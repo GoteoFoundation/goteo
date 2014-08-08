@@ -2301,16 +2301,17 @@ namespace Goteo\Model {
             $sql = "
                 SELECT project.id as id
                 FROM  project
+                LEFT JOIN project_conf on project = id
                 WHERE project.status = 3
                 AND (
-                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 35
-                        AND (passed IS NULL OR passed = '0000-00-00')
-                        )
-                    OR
-                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 75
-                        AND (success IS NULL OR success = '0000-00-00')
-                        )
+                    ((passed IS NULL OR passed = '0000-00-00') AND
+                      DATEDIFF(now(),  DATE_ADD(published, INTERVAL IFNULL(days_round1, 40) DAY)) BETWEEN 0 AND 5
                     )
+                    OR
+                    ((success IS NULL OR success = '0000-00-00') AND
+                     DATEDIFF(now(),  DATE_ADD(published, INTERVAL IFNULL(days_round2, 80) DAY)) BETWEEN 0 AND 3
+                    )
+                )
                 ORDER BY name ASC
             ";
 
