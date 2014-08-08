@@ -104,10 +104,14 @@ $url = '';
     <div class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span> <?php echo $days ?> <?php echo Text::get('regular-days'); ?></div>
         <?php
             else :
-                $part = strtotime($project->published);
-                // si primera ronda: published + PRIMERA_RONDA días
-                // si segunda ronda: published + SEGUNDA_RONDA días
-                $plus = $project->days_round1 * $project->round;
+                $part = strtotime($date_published);
+
+                if ($round == 1) {
+                    $plus = $days_round1;
+                } elseif ($round == 2) {
+                    $plus = $days_round2;
+                }
+
                 $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
                 $timeTogo = Check::time_togo($final_day,1);
         ?>

@@ -121,10 +121,14 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
                     $days_left = number_format($days);
                     $days_left2 = Text::get('regular-days');
                 } else {
-                    $part = strtotime($project->published);
-                    // si primera ronda: published + PRIMERA_RONDA días
-                    // si segunda ronda: published + SEGUNDA_RONDA días
-                    // FIXME: $plus = 40 * $project->round;
+                    $part = strtotime($date_published);
+
+                    if ($round == 1) {
+                        $plus = $days_round1;
+                    } elseif ($round == 2) {
+                        $plus = $days_round2;
+                    }
+
                     $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
                     $days_left = Check::time_togo($final_day, 1);
                     $days_left2 = '';
