@@ -37,7 +37,7 @@ namespace Goteo\Model\Project {
                     $project_conf->noinvest = 0;
                     $project_conf->watch = 0;
                     $project_conf->days_round1 = 40;
-                    $project_conf->days_round2 = 80;
+                    $project_conf->days_round2 = 40;
                     $project_conf->one_round = 0;
                 }
 

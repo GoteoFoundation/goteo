@@ -17,7 +17,7 @@ $image          = $project->image;
 $user           = $project->user;
 $days           = $project->days;
 $days_round1    = $project->days_round1;
-$days_round2    = $project->days_round2;
+$days_total     = $project->days_total;
 $round          = $project->round;
 $status         = $project->status;
 $amount         = $project->amount;
@@ -109,7 +109,7 @@ $url = '';
                 if ($round == 1) {
                     $plus = $days_round1;
                 } elseif ($round == 2) {
-                    $plus = $days_round2;
+                    $plus = $days_total;
                 }
 
                 $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));

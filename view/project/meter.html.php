@@ -15,14 +15,14 @@ $optimum    = $project->maxcost;
 $reached    = $project->invested;
 $days       = $project->days;
 $days_round1 = $project->days_round1;
-$days_round2 = $project->days_round2;
+$days_total = $project->days_total;
 $round      = $project->round;
 $status     = $project->status;
 $amount     = $project->amount;
 $date_created = $project->created;
 $date_updated = $project->updated;
 $date_success = $project->success;
-$date_closed = $project->closed;
+$date_closed  = $project->closed;
 $date_published = $project->published;
 $num_investors  = $project->num_investors;
 
@@ -126,7 +126,7 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
                     if ($round == 1) {
                         $plus = $days_round1;
                     } elseif ($round == 2) {
-                        $plus = $days_round2;
+                        $plus = $days_total;
                     }
 
                     $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));

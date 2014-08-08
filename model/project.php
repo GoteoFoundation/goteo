@@ -327,6 +327,7 @@ namespace Goteo\Model {
                 $project_conf = Project\Conf::get($id);
                 $project->days_round1 = $project_conf->days_round1;
                 $project->days_round2 = $project_conf->days_round2;
+                $project->days_total = $project->days_round1 + $project->days_round2;
                 $project->one_round = $project_conf->one_round;
                 $project->watch = Project\Conf::isWatched($id);
                 $project->noinvest = Project\Conf::isInvestClosed($id);
@@ -487,6 +488,7 @@ namespace Goteo\Model {
                 $project_conf = Project\Conf::get($id);
                 $project->days_round1 = $project_conf->days_round1;
                 $project->days_round2 = $project_conf->days_round2;
+                $project->days_total = $project->days_round1 + $project->days_round2;
                 $project->one_round = $project_conf->one_round;
                 $project->watch = Project\Conf::isWatched($id);
                 $project->noinvest = Project\Conf::isInvestClosed($id);
@@ -623,9 +625,9 @@ namespace Goteo\Model {
                 if ($days < $project->days_round1) { // En primera ronda
                     $this->round = 1;
                     $daysleft = $project->days_round1 - $days;
-                } elseif (!$project->one_round && $days >= $project->days_round1 && $days <= $project->days_round2) { // En segunda ronda
+                } elseif (!$project->one_round && $days >= $project->days_round1 && $days <= $project->days_total) { // En segunda ronda
                     $this->round = 2;
-                    $daysleft = $project->days_round2 - $days;
+                    $daysleft = $project->days_total - $days;
                 } else { // Ha finalizado la segunda ronda
                     //FIXME: ¿> 81 días? ($days > $project->days_round2+1)
                     $this->round = 0;
@@ -2008,9 +2010,10 @@ namespace Goteo\Model {
 
             $days_round1 = \Project\Conf::getRound1Days($id);
             $days_round2 = \Project\Conf::getRound2Days($id);
+            $days_total = $days_round1 + $days_round2;
 
             if ($days > days_round1) {
-                $rest = days_round2 - $days; //en segunda ronda
+                $rest = days_total - $days; //en segunda ronda
             } else {
                 $rest = days_round1 - $days; // en primera ronda
             }
@@ -2281,6 +2284,7 @@ namespace Goteo\Model {
                 $project_conf = Project\Conf::get($id);
                 $the_proj->days_round1 = $project_conf->days_round1;
                 $the_proj->days_round2 = $project_conf->days_round2;
+                $the_proj->days_total = $the_proj->days_round1 + $the_proj->days_round2;
 
                 $projects[] = $the_proj;
             }
@@ -2309,7 +2313,7 @@ namespace Goteo\Model {
                     )
                     OR
                     ((success IS NULL OR success = '0000-00-00') AND
-                     DATEDIFF(now(),  DATE_ADD(published, INTERVAL IFNULL(days_round2, 80) DAY)) BETWEEN 0 AND 3
+                     DATEDIFF(now(),  DATE_ADD(published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY)) BETWEEN 0 AND 3
                     )
                 )
                 ORDER BY name ASC
