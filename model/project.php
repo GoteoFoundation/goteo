@@ -2289,6 +2289,9 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos en campaña (para ser revisados por el cron/execute)
+         *
+         * Escogemos los proyectos que están a 5 días de terminar primera ronda o 3 días de terminar segunda.
+         * En cron/execute necesitamos estos proyectos para feed y mail automático.
          * @return: array of Model\Project (full instance (get))
          */
         public static function getActive()
