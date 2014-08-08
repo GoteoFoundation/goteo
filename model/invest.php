@@ -1290,28 +1290,35 @@ namespace Goteo\Model {
                     $p0 = (string) 'all';
                 case 3: // en marcha
                     // si tiene fecha $project->passed de pase a segunda ronda: paypal(0) no es incidencia para los aportes de segunda ronda
-                    if (!empty($passed)) {
-                        if ($round == 1) {
-                            // esto es mal
-                            $Data['note'][] = "ATENCION! Está marcada la fecha de pase a segunda ronda (el {$passed}) pero sique en primera ronda!!!";
-                            $act_eq = (string) 'first';
-                        } else {
-                            // en segunda ronda
-                            if (!isset($p0)) {
-                                $p0 = (string) 'first'; // paypal(0) es incidencia paralos de primera ronda solamente
-                            }
-                            // si está en segunda ronda; la financiacion actual es un merge de usuarios y suma de aportes correctos, incidencias, correctos y cantidad total
-                            $act_eq = (string) 'sum';
-                        }
+
+                    if (Project\Conf::isOneRound($project)) {
+                        $act_eq = (string) 'first';
                     } else {
-                        // si no tiene fecha de pase y esta en ronda 2: es un problema se trata como solo financiacion actual y paypal(0) no son incidencias
-                        if ($round == 2) {
-                            $Data['note'][] = "ATENCION! En segunda ronda pero NO está marcada la fecha de pase a segunda ronda!!!";
-                            $act_eq = (string) 'first';
+
+                        if (!empty($passed)) {
+                            if ($round == 1) {
+                                // esto es mal
+                                $Data['note'][] = "ATENCION! Está marcada la fecha de pase a segunda ronda (el {$passed}) pero sique en primera ronda!!!";
+                                $act_eq = (string) 'first';
+                            } else {
+                                // en segunda ronda
+                                if (!isset($p0)) {
+                                    $p0 = (string) 'first'; // paypal(0) es incidencia paralos de primera ronda solamente
+                                }
+                                // si está en segunda ronda; la financiacion actual es un merge de usuarios y suma de aportes correctos, incidencias, correctos y cantidad total
+                                $act_eq = (string) 'sum';
+                            }
                         } else {
-                            // ok, en primera ronda sin  fecha marcada, informe solo actual = primera
-                            $act_eq = (string) 'first';
+                            // si no tiene fecha de pase y esta en ronda 2: es un problema se trata como solo financiacion actual y paypal(0) no son incidencias
+                            if ($round == 2) {
+                                $Data['note'][] = "ATENCION! En segunda ronda pero NO está marcada la fecha de pase a segunda ronda!!!";
+                                $act_eq = (string) 'first';
+                            } else {
+                                // ok, en primera ronda sin  fecha marcada, informe solo actual = primera
+                                $act_eq = (string) 'first';
+                            }
                         }
+
                     }
 
                     // si solamente financiacion actual=primera
