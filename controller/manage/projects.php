@@ -362,10 +362,18 @@ namespace Goteo\Controller\Manage {
                     'issue' => 'show'
                 ));
                 $sum = 0;
+
+                foreach($issues as $issue) {
+                    $sum += $issue->amount;
+                }
+
+                /* Error de PHP. Corregir */
+                /*
                 array_walk($issues, function($item, $index, $sum) {
                         $sum += $item->amount;
                     }, &$sum);
                 $the_proj->issues = $sum;
+                */
                 
                 // y si estas incidencias hacen peligrar el mínimo
                 
