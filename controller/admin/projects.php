@@ -321,7 +321,7 @@ namespace Goteo\Controller\Admin {
                 );
             }
 
-            if ($action == 'rounds') {
+            if ($action == 'conf') {
 
                 $conf = Model\Project\Conf::get($project->id);
 
@@ -330,7 +330,7 @@ namespace Goteo\Controller\Admin {
                     'view/admin/index.html.php',
                     array(
                         'folder' => 'projects',
-                        'file' => 'rounds',
+                        'file' => 'conf',
                         'project' => $project,
                         'conf' => $conf
                     )

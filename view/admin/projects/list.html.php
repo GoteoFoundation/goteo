@@ -188,7 +188,7 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                     <a href="<?php echo "/admin/projects/open_tags/{$project->id}"; ?>">[Agrupación]</a>
                     <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}"; ?>" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Id]</a><?php endif; ?>
                     <a href="<?php echo "/admin/projects/consultants/{$project->id}"; ?>">[Asesor]</a>
-                    <a href="<?php echo "/admin/projects/rounds/{$project->id}"; ?>">[Días de campaña]</a>
+                    <a href="<?php echo "/admin/projects/conf/{$project->id}"; ?>">[Configuración de campaña]</a>
                     &nbsp;|&nbsp;
                     <?php if ($project->status == 0) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}"; ?>">[Reabrir edición]</a><?php endif; ?>
                     <?php if ($project->status < 2) : ?><a href="<?php echo "/admin/projects/review/{$project->id}"; ?>" onclick="return confirm('El creador no podrá editarlo más, ok?');">[A revisión]</a><?php endif; ?>

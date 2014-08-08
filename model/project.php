@@ -2291,7 +2291,6 @@ namespace Goteo\Model {
          * Lista de proyectos en campaña (para ser revisados por el cron/execute)
          * @return: array of Model\Project (full instance (get))
          */
-        // FIXME: >= 35 => >=75. Pôr qué?
         public static function getActive()
         {
             $projects = array();

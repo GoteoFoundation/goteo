@@ -281,7 +281,7 @@ namespace Goteo\Controller {
                     'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true),
                     'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true),
                     'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true),
-                    'config' => array('label' => 'Configuración de campaña del proyecto', 'item' => true)
+                    'conf' => array('label' => 'Configuración de campaña del proyecto', 'item' => true)
                 ),
                 'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '', 'consultant' => '','proj_id' =>'')
             ),
