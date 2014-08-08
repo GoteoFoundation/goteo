@@ -59,7 +59,7 @@ uasort($project->individual_rewards,
         <ul>
         <?php foreach ($project->social_rewards as $social) : ?>
             <li class="<?php echo $social->icon ?>">
-                <h<?php echo $level + 1 ?> class="name"><?php echo htmlspecialchars($social->icon_name) . ': ' .htmlspecialchars($social->reward) ?></h<?php echo $level + 1 ?>
+                <h<?php echo $level + 1 ?> class="name"><?php echo htmlspecialchars($social->icon_name) . ': ' .htmlspecialchars($social->reward) ?></h<?php echo $level + 1 ?>>
                 <p><?php echo htmlspecialchars($social->description)?></p>
                 <?php if (!empty($social->license) && array_key_exists($social->license, $licenses)): ?>
                 <div class="license <?php echo htmlspecialchars($social->license) ?>">

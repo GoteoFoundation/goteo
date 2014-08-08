@@ -227,12 +227,12 @@ namespace Goteo\Library {
 			$info .= '<div class="a i"><h3><a href="'.$URL.'/project/'.$this->project->id.'/supporters"'.$target.'>' . $this->project->num_investors . '</a></h3><p><a href="'.$URL.'/project/'.$this->project->id.'/supporters"'.$target.'>'.Text::get('project-view-metter-investors').'</a></p></div>';
 
 			//financiacio, data
-			$info .= '<div class="b i"><h3><a href="'.$URL.'/project/'.$this->project->id.'/needs"'.$target.'>' . \amount_format($this->project->invested,0,'',','). '<img src="'.$URL.'/view/css/euro/violet/yl.png" alt="&euro;"></a></h3>';
+			$info .= '<div class="b i"><h3><a href="'.$URL.'/project/'.$this->project->id.'/needs"'.$target.'>' . \amount_format($this->project->invested,0,'',','). '<img src="'.$URL.'/view/css/euro/violet/yl.png" alt="&euro;" /></a></h3>';
 			$info .= '<p><a href="'.$URL.'/project/'.$this->project->id.'/needs">' . Text::get('project-view-metter-days') . " {$this->project->days} " . Text::get('regular-days') .'</a></p></div>';
 
 			//impulsores, nom, desc
 			$info .= '<div class="c i">';
-			$info .= '<div class="c1"><p><a href="'.$URL.'/user/'.$this->project->owner.'"'.$target.'><img src="'.$URL.'/image/'.$this->project->user->avatar->id.'/56/56/1" alt="'.$this->project->user->name.'" title="'.$this->project->user->name.'"><br />' . Text::get('regular-by') . ' '  . $this->project->user->name . '</a></p></div>';
+			$info .= '<div class="c1"><p><a href="'.$URL.'/user/'.$this->project->owner.'"'.$target.'><img src="'.$URL.'/image/'.$this->project->user->avatar->id.'/56/56/1" alt="'.$this->project->user->name.'" title="'.$this->project->user->name.'" /><br />' . Text::get('regular-by') . ' '  . $this->project->user->name . '</a></p></div>';
 			$info .= '<div class="c2"><h3><a href="'.$URL.'/project/'.$this->project->id.'"'.$target.'>' . $this->project->name . '</a></h3><p><a href="'.$URL.'/project/'.$this->project->id.'"'.$target.'>'.$this->project->subtitle.'</a></p></div>';
 			$info .= '</div>';
 

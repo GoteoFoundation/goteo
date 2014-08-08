@@ -86,7 +86,7 @@ include 'view/prologue.html.php' ?>
                 <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
                 <div class="project-subtitle"><?php echo htmlspecialchars($project->subtitle) ?></div>
                 <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?php echo Text::get('regular-by') ?> <?php echo $project->user->name; ?></a></div>
-                <br clear="both" />
+                <br/>
 
                 <?php if (!empty($categories)) : ?>
                 <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
