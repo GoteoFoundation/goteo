@@ -6,6 +6,7 @@ namespace Goteo\Model {
     use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\User,
+        Goteo\Model\Project,
         Goteo\Model\Call;
 
     class Invest extends \Goteo\Core\Model {
