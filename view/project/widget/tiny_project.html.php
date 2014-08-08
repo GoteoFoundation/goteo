@@ -6,12 +6,34 @@ use Goteo\Core\View,
     Goteo\Model\Image;
 
 $project = $this['project'];
+
+$proj_id        = $project->id;
+$proj_name      = $project->name;
+$proj_subtitle  = $project->subtitle;
+$proj_description = $project->description;
+$categories     = $project->categories;
+$tagmark        = $project->tagmark;
+$image          = $project->image;
+$user           = $project->user;
+$days           = $project->days;
+$days_round1    = $project->days_round1;
+$days_round2    = $project->days_round2;
+$round          = $project->round;
+$status         = $project->status;
+$amount         = $project->amount;
+$per_amount     = $project->per_amount;
+$date_created   = $project->created;
+$date_updated   = $project->updated;
+$date_success   = $project->success;
+$date_closed    = $project->closed;
+$date_published = $project->published;
+
 $url = '';
 ?>
 <li>
-    <a href="<?php echo $url ?>/project/<?php echo $project->id ?>" class="expand" target="_blank"></a>
+    <a href="<?php echo $url ?>/project/<?php echo $proj_id ?>" class="expand" target="_blank"></a>
     <div class="image">
-        <?php switch ($project->tagmark) {
+        <?php switch ($tagmark) {
             case 'onrun': // "en marcha"
                 echo '<div class="tagmark aqua">' . Text::get('regular-onrun_mark') . '</div>';
                 break;
@@ -32,54 +54,54 @@ $url = '';
                 break;
         } ?>
 
-        <?php if ($project->image instanceof Image): ?>
-        <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"><img src="<?php echo $project->image->getLink(150, 98, true) ?>" alt="<?php echo $project->name ?>"/></a>
+        <?php if ($image instanceof Image): ?>
+        <a href="<?php echo $url ?>/project/<?php echo $proj_id ?>"><img src="<?php echo $image->getLink(150, 98, true) ?>" alt="<?php echo $proj_name ?>"/></a>
         <?php endif ?>
-        <?php if (!empty($project->categories)): ?>
-        <div class="categories"><?php $sep = ''; foreach ($project->categories as $key=>$value) :
+        <?php if (!empty($categories)): ?>
+        <div class="categories"><?php $sep = ''; foreach ($categories as $key=>$value) :
             echo $sep.htmlspecialchars($value);
         $sep = ', '; endforeach; ?></div>
         <?php endif ?>
     </div>
-    <h3 class="title"><a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($project->name,50)) ?></a></h3>
-    <div class="description"><?php echo empty($project->subtitle) ? Text::recorta($project->description, 100) : Text::recorta($project->subtitle, 100); ?></div>
-    <h4 class="author"><?php echo Text::get('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>" target="_blank"><?php echo htmlspecialchars(Text::recorta($project->user->name,40)) ?></a></h4>
+    <h3 class="title"><a href="<?php echo $url ?>/project/<?php echo $proj_id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars(Text::recorta($proj_name, 50)) ?></a></h3>
+    <div class="description"><?php echo empty($proj_subtitle) ? Text::recorta($proj_description, 100) : Text::recorta($proj_subtitle, 100); ?></div>
+    <h4 class="author"><?php echo Text::get('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($user->id) ?>" target="_blank"><?php echo htmlspecialchars(Text::recorta($user->name,40)) ?></a></h4>
     <span class="obtained"><?php echo Text::get('project-view-metter-got'); ?></span>
     <div class="obtained">
-        <strong><?php echo \amount_format($project->amount) ?> <span class="euro">&euro;</span></strong>
-        <span class="percent"><?php echo $project->per_amount ?> &#37;</span>
+        <strong><?php echo \amount_format($amount) ?> <span class="euro">&euro;</span></strong>
+        <span class="percent"><?php echo $per_amount ?> &#37;</span>
     </div>
     <?php
-    switch ($project->status) {
+    switch ($status) {
         case 1: // en edicion
         ?>
-    <div class="days"><span><?php echo Text::get('project-view-metter-day_created'); ?></span> <?php echo date('d / m / Y', strtotime($project->created)) ?></div>
+    <div class="days"><span><?php echo Text::get('project-view-metter-day_created'); ?></span> <?php echo date('d / m / Y', strtotime($date_created)) ?></div>
         <?php
         break;
 
         case 2: // enviado a revision
         ?>
-    <div class="days"><span><?php echo Text::get('project-view-metter-day_updated'); ?></span> <?php echo date('d / m / Y', strtotime($project->updated)) ?></div>
+    <div class="days"><span><?php echo Text::get('project-view-metter-day_updated'); ?></span> <?php echo date('d / m / Y', strtotime($date_updated)) ?></div>
         <?php
         break;
 
         case 4: // financiado
         case 5: // caso de exito
         ?>
-    <div class="days"><span><?php echo Text::get('project-view-metter-day_success'); ?></span> <?php echo date('d / m / Y', strtotime($project->success)) ?></div>
+    <div class="days"><span><?php echo Text::get('project-view-metter-day_success'); ?></span> <?php echo date('d / m / Y', strtotime($date_success)) ?></div>
         <?php
         break;
 
         case 6: // archivado
         ?>
-    <div class="days"><span><?php echo Text::get('project-view-metter-day_closed'); ?></span> <?php echo date('d / m / Y', strtotime($project->closed)) ?></div>
+    <div class="days"><span><?php echo Text::get('project-view-metter-day_closed'); ?></span> <?php echo date('d / m / Y', strtotime($date_closed)) ?></div>
         <?php
         break;
 
         default:
-            if ($project->days > 2 || $project->days == 0) :
+            if ($days > 2 || $days == 0) :
         ?>
-    <div class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span> <?php echo $project->days ?> <?php echo Text::get('regular-days'); ?></div>
+    <div class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span> <?php echo $days ?> <?php echo Text::get('regular-days'); ?></div>
         <?php
             else :
                 $part = strtotime($project->published);
