@@ -329,6 +329,7 @@ namespace Goteo\Model {
                 $project->days_round2 = $project_conf->days_round2;
                 $project->one_round = $project_conf->one_round;
                 $project->watch = Project\Conf::isWatched($id);
+                $project->noinvest = Project\Conf::isInvestClosed($id);
 
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
@@ -354,8 +355,6 @@ namespace Goteo\Model {
                     $messegers[$msg->user] = $msg->user;
                 }
                 $project->num_messegers = count($messegers);
-
-                $project->noinvest = Project\Conf::isInvestClosed($id);
 
                 $project->setDays();
                 $project->setTagmark();
@@ -488,6 +487,7 @@ namespace Goteo\Model {
                 $project_conf = Project\Conf::get($id);
                 $project->days_round1 = $project_conf->days_round1;
                 $project->days_round2 = $project_conf->days_round2;
+                $project->one_round = $project_conf->one_round;
                 $project->watch = Project\Conf::isWatched($id);
                 $project->noinvest = Project\Conf::isInvestClosed($id);
 
@@ -623,7 +623,7 @@ namespace Goteo\Model {
                 if ($days < $project->days_round1) { // En primera ronda
                     $this->round = 1;
                     $daysleft = $project->days_round1 - $days;
-                } elseif ($days >= $project->days_round1 && $days <= $project->days_round2) { // En segunda ronda
+                } elseif (!$project->one_round && $days >= $project->days_round1 && $days <= $project->days_round2) { // En segunda ronda
                     $this->round = 2;
                     $daysleft = $project->days_round2 - $days;
                 } else { // Ha finalizado la segunda ronda
