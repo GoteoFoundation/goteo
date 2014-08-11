@@ -6,8 +6,7 @@
 //
 // **************
 
-// Make sure the namespace is not defined yet
-
+// Make sure the namespace is defined
 if (typeof GOTEO === 'undefined') {
     var GOTEO = { 
         charts : {},
@@ -17,7 +16,10 @@ if (typeof GOTEO === 'undefined') {
         formats : {
             format : d3.time.format("%Y-%m-%d"),
             formatXaxis : d3.time.format("%b %d"),
-            formatLabel : d3.time.format("%d %B")
+            formatLabel : d3.time.format("%d %B"),
+            formatYaxis : function (d) {
+                return (+d).toLocaleString("de-DE");
+            }
         }
     };
 };
