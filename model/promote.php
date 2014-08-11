@@ -147,6 +147,13 @@ namespace Goteo\Model {
                 //calcular dias sin consultar sql
                 $promo->projectData->days = $promo->days;
                 $promo->projectData->round = 0;
+
+                $project_conf = Project\Conf::get($promo->projectData->id);
+                $promo->projectData->days_round1 = $project_conf->days_round1;
+                $promo->projectData->days_round2 = $project_conf->days_round2;
+                $promo->projectData->days_total = $project_conf->days_round1 + $project_conf->days_round2;
+                $promo->projectData->one_round = $project_conf->one_round;
+
                 $promo->projectData->setDays();
                 $promo->projectData->setTagmark();
 

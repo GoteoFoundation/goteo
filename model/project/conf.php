@@ -37,7 +37,7 @@ namespace Goteo\Model\Project {
                     $project_conf->noinvest = 0;
                     $project_conf->watch = 0;
                     $project_conf->days_round1 = 40;
-                    $project_conf->days_round2 = 80;
+                    $project_conf->days_round2 = 40;
                     $project_conf->one_round = 0;
                 }
 
@@ -179,6 +179,22 @@ namespace Goteo\Model\Project {
         public static function isWatched($id) {
             try {
                 $query = static::query("SELECT watch FROM project_conf WHERE project = ?", array($id));
+                $watch = $query->fetchColumn();
+                return ($watch == 1);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+        /**
+         * Comprobar si el proyecto es de ronda única
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
+        public static function isOneRound($id) {
+            try {
+                $query = static::query("SELECT one_round FROM project_conf WHERE project = ?", array($id));
                 $watch = $query->fetchColumn();
                 return ($watch == 1);
             } catch(\PDOException $e) {

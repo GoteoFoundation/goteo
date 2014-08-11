@@ -275,7 +275,7 @@ namespace Goteo\Library {
         }
 
         /**
-         * Metodo para calcular cuanto falta para una fecha (para las 0:00 de esa fecha
+         * Metodo para calcular cuanto falta para una fecha (para las 0:00 de esa fecha)
          *
          * Usa los mismos periodos que feed::time_ago y la misma idea pero con la resta a la inversa
          */

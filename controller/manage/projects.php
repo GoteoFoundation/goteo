@@ -334,8 +334,8 @@ namespace Goteo\Controller\Manage {
                     $the_proj->passed = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$days_round1, date('Y', $the_date)));
                 }
                 if (empty($the_proj->success)) {
-                    $days_round2 = Model\Project\Conf::getRound2Days($proj['id']);
-                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$days_round2, date('Y', $the_date)));
+                    $days_total = Project\Conf::getRound1Days($proj['id']) + Project\Conf::getRound2Days($proj['id']);
+                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$days_total, date('Y', $the_date)));
                 }
                 
                 // preparamos los flags
@@ -362,10 +362,18 @@ namespace Goteo\Controller\Manage {
                     'issue' => 'show'
                 ));
                 $sum = 0;
+
+                foreach($issues as $issue) {
+                    $sum += $issue->amount;
+                }
+
+                /* Error de PHP. Corregir */
+                /*
                 array_walk($issues, function($item, $index, $sum) {
                         $sum += $item->amount;
                     }, &$sum);
                 $the_proj->issues = $sum;
+                */
                 
                 // y si estas incidencias hacen peligrar el mínimo
                 

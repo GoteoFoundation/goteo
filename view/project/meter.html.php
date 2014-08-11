@@ -14,6 +14,17 @@ $minimum    = $project->mincost;
 $optimum    = $project->maxcost;
 $reached    = $project->invested;
 $days       = $project->days;
+$days_round1 = $project->days_round1;
+$days_total = $project->days_total;
+$round      = $project->round;
+$status     = $project->status;
+$amount     = $project->amount;
+$date_created = $project->created;
+$date_updated = $project->updated;
+$date_success = $project->success;
+$date_closed  = $project->closed;
+$date_published = $project->published;
+$num_investors  = $project->num_investors;
 
 
 // PHP la pifia (y mucho) con los cálculos en coma flotante
@@ -81,7 +92,7 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
     <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : ''; echo $activable ? ' activable' : ''; ?>">
         
         <h<?php echo $level ?> class="title investment"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
-        <?php if (!empty($project->round)) : ?><h<?php echo $level ?> class="title ronda"><?php echo $project->round . Text::get('regular-round'); ?></h<?php echo $level ?>><?php endif; ?>
+        <?php if (!empty($round)) : ?><h<?php echo $level ?> class="title ronda"><?php echo $round . Text::get('regular-round'); ?></h<?php echo $level ?>><?php endif; ?>
         <?php if ($activable) : ?><h<?php echo $level ?> class="title obtained"><?php echo Text::get('project-view-metter-got'); ?></h<?php echo $level ?>><?php endif; ?>
         <div class="graph">
             <div class="optimum">
@@ -105,15 +116,19 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
             <dd class="reached"><strong><?php echo \amount_format($reached) ?> <span class="euro">&euro;</span></strong></dd>
 
             <?php
-            if ($project->status == 3) { // en campaña
+            if ($status == 3) { // en campaña
                 if ($days > 2) {
                     $days_left = number_format($days);
                     $days_left2 = Text::get('regular-days');
                 } else {
-                    $part = strtotime($project->published);
-                    // si primera ronda: published + PRIMERA_RONDA días
-                    // si segunda ronda: published + SEGUNDA_RONDA días
-                    // FIXME: $plus = 40 * $project->round;
+                    $part = strtotime($date_published);
+
+                    if ($round == 1) {
+                        $plus = $days_round1;
+                    } elseif ($round == 2) {
+                        $plus = $days_total;
+                    }
+
                     $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
                     $days_left = Check::time_togo($final_day, 1);
                     $days_left2 = '';
@@ -122,27 +137,27 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
             <dt class="days"><span><?php echo Text::get('project-view-metter-days'); ?></span></dt>
             <dd class="days"><strong><?php echo $days_left; ?></strong> <?php echo $days_left2; ?></dd>
             <?php
-            } elseif (!empty($project->status)) {
-                switch ($project->status) {
+            } elseif (!empty($status)) {
+                switch ($status) {
                     case 1: // en edicion
                         $text = 'project-view-metter-day_created';
-                        $date = $project->created;
+                        $date = $date_created;
                         break;
 
                     case 2: // pendiente de valoración
                         $text = 'project-view-metter-day_updated';
-                        $date = $project->updated;
+                        $date = $date_updated;
                         break;
 
                     case 4: // financiado
                     case 5: // retorno cumplido
                         $text = 'project-view-metter-day_success';
-                        $date = $project->success;
+                        $date = $date_success;
                         break;
 
                     case 6: // archivado
                         $text = 'project-view-metter-day_closed';
-                        $date = $project->closed;
+                        $date = $date_closed;
                         break;
                 }
             ?>
@@ -153,7 +168,7 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
             ?>
 
             <dt class="supporters"><span><?php echo Text::get('project-view-metter-investors'); ?></span></dt>
-            <dd class="supporters"><strong><?php echo $project->num_investors ?></strong></dd>
+            <dd class="supporters"><strong><?php echo $num_investors ?></strong></dd>
 
         </dl>
 
@@ -166,7 +181,7 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
 
     <?php /*
     // si en estado 3 ha alcanzado el optimo o segunda ronda, "aun puedes seguir aportando" junto al quedan tantos días
-    if ($project->status == 3 && ($project->round == 2  || $project->amount >= $project->maxcost || ($project->round == 1  && $project->amount >= $project->mincost) )) : ?>
+    if ($status == 3 && ($round == 2  || $amount >= $optimum || ($round == 1  && $amount >= $minimum) )) : ?>
         <div class="keepiton"><?php echo Text::get('regular-keepiton') ?></div>
     <?php endif; */ ?>
 
