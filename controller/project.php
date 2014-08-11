@@ -944,6 +944,9 @@ namespace Goteo\Controller {
 
             }
 
+            // ronda unica
+            $project->one_round = empty($_POST['one_round']) ? 0 : 1;
+
             return true;
         }
 
