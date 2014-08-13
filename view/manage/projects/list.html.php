@@ -123,6 +123,7 @@ $filters = $this['filters'];
             </tr>
             <tr>
                 <td colspan="5">
+                    <?php if ($project->status == 3) : ?>
                     <p>
                         <strong>Conf. P.R.: </strong> <?php echo $project->days_round1; ?>&nbsp;&nbsp;
                         <?php if ($project->one_round) : ?><strong>Ronda &uacute;nica: </strong>&nbsp;&nbsp;
@@ -133,6 +134,7 @@ $filters = $this['filters'];
                         <strong>Está en la ronda: </strong> <?php echo $project->round; ?>&nbsp;&nbsp;
                         Le quedan <strong><?php echo $project->days; ?></strong> d&iacute;as.&nbsp;&nbsp;
                     </p>
+                    <?php endif; ?>
                     <p>
                     <strong>Publicado el</strong> <?php echo date('d-m-Y', strtotime($project->published)); ?>&nbsp;&nbsp;&nbsp;&nbsp;
                     <strong>Final primera:</strong> <?php echo date('d-m-Y', strtotime($project->passed)); ?>&nbsp;&nbsp;&nbsp;&nbsp;

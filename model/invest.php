@@ -726,7 +726,8 @@ namespace Goteo\Model {
             }
 
             $query = static::query($sql, $values);
-            if($got = $query->fetchObject() && $only === null && $call === null) {
+            $got = $query->fetchObject();
+            if($only === null && $call === null) {
                 //actualiza el el amount en proyecto
                 if (!empty($got->much)) {
                     static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));

@@ -327,8 +327,8 @@ namespace Goteo\Model {
                 $project_conf = Project\Conf::get($id);
                 $project->days_round1 = $project_conf->days_round1;
                 $project->days_round2 = $project_conf->days_round2;
-                $project->days_total = $project->days_round1 + $project->days_round2;
                 $project->one_round = $project_conf->one_round;
+                $project->days_total = ($project->one_round) ? $project_conf->days_round1 : $project->days_round1 + $project->days_round2;
                 $project->watch = Project\Conf::isWatched($id);
                 $project->noinvest = Project\Conf::isInvestClosed($id);
 
@@ -491,8 +491,8 @@ namespace Goteo\Model {
                 $project_conf = Project\Conf::get($id);
                 $project->days_round1 = $project_conf->days_round1;
                 $project->days_round2 = $project_conf->days_round2;
-                $project->days_total = $project->days_round1 + $project->days_round2;
                 $project->one_round = $project_conf->one_round;
+                $project->days_total = ($project->one_round) ? $project_conf->days_round1 : $project->days_round1 + $project->days_round2;
                 $project->watch = Project\Conf::isWatched($id);
                 $project->noinvest = Project\Conf::isInvestClosed($id);
 
@@ -1916,13 +1916,13 @@ namespace Goteo\Model {
                             return false;
                         }
                     } else {
-                        throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
+                        throw new Exception('Fallo al iniciar transaccion rebase. ');
                     }
                 }
 
                 return true;
             } catch (\PDOException $e) {
-                throw new \Goteo\Core\Exception('Fallo rebase id temporal. ' . \trace($e));
+                throw new Exception('Fallo rebase id temporal. ' . $e->getMessage());
             }
 
         }
@@ -2000,8 +2000,9 @@ namespace Goteo\Model {
         /**
          * Metodo que devuelve los días que quedan para finalizar la ronda actual
          *
+         *  No se usa, lo hace el setDays
+         *
          * @return numeric days remaining to go
-         */
         public function daysRemain($id) {
             //esto tambien se puede hacer sin sql
             //...FALTA
@@ -2014,8 +2015,8 @@ namespace Goteo\Model {
             $days = $query->fetchColumn(0);
             $days--;
 
-            $days_round1 = \Project\Conf::getRound1Days($id);
-            $days_round2 = \Project\Conf::getRound2Days($id);
+            $days_round1 = Project\Conf::getRound1Days($id);
+            $days_round2 = Project\Conf::getRound2Days($id);
             $days_total = $days_round1 + $days_round2;
 
             if ($days > days_round1) {
@@ -2026,6 +2027,7 @@ namespace Goteo\Model {
 
             return $rest;
         }
+         */
 
         /*
          * Lista de proyectos de un usuario
@@ -2287,10 +2289,11 @@ namespace Goteo\Model {
                 $the_proj->patrons = Patron::numRecos($proj->id);
 
                 // extra conf
-                $project_conf = Project\Conf::get($id);
+                $project_conf = Project\Conf::get($proj->id);
                 $the_proj->days_round1 = $project_conf->days_round1;
                 $the_proj->days_round2 = $project_conf->days_round2;
-                $the_proj->days_total = $the_proj->days_round1 + $the_proj->days_round2;
+                $the_proj->one_round = $the_proj->one_round;
+                $the_proj->days_total = ($the_proj->one_round) ? $the_proj->days_round1 : $the_proj->days_round1 + $the_proj->days_round2;
 
                 $projects[] = $the_proj;
             }
@@ -2309,7 +2312,8 @@ namespace Goteo\Model {
             $projects = array();
 
             $sql = "
-                SELECT project.id as id
+                SELECT
+                    project.id as id
                 FROM  project
                 LEFT JOIN project_conf on project = id
                 WHERE project.status = 3

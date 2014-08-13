@@ -34,6 +34,7 @@ namespace Goteo\Model\Project {
                 // Valores por defecto si no existe el proyecto en la tabla
                 if (!$project_conf instanceof self) {
                     $project_conf = new self;
+                    $project_conf->project = $id;
                     $project_conf->noinvest = 0;
                     $project_conf->watch = 0;
                     $project_conf->days_round1 = 40;

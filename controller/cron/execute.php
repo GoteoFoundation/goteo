@@ -13,10 +13,8 @@ namespace Goteo\Controller\Cron {
 
         public static function process ($debug = false) {
             // revision de proyectos: dias, conseguido y cambios de estado
-            // proyectos en campaña,
-            // (publicados hace más de 40 días que no tengan fecha de pase)
-            // o (publicados hace mas de 80 días que no tengan fecha de exito)
-            
+            // proyectos en campaña que estén a 5 días de terminar primera ronda a o a 3 de terminar la segunda
+
             if ($debug) echo 'Comenzamos con los proyectos en campaña (esto está en '.\LANG.')<br /><br />';
 
             $projects = Model\Project::getActive();
@@ -213,11 +211,89 @@ namespace Goteo\Controller\Cron {
         }
 
         /**
+         * El proyecto ha finalizado la campaña al ser ronda única
+         */
+        protected static function cron_project_has_finished_unique_round($project, $per_amount) {
+            echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
+            echo 'El proyecto supera la primera y única ronda: marcamos fecha y damos por financiado';
+
+            // marcamos fecha de pase
+            $errors = array();
+            if ($project->passed($errors)) {
+                // se crea el registro de contrato
+                if (Model\Contract::create($project->id, $errors)) {
+                    echo ' -> Ok:: se ha creado el registro de contrato';
+                } else {
+                    @mail(\GOTEO_FAIL_MAIL,
+                        'Fallo al crear registro de contrato ' . SITE_URL,
+                        'Fallo al crear registro de contrato para el proyecto '.$project->name.': ' . implode(',', $errors));
+                    echo ' -> semi-Ok: se ha actualiuzado el estado del proyecto pero ha fallado al crear el registro de contrato. ERROR: ' . implode(',', $errors);
+                }
+            } else {
+                @mail(\GOTEO_FAIL_MAIL,
+                    'Fallo al marcar fecha de sobrepasada primera y única ronda ' . SITE_URL,
+                    'Fallo al marcar la fecha de sobrepasada primera y única ronda para el proyecto '.$project->name.': ' . implode(',', $errors));
+                echo ' -> ERROR::' . implode(',', $errors);
+            }
+
+            // y financiado
+            $errors = array();
+            if ($project->succeed($errors)) {
+                $log_text = 'El proyecto %s ha sido %s obteniendo %s';
+            } else {
+                @mail(\GOTEO_FAIL_MAIL,
+                    'Fallo al marcar financiado ' . SITE_URL,
+                    'Fallo al marcar el proyecto '.$project->name.' como financiado ' . implode(',', $errors));
+                echo 'ERROR::' . implode(',', $errors);
+                $log_text = 'El proyecto %s ha fallado al ser, %s obteniendo %s';
+            }
+
+            echo '<br />';
+
+            // Evento Feed solo si ejecucion automatica
+            if (\defined('CRON_EXEC')) {
+                $log = new Feed();
+                $log->setTarget($project->id);
+                $log->populate('proyecto supera unica ronda (cron)', '/admin/projects', \vsprintf('El proyecto %s %s su unica ronda obteniendo %s', array(
+                    Feed::item('project', $project->name, $project->id),
+                    Feed::item('relevant', 'completa'),
+                    Feed::item('money', $project->amount.' &euro; ('.\number_format($per_amount, 2).'%) de aportes sobre minimo')
+                )));
+                $log->doAdmin('project');
+
+                // evento público
+                $log->populate($project->name, null,
+                    Text::html('feed-project_finish_unique',
+                        Feed::item('project', $project->name, $project->id),
+                        $project->amount,
+                        \round($per_amount)
+                    ));
+                $log->doPublic('projects');
+                unset($log);
+
+                // Email de proyecto finaliza su única ronda al autor y a los inversores
+                Send::toOwner('unique_pass', $project);
+                Send::toInvestors('unique_pass', $project);
+
+                // mail de aviso
+                $mailHandler = new Mail();
+                $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
+                $mailHandler->toName = 'Goteo.org';
+                $mailHandler->subject = 'Iniciado contrato ' . $project->name;
+                $mailHandler->content = 'El proyecto '.$project->name.' ha finalizado su única ronda, se ha iniciado el registro de contrato.';
+                $mailHandler->html = false;
+                $mailHandler->template = null;
+                $mailHandler->send();
+                unset($mailHandler);
+            }
+        }
+
+        /**
          * El proyecto ha finalizado la segunda ronda
          */
         protected static function cron_project_has_finished_second_round($project, $per_amount) {
             echo $project->name . ': ha recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . '<br />';
-            echo 'Ha llegado a los 80 días: financiado. ';
+            echo 'Ha llegado a los '.$project->days_total.' días: financiado. ';
 
             $errors = array();
             if ($project->succeed($errors)) {
@@ -509,15 +585,27 @@ namespace Goteo\Controller\Cron {
                 $per_amount = 0;
             }
 
-            // los dias que lleva el proyecto  (ojo que los financiados llevaran mas de 80 dias)
-            $days = $project->daysActive();
-
             if ($debug) {
+
+                // días configurados para primera ronda
+                echo 'Configurado primera ronda '.$project->days_round1.'  días<br />';
+
+                if ($project->one_round)
+                    echo 'Configurado ronda única <br />'; // si configurado ronda unica
+                else
+                    echo 'Configurado segunda ronda '.$project->days_round2.'  días<br />'; // dias configurado segunda ronda
+
+                // días que lleva en campaña
+                echo 'Lleva '.$project->days_active.'  días desde la publicacion<br />';
+
+                // días que le quedan para finalizar esta actual ronda
+                echo 'Quedan '.$project->days.' días para el final de la '.$project->round.'a ronda<br />';
+
+                // financiación sobre mínimo
                 echo 'Mínimo: '.$project->mincost.' &euro; <br />';
                 echo 'Obtenido: '.$project->amount.' &euro;<br />';
                 echo 'Ha alcanzado el '.$per_amount.' &#37; del minimo<br />';
-                echo 'Lleva '.$days.'  días desde la publicacion<br />';
-                echo 'Quedan '.$project->days.' días para el final de la '.$project->round.'a ronda<br />';
+
             }
 
             // a los 5, 3, 2, y 1 dia para finalizar ronda
@@ -526,35 +614,50 @@ namespace Goteo\Controller\Cron {
                 self::cron_feed_project_finishing($project);
             }
 
-            //  (financiado a los 80 o cancelado si a los 40 no llega al minimo)
-            // si ha llegado a los 40 dias: mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
-            if ($days >= 40) {
+            // (financiado a los days_total o cancelado si a los days_round1 no llega al minimo)
+            // si ha llegado a los dias configurados para primera ronda:
+            //  mínimo-> ejecutar ; no minimo proyecto y todos los preapprovals cancelados
+            if ($project->days_active >= $project->days_round1) {
                 // si no ha alcanzado el mínimo, pasa a estado caducado
                 if ($project->amount < $project->mincost) {
-                    if ($debug) echo 'Ha llegado a los 40 dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
+                    if ($debug) echo 'Ha llegado a los '.$project->days_round1.' dias de campaña sin conseguir el minimo, no pasa a segunda ronda<br />';
 
                     $cancelAll = true;
                     self::cron_project_has_failed($project, $per_amount);
 
                 } else {
-                    // tiene hasta 80 días para conseguir el óptimo (o más)
-                    if ($days >= 80) {
 
-                        if ($debug) echo 'Ha llegado a los 80 dias de campaña (final de segunda ronda)<br />';
+                    if ($project->one_round) {
+                    // ronda única
+
+                        if ($debug) echo 'Ha llegado a los '.$project->days_round1.' dias de campaña, al ser ronda única termina aquí<br />';
+                        $execute = true; // ejecutar los cargos
+                        self::cron_project_has_finished_unique_round($project, $per_amount);
+
+
+                    } elseif ($project->days_active >= $project->days_total) {
+                    // tiene hasta el total de días (días primera + días segunda) para conseguir el óptimo (o más)
+
+                        if ($debug) echo 'Ha llegado a los '.$project->days_total.' dias de campaña (final de segunda ronda)<br />';
                         $execute = true; // ejecutar los cargos de la segunda ronda
                         self::cron_project_has_finished_second_round($project, $per_amount);
 
-                    } elseif (empty($project->passed)) {
 
-                        if ($debug) echo 'Ha llegado a los 40 dias de campaña, pasa a segunda ronda<br />';
+                    } elseif (empty($project->passed)) {
+                    // pasa a segunda ronda
+
+                        if ($debug) echo 'Ha llegado a los '.$project->days_round1.' dias de campaña, pasa a segunda ronda<br />';
                         $execute = true; // ejecutar los cargos de la primera ronda
                         self::cron_project_has_finished_first_round($project, $per_amount);
 
+
                     } else {
+                        // este caso es lo normal estando en segunda ronda
                         if ($debug) {
-                            echo 'Lleva más de 40 dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
+                            echo 'Lleva más de '.$project->days_round1.' dias de campaña, debe estar en segunda ronda con fecha marcada<br />';
                             echo $project->name . ': lleva recaudado ' . $project->amount . ', '.$per_amount.'% de ' . $project->mincost . '/' . $project->maxcost . ' y paso a segunda ronda el '.$project->passed.'<br />';
                         }
+
                     }
                 }
             }

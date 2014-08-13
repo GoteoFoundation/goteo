@@ -32,6 +32,12 @@ namespace Goteo\Controller\Cron {
             /// tipo de envio
             switch ($type) {
                 // Estos son avisos de final de ronda
+                case 'unique_pass': // template 20, proyecto finaliza la única ronda
+                    $tpl = 60;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/rewards');
+                    break;
+
                 case 'r1_pass': // template 20, proyecto supera la primera ronda
                     $tpl = 20;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
@@ -391,6 +397,12 @@ namespace Goteo\Controller\Cron {
 
             // - Separamos los replaces de contenido de los replaces individuales (%USERNAME%)
             switch ($type) {
+                case 'unique_pass': // template 61, finaliza única ronda
+                        $tpl = 61;
+                        $search  = array('%PROJECTNAME%', '%PROJECTURL%');
+                        $replace = array($project->name, SITE_URL . '/project/' . $project->id);
+                    break;
+
                 case 'r1_pass': // template 15, proyecto supera la primera ronda
                         $tpl = 15;
                         $search  = array('%PROJECTNAME%', '%PROJECTURL%');

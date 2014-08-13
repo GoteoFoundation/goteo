@@ -79,8 +79,8 @@ namespace Goteo\Controller\Admin {
                 } elseif (isset($_POST['save-rounds'])) {
 
                     $project_conf = Model\Project\Conf::get($projData->id);
-                    $project_conf->days_round1 = $_POST['round1'];
-                    $project_conf->days_round2 = $_POST['round2'];
+                    $project_conf->days_round1 = (!empty($_POST['round1'])) ? $_POST['round1'] : 40;
+                    $project_conf->days_round2 = (!empty($_POST['round2'])) ? $_POST['round2'] : 40;
                     $project_conf->one_round = isset($_POST['oneround']);
                     if ($project_conf->save($errors)) {
                         Message::Info('Se han actualizado los días de campaña del proyecto ' . $projData->name);
