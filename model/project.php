@@ -333,15 +333,16 @@ namespace Goteo\Model {
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
                 $project->investors = Invest::investors($id);
-                //consultamos y actualizamos el numero de inversores
-                if(empty($project->num_investors)) {
-                    $project->num_investors = Invest::numInvestors($id);
-                }
 
-                if(empty($project->amount)) {
+                if($project->status == 3 && empty($project->amount)) {
                     $project->amount = Invest::invested($id);
                 }
                 $project->invested = $project->amount;
+
+                //consultamos y actualizamos el numero de inversores
+                if($project->amount > 0 && empty($project->num_investors)) {
+                    $project->num_investors = Invest::numInvestors($id);
+                }
 
                 //mensajes y mensajeros
                 $messegers = array();
@@ -465,15 +466,17 @@ namespace Goteo\Model {
                 // asesores
                 $project->consultants = Project::getConsultants($id);
 
-                if(empty($project->amount)) {
+
+                if($project->status == 3 && empty($project->amount)) {
                     $project->amount = Invest::invested($id);
                 }
                 $project->invested = $project->amount;
 
                 //consultamos y actualizamos el numero de inversores si no está definido
-                if(empty($project->num_investors)) {
+                if($project->amount > 0 && empty($project->num_investors)) {
                     $project->num_investors = Invest::numInvestors($id);
                 }
+
                 $project->num_messegers = Message::numMessegers($id);
 
                 // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado
