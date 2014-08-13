@@ -124,10 +124,16 @@ $filters = $this['filters'];
             <tr>
                 <td colspan="5">
                     <p>
-                    <?php if ($project->status == 3) : ?>
-                    <strong>Ronda: </strong> <?php echo $project->round; ?>&nbsp;&nbsp;
-                    Le quedan <strong><?php echo $project->days; ?></strong> d&iacute;as.&nbsp;&nbsp;
-                    <?php endif; ?>
+                        <strong>Conf. P.R.: </strong> <?php echo $project->days_round1; ?>&nbsp;&nbsp;
+                        <?php if ($project->one_round) : ?><strong>Ronda &uacute;nica: </strong>&nbsp;&nbsp;
+                        <?php else : ?><strong>Conf. S.R.: </strong> <?php echo $project->days_round2; ?>&nbsp;&nbsp;
+                        <?php endif; ?>
+                        <strong>Total: </strong> <?php echo $project->days_total; ?>&nbsp;&nbsp;
+                        <strong>Lleva: </strong> <?php echo $project->days_active; ?> d&iacute;as.&nbsp;&nbsp;
+                        <strong>Está en la ronda: </strong> <?php echo $project->round; ?>&nbsp;&nbsp;
+                        Le quedan <strong><?php echo $project->days; ?></strong> d&iacute;as.&nbsp;&nbsp;
+                    </p>
+                    <p>
                     <strong>Publicado el</strong> <?php echo date('d-m-Y', strtotime($project->published)); ?>&nbsp;&nbsp;&nbsp;&nbsp;
                     <strong>Final primera:</strong> <?php echo date('d-m-Y', strtotime($project->passed)); ?>&nbsp;&nbsp;&nbsp;&nbsp;
                     <strong>Final segunda:</strong> <?php echo date('d-m-Y', strtotime($project->success)); ?>

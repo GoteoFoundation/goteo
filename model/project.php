@@ -624,17 +624,18 @@ namespace Goteo\Model {
 
             if ($this->status == 3) { // En campaña
                 $days = $this->daysActive(); // Tiempo de campaña (días desde la fecha de publicación del proyecto)
+                $this->days_active = $days;
 
                 if ($days < $this->days_round1) { // En primera ronda
                     $this->round = 1;
                     $daysleft = $this->days_round1 - $days;
-                } elseif ($days >= $this->days_round1 && $days <= $this->days_round2) { // En segunda ronda
-                    $daysleft = $this->days_round1 - $days;
                 } elseif (!$this->one_round && $days >= $this->days_round1 && $days <= $this->days_total) { // En segunda ronda
                     $this->round = 2;
                     $daysleft = $this->days_total - $days;
-                } else { // Ha finalizado la segunda ronda
-                    //FIXME: ¿> 81 días? ($days > $this->days_round2+1)
+                } elseif ($days >= $this->days_total) { // Ha finalizado la campaña
+                    $this->round = ($this->one_round) ? 1 : 2;
+                    $daysleft = 0;
+                } else {
                     $this->round = 0;
                     $daysleft = 0;
                 }
