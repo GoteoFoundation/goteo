@@ -47,4 +47,4 @@ else :
     </ul>
 </div>
 <?php endif; ?>
-<?php if ($banner->image instanceof \Goteo\Model\Image) : ?><div class="shb-img"><img src="<?php echo $banner->image->getLink(700, 156, true) ?>" title="<?php echo $banner->title ?>" alt="<?php echo $banner->title ?>" /></div><?php endif; ?>
+<?php if ($banner->image instanceof \Goteo\Model\Image) : ?><div class="shb-img"><img src="<?php echo $banner->image->getLink(700, 156, true) ?>" title="<?php echo htmlspecialchars($banner->title) ?>" alt="<?php echo htmlspecialchars($banner->title) ?>" /></div><?php endif; ?>

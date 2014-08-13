@@ -71,7 +71,7 @@ include 'view/header.html.php';
                             <div class="post-gallery-container">
                                 <?php $i = 1; foreach ($post->gallery as $image) : ?>
                                 <div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
-                                    <img src="<?php echo $image->getLink(500, 285); ?>" alt="<?php echo $post->title; ?>" />
+                                    <img src="<?php echo $image->getLink(500, 285); ?>" alt="<?php echo htmlspecialchars($post->title) ?>" />
                                 </div>
                                 <?php $i++; endforeach; ?>
                             </div>
@@ -89,7 +89,7 @@ include 'view/header.html.php';
                         </div>
                         <?php elseif (!empty($post->image)) : ?>
                             <div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
-                                <img src="<?php echo $post->image->getLink(500, 285); ?>" alt="<?php echo $post->title; ?>" />
+                                <img src="<?php echo $post->image->getLink(500, 285); ?>" alt="<?php echo htmlspecialchars($post->title) ?>" />
                             </div>
                         <?php endif; ?>
                     </div>

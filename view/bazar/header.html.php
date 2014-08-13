@@ -5,7 +5,7 @@ $page = $this['page'];
 ?>
 <header>
 	<nav>
-		<a href="<?php echo $page->url; ?>" class="logo<?php if (!$page->home) echo ' page'; ?>"><img src="/view/bazar/img/carro.png" alt="IMG" title="<?php echo $page->name; ?>" /></a>
+		<a href="<?php echo $page->url; ?>" class="logo<?php if (!$page->home) echo ' page'; ?>"><img src="/view/bazar/img/carro.png" alt="IMG" title="<?php echo htmlspecialchars($page->name); ?>" /></a>
 		<?php if ($page->home) : ?>
 			<h1><?php echo $page->name; ?></h1>
 			<h2><?php echo $page->description; ?></h2>

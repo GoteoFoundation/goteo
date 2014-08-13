@@ -31,7 +31,7 @@ if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; }
 
 	<article class="header top">
 		<div class="caja"><p class="precio"><?php echo $item->amount; ?>&euro;</p></div>
-		<img class="item" src="<?php echo $item->imgsrc; ?>" title="<?php echo $item->title; ?>" alt="IMG" title="<?php echo $item->title; ?>"/>
+		<img class="item" src="<?php echo $item->imgsrc; ?>" title="<?php echo htmlspecialchars($item->title); ?>" alt="IMG" />
 	</article>
 	<article class="header prod">
 		<div id="prod-description"><?php echo $item->description; ?></div>

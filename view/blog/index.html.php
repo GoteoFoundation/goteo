@@ -39,7 +39,7 @@ if ($this['show'] == 'list') {
     }
 } elseif ($this['show'] == 'post') {
     $ogmeta = array(
-        'title' => $post->title,
+        'title' => htmlspecialchars($post->title, ENT_QUOTES),
         'description' => Text::get('regular-by').' '.$post->user->name,
         'url' => SITE_URL . '/blog/'.$post->id
     );

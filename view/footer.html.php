@@ -83,7 +83,7 @@ jQuery(document).ready(function($) {
 				<div class="slides_container">
 					<?php $i = 1; foreach ($sponsors as $sponsor) : ?>
 					<div class="sponsor" id="footer-sponsor-<?php echo $i ?>">
-						<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?php echo $sponsor->name ?>" /></a>
+						<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?php echo htmlspecialchars($sponsor->name) ?>" /></a>
 					</div>
 					<?php $i++; endforeach; ?>
 				</div>

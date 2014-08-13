@@ -102,8 +102,8 @@ namespace Goteo\Controller {
             $vdata['page'] = $page;
 
             $vdata['ogmeta'] = array(
-                'title' => $item_title,
-                'description' => $item_description,
+                'title' => htmlspecialchars($item_title, ENT_QUOTES),
+                'description' => htmlspecialchars($item_description, ENT_QUOTES),
                 'url' => $ogurl,
                 'image' => $ogimages
             );
