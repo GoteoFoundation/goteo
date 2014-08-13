@@ -50,16 +50,6 @@ namespace Goteo\Controller {
             // Proyectos destacados
             if (isset($order['promotes'])) {
                 $promotes  = Promote::getAll(true);
-/*
-                //demasiadas queries con esto
-                foreach ($promotes as $key => &$promo) {
-                    try {
-                        $promo->projectData = Project::getMedium($promo->project, LANG);
-                    } catch (\Goteo\Core\Error $e) {
-                        unset($promotes[$key]);
-                    }
-                }
-*/
             }
 
             // capital riego
@@ -73,21 +63,6 @@ namespace Goteo\Controller {
             // padrinos
             if (isset($order['patrons'])) {
                 $patrons  = Patron::getInHome();
-/*
-                //aqui también tenemos una infinidad de queries
-                foreach ($patrons as $key=>$userId) {
-                    try {
-                        $userData = User::getMini($userId);
-                        $vipData = User\Vip::get($userId);
-                        if (!empty($vipData->image)) {
-                            $userData->avatar = $vipData->image;
-                        }
-                        $patrons[$userId] = $userData;
-                    } catch (\Goteo\Core\Error $e) {
-                        unset($patrons[$userId]);
-                    }
-                }
-*/
             }
             // actividad reciente
             if (isset($order['feed'])) {
@@ -114,19 +89,6 @@ namespace Goteo\Controller {
             // Banners siempre
             $banners   = Banner::getAll(true);
 
-/*          //esto genera una infinidad de queries:
-            foreach ($banners as $id => &$banner) {
-
-                if (!empty($banner->project)) {
-                    try {
-                        $banner->project = Project::get($banner->project, LANG);
-                    } catch (\Goteo\Core\Error $e) {
-                        unset($banners[$id]);
-                    }
-                }
-
-            }
-*/
             return new View('view/index.html.php',
                 array(
                     'banners'   => $banners,
@@ -160,36 +122,11 @@ namespace Goteo\Controller {
             // Proyectos destacados primero para saber si lo meto en el buscador o no
             if (isset($order['promotes']) || isset($side_order['searcher'])) {
                 $promotes  = Promote::getAll(true, NODE_ID);
-
-/*
-                //demasiadas queries con esto
-                foreach ($promotes as $key => &$promo) {
-                    try {
-                        $promo->projectData = Project::getMedium($promo->project, LANG);
-                    } catch (\Goteo\Core\Error $e) {
-                        unset($promotes[$key]);
-                    }
-                }
-*/
             }
 
             // padrinos
             if (isset($order['patrons'])) {
                 $patrons  =  $patrons = Patron::getInHome();
-/*
-                foreach ($patrons as $key=>$userId) {
-                    try {
-                        $userData = User::getMini($userId);
-                        $vipData = User\Vip::get($userId);
-                        if (!empty($vipData->image)) {
-                            $userData->avatar = $vipData->image;
-                        }
-                        $patrons[$userId] = $userData;
-                    } catch (\Goteo\Core\Error $e) {
-                        unset($patrons[$userId]);
-                    }
-                }
-*/
             }
 
 

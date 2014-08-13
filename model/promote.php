@@ -72,6 +72,7 @@ namespace Goteo\Model {
                                     AND eng.lang = 'en'";
                 }
 
+            // sacamos tambien todos los dfatos que da el project::getMedium
             $query = static::query("
                 SELECT
                     promote.id as id,
