@@ -21,7 +21,7 @@ if (count($patrons) > 1) : ?>
                 <a href="/user/profile/<?php echo $patron->id ?>" title="<?php echo $patron->name ?>" target="_blank"><?php echo $patron->name ?></a>
             </div>
             <div class="patron-avatar">
-                <a href="/user/profile/<?php echo $patron->id ?>" title="<?php echo $patron->name ?>" target="_blank"><img src="<?php echo $patron->avatar->getLink(112, 74, true) ?>" alt="<?php echo $patron->name ?>" /></a>
+                <a href="/user/profile/<?php echo $patron->id ?>" title="<?php echo $patron->name ?>" target="_blank"><img src="<?php echo $patron->avatar->getLink(112, 74, true) ?>" alt="<?php echo htmlspecialchars($patron->name) ?>" /></a>
             </div>
             <div class="patron-reco">
                 <span><a href="<?php echo $patron->link ?>" target="_blank"><?php echo $patron->title; ?></a></span>

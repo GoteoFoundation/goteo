@@ -97,7 +97,7 @@ include 'view/prologue.html.php' ?>
                 <?php endif; ?>
 
                 <?php if (!empty($project->node) && $project->node != \NODE_ID) : ?>
-                <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" ><img src ="/nodesys/<?php echo $project->node ?>/sello.png" alt="<?php echo $project->nodeData->name ?>" title="Nodo <?php echo $project->nodeData->name ?>"/></a></div>
+                <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" ><img src ="/nodesys/<?php echo $project->node ?>/sello.png" alt="<?php echo htmlspecialchars($project->nodeData->name) ?>" title="Nodo <?php echo htmlspecialchars($project->nodeData->name) ?>"/></a></div>
                 <?php endif; ?>
             </div>
 

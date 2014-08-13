@@ -20,7 +20,7 @@ $call = $this['call'];
 	<div class="slides_container">
 		<?php $i = 1; foreach ($call->sponsors as $sponsor) : ?>
 		<div class="sponsor" id="call-sponsor-<?php echo $i ?>">
-			<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85, true) ?>" alt="<?php echo $sponsor->name ?>" /></a>
+			<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85, true) ?>" alt="<?php echo htmlspecialchars($sponsor->name) ?>" /></a>
 		</div>
 		<?php $i++; endforeach; ?>
 	</div>

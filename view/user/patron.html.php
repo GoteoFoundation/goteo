@@ -54,7 +54,7 @@ shuffle($recos);
         <h2><span class="greenblue"><?php echo $user->name ?></span><br /><?php echo Text::html('profile-patron-header', count($recos)) ?></h2>
         
         <?php if (!empty($user->node) && $user->node != \GOTEO_NODE) : ?>
-        <div class="nodemark"><a class="node-jump" href="<?php echo $user->nodeData->url ?>" ><img src ="/nodesys/<?php echo $user->node ?>/sello.png" alt="<?php echo $user->nodeData->name ?>" title="Nodo <?php echo $user->nodeData->name ?>"/></a></div>
+        <div class="nodemark"><a class="node-jump" href="<?php echo $user->nodeData->url ?>" ><img src ="/nodesys/<?php echo $user->node ?>/sello.png" alt="<?php echo htmlspecialchars($user->nodeData->name) ?>" title="Nodo <?php echo htmlspecialchars($user->nodeData->name) ?>"/></a></div>
         <?php endif; ?>
     </div>
     
