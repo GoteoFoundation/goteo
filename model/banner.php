@@ -80,6 +80,7 @@ namespace Goteo\Model {
                                     AND eng.lang = 'en'";
                 }
 
+                // sacamos también los datos de proyecto que se necesitan
                 $sql="SELECT
                         banner.id as id,
                         banner.node as node,

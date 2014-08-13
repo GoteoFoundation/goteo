@@ -248,6 +248,7 @@ namespace Goteo\Model {
 
         /*
          * Devuelve la lista de patronos que deben estar en home
+         *  con datos del usuario e imagen de padrino
          */
         public static function getInHome($node = \GOTEO_NODE) {
 
@@ -255,23 +256,55 @@ namespace Goteo\Model {
 
             $values = array(':node'=>$node);
 
-            $sql = "SELECT
-                        patron.user as id,
-                        patron_order.order as `order`
-                    FROM patron
-                    LEFT JOIN patron_order
-                        ON patron_order.id = patron.user
-                    WHERE patron_order.order is not null
-                    AND patron.node = :node
-                    ORDER BY `order` ASC";                  
+            try {
+                $sql = "SELECT
+                        user.id as id,
+                        user.name as name,
+                        user.num_patron_active as num_patron_active,
+                        patron_order.order as `order`,
+                        user_vip.image as vip_image,
+                        user.avatar as user_image
+                    FROM patron_order
+                    INNER JOIN user
+                        ON user.id = patron_order.id
+                    LEFT JOIN user_vip
+                        ON user_vip.user = patron_order.id
+                    INNER JOIN patron
+                        ON patron.user = patron_order.id
+                        AND patron.node = :node
+                    WHERE patron_order.order IS NOT NULL
+                    GROUP BY patron.user
+                    ORDER BY patron_order.order ASC";
 
-            $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-                if (!in_array($item->id, $list))
-                    $list[$item->id] = $item->id;
+                $query = self::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+
+                    // usar avatar del usuario si no tiene imagen propia de vip (apaisada)
+                    $item->avatar = (empty($item->vip_image) && !empty($item->user_image))
+                        ? Model\Image::get($item->user_image)
+                        : Model\Image::get($item->vip_image);
+
+                    // y si no tiene ninguna, la gota
+                    if (!$item->avatar instanceof Model\Image ) {
+                        $item->avatar = Model\Image::get(1);
+                    }
+
+                    // solo en caso de que no tenga grabado el numero de proyectos apadrinados
+                    if (empty($item->num_patron_active)) {
+                        $patrons = static::calcPatrons($item->id);
+                        $item->num_patron = $patrons->num_patron;
+                        $item->num_patron_active = $patrons->num_patron_active;
+                    }
+
+                    $list[$item->id] = $item;
+                }
+
+                return $list;
+            } catch (\Goteo\Core\Error $e) {
+                return array();
             }
 
-            return $list;
+
         }
 
         /**
