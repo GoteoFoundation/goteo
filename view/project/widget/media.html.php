@@ -7,7 +7,7 @@ if (!empty($this['project']->media)) {
 	{
 		$img_url=$this['project']->secGallery['play-video'][0]->imageData->getLink(620, 380);
 		?>
-        <script>
+        <script type="text/javascript">
             function loadVideo() {
                 var vid = document.getElementById('video_holder');
                 vid.innerHTML = '<?php echo $this['project']->media->getEmbedCode(false, null,1); ?>';
