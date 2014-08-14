@@ -54,7 +54,7 @@ div.stories-banners-container div.stories-banner > div.info{
 }
 
 
-div.stories-banners-container div.stories-banner div.info_extra{  
+div.stories-banners-container div.stories-banner > div.info_extra{  
 	
 	min-width: 238px;
 	margin-top: 5px; 
@@ -82,7 +82,7 @@ div.stories-banners-container div.stories-banner div.info a {
 
 }
 
-div.stories-banners-container div.stories-banner div.info a:hover >div.info_title {
+div.stories-banners-container div.stories-banner div.info a:hover div.info_title {
  
 	color:#585a5c;
 
@@ -104,7 +104,7 @@ div.stories-banners-container div.stories-banner div.info a:hover div.review {
 
 
 
-div.stories-banners-container div.stories-banner div.info div.line{
+div.stories-banners-container div.stories-banner div.info  div.line{
 
 	border-bottom-style:solid; 
 	border-bottom-width:1px; 
@@ -114,7 +114,7 @@ div.stories-banners-container div.stories-banner div.info div.line{
 
 }
 
-div.stories-banners-container div.stories-banner div.info div.description{
+div.stories-banners-container div.stories-banner div.info  div.description{
 
 	color:#3E3E41;
 }
@@ -127,7 +127,7 @@ div.stories-banners-container div.stories-banner div.info_extra span.cofinanciad
 
 }
 
-div.stories-banners-container div.stories-banner div.info_extra strong.ncofinanciadores {
+div.stories-banners-container div.stories-banner div.info_extra  strong.ncofinanciadores {
 
 	color:#313B96; 
 	font-size:20px; 
@@ -136,7 +136,7 @@ div.stories-banners-container div.stories-banner div.info_extra strong.ncofinanc
 
 }
 
-div.stories-banners-container div.stories-banner div.info_extra span.obtenido {
+div.stories-banners-container div.stories-banner div.info_extra  span.obtenido {
 
 	color:#96238F; 
 	font-size:11px; 
