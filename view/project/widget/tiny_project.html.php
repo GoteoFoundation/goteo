@@ -34,6 +34,9 @@ $url = '';
     <a href="<?php echo $url ?>/project/<?php echo $proj_id ?>" class="expand" target="_blank"></a>
     <div class="image">
         <?php switch ($tagmark) {
+            case 'oneround': // "ronda única"
+                echo '<div class="tagmark aqua">' . Text::get('regular-oneround_mark') . '</div>';
+                break;
             case 'onrun': // "en marcha"
                 echo '<div class="tagmark aqua">' . Text::get('regular-onrun_mark') . '</div>';
                 break;
