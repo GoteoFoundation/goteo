@@ -27,7 +27,7 @@ foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
 ?>
 <div class="widget">
     <p>Movemos el aporte de <strong><?php echo $user->name ?></strong> al proyecto <strong><?php echo $project->name; ?></strong> de <strong><?php echo $original->amount; ?> &euro;</strong> mediante <strong><?php echo $original->method; ?></strong> del d&iacute;a <strong><?php echo date('d-m-Y', strtotime($original->invested)); ?></strong>.</p>
-    <form id="filter-form" action="/admin/invests/move/<?php echo $original->id ?>" method="post">
+    <form id="filter-form" action="/admin/accounts/move/<?php echo $original->id ?>" method="post">
         <p>
             <label for="invest-project">Al proyecto:</label><br />
             <select id="invest-project" name="project">

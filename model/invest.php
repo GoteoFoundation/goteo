@@ -459,9 +459,8 @@ namespace Goteo\Model {
                     );
                 }
 
-                //actualizar amounts y numero inversores
-                self::invested($this->project);
-                self::numInvestors($this->project);
+                // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                $this->keepUpdated();
 
                 return true;
 
@@ -1008,11 +1007,6 @@ namespace Goteo\Model {
                         $drop->setStatus($status);
                     }
                 }
-
-                // mantenimiento de registros relacionados (usuario, proyecto, ...)
-                $this->keepUpdated();
-
-
 
                 return true;
             } else {
@@ -1743,12 +1737,17 @@ namespace Goteo\Model {
          *
          * @return success boolean
          */
-        private function keepUpdated() {
+        public function keepUpdated() {
 
             // cantidad total aportada en goteo
             $amount = User::updateAmount($this->user);
             // nivel de meritocracia
             User::updateWorth($this->user, $amount);
+
+            // proyecto
+            self::invested($this->project); // conseguido
+            self::numInvestors($this->project); // inversores
+
 
          }
 

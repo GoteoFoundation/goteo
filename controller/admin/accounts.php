@@ -75,6 +75,10 @@ namespace Goteo\Controller\Admin {
                         // cambio estado del aporte original a 'Reubicado' (no aparece en cofinanciadores)
                         // si tuviera que aparecer lo marcaríamos como caducado
                         if ($original->setStatus('5')) {
+
+                            // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                            $original->keepUpdated();
+
                             // Evento Feed
                             $log = new Feed();
                             $log->setTarget($projectData->id);
@@ -141,6 +145,10 @@ namespace Goteo\Controller\Admin {
                         if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
                             Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $_SESSION['user']->name . ' ha cambiado el estado del apote a '.$status[$new]);
                             Message::Info('Se ha actualizado el estado del aporte');
+
+                            // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                            $invest->keepUpdated();
+
                         } else {
                             Message::Error('Ha fallado al actualizar el estado del aporte');
                         }
@@ -215,7 +223,10 @@ namespace Goteo\Controller\Admin {
                         break;
                 }
 
-                // Evento Feed
+               // mantenimiento de registros relacionados (usuario, proyecto, ...)
+               $invest->keepUpdated();
+
+               // Evento Feed
                 $log = new Feed();
                 $log->setTarget($projectData->id);
                 $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
@@ -448,6 +459,9 @@ namespace Goteo\Controller\Admin {
 
                 }
 
+
+                // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                $invest->keepUpdated();
             }
 
             // ejecutar cargo ahora!!, solo aportes no ejecutados
