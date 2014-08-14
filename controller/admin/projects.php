@@ -82,6 +82,8 @@ namespace Goteo\Controller\Admin {
                     $project_conf->days_round1 = (!empty($_POST['round1'])) ? $_POST['round1'] : 40;
                     $project_conf->days_round2 = (!empty($_POST['round2'])) ? $_POST['round2'] : 40;
                     $project_conf->one_round = isset($_POST['oneround']);
+                    // si es ronda única, los días de segunda deben grabarse a cero (para que el getActive no lo cuente para segunda)
+                    if ($project_conf->one_round) $project_conf->days_round2 = 0;
                     if ($project_conf->save($errors)) {
                         Message::Info('Se han actualizado los días de campaña del proyecto ' . $projData->name);
                     } else {

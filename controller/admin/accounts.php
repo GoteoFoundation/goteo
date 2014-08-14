@@ -355,7 +355,7 @@ namespace Goteo\Controller\Admin {
                 $invests = Model\Invest::getAll($id);
                 $project->investors = Model\Invest::investors($id, false, true);
                 $users = $project->agregateInvestors();
-                $status = Model\Invest::status();
+                $status = Model\Project::status();
                 $investStatus = Model\Invest::status();
 
                 // Datos para el informe de transacciones correctas

@@ -17,7 +17,7 @@ namespace Goteo\Controller\Cron {
 
             if ($debug) echo 'Comenzamos con los proyectos en campaña (esto está en '.\LANG.')<br /><br />';
 
-            $projects = Model\Project::getActive();
+            $projects = Model\Project::getActive($debug);
             foreach ($projects as $project) {
                 self::cron_process_project($project, $debug);
             }

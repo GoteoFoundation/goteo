@@ -365,6 +365,7 @@ namespace Goteo\Model {
                 if (!empty($project->published)) {
                     $ptime = strtotime($project->published);
                     $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+$project->days_round1, date('Y', $ptime)));
+                    $project->willfinish = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+$project->days_total, date('Y', $ptime)));
                 }
 
                 // podría estar asignado a alguna convocatoria
@@ -2307,27 +2308,37 @@ namespace Goteo\Model {
          * En cron/execute necesitamos estos proyectos para feed y mail automático.
          * @return: array of Model\Project (full instance (get))
          */
-        public static function getActive()
+        public static function getActive($debug = false)
         {
             $projects = array();
 
             $sql = "
                 SELECT
-                    project.id as id
+                    project.id as id,
+                    project.published,
+                    project.passed,
+                    project.success,
+                    project_conf.days_round1,
+                    project_conf.days_round2,
+                    project_conf.one_round,
+                    DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) as rest_primera,
+                    DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) as rest_total
                 FROM  project
                 LEFT JOIN project_conf on project = id
                 WHERE project.status = 3
                 AND (
                     ((passed IS NULL OR passed = '0000-00-00') AND
-                      DATEDIFF(now(),  DATE_ADD(published, INTERVAL IFNULL(days_round1, 40) DAY)) BETWEEN 0 AND 5
+                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) BETWEEN 0 AND 5
                     )
                     OR
                     ((success IS NULL OR success = '0000-00-00') AND
-                     DATEDIFF(now(),  DATE_ADD(published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY)) BETWEEN 0 AND 3
+                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) BETWEEN 0 AND 3
                     )
                 )
                 ORDER BY name ASC
             ";
+
+            if ($debug) echo $sql.'<hr />';
 
             $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {

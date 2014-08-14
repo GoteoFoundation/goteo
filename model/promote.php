@@ -3,6 +3,7 @@ namespace Goteo\Model {
 
     use \Goteo\Library\Text,
         \Goteo\Model\Project,
+        \Goteo\Model\Image,
         \Goteo\Library\Check;
 
     class Promote extends \Goteo\Core\Model {
@@ -62,11 +63,11 @@ namespace Goteo\Model {
 
             if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(promote_lang.title, promote.title) as title,
-                                    IFNULL(promote_lang.description, promote.description) as description";
+                                    IFNULL(promote_lang.description, promote.description) as promo_text";
                 }
             else {
                     $different_select=" IFNULL(promote_lang.title, IFNULL(eng.title, promote.title)) as title,
-                                        IFNULL(promote_lang.description, IFNULL(eng.description, promote.description)) as description";
+                                        IFNULL(promote_lang.description, IFNULL(eng.description, promote.description)) as promo_text";
                     $eng_join=" LEFT JOIN promote_lang as eng
                                     ON  eng.id = promote.id
                                     AND eng.lang = 'en'";

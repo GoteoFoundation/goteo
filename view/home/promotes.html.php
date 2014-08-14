@@ -18,7 +18,7 @@ if (count($promotes) > 6) {
             <?php echo new View('view/project/widget/project.html.php', array(
                 'project' => $promo->projectData,
                 'balloon' => '<h4>' . htmlspecialchars($promo->title) . '</h4>' .
-                             '<blockquote>' . $promo->description . '</blockquote>'
+                             '<blockquote>' . $promo->promo_text . '</blockquote>'
             )) ?>
 
     <?php endforeach ?>

@@ -47,14 +47,18 @@ $cName = "P-{$cNum}-{$cDate}";
     // * el capital riego no lo manda goteo, lo manda el convocador
     ?>
 <p>
-    <?php if (!empty($project->passed)) {
-        echo 'El proyecto terminó la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->passed)).'</strong>.<br />';
+    <?php
+    $unique = ($project->one_round) ? ' (y única)' : '';
+    if (!empty($project->passed)) {
+        echo 'El proyecto terminó la primera'.$unique.' ronda el día <strong>'.date('d/m/Y', strtotime($project->passed)).'</strong>.<br />';
     } else {
-        echo 'El proyecto terminará la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->willpass)).'</strong>.<br />';
+        echo 'El proyecto terminará la primera'.$unique.' ronda el día <strong>'.date('d/m/Y', strtotime($project->willpass)).'</strong>.<br />';
     } ?>
 
-    <?php if (!empty($project->success)) {
+    <?php if (!$project->one_round && !empty($project->success)) {
         echo 'El proyecto terminó la segunda ronda el día <strong>'.date('d/m/Y', strtotime($project->success)).'</strong>.';
+    } elseif (empty($project->success)) {
+        echo 'El proyecto terminará la segunda ronda el día <strong>'.date('d/m/Y', strtotime($project->willfinish)).'</strong>.<br />';
     } ?>
 <br />
 <br />

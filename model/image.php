@@ -23,7 +23,7 @@ namespace Goteo\Model {
          *
          * @param type array	$file	Array $_FILES.
          */
-        public function __construct ($file) {
+        public function __construct ($file = null) {
 			$this->dir_originals = GOTEO_DATA_PATH . 'images' . DIRECTORY_SEPARATOR;
 			$this->dir_cache = GOTEO_DATA_PATH . 'cache' . DIRECTORY_SEPARATOR;
 

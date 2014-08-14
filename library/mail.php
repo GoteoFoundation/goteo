@@ -160,6 +160,12 @@ namespace Goteo\Library {
 
                     // si estoy en entorno local ni lo intento
                     if (GOTEO_ENV == 'local') {
+                        $errors[] = 'No envía porque está en local';
+                        $errors[] = "Asunto: {$this->subject}";
+                        $errors[] = "Destinatario: {$this->to}";
+                        $errors[] = "Plantilla: {$this->template}";
+                        $errors[] = "<hr />";
+
                         return true;
                     }
 
