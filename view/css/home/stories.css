@@ -184,13 +184,13 @@ div.info div blockquote:after  { content: "\201D"; }
 
 div.info div.description > a {
 
-	text-decoration: underline;
-	color:#3E3E41;
+	text-decoration: underline !important;
+	color:#3E3E41 !important;
 
 }
 
 div.info div.description > a:hover {
 
-	color:#BCE8E8;
+	color:#BCE8E8 !important;
 
 }
