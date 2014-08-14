@@ -81,7 +81,7 @@ namespace Goteo\Controller\Manage {
                             $log->populate('Aporte reubicado', '/manage/accounts',
                                 \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('money', $_POST['amount'].' &euro;'),
+                                    Feed::item('money', $invest->amount.' &euro;'),
                                     Feed::item('project', $projectData->name, $projectData->id),
                                     Feed::item('user', $userData->name, $userData->id)
                             )));
@@ -170,6 +170,7 @@ namespace Goteo\Controller\Manage {
                     throw new Redirection('/manage/accounts');
                 }
                 $projectData = Model\Project::getMini($invest->project);
+                $userData = Model\User::getMini($invest->user);
 
                 $errors = array();
 
@@ -355,6 +356,7 @@ namespace Goteo\Controller\Manage {
                 $invests = Model\Invest::getAll($id);
                 $project->investors = Model\Invest::investors($id, false, true);
                 $users = $project->agregateInvestors();
+                $status = Model\Project::status();
                 $investStatus = Model\Invest::status();
 
                 // Datos para el informe de transacciones correctas
@@ -387,7 +389,7 @@ namespace Goteo\Controller\Manage {
 
                 if ($project->status > 3 && $project->status < 6) {
                     $errors[] = 'No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv';
-                    break;
+                    throw new Redirection('/manage/accounts');
                 }
 
                 switch ($invest->method) {
@@ -612,7 +614,6 @@ namespace Goteo\Controller\Manage {
                         'invest'=>$invest,
                         'project'=>$project,
                         'user'=>$userData,
-                        'details'=>$details,
                         'status'=>$status,
                         'investStatus'=>$investStatus
                     )
