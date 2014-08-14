@@ -727,11 +727,9 @@ namespace Goteo\Model {
 
             $query = static::query($sql, $values);
             $got = $query->fetchObject();
-            if($only === null && $call === null) {
-                //actualiza el el amount en proyecto
-                if (!empty($got->much)) {
-                    static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
-                }
+            if(!isset ($only) && !isset($call)) {
+                //actualiza el el amount en proyecto (aunque se quede a cero)
+                static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
             }
             return (int) $got->much;
         }
@@ -839,10 +837,8 @@ namespace Goteo\Model {
 
             $query = static::query($sql, $values);
             if($got = $query->fetchObject()) {
-                //actualiza el numero de inversores en proyecto
-                if (!empty($got->investors)) {
-                    static::query("UPDATE project SET num_investors = :num WHERE id = :project", array(':num' => (int) $got->investors, ':project' => $project));
-                }
+                //actualiza el numero de inversores en proyecto (aunque sea ninguno)
+                static::query("UPDATE project SET num_investors = :num WHERE id = :project", array(':num' => (int) $got->investors, ':project' => $project));
             }
 
             return (int) $got->investors;

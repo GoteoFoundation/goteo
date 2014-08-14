@@ -337,7 +337,7 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 $project->investors = Invest::investors($id);
 
-                if($project->status == 3 && empty($project->amount)) {
+                if($project->status > 3 && empty($project->amount)) {
                     $project->amount = Invest::invested($id);
                 }
                 $project->invested = $project->amount;

@@ -269,6 +269,7 @@ namespace Goteo\Controller\Manage {
              */
             
             //el Order
+            $sqlOrder = '';
             switch ($filters['order']) {
                 case 'adate': // por fecha, antiguos primero
                     $sqlOrder .= " ORDER BY project.published ASC";

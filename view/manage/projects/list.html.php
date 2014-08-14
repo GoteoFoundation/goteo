@@ -172,7 +172,7 @@ $filters = $this['filters'];
                     <p>
                         <strong>M&iacute;nimo: </strong><?php echo $project->mincost; ?>&euro;&nbsp;&nbsp;&nbsp;
                         <strong>&Oacute;ptimo: </strong><?php echo $project->maxcost; ?>&euro;&nbsp;&nbsp;&nbsp;
-                        <strong>Conseguido: </strong><?php echo $project->invested; ?>&euro;&nbsp;&nbsp;&nbsp
+                        <strong>Conseguido: </strong><?php echo $project->amount; ?>&euro;&nbsp;&nbsp;&nbsp
                         <?php if (!empty($project->issues)) : ?><strong>Incidencias: </strong><?php echo $project->issues; ?>&euro; <a href="/admin/accounts/?projects=<?php echo $project->id; ?>&issue=show" target="_blank" title="Ver aportes con incidencia">[Ver]</a><?php endif; ?>
                     </p>
                 </td>
