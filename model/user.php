@@ -849,6 +849,23 @@ namespace Goteo\Model {
         }
 
         /*
+         * Consulta simple de si el usuario es impulsor (de proyecto publicado)
+         */
+        public static function isOwner($user, $published = false, $dbg = false) {
+
+            $sql = "SELECT COUNT(*) FROM project WHERE owner = ?";
+            if ($published) {
+                $sql .= " AND status > 2";
+            }
+            $sql .= " ORDER BY created DESC";
+            if ($dbg) echo $sql.\trace($user).'<br />';
+            $query = self::query($sql, array($user));
+            $is = $query->fetchColumn();
+            if ($dbg) var_dump($is);
+            return !empty($is);
+        }
+
+        /*
          * Listado simple de los usuarios Convocadores
          */
         public static function getCallers() {
@@ -1568,6 +1585,56 @@ namespace Goteo\Model {
             } else {
                 return false;
             }
+        }
+
+
+        /*
+         * Consulta simple para saber si un usuario ha cofinanciado en algun proyecto de un impulsor
+         * @return: boolean
+         */
+        public static function isInvestor($user, $owner, $dbg = false) {
+            $sql = "SELECT COUNT(*)
+            FROM project
+            INNER JOIN invest
+                ON invest.project = project.id
+                AND invest.status IN ('0', '1', '3', '4')
+                AND invest.user = :user
+            WHERE project.owner = :owner
+            AND project.status > 2
+            ";
+            $values = array(
+                ':user' => $user,
+                ':owner' => $owner
+            );
+            if ($dbg) echo str_replace(array_keys($values), array_values($values),$sql).'<br />';
+            $query = static::query($sql, $values);
+            $is = $query->fetchColumn();
+            if ($dbg) var_dump($is);
+            return !empty($is);
+        }
+
+        /*
+         * Consulta simple para saber si un usuario ha participado en los mensajes de algun proyecto de un impulsor
+         * @return: boolean
+         */
+        public static function isParticipant($user, $owner, $dbg = false) {
+            $sql = "SELECT COUNT(*)
+            FROM project
+            INNER JOIN message
+                ON message.project = project.id
+                AND message.user = :user
+            WHERE project.owner = :owner
+            AND project.status > 2
+            ";
+            $values = array(
+                ':user' => $user,
+                ':owner' => $owner
+            );
+            if ($dbg) echo str_replace(array_keys($values), array_values($values),$sql).'<br />';
+            $query = static::query($sql, $values);
+            $is = $query->fetchColumn();
+            if ($dbg) var_dump($is);
+            return !empty($is);
         }
 
 

@@ -484,8 +484,8 @@ namespace Goteo\Controller {
                 $show = 'profile';
             }
 
-            $dbg = false;
-//            if ($_SESSION['user']->id == 'root') $dbg = true;
+            // para debuguear, añadir ?debug=b1da4861a4edf5615ec39f07963ea8db
+            $dbg = (isset($_GET['debug']) && $_GET['debug'] == md5('dbg'));
 
             if ($dbg)
                 $ti = microtime(true);
@@ -519,78 +519,64 @@ namespace Goteo\Controller {
                     Message::Info(Text::get('user-login-required-to_see'));
                     throw new Redirection(SEC_URL."/user/login");
                 }
-
-                /*
-                  // subpágina de cofinanciadores
-                  if ($show == 'investors') {
-                  Message::Info(Text::get('user-login-required-to_see-supporters'));
-                  throw new Redirection('/user/profile/' .  $id);
-                  }
-                 */
             }
-            //--- el resto pueden seguir ---
-            // impulsor y usuario solamente pueden comunicarse si:
-            if ($show == 'message') {
 
-                $is_author   = false; // si es autor de un proyecto publicado
-                $is_investor = false; // si es cofinanciador
-                $is_messeger = false; // si es mensajeado
-                $is_participant = false; // si es participante
+            // en la página de mensaje o en el perfil para pintar o no el botón
+            if ($show == 'message' || $show == 'profile') {
 
-                // si el usuario logueado es impulsor (autor de proyecto publicado
-                $user_created = Model\Project::ofmine($_SESSION['user']->id, true);
-                if (!empty($user_created)) {
-                    $is_author = true;
+                // ver si el usuario logueado (A)
+                $uLoged = $_SESSION['user']->id;
+
+                // puede enviar mensaje (mensajear)
+                $user->messageable = false;  // por defecto no
+
+                // al usuario del perfil (B)
+                $uProfile = $id;
+
+                // solamente pueden comunicarse si:
+
+                // para debug
+                if ($dbg) {
+                    // si el U.logueado es impulsor (autor de proyecto publicado)
+                    Model\User::isOwner($uLoged, true, $dbg);
+                    echo '<br /><br />';
+
+                    // si A es cofinanciador en algún proyecto que impulsa B
+                    Model\User::isInvestor($uLoged, $uProfile, $dbg);
+                    echo '<br /><br />';
+
+                    // si B es cofinanciador en algún proyecto que impulsa A
+                    Model\User::isInvestor($uProfile, $uLoged, $dbg);
+                    echo '<br /><br />';
+
+                    // si A ha escrito mensaje en algún proyecto que impulsa B
+                    Model\User::isParticipant($uProfile, $uLoged, $dbg);
+                    echo '<br /><br />';
+
+                    // si B ha escrito mensaje en algún proyecto que impulsa A
+                    Model\User::isParticipant($uLoged, $uProfile, $dbg);
+                    echo '<br /><br />';
                 }
 
-                //@TODO: Hay que revisar las siguientes verificaciones y optimizar
+                // sin debug no da echoes
 
-                // si el usuario del perfil es cofinanciador o participante
-                // proyectos que es cofinanciador este usuario (el del perfil)
-                $user_invested = Model\User::invested($id, true);
-                foreach ($user_invested as $a_project) {
-                    if ($a_project->owner == $_SESSION['user']->id) {
-                        $is_investor = true;
-                        break;
-                    }
-                }
+                if (Model\User::isOwner($uLoged, true)
+                    || Model\User::isInvestor($uLoged, $uProfile)
+                    || Model\User::isInvestor($uProfile, $uLoged)
+                    || Model\User::isParticipant($uProfile, $uLoged)
+                    || Model\User::isParticipant($uLoged, $uProfile)
+                )
+                    $user->messageable = true;
 
-                // proyectos que es participante este usuario (el del perfil) (que ha enviado algún mensaje)
-                $user_messeged = Model\Message::getMesseged($id, true);
-                foreach ($user_messeged as $a_msg) {
-                    if ($a_msg->owner == $_SESSION['user']->id) {
-                        $is_messeger = true;
-                        break;
-                    }
-                }
+            }
 
-
-                // si el usuario logueado es el usuario cofinanciador/participante
-                // si el usuario del perfil es impulsor de un proyecto cofinanciado o en el que ha participado
-                // proyectos que es cofinanciador el usuario logueado
-                $user_invested = Model\User::invested($_SESSION['user']->id, true);
-                foreach ($user_invested as $a_project) {
-                    if ($a_project->owner == $id) {
-                        $is_investor = true;
-                        break;
-                    }
-                }
-
-                // proyectos que es participante el usuario logueado (que ha enviado algún mensaje)
-                $user_messeged = Model\Message::getMesseged($_SESSION['user']->id, true);
-                foreach ($user_messeged as $a_project) {
-                    if ($a_project->owner == $id) {
-                        $is_participant = true;
-                        break;
-                    }
-                }
-
-                if (!$is_investor && !$is_messeger && !$is_author && !$is_participant) {
-                    Message::Info(Text::get('user-message-restricted'));
-                    throw new Redirection('/user/profile/' . $id);
-                } else {
-                    $_SESSION['message_autorized'] = true;
-                }
+            // si ya esta en la página de mensaje
+            if ($show == 'message' && !$user->messageable) {
+                Message::Info(Text::get('user-message-restricted'));
+                throw new Redirection('/user/profile/' . $id);
+            } else {
+                // para el controller/message::personal
+                $_SESSION['message_autorized'] = true;
             }
 
             /*
