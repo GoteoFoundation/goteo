@@ -1,6 +1,10 @@
 <?php
 use Goteo\Library\Text,
-    Goteo\Core\View;
+    Goteo\Core\View,
+    Goteo\Library\Worth;
+
+// niveles de meritocracia
+$worthcracy = Worth::getAll();
 
 $investors = $this['investors'];
 
@@ -20,7 +24,7 @@ uasort($investors,
         <ul>
             <?php $c=1; foreach ($investors as $user => $investor):
                 if ($user == 'anonymous') continue; ?>
-            <li class="activable"><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor)) ?></li>
+            <li class="activable"><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>
             <?php if ($c>=10) break; else $c++; endforeach; ?>
         </ul>
     </div>

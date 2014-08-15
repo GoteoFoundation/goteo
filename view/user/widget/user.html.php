@@ -5,11 +5,7 @@ use Goteo\Library\Text;
 $user = $this['user'];
 $level = (int) $this['level'] ?: 3;
 
-// @todo Esto ya debería venirme en $user
-if (!isset($user->webs)) {
-    $user->webs = \Goteo\Model\User\Web::get($user->id);
-}
-
+// autodetección de enlaces en el texto
 $user->about = nl2br(Text::urlink($user->about));
 ?>
 
