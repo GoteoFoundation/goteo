@@ -1739,6 +1739,9 @@ namespace Goteo\Model {
          */
         public function keepUpdated() {
 
+            // numero de proyectos aportados
+            User::numInvested($this->user);
+
             // cantidad total aportada en goteo
             $amount = User::updateAmount($this->user);
             // nivel de meritocracia

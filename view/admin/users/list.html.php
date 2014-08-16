@@ -128,7 +128,8 @@ $pagedResults = new \Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] 
                 <th>Alias</th> <!-- view profile -->
                 <th>User</th>
                 <th>Email</th>
-                <th>Proyectos</th>
+                <th>Impulsados</th>
+                <th>Cofinanciados</th>
                 <th>Cantidad</th>
                 <th>Alta</th>
             </tr>
@@ -147,13 +148,14 @@ $pagedResults = new \Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] 
                 <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" <?php echo (!empty($adminNode)) ? 'style="color: green;" title="'.$adminNode.'"' : 'title="Ver perfil público"'; ?>><?php echo substr($user->name, 0, 20); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 20); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
-                <td><?php echo $user->nprojs; ?></td>
-                <td><?php echo \amount_format($user->namount); ?> &euro;</td>
+                <td><?php echo (!empty($user->num_owned)) ? $user->num_owned : $user->get_numOwned; ?></td>
+                <td><?php echo (!empty($user->num_invested)) ? $user->num_invested : $user->get_numInvested; ?></td>
+                <td><?php echo (!empty($user->amount)) ? \amount_format($user->amount) : \amount_format($user->get_amount); ?> &euro;</td>
                 <td><?php echo $user->register_date; ?></td>
             </tr>
             <tr>
                 <td><a href="/admin/users/manage/<?php echo $user->id; ?>" title="Gestionar">[Gestionar]</a></td>
-                <td><?php if ($user->nprojs > 0) {
+                <td><?php if ($user->num_invested > 0) {
                     if (!isset($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE ) : ?>
                 <a href="/admin/accounts/?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
                 <?php else:  ?>
@@ -172,7 +174,7 @@ $pagedResults = new \Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] 
                 </td>
             </tr>
             <tr>
-                <td colspan="6"><hr /></td>
+                <td colspan="7"><hr /></td>
             </tr>
             <?php endwhile; ?>
         </tbody>
