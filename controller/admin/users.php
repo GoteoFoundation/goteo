@@ -427,7 +427,6 @@ namespace Goteo\Controller\Admin {
                             'file' => 'list',
                             'users'=>$users,
                             'filters' => $filters,
-                            'name' => $name,
                             'status' => $status,
                             'interests' => $interests,
                             'roles' => $roles,

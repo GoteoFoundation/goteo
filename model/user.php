@@ -68,13 +68,17 @@ namespace Goteo\Model {
             if($name == "token") {
 	            return $this->getToken();
 	        }
-	        if($name == "num_supported_projs")
-	            return $this->getSupportedProjs();
+	        if($name == "num_invested") {
+                return !empty($this->num_invested) ? $this->num_invested : self::numInvested($this->id);
+            }
 	        if($name == "support") {
 	            return $this->getSupport();
 	        }
-	        if($name == "projects") {
-	            return $this->getProjects();
+	        if($name == "num_owned") {
+                return (!empty($this->num_owned)) ? $this->num_owned : self::updateOwned($this->id);
+	        }
+	        if($name == "worth") {
+                return (!empty($this->worth)) ? $this->worth : self::updateWorth($this->id, $this->amount);
 	        }
 	        if($name == "geoloc") {
 	            return User\Location::get($this->id);
@@ -545,12 +549,17 @@ namespace Goteo\Model {
                         user.twitter as twitter,
                         user.identica as identica,
                         user.linkedin as linkedin,
-                        user.active as active,
+                        user.amount as amount,
+                        user.num_patron as num_patron,
+                        user.num_patron_active as num_patron_active,
+                        user.worth as worth,
                         user.confirmed as confirmed,
                         user.hide as hide,
                         user.created as created,
                         user.modified as modified,
-                        user.node as node
+                        user.node as node,
+                        user.num_invested as num_invested,
+                        user.num_owned as num_owned
                     FROM user
                     LEFT JOIN user_lang
                         ON  user_lang.id = user.id
@@ -770,6 +779,9 @@ namespace Goteo\Model {
                         active,
                         hide,
                         DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
+                        amount,
+                        num_invested,
+                        num_owned,
                         node
                         $sqlCR
                     FROM user
@@ -793,10 +805,6 @@ namespace Goteo\Model {
                     $rolevar = $role->role_id;
                     $user->$rolevar = true;
                 }
-
-                $user->namount = (int) $user->amount;
-                $user->nprojs = $user->num_supported_projs;
-                //$user->nprojs = (int) count($user->support['projects']);
 
                 $users[] = $user;
             }
@@ -1256,11 +1264,19 @@ namespace Goteo\Model {
         }
 
         /*
-         * Simple, número de proyectos cofinanciados (
+         * Método para calcular el número de proyectos cofinanciados
+         * Actualiza el campo
          */
-    	private function getSupportedProjs () {
-            $query = self::query("SELECT COUNT(DISTINCT(project)) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($this->id));
-            return $query->fetchColumn();
+    	public static function numInvested ($id) {
+            $query = self::query("SELECT num_invested as old_num_invested, (SELECT COUNT(DISTINCT(project)) FROM invest WHERE user = :user AND status IN ('0', '1', '3', '4')) as num_invested FROM user WHERE id = :user", array(':user' => $id));
+            $inv = $query->fetchObject();
+            if($inv->old_num_invested != $inv->num_invested) {
+                self::query("UPDATE
+                        user SET
+                        num_invested = :nproj
+                     WHERE id = :id", array(':id' => $id, ':nproj' => $inv->num_invested));
+            }
+            return $inv->nproj;
         }
 
 	    /**
@@ -1270,14 +1286,13 @@ namespace Goteo\Model {
          * @param $amount int
     	 * @return result boolean
     	 */
-    	public static function updateWorth ($userId, $amount) {
-            $query = self::query('SELECT id FROM worthcracy WHERE amount <= ? ORDER BY amount DESC LIMIT 1', array($amount));
-            $worth = $query->fetchColumn();
-            if (self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $userId, ':worth' => $worth))) {
-                return true;
-            } else {
-                return false;
+    	public static function updateWorth ($user, $amount) {
+            $query = self::query('SELECT worth as old_worth, (SELECT id FROM worthcracy WHERE amount <= :amount ORDER BY amount DESC LIMIT 1) as new_worth FROM user WHERE id = :user', array(':amount'=>$amount, ':user'=>$user));
+            $usr = $query->fetchObject();
+            if ($usr->old_worth != $usr->new_worth) {
+                self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $user, ':worth' => $usr->new_worth));
             }
+            return $usr->new_worth;
         }
 
         /**
@@ -1285,10 +1300,13 @@ namespace Goteo\Model {
     	 *
     	 * @return type int	Count(id)
     	 */
-    	private function getProjects () {
-            $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status > 2', array($this->id));
-            $num_proj = $query->fetchColumn(0);
-            return $num_proj;
+        public static function updateOwned ($user) {
+            $query = self::query('SELECT num_owned as old_num, (SELECT COUNT(id) FROM project WHERE owner = :user AND status > 2) as new_num FROM user WHERE id = :user', array(':user'=>$user));
+            $num = $query->fetchObject();
+            if ($num->old_num != $num->new_num) {
+                self::query('UPDATE user SET num_owned = :num WHERE id = :id', array(':id' => $user, ':num' => $num->new_num));
+            }
+            return $num->new_num;
         }
 
         /**
@@ -1297,12 +1315,13 @@ namespace Goteo\Model {
          * @param user string Id del usuario
     	 * @return type int	Count(id)
     	 */
-    	public static function updateAmount ($userId) {
-            $query = self::query("SELECT SUM(invest.amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($userId));
-            $amount = $query->fetchColumn();
-            self::query('UPDATE user SET amount = :amount WHERE id = :id', array(':id' => $userId, ':amount' => $amount));
-
-            return $amount;
+    	public static function updateAmount ($user) {
+            $query = self::query("SELECT amount as old_amount, (SELECT SUM(invest.amount) FROM invest WHERE user = :user AND status IN ('0', '1', '3')) as new_amount FROM user WHERE id = :user", array(':user'=>$user));
+            $amount = $query->fetchObject();
+            if ($amount->old_amount != $amount->new_amount) {
+                self::query('UPDATE user SET amount = :amount WHERE id = :id', array(':id' => $user, ':amount' => $amount->new_amount));
+            }
+            return $amount->new_amount;
         }
 
         /**

@@ -49,3 +49,14 @@ ALTER TABLE `user`
   CHANGE `confirmed` `confirmed` int(1)   NOT NULL DEFAULT 0 after `hide` ,
   CHANGE `lang` `lang` varchar(2)  COLLATE utf8_general_ci NULL DEFAULT 'es' after `confirmed` ,
   CHANGE `node` `node` varchar(50)  COLLATE utf8_general_ci NULL after `lang` ;
+
+-- numero proyectos cofinanciados  
+ALTER TABLE `user`
+  ADD COLUMN `num_invested` int(10) unsigned   NOT NULL DEFAULT 0 COMMENT 'Num. proyectos cofinanciados';
+
+-- numero proyectos publicados
+ALTER TABLE `user`
+  ADD COLUMN `num_owned` int(10) unsigned   NOT NULL DEFAULT 0 COMMENT 'Num. proyectos publicados';
+
+  
+  

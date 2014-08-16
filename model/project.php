@@ -1661,6 +1661,9 @@ namespace Goteo\Model {
                     unset($msg);
                 }
 
+                // actualizar numero de proyectos publicados del usuario
+                User::updateOwned($this->owner);
+
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al publicar el proyecto. ' . $e->getMessage();
@@ -1952,7 +1955,7 @@ namespace Goteo\Model {
                 return $id;
             }
             catch (\PDOException $e) {
-                throw new Goteo\Core\Exception('Fallo al verificar id única para el proyecto. ' . $e->getMessage());
+                throw new Exception('Fallo al verificar id única para el proyecto. ' . $e->getMessage());
             }
         }
 
@@ -2707,7 +2710,7 @@ namespace Goteo\Model {
                         project SET
                         mincost = :mincost,
                         maxcost = :maxcost
-                     WHERE id = :id", array('id' => $id, 'mincost' => $costs->mincost, 'maxcost' => $costs->maxcost));
+                     WHERE id = :id", array(':id' => $id, ':mincost' => $costs->mincost, ':maxcost' => $costs->maxcost));
                 }
             }
             return $costs;
