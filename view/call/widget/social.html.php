@@ -44,7 +44,7 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
          if (!empty($social->fbappid)) : 
              echo Text::widget($social->fbappid, 'fb-nocount', 'height:20px;'); ?>
             <div id="fb-root"></div>
-            <script>(function(d, s, id) {
+            <script type="text/javascript">(function(d, s, id) {
               var js, fjs = d.getElementsByTagName(s)[0];
               if (d.getElementById(id)) {return;}
               js = d.createElement(s); js.id = id;
@@ -62,7 +62,7 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
            data-count="none"
            data-counturl="<?php echo SITE_URL . '/call/' . $call->id; ?>"
            target="_blank"><?php echo Text::get('regular-twitter'); ?></a>
-        <script>!function(d,s,id){
+        <script type="text/javascript">!function(d,s,id){
             var js,fjs=d.getElementsByTagName(s)[0];
             if(!d.getElementById(id)){
                 js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);

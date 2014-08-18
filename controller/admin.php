@@ -280,7 +280,8 @@ namespace Goteo\Controller {
                     'open_tags' => array('label' => 'Asignando una agrupación al proyecto', 'item' => true),
                     'report' => array('label' => 'Informe Financiero del proyecto', 'item' => true),
                     'rebase' => array('label' => 'Cambiando Id de proyecto', 'item' => true),
-                    'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true)
+                    'consultants' => array('label' => 'Cambiando asesor del proyecto', 'item' => true),
+                    'conf' => array('label' => 'Configuración de campaña del proyecto', 'item' => true)
                 ),
                 'filters' => array('status' => '-1', 'category' => '', 'proj_name' => '', 'name' => '', 'node' => '', 'called' => '', 'order' => '', 'consultant' => '','proj_id' =>'')
             ),
@@ -447,18 +448,22 @@ namespace Goteo\Controller {
 
         // preparado para index unificado
         public function index($option = 'index', $action = 'list', $id = null, $subaction = null) {
+            //desactivamos la cache para el admin
+            \Goteo\Core\DB::cache(false);
             if ($option == 'index') {
                 $BC = self::menu(array('option' => $option, 'action' => null, 'id' => null));
                 define('ADMIN_BCPATH', $BC);
                 $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
                 $tasks = Model\Task::getAll(array(), $node, true);
-                return new View('view/admin/index.html.php', array('tasks' => $tasks));
+                $ret = new View('view/admin/index.html.php', array('tasks' => $tasks));
             } else {
                 $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
                 define('ADMIN_BCPATH', $BC);
                 $SubC = 'Goteo\Controller\Admin' . \chr(92) . \ucfirst($option);
-                return $SubC::process($action, $id, self::setFilters($option), $subaction);
+                $ret = $SubC::process($action, $id, self::setFilters($option), $subaction);
             }
+            \Goteo\Core\DB::cache(true);
+            return $ret;
         }
 
         // Para marcar tareas listas
@@ -737,7 +742,7 @@ namespace Goteo\Controller {
                         $menu['contents']['options']['texts'] = $options['texts']; // gestión de textos
                         $menu['contents']['options']['faq'] = $options['faq']; // gestión de faqs
                         $menu['contents']['options']['templates'] = $options['templates']; // gestión de plantillas
-                        $menu['projects']['options']['transcalls'] = $options['transcalls']; // traducción de convocatorias    
+                        $menu['projects']['options']['transcalls'] = $options['transcalls']; // traducción de convocatorias
                         $menu['projects']['options']['commons'] = $options['commons']; // gestion de retornos colectivos
                         $menu['projects']['options']['bazar'] = $options['bazar']; // gestion de retornos colectivos
                         $menu['contents']['options']['open_tags'] = $options['open_tags']; // gestión de agrupaciones

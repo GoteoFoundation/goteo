@@ -27,7 +27,7 @@ namespace Goteo\Model {
                 $lang=self::default_lang_by_id($id, 'patron_lang', \LANG);
 
                 $query = static::query("
-                    SELECT  
+                    SELECT
                         patron.id as id,
                         patron.node as node,
                         patron.project as project,
@@ -104,7 +104,7 @@ namespace Goteo\Model {
                 ";
 
             $query = static::query($sql, array(':node' => $node, ':lang'=>\LANG));
-            
+
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100, false);
                 $promo->user = Model\User::getMini($promo->user);
@@ -165,6 +165,33 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /**
+         * Devuelve y actualiza el numero de proyectos recomendados por un padrino
+         * deberá llamarse esta función cuando se actualizen las recomendaciones
+         */
+        public static function calcPatrons($user) {
+
+            $values = array(':user' => $user);
+
+            $count = self::query("SELECT
+                    num_patron AS old_patron,
+                    num_patron_active AS old_patron_active,
+                    (SELECT count(*) FROM patron WHERE `user` = :user) AS num_patron,
+                    (SELECT count(*) FROM patron WHERE `user` = :user AND active = 1) AS num_patron_active
+                    FROM `user`
+                    WHERE id = :user", $values);
+            if($patrons = $count->fetchObject()) {
+                if($patrons->num_patron != $patrons->old_patron || $patrons->num_patron_active != $patrons->old_patron_active) {
+                    self::query("UPDATE
+                        user SET
+                        num_patron = :num_patron,
+                        num_patron_active = :num_patron_active
+                     WHERE id = :id", array(':id' => $user, ':num_patron' => $patrons->num_patron, ':num_patron_active' => $patrons->num_patron_active));
+                }
+            }
+            return $patrons;
+        }
+
         /*
          * Devuelve la lista de patronos con recomendaciones activas
          */
@@ -175,15 +202,45 @@ namespace Goteo\Model {
             $values = array(':node'=>$node);
 
             $sql = "SELECT
-                        patron.user as id
+                        patron.user as id,
+                        user.name as name,
+                        user.num_patron_active as num_patron_active,
+                        user_vip.image as vip_image,
+                        image.id as image_id,
+                        image.name as image_name
                     FROM patron
+                    LEFT JOIN user_vip
+                        ON user_vip.user = patron.user
+                    LEFT JOIN user
+                        ON user.id = patron.user
+                    LEFT JOIN image
+                        ON image.id = user.avatar
                     WHERE patron.active = 1
                     AND patron.node = :node
                     ORDER BY patron.`order` ASC";
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-                if (!in_array($item->id, $list))
-                    $list[$item->id] = $item->id;
+                $user = new User;
+                $user->id = $item->id;
+                $user->name = $item->name;
+                // nos ahorramos las llamadas sql a image pues en la vista solo se usa el nombre y la id (de la funcion getLink)
+                $user->avatar = new Image;
+                $user->avatar->name = $item->image_name;
+                $user->avatar->id = $item->image_id;
+                //si existe una imagen vip, la ponemos (esto no es muy costso porque hay muy pocas, solo una de momento...):
+                if($item->vip_image) {
+                    $avatar = Image::get($item->vip_image);
+                    if (!empty($avatar)) {
+                        $user->avatar = $avatar;
+                    }
+                }
+                //si no existe el numero de recomendaciones lo actualizamos
+                $user->num_patron_active = $item->num_patron_active;
+                if(empty($item->num_patron_active)) {
+                    $nums = self::calcPatrons($item->id);
+                    $user->num_patron_active = $nums->num_patron_active;
+                }
+                $list[$item->id] = $user;
             }
 
             return $list;
@@ -191,6 +248,7 @@ namespace Goteo\Model {
 
         /*
          * Devuelve la lista de patronos que deben estar en home
+         *  con datos del usuario e imagen de padrino
          */
         public static function getInHome($node = \GOTEO_NODE) {
 
@@ -198,23 +256,55 @@ namespace Goteo\Model {
 
             $values = array(':node'=>$node);
 
-            $sql = "SELECT
-                        patron.user as id,
-                        patron_order.order as `order`
-                    FROM patron
-                    LEFT JOIN patron_order
-                        ON patron_order.id = patron.user
-                    WHERE patron_order.order is not null
-                    AND patron.node = :node
-                    ORDER BY `order` ASC";                  
+            try {
+                $sql = "SELECT
+                        user.id as id,
+                        user.name as name,
+                        user.num_patron_active as num_patron_active,
+                        patron_order.order as `order`,
+                        user_vip.image as vip_image,
+                        user.avatar as user_image
+                    FROM patron_order
+                    INNER JOIN user
+                        ON user.id = patron_order.id
+                    LEFT JOIN user_vip
+                        ON user_vip.user = patron_order.id
+                    INNER JOIN patron
+                        ON patron.user = patron_order.id
+                        AND patron.node = :node
+                    WHERE patron_order.order IS NOT NULL
+                    GROUP BY patron.user
+                    ORDER BY patron_order.order ASC";
 
-            $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-                if (!in_array($item->id, $list))
-                    $list[$item->id] = $item->id;
+                $query = self::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+
+                    // usar avatar del usuario si no tiene imagen propia de vip (apaisada)
+                    $item->avatar = (empty($item->vip_image) && !empty($item->user_image))
+                        ? Model\Image::get($item->user_image)
+                        : Model\Image::get($item->vip_image);
+
+                    // y si no tiene ninguna, la gota
+                    if (!$item->avatar instanceof Model\Image ) {
+                        $item->avatar = Model\Image::get(1);
+                    }
+
+                    // solo en caso de que no tenga grabado el numero de proyectos apadrinados
+                    if (empty($item->num_patron_active)) {
+                        $patrons = static::calcPatrons($item->id);
+                        $item->num_patron = $patrons->num_patron;
+                        $item->num_patron_active = $patrons->num_patron_active;
+                    }
+
+                    $list[$item->id] = $item;
+                }
+
+                return $list;
+            } catch (\Goteo\Core\Error $e) {
+                return array();
             }
 
-            return $list;
+
         }
 
         /**
@@ -317,7 +407,7 @@ namespace Goteo\Model {
         }
 
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
 
@@ -361,7 +451,8 @@ namespace Goteo\Model {
                 $sql = "REPLACE INTO patron SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
-
+                //actualizar conteo
+                self::calcPatrons($this->user);
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
@@ -387,28 +478,36 @@ namespace Goteo\Model {
          * Para quitar un apadrinamiento
          */
         public static function delete ($id) {
-            
-            $sql = "DELETE FROM patron WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
 
+            $query = self::query("SELECT user FROM patron WHERE id = :id", array(':id' => $id));
+            $query->cacheTime(0);
+            if($u = $query->fetchObject()) {
+                $sql = "DELETE FROM patron WHERE id = :id";
+                if (self::query($sql, array(':id' => $id))) {
+                    //actualizar conteo
+                    self::calcPatrons($u->user);
+                    return true;
+                }
+            }
+            return false;
         }
 
         /* Para activar/desactivar un apadrinamiento
          */
         public static function setActive ($id, $active = false) {
-
-            $sql = "UPDATE patron SET active = :active WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id, ':active'=>$active))) {
-                return true;
-            } else {
-                return false;
+            $query = self::query("SELECT user FROM patron WHERE id = :id", array(':id' => $id));
+            $query->cacheTime(0);
+            if($u = $query->fetchObject()) {
+                $sql = "UPDATE patron SET active = :active WHERE id = :id";
+                if (self::query($sql, array(':id'=>$id, ':active'=>$active))) {
+                    //actualizar conteo
+                    self::calcPatrons($u->user);
+                    return true;
+                }
             }
-
+            return false;
         }
+
 
         /*
          * Para poner un padrino en home
@@ -535,5 +634,5 @@ namespace Goteo\Model {
 
 
     }
-    
+
 }

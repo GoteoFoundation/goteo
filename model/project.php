@@ -103,11 +103,11 @@ namespace Goteo\Model {
 
             //Obtenido, Días, Cofinanciadores
             $invested = 0, //cantidad de inversión
-            $days = 0, //para 40 desde la publicación o para 80 si no está caducado
+            $days = 0, //para PRIMERA_RONDA días desde la publicación o para SEGUNDA_RONDA días si no está caducado
             $investors = array(), // aportes individuales a este proyecto
             $num_investors = 0, // numero de usuarios que han aportado
 
-            $round = 0, // para ver si ya está en la fase de los 40 a los 80
+            $round = 0, // para ver si ya está en la segunda fase
             $passed = null, // para ver si hemos hecho los eventos de paso a segunda ronda
             $willpass = null, // fecha final de primera ronda
 
@@ -139,7 +139,14 @@ namespace Goteo\Model {
                 return Project\Account::getAllowpp($this->id);
             }
             if($name == "budget") {
-	            return self::calcCosts($this->id);
+                $cost = new stdClass;
+                $cost->mincost = $this->mincost;
+                $cost->maxcost = $this->maxcost;
+                //calcular si esta vacio
+                if(empty($cost->mincost)) {
+                    $cost = self::calcCosts($this->id);
+                }
+	            return $cost;
 	        }
             return $this->$name;
         }
@@ -162,7 +169,7 @@ namespace Goteo\Model {
             if (isset($_SESSION['oncreate_applyto'])) {
                 $call = $_SESSION['oncreate_applyto'];
                 $callData = Call::getMini($call);
-                 if (!empty($callData->user->node)) { 
+                 if (!empty($callData->user->node)) {
                      $node = $callData->user->node;
                      // también movemos al impulsor a ese nodo
                     self::query("UPDATE user SET node = :node WHERE id = :id", array(':node'=>$node, ':id'=>$user));
@@ -316,18 +323,29 @@ namespace Goteo\Model {
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
 
+                // extra conf
+                $project_conf = Project\Conf::get($id);
+                $project->days_round1 = $project_conf->days_round1;
+                $project->days_round2 = $project_conf->days_round2;
+                $project->one_round = $project_conf->one_round;
+                $project->days_total = ($project->one_round) ? $project_conf->days_round1 : $project->days_round1 + $project->days_round2;
+                $project->watch = Project\Conf::isWatched($id);
+                $project->noinvest = Project\Conf::isInvestClosed($id);
+
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
                 $project->investors = Invest::investors($id);
-                $project->num_investors = Invest::numInvestors($id);
 
-                $amount = Invest::invested($id);
-                if ($project->invested != $amount) {
-                    self::query("UPDATE project SET amount = '{$amount}' WHERE id = ?", array($id));
+                if($project->status > 3 && empty($project->amount)) {
+                    $project->amount = Invest::invested($id);
                 }
-                $project->invested = $amount;
-                $project->amount   = $amount;
+                $project->invested = $project->amount;
+
+                //consultamos y actualizamos el numero de inversores
+                if($project->amount > 0 && empty($project->num_investors)) {
+                    $project->num_investors = Invest::numInvestors($id);
+                }
 
                 //mensajes y mensajeros
                 $messegers = array();
@@ -340,15 +358,14 @@ namespace Goteo\Model {
                 }
                 $project->num_messegers = count($messegers);
 
-                $project->noinvest = Project\Conf::isInvestClosed($id);
-
                 $project->setDays();
                 $project->setTagmark();
 
-                // fecha final primera ronda (fecha campaña + 40)
+                // fecha final primera ronda (fecha campaña + PRIMERA_RONDA)
                 if (!empty($project->published)) {
                     $ptime = strtotime($project->published);
-                    $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+40, date('Y', $ptime)));
+                    $project->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+$project->days_round1, date('Y', $ptime)));
+                    $project->willfinish = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+$project->days_total, date('Y', $ptime)));
                 }
 
                 // podría estar asignado a alguna convocatoria
@@ -451,18 +468,32 @@ namespace Goteo\Model {
                 // asesores
                 $project->consultants = Project::getConsultants($id);
 
-                $amount = Invest::invested($id);
-                $project->invested = $amount;
-                $project->amount   = $amount;
 
-                $project->num_investors = Invest::numInvestors($id);
+                if($project->status == 3 && empty($project->amount)) {
+                    $project->amount = Invest::invested($id);
+                }
+                $project->invested = $project->amount;
+
+                //consultamos y actualizamos el numero de inversores si no está definido
+                if($project->amount > 0 && empty($project->num_investors)) {
+                    $project->num_investors = Invest::numInvestors($id);
+                }
+
                 $project->num_messegers = Message::numMessegers($id);
 
-                // sacamos rapidamente el presupuesto mínimo y óptimo
-                $costs = self::calcCosts($id);
-                $project->mincost = $costs->mincost;
-                $project->maxcost = $costs->maxcost;
+                // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado
+                if(empty($project->mincost)) {
+                    $costs = self::calcCosts($id);
+                    $project->mincost = $costs->mincost;
+                    $project->maxcost = $costs->maxcost;
+                }
 
+                // extra conf
+                $project_conf = Project\Conf::get($id);
+                $project->days_round1 = $project_conf->days_round1;
+                $project->days_round2 = $project_conf->days_round2;
+                $project->one_round = $project_conf->one_round;
+                $project->days_total = ($project->one_round) ? $project_conf->days_round1 : $project->days_round1 + $project->days_round2;
                 $project->watch = Project\Conf::isWatched($id);
                 $project->noinvest = Project\Conf::isInvestClosed($id);
 
@@ -476,7 +507,6 @@ namespace Goteo\Model {
                 if (!empty($project->node)) {
                     $project->nodeData = Node::getMini($project->node);
                 }
-
 
                 return $project;
 
@@ -588,44 +618,41 @@ namespace Goteo\Model {
         }
 
         /*
-         *  Para calcular los dias y la ronda
+         *  Para calcular la ronda de un proyecto y los dias restantes de campaña
+         *  Este método se llama al instanciar un proyecto con get() o getMedium(), modificando sus atributos $round y $days
          */
-        private function setDays() {
-            //para proyectos en campaña o posterior
-            if ($this->status > 2) {
-                // tiempo de campaña
-                if ($this->status == 3) {
-                    $days = $this->daysActive();
-                    if ($days > 81) {
-                        $this->round = 0;
-                        $days = 0;
-                    } elseif ($days >= 40) {
-                        $days = 80 - $days;
-                        $this->round = 2;
-                    } else {
-                        $days = 40 - $days;
-                        $this->round = 1;
-                    }
+        public function setDays() {
 
-                    if ($days < 0) {
-                        // no deberia estar en campaña sino financuiado o caducado
-                        $days = 0;
-                    }
+            if ($this->status == 3) { // En campaña
+                $days = $this->daysActive(); // Tiempo de campaña (días desde la fecha de publicación del proyecto)
+                $this->days_active = $days;
 
+                if ($days < $this->days_round1) { // En primera ronda
+                    $this->round = 1;
+                    $daysleft = $this->days_round1 - $days;
+                } elseif (!$this->one_round && $days >= $this->days_round1 && $days <= $this->days_total) { // En segunda ronda
+                    $this->round = 2;
+                    $daysleft = $this->days_total - $days;
+                } elseif ($days >= $this->days_total) { // Ha finalizado la campaña
+                    $this->round = ($this->one_round) ? 1 : 2;
+                    $daysleft = 0;
                 } else {
                     $this->round = 0;
-                    $days = 0;
+                    $daysleft = 0;
                 }
 
+                // no deberia estar en campaña sino financiado o caducado
+                if ($daysleft < 0) $daysleft = 0;
 
-            } else {
-                $days = 0;
+            } else { // $this->status != 3
+                $this->round = 0;
+                $daysleft = 0;
             }
 
-            if ($this->days != $days) {
-                self::query("UPDATE project SET days = '{$days}' WHERE id = ?", array($this->id));
+            if ($this->days != $daysleft) {
+                self::query("UPDATE project SET days = '{$daysleft}' WHERE id = ?", array($this->id));
+                $this->days = $daysleft;
             }
-            $this->days = $days;
         }
 
          /*
@@ -711,11 +738,14 @@ namespace Goteo\Model {
         /*
          *  Para ver que tagmark le toca
          */
-        private function setTagmark() {
+        public function setTagmark() {
             // a ver que banderolo le toca
-            // "financiado" al final de de los 80 dias
+            // "financiado" al final de los SEGUNDA_RONDA dias
             if ($this->status == 4) :
                 $this->tagmark = 'gotit';
+            // "Ronda única" cuando la campaña es de ronda única
+            elseif ($this->status == 3 && $this->one_round) :
+                $this->tagmark = 'oneround';
             // "en marcha" cuando llega al optimo en primera o segunda ronda
             elseif ($this->status == 3 && $this->amount >= $this->maxcost) :
                 $this->tagmark = 'onrun';
@@ -866,6 +896,12 @@ namespace Goteo\Model {
                 // cada una con sus save, sus new y sus remove
                 // quitar las que tiene y no vienen
                 // añadir las que vienen y no tiene
+
+                // project_conf
+                // FIXME: Salvar al completo? / No machacar con valores vacíos
+                $conf = Project\Conf::get($this->id);
+                $conf->one_round = $this->one_round;
+                $conf->save();
 
                 //categorias
                 $tiene = Project\Category::get($this->id);
@@ -1066,7 +1102,7 @@ namespace Goteo\Model {
          * comprueba errores de datos y actualiza la puntuación
          */
         public function check() {
-            
+
             $errors = &$this->errors;
             $okeys  = &$this->okeys ;
 
@@ -1545,11 +1581,11 @@ namespace Goteo\Model {
             // Cálculo del % de progreso
             $progress = 100 * $this->score / $this->max;
             $progress = round($progress, 0);
-            
+
             if ($progress > 100) $progress = 100;
             if ($progress < 0)   $progress = 0;
 
-            if ($this->status == 1 && 
+            if ($this->status == 1 &&
                 $progress >= 80 &&
                 \array_empty($this->errors)
                 ) {
@@ -1572,9 +1608,9 @@ namespace Goteo\Model {
 
                 $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
                 self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
-                
+
                 return true;
-                
+
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para revisión. ' . $e->getMessage();
                 return false;
@@ -1624,6 +1660,9 @@ namespace Goteo\Model {
                     }
                     unset($msg);
                 }
+
+                // actualizar numero de proyectos publicados del usuario
+                User::updateOwned($this->owner);
 
                 return true;
             } catch (\PDOException $e) {
@@ -1773,7 +1812,7 @@ namespace Goteo\Model {
                     // idealizar el nombre
                     $newid = self::checkId(self::idealiza($this->name));
                     if ($newid == false) return false;
-                    
+
                     // actualizar las tablas relacionadas en una transacción
                     $fail = false;
                     if (self::query("START TRANSACTION")) {
@@ -1820,7 +1859,7 @@ namespace Goteo\Model {
                             foreach ($acls->fetchAll(\PDO::FETCH_OBJ) as $rule) {
                                 $url = str_replace($this->id, $newid, $rule->url);
                                 self::query("UPDATE `acl` SET `url` = :url WHERE id = :id", array(':url'=>$url, ':id'=>$rule->id));
-                                
+
                             }
 //                            echo 'acls listos <br />';
 
@@ -1848,7 +1887,7 @@ namespace Goteo\Model {
                                 self::query("UPDATE `feed` SET `target_id` = '{$newid}'  WHERE id = '{$feed2->id}';");
 
                             }
-                            
+
                             // traductores
                             $sql = "UPDATE `user_translate` SET `item` = '{$newid}' WHERE `user_translate`.`type` = 'project' AND `user_translate`.`item` = :id;";
                             self::query($sql, array(':id'=>$this->id));
@@ -1884,13 +1923,13 @@ namespace Goteo\Model {
                             return false;
                         }
                     } else {
-                        throw new Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ' . \trace($e));
+                        throw new Exception('Fallo al iniciar transaccion rebase. ');
                     }
                 }
 
                 return true;
             } catch (\PDOException $e) {
-                throw new \Goteo\Core\Exception('Fallo rebase id temporal. ' . \trace($e));
+                throw new Exception('Fallo rebase id temporal. ' . $e->getMessage());
             }
 
         }
@@ -1916,7 +1955,7 @@ namespace Goteo\Model {
                 return $id;
             }
             catch (\PDOException $e) {
-                throw new Goteo\Core\Exception('Fallo al verificar id única para el proyecto. ' . $e->getMessage());
+                throw new Exception('Fallo al verificar id única para el proyecto. ' . $e->getMessage());
             }
         }
 
@@ -1927,7 +1966,7 @@ namespace Goteo\Model {
         public function minmax() {
             $this->mincost = 0;
             $this->maxcost = 0;
-            
+
             foreach ($this->costs as $item) {
                 if ($item->required == 1) {
                     $this->mincost += $item->amount;
@@ -1941,11 +1980,19 @@ namespace Goteo\Model {
 
 
         /**
-         * Metodo que devuelve los días que lleva de publicación
+         * Método que devuelve los días que lleva en campaña el proyecto (días desde la fecha de publicación)
          *
-         * @return numeric days active from published
+         * @return numeric days active from published field
          */
         public function daysActive() {
+            // se puede hacer sin consultar la base de datos
+            if($this->published) {
+                $published = strtotime($this->published . date(" H:i:s"));
+                $today = time();
+                $diff = $today - $published;
+                $days = floor($diff/60/60/24);
+            }
+            if($days) return $days;
             // días desde el published
             $sql = "
                 SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(CONCAT(published, DATE_FORMAT(now(), ' %H:%i:%s')))), '%j') as days
@@ -1953,16 +2000,19 @@ namespace Goteo\Model {
                 WHERE id = ?";
             $query = self::query($sql, array($this->id));
             $past = $query->fetchObject();
-
+            // echo "[{$past->days} $days]";die;
             return $past->days - 1;
         }
 
         /**
          * Metodo que devuelve los días que quedan para finalizar la ronda actual
          *
+         *  No se usa, lo hace el setDays
+         *
          * @return numeric days remaining to go
-         */
         public function daysRemain($id) {
+            //esto tambien se puede hacer sin sql
+            //...FALTA
             // primero, días desde el published
             $sql = "
                 SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
@@ -1972,14 +2022,19 @@ namespace Goteo\Model {
             $days = $query->fetchColumn(0);
             $days--;
 
-            if ($days > 40) {
-                $rest = 80 - $days; //en segunda ronda
+            $days_round1 = Project\Conf::getRound1Days($id);
+            $days_round2 = Project\Conf::getRound2Days($id);
+            $days_total = $days_round1 + $days_round2;
+
+            if ($days > days_round1) {
+                $rest = days_total - $days; //en segunda ronda
             } else {
-                $rest = 40 - $days; // en primera ronda
+                $rest = days_round1 - $days; // en primera ronda
             }
 
             return $rest;
         }
+         */
 
         /*
          * Lista de proyectos de un usuario
@@ -2000,7 +2055,7 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[] = self::getMedium($proj->id);
             }
-            
+
             return $projects;
         }
 
@@ -2077,7 +2132,7 @@ namespace Goteo\Model {
                     //,  DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
                     //        HAVING day <= 15 AND day IS NOT NULL
                     $limit = 9;
-                    $sql = "SELECT 
+                    $sql = "SELECT
                                 project.id as id,
                                 project.name as name
                             FROM project
@@ -2156,7 +2211,7 @@ namespace Goteo\Model {
                             $sqlFilter
                             ORDER BY published DESC";
                     break;
-                default: 
+                default:
                     // todos los que estan 'en campaña', en cualquier nodo
                     $sql = "SELECT id, name FROM project WHERE status = 3 ORDER BY name ASC";
             }
@@ -2178,12 +2233,12 @@ namespace Goteo\Model {
             return $projects;
         }
 
-        // 
+        //
         /**
-         * Lista de proyectos en campaña y/o financiados 
+         * Lista de proyectos en campaña y/o financiados
          *   para crear aporte manual
          *   para gestión de contratos
-         * 
+         *
          * @param bool $campaignonly  solo saca proyectos en proceso de campaña  (parece que esto no se usa...)
          * @param bool $mini  devuelve array asociativo id => nombre, para cuando no se necesita toda la instancia
          * @return array de instancias de proyecto // array asociativo (si recibe mini = true)
@@ -2215,31 +2270,38 @@ namespace Goteo\Model {
          * Lista de proyectos para ser revisados por el cron/daily
          * en campaña
          *  o financiados hace más de dos meses y con retornos/recompensas pendientes
-         * 
+         *
          * solo carga datos necesarios para cron/daily
-         * 
+         *
          * @return array de instancias parciales de proyecto (getMedium)
          */
         public static function review()
         {
             $projects = array();
 
-            $sql = "SELECT 
-                    id, status, 
+            $sql = "SELECT
+                    id, status,
                     DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as dias
-                FROM  project 
+                FROM  project
                 WHERE status IN ('3', '4')
                 HAVING status = 3 OR (status = 4 AND  dias > 138)
                 ORDER BY days ASC";
-            
-            
+
+
             $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $the_proj = self::getMedium($proj->id);
                 $the_proj->percent = floor(($the_proj->invested / $the_proj->mincost) * 100);
                 $the_proj->days = (int) $proj->dias - 1;
                 $the_proj->patrons = Patron::numRecos($proj->id);
-                
+
+                // extra conf
+                $project_conf = Project\Conf::get($proj->id);
+                $the_proj->days_round1 = $project_conf->days_round1;
+                $the_proj->days_round2 = $project_conf->days_round2;
+                $the_proj->one_round = $the_proj->one_round;
+                $the_proj->days_total = ($the_proj->one_round) ? $the_proj->days_round1 : $the_proj->days_round1 + $the_proj->days_round2;
+
                 $projects[] = $the_proj;
             }
             return $projects;
@@ -2247,27 +2309,42 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos en campaña (para ser revisados por el cron/execute)
+         *
+         * Escogemos los proyectos que están a 5 días de terminar primera ronda o 3 días de terminar segunda.
+         * En cron/execute necesitamos estos proyectos para feed y mail automático.
          * @return: array of Model\Project (full instance (get))
          */
-        public static function getActive()
+        public static function getActive($debug = false)
         {
             $projects = array();
 
             $sql = "
-                SELECT project.id as id
+                SELECT
+                    project.id as id,
+                    project.published,
+                    project.passed,
+                    project.success,
+                    project_conf.days_round1,
+                    project_conf.days_round2,
+                    project_conf.one_round,
+                    DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) as rest_primera,
+                    DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) as rest_total
                 FROM  project
+                LEFT JOIN project_conf on project = id
                 WHERE project.status = 3
                 AND (
-                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 35
-                        AND (passed IS NULL OR passed = '0000-00-00')
-                        )
-                    OR
-                    (DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') >= 75
-                        AND (success IS NULL OR success = '0000-00-00')
-                        )
+                    ((passed IS NULL OR passed = '0000-00-00') AND
+                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) BETWEEN 0 AND 5
                     )
+                    OR
+                    ((success IS NULL OR success = '0000-00-00') AND
+                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) BETWEEN 0 AND 3
+                    )
+                )
                 ORDER BY name ASC
             ";
+
+            if ($debug) echo $sql.'<hr />';
 
             $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
@@ -2352,20 +2429,20 @@ namespace Goteo\Model {
             if (!empty($filters['called'])) {
 
                 switch ($filters['called']) {
-                    
+
                     //en cualquier convocatoria
                     case 'all':
                         $sqlFilter .= " AND project.id IN (
                         SELECT project
                         FROM call_project)";
                         break;
-                    //en ninguna convocatoria    
+                    //en ninguna convocatoria
                     case 'none':
                         $sqlFilter .= " AND project.id NOT IN (
                         SELECT project
                         FROM call_project)";
                         break;
-                    //filtro en esta convocatoria    
+                    //filtro en esta convocatoria
                     default:
                         $sqlFilter .= " AND project.id IN (
                         SELECT project
@@ -2406,7 +2483,7 @@ namespace Goteo\Model {
             }
 
             // la select
-            $sql = "SELECT 
+            $sql = "SELECT
                         project.id,
                         project.id REGEXP '[0-9a-f]{5,40}' as draft
                     FROM project
@@ -2593,7 +2670,7 @@ namespace Goteo\Model {
             foreach($this->investors as $investor) {
 
                 if (!empty($investor->campaign)) continue;
-                
+
                 $investors[$investor->user] = (object) array(
                     'user' => $investor->user,
                     'name' => $investor->name,
@@ -2608,11 +2685,14 @@ namespace Goteo\Model {
             return $investors;
         }
 
-        /**
-         *  Método para calcular el mínimo y óptimo de un proyecto
+        /*
+        * Método para calcular el mínimo y óptimo de un proyecto
+        * Actualiza en project el mincost y maxcost
         */
         public static function calcCosts($id) {
             $cost_query = self::query("SELECT
+                        mincost AS oldmincost,
+                        maxcost AS oldmaxcost,
                         (SELECT  SUM(amount)
                         FROM    cost
                         WHERE   project = project.id
@@ -2624,8 +2704,15 @@ namespace Goteo\Model {
                         ) as `maxcost`
                 FROM project
                 WHERE id =?", array($id));
-            $costs = $cost_query->fetchObject();
-            
+            if($costs = $cost_query->fetchObject()) {
+                if($costs->mincost != $costs->oldmincost || $costs->maxcost != $costs->oldmaxcost) {
+                    self::query("UPDATE
+                        project SET
+                        mincost = :mincost,
+                        maxcost = :maxcost
+                     WHERE id = :id", array(':id' => $id, ':mincost' => $costs->mincost, ':maxcost' => $costs->maxcost));
+                }
+            }
             return $costs;
         }
 

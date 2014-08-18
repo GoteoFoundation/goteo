@@ -6,6 +6,7 @@
 //
 // **************
 
+// Make sure the namespace is defined
 if (typeof GOTEO === 'undefined') {
     var GOTEO = { 
         charts : {},
@@ -524,7 +525,7 @@ GOTEO.utilities.onHover = function(){
             this_minute = (now - day) / 1000,
             total_days = dates.total_days,
             day_number = Math.floor((format.parse(today_funds.date) - (start_date)) / 86400000),
-            today_minimum = (day_number > 40) ? minimum : Math.floor((+minimum / 40) * +day_number),
+            today_minimum = (day_number > PRIMERA_RONDA) ? minimum : Math.floor((+minimum / PRIMERA_RONDA) * +day_number),
             y_today_funds = y(today_funds.value),
             y_tomorrow_funds = y(tomorrow.value);
             if (!passed_minimum) {

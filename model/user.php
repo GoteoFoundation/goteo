@@ -34,6 +34,8 @@ namespace Goteo\Model {
             $twitter,
             $identica,
             $linkedin,
+            $amount,
+            $worth,
             $created,
             $modified,
             $interests = array(),
@@ -66,17 +68,20 @@ namespace Goteo\Model {
             if($name == "token") {
 	            return $this->getToken();
 	        }
+	        if($name == "get_numInvested") {
+                return !empty($this->num_invested) ? $this->num_invested : self::numInvested($this->id);
+            }
 	        if($name == "support") {
 	            return $this->getSupport();
 	        }
-	        if($name == "worth") {
-	            return $this->getWorth();
+	        if($name == "get_numOwned") {
+                return (!empty($this->num_owned)) ? $this->num_owned : self::updateOwned($this->id);
 	        }
-	        if($name == "amount") {
-	            return $this->getAmount();
+	        if($name == "get_worth") {
+                return (!empty($this->worth)) ? $this->worth : self::updateWorth($this->id, $this->amount);
 	        }
-	        if($name == "projects") {
-	            return $this->getProjects();
+	        if($name == "get_amount") {
+                return (!empty($this->amount)) ? $this->amount : self::updateAmount($this->id);
 	        }
 	        if($name == "geoloc") {
 	            return User\Location::get($this->id);
@@ -534,8 +539,9 @@ namespace Goteo\Model {
                 $sql = "
                     SELECT
                         user.id as id,
-                        user.email as email,
                         user.name as name,
+                        user.email as email,
+                        user.active as active,
                         IFNULL(user.lang, 'es') as lang,
                         user.location as location,
                         user.avatar as avatar,
@@ -547,12 +553,17 @@ namespace Goteo\Model {
                         user.twitter as twitter,
                         user.identica as identica,
                         user.linkedin as linkedin,
-                        user.active as active,
+                        user.amount as amount,
+                        user.num_patron as num_patron,
+                        user.num_patron_active as num_patron_active,
+                        user.worth as worth,
                         user.confirmed as confirmed,
                         user.hide as hide,
                         user.created as created,
                         user.modified as modified,
-                        user.node as node
+                        user.node as node,
+                        user.num_invested as num_invested,
+                        user.num_owned as num_owned
                     FROM user
                     LEFT JOIN user_lang
                         ON  user_lang.id = user.id
@@ -633,6 +644,7 @@ namespace Goteo\Model {
             $users = array();
 
             $sqlFilter = "";
+            $sqlOrder = "";
             if (!empty($filters['id'])) {
                 $sqlFilter .= " AND id = :id";
                 $values[':id'] = $filters['id'];
@@ -696,6 +708,7 @@ namespace Goteo\Model {
                         $sqlFilter .= " AND id IN (
                             SELECT DISTINCT(owner)
                             FROM project
+                            WHERE status > 2
                             ) ";
                         break;
                     case 'investors': // aportan correctamente a proyectos
@@ -771,6 +784,9 @@ namespace Goteo\Model {
                         active,
                         hide,
                         DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
+                        amount,
+                        num_invested,
+                        num_owned,
                         node
                         $sqlCR
                     FROM user
@@ -779,7 +795,8 @@ namespace Goteo\Model {
                     $sqlOrder
                     LIMIT 999
                     ";
-            
+
+            // echo str_replace(array_keys($values), array_values($values),$sql).'<br />';
             $query = self::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
@@ -795,9 +812,6 @@ namespace Goteo\Model {
                     $user->$rolevar = true;
                 }
 
-                $user->namount = (int) $user->amount;
-                $user->nprojs = (int) count($user->support['projects']);
-                
                 $users[] = $user;
             }
             return $users;
@@ -846,6 +860,23 @@ namespace Goteo\Model {
             }
 
             return $list;
+        }
+
+        /*
+         * Consulta simple de si el usuario es impulsor (de proyecto publicado)
+         */
+        public static function isOwner($user, $published = false, $dbg = false) {
+
+            $sql = "SELECT COUNT(*) FROM project WHERE owner = ?";
+            if ($published) {
+                $sql .= " AND status > 2";
+            }
+            $sql .= " ORDER BY created DESC";
+            if ($dbg) echo $sql.\trace($user).'<br />';
+            $query = self::query($sql, array($user));
+            $is = $query->fetchColumn();
+            if ($dbg) var_dump($is);
+            return !empty($is);
         }
 
         /*
@@ -1220,7 +1251,7 @@ namespace Goteo\Model {
             if ($geoloc->save($errors)) {
                 return $loc;
             } else {
-                @mail('geoloc_fail@doukeshi.org', 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
+                @mail(\GOTEO_FAIL_MAIL, 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
                 return false;
             }
     	}
@@ -1238,20 +1269,36 @@ namespace Goteo\Model {
             return array('projects' => $projects, 'amount' => $invest[0], 'invests' => $invest[1]);
         }
 
-	    /**
-    	 * Nivel actual de meritocracia. (1-5)
-    	 * [Recalcula y actualiza el registro en db]
-    	 *
-    	 * @return type int	Worth::id
-    	 */
-    	private function getWorth () {
-            $query = self::query('SELECT id FROM worthcracy WHERE amount <= ? ORDER BY amount DESC LIMIT 1', array($this->support['amount']));
-            $worth = $query->fetchColumn();
-    	    $query = self::query('SELECT worth FROM user WHERE id = ?', array($this->id));
-            if($worth !== $query->fetchColumn()) {
-                self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $this->id, ':worth' => $worth));
+        /*
+         * Método para calcular el número de proyectos cofinanciados
+         * Actualiza el campo
+         */
+    	public static function numInvested ($id) {
+            $query = self::query("SELECT num_invested as old_num_invested, (SELECT COUNT(DISTINCT(project)) FROM invest WHERE user = :user AND status IN ('0', '1', '3', '4')) as num_invested FROM user WHERE id = :user", array(':user' => $id));
+            $inv = $query->fetchObject();
+            if($inv->old_num_invested != $inv->num_invested) {
+                self::query("UPDATE
+                        user SET
+                        num_invested = :nproj
+                     WHERE id = :id", array(':id' => $id, ':nproj' => $inv->num_invested));
             }
-            return $worth;
+            return $inv->nproj;
+        }
+
+	    /**
+    	 * Recalcula y actualiza el nivel de meritocracia
+    	 * Segun el actual importe cofinanciado por el usuario
+         *
+         * @param $amount int
+    	 * @return result boolean
+    	 */
+    	public static function updateWorth ($user, $amount) {
+            $query = self::query('SELECT worth as old_worth, (SELECT id FROM worthcracy WHERE amount <= :amount ORDER BY amount DESC LIMIT 1) as new_worth FROM user WHERE id = :user', array(':amount'=>$amount, ':user'=>$user));
+            $usr = $query->fetchObject();
+            if ($usr->old_worth != $usr->new_worth) {
+                self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $user, ':worth' => $usr->new_worth));
+            }
+            return $usr->new_worth;
         }
 
         /**
@@ -1259,21 +1306,28 @@ namespace Goteo\Model {
     	 *
     	 * @return type int	Count(id)
     	 */
-    	private function getProjects () {
-            $query = self::query('SELECT COUNT(id) FROM project WHERE owner = ? AND status > 2', array($this->id));
-            $num_proj = $query->fetchColumn(0);
-            return $num_proj;
+        public static function updateOwned ($user) {
+            $query = self::query('SELECT num_owned as old_num, (SELECT COUNT(id) FROM project WHERE owner = :user AND status > 2) as new_num FROM user WHERE id = :user', array(':user'=>$user));
+            $num = $query->fetchObject();
+            if ($num->old_num != $num->new_num) {
+                self::query('UPDATE user SET num_owned = :num WHERE id = :id', array(':id' => $user, ':num' => $num->new_num));
+            }
+            return $num->new_num;
         }
 
         /**
-    	 * Cantidad aportada
+    	 * Actualiza Cantidad aportada
     	 *
+         * @param user string Id del usuario
     	 * @return type int	Count(id)
     	 */
-    	private function getAmount () {
-            $query = self::query("SELECT SUM(invest.amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3')", array($this->id));
-            $amount = $query->fetchColumn(0);
-            return $amount;
+    	public static function updateAmount ($user) {
+            $query = self::query("SELECT amount as old_amount, (SELECT SUM(invest.amount) FROM invest WHERE user = :user AND status IN ('0', '1', '3')) as new_amount FROM user WHERE id = :user", array(':user'=>$user));
+            $amount = $query->fetchObject();
+            if ($amount->old_amount != $amount->new_amount) {
+                self::query('UPDATE user SET amount = :amount WHERE id = :id', array(':id' => $user, ':amount' => $amount->new_amount));
+            }
+            return $amount->new_amount;
         }
 
         /**
@@ -1556,6 +1610,56 @@ namespace Goteo\Model {
             } else {
                 return false;
             }
+        }
+
+
+        /*
+         * Consulta simple para saber si un usuario ha cofinanciado en algun proyecto de un impulsor
+         * @return: boolean
+         */
+        public static function isInvestor($user, $owner, $dbg = false) {
+            $sql = "SELECT COUNT(*)
+            FROM project
+            INNER JOIN invest
+                ON invest.project = project.id
+                AND invest.status IN ('0', '1', '3', '4')
+                AND invest.user = :user
+            WHERE project.owner = :owner
+            AND project.status > 2
+            ";
+            $values = array(
+                ':user' => $user,
+                ':owner' => $owner
+            );
+            if ($dbg) echo str_replace(array_keys($values), array_values($values),$sql).'<br />';
+            $query = static::query($sql, $values);
+            $is = $query->fetchColumn();
+            if ($dbg) var_dump($is);
+            return !empty($is);
+        }
+
+        /*
+         * Consulta simple para saber si un usuario ha participado en los mensajes de algun proyecto de un impulsor
+         * @return: boolean
+         */
+        public static function isParticipant($user, $owner, $dbg = false) {
+            $sql = "SELECT COUNT(*)
+            FROM project
+            INNER JOIN message
+                ON message.project = project.id
+                AND message.user = :user
+            WHERE project.owner = :owner
+            AND project.status > 2
+            ";
+            $values = array(
+                ':user' => $user,
+                ':owner' => $owner
+            );
+            if ($dbg) echo str_replace(array_keys($values), array_values($values),$sql).'<br />';
+            $query = static::query($sql, $values);
+            $is = $query->fetchColumn();
+            if ($dbg) var_dump($is);
+            return !empty($is);
         }
 
 

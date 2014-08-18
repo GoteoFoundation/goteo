@@ -23,6 +23,7 @@ $sizes = array(
         <input type="hidden" name="table" value="<?php echo $table ?>" />
         <input type="hidden" name="id" value="<?php echo $id ?>" />
         <input type="hidden" name="lang" value="<?php echo $_SESSION['translate_lang'] ?>" />
+        <?php if ($table == 'post') : ?><input type="hidden" name="blog" value="<?php echo $content->blog ?>" /><?php endif; ?>
 
 
         <?php foreach (Content::$fields[$table] as $field=>$fieldName) : ?>

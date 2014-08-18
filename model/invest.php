@@ -6,6 +6,7 @@ namespace Goteo\Model {
     use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\User,
+        Goteo\Model\Project,
         Goteo\Model\Call;
 
     class Invest extends \Goteo\Core\Model {
@@ -297,11 +298,11 @@ namespace Goteo\Model {
                         $sqlFilter
                     ORDER BY invest.id DESC
                     ";
-            
+
             if ($limited > 0 && is_numeric($limited)) {
                 $sql .= "LIMIT $limited";
             }
-            
+
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item;
@@ -309,7 +310,7 @@ namespace Goteo\Model {
             return $list;
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (!is_numeric($this->amount))
                 $errors[] = 'La cantidad no es correcta';
 
@@ -376,7 +377,7 @@ namespace Goteo\Model {
                     // si es de convocatoria,
                     if (isset($this->called) && $this->called instanceof Call) {
 
-                        // si el aporte es más de lo que puede 
+                        // si el aporte es más de lo que puede
                         $drop_amount = ($this->amount > $this->maxdrop) ? $this->maxdrop : $this->amount;
 
                         // si queda capital riego
@@ -405,7 +406,7 @@ namespace Goteo\Model {
                                 $this->droped = $drop->id;
                                 $this->call = $this->called->id;
                             }
-                            
+
                         } else {
                             unset($this->called);
                         }
@@ -445,8 +446,8 @@ namespace Goteo\Model {
                         ':invest'   => $this->id,
                         ':user'     => $this->user,
                         ':address'  => $this->address->address,
-                        ':zipcode'  => $this->address->zipcode, 
-                        ':location' => $this->address->location, 
+                        ':zipcode'  => $this->address->zipcode,
+                        ':location' => $this->address->location,
                         ':country'  => $this->address->country,
                         ':name'     => $this->address->name,
                         ':nif'      => $this->address->nif,
@@ -458,7 +459,11 @@ namespace Goteo\Model {
                     );
                 }
 
+                // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                $this->keepUpdated();
+
                 return true;
+
             } catch(\PDOException $e) {
                 // TODO: Revertir últimas transacciones
                 $errors[] = "El aporte no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -560,7 +565,7 @@ namespace Goteo\Model {
 
             $list = array();
             $values = array();
-            
+
             $and = " WHERE";
 
             $sql = "
@@ -721,6 +726,10 @@ namespace Goteo\Model {
 
             $query = static::query($sql, $values);
             $got = $query->fetchObject();
+            if(!isset ($only) && !isset($call)) {
+                //actualiza el el amount en proyecto (aunque se quede a cero)
+                static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+            }
             return (int) $got->much;
         }
 
@@ -812,7 +821,7 @@ namespace Goteo\Model {
                 }
 
             }
-            
+
             return $investors;
         }
 
@@ -826,7 +835,11 @@ namespace Goteo\Model {
                 ";
 
             $query = static::query($sql, $values);
-            $got = $query->fetchObject();
+            if($got = $query->fetchObject()) {
+                //actualiza el numero de inversores en proyecto (aunque sea ninguno)
+                static::query("UPDATE project SET num_investors = :num WHERE id = :project", array(':num' => (int) $got->investors, ':project' => $project));
+            }
+
             return (int) $got->investors;
         }
 
@@ -963,7 +976,7 @@ namespace Goteo\Model {
             } else {
                 return false;
             }
-            
+
         }
 
         /*
@@ -1095,7 +1108,7 @@ namespace Goteo\Model {
                         self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
                     }
                 }
-                
+
                 return true;
             } else {
                 return false;
@@ -1124,9 +1137,9 @@ namespace Goteo\Model {
                         returned = :returned,
                         status = $status
                     WHERE id = :id";
-            
+
             if (self::query($sql, $values)) {
-                
+
                 // si tiene capital riego asociado, lo liberamos
                 if (!empty($this->droped)) {
                     $drop = Invest::get($this->droped);
@@ -1268,28 +1281,35 @@ namespace Goteo\Model {
                     $p0 = (string) 'all';
                 case 3: // en marcha
                     // si tiene fecha $project->passed de pase a segunda ronda: paypal(0) no es incidencia para los aportes de segunda ronda
-                    if (!empty($passed)) {
-                        if ($round == 1) {
-                            // esto es mal
-                            $Data['note'][] = "ATENCION! Está marcada la fecha de pase a segunda ronda (el {$passed}) pero sique en primera ronda!!!";
-                            $act_eq = (string) 'first';
-                        } else {
-                            // en segunda ronda
-                            if (!isset($p0)) {
-                                $p0 = (string) 'first'; // paypal(0) es incidencia paralos de primera ronda solamente
-                            }
-                            // si está en segunda ronda; la financiacion actual es un merge de usuarios y suma de aportes correctos, incidencias, correctos y cantidad total
-                            $act_eq = (string) 'sum';
-                        }
+
+                    if (Project\Conf::isOneRound($project)) {
+                        $act_eq = (string) 'first';
                     } else {
-                        // si no tiene fecha de pase y esta en ronda 2: es un problema se trata como solo financiacion actual y paypal(0) no son incidencias
-                        if ($round == 2) {
-                            $Data['note'][] = "ATENCION! En segunda ronda pero NO está marcada la fecha de pase a segunda ronda!!!";
-                            $act_eq = (string) 'first';
+
+                        if (!empty($passed)) {
+                            if ($round == 1) {
+                                // esto es mal
+                                $Data['note'][] = "ATENCION! Está marcada la fecha de pase a segunda ronda (el {$passed}) pero sique en primera ronda!!!";
+                                $act_eq = (string) 'first';
+                            } else {
+                                // en segunda ronda
+                                if (!isset($p0)) {
+                                    $p0 = (string) 'first'; // paypal(0) es incidencia paralos de primera ronda solamente
+                                }
+                                // si está en segunda ronda; la financiacion actual es un merge de usuarios y suma de aportes correctos, incidencias, correctos y cantidad total
+                                $act_eq = (string) 'sum';
+                            }
                         } else {
-                            // ok, en primera ronda sin  fecha marcada, informe solo actual = primera
-                            $act_eq = (string) 'first';
+                            // si no tiene fecha de pase y esta en ronda 2: es un problema se trata como solo financiacion actual y paypal(0) no son incidencias
+                            if ($round == 2) {
+                                $Data['note'][] = "ATENCION! En segunda ronda pero NO está marcada la fecha de pase a segunda ronda!!!";
+                                $act_eq = (string) 'first';
+                            } else {
+                                // ok, en primera ronda sin  fecha marcada, informe solo actual = primera
+                                $act_eq = (string) 'first';
+                            }
                         }
+
                     }
 
                     // si solamente financiacion actual=primera
@@ -1376,13 +1396,13 @@ namespace Goteo\Model {
                             }
                             $Data['drop']['total'] = $Data['drop']['first'];
                         }
-                        
+
                     } elseif ($act_eq === 'sum') {
                         // complicado: primero los de primera ronda, luego los de segunda ronda sumando al total
                         // calcular ultimo dia de primera ronda segun la fecha de pase
                         $passtime = strtotime($passed);
                         $last_day = date('Y-m-d', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)-1, date('Y', $passtime)));
-                        
+
                         // CASH first
                         $inv_cash = self::getList(array(
                             'methods' => 'cash',
@@ -1477,7 +1497,7 @@ namespace Goteo\Model {
                         }
 
                         // -- Los de segunda
-                        
+
                         // CASH  second
                         $inv_cash = self::getList(array(
                             'methods' => 'cash',
@@ -1688,10 +1708,52 @@ namespace Goteo\Model {
                 $list[] = $item;
             }
             return $list;
+         }
+
+        /**
+         * Tratamiento de aportes pendientes en cron/execute
+         */
+        public static function getPending($id) {
+            $query = \Goteo\Core\Model::query("
+                SELECT  *
+                FROM  invest
+                WHERE   invest.project = ?
+                AND     (invest.status = 0
+                    OR (invest.method = 'tpv'
+                        AND invest.status = 1
+                    )
+                    OR (invest.method = 'cash'
+                        AND invest.status = 1
+                    )
+                )
+                AND (invest.campaign IS NULL OR invest.campaign = 0)
+                ", array($id));
+
+            return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+        }
+
+        /**
+         * Keep updated any related data entities
+         *
+         * @return success boolean
+         */
+        public function keepUpdated() {
+
+            // numero de proyectos aportados
+            User::numInvested($this->user);
+
+            // cantidad total aportada en goteo
+            $amount = User::updateAmount($this->user);
+            // nivel de meritocracia
+            User::updateWorth($this->user, $amount);
+
+            // proyecto
+            self::invested($this->project); // conseguido
+            self::numInvestors($this->project); // inversores
 
 
          }
 
     }
-    
+
 }

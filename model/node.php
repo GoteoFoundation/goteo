@@ -174,7 +174,7 @@ namespace Goteo\Model {
                 $this->name = $this->id;
 
             if (empty($this->email))
-                $this->email = \GOTEO_CONTACT_MAIL;
+                $this->email = \GOTEO_MAIL;
 
             if (!isset($this->active))
                 $this->active = 0;

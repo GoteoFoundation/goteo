@@ -20,7 +20,7 @@ namespace Goteo\Library {
          * Método para crear un preapproval para un aporte
          * va a mandar al usuario a paypal para que confirme
          *
-         * @TODO poner límite máximo de dias a lo que falte para los 40/80 dias para evitar las cancelaciones
+         * @TODO poner límite máximo de dias a lo que falte para los PRIMERA_RONDA/SEGUNDA_RONDA dias para evitar las cancelaciones
          */
         public static function preapproval($invest, &$errors = array()) {
             
@@ -69,7 +69,7 @@ namespace Goteo\Library {
 		           if(strtoupper($ap->isSuccess) == 'FAILURE') {
                         Invest::setDetail($invest->id, 'paypal-conection-fail', 'Ha fallado la comunicacion con paypal al iniciar el preapproval. Proceso libary/paypal::preapproval');
                        $errors[] = 'No se ha podido iniciar la comunicación con paypal para procesar la preaprovación del cargo. ' . $ap->getLastError();
-                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' ap->success = FAILURE.<br /><pre>' . print_r($ap, true) . '</pre><pre>' . print_r($response, true) . '</pre>' . $ap->getLastError());
+                        @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' ap->success = FAILURE.<br /><pre>' . print_r($ap, true) . '</pre><pre>' . print_r($response, true) . '</pre>' . $ap->getLastError());
                         return false;
 					}
 
@@ -84,7 +84,7 @@ namespace Goteo\Library {
                     } else {
                         Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
                         $errors[] = 'No preapproval key obtained. <pre>' . print_r($response, true) . '</pre>';
-                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No preapproval key obtained.<br /><pre>' . print_r($response, true) . '</pre>');
+                        @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No preapproval key obtained.<br /><pre>' . print_r($response, true) . '</pre>');
                         return false;
                     }
 
@@ -99,7 +99,7 @@ namespace Goteo\Library {
 
                 Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
-                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, true) . '</pre>');
+                @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, true) . '</pre>');
                 return false;
 			}
             
@@ -117,7 +117,7 @@ namespace Goteo\Library {
 
             if ($invest->status == 1) {
                 $errors[] = 'Este aporte ya está cobrado!';
-                @mail('goteo-paypal-fail@doukeshi.org', 'Dobleejecución de preapproval', 'Se intentaba ejecutar un aporte en estado Cobrado. <br /><pre>' . print_r($invest, true) . '</pre>');
+                @mail(\GOTEO_FAIL_MAIL, 'Dobleejecución de preapproval en ' . SITE_URL, 'Se intentaba ejecutar un aporte en estado Cobrado. <br /><pre>' . print_r($invest, true) . '</pre>');
                 return false;
             }
             
@@ -332,7 +332,7 @@ namespace Goteo\Library {
                             break;
                         default:
                             if (empty($errorId)) {
-                                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, true) . '</pre>');
+                                @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, true) . '</pre>');
                                 $log = new Feed();
                                 $log->setTarget($project->id);
                                 $log->populate('Error interno de PayPal', '/admin/accounts',
@@ -390,13 +390,13 @@ namespace Goteo\Library {
                     } else {
                         Invest::setIssue($invest->id);
                         $errors[] = "Obtenido payKey: $token pero no se ha grabado correctamente (paypal::setPayment) en el registro id: {$invest->id}.";
-                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error al actualizar registro aporte (setPayment)', 'ERROR en ' . __FUNCTION__ . ' Metodo paypal::setPayment ha fallado.<br /><pre>' . print_r($response, true) . '</pre>');
+                        @mail(\GOTEO_FAIL_MAIL, 'Error al actualizar registro aporte (setPayment)', 'ERROR en ' . __FUNCTION__ . ' Metodo paypal::setPayment ha fallado.<br /><pre>' . print_r($response, true) . '</pre>');
                         return false;
                     }
                 } else {
                     Invest::setIssue($invest->id);
                     $errors[] = 'No ha obtenido Payment Key.';
-                    @mail('goteo-paypal-API-fault@doukeshi.org', 'Error en implementacion Paypal API (no payKey)', 'ERROR en ' . __FUNCTION__ . ' No payment key obtained.<br /><pre>' . print_r($response, true) . '</pre>');
+                    @mail(\GOTEO_FAIL_MAIL, 'Error en implementacion Paypal API (no payKey)', 'ERROR en ' . __FUNCTION__ . ' No payment key obtained.<br /><pre>' . print_r($response, true) . '</pre>');
                     return false;
                 }
     
@@ -410,7 +410,7 @@ namespace Goteo\Library {
 
                 Invest::setIssue($invest->id);
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' Exception<br /><pre>' . print_r($fault, true) . '</pre>');
+                @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . ' Exception<br /><pre>' . print_r($fault, true) . '</pre>');
                 return false;
             }
 
@@ -481,7 +481,7 @@ namespace Goteo\Library {
 
                     if (empty($errorId)) {
                         $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, true) . '</pre>';
-                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error en implementacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, true) . '</pre>');
+                        @mail(\GOTEO_FAIL_MAIL, 'Error en implementacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, true) . '</pre>');
                     } else {
                         $errors[] = "$action $errorMsg [$errorId]";
                     }
@@ -495,12 +495,12 @@ namespace Goteo\Library {
                         return true;
                     } else {
                         $errors[] = "Obtenido estatus de ejecución {$response->paymentExecStatus} pero no se ha actualizado el registro de aporte id {$invest->id}.";
-                        @mail('goteo-paypal-API-fault@doukeshi.org', 'Error al actualizar registro aporte (setStatus)', 'ERROR en ' . __FUNCTION__ . ' Metodo paypal::setStatus ha fallado.<br /><pre>' . print_r($response, true) . '</pre>');
+                        @mail(\GOTEO_FAIL_MAIL, 'Error al actualizar registro aporte (setStatus)', 'ERROR en ' . __FUNCTION__ . ' Metodo paypal::setStatus ha fallado.<br /><pre>' . print_r($response, true) . '</pre>');
                         return false;
                     }
                 } else {
                     $errors[] = 'No se ha completado el pago encadenado, no se ha pagado al proyecto.';
-                    @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' aporte id '.$invest->id.'. No payment exec status completed.<br /><pre>' . print_r($response, true) . '</pre>');
+                    @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' aporte id '.$invest->id.'. No payment exec status completed.<br /><pre>' . print_r($response, true) . '</pre>');
                     return false;
                 }
 
@@ -513,7 +513,7 @@ namespace Goteo\Library {
                 $fault->error = $errorData;
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br />No se ha podido inicializar la comunicación con Paypal.<br /><pre>' . print_r($fault, true) . '</pre>');
+                @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br />No se ha podido inicializar la comunicación con Paypal.<br /><pre>' . print_r($fault, true) . '</pre>');
                 return false;
             }
 
@@ -550,7 +550,7 @@ namespace Goteo\Library {
                 $fault->error = $errorData;
 
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
-                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, true) . '</pre>');
+                @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, true) . '</pre>');
                 return false;
             }
         }
@@ -585,14 +585,14 @@ namespace Goteo\Library {
                 $fault->error = $errorData;
 
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
-                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, true) . '</pre>');
+                @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, true) . '</pre>');
                 return false;
             }
         }
 
 
         /*
-         * Llamada para cancelar un preapproval (si llega a los 40 sin conseguir el mínimo)
+         * Llamada para cancelar un preapproval (si llega a los PRIMERA_RONDA sin conseguir el mínimo)
          * recibe la instancia del aporte
          */
         public static function cancelPreapproval ($invest, &$errors = array(), $fail = false) {
@@ -615,7 +615,7 @@ namespace Goteo\Library {
                 if(strtoupper($ap->isSuccess) == 'FAILURE') {
                     Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el preapproval. Proceso libary/paypal::cancelPreapproval');
                     $errors[] = 'Preapproval cancel failed.' . $ap->getLastError();
-                    @mail('goteo-paypal-API-fault@doukeshi.org', 'Fallo al cancelar preapproval Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($ap->getLastError(), true) . '</pre>');
+                    @mail(\GOTEO_FAIL_MAIL, 'Fallo al cancelar preapproval Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($ap->getLastError(), true) . '</pre>');
                     return false;
                 } else {
                     Invest::setDetail($invest->id, 'paypal-cancel', 'El Preapproval se ha cancelado y con ello el aporte. Proceso libary/paypal::cancelPreapproval');
@@ -633,7 +633,7 @@ namespace Goteo\Library {
 
                 Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el preapproval. Proceso libary/paypal::cancelPreapproval');
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
-                @mail('goteo-paypal-API-fault@doukeshi.org', 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, true) . '</pre>');
+                @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, true) . '</pre>');
                 return false;
             }
         }

@@ -19,6 +19,9 @@ if ($project->status == 3 && $project->noinvest) {
     <h<?php echo $level + 1 ?> class="supertitle"><?php echo Text::get('project-support-supertitle'); ?></h<?php echo $level + 1 ?>>
     
     <?php switch ($project->tagmark) {
+        case 'oneround': // "ronda única"
+            echo '<div class="tagmark aqua">' . Text::get('regular-oneround_mark') . '</div>';
+            break;
         case 'onrun': // "en marcha"
             echo '<div class="tagmark aqua">' . Text::get('regular-onrun_mark') . '</div>';
             break;

@@ -64,6 +64,7 @@ namespace Goteo\Model\Blog {
                     LEFT JOIN post_lang
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
+                        AND post_lang.blog = post.blog
                     WHERE post.id = :id
                     ", array(':id' => $id, ':lang'=>$lang));
 
@@ -148,6 +149,7 @@ namespace Goteo\Model\Blog {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                    AND post_lang.blog = post.blog
                 $eng_join
                 ";
             if (!empty($blog)) {
@@ -264,6 +266,7 @@ namespace Goteo\Model\Blog {
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
+                    AND post_lang.blog = post.blog
                 $eng_join
                 ";
 
@@ -465,6 +468,7 @@ namespace Goteo\Model\Blog {
 
             $fields = array(
                 'id'=>'id',
+                'blog'=>'blog',
                 'lang'=>'lang',
                 'title'=>'title_lang',
                 'text'=>'text_lang',

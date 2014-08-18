@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
         <?php }?>
 		<div class="w940" style="padding:20px;">
         	<div class="block categories">
-                <h8 class="title"><?php echo Text::get('footer-header-categories') ?></h8>
+                <h6 class="title"><?php echo Text::get('footer-header-categories') ?></h6>
                 <ul class="scroll-pane">
                 <?php foreach ($categories as $id=>$name) : ?>
                     <li><a href="/discover/results/<?php echo $id.'/'.$name; ?>"><?php echo $name; ?></a></li>
@@ -40,7 +40,7 @@ jQuery(document).ready(function($) {
             </div>
 
             <div class="block projects">
-                <h8 class="title"><?php echo Text::get('footer-header-projects') ?></h8>
+                <h6 class="title"><?php echo Text::get('footer-header-projects') ?></h6>
                 <ul class="scroll-pane">
                     <li><a href="/"><?php echo Text::get('home-promotes-header') ?></a></li>
                     <li><a href="/discover/view/popular"><?php echo Text::get('discover-group-popular-header') ?></a></li>
@@ -54,7 +54,7 @@ jQuery(document).ready(function($) {
             </div>
 
             <div class="block resources">
-                <h8 class="title"><?php echo Text::get('footer-header-resources') ?></h8>
+                <h6 class="title"><?php echo Text::get('footer-header-resources') ?></h6>
                 <ul class="scroll-pane">
                     <li><a href="/faq"><?php echo Text::get('regular-header-faq') ?></a></li>
                     <li><a href="/glossary"><?php echo Text::get('footer-resources-glossary') ?></a></li>
@@ -79,11 +79,11 @@ jQuery(document).ready(function($) {
 				});
 			</script>
            <div id="slides_sponsor" class="block sponsors">
-                <h8 class="title"><?php echo Text::get('footer-header-sponsors') ?></h8>
+                <h6 class="title"><?php echo Text::get('footer-header-sponsors') ?></h6>
 				<div class="slides_container">
 					<?php $i = 1; foreach ($sponsors as $sponsor) : ?>
 					<div class="sponsor" id="footer-sponsor-<?php echo $i ?>">
-						<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?php echo $sponsor->name ?>" /></a>
+						<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?php echo htmlspecialchars($sponsor->name) ?>" /></a>
 					</div>
 					<?php $i++; endforeach; ?>
 				</div>
@@ -96,7 +96,7 @@ jQuery(document).ready(function($) {
 
             <div class="block services">
                 
-                <h8 class="title"><?php echo Text::get('footer-header-services') ?></h8>
+                <h6 class="title"><?php echo Text::get('footer-header-services') ?></h6>
                 <ul>
                     <li><a href="/service/resources"><?php echo Text::get('footer-service-resources') ?></a></li>
 <?php /*                    <li><a href="/service/campaign"><?php echo Text::get('footer-service-campaign') ?></a></li>
@@ -109,7 +109,7 @@ jQuery(document).ready(function($) {
             </div>
          
             <div class="block social" style="border-right:#ebe9ea 2px solid;">
-                <h8 class="title"><?php echo Text::get('footer-header-social') ?></h8>
+                <h6 class="title"><?php echo Text::get('footer-header-social') ?></h6>
                 <ul>
                     <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>

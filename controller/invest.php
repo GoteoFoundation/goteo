@@ -197,13 +197,6 @@ namespace Goteo\Controller {
                 $drop = Model\Invest::get($invest->droped);
                 $callData = Model\Call::getMini($drop->call);
 
-                // + mail de aviso por tema de óptimo de convocatoria Unia
-                if ($drop->call == 'unia-cofinanciacion-innovacion-educativa' && $projectData->invested >= $projectData->maxcost) {
-                    @mail('goteo@doukeshi.org',
-                        'Proyecto ' . $project->name . ' ha alcanzado el óptimo',
-                        'El proyecto '.$project->name.' ha llegado a '.$projectData->invested.'eur rebasando '.$projectData->maxcost.'eur Corregir riego para que no supere y cerrar grifo.');
-                }
-
                 // texto de capital riego
                 $txt_droped = Text::get('invest-mail_info-drop', $callData->user->name, $drop->amount, $callData->name);
             } else {
@@ -217,7 +210,7 @@ namespace Goteo\Controller {
             if ($invest->method == 'tpv') {
                 // si el aporte no está en estado "cobrado por goteo" (1) 
                 if ($invest->status != '1') {
-                    @mail('goteo_fail@doukeshi.org',
+                    @mail(\GOTEO_FAIL_MAIL,
                         'Aporte tpv no pagado ' . $invest->id,
                         'Ha llegado a invest/confirm el aporte '.$invest->id.' mediante tpv sin estado cobrado (llega con estado '.$invest->status.')');
                     // mandarlo a la pagina de aportar para que lo intente de nuevo

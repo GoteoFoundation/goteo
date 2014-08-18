@@ -5,8 +5,7 @@ use Goteo\Core\View,
     Goteo\Library\Worth;
 
 $user = $this['user'];
-
-$worthcracy = Worth::getAll();
+$worthcracy = $this['worthcracy'];
 ?>
 <div class="supporterContainer">
 	<?php if ($user->campaign) : ?>

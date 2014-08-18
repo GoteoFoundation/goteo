@@ -7,3 +7,5 @@ CREATE TABLE IF NOT EXISTS invest_reward (
 
 -- Alter table por si no se puede pasar el create
 ALTER TABLE `invest_reward` ADD `fulfilled` BOOLEAN NOT NULL DEFAULT '0';
+
+ALTER TABLE `invest_reward` ADD INDEX `reward` ( `reward` ) ;

@@ -76,6 +76,19 @@ namespace Goteo\Controller\Admin {
                         Message::Error(implode('<br />', $errors));
                     }
 
+                } elseif (isset($_POST['save-rounds'])) {
+
+                    $project_conf = Model\Project\Conf::get($projData->id);
+                    $project_conf->days_round1 = (!empty($_POST['round1'])) ? $_POST['round1'] : 40;
+                    $project_conf->days_round2 = (!empty($_POST['round2'])) ? $_POST['round2'] : 40;
+                    $project_conf->one_round = isset($_POST['oneround']);
+                    // si es ronda única, los días de segunda deben grabarse a cero (para que el getActive no lo cuente para segunda)
+                    if ($project_conf->one_round) $project_conf->days_round2 = 0;
+                    if ($project_conf->save($errors)) {
+                        Message::Info('Se han actualizado los días de campaña del proyecto ' . $projData->name);
+                    } else {
+                        Message::Error(implode('<br />', $errors));
+                    }
                 } elseif (isset($_POST['save-node'])) {
 
                     if (!isset($nodes[$_POST['node']])) {
@@ -215,6 +228,15 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'cancel':
                     // descartar un proyecto por malo
+
+                    // Asignar como asesor al admin que lo ha descartado
+                    if ($_SESSION['user']->id != 'root') {
+                        if ((!isset($project->consultants[$_SESSION['user']->id])) && ($project->assignConsultant($_SESSION['user']->id, $errors))) {
+                            $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
+                            Message::Info($msg);
+                        }
+                    }
+
                     if ($project->cancel($errors)) {
                         $log_text = 'El admin %s ha pasado el proyecto %s al estado <span class="red">Descartado</span>';
                     } else {
@@ -297,6 +319,22 @@ namespace Goteo\Controller\Admin {
                         'file' => 'accounts',
                         'project' => $project,
                         'accounts' => $accounts
+                    )
+                );
+            }
+
+            if ($action == 'conf') {
+
+                $conf = Model\Project\Conf::get($project->id);
+
+                // cambiar fechas
+                return new View(
+                    'view/admin/index.html.php',
+                    array(
+                        'folder' => 'projects',
+                        'file' => 'conf',
+                        'project' => $project,
+                        'conf' => $conf
                     )
                 );
             }
@@ -458,10 +496,15 @@ namespace Goteo\Controller\Admin {
                     }
                     unset($mailHandler);
 
-                    // si ha sido un asesor se le cambia el estado al proyecto
-                    if (isset($project->consultants[$_SESSION['user']->id])) {
-                        $project->cancel();
+                    // Asignar como asesor al admin que lo ha rechazado
+                    if ($_SESSION['user']->id != 'root') {
+                        if ((!isset($project->consultants[$_SESSION['user']->id])) && ($project->assignConsultant($_SESSION['user']->id, $errors))) {
+                            $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
+                            Message::Info($msg);
+                        }
                     }
+
+                    $project->cancel();
                 }
 
                 throw new Redirection('/admin/projects/list');

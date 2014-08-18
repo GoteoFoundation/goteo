@@ -56,7 +56,7 @@ namespace Goteo\Controller\Cron {
             $sql5 = "SELECT * FROM invest WHERE status = -1 AND transaction IS NOT NULL";
             $query5 = Model\Project::query($sql5);
             foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
-                @mail('goteo_fail@doukeshi.org',
+                @mail(\GOTEO_FAIL_MAIL,
                     'Aporte Incompleto con numero de autorización. En ' . SITE_URL,
                     'Aporte Incompleto con numero de autorización: <pre>' . print_r($row, true). '</pre>');
             }

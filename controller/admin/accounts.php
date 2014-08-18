@@ -75,13 +75,17 @@ namespace Goteo\Controller\Admin {
                         // cambio estado del aporte original a 'Reubicado' (no aparece en cofinanciadores)
                         // si tuviera que aparecer lo marcaríamos como caducado
                         if ($original->setStatus('5')) {
+
+                            // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                            $original->keepUpdated();
+
                             // Evento Feed
                             $log = new Feed();
                             $log->setTarget($projectData->id);
                             $log->populate('Aporte reubicado', '/admin/accounts',
                                 \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
                                     Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                    Feed::item('money', $_POST['amount'].' &euro;'),
+                                    Feed::item('money', $invest->amount.' &euro;'),
                                     Feed::item('project', $projectData->name, $projectData->id),
                                     Feed::item('user', $userData->name, $userData->id)
                             )));
@@ -136,11 +140,15 @@ namespace Goteo\Controller\Admin {
                 }
 
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && isset($new) && isset($status[$new])) {
-                    
+
                     if ($new != $invest->status) {
                         if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
                             Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $_SESSION['user']->name . ' ha cambiado el estado del apote a '.$status[$new]);
                             Message::Info('Se ha actualizado el estado del aporte');
+
+                            // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                            $invest->keepUpdated();
+
                         } else {
                             Message::Error('Ha fallado al actualizar el estado del aporte');
                         }
@@ -215,7 +223,10 @@ namespace Goteo\Controller\Admin {
                         break;
                 }
 
-                // Evento Feed
+               // mantenimiento de registros relacionados (usuario, proyecto, ...)
+               $invest->keepUpdated();
+
+               // Evento Feed
                 $log = new Feed();
                 $log->setTarget($projectData->id);
                 $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
@@ -271,8 +282,8 @@ namespace Goteo\Controller\Admin {
                 $users = Model\User::getAllMini();
                 // campañas
                 $calls = Model\Call::getAll();
-                   
-                
+
+
                 // generar aporte manual
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add']) ) {
 
@@ -311,7 +322,7 @@ namespace Goteo\Controller\Admin {
                         $log->populate('Aporte manual (admin)', '/admin/accounts',
                             \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
-                                Feed::item('money', $_POST['amount'].' &euro;'),
+                                Feed::item('money', $invest->amount.' &euro;'),
                                 Feed::item('project', $projectData->name, $projectData->id),
                                 Feed::item('user', $userData->name, $userData->id)
                         )));
@@ -355,7 +366,7 @@ namespace Goteo\Controller\Admin {
                 $invests = Model\Invest::getAll($id);
                 $project->investors = Model\Invest::investors($id, false, true);
                 $users = $project->agregateInvestors();
-                $status = Model\Invest::status();
+                $status = Model\Project::status();
                 $investStatus = Model\Invest::status();
 
                 // Datos para el informe de transacciones correctas
@@ -448,6 +459,9 @@ namespace Goteo\Controller\Admin {
 
                 }
 
+
+                // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                $invest->keepUpdated();
             }
 
             // ejecutar cargo ahora!!, solo aportes no ejecutados
@@ -460,7 +474,7 @@ namespace Goteo\Controller\Admin {
                 }
                 $project = Model\Project::get($invest->project);
                 $userData = Model\User::get($invest->user);
-                
+
                 switch ($invest->method) {
                     case 'paypal':
                         // a ver si tiene cuenta paypal
@@ -490,14 +504,14 @@ namespace Goteo\Controller\Admin {
                             $errors[] = 'Cargo paypal correcto';
                             $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                             $invest->status = 1;
-                            
+
                             // si era incidencia la desmarcamos
                             if ($invest->issue) {
                                 Model\Invest::unsetIssue($invest->id);
                                 Model\Invest::setDetail($invest->id, 'issue-solved', 'La incidencia se ha dado por resuelta al ejecutar el aporte manualmente por el admin ' . $_SESSION['user']->name);
                             }
-                            
-                            
+
+
                         } else {
                             $txt_errors = implode('; ', $errors);
                             $errors[] = 'Fallo al ejecutar cargo paypal: ' . $txt_errors . '<strong>POSIBLE INCIDENCIA NO COMUNICADA Y APORTE NO CANCELADO, HAY QUE TRATARLA MANUALMENTE</strong>';
@@ -587,7 +601,7 @@ namespace Goteo\Controller\Admin {
                 'manual' => 'Solo los manuales',
                 'campaign' => 'Solo con riego',
             );
-            
+
             // filtros de revisión de proyecto
             $review = array(
                 'collect' => 'Recaudado',

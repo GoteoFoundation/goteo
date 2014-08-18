@@ -92,6 +92,29 @@ if (NODE_ID != GOTEO_NODE) {
         <?php if (isset($jsreq_ckeditor)) : ?>
            <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
         <?php endif; ?>
+        <script type="text/javascript">
+                    jQuery(document).ready(function ($) {
+                         $("#lang").hover(function(){
+                           //desplegar idiomas
+                           try{clearTimeout(TID_LANG)}catch(e){};
+                           var pos = $(this).offset().left;
+                           $('ul.lang').css({left:pos+'px'});
+                           $("ul.lang").fadeIn();
+                           $("#lang").css("background","#808285 url('/view/css/bolita.png') 4px 7px no-repeat");
+
+                       },function() {
+                           TID_LANG = setTimeout('$("ul.lang").hide()',100);
+                        });
+                        $('ul.lang').hover(function(){
+                            try{clearTimeout(TID_LANG)}catch(e){};
+                        },function() {
+                           TID_LANG = setTimeout('$("ul.lang").hide()',100);
+                           $("#lang").css("background","#59595C url('/view/css/bolita.png') 4px 7px no-repeat");
+                        });
+                        
+                        
+                    });
+        </script>   
 
 <script type="text/javascript">
 
@@ -111,7 +134,7 @@ if (NODE_ID != GOTEO_NODE) {
     <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?>>
 <?php if (isset($fbCode)) : ?>
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
+<script type="text/javascript">(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
   js = d.createElement(s); js.id = id;

@@ -32,6 +32,12 @@ namespace Goteo\Controller\Cron {
             /// tipo de envio
             switch ($type) {
                 // Estos son avisos de final de ronda
+                case 'unique_pass': // template 20, proyecto finaliza la única ronda
+                    $tpl = 60;
+                    $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
+                    $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/rewards');
+                    break;
+
                 case 'r1_pass': // template 20, proyecto supera la primera ronda
                     $tpl = 20;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
@@ -223,7 +229,7 @@ namespace Goteo\Controller\Cron {
                     $monitors[] = 'enric@goteo.org';
                     $monitors[] = 'olivier@goteo.org';
                     $monitors[] = 'monitorizing@goteo.org';
-                    $monitors[] = 'monitorizing@doukeshi.org';
+                    $monitors[] = 'dev@goteo.org';
                     $monitors[] = 'pablo@anche.no';
 
                     $mailHandler->bcc = $monitors;
@@ -241,8 +247,8 @@ namespace Goteo\Controller\Cron {
                 $mailHandler->template = $template->id;
                 if (!$mailHandler->send($errors)) {
                     echo \trace($errors);
-                    @mail('goteo_fail@doukeshi.org',
-                        'Fallo al enviar email automaticamente al autor ' . SITE_URL,
+                    @mail(\GOTEO_FAIL_MAIL,
+                        'Fallo al enviar email automaticamente al autor en ' . SITE_URL,
                         'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, true). '</pre>');
                     $error_sending = true;
                 }
@@ -352,7 +358,7 @@ namespace Goteo\Controller\Cron {
                     $mailHandler->template = $template->id;
                     if (!$mailHandler->send($errors)) {
                         echo \trace($errors);
-                        @mail('goteo_fail@doukeshi.org',
+                        @mail(\GOTEO_FAIL_MAIL,
                             'Fallo al enviar email automaticamente al asesor ' . SITE_URL,
                             'Fallo al enviar email automaticamente al asesor: <pre>' . print_r($mailHandler, true). '</pre>');
                         $error_sending = true;
@@ -378,7 +384,8 @@ namespace Goteo\Controller\Cron {
          */
         static public function toInvestors ($type, $project, $post = null) {
 
-            $debug = \defined('CRON_EXEC');
+            // activar debug para mostrar menajes en el log
+            $debug = false;
 
             // notificación
             $notif = $type == 'update' ? 'updates' : 'rounds';
@@ -390,6 +397,12 @@ namespace Goteo\Controller\Cron {
 
             // - Separamos los replaces de contenido de los replaces individuales (%USERNAME%)
             switch ($type) {
+                case 'unique_pass': // template 61, finaliza única ronda
+                        $tpl = 61;
+                        $search  = array('%PROJECTNAME%', '%PROJECTURL%');
+                        $replace = array($project->name, SITE_URL . '/project/' . $project->id);
+                    break;
+
                 case 'r1_pass': // template 15, proyecto supera la primera ronda
                         $tpl = 15;
                         $search  = array('%PROJECTNAME%', '%PROJECTURL%');
@@ -571,7 +584,7 @@ namespace Goteo\Controller\Cron {
 
                     } else {
                         $anyfail = true;
-                        @mail('goteo_fail@doukeshi.org',
+                        @mail(\GOTEO_FAIL_MAIL,
                             'Fallo al enviar email automaticamente al amigo ' . SITE_URL,
                             'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, true). '</pre>');
                     }

@@ -3,6 +3,7 @@ namespace Goteo\Model {
 
     use \Goteo\Library\Text,
         \Goteo\Model\Project,
+        \Goteo\Model\Image,
         \Goteo\Library\Check;
 
     class Promote extends \Goteo\Core\Model {
@@ -26,7 +27,7 @@ namespace Goteo\Model {
                 $lang=self::default_lang_by_id($id, 'promote_lang', \LANG);
 
                 $query = static::query("
-                    SELECT  
+                    SELECT
                         promote.id as id,
                         promote.node as node,
                         promote.project as project,
@@ -62,16 +63,17 @@ namespace Goteo\Model {
 
             if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(promote_lang.title, promote.title) as title,
-                                    IFNULL(promote_lang.description, promote.description) as description";
+                                    IFNULL(promote_lang.description, promote.description) as promo_text";
                 }
             else {
                     $different_select=" IFNULL(promote_lang.title, IFNULL(eng.title, promote.title)) as title,
-                                        IFNULL(promote_lang.description, IFNULL(eng.description, promote.description)) as description";
+                                        IFNULL(promote_lang.description, IFNULL(eng.description, promote.description)) as promo_text";
                     $eng_join=" LEFT JOIN promote_lang as eng
                                     ON  eng.id = promote.id
                                     AND eng.lang = 'en'";
                 }
 
+            // sacamos tambien todos los dfatos que da el project::getMedium
             $query = static::query("
                 SELECT
                     promote.id as id,
@@ -79,6 +81,19 @@ namespace Goteo\Model {
                     project.name as name,
                     project.status as status,
                     $different_select,
+                    project.published as published,
+                    project.created as created,
+                    project.updated as updated,
+                    project.mincost as mincost,
+                    project.maxcost as maxcost,
+                    project.amount as amount,
+                    project.description as description,
+                    project.num_investors as num_investors,
+                    project.days as days,
+                    user.id as user_id,
+                    user.name as user_name,
+                    image.id as image_id,
+                    image.name as image_name,
                     promote.order as `order`,
                     promote.active as `active`
                 FROM    promote
@@ -88,16 +103,66 @@ namespace Goteo\Model {
                 $eng_join
                 INNER JOIN project
                     ON project.id = promote.project
+                INNER JOIN user
+                    ON user.id = project.owner
+                LEFT JOIN image
+                    ON image.id = project.image
                 WHERE promote.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
                 ", array(':node' => $node, ':lang'=>$lang));
-            
+
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
-                $promo->description =Text::recorta($promo->description, 100, false);
+                $promo->description = Text::recorta($promo->description, 100, false);
+                //variables usadas en view/project/widget/project.html.php
+                $promo->projectData = new Project;
+                $promo->projectData->id = $promo->project;
+                $promo->projectData->status = $promo->status;
+                $promo->projectData->name = $promo->name;
+                $promo->projectData->description = $promo->description;
+                $promo->projectData->published = $promo->published;
+                if($promo->image_id) {
+                    $promo->projectData->image = new Image;
+                    $promo->projectData->image->id = $promo->image_id;
+                    $promo->projectData->image->name = $promo->image_name;
+                }
+                $promo->projectData->amount = $promo->amount;
+                $promo->projectData->invested = $promo->amount;
+                $promo->projectData->num_investors = $promo->num_investors;
+                if(empty($promo->num_investors)) {
+                    $promo->projectData->num_investors = Invest::numInvestors($promo->project);
+                }
+                //de momento... habria que mejorarlo
+                $promo->projectData->categories = Project\Category::getNames($promo->project, 2);
+                $promo->projectData->social_rewards = Project\Reward::getAll($promo->project, 'social', $lang);
+
+                $promo->projectData->mincost = $promo->mincost;
+                $promo->projectData->maxcost = $promo->maxcost;
+                if(empty($promo->mincost)) {
+                    $calc = Project::calcCosts($promo->project);
+                    $promo->projectData->mincost = $calc->mincost;
+                    $promo->projectData->maxcost = $calc->maxcost;
+                }
+                $promo->projectData->user = new User;
+                $promo->projectData->user->id = $promo->user_id;
+                $promo->projectData->user->name = $promo->user_name;
+                //calcular dias sin consultar sql
+                $promo->projectData->days = $promo->days;
+                $promo->projectData->round = 0;
+
+                $project_conf = Project\Conf::get($promo->projectData->id);
+                $promo->projectData->days_round1 = $project_conf->days_round1;
+                $promo->projectData->days_round2 = $project_conf->days_round2;
+                $promo->projectData->days_total = $project_conf->days_round1 + $project_conf->days_round2;
+                $promo->projectData->one_round = $project_conf->one_round;
+
+                $promo->projectData->setDays();
+                $promo->projectData->setTagmark();
+
                 $promo->status = $status[$promo->status];
                 $promos[] = $promo;
             }
+                // print_r($promos);die;
 
             return $promos;
         }
@@ -128,7 +193,7 @@ namespace Goteo\Model {
         }
 
         // ya no validamos esto
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
 
@@ -179,7 +244,7 @@ namespace Goteo\Model {
          * Para quitar un proyecto destacado
          */
         public static function delete ($id) {
-            
+
             $sql = "DELETE FROM promote WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
@@ -235,5 +300,5 @@ namespace Goteo\Model {
 
 
     }
-    
+
 }

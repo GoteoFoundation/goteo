@@ -34,6 +34,29 @@ ALTER TABLE `user` ADD `lang` VARCHAR( 2 ) NULL DEFAULT NULL;
 -- nodo donde se registró
 ALTER TABLE `user` ADD `node` VARCHAR( 50 ) NULL DEFAULT NULL;
 
--- total aportado (no estaba este campo en real)
-ALTER TABLE `user` ADD `amount` INT( 7 ) NULL DEFAULT  NULL AFTER `linkedin` ;
+-- cantidad aportada en goteo
+ALTER TABLE `user` ADD `amount` INT( 7 ) NULL DEFAULT NULL COMMENT 'Cantidad total aportada' AFTER `linkedin` ;
 
+-- campos de contar patronizaciones
+ALTER TABLE `user`
+  ADD COLUMN `num_patron` int(10) unsigned   NOT NULL DEFAULT 0 COMMENT 'Num. proyectos patronizados' after `amount` ,
+  ADD COLUMN `num_patron_active` int(10) unsigned   NOT NULL DEFAULT 0 COMMENT 'Num. proyectos patronizados activos' after `num_patron` ,
+  CHANGE `worth` `worth` int(7)   NULL after `num_patron_active` ,
+  CHANGE `created` `created` timestamp   NULL after `worth` ,
+  CHANGE `modified` `modified` timestamp   NULL DEFAULT CURRENT_TIMESTAMP  on update CURRENT_TIMESTAMP after `created` ,
+  CHANGE `token` `token` tinytext  COLLATE utf8_general_ci NOT NULL after `modified` ,
+  CHANGE `hide` `hide` tinyint(1)   NOT NULL DEFAULT 0 COMMENT 'No se ve publicamente' after `token` ,
+  CHANGE `confirmed` `confirmed` int(1)   NOT NULL DEFAULT 0 after `hide` ,
+  CHANGE `lang` `lang` varchar(2)  COLLATE utf8_general_ci NULL DEFAULT 'es' after `confirmed` ,
+  CHANGE `node` `node` varchar(50)  COLLATE utf8_general_ci NULL after `lang` ;
+
+-- numero proyectos cofinanciados  
+ALTER TABLE `user`
+  ADD COLUMN `num_invested` int(10) unsigned   NOT NULL DEFAULT 0 COMMENT 'Num. proyectos cofinanciados';
+
+-- numero proyectos publicados
+ALTER TABLE `user`
+  ADD COLUMN `num_owned` int(10) unsigned   NOT NULL DEFAULT 0 COMMENT 'Num. proyectos publicados';
+
+  
+  
