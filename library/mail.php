@@ -207,6 +207,17 @@ namespace Goteo\Library {
 
             // grabamos el contenido en la tabla de envios
             // especial para masivos, solo grabamos un sinoves
+
+            // 'mail-file'
+            // el contenido se guarda en un bucket
+            // para mails normales, se genera md5 (id.email.template.Secret)
+            // para newsletter, se usa directamente id de registro tabla 'mail'
+            // en el campo 'content' de la tabla grabamos el nombre del archivo
+            // la dirección del bucket no se graba en la tabla (diferente para beta y real, desde settings)
+
+            // Caducidad
+            // se graba también en la tabla la fecha en la que caduca el contenido (un script auo. borra esos archivos del bucket y registros de la tabla)
+
             if ($this->massive) {
                 if (!empty($_SESSION['NEWSLETTER_SENDID']) ) {
                     $sendId = $_SESSION['NEWSLETTER_SENDID'];
@@ -241,7 +252,7 @@ namespace Goteo\Library {
 
                 $sendId = Model::insertId();
                 // tokens
-                $leave_token = $sinoves_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+                $sinoves_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
                 $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
             }
 
