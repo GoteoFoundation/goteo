@@ -2,7 +2,10 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Library\Text;
+    use Goteo\Library\Text,
+        Goteo\Library\File,
+        Goteo\Library\MImage,
+        Goteo\Library\Cache;
 
     class Image extends \Goteo\Core\Model {
 
@@ -13,8 +16,9 @@ namespace Goteo\Model {
             $tmp,
             $error,
             $size,
-            $dir_originals,
-            $dir_cache;
+            $dir_originals = 'images/', //directorio archivos originales (relativo a data/ o al bucket s3)
+            $dir_cache = 'cache/'; //directorio archivos cache (relativo a data/ o al bucket s3)
+        private $fp;
 
         public static $types = array('user','project', 'post', 'glossary', 'info');
 
@@ -45,6 +49,8 @@ namespace Goteo\Model {
             if(!is_dir($this->dir_cache)) {
 				mkdir($this->dir_cache);
 			}
+
+            $this->fp = File::get();
         }
 
         /**
@@ -61,12 +67,43 @@ namespace Goteo\Model {
         }
 
         /**
+         * retorna nombre "seguro", que no existe ya
+         */
+        public function save_name() {
+            //un nombre que no exista
+            $name = $this->fp->get_save_name($this->dir_originals . $this->name);
+            if($this->dir_originals) $name = substr($name, strlen($this->dir_originals));
+            return $name;
+        }
+
+        /**
+         * Retorna URL del archivo o ruta absluta si es local
+         */
+        public function url( $path = null) {
+            if($path === null) $path = $this->dir_originals . $this->name;
+             //url del archivo o ruta absoluta si es local
+            if($this->fp->type == 'file') {
+                $url = $this->fp->get_path($path);
+            }
+            else $url = SRC_URL . "/" . $path;
+
+            return $url;
+        }
+
+        /**
          * (non-PHPdoc)
          * @see Goteo\Core.Model::save()
+         *
+         * FALTA!!!
          */
         public function save(&$errors = array()) {
             if($this->validate($errors)) {
-                $data[':name'] = $this->name;
+                //nombre seguro
+                $name = $this->save_name();
+
+                if(!empty($this->name)) {
+                    $data[':name'] = $name;
+                }
 
                 if(!empty($this->type)) {
                     $data[':type'] = $this->type;
@@ -76,10 +113,9 @@ namespace Goteo\Model {
                     $data[':size'] = $this->size;
                 }
 
-                //si es un archivo que se sube
-                if(is_uploaded_file($this->tmp)) {
-                    move_uploaded_file($this->tmp,$this->dir_originals . $this->name);
-                    chmod($this->dir_originals . $this->name, 0777);
+                // die($name);
+                if(!empty($this->tmp)) {
+                    $this->fp->upload($this->tmp, $this->dir_originals . $name);
                 }
                 else {
                     $errors[] = Text::get('image-upload-fail');
@@ -101,6 +137,7 @@ namespace Goteo\Model {
                     // Ejecuta SQL.
                     $result = self::query($query, $data);
                     if(empty($this->id)) $this->id = self::insertId();
+                    $this->name = $name;
                     return true;
             	} catch(\PDOException $e) {
                     $errors[] = "No se ha podido guardar el archivo en la base de datos: " . $e->getMessage();
@@ -266,6 +303,9 @@ namespace Goteo\Model {
                 }
                 self::query("COMMIT");
 
+                //esborra de disk
+                $this->fp->delete($this->dir_originals . $this->name);
+
                 return true;
             } catch(\PDOException $e) {
                 return false;
@@ -284,13 +324,14 @@ namespace Goteo\Model {
 		 * @param type int $crop
 		 * @return type string
 		 */
-		public function getLink ($width = 200, $height = 200, $crop = false) {
+		public function getLink ($width = 'auto', $height = 'auto', $crop = false) {
 
-            $tc = $crop ? 'c' : '';
+            $tc = ($crop ? "c" : "");
+            $cache = "{$width}x{$height}{$tc}/{$this->name}";
             
-            $cache = $this->dir_cache . "{$width}x{$height}{$tc}" . DIRECTORY_SEPARATOR . $this->name;
-
-            if (\file_exists($cache)) {
+            $c = new Cache($this->dir_cache, $this->fp);
+            
+            if($c->get_file($cache)) {
                 return SRC_URL . "/data/cache/{$width}x{$height}{$tc}/{$this->name}";
             } else {
                 return SRC_URL . "/image/{$this->id}/{$width}/{$height}/" . $crop;
@@ -344,68 +385,92 @@ namespace Goteo\Model {
 		 * @param type int	$height
 		 */
         public function display ($width, $height, $crop) {
-            require_once PEAR . 'Image/Transform.php';
-            $it =& \Image_Transform::factory('GD');
-            if (\PEAR::isError($it)) {
-                die($it->getMessage() . '<br />' . $it->getDebugInfo());
+
+            $cache = $width."x$height" . ($crop ? "c" : "") . "/" . $this->name;
+
+			$url_cache = $this->url($this->dir_cache . $cache);
+
+            $url_original = $this->url();
+
+            $c = new Cache($this->dir_cache, $this->fp);
+
+            ignore_user_abort(true);
+            //comprueba si existe el archivo en cache
+            if($c->get_file($cache)) {
+                //si existe, servimos el fichero inmediatamante (via redireccion http)
+                //PERO continuamos la ejecuciÃ³n del script para recrear el cache si estÃ¡ expirado
+                ob_end_clean();
+                header("Connection: close", true);
+                self::stream($url_cache, false);
+                //close connection with browser
+                ob_end_flush();
+                flush();
+                //check if file is newer
+                if(!$c->expired($cache, $this->fp->mtime($this->name))) {
+                    exit;
+                }
+                //continue to force rebuild cache
+
+            }
+            //si no existe o es nuevo, creamos el archivo
+            $im = new MImage($url_original);
+            $im->fallback('auto');
+            $im->proportional($crop ? 1 : 2);
+            $im->quality(98);
+
+            $im->resize($width, $height);
+
+            //guardar a cache si no hay errores
+            if(!$im->has_errors()) {
+                //guardar un archivo temporal y subir
+                $tmp = tempnam(sys_get_temp_dir(), 'goteo-img');
+                $im->save($tmp);
+                //subir el archivo a cache
+                $c->put_file($tmp, $cache);
+                unlink($tmp);
             }
 
-            $cache = $this->dir_cache . $width."x$height" . ($crop ? "c" : "") . DIRECTORY_SEPARATOR;
-            if(!is_dir($cache)) mkdir($cache);
+            ignore_user_abort(false);
 
-			$cache .= $this->name;
-			//comprova si existeix  catxe
-			if(!is_file($cache)) {
-				$it->load($this->dir_originals . $this->name);
+            //stream del archivo creado y muerte del script
+            $im->flush();
+		}
 
-				if($crop) {
-					if ($width > $height) {
-
-						$f = $height / $width;
-						$new_y = round($it->img_x * $f);
-						//
-
-						if($new_y < $it->img_y) {
-							$at = round(( $it->img_y - $new_y ) / 2);
-							$it->crop($it->img_x, $new_y, 0, $at);
-							$it->img_y = $new_y;
-						}
-
-						$it->resized = false;
-						$it->scaleByX($width);
-
-					} else {
-
-						$f = $width / $height;
-						$new_x = round($it->img_y * $f);
-
-						if($new_x < $it->img_x) {
-							$at = round(( $it->img_x - $new_x ) / 2);
-							$it->crop($new_x, $it->img_y, $at, 0);
-							$it->img_x = $new_x;
-						}
-
-						$it->resized = false;
-						$it->scaleByY($height);
-
-					}
-
-				}
-				else $it->fit($width,$height);
-
-				$it->save($cache);
-                chmod($cache, 0777);
+        /**
+         * Passthru a file with content-type, name
+         * @param  [type] $file [description]
+         * @return [type]       [description]
+         */
+        static function stream($file, $exit = true) {
+            //redirection if is http stream
+            if(substr($file, 0 , 7) == 'http://' || substr($file, 0 , 8) == 'https://') {
+                header("Location: $file");
             }
+            else {
+                list($width, $height, $type, $attr) = @getimagesize( $file );
+                if(!$type && function_exists( 'exif_imagetype' ) ) {
+                    $type = exif_imagetype($file);
+                }
+                if($type) {
+                     $type = image_type_to_mime_type($type);
+                }
+                else {
+                    $type = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                    die($type);
+                    if($type == 'jpg') $type = "jpeg";
+                    if(!in_array($type, array('jpeg', 'png', 'gif'))) die("file $type not image!");
+                    $type = "image/$type";
+                }
 
-			header("Content-type: " . $this->type);
-			readfile($cache);
-			return true;
-		}
+                header("Content-type: " . $type);
+                header('Content-Disposition: inline; filename="' . str_replace("'", "\'", basename($file)) . '"');
+                header("Content-Length: " . @filesize($file));
+                readfile($file);
+            }
+            if($exit) exit;
+        }
 
-		public function isGIF () {
-		    return ($this->type == 'image/gif');
-		}
-
+// POSIBLEMENTE código obsoleto a partir de este punto
     	public function isJPG () {
 		    return ($this->type == 'image/jpg') || ($this->type == 'image/jpeg');
 		}
