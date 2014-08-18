@@ -2,9 +2,12 @@
 
 namespace Goteo\Library {
 
+    // require_once "library/aws/S3.php"; //AWS SDK
 	use Goteo\Core\Model,
         Goteo\Core\Exception,
         Goteo\Core\View;
+
+    // use \S3;  <-- no hace falta, se usa \S3  directamente
 
     class Mail {
 
@@ -18,8 +21,8 @@ namespace Goteo\Library {
             $content,
             $cc = false,
             $bcc = false,
-            $reply = false,
-            $replyName,
+            $reply = GOTEO_MAIL_FROM,
+            $replyName = GOTEO_MAIL_NAME,
             $attachments = array(),
             $html = true,
             $massive = false,
