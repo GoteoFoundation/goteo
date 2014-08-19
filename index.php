@@ -100,9 +100,6 @@ $SSL = (defined('GOTEO_SSL') && GOTEO_SSL === true );
 $SITE_URL = (NODE_ID != GOTEO_NODE) ? NODE_URL : GOTEO_URL;
 $raw_url = str_replace('http:', '', $SITE_URL);
 
-// SRC_URL  (sin protocolo)
-define('SRC_URL', $raw_url);
-
 // SEC_URL (siempre https, si ssl activado)
 define('SEC_URL', ($SSL) ? 'https:'.$raw_url : $SITE_URL);
 
