@@ -92,8 +92,7 @@ namespace Goteo\Model {
                     project.days as days,
                     user.id as user_id,
                     user.name as user_name,
-                    image.id as image_id,
-                    image.name as image_name,
+                    project.image as image,
                     promote.order as `order`,
                     promote.active as `active`
                 FROM    promote
@@ -105,8 +104,6 @@ namespace Goteo\Model {
                     ON project.id = promote.project
                 INNER JOIN user
                     ON user.id = project.owner
-                LEFT JOIN image
-                    ON image.id = project.image
                 WHERE promote.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
@@ -121,11 +118,15 @@ namespace Goteo\Model {
                 $promo->projectData->name = $promo->name;
                 $promo->projectData->description = $promo->description;
                 $promo->projectData->published = $promo->published;
-                if($promo->image_id) {
-                    $promo->projectData->image = new Image;
-                    $promo->projectData->image->id = $promo->image_id;
-                    $promo->projectData->image->name = $promo->image_name;
+
+                // imagen
+                if (!empty($promo->image)) {
+                    $promo->projectData->image = Image::get($promo->image);
+                } else {
+                    $first = Project\Image::setFirst($promo->project);
+                    $promo->projectData->image = Image::get($first);
                 }
+
                 $promo->projectData->amount = $promo->amount;
                 $promo->projectData->invested = $promo->amount;
                 $promo->projectData->num_investors = $promo->num_investors;

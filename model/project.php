@@ -306,11 +306,11 @@ namespace Goteo\Model {
                 }
 
                 // imagen
-                if (empty($project->image)) {
-                    $image = Project\Image::setFirst($project->id);
+                if (!empty($project->image)) {
                     $project->image = Image::get($project->image);
                 } else {
-                    $project->image = Image::get($project->image);
+                    $first = Project\Image::setFirst($project->id);
+                    $project->image = Image::get($first);
                 }
 
                 // categorias
@@ -460,11 +460,11 @@ namespace Goteo\Model {
                 $project->user = User::getMini($project->owner);
 
                 // imagen
-                if (empty($project->image)) {
-                    $image = Project\Image::setFirst($project->id);
+                if (!empty($project->image)) {
                     $project->image = Image::get($project->image);
                 } else {
-                    $project->image = Image::get($project->image);
+                    $first = Project\Image::setFirst($project->id);
+                    $project->image = Image::get($first);
                 }
 
 				// categorias
