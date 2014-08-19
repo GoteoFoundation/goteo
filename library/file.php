@@ -9,7 +9,7 @@ namespace Goteo\Library {
     	Goteo\Core\Error,
     	Goteo\Core\Exception;
 
-	use \S3\S3Client;
+	use \S3;
 
     /*
      * Capa de abstracción para el manejo de archivos en funcion de la configuracion
@@ -124,35 +124,33 @@ namespace Goteo\Library {
 		/**
 		 * Returns false if cannot connect o change to specified path
 		 * */
-		function connect() {
+		public function connect() {
+			$connected = false;
+
 			set_error_handler(array($this,'error_handler'), E_ALL & ~E_NOTICE);
 			switch($this->type) {
 				case 'file':
 						if($this->link) return true;
 
-						$this->link = true;
 						if($this->realpath($this->path)) {
-							return true;
-						}
-						else {
+							$this->link = true;
+							$connected = true;
+						} else {
 							$this->link = false;
 							$this->throwError('file-chdir-error');
 						}
 					break;
 
 				case 's3':
-						if($this->link instanceOf S3Client) return true;
-						$this->link = S3Client::factory(array(
-    						'key'    => $this->user,
-    						'secret' => $this->pass,
-    						'region' => AWS_REGION
-						));
+						if($this->link instanceOf \S3) return true;
+
+						$this->link = new \S3($this->user, $this->pass);
+
 						try {
-							//try to find the bucket by requesting his location
-							$lc = $this->link->getBucketLocation(array('Bucket' => $this->bucket));
-							return true;
+							$this->link->getBucketLocation($this->bucket);
+							$connected = true;
 						}catch(\Exception $e) {
-							$this->link = null;
+							$this->link = false;
 							$this->throwError($e->getMessage());
 						}
 					break;
@@ -160,7 +158,7 @@ namespace Goteo\Library {
 			}
 
 			restore_error_handler();
-			return false;
+			return $connected;
 		}
 
 		/**
@@ -170,6 +168,9 @@ namespace Goteo\Library {
 		public function close() {
 			$ok = true;
 			switch($this->type) {
+				case 'file':
+					// TODO
+					break;
 				case 's3':
 						if( !($this->link instanceOf S3Client) ) return false;
 					break;
@@ -262,20 +263,27 @@ namespace Goteo\Library {
 			}
 			switch($this->type) {
 				case 'file':
-						if($auto_create_dirs) $this->mkdir_recursive(dirname($remote));
-						if(copy($local, $remote)) $ok = true;
-						else return $this->throwError("file-error-uploading-to: " . $this->last_error);
+					if($auto_create_dirs) {
+						$this->mkdir_recursive(dirname($remote));
+					}
+
+					if(copy($local, $remote)) {
+						$ok = true;
+					} else {
+						return $this->throwError("file-error-uploading-to: " . $this->last_error);
+					}
 					break;
 
 				case 's3':
-						try {
-							$this->link->putObject(array('Bucket' => $this->bucket, 'SourceFile' => $local, 'Key' => $remote, 'ACL' => self::s3_acl($auto_create_dirs)));
-							// We can poll the object until it is accessible
-							$this->link->waitUntilObjectExists(array('Bucket' => $this->bucket, 'Key' => $remote));
-							$ok = true;
-						}catch(\Exception $e) {
-							return $this->throwError('s3-error-uploading-to: ' . $e->getMessage());
-						}
+					// TODO para todos
+					//if ($this->link->putObject(S3::inputFile($local), $this->bucket, 'mail/' . $remote, ACL_PUBLIC_READ)) {
+					if ($this->link->putObject(S3::inputFile($local), $this->bucket, 'mail/' . $remote, self::s3_acl($auto_create_dirs))) {
+						$ok = true;
+					    echo "File uploaded.";
+					} else {
+					    echo "Failed to upload file.";
+					}
+
 					break;
 			}
 			restore_error_handler();
@@ -290,7 +298,7 @@ namespace Goteo\Library {
 		 *                                 on AWS S3, is always true (there's no directories)
 		 * @return boolean        returns true if success, false otherwise
 		 */
-		function delete($remote, $auto_delete_dirs = true) {
+		public function delete($remote, $auto_delete_dirs = true) {
 			if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
 
 			$remote = $this->get_path($remote);
@@ -427,6 +435,7 @@ namespace Goteo\Library {
 				file_put_contents($tmp, file_get_contents($local));
 				$local = $tmp;
 			}
+
 			switch($this->type) {
 				case 'file':
 						if(copy($remote, $local)) $ok = true;
@@ -434,12 +443,11 @@ namespace Goteo\Library {
 					break;
 
 				case 's3':
-						try{
-							$this->link->getObject(array('Bucket' => $this->bucket, 'Key' => $remote, 'SaveAs' => $local));
+						if (($this->link->getObject($this->bucket, $remote, $local)) !== false) {
 							$ok = true;
-						}catch(\Exception $e) {
-							return $this->throwError($e->getMessage());
-						}
+   						} else {
+   							echo "Failed to download file.";
+   						}
 					break;
 			}
 			restore_error_handler();
@@ -480,8 +488,6 @@ namespace Goteo\Library {
 				case 's3':
 						try{
 							$this->link->copyObject(array('Bucket' => $this->bucket, 'CopySource' => urlencode($this->bucket. "/". $remote_source), 'Key' => $remote_dest, 'ACL' => self::s3_acl($auto_create_dirs)));
-							// We can poll the object until it is accessible
-							$this->link->waitUntilObjectExists(array('Bucket' => $this->bucket, 'Key' => $remote_dest));
 							$this->link->deleteObject(array('Bucket' => $this->bucket, 'Key' => $remote_source));
 							$ok = true;
 						} catch(\Exception $e) {
@@ -579,15 +585,17 @@ namespace Goteo\Library {
 					break;
 
 				case 's3':
-					try {
-						$info = $this->link->getObject(array('Bucket' => $this->bucket, 'Key' => $remote));
-						$data = $info->get('Body');
-					}catch(\Exception $e) {
-						return $this->throwError($e->getMessage());
-					}
+					if (($object = $this->link->getObject($this->bucket, $remote)) !== false) {
+						$data = $object->body;
+   					} else {
+   						echo "Failed to download file.";
+   					}
+
 					break;
 			}
+
 			restore_error_handler();
+
 			return $data;
 		}
 
@@ -615,16 +623,21 @@ namespace Goteo\Library {
 					try {
 						$body = '';
 						if($flags == FILE_APPEND) {
-							try {
-								$info = $this->link->getObject(array('Bucket' => $this->bucket, 'Key' => $remote));
-								$body = $info->get('Body');
-							}catch(\Exception $e) {}
+							if (($object = $this->link->getObject($bucket, $remote)) !== false) {
+								$body = $object->body;
+   							} else {
+   								echo "Failed to download file.";
+   							}
 						}
 						$body .= $data;
-						$info = $this->link->putObject(array('Bucket' => $this->bucket, 'Key' => $remote, 'Body' => $body, 'ACL' => self::s3_acl($perms)));
-						// We can poll the object until it is accessible
-						$this->link->waitUntilObjectExists(array('Bucket' => $this->bucket, 'Key' => $remote));
-						$res = true;
+
+						if ($this->link->putObject($body, $this->bucket, $remote, self::s3_acl($perms))) {
+							$res = true;
+							echo "File uploaded.";
+						} else {
+						    echo "Failed to upload file.";
+						}
+
 					}catch(\Exception $e) {
 						return $this->throwError($e->getMessage());
 					}
