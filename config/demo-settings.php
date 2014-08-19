@@ -108,12 +108,11 @@ define('FILE_HANDLER', 'file');
 define('LOG_HANDLER', 'file');
 
 
-//S3 bucket
-define('AWS_S3_BUCKET', 'static.example.com');
-define('AWS_S3_PREFIX', '');
-//bucket para logs
-define('AWS_S3_LOG_BUCKET', 'bucket');
-define('AWS_S3_LOG_PREFIX', 'applogs/');
+//S3 buckets
+define('AWS_S3_BUCKET_STATIC', 'static.example.com');
+define('AWS_S3_BUCKET_MAIL', 'mail-archive.example.com');
+define('AWS_S3_BUCKET_DOCUMENT', 'document.example.com');
+define('AWS_S3_BUCKET_PRESS', 'press.example.com');
 
 // Cron params
 define('CRON_PARAM', '--------------');
