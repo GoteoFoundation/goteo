@@ -3,13 +3,13 @@
 namespace Goteo\Library {
 
 	// require_once "library/aws/aws.phar"; //AWS SDK PHAR
-	require_once "library/aws/aws-autoloader.php"; //AWS SDK normal
+	require_once "library/aws/S3.php"; //AWS SDK normal
 
     use Goteo\Core\Model,
     	Goteo\Core\Error,
     	Goteo\Core\Exception;
 
-	use Aws\S3\S3Client;
+	use \S3\S3Client;
 
     /*
      * Capa de abstracción para el manejo de archivos en funcion de la configuracion
