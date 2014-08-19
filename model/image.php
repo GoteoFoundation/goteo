@@ -393,8 +393,11 @@ namespace Goteo\Model {
 				}
 				else $it->fit($width,$height);
 
-				$it->save($cache);
-                chmod($cache, 0777);
+				if($it->save($cache));
+                if(is_file($cache))
+                    chmod($cache, 0777);
+                else
+                    die('Error creando '.$cache);
             }
 
 			header("Content-type: " . $this->type);
