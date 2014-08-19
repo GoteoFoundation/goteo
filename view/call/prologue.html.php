@@ -5,8 +5,8 @@ if ($call->image instanceof Goteo\Model\Image) {
     $img_mobile = $call->image->getLink(750, 750);
     $img_tablet = $call->image->getLink(1023, 1023);
     $img_pc = $call->image->getLink(1400, 1400);
-    $imghuge = $call->image->getLink(5000, 5000);    
-} 
+    $imghuge = $call->image->getLink(5000, 5000);
+}
 
 
 ?>
@@ -26,76 +26,76 @@ if ($call->image instanceof Goteo\Model\Image) {
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <meta property="og:title" content="<?php echo $call->name; ?>" />
         <meta property="og:description" content="<?php echo $call->subtitle; ?>" />
-        <meta property="og:image" content="<?php echo SRC_URL ?>/image/<?php echo $call->logo->id; ?>" />
+        <meta property="og:image" content="<?php echo SITE_URL ?>/image/<?php echo $call->logo->id; ?>" />
         <meta property="og:url" content="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>" />
 
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/tipsy/tipsy.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/tipsy/tipsy.css" />
         <?php if ($bodyClass == 'splash') : ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/splash.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/splash.css" />
         <?php else : ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/twitter.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/view.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/projects.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/twitter.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/view.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/projects.css" />
         <?php if ($bodyClass == 'info') : ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/stats.css" />
-		<?php endif; ?>		
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/banners.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/supporters.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/sponsors.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/extra.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/stats.css" />
+		<?php endif; ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/banners.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/supporters.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/sponsors.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/extra.css" />
     <style type="text/css">
-          body { 
+          body {
                  background: url('<?php echo $imghuge; ?>');
                }
     </style>
     <style type="text/css" media="only screen and (max-width:340px)">
           body { background: url(<?php echo $img_minimobile; ?>);
-                 
+
                }
-           
+
     </style>
     <style type="text/css" media="only screen and (min-width:340px) and (max-width:750px)">
           body { background: url(<?php echo $img_mobile; ?>);
 
           }
 
-  
-          
-                
+
+
+
     </style>
     <style type="text/css" media="only screen and (min-width:750px) and (max-width:1023px)">
           body { background: url(<?php echo $img_tablet; ?>);
-                               
+
                }
     </style>
     <style type="text/css" media="only screen and (min-width:1024px) and (max-width:1400px)">
           body { background: url(<?php echo $img_pc; ?>);
-                 
+
                }
     </style>
-    <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/responsive.css" />
-    <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/mobile.css" media="only screen and (max-width:400px)" />
-    <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/tablet.css" media="only screen and (min-width:400px) and (max-width:770px)" />
+    <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/responsive.css" />
+    <link rel="stylesheet" href="<?php echo SITE_URL ?>/view/css/call/mobile.css" media="only screen and (max-width:400px)" />
+    <link rel="stylesheet" href="<?php echo SITE_URL ?>/view/css/call/tablet.css" media="only screen and (min-width:400px) and (max-width:770px)" />
 
-   
+
     <?php endif; ?>
 
       <!--[if IE]>
-      <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
+      <link href="<?php echo SITE_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
       <![endif]-->
 
         <!--<script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
 		{
-			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
+			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/mac.css" />');
 		}-->
 	    </script>
         <?php if (!isset($useJQuery) || !empty($useJQuery)): ?>
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery.tipsy.min.js"></script>
         <?php endif ?>
-		<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
-		<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/carousel.js"></script>
+		<script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery.slides.min.js"></script>
+		<script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/carousel.js"></script>
         <!-- Google analytics -->
         <script type="text/javascript">
 
@@ -130,8 +130,8 @@ if ($call->image instanceof Goteo\Model\Image) {
                 $(".a-null").click(function (event) {
                     event.preventDefault();
                 });
-				
-               
+
+
 
             });
         </script>
@@ -141,4 +141,4 @@ if ($call->image instanceof Goteo\Model\Image) {
 
 
         <div id="wrapper">
-			
+

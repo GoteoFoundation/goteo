@@ -37,57 +37,57 @@ if (NODE_ID != GOTEO_NODE) {
 <?php else : ?>
         <meta property="og:title" content="Goteo.org" />
         <meta property="og:description" content="<?php echo utf8_decode(GOTEO_META_DESCRIPTION) ?>" />
-        <meta property="og:image" content="<?php echo SRC_URL ?>/goteo_logo.png" />
+        <meta property="og:image" content="<?php echo SITE_URL ?>/goteo_logo.png" />
         <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/goteo.min.css" />
       <!--[if IE]>
-      <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
+      <link href="<?php echo SITE_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
       <![endif]-->
 
         <script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
 		{
-			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
+			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/mac.css" />');
 		}
 	    </script>
-      
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
+
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery.tipsy.min.js"></script>
         <!-- custom scrollbars -->
-        <link type="text/css" href="<?php echo SRC_URL ?>/view/css/jquery.jscrollpane.min.css" rel="stylesheet" media="all" />
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.mousewheel.min.js"></script>
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.jscrollpane.min.js"></script>
+        <link type="text/css" href="<?php echo SITE_URL ?>/view/css/jquery.jscrollpane.min.css" rel="stylesheet" media="all" />
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery.mousewheel.min.js"></script>
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery.jscrollpane.min.js"></script>
         <!-- end custom scrollbars -->
 
         <!-- sliders -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery.slides.min.js"></script>
         <!-- end sliders -->
 
         <!-- fancybox-->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.fancybox.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery.fancybox.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
         <!-- end custom fancybox-->
 
         <!-- vigilante de sesion -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/watchdog.js"></script>
 
         <!-- saltos entre nodos -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/nodejump.js"></script>
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/nodejump.js"></script>
 
         <?php if (!isset($_SESSION['impersonating']) && $_SESSION['user'] instanceof \Goteo\Model\User && empty($_SESSION['user']->geoloc) && !$_SESSION['user']->geologed && !$_SESSION['user']->unlocable) : ?>
         <!-- geologin -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geologin.js"></script>
+        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/geologin.js"></script>
         <?php endif; ?>
-        
-      
+
+
         <?php if (isset($jscrypt)) : ?>
-            <script src="<?php echo SRC_URL ?>/view/js/sha1.min.js"></script>
+            <script src="<?php echo SITE_URL ?>/view/js/sha1.min.js"></script>
         <?php endif; ?>
 
         <?php if (isset($jsreq_autocomplete)) : ?>
-            <link href="<?php echo SRC_URL ?>/view/css/jquery-ui-1.10.3.autocomplete.min.css" rel="stylesheet" />
-            <script src="<?php echo SRC_URL ?>/view/js/jquery-ui-1.10.3.autocomplete.min.js"></script>
+            <link href="<?php echo SITE_URL ?>/view/css/jquery-ui-1.10.3.autocomplete.min.css" rel="stylesheet" />
+            <script src="<?php echo SITE_URL ?>/view/js/jquery-ui-1.10.3.autocomplete.min.js"></script>
         <?php endif; ?>
         <?php if (isset($jsreq_ckeditor)) : ?>
            <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
@@ -111,10 +111,10 @@ if (NODE_ID != GOTEO_NODE) {
                            TID_LANG = setTimeout('$("ul.lang").hide()',100);
                            $("#lang").css("background","#59595C url('/view/css/bolita.png') 4px 7px no-repeat");
                         });
-                        
-                        
+
+
                     });
-        </script>   
+        </script>
 
 <script type="text/javascript">
 
