@@ -75,22 +75,32 @@ namespace Goteo\Library {
 		 * Sets the initial parameters to work
          * Depending on the configuration it will be an instance to manage local files or files at Amazon S3
 		 */
-		public function __construct() {
+		public function __construct($bucket = AWS_S3_BUCKET_STATIC, $error_mode = 'error') {
 			if(defined("FILE_HANDLER") && FILE_HANDLER == 's3') {
                 $this->type = 's3';
                 $this->user = AWS_KEY;
                 $this->pass = AWS_SECRET;
-                $this->path = AWS_S3_PREFIX;
-                $this->bucket = AWS_S3_BUCKET;
+                $this->bucket = $bucket;
             } else {
                 $this->type = 'file';
                 $this->path = dirname(__DIR__) . '/data';
+            	if (substr($this->path, -1, 1) != DIRECTORY_SEPARATOR) $this->path .= DIRECTORY_SEPARATOR;
             }
 
-            if (substr($this->path, -1, 1) != DIRECTORY_SEPARATOR) $this->path .= DIRECTORY_SEPARATOR;
             $this->error_mode($error_mode);
 		}
 
+		/**
+		 *
+		 */
+		public function setBucket($bucket) {
+			if ($this->type != 's3') {
+				throw new RuntimeException("Cannot set bucket if the instance type is not Amazon S3");
+			}
+
+			$this->bucket = $bucket;
+		}
+		
 		/**
 		 *
 		 */
