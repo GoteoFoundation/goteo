@@ -28,26 +28,17 @@ namespace Goteo\Model {
          * @param type array	$file	Array $_FILES.
          */
         public function __construct ($file = null) {
-			$this->dir_originals = GOTEO_DATA_PATH . 'images' . DIRECTORY_SEPARATOR;
-			$this->dir_cache = GOTEO_DATA_PATH . 'cache' . DIRECTORY_SEPARATOR;
 
             if(is_array($file)) {
-                $this->name = self::check_filename($file['name'], $this->dir_originals);
+                $this->name = $file['name'];
                 $this->type = $file['type'];
                 $this->tmp = $file['tmp_name'];
                 $this->error = $file['error'];
                 $this->size = $file['size'];
             }
             elseif(is_string($file)) {
-				$this->name = self::check_filename(basename($file), $this->dir_originals);
+				$this->name = basename($file);
 				$this->tmp = $file;
-			}
-            //die($this->dir_originals);
-            if(!is_dir($this->dir_originals)) {
-				mkdir($this->dir_originals);
-			}
-            if(!is_dir($this->dir_cache)) {
-				mkdir($this->dir_cache);
 			}
 
             $this->fp = File::get();
@@ -151,7 +142,7 @@ namespace Goteo\Model {
 		* Returns a secure name to store in file system, if the generated filename exists returns a non-existing one
 		* @param $name original name to be changed-sanitized
 		* @param $dir if specified, generated name will be changed if exists in that dir
-		*/
+* Esto ya lo hace la clase File con get_save_name
 		public static function check_filename($name='',$dir=null){
 			$name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(self::idealiza($name, true)));
 			if(is_dir($dir)) {
@@ -161,6 +152,7 @@ namespace Goteo\Model {
 			}
 			return $name;
 		}
+		*/
 
 		/**
 		 * (non-PHPdoc)
@@ -332,7 +324,7 @@ namespace Goteo\Model {
             $c = new Cache($this->dir_cache, $this->fp);
             
             if($c->get_file($cache)) {
-                return SRC_URL . "/data/cache/{$width}x{$height}{$tc}/{$this->name}";
+                return SRC_URL . "/cache/{$cache}";
             } else {
                 return SRC_URL . "/image/{$this->id}/{$width}/{$height}/" . $crop;
             }

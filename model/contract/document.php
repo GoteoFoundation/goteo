@@ -3,6 +3,7 @@
 namespace Goteo\Model\Contract {
 
     use Goteo\Library\Check,
+        Goteo\Library\File,
         Goteo\Library\Text,
         Goteo\Model;
 
@@ -16,10 +17,10 @@ namespace Goteo\Model\Contract {
             $size,
             $tmp,
             $filedir;
+        private $fp;
 
-        // ruta absoluta a a contract_docs (no accesible por web)
-        public static $dir = '/var/www/goteo/contracts/';
-
+        // ruta en data a contract_docs (Hay alli un .htaccess para prohibir el acceso publico si es local)
+        public static $dir = 'contracts/';
 
         /**
          * Constructor.
@@ -29,24 +30,30 @@ namespace Goteo\Model\Contract {
         public function setFile ($file) {
 
             $this->filedir = self::$dir . $this->contract . '/';
-            
-            if(!is_dir($this->filedir)) {
-				mkdir($this->filedir);
-                chmod($this->filedir, 0777);
-			}
+
             if(is_array($file) && !empty($file['name'])) {
-                $this->name = self::check_filename($file['name'], $this->filedir);
+                $this->name = $file['name'];
                 $this->type = $file['type'];
                 $this->tmp = $file['tmp_name'];
                 $this->error = $file['error'];
                 $this->size = $file['size'];
-                
+
+                $this->fp = File::get();
                 return true;
             } else {
                 return false;
             }
         }
-        
+        /**
+         * retorna nombre "seguro", que no existe ya
+         */
+        public function save_name() {
+            //un nombre que no exista
+            $name = $this->fp->get_save_name(self::$dir . $this->name);
+            if(self::$dir) $name = substr($name, strlen(self::$dir));
+            return $name;
+        }
+
 		/**
 		 * (non-PHPdoc)
 		 * @see Goteo\Core.Model::validate()
@@ -79,47 +86,51 @@ namespace Goteo\Model\Contract {
 			}
             return empty($errors);
 		}
-        
+
         /**
          * Solo graba, no actualiza
          * (non-PHPdoc)
          * @see Goteo\Core.Model::save()
          */
         public function save(&$errors = array()) {
-            
+
             try {
 
                 if($this->validate($errors)) {
-                    // añadimos 5 letras del id de contrato al nombre de archivo
+                    //nombre seguro
+                    $name = $this->save_name();
 
                     $data = array(
                         ':contract' => $this->contract,
-                        ':name' => $this->name,
+                        ':name' => $name,
                         ':type' => $this->type,
                         ':size' => $this->size,
 
                     );
 
                     //si es un archivo que se sube
-                    if(is_uploaded_file($this->tmp)) {
-                        $destino = $this->filedir . $this->name;
-                        if (move_uploaded_file($this->tmp, $destino)) {
-                            chmod($destino, 0777);
-                        } else {
-                            $errors[] = $this->tmp . ' no se ha podidio ubicar en '.$destino;
+                    if(!empty($this->tmp)) {
+
+                        $destino = $this->filedir . $name;
+
+                        //subir el archivo
+                        if(!$this->fp->upload($this->tmp, $destino, 'bucket-owner-full-control')) {
+                            $errors[] = $this->tmp . ' no se ha podido ubicar en '.$destino;
                             return false;
                         }
+
                     } else {
                         $errors[] = Text::get('error-image-tmp');
                         return false;
                     }
 
                     // Construye SQL.
-                    $query = "INSERT INTO document (id, contract, name, type, size) 
+                    $query = "INSERT INTO document (id, contract, name, type, size)
                         VALUES ('', :contract, :name, :type, :size)";
                     // Ejecuta SQL.
                     if (self::query($query, $data)) {
                         $this->id = self::insertId();
+                        $this->name = $name;
                         return true;
                     } else {
                         $errors[] = "Fallo sql: $query " . print_r($data, true);
@@ -149,7 +160,7 @@ namespace Goteo\Model\Contract {
                 
                 $query = static::query($sql, array(':id' => $id));
                 $doc = $query->fetchObject(__CLASS__);
-                $doc->filedir = self::$dir . '/' . $doc->contract . '/';
+                $doc->filedir = self::$dir . $doc->contract . '/';
                 
                 return $doc;
             } catch(\PDOException $e) {
@@ -175,7 +186,7 @@ namespace Goteo\Model\Contract {
                 
                 $query = static::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $document) {
-                    $document->filedir = self::$dir . '/' . $document->contract . '/';
+                    $document->filedir = self::$dir . $document->contract . '/';
                     $array[] = $document;
                 }
                 
@@ -191,9 +202,12 @@ namespace Goteo\Model\Contract {
         public function remove (&$errors = array()) {
 
             try {
+                if(!($this->fp instanceof File)) $this->fp = File::get();
+                // print_r($this->filedir . $this->name);die;
                 $sql = "DELETE FROM document WHERE id = ?";
                 if (self::query($sql, array($this->id))) {
-                    if (unlink($this->filedir . $this->name)) {
+                     //esborra de disk
+                    if ($this->fp->delete($this->filedir . $this->name)) {
                         return true;
                     } else {
                         $errors[] = 'Se ha borrado el registro pero el unlink() ha fallado';
@@ -214,7 +228,7 @@ namespace Goteo\Model\Contract {
 		* Returns a secure name to store in file system, if the generated filename exists returns a non-existing one
 		* @param $name original name to be changed-sanitized
 		* @param $dir if specified, generated name will be changed if exists in that dir
-		*/
+* ESto ya lo hace la clase File con get_save_name
 		public static function check_filename($name='',$dir=null){
 			$name = preg_replace("/[^a-z0-9~\.]+/","-",strtolower(self::idealiza($name, true)));
 			if(is_dir($dir)) {
@@ -224,6 +238,7 @@ namespace Goteo\Model\Contract {
 			}
 			return $name;
 		}
+		*/
         
         
     }

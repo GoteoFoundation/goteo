@@ -5,6 +5,7 @@ namespace Goteo\Controller\Dashboard {
     use Goteo\Model,
         Goteo\Core\Redirection,
 		Goteo\Library\Message,
+        Goteo\Library\File,
         Goteo\Library\Text,
 		Goteo\Library\Check,
         Goteo\Library\Listing;
@@ -198,6 +199,8 @@ namespace Goteo\Controller\Dashboard {
                 $objeto = new \Goteo\Library\Num2char($donation->amount, null);
                 $donation->amount_char = $objeto->getLetra();
 
+                $fp = File::get();
+                $dir = 'pdfs/donativos/';
                 $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
 
 
@@ -213,6 +216,17 @@ namespace Goteo\Controller\Dashboard {
                     echo 'FIN';
                     echo '<hr><pre>' . print_r($pdf, true) . '</pre>';
                 } else {
+                        //guardar pdf en temporal y luego subir a remoto (s3 o data/ si es local)
+                        $tmp = tempnam(sys_get_temp_dir(), 'goteo-img');
+                        $pdf->Output($tmp, 'F');
+                        //guardamos a remoto (acceso privado)
+                        if($fp->upload($tmp, $dir . $filename, 'bucket-owner-full-control')) {
+                            // si se graba lo ponemos en el registro para que a la próxima se cargue
+                            $donation->setPdf($filename);
+                        }
+                        unlink($tmp);
+
+/*
                     $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
                     $donation->setPdf($filename);
 //                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
@@ -221,8 +235,15 @@ namespace Goteo\Controller\Dashboard {
                     header("Content-Transfer-Encoding: binary");
                     echo $pdf->Output('', 'S');
                     die;
+*/
                 }
 
+                header('Content-type: application/pdf');
+                // y forzamos la descarga (desde static.goteo.org)
+                header("Content-disposition: attachment; filename={$donation->pdf}");
+                header("Content-Transfer-Encoding: binary");
+                echo $fp->get_contents($dir . $filename);
+                die;
             }
             // fin action download
 
