@@ -11,12 +11,12 @@ namespace Goteo\Library {
 
 	use Aws\S3\S3Client;
 
-	/*
+    /*
      * Capa de abstracción para el manejo de archivos en funcion de la configuracion
      *
      */
 
-	/**
+    /**
 	* @file classes/file.php
 	* @author Ivan Vergés
 	* @brief FILE wrapper manipulation class\n
@@ -88,7 +88,7 @@ namespace Goteo\Library {
 			$this->user = $user;
 			$this->pass = $pass;
 			$this->path = $path;
-			if(substr($this->path, -1, 1) != '/') $this->path .= "/";
+			if(substr($this->path, -1, 1) != DIRECTORY_SEPARATOR) $this->path .= DIRECTORY_SEPARATOR;
 			if($this->type == 's3') {
 				$this->bucket = $port;
 				if(empty($path)) $this->path = '';
@@ -262,7 +262,7 @@ namespace Goteo\Library {
 							return $this->get_path($path);
 						break;
 				}
-				if(substr($realpath, 1, -1)!='/') $realpath .= "/";
+				if(substr($realpath, 1, -1) != DIRECTORY_SEPARATOR) $realpath .= DIRECTORY_SEPARATOR;
 			}
 			restore_error_handler();
 			return $realpath;
