@@ -77,7 +77,6 @@ namespace Goteo\Library {
 		 */
 		public function __construct() {
 			if(defined("FILE_HANDLER") && FILE_HANDLER == 's3') {
-                $fp = new self('s3', AWS_KEY, AWS_SECRET, AWS_S3_PREFIX, AWS_S3_BUCKET);
                 $this->type = 's3';
                 $this->user = AWS_KEY;
                 $this->pass = AWS_SECRET;
