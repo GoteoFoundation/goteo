@@ -293,7 +293,7 @@ namespace Goteo\Model {
             if (\file_exists($cache)) {
                 return SRC_URL . "/data/cache/{$width}x{$height}{$tc}/{$this->name}";
             } else {
-                return SRC_URL . "/image/{$this->id}/{$width}/{$height}/" . $crop;
+                return SITE_URL . "/image/{$this->id}/{$width}/{$height}/" . $crop;
             }
 
 		}

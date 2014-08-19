@@ -41,7 +41,8 @@ namespace Goteo\Controller {
                 if ($item->project->status != 3)
                     throw new Redirection('/bazaar');
 
-                $item->imgsrc = (!empty($item->img)) ? '/data/images/'.$item->img->name : '/data/images/bazaritem.svg';
+                $item->imgsrc = (!empty($item->img)) ? SRC_URL.'
+                /images/'.$item->img->name : SRC.'/images/bazaritem.svg';
                 $ogimages[] = $URL.$item->imgsrc;
                 $vdata["item"] = $item;
 
@@ -71,7 +72,7 @@ namespace Goteo\Controller {
 
                 $items = Model\Bazar::getAll();
                 foreach ($items as &$item) {
-                    $item->imgsrc = (!empty($item->img)) ? '/data/images/'.$item->img->name : '/data/images/bazaritem.svg';
+                    $item->imgsrc = (!empty($item->img)) ? SRC_URL.'/images/'.$item->img->name : SRC_URL.'/images/bazaritem.svg';
                     $ogimages[] = $URL.$item->imgsrc;
                 }
                 $vdata["items"] = $items;
