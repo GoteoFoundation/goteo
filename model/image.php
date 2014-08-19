@@ -395,14 +395,14 @@ namespace Goteo\Model {
 
 				if($it->save($cache));
                 if(is_file($cache))
-                    chmod($cache, 0777);
+                    @chmod($cache, 0777);
                 else
                     die('Error creando '.$cache);
             }
 
 			header("Content-type: " . $this->type);
 			readfile($cache);
-			return true;
+			die;
 		}
 
 		public function isGIF () {
