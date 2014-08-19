@@ -233,7 +233,7 @@ namespace Goteo\Library {
                         ':node' => $_SESSION['admin_node'],
                         ':lang' => $this->lang
                     );
-                    $query = Model::query($sql, $values);
+                    Model::query($sql, $values);
 
                     $sendId = Model::insertId();
                     $_SESSION['NEWSLETTER_SENDID'] = $sendId;
@@ -251,7 +251,7 @@ namespace Goteo\Library {
                     ':node' => $_SESSION['admin_node'],
                     ':lang' => $this->lang
                 );
-                $query = Model::query($sql, $values);
+                Model::query($sql, $values);
 
                 $sendId = Model::insertId();
                 // tokens
@@ -259,12 +259,7 @@ namespace Goteo\Library {
                 $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
             }
 
-            if (!empty($sendId)) {
-                $viewData['sinoves'] = $this->url . '/mail/' . \mybase64_encode($sinoves_token) . '/?email=' . $this->to;
-            } else {
-                $viewData['sinoves'] = $this->url . '/contact';
-            }
-
+            $viewData['sinoves'] = $this->url . '/mail/' . \mybase64_encode($sinoves_token) . '/?email=' . $this->to;
             $viewData['baja'] = $this->url . '/user/leave/?email=' . $this->to;
 
             if ($plain) {
