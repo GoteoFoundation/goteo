@@ -184,16 +184,19 @@ namespace Goteo\Controller\Dashboard {
                 }
 
 
-                //@TODO borramos el pdf anterior y generamos de nuevo
-                if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/' . $donation->pdf)) {
-                    unlink('data/pdfs/donativos/' . $donation->pdf);
+                // borramos el pdf anterior y generamos de nuevo
+                //@TODO  el file_exists y unlink debe ser con Library File (bucket documents)
+                if (!empty($donation->pdf) && file_exists('certs/' . $donation->pdf)) {
+
+                    //
+                    unlink('certs/' . $donation->pdf);
                 } 
 
 
                 // para generar: 
                 // preparamos los datos para el pdf
                 // generamos el pdf y lo mosteramos con la vista específica
-                // estos pdf se guardan en /data/pdfs/donativos
+                // estos pdf se guardan en el bucket de documentos /certs
                 // el formato del archivo es: Ymd_nif_userid
 
                 $objeto = new \Goteo\Library\Num2char($donation->amount, null);
@@ -226,16 +229,6 @@ namespace Goteo\Controller\Dashboard {
                         }
                         unlink($tmp);
 
-/*
-                    $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
-                    $donation->setPdf($filename);
-//                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
-                    header('Content-type: application/pdf');
-                    header("Content-disposition: attachment; filename={$donation->pdf}");
-                    header("Content-Transfer-Encoding: binary");
-                    echo $pdf->Output('', 'S');
-                    die;
-*/
                 }
 
                 header('Content-type: application/pdf');

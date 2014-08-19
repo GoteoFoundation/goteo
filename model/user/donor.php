@@ -254,6 +254,23 @@ namespace Goteo\Model\User {
             }
         }
 
+        /*
+         * Nombre del archivo de certificado guardado
+         */
+        public function getPdf($user, $year) {
+            try {
+                $sql = "SELECT pdf FROM user_donation WHERE user = :user AND year = :year";
+                if ($filename = self::query($sql, array(':user' => $user, 'year' => $year))) {
+                    return $filename->fetchColumn();
+                } else {
+                    return null;
+                }
+            } catch (\PDOException $e) {
+                $errors[] = "No se puede recuperar pdf." . $e->getMessage();
+                return false;
+            }
+        }
+
 
         /*
          * Resetear pdf
@@ -262,8 +279,11 @@ namespace Goteo\Model\User {
             try {
                 $sql = "UPDATE user_donation SET pdf = NULL WHERE MD5(pdf) = :pdf";
                 if (self::query($sql, array(':pdf'=>$xfilename))) {
-                    $path = 'data/pdfs/donativos/'.$xfilename;
-                    unset($path);
+
+                    // @TODO: debe usar library file para eliminar el archivo (bucket documents)
+                    $path = 'certs/'.$xfilename;
+                    unlink($path);
+
 
                     return true;
                 } else {

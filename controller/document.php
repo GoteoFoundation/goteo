@@ -15,7 +15,7 @@ namespace Goteo\Controller {
                 if (!$doc instanceof Model\Contract\Document)
                     throw new Error('404', 'No tenemos el documento '.$name);
 
-                // pero ojo porque al ser el archivo privado quizás habrá que coger los contenidos
+                // pero ojo porque al ser el archivo privado quizï¿½s habrï¿½ que coger los contenidos
                 // mime type en el header
                 $fp = File::get();
                 header("Content-type: " . $doc->type);
@@ -24,6 +24,24 @@ namespace Goteo\Controller {
 
             } catch(\PDOException $e) {
                 die("No se ha podido recuperar el documento:<br />" . $e->getMessage());
+            }
+
+        }
+
+        public function cert($user, $year) {
+            try {
+                $pdf = Model\User\Donor::getPdf($user, $year);
+
+                if (empty($pdf))
+                    throw new Error('404', 'No se ha generado el certificado de '.$user.' para '.$year);
+
+                $fp = File::get();
+                header("Content-type: application/pdf");
+                // archivo
+                echo $fp->get_contents('certs/'. $pdf);
+
+            } catch(\PDOException $e) {
+                die("No se ha podido recuperar el certificado:<br />" . $e->getMessage());
             }
 
         }
