@@ -130,11 +130,11 @@ namespace Goteo\Model {
 		 * @see Goteo\Core.Model::validate()
 		 */
 		public function validate(&$errors = array()) {
-            
+
 			if(empty($this->name)) {
                 $errors['image'] = Text::get('error-image-name');
             }
-            
+
             // checkeo de errores de $_FILES
             if($this->error !== UPLOAD_ERR_OK) {
                 switch($this->error) {
@@ -186,7 +186,7 @@ namespace Goteo\Model {
             if(empty($this->size)) {
                 $errors['image'] = Text::get('error-image-size');
             }
-            
+
             return empty($errors);
 		}
 
@@ -287,11 +287,11 @@ namespace Goteo\Model {
 		public function getLink ($width = 200, $height = 200, $crop = false) {
 
             $tc = $crop ? 'c' : '';
-            
+
             $cache = $this->dir_cache . "{$width}x{$height}{$tc}" . DIRECTORY_SEPARATOR . $this->name;
 
             if (\file_exists($cache)) {
-                return SRC_URL . "/data/cache/{$width}x{$height}{$tc}/{$this->name}";
+                return SITE_URL . "/data/cache/{$width}x{$height}{$tc}/{$this->name}";
             } else {
                 return SITE_URL . "/image/{$this->id}/{$width}/{$height}/" . $crop;
             }
