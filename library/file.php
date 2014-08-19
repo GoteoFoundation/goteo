@@ -3,13 +3,13 @@
 namespace Goteo\Library {
 
 	// require_once "library/aws/aws.phar"; //AWS SDK PHAR
-	require_once "library/aws/aws-autoloader.php"; //AWS SDK normal
+	require_once "library/aws/S3.php"; //AWS SDK normal
 
     use Goteo\Core\Model,
     	Goteo\Core\Error,
     	Goteo\Core\Exception;
 
-	use Aws\S3\S3Client;
+	use \S3\S3Client;
 
     /*
      * Capa de abstracción para el manejo de archivos en funcion de la configuracion
@@ -20,7 +20,7 @@ namespace Goteo\Library {
 	* @file classes/file.php
 	* @author Ivan Vergés
 	* @brief FILE wrapper manipulation class\n
-	* This file is used to upload, download on several services like, local, ftp, AmazonS3\n
+	* This file is used to upload, download on several services like, local, AmazonS3\n
 	* This class is used by the file functions/file.php
 	*
 	* @section usage Usage
@@ -38,7 +38,7 @@ namespace Goteo\Library {
 	* $tmp = tempnam(sys_get_temp_dir(), 'goteo-temp');
 	*
 	* //creacion del objecto s3 o local en funcion de la configuracion de goteo
-	* $fp = File::get();
+	* $fp = new File();
 	*
 	*
 	* //obtencion de tamaño (bytes) de un archivo
@@ -67,50 +67,34 @@ namespace Goteo\Library {
 	*/
     class File {
     	public $type = '';
-		private $link = '', $host = '', $port = '', $user = '', $pass = '', $path = '', $bucket = '';
+		private $link = '', $user = '', $pass = '', $path = '', $bucket = '';
 		public  $last_error = '', $last_path = '', $last_local = '', $last_remote = '';
-		public  $ftp_pasv = true;
 		private $quiet_mode = false;
 
 		/**
 		 * Sets the initial parameters to work
-		 * @param string $type type of service, could be: file, ftp, s3
-		 * @param string $host host to connect (ftp only)
-		 * @param string $user username  to connect (ftp only), for s3 it's the access key
-		 * @param string $pass password  to connect (ftp only), for s3 it's the secret key
-		 * @param string $path base path to operate, for s3 it's the prefix (a / char will be added)
-		 * @param string $port port to connect (ftp only), for s3 it's the bucket to operate
+         * Depending on the configuration it will be an instance to manage local files or files at Amazon S3
 		 */
-		function __construct($type = '', $host = '', $user = '', $pass = '', $path = '', $port = '') {
-			$this->type = $type;
-			$this->host = $host;
-			$this->port = $port;
-			$this->user = $user;
-			$this->pass = $pass;
-			$this->path = $path;
-			if(substr($this->path, -1, 1) != DIRECTORY_SEPARATOR) $this->path .= DIRECTORY_SEPARATOR;
-			if($this->type == 's3') {
-				$this->bucket = $port;
-				if(empty($path)) $this->path = '';
-			}
+		public function __construct() {
+			if(defined("FILE_HANDLER") && FILE_HANDLER == 's3') {
+                $this->type = 's3';
+                $this->user = AWS_KEY;
+                $this->pass = AWS_SECRET;
+                $this->path = AWS_S3_PREFIX;
+                $this->bucket = AWS_S3_BUCKET;
+            } else {
+                $this->type = 'file';
+                $this->path = dirname(__DIR__) . '/data';
+            }
+
+            if (substr($this->path, -1, 1) != DIRECTORY_SEPARATOR) $this->path .= DIRECTORY_SEPARATOR;
+            $this->error_mode($error_mode);
 		}
 
 		/**
-		 * Obtiene una instancia de FILE con la configuracion de goteo
-		 * @return [type] [description]
+		 *
 		 */
-		function get($error_mode = 'error') {
-            if(defined("FILE_HANDLER") && FILE_HANDLER == 's3') {
-                $fp = new self('s3','', AWS_KEY, AWS_SECRET, AWS_S3_PREFIX, AWS_S3_BUCKET);
-            }
-            else {
-                $fp = new self('file', '', '', '', dirname(__DIR__) . '/data');
-            }
-			$fp->error_mode($error_mode);
-            return $fp;
-		}
-
-		function error_mode($mode = 'exception') {
+		public function error_mode($mode = 'exception') {
 			if($mode == 'exception')  $this->quiet_mode = false;
 			elseif($mode == 'quiet')  $this->quiet_mode = 1;
 			elseif($mode == 'string') $this->quiet_mode = 2;
@@ -118,7 +102,10 @@ namespace Goteo\Library {
 			elseif($mode == 'error')  $this->quiet_mode = 4;
 		}
 
-		static function s3_acl($perm = 'public-read') {
+		/**
+		 *
+		 */
+		public static function s3_acl($perm = 'public-read') {
 			if(!is_string($perm) || !in_array($perm, array('public-read', 'public-read-write', 'authenticated-read', 'bucket-owner-read', 'bucket-owner-full-control')))
 				$perm = 'public-read';
 			return $perm;
@@ -142,24 +129,6 @@ namespace Goteo\Library {
 							$this->throwError('file-chdir-error');
 						}
 					break;
-
-				case 'ftp':
-						if(is_resource($this->link)) return true;
-
-						if($this->link = @ftp_connect($this->host,(string)($this->port ? $this->port : 21) )) {
-							if(@ftp_login($this->link, $this->user, $this->pass)) {
-								// activate passive
-								if($this->ftp_pasv) ftp_pasv($this->link, true);
-								//test path
-								if($this->realpath($this->path)) return true;
-								else $this->throwError('ftp-chdir-error');
-							}
-							else $this->throwError('ftp-auth-error');
-
-						}
-						else $this->throwError('ftp-connection-error');
-					break;
-
 
 				case 's3':
 						if($this->link instanceOf S3Client) return true;
@@ -188,14 +157,9 @@ namespace Goteo\Library {
 		 * Close the current connection
 		 * @return [type] [description]
 		 */
-		function close() {
+		public function close() {
 			$ok = true;
 			switch($this->type) {
-				case 'ftp':
-						if(!is_resource($this->link)) return false;
-						$ok = ftp_close($this->link);
-					break;
-
 				case 's3':
 						if( !($this->link instanceOf S3Client) ) return false;
 					break;
@@ -209,7 +173,7 @@ namespace Goteo\Library {
 		 * @param  [type] $path [description]
 		 * @return [type]         [description]
 		 */
-		static function path($path) {
+		public static function path($path) {
 			while($path{0} == '/') $path = substr($path, 1);
 			if(substr($path, -1, 1) != '/') $path .= '/';
 			return $path;
@@ -233,7 +197,7 @@ namespace Goteo\Library {
 		 * @param  string $path the path for to check existence
 		 * @return string       returns the real path directory or false on failure
 		 */
-		function realpath($path='') {
+		public function realpath($path='') {
 			$this->last_path = $path;
 			$realpath = false;
 			set_error_handler(array($this,'error_handler'), E_ALL & ~E_NOTICE);
@@ -243,17 +207,6 @@ namespace Goteo\Library {
 				switch($this->type) {
 					case 'file':
 							if( !($realpath = realpath($path)) ) {
-								return $this->throwError("$path not found: " . $this->last_error);
-							}
-						break;
-
-					case 'ftp':
-							$p = @ftp_pwd($this->link);
-							if(@ftp_chdir($this->link, $path)) {
-								$realpath = ftp_pwd($this->link);
-								@ftp_chdir($this->link, $p);
-							}
-							else {
 								return $this->throwError("$path not found: " . $this->last_error);
 							}
 						break;
@@ -278,7 +231,7 @@ namespace Goteo\Library {
 		 *                                   public-read, public-read-write, authenticated-read, bucket-owner-read, bucket-owner-full-control (default public-read)
 		 * @return boolean        returns true if success, false otherwise
 		 */
-		function upload($local, $remote, $auto_create_dirs = true) {
+		public function upload($local, $remote, $auto_create_dirs = true) {
 			if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
 			$remote = $this->get_path($remote);
 			$this->last_local  = $local;
@@ -302,19 +255,6 @@ namespace Goteo\Library {
 						if($auto_create_dirs) $this->mkdir_recursive(dirname($remote));
 						if(copy($local, $remote)) $ok = true;
 						else return $this->throwError("file-error-uploading-to: " . $this->last_error);
-					break;
-
-				case 'ftp':
-						$dir = dirname($remote);
-						$odir = '';
-						if($auto_create_dirs) $this->mkdir_recursive($dir);
-						if($dir != '.') {
-							$odir = ftp_pwd($this->link);
-							ftp_chdir($this->link, $dir);
-						}
-						if(ftp_put($this->link, basename($remote), $local, FTP_BINARY)) $ok = true;
-						if($odir) ftp_chdir($this->link, $odir);
-						if(!$ok) return $this->throwError("ftp-error-uploading-to: " . $this->last_error);
 					break;
 
 				case 's3':
@@ -357,19 +297,6 @@ namespace Goteo\Library {
 						else return $this->throwError("file-error-deleting-to: " . $this->last_error);
 					break;
 
-				case 'ftp':
-						$dir = dirname($remote);
-						$odir = '';
-						if($dir != '.') {
-							$odir = ftp_pwd($this->link);
-							ftp_chdir($this->link, $dir);
-						}
-						if(ftp_delete($this->link, basename($remote))) $ok = true;
-						if($odir) ftp_chdir($this->link, $odir);
-						if($auto_delete_dirs) $this->delete_empty_dir($dir, is_string($auto_delete_dirs) ? $auto_delete_dirs : false);
-						if(!$ok) return $this->throwError("ftp-error-deleting-to: " . $this->last_error);
-					break;
-
 				case 's3':
 						try{
 							$this->link->deleteObject(array('Bucket' => $this->bucket, 'Key' => $remote));
@@ -406,24 +333,6 @@ namespace Goteo\Library {
 							$ok = true;
 						}
 						else return $this->throwError("file-error-rmdir-to: " . $this->last_error);
-					break;
-
-				case 'ftp':
-						//try to delete the dir or file
-						$ok = false;
-						 if( !(@ftp_rmdir($this->link, $remote) || @ftp_delete($this->link, $remote)) ) {
-						 	//if the attempt to delete fails, get the file listing
-							$filelist = @ftp_nlist($this->link, $remote);
-							//loop through the file list and recursively delete the FILE in the list
-							foreach($filelist as $file) {
-								$file = preg_replace("/^" . str_replace("/", "\/", quotemeta($this->path)) . "/", "", $file);
-								$this->rmdir($file);
-							}
-							//if the file list is empty, delete the DIRECTORY we passed
-							$ok = $this->rmdir($remote_dir_original);
-						}
-						else $ok = true;
-						if(!$ok) return $this->throwError("ftp-error-rmdir-to: " . $this->last_error);
 					break;
 
 				case 's3':
@@ -468,10 +377,6 @@ namespace Goteo\Library {
 					}
 					break;
 
-				case 'ftp':
-					if(@ftp_rmdir($this->link, $remote_dir)) return $this->delete_empty_dir(dirname($remote_dir), $top_max_dir);
-					break;
-
 			}
 			return true;
 		}
@@ -489,24 +394,6 @@ namespace Goteo\Library {
 						return is_dir($remote_dir);
 					break;
 
-				case 'ftp':
-						$dir = $remote_dir;
-						$odir = ftp_pwd($this->link);
-						$parts = explode("/", $dir);
-				        $ok = true;
-				        foreach($parts as $part){
-			                if(@ftp_chdir($this->link, $part)) continue;
-			                elseif(@ftp_mkdir($this->link, $part)){
-			                    ftp_chdir($this->link, $part);
-			                }
-			                else {
-			                    $ok = false;
-			                }
-				        }
-				        if($odir) ftp_chdir($this->link, $odir);
-				        return $ok;
-				    break;
-
 			}
 		}
 
@@ -516,7 +403,7 @@ namespace Goteo\Library {
 		 * @param  string $local  local file (must be absolute or relative to the working document)
 		 * @return boolean        returns true if success, false otherwise
 		 */
-		function download($remote, $local) {
+		public function download($remote, $local) {
 			if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
 			$remote = $this->get_path($remote);
 			$this->last_local = $local;
@@ -534,18 +421,6 @@ namespace Goteo\Library {
 				case 'file':
 						if(copy($remote, $local)) $ok = true;
 						else return $this->throwError("file-error-downloading-from: " . $this->last_error);
-					break;
-
-				case 'ftp':
-						$dir = dirname($remote);
-						$odir = '';
-						if($dir != '.') {
-							$odir = ftp_pwd($this->link);
-							ftp_chdir($this->link, $dir);
-						}
-						if(ftp_get($this->link, $local, basename($remote), FTP_BINARY)) $ok = true;
-						if($odir) ftp_chdir($this->link, $odir);
-						if(!$ok) return $this->throwError("ftp-error-downloading-from: " . $this->last_error);
 					break;
 
 				case 's3':
@@ -572,7 +447,7 @@ namespace Goteo\Library {
 		 *                                   public-read, public-read-write, authenticated-read, bucket-owner-read, bucket-owner-full-control (default public-read)
 		 * @return boolean        returns true if success, false otherwise
 		 */
-		function rename($remote_source, $remote_dest, $auto_create_dirs = true, $auto_delete_dirs = true) {
+		public function rename($remote_source, $remote_dest, $auto_create_dirs = true, $auto_delete_dirs = true) {
 			if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
 			$remote_source     = $this->get_path($remote_source);
 			$remote_dest       = $this->get_path($remote_dest);
@@ -590,15 +465,6 @@ namespace Goteo\Library {
 							if($auto_delete_dirs) $this->delete_empty_dir(dirname($remote_source));
 						}
 						else return $this->throwError("file-error-renaming-to: " . $this->last_error);
-					break;
-
-				case 'ftp':
-						if($auto_create_dirs) $this->mkdir_recursive(dirname($remote_dest));
-						if(ftp_rename($this->link, $remote_source, $remote_dest)) {
-							$ok = true;
-							if($auto_delete_dirs) $this->delete_empty_dir(dirname($remote_source));
-						}
-						else return $this->throwError("ftp-error-renaming-to: " . $this->last_error);
 					break;
 
 				case 's3':
@@ -626,7 +492,7 @@ namespace Goteo\Library {
 		 * @param  boolean $force  if it is true, then will try to download the file from ftp if ftp_size fails
 		 * @return int         		returns -1 on error, file size otherwise
 		 */
-		function size($remote_original, $force=false) {
+		public function size($remote_original, $force=false) {
 			if(!$this->connect()) return -1;
 			$remote = $this->get_path($remote_original);
 			$this->last_remote = $remote;
@@ -636,29 +502,6 @@ namespace Goteo\Library {
 			switch($this->type) {
 				case 'file':
 						if( !($size = filesize($remote)) ) $size = -1;
-					break;
-
-				case 'ftp':
-						$dir = dirname($remote);
-						$odir = '';
-						if($dir != '.') {
-							$odir = ftp_pwd($this->link);
-							ftp_chdir($this->link, $dir);
-						}
-						$size = ftp_size($this->link, basename($remote));
-						if($odir) ftp_chdir($this->link, $odir);
-						if($size == -1 && $force) {
-							//try to download the file and check the filesize
-							$tmp = tempnam(sys_get_temp_dir(), 'file');
-							if($this->download($remote_original, $tmp)) {
-								if(is_file($tmp)) {
-									$size = filesize($tmp);
-									unlink($tmp);
-								}
-								else $size = -1;
-							}
-							else $size = -1;
-						}
 					break;
 
 				case 's3':
@@ -681,7 +524,7 @@ namespace Goteo\Library {
 		 * @param  boolean $force  if it is true, then will try to download the file from ftp if ftp_size fails
 		 * @return int         		returns -1 on error, file size otherwise
 		 */
-		function mtime($remote_original, $force=false) {
+		public function mtime($remote_original, $force=false) {
 			if(!$this->connect()) return -1;
 			$remote = $this->get_path($remote_original);
 			$this->last_remote = $remote;
@@ -691,29 +534,6 @@ namespace Goteo\Library {
 			switch($this->type) {
 				case 'file':
 						if( false === ($modified = @filemtime($remote)) ) $modified = -1;
-					break;
-
-				case 'ftp':
-						$dir = dirname($remote);
-						$odir = '';
-						if($dir != '.') {
-							$odir = ftp_pwd($this->link);
-							ftp_chdir($this->link, $dir);
-						}
-						$modified = ftp_mdtm($this->link, basename($remote));
-						if($odir) ftp_chdir($this->link, $odir);
-						if($modified == -1 && $force) {
-							//try to download the file and check the filesize
-							$tmp = tempnam(sys_get_temp_dir(), 'file');
-							if($this->download($remote_original, $tmp)) {
-								if(is_file($tmp)) {
-									$modified = @filemtime($tmp);
-									unlink($tmp);
-								}
-								else $modified = -1;
-							}
-							else $modified = -1;
-						}
 					break;
 
 				case 's3':
@@ -736,7 +556,7 @@ namespace Goteo\Library {
 		 * @param  string $remote remote file
 		 * @return string         file raw data
 		 */
-		function get_contents($remote_original) {
+		public function get_contents($remote_original) {
 			if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
 			$remote = $this->get_path($remote_original);
 			$this->last_remote = $remote;
@@ -768,7 +588,7 @@ namespace Goteo\Library {
 		 *
 		 * @return [type] [description]
 		 */
-		function put_contents($remote_original, $data, $flags = 0, $perms = 'public-read') {
+		public function put_contents($remote_original, $data, $flags = 0, $perms = 'public-read') {
 			if(is_array($data)) $data = implode("", $data);
 			if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
 			$remote = $this->get_path($remote_original);
@@ -806,11 +626,10 @@ namespace Goteo\Library {
 
 		/**
 		 * retrieves a non existing name from the remote place
-		 * FALTA: FTP!!
 		 * @param  [type] $remote_original [description]
 		 * @return [type]                  [description]
 		 */
-		function get_save_name($remote_original) {
+		public function get_save_name($remote_original) {
 			if(!$this->connect()) return false;
 			if(!$remote_original) return false;
 			$dir = dirname($remote_original);

@@ -17,7 +17,7 @@ namespace Goteo\Controller {
 
                 // pero ojo porque al ser el archivo privado quiz�s habr� que coger los contenidos
                 // mime type en el header
-                $fp = File::get();
+                $fp = new File();
                 header("Content-type: " . $doc->type);
                 // contenidos
                 echo $fp->get_contents($doc->filedir . $doc->name);

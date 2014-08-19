@@ -202,10 +202,9 @@ namespace Goteo\Controller\Dashboard {
                 $objeto = new \Goteo\Library\Num2char($donation->amount, null);
                 $donation->amount_char = $objeto->getLetra();
 
-                $fp = File::get();
+                $fp = new File();
                 $dir = 'pdfs/donativos/';
                 $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
-
 
                 $debug = false;
 

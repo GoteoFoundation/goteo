@@ -41,7 +41,7 @@ namespace Goteo\Model {
 				$this->tmp = $file;
 			}
 
-            $this->fp = File::get();
+            $this->fp = new File();
         }
 
         /**
