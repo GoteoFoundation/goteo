@@ -221,13 +221,13 @@ try {
             }
             // if($mime_type == "text/html" && GOTEO_ENV != 'real') {
             if($mime_type == "text/html" && defined('DEBUG_SQL_QUERIES')) {
-                echo '<div style="position:absolute;top:10px;left:10px;padding:10px;z-index:1000;background:rgba(255,255,255,0.6)"><pre>';
+                echo '<div style="position:absolute;top:10px;left:10px;padding:10px;z-index:1000;background:rgba(255,255,255,0.6)">[<a href="#" onclick="$(this).parent().remove();return false;">cerrar</a>]<pre>';
                 echo "<b>Server IP:</b> ".$_SERVER['SERVER_ADDR'] . '<br>';
                 echo "<b>Client IP:</b> ".$_SERVER['REMOTE_ADDR'] . '<br>';
                 echo "<b>X-Forwarded-for:</b> ".$_SERVER['HTTP_X_FORWARDED_FOR'] . '<br>';
                 echo "<b>END:</b> ".(microtime(true) - START_TIME ) . 's <br>';
                 echo '<b>SQL STATS:</b><br> '.print_r(Goteo\Core\DB::getQueryStats(), 1);
-                echo '</pre>    </div>';
+                echo '</pre></div>';
             }
 
             echo $result;
