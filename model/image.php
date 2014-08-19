@@ -448,7 +448,6 @@ namespace Goteo\Model {
                 }
                 else {
                     $type = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-                    die($type);
                     if($type == 'jpg') $type = "jpeg";
                     if(!in_array($type, array('jpeg', 'png', 'gif'))) die("file $type not image!");
                     $type = "image/$type";

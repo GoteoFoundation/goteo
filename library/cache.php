@@ -15,9 +15,9 @@ namespace Goteo\Library {
 		function __construct($dir = '', $type = 'local', $url_prefix = '') {
 			if($type == 'local') {
 				if(!is_dir($dir)) {
-					if(mkdir($dir, true)) @chmod($dir, 0777);
+					mkdir($dir, 0777, true);
 				}
-				if(substr($dir, -1, 1) != "/") $dir = "$dir/";
+				if(substr($dir, -1, 1) != DIRECTORY_SEPARATOR) $dir .= DIRECTORY_SEPARATOR;
 				$this->type = 'local';
 				$this->dir = $dir;
 			}
@@ -32,7 +32,7 @@ namespace Goteo\Library {
 
 		function get_path($file='') {
 			$dir = $this->dir;
-			if(substr($dir, -1, 1) != '/') $dir .= "/";
+			if(substr($dir, -1, 1) != DIRECTORY_SEPARATOR) $dir .= DIRECTORY_SEPARATOR;
 			if($file{0} == '/') $file = substr($file, 1);
 			return $dir . $file;
 		}
