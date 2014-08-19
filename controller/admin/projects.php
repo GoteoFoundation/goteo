@@ -143,6 +143,8 @@ namespace Goteo\Controller\Admin {
                     
                     if ($todook) {
                         Message::Info('Se han actualizado los datos');
+                        // recalculamos la imagen para el widget
+                        Model\Project\Image::setFirst($id);
                     }
                     
                     throw new Redirection('/admin/projects/images/'.$id);

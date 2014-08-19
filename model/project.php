@@ -305,7 +305,15 @@ namespace Goteo\Model {
                     }
                 }
 
-				// categorias
+                // imagen
+                if (empty($project->image)) {
+                    $image = Project\Image::setFirst($project->id);
+                    $project->image = Image::get($project->image);
+                } else {
+                    $project->image = Image::get($project->image);
+                }
+
+                // categorias
                 $project->categories = Project\Category::get($id);
 
 				// costes y los sumammos
@@ -452,7 +460,12 @@ namespace Goteo\Model {
                 $project->user = User::getMini($project->owner);
 
                 // imagen
-                $project->image = Project\Image::getFirst($project->id);
+                if (empty($project->image)) {
+                    $image = Project\Image::setFirst($project->id);
+                    $project->image = Image::get($project->image);
+                } else {
+                    $project->image = Image::get($project->image);
+                }
 
 				// categorias
                 $project->categories = Project\Category::getNames($id, 2);
@@ -820,7 +833,6 @@ namespace Goteo\Model {
                     $image = new Image($this->image);
                     if ($image->save($errors)) {
                         $this->gallery[] = $image;
-                        $this->image = $image->id;
 
                         /**
                          * Guarda la relación NM en la tabla 'project_image'.
@@ -852,7 +864,6 @@ namespace Goteo\Model {
                     'post_country',
                     'name',
                     'subtitle',
-                    'image',
                     'description',
                     'motivation',
                     'video',
@@ -2158,6 +2169,7 @@ namespace Goteo\Model {
                                 ) as `getamount`
                         FROM project
                         WHERE status IN ('3', '4', '5')
+                        AND amount >= mincost
                         $sqlFilter
                         HAVING getamount >= mincost
                         ORDER BY published DESC";
@@ -2221,12 +2233,19 @@ namespace Goteo\Model {
                 $sql .= " LIMIT $limit";
             }
 
+
+
+
             $projects = array();
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
                 if ($mini) {
                     $projects[$proj['id']] = $proj['name'];
                 } else {
+
+
+
+
                     $projects[] = self::getMedium($proj['id']);
                 }
             }
