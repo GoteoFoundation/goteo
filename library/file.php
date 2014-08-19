@@ -95,7 +95,7 @@ namespace Goteo\Library {
 		 */
 		public function setBucket($bucket) {
 			if ($this->type != 's3') {
-				throw new RuntimeException("Cannot set bucket if the instance type is not Amazon S3");
+				throw new \RuntimeException("Cannot set bucket if the instance type is not Amazon S3");
 			}
 
 			$this->bucket = $bucket;
