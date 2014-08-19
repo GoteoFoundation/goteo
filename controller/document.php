@@ -35,7 +35,7 @@ namespace Goteo\Controller {
                 if (empty($pdf))
                     throw new Error('404', 'No se ha generado el certificado de '.$user.' para '.$year);
 
-                $fp = File::get();
+                $fp = new File();
                 header("Content-type: application/pdf");
                 // archivo
                 echo $fp->get_contents('certs/'. $pdf);
