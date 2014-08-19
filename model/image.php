@@ -393,7 +393,7 @@ namespace Goteo\Model {
 				}
 				else $it->fit($width,$height);
 
-				if($it->save($cache));
+				$it->save($cache);
                 if(is_file($cache))
                     @chmod($cache, 0777);
                 else
