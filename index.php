@@ -12,6 +12,15 @@ use Goteo\Core\Resource,
 require_once 'config.php';
 require_once 'core/common.php';
 
+define("START_TIME", microtime(true));
+//si el parametro GET vale:
+// 0 se muestra estadísticas de SQL, pero no los logs
+// 1 se hace un log con las queries no cacheadas
+// 2 se hace un log con las queries no cacheadas y también las cacheadas
+if(isset($_GET['sqldebug']) && !defined('DEBUG_SQL_QUERIES')) {
+    define('DEBUG_SQL_QUERIES', intval($_GET['sqldebug']));
+}
+
 /*
  * Pagina de en mantenimiento
  */
@@ -210,12 +219,19 @@ try {
                 $mime_type = $result->getMIME();
                 header("Content-type: $mime_type");
             }
+            // if($mime_type == "text/html" && GOTEO_ENV != 'real') {
+            if($mime_type == "text/html" && defined('DEBUG_SQL_QUERIES')) {
+                echo '<div style="position:absolute;top:10px;left:10px;padding:10px;z-index:1000;background:rgba(255,255,255,0.6)"><pre>';
+                echo "<b>Server IP:</b> ".$_SERVER['SERVER_ADDR'] . '<br>';
+                echo "<b>Client IP:</b> ".$_SERVER['REMOTE_ADDR'] . '<br>';
+                echo "<b>X-Forwarded-for:</b> ".$_SERVER['HTTP_X_FORWARDED_FOR'] . '<br>';
+                echo "<b>END:</b> ".(microtime(true) - START_TIME ) . 's <br>';
+                echo '<b>SQL STATS:</b><br> '.print_r(Goteo\Core\DB::getQueryStats(), 1);
+                echo '</pre>    </div>';
+            }
 
             echo $result;
 
-            if($mime_type == "text/html" && GOTEO_ENV != 'real') {
-                echo "<!-- ".print_r(Goteo\Core\DB::getQueryStats(), true) . " -->";
-            }
             // Farewell
             die;
 
