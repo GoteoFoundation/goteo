@@ -38,7 +38,7 @@ namespace Goteo\Model\Contract {
                 $this->error = $file['error'];
                 $this->size = $file['size'];
 
-                $this->fp = File::get();
+                $this->fp = new File();
                 return true;
             } else {
                 return false;
@@ -202,7 +202,7 @@ namespace Goteo\Model\Contract {
         public function remove (&$errors = array()) {
 
             try {
-                if(!($this->fp instanceof File)) $this->fp = File::get();
+                if(!($this->fp instanceof File)) $this->fp = new File();
                 // print_r($this->filedir . $this->name);die;
                 $sql = "DELETE FROM document WHERE id = ?";
                 if (self::query($sql, array($this->id))) {

@@ -38,7 +38,7 @@ namespace Goteo\Library {
 	* $tmp = tempnam(sys_get_temp_dir(), 'goteo-temp');
 	*
 	* //creacion del objecto s3 o local en funcion de la configuracion de goteo
-	* $fp = File::get();
+	* $fp = new File();
 	*
 	*
 	* //obtencion de tamaño (bytes) de un archivo
