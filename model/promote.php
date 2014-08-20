@@ -118,12 +118,21 @@ namespace Goteo\Model {
 
 
                 // el getWidget hará todo esto:
-                $Widget = new Project;
+                $Widget = new Project();
                 $Widget->id = $promo->project;
                 $Widget->status = $promo->status;
                 $Widget->name = $promo->name;
                 $Widget->description = $promo->description;
                 $Widget->published = $promo->published;
+
+                // configuración de campaña
+                $Widget->noinvest = $promo->noinvest;
+                $Widget->watch = $promo->watch;
+                $Widget->days_round1 = (!empty($promo->days_round1)) ? $promo->days_round1 : 40;
+                $Widget->days_round2 = (!empty($promo->days_round2)) ? $promo->days_round2 : 40;
+                $Widget->one_round = $promo->one_round;
+                $Widget->days_total = ($Widget->days_round1 + $Widget->days_round2);
+
 
                 // imagen
                 if (!empty($promo->image)) {
@@ -148,10 +157,10 @@ namespace Goteo\Model {
 
                 //mensajes y mensajeros
                 // solo cargamos mensajes en la vista mensajes
-                if (!empty($promo->num_messegers)) {
-                    $Widget->num_messegers = $promo->num_messegers;
+                if (!empty($promo->num_messengers)) {
+                    $Widget->num_messengers = $promo->num_messengers;
                 } else {
-                    $Widget->num_messegers = Message::numMessegers($promo->project);
+                    $Widget->num_messengers = Message::numMessengers($promo->project);
                 }
 
                 // novedades
@@ -184,7 +193,7 @@ namespace Goteo\Model {
                 $Widget->days_total = $project_conf->days_round1 + $project_conf->days_round2;
                 $Widget->one_round = $project_conf->one_round;
 
-                $Widget->setDays(); // esto hace una consulta para el número de días
+                $Widget->setDays(); // esto hace una consulta para el número de días que lleva
                 $Widget->setTagmark(); // esto no hace consulta
 
 
