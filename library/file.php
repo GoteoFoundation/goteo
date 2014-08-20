@@ -127,7 +127,6 @@ namespace Goteo\Library {
         public function connect() {
             $connected = false;
 
-            set_error_handler(array($this,'error_handler'), E_ALL & ~E_NOTICE);
             switch($this->type) {
                 case 'file':
                         if($this->link) return true;
@@ -157,7 +156,6 @@ namespace Goteo\Library {
 
             }
 
-            restore_error_handler();
             return $connected;
         }
 
@@ -211,7 +209,6 @@ namespace Goteo\Library {
         public function realpath($path='') {
             $this->last_path = $path;
             $realpath = false;
-            set_error_handler(array($this,'error_handler'), E_ALL & ~E_NOTICE);
 
             if($this->link && $path) {
                 $realpath = '';
@@ -228,7 +225,7 @@ namespace Goteo\Library {
                 }
                 if(substr($realpath, 1, -1) != DIRECTORY_SEPARATOR) $realpath .= DIRECTORY_SEPARATOR;
             }
-            restore_error_handler();
+
             return $realpath;
         }
 
@@ -249,7 +246,6 @@ namespace Goteo\Library {
             $this->last_remote = $remote;
 
             $ok = false;
-            set_error_handler(array($this,'error_handler'), E_ALL & ~E_NOTICE);
 
             //if local is a stream, copy locally
             if(substr($local,0,7) == 'http://') {
@@ -286,7 +282,7 @@ namespace Goteo\Library {
 
                     break;
             }
-            restore_error_handler();
+
             return $ok;
         }
 
@@ -305,7 +301,7 @@ namespace Goteo\Library {
             $this->last_remote = $remote;
 
             $ok = false;
-            set_error_handler(array($this,'error_handler'),E_ALL & ~E_NOTICE);
+
             switch($this->type) {
                 case 'file':
                         if(unlink($remote)) {
@@ -325,7 +321,7 @@ namespace Goteo\Library {
                     break;
 
             }
-            restore_error_handler();
+
             return $ok;
 
         }
@@ -344,7 +340,7 @@ namespace Goteo\Library {
             $this->last_remote = $remote;
 
             $ok = false;
-            set_error_handler(array($this,'error_handler'),E_ALL & ~E_NOTICE);
+
             switch($this->type) {
                 case 'file':
                         if(m_rmdir($remote)) {
@@ -372,7 +368,7 @@ namespace Goteo\Library {
                     break;
 
             }
-            restore_error_handler();
+
             return $ok;
         }
 
@@ -428,7 +424,6 @@ namespace Goteo\Library {
             $this->last_remote = $remote;
 
             $ok = false;
-            set_error_handler(array($this,'error_handler'),E_ALL & ~E_NOTICE);
 
             if(substr($local,0,7) == 'http://') {
                 $tmp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()]=tmpfile())));
@@ -450,7 +445,6 @@ namespace Goteo\Library {
                         }
                     break;
             }
-            restore_error_handler();
 
             return $ok;
         }
@@ -473,7 +467,6 @@ namespace Goteo\Library {
             $this->last_remote = $remote_source;
 
             $ok = false;
-            set_error_handler(array($this,'error_handler'),E_ALL & ~E_NOTICE);
 
             switch($this->type) {
                 case 'file':
@@ -496,8 +489,6 @@ namespace Goteo\Library {
                     break;
             }
 
-            restore_error_handler();
-
             if($ok) $this->last_remote = $remote_dest;
             return $ok;
         }
@@ -513,7 +504,6 @@ namespace Goteo\Library {
             $remote = $this->get_path($remote_original);
             $this->last_remote = $remote;
             $size = -1;
-            set_error_handler(array($this,'error_handler'),E_ALL & ~E_NOTICE);
 
             switch($this->type) {
                 case 'file':
@@ -530,7 +520,7 @@ namespace Goteo\Library {
                         }
                     break;
             }
-            restore_error_handler();
+
             return $size;
         }
 
@@ -545,7 +535,6 @@ namespace Goteo\Library {
             $remote = $this->get_path($remote_original);
             $this->last_remote = $remote;
             $modified = -1;
-            set_error_handler(array($this,'error_handler'),E_ALL & ~E_NOTICE);
 
             switch($this->type) {
                 case 'file':
@@ -563,7 +552,7 @@ namespace Goteo\Library {
 
                     break;
             }
-            restore_error_handler();
+
             return $modified;
         }
 
@@ -577,7 +566,6 @@ namespace Goteo\Library {
             $remote = $this->get_path($remote_original);
             $this->last_remote = $remote;
             $data = '';
-            set_error_handler(array($this,'error_handler'),E_ALL & ~E_NOTICE);
 
             switch($this->type) {
                 case 'file':
@@ -593,8 +581,6 @@ namespace Goteo\Library {
 
                     break;
             }
-
-            restore_error_handler();
 
             return $data;
         }
@@ -614,7 +600,6 @@ namespace Goteo\Library {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote_original);
             $this->last_remote = $remote;
-            set_error_handler(array($this,'error_handler'),E_ALL & ~E_NOTICE);
 
             $res = false;
             switch($this->type) {
@@ -643,7 +628,6 @@ namespace Goteo\Library {
                     break;
             }
             
-            restore_error_handler();
             return $res;
         }
 
@@ -660,7 +644,7 @@ namespace Goteo\Library {
             $name = basename($remote_original);
             $name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(Model::idealiza($name, true)));
             $remote = $this->get_path($dir . $name);
-            set_error_handler(array($this,'error_handler'),E_ALL & ~E_NOTICE);
+
             switch($this->type) {
                 case 'file':
                     while ( file_exists ( $remote )) {
@@ -692,17 +676,8 @@ namespace Goteo\Library {
                         }
                     break;
             }
-            restore_error_handler();
+
             return $dir . $name;
-        }
-        /**
-         * Handle function errors
-         * */
-        public function error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
-            if(error_reporting() === 0) return;
-            $this->last_error = "[$errno line $errline] $errstr";
-            //echo "\n\n".$this->error."\n\n";
-            return true;
         }
 
         protected function throwError($msg) {
