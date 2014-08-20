@@ -163,7 +163,7 @@ div#main ul#list>li {
 }
 
 #social-logo li.facebook {
-    background-image: url('social/facebook.png');
+    background-image: url('/view/css/social/facebook.png');
 }
 
 #social-logo li.google {
