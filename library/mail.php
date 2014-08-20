@@ -2,12 +2,10 @@
 
 namespace Goteo\Library {
 
-    // require_once "library/aws/S3.php"; //AWS SDK
 	use Goteo\Core\Model,
         Goteo\Core\Exception,
+        Goteo\Library\File,
         Goteo\Core\View;
-
-    // use \S3;  <-- no hace falta, se usa \S3  directamente
 
     class Mail {
 
@@ -221,43 +219,26 @@ namespace Goteo\Library {
             // Caducidad
             // se graba también en la tabla la fecha en la que caduca el contenido (un script auo. borra esos archivos del bucket y registros de la tabla)
 
+            $email = ($this->massive) ? "any" : $this->to;
+
             if ($this->massive) {
+
                 if (!empty($_SESSION['NEWSLETTER_SENDID']) ) {
                     $sendId = $_SESSION['NEWSLETTER_SENDID'];
                 } else {
-                    $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
-                    $values = array (
-                        ':email' => 'any',
-                        ':html' => $this->content,
-                        ':template' => $this->template,
-                        ':node' => $_SESSION['admin_node'],
-                        ':lang' => $this->lang
-                    );
-                    Model::query($sql, $values);
-
-                    $sendId = Model::insertId();
+                    $sendId = $this->saveEmailToDB($email);
+                    $this->saveContentToFile($sendId);
                     $_SESSION['NEWSLETTER_SENDID'] = $sendId;
                 }
-                // tokens
-                $sinoves_token = md5(uniqid()) . '¬any¬' . $sendId;
-                $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
 
             } else {
-                $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
-                $values = array (
-                    ':email' => $this->to,
-                    ':html' => $this->content,
-                    ':template' => $this->template,
-                    ':node' => $_SESSION['admin_node'],
-                    ':lang' => $this->lang
-                );
-                Model::query($sql, $values);
-
-                $sendId = Model::insertId();
-                // tokens
-                $sinoves_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
-                $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+                $sendId = $this->saveEmailToDB($email);
+                $this->saveContentToFile($sendId);
             }
+
+            // tokens
+            $sinoves_token = md5(uniqid()) . '¬' . $email  . '¬' . $sendId;
+            $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
 
             $viewData['sinoves'] = $this->url . '/mail/' . \mybase64_encode($sinoves_token) . '/?email=' . $this->to;
             $viewData['baja'] = $this->url . '/user/leave/?email=' . $this->to;
@@ -277,6 +258,50 @@ namespace Goteo\Library {
                     return new View (GOTEO_PATH.'view/email/goteo.html.php', $viewData);
                 }
             }
+        }
+
+        /**
+         * Save email metadata to DB
+         * @param $email
+         * @return int ID of the inserted email
+         */
+        private function saveEmailToDB($email) {
+            $sql = "INSERT INTO mail (id, email, template, node, lang) VALUES ('', :email, :template, :node, :lang)";
+            $values = array (
+                ':email' => $email,
+                ':template' => $this->template,
+                ':node' => $_SESSION['admin_node'],
+                ':lang' => $this->lang
+                );
+            Model::query($sql, $values);
+
+            return Model::insertId();
+        }
+
+        /**
+         * Store HTML email body generating previously an unique ID for the filename
+         * @param $sendId
+         * @param $filename
+         * @return
+         */
+        private function saveContentToFile($sendId) {
+            $email = ($this->massive) ? "any" : $this->to;
+            $prefix = ($this->massive) ? "news/" : "sys/";
+            $contentId = $prefix . md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
+
+            $sql = "UPDATE mail SET content = :content WHERE id = :id";
+            $values = array (
+                ':content' => $contentId,
+                ':id' => $sendId,
+                );
+            Model::query($sql, $values);
+
+            // Guardar a S3
+            $fpremote = new File();
+            $fpremote->setBucket(AWS_S3_BUCKET_MAIL);
+
+            $headers = array("Content-Type" => "text/html; charset=UTF-8");
+            $fpremote->put_contents($contentId, $this->content, 0, 'public-read', array(), $headers);
         }
 
         /**
