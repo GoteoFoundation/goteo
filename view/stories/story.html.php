@@ -16,7 +16,7 @@ if(empty($story->url))
 else
     $link_background=$story->url;
 
-foreach ($story->project->open_tags as $openId => $openData) {
+foreach ($story->open_tags as $openId => $openData) {
             if($openId!="post") 
                 $open_tags=$openData;
             else if($openData) 

@@ -94,12 +94,20 @@ namespace Goteo\Model {
                     stories.image as image,
                     stories.order as `order`,
                     stories.post as `post`,
-                    stories.active as `active`
+                    stories.active as `active`,
+                    open_tag.name as open_tag
                 FROM    stories
                 LEFT JOIN stories_lang
                     ON  stories_lang.id = stories.id
                     AND stories_lang.lang = :lang
                 $eng_join
+                LEFT JOIN project
+                    ON  project.id = stories.project
+                LEFT JOIN open_tag
+                    ON  open_tag.id = project.id
+                LEFT JOIN open_tag_lang
+                    ON  open_tag_lang.id = open_tag.id
+                    AND open_tag_lang.lang = :lang
                 WHERE stories.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC
