@@ -423,7 +423,10 @@ namespace Goteo\Model {
             try {
 				// metemos los datos del proyecto en la instancia
 				$query = self::query("SELECT id, name, owner, comment, lang, status, node FROM project WHERE id = ?", array($id));
-				$project = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
+				$project = $query->fetchObject(__CLASS__);
+
+                // primero, que no lo grabe
+                $project->dontsave = true;
 
                 // owner
                 $project->user = User::getMini($project->owner);
