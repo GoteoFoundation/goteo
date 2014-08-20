@@ -110,3 +110,12 @@ ALTER TABLE `project` ADD COLUMN `mincost` INT(5) DEFAULT 0 NULL COMMENT 'minimo
 
 -- Añadido numero de inversores
 ALTER TABLE `project` ADD COLUMN `num_investors` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Numero inversores' AFTER `days`;
+
+-- Grado de popularidad (suma num_investors y num_messegers)
+ALTER TABLE `project` ADD COLUMN `popularity` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Popularidad del proyecto' AFTER `num_investors`;
+
+-- Añadido numero de usuarios que escriben mensajes
+ALTER TABLE `project` ADD COLUMN `num_messengers` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de personas que envían mensajes' AFTER `popularity`;
+
+-- Añadido numero de posts
+ALTER TABLE `project` ADD COLUMN `num_posts` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de post' AFTER `num_messengers`;
