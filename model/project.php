@@ -446,14 +446,35 @@ namespace Goteo\Model {
 
             try {
 
-
-                // @Javier hay que añadir project_conf, user y los campos en el select
-                $sql = "SELECT * FROM project WHERE id = ?";
-
-
+                $sql ="
+                SELECT
+                    project.id as project,
+                    project.status as status,
+                    project.published as published,
+                    project.created as created,
+                    project.updated as updated,
+                    project.mincost as mincost,
+                    project.maxcost as maxcost,
+                    project.amount as amount,
+                    project.num_investors as num_investors,
+                    project.days as days,
+                    project.name as name,
+                    user.id as user_id,
+                    user.name as user_name,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
+                FROM  project
+                INNER JOIN user
+                    ON user.id = project.owner
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
+                WHERE project.id = :id";
 
 				// metemos los datos del proyecto en la instancia
-				$query = self::query($sql, array($id));
+                $values = array(':id'=>$id);
+				$query = self::query($sql, $values);
 				$project = $query->fetchObject(__CLASS__);
 
                 // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
@@ -479,76 +500,12 @@ namespace Goteo\Model {
                 }
 
 
-                // @Javier luego llamar aquí a getWidget para que cargue el resto
+                // aquí usará getWidget para sacar todo esto
+                $project = self::getWidget($project);
 
                 // Y añadir el dontsave
                 $project->dontsave = true;
 
-
-                // @Javier entonces se podrá comentar todo lo demás
-
-                // owner
-                $project->user = User::getMini($project->owner);
-
-                // imagen
-                if (!empty($project->image)) {
-                    $project->image = Image::get($project->image);
-                } else {
-                    $first = Project\Image::setFirst($project->id);
-                    $project->image = Image::get($first);
-                }
-
-				// categorias
-                $project->categories = Project\Category::getNames($id, 2);
-
-				// retornos colectivos
-				$project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
-				// retornos individuales
-				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
-
-                // open_tags
-                $project->open_tags = Project\Open_tag::getNames($id, 1);
-
-                // asesores
-                $project->consultants = Project::getConsultants($id);
-
-
-                if($project->status == 3 && empty($project->amount)) {
-                    $project->amount = Invest::invested($id);
-                }
-                $project->invested = $project->amount;
-
-                //consultamos y actualizamos el numero de inversores si no está definido
-                if($project->amount > 0 && empty($project->num_investors)) {
-                    $project->num_investors = Invest::numInvestors($id);
-                }
-
-                if (empty($project->num_messengers)) {
-                    $project->num_messengers = Message::numMessengers($id);
-                }
-
-                // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado
-                if(empty($project->mincost)) {
-                    $costs = self::calcCosts($id);
-                    $project->mincost = $costs->mincost;
-                    $project->maxcost = $costs->maxcost;
-                }
-
-                // extra conf
-                $project_conf = Project\Conf::get($id);
-                $project->days_round1 = $project_conf->days_round1;
-                $project->days_round2 = $project_conf->days_round2;
-                $project->one_round = $project_conf->one_round;
-                $project->days_total = ($project->one_round) ? $project_conf->days_round1 : $project->days_round1 + $project->days_round2;
-                $project->watch = Project\Conf::isWatched($id);
-                $project->noinvest = Project\Conf::isInvestClosed($id);
-
-                $project->setDays();
-                $project->setTagmark();
-
-
-
-                // @Javier esto dejarlo por ahora:
                 // podría estar asignado a alguna convocatoria
                 $project->called = Call\Project::called($project);
 
@@ -556,8 +513,6 @@ namespace Goteo\Model {
                 if (!empty($project->node)) {
                     $project->nodeData = Node::getMini($project->node);
                 }
-                //
-
 
                 return $project;
 
