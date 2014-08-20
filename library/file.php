@@ -312,18 +312,29 @@ namespace Goteo\Library {
                     break;
 
                 case 's3':
-                        try{
-                            $this->link->deleteObject(array('Bucket' => $this->bucket, 'Key' => $remote));
+                        if ($this->link->deleteObject($this->bucket, $remote)) {
                             $ok = true;
-                        } catch(\Exception $e) {
-                            return $this->throwError("s3-error-deleting-to: " . $e->getMessage());
+                        } else {
+                            return $this->throwError("Failed to delete file");
                         }
+
                     break;
 
             }
 
             return $ok;
 
+        }
+
+        /**
+         * From: http://php.net/manual/es/function.rmdir.php#110489
+         */
+        public static function delTree($dir) {
+            $files = array_diff(scandir($dir), array('.','..'));
+            foreach ($files as $file) {
+                (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
+            }
+            return rmdir($dir);
         }
 
         /**
@@ -343,28 +354,23 @@ namespace Goteo\Library {
 
             switch($this->type) {
                 case 'file':
-                        if(m_rmdir($remote)) {
+                        if(self::delTree($remote)) {
                             $ok = true;
                         }
                         else return $this->throwError("file-error-rmdir-to: " . $this->last_error);
                     break;
 
                 case 's3':
-                        try {
-                            $ok = false;
-                            $objectsIterator = $this->link->getIterator('ListObjects', array(
-                                'Bucket' => $this->bucket,
-                                'Prefix' => $remote
-                            ), array(
-                                'names_only' => true
-                            ));
-                            foreach ($objectsIterator as $key) {
-                                // echo $key . "\n";
-                                $this->link->deleteObject(array('Bucket' => $this->bucket, 'Key' => $key));
-                            }
-                        } catch(\Exception $e) {
-                            return $this->throwError("s3-error-deleting-to: " . $e->getMessage());
+
+                    if (($contents = $this->link->getBucket($this->bucket, $remote)) !== false) {
+                        foreach ($contents as $object) {
+                            // print_r($object);
+                            $this->link->deleteObject($this->bucket, $object->name);
                         }
+                    } else {
+                        return $this->throwError("s3-error-deleting-to: " . $e->getMessage());
+                    }
+
                     break;
 
             }
@@ -479,13 +485,15 @@ namespace Goteo\Library {
                     break;
 
                 case 's3':
-                        try{
-                            $this->link->copyObject(array('Bucket' => $this->bucket, 'CopySource' => urlencode($this->bucket. "/". $remote_source), 'Key' => $remote_dest, 'ACL' => self::s3_acl($auto_create_dirs)));
-                            $this->link->deleteObject(array('Bucket' => $this->bucket, 'Key' => $remote_source));
+                        if (($this->link->copyObject($this->bucket, $remote_source, $this->bucket, $remote_dest, self::s3_acl($auto_create_dirs)))
+                                && ($this->link->deleteObject($this->bucket, $remote_source))) {
                             $ok = true;
-                        } catch(\Exception $e) {
-                            return $this->throwError("s3-error-renaming-to: " . $e->getMessage());
                         }
+
+                        if (!$ok) {
+                            return $this->throwError("Failed to rename file");
+                        }
+
                     break;
             }
 
@@ -511,13 +519,13 @@ namespace Goteo\Library {
                     break;
 
                 case 's3':
-                        try {
-                            $info = $this->link->headObject(array('Bucket' => $this->bucket, 'Key' => $remote));
-                            $size = (int) $info->get('ContentLength');
-                        }catch(\Exception $e) {
+                        if (($info = $this->link->getObjectInfo($this->bucket, $remote)) !== false) {
+                            $size = (int) $info->size;
+                        } else {
                             $size = -1;
-                            // return $this->throwError($e->getMessage());
+                            // return $this->throwError("Failed to retrieve filesize from remote");
                         }
+
                     break;
             }
 
@@ -542,12 +550,12 @@ namespace Goteo\Library {
                     break;
 
                 case 's3':
-                        try {
-                            $info = $this->link->headObject(array('Bucket' => $this->bucket, 'Key' => $remote));
-                            $modified = strtotime($info->get('LastModified'));
-                        }catch(\Exception $e) {
+
+                        if (($info = $this->link->getObjectInfo($this->bucket, $remote)) !== false) {
+                            $modified = strtotime($info->time);
+                        } else {
                             $modified = -1;
-                            // return $this->throwError($e->getMessage());
+                            // return $this->throwError("Failed to retrieve filesize from remote");
                         }
 
                     break;
@@ -590,12 +598,15 @@ namespace Goteo\Library {
          * @param $remote_original
          * @param $data
          * @param $flags
+         * @param $perms (S3 only)
+         * @param $metaHeaders (S3 only)
+         * @param $requestHeaders (S3 only)
          * @param  boolean $perms on S3 its used as a Permission control, string expecte of one of this values:
          *                        public-read, public-read-write, authenticated-read, bucket-owner-read, bucket-owner-full-control (default public-read)
          *
          * @return [type] [description]
          */
-        public function put_contents($remote_original, $data, $flags = 0, $perms = 'public-read') {
+        public function put_contents($remote_original, $data, $flags = 0, $perms = 'public-read', $metaHeaders = array(), $requestHeaders = array()) {
             if(is_array($data)) $data = implode("", $data);
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote_original);
@@ -618,7 +629,7 @@ namespace Goteo\Library {
                         }
                         $body .= $data;
 
-                        if ($this->link->putObject($body, $this->bucket, $remote, self::s3_acl($perms))) {
+                        if ($this->link->putObject($body, $this->bucket, $remote, self::s3_acl($perms), $metaHeaders, $requestHeaders)) {
                             $res = true;
                             echo "File uploaded.";
                         } else {
