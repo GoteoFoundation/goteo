@@ -11,7 +11,8 @@ namespace Goteo\Model {
         Goteo\Model\Blog,
         Goteo\Model\Call,
         Goteo\Model\Patron,
-        Goteo\Model\Node;
+        Goteo\Model\Node
+        ;
 
     class Project extends \Goteo\Core\Model {
 
@@ -550,7 +551,7 @@ namespace Goteo\Model {
         public static function getWidget($project) {
 
                 $Widget = new Project();
-                $Widget->id = $projecy->id;
+                $Widget->id = $project->id;
                 $Widget->status = $project->status;
                 $Widget->name = $project->name;
                 $Widget->description = $project->description;
@@ -600,7 +601,7 @@ namespace Goteo\Model {
                 if (!empty($project->num_posts)) {
                     $Widget->num_posts = $project->num_posts;
                 } else {
-                    $Widget->num_posts =  Post::numPosts($project->project);
+                    $Widget->num_posts =  Blog\Post::numPosts($project->project);
                 }
 
                 if(!empty($project->mincost) && !empty($project->maxcost)) {
@@ -2182,30 +2183,15 @@ namespace Goteo\Model {
                 $sqlFilter = "";
             }
 
+            $values[':lang'] = \LANG;
+
             // segun el tipo (ver controller/discover.php)
             switch ($type) {
                 case 'popular':
                     // de los que estan en campaña,
                     // los que tienen más usuarios entre cofinanciadores y mensajeros
-                    /*$sql = "SELECT project.id as id,
-                                   project.name as name,
-                                    (SELECT COUNT(DISTINCT(invest.user))
-                                        FROM    invest
-                                        WHERE   invest.project = project.id
-                                        AND     invest.status IN ('0', '1')
-                                    )
-                                    +
-                                    (SELECT  COUNT(DISTINCT(message.user))
-                                        FROM    message
-                                        WHERE   messa.project = project.id
-                                    ) as follower
-                            FROM project
-                            WHERE project.status= 3
-                            $sqlFilter
-                            HAVING followers > 20
-                            ORDER BY followers DESC";*/
                     
-                    $different_select="project.popularity as popularity, ";
+                    $different_select="project.popularity as popularity,";
                     $where="project.status= 3 AND popularity >20";
                     $order="popularity DESC";
 
@@ -2213,14 +2199,7 @@ namespace Goteo\Model {
 
                 case 'outdate':
                     // los que les quedan 15 dias o menos
-                    /*$sql = "SELECT  id,
-                                   name
-                            FROM    project
-                            WHERE   days <= 15
-                            AND     days > 0
-                            AND     status = 3
-                            $sqlFilter
-                            ORDER BY days ASC";*/
+                   
                     $where="days <= 15 AND days > 0 AND status = 3";
                     $order="popularity ASC";
                     break;
@@ -2229,63 +2208,38 @@ namespace Goteo\Model {
                     // Cambio de criterio: Los últimos 9
                     //,  DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
                     //        HAVING day <= 15 AND day IS NOT NULL
-                    /*$limit = 9;
-                    $sql = "SELECT
-                                project.id as id,
-                                project.name as name
-                            FROM project
-                            WHERE project.status = 3
-                            AND project.passed IS NULL
-                            $sqlFilter
-                            ORDER BY published DESC";*/
+                   
                     $where="project.status = 3 AND project.passed IS NULL";
                     $order="published DESC";
                     $limit = 9;
                     break;
                 case 'success':
                     // los que han conseguido el mínimo
-                    /*$sql = "SELECT
-                                id,
-                                name,
-                                (SELECT  SUM(amount)
-                                FROM    cost
-                                WHERE   project = project.id
-                                AND     required = 1
-                                ) as `mincost`,
-                                (SELECT  SUM(amount)
-                                FROM    invest
-                                WHERE   project = project.id
-                                AND     invest.status IN ('0', '1', '3', '4')
-                                ) as `getamount`
-                        FROM project
-                        WHERE status IN ('3', '4', '5')
-                        $sqlFilter
-                        HAVING getamount >= mincost
-                        ORDER BY published DESC";*/
+                    
                     $where="status IN ('3', '4', '5') AND project.amount >= mincost";
                     $order="published DESC";
                     break;
                 case 'almost-fulfilled':
                     // para gestión de retornos
-                    //$sql = "SELECT id, name FROM project WHERE status IN ('4','5') $sqlFilter ORDER BY name ASC";
+                   
                     $where="status IN ('4','5')";
                     $order="name ASC";
                     break;
                 case 'fulfilled':
                     // retorno cumplido
-                    //$sql = "SELECT id, name FROM project WHERE status IN ('5') $sqlFilter ORDER BY name ASC";
+        
                     $where="status IN ('5')";
                     $order="name ASC";
                     break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
-                    //$sql = "SELECT id, name FROM project WHERE status > 2 AND status < 6 $sqlFilter ORDER BY name ASC";
+                    
                     $where="status < 6";
                     $order="name ASC";
                     break;
                 case 'archive':
                     // caducados, financiados o casos de exito
-                    //$sql = "SELECT id, name FROM project WHERE status = 6 $sqlFilter ORDER BY closed DESC";
+                  
                     $where="status = 6";
                     $order="closed DESC";
                     break;
@@ -2295,41 +2249,14 @@ namespace Goteo\Model {
                     // cambio de criterio, en otros nodos no filtramos por followers,
                     //   mostramos todos los que estan en campaña (los nuevos primero)
                     //  limitamos a 40
-                    /*
-                    $sql = "SELECT project.id as id,
-                                    (SELECT COUNT(DISTINCT(invest.user))
-                                        FROM    invest
-                                        WHERE   invest.project = project.id
-                                        AND     invest.status IN ('0', '1')
-                                    )
-                                    +
-                                    (SELECT  COUNT(DISTINCT(message.user))
-                                        FROM    message
-                                        WHERE   message.project = project.id
-                                    ) as followers
-                            FROM project
-                            WHERE project.status= 3
-                            $sqlFilter
-                            HAVING followers > 20
-                            ORDER BY followers DESC";
-                    */
-
-                    /*$limit = 40;
-
-                    $sql = "SELECT
-                                project.id as id,
-                                project.name as name
-                            FROM project
-                            WHERE project.status = 3
-                            $sqlFilter
-                            ORDER BY published DESC";*/
+                    
                     $where="project.status = 3";
                     $order="closed DESC";
                     $limit = 40;
                     break;
                 default:
                     // todos los que estan 'en campaña', en cualquier nodo
-                    /*$sql = "SELECT id, name FROM project WHERE status = 3 ORDER BY name ASC";*/
+                    
                     $where="project.status = 3";
                     $order="name ASC";
                     $limit = 40;
@@ -2338,10 +2265,20 @@ namespace Goteo\Model {
 
             $where.=$sqlFilter;
 
+            if(self::default_lang(\LANG)=='es') {
+                $different_select2=" IFNULL(project_lang.description, project.description) as description";
+            }
+            else {
+                $different_select2=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+                $eng_join=" LEFT JOIN project_lang as eng
+                                ON  eng.id = project.id
+                                AND eng.lang = 'en'";
+            }
+
             $sql ="
                 SELECT
                     project.id as id,
-                    project.name as name,
+                    $different_select2,
                     project.status as status,
                     project.published as published,
                     project.created as created,
@@ -2349,9 +2286,9 @@ namespace Goteo\Model {
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
-                    project.description as description,
                     project.num_investors as num_investors,
                     project.days as days,
+                    project.name as name,
                     user.id as user_id,
                     $different_select
                     user.id as user_id,
@@ -2365,6 +2302,10 @@ namespace Goteo\Model {
                     ON user.id = project.owner
                 LEFT JOIN project_conf
                     ON project_conf.project = project.id
+                LEFT JOIN project_lang
+                            ON  project_lang.id = project.id
+                            AND project_lang.lang = :lang
+                $eng_join
                 WHERE
                 $where
                 ORDER BY $order

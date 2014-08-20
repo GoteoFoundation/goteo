@@ -121,87 +121,8 @@ namespace Goteo\Model {
 
 
                 // aquí usará getWidget para sacar todo esto
-                // $promo->projectData = Project::getWidget($promo);
-
-
-                // el getWidget hará todo esto:
-                $Widget = new Project();
-                $Widget->id = $promo->project;
-                $Widget->status = $promo->status;
-                $Widget->name = $promo->name;
-                $Widget->description = $promo->description;
-                $Widget->published = $promo->published;
-
-                // configuración de campaña
-                // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
-                // no necesario: $Widget->watch = $promo->watch;
-                $Widget->noinvest = $promo->noinvest;
-                $Widget->days_round1 = (!empty($promo->days_round1)) ? $promo->days_round1 : 40;
-                $Widget->days_round2 = (!empty($promo->days_round2)) ? $promo->days_round2 : 40;
-                $Widget->one_round = $promo->one_round;
-                $Widget->days_total = ($promo->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
-
-
-                // imagen
-                if (!empty($promo->image)) {
-                    $Widget->image = Image::get($promo->image);
-                } else {
-                    $first = Project\Image::setFirst($promo->project);
-                    $Widget->image = Image::get($first);
-                }
-
-                $Widget->amount = $promo->amount;
-                $Widget->invested = $promo->amount;
-
-                //de momento... habria que mejorarlo
-                $Widget->categories = Project\Category::getNames($promo->project, 2);
-                $Widget->rewards = Project\Reward::getWidget($promo->project);
-
-                if(!empty($promo->num_investors)) {
-                    $Widget->num_investors = $promo->num_investors;
-                } else {
-                    $Widget->num_investors = Invest::numInvestors($promo->project);
-                }
-
-                //mensajes y mensajeros
-                // solo cargamos mensajes en la vista mensajes
-                if (!empty($promo->num_messengers)) {
-                    $Widget->num_messengers = $promo->num_messengers;
-                } else {
-                    $Widget->num_messengers = Message::numMessengers($promo->project);
-                }
-
-                // novedades
-                // solo cargamos blog en la vista novedades
-                if (!empty($promo->num_posts)) {
-                    $Widget->num_posts = $promo->num_posts;
-                } else {
-                    $Widget->num_posts =  Blog\Post::numPosts($promo->project);
-                }
-
-                if(!empty($promo->mincost) && !empty($promo->maxcost)) {
-                    $Widget->mincost = $promo->mincost;
-                    $Widget->maxcost = $promo->maxcost;
-                } else {
-                    $calc = Project::calcCosts($promo->project);
-                    $Widget->mincost = $calc->mincost;
-                    $Widget->maxcost = $calc->maxcost;
-                }
-                $Widget->user = new User;
-                $Widget->user->id = $promo->user_id;
-                $Widget->user->name = $promo->user_name;
-
-                // calcular dias sin consultar sql
-                $Widget->days = $promo->days;
-
-                $Widget->setDays(); // esto hace una consulta para el número de días que le faltaan segun configuración
-                $Widget->setTagmark(); // esto no hace consulta
-
-
-                // hasta aquí, ya tenemos el widget
-
-                $promo->projectData = $Widget;
-
+                $promo->projectData = Project::getWidget($promo);
+                
                 $promos[] = $promo;
             }
                 // print_r($promos);die;
