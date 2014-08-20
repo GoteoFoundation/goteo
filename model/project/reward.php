@@ -114,6 +114,9 @@ namespace Goteo\Model\Project {
         }
 
         public static function getWidget($project, $lang = \LANG) {
+
+            $debug = false;
+
             try {
                 $array = array();
 
@@ -121,6 +124,10 @@ namespace Goteo\Model\Project {
                     ':project' => $project,
                     ':lang' => $lang
                 );
+
+                $icons = Icon::getList();
+                // die(\trace($icons));
+
 
                 if(self::default_lang($lang)=='es') {
                     $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward";
@@ -156,8 +163,18 @@ namespace Goteo\Model\Project {
                 // limite
                 $sql .= " LIMIT 4";
 
+                if ($debug) {
+                    echo \trace($values);
+                    echo $sql;
+                    die;
+                }
+
+
                 $query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+
+                    $item->icon_name = $icons[$item->icon]->name;
+
                     $array[$item->id] = $item;
                 }
                 return $array;

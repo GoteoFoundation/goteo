@@ -107,7 +107,7 @@ namespace Goteo\Model {
                 INNER JOIN user
                     ON user.id = project.owner
                 LEFT JOIN project_conf
-                    project_conf.project = project.id
+                    ON project_conf.project = project.id
                 WHERE promote.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
