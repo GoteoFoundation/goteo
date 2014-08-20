@@ -75,7 +75,7 @@ if ($project->status == 3 && $project->noinvest) {
         <?php endif ?>
         <?php if (!empty($project->categories)): ?>
         <div class="categories">
-        <?php $sep = ''; foreach ($project->categories as $key=>$value) :
+        <?php $sep = ''; foreach ($project->cat_names as $key=>$value) :
             echo $sep.htmlspecialchars($value);
         $sep = ', '; endforeach; ?>
         </div>
@@ -96,7 +96,7 @@ if ($project->status == 3 && $project->noinvest) {
         <ul>
            <?php foreach ($project->rewards as $reward): ?>
             <li class="<?php echo $reward->icon ?> activable">
-                <a href="<?php echo $url ?>/project/<?php echo $reward->id ?>/rewards" title="<?php echo htmlspecialchars("{$reward->icon_name}: {$reward->reward}"); if ($reward->type == 'individual') echo $reward->amount.' &euro;'; ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($reward->reward) ?></a>
+                <a href="<?php echo $url ?>/project/<?php echo $reward->id ?>/rewards" title="<?php echo htmlspecialchars("{$reward->icon_name}: {$reward->reward}"); if ($reward->type == 'individual') echo ' '.$reward->amount.' &euro;'; ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($reward->reward) ?></a>
             </li>
            <?php endforeach ?>
         </ul>
