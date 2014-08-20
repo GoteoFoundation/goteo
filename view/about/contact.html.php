@@ -7,14 +7,17 @@ $bodyClass = 'about';
 
 $page = Page::get('contact');
 $tags = $this['tags'];
+$showCaptcha = $this['showCaptcha'];
 
 $_SESSION['msg_token'] = uniqid(rand(), true);
 
-// recaptcha
-require_once 'library/recaptchalib.php';
+if ($showCaptcha) {
+    // recaptcha
+    require_once 'library/recaptchalib.php';
 
-$RECAPTCHA = (\HTTPS_ON) ? RECAPTCHA_API_SECURE_SERVER : RECAPTCHA_API_SERVER;
-$RECAPTCHA .= '/challenge?k='. RECAPTCHA_PUBLIC_KEY;
+    $RECAPTCHA = (\HTTPS_ON) ? RECAPTCHA_API_SECURE_SERVER : RECAPTCHA_API_SERVER;
+    $RECAPTCHA .= '/challenge?k='. RECAPTCHA_PUBLIC_KEY;
+}
 
 include 'view/prologue.html.php';
 include 'view/header.html.php';
@@ -90,6 +93,7 @@ include 'view/header.html.php';
                             </td>
                         </tr>
                         
+                        <?php if ($showCaptcha) { ?>
                         <tr>
                             <td colspan="2">
                                 <div class="field">
@@ -98,12 +102,16 @@ include 'view/header.html.php';
                                 </div>
                             </td>
                         </tr>
+                        <?php } ?>
                     </table>
+
+                    <?php if ($showCaptcha) { ?>
                     <!--reCAPTCHA -->
                     <div id="recaptcha_image"></div><a href="javascript:Recaptcha.reload()"><?php echo Text::get('contact-captcha-refresh'); ?></a>
                     <script type="text/javascript" src="<?php echo $RECAPTCHA; ?>"></script>
                     <br />
                     <!-- fin reCAPTCHA -->
+                    <?php } ?>
 
                     <button class="aqua" name="send" type="submit"><?php echo Text::get('contact-send_message-button'); ?></button>
                 </form>
