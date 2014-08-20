@@ -516,10 +516,18 @@ namespace Goteo\Controller {
 
             // si lo puede ver
             if ($grant) {
+
+                if ($show == 'home') {
+                    // para el widget embed
+                    $project->cat_names = Model\Project\Category::getNames($id);
+                    $project->rewards = array_merge($project->social_rewards, $project->individual_rewards);
+                }
+
                 $viewData = array(
                         'project' => $project,
                         'show' => $show
                     );
+
 
                 // tenemos que tocar esto un poquito para motrar las necesitades no economicas
                 if ($show == 'needs-non') {

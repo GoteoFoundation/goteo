@@ -5,6 +5,7 @@ namespace Goteo\Model {
 	use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\Node,
+        Goteo\Model\Project,
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Check,
@@ -1507,7 +1508,11 @@ namespace Goteo\Model {
          */
         public static function invested($user, $publicOnly = true)
         {
+            $debug = false;
+
             $projects = array();
+
+            // @Javier: añadir los campos, los joins
 
             $sql = "SELECT project.id
                     FROM  project
@@ -1521,16 +1526,18 @@ namespace Goteo\Model {
                 $sql .= "AND project.status >= 3
                     ";
             }
-            $sql .= "GROUP BY project.id
-                    ORDER BY name ASC
+            $sql .= "
+                    ORDER BY project.status ASC, project.created DESC
                     ";
-/*
-            if ($_SESSION['user']->id == 'root') {
-                echo $sql . '<br />';
+
+            $sql .= "LIMIT 12";
+
+            if ($debug) {
                 echo \trace($user);
+                echo $sql;
+                die;
             }
- * 
- */
+
 
             /*
              * Restriccion de que no aparecen los que cofinancio que esten en edicion
@@ -1539,8 +1546,8 @@ namespace Goteo\Model {
              */
 
             $query = self::query($sql, array($user));
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $proj) {
-                $projects[] = \Goteo\Model\Project::getMedium($proj->id);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+                $projects[] = Project::getWidget($proj);
             }
             return $projects;
         }

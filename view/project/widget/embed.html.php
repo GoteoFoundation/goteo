@@ -4,7 +4,9 @@
         Goteo\Model\Project;
 
     $URL = \SITE_URL;
-    $project = Project::getMedium($this['project']->id);
+
+    $project = $this['project'];
+
 	$url = $URL . '/widget/project/' . $this['project']->id;
     if (LANG != 'es')
         $url .= '?lang=' . LANG;
@@ -14,17 +16,20 @@
     }
 
 	$widget_code = Text::widget($url);
-?>
+
+/*
 <script type="text/javascript">
 	// Mark DOM as javascript-enabled
-	jQuery(document).ready(function ($) { 
-		/*$("#code").click(function(){
+	jQuery(document).ready(function ($) {
+		$("#code").click(function(){
 			$("#code").focus();
-			$("#code").select();					
-		});*/
-		
+			$("#code").select();
+		});
+
 	});
 </script>
+*/
+?>
 <div id="project-code">
     <?php
         // el proyecto de trabajo

@@ -330,7 +330,7 @@ namespace Goteo\Model {
                 // categorias
                 $project->categories = Project\Category::get($id);
 
-				// costes y los sumammos
+                // costes y los sumammos
 				$project->costs = Project\Cost::getAll($id, $lang);
                 $project->minmax();
 
@@ -2089,38 +2089,6 @@ namespace Goteo\Model {
             return $past->days - 1;
         }
 
-        /**
-         * Metodo que devuelve los días que quedan para finalizar la ronda actual
-         *
-         *  No se usa, lo hace el setDays
-         *
-         * @return numeric days remaining to go
-        public function daysRemain($id) {
-            //esto tambien se puede hacer sin sql
-            //...FALTA
-            // primero, días desde el published
-            $sql = "
-                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
-                FROM project
-                WHERE id = ?";
-            $query = self::query($sql, array($id));
-            $days = $query->fetchColumn(0);
-            $days--;
-
-            $days_round1 = Project\Conf::getRound1Days($id);
-            $days_round2 = Project\Conf::getRound2Days($id);
-            $days_total = $days_round1 + $days_round2;
-
-            if ($days > days_round1) {
-                $rest = days_total - $days; //en segunda ronda
-            } else {
-                $rest = days_round1 - $days; // en primera ronda
-            }
-
-            return $rest;
-        }
-         */
-
         /*
          * Lista de proyectos de un usuario
          * @return: array of Model\Project
@@ -2129,16 +2097,18 @@ namespace Goteo\Model {
         {
             $projects = array();
 
+            // @Javier: añadir campos y joins
+
             $sql = "SELECT * FROM project WHERE owner = ?";
             if ($published) {
-                $sql .= " AND status > 2";
-            } /* else {
-                $sql .= " AND status > 0";
-            } */
-            $sql .= " ORDER BY created DESC";
+                $sql .= " AND project.status > 2";
+            }
+
+            $sql .= " ORDER BY project.status ASC, project.created DESC";
+
             $query = self::query($sql, array($owner));
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $projects[] = self::getMedium($proj->id);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+                $projects[] = self::getWidget($proj);
             }
 
             return $projects;
