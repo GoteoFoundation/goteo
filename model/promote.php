@@ -62,6 +62,7 @@ namespace Goteo\Model {
             if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(promote_lang.title, promote.title) as title,
                                     IFNULL(promote_lang.description, promote.description) as promo_text";
+                $different_select_project=" IFNULL(project_lang.description, project.description) as description";
                 }
             else {
                     $different_select=" IFNULL(promote_lang.title, IFNULL(eng.title, promote.title)) as title,
@@ -69,6 +70,10 @@ namespace Goteo\Model {
                     $eng_join=" LEFT JOIN promote_lang as eng
                                     ON  eng.id = promote.id
                                     AND eng.lang = 'en'";
+                    $different_select_project=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+                    $eng_join_Project=" LEFT JOIN project_lang as eng
+                                    ON  eng.id = project.id
+                                       AND eng.lang = 'en'";
                 }
 
             // sacamos tambien todos los dfatos que da el project::getMedium
@@ -85,7 +90,7 @@ namespace Goteo\Model {
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
-                    project.description as description,
+                    $different_select_project,
                     project.num_investors as num_investors,
                     project.days as days,
                     user.id as user_id,
@@ -104,6 +109,10 @@ namespace Goteo\Model {
                 $eng_join
                 INNER JOIN project
                     ON project.id = promote.project
+                LEFT JOIN project_lang
+                    ON project_lang.id = project.id
+                    AND project_lang.lang = :lang
+                $eng_join_project
                 INNER JOIN user
                     ON user.id = project.owner
                 LEFT JOIN project_conf
@@ -122,7 +131,7 @@ namespace Goteo\Model {
 
                 // aquí usará getWidget para sacar todo esto
                 $promo->projectData = Project::getWidget($promo);
-                
+
                 $promos[] = $promo;
             }
                 // print_r($promos);die;

@@ -572,7 +572,7 @@ namespace Goteo\Model {
         public static function getWidget($project) {
 
                 $Widget = new Project();
-                $Widget->id = $project->id;
+                $Widget->id = $project->project;
                 $Widget->status = $project->status;
                 $Widget->name = $project->name;
                 $Widget->description = $project->description;
@@ -2298,7 +2298,7 @@ namespace Goteo\Model {
 
             $sql ="
                 SELECT
-                    project.id as id,
+                    project.id as project,
                     $different_select2,
                     project.status as status,
                     project.published as published,
