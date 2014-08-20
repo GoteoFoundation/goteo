@@ -71,12 +71,11 @@ namespace Goteo\Model {
                                     ON  eng.id = promote.id
                                     AND eng.lang = 'en'";
                     $different_select_project=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
-                    $eng_join_Project=" LEFT JOIN project_lang as eng
+                    $eng_join_project=" LEFT JOIN project_lang as eng
                                     ON  eng.id = project.id
                                        AND eng.lang = 'en'";
                 }
 
-            // sacamos tambien todos los dfatos que da el project::getMedium
             $query = static::query("
                 SELECT
                     promote.id as id,
@@ -87,6 +86,8 @@ namespace Goteo\Model {
                     project.published as published,
                     project.created as created,
                     project.updated as updated,
+                    project.success as success,
+                    project.closed as closed,
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
@@ -96,8 +97,6 @@ namespace Goteo\Model {
                     user.id as user_id,
                     user.name as user_name,
                     project.image as image,
-                    promote.order as `order`,
-                    promote.active as `active`,
                     project_conf.noinvest as noinvest,
                     project_conf.one_round as one_round,
                     project_conf.days_round1 as days_round1,
@@ -119,7 +118,7 @@ namespace Goteo\Model {
                     ON project_conf.project = project.id
                 WHERE promote.node = :node
                 $sqlFilter
-                ORDER BY `order` ASC, title ASC
+                ORDER BY promote.order ASC, title ASC
                 ", array(':node' => $node, ':lang'=>$lang));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {

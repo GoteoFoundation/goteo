@@ -295,6 +295,7 @@ namespace Goteo\Model {
             return (int) $got->messengers;
         }
 
+
         /*
          * Lista de usuarios mensajeros de un proyecto
          */

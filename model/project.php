@@ -532,6 +532,10 @@ namespace Goteo\Model {
                 $Widget->name = $project->name;
                 $Widget->description = $project->description;
                 $Widget->published = $project->published;
+                $Widget->created = $project->created;
+                $Widget->updated = $project->updated;
+                $Widget->success = $project->success;
+                $Widget->closed = $project->closed;
 
                 // configuración de campaña
                 // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
@@ -2096,17 +2100,61 @@ namespace Goteo\Model {
         public static function ofmine($owner, $published = false)
         {
             $projects = array();
+            $values = array();
+            $values[':lang'] = \LANG;
+            $values[':owner'] = $owner;
 
-            // @Javier: añadir campos y joins
-
-            $sql = "SELECT * FROM project WHERE owner = ?";
-            if ($published) {
-                $sql .= " AND project.status > 2";
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(project_lang.description, project.description) as description";
+            }
+            else {
+                $different_select=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+                $eng_join=" LEFT JOIN project_lang as eng
+                                ON  eng.id = project.id
+                                AND eng.lang = 'en'";
             }
 
-            $sql .= " ORDER BY project.status ASC, project.created DESC";
+            if ($published) {
+                $sqlFilter = " AND project.status > 2";
+            }
 
-            $query = self::query($sql, array($owner));
+            $sql ="
+                SELECT
+                    project.id as project,
+                    $different_select,
+                    project.status as status,
+                    project.published as published,
+                    project.created as created,
+                    project.updated as updated,
+                    project.success as success,
+                    project.closed as closed,
+                    project.mincost as mincost,
+                    project.maxcost as maxcost,
+                    project.amount as amount,
+                    project.num_investors as num_investors,
+                    project.days as days,
+                    project.name as name,
+                    user.id as user_id,
+                    user.name as user_name,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
+                FROM  project
+                INNER JOIN user
+                    ON user.id = project.owner
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
+                LEFT JOIN project_lang
+                    ON  project_lang.id = project.id
+                    AND project_lang.lang = :lang
+                $eng_join
+                WHERE owner = :owner
+                $sqlFilter
+                ORDER BY  project.status ASC, project.created DESC
+                ";
+
+            $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
                 $projects[] = self::getWidget($proj);
             }
@@ -2120,6 +2168,8 @@ namespace Goteo\Model {
          */
         public static function published($type = 'all', $limit = 12, $mini = false)
         {
+            $different_select='';
+
             $values = array();
             // si es un nodo, filtrado
             if (\NODE_ID != \GOTEO_NODE) {
@@ -2229,13 +2279,14 @@ namespace Goteo\Model {
                     project.published as published,
                     project.created as created,
                     project.updated as updated,
+                    project.success as success,
+                    project.closed as closed,
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
                     project.num_investors as num_investors,
                     project.days as days,
                     project.name as name,
-                    user.id as user_id,
                     $different_select
                     user.id as user_id,
                     user.name as user_name,
