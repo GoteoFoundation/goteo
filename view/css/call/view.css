@@ -12,14 +12,14 @@ html {
     overflow: auto;
 }
 
-html, body {        
+html, body {
 	padding: 0;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
 }
 
-body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {    
+body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {
     font-size: 12px;
     color: #58595b;
 }
@@ -151,7 +151,7 @@ div#main ul#list>li {
 #social-logo li {
     display: block;
     padding-left: 30px;
-    float: left;    
+    float: left;
     min-height: 2em;
     line-height: 2em;
     background: no-repeat left center;
@@ -163,7 +163,7 @@ div#main ul#list>li {
 }
 
 #social-logo li.facebook {
-    background-image: url('/view/css/social/facebook.png');
+    background-image: url('social/facebook.png');
 }
 
 #social-logo li.google {
@@ -171,7 +171,7 @@ div#main ul#list>li {
 }
 
 #social-logo li.twitter {
-    background-image: url('/view/css/social/twitter.png');    
+    background-image: url('/view/css/social/twitter.png');
 }
 
 #social-logo li.identica {
@@ -236,7 +236,7 @@ div#main ul#list>li {
 .connect_widget_not_connected_text, .connect_widget_connected_text {
   display:none !important;
 }
- 
+
 /* Info container */
 
 #info {
@@ -333,7 +333,7 @@ div#header div#menu > ul > li {
 	float: left;
 }
 
-div#super-header ul > li.home > a {    
+div#super-header ul > li.home > a {
     overflow: hidden;
     text-indent: 2000px;
     display: block;
@@ -422,7 +422,7 @@ ul.lang {
 	margin:0;
 	padding:0;
 }
-	
+
 ul.lang li {
 	background-color: #59595C;
 	height: 15px;
@@ -433,7 +433,7 @@ ul.lang li {
 }
 
 ul.lang li:hover {
-	background: #808285; 
+	background: #808285;
 }
 
 ul.lang li>a {
@@ -460,7 +460,7 @@ div#header ul > li.dashboard {
 div#header ul > li.dashboard > a {
     padding: .5em .8em;
     font-size: 12px;
-    display: inline-block;    
+    display: inline-block;
     color: #59595c;
 }
 
@@ -480,7 +480,7 @@ div#header ul > li.dashboard > a > img{
 }
 
 div#header ul > li.dashboard:hover {
-    background-color: #1db3b2;    
+    background-color: #1db3b2;
 }
 
 div#header ul > li.dashboard > a > span > em {
@@ -508,7 +508,7 @@ div#header ul > li.dashboard > div > ul {
 }
 
 div#header ul > li.dashboard > div > ul > li {
-    border-top: 1px solid #a5e1e0;    
+    border-top: 1px solid #a5e1e0;
 }
 
 div#header ul > li.dashboard > div > ul > li * {
@@ -517,7 +517,7 @@ div#header ul > li.dashboard > div > ul > li * {
 }
 
 div#header ul > li.dashboard > div > ul > li > a {
-    display: block;    
+    display: block;
     padding: .1em 1em;
 	text-decoration: none;
 }
@@ -912,25 +912,25 @@ a.button {
     padding: .5em .8em;
 	font-size: 11px;
     text-transform: uppercase;
-    border: none;    
+    border: none;
     cursor: pointer;
     font-weight: normal;
     color: white;
     margin: .5em 0;
     display: inline-block;
-    text-decoration: none;    
+    text-decoration: none;
     text-align: center;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    background: #149290 url('/view/css/button/aqua.png') repeat-x top;   
+    background: #149290 url('/view/css/button/aqua.png') repeat-x top;
 }
 
 input[type="submit"]:active,
 input[type="reset"]:active,
 button:active,
 a.button:active {
-    background: #60c1bf url('/view/css/button/aqua-active.png') repeat-x top;    
+    background: #60c1bf url('/view/css/button/aqua-active.png') repeat-x top;
 }
 
 input[type="submit"]:hover,
@@ -943,17 +943,17 @@ a.button:hover {
 input.red[type="submit"],
 input.red[type="reset"],
 button.red,
-a.button.red {    
-    background: #b5161e url('/view/css/button/red.png') repeat-x top;    
-    color: white;    
-} 
+a.button.red {
+    background: #b5161e url('/view/css/button/red.png') repeat-x top;
+    color: white;
+}
 
 input.red[type="submit"]:active,
 input.red[type="reset"]:active,
 button.red:active,
 a.button.red:active {
-    background: #e44133 url('/view/css/button/red-active.png') repeat-x top;    
-} 
+    background: #e44133 url('/view/css/button/red-active.png') repeat-x top;
+}
 
 input.red[type="submit"]:hover,
 input.red[type="reset"]:hover,
@@ -980,7 +980,7 @@ a.button.long {
 a.button.join {
 	font-size: 15px;
 	/*padding: 0.4em 2.1em;*/
-	
+
 }
 
 /* Content terms */
@@ -1105,7 +1105,7 @@ table.info-table tfoot th.total {
 }
 
 table.info-table tfoot tr > * {
-    border: none;   
+    border: none;
 }
 
 .info .freetext h3 {
