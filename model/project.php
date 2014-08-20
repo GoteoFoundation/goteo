@@ -500,7 +500,7 @@ namespace Goteo\Model {
                 }
 
                 if (empty($project->num_messengers)) {
-                    $project->num_messengers = Message::numMessengers($id);
+                    $project->num_messengers = Message::numMessegers($id);
                 }
 
                 // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado

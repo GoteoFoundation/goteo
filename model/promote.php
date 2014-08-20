@@ -91,7 +91,11 @@ namespace Goteo\Model {
                     user.name as user_name,
                     project.image as image,
                     promote.order as `order`,
-                    promote.active as `active`
+                    promote.active as `active`,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
                 FROM    promote
                 LEFT JOIN promote_lang
                     ON promote_lang.id = promote.id
@@ -101,6 +105,8 @@ namespace Goteo\Model {
                     ON project.id = promote.project
                 INNER JOIN user
                     ON user.id = project.owner
+                LEFT JOIN project_conf
+                    project_conf.project = project.id
                 WHERE promote.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
@@ -126,12 +132,13 @@ namespace Goteo\Model {
                 $Widget->published = $promo->published;
 
                 // configuración de campaña
+                // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
+                // no necesario: $Widget->watch = $promo->watch;
                 $Widget->noinvest = $promo->noinvest;
-                $Widget->watch = $promo->watch;
                 $Widget->days_round1 = (!empty($promo->days_round1)) ? $promo->days_round1 : 40;
                 $Widget->days_round2 = (!empty($promo->days_round2)) ? $promo->days_round2 : 40;
                 $Widget->one_round = $promo->one_round;
-                $Widget->days_total = ($Widget->days_round1 + $Widget->days_round2);
+                $Widget->days_total = ($promo->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
 
 
                 // imagen
@@ -147,7 +154,7 @@ namespace Goteo\Model {
 
                 //de momento... habria que mejorarlo
                 $Widget->categories = Project\Category::getNames($promo->project, 2);
-                $Widget->social_rewards = Project\Reward::getAll($promo->project, 'social', $lang);
+                $Widget->rewards = Project\Reward::getWidget($promo->project);
 
                 if(!empty($promo->num_investors)) {
                     $Widget->num_investors = $promo->num_investors;
@@ -183,17 +190,10 @@ namespace Goteo\Model {
                 $Widget->user->id = $promo->user_id;
                 $Widget->user->name = $promo->user_name;
 
-                //calcular dias sin consultar sql
+                // calcular dias sin consultar sql
                 $Widget->days = $promo->days;
-                $Widget->round = 0;
 
-                $project_conf = Project\Conf::get($Widget->id);
-                $Widget->days_round1 = $project_conf->days_round1;
-                $Widget->days_round2 = $project_conf->days_round2;
-                $Widget->days_total = $project_conf->days_round1 + $project_conf->days_round2;
-                $Widget->one_round = $project_conf->one_round;
-
-                $Widget->setDays(); // esto hace una consulta para el número de días que lleva
+                $Widget->setDays(); // esto hace una consulta para el número de días que le faltaan segun configuración
                 $Widget->setTagmark(); // esto no hace consulta
 
 
