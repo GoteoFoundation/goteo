@@ -361,8 +361,8 @@ namespace Goteo\Model {
 
                 //mensajes y mensajeros
                 // solo cargamos mensajes en la vista mensajes
-                if ($project->status >= 3 && empty($project->num_messegers)) {
-                    $project->num_messegers = Message::numMessegers($id);
+                if ($project->status >= 3 && empty($project->num_messengers)) {
+                    $project->num_messengers = Message::numMessengers($id);
                 }
 
                 // novedades
@@ -499,8 +499,8 @@ namespace Goteo\Model {
                     $project->num_investors = Invest::numInvestors($id);
                 }
 
-                if (empty($project->num_messegers)) {
-                    $project->num_messegers = Message::numMessegers($id);
+                if (empty($project->num_messengers)) {
+                    $project->num_messengers = Message::numMessengers($id);
                 }
 
                 // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado
@@ -705,7 +705,7 @@ namespace Goteo\Model {
                 if ($days < $this->days_round1) { // En primera ronda
                     $this->round = 1;
                     $daysleft = $this->days_round1 - $days;
-                } elseif (!$this->one_round && $days >= $this->days_round1 && $days <= $this->days_total) { // En segunda ronda
+                } elseif ( !$this->one_round && $days >= $this->days_round1 && $days <= $this->days_total ) { // En segunda ronda
                     $this->round = 2;
                     $daysleft = $this->days_total - $days;
                 } elseif ($days >= $this->days_total) { // Ha finalizado la campaña

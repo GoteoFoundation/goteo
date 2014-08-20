@@ -180,7 +180,7 @@ namespace Goteo\Model {
                 if (empty($this->id)) $this->id = self::insertId();
 
                 // actualizar campo calculado
-                self::numMessegers($this->project);
+                self::numMessengers($this->project);
 
                 return true;
             } catch(\PDOException $e) {
@@ -265,13 +265,13 @@ namespace Goteo\Model {
         /*
          * Numero de usuarios mensajeros de un proyecto
          */
-        public static function numMessegers ($project) {
+        public static function numMessengers ($project) {
 
             $debug = false;
 
             $values = array(':project' => $project);
 
-            $sql = "SELECT  COUNT(*) as messegers, project.num_messegers as num
+            $sql = "SELECT  COUNT(*) as messengers, project.num_messengers as num
                 FROM    message
                 INNER JOIN project
                     ON project.id = message.project
@@ -287,18 +287,18 @@ namespace Goteo\Model {
             $query = static::query($sql, $values);
             if($got = $query->fetchObject()) {
                 // si ha cambiado, actualiza el numero de inversores en proyecto
-                if ($got->messegers != $got->num) {
-                    static::query("UPDATE project SET num_messegers = :num WHERE id = :project", array(':num' => (int) $got->messegers, ':project' => $project));
+                if ($got->messengers != $got->num) {
+                    static::query("UPDATE project SET num_messengers = :num WHERE id = :project", array(':num' => (int) $got->messengers, ':project' => $project));
                 }
             }
 
-            return (int) $got->messegers;
+            return (int) $got->messengers;
         }
 
         /*
          * Lista de usuarios mensajeros de un proyecto
          */
-        public static function getMessegers ($id) {
+        public static function getMessengers ($id) {
             $list = array();
 
             $sql = "SELECT 
