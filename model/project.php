@@ -444,12 +444,16 @@ namespace Goteo\Model {
         public static function getMedium($id, $lang = \LANG) {
 
             try {
-				// metemos los datos del proyecto en la instancia
-				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
-				$project = $query->fetchObject(__CLASS__);
 
-                // primero, que no lo grabe
-                $project->dontsave = true;
+
+                // @Javier hay que añadir project_conf, user y los campos en el select
+                $sql = "SELECT * FROM project WHERE id = ?";
+
+
+
+				// metemos los datos del proyecto en la instancia
+				$query = self::query($sql, array($id));
+				$project = $query->fetchObject(__CLASS__);
 
                 // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
                 if(!empty($lang) && $lang!=$project->lang) {
@@ -472,6 +476,15 @@ namespace Goteo\Model {
                         $project->$field = $value;
                     }
                 }
+
+
+                // @Javier luego llamar aquí a getWidget para que cargue el resto
+
+                // Y añadir el dontsave
+                $project->dontsave = true;
+
+
+                // @Javier entonces se podrá comentar todo lo demás
 
                 // owner
                 $project->user = User::getMini($project->owner);
@@ -532,6 +545,9 @@ namespace Goteo\Model {
                 $project->setDays();
                 $project->setTagmark();
 
+
+
+                // @Javier esto dejarlo por ahora:
                 // podría estar asignado a alguna convocatoria
                 $project->called = Call\Project::called($project);
 
@@ -539,6 +555,8 @@ namespace Goteo\Model {
                 if (!empty($project->node)) {
                     $project->nodeData = Node::getMini($project->node);
                 }
+                //
+
 
                 return $project;
 
