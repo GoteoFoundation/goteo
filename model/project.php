@@ -500,7 +500,7 @@ namespace Goteo\Model {
                 }
 
                 if (empty($project->num_messengers)) {
-                    $project->num_messengers = Message::numMessegers($id);
+                    $project->num_messengers = Message::numMessengers($id);
                 }
 
                 // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado
@@ -543,19 +543,20 @@ namespace Goteo\Model {
         public static function getWidget($project) {
 
                 $Widget = new Project();
-                $Widget->id = $project->project;
+                $Widget->id = $projecy->id;
                 $Widget->status = $project->status;
                 $Widget->name = $project->name;
                 $Widget->description = $project->description;
                 $Widget->published = $project->published;
 
                 // configuración de campaña
+                // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
+                // no necesario: $Widget->watch = $project->watch;
                 $Widget->noinvest = $project->noinvest;
-                $Widget->watch = $project->watch;
                 $Widget->days_round1 = (!empty($project->days_round1)) ? $project->days_round1 : 40;
                 $Widget->days_round2 = (!empty($project->days_round2)) ? $project->days_round2 : 40;
                 $Widget->one_round = $project->one_round;
-                $Widget->days_total = ($Widget->days_round1 + $Widget->days_round2);
+                $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
 
 
                 // imagen
@@ -571,7 +572,7 @@ namespace Goteo\Model {
 
                 //de momento... habria que mejorarlo
                 $Widget->categories = Project\Category::getNames($project->project, 2);
-                $Widget->social_rewards = Project\Reward::getAll($project->project, 'social', $lang);
+                $Widget->rewards = Project\Reward::getWidget($project->project);
 
                 if(!empty($project->num_investors)) {
                     $Widget->num_investors = $project->num_investors;
@@ -607,17 +608,10 @@ namespace Goteo\Model {
                 $Widget->user->id = $project->user_id;
                 $Widget->user->name = $project->user_name;
 
-                //calcular dias sin consultar sql
+                // calcular dias sin consultar sql
                 $Widget->days = $project->days;
-                $Widget->round = 0;
 
-                $project_conf = Project\Conf::get($Widget->id);
-                $Widget->days_round1 = $project_conf->days_round1;
-                $Widget->days_round2 = $project_conf->days_round2;
-                $Widget->days_total = $project_conf->days_round1 + $project_conf->days_round2;
-                $Widget->one_round = $project_conf->one_round;
-
-                $Widget->setDays(); // esto hace una consulta para el número de días que lleva
+                $Widget->setDays(); // esto hace una consulta para el número de días que le faltaan segun configuración
                 $Widget->setTagmark(); // esto no hace consulta
 
                 return $Widget;
@@ -2354,10 +2348,16 @@ namespace Goteo\Model {
                     user.id as user_id,
                     $different_select
                     user.id as user_id,
-                    user.name as user_name
+                    user.name as user_name,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
                 FROM  project
                 INNER JOIN user
                     ON user.id = project.owner
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
                 WHERE
                 $where
                 ORDER BY $order
