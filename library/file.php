@@ -273,7 +273,7 @@ namespace Goteo\Library {
                 case 's3':
                     // TODO para todos
                     //if ($this->link->putObject(S3::inputFile($local), $this->bucket, 'mail/' . $remote, ACL_PUBLIC_READ)) {
-                    if ($this->link->putObject(S3::inputFile($local), $this->bucket, 'mail/' . $remote, self::s3_acl($auto_create_dirs))) {
+                    if ($this->link->putObject(S3::inputFile($local), $this->bucket, $remote, self::s3_acl($auto_create_dirs))) {
                         $ok = true;
                         echo "File uploaded.";
                     } else {
