@@ -542,51 +542,85 @@ namespace Goteo\Model {
          */
         public static function getWidget($project) {
 
-                $project->description = Text::recorta($project->description, 100, false);
-                $project->id = $promo->project;
-                $project->status = $promo->status;
-                $project->name = $promo->name;
-                $project->description = $promo->description;
-                $project->published = $promo->published;
+                $Widget = new Project();
+                $Widget->id = $project->project;
+                $Widget->status = $project->status;
+                $Widget->name = $project->name;
+                $Widget->description = $project->description;
+                $Widget->published = $project->published;
+
+                // configuración de campaña
+                $Widget->noinvest = $project->noinvest;
+                $Widget->watch = $project->watch;
+                $Widget->days_round1 = (!empty($project->days_round1)) ? $project->days_round1 : 40;
+                $Widget->days_round2 = (!empty($project->days_round2)) ? $project->days_round2 : 40;
+                $Widget->one_round = $project->one_round;
+                $Widget->days_total = ($Widget->days_round1 + $Widget->days_round2);
+
 
                 // imagen
-                $project->image = Project\Image::getFirst($project->id);
-
-                 // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado
-                if(empty($project->mincost)) {
-                    $costs = self::calcCosts($id);
-                    $project->mincost = $costs->mincost;
-                    $project->maxcost = $costs->maxcost;
+                if (!empty($project->image)) {
+                    $Widget->image = Image::get($project->image);
+                } else {
+                    $first = Project\Image::setFirst($project->project);
+                    $Widget->image = Image::get($first);
                 }
 
-                $project->invested = $project->amount;
+                $Widget->amount = $project->amount;
+                $Widget->invested = $project->amount;
 
-                //consultamos y actualizamos el numero de inversores si no está definido
-                if($project->amount > 0 && empty($project->num_investors)) {
-                    $project->num_investors = Invest::numInvestors($id);
-                }
                 //de momento... habria que mejorarlo
-                $project->categories = Project\Category::getNames($promo->project, 2);
-                $project->social_rewards = Project\Reward::getAll($promo->project, 'social', $lang);
+                $Widget->categories = Project\Category::getNames($project->project, 2);
+                $Widget->social_rewards = Project\Reward::getAll($project->project, 'social', $lang);
 
-                $project->user = new User;
+                if(!empty($project->num_investors)) {
+                    $Widget->num_investors = $project->num_investors;
+                } else {
+                    $Widget->num_investors = Invest::numInvestors($project->project);
+                }
 
-                // extra conf
-                $project_conf = Project\Conf::get($id);
-                $project->days_round1 = $project_conf->days_round1;
-                $project->days_round2 = $project_conf->days_round2;
-                $project->one_round = $project_conf->one_round;
-                $project->days_total = ($project->one_round) ? $project_conf->days_round1 : $project->days_round1 + $project->days_round2;
-                $project->watch = Project\Conf::isWatched($id);
-                $project->noinvest = Project\Conf::isInvestClosed($id);
+                //mensajes y mensajeros
+                // solo cargamos mensajes en la vista mensajes
+                if (!empty($project->num_messengers)) {
+                    $Widget->num_messengers = $project->num_messengers;
+                } else {
+                    $Widget->num_messengers = Message::numMessengers($project->project);
+                }
 
-                $project->setDays();
-                $project->setTagmark();
+                // novedades
+                // solo cargamos blog en la vista novedades
+                if (!empty($project->num_posts)) {
+                    $Widget->num_posts = $project->num_posts;
+                } else {
+                    $Widget->num_posts =  Post::numPosts($project->project);
+                }
 
-                // podría estar asignado a alguna convocatoria
-                $project->called = Call\Project::called($project);
+                if(!empty($project->mincost) && !empty($project->maxcost)) {
+                    $Widget->mincost = $project->mincost;
+                    $Widget->maxcost = $project->maxcost;
+                } else {
+                    $calc = Project::calcCosts($project->project);
+                    $Widget->mincost = $calc->mincost;
+                    $Widget->maxcost = $calc->maxcost;
+                }
+                $Widget->user = new User;
+                $Widget->user->id = $project->user_id;
+                $Widget->user->name = $project->user_name;
 
-            return $project;
+                //calcular dias sin consultar sql
+                $Widget->days = $project->days;
+                $Widget->round = 0;
+
+                $project_conf = Project\Conf::get($Widget->id);
+                $Widget->days_round1 = $project_conf->days_round1;
+                $Widget->days_round2 = $project_conf->days_round2;
+                $Widget->days_total = $project_conf->days_round1 + $project_conf->days_round2;
+                $Widget->one_round = $project_conf->one_round;
+
+                $Widget->setDays(); // esto hace una consulta para el número de días que lleva
+                $Widget->setTagmark(); // esto no hace consulta
+
+                return $Widget;
 
         }
 
@@ -2136,7 +2170,7 @@ namespace Goteo\Model {
          * Lista de proyectos publicados
          * @return: array of Model\Project
          */
-        public static function published($type = 'all', $limit = null, $mini = false)
+        public static function published($type = 'all', $limit = 12, $mini = false)
         {
             $values = array();
             // si es un nodo, filtrado
@@ -2146,9 +2180,6 @@ namespace Goteo\Model {
             } else {
                 $sqlFilter = "";
             }
-
-            //limite por defecto
-            $limit=12;
 
             // segun el tipo (ver controller/discover.php)
             switch ($type) {
@@ -2329,18 +2360,18 @@ namespace Goteo\Model {
                     ON user.id = project.owner
                 WHERE
                 $where
-                ORDER BY name ASC
+                ORDER BY $order
+                LIMIT $limit
                 ";
 
             $projects = array();
             $query = self::query($sql, $values);
             
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
                 if ($mini) {
-                    $projects[$proj['id']] = $proj['name'];
+                    $projects[$proj->id] = $proj->name;
                 } else {
-                    $projects[]=$proj;
-                    $projects[$proj->id] = self::getWidget($proj);
+                    $projects[]=self::getWidget($proj);
                 }
             }
             return $projects;
