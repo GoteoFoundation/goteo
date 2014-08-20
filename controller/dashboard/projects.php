@@ -480,6 +480,10 @@ namespace Goteo\Controller\Dashboard {
             } else {
                 $post = new Model\Blog\Post();
             }
+
+            $post->owner_type = 'project';
+            $post->owner_id = $project->id;
+
             // campos que actualizamos
             $fields = array(
                 'id',

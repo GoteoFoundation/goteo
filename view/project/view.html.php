@@ -20,18 +20,18 @@ $personalData = ($user instanceof User) ? User::getPersonal($user->id) : new std
 
 $categories = Category::getNames($project->id);
 
-if (!empty($project->investors)) {
+if (!empty($project->num_investors)) {
     $supporters = ' (' . $project->num_investors . ')';
 } else {
     $supporters = '';
 }
-if (!empty($project->messages)) {
-    $messages = ' (' . $project->num_messages . ')';
+if (!empty($project->num_messegers)) {
+    $messages = ' (' . $project->num_messegers . ')';
 } else {
     $messages = '';
 }
-if (!empty($blog->posts)) {
-    $updates = ' (' . count($blog->posts) . ')';
+if (!empty($project->num_posts)) {
+    $updates = ' (' . $project->num_posts . ')';
 } else {
     $updates = '';
 }

@@ -826,18 +826,31 @@ namespace Goteo\Model {
         }
 
         public static function numInvestors ($project) {
+
+            $debug = false;
+
             $values = array(':project' => $project);
 
-            $sql = "SELECT  COUNT(DISTINCT(user)) as investors
+            $sql = "SELECT  COUNT(DISTINCT(invest.user)) as investors, project.num_investors as num
                 FROM    invest
-                WHERE   project = :project
+                INNER JOIN project
+                    ON project.id = invest.project
+                WHERE   invest.project = :project
                 AND     invest.status IN ('0', '1', '3', '4')
                 ";
 
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
+            }
+
             $query = static::query($sql, $values);
             if($got = $query->fetchObject()) {
-                //actualiza el numero de inversores en proyecto (aunque sea ninguno)
-                static::query("UPDATE project SET num_investors = :num WHERE id = :project", array(':num' => (int) $got->investors, ':project' => $project));
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->investors != $got->num) {
+                    static::query("UPDATE project SET num_investors = :num WHERE id = :project", array(':num' => (int) $got->investors, ':project' => $project));
+                }
             }
 
             return (int) $got->investors;

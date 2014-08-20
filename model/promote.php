@@ -54,9 +54,6 @@ namespace Goteo\Model {
          */
         public static function getAll ($activeonly = false, $node = \GOTEO_NODE, $lang = \LANG) {
 
-            // estados
-            $status = Project::status();
-
             $promos = array();
 
             $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
@@ -110,57 +107,91 @@ namespace Goteo\Model {
                 ", array(':node' => $node, ':lang'=>$lang));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
-                $promo->description = Text::recorta($promo->description, 100, false);
+                $promo->promo_text = Text::recorta($promo->promo_text, 100, false);
                 //variables usadas en view/project/widget/project.html.php
-                $promo->projectData = new Project;
-                $promo->projectData->id = $promo->project;
-                $promo->projectData->status = $promo->status;
-                $promo->projectData->name = $promo->name;
-                $promo->projectData->description = $promo->description;
-                $promo->projectData->published = $promo->published;
+
+
+
+
+                // aquí usará getWidget para sacar todo esto
+                // $promo->projectData = Project::getWidget($promo);
+
+
+                // el getWidget hará todo esto:
+                $Widget = new Project;
+                $Widget->id = $promo->project;
+                $Widget->status = $promo->status;
+                $Widget->name = $promo->name;
+                $Widget->description = $promo->description;
+                $Widget->published = $promo->published;
 
                 // imagen
                 if (!empty($promo->image)) {
-                    $promo->projectData->image = Image::get($promo->image);
+                    $Widget->image = Image::get($promo->image);
                 } else {
                     $first = Project\Image::setFirst($promo->project);
-                    $promo->projectData->image = Image::get($first);
+                    $Widget->image = Image::get($first);
                 }
 
-                $promo->projectData->amount = $promo->amount;
-                $promo->projectData->invested = $promo->amount;
-                $promo->projectData->num_investors = $promo->num_investors;
-                if(empty($promo->num_investors)) {
-                    $promo->projectData->num_investors = Invest::numInvestors($promo->project);
-                }
+                $Widget->amount = $promo->amount;
+                $Widget->invested = $promo->amount;
+
                 //de momento... habria que mejorarlo
-                $promo->projectData->categories = Project\Category::getNames($promo->project, 2);
-                $promo->projectData->social_rewards = Project\Reward::getAll($promo->project, 'social', $lang);
+                $Widget->categories = Project\Category::getNames($promo->project, 2);
+                $Widget->social_rewards = Project\Reward::getAll($promo->project, 'social', $lang);
 
-                $promo->projectData->mincost = $promo->mincost;
-                $promo->projectData->maxcost = $promo->maxcost;
-                if(empty($promo->mincost)) {
-                    $calc = Project::calcCosts($promo->project);
-                    $promo->projectData->mincost = $calc->mincost;
-                    $promo->projectData->maxcost = $calc->maxcost;
+                if(!empty($promo->num_investors)) {
+                    $Widget->num_investors = $promo->num_investors;
+                } else {
+                    $Widget->num_investors = Invest::numInvestors($promo->project);
                 }
-                $promo->projectData->user = new User;
-                $promo->projectData->user->id = $promo->user_id;
-                $promo->projectData->user->name = $promo->user_name;
+
+                //mensajes y mensajeros
+                // solo cargamos mensajes en la vista mensajes
+                if (!empty($promo->num_messegers)) {
+                    $Widget->num_messegers = $promo->num_messegers;
+                } else {
+                    $Widget->num_messegers = Message::numMessegers($promo->project);
+                }
+
+                // novedades
+                // solo cargamos blog en la vista novedades
+                if (!empty($promo->num_posts)) {
+                    $Widget->num_posts = $promo->num_posts;
+                } else {
+                    $Widget->num_posts =  Post::numPosts($promo->project);
+                }
+
+                if(!empty($promo->mincost) && !empty($promo->maxcost)) {
+                    $Widget->mincost = $promo->mincost;
+                    $Widget->maxcost = $promo->maxcost;
+                } else {
+                    $calc = Project::calcCosts($promo->project);
+                    $Widget->mincost = $calc->mincost;
+                    $Widget->maxcost = $calc->maxcost;
+                }
+                $Widget->user = new User;
+                $Widget->user->id = $promo->user_id;
+                $Widget->user->name = $promo->user_name;
+
                 //calcular dias sin consultar sql
-                $promo->projectData->days = $promo->days;
-                $promo->projectData->round = 0;
+                $Widget->days = $promo->days;
+                $Widget->round = 0;
 
-                $project_conf = Project\Conf::get($promo->projectData->id);
-                $promo->projectData->days_round1 = $project_conf->days_round1;
-                $promo->projectData->days_round2 = $project_conf->days_round2;
-                $promo->projectData->days_total = $project_conf->days_round1 + $project_conf->days_round2;
-                $promo->projectData->one_round = $project_conf->one_round;
+                $project_conf = Project\Conf::get($Widget->id);
+                $Widget->days_round1 = $project_conf->days_round1;
+                $Widget->days_round2 = $project_conf->days_round2;
+                $Widget->days_total = $project_conf->days_round1 + $project_conf->days_round2;
+                $Widget->one_round = $project_conf->one_round;
 
-                $promo->projectData->setDays();
-                $promo->projectData->setTagmark();
+                $Widget->setDays(); // esto hace una consulta para el número de días
+                $Widget->setTagmark(); // esto no hace consulta
 
-                $promo->status = $status[$promo->status];
+
+                // hasta aquí, ya tenemos el widget
+
+                $promo->projectData = $Widget;
+
                 $promos[] = $promo;
             }
                 // print_r($promos);die;

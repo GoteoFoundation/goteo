@@ -8,6 +8,7 @@ namespace Goteo\Model {
         Goteo\Model\User,
         Goteo\Model\Image,
         Goteo\Model\Message,
+        Goteo\Model\Blog\Post,
         Goteo\Model\Call,
         Goteo\Model\Patron,
         Goteo\Model\Node;
@@ -345,27 +346,33 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 $project->investors = Invest::investors($id);
 
-                if($project->status > 3 && empty($project->amount)) {
+                if($project->status >= 3 && empty($project->amount)) {
                     $project->amount = Invest::invested($id);
                 }
                 $project->invested = $project->amount;
 
+
+                // campos calculados para los números del menu
+
                 //consultamos y actualizamos el numero de inversores
-                if($project->amount > 0 && empty($project->num_investors)) {
+                if($project->status >= 3 && $project->amount > 0 && empty($project->num_investors)) {
                     $project->num_investors = Invest::numInvestors($id);
                 }
 
                 //mensajes y mensajeros
-                $messegers = array();
-                $project->messages = Message::getAll($id, $lang);
-                $project->num_messages = 0;
-                foreach ($project->messages as $msg) {
-                    $project->num_messages++;
-                    $project->num_messages+=count($msg->responses);
-                    $messegers[$msg->user] = $msg->user;
+                // solo cargamos mensajes en la vista mensajes
+                if ($project->status >= 3 && empty($project->num_messegers)) {
+                    $project->num_messegers = Message::numMessegers($id);
                 }
-                $project->num_messegers = count($messegers);
 
+                // novedades
+                // solo cargamos blog en la vista novedades
+                if ($project->status >= 3 && empty($project->num_posts)) {
+                    $project->num_posts =  Post::numPosts($id);
+                }
+
+
+                // calculos de días y banderolos
                 $project->setDays();
                 $project->setTagmark();
 
@@ -492,7 +499,9 @@ namespace Goteo\Model {
                     $project->num_investors = Invest::numInvestors($id);
                 }
 
-                $project->num_messegers = Message::numMessegers($id);
+                if (empty($project->num_messegers)) {
+                    $project->num_messegers = Message::numMessegers($id);
+                }
 
                 // sacamos rapidamente el presupuesto mínimo y óptimo si no está ya calculado
                 if(empty($project->mincost)) {

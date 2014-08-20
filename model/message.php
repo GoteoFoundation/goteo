@@ -62,11 +62,11 @@ namespace Goteo\Model {
         /*
          * Lista de hilos de un proyecto
          */
-        public static function getAll ($project, $lang = null) {
+        public static function getAll ($project, $lang = \LANG) {
 
             $messages = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(message_lang.message, message.message) as message";
                 }
             else {
@@ -179,6 +179,9 @@ namespace Goteo\Model {
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 
+                // actualizar campo calculado
+                self::numMessegers($this->project);
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "El mensaje no se ha grabado correctamente. Por favor, inténtelo de nuevo." . $e->getMessage();
@@ -262,16 +265,34 @@ namespace Goteo\Model {
         /*
          * Numero de usuarios mensajeros de un proyecto
          */
-        public static function numMessegers ($id) {
-            $sql = "SELECT COUNT(DISTINCT(message.user)) FROM message WHERE project = :id";
-            $query = self::query($sql, array(':id'=>$id));
-            $num = $query->fetchColumn();
+        public static function numMessegers ($project) {
 
-            if (empty($num)) {
-                return false;
-            } else {
-                return $num;
+            $debug = false;
+
+            $values = array(':project' => $project);
+
+            $sql = "SELECT  COUNT(*) as messegers, project.num_messegers as num
+                FROM    message
+                INNER JOIN project
+                    ON project.id = message.project
+                WHERE   message.project = :project
+                ";
+
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
             }
+
+            $query = static::query($sql, $values);
+            if($got = $query->fetchObject()) {
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->messegers != $got->num) {
+                    static::query("UPDATE project SET num_messegers = :num WHERE id = :project", array(':num' => (int) $got->messegers, ':project' => $project));
+                }
+            }
+
+            return (int) $got->messegers;
         }
 
         /*

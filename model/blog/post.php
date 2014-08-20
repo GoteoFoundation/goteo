@@ -15,6 +15,7 @@ namespace Goteo\Model\Blog {
         public
             $id,
             $blog,
+            $project,
             $title,
             $text,
             $image,
@@ -457,6 +458,11 @@ namespace Goteo\Model\Blog {
                     }
                 }
 
+                // actualizar campo calculado
+                if ( $this->publish == 1 && $this->owner_type == 'project' ) {
+                    self::numPosts($this->owner_id);
+                }
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
@@ -533,6 +539,47 @@ namespace Goteo\Model\Blog {
                     return false;
                 }
         }
+
+
+        /*
+         * Numero de entradas de novedaades (publicadads) de un proyecto
+         */
+        public static function numPosts ($project, $published_only = true) {
+
+            $debug = false;
+
+            $values = array(':project' => $project);
+
+            $sql = "SELECT  COUNT(*) as posts, project.num_posts as num
+                FROM    post
+                INNER JOIN project
+                    ON project.id = :project
+                INNER JOIN blog
+                    ON blog.owner = project.id
+                    AND blog.type = 'project'
+                WHERE post.blog = blog.id
+                ";
+
+            if ($published_only)
+                $sql .= 'AND post.publish = 1';
+
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
+            }
+
+            $query = static::query($sql, $values);
+            if($got = $query->fetchObject()) {
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->posts != $got->num) {
+                    static::query("UPDATE project SET num_posts = :num WHERE id = :project", array(':num' => (int) $got->posts, ':project' => $project));
+                }
+            }
+
+            return (int) $got->posts;
+        }
+
 
     }
     
