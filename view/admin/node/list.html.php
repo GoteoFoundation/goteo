@@ -35,7 +35,7 @@ if (!$node instanceof Model\Node) {
         </tr>
         <tr>
             <td>Logo</td>
-            <td><?php echo is_object($node->logo) ? '<img src="'.SRC_URL.'/image/' . $node->logo->id . '/128/128" alt="Logo" />' : ''; ?></td>
+            <td><?php echo is_object($node->logo) ? '<img src="' . SITE_URL . '/image/' . $node->logo->id . '/128/128" alt="Logo" />' : ''; ?></td>
         </tr>
         <tr>
             <td>Localización</td>

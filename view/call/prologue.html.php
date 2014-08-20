@@ -29,20 +29,20 @@ if ($call->image instanceof Goteo\Model\Image) {
         <meta property="og:image" content="<?php echo SITE_URL ?>/image/<?php echo $call->logo->id; ?>" />
         <meta property="og:url" content="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>" />
 
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/tipsy/tipsy.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/tipsy/tipsy.css" />
         <?php if ($bodyClass == 'splash') : ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/splash.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/splash.css" />
         <?php else : ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/twitter.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/view.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/projects.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/twitter.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/view.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/projects.css" />
         <?php if ($bodyClass == 'info') : ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/stats.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/stats.css" />
 		<?php endif; ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/banners.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/supporters.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/sponsors.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/extra.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/banners.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/supporters.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/sponsors.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/extra.css" />
     <style type="text/css">
           body {
                  background: url('<?php echo $imghuge; ?>');
@@ -73,29 +73,29 @@ if ($call->image instanceof Goteo\Model\Image) {
 
                }
     </style>
-    <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/call/responsive.css" />
-    <link rel="stylesheet" href="<?php echo SITE_URL ?>/view/css/call/mobile.css" media="only screen and (max-width:400px)" />
-    <link rel="stylesheet" href="<?php echo SITE_URL ?>/view/css/call/tablet.css" media="only screen and (min-width:400px) and (max-width:770px)" />
+    <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/call/responsive.css" />
+    <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/mobile.css" media="only screen and (max-width:400px)" />
+    <link rel="stylesheet" href="<?php echo SRC_URL ?>/view/css/call/tablet.css" media="only screen and (min-width:400px) and (max-width:770px)" />
 
 
     <?php endif; ?>
 
       <!--[if IE]>
-      <link href="<?php echo SITE_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
+      <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
       <![endif]-->
 
         <!--<script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
 		{
-			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL ?>/view/css/mac.css" />');
+			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
 		}-->
 	    </script>
         <?php if (!isset($useJQuery) || !empty($useJQuery)): ?>
-        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery-1.6.4.min.js"></script>
-        <script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery.tipsy.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
         <?php endif ?>
-		<script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/jquery.slides.min.js"></script>
-		<script type="text/javascript" src="<?php echo SITE_URL ?>/view/js/carousel.js"></script>
+		<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
+		<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/carousel.js"></script>
         <!-- Google analytics -->
         <script type="text/javascript">
 

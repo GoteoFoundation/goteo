@@ -49,7 +49,7 @@ $filters = $this['filters'];
             <tr>
                 <td><a href="/admin/licenses/edit/<?php echo $license->id; ?>">[Editar]</a></td>
                 <td><?php echo $license->name; ?></td>
-                <td><img src="/view/css/license/<?php echo $license->id; ?>.png" alt="<?php echo $license->id; ?>" title="<?php echo $license->name; ?>" /></td>
+                <td><img src="<?php echo SRC_URL; ?>/view/css/license/<?php echo $license->id; ?>.png" alt="<?php echo $license->id; ?>" title="<?php echo $license->name; ?>" /></td>
                 <td><?php echo $license->description; ?></td>
                 <td><?php echo !empty($license->group) ? $this['groups'][$license->group] : ''; ?></td>
                 <td><?php echo $license->order; ?></td>
