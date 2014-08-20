@@ -17,9 +17,9 @@ else
     $link_background=$story->url;
 
 foreach ($story->project->open_tags as $openId => $openData) {
-            if($openId!="post") 
+            if($openId!="post")
                 $open_tags=$openData;
-            else if($openData) 
+            else if($openData)
                 $open_tags='<a href="/blog/'.$openData.'">'.$open_tags.'</a>';
 }
 
@@ -44,6 +44,6 @@ foreach ($story->project->open_tags as $openId => $openData) {
         </div>
         <div class="info_extra">
             <span class="cofinanciadores"><?php echo  mb_strtoupper(Text::get('project-view-metter-investors'));?></span> <strong class="ncofinanciadores"><?php echo $story->project->num_investors;?></strong>
-            <span class="obtenido"><span><?php echo  mb_strtoupper(Text::get('project-view-metter-got'));?></span><strong><?php echo $story->project->amount;?></strong><img src="/view/css/euro/violet/xl.png" width="20" alt="&euro;"/></span>
-        </div>            
-    </div>                                   
+            <span class="obtenido"><span><?php echo  mb_strtoupper(Text::get('project-view-metter-got'));?></span><strong><?php echo $story->project->amount;?></strong><img src="<?php echo SRC_URL; ?>/view/css/euro/violet/xl.png" width="20" alt="&euro;"/></span>
+        </div>
+    </div>

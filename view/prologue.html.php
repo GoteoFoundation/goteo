@@ -100,7 +100,7 @@ if (NODE_ID != GOTEO_NODE) {
                            var pos = $(this).offset().left;
                            $('ul.lang').css({left:pos+'px'});
                            $("ul.lang").fadeIn();
-                           $("#lang").css("background","#808285 url('/view/css/bolita.png') 4px 7px no-repeat");
+                           $("#lang").css("background","#808285 url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 7px no-repeat");
 
                        },function() {
                            TID_LANG = setTimeout('$("ul.lang").hide()',100);
@@ -109,7 +109,7 @@ if (NODE_ID != GOTEO_NODE) {
                             try{clearTimeout(TID_LANG)}catch(e){};
                         },function() {
                            TID_LANG = setTimeout('$("ul.lang").hide()',100);
-                           $("#lang").css("background","#59595C url('/view/css/bolita.png') 4px 7px no-repeat");
+                           $("#lang").css("background","#59595C url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 7px no-repeat");
                         });
 
 
