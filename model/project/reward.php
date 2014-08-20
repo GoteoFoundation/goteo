@@ -117,33 +117,16 @@ namespace Goteo\Model\Project {
             try {
                 $array = array();
 
-                $icons = Icon::getList();
-
                 $values = array(
                     ':project' => $project,
-                    ':type' => $type,
                     ':lang' => $lang
                 );
 
-                $sqlFilter = "";
-                if (!empty($fulfilled)) {
-                    $sqlFilter .= "    AND reward.fulsocial = :fulfilled";
-                    $values[':fulfilled'] = $fulfilled == 'ok' ? 1 : 0;
-                }
-                if (!empty($icon)) {
-                    $sqlFilter .= "    AND reward.icon = :icon";
-                    $values[':icon'] = $icon;
-                }
-
                 if(self::default_lang($lang)=='es') {
-                    $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward,
-                                        IFNULL(reward_lang.description, reward.description) as description,
-                                        IFNULL(reward_lang.other, reward.other) as other";
+                    $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward";
                     }
                 else {
-                        $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward,
-                                            IFNULL(reward_lang.description, IFNULL(eng.description, reward.description)) as description,
-                                            IFNULL(reward_lang.other, IFNULL(eng.other, reward.other)) as other";
+                        $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward";
                         $eng_join=" LEFT JOIN reward_lang as eng
                                         ON  eng.id = reward.id
                                         AND eng.project = :project
@@ -156,12 +139,7 @@ namespace Goteo\Model\Project {
                             $different_select,
                             reward.type as type,
                             reward.icon as icon,
-                            reward.license as license,
-                            reward.amount as amount,
-                            reward.units as units,
-                            reward.fulsocial as fulsocial,
-                            reward.url,
-                            reward.bonus
+                            reward.amount as amount
                         FROM    reward
                         LEFT JOIN reward_lang
                             ON  reward_lang.id = reward.id
@@ -169,8 +147,6 @@ namespace Goteo\Model\Project {
                             AND reward_lang.lang = :lang
                         $eng_join
                         WHERE   reward.project = :project
-                            AND type= :type
-                        $sqlFilter
                         ";
 
 
@@ -178,18 +154,10 @@ namespace Goteo\Model\Project {
                 $sql .= " ORDER BY reward.order ASC, reward.id ASC";
 
                 // limite
-                $sql .= "";
+                $sql .= " LIMIT 4";
 
                 $query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
-
-                    if ($item->icon == 'other' && !empty($item->other)) {
-                        $item->icon_name = $item->other;
-                    }
-                    else {
-                        $item->icon_name = $icons[$item->icon]->name;
-                    }
-
                     $array[$item->id] = $item;
                 }
                 return $array;

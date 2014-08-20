@@ -4,6 +4,7 @@ namespace Goteo\Model {
     use \Goteo\Library\Text,
         \Goteo\Model\Project,
         \Goteo\Model\Image,
+        \Goteo\Model\Blog,
         \Goteo\Library\Check;
 
     class Promote extends \Goteo\Core\Model {
@@ -175,7 +176,7 @@ namespace Goteo\Model {
                 if (!empty($promo->num_posts)) {
                     $Widget->num_posts = $promo->num_posts;
                 } else {
-                    $Widget->num_posts =  Post::numPosts($promo->project);
+                    $Widget->num_posts =  Blog\Post::numPosts($promo->project);
                 }
 
                 if(!empty($promo->mincost) && !empty($promo->maxcost)) {

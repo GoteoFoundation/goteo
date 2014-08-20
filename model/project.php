@@ -8,7 +8,7 @@ namespace Goteo\Model {
         Goteo\Model\User,
         Goteo\Model\Image,
         Goteo\Model\Message,
-        Goteo\Model\Blog\Post,
+        Goteo\Model\Blog,
         Goteo\Model\Call,
         Goteo\Model\Patron,
         Goteo\Model\Node;
@@ -123,7 +123,16 @@ namespace Goteo\Model {
 
             $finishable = false, // llega al progresso mínimo para enviar a revision
 
-            $tagmark = null;  // banderolo a mostrar
+            $tagmark = null,  // banderolo a mostrar
+
+
+            $noinvest = 0,
+            $watch = 0,
+            $days_round1 = 40,
+            $days_round2 = 40,
+            $one_round = 0
+
+        ;
 
 
         /**
@@ -248,7 +257,10 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del proyecto en la instancia
-				$query = self::query("SELECT * FROM project WHERE id = ?", array($id));
+				$query = self::query("SELECT * FROM project
+				LEFT JOIN project_conf
+				    ON project_conf.project = project.id
+				WHERE id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
@@ -334,12 +346,7 @@ namespace Goteo\Model {
 
                 // extra conf
                 $project_conf = Project\Conf::get($id);
-                $project->days_round1 = $project_conf->days_round1;
-                $project->days_round2 = $project_conf->days_round2;
-                $project->one_round = $project_conf->one_round;
-                $project->days_total = ($project->one_round) ? $project_conf->days_round1 : $project->days_round1 + $project->days_round2;
-                $project->watch = Project\Conf::isWatched($id);
-                $project->noinvest = Project\Conf::isInvestClosed($id);
+                $project->days_total = ($project->one_round) ? $project->days_round1 : ( $project->days_round1 + $project->days_round2 );
 
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
@@ -368,7 +375,7 @@ namespace Goteo\Model {
                 // novedades
                 // solo cargamos blog en la vista novedades
                 if ($project->status >= 3 && empty($project->num_posts)) {
-                    $project->num_posts =  Post::numPosts($id);
+                    $project->num_posts =  Blog\Post::numPosts($id);
                 }
 
 
