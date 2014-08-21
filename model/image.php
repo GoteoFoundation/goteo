@@ -336,46 +336,6 @@ namespace Goteo\Model {
 		}
 
 		/**
-		 * Carga la imagen en el directorio temporal del sistema.
-		 *
-		 * @return type bool
-		 */
-		public function load () {
-		    if(!empty($this->id) && !empty($this->name)) {
-    		    $tmp = tempnam(sys_get_temp_dir(), 'Goteo');
-                $file = fopen($tmp, "w");
-                fwrite($file, $this->content);
-                fclose($file);
-                if(!file_exists($tmp)) {
-                    throw \Goteo\Core\Exception("Error al cargar la imagen temporal.");
-                }
-                else {
-                    $this->tmp = $tmp;
-                    return true;
-                }
-		    }
-		}
-
-		/**
-		 * Elimina la imagen temporal.
-		 *
-		 * @return type bool
-		 */
-    	public function unload () {
-    	    if(!empty($this->tmp)) {
-                if(!file_exists($this->tmp)) {
-                    throw \Goteo\Core\Exception("Error, la imagen temporal no ha sido encontrada.");
-                }
-                else {
-                    unlink($this->tmp);
-                    unset($this->tmp);
-                    return true;
-                }
-    	    }
-    	    return false;
-		}
-
-		/**
 		 * Muestra la imagen en pantalla.
 		 * @param type int	$width
 		 * @param type int	$height
@@ -383,11 +343,6 @@ namespace Goteo\Model {
         public function display ($width, $height, $crop) {
 
             $cache = $width."x$height" . ($crop ? "c" : "") . "/" . $this->name;
-
-			$url_cache = $this->url($this->dir_cache . $cache);
-
-            $url_original = $this->url();
-
             $c = new Cache($this->dir_cache, $this->fp);
 
             ignore_user_abort(true);
@@ -397,6 +352,8 @@ namespace Goteo\Model {
                 //PERO continuamos la ejecuciÃ³n del script para recrear el cache si estÃ¡ expirado
                 ob_end_clean();
                 header("Connection: close", true);
+
+                $url_cache = $this->url($this->dir_cache . $cache);
                 self::stream($url_cache, false);
                 //close connection with browser
                 ob_end_flush();
@@ -409,6 +366,7 @@ namespace Goteo\Model {
 
             }
             //si no existe o es nuevo, creamos el archivo
+            $url_original = $this->url();
             $im = new MImage($url_original);
             $im->fallback('auto');
             $im->proportional($crop ? 1 : 2);
@@ -465,141 +423,9 @@ namespace Goteo\Model {
             if($exit) exit;
         }
 
-// POSIBLEMENTE código obsoleto a partir de este punto
-    	public function isJPG () {
-		    return ($this->type == 'image/jpg') || ($this->type == 'image/jpeg');
-		}
-
-    	public function isPNG () {
-		    return ($this->type == 'image/png');
-		}
-
-    	public function toGIF () {
-    	    $this->load();
-    	    if(!$this->isGIF()) {
-                list($width, $height, $type) = getimagesize($this->tmp);
-                switch($type) {
-                	case 1:
-                		$image = imagecreatefromgif($this->tmp);
-                		break;
-                	default:
-                	case 2:
-                		$image = imagecreatefromjpeg($this->tmp);
-                		break;
-                	case 3:
-                		$image = imagecreatefrompng($this->tmp);
-                		break;
-                	case 6:
-                		$image = imagecreatefromwbmp($this->tmp);
-                		break;
-                }
-                $tmp = static::replace_extension($this->tmp, 'gif');
-                $this->unload();
-                $this->tmp = $tmp;
-           		imagegif($image, $this->tmp);
-           		imagedestroy($image);
-                return true;
-    	    }
-    	    return;
-    	}
-
-        public function toJPG () {
-    	    $this->load();
-    	    if(!$this->isJPG()) {
-                list($width, $height, $type) = getimagesize($this->tmp);
-                switch($type) {
-                	case 1:
-                		$image = imagecreatefromgif($this->tmp);
-                		break;
-                	default:
-                	case 2:
-                		$image = imagecreatefromjpeg($this->tmp);
-                		break;
-                	case 3:
-                		$image = imagecreatefrompng($this->tmp);
-                		break;
-                	case 6:
-                		$image = imagecreatefromwbmp($this->tmp);
-                		break;
-                }
-                $tmp = static::replace_extension($this->tmp, 'gif');
-                $this->unload();
-                $this->tmp = $tmp;
-           		imagejpeg($image, $this->tmp, 100);
-           		imagedestroy($image);
-                return true;
-    	    }
-    	    return;
-    	}
-
-    	public function toPNG () {
-    	    $this->load();
-    	    if(!$this->isPNG()) {
-                list($width, $height, $type) = getimagesize($this->tmp);
-                switch($type) {
-                	case 1:
-                		$image = imagecreatefromgif($this->tmp);
-                		break;
-                	default:
-                	case 2:
-                		$image = imagecreatefromjpeg($this->tmp);
-                		break;
-                	case 3:
-                		$image = imagecreatefrompng($this->tmp);
-                		break;
-                	case 6:
-                		$image = imagecreatefromwbmp($this->tmp);
-                		break;
-                }
-                $tmp = static::replace_extension($this->tmp, 'gif');
-                $this->unload();
-                $this->tmp = $tmp;
-           		imagepng($image, $this->tmp, 100);
-           		imagedestroy($image);
-                return true;
-    	    }
-    	    return;
-    	}
-
         private function getContent () {
             return file_get_contents($this->dir_originals . $this->name);
     	}
-
-        /*
-         * Devuelve la imagen en GIF.
-         *
-         * @return type object	Image
-         */
-        static public function gif ($id) {
-            $img = static::get($id);
-            if(!$img->isGIF())
-                $img->toGIF();
-            return $img;
-        }
-
-        /*
-         * Devuelve la imagen en JPG/JPEG.
-         *
-         * @return type object	Image
-         */
-        static public function jpg ($id) {
-            $img = static::get($id);
-            if ($img->isJPG())
-                $img->toJPG();
-            return $img;
-        }
-
-        /*
-         * Devuelve la imagen en PNG.
-         *
-         * @return type object	Image
-         */
-        static public function png ($id) {
-            $img = self::get($id);
-            if ($img->isPNG())
-                $img->toPNG();
-            return $img;
-        }
 
         /**
          * Reemplaza la extensión de la imagen.
