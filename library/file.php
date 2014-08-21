@@ -290,9 +290,6 @@ namespace Goteo\Library {
                     //if ($this->link->putObject(S3::inputFile($local), $this->bucket, 'mail/' . $remote, ACL_PUBLIC_READ)) {
                     if ($this->link->putObject(S3::inputFile($local), $this->bucket, $remote, self::s3_acl($auto_create_dirs))) {
                         $ok = true;
-                        echo "File uploaded.";
-                    } else {
-                        echo "Failed to upload file.";
                     }
 
                     break;
@@ -449,16 +446,17 @@ namespace Goteo\Library {
 
             switch($this->type) {
                 case 'file':
-                        if(copy($remote, $local)) $ok = true;
-                        else return $this->throwError("file-error-downloading-from: " . $this->last_error);
+                    if(copy($remote, $local)) {
+                        $ok = true;
+                    } else {
+                        return $this->throwError("file-error-downloading-from: " . $this->last_error);
+                    }
                     break;
 
                 case 's3':
-                        if (($this->link->getObject($this->bucket, $remote, $local)) !== false) {
-                            $ok = true;
-                        } else {
-                            echo "Failed to download file.";
-                        }
+                    if (($this->link->getObject($this->bucket, $remote, $local)) !== false) {
+                        $ok = true;
+                    }
                     break;
             }
 
@@ -612,8 +610,6 @@ namespace Goteo\Library {
                 case 's3':
                     if (($object = $this->link->getObject($this->bucket, $remote)) !== false) {
                         $data = $object->body;
-                    } else {
-                        echo "Failed to download file.";
                     }
 
                     break;
@@ -640,10 +636,10 @@ namespace Goteo\Library {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote_original);
 
-            $res = false;
+            $ok = false;
             switch($this->type) {
                 case 'file':
-                    $res = file_put_contents($remote, $data, $flags);
+                    $ok = file_put_contents($remote, $data, $flags);
                     break;
 
                 case 's3':
@@ -651,23 +647,18 @@ namespace Goteo\Library {
                         if($flags == FILE_APPEND) {
                             if (($object = $this->link->getObject($this->bucket, $remote)) !== false) {
                                 $body = $object->body;
-                            } else {
-                                echo "Failed to download file.";
                             }
                         }
                         $body .= $data;
 
                         if ($this->link->putObject($body, $this->bucket, $remote, self::s3_acl($perms), $metaHeaders, $requestHeaders)) {
-                            $res = true;
-                            echo "File uploaded.";
-                        } else {
-                            echo "Failed to upload file.";
+                            $ok = true;
                         }
 
                     break;
             }
             
-            return $res;
+            return $ok;
         }
 
         /**
