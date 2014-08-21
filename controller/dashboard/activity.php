@@ -183,15 +183,15 @@ namespace Goteo\Controller\Dashboard {
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
-
                 // borramos el pdf anterior y generamos de nuevo
-                //@TODO  el file_exists y unlink debe ser con Library File (bucket documents)
-                if (!empty($donation->pdf) && file_exists('certs/' . $donation->pdf)) {
+                if (!empty($donation->pdf)) {
+                    $fp = new File();
+                    $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
 
-                    //
-                    unlink('certs/' . $donation->pdf);
-                } 
-
+                    if ($fp->exists($donation->pdf)) {
+                        $fp->delete($donation->pdf);
+                    }
+                }
 
                 // para generar: 
                 // preparamos los datos para el pdf

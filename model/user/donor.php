@@ -276,23 +276,24 @@ namespace Goteo\Model\User {
          * Resetear pdf
          */
         static public function resetPdf($xfilename) {
+            $ok = false;
+
             try {
                 $sql = "UPDATE user_donation SET pdf = NULL WHERE MD5(pdf) = :pdf";
                 if (self::query($sql, array(':pdf'=>$xfilename))) {
 
-                    // @TODO: debe usar library file para eliminar el archivo (bucket documents)
-                    $path = 'certs/'.$xfilename;
-                    unlink($path);
+                    $fp = new File();
+                    $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
+                    $fp->delete($xfilename);
 
-
-                    return true;
-                } else {
-                    return false;
+                    $ok = true;
                 }
             } catch (\PDOException $e) {
                 $errors[] = "Los datos no se han guardado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
             }
+
+            return $ok;
         }
 
 
