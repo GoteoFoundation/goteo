@@ -315,22 +315,20 @@ namespace Goteo\Library {
 
             switch($this->type) {
                 case 'file':
-                        if(unlink($remote)) {
-                            $ok = true;
-                            if($auto_delete_dirs) $this->delete_empty_dir(dirname($remote), is_string($auto_delete_dirs) ? $auto_delete_dirs : false);
-                        }
-                        else return $this->throwError("file-error-deleting-to: " . $this->last_error);
+                    if(unlink($remote)) {
+                        $ok = true;
+                        if($auto_delete_dirs) $this->delete_empty_dir(dirname($remote), is_string($auto_delete_dirs) ? $auto_delete_dirs : false);
+                    }
+                    else return $this->throwError("file-error-deleting-to: " . $this->last_error);
                     break;
 
                 case 's3':
-                        if ($this->link->deleteObject($this->bucket, $remote)) {
-                            $ok = true;
-                        } else {
-                            return $this->throwError("Failed to delete file");
-                        }
-
+                    if ($this->link->deleteObject($this->bucket, $remote)) {
+                        $ok = true;
+                    } else {
+                        return $this->throwError("Failed to delete file");
+                    }
                     break;
-
             }
 
             return $ok;
@@ -494,23 +492,23 @@ namespace Goteo\Library {
 
             switch($this->type) {
                 case 'file':
-                        if($auto_create_dirs) $this->mkdir_recursive(dirname($remote_dest));
-                        if(rename($remote_source, $remote_dest)) {
-                            $ok = true;
-                            if($auto_delete_dirs) $this->delete_empty_dir(dirname($remote_source));
-                        }
-                        else return $this->throwError("file-error-renaming-to: " . $this->last_error);
+                    if($auto_create_dirs) $this->mkdir_recursive(dirname($remote_dest));
+                    if(rename($remote_source, $remote_dest)) {
+                        $ok = true;
+                        if($auto_delete_dirs) $this->delete_empty_dir(dirname($remote_source));
+                    }
+                    else return $this->throwError("file-error-renaming-to: " . $this->last_error);
                     break;
 
                 case 's3':
-                        if (($this->link->copyObject($this->bucket, $remote_source, $this->bucket, $remote_dest, self::s3_acl($auto_create_dirs)))
-                                && ($this->link->deleteObject($this->bucket, $remote_source))) {
-                            $ok = true;
-                        }
+                    if (($this->link->copyObject($this->bucket, $remote_source, $this->bucket, $remote_dest, self::s3_acl($auto_create_dirs)))
+                            && ($this->link->deleteObject($this->bucket, $remote_source))) {
+                        $ok = true;
+                    }
 
-                        if (!$ok) {
-                            return $this->throwError("Failed to rename file");
-                        }
+                    if (!$ok) {
+                        return $this->throwError("Failed to rename file");
+                    }
 
                     break;
             }
@@ -531,17 +529,16 @@ namespace Goteo\Library {
 
             switch($this->type) {
                 case 'file':
-                        if( !($size = filesize($remote)) ) $size = -1;
+                    if( !($size = filesize($remote)) ) $size = -1;
                     break;
 
                 case 's3':
-                        if (($info = $this->link->getObjectInfo($this->bucket, $remote)) !== false) {
-                            $size = (int) $info->size;
-                        } else {
-                            $size = -1;
-                            // return $this->throwError("Failed to retrieve filesize from remote");
-                        }
-
+                    if (($info = $this->link->getObjectInfo($this->bucket, $remote)) !== false) {
+                        $size = (int) $info->size;
+                    } else {
+                        $size = -1;
+                        // return $this->throwError("Failed to retrieve filesize from remote");
+                    }
                     break;
             }
 
@@ -561,18 +558,16 @@ namespace Goteo\Library {
 
             switch($this->type) {
                 case 'file':
-                        if( false === ($modified = @filemtime($remote)) ) $modified = -1;
+                    if( false === ($modified = @filemtime($remote)) ) $modified = -1;
                     break;
 
                 case 's3':
-
-                        if (($info = $this->link->getObjectInfo($this->bucket, $remote)) !== false) {
-                            $modified = strtotime($info->time);
-                        } else {
-                            $modified = -1;
-                            // return $this->throwError("Failed to retrieve filesize from remote");
-                        }
-
+                    if (($info = $this->link->getObjectInfo($this->bucket, $remote)) !== false) {
+                        $modified = strtotime($info->time);
+                    } else {
+                        $modified = -1;
+                        // return $this->throwError("Failed to retrieve filesize from remote");
+                    }
                     break;
             }
 
@@ -654,18 +649,17 @@ namespace Goteo\Library {
                     break;
 
                 case 's3':
-                        $body = '';
-                        if($flags == FILE_APPEND) {
-                            if (($object = $this->link->getObject($this->bucket, $remote)) !== false) {
-                                $body = $object->body;
-                            }
+                    $body = '';
+                    if($flags == FILE_APPEND) {
+                        if (($object = $this->link->getObject($this->bucket, $remote)) !== false) {
+                            $body = $object->body;
                         }
-                        $body .= $data;
+                    }
+                    $body .= $data;
 
-                        if ($this->link->putObject($body, $this->bucket, $remote, self::s3_acl($perms), $metaHeaders, $requestHeaders)) {
-                            $ok = true;
-                        }
-
+                    if ($this->link->putObject($body, $this->bucket, $remote, self::s3_acl($perms), $metaHeaders, $requestHeaders)) {
+                        $ok = true;
+                    }
                     break;
             }
             
