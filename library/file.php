@@ -133,29 +133,30 @@ namespace Goteo\Library {
 
             switch($this->type) {
                 case 'file':
-                        if($this->link) return true;
-
-                        if($this->realpath($this->path)) {
-                            $this->link = true;
-                            $connected = true;
-                        } else {
-                            $this->link = false;
-                            $this->throwError('file-chdir-error');
-                        }
+                    if($this->link) {
+                        $connected = true;
+                    } elseif($this->realpath($this->path)) {
+                        $this->link = true;
+                        $connected = true;
+                    } else {
+                        $this->throwError('file-chdir-error');
+                    }
                     break;
 
                 case 's3':
-                        if($this->link instanceOf \S3) return true;
+                    if($this->link instanceOf \S3) {
+                        $connected = true;
+                    } else {
 
                         $this->link = new \S3($this->user, $this->pass);
 
-                        try {
-                            $this->link->getBucketLocation($this->bucket);
+                        if ($this->link->getBucketLocation($this->bucket) !== false) {
                             $connected = true;
-                        }catch(\Exception $e) {
+                        } else {
                             $this->link = false;
                             $this->throwError($e->getMessage());
                         }
+                    }
                     break;
 
             }
@@ -173,10 +174,14 @@ namespace Goteo\Library {
                 case 'file':
                     // TODO
                     break;
+
                 case 's3':
-                        if( !($this->link instanceOf S3Client) ) return false;
+                    if( !($this->link instanceOf \S3) ) {
+                        $ok = false;
+                    }
                     break;
             }
+
             $this->link = null;
             return $ok;
         }
@@ -218,19 +223,23 @@ namespace Goteo\Library {
             $realpath = false;
 
             if($this->link && $path) {
-                $realpath = '';
+
                 switch($this->type) {
                     case 'file':
-                            if( !($realpath = realpath($path)) ) {
-                                return $this->throwError("$path not found: " . $this->last_error);
-                            }
+                        $realpath = realpath($path);
+                        if (!$realpath) {
+                            return $this->throwError("{$path} not found: " . $this->last_error);
+                        }
                         break;
 
                     case 's3':
-                            return $this->get_path($path);
+                        $realpath = $this->get_path($path);
                         break;
                 }
-                if(substr($realpath, 1, -1) != DIRECTORY_SEPARATOR) $realpath .= DIRECTORY_SEPARATOR;
+            }
+
+            if($realpath && substr($realpath, 1, -1) != DIRECTORY_SEPARATOR) {
+                $realpath .= DIRECTORY_SEPARATOR;
             }
 
             return $realpath;
@@ -327,7 +336,6 @@ namespace Goteo\Library {
             }
 
             return $ok;
-
         }
 
         /**
