@@ -135,7 +135,7 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
         <tbody>
             <tr>
                 <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview" style="<?php if (isset($project->called)) echo 'color: blue;'; ?>"><?php echo $project->name; ?></a></td>
-                <td><a href="mailto:<?php echo $project->user_email; ?>"><?php echo substr($project->user_email, 0, 100); ?></a></td>
+                <td><a href="mailto:<?php echo $project->user->email; ?>"><?php echo substr($project->user->email, 0, 100); ?></a></td>
                 <td><?php echo date('d-m-Y', strtotime($project->updated)); ?></td>
                 <td><?php echo ($project->status == 1 && !$project->draft) ? '<span style="color: green;">En negociación</span>' : $this['status'][$project->status]; ?></td>
                 <td style="text-align: center;"><?php echo $project->node; ?></td>

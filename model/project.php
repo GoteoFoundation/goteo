@@ -2609,7 +2609,9 @@ namespace Goteo\Model {
                         project.num_investors as num_investors,
                         project.amount as invested,
                         user.email as user_email,
-                        user.email as user_email,
+                        user.name as user_name,
+                        user.lang as user_lang,
+                        user.id as user_id,
                         project_conf.*
                     FROM project
                     LEFT JOIN project_conf
@@ -2628,6 +2630,14 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
                 //$the_proj = self::getMedium($proj['id']);
+
+                $proj->user = new User;
+                $proj->user->id = $proj->user_id;
+                $proj->user->name = $proj->user_name;
+                $proj->user->email = $proj->user_email;
+                $proj->user->lang = $proj->user_lang;
+                
+
                 $proj->draft = $proj->draft;
 
                 //añadir lo que haga falta
