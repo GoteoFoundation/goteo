@@ -195,10 +195,13 @@ namespace Goteo\Library {
          */
         public function get_path($remote='') {
             while($remote{0} == '/') $remote = substr($remote,1);
-            $path = $this->path;
-            while(substr($path, -1) == '/') $path = substr($path, 0, -1);
-            if($path) return "$path/$remote";
-            else return $remote;
+            if (empty($path)) {
+                return $remote;
+            } else {
+                $path = $this->path;
+                while(substr($path, -1) == '/') $path = substr($path, 0, -1);
+                return "$path/$remote";
+            }
         }
 
         /**
