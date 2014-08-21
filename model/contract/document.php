@@ -150,7 +150,7 @@ namespace Goteo\Model\Contract {
         /**
          * Get documentdata
          * @param varcahr(50) $id  Document identifier
-         * @return object instanceof stdClass
+         * @return object instanceof Document or false if it doesn't exist
          */
 	 	public static function get ($id) {
             
@@ -161,7 +161,12 @@ namespace Goteo\Model\Contract {
                 
                 $query = static::query($sql, array(':id' => $id));
                 $doc = $query->fetchObject(__CLASS__);
-                $doc->filedir = self::$dir . $doc->contract . '/';
+
+                if ($doc instanceof Document) {
+                    $doc->filedir = self::$dir . '/' . $doc->contract . '/';
+                } else {
+                    $doc = false;
+                }
                 
                 return $doc;
             } catch(\PDOException $e) {
@@ -172,7 +177,7 @@ namespace Goteo\Model\Contract {
         /**
          * Get the documents for a contract
          * @param varcahr(50) $id  Contract identifier
-         * @return array of documents
+         * @return array of documents or false if it doesn't exist
          */
 	 	public static function getDocs ($id) {
             
@@ -191,6 +196,10 @@ namespace Goteo\Model\Contract {
                     $array[] = $document;
                 }
                 
+                if(empty($array)) {
+                    $array = false;
+                }
+
                 return $array;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
@@ -198,9 +207,11 @@ namespace Goteo\Model\Contract {
 		}
 
         /*
-         * elimina el registro y el archivo
+         * Elimina el registro y el archivo
+         * TODO: ROLLBACK
          */
         public function remove (&$errors = array()) {
+            $ok = false;
 
             try {
                 if(!($this->fp instanceof File)) {
@@ -209,21 +220,22 @@ namespace Goteo\Model\Contract {
                 }
 
                 $sql = "DELETE FROM document WHERE id = ?";
-                if (self::query($sql, array($this->id))) {
+                $values = array($this->id);
+                if (self::query($sql, $values)) {
                      //esborra de disk
                     if ($this->fp->delete($this->filedir . $this->name)) {
-                        return true;
+                        $ok = true;
                     } else {
                         $errors[] = 'Se ha borrado el registro pero ha fallado al borrar el archivo';
                     }
                 } else {
                     $errors[] = 'El sql ha fallado: '.$sql.' con id: '.$this->id;
-                    return false;
                 }
             } catch(\PDOException $e) {
                 $errors[] = 'El sql ha fallado: '.$sql.' con id: '.$this->id;
             }
 
+            return $ok;
         }
 
         
