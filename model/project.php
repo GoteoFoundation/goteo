@@ -2593,12 +2593,35 @@ namespace Goteo\Model {
             // como los consultores
             $sql = "SELECT
                         project.id,
-                        project.id REGEXP '[0-9a-f]{5,40}' as draft
+                        project.id REGEXP '[0-9a-f]{5,40}' as draft,
+                        project.name as name,
+                        project.updated as updated,
+                        project.status as status,
+                        project.node as node,
+                        project.mincost as mincost,
+                        project.maxcost as maxcost,
+                        project.node as node,
+                        project.days as days,
+                        project.owner as owner,
+                        project.translate as translate,
+                        project.progress as progress,
+                        project.num_messengers as num_messengers,
+                        project.num_investors as num_investors,
+                        project.amount as invested,
+                        user.email as user_email,
+                        user.email as user_email,
+                        project_conf.*
                     FROM project
+                    LEFT JOIN project_conf
+                    ON project_conf.project=project.id
+                    LEFT JOIN user
+                    ON user.id=project.owner
+
                     $sqlConsultantFilter
                     WHERE project.id != ''
                         $sqlFilter
                         $sqlOrder
+
                     LIMIT 999
                     ";
 
@@ -2609,6 +2632,25 @@ namespace Goteo\Model {
 
                 //añadir lo que haga falta
                 $proj->consultants = self::getConsultants($proj->id);
+                $project->called = Call\Project::called($project);
+
+                //calculo de maxcost, min_cost sólo si hace falta
+                if(empty($project->mincost)) {
+                        $costs = self::calcCosts($project->id);
+                        $project->mincost = $costs->mincost;
+                        $project->maxcost = $costs->maxcost;
+                    }
+
+                //cálculo de mensajeros si no esta ya
+                if (empty($project->num_messengers)) {
+                      $project->num_messengers = Message::numMessengers($project->id);
+                    }
+
+                //cálculo de número de cofinanciadores si no está hecho
+                if(empty($project->num_investors)) {
+                       $project->num_investors = Invest::numInvestors($project->id);
+                   }
+
 
                 $projects[] = $proj;
             }
