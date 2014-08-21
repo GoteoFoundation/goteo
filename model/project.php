@@ -2466,6 +2466,8 @@ namespace Goteo\Model {
          */
         public static function getList($filters = array(), $node = null) {
 
+            $debug = (isset($_GET['dbg']) && $_GET['dbg'] == 'debug');
+
             $projects = array();
 
             $values = array();
@@ -2593,22 +2595,82 @@ namespace Goteo\Model {
             // como los consultores
             $sql = "SELECT
                         project.id,
-                        project.id REGEXP '[0-9a-f]{5,40}' as draft
+                        project.id REGEXP '[0-9a-f]{5,40}' as draft,
+                        project.name as name,
+                        project.updated as updated,
+                        project.status as status,
+                        project.node as node,
+                        project.mincost as mincost,
+                        project.maxcost as maxcost,
+                        project.node as node,
+                        project.days as days,
+                        project.owner as owner,
+                        project.translate as translate,
+                        project.progress as progress,
+                        project.num_messengers as num_messengers,
+                        project.num_investors as num_investors,
+                        project.amount as invested,
+                        user.email as user_email,
+                        user.name as user_name,
+                        user.lang as user_lang,
+                        user.id as user_id,
+                        project_conf.*
                     FROM project
+                    LEFT JOIN project_conf
+                    ON project_conf.project=project.id
+                    LEFT JOIN user
+                    ON user.id=project.owner
+
                     $sqlConsultantFilter
                     WHERE project.id != ''
                         $sqlFilter
                         $sqlOrder
+
                     LIMIT 999
                     ";
+
+
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
+            }
+
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
                 //$the_proj = self::getMedium($proj['id']);
+
+                $proj->user = new User;
+                $proj->user->id = $proj->user_id;
+                $proj->user->name = $proj->user_name;
+                $proj->user->email = $proj->user_email;
+                $proj->user->lang = $proj->user_lang;
+                
+
                 $proj->draft = $proj->draft;
 
                 //añadir lo que haga falta
                 $proj->consultants = self::getConsultants($proj->id);
+                $project->called = Call\Project::called($project);
+
+                //calculo de maxcost, min_cost sólo si hace falta
+                if(empty($project->mincost)) {
+                        $costs = self::calcCosts($project->id);
+                        $project->mincost = $costs->mincost;
+                        $project->maxcost = $costs->maxcost;
+                    }
+
+                //cálculo de mensajeros si no esta ya
+                if (empty($project->num_messengers)) {
+                      $project->num_messengers = Message::numMessengers($project->id);
+                    }
+
+                //cálculo de número de cofinanciadores si no está hecho
+                if(empty($project->num_investors)) {
+                       $project->num_investors = Invest::numInvestors($project->id);
+                   }
+
 
                 $projects[] = $proj;
             }

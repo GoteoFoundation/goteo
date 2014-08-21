@@ -689,6 +689,37 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
                 );
         }
         
+        /*
+         * Estados de proceso de contrato
+         */
+        public static function nextStatus ($actual) {
+
+            // echo "actual: $actual<br />";
+
+            $nexts = array();
+
+            $estados = array( 'owner', 'admin', 'ready', 'pdf', 'recieved', 'payed', 'closed' );
+
+            $ya = false;
+
+            foreach ($estados as $key=>$value) {
+
+                if ($ya) {
+                    $nexts[] = $value;
+                    // echo "añadido $value<br />";
+                }
+
+                if ($value == $actual) {
+                    $ya = true;
+                    // echo "desde ya $key == $actual <br />";
+                }
+
+            }
+
+            return $nexts;
+
+        }
+
 	}
     
 }

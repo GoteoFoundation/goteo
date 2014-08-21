@@ -831,7 +831,7 @@ namespace Goteo\Model {
 
             $values = array(':project' => $project);
 
-            $sql = "SELECT  COUNT(DISTINCT(invest.user)) as investors, project.num_investors as num
+            $sql = "SELECT  COUNT(DISTINCT(invest.user)) as investors, project.num_investors as num, project.num_messengers as pop
                 FROM    invest
                 INNER JOIN project
                     ON project.id = invest.project
@@ -849,7 +849,7 @@ namespace Goteo\Model {
             if($got = $query->fetchObject()) {
                 // si ha cambiado, actualiza el numero de inversores en proyecto
                 if ($got->investors != $got->num) {
-                    static::query("UPDATE project SET num_investors = :num WHERE id = :project", array(':num' => (int) $got->investors, ':project' => $project));
+                    static::query("UPDATE project SET num_investors = :num, popularity = :pop WHERE id = :project", array(':num' => (int) $got->investors, ':pop' => ( $got->investors + $got->pop), ':project' => $project));
                 }
             }
 
