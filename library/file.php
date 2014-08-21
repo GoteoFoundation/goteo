@@ -192,8 +192,8 @@ namespace Goteo\Library {
          * @return [type]         [description]
          */
         public static function path($path) {
-            while($path{0} == '/') $path = substr($path, 1);
-            if(substr($path, -1, 1) != '/') $path .= '/';
+            while($path{0} == DIRECTORY_SEPARATOR) $path = substr($path, 1);
+            if(substr($path, -1, 1) != DIRECTORY_SEPARATOR) $path .= DIRECTORY_SEPARATOR;
             return $path;
         }
 
@@ -204,13 +204,14 @@ namespace Goteo\Library {
          */
         public function get_path($remote='') {
             while($remote{0} == '/') $remote = substr($remote,1);
-            if (empty($path)) {
-                return $remote;
-            } else {
+
+            if (!empty($path)) {
                 $path = $this->path;
-                while(substr($path, -1) == '/') $path = substr($path, 0, -1);
-                return "$path/$remote";
+                while(substr($path, -1) == DIRECTORY_SEPARATOR) $path = substr($path, 0, -1);
+                $remote = $path . DIRECTORY_SEPARATOR . $remote;
             }
+
+            return $remote;
         }
 
         /**
@@ -404,6 +405,9 @@ namespace Goteo\Library {
                         if(@rmdir($remote_dir)) return $this->delete_empty_dir(dirname($remote_dir), $top_max_dir);
                     }
                     break;
+                case 's3':
+                    // TODO
+                    break;
 
             }
             return true;
@@ -416,13 +420,20 @@ namespace Goteo\Library {
          */
         protected function mkdir_recursive($remote_dir) {
             if(!$this->connect()) return false;
+            $ok = true;
             switch($this->type) {
                 case 'file':
-                        if(!is_dir($remote_dir)) @mkdir($remote_dir, 0777, true);
-                        return is_dir($remote_dir);
+                    if(!is_dir($remote_dir)) {
+                        $ok = @mkdir($remote_dir, 0777, true);
+                    }
+                    break;
+                case 's3':
+                    // TODO
                     break;
 
             }
+
+            return $ok;
         }
 
         /**
@@ -685,25 +696,16 @@ namespace Goteo\Library {
                     break;
 
                 case 's3':
-                        try {
-                            $prefix = preg_replace ( "/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/e", "'\$1'", $name );
-                            $objectsIterator = $this->link->getIterator('ListObjects', array(
-                                'Bucket' => $this->bucket,
-                                'Prefix' => $this->get_path($dir . $prefix)
-                            ), array(
-                                'names_only' => true
-                            ));
-                            $files = array();
-                            foreach ($objectsIterator as $key) {
-                                $files[] = $key;
-                            }
-                            // echo $dir.$prefix;print_r($files);
-                            while ( in_array($dir . $name, $files )) {
-                                $name = preg_replace ( "/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/e", "'\$1-'.(\$3+1).'\$4'", $name );
-                            }
-                        }catch(\Exception $e) {
-                            // return $this->throwError($e->getMessage());
-                        }
+                    //
+                    $prefix = preg_replace ( "/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/e", "'\$1'", $name );
+                    $dir .= $prefix;
+
+                    $info = $this->link->getObjectInfo($this->bucket, $dir . $name);
+                    while($info !== false) {
+                        $name = preg_replace ( "/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/e", "'\$1-'.(\$3+1).'\$4'", $name );
+                        $info = $this->link->getObjectInfo($this->bucket, $dir . $name);
+                    }
+
                     break;
             }
 
