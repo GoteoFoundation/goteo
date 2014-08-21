@@ -15,12 +15,14 @@ namespace Goteo\Controller {
                 if (!$doc instanceof Model\Contract\Document)
                     throw new Error('404', 'No tenemos el documento '.$name);
 
-                // pero ojo porque al ser el archivo privado quiz�s habr� que coger los contenidos
+                // pero ojo porque al ser el archivo privado quizás habrá que coger los contenidos
                 // mime type en el header
                 $fp = new File();
+                $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, $doc->filedir);
+
                 header("Content-type: " . $doc->type);
                 // contenidos
-                echo $fp->get_contents($doc->filedir . $doc->name);
+                echo $fp->get_contents($doc->name);
 
             } catch(\PDOException $e) {
                 die("No se ha podido recuperar el documento:<br />" . $e->getMessage());
@@ -36,9 +38,11 @@ namespace Goteo\Controller {
                     throw new Error('404', 'No se ha generado el certificado de '.$user.' para '.$year);
 
                 $fp = new File();
+                $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
+
                 header("Content-type: application/pdf");
                 // archivo
-                echo $fp->get_contents('certs/'. $pdf);
+                echo $fp->get_contents($pdf);
 
             } catch(\PDOException $e) {
                 die("No se ha podido recuperar el certificado:<br />" . $e->getMessage());

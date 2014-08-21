@@ -39,13 +39,14 @@ namespace Goteo\Model\Contract {
                 $this->size = $file['size'];
 
                 $this->fp = new File();
+                $this->fp->setBucket(AWS_S3_BUCKET_DOCUMENT);
                 return true;
             } else {
                 return false;
             }
         }
         /**
-         * retorna nombre "seguro", que no existe ya
+         * Retorna nombre "seguro", que no existe ya
          */
         public function save_name() {
             //un nombre que no exista
@@ -202,23 +203,25 @@ namespace Goteo\Model\Contract {
         public function remove (&$errors = array()) {
 
             try {
-                if(!($this->fp instanceof File)) $this->fp = new File();
-                // print_r($this->filedir . $this->name);die;
+                if(!($this->fp instanceof File)) {
+                    $this->fp = new File();
+                    $this->fp->setBucket(AWS_S3_BUCKET_DOCUMENT);
+                }
+
                 $sql = "DELETE FROM document WHERE id = ?";
                 if (self::query($sql, array($this->id))) {
                      //esborra de disk
                     if ($this->fp->delete($this->filedir . $this->name)) {
                         return true;
                     } else {
-                        $errors[] = 'Se ha borrado el registro pero el unlink() ha fallado';
-                        return false;
+                        $errors[] = 'Se ha borrado el registro pero ha fallado al borrar el archivo';
                     }
                 } else {
                     $errors[] = 'El sql ha fallado: '.$sql.' con id: '.$this->id;
                     return false;
                 }
             } catch(\PDOException $e) {
-                return false;
+                $errors[] = 'El sql ha fallado: '.$sql.' con id: '.$this->id;
             }
 
         }
