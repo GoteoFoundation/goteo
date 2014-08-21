@@ -2466,6 +2466,8 @@ namespace Goteo\Model {
          */
         public static function getList($filters = array(), $node = null) {
 
+            $debug = (isset($_GET['dbg']) && $_GET['dbg'] == 'debug');
+
             $projects = array();
 
             $values = array();
@@ -2626,6 +2628,14 @@ namespace Goteo\Model {
 
                     LIMIT 999
                     ";
+
+
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
+            }
+
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
