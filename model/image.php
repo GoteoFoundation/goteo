@@ -42,6 +42,7 @@ namespace Goteo\Model {
 			}
 
             $this->fp = new File();
+            $this->fp->setBucket(AWS_S3_BUCKET_STATIC);
         }
 
         /**
@@ -73,6 +74,7 @@ namespace Goteo\Model {
         public function url( $path = null) {
             if($path === null) $path = $this->dir_originals . $this->name;
              //url del archivo o ruta absoluta si es local
+            // @NO: El uso de $fp debe ser independiente de su implementación
             if($this->fp->type == 'file') {
                 $url = $this->fp->get_path($path);
             }
