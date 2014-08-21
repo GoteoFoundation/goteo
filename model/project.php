@@ -2004,37 +2004,6 @@ namespace Goteo\Model {
             return $past->days - 1;
         }
 
-        /**
-         * Metodo que devuelve los días que quedan para finalizar la ronda actual
-         *
-         *  No se usa, lo hace el setDays
-         *
-         * @return numeric days remaining to go
-        public function daysRemain($id) {
-            //esto tambien se puede hacer sin sql
-            //...FALTA
-            // primero, días desde el published
-            $sql = "
-                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as days
-                FROM project
-                WHERE id = ?";
-            $query = self::query($sql, array($id));
-            $days = $query->fetchColumn(0);
-            $days--;
-
-            $days_round1 = Project\Conf::getRound1Days($id);
-            $days_round2 = Project\Conf::getRound2Days($id);
-            $days_total = $days_round1 + $days_round2;
-
-            if ($days > days_round1) {
-                $rest = days_total - $days; //en segunda ronda
-            } else {
-                $rest = days_round1 - $days; // en primera ronda
-            }
-
-            return $rest;
-        }
-         */
 
         /*
          * Lista de proyectos de un usuario

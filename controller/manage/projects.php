@@ -255,6 +255,8 @@ namespace Goteo\Controller\Manage {
                         break;
 
                     default:
+                        // aqui hay que filtrar hasta ese estado específico pero los posteriores a cero
+                        // excepto el flag de pago adelantado
                           $sqlFilter .= " AND contract_status.{$filters['contractStatus']} = 1";
                         break;
                 }
@@ -310,6 +312,8 @@ namespace Goteo\Controller\Manage {
             }
 
             // la select
+            // @Javier , esto habría que optimizarlo igual que el Project::GetList
+            // no se usa exactamente porque aqui necesita join con datos de contrato
             $sql = "SELECT 
                         project.id
                     FROM project
@@ -324,19 +328,17 @@ namespace Goteo\Controller\Manage {
 //            Message::Info($sql);
                     
             $query = Model\Project::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $the_proj = Model\Project::getMedium($proj['id']);
-                $the_proj->contract = Model\Contract::get($proj['id']);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+                $the_proj = Model\Project::getMedium($proj->id);
+                $the_proj->contract = Model\Contract::get($proj->id);
                 
                 // si aun no tiene fechas hay que calcularlas
                 $the_date = strtotime($the_proj->published);
                 if (empty($the_proj->passed)) {
-                    $days_round1 = Model\Project\Conf::getRound1Days($proj['id']);
-                    $the_proj->passed = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$days_round1, date('Y', $the_date)));
+                    $the_proj->passed = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$the_proj->days_round1, date('Y', $the_date)));
                 }
                 if (empty($the_proj->success)) {
-                    $days_total = Model\Project\Conf::getRound1Days($proj['id']) + Model\Project\Conf::getRound2Days($proj['id']);
-                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$days_total, date('Y', $the_date)));
+                    $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$the_proj->days_total, date('Y', $the_date)));
                 }
                 
                 // preparamos los flags
@@ -368,14 +370,8 @@ namespace Goteo\Controller\Manage {
                     $sum += $issue->amount;
                 }
 
-                /* Error de PHP. Corregir */
-                /*
-                array_walk($issues, function($item, $index, $sum) {
-                        $sum += $item->amount;
-                    }, &$sum);
                 $the_proj->issues = $sum;
-                */
-                
+
                 // y si estas incidencias hacen peligrar el mínimo
                 
                 $projects[] = $the_proj;
