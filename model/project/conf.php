@@ -119,26 +119,6 @@ namespace Goteo\Model\Project {
             }
         }
 
-        public static function getRound1Days($id) {
-
-            try {
-                $query = static::query("SELECT days_round1 FROM project_conf WHERE project = ?", array($id));
-                return $query->fetchColumn();
-            } catch(\PDOException $e) {
-                return false;
-            }
-        }
-
-         public static function getRound2Days($id) {
-
-            try {
-                $query = static::query("SELECT days_round2 FROM project_conf WHERE project = ?", array($id));
-                return $query->fetchColumn();
-            } catch(\PDOException $e) {
-                return false;
-            }
-        }
-        
         /**
          * Vigilar un proyecto
          *
