@@ -239,25 +239,38 @@ namespace Goteo\Controller\Manage {
             if (!empty($filters['contractStatus'])) {
                 switch ($filters['contractStatus']) {
                     case 'all': // Tengan o no contrato generado
-                        $sqlFilter .= " AND (contract_status.contract IS NULL OR contract_status.closed = 0)";
+                        $sqlFilter .= " AND (contract_status.contract IS NULL OR contract_status.closed = 0)
+                        ";
                         break;
 
                     case 'noreg': // Sin registro de contrato
                         $sqlJoin .= "LEFT JOIN contract ON contract.project = project.id";
-                        $sqlFilter .= " AND contract.project IS NULL";
+                        $sqlFilter .= " AND contract.project IS NULL
+                        ";
                         $joined = true;
                         break;
 
                     case 'onform': // Editando datos
                         $sqlJoin .= "INNER JOIN contract ON contract.project = project.id";
-                        $sqlFilter .= " AND (contract.project IS NOT NULL OR contract_status.owner = 0)";
+                        $sqlFilter .= " AND (contract.project IS NOT NULL OR contract_status.owner = 0)
+                        ";
                         $joined = true;
                         break;
 
                     default:
                         // aqui hay que filtrar hasta ese estado específico pero los posteriores a cero
                         // excepto el flag de pago adelantado
-                          $sqlFilter .= " AND contract_status.{$filters['contractStatus']} = 1";
+                          $sqlFilter .= " AND contract_status.{$filters['contractStatus']} = 1
+                          ";
+
+                          // sacamos los estados posteriores
+                          $nexts = Model\Contract::nextStatus($filters['contractStatus']);
+
+                          if (!empty($nexts)) foreach ($nexts as $next) {
+                              $sqlFilter .= " AND contract_status.{$next} = 0
+                              ";
+                          }
+
                         break;
                 }
             }
@@ -325,8 +338,13 @@ namespace Goteo\Controller\Manage {
                         $sqlOrder
                     LIMIT 999
                     ";
-//            Message::Info($sql);
-                    
+
+            /*
+            var_dump($values);
+            echo $sql;
+            die;
+            */
+
             $query = Model\Project::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
                 $the_proj = Model\Project::getMedium($proj->id);
