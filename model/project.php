@@ -258,10 +258,17 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del proyecto en la instancia
-				$query = self::query("SELECT * FROM project
+                $sql = "SELECT project.*, node.name as node_name, node.url as node_url, project_conf.*
+                FROM project
 				LEFT JOIN project_conf
 				    ON project_conf.project = project.id
-				WHERE id = ?", array($id));
+				LEFT JOIN node
+				    ON node.id = project.node
+				WHERE project.id = ?
+				";
+
+
+				$query = self::query($sql, array($id));
 				$project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
@@ -297,6 +304,14 @@ namespace Goteo\Model {
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
                         $project->$field = $value;
                     }
+                }
+
+                // datos del nodo
+                if (!empty($project->node)) {
+                    $project->nodeData = new Node;
+                    $project->nodeData->id = $project->node;
+                    $project->nodeData->name = $project->node_name;
+                    $project->nodeData->url = $project->node_url;
                 }
 
                 if (isset($project->media)) {
@@ -339,8 +354,14 @@ namespace Goteo\Model {
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
+
+                // @Javier: hay que verificar cuales de los datos de a continuación no se usan en la página de proyecto
+                // por ejemplo ->consultants casi seguro que no se usa
+                // si eso, lo quitamos de aquí y lo añadimos en el controlador de donde se use
+
+
                 // asesores
-                $project->consultants = Project::getConsultants($id);
+                // $project->consultants = Project::getConsultants($id);
 
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
@@ -393,11 +414,6 @@ namespace Goteo\Model {
 
                 // podría estar asignado a alguna convocatoria
                 $project->called = Call\Project::called($project);
-
-                // datos del nodo
-                if (!empty($project->node)) {
-                    $project->nodeData = Node::getMini($project->node);
-                }
 
                 // recomendaciones de padrinos
                 $project->patrons = Patron::getRecos($project->id);
@@ -507,12 +523,12 @@ namespace Goteo\Model {
                 $project->dontsave = true;
 
                 // podría estar asignado a alguna convocatoria
-                $project->called = Call\Project::called($project);
+                // parece que no se usa en el widget
+                // $project->called = Call\Project::called($project);
 
                 // datos del nodo
-                if (!empty($project->node)) {
-                    $project->nodeData = Node::getMini($project->node);
-                }
+                // no se usa en el widget
+                // if (!empty($project->node)) $project->nodeData = Node::getMini($project->node);
 
                 return $project;
 
@@ -2572,6 +2588,9 @@ namespace Goteo\Model {
             }
 
             // la select
+            //@Javier: esto es de admin pero meter los campos en la select y no usar getMedium ni getWidget.
+            // Si la lista de proyectos necesita campos calculados lo añadimos aqui  (ver view/admin/projects/list.html.php)
+            // como los consultores
             $sql = "SELECT
                         project.id,
                         project.id REGEXP '[0-9a-f]{5,40}' as draft
@@ -2584,10 +2603,14 @@ namespace Goteo\Model {
                     ";
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $proj) {
-                $the_proj = self::getMedium($proj['id']);
-                $the_proj->draft = $proj['draft'];
-                $projects[] = $the_proj;
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+                //$the_proj = self::getMedium($proj['id']);
+                $proj->draft = $proj->draft;
+
+                //añadir lo que haga falta
+                $proj->consultants = self::getConsultants($proj->id);
+
+                $projects[] = $proj;
             }
             return $projects;
         }

@@ -120,7 +120,10 @@ namespace Goteo\Controller\Cron {
                 case 'tip_0':
                     $tpl = 57;
 
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
+                    // necesitamos saber los consultores (lo hemos quitado del Project::get  )
+                    $project->consultants = Model\Project::getConsultants($project->id);
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
                     if(empty($project->consultants)) {
                         $consultants = 'Enric Senabre';
                     } else {
@@ -273,9 +276,8 @@ namespace Goteo\Controller\Cron {
             
             if ($debug) echo 'toConsultants: ';
 
-            if (!isset($project->consultants)) {
-                $project->consultants = Model\Project::getConsultants($project->id);
-            }
+            // ya no está por defecto en el ::get()
+            $project->consultants = Model\Project::getConsultants($project->id);
 
             /// tipo de envio
             switch ($type) {
@@ -297,7 +299,7 @@ namespace Goteo\Controller\Cron {
                 case 'tip_0':
                     $tpl = 57;
 
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
                     if (empty($project->consultants)) { 
                         $consultants = array('esenabre' => 'Enric Senabre');
                     } else {
