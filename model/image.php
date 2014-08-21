@@ -142,7 +142,9 @@ namespace Goteo\Model {
 		* Returns a secure name to store in file system, if the generated filename exists returns a non-existing one
 		* @param $name original name to be changed-sanitized
 		* @param $dir if specified, generated name will be changed if exists in that dir
-* Esto ya lo hace la clase File con get_save_name
+        * Esto ya lo hace la clase File con get_save_name
+        */
+        /*
 		public static function check_filename($name='',$dir=null){
 			$name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(self::idealiza($name, true)));
 			if(is_dir($dir)) {
