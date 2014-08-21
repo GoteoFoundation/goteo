@@ -73,15 +73,21 @@ namespace Goteo\Model {
             if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(stories_lang.title, stories.title) as title,
                                     IFNULL(stories_lang.description, stories.description) as description,
-                                    IFNULL(stories_lang.review, stories.review) as review";
+                                    IFNULL(stories_lang.review, stories.review) as review,
+                                    IFNULL(open_tag_lang.name, open_tag.name) as open_tags_name";
                 }
             else {
                     $different_select=" IFNULL(stories_lang.title, IFNULL(eng.title, stories.title)) as title,
                                         IFNULL(stories_lang.description, IFNULL(eng.description, stories.description)) as description,
-                                        IFNULL(stories_lang.review, IFNULL(eng.review, stories.review)) as review";
+                                        IFNULL(stories_lang.review, IFNULL(eng.review, stories.review)) as review,
+                                        IFNULL(open_tag_lang.name, IFNULL(eng_open_tag.name, open_tag.name)) as open_tags_name";
                     $eng_join=" LEFT JOIN stories_lang as eng
                                     ON  eng.id = stories.id
                                     AND eng.lang = 'en'";
+
+                    $eng_join_open_tags=" LEFT JOIN open_tag_lang as eng_open_tag
+                                    ON  eng_open_tag.id = open_tag.id
+                                    AND eng_open_tag.lang = 'en'";
                 }
 
             $query = static::query("
@@ -95,19 +101,20 @@ namespace Goteo\Model {
                     stories.order as `order`,
                     stories.post as `post`,
                     stories.active as `active`,
-                    open_tag.name as open_tag
+                    open_tag.post as open_tags_post
                 FROM    stories
                 LEFT JOIN stories_lang
                     ON  stories_lang.id = stories.id
                     AND stories_lang.lang = :lang
                 $eng_join
-                LEFT JOIN project
-                    ON  project.id = stories.project
+                LEFT JOIN project_open_tag
+                    ON  project_open_tag.project = stories.project
                 LEFT JOIN open_tag
-                    ON  open_tag.id = project.id
+                    ON  open_tag.id = project_open_tag.open_tag
                 LEFT JOIN open_tag_lang
                     ON  open_tag_lang.id = open_tag.id
                     AND open_tag_lang.lang = :lang
+                $eng_join_open_tags
                 WHERE stories.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC
@@ -117,7 +124,6 @@ namespace Goteo\Model {
                 $story->image = !empty($story->image) ? Image::get($story->image) : null;
                 $story->status = $status[$story->status];
                 $story->project = (!empty($story->project)) ? Project::getMedium($story->project) : null;
-
                 $stories[] = $story;
             }
 
