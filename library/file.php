@@ -91,14 +91,18 @@ namespace Goteo\Library {
         }
 
         /**
+         * Sets (new) bucket and prefix. Instance type must be S3 already.
+         * @param $bucket
+         * @param $prefix
          *
          */
-        public function setBucket($bucket) {
+        public function setBucket($bucket, $prefix='') {
             if ($this->type != 's3') {
                 throw new \RuntimeException("Cannot set bucket if the instance type is not Amazon S3");
             }
 
             $this->bucket = $bucket;
+            $this->path = $prefix;
         }
         
         /**
