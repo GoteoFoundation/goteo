@@ -243,7 +243,6 @@ namespace Goteo\Library {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote);
             $this->last_local  = $local;
-            $this->last_remote = $remote;
 
             $ok = false;
 
@@ -296,9 +295,7 @@ namespace Goteo\Library {
          */
         public function delete($remote, $auto_delete_dirs = true) {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
-
             $remote = $this->get_path($remote);
-            $this->last_remote = $remote;
 
             $ok = false;
 
@@ -348,7 +345,6 @@ namespace Goteo\Library {
             $remote = $this->get_path($remote_dir_original);
             //never delete the working path
             if($remote == $this->get_path()) return $this->throwError("remote error: [$remote] != [" . $this->get_path() . "]");
-            $this->last_remote = $remote;
 
             $ok = false;
 
@@ -427,7 +423,6 @@ namespace Goteo\Library {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote);
             $this->last_local = $local;
-            $this->last_remote = $remote;
 
             $ok = false;
 
@@ -470,7 +465,6 @@ namespace Goteo\Library {
             $remote_source     = $this->get_path($remote_source);
             $remote_dest       = $this->get_path($remote_dest);
             if($remote_source == $remote_dest) return $this->throwError("files equals: [$remote_source] == [$remote_dest]");
-            $this->last_remote = $remote_source;
 
             $ok = false;
 
@@ -497,7 +491,6 @@ namespace Goteo\Library {
                     break;
             }
 
-            if($ok) $this->last_remote = $remote_dest;
             return $ok;
         }
 
@@ -510,7 +503,6 @@ namespace Goteo\Library {
         public function size($remote_original, $force=false) {
             if(!$this->connect()) return -1;
             $remote = $this->get_path($remote_original);
-            $this->last_remote = $remote;
             $size = -1;
 
             switch($this->type) {
@@ -541,7 +533,6 @@ namespace Goteo\Library {
         public function mtime($remote_original, $force=false) {
             if(!$this->connect()) return -1;
             $remote = $this->get_path($remote_original);
-            $this->last_remote = $remote;
             $modified = -1;
 
             switch($this->type) {
@@ -572,7 +563,6 @@ namespace Goteo\Library {
         public function get_contents($remote_original) {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote_original);
-            $this->last_remote = $remote;
             $data = '';
 
             switch($this->type) {
@@ -610,7 +600,6 @@ namespace Goteo\Library {
             if(is_array($data)) $data = implode("", $data);
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote_original);
-            $this->last_remote = $remote;
 
             $res = false;
             switch($this->type) {
