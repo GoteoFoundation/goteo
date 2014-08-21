@@ -70,7 +70,7 @@ $filters = $this['filters'];
                     <?php if ($row->confirmed) echo ' Confirmado';
                     elseif ($row->edited) echo ' Revisado'; ?>
                     <?php if ($row->pdf) : ?>
-                        <br /><a href="/data/pdfs/donativos/<?php echo $row->pdf; ?>" target="_blank">[Ver pdf]</a><br />
+                        <br /><a href="/document/cert/<?php echo $row->id; ?>/<?php echo $filters['year']; ?>" target="_blank">[Ver pdf]</a><br />
                         <a href="/admin/reports/resetpdf/<?php echo md5($row->pdf); ?>" onclick="return confirm('Seguro que eliminamos este pdf de certificado?');">[Eliminar pdf]</a>
                     <?php endif; ?>
                 </td>
