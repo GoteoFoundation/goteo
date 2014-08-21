@@ -18,20 +18,18 @@ $blog    = $this['blog'];
 $user    = $_SESSION['user'];
 $personalData = ($user instanceof User) ? User::getPersonal($user->id) : new stdClass();
 
-$categories = Category::getNames($project->id);
-
-if (!empty($project->investors)) {
+if (!empty($project->num_investors)) {
     $supporters = ' (' . $project->num_investors . ')';
 } else {
     $supporters = '';
 }
-if (!empty($project->messages)) {
-    $messages = ' (' . $project->num_messages . ')';
+if (!empty($project->num_messengers)) {
+    $messages = ' (' . $project->num_messengers . ')';
 } else {
     $messages = '';
 }
-if (!empty($blog->posts)) {
-    $updates = ' (' . count($blog->posts) . ')';
+if (!empty($project->num_posts)) {
+    $updates = ' (' . $project->num_posts . ')';
 } else {
     $updates = '';
 }
@@ -88,9 +86,9 @@ include 'view/prologue.html.php' ?>
                 <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?php echo Text::get('regular-by') ?> <?php echo $project->user->name; ?></a></div>
                 <br/>
 
-                <?php if (!empty($categories)) : ?>
+                <?php if (!empty($project->cat_names)) : ?>
                 <div class="categories"><h3><?php echo Text::get('project-view-categories-title'); ?></h3>
-                    <?php $sep = ''; foreach ($categories as $key=>$value) :
+                    <?php $sep = ''; foreach ($project->cat_names as $key=>$value) :
                         echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'">'.htmlspecialchars($value).'</a>';
                     $sep = ', '; endforeach; ?>
                 </div>

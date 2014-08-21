@@ -113,6 +113,76 @@ namespace Goteo\Model\Project {
             }
         }
 
+        public static function getWidget($project, $lang = \LANG) {
+
+            $debug = false;
+
+            try {
+                $array = array();
+
+                $values = array(
+                    ':project' => $project,
+                    ':lang' => $lang
+                );
+
+                $icons = Icon::getList();
+                // die(\trace($icons));
+
+
+                if(self::default_lang($lang)=='es') {
+                    $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward";
+                    }
+                else {
+                        $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward";
+                        $eng_join=" LEFT JOIN reward_lang as eng
+                                        ON  eng.id = reward.id
+                                        AND eng.project = :project
+                                        AND eng.lang = 'en'";
+                    }
+
+                $sql = "SELECT
+                            reward.id as id,
+                            reward.project as project,
+                            $different_select,
+                            reward.type as type,
+                            reward.icon as icon,
+                            reward.amount as amount
+                        FROM    reward
+                        LEFT JOIN reward_lang
+                            ON  reward_lang.id = reward.id
+                            AND reward_lang.project = :project
+                            AND reward_lang.lang = :lang
+                        $eng_join
+                        WHERE   reward.project = :project
+                        ";
+
+
+                // order
+                $sql .= " ORDER BY reward.order ASC, reward.id ASC";
+
+                // limite
+                $sql .= " LIMIT 4";
+
+                if ($debug) {
+                    echo \trace($values);
+                    echo $sql;
+                    die;
+                }
+
+
+                $query = self::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+
+                    $item->icon_name = $icons[$item->icon]->name;
+
+                    $array[$item->id] = $item;
+                }
+                return $array;
+            } catch (\PDOException $e) {
+                throw new \Goteo\Core\Exception($e->getMessage());
+            }
+        }
+
         public function validate(&$errors = array()) {
             // Estos son errores que no permiten continuar
             if (empty($this->project))

@@ -16,12 +16,7 @@ if(empty($story->url))
 else
     $link_background=$story->url;
 
-foreach ($story->project->open_tags as $openId => $openData) {
-            if($openId!="post")
-                $open_tags=$openData;
-            else if($openData)
-                $open_tags='<a href="/blog/'.$openData.'">'.$open_tags.'</a>';
-}
+$open_tags='<a href="/blog/'.$story->open_tags_post.'">'.$story->open_tags_name.'</a>';
 
 ?>
 <div class="stories-banner<?php if (!empty($story->project)) echo ' activable'; ?>"<?php if ($story->image instanceof \Goteo\Model\Image) : ?> style="background: url('<?php echo $story->image->getLink(940, 385, true); ?>');"<?php endif; ?>>

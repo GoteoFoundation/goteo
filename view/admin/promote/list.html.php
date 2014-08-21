@@ -2,6 +2,8 @@
 use Goteo\Library\Text,
     Goteo\Core\ACL;
 
+$status = $this['status'];
+
 $translator = ACL::check('/translate') ? true : false;
 ?>
 <a href="/admin/promote/add" class="button">Nuevo destacado</a>
@@ -29,7 +31,7 @@ $translator = ACL::check('/translate') ? true : false;
             <tr>
                 <td><a href="/project/<?php echo $promo->project; ?>" target="_blank" title="Preview">[Ver]</a></td>
                 <td><?php echo ($promo->active) ? '<strong>'.$promo->name.'</strong>' : $promo->name; ?></td>
-                <td><?php echo $promo->status; ?></td>
+                <td><?php echo $status[$promo->status]; ?></td>
                 <td><?php echo $promo->order; ?></td>
                 <td><a href="/admin/promote/up/<?php echo $promo->id; ?>">[&uarr;]</a></td>
                 <td><a href="/admin/promote/down/<?php echo $promo->id; ?>">[&darr;]</a></td>

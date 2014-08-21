@@ -516,29 +516,23 @@ namespace Goteo\Controller {
 
             // si lo puede ver
             if ($grant) {
+
+                if ($show == 'home') {
+                    // para el widget embed
+                    $project->cat_names = Model\Project\Category::getNames($id);
+                    $project->rewards = array_merge($project->social_rewards, $project->individual_rewards);
+                }
+
                 $viewData = array(
                         'project' => $project,
                         'show' => $show
                     );
 
-                // sus entradas de novedades
-                $blog = Model\Blog::get($project->id);
-                // si está en modo preview, ponemos  todas las entradas, incluso las no publicadas
-                if (isset($_GET['preview']) && $_GET['preview'] == $_SESSION['user']->id) {
-                    $blog->posts = Model\Blog\Post::getAll($blog->id, null, false);
-                }
-
-                $viewData['blog'] = $blog;
 
                 // tenemos que tocar esto un poquito para motrar las necesitades no economicas
                 if ($show == 'needs-non') {
                     $viewData['show'] = 'needs';
                     $viewData['non-economic'] = true;
-                }
-
-                // -- Mensaje azul molesto para usuarios no registrados
-                if (($show == 'messages' || $show == 'updates') && empty($_SESSION['user'])) {
-                    Message::Info(Text::html('user-login-required'));
                 }
 
                 //tenemos que tocar esto un poquito para gestionar los pasos al aportar
@@ -617,9 +611,32 @@ namespace Goteo\Controller {
                     $viewData['step'] = $step;
                 }
 
+                // -- Mensaje azul molesto para usuarios no registrados
+                if ($show == 'messages') {
+                    $project->messages = Model\Message::getAll($project->id);
+
+                    if (empty($_SESSION['user'])) {
+                        Message::Info(Text::html('user-login-required'));
+                    }
+                }
+
+                // posts
                 if ($show == 'updates') {
+                    // sus entradas de novedades
+                    $blog = Model\Blog::get($project->id);
+                    // si está en modo preview, ponemos  todas las entradas, incluso las no publicadas
+                    if (isset($_GET['preview']) && $_GET['preview'] == $_SESSION['user']->id) {
+                        $blog->posts = Model\Blog\Post::getAll($blog->id, null, false);
+                    }
+
+                    $viewData['blog'] = $blog;
+
                     $viewData['post'] = $post;
                     $viewData['owner'] = $project->owner;
+
+                    if (empty($_SESSION['user'])) {
+                        Message::Info(Text::html('user-login-required'));
+                    }
                 }
 
                 // para la pagina de cofinanciadores miramos si hay riego

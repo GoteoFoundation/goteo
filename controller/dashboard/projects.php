@@ -20,7 +20,7 @@ namespace Goteo\Controller\Dashboard {
  *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
  *      'licencia' el acuerdo entre goteo y el usuario, licencia cc-by-nc-nd, enlace al pdf
  *      'gestionar retornos' resumen recompensas/cofinanciadores/conseguido  y lista de cofinanciadores y recompensas esperadas
- *      'messegers' gestionar colaboradores
+ *      'messengers' gestionar colaboradores
  *      'contract' contrato
  *      'account'  cuentas
  */            
@@ -223,7 +223,7 @@ namespace Goteo\Controller\Dashboard {
         /**
          * Realiza el envio masivo a participantees o cofinanciadores
          * 
-         * @param type $option 'messegers' || 'rewards'
+         * @param type $option 'messengers' || 'rewards'
          * @param type $project Instancia del proyecto de trabajo
          * @return boolean
          */
@@ -239,9 +239,9 @@ namespace Goteo\Controller\Dashboard {
             }
 
             // si a todos los participantes
-            if ($option == 'messegers' && !empty($_POST['msg_all'])) {
+            if ($option == 'messengers' && !empty($_POST['msg_all'])) {
                 // a todos los participantes
-                foreach (Model\Message::getMessegers($project->id) as $messeger => $msgData) {
+                foreach (Model\Message::getMessengers($project->id) as $messeger => $msgData) {
                     if ($messeger == $project->owner)
                         continue;
                     $who[$messeger] = $messeger;
@@ -284,7 +284,7 @@ namespace Goteo\Controller\Dashboard {
             // segun destinatarios
             $allsome = explode('/', Text::get('regular-allsome'));
             $enviandoa = !empty($_POST['msg_all']) ? $allsome[0] : $allsome[1];
-            if ($option == 'messegers') {
+            if ($option == 'messengers') {
                 Message::Info(Text::get('dashboard-messegers-mail-sendto', $enviandoa));
             } else {
                 Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa));
@@ -480,6 +480,10 @@ namespace Goteo\Controller\Dashboard {
             } else {
                 $post = new Model\Blog\Post();
             }
+
+            $post->owner_type = 'project';
+            $post->owner_id = $project->id;
+
             // campos que actualizamos
             $fields = array(
                 'id',

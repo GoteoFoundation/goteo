@@ -4,6 +4,7 @@ namespace Goteo\Model {
     use \Goteo\Library\Text,
         \Goteo\Model\Project,
         \Goteo\Model\Image,
+        \Goteo\Model\Blog,
         \Goteo\Library\Check;
 
     class Promote extends \Goteo\Core\Model {
@@ -54,9 +55,6 @@ namespace Goteo\Model {
          */
         public static function getAll ($activeonly = false, $node = \GOTEO_NODE, $lang = \LANG) {
 
-            // estados
-            $status = Project::status();
-
             $promos = array();
 
             $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
@@ -64,6 +62,7 @@ namespace Goteo\Model {
             if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(promote_lang.title, promote.title) as title,
                                     IFNULL(promote_lang.description, promote.description) as promo_text";
+                $different_select_project=" IFNULL(project_lang.description, project.description) as description";
                 }
             else {
                     $different_select=" IFNULL(promote_lang.title, IFNULL(eng.title, promote.title)) as title,
@@ -71,9 +70,12 @@ namespace Goteo\Model {
                     $eng_join=" LEFT JOIN promote_lang as eng
                                     ON  eng.id = promote.id
                                     AND eng.lang = 'en'";
+                    $different_select_project=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+                    $eng_join_project=" LEFT JOIN project_lang as eng
+                                    ON  eng.id = project.id
+                                       AND eng.lang = 'en'";
                 }
 
-            // sacamos tambien todos los dfatos que da el project::getMedium
             $query = static::query("
                 SELECT
                     promote.id as id,
@@ -84,18 +86,21 @@ namespace Goteo\Model {
                     project.published as published,
                     project.created as created,
                     project.updated as updated,
+                    project.success as success,
+                    project.closed as closed,
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
-                    project.description as description,
+                    $different_select_project,
                     project.num_investors as num_investors,
                     project.days as days,
                     user.id as user_id,
                     user.name as user_name,
-                    image.id as image_id,
-                    image.name as image_name,
-                    promote.order as `order`,
-                    promote.active as `active`
+                    project.image as image,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
                 FROM    promote
                 LEFT JOIN promote_lang
                     ON promote_lang.id = promote.id
@@ -103,63 +108,29 @@ namespace Goteo\Model {
                 $eng_join
                 INNER JOIN project
                     ON project.id = promote.project
+                LEFT JOIN project_lang
+                    ON project_lang.id = project.id
+                    AND project_lang.lang = :lang
+                $eng_join_project
                 INNER JOIN user
                     ON user.id = project.owner
-                LEFT JOIN image
-                    ON image.id = project.image
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
                 WHERE promote.node = :node
                 $sqlFilter
-                ORDER BY `order` ASC, title ASC
+                ORDER BY promote.order ASC, title ASC
                 ", array(':node' => $node, ':lang'=>$lang));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
-                $promo->description = Text::recorta($promo->description, 100, false);
+                $promo->promo_text = Text::recorta($promo->promo_text, 100, false);
                 //variables usadas en view/project/widget/project.html.php
-                $promo->projectData = new Project;
-                $promo->projectData->id = $promo->project;
-                $promo->projectData->status = $promo->status;
-                $promo->projectData->name = $promo->name;
-                $promo->projectData->description = $promo->description;
-                $promo->projectData->published = $promo->published;
-                if($promo->image_id) {
-                    $promo->projectData->image = new Image;
-                    $promo->projectData->image->id = $promo->image_id;
-                    $promo->projectData->image->name = $promo->image_name;
-                }
-                $promo->projectData->amount = $promo->amount;
-                $promo->projectData->invested = $promo->amount;
-                $promo->projectData->num_investors = $promo->num_investors;
-                if(empty($promo->num_investors)) {
-                    $promo->projectData->num_investors = Invest::numInvestors($promo->project);
-                }
-                //de momento... habria que mejorarlo
-                $promo->projectData->categories = Project\Category::getNames($promo->project, 2);
-                $promo->projectData->social_rewards = Project\Reward::getAll($promo->project, 'social', $lang);
 
-                $promo->projectData->mincost = $promo->mincost;
-                $promo->projectData->maxcost = $promo->maxcost;
-                if(empty($promo->mincost)) {
-                    $calc = Project::calcCosts($promo->project);
-                    $promo->projectData->mincost = $calc->mincost;
-                    $promo->projectData->maxcost = $calc->maxcost;
-                }
-                $promo->projectData->user = new User;
-                $promo->projectData->user->id = $promo->user_id;
-                $promo->projectData->user->name = $promo->user_name;
-                //calcular dias sin consultar sql
-                $promo->projectData->days = $promo->days;
-                $promo->projectData->round = 0;
 
-                $project_conf = Project\Conf::get($promo->projectData->id);
-                $promo->projectData->days_round1 = $project_conf->days_round1;
-                $promo->projectData->days_round2 = $project_conf->days_round2;
-                $promo->projectData->days_total = $project_conf->days_round1 + $project_conf->days_round2;
-                $promo->projectData->one_round = $project_conf->one_round;
 
-                $promo->projectData->setDays();
-                $promo->projectData->setTagmark();
 
-                $promo->status = $status[$promo->status];
+                // aquí usará getWidget para sacar todo esto
+                $promo->projectData = Project::getWidget($promo);
+
                 $promos[] = $promo;
             }
                 // print_r($promos);die;
