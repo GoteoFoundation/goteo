@@ -556,6 +556,30 @@ namespace Goteo\Library {
         }
 
         /**
+         * Like file_exists()
+         * @param $filename
+         * @return boolean
+         */
+        public function exists($filename) {
+            if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
+            $filepath = $this->get_path($filename);
+            $ok = false;
+
+            switch($this->type) {
+                case 'file':
+                    $ok = file_exists($filepath);
+                    break;
+
+                case 's3':
+                    $info = $this->link->getObjectInfo($this->bucket, $filepath);
+                    $ok = ($info !== false);
+                    break;
+            }
+
+            return $ok;
+        }
+
+        /**
          * Like file_get_contents()
          * @param  string $remote remote file
          * @return string         file raw data
