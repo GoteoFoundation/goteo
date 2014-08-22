@@ -336,16 +336,6 @@ namespace Goteo\Controller\Cron {
                 $passtime = strtotime($project->passed);
                 $limsec = date('d/m/Y', \mktime(0, 0, 0, date('m', $passtime), date('d', $passtime)+89, date('Y', $passtime)));
 
-                // mail de aviso
-                $mailHandler = new Mail();
-                $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
-                $mailHandler->toName = 'Goteo.org';
-                $mailHandler->subject = 'Pagar al proyecto ' . $project->name;
-                $mailHandler->content = 'El proyecto '.$project->name.' ha terminado la segunda ronda, hacer los pagos. Se ha creado una tarea para esto.';
-                $mailHandler->html = false;
-                $mailHandler->template = null;
-                $mailHandler->send();
-                unset($mailHandler);
             }
         }
 

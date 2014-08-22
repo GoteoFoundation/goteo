@@ -156,7 +156,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <dt>Convocatoria:</dt>
         <dd><?php echo $calls[$droped->call] ?></dd>
     </dl>
-    <a href="/manage/invests/details/<?php echo $droped->id ?>" target="_blank">Ver aporte completo de riego</a>
+    <a href="/admin/accounts/details/<?php echo $droped->id ?>" target="_blank">Ver aporte completo de riego</a>
     <?php endif; ?>
 
 </div>
