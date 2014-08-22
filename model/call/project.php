@@ -61,6 +61,10 @@ namespace Goteo\Model\Call {
                             project.project_location as location,
                             project.subtitle as subtitle,
                             project.description as description,
+                            project.maxproj as maxproj,
+                            project.called as called,
+                            project.amount_user as amount_user,
+                            project.amount_call as amount_call,
                             $sql_draft
                             IF(project.passed IS NULL, 1, 2) as round
                         FROM project
@@ -96,6 +100,65 @@ namespace Goteo\Model\Call {
 				throw new \Goteo\Core\Exception($e->getMessage());
             }
 		}
+
+        /**
+         * Get the projects assigned to a call
+         * @param varcahr(50) $id  Call identifier
+         * @return array of categories identifiers
+         */
+        public static function getMini ($call, $filters = array()) {
+            $array = array ();
+            try {
+
+                $values = array(':call'=>$call);
+
+                $sqlFilter = "";
+                if (!empty($filters['category'])) {
+                    $sqlFilter .= "LEFT JOIN project_category
+                        ON project_category.project = call_project.project
+                        AND project_category.category = :filter";
+                    $values[':filter'] = $filters['category'];
+                }
+
+                $and = "WHERE";
+                if (!isset($filters['all'])) {
+                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                    $and = "AND";
+                    $sql_draft ="project.id REGEXP '[0-9a-f]{5,40}' as draft,";
+                }
+                if (isset($filters['published'])) {
+                    $sqlFilter .= " $and project.status >= 3";
+                    $and = "AND";
+                }
+
+
+                $sql = "SELECT
+                            project.id as id,
+                            project.name as name,
+                            project.status as status,
+                            project.amount as amount
+                        FROM project
+                        INNER JOIN call_project
+                            ON  call_project.project = project.id
+                            AND call_project.call = :call
+                        $sqlFilter
+                        GROUP BY project.id
+                        ORDER BY project.name ASC
+                        ";
+
+                $query = static::query($sql, $values);
+                $items = $query->fetchAll(\PDO::FETCH_OBJ);
+
+                foreach ($items as $item) {
+
+                    $array[$item->id] = $item;
+                }
+
+                return $array;
+            } catch(\PDOException $e) {
+                throw new \Goteo\Core\Exception($e->getMessage());
+            }
+        }
 
         /**
          * Get all projects available
