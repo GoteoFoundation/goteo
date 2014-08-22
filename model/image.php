@@ -78,9 +78,10 @@ namespace Goteo\Model {
 
             // @TODO: El uso de $fp debe ser independiente de su implementación
             if($this->fp instanceof LocalFile) {
-                $url = $this->fp->get_path($path);
+                $url = SRC_URL . '/data/' . $path;
+                die($url);
             } else {
-                $url = SRC_URL . "/" . $path;
+                $url = SRC_URL . '/' . $path;
             }
 
             return $url;
@@ -368,7 +369,7 @@ namespace Goteo\Model {
             $c = new Cache($this->dir_cache);
 
             if($c->get_file($cache)) {
-                return SITE_URL . $this->dir_cache .'/' . $cache;
+                return SITE_URL . '/' . $this->dir_cache .'/' . $cache;
             } else {
 
                 if (is_numeric($this->id)) {
@@ -392,7 +393,6 @@ namespace Goteo\Model {
 
             $cache = $width."x$height" . ($crop ? 'c' : '') . "/" . $this->name;
             $c = new Cache($this->dir_cache);
-
             ignore_user_abort(true);
             //comprueba si existe el archivo en cache
             if($c->get_file($cache)) {
@@ -401,7 +401,8 @@ namespace Goteo\Model {
                 ob_end_clean();
                 header('Connection: close', true);
 
-                $url_cache = $this->url($this->dir_cache . $cache);
+                $url_cache = SITE_URL . '/data/' . $this->dir_cache . $cache;
+
                 self::stream($url_cache, false);
                 //close connection with browser
                 ob_end_flush();
@@ -414,7 +415,13 @@ namespace Goteo\Model {
 
             }
             //si no existe o es nuevo, creamos el archivo
-            $url_original = $this->url();
+            if (defined("FILE_HANDLER") && FILE_HANDLER == 's3' && defined("AWS_SECRET") && defined("AWS_KEY")) {
+                $url_original = SRC_URL . '/images/' . $this->name;
+            }
+            else {
+                $url_original = dirname(__DIR__) . '/data/images/' . $this->name;
+            }
+
             $im = new MImage($url_original);
             $im->fallback('auto');
             $im->proportional($crop ? 1 : 2);
