@@ -17,7 +17,9 @@ namespace Goteo\Model {
             $error,
             $size,
             $dir_originals = 'images/', //directorio archivos originales (relativo a data/ o al bucket s3)
-            $dir_cache = 'cache/'; //directorio archivos cache (relativo a data/ o al bucket s3)
+            $dir_cache = 'cache/', //directorio archivos cache (relativo a data/ o al bucket s3)
+            $newstyle = false; // new style es no usar tabla image
+
         private $fp;
 
         public static $types = array('user','project', 'post', 'glossary', 'info');
@@ -42,7 +44,8 @@ namespace Goteo\Model {
 			}
 
             $this->fp = new File();
-            $this->fp->setBucket(AWS_S3_BUCKET_STATIC);
+            if (\FILE_HANDLER == 's3')
+                $this->fp->setBucket(AWS_S3_BUCKET_STATIC);
         }
 
         /**
@@ -92,10 +95,10 @@ namespace Goteo\Model {
         public function save(&$errors = array()) {
             if($this->validate($errors)) {
                 //nombre seguro
-                $name = $this->save_name();
+                $this->name = $this->save_name();
 
                 if(!empty($this->name)) {
-                    $data[':name'] = $name;
+                    $data[':name'] = $this->name;
                 }
 
                 if(!empty($this->type)) {
@@ -106,34 +109,46 @@ namespace Goteo\Model {
                     $data[':size'] = $this->size;
                 }
 
-                // die($name);
-                if(!empty($this->tmp)) {
-                    $this->fp->upload($this->tmp, $this->dir_originals . $name);
-                }
-                else {
-                    $errors[] = Text::get('image-upload-fail');
-                    return false;
-                }
-
                 try {
 
-                    // Construye SQL.
-                    $query = "REPLACE INTO image (";
-                    foreach($data AS $key => $row) {
-                        $query .= substr($key, 1) . ", ";
+                    if(!empty($this->tmp)) {
+                        $this->fp->upload($this->tmp, $this->dir_originals . $this->name);
                     }
-                    $query = substr($query, 0, -2) . ") VALUES (";
-                    foreach($data AS $key => $row) {
-                        $query .= $key . ", ";
+                    else {
+                        $errors[] = Text::get('image-upload-fail');
+                        return false;
                     }
-                    $query = substr($query, 0, -2) . ")";
-                    // Ejecuta SQL.
-                    $result = self::query($query, $data);
-                    if(empty($this->id)) $this->id = self::insertId();
-                    $this->name = $name;
+
+                    if ($this->newstyle) {
+
+                        // no guardamos en tabla, id es el nombre del archivo
+                        $this->id = $this->name;
+
+                    } else {
+
+                        // @FIXME esto se podrá quitar cuando todas las entidades image estén modificadas
+
+
+                        // Construye SQL.
+                        $query = "REPLACE INTO image (";
+                        foreach($data AS $key => $row) {
+                            $query .= substr($key, 1) . ", ";
+                        }
+                        $query = substr($query, 0, -2) . ") VALUES (";
+                        foreach($data AS $key => $row) {
+                            $query .= $key . ", ";
+                        }
+                        $query = substr($query, 0, -2) . ")";
+                        // Ejecuta SQL.
+                        $result = self::query($query, $data);
+                        if(empty($this->id)) $this->id = self::insertId();
+
+                    }
+
                     return true;
+
             	} catch(\PDOException $e) {
-                    $errors[] = "No se ha podido guardar el archivo en la base de datos: " . $e->getMessage();
+                    $errors[] = "No se ha podido guardar la imagen: " . $e->getMessage();
                     return false;
     			}
             }
@@ -231,7 +246,10 @@ namespace Goteo\Model {
 		 */
 	    static public function get ($id) {
             try {
-                $query = static::query("
+
+                if (is_numeric($id)) {
+
+                    $query = static::query("
                     SELECT
                         id,
                         name,
@@ -240,7 +258,15 @@ namespace Goteo\Model {
                     FROM image
                     WHERE id = :id
                     ", array(':id' => $id));
-                $image = $query->fetchObject(__CLASS__);
+                    $image = $query->fetchObject(__CLASS__);
+
+                } else {
+                    $image = new Image;
+                    $image->name = $id;
+                    $image->id = $id;
+                }
+
+
                 return $image;
             } catch(\PDOException $e) {
                 return false;
@@ -330,7 +356,15 @@ namespace Goteo\Model {
             if($c->get_file($cache)) {
                 return SRC_URL . "/cache/{$cache}";
             } else {
-                return SITE_URL . "/image/{$this->id}/{$width}/{$height}/" . $crop;
+
+                if (is_numeric($this->id)) {
+                    // controlador antigo por id
+                    return SITE_URL . "/image/{$this->id}/{$width}/{$height}/{$crop}/" . $crop;
+                } else {
+                    // controlador nuevo por nombre de archivo
+                    return SITE_URL . "/img/{$cache}";
+                }
+
             }
 
 		}
