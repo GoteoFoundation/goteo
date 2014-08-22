@@ -19,7 +19,7 @@ namespace Goteo\Library {
 				}
 				if(substr($dir, -1, 1) != DIRECTORY_SEPARATOR) $dir .= DIRECTORY_SEPARATOR;
 				$this->type = 'local';
-				$this->dir = $dir;
+				$this->dir = dirname(dirname(__FILE__)) . '/data/' . $dir;
 			}
 			elseif($type instanceOf File) {
 				$this->type = 'remote';

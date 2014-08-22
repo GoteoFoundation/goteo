@@ -76,7 +76,7 @@ namespace Goteo\Library {
          * Depending on the configuration it will be an instance to manage local files or files at Amazon S3
          */
         public function __construct($bucket = AWS_S3_BUCKET_STATIC, $error_mode = 'error') {
-            if(defined("FILE_HANDLER") && FILE_HANDLER == 's3') {
+            if(defined("FILE_HANDLER") && \FILE_HANDLER == 's3') {
                 $this->type = 's3';
                 $this->user = AWS_KEY;
                 $this->pass = AWS_SECRET;
@@ -104,7 +104,7 @@ namespace Goteo\Library {
             $this->bucket = $bucket;
             $this->path = $prefix;
         }
-        
+
         /**
          *
          */
@@ -669,7 +669,7 @@ namespace Goteo\Library {
                     }
                     break;
             }
-            
+
             return $ok;
         }
 

@@ -10,9 +10,9 @@ use Goteo\Core\Resource,
     Goteo\Library\Lang;
 
 define('START_TIME', microtime(true));
-
 require_once 'config.php';
 require_once 'core/common.php';
+
 
 //si el parametro GET vale:
 // 0 se muestra estadísticas de SQL, pero no los logs
@@ -145,7 +145,6 @@ Lang::set($forceLang);
 
 // cambiamos el locale
 \setlocale(\LC_TIME, Lang::locale());
-
 /* Cookie para la ley de cookies */
 if (empty($_COOKIE['goteo_cookies'])) {
     setcookie("goteo_cookies", '1', time() + 3600 * 24 * 365);
@@ -200,23 +199,27 @@ try {
             // Try to instantiate
             $instance = $class->newInstance();
 
-            // Start output buffer
-            ob_start();
 
             // Invoke method
             $result = $method->invokeArgs($instance, $segments);
 
             if ($result === null) {
+                // Start output buffer
+                ob_start();
                 // Get buffer contents
                 $result = ob_get_contents();
+                ob_end_clean();
             }
 
-            ob_end_clean();
 
             if ($result instanceof Resource\MIME) {
                 $mime_type = $result->getMIME();
                 header("Content-type: $mime_type");
             }
+
+            //esto suele llamar a un metodo magic: __toString de la vista View
+            echo $result;
+
             // if($mime_type == "text/html" && GOTEO_ENV != 'real') {
             if($mime_type == "text/html" && defined('DEBUG_SQL_QUERIES')) {
                 echo '<div style="position:static;top:10px;left:10px;padding:10px;z-index:1000;background:rgba(255,255,255,0.6)">[<a href="#" onclick="$(this).parent().remove();return false;">cerrar</a>]<pre>';
@@ -228,7 +231,6 @@ try {
                 echo '</pre></div>';
             }
 
-            echo $result;
 
             // Farewell
             die('<!-- '.(microtime(true) - START_TIME ) . 's -->');

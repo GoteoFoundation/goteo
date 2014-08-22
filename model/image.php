@@ -17,7 +17,7 @@ namespace Goteo\Model {
             $error,
             $size,
             $dir_originals = 'images/', //directorio archivos originales (relativo a data/ o al bucket s3)
-            $dir_cache = 'cache/', //directorio archivos cache (relativo a data/ o al bucket s3)
+            $dir_cache = 'cache/', //directorio archivos cache (relativo a data/ o al bucket s3 en cuanto se implemente)
             $newstyle = false; // new style es no usar tabla image
 
         private $fp;
@@ -349,21 +349,21 @@ namespace Goteo\Model {
 		 */
 		public function getLink ($width = 'auto', $height = 'auto', $crop = false) {
 
-            $tc = ($crop ? "c" : "");
-            $cache = "{$width}x{$height}{$tc}/{$this->name}";
-            
-            $c = new Cache($this->dir_cache, $this->fp);
-            
+            $tc = ($crop ? 'c' : '');
+            $cache = $width . 'x' . $height . $tc .'/' .$this->name;
+
+            $c = new Cache($this->dir_cache);
+
             if($c->get_file($cache)) {
-                return SRC_URL . "/cache/{$cache}";
+                return SITE_URL . $this->dir_cache .'/' . $cache;
             } else {
 
                 if (is_numeric($this->id)) {
                     // controlador antigo por id
-                    return SITE_URL . "/image/{$this->id}/{$width}/{$height}/{$crop}/" . $crop;
+                    return SITE_URL . '/image/' . $this->id .'/'. $width . '/' . $height . '/' . $crop;
                 } else {
                     // controlador nuevo por nombre de archivo
-                    return SITE_URL . "/img/{$cache}";
+                    return SITE_URL . '/img/' . $cache;
                 }
 
             }
@@ -377,8 +377,8 @@ namespace Goteo\Model {
 		 */
         public function display ($width, $height, $crop) {
 
-            $cache = $width."x$height" . ($crop ? "c" : "") . "/" . $this->name;
-            $c = new Cache($this->dir_cache, $this->fp);
+            $cache = $width."x$height" . ($crop ? 'c' : '') . "/" . $this->name;
+            $c = new Cache($this->dir_cache);
 
             ignore_user_abort(true);
             //comprueba si existe el archivo en cache
@@ -386,7 +386,7 @@ namespace Goteo\Model {
                 //si existe, servimos el fichero inmediatamante (via redireccion http)
                 //PERO continuamos la ejecuciÃ³n del script para recrear el cache si estÃ¡ expirado
                 ob_end_clean();
-                header("Connection: close", true);
+                header('Connection: close', true);
 
                 $url_cache = $this->url($this->dir_cache . $cache);
                 self::stream($url_cache, false);
