@@ -100,13 +100,13 @@ UPDATE user_vip SET image = (SELECT name FROM image WHERE id = image);
  ALTER TABLE `user` CHANGE `avatar` `avatar` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
 
  -- script
-UPDATE user SET avatar = (SELECT image FROM image WHERE id = avatar);
+UPDATE user SET avatar = (SELECT name FROM image WHERE id = user.avatar);
 
  -- node
  ALTER TABLE `node` CHANGE `logo` `logo` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
 
  -- script
-UPDATE node SET logo = (SELECT image FROM image WHERE id = logo);
+UPDATE node SET logo = (SELECT name FROM image WHERE id = node.logo);
 
 
 
