@@ -5,7 +5,7 @@ namespace Goteo\Controller\Dashboard {
     use Goteo\Model,
         Goteo\Core\Redirection,
 		Goteo\Library\Message,
-        Goteo\Library\File,
+        Goteo\Library\FileHandler\File,
         Goteo\Library\Text,
 		Goteo\Library\Check,
         Goteo\Library\Listing;
@@ -183,14 +183,11 @@ namespace Goteo\Controller\Dashboard {
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
+                $fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
+
                 // borramos el pdf anterior y generamos de nuevo
                 if (!empty($donation->pdf)) {
-                    $fp = new File();
-                    if (FILE_HANDLER == 's3') {
-                        $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
-                    } else {
-                        $fp->setPath('certs/');
-                    }
+                    $fp->setPath('certs/');
 
                     if ($fp->exists($donation->pdf)) {
                         $fp->delete($donation->pdf);
@@ -206,8 +203,7 @@ namespace Goteo\Controller\Dashboard {
                 $objeto = new \Goteo\Library\Num2char($donation->amount, null);
                 $donation->amount_char = $objeto->getLetra();
 
-                $fp = new File();
-                $dir = 'pdfs/donativos/';
+
                 $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
 
                 $debug = false;
@@ -218,6 +214,8 @@ namespace Goteo\Controller\Dashboard {
                 require_once 'library/pdf.php';  // Libreria pdf
                 $pdf = donativeCert($donation);
 
+                $fp->setPath('pdfs/donativos/');
+
                 if ($debug) {
                     echo 'FIN';
                     echo '<hr><pre>' . print_r($pdf, true) . '</pre>';
@@ -226,7 +224,7 @@ namespace Goteo\Controller\Dashboard {
                         $tmp = tempnam(sys_get_temp_dir(), 'goteo-img');
                         $pdf->Output($tmp, 'F');
                         //guardamos a remoto (acceso privado)
-                        if($fp->upload($tmp, $dir . $filename, 'bucket-owner-full-control')) {
+                        if($fp->upload($tmp, $filename, 'bucket-owner-full-control')) {
                             // si se graba lo ponemos en el registro para que a la próxima se cargue
                             $donation->setPdf($filename);
                         }
@@ -238,7 +236,7 @@ namespace Goteo\Controller\Dashboard {
                 // y forzamos la descarga (desde static.goteo.org)
                 header("Content-disposition: attachment; filename={$donation->pdf}");
                 header("Content-Transfer-Encoding: binary");
-                echo $fp->get_contents($dir . $filename);
+                echo $fp->get_contents($filename);
                 die;
             }
             // fin action download

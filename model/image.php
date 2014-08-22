@@ -3,7 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Text,
-        Goteo\Library\File,
+        Goteo\Library\FileHandler\File,
         Goteo\Library\MImage,
         Goteo\Library\Cache;
 
@@ -43,10 +43,7 @@ namespace Goteo\Model {
 				$this->tmp = $file;
 			}
 
-            $this->fp = new File();
-            if (\FILE_HANDLER == 's3') {
-                $this->fp->setBucket(AWS_S3_BUCKET_STATIC);
-            }
+            $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_STATIC));
         }
 
         /**
@@ -77,12 +74,14 @@ namespace Goteo\Model {
          */
         public function url( $path = null) {
             if($path === null) $path = $this->dir_originals . $this->name;
-             //url del archivo o ruta absoluta si es local
-            // @NO: El uso de $fp debe ser independiente de su implementación
-            if($this->fp->type == 'file') {
+            //url del archivo o ruta absoluta si es local
+
+            // @TODO: El uso de $fp debe ser independiente de su implementación
+            if($this->fp instanceof LocalFile) {
                 $url = $this->fp->get_path($path);
+            } else {
+                $url = SRC_URL . "/" . $path;
             }
-            else $url = SRC_URL . "/" . $path;
 
             return $url;
         }

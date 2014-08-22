@@ -4,7 +4,7 @@ namespace Goteo\Library {
 
 	use Goteo\Core\Model,
         Goteo\Core\Exception,
-        Goteo\Library\File,
+        Goteo\Library\FileHandler\File,
         Goteo\Core\View;
 
     class Mail {
@@ -296,12 +296,8 @@ namespace Goteo\Library {
                 );
             Model::query($sql, $values);
 
-            // Guardar a S3
-            $fpremote = new File();
-
-            if (FILE_HANDLER == 's3') {
-                $fpremote->setBucket(AWS_S3_BUCKET_MAIL);
-            }
+            // Guardar al sistema de archivos
+            $fpremote = File::factory(array('bucket' => AWS_S3_BUCKET_MAIL));
 
             $headers = array("Content-Type" => "text/html; charset=UTF-8");
             $fpremote->put_contents($contentId, $this->content, 0, 'public-read', array(), $headers);

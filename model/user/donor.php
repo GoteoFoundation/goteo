@@ -3,6 +3,7 @@
 namespace Goteo\Model\User {
 
     use Goteo\Library\Check,
+        Goteo\Library\FileHandler\File,
         Goteo\Library\Text;
 
 
@@ -282,13 +283,8 @@ namespace Goteo\Model\User {
                 $sql = "UPDATE user_donation SET pdf = NULL WHERE MD5(pdf) = :pdf";
                 if (self::query($sql, array(':pdf'=>$xfilename))) {
 
-                    $fp = new File();
-
-                    if (FILE_HANDLER == 's3') {
-                        $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
-                    } else {
-                        $fp->setPath('certs/');
-                    }
+                    $fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
+                    $fp->setPath('certs/');
 
                     $fp->delete($xfilename);
 

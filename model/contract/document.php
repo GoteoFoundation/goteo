@@ -3,7 +3,7 @@
 namespace Goteo\Model\Contract {
 
     use Goteo\Library\Check,
-        Goteo\Library\File,
+        Goteo\Library\FileHandler\File,
         Goteo\Library\Text,
         Goteo\Model;
 
@@ -38,11 +38,7 @@ namespace Goteo\Model\Contract {
                 $this->error = $file['error'];
                 $this->size = $file['size'];
 
-                $this->fp = new File();
-
-                if (FILE_HANDLER == 's3') {
-                    $this->fp->setBucket(AWS_S3_BUCKET_DOCUMENT);
-                }
+                $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
 
                 return true;
             } else {
@@ -219,10 +215,7 @@ namespace Goteo\Model\Contract {
 
             try {
                 if(!($this->fp instanceof File)) {
-                    $this->fp = new File();
-                    if (FILE_HANDLER == 's3') {
-                        $this->fp->setBucket(AWS_S3_BUCKET_DOCUMENT);
-                    }
+                    $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
                 }
 
                 $sql = "DELETE FROM document WHERE id = ?";
