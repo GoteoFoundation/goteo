@@ -27,7 +27,7 @@ include 'view/call/header.html.php';
                 <div id="call-description"><?php echo $call->description ?></div>
                 <?php endif; ?>
 
-                <?php if (($call->status > 3 ) && count($call->projects) > 0)
+                <?php if (($call->status > 3 ) && $call->num_projects > 0)
                         echo new View('view/call/widget/table.html.php', $this);
                 ?>
 
@@ -53,7 +53,7 @@ include 'view/call/header.html.php';
                     <?php if (!$call->expired) : // sigue abierta  ?>
                         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red join" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
                     <?php endif; ?>
-                <?php elseif (count($call->projects) > 0) : //en campaña con proyectos  ?>
+                <?php elseif ($call->num_projects > 0) : //en campaña con proyectos  ?>
                     <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
         <?php endif; ?>
             </p>

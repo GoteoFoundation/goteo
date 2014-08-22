@@ -42,6 +42,7 @@ namespace Goteo\Model\Call {
                 if (!isset($filters['all'])) {
                     $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
                     $and = "AND";
+                    $sql_draft ="project.id REGEXP '[0-9a-f]{5,40}' as draft,";
                 }
                 if (isset($filters['published'])) {
                     $sqlFilter .= " $and project.status >= 3";
@@ -60,7 +61,7 @@ namespace Goteo\Model\Call {
                             project.project_location as location,
                             project.subtitle as subtitle,
                             project.description as description,
-                            project.id REGEXP '[0-9a-f]{5,40}' as draft,
+                            $sql_draft
                             IF(project.passed IS NULL, 1, 2) as round
                         FROM project
                         INNER JOIN call_project
@@ -186,7 +187,7 @@ namespace Goteo\Model\Call {
 		}
 
 		/**
-		 * Quitar una palabra clave de un proyecto
+		 * Quitar un proyecto de la convocatoria
 		 *
 		 * @param varchar(50) $call id de un proyecto
 		 * @param INT(12) $id  identificador de la tabla keyword
@@ -202,6 +203,9 @@ namespace Goteo\Model\Call {
 			try {
                 $sql = "DELETE FROM call_project WHERE project = :project AND `call` = :call";
                 if (self::query($sql, $values)) {
+
+                    // actualizar numero de proyectos
+
                     return true;
                 } else {
                     $errors[] = "$sql <pre>".print_r($values, true)."</pre>";
@@ -466,6 +470,42 @@ namespace Goteo\Model\Call {
             } else {
                 return false;
             }
+        }
+
+        /*
+         * Numero de proyectos publicados en una convocatoria
+         */
+        public static function numProjects ($call) {
+
+            $debug = true;
+
+            $values = array(':call' => $call);
+
+            $sql = "SELECT  COUNT(*) as projects, call.num_projects as num
+                FROM    `call`
+                INNER JOIN call_project
+                    ON call_project = call.id
+                INNER JOIN project
+                    ON call_project.project = project.id
+                WHERE   call.id = :call
+                ";
+
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
+            }
+
+            $query = static::query($sql, $values);
+            if($got = $query->fetchObject()) {
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->projects != $got->num) {
+                    $values['num'] = (int) $got->projects;
+                    static::query("UPDATE `call` SET num_projects = :num  WHERE id = :call", $values);
+                }
+            }
+
+            return (int) $got->messengers;
         }
 
     }

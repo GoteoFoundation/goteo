@@ -433,7 +433,7 @@ namespace Goteo\Model {
                 }
 
                 // podría estar asignado a alguna convocatoria
-                $project->called = Call\Project::called($project);
+                $project->called = Call\Project::miniCalled($project);
 
                 // recomendaciones de padrinos
                 $project->patrons = Patron::getRecos($project->id);
@@ -2668,28 +2668,26 @@ namespace Goteo\Model {
                 $proj->user->lang = $proj->user_lang;
                 
 
-                $proj->draft = $proj->draft;
-
                 //añadir lo que haga falta
                 $proj->consultants = self::getConsultants($proj->id);
-                $project->called = Call\Project::called($project);
+                $proj->called = Call\Project::miniCalled($proj->id);
 
                 //calculo de maxcost, min_cost sólo si hace falta
-                if(empty($project->mincost)) {
-                        $costs = self::calcCosts($project->id);
-                        $project->mincost = $costs->mincost;
-                        $project->maxcost = $costs->maxcost;
-                    }
+                if(empty($proj->mincost)) {
+                    $costs = self::calcCosts($proj->id);
+                    $proj->mincost = $costs->mincost;
+                    $proj->maxcost = $costs->maxcost;
+                }
 
                 //cálculo de mensajeros si no esta ya
-                if (empty($project->num_messengers)) {
-                      $project->num_messengers = Message::numMessengers($project->id);
-                    }
+                if (empty($proj->num_messengers)) {
+                    $proj->num_messengers = Message::numMessengers($proj->id);
+                }
 
                 //cálculo de número de cofinanciadores si no está hecho
-                if(empty($project->num_investors)) {
-                       $project->num_investors = Invest::numInvestors($project->id);
-                   }
+                if(empty($proj->num_investors)) {
+                    $proj->num_investors = Invest::numInvestors($proj->id);
+               }
 
 
                 $projects[] = $proj;

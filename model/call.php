@@ -269,8 +269,11 @@ namespace Goteo\Model {
                 // iconos de retorno
                 $call->icons = Call\Icon::get($id);
 
-                // proyectos
-                $call->projects = Call\Project::get($id, array('published'=>true));
+                // proyectos (solo se cargan en la página de listado de proyectos)
+                if (empty($call->num_projects)) {
+                    $call->num_projects = Call\Project::numProjects($id);
+                }
+                // $call->projects = Call\Project::get($id, array('published'=>true));
 
                 // entradas blog
                 $call->posts = Call\Post::get($id);

@@ -84,3 +84,7 @@ ALTER TABLE `call` ADD `fbappid` tinytext DEFAULT NULL AFTER `tweet` ;
 
 -- Modalidad del maximo por proyecto
 ALTER TABLE `call` ADD `modemaxp` VARCHAR(3) DEFAULT 'imp' COMMENT 'Modalidad del máximo por proyecto: imp = importe, per = porcentaje' AFTER `maxdrop`;
+
+
+-- Añadido numero de usuarios proyectos publicados
+ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos publicados';
