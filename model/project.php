@@ -472,6 +472,7 @@ namespace Goteo\Model {
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
+                    project.image as image,
                     project.num_investors as num_investors,
                     project.days as days,
                     project.name as name,
