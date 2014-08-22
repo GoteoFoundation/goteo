@@ -9,10 +9,11 @@ use Goteo\Core\Resource,
     Goteo\Library\Message,
     Goteo\Library\Lang;
 
+define('START_TIME', microtime(true));
+
 require_once 'config.php';
 require_once 'core/common.php';
 
-define("START_TIME", microtime(true));
 //si el parametro GET vale:
 // 0 se muestra estadísticas de SQL, pero no los logs
 // 1 se hace un log con las queries no cacheadas
@@ -219,18 +220,18 @@ try {
             // if($mime_type == "text/html" && GOTEO_ENV != 'real') {
             if($mime_type == "text/html" && defined('DEBUG_SQL_QUERIES')) {
                 echo '<div style="position:static;top:10px;left:10px;padding:10px;z-index:1000;background:rgba(255,255,255,0.6)">[<a href="#" onclick="$(this).parent().remove();return false;">cerrar</a>]<pre>';
-                echo "<b>Server IP:</b> ".$_SERVER['SERVER_ADDR'] . '<br>';
-                echo "<b>Client IP:</b> ".$_SERVER['REMOTE_ADDR'] . '<br>';
-                echo "<b>X-Forwarded-for:</b> ".$_SERVER['HTTP_X_FORWARDED_FOR'] . '<br>';
-                echo "<b>END:</b> ".(microtime(true) - START_TIME ) . 's <br>';
+                echo '<b>Server IP:</b> '.$_SERVER['SERVER_ADDR'] . '<br>';
+                echo '<b>Client IP:</b> '.$_SERVER['REMOTE_ADDR'] . '<br>';
+                echo '<b>X-Forwarded-for:</b> '.$_SERVER['HTTP_X_FORWARDED_FOR'] . '<br>';
                 echo '<b>SQL STATS:</b><br> '.print_r(Goteo\Core\DB::getQueryStats(), 1);
+                echo '<b>END:</b> '.(microtime(true) - START_TIME ) . 's';
                 echo '</pre></div>';
             }
 
             echo $result;
 
             // Farewell
-            die;
+            die('<!-- '.(microtime(true) - START_TIME ) . 's -->');
 
         }
 
