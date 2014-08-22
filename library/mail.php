@@ -286,7 +286,7 @@ namespace Goteo\Library {
          */
         private function saveContentToFile($sendId) {
             $email = ($this->massive) ? "any" : $this->to;
-            $prefix = ($this->massive) ? "news/" : "sys/";
+            $prefix = ($this->massive) ? "/news/" : "/sys/";
             $contentId = $prefix . md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
 
             $sql = "UPDATE mail SET content = :content WHERE id = :id";
