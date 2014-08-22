@@ -258,17 +258,30 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del proyecto en la instancia
-                $sql = "SELECT project.*, node.name as node_name, node.url as node_url, project_conf.*
+                $sql = "SELECT project.*, 
+                                node.name as node_name, 
+                                node.url as node_url, 
+                                project_conf.*,
+                                user.name as user_name,
+                                user.avatar as user_avatar,
+                                IFNULL(user_lang.about, user.about) as user_about,
+                                user.location as user_location,
+                                user.id as user_id
                 FROM project
 				LEFT JOIN project_conf
 				    ON project_conf.project = project.id
 				LEFT JOIN node
 				    ON node.id = project.node
-				WHERE project.id = ?
+                INNER JOIN user
+                    ON user.id=project.owner
+                LEFT JOIN user_lang
+                    ON  user_lang.id = user.id
+                    AND user_lang.lang = :lang
+				WHERE project.id = :id
 				";
 
-
-				$query = self::query($sql, array($id));
+                $values = array(':id'=>$id,':lang'=>$lang);
+				$query = self::query($sql, $values);
 				$project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
@@ -322,7 +335,20 @@ namespace Goteo\Model {
                 }
 
                 // owner
-                $project->user = User::get($project->owner, $lang);
+
+                $project->user = new User;
+                $project->user->id = $project->user_id;
+                $project->user->name = $project->user_name;
+                $project->user->email = $project->user_email;
+                $project->user->lang = $project->user_lang;
+                $project->user->about = $project->user_about;
+
+                $project->user->avatar = Image::get($project->user->avatar);
+                if (empty($project->user->avatar->id) || !$project->user->avatar instanceof Image) {
+                    $project->user->avatar = Image::get(1);
+                }
+
+                $project->user->webs = User\Web::get($project->user_id);
 
                 // galeria
                 $project->gallery = Project\Image::getGallery($project->id);
@@ -353,12 +379,6 @@ namespace Goteo\Model {
 				$project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
-
-
-                // @Javier: hay que verificar cuales de los datos de a continuación no se usan en la página de proyecto
-                // por ejemplo ->consultants casi seguro que no se usa
-                // si eso, lo quitamos de aquí y lo añadimos en el controlador de donde se use
-
 
                 // asesores
                 // $project->consultants = Project::getConsultants($id);
