@@ -14,18 +14,18 @@ if (!empty($this['project']->media)) {
             }
         </script>
 		<div class="widget project-media" style="position:relative;" id="video_holder">
-			<img src="<?php echo $img_url; ?>" width="620" height="380"/>  
-			<div onclick="loadVideo()" class="video_button"><img src="/view/css/project/widget/play.png" width="6"style="margin-right:12px;"/><?php echo Text::get('project-media-play_video'); ?></div>
+			<img src="<?php echo $img_url; ?>" width="620" height="380"/>
+			<div onclick="loadVideo()" class="video_button"><img src="<?php echo SRC_URL; ?>/view/css/project/widget/play.png" width="6"style="margin-right:12px;"/><?php echo Text::get('project-media-play_video'); ?></div>
 		</div>
-<?php 
+<?php
 	}
 
-	else 
+	else
 	{ ?>
 		<div class="widget project-media" <?php if ($this['project']->media_usubs) : ?>style="height:412px;"<?php endif; ?>>
 	    <?php echo $this['project']->media->getEmbedCode($this['project']->media_usubs, \LANG); ?>
 		</div>
-	<?php 
+	<?php
 	}
 }
 ?>

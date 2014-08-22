@@ -15,8 +15,6 @@ namespace Goteo\Controller {
         
         public function index () {
 
-
-
             $tags = array();
             $rawTags = Text::get('contact-form-tags');
             $listTags = explode(';', $rawTags);
@@ -28,6 +26,7 @@ namespace Goteo\Controller {
                 $tags[$keyTag] = trim($pairTag[1]);
             }
 
+            $showCaptcha = (GOTEO_ENV == 'real');
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
@@ -69,12 +68,14 @@ namespace Goteo\Controller {
                     $msg_content = nl2br(\strip_tags($_POST['message']));
                 }
 
-                // verificamos el captcha
-                require 'library/recaptchalib.php';
-                $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response"]);
-                if (!$resp->is_valid) {
-                    $errors['recaptcha'] = Text::get('error-contact-captcha');
-                  }                
+                if ($showCaptcha) {
+                    // verificamos el captcha
+                    require 'library/recaptchalib.php';
+                    $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response"]);
+                    if (!$resp->is_valid) {
+                        $errors['recaptcha'] = Text::get('error-contact-captcha');
+                    }
+                }
                 
                 $data = array(
                         'tag' => $_POST['tag'],
@@ -133,6 +134,7 @@ namespace Goteo\Controller {
                 array(
                     'data'    => $data,
                     'tags'    => $tags,
+                    'showCaptcha' => $showCaptcha,
                     'errors'  => $errors
                 )
             );

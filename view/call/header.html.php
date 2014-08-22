@@ -1,24 +1,24 @@
-<?php 
+<?php
     use Goteo\Library\Text,
         Goteo\Library\Lang,
         Goteo\Core\ACL;
 ?>
 
-<?php include 'view/header/lang.html.php' ?> 
+<?php include 'view/header/lang.html.php' ?>
 
 <div id="header">
     <h1><?php echo Text::get('regular-main-header'); ?></h1>
 
-    <div id="super-header">    
+    <div id="super-header">
 		<div id="menu">
 			<ul>
 				<li class="home"><a href="/">Inicio</a></li>
                 <li class="campanya">: <?php echo Text::get('call_header_riego'); ?> - <?php echo str_replace('-', ' ', $call->id) ?></li>
 			</ul>
 		</div>
-        
+
         <div id="rightside">
-		
+
         <ul class="menu-right">
             <li class="capital">
                 <a href="/service/resources" target="_blank"><?php echo Text::get('call_header_whats_riego'); ?></a>
@@ -51,7 +51,7 @@
                 <a href="/user/login?return=<?php echo $_SERVER['REQUEST_URI'] ?>"><?php echo Text::get('regular-login'); ?></a>
             </li>
             <?php endif ?>
-            
+
 			<li id="lang">
 				<a href="#" ><?php echo Lang::get(LANG)->short ?></a>
 			</li>
@@ -69,7 +69,7 @@
 			   //desplegar idiomas
 			   try{clearTimeout(TID_LANG)}catch(e){};
 			   $("ul.lang").fadeIn();
-		       $("#lang").css("background","url('/view/css/bolita.png') 4px 5px no-repeat #808285");
+		       $("#lang").css("background","url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 5px no-repeat #808285");
 
 		   },function() {
 			   TID_LANG = setTimeout('$("ul.lang").hide()',100);
@@ -78,13 +78,13 @@
 				try{clearTimeout(TID_LANG)}catch(e){};
 			},function() {
 			   TID_LANG = setTimeout('$("ul.lang").hide()',100);
-			   $("#lang").css("background","url('/view/css/bolita_gris.png') 4px 5px no-repeat transparent");
+			   $("#lang").css("background","url('<?php echo SRC_URL; ?>/view/css/bolita_gris.png') 4px 5px no-repeat transparent");
 			});
 
 
 		});
 		</script>
-		
+
 	   </div>
 	</div>
 

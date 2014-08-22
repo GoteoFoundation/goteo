@@ -2,7 +2,10 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Library\Text;
+    use Goteo\Library\Text,
+        Goteo\Library\File,
+        Goteo\Library\MImage,
+        Goteo\Library\Cache;
 
     class Image extends \Goteo\Core\Model {
 
@@ -13,8 +16,11 @@ namespace Goteo\Model {
             $tmp,
             $error,
             $size,
-            $dir_originals,
-            $dir_cache;
+            $dir_originals = 'images/', //directorio archivos originales (relativo a data/ o al bucket s3)
+            $dir_cache = 'cache/', //directorio archivos cache (relativo a data/ o al bucket s3 en cuanto se implemente)
+            $newstyle = false; // new style es no usar tabla image
+
+        private $fp;
 
         public static $types = array('user','project', 'post', 'glossary', 'info');
 
@@ -24,27 +30,23 @@ namespace Goteo\Model {
          * @param type array	$file	Array $_FILES.
          */
         public function __construct ($file = null) {
-			$this->dir_originals = GOTEO_DATA_PATH . 'images' . DIRECTORY_SEPARATOR;
-			$this->dir_cache = GOTEO_DATA_PATH . 'cache' . DIRECTORY_SEPARATOR;
 
             if(is_array($file)) {
-                $this->name = self::check_filename($file['name'], $this->dir_originals);
+                $this->name = $file['name'];
                 $this->type = $file['type'];
                 $this->tmp = $file['tmp_name'];
                 $this->error = $file['error'];
                 $this->size = $file['size'];
             }
             elseif(is_string($file)) {
-				$this->name = self::check_filename(basename($file), $this->dir_originals);
+				$this->name = basename($file);
 				$this->tmp = $file;
 			}
-            //die($this->dir_originals);
-            if(!is_dir($this->dir_originals)) {
-				mkdir($this->dir_originals);
-			}
-            if(!is_dir($this->dir_cache)) {
-				mkdir($this->dir_cache);
-			}
+
+            $this->fp = new File();
+            if (\FILE_HANDLER == 's3') {
+                $this->fp->setBucket(AWS_S3_BUCKET_STATIC);
+            }
         }
 
         /**
@@ -61,12 +63,44 @@ namespace Goteo\Model {
         }
 
         /**
+         * retorna nombre "seguro", que no existe ya
+         */
+        public function save_name() {
+            //un nombre que no exista
+            $name = $this->fp->get_save_name($this->dir_originals . $this->name);
+            if($this->dir_originals) $name = substr($name, strlen($this->dir_originals));
+            return $name;
+        }
+
+        /**
+         * Retorna URL del archivo o ruta absluta si es local
+         */
+        public function url( $path = null) {
+            if($path === null) $path = $this->dir_originals . $this->name;
+             //url del archivo o ruta absoluta si es local
+            // @NO: El uso de $fp debe ser independiente de su implementación
+            if($this->fp->type == 'file') {
+                $url = $this->fp->get_path($path);
+            }
+            else $url = SRC_URL . "/" . $path;
+
+            return $url;
+        }
+
+        /**
          * (non-PHPdoc)
          * @see Goteo\Core.Model::save()
+         *
+         * FALTA!!!
          */
         public function save(&$errors = array()) {
             if($this->validate($errors)) {
-                $data[':name'] = $this->name;
+                //nombre seguro
+                $this->name = $this->save_name();
+
+                if(!empty($this->name)) {
+                    $data[':name'] = $this->name;
+                }
 
                 if(!empty($this->type)) {
                     $data[':type'] = $this->type;
@@ -76,34 +110,46 @@ namespace Goteo\Model {
                     $data[':size'] = $this->size;
                 }
 
-                //si es un archivo que se sube
-                if(is_uploaded_file($this->tmp)) {
-                    move_uploaded_file($this->tmp,$this->dir_originals . $this->name);
-                    chmod($this->dir_originals . $this->name, 0777);
-                }
-                else {
-                    $errors[] = Text::get('image-upload-fail');
-                    return false;
-                }
-
                 try {
 
-                    // Construye SQL.
-                    $query = "REPLACE INTO image (";
-                    foreach($data AS $key => $row) {
-                        $query .= substr($key, 1) . ", ";
+                    if(!empty($this->tmp)) {
+                        $this->fp->upload($this->tmp, $this->dir_originals . $this->name);
                     }
-                    $query = substr($query, 0, -2) . ") VALUES (";
-                    foreach($data AS $key => $row) {
-                        $query .= $key . ", ";
+                    else {
+                        $errors[] = Text::get('image-upload-fail');
+                        return false;
                     }
-                    $query = substr($query, 0, -2) . ")";
-                    // Ejecuta SQL.
-                    $result = self::query($query, $data);
-                    if(empty($this->id)) $this->id = self::insertId();
+
+                    if ($this->newstyle) {
+
+                        // no guardamos en tabla, id es el nombre del archivo
+                        $this->id = $this->name;
+
+                    } else {
+
+                        // @FIXME esto se podrá quitar cuando todas las entidades image estén modificadas
+
+
+                        // Construye SQL.
+                        $query = "REPLACE INTO image (";
+                        foreach($data AS $key => $row) {
+                            $query .= substr($key, 1) . ", ";
+                        }
+                        $query = substr($query, 0, -2) . ") VALUES (";
+                        foreach($data AS $key => $row) {
+                            $query .= $key . ", ";
+                        }
+                        $query = substr($query, 0, -2) . ")";
+                        // Ejecuta SQL.
+                        $result = self::query($query, $data);
+                        if(empty($this->id)) $this->id = self::insertId();
+
+                    }
+
                     return true;
+
             	} catch(\PDOException $e) {
-                    $errors[] = "No se ha podido guardar el archivo en la base de datos: " . $e->getMessage();
+                    $errors[] = "No se ha podido guardar la imagen: " . $e->getMessage();
                     return false;
     			}
             }
@@ -114,7 +160,9 @@ namespace Goteo\Model {
 		* Returns a secure name to store in file system, if the generated filename exists returns a non-existing one
 		* @param $name original name to be changed-sanitized
 		* @param $dir if specified, generated name will be changed if exists in that dir
-		*/
+        * Esto ya lo hace la clase File con get_save_name
+        */
+        /*
 		public static function check_filename($name='',$dir=null){
 			$name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(self::idealiza($name, true)));
 			if(is_dir($dir)) {
@@ -124,17 +172,18 @@ namespace Goteo\Model {
 			}
 			return $name;
 		}
+		*/
 
 		/**
 		 * (non-PHPdoc)
 		 * @see Goteo\Core.Model::validate()
 		 */
 		public function validate(&$errors = array()) {
-            
+
 			if(empty($this->name)) {
                 $errors['image'] = Text::get('error-image-name');
             }
-            
+
             // checkeo de errores de $_FILES
             if($this->error !== UPLOAD_ERR_OK) {
                 switch($this->error) {
@@ -186,7 +235,7 @@ namespace Goteo\Model {
             if(empty($this->size)) {
                 $errors['image'] = Text::get('error-image-size');
             }
-            
+
             return empty($errors);
 		}
 
@@ -290,6 +339,9 @@ namespace Goteo\Model {
                 }
                 self::query("COMMIT");
 
+                //esborra de disk
+                $this->fp->delete($this->dir_originals . $this->name);
+
                 return true;
             } catch(\PDOException $e) {
                 return false;
@@ -308,66 +360,28 @@ namespace Goteo\Model {
 		 * @param type int $crop
 		 * @return type string
 		 */
-		public function getLink ($width = 200, $height = 200, $crop = false) {
+		public function getLink ($width = 'auto', $height = 'auto', $crop = false) {
 
-            $tc = $crop ? 'c' : '';
-            
-            $cache = $this->dir_cache . "{$width}x{$height}{$tc}" . DIRECTORY_SEPARATOR . $this->name;
+            $tc = ($crop ? 'c' : '');
+            $cache = $width . 'x' . $height . $tc .'/' .$this->name;
 
-            if (\file_exists($cache)) {
-                return SRC_URL . "/data/cache/{$width}x{$height}{$tc}/{$this->name}";
+
+            $c = new Cache($this->dir_cache);
+
+            if($c->get_file($cache)) {
+                return SITE_URL . $this->dir_cache .'/' . $cache;
             } else {
 
                 if (is_numeric($this->id)) {
                     // controlador antigo por id
-                    return SITE_URL . "/image/{$this->id}/{$width}/{$height}/{$crop}/" . $crop;
+                    return SITE_URL . '/image/' . $this->id .'/'. $width . '/' . $height . '/' . $crop;
                 } else {
                     // controlador nuevo por nombre de archivo
-                    return SITE_URL . "/img/{$cache}";
+                    return SITE_URL . '/img/' . $cache;
                 }
 
             }
 
-		}
-
-		/**
-		 * Carga la imagen en el directorio temporal del sistema.
-		 *
-		 * @return type bool
-		 */
-		public function load () {
-		    if(!empty($this->id) && !empty($this->name)) {
-    		    $tmp = tempnam(sys_get_temp_dir(), 'Goteo');
-                $file = fopen($tmp, "w");
-                fwrite($file, $this->content);
-                fclose($file);
-                if(!file_exists($tmp)) {
-                    throw \Goteo\Core\Exception("Error al cargar la imagen temporal.");
-                }
-                else {
-                    $this->tmp = $tmp;
-                    return true;
-                }
-		    }
-		}
-
-		/**
-		 * Elimina la imagen temporal.
-		 *
-		 * @return type bool
-		 */
-    	public function unload () {
-    	    if(!empty($this->tmp)) {
-                if(!file_exists($this->tmp)) {
-                    throw \Goteo\Core\Exception("Error, la imagen temporal no ha sido encontrada.");
-                }
-                else {
-                    unlink($this->tmp);
-                    unset($this->tmp);
-                    return true;
-                }
-    	    }
-    	    return false;
 		}
 
 		/**
@@ -376,202 +390,91 @@ namespace Goteo\Model {
 		 * @param type int	$height
 		 */
         public function display ($width, $height, $crop) {
-            require_once PEAR . 'Image/Transform.php';
-            $it =& \Image_Transform::factory('GD');
-            if (\PEAR::isError($it)) {
-                die($it->getMessage() . '<br />' . $it->getDebugInfo());
+
+            $cache = $width."x$height" . ($crop ? 'c' : '') . "/" . $this->name;
+            $c = new Cache($this->dir_cache);
+
+            ignore_user_abort(true);
+            //comprueba si existe el archivo en cache
+            if($c->get_file($cache)) {
+                //si existe, servimos el fichero inmediatamante (via redireccion http)
+                //PERO continuamos la ejecuciÃ³n del script para recrear el cache si estÃ¡ expirado
+                ob_end_clean();
+                header('Connection: close', true);
+
+                $url_cache = $this->url($this->dir_cache . $cache);
+                self::stream($url_cache, false);
+                //close connection with browser
+                ob_end_flush();
+                flush();
+                //check if file is newer
+                if(!$c->expired($cache, $this->fp->mtime($this->name))) {
+                    exit;
+                }
+                //continue to force rebuild cache
+
+            }
+            //si no existe o es nuevo, creamos el archivo
+            $url_original = $this->url();
+            $im = new MImage($url_original);
+            $im->fallback('auto');
+            $im->proportional($crop ? 1 : 2);
+            $im->quality(98);
+
+            $im->resize($width, $height);
+
+            //guardar a cache si no hay errores
+            if(!$im->has_errors()) {
+                //guardar un archivo temporal y subir
+                $tmp = tempnam(sys_get_temp_dir(), 'goteo-img');
+                $im->save($tmp);
+                //subir el archivo a cache
+                $c->put_file($tmp, $cache);
+                unlink($tmp);
             }
 
-            $cache = $this->dir_cache . $width."x$height" . ($crop ? "c" : "") . DIRECTORY_SEPARATOR;
-            if(!is_dir($cache)) mkdir($cache);
+            ignore_user_abort(false);
 
-			$cache .= $this->name;
-			//comprova si existeix  catxe
-			if(!is_file($cache)) {
-				$it->load($this->dir_originals . $this->name);
+            //stream del archivo creado y muerte del script
+            $im->flush();
+		}
 
-				if($crop) {
-					if ($width > $height) {
-
-						$f = $height / $width;
-						$new_y = round($it->img_x * $f);
-						//
-
-						if($new_y < $it->img_y) {
-							$at = round(( $it->img_y - $new_y ) / 2);
-							$it->crop($it->img_x, $new_y, 0, $at);
-							$it->img_y = $new_y;
-						}
-
-						$it->resized = false;
-						$it->scaleByX($width);
-
-					} else {
-
-						$f = $width / $height;
-						$new_x = round($it->img_y * $f);
-
-						if($new_x < $it->img_x) {
-							$at = round(( $it->img_x - $new_x ) / 2);
-							$it->crop($new_x, $it->img_y, $at, 0);
-							$it->img_x = $new_x;
-						}
-
-						$it->resized = false;
-						$it->scaleByY($height);
-
-					}
-
-				}
-				else $it->fit($width,$height);
-
-				$it->save($cache);
-                chmod($cache, 0777);
+        /**
+         * Passthru a file with content-type, name
+         * @param  [type] $file [description]
+         * @return [type]       [description]
+         */
+        static function stream($file, $exit = true) {
+            //redirection if is http stream
+            if(substr($file, 0 , 7) == 'http://' || substr($file, 0 , 8) == 'https://') {
+                header("Location: $file");
             }
-
-			header("Content-type: " . $this->type);
-			readfile($cache);
-			return true;
-		}
-
-		public function isGIF () {
-		    return ($this->type == 'image/gif');
-		}
-
-    	public function isJPG () {
-		    return ($this->type == 'image/jpg') || ($this->type == 'image/jpeg');
-		}
-
-    	public function isPNG () {
-		    return ($this->type == 'image/png');
-		}
-
-    	public function toGIF () {
-    	    $this->load();
-    	    if(!$this->isGIF()) {
-                list($width, $height, $type) = getimagesize($this->tmp);
-                switch($type) {
-                	case 1:
-                		$image = imagecreatefromgif($this->tmp);
-                		break;
-                	default:
-                	case 2:
-                		$image = imagecreatefromjpeg($this->tmp);
-                		break;
-                	case 3:
-                		$image = imagecreatefrompng($this->tmp);
-                		break;
-                	case 6:
-                		$image = imagecreatefromwbmp($this->tmp);
-                		break;
+            else {
+                list($width, $height, $type, $attr) = @getimagesize( $file );
+                if(!$type && function_exists( 'exif_imagetype' ) ) {
+                    $type = exif_imagetype($file);
                 }
-                $tmp = static::replace_extension($this->tmp, 'gif');
-                $this->unload();
-                $this->tmp = $tmp;
-           		imagegif($image, $this->tmp);
-           		imagedestroy($image);
-                return true;
-    	    }
-    	    return;
-    	}
-
-        public function toJPG () {
-    	    $this->load();
-    	    if(!$this->isJPG()) {
-                list($width, $height, $type) = getimagesize($this->tmp);
-                switch($type) {
-                	case 1:
-                		$image = imagecreatefromgif($this->tmp);
-                		break;
-                	default:
-                	case 2:
-                		$image = imagecreatefromjpeg($this->tmp);
-                		break;
-                	case 3:
-                		$image = imagecreatefrompng($this->tmp);
-                		break;
-                	case 6:
-                		$image = imagecreatefromwbmp($this->tmp);
-                		break;
+                if($type) {
+                     $type = image_type_to_mime_type($type);
                 }
-                $tmp = static::replace_extension($this->tmp, 'gif');
-                $this->unload();
-                $this->tmp = $tmp;
-           		imagejpeg($image, $this->tmp, 100);
-           		imagedestroy($image);
-                return true;
-    	    }
-    	    return;
-    	}
-
-    	public function toPNG () {
-    	    $this->load();
-    	    if(!$this->isPNG()) {
-                list($width, $height, $type) = getimagesize($this->tmp);
-                switch($type) {
-                	case 1:
-                		$image = imagecreatefromgif($this->tmp);
-                		break;
-                	default:
-                	case 2:
-                		$image = imagecreatefromjpeg($this->tmp);
-                		break;
-                	case 3:
-                		$image = imagecreatefrompng($this->tmp);
-                		break;
-                	case 6:
-                		$image = imagecreatefromwbmp($this->tmp);
-                		break;
+                else {
+                    $type = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                    if($type == 'jpg') $type = "jpeg";
+                    if(!in_array($type, array('jpeg', 'png', 'gif'))) die("file $type not image!");
+                    $type = "image/$type";
                 }
-                $tmp = static::replace_extension($this->tmp, 'gif');
-                $this->unload();
-                $this->tmp = $tmp;
-           		imagepng($image, $this->tmp, 100);
-           		imagedestroy($image);
-                return true;
-    	    }
-    	    return;
-    	}
+
+                header("Content-type: " . $type);
+                header('Content-Disposition: inline; filename="' . str_replace("'", "\'", basename($file)) . '"');
+                header("Content-Length: " . @filesize($file));
+                readfile($file);
+            }
+            if($exit) exit;
+        }
 
         private function getContent () {
             return file_get_contents($this->dir_originals . $this->name);
     	}
-
-        /*
-         * Devuelve la imagen en GIF.
-         *
-         * @return type object	Image
-         */
-        static public function gif ($id) {
-            $img = static::get($id);
-            if(!$img->isGIF())
-                $img->toGIF();
-            return $img;
-        }
-
-        /*
-         * Devuelve la imagen en JPG/JPEG.
-         *
-         * @return type object	Image
-         */
-        static public function jpg ($id) {
-            $img = static::get($id);
-            if ($img->isJPG())
-                $img->toJPG();
-            return $img;
-        }
-
-        /*
-         * Devuelve la imagen en PNG.
-         *
-         * @return type object	Image
-         */
-        static public function png ($id) {
-            $img = self::get($id);
-            if ($img->isPNG())
-                $img->toPNG();
-            return $img;
-        }
 
         /**
          * Reemplaza la extensión de la imagen.
