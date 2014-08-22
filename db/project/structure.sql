@@ -119,3 +119,6 @@ ALTER TABLE `project` ADD COLUMN `num_messengers` INT UNSIGNED DEFAULT 0 NOT NUL
 
 -- Añadido numero de posts
 ALTER TABLE `project` ADD COLUMN `num_posts` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de post' AFTER `num_messengers`;
+
+-- campo imagen a nombre archivo
+ALTER TABLE `project` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';

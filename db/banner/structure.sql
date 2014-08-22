@@ -19,3 +19,6 @@ ALTER TABLE `banner` ADD `active` INT(1) NOT NULL DEFAULT '0' ;
 ALTER TABLE `banner` ADD `title` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL ;
 ALTER TABLE `banner` ADD `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL ;
 ALTER TABLE `banner` ADD `url` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL ;
+
+-- campo imagen a nombre archivo
+ALTER TABLE `banner` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
