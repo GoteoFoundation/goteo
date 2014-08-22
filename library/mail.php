@@ -10,7 +10,6 @@ namespace Goteo\Library {
     class Mail {
 
         public
-            $url = SITE_URL,
             $from = GOTEO_MAIL_FROM,
             $fromName = GOTEO_MAIL_NAME,
             $to = GOTEO_MAIL_FROM,
@@ -237,11 +236,10 @@ namespace Goteo\Library {
             }
 
             // tokens
-            $sinoves_token = md5(uniqid()) . '¬' . $email  . '¬' . $sendId;
             $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
 
-            $viewData['sinoves'] = $this->url . '/mail/' . \mybase64_encode($sinoves_token) . '/?email=' . $this->to;
-            $viewData['baja'] = $this->url . '/user/leave/?email=' . $this->to;
+            $viewData['sinoves'] = static::getSinovesLink($sendId);
+            $viewData['baja'] = SITE_URL . '/user/leave/?email=' . $this->to;
 
             if ($plain) {
                 return strip_tags($this->content) . '
@@ -250,7 +248,7 @@ namespace Goteo\Library {
             } else {
                 // para plantilla boletin
                 if ($this->template == 33) {
-                    $viewData['baja'] = $this->url . '/user/unsuscribe/' . \mybase64_encode($leave_token);
+                    $viewData['baja'] = SITE_URL . '/user/unsuscribe/' . \mybase64_encode($leave_token);
                     return new View (GOTEO_PATH.'view/email/newsletter.html.php', $viewData);
                 } elseif (!empty($this->node) && $this->node != GOTEO_NODE) {
                     return new View (GOTEO_PATH.'nodesys/'.$this->node.'/view/email/default.html.php', $viewData);
