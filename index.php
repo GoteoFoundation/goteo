@@ -105,7 +105,7 @@ $raw_url = str_replace('http:', '', $SITE_URL);
 define('SEC_URL', ($SSL) ? 'https:'.$raw_url : $SITE_URL);
 
 // si estamos en entorno seguro
-define('HTTPS_ON', ($_SERVER['HTTPS'] === 'on'));
+define('HTTPS_ON', ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ));
 
 // SITE_URL, según si estamos en entorno seguro o si el usuario esta autenticado
 if ($SSL
