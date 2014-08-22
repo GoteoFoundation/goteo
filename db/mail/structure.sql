@@ -13,3 +13,7 @@ ALTER TABLE `mail` ADD `node` VARCHAR( 50 ) NULL AFTER `template` ;
 
 -- para verificaciones de idioma alternativo
 ALTER TABLE `mail`  ADD `lang` VARCHAR(2) NULL DEFAULT NULL COMMENT 'Idioma en el que se solicitó la plantilla'
+
+-- almacenamiento del html en Amazon S3
+ALTER TABLE `mail` ADD `content` VARCHAR(32) NULL DEFAULT NULL COMMENT 'ID del archivo con HTML estático'
+ALTER TABLE `mail` DROP `html`

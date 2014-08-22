@@ -113,13 +113,13 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
             'value'     => $user->location
         ),
-        
+
         'anchor-avatar' => array(
             'type' => 'html',
             'class' => 'inline',
             'html' => '<a name="avatar"></a>'
         ),
-        
+
         'user_avatar' => array(
             'type'      => 'group',
             'required'  => true,
@@ -144,7 +144,7 @@ echo new SuperForm(array(
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) &&  $user->avatar->id != 1 ?
-                               $user->avatar . '<img src="'.SRC_URL.'/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               $user->avatar . '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 

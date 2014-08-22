@@ -17,13 +17,13 @@ foreach ($post->gallery as $image) {
         'type'  => 'html',
         'class' => 'inline gallery-image',
         'html'  => is_object($image) ?
-                   $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
+                   $image . '<img src="' . SITE_URL . '/image/' . $image->id . '/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
                    ''
     );
 
 }
 ?>
-<script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	// Lanza wysiwyg contenido

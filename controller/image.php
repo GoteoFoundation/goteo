@@ -15,23 +15,6 @@ namespace Goteo\Controller {
             }
         }
 
-        /*
-        public function upload ($width = 200, $height = 200) {
-
-            if (!empty($_FILES) && count($_FILES) === 1) {
-                // Do upload
-                $image = new Model\Image(current($_FILES));
-
-                if ($image->save()) {
-                    return $image->getLink($width, $height);
-                }
-
-            }
-
-        }
-         * 
-         */
-
     }
 
 }

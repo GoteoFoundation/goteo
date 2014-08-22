@@ -1,4 +1,4 @@
-REAME
+README
 ===========
 
-Archiu
+Archivo
