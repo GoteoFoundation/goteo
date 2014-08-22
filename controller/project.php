@@ -639,14 +639,6 @@ namespace Goteo\Controller {
                     }
                 }
 
-                // para la pagina de cofinanciadores miramos si hay riego
-                if ($show == 'supporters') {
-                    $droped = Model\Invest::invested($project->id, 'call');
-                    if ($droped > 0) {
-                        $viewData['droped'] = $droped;
-                    }
-                }
-
                 if ($show == 'messages' && $project->status < 3) {
                     Message::Info(Text::get('project-messages-closed'));
                 }

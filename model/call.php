@@ -186,7 +186,11 @@ namespace Goteo\Model {
 
             try {
 
-                $sql= "SELECT 
+                $debug = false;
+
+                $values = array(':id' => $id);
+
+                $sql= "SELECT
                             `call`.*,
                              user.id as user_id,
                              user.name as user_name,
@@ -203,12 +207,18 @@ namespace Goteo\Model {
                       ON user.id=call.owner 
                       WHERE call.id = :id";
 
+                if ($debug) {
+                    echo \trace($values);
+                    echo $sql;
+                    die;
+                }
+
                 // metemos los datos del convocatoria en la instancia
-                $query = self::query($sql, array(':id' => $id));
+                $query = self::query($sql, $values);
                 $call = $query->fetchObject(__CLASS__);
 
                 if (!$call instanceof \Goteo\Model\Call) {
-                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-call'));
+                   return null;
                 }
 
                 if(!empty($lang) && $lang!=$call->lang)
@@ -318,6 +328,7 @@ namespace Goteo\Model {
             } catch (\PDOException $e) {
                 throw \Goteo\Core\Exception($e->getMessage());
             } catch (\Goteo\Core\Error $e) {
+                die($e->getMessage());
                 throw new \Goteo\Core\Error('404', Text::html('fatal-error-call'));
             }
         }

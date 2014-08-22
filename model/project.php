@@ -387,7 +387,6 @@ namespace Goteo\Model {
 				$project->supports = Project\Support::getAll($id, $lang);
 
                 // extra conf
-                $project_conf = Project\Conf::get($id);
                 $project->days_total = ($project->one_round) ? $project->days_round1 : ( $project->days_round1 + $project->days_round2 );
 
                 //-----------------------------------------------------------------
