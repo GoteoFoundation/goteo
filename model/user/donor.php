@@ -283,7 +283,13 @@ namespace Goteo\Model\User {
                 if (self::query($sql, array(':pdf'=>$xfilename))) {
 
                     $fp = new File();
-                    $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
+
+                    if (FILE_HANDLER == 's3') {
+                        $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
+                    } else {
+                        $fp->setPath('certs/');
+                    }
+
                     $fp->delete($xfilename);
 
                     $ok = true;

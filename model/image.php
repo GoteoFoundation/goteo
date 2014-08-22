@@ -44,8 +44,9 @@ namespace Goteo\Model {
 			}
 
             $this->fp = new File();
-            if (\FILE_HANDLER == 's3')
+            if (\FILE_HANDLER == 's3') {
                 $this->fp->setBucket(AWS_S3_BUCKET_STATIC);
+            }
         }
 
         /**

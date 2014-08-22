@@ -108,6 +108,13 @@ namespace Goteo\Library {
         /**
          *
          */
+        public function setPath($path) {
+            $this->path = $path;
+        }
+
+        /**
+         *
+         */
         public function error_mode($mode = 'exception') {
             if($mode == 'exception')  $this->quiet_mode = false;
             elseif($mode == 'quiet')  $this->quiet_mode = 1;

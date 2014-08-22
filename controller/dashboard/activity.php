@@ -186,7 +186,11 @@ namespace Goteo\Controller\Dashboard {
                 // borramos el pdf anterior y generamos de nuevo
                 if (!empty($donation->pdf)) {
                     $fp = new File();
-                    $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
+                    if (FILE_HANDLER == 's3') {
+                        $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
+                    } else {
+                        $fp->setPath('certs/');
+                    }
 
                     if ($fp->exists($donation->pdf)) {
                         $fp->delete($donation->pdf);

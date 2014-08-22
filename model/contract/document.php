@@ -39,7 +39,11 @@ namespace Goteo\Model\Contract {
                 $this->size = $file['size'];
 
                 $this->fp = new File();
-                $this->fp->setBucket(AWS_S3_BUCKET_DOCUMENT);
+
+                if (FILE_HANDLER == 's3') {
+                    $this->fp->setBucket(AWS_S3_BUCKET_DOCUMENT);
+                }
+
                 return true;
             } else {
                 return false;
@@ -216,7 +220,9 @@ namespace Goteo\Model\Contract {
             try {
                 if(!($this->fp instanceof File)) {
                     $this->fp = new File();
-                    $this->fp->setBucket(AWS_S3_BUCKET_DOCUMENT);
+                    if (FILE_HANDLER == 's3') {
+                        $this->fp->setBucket(AWS_S3_BUCKET_DOCUMENT);
+                    }
                 }
 
                 $sql = "DELETE FROM document WHERE id = ?";

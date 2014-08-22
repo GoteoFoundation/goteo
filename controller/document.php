@@ -18,7 +18,12 @@ namespace Goteo\Controller {
                 // pero ojo porque al ser el archivo privado quizás habrá que coger los contenidos
                 // mime type en el header
                 $fp = new File();
-                $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, $doc->filedir);
+
+                if (FILE_HANDLER == 's3') {
+                    $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, $doc->filedir);
+                } else {
+                    $fp->setPath($doc->filedir);
+                }
 
                 header("Content-type: " . $doc->type);
                 // contenidos
@@ -38,7 +43,11 @@ namespace Goteo\Controller {
                     throw new Error('404', 'No se ha generado el certificado de '.$user.' para '.$year);
 
                 $fp = new File();
-                $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
+                if (FILE_HANDLER == 's3') {
+                    $fp->setBucket(AWS_S3_BUCKET_DOCUMENT, 'certs/');
+                } else {
+                    $fp->setPath('certs/');
+                }
 
                 header("Content-type: application/pdf");
                 // archivo

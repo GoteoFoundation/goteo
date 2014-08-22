@@ -298,7 +298,10 @@ namespace Goteo\Library {
 
             // Guardar a S3
             $fpremote = new File();
-            $fpremote->setBucket(AWS_S3_BUCKET_MAIL);
+
+            if (FILE_HANDLER == 's3') {
+                $fpremote->setBucket(AWS_S3_BUCKET_MAIL);
+            }
 
             $headers = array("Content-Type" => "text/html; charset=UTF-8");
             $fpremote->put_contents($contentId, $this->content, 0, 'public-read', array(), $headers);
