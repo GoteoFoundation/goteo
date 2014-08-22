@@ -186,8 +186,25 @@ namespace Goteo\Model {
 
             try {
 
+                $sql= "SELECT 
+                            `call`.*,
+                             user.id as user_id,
+                             user.name as user_name,
+                             user.avatar as user_avatar,
+                             user.email as user_email,
+                             user.facebook as user_facebook,
+                             user.google as user_google,
+                             user.twitter as user_twitter,
+                             user.identica as user_identica,
+                             user.linkedin as user_linkedin,
+                             user.lang as user_lang
+                      FROM `call` 
+                      INNER JOIN user
+                      ON user.id=call.owner 
+                      WHERE call.id = :id";
+
                 // metemos los datos del convocatoria en la instancia
-                $query = self::query("SELECT * FROM `call` WHERE id = :id", array(':id' => $id));
+                $query = self::query($sql, array(':id' => $id));
                 $call = $query->fetchObject(__CLASS__);
 
                 if (!$call instanceof \Goteo\Model\Call) {
@@ -224,7 +241,26 @@ namespace Goteo\Model {
                 }        
 
                 // owner
-                $call->user = User::get($call->owner);
+
+                $call->user = new User;
+                $call->user->id = $call->user_id;
+                $call->user->name = $call->user_name;
+                $call->user->email = $call->user_email;
+                $call->user->lang = $call->user_lang;
+                $call->user->avatar = $call->user_avatar;
+                $call->user->facebook = $call->user_facebook;
+                $call->user->google = $call->user_google;
+                $call->user->twitter = $call->user_twitter;
+                $call->user->identica = $call->user_identica;
+                $call->user->linkedin = $call->user_linkedin;
+
+
+                $call->user->avatar = Image::get($call->user->avatar);
+                if (empty($call->user->avatar->id) || !$call->user->avatar instanceof Image) {
+                    $call->user->avatar = Image::get(1);
+                }
+
+                $call->user->webs = User\Web::get($call->user_id);
 
                 // No vamos a hacer aqui objetos para las imagenes, los hacemos en el controlador
                 // categorias
