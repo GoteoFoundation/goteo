@@ -119,3 +119,15 @@ ALTER TABLE `project` ADD COLUMN `num_messengers` INT UNSIGNED DEFAULT 0 NOT NUL
 
 -- Añadido numero de posts
 ALTER TABLE `project` ADD COLUMN `num_posts` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de post' AFTER `num_messengers`;
+
+-- Recaudación que proviene de los usuarios
+ALTER TABLE `project` ADD COLUMN `amount_users` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudación proveniente de los usuarios';
+
+-- Recaudación proveniente de la convocatoria
+ALTER TABLE `project` ADD COLUMN `amount_call` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudación proveniente de la convocatoria';
+
+-- Convocatoria en la que está
+ALTER TABLE `project` ADD COLUMN `called` VARCHAR(50) COMMENT 'Convocatoria en la que está';
+
+-- Máximo dinero que puede conseguir un proyecto de la convocatoria
+ALTER TABLE `project` ADD COLUMN `maxproj` INT(5) 'Dinero que puede conseguir un proyecto de la convocatoria';
