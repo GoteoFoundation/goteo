@@ -481,14 +481,14 @@ namespace Goteo\Model\Call {
          */
         public static function numProjects ($call) {
 
-            $debug = true;
+            $debug = false;
 
             $values = array(':call' => $call);
 
             $sql = "SELECT  COUNT(*) as projects, call.num_projects as num
                 FROM    `call`
                 INNER JOIN call_project
-                    ON call_project = call.id
+                    ON call_project.call = call.id
                 INNER JOIN project
                     ON call_project.project = project.id
                 WHERE   call.id = :call
