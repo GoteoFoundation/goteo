@@ -88,3 +88,12 @@ ALTER TABLE `call` ADD `modemaxp` VARCHAR(3) DEFAULT 'imp' COMMENT 'Modalidad de
 
 -- Añadido numero de usuarios proyectos publicados
 ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos publicados';
+
+-- Añadido numero de usuarios proyectos publicados
+ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos publicados';
+
+-- Recaudación que proviene de los usuarios
+ALTER TABLE `call` ADD COLUMN `amount_users` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudación proveniente de los usuarios';
+
+-- Recaudación proveniente de la convocatoria
+ALTER TABLE `call` ADD COLUMN `amount_call` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudación proveniente de la convocatoria';
