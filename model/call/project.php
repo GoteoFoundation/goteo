@@ -79,10 +79,10 @@ namespace Goteo\Model\Call {
                     // cuanto han recaudado
                     // de los usuarios
                     if (empty($item->amount_users)) {
-                        $item->amount_users = Model\Invest::invested($item->id, 'users');
+                        $item->amount_users = Model\Invest::invested($item->id, 'users', $call);
                     }
                     // de la convocatoria
-                    if (empty($item->amount_users)) {
+                    if (empty($item->amount_call)) {
                         $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
                     }
 
