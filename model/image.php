@@ -198,7 +198,20 @@ namespace Goteo\Model {
 		 */
 	    static public function get ($id) {
             try {
-                $query = static::query("
+
+                // imagenes especiales
+                switch ($id) {
+                    case '1':
+                        $id = 'la_gota.png'; // imagen por defecto en toda la aplicación
+                        break;
+                    case '2':
+                        $id = 'la_gota-wof.png'; // imagen por defecto en el wall of friends
+                        break;
+                }
+
+                if (is_numeric($id)) {
+
+                    $query = static::query("
                     SELECT
                         id,
                         name,
@@ -207,7 +220,15 @@ namespace Goteo\Model {
                     FROM image
                     WHERE id = :id
                     ", array(':id' => $id));
-                $image = $query->fetchObject(__CLASS__);
+                    $image = $query->fetchObject(__CLASS__);
+
+                } else {
+                    $image = new Image;
+                    $image->name = $id;
+                    $image->id = $id;
+                }
+
+
                 return $image;
             } catch(\PDOException $e) {
                 return false;
@@ -293,7 +314,15 @@ namespace Goteo\Model {
             if (\file_exists($cache)) {
                 return SRC_URL . "/data/cache/{$width}x{$height}{$tc}/{$this->name}";
             } else {
-                return SITE_URL . "/image/{$this->id}/{$width}/{$height}/" . $crop;
+
+                if (is_numeric($this->id)) {
+                    // controlador antigo por id
+                    return SITE_URL . "/image/{$this->id}/{$width}/{$height}/{$crop}/" . $crop;
+                } else {
+                    // controlador nuevo por nombre de archivo
+                    return SITE_URL . "/img/{$cache}";
+                }
+
             }
 
 		}

@@ -1,0 +1,13 @@
+
+
+-- bazaar
+ALTER TABLE `bazar` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
+-- script
+UPDATE bazar SET image = (SELECT name FROM image WHERE id = image);
+
+
+
+
+
+
+
