@@ -199,6 +199,9 @@ namespace Goteo\Model {
 	    static public function get ($id) {
             try {
 
+                if (empty($id))
+                    $id = 1;
+
                 // imagenes especiales
                 switch ($id) {
                     case '1':
