@@ -40,7 +40,8 @@ namespace Goteo\Controller\Admin {
                         case 'add':
                             Message::Info('Convocatoria destacada correctamente');
 
-                            $callData = Model\Call::getMini($_POST['call']);
+                            // parece que no se usa
+                            // $callData = Model\Call::getMini($_POST['call']);
 
                             break;
                         case 'edit':

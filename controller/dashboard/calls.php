@@ -43,10 +43,10 @@ namespace Goteo\Controller\Dashboard {
 
             if ($action == 'select' && !empty($_POST['call'])) {
                 // si se selecciona otra convocatoria
-                $call = Model\call::get($_POST['call']);
+                $call = Model\call::getMini($_POST['call']);
             } elseif (!empty($_SESSION['call']->id)) {
                 // mantener los datos de la convocatoria de trabajo
-                $call = Model\Call::get($_SESSION['call']->id);
+                $call = Model\Call::getMini($_SESSION['call']->id);
             }
 
             if (empty($call)) {

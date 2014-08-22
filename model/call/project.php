@@ -221,19 +221,42 @@ namespace Goteo\Model\Call {
          */
         public static function miniCalled ($project) {
             try {
-                $sql = "SELECT
-                            call_project.call as id
-                        FROM call_project
-                        WHERE  call_project.project = :project
-                        LIMIT 1
-                        ";
 
-                $query = static::query($sql, array(':project'=>$project));
-                $called = $query->fetchColumn();
-                if (!empty ($called)) {
-                    $call = Model\Call::getMini($called);
+                $sql = "
+                  SELECT
+                    call.id as id,
+                    call.name as name,
+                    call.owner as owner,
+                    call.lang as lang,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar,
+                    user.lang as user_lang,
+                    user.node as user_node
+                  FROM `call`
+                  INNER JOIN call_project
+                    ON call.id = call_project.call
+                  INNER JOIN user
+                    ON user.id = call.owner
+                  WHERE call_project.project = :project
+                  LIMIT 1
+                  ";
+                // metemos los datos del convocatoria en la instancia
+                $query = self::query($sql, array(':project'=>$project));
+                if ($call = $query->fetchObject('\Goteo\Model\Call')) {
+
+                    // owner
+                    $user = new User;
+                    $user->name = $call->user_name;
+                    $user->email = $call->user_email;
+                    $user->lang = $call->user_lang;
+                    $user->node = $call->user_node;
+                    $user->avatar = Image::get($call->user_avatar);
+
+                    $call->user = $user;
 
                     return $call;
+
                 } else {
                     return null;
                 }

@@ -291,11 +291,37 @@ namespace Goteo\Model {
         public static function getMini($id) {
 
             try {
+
+                $sql = "
+                  SELECT
+                    call.id as id,
+                    call.name as name,
+                    call.owner as owner,
+                    call.lang as lang,
+                    call.status as status,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar,
+                    user.lang as user_lang,
+                    user.node as user_node
+                  FROM `call`
+                  INNER JOIN user
+                    ON user.id = call.owner
+                  WHERE call.id = :call
+                  ";
                 // metemos los datos del convocatoria en la instancia
-                $query = self::query("SELECT id, name, owner, lang FROM `call` WHERE id = ?", array($id));
-                $call = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
+                $query = self::query($sql, array(':call'=>$id));
+                $call = $query->fetchObject(__CLASS__);
+
                 // owner
-                $call->user = User::getMini($call->owner);
+                $user = new User;
+                $user->name = $call->user_name;
+                $user->email = $call->user_email;
+                $user->lang = $call->user_lang;
+                $user->node = $call->user_node;
+                $user->avatar = Image::get($call->user_avatar);
+
+                $call->user = $user;
 
                 return $call;
             } catch (\PDOException $e) {
