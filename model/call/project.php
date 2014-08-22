@@ -78,9 +78,13 @@ namespace Goteo\Model\Call {
                 foreach ($items as $item) {
                     // cuanto han recaudado
                     // de los usuarios
-                    $item->amount_users = Model\Invest::invested($item->id, 'users');
+                    if (empty($item->amount_users)) {
+                        $item->amount_users = Model\Invest::invested($item->id, 'users');
+                    }
                     // de la convocatoria
-                    $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
+                    if (empty($item->amount_users)) {
+                        $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
+                    }
 
                     $item->user = Model\User::getMini($item->owner);
 

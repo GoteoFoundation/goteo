@@ -56,9 +56,9 @@ namespace Goteo\Controller\Dashboard {
             // aqui necesito tener una convocatoria de trabajo,
             // si no hay ninguna ccoge la última
             if ($call instanceof \Goteo\Model\Call) {
-                $_SESSION['call'] = $call;
                 // y con todos los proyectos
-                $call->projects = Model\Call\Project::get($_SESSION['call']->id, array('all'));
+                $call->projects = Model\Call\Project::getMini($_SESSION['call']->id, array('all'));
+                $_SESSION['call'] = $call;
             } else {
                 Message::Error('No se puede trabajar con la convocatoria seleccionada, contacta con nosotros');
                 $call = null;

@@ -247,11 +247,10 @@ namespace Goteo\Controller\Admin {
                 $filters = ($call->status > 3) ? array('published'=>true) : array('all'=>true);
                 $projects   = Model\Call\Project::get($call->id, $filters);
                 $status     = Model\Project::status();
-                // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
-                //$available  = Model\Call\Project::getAvailable($call->id);
-                // los quitamos por ahora
 
                 // a los seleccionados les añadimos el presupuesto y el máximo
+                // esto lo pasamos a Model\Call\Project::get
+                /*
                 foreach ($projects as &$project) {
                     // su presupuesto
                     // calculo de mincost, maxcost solo si hace falta
@@ -269,6 +268,7 @@ namespace Goteo\Controller\Admin {
                     $called = Model\Call\Project::called($project, $call, $project->amount_call);
                     $project->maxproj = $called->maxproj;
                 }
+                */
 
 
 
