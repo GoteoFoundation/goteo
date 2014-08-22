@@ -400,6 +400,17 @@ namespace Goteo\Library {
 
         }
 
+        public static function getSinovesLink($id) {
+            $sql = "SELECT content
+                    FROM mail
+                    WHERE id = :id";
+
+            $query = Model::query($sql, array(':id' => $id));
+            $content = $query->fetchColumn();
+            $url = 'http://' . AWS_S3_BUCKET_MAIL . $content;
+
+            return $url;
+        }
 
         /**
          * Control de límite de mails que se pueden enviar al día
