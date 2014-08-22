@@ -369,7 +369,7 @@ namespace Goteo\Model {
             $c = new Cache($this->dir_cache);
 
             if($c->get_file($cache)) {
-                return SITE_URL . '/' . $this->dir_cache .'/' . $cache;
+                return SITE_URL . '/' . $this->dir_cache . $cache;
             } else {
 
                 if (is_numeric($this->id)) {
