@@ -14,3 +14,6 @@ CREATE TABLE IF NOT EXISTS `bazar` (
 
 -- permitir campos vacios
 ALTER TABLE `bazar` CHANGE `reward` `reward` BIGINT(20) UNSIGNED NULL, CHANGE `project` `project` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL, CHANGE `amount` `amount` INT(5) NULL, CHANGE `image` `image` INT(10) UNSIGNED NULL, CHANGE `order` `order` SMALLINT(5) NOT NULL DEFAULT '9999', CHANGE `active` `active` INT(1) NOT NULL DEFAULT '1';
+
+-- campo imagen a nombre archivo
+ALTER TABLE `bazar` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
