@@ -111,8 +111,7 @@ namespace Goteo\Library\FileHandler {
 			$perms = $extra['perms'];
                 }
 
-                // TODO para todos
-                //if ($this->link->putObject(S3::inputFile($local), $this->bucket, 'mail/' . $remote, ACL_PUBLIC_READ)) {
+                //if ($this->link->putObject(S3::inputFile($local), $this->bucket, $remote, ACL_PUBLIC_READ)) {
                 if ($this->link->putObject(S3::inputFile($local), $this->bucket, $remote, $perms)) {
                     $ok = true;
                 }
