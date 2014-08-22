@@ -14,12 +14,12 @@ namespace Goteo\Library {
 
 		function __construct($dir = '', $type = 'local', $url_prefix = '') {
 			if($type == 'local') {
-				if(!is_dir($dir)) {
-					mkdir($dir, 0777, true);
-				}
 				if(substr($dir, -1, 1) != DIRECTORY_SEPARATOR) $dir .= DIRECTORY_SEPARATOR;
 				$this->type = 'local';
 				$this->dir = dirname(dirname(__FILE__)) . '/data/' . $dir;
+				if(!is_dir($this->dir)) {
+					mkdir($this->dir, 0777, true);
+				}
 			}
 			elseif($type instanceOf File) {
 				$this->type = 'remote';
@@ -95,6 +95,10 @@ namespace Goteo\Library {
 			$f = $this->get_path($remote);
 			if($this->type == 'local') {
 				if(is_file($local)) {
+					$dir = dirname($f);
+					if(!is_dir($dir)) {
+						mkdir($dir, 0777, true);
+					}
 					$ok = copy($local, $f);
 					@chmod($f, 0666);
 					return $ok;
