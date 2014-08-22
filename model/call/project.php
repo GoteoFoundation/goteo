@@ -317,12 +317,12 @@ namespace Goteo\Model\Call {
                 if ($call = $query->fetchObject('\Goteo\Model\Call')) {
 
                     // owner
-                    $user = new User;
+                    $user = new Model\User;
                     $user->name = $call->user_name;
                     $user->email = $call->user_email;
                     $user->lang = $call->user_lang;
                     $user->node = $call->user_node;
-                    $user->avatar = Image::get($call->user_avatar);
+                    $user->avatar = Model\Image::get($call->user_avatar);
 
                     $call->user = $user;
 

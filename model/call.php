@@ -203,7 +203,7 @@ namespace Goteo\Model {
                              user.linkedin as user_linkedin,
                              user.lang as user_lang
                       FROM `call` 
-                      INNER JOIN user
+                      LEFT JOIN user
                       ON user.id=call.owner 
                       WHERE call.id = :id";
 
