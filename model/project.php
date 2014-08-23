@@ -493,6 +493,8 @@ namespace Goteo\Model {
                     project.amount as amount,
                     project.image as image,
                     project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
                     user.id as user_id,
@@ -2167,7 +2169,10 @@ namespace Goteo\Model {
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
+                    project.image as image,
                     project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
                     user.id as user_id,
@@ -2320,7 +2325,10 @@ namespace Goteo\Model {
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
+                    project.image as image,
                     project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
                     $different_select
@@ -2623,13 +2631,15 @@ namespace Goteo\Model {
                         project.mincost as mincost,
                         project.maxcost as maxcost,
                         project.node as node,
+                        project.amount as amount,
+                        project.image as image,
+                        project.num_investors as num_investors,
+                        project.num_messengers as num_messengers,
+                        project.num_posts as num_posts,
                         project.days as days,
                         project.owner as owner,
                         project.translate as translate,
                         project.progress as progress,
-                        project.num_messengers as num_messengers,
-                        project.num_investors as num_investors,
-                        project.amount as invested,
                         user.email as user_email,
                         user.name as user_name,
                         user.lang as user_lang,
@@ -2679,12 +2689,12 @@ namespace Goteo\Model {
                     $proj->maxcost = $costs->maxcost;
                 }
 
-                //cálculo de mensajeros si no esta ya
+                //cálculo de mensajeros
                 if (empty($proj->num_messengers)) {
                     $proj->num_messengers = Message::numMessengers($proj->id);
                 }
 
-                //cálculo de número de cofinanciadores si no está hecho
+                //cálculo de número de cofinanciadores
                 if(empty($proj->num_investors)) {
                     $proj->num_investors = Invest::numInvestors($proj->id);
                }
