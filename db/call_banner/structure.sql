@@ -7,3 +7,6 @@ CREATE TABLE `call_banner` (
 `order` INT( 11 ) NOT NULL DEFAULT '1',
 PRIMARY KEY ( `id` )
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Banners de convocatorias';
+
+-- campo imagen a nombre archivo
+ALTER TABLE `call_banner` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';

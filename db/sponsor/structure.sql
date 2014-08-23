@@ -11,3 +11,6 @@ PRIMARY KEY ( `id` )
 ALTER TABLE `sponsor` ADD `node` VARCHAR( 50 ) NOT NULL;
 -- en consecuencia
 UPDATE `sponsor` set node = 'goteo';
+
+-- campo imagen a nombre archivo
+ALTER TABLE `sponsor` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
