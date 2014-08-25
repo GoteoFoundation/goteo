@@ -17,44 +17,48 @@ namespace Goteo\Controller\Cron {
             echo 'Imagenes en uso: <br />';
             $en_uso = array();
             
-            $sql = "SELECT image as id FROM `banner`
+            $sql = "SELECT image as id FROM `banner` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `call`
+                    SELECT logo as id FROM `call` WHERE logo IS NOT NULL AND logo REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT backimage as id FROM `call`
+                    SELECT image as id FROM `call` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `feed`
+                    SELECT backimage as id FROM `call` WHERE backimage IS NOT NULL AND backimage REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT logo as id FROM `call`
+                    SELECT image as id FROM `feed` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT logo as id FROM `node`
+                    SELECT logo as id FROM `node` WHERE logo IS NOT NULL AND logo REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT avatar as id FROM `user`
+                    SELECT avatar as id FROM `user` WHERE avatar IS NOT NULL AND avatar REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `call_banner`
+                    SELECT image as id FROM `call_banner` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `call_sponsor`
+                    SELECT image as id FROM `call_sponsor` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `glossary_image`
+                    SELECT image as id FROM `glossary_image` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `info_image`
+                    SELECT image as id FROM `info_image` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `post`
+                    SELECT image as id FROM `news` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `post_image`
+                    SELECT image as id FROM `post` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `project`
+                    SELECT image as id FROM `post_image` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `project_image`
+                    SELECT image as id FROM `project` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `sponsor`
+                    SELECT image as id FROM `project_image` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `bazar`
+                    SELECT image as id FROM `sponsor` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
-                    SELECT image as id FROM `user_vip`
+                    SELECT image as id FROM `bazar` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
+                    UNION DISTINCT
+                    SELECT image as id FROM `stories` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
+                    UNION DISTINCT
+                    SELECT image as id FROM `user_vip` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     ";
-            
-            echo $sql . '<br />';
+
+            // echo $sql . '<br />';
             $query = Model\Image::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
                 if (!empty($row->id)) {
@@ -64,7 +68,10 @@ namespace Goteo\Controller\Cron {
             
             echo 'Son '.count($en_uso).'<br />';
             echo "<br />";
-            
+
+            // las que no se usan sería
+            echo "SELECT * FROM image where id NOT IN ('".implode("','", $en_uso)."')";
+            die;
             
             // obtenemos array de imágenes en tabla
             echo 'Actualmente en tabla:<br />';
