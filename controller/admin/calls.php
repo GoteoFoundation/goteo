@@ -244,7 +244,8 @@ namespace Goteo\Controller\Admin {
                     Message::Error('No se ha especificado ninguna convocatoria en la URL');
                     throw new Redirection('/admin/calls/list');
                 }
-                $filters = ($call->status > 3) ? array('published'=>true) : array('all'=>true);
+                // $filters = ($call->status > 3) ? array('published'=>true) : array('all'=>true);
+                $filters = array('all'=>true); // (siempre todos)
                 $projects   = Model\Call\Project::get($call->id, $filters);
                 $status     = Model\Project::status();
                 // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
