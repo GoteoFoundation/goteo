@@ -1,4 +1,4 @@
 README
 ===========
 
-Archivo
+Archivo info
