@@ -95,6 +95,7 @@ namespace Goteo\Model {
          */
         public function save(&$errors = array()) {
             if($this->validate($errors)) {
+                $this->original_name = $this->name;
                 //nombre seguro
                 $this->name = $this->save_name();
 
@@ -113,7 +114,13 @@ namespace Goteo\Model {
                 try {
 
                     if(!empty($this->tmp)) {
-                        $this->fp->upload($this->tmp, $this->dir_originals . $this->name);
+                        $uploaded = $this->fp->upload($this->tmp, $this->dir_originals . $this->name);
+
+                        //@FIXME falta checkear que la imagen se ha subido correctamente
+                        if (!$uploaded) {
+                            $errors[] = 'fp->upload : <br />'.$this->tmp.' <br />dir: '.$this->dir_originals.' <br />file name: '.$this->name . '<br />from: '.$this->original_name;
+                            return false;
+                        }
                     }
                     else {
                         $errors[] = Text::get('image-upload-fail');
@@ -328,7 +335,7 @@ namespace Goteo\Model {
 
             try {
                 self::query("START TRANSACTION");
-                $sql = "DELETE FROM image WHERE id = ?";
+                $sql = "DELETE FROM image WHERE id = ?";  // Esto ya no hará falta cuando no haya tabla image
                 $query = self::query($sql, array($this->id));
 
                 // para usuarios y proyectos que tienen N imagenes

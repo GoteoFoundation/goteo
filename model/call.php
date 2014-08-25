@@ -473,6 +473,9 @@ namespace Goteo\Model {
                 // Logo
                 if (is_array($this->logo) && !empty($this->logo['name'])) {
                     $logo = new Image($this->logo);
+                    // eliminando tabla images
+                    $logo->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                     if ($logo->save($errors)) {
                         $this->logo = $logo->id;
                     } else {
@@ -480,9 +483,12 @@ namespace Goteo\Model {
                     }
                 }
 
-                // Imagen de fondo splash
+                // Imagen widget
                 if (is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
+                    // eliminando tabla images
+                    $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                     if ($image->save($errors)) {
                         $this->image = $image->id;
                     } else {
@@ -493,6 +499,9 @@ namespace Goteo\Model {
                 // Imagen de fondo resto de páginas
                 if (is_array($this->backimage) && !empty($this->backimage['name'])) {
                     $backimage = new Image($this->backimage);
+                    // eliminando tabla images
+                    $backimage->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                     if ($backimage->save($errors)) {
                         $this->backimage = $backimage->id;
                     } else {
