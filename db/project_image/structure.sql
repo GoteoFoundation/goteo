@@ -6,3 +6,6 @@ CREATE TABLE IF NOT EXISTS `project_image` (
   `order` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`project`,`image`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- campo imagen a nombre archivo
+ALTER TABLE `project_image` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';

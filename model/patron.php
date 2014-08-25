@@ -132,6 +132,7 @@ namespace Goteo\Model {
              if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(patron_lang.title, patron.title) as title,
                                     IFNULL(patron_lang.description, patron.description) as description";
+                 $different_select_project=" IFNULL(project_lang.description, project.description) as description";
                 }
             else {
                 $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title)) as title,
@@ -139,23 +140,58 @@ namespace Goteo\Model {
                 $eng_join=" LEFT JOIN patron_lang as eng
                                 ON  eng.id = patron.id
                                 AND eng.lang = 'en'";
+                $different_select_project=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+                $eng_join_project=" LEFT JOIN project_lang as eng
+                                    ON  eng.id = project.id
+                                       AND eng.lang = 'en'";
                 }
 
             $sql = "SELECT
-                        project,
-                        $different_select
+                        patron.project as project,
+                        $different_select,
+                        project.published as published,
+                        project.created as created,
+                        project.updated as updated,
+                        project.success as success,
+                        project.closed as closed,
+                        project.mincost as mincost,
+                        project.maxcost as maxcost,
+                        $different_select_project,
+                        project.amount as amount,
+                        project.image as image,
+                        project.num_investors as num_investors,
+                        project.num_messengers as num_messengers,
+                        project.num_posts as num_posts,
+                        project.days as days,
+                        user.id as user_id,
+                        user.name as user_name,
+                        project.image as image,
+                        project_conf.noinvest as noinvest,
+                        project_conf.one_round as one_round,
+                        project_conf.days_round1 as days_round1,
+                        project_conf.days_round2 as days_round2
                     FROM patron
                     LEFT JOIN patron_lang
                         ON patron_lang.id = patron.id
                         AND patron_lang.lang = :lang
                     $eng_join
-                    WHERE user = :user
+                    INNER JOIN project
+                        ON project.id = patron.project
+                    LEFT JOIN project_lang
+                        ON project_lang.id = project.id
+                        AND project_lang.lang = :lang
+                    $eng_join_project
+                    INNER JOIN user
+                        ON user.id = project.owner
+                    LEFT JOIN project_conf
+                        ON project_conf.project = project.id
+                    WHERE patron.user = :user
                     $sqlFilter
-                    ORDER BY `order` ASC";
+                    ORDER BY patron.order ASC";
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $reco) {
                 try {
-                    $reco->projectData = Project::getMedium($reco->project, LANG);
+                    $reco->projectData = Project::getWidget($reco);
                 } catch (\Goteo\Core\Error $e) {
                     continue;
                 }

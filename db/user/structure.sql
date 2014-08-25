@@ -58,5 +58,7 @@ ALTER TABLE `user`
 ALTER TABLE `user`
   ADD COLUMN `num_owned` int(10) unsigned   NOT NULL DEFAULT 0 COMMENT 'Num. proyectos publicados';
 
+-- campo imagen a nombre archivo
+ALTER TABLE `user` CHANGE `avatar` `avatar` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
   
   

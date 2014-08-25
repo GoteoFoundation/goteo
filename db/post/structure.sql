@@ -24,3 +24,6 @@ ALTER TABLE  `post` ADD  `home` BOOLEAN NULL DEFAULT  '0' COMMENT  'para los de 
 ALTER TABLE `post` ADD `footer` BOOLEAN NULL DEFAULT '0' COMMENT 'Para los del footer';
 ALTER TABLE `post` ADD `legend` TEXT NULL ;
 ALTER TABLE  `post` ADD  `author` VARCHAR( 50 ) NULL ;
+
+-- campo imagen a nombre archivo
+ALTER TABLE `post` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';

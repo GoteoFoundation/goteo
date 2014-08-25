@@ -112,6 +112,9 @@ namespace Goteo\Model {
             // Primero la imagenImagen
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
+                // @image-table (descomentar la siguiente linea)
+                // $image->newstyle = true; // no grabar en tabla image para esta entidad, guardar nombre archivo en esta tabla
+
                 if ($image->save($errors)) {
                     $this->image = $image->id;
                 } else {

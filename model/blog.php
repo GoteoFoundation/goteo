@@ -162,7 +162,8 @@ namespace Goteo\Model {
                 $num = $query->fetchColumn(0);
                 return ($num > 0);
         }
-        
+
+
     }
     
 }

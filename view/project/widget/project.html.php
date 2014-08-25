@@ -75,7 +75,7 @@ if ($project->status == 3 && $project->noinvest) {
         <?php endif ?>
         <?php if (!empty($project->categories)): ?>
         <div class="categories">
-        <?php $sep = ''; foreach ($project->categories as $key=>$value) :
+        <?php $sep = ''; foreach ($project->cat_names as $key=>$value) :
             echo $sep.htmlspecialchars($value);
         $sep = ', '; endforeach; ?>
         </div>
@@ -94,18 +94,11 @@ if ($project->status == 3 && $project->noinvest) {
         <h<?php echo $level + 1 ?>><?php echo Text::get('project-rewards-header'); ?></h<?php echo $level + 1?>>
 
         <ul>
-           <?php $q = 1; foreach ($project->social_rewards as $social): ?>
-            <li class="<?php echo $social->icon ?> activable">
-                <a href="<?php echo $url ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$social->icon_name}: {$social->reward}") ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($social->reward) ?></a>
+           <?php foreach ($project->rewards as $reward): ?>
+            <li class="<?php echo $reward->icon ?> activable">
+                <a href="<?php echo $url ?>/project/<?php echo $reward->id ?>/rewards" title="<?php echo htmlspecialchars("{$reward->icon_name}: {$reward->reward}"); if ($reward->type == 'individual') echo ' '.$reward->amount.' &euro;'; ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($reward->reward) ?></a>
             </li>
-           <?php if ($q >= 4) break; $q++;
-               endforeach ?>
-           <?php if ($q < 4) foreach ($project->individual_rewards as $individual): ?>
-            <li class="<?php echo $individual->icon ?> activable">
-                <a href="<?php echo $url ?>/project/<?php echo $project->id ?>/rewards" title="<?php echo htmlspecialchars("{$individual->icon_name}: {$individual->reward} {$individual->amount}") ?> &euro;" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($individual->reward) ?></a>
-            </li>
-           <?php if ($q >= 4) break; $q++;
-           endforeach ?>
+           <?php endforeach ?>
         </ul>
 
 

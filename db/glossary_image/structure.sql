@@ -3,3 +3,6 @@ CREATE TABLE IF NOT EXISTS `glossary_image` (
   `image` int(10) unsigned NOT NULL,
   PRIMARY KEY (`glossary`,`image`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- campo imagen a nombre archivo
+ALTER TABLE `glossary_image` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';

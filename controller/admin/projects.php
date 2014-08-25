@@ -143,6 +143,8 @@ namespace Goteo\Controller\Admin {
                     
                     if ($todook) {
                         Message::Info('Se han actualizado los datos');
+                        // recalculamos la imagen para el widget
+                        Model\Project\Image::setFirst($id);
                     }
                     
                     throw new Redirection('/admin/projects/images/'.$id);
@@ -205,6 +207,7 @@ namespace Goteo\Controller\Admin {
 
             if (isset($id)) {
                 $project = Model\Project::get($id);
+                $project->consultants = Model\Project::getConsultants($project->id);
             }
             switch ($action) {
                 case 'review':
@@ -427,8 +430,6 @@ namespace Goteo\Controller\Admin {
                         Message::Error(implode('<br />', $errors));
                     }
                 }
-
-                $project->consultants = Model\Project::getConsultants($project->id);
 
                 return new View(
                     'view/admin/index.html.php',

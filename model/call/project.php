@@ -42,6 +42,7 @@ namespace Goteo\Model\Call {
                 if (!isset($filters['all'])) {
                     $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
                     $and = "AND";
+                    $sql_draft ="project.id REGEXP '[0-9a-f]{5,40}' as draft,";
                 }
                 if (isset($filters['published'])) {
                     $sqlFilter .= " $and project.status >= 3";
@@ -60,7 +61,11 @@ namespace Goteo\Model\Call {
                             project.project_location as location,
                             project.subtitle as subtitle,
                             project.description as description,
-                            project.id REGEXP '[0-9a-f]{5,40}' as draft,
+                            project.maxproj as maxproj,
+                            project.called as called,
+                            project.amount_user as amount_user,
+                            project.amount_call as amount_call,
+                            $sql_draft
                             IF(project.passed IS NULL, 1, 2) as round
                         FROM project
                         INNER JOIN call_project
@@ -77,9 +82,13 @@ namespace Goteo\Model\Call {
                 foreach ($items as $item) {
                     // cuanto han recaudado
                     // de los usuarios
-                    $item->amount_users = Model\Invest::invested($item->id, 'users');
+                    if (empty($item->amount_users)) {
+                        $item->amount_users = Model\Invest::invested($item->id, 'users', $call);
+                    }
                     // de la convocatoria
-                    $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
+                    if (empty($item->amount_call)) {
+                        $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
+                    }
 
                     $item->user = Model\User::getMini($item->owner);
 
@@ -91,6 +100,65 @@ namespace Goteo\Model\Call {
 				throw new \Goteo\Core\Exception($e->getMessage());
             }
 		}
+
+        /**
+         * Get the projects assigned to a call
+         * @param varcahr(50) $id  Call identifier
+         * @return array of categories identifiers
+         */
+        public static function getMini ($call, $filters = array()) {
+            $array = array ();
+            try {
+
+                $values = array(':call'=>$call);
+
+                $sqlFilter = "";
+                if (!empty($filters['category'])) {
+                    $sqlFilter .= "LEFT JOIN project_category
+                        ON project_category.project = call_project.project
+                        AND project_category.category = :filter";
+                    $values[':filter'] = $filters['category'];
+                }
+
+                $and = "WHERE";
+                if (!isset($filters['all'])) {
+                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                    $and = "AND";
+                    $sql_draft ="project.id REGEXP '[0-9a-f]{5,40}' as draft,";
+                }
+                if (isset($filters['published'])) {
+                    $sqlFilter .= " $and project.status >= 3";
+                    $and = "AND";
+                }
+
+
+                $sql = "SELECT
+                            project.id as id,
+                            project.name as name,
+                            project.status as status,
+                            project.amount as amount
+                        FROM project
+                        INNER JOIN call_project
+                            ON  call_project.project = project.id
+                            AND call_project.call = :call
+                        $sqlFilter
+                        GROUP BY project.id
+                        ORDER BY project.name ASC
+                        ";
+
+                $query = static::query($sql, $values);
+                $items = $query->fetchAll(\PDO::FETCH_OBJ);
+
+                foreach ($items as $item) {
+
+                    $array[$item->id] = $item;
+                }
+
+                return $array;
+            } catch(\PDOException $e) {
+                throw new \Goteo\Core\Exception($e->getMessage());
+            }
+        }
 
         /**
          * Get all projects available
@@ -186,7 +254,7 @@ namespace Goteo\Model\Call {
 		}
 
 		/**
-		 * Quitar una palabra clave de un proyecto
+		 * Quitar un proyecto de la convocatoria
 		 *
 		 * @param varchar(50) $call id de un proyecto
 		 * @param INT(12) $id  identificador de la tabla keyword
@@ -202,6 +270,9 @@ namespace Goteo\Model\Call {
 			try {
                 $sql = "DELETE FROM call_project WHERE project = :project AND `call` = :call";
                 if (self::query($sql, $values)) {
+
+                    // actualizar numero de proyectos
+
                     return true;
                 } else {
                     $errors[] = "$sql <pre>".print_r($values, true)."</pre>";
@@ -221,19 +292,42 @@ namespace Goteo\Model\Call {
          */
         public static function miniCalled ($project) {
             try {
-                $sql = "SELECT
-                            call_project.call as id
-                        FROM call_project
-                        WHERE  call_project.project = :project
-                        LIMIT 1
-                        ";
 
-                $query = static::query($sql, array(':project'=>$project));
-                $called = $query->fetchColumn();
-                if (!empty ($called)) {
-                    $call = Model\Call::getMini($called);
+                $sql = "
+                  SELECT
+                    call.id as id,
+                    call.name as name,
+                    call.owner as owner,
+                    call.lang as lang,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar,
+                    user.lang as user_lang,
+                    user.node as user_node
+                  FROM `call`
+                  INNER JOIN call_project
+                    ON call.id = call_project.call
+                  INNER JOIN user
+                    ON user.id = call.owner
+                  WHERE call_project.project = :project
+                  LIMIT 1
+                  ";
+                // metemos los datos del convocatoria en la instancia
+                $query = self::query($sql, array(':project'=>$project));
+                if ($call = $query->fetchObject('\Goteo\Model\Call')) {
+
+                    // owner
+                    $user = new Model\User;
+                    $user->name = $call->user_name;
+                    $user->email = $call->user_email;
+                    $user->lang = $call->user_lang;
+                    $user->node = $call->user_node;
+                    $user->avatar = Model\Image::get($call->user_avatar);
+
+                    $call->user = $user;
 
                     return $call;
+
                 } else {
                     return null;
                 }
@@ -443,6 +537,42 @@ namespace Goteo\Model\Call {
             } else {
                 return false;
             }
+        }
+
+        /*
+         * Numero de proyectos publicados en una convocatoria
+         */
+        public static function numProjects ($call) {
+
+            $debug = false;
+
+            $values = array(':call' => $call);
+
+            $sql = "SELECT  COUNT(*) as projects, call.num_projects as num
+                FROM    `call`
+                INNER JOIN call_project
+                    ON call_project.call = call.id
+                INNER JOIN project
+                    ON call_project.project = project.id
+                WHERE   call.id = :call
+                ";
+
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
+            }
+
+            $query = static::query($sql, $values);
+            if($got = $query->fetchObject()) {
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->projects != $got->num) {
+                    $values['num'] = (int) $got->projects;
+                    static::query("UPDATE `call` SET num_projects = :num  WHERE id = :call", $values);
+                }
+            }
+
+            return (int) $got->messengers;
         }
 
     }

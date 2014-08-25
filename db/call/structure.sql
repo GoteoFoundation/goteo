@@ -83,4 +83,17 @@ ALTER TABLE `call` ADD `tweet` tinytext DEFAULT NULL AFTER `dossier` ;
 ALTER TABLE `call` ADD `fbappid` tinytext DEFAULT NULL AFTER `tweet` ;
 
 -- Modalidad del maximo por proyecto
-ALTER TABLE `call` ADD `modemaxp` VARCHAR(3) DEFAULT 'imp' COMMENT 'Modalidad del máximo por proyecto: imp = importe, per = porcentaje' AFTER `maxdrop`;
+ALTER TABLE `call` ADD `modemaxp` VARCHAR(3) DEFAULT 'imp' COMMENT 'Modalidad del mï¿½ximo por proyecto: imp = importe, per = porcentaje' AFTER `maxdrop`;
+
+
+-- Aï¿½adido numero de usuarios proyectos publicados
+ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Nï¿½mero de proyectos publicados';
+
+-- Aï¿½adido numero de usuarios proyectos publicados
+ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Nï¿½mero de proyectos publicados';
+
+-- Recaudaciï¿½n que proviene de los usuarios
+ALTER TABLE `call` ADD COLUMN `amount_users` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudaciï¿½n proveniente de los usuarios';
+
+-- Recaudaciï¿½n proveniente de la convocatoria
+ALTER TABLE `call` ADD COLUMN `amount_call` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudaciï¿½n proveniente de la convocatoria';

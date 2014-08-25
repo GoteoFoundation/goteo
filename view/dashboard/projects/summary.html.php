@@ -36,7 +36,7 @@ if (!$project instanceof  Goteo\Model\Project) {
 <div id="meter-big" class="widget collapsable">
 
     <?php echo new View('view/project/meter_hor_big.html.php', $this) ?>
-    
+
 </div>
 
 <br clear="both" />
@@ -49,15 +49,15 @@ if (!$project instanceof  Goteo\Model\Project) {
     <script language="javascript" type="text/javascript" src="<?php echo $http; ?>://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
 
     <!-- funciones para la visualización -->
-    <script language="javascript" type="text/javascript" src="/view/js/project/chart.js"></script>
-    <script language="javascript" type="text/javascript" src="/view/js/project/visualizers.js"></script>
-    <script language="javascript" type="text/javascript" src="/view/js/project/display.js"></script>
+    <script language="javascript" type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/project/chart.js"></script>
+    <script language="javascript" type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/project/visualizers.js"></script>
+    <script language="javascript" type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/project/display.js"></script>
 
     <!-- estilos para la visualización -->
-    <link rel="stylesheet" type="text/css" href="/view/css/dashboard/projects/graph.css"/>	
-    
-    
-    <div class="widget chart"> 
+    <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL; ?>/view/css/dashboard/projects/graph.css"/>
+
+
+    <div class="widget chart">
             <div id="project_selection" style="margin-bottom: 10px"></div>
             <div class="titles">
                 <div>
@@ -85,11 +85,11 @@ if (!$project instanceof  Goteo\Model\Project) {
             </div>
             <div id="cofund" class="chart_div"></div>
     </div>
-    
+
 <script type="text/javascript">
     /* función para cargar los datos del gáfico, sacado de graphA.js */
 jQuery(document).ready(function(){
-        GOTEO.initializeGraph(<?php echo $this['data']; ?>); 
+        GOTEO.initializeGraph(<?php echo $this['data']; ?>);
     });
 
 </script>

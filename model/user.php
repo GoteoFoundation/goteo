@@ -5,6 +5,7 @@ namespace Goteo\Model {
 	use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\Node,
+        Goteo\Model\Project,
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Check,
@@ -1507,40 +1508,81 @@ namespace Goteo\Model {
          */
         public static function invested($user, $publicOnly = true)
         {
+            $debug = false;
+
             $projects = array();
+            $values = array();
+            $values[':lang'] = \LANG;
+            $values[':user'] = $user;
 
-            $sql = "SELECT project.id
-                    FROM  project
-                    INNER JOIN invest
-                        ON project.id = invest.project
-                        AND invest.user = ?
-                        AND invest.status IN ('0', '1', '3', '4')
-                    WHERE project.status < 7
-                    ";
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(project_lang.description, project.description) as description";
+            }
+            else {
+                $different_select=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+                $eng_join=" LEFT JOIN project_lang as eng
+                                ON  eng.id = project.id
+                                AND eng.lang = 'en'";
+            }
+
             if ($publicOnly) {
-                $sql .= "AND project.status >= 3
-                    ";
+                $sqlFilter = " AND project.status > 2";
             }
-            $sql .= "GROUP BY project.id
-                    ORDER BY name ASC
-                    ";
-/*
-            if ($_SESSION['user']->id == 'root') {
-                echo $sql . '<br />';
-                echo \trace($user);
+
+            $sql ="
+                SELECT
+                    project.id as project,
+                    $different_select,
+                    project.status as status,
+                    project.published as published,
+                    project.created as created,
+                    project.updated as updated,
+                    project.success as success,
+                    project.closed as closed,
+                    project.mincost as mincost,
+                    project.maxcost as maxcost,
+                    project.amount as amount,
+                    project.image as image,
+                    project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
+                    project.days as days,
+                    project.name as name,
+                    user.id as user_id,
+                    user.name as user_name,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
+                FROM  project
+                INNER JOIN invest
+                    ON project.id = invest.project
+                    AND invest.user = :user
+                    AND invest.status IN ('0', '1', '3', '4')
+                INNER JOIN user
+                    ON user.id = project.owner
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
+                LEFT JOIN project_lang
+                    ON  project_lang.id = project.id
+                    AND project_lang.lang = :lang
+                $eng_join
+                WHERE project.status < 7
+                $sqlFilter
+                ORDER BY  project.status ASC, project.created DESC
+                ";
+
+            $sql .= "LIMIT 12";
+
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
             }
- * 
- */
 
-            /*
-             * Restriccion de que no aparecen los que cofinancio que esten en edicion
-             *  solamente no sacamos los caducados
-             * project.status > 1 AND
-             */
-
-            $query = self::query($sql, array($user));
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $proj) {
-                $projects[] = \Goteo\Model\Project::getMedium($proj->id);
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+                $projects[] = Project::getWidget($proj);
             }
             return $projects;
         }

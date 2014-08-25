@@ -3,7 +3,7 @@
 use Goteo\Library\Text;
 
 ?>
-<script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	// Lanza wysiwyg contenido

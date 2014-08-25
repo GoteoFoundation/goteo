@@ -308,7 +308,7 @@ namespace Goteo\Controller\Admin {
 
                     // si llega campaign, montar el $invest->called con instancia call para que el save genere el riego
                     if (!empty($_POST['campaign'])) {
-                        $called = Model\Call::get($_POST['campaign']);
+                        $called = Model\Call::getMini($_POST['campaign']);
 
                         if ($called instanceof Model\Call) {
                             $invest->called = $called;

@@ -16,3 +16,6 @@ ALTER TABLE `feed` ADD `image` INT( 10 ) NULL ;
 ALTER TABLE `feed` ADD `target_type` VARCHAR( 10 ) NULL COMMENT 'tipo de objetivo',
 ADD `target_id` VARCHAR( 50 ) NULL COMMENT 'registro objetivo',
 ADD INDEX ( `target_type` );
+
+-- campo imagen a nombre archivo
+ALTER TABLE `feed` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';

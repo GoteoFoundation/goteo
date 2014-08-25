@@ -211,6 +211,9 @@ namespace Goteo\Model {
             // Imagen para el regalo
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
+                // @image-table (descomentar la siguiente linea)
+                // $image->newstyle = true; // no grabar en tabla image para esta entidad, guardar nombre archivo en esta tabla
+
                 if ($image->save()) {
                     $this->image = $image->id;
                 } else {

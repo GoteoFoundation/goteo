@@ -26,7 +26,7 @@ else :
         <p><?php echo current($banner->project_social_rewards)->reward ?></p>
         <ul>
             <?php $c = 1; foreach ($banner->project_social_rewards as $id => $reward) : ?>
-            <li><img src="<?php echo SRC_URL ?>/view/css/icon/s/<?php echo $reward->icon ?>.png" alt="<?php echo $reward->icon ?>" title="<?php echo $reward->reward ?>" /></li>
+            <li><img src="<?php echo SRC_URL ?>/view/css/icon/s/<?php echo $reward->icon ?>.png" alt="<?php echo $reward->icon ?>" title="<?php echo htmlspecialchars($reward->reward) ?>" /></li>
             <?php if ($c>4) break; else $c++; endforeach; ?>
         </ul>
         <div class="license"><?php foreach ($banner->project_social_rewards as $id => $reward) :

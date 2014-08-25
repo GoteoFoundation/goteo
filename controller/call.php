@@ -44,7 +44,7 @@ namespace Goteo\Controller {
         }
 
         public function delete ($id) {
-            $call = Model\Call::get($id);
+            $call = Model\Call::getMini($id);
             if ($call->delete()) {
                 if ($_SESSION['call']->id == $id) {
                     unset($_SESSION['call']);
@@ -379,11 +379,9 @@ namespace Goteo\Controller {
                 Message::Error('Ha habido algun errror al cargar la convocatoria solicitada');
                 throw new Redirection("/");
             } else {
-                $the_logo = empty($call->logo) ? 1 : $call->logo;
-                $call->logo = Model\Image::get($the_logo);
+                $call->logo = Model\Image::get($call->logo);
                 // el fondo es el campo  backimage
-                $the_image = empty($call->backimage) ? 1 : $call->backimage;
-                $call->image = Model\Image::get($the_image);
+                $call->image = Model\Image::get($call->backimage);
             }
 
             // solamente se puede ver publicamente si
@@ -478,14 +476,15 @@ namespace Goteo\Controller {
                 }
 
                 // filtro proyectos por categoria
-                if ($show == 'projects') {
+                if ($show == 'projects' || $show == 'info') {
+                    $filters = array(
+                        'published' => true
+                    );
                     if (isset($_GET['filter']) && is_numeric($_GET['filter'])) {
-                        $filters = array(
-                            'category' => $_GET['filter'],
-                            'published' => true
-                        );
-                        $call->projects = Model\Call\Project::get($call->id, $filters);
-                        }
+                        $filters['category'] = $_GET['filter'];
+                        $filter = $_GET['filter'];
+                    }
+                    $call->projects = Model\Call\Project::get($call->id, $filters);
                 }
 
                 echo new View('view/call/'.$show.'.html.php', array ('call' => $call, 'social' => $social, 'filter' => $filter));
@@ -496,7 +495,7 @@ namespace Goteo\Controller {
         }
 
         private function apply ($id) {
-            $call = Model\Call::get($id, LANG);
+            $call = Model\Call::getMini($id);
 
             if (!$call instanceof Model\Call) {
                 Message::Error(Text::get('call-apply-failed'));
@@ -529,7 +528,7 @@ namespace Goteo\Controller {
                 return false;
             }
 
-            $user = Model\User::get($call->owner);
+            $user = $call->user;
 
             // tratar la imagen y ponerla en la propiedad avatar
             // __FILES__
