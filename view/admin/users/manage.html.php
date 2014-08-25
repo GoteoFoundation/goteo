@@ -86,7 +86,7 @@ $langs = $this['langs'];
         <?php if (isset($_SESSION['admin_menu']['projects']['options']['accounts'])) : ?>
         <li><a href="/admin/accounts/add/?user=<?php echo $user->id; ?>">[Crear aporte]</a></li>
         <?php endif; ?>
-        <li><a href="/admin/<?php echo (isset($_SESSION['admin_node'])) ? 'invests' : 'accounts'; ?>/?name=<?php echo $user->email; ?>">[Historial aportes]</a></li>
+        <li><a href="/admin/<?php echo (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) ? 'invests' : 'accounts'; ?>/?name=<?php echo $user->email; ?>">[Historial aportes]</a></li>
         <li><a href="/admin/sended/?user=<?php echo urlencode($user->email); ?>">[Historial envíos]</a></li>
     </ul>
 
