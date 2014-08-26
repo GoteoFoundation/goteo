@@ -252,7 +252,9 @@ namespace Goteo\Model {
 		 * @param type int	$id
 		 * @return type object	Image
 		 */
-	    static public function get ($id) {
+	    static public function get ($id, $debug = false) {
+
+            if ($debug) echo "Request image $id<br />";
             try {
 
                 if (empty($id))
@@ -281,14 +283,24 @@ namespace Goteo\Model {
                     ", array(':id' => $id));
                     $image = $query->fetchObject(__CLASS__);
 
+                    if ($debug) echo "Numeric, from table: ".\trace($image);
+
+
                 } else {
                     $image = new Image;
                     $image->name = $id;
                     $image->id = $id;
+
+                    if ($debug) echo "Numeric, from name: <br />";
+                    if ($debug) echo \trace($image);
+                    if ($debug) echo $image->getLink(150, 85);
+
+
                 }
 
+                if ($debug) die;
 
-                return $image;
+                    return $image;
             } catch(\PDOException $e) {
                 return false;
             }

@@ -37,7 +37,7 @@ namespace Goteo\Model {
         }
 
         /*
-         * Lista de patrocinadores
+         * Lista de patrocinadores (para panel admin)
          */
         public static function getAll ($node = \GOTEO_NODE) {
 
@@ -70,7 +70,7 @@ namespace Goteo\Model {
 
             $list = array();
 
-            $sql = static::query("
+            $sql = "
                 SELECT
                     id,
                     name,
@@ -79,13 +79,16 @@ namespace Goteo\Model {
                 FROM    sponsor
                 WHERE node = :node
                 ORDER BY `order` ASC, name ASC
-                ", array(':node'=>$node));
+                ";
 
-            foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
+            echo $sql;
+            echo \trace($node);
+
+            $query = static::query($sql, array(':node'=>$node));
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
                 // imagen
-                if (!empty($sponsor->image)) {
-                    $sponsor->image = Image::get($sponsor->image);
-                }
+                $sponsor->image = Image::get($sponsor->image);
 
                 $list[] = $sponsor;
             }

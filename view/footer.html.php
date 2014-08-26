@@ -15,6 +15,9 @@ $lang = (LANG != 'es') ? '?lang='.LANG : '';
 $categories = Category::getList();  // categorias que se usan en proyectos
 $posts      = Post::getList('footer');
 $sponsors   = Sponsor::getList();
+
+die(\trace($sponsors));
+
 ?>
 
 <script type="text/javascript">
