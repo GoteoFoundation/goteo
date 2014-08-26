@@ -83,17 +83,17 @@ ALTER TABLE `call` ADD `tweet` tinytext DEFAULT NULL AFTER `dossier` ;
 ALTER TABLE `call` ADD `fbappid` tinytext DEFAULT NULL AFTER `tweet` ;
 
 -- Modalidad del maximo por proyecto
-ALTER TABLE `call` ADD `modemaxp` VARCHAR(3) DEFAULT 'imp' COMMENT 'Modalidad del m�ximo por proyecto: imp = importe, per = porcentaje' AFTER `maxdrop`;
+ALTER TABLE `call` ADD `modemaxp` VARCHAR(3) DEFAULT 'imp' COMMENT 'Modalidad del máximo por proyecto: imp = importe, per = porcentaje' AFTER `maxdrop`;
 
 
--- A�adido numero de usuarios proyectos publicados
-ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'N�mero de proyectos publicados';
+-- Añadido numero de usuarios proyectos publicados
+ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos publicados';
 
--- A�adido numero de usuarios proyectos publicados
-ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'N�mero de proyectos publicados';
+-- Añadido numero de usuarios proyectos publicados
+ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos publicados';
 
--- Recaudaci�n que proviene de los usuarios
-ALTER TABLE `call` ADD COLUMN `amount_users` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudaci�n proveniente de los usuarios';
+-- Recaudación que proviene de los usuarios
+ALTER TABLE `call` ADD COLUMN `amount_users` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudación proveniente de los usuarios';
 
--- Recaudaci�n proveniente de la convocatoria
-ALTER TABLE `call` ADD COLUMN `amount_call` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudaci�n proveniente de la convocatoria';
+-- Recaudación proveniente de la convocatoria
+ALTER TABLE `call` ADD COLUMN `amount_call` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudación proveniente de la convocatoria';
