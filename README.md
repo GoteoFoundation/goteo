@@ -3,4 +3,4 @@ README
 
 Archivo info
 
-Julian push test + test desde portatil
+Julian push test + test desde portatil + test ivan
