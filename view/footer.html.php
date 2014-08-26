@@ -16,6 +16,7 @@ $categories = Category::getList();  // categorias que se usan en proyectos
 $posts      = Post::getList('footer');
 $sponsors   = Sponsor::getList();
 
+echo \trace($sponsors);
 ?>
 
 <script type="text/javascript">
@@ -25,7 +26,7 @@ jQuery(document).ready(function($) {
 </script>
 
     <div id="footer">
-        <?php if($bannerPrensa&&count($this[news])) {?>
+        <?php if( $bannerPrensa && count($this[news]) ) {?>
         <div id="press_banner">
             <?php echo $bannerPrensa;?> 
         </div> 
