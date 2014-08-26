@@ -16,7 +16,7 @@ $categories = Category::getList();  // categorias que se usan en proyectos
 $posts      = Post::getList('footer');
 $sponsors   = Sponsor::getList();
 
-echo \trace($sponsors);
+//echo \trace($sponsors);
 ?>
 
 <script type="text/javascript">

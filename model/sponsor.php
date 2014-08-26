@@ -87,10 +87,10 @@ namespace Goteo\Model {
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
 
-                echo \trace($sponsor);
+               // echo \trace($sponsor);
 
                 // imagen
-                $sponsor->image = Image::get($sponsor->image, true);
+                $sponsor->image = Image::get($sponsor->image);
 
                 $list[] = $sponsor;
             }
