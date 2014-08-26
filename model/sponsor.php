@@ -87,8 +87,8 @@ namespace Goteo\Model {
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
 
-                echo \trace($node);
-                
+                echo \trace($sponsor);
+
                 // imagen
                 $sponsor->image = Image::get($sponsor->image, true);
 
