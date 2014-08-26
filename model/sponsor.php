@@ -81,14 +81,14 @@ namespace Goteo\Model {
                 ORDER BY `order` ASC, name ASC
                 ";
 
-            echo $sql;
-            echo \trace($node);
+            // echo $sql;
+            // echo \trace($node);
 
             $query = static::query($sql, array(':node'=>$node));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
                 // imagen
-                $sponsor->image = Image::get($sponsor->image);
+                $sponsor->image = Image::get($sponsor->image, true);
 
                 $list[] = $sponsor;
             }
