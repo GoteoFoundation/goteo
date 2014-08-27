@@ -240,16 +240,13 @@ namespace Goteo\Model {
                         patron.user as id,
                         user.name as name,
                         user.num_patron_active as num_patron_active,
-                        user_vip.image as vip_image,
-                        image.id as image_id,
-                        image.name as image_name
+                        user.avatar as avatar,
+                        user_vip.image as vip_image
                     FROM patron
                     LEFT JOIN user_vip
                         ON user_vip.user = patron.user
                     LEFT JOIN user
                         ON user.id = patron.user
-                    LEFT JOIN image
-                        ON image.id = user.avatar
                     WHERE patron.active = 1
                     AND patron.node = :node
                     ORDER BY patron.`order` ASC";
@@ -259,9 +256,7 @@ namespace Goteo\Model {
                 $user->id = $item->id;
                 $user->name = $item->name;
                 // nos ahorramos las llamadas sql a image pues en la vista solo se usa el nombre y la id (de la funcion getLink)
-                $user->avatar = new Image;
-                $user->avatar->name = $item->image_name;
-                $user->avatar->id = $item->image_id;
+                $user->avatar = Image::get($item->avatar);
                 //si existe una imagen vip, la ponemos (esto no es muy costso porque hay muy pocas, solo una de momento...):
                 if($item->vip_image) {
                     $avatar = Image::get($item->vip_image);

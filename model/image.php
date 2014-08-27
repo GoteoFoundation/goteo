@@ -291,7 +291,7 @@ namespace Goteo\Model {
                     $image->name = $id;
                     $image->id = $id;
 
-                    if ($debug) echo "Numeric, from name: <br />";
+                    if ($debug) echo "Not numeric, from name: <br />";
                     if ($debug) echo \trace($image);
                     if ($debug) echo $image->getLink(150, 85);
 
