@@ -757,6 +757,21 @@ namespace Goteo\Library {
             return $url = preg_replace('#/.+#', '', preg_replace('#http|s?://#', '', $url));
         }
 
+         /*
+         * Método para eliminar etiquetas script, iframe, form y objet.
+         */
+        public static function tags_filter($text) {
+
+            $paterns = array ('#<script(.*?)</script>#i', '#<iframe(.*?)</iframe>#i', 
+                              '#<embed(.*?)</embed>#i', '#<form(.*?)</form>#i');
+            $sus = array ('', '', '','','');
+            $text = preg_replace($paterns,$sus,$text);
+
+            return $text;
+        }
+
+
+
 
 	}
 

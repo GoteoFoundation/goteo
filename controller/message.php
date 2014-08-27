@@ -20,11 +20,6 @@ namespace Goteo\Controller {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
 
-                $_POST['message'] = preg_replace("#<script(.*?)</script>#",'',$_POST['message']);
-                $_POST['message'] = preg_replace("#<iframe(.*?)</iframe>#",'',$_POST['message']);
-                $_POST['message'] = preg_replace("#<embed(.*?)</embed>#",'',$_POST['message']);
-                $_POST['message'] = preg_replace("#<form(.*?)</form>#",'',$_POST['message']);
-
                 $projectData = Model\Project::getMini($project);
 
                 if ($projectData->status < 3) {
@@ -356,11 +351,6 @@ namespace Goteo\Controller {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
 
                  //eliminamos etiquetas script, iframe, embed y form.
-
-                $_POST['message'] = preg_replace("#<script(.*?)</script>#",'',$_POST['message']);
-                $_POST['message'] = preg_replace("#<iframe(.*?)</iframe>#",'',$_POST['message']);
-                $_POST['message'] = preg_replace("#<embed(.*?)</embed>#",'',$_POST['message']);
-                $_POST['message'] = preg_replace("#<form(.*?)</form>#",'',$_POST['message']);
 
                 $comment = new Model\Blog\Post\Comment(array(
                     'user' => $_SESSION['user']->id,

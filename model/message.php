@@ -174,6 +174,9 @@ namespace Goteo\Model {
                 }
             }
 
+            //eliminamos etiquetas script,iframe..
+            $values[':message']=Text::tags_filter($values[':message']);
+
             try {
                 $sql = "REPLACE INTO message SET " . $set;
                 self::query($sql, $values);
@@ -203,6 +206,9 @@ namespace Goteo\Model {
                     $values[":$field"] = $this->$ffield;
                 }
             }
+
+            //eliminamos etiquetas script,iframe..
+            $values[':message']=Text::tags_filter($values[':message']);
 
             try {
                 $sql = "REPLACE INTO message_lang SET " . $set;
