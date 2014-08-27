@@ -419,6 +419,9 @@ namespace Goteo\Model\Blog {
                 $values[":$field"] = $this->$field;
             }
 
+            //eliminamos etiquetas script,iframe..
+            $values[':text']=Text::tags_filter($values[':text']);
+
             try {
                 $sql = "REPLACE INTO post SET " . $set;
                 self::query($sql, $values);
@@ -492,6 +495,9 @@ namespace Goteo\Model\Blog {
                 $set .= "`$field` = :$field ";
                 $values[":$field"] = $this->$ffield;
             }
+
+            //eliminamos etiquetas script,iframe..
+            $values[':text']=Text::tags_filter($values[':text']);
 
             try {
                 $sql = "REPLACE INTO post_lang SET " . $set;
