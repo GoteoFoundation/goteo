@@ -1,6 +1,7 @@
 <?php
 
 use Goteo\Library\Text,
+    Goteo\Library\Mail,
     Goteo\Core\View;
 
 // paginacion
@@ -80,7 +81,7 @@ $pagedResults = new \Paginated($this['sended'], 20, isset($_GET['page']) ? $_GET
             <tbody>
                 <?php
                 while ($send = $pagedResults->fetchPagedRow()) :
-                    $link = SITE_URL . '/mail/' . \mybase64_encode(md5(uniqid()) . '¬' . $send->email . '¬' . $send->id) . '/?email=' . urlencode($send->email);
+                    $link = Mail::getSinovesLink($send->id);
                     ?>
                     <tr>
                         <td><a href="<?php echo $link; ?>" target="_blank">[Enlace]</a></td>

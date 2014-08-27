@@ -16,7 +16,7 @@ if (count($news) > 4) :  ?>
 </script>
 <?php endif; ?>
 <div class="clip">
-    <img src="/view/css/home/clip.png" width="70"/>
+    <img src="<?php echo SRC_URL; ?>/view/css/home/clip.png" width="70"/>
 </div>
 <div class="clip_sup">
 </div>

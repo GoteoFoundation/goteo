@@ -186,12 +186,39 @@ namespace Goteo\Model {
 
             try {
 
+                $debug = false;
+
+                $values = array(':id' => $id);
+
+                $sql= "SELECT
+                            `call`.*,
+                             user.id as user_id,
+                             user.name as user_name,
+                             user.avatar as user_avatar,
+                             user.email as user_email,
+                             user.facebook as user_facebook,
+                             user.google as user_google,
+                             user.twitter as user_twitter,
+                             user.identica as user_identica,
+                             user.linkedin as user_linkedin,
+                             user.lang as user_lang
+                      FROM `call` 
+                      LEFT JOIN user
+                      ON user.id=call.owner 
+                      WHERE call.id = :id";
+
+                if ($debug) {
+                    echo \trace($values);
+                    echo $sql;
+                    die;
+                }
+
                 // metemos los datos del convocatoria en la instancia
-                $query = self::query("SELECT * FROM `call` WHERE id = :id", array(':id' => $id));
+                $query = self::query($sql, $values);
                 $call = $query->fetchObject(__CLASS__);
 
                 if (!$call instanceof \Goteo\Model\Call) {
-                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-call'));
+                   return null;
                 }
 
                 if(!empty($lang) && $lang!=$call->lang)
@@ -224,7 +251,26 @@ namespace Goteo\Model {
                 }        
 
                 // owner
-                $call->user = User::get($call->owner);
+
+                $call->user = new User;
+                $call->user->id = $call->user_id;
+                $call->user->name = $call->user_name;
+                $call->user->email = $call->user_email;
+                $call->user->lang = $call->user_lang;
+                $call->user->avatar = $call->user_avatar;
+                $call->user->facebook = $call->user_facebook;
+                $call->user->google = $call->user_google;
+                $call->user->twitter = $call->user_twitter;
+                $call->user->identica = $call->user_identica;
+                $call->user->linkedin = $call->user_linkedin;
+
+
+                $call->user->avatar = Image::get($call->user->avatar);
+                if (empty($call->user->avatar->id) || !$call->user->avatar instanceof Image) {
+                    $call->user->avatar = Image::get(1);
+                }
+
+                $call->user->webs = User\Web::get($call->user_id);
 
                 // No vamos a hacer aqui objetos para las imagenes, los hacemos en el controlador
                 // categorias
@@ -233,8 +279,11 @@ namespace Goteo\Model {
                 // iconos de retorno
                 $call->icons = Call\Icon::get($id);
 
-                // proyectos
-                $call->projects = Call\Project::get($id, array('published'=>true));
+                // proyectos (solo se cargan en la página de listado de proyectos)
+                if (empty($call->num_projects)) {
+                    $call->num_projects = Call\Project::numProjects($id);
+                }
+                // $call->projects = Call\Project::get($id, array('published'=>true));
 
                 // entradas blog
                 $call->posts = Call\Post::get($id);
@@ -279,6 +328,7 @@ namespace Goteo\Model {
             } catch (\PDOException $e) {
                 throw \Goteo\Core\Exception($e->getMessage());
             } catch (\Goteo\Core\Error $e) {
+                die($e->getMessage());
                 throw new \Goteo\Core\Error('404', Text::html('fatal-error-call'));
             }
         }
@@ -291,11 +341,37 @@ namespace Goteo\Model {
         public static function getMini($id) {
 
             try {
+
+                $sql = "
+                  SELECT
+                    call.id as id,
+                    call.name as name,
+                    call.owner as owner,
+                    call.lang as lang,
+                    call.status as status,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar,
+                    user.lang as user_lang,
+                    user.node as user_node
+                  FROM `call`
+                  INNER JOIN user
+                    ON user.id = call.owner
+                  WHERE call.id = :call
+                  ";
                 // metemos los datos del convocatoria en la instancia
-                $query = self::query("SELECT id, name, owner, lang FROM `call` WHERE id = ?", array($id));
-                $call = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
+                $query = self::query($sql, array(':call'=>$id));
+                $call = $query->fetchObject(__CLASS__);
+
                 // owner
-                $call->user = User::getMini($call->owner);
+                $user = new User;
+                $user->name = $call->user_name;
+                $user->email = $call->user_email;
+                $user->lang = $call->user_lang;
+                $user->node = $call->user_node;
+                $user->avatar = Image::get($call->user_avatar);
+
+                $call->user = $user;
 
                 return $call;
             } catch (\PDOException $e) {
@@ -397,6 +473,9 @@ namespace Goteo\Model {
                 // Logo
                 if (is_array($this->logo) && !empty($this->logo['name'])) {
                     $logo = new Image($this->logo);
+                    // eliminando tabla images
+                    $logo->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                     if ($logo->save($errors)) {
                         $this->logo = $logo->id;
                     } else {
@@ -404,9 +483,12 @@ namespace Goteo\Model {
                     }
                 }
 
-                // Imagen de fondo splash
+                // Imagen widget
                 if (is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
+                    // eliminando tabla images
+                    $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                     if ($image->save($errors)) {
                         $this->image = $image->id;
                     } else {
@@ -417,6 +499,9 @@ namespace Goteo\Model {
                 // Imagen de fondo resto de páginas
                 if (is_array($this->backimage) && !empty($this->backimage['name'])) {
                     $backimage = new Image($this->backimage);
+                    // eliminando tabla images
+                    $backimage->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                     if ($backimage->save($errors)) {
                         $this->backimage = $backimage->id;
                     } else {

@@ -12,7 +12,7 @@ $data     = Page::get($id, $node, $_SESSION['translate_lang']);
 
 $bodyClass = 'admin';
 ?>
-<script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -71,7 +71,7 @@ $(document).ready(function(){
             <textarea id="richtext_content" name="content" cols="100" rows="20"><?php echo $data->content; ?></textarea>
             </label>
         </p>
-        
+
         <input type="submit" name="save" value="Guardar" />
     </form>
 </div>

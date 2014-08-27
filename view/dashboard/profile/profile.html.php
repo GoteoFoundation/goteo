@@ -156,7 +156,7 @@ $sfid = 'sf-project-profile';
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) &&  $user->avatar->id != 1 ?
-                               $user->avatar . '<img src="'.SRC_URL.'/image/' . $user->avatar->id . '/128/128/1" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               $user->avatar . '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128/1" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
@@ -167,7 +167,7 @@ $sfid = 'sf-project-profile';
 
 // imagen de colaborador si es usuario vip
 if (isset($user->roles['vip'])) {
-    
+
     $vip = $this['vip'];
 
     $superarray['elements']['vip_image'] = array(
@@ -190,7 +190,7 @@ if (isset($user->roles['vip'])) {
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($vip->image) ?
-                               $vip->image . '<img src="'.SRC_URL.'/image/' . $vip->image->id . '/112/74/1" alt="Avatar" /><button class="image-remove" type="submit" name="vip_image-'.$vip->image->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               $vip->image . '<img src="' . SITE_URL . '/image/' . $vip->image->id . '/112/74/1" alt="Avatar" /><button class="image-remove" type="submit" name="vip_image-'.$vip->image->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 

@@ -158,10 +158,7 @@ namespace Goteo\Library {
 
             if ($query = Model::query($sql)) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $mailing) {
-
-                    $mailing->link = '/mail/'.\mybase64_encode(md5(uniqid()).'¬any¬'.$mailing->mail).'/?email=any';
-
-
+                    $mailing->link = Mail::getSinovesLink($mailing->mail);
                     $list[] = $mailing;
                 }
             }

@@ -94,6 +94,9 @@ define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
 define('GOTEO_URL', 'http://example.com');
+//url de recursos estaticos (imagenes CSS)
+define('SRC_URL', 'https://static.example.com');
+
 // ssl
 define('GOTEO_SSL', false);
 

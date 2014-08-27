@@ -42,12 +42,16 @@ namespace Goteo\Core {
         }
 
         public function __toString () {
+            try {
+                ob_start();
 
-            ob_start();
+                include $this->file;
 
-            include $this->file;
-
-            return ob_get_clean();
+                return ob_get_clean();
+            } catch(Exception $e) {
+                print($e);
+                die($e->getMessage());
+            }
 
         }
 

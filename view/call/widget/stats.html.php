@@ -136,7 +136,7 @@ $call = $this['call'];
         <?php endif; ?>
 
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button info"><?php echo Text::get('call-splash-more_info-button') ?></a>
-         <?php if (count($call->projects) > 0) : // solo si tiene proyectos  ?>
+         <?php if ($call->num_projects > 0) : // solo si tiene proyectos  ?>
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
         <?php endif; ?>
         

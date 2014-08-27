@@ -387,7 +387,6 @@ namespace Goteo\Model {
 				$project->supports = Project\Support::getAll($id, $lang);
 
                 // extra conf
-                $project_conf = Project\Conf::get($id);
                 $project->days_total = ($project->one_round) ? $project->days_round1 : ( $project->days_round1 + $project->days_round2 );
 
                 //-----------------------------------------------------------------
@@ -433,7 +432,7 @@ namespace Goteo\Model {
                 }
 
                 // podría estar asignado a alguna convocatoria
-                $project->called = Call\Project::called($project);
+                $project->called = Call\Project::miniCalled($project);
 
                 // recomendaciones de padrinos
                 $project->patrons = Patron::getRecos($project->id);
@@ -492,7 +491,10 @@ namespace Goteo\Model {
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
+                    project.image as image,
                     project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
                     user.id as user_id,
@@ -945,6 +947,9 @@ namespace Goteo\Model {
                 // Image
                 if (is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
+                    // eliminando tabla images
+                    $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                     if ($image->save($errors)) {
                         $this->gallery[] = $image;
 
@@ -2167,7 +2172,10 @@ namespace Goteo\Model {
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
+                    project.image as image,
                     project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
                     user.id as user_id,
@@ -2320,7 +2328,10 @@ namespace Goteo\Model {
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
+                    project.image as image,
                     project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
                     $different_select
@@ -2623,13 +2634,15 @@ namespace Goteo\Model {
                         project.mincost as mincost,
                         project.maxcost as maxcost,
                         project.node as node,
+                        project.amount as amount,
+                        project.image as image,
+                        project.num_investors as num_investors,
+                        project.num_messengers as num_messengers,
+                        project.num_posts as num_posts,
                         project.days as days,
                         project.owner as owner,
                         project.translate as translate,
                         project.progress as progress,
-                        project.num_messengers as num_messengers,
-                        project.num_investors as num_investors,
-                        project.amount as invested,
                         user.email as user_email,
                         user.name as user_name,
                         user.lang as user_lang,
@@ -2668,28 +2681,26 @@ namespace Goteo\Model {
                 $proj->user->lang = $proj->user_lang;
                 
 
-                $proj->draft = $proj->draft;
-
                 //añadir lo que haga falta
                 $proj->consultants = self::getConsultants($proj->id);
-                $project->called = Call\Project::called($project);
+                $proj->called = Call\Project::miniCalled($proj->id);
 
                 //calculo de maxcost, min_cost sólo si hace falta
-                if(empty($project->mincost)) {
-                        $costs = self::calcCosts($project->id);
-                        $project->mincost = $costs->mincost;
-                        $project->maxcost = $costs->maxcost;
-                    }
+                if(empty($proj->mincost)) {
+                    $costs = self::calcCosts($proj->id);
+                    $proj->mincost = $costs->mincost;
+                    $proj->maxcost = $costs->maxcost;
+                }
 
-                //cálculo de mensajeros si no esta ya
-                if (empty($project->num_messengers)) {
-                      $project->num_messengers = Message::numMessengers($project->id);
-                    }
+                //cálculo de mensajeros
+                if (empty($proj->num_messengers)) {
+                    $proj->num_messengers = Message::numMessengers($proj->id);
+                }
 
-                //cálculo de número de cofinanciadores si no está hecho
-                if(empty($project->num_investors)) {
-                       $project->num_investors = Invest::numInvestors($project->id);
-                   }
+                //cálculo de número de cofinanciadores
+                if(empty($proj->num_investors)) {
+                    $proj->num_investors = Invest::numInvestors($proj->id);
+               }
 
 
                 $projects[] = $proj;

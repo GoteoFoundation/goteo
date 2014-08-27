@@ -70,7 +70,7 @@ $template = Template::get($tpl);
                 <td><?php echo $item->date; ?></td>
                 <td><?php echo $item->subject; ?></td>
                 <td><?php echo $item->active ? '<span style="color:green;font-weight:bold;">Activo</span>' : '<span style="color:red;font-weight:bold;">Inactivo</span>'; ?></td>
-                <td><?php echo $item->bloqued ? 'Bloqueado' : ''; ?></td>
+                <td><?php echo $item->blocked ? 'Bloqueado' : ''; ?></td>
                 <td><a href="<?php echo $item->link; ?>" target="_blank">[Si no ves]</a></td>
             </tr>
             <?php endforeach; ?>

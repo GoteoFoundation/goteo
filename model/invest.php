@@ -407,8 +407,6 @@ namespace Goteo\Model {
                                 $this->call = $this->called->id;
                             }
 
-                        } else {
-                            unset($this->called);
                         }
                     }
 
@@ -460,7 +458,7 @@ namespace Goteo\Model {
                 }
 
                 // mantenimiento de registros relacionados (usuario, proyecto, ...)
-                $this->keepUpdated();
+                $this->keepUpdated($this->called->id);
 
                 return true;
 
@@ -726,10 +724,20 @@ namespace Goteo\Model {
 
             $query = static::query($sql, $values);
             $got = $query->fetchObject();
-            if(!isset ($only) && !isset($call)) {
+            if(!isset ($only)) {
                 //actualiza el el amount en proyecto (aunque se quede a cero)
                 static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+
+            } elseif ($only == 'users') {
+                // actualiza el amount invertido por los usuarios
+                static::query("UPDATE project SET amount_users = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+
+            } elseif ($only == 'call' && !empty($call)) {
+                // actualiza el amount invertido por el convocador
+                static::query("UPDATE project SET amount_call = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+
             }
+
             return (int) $got->much;
         }
 
@@ -1750,7 +1758,7 @@ namespace Goteo\Model {
          *
          * @return success boolean
          */
-        public function keepUpdated() {
+        public function keepUpdated($call_id = null) {
 
             // numero de proyectos aportados
             User::numInvested($this->user);
@@ -1765,7 +1773,13 @@ namespace Goteo\Model {
             self::numInvestors($this->project); // inversores
 
 
-         }
+            // si es aporte de riego
+            if (!empty($call_id)) {
+                self::invested($this->project, 'users');
+                self::invested($this->project, 'call', $call_id);
+            }
+
+        }
 
     }
 

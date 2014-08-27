@@ -194,6 +194,9 @@ namespace Goteo\Model {
                     // Avatar
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
+                        // eliminando tabla images
+                        $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                         if ($image->save($errors)) {
                             $data[':avatar'] = $image->id;
                         } else {
@@ -581,9 +584,13 @@ namespace Goteo\Model {
 
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
+
+                // @LACRA
                 if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
                     $user->avatar = Image::get(1);
                 }
+                // esto ya lo debería hacer el Image::get
+
                 $user->interests = User\Interest::get($id);
                 $user->webs = User\Web::get($id);
 
@@ -621,9 +628,12 @@ namespace Goteo\Model {
                 $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
 
                 $user->avatar = Image::get($user->avatar);
+
+                // @LACRA
                 if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
                     $user->avatar = Image::get(1);
                 }
+                // esto ya debería hacerlo el Image::get
 
                 return $user;
             } catch(\PDOException $e) {
@@ -1542,7 +1552,10 @@ namespace Goteo\Model {
                     project.mincost as mincost,
                     project.maxcost as maxcost,
                     project.amount as amount,
+                    project.image as image,
                     project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
                     user.id as user_id,

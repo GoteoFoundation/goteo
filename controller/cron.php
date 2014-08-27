@@ -37,22 +37,25 @@ namespace Goteo\Controller {
 
             // a ver si existe el bloqueo (PARA HOY)
             $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'_'.date('Ymd').'.block';
-            $this->cron_lock($block_file, 'execute');
 
-            Cron\Execute::process($debug);
+            if ( $this->cron_lock($block_file, 'execute') ) {
 
-            echo '<hr />';
+                Cron\Execute::process($debug);
 
-            $finish = $this->get_microtime();
-            $total_time = round(($finish - $start), 4);
+                echo '<hr />';
 
-            if ($debug) {
-                echo '<hr/>';
-                echo "<br /><strong>cron/execute finish (executed in ".$total_time." seconds)</strong><hr />";
+                $finish = $this->get_microtime();
+                $total_time = round(($finish - $start), 4);
+
+                if ($debug) {
+                    echo '<hr/>';
+                    echo "<br /><strong>cron/execute finish (executed in ".$total_time." seconds)</strong><hr />";
+                }
+
+                // desbloqueamos
+                $this->cron_unlock($block_file, 'execute');
+
             }
-
-            // desbloqueamos
-            $this->cron_unlock($block_file, 'execute');
 
             // recogemos el buffer para grabar el log
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
@@ -338,16 +341,21 @@ namespace Goteo\Controller {
                     'Se ha encontrado con que el cron '. $cron_name .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
                         El contenido del bloqueo es: '. $block_content);
 
-                die;
+                return false;
+
             } else {
                 $block = 'Bloqueo del '.$block_file.' activado el '.date('d-m-Y').' a las '.date ('H:i:s').'<br />';
                 if (\file_put_contents($block_file, $block, FILE_APPEND)) {
                     \chmod($block_file, 0777);
                     echo $block;
+
+                    return true;
                 } else {
                     echo 'No se ha podido crear el archivo de bloqueo<br />';
                     @mail(\GOTEO_FAIL_MAIL, 'Cron '. $cron_name .' no se ha podido bloquear en ' . SITE_URL,
                         'No se ha podido crear el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
+
+                    return false;
                 }
             }
         }
