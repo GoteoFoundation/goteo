@@ -78,7 +78,9 @@ namespace Goteo\Model\Blog {
 
                 // galeria
                 $post->gallery = Image::getAll($id, 'post');
-                $post->image = $post->gallery[0];
+                if (empty($post->image)) {
+                    $post->image = Post::setImage($id, $post->gallery[0]);
+                }
 
                 $post->comments = Post\Comment::getAll($id);
                 $post->num_comments = count($post->comments);
@@ -182,7 +184,9 @@ namespace Goteo\Model\Blog {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
-                $post->image = $post->gallery[0];
+                if (empty($post->image)) {
+                    $post->image = Post::setImage($post->id, $post->gallery[0]);
+                }
 
                 // video
                 if (!empty($post->media)) {
@@ -346,7 +350,9 @@ namespace Goteo\Model\Blog {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
-                $post->image = $post->gallery[0];
+                if (empty($post->image)) {
+                    $post->image = Post::setImage($post->id, $post->gallery[0]);
+                }
 
                 // video
                 if (isset($post->media)) {
@@ -583,6 +589,20 @@ namespace Goteo\Model\Blog {
             return (int) $got->posts;
         }
 
+
+        /*
+         * Para aplicar la imagen
+         */
+        public static function setImage ($post, $image) {
+
+            if (!empty($image)) {
+                $sql = "UPDATE post SET `image` = :image WHERE id = :post";
+                self::query($sql, array(':post'=>$post, ':image'=>$image));
+            }
+
+            return $image;
+
+        }
 
     }
     

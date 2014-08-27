@@ -600,6 +600,8 @@ namespace Goteo\Model {
                 $Widget->categories = Project\Category::getNames($project->project, 2);
                 $Widget->rewards = Project\Reward::getWidget($project->project);
 
+            /*
+            // esto no hace falta en el widget
                 if(!empty($project->num_investors)) {
                     $Widget->num_investors = $project->num_investors;
                 } else {
@@ -621,6 +623,7 @@ namespace Goteo\Model {
                 } else {
                     $Widget->num_posts =  Blog\Post::numPosts($project->project);
                 }
+*/
 
                 if(!empty($project->mincost) && !empty($project->maxcost)) {
                     $Widget->mincost = $project->mincost;
