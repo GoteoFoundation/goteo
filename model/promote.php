@@ -70,10 +70,10 @@ namespace Goteo\Model {
                     $eng_join=" LEFT JOIN promote_lang as eng
                                     ON  eng.id = promote.id
                                     AND eng.lang = 'en'";
-                    $different_select_project=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
-                    $eng_join_project=" LEFT JOIN project_lang as eng
-                                    ON  eng.id = project.id
-                                       AND eng.lang = 'en'";
+                    $different_select_project=" IFNULL(project_lang.description, IFNULL(eng_proj.description, project.description)) as description";
+                    $eng_join_project=" LEFT JOIN project_lang as eng_proj
+                                    ON  eng_proj.id = project.id
+                                       AND eng_proj.lang = 'en'";
                 }
 
             $query = static::query("
