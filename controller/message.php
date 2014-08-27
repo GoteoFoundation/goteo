@@ -349,6 +349,9 @@ namespace Goteo\Controller {
         public function post ($post, $project = null) {
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
+
+                 //eliminamos etiquetas script, iframe, embed y form.
+
                 $comment = new Model\Blog\Post\Comment(array(
                     'user' => $_SESSION['user']->id,
                     'post' => $post,
