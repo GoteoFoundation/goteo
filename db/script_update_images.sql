@@ -16,7 +16,7 @@ UPDATE banner SET image = (SELECT name FROM image WHERE id = image) WHERE image 
 
 -- sponsor
 -- script
-UPDATE sponsor SET image = (SELECT name FROM image WHERE id = image);
+UPDATE sponsor SET image = (SELECT name FROM image WHERE id = image) WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$';
 
 
 
