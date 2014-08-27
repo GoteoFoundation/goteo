@@ -51,18 +51,21 @@ UPDATE call_sponsor SET image = (SELECT name FROM image WHERE id = image) WHERE 
 
 
 -- feed
+
 -- script
 UPDATE feed SET image = (SELECT name FROM image WHERE id = image) WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$';
 
 
 
--- glossary_image
+-- glossary_image (esta tabla tiene un UNIQUE para id-image, antes de pasar el update eliminamos los registros sin elemento en la tabla image)
+DELETE FROM `glossary_image` WHERE glossary_image.image REGEXP '^[0-9]+$' AND glossary_image.image NOT IN (SELECT id FROM image);
 -- script
 UPDATE glossary_image SET image = (SELECT name FROM image WHERE id = image) WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$';
 
 
 
--- info_image
+-- info_image (esta tabla tiene un UNIQUE para id-image, antes de pasar el update eliminamos los registros sin elemento en la tabla image)
+DELETE FROM `info_image` WHERE info_image.image REGEXP '^[0-9]+$' AND info_image.image NOT IN (SELECT id FROM image);
 -- script
 UPDATE info_image SET image = (SELECT name FROM image WHERE id = image) WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$';
 
@@ -80,7 +83,8 @@ UPDATE post SET image = (SELECT name FROM image WHERE id = image) WHERE image IS
 
 
 
--- post_image
+-- post_image (esta tabla tiene un UNIQUE para id-image, antes de pasar el update eliminamos los registros sin elemento en la tabla image)
+DELETE FROM `post_image` WHERE post_image.image REGEXP '^[0-9]+$' AND post_image.image NOT IN (SELECT id FROM image);
 -- script
 UPDATE post_image SET image = (SELECT name FROM image WHERE id = image) WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$';
 
@@ -91,7 +95,8 @@ UPDATE post_image SET image = (SELECT name FROM image WHERE id = image) WHERE im
 UPDATE project SET image = (SELECT name FROM image WHERE id = image) WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$';
 
 
--- project_image
+-- project_image (esta tabla tiene un UNIQUE para id-image, antes de pasar el update eliminamos los registros sin elemento en la tabla image)
+DELETE FROM `project_image` WHERE project_image.image REGEXP '^[0-9]+$' AND project_image.image NOT IN (SELECT id FROM image);
 -- script
 UPDATE project_image SET image = (SELECT name FROM image WHERE id = image AND name != '') WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$';
 
