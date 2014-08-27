@@ -118,7 +118,7 @@ namespace Goteo\Library {
 //                    echo \trace($item).'<hr />';
                     $the_author = $item->user->screen_name;
                     $the_user = $item->user->name;
-                    $the_avatar = $item->user->profile_image_url;
+                    $the_avatar = (\HTTPS_ON) ? str_replace('http://', 'https://', $item->user->profile_image_url) : $item->user->profile_image_url;
                     $the_profile = 'https://twitter.com/'.$the_author;
                     $twitter_user = $the_author;
                     $gUser = false;
