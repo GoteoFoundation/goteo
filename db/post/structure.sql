@@ -27,3 +27,8 @@ ALTER TABLE  `post` ADD  `author` VARCHAR( 50 ) NULL ;
 
 -- campo imagen a nombre archivo
 ALTER TABLE `post` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
+
+-- indices
+ALTER TABLE `post` ADD INDEX `portada` ( `home` );
+ALTER TABLE `post` ADD INDEX `pie` ( `footer` );
+ALTER TABLE `post` ADD INDEX `publicadas` ( `publish` );
