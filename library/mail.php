@@ -284,18 +284,25 @@ namespace Goteo\Library {
          */
         private function saveContentToFile($sendId) {
             $email = ($this->massive) ? "any" : $this->to;
-            $prefix = ($this->massive) ? "/news/" : "/sys/";
-            $contentId = $prefix . md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
+            $path = ($this->massive) ? "/news/" : "/sys/";
+            $contentId = md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
 
             $sql = "UPDATE mail SET content = :content WHERE id = :id";
             $values = array (
-                ':content' => $contentId,
+                ':content' => $path . $contentId,
                 ':id' => $sendId,
                 );
             Model::query($sql, $values);
 
             // Guardar al sistema de archivos
             $fpremote = File::factory(array('bucket' => AWS_S3_BUCKET_MAIL));
+
+            // Necesitamos constante de donde irán los mails: MAIL_PATH = /data/mail
+            // MAIL_PATH + $path
+            if (FILE_HANDLER == 'file') {
+                $path = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'mail' . $path;
+            }
+            $fpremote->setPath($path);
 
             $headers = array("Content-Type" => "text/html; charset=UTF-8");
             $fpremote->put_contents($contentId, $this->content, 0, 'public-read', array(), $headers);

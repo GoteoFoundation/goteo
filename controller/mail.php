@@ -21,11 +21,7 @@ namespace Goteo\Controller {
                 $parts = explode('¬', $token);
 
                 if (!empty($parts[2])) {
-                    if (FILE_HANDLER == 's3') {
-                        $link = Mailer::getSinovesLink($parts[2]);
-                    } elseif (FILE_HANDLER == 'file') {
-                        $link = Mailer::getSinovesLink($parts[2]);
-                    }
+                    $link = Mailer::getSinovesLink($parts[2]);
                 }
             }
 
@@ -42,7 +38,8 @@ namespace Goteo\Controller {
                 throw new Redirection('/');
             }
 
-            $path = 'data' . DIRECTORY_SEPARATOR . 'mail' . DIRECTORY_SEPARATOR . 'sys' . DIRECTORY_SEPARATOR;
+            // constante MAIL_PATH
+            $path = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'mail' . DIRECTORY_SEPARATOR . 'sys' . DIRECTORY_SEPARATOR;
             $path .= $file;
             $contents = file_get_contents($path);
 
