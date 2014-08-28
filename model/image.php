@@ -44,6 +44,7 @@ namespace Goteo\Model {
 			}
 
             $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_STATIC));
+            $this->fp->setPath($this->dir_originals);
         }
 
         /**
@@ -57,16 +58,6 @@ namespace Goteo\Model {
 	            return $this->getContent();
 	        }
             return $this->$name;
-        }
-
-        /**
-         * retorna nombre "seguro", que no existe ya
-         */
-        public function save_name() {
-            //un nombre que no exista
-            $name = $this->fp->get_save_name($this->dir_originals . $this->name);
-            if($this->dir_originals) $name = substr($name, strlen($this->dir_originals));
-            return $name;
         }
 
         /**
@@ -97,7 +88,7 @@ namespace Goteo\Model {
             if($this->validate($errors)) {
                 $this->original_name = $this->name;
                 //nombre seguro
-                $this->name = $this->save_name();
+                $this->name = $this->fp->get_save_name($this->name);
 
                 if(!empty($this->name)) {
                     $data[':name'] = $this->name;
@@ -114,7 +105,7 @@ namespace Goteo\Model {
                 try {
 
                     if(!empty($this->tmp)) {
-                        $uploaded = $this->fp->upload($this->tmp, $this->dir_originals . $this->name);
+                        $uploaded = $this->fp->upload($this->tmp, $this->name);
 
                         //@FIXME falta checkear que la imagen se ha subido correctamente
                         if (!$uploaded) {
@@ -352,7 +343,7 @@ namespace Goteo\Model {
                 }
 
                 //esborra de disk
-                $this->fp->delete($this->dir_originals . $this->name);
+                $this->fp->delete($this->name);
 
                 return true;
             } catch(\PDOException $e) {
@@ -492,7 +483,7 @@ namespace Goteo\Model {
         }
 
         private function getContent () {
-            return file_get_contents($this->dir_originals . $this->name);
+            return file_get_contents($this->name);
     	}
 
         /**
