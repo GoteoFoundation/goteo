@@ -7,6 +7,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
 		Goteo\Library\Text,
         Goteo\Model,
+        Goteo\Library\Mail,
         Goteo\Library\Message,
 		Goteo\Library\Template,
         Goteo\Library\Newsletter as Boletin,
@@ -74,17 +75,11 @@ namespace Goteo\Controller\Admin {
                             // asunto
                             $subject = $tpl->title;
 
-                            // creamos instancia
-                            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
-                            $values = array (
-                                ':email' => 'any',
-                                ':html' => $content,
-                                ':template' => $template,
-                                ':node' => $node,
-                                ':lang' => $lang
-                            );
-                            $query = \Goteo\Core\Model::query($sql, $values);
-                            $mailId = \Goteo\Core\Model::insertId();
+                            $mail = new Mail();
+                            $mail->template = template;
+                            $mail->node = $node;
+                            $mail->lang = $lang;
+                            $mailId = $mail->saveEmailToDB('any');
 
                             // inicializamos el envío
                             if (Sender::initiateSending($mailId, $subject, $recipients, true)) {

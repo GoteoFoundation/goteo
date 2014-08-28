@@ -16,6 +16,7 @@ namespace Goteo\Library {
             $toName = GOTEO_MAIL_NAME,
             $subject,
             $content,
+            $node,
             $cc = false,
             $bcc = false,
             $reply = GOTEO_MAIL_FROM,
@@ -219,6 +220,7 @@ namespace Goteo\Library {
             // se graba también en la tabla la fecha en la que caduca el contenido (un script auo. borra esos archivos del bucket y registros de la tabla)
 
             $email = ($this->massive) ? "any" : $this->to;
+            $this->node = $_SESSION['admin_node'];
 
             if ($this->massive) {
 
@@ -264,11 +266,12 @@ namespace Goteo\Library {
          * @return int ID of the inserted email
          */
         private function saveEmailToDB($email) {
+
             $sql = "INSERT INTO mail (id, email, template, node, lang) VALUES ('', :email, :template, :node, :lang)";
             $values = array (
                 ':email' => $email,
                 ':template' => $this->template,
-                ':node' => $_SESSION['admin_node'],
+                ':node' => $this->node,
                 ':lang' => $this->lang
                 );
             Model::query($sql, $values);
@@ -284,18 +287,25 @@ namespace Goteo\Library {
          */
         private function saveContentToFile($sendId) {
             $email = ($this->massive) ? "any" : $this->to;
-            $prefix = ($this->massive) ? "/news/" : "/sys/";
-            $contentId = $prefix . md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
+            $path = ($this->massive) ? "/news/" : "/sys/";
+            $contentId = md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
 
             $sql = "UPDATE mail SET content = :content WHERE id = :id";
             $values = array (
-                ':content' => $contentId,
+                ':content' => $path . $contentId,
                 ':id' => $sendId,
                 );
             Model::query($sql, $values);
 
+            // Necesitamos constante de donde irán los mails: MAIL_PATH = /data/mail
+            // MAIL_PATH + $path
+            if (FILE_HANDLER == 'file') {
+                $path = 'mail' . $path;
+            }
+
             // Guardar al sistema de archivos
             $fpremote = File::factory(array('bucket' => AWS_S3_BUCKET_MAIL));
+            $fpremote->setPath($path);
 
             $headers = array("Content-Type" => "text/html; charset=UTF-8");
             $fpremote->put_contents($contentId, $this->content, 0, 'public-read', array(), $headers);
@@ -398,14 +408,27 @@ namespace Goteo\Library {
 
         }
 
+        /**
+         * Devuelve el enlace para Sinoves
+         * @param $id
+         * @return $url
+         */
         public static function getSinovesLink($id) {
+
+            $url = '';
+
             $sql = "SELECT content
-                    FROM mail
-                    WHERE id = :id";
+                FROM mail
+                WHERE id = :id";
 
             $query = Model::query($sql, array(':id' => $id));
             $content = $query->fetchColumn();
-            $url = 'http://' . AWS_S3_BUCKET_MAIL . $content;
+
+            if (FILE_HANDLER == 's3') {
+                $url = 'http://' . AWS_S3_BUCKET_MAIL . $content;
+            } elseif (FILE_HANDLER == 'file') {
+                $url = SITE_URL . '/mail' . $content;
+            }
 
             return $url;
         }

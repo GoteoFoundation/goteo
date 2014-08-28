@@ -506,21 +506,11 @@ namespace Goteo\Controller\Cron {
             // content
             $content = \str_replace($search, $replace, $template->text);
 
-
-
-
-            // - se crea un registro de tabla mail
-            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
-            $values = array (
-                ':email' => 'any',
-                ':html' => $content,
-                ':template' => $tpl,
-                ':node' => \GOTEO_NODE,
-                ':lang' => $comlang
-            );
-            $query = \Goteo\Core\Model::query($sql, $values);
-            $mailId = \Goteo\Core\Model::insertId();
-
+            $mail = new Mail();
+            $mail->template = tpl;
+            $mail->node = \GOTEO_NODE;
+            $mail->lang = $comlang;
+            $mailId = $mail->saveEmailToDB('any');
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
             // - initiateSending ($mailId, $subject, $receivers, $autoactive = 0)
