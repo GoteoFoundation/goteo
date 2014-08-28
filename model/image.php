@@ -22,7 +22,7 @@ namespace Goteo\Model {
 
         private $fp;
 
-        public static $types = array('user','project', 'post', 'glossary', 'info');
+        public static $types = array('project', 'post', 'glossary', 'info');
 
         /**
          * Constructor.
@@ -339,30 +339,24 @@ namespace Goteo\Model {
         /**
          * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
          *
-         * @param  string       $which    'user'|'project'|'post'
+         * @param  string       $which    'project', 'post', 'glossary', 'info'
          * @return bool        true|false
          *
          */
-        public function remove($which) {
+        public function remove(&$errors = array(), $which = null) {
 
             try {
-                self::query("START TRANSACTION");
-                $sql = "DELETE FROM image WHERE id = ?";  // Esto ya no hará falta cuando no haya tabla image
-                $query = self::query($sql, array($this->id));
-
-                // para usuarios y proyectos que tienen N imagenes
-                // por ahora post solo tiene 1
                 if (\is_string($which) && \in_array($which, self::$types)) {
                     $sql = "DELETE FROM {$which}_image WHERE image = ?";
                     $query = self::query($sql, array($this->id));
                 }
-                self::query("COMMIT");
 
                 //esborra de disk
                 $this->fp->delete($this->dir_originals . $this->name);
 
                 return true;
             } catch(\PDOException $e) {
+                $errors[] = $e->getMessage();
                 return false;
             }
         }

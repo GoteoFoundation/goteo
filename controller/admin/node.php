@@ -45,8 +45,8 @@ namespace Goteo\Controller\Admin {
 
                         // tratar si quitan la imagen
                         if (!empty($_POST['logo-' . $node->logo->id .  '-remove'])) {
-                            $node->logo->remove('node');
-                            $node->logo = '';
+                            $node->logo->remove($errors);
+                            $node->logo = null;
                         }
 
                         // tratar la imagen y ponerla en la propiedad logo

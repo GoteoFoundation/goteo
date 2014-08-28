@@ -697,7 +697,7 @@ namespace Goteo\Controller {
 
             // tratar si quitan la imagen
             if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
-                $user->avatar->remove();
+                $user->avatar->remove($errors);
                 $user->avatar = null;
             }
 
@@ -897,7 +897,7 @@ namespace Goteo\Controller {
             // tratar las imagenes que quitan
             foreach ($project->gallery as $key=>$image) {
                 if (!empty($_POST["gallery-{$image->id}-remove"])) {
-                    $image->remove('project');
+                    $image->remove($errors, 'project');
                     unset($project->gallery[$key]);
                 }
             }
