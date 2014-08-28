@@ -2,49 +2,77 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Core\Redirection,
-		Goteo\Core\Model,
-        Goteo\Core\View;
+    use Goteo\Core\Redirection,
+        Goteo\Library\Mail as Mailer;
 
-	class Mail extends \Goteo\Core\Controller {
+    class Mail extends \Goteo\Core\Controller {
 
-	    /**
-	     * solo si recibe un token válido
-	     */
-		public function index ($token) {
+        /**
+         * solo si recibe un token válido
+         * Método antiguo que se mantiene por compatibilidad con la versión anterior que guardaba el contenido de los email en la BD
+         */
+        public function index ($token) {
 
-            if (!empty($token) && !empty($_GET['email'])) {
+            $link = '/';
+
+            if (!empty($token)) {
+
                 $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
-                if(count($parts) > 2 && ($_GET['email'] == $parts[1] || $parts[1] == 'any' ) && !empty($parts[2])) {
 
-                    // cogemos el md5 del archivo a cargar del campo 'content' de la tabla 'mail'
-                    // montamos url (segun newsletter)  y hacemos get_content
-                    // pasamos el contenido a la vista
-
-                    // cogemos el contenido de la bbdd y lo pintamos aqui tal cual
-                    if ($query = Model::query('SELECT html FROM mail WHERE email = ? AND id = ?', array($parts[1], $parts[2]))) {
-                        $content = $query->fetchColumn();
-
-
-                        if ($parts[1] == 'any') {
-                            return new View ('view/email/newsletter.html.php', array('content'=>$content, 'baja' => ''));
-                        } else {
-                            $baja = SEC_URL . '/user/leave/?email=' . $parts[1];
-
-                            if (NODE_ID != \GOTEO_NODE && \file_exists('nodesys/'.NODE_ID.'/view/email/default.html.php')) {
-                                return new View ('nodesys/'.NODE_ID.'/view/email/default.html.php', array('content'=>$content, 'baja' => $baja));
-                            } else {
-                                return new View ('view/email/goteo.html.php', array('content'=>$content, 'baja' => $baja));
-                            }
-                        }
+                if (!empty($parts[2])) {
+                    if (FILE_HANDLER == 's3') {
+                        $link = Mailer::getSinovesLink($parts[2]);
+                    } elseif (FILE_HANDLER == 'file') {
+                        $link = Mailer::getSinovesLink($parts[2]);
                     }
                 }
             }
 
-            throw new Redirection('/');
-		}
+            throw new Redirection($link);
+        }
 
+
+        /**
+         * Email
+         */
+        public function sys ($file) {
+
+            if (FILE_HANDLER != 'file') {
+                throw new Redirection('/');
+            }
+
+            $path = 'data' . DIRECTORY_SEPARATOR . 'mail' . DIRECTORY_SEPARATOR . 'sys' . DIRECTORY_SEPARATOR;
+            $path .= $file;
+            $contents = file_get_contents($path);
+
+            if ($contents === false) {
+                throw new Redirection('/');
+            }
+
+            die($contents);
+        }
+
+        /**
+         * Newsletter email
+         */
+        public function news ($file) {
+
+            if (FILE_HANDLER != 'file') {
+                throw new Redirection('/');
+            }
+
+            $path = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'mail' . DIRECTORY_SEPARATOR . 'news' . DIRECTORY_SEPARATOR;
+            $path .= $file;
+
+            $contents = file_get_contents($path);
+
+            if ($contents === false) {
+                throw new Redirection('/');
+            }
+
+            die($contents);
+        }
     }
 
 }

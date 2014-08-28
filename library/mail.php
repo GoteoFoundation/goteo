@@ -398,14 +398,27 @@ namespace Goteo\Library {
 
         }
 
+        /**
+         * Devuelve el enlace para Sinoves
+         * @param $id
+         * @return $url
+         */
         public static function getSinovesLink($id) {
+
+            $url = '';
+
             $sql = "SELECT content
-                    FROM mail
-                    WHERE id = :id";
+                FROM mail
+                WHERE id = :id";
 
             $query = Model::query($sql, array(':id' => $id));
             $content = $query->fetchColumn();
-            $url = 'http://' . AWS_S3_BUCKET_MAIL . $content;
+
+            if (FILE_HANDLER == 's3') {
+                $url = 'http://' . AWS_S3_BUCKET_MAIL . $content;
+            } elseif (FILE_HANDLER == 'file') {
+                $url = SITE_URL . '/mail' . $content;
+            }
 
             return $url;
         }
