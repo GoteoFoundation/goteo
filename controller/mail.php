@@ -59,9 +59,9 @@ namespace Goteo\Controller {
                 throw new Redirection('/');
             }
 
+            // constante MAIL_PATH
             $path = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'mail' . DIRECTORY_SEPARATOR . 'news' . DIRECTORY_SEPARATOR;
             $path .= $file;
-
             $contents = file_get_contents($path);
 
             if ($contents === false) {

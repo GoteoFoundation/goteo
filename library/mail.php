@@ -16,6 +16,7 @@ namespace Goteo\Library {
             $toName = GOTEO_MAIL_NAME,
             $subject,
             $content,
+            $node,
             $cc = false,
             $bcc = false,
             $reply = GOTEO_MAIL_FROM,
@@ -219,6 +220,7 @@ namespace Goteo\Library {
             // se graba también en la tabla la fecha en la que caduca el contenido (un script auo. borra esos archivos del bucket y registros de la tabla)
 
             $email = ($this->massive) ? "any" : $this->to;
+            $this->node = $_SESSION['admin_node'];
 
             if ($this->massive) {
 
@@ -264,11 +266,12 @@ namespace Goteo\Library {
          * @return int ID of the inserted email
          */
         private function saveEmailToDB($email) {
+
             $sql = "INSERT INTO mail (id, email, template, node, lang) VALUES ('', :email, :template, :node, :lang)";
             $values = array (
                 ':email' => $email,
                 ':template' => $this->template,
-                ':node' => $_SESSION['admin_node'],
+                ':node' => $this->node,
                 ':lang' => $this->lang
                 );
             Model::query($sql, $values);
