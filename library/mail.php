@@ -300,7 +300,7 @@ namespace Goteo\Library {
             // Necesitamos constante de donde irán los mails: MAIL_PATH = /data/mail
             // MAIL_PATH + $path
             if (FILE_HANDLER == 'file') {
-                $path = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'mail' . $path;
+                $path = 'mail' . $path;
             }
 
             // Guardar al sistema de archivos
