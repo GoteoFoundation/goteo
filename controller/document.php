@@ -15,7 +15,7 @@ namespace Goteo\Controller {
                 if (!$doc instanceof Model\Contract\Document)
                     throw new Error('404', 'No tenemos el documento '.$name);
 
-                // pero ojo porque al ser el archivo privado quizÃ¡s habrÃ¡ que coger los contenidos
+                // pero ojo porque al ser el archivo privado quizás habrá que coger los contenidos
                 // mime type en el header
                 $fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
                 $fp->setPath($doc->filedir);
