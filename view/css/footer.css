@@ -57,6 +57,7 @@ div#footer div.block{
 	padding-left:15px;	
 	border-left:#ebe9ea 2px solid;	
     overflow: hidden;
+    display: table;
 }
 
 
