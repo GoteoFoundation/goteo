@@ -23,7 +23,7 @@ namespace Goteo\Library\FileHandler {
 
             if($this->link) {
                 $connected = true;
-            } elseif($this->realpath($this->path)) {
+            } elseif($this->realpath()) {
                 $this->link = true;
                 $connected = true;
             } else {
