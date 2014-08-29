@@ -458,14 +458,43 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del proyecto en la instancia
-				$query = self::query("SELECT id, name, owner, comment, lang, status, node FROM project WHERE id = ?", array($id));
+				$query = self::query("SELECT
+                                        project.id as id, 
+                                        project.name as name, 
+                                        project.owner as owner, 
+                                        project.comment as comment, 
+                                        project.lang as lang, 
+                                        project.status as status, 
+                                        project.node as node,
+                                        user.id as user_id,
+                                        user.name as user_name,
+                                        user.avatar as user_avatar,
+                                        user.email as user_email,
+                                        IFNULL(user.lang, 'es') as user_lang,
+                                        user.node as user_node
+                                      FROM project
+                                      LEFT JOIN user
+                                      ON user.id=project.owner
+                                      WHERE project.id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
 
                 // primero, que no lo grabe
                 $project->dontsave = true;
 
                 // owner
-                $project->user = User::getMini($project->owner);
+                $project->user=new user;
+                $project->user->id=$project->user_id;
+                $project->user->name=$project->user_name;
+                $project->user->email=$project->user_email;
+                $project->user->lang=$project->user_lang;
+                $project->user->node=$project->user_node;
+
+                $project->user->avatar = Image::get($project->user_avatar);
+
+                // @LACRA
+                if (empty($project->user->avatar->id) || !$project->user->avatar instanceof Image) {
+                    $project->user->avatar = Image::get(1);
+                }
 
 				return $project;
 

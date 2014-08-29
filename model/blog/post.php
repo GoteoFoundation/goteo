@@ -58,7 +58,8 @@ namespace Goteo\Model\Blog {
                         post.author as author,
                         CONCAT(blog.type, '-', blog.owner) as owner,
                         blog.type as owner_type,
-                        blog.owner as owner_id
+                        blog.owner as owner_id,
+                        user.name as user_name
                     FROM    post
                     INNER JOIN blog
                         ON  blog.id = post.blog
@@ -66,6 +67,8 @@ namespace Goteo\Model\Blog {
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
                         AND post_lang.blog = post.blog
+                    LEFT JOIN user
+                        ON user.id=post.author
                     WHERE post.id = :id
                     ", array(':id' => $id, ':lang'=>$lang));
 
@@ -94,7 +97,8 @@ namespace Goteo\Model\Blog {
 
                 // autor
                 if (!empty($post->author)) {
-                    $post->user = User::getMini($post->author);
+                    $post->user=new User;
+                    $post->user->name = $post->user_name;
                 } else if ($post->owner_type == 'project') {
                     $post->project = Project::getMini($post->owner_id);
                     $post->user = $post->project->user;
@@ -145,10 +149,13 @@ namespace Goteo\Model\Blog {
                     post.footer as footer,
                     post.author as author,
                     blog.type as owner_type,
-                    blog.owner as owner_id
+                    blog.owner as owner_id,
+                    user.name as user_name
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
+                LEFT JOIN user
+                        ON user.id=post.author
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
@@ -214,7 +221,8 @@ namespace Goteo\Model\Blog {
                         break;
 
                     case 'node':
-                        $post->user   = User::getMini($post->author);
+                        $post->user   = new User;
+                        $post->user->name=$post->user_name;
                         $node_blog = Node::get($post->owner_id);
                         $post->owner_name = $node_blog->name;
                         break;
@@ -264,7 +272,8 @@ namespace Goteo\Model\Blog {
                     post.footer as footer,
                     post.author as author,
                     blog.type as owner_type,
-                    blog.owner as owner_id
+                    blog.owner as owner_id,
+                    user.name as user_name
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
@@ -272,6 +281,8 @@ namespace Goteo\Model\Blog {
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
                     AND post_lang.blog = post.blog
+                LEFT JOIN user
+                        ON user.id=post.author
                 $eng_join
                 ";
 
@@ -371,7 +382,8 @@ namespace Goteo\Model\Blog {
                         break;
 
                     case 'node':
-                        $post->user   = User::getMini($post->author);
+                        $post->user   = new user;
+                        $post->user->name=$post->user_name;
                         $node_blog = Node::get($post->owner_id);
                         $post->owner_name = $node_blog->name;
                         break;
