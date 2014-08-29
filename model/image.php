@@ -24,6 +24,25 @@ namespace Goteo\Model {
 
         public static $types = array('project', 'post', 'glossary', 'info');
 
+        // decopilatorio con los tamaños habituales para imágenes de cada entidad
+        // este es el tamaño que se usa en la página de gestión de la entidad (tabla)
+        // sale de buscat getLink() en toda la aplicación
+        public static $sizes = array(
+            'user-avatar' => '56x56c', // cabecera en la página de proyecto y perfil (hay más tamaños)
+            'banner' => '700x156c',
+            'call-logo' => '250x124c',
+            'call-image' => '',
+            'call-backimage' => '', // sistintos tamaños segun dispositivo
+            'call_banner' => '',
+            'call_sponsor' => '',
+            'project' => '580x580',
+            'post' => '500x285',
+            'glossary' => '500x285',
+            'info' => '500x285',
+            'story' => '940x385c',
+            'sponsor' => '150x85'
+        );
+
         /**
          * Constructor.
          *

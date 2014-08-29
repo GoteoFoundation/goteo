@@ -83,7 +83,7 @@ namespace Goteo\Model {
                     ORDER BY datetime DESC
                     ";
 
-            echo $sql . '<br />';
+            // echo $sql . '<br />';
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
