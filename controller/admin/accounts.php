@@ -133,28 +133,27 @@ namespace Goteo\Controller\Admin {
 
                 $new = isset($_POST['status']) ? $_POST['status'] : null;
 
-                if ($invest->issue && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && $_POST['resolve'] == 1) {
-                    Model\Invest::unsetIssue($id);
-                    Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . $_SESSION['user']->name);
-                    Message::Info('La incidencia se ha dado por resuelta');
-                }
+                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 
-                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update']) && isset($new) && isset($status[$new])) {
+                    // si estan desmarcando incidencia
+                    if ($invest->issue && $_POST['resolve'] == 1) {
+                        Model\Invest::unsetIssue($id);
+                        Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . $_SESSION['user']->name);
+                        Message::Info('La incidencia se ha dado por resuelta');
+                    }
 
-                    if ($new != $invest->status) {
+                    if ($new != $invest->status && isset($new) && isset($status[$new])) {
                         if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
                             Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $_SESSION['user']->name . ' ha cambiado el estado del apote a '.$status[$new]);
                             Message::Info('Se ha actualizado el estado del aporte');
-
-                            // mantenimiento de registros relacionados (usuario, proyecto, ...)
-                            $invest->keepUpdated();
-
                         } else {
                             Message::Error('Ha fallado al actualizar el estado del aporte');
                         }
-                    } else {
-                        Message::Error('No se ha cambiado el estado');
                     }
+
+                    // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                    $invest->keepUpdated();
+
                     throw new Redirection('/admin/accounts/details/'.$id);
                 }
 
@@ -223,13 +222,10 @@ namespace Goteo\Controller\Admin {
                         break;
                 }
 
-               // mantenimiento de registros relacionados (usuario, proyecto, ...)
-               $invest->keepUpdated();
-
                // Evento Feed
                 $log = new Feed();
                 $log->setTarget($projectData->id);
-                $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
+                $log->populate('Cargo cancelado al resolver (admin)', '/admin/accounts',
                     \vsprintf($log_text, array(
                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                         Feed::item('user', $userData->name, $userData->id),
@@ -238,7 +234,7 @@ namespace Goteo\Controller\Admin {
                         Feed::item('project', $projectData->name, $projectData->id),
                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                 )));
-                $log->doAdmin();
+                $log->doAdmin('admin');
                 unset($log);
 
                 // luego resolver
@@ -253,6 +249,9 @@ namespace Goteo\Controller\Admin {
                     )));
                     $log->doAdmin('admin');
                     unset($log);
+
+                    // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                    $invest->keepUpdated();
 
                     Message::Info('La incidencia se ha dado por resuelta, el aporte se ha pasado a manual y cobrado');
                     throw new Redirection('/admin/accounts');
@@ -453,7 +452,7 @@ namespace Goteo\Controller\Admin {
                             Feed::item('project', $project->name, $project->id),
                             Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                     )));
-                    $log->doAdmin();
+                    $log->doAdmin('admin');
                     Model\Invest::setDetail($invest->id, 'manually-canceled', $log->html);
                     unset($log);
 
@@ -550,7 +549,7 @@ namespace Goteo\Controller\Admin {
                             Feed::item('project', $project->name, $project->id),
                             Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                     )));
-                    $log->doAdmin();
+                    $log->doAdmin('admin');
                     Model\Invest::setDetail($invest->id, 'manually-executed', $log->html);
                     unset($log);
                 }
