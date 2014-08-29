@@ -198,9 +198,11 @@ namespace Goteo\Core {
                     //incrementar queries no cacheadas
                     self::$query_stats[$this->dbh->type][0]++;
 
-                    if($this->debug) $t = microtime(true);
+                    $t = microtime(true);
                     $this->execute =  parent::execute($params);
-                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ' (' . round(microtime(true) - $t, 4) . 's): ' . $this->queryString .' | '. print_r($this->input_parameters,true);
+                    $query_time = round(microtime(true) - $t, 4);
+                    self::$query_stats[$this->dbh->type][2] += $query_time;
+                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ' (' . $query_time . 's): ' . $this->queryString .' | '. print_r($this->input_parameters,true);
                 }
                 return $this->execute;
             } catch (\PDOException $e) {
