@@ -41,7 +41,7 @@ $bodyClass = 'project-show';
 // metas og: para que al compartir en facebook coja bien el nombre y la imagen (todas las de proyecto y las novedades
 $ogmeta = array(
     'title' => htmlspecialchars($project->name, ENT_QUOTES),
-    'description' => Text::get('regular-by').' '.$project->user->name,
+    'description' => htmlspecialchars($project->subtitle, ENT_QUOTES),
     'url' => $URL . '/project/'.$project->id
 );
 
