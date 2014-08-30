@@ -106,7 +106,7 @@ $call = $this['call'];
             </dl>
             <dl class="block processing">
                 <dt><?php echo Text::get('call-splash-runing_projects-header') ?></dt>
-                <dd><?php echo $call->runing_projects ?></dd>
+                <dd><?php echo $call->running_projects ?></dd>
             </dl>
             <dl class="block success">
                 <dt><?php echo Text::get('call-splash-success_projects-header') ?></dt>

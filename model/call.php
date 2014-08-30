@@ -84,8 +84,10 @@ namespace Goteo\Model {
          *
          * @param type string $name
          * @return type mixed
-         */
 
+         *
+         * Estos campos han sido optimizados con Campos Calculados
+         *
         public function __get($name) {
             switch ($name) {
                 case "rest":
@@ -104,6 +106,7 @@ namespace Goteo\Model {
                     return $this->$name;
             }
         }
+         */
 
         /**
          * Inserta un convocatoria con los datos mínimos
@@ -285,17 +288,12 @@ namespace Goteo\Model {
                 }
                 // $call->projects = Call\Project::get($id, array('published'=>true));
 
-                // cuantos en campaña (status 3) y cuantos exitosos
-                $call->runing_projects = 0;
-                $call->success_projects = 0;
-
-                foreach ($call->projects as $proj) {
-                    if (\Goteo\Model\Project::isSuccessful($proj->id)) {
-                        $call->success_projects++;
-                    } 
-                    if ($proj->status == 3) {
-                        $call->runing_projects++;
-                    }
+                // cuantos en campaña (status 3) y cuantos exitosos (status 4 o 5)
+                if (empty($call->running_projects)) {
+                    $call->running_projects = Call\Project::numRunningProjects($id);
+                }
+                if (empty($call->success_projects)) {
+                    $call->success_projects = Call\Project::numSuccessProjects($id);
                 }
 
                 // para convocatorias en campaña o posterior
@@ -320,6 +318,25 @@ namespace Goteo\Model {
 
                 $call->sponsors = Call\Sponsor::getList($id);
                 $call->banners  = Call\Banner::getList($id, $lang);
+
+                // campos calculados
+
+                // riego comprometido
+                if (empty($call->used)) {
+                    $call->used = $call->getUsed();
+                }
+
+                // riego restante
+                if (empty($call->rest)) {
+                    $call->rest = $call->getRest($call->used);
+                }
+
+                // proyectos asignados
+                if (empty($call->applied)) {
+                    // número de proyectos presentados a la campaña
+                    $applied = $call->getConf('applied');
+                    $call->applied = (isset($applied)) ? $applied : $call->getApplied();
+                }
 
                 return $call;
             } catch (\PDOException $e) {
@@ -401,22 +418,33 @@ namespace Goteo\Model {
 
         /*
          *  Devuelve simplemente el número de proyectos asignados a esta convocatoria
-         *  No cuentan los draft
+         *  No cuentan los draft pero si los en negociación
          */
         public function getApplied() {
                 $sql = "SELECT
-                            COUNT(project.id) as cuantos
-                        FROM project
+                            COUNT(project.id) as cuantos,
+                            `call`.applied as num
+                        FROM `call`
                         INNER JOIN call_project
-                            ON  call_project.project = project.id
-                            AND call_project.call = :call
-                        WHERE (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )
+                            ON  call_project.call = call.id
+                        INNER JOIN project
+                            ON project.id = call_project.project
+                            AND (
+                                  project.status > 1
+                                  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}')
+                              )
+                        WHERE call.id = :call
                         ";
                 
                 $query = static::query($sql, array(':call'=>$this->id));
-                $cuantos = $query->fetchColumn();
-                
-                return $cuantos;
+                $applied = $query->fetchObject();
+
+                // actualizar el campo calculado
+                if ($applied->cuantos != $applied->num) {
+                    static::query("UPDATE `call` SET applied = :new WHERE id = :call", array(':new' => (int) $applied->cuantos, ':call'=>$this->id));
+                }
+
+                return (int) $applied->cuantos;
         }
         
         
@@ -901,7 +929,13 @@ namespace Goteo\Model {
          * Lista de convocatorias en campaña (para la portada)
          */
         public static function getActive($status = null, $all = false) {
-            $calls = array();
+
+            $debug = false;
+
+            $sqlFilter = '';
+            $sqlJoin = '';
+
+            $list = array();
             $values = array();
 
             if (in_array($status, array(3, 4, 5))) {
@@ -913,20 +947,107 @@ namespace Goteo\Model {
             }
 
             if (\NODE_ID != \GOTEO_NODE) {
-                $sqlFilter .= " AND call.id IN (SELECT `call` FROM campaign WHERE node = :node and active = 1) ";
+                $sqlJoin .= " INNER JOIN campaign
+                    ON campaign.call = call.id
+                    AND campaign.node = :node
+                    AND campaign.active = 1
+                    ";
                 $values[':node'] = \NODE_ID;
             }
 
-            $sql = "SELECT call.id
+
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(call_lang.name, call.name) as name,
+                            IFNULL(call_lang.subtitle, call.subtitle) as subtitle,
+                            IFNULL(call_lang.resources, call.resources) as resources
+                            ";
+
+
+            }
+            else {
+                $different_select="IFNULL(call_lang.name, IFNULL(eng.name, call.name)) as name,
+                            IFNULL(call_lang.subtitle, IFNULL(eng.subtitle, call.subtitle)) as subtitle,
+                            IFNULL(call_lang.resources, IFNULL(eng.resources, call.resources)) as resources
+                            ";
+                $eng_join=" LEFT JOIN call_lang as eng
+                                ON  eng.id = call.id
+                                AND eng.lang = 'en'
+                                ";
+            }
+
+
+
+            $sql = "SELECT
+                      `call`.*,
+                         user.id as user_id,
+                         user.name as user_name,
+                         user.avatar as user_avatar,
+                         user.email as user_email,
+                      $different_select
                     FROM  `call`
+                    LEFT JOIN user ON user.id = `call`.owner
+                    $sqlJoin
+                    LEFT JOIN call_lang ON  call_lang.id = call.id
+                    $eng_join
                     $sqlFilter
-                    ORDER BY name ASC";
+                    ORDER BY `call`.name ASC";
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $call) {
-                $calls[] = self::get($call->id, \LANG);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Call') as $call) {
+
+                $call->user = new User;
+                $call->user->id = $call->user_id;
+                $call->user->name = $call->user_name;
+                $call->user->avatar = Image::get($call->user_avatar);
+                $call->user->email = $call->user_email;
+
+                // fase de aplicación
+                if ($call->status == 3) {
+                    // a ver si ya ha expirado
+                    $open = strtotime($call->opened);
+                    $until = mktime(0, 0, 0, date('m', $open), date('d', $open) + $call->days, date('Y', $open));
+                    $hoy = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+
+                    // si se ha pasado de dias o está publicada en aplicación cerrada
+                    if ($hoy > $until || (defined('CALL_NOAPPLY') && CALL_NOAPPLY == true)) {
+                        $call->expired = true;
+                    }
+
+                    // rellenamos el array de visualizacion de fecha limite
+                    $call->until['day'] = date('d', $until);
+                    $call->until['month'] = strftime('%b', $until);
+                    $call->until['year'] = date('Y', $until);
+                }
+
+                // campos calculados
+
+                // riego comprometido
+                if (empty($call->used)) {
+                    $call->used = $call->getUsed();
+                }
+
+                // riego restante
+                if (empty($call->rest)) {
+                    $call->rest = $call->getRest($call->used);
+                }
+
+                // proyectos asignados
+                if (empty($call->applied)) {
+                    // número de proyectos presentados a la campaña
+                    $applied = $call->getConf('applied');
+                    $call->applied = (isset($applied)) ? $applied : $call->getApplied();
+                }
+
+                $list [] = $call;
             }
-            return $calls;
+
+            if ($debug) {
+                echo \sqldbg($sql, $values);
+                echo \trace ($list);
+                die;
+            }
+
+            return $list;
         }
 
         /*
@@ -1343,14 +1464,14 @@ namespace Goteo\Model {
         }
 
         /*
-         * Dinero restante
+         * Capital riego comprometido
          *
          * @param id call
          */
-        private function getRest($getUsed = false) {
+        public function getUsed() {
             // cogemos la cantidad de presupuesto y la cantidad de aportes activos para esta campaña
             $sql = "
-                SELECT SUM(invest.amount)
+                SELECT SUM(invest.amount) as amount
                 FROM invest
                 WHERE invest.campaign = 1
                 AND invest.call = ?
@@ -1358,10 +1479,24 @@ namespace Goteo\Model {
             $query = self::query($sql, array($this->id));
             $used = $query->fetchColumn();
 
-            if ($getUsed)
-                return $used;
+            // actualizar el campo calculado
+            if ($used->amount != $this->used) {
+                static::query("UPDATE `call` SET used = :new WHERE id = :call", array(':new' => (int) $used->amount, ':call'=>$this->id));
+            }
 
-            return ($this->amount - $used);
+            return (int) $used->amount;
+        }
+
+        public function getRest($used = 0) {
+
+            $rest = $this->amount - $used;
+
+            // actualizar el campo calculado
+            if ($rest != $this->rest) {
+                static::query("UPDATE `call` SET rest = :new WHERE id = :call", array(':new' => (int) $rest, ':call'=>$this->id));
+            }
+
+            return $rest;
         }
 
         /*

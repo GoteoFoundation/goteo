@@ -42,7 +42,6 @@ namespace Goteo\Model\Call {
                 if (!isset($filters['all'])) {
                     $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
                     $and = "AND";
-                    $sql_draft ="project.id REGEXP '[0-9a-f]{5,40}' as draft,";
                 }
                 if (isset($filters['published'])) {
                     $sqlFilter .= " $and project.status >= 3";
@@ -65,7 +64,7 @@ namespace Goteo\Model\Call {
                             project.called as called,
                             project.amount_users as amount_users,
                             project.amount_call as amount_call,
-                            $sql_draft
+                            project.id REGEXP '[0-9a-f]{5,40}' as draft,
                             IF(project.passed IS NULL, 1, 2) as round
                         FROM project
                         INNER JOIN call_project
@@ -247,7 +246,7 @@ namespace Goteo\Model\Call {
                     $errors[] = "$sql <pre>".print_r($values, true)."</pre>";
                 }
 			} catch(\PDOException $e) {
-				$errors[] = "La proyecto {$project} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
+				$errors[] = "La proyecto {$this->name} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
 			}
 
@@ -299,6 +298,7 @@ namespace Goteo\Model\Call {
                     call.name as name,
                     call.owner as owner,
                     call.lang as lang,
+                    call.applied as applied,
                     user.name as user_name,
                     user.email as user_email,
                     user.avatar as user_avatar,
@@ -325,6 +325,12 @@ namespace Goteo\Model\Call {
                     $user->avatar = Model\Image::get($call->user_avatar);
 
                     $call->user = $user;
+
+                    // proyectos asignados
+                    if (empty($call->applied)) {
+                        $call->applied = $call->getApplied();
+                    }
+
 
                     return $call;
 
@@ -558,8 +564,7 @@ namespace Goteo\Model\Call {
                 ";
 
             if ($debug) {
-                echo \trace($values);
-                echo $sql;
+                echo \sqldbg($sql, $values);
                 die;
             }
 
@@ -573,6 +578,123 @@ namespace Goteo\Model\Call {
             }
 
             return (int) $got->messengers;
+        }
+
+        /*
+         * Numero de proyectos publicados en una convocatoria
+         */
+        public static function numRunningProjects ($call) {
+
+            $debug = false;
+
+            $values = array(':call' => $call);
+
+            $sql = "SELECT  COUNT(*) as projects, call.running_projects as num
+                FROM    `call`
+                INNER JOIN call_project
+                    ON call_project.call = call.id
+                INNER JOIN project
+                    ON call_project.project = project.id
+                    AND project.status = 3
+                WHERE   call.id = :call
+                ";
+
+            if ($debug) {
+                echo \sqldbg($sql, $values);
+                die;
+            }
+
+            $query = static::query($sql, $values);
+            if($got = $query->fetchObject()) {
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->projects != $got->num) {
+                    $values['num'] = (int) $got->projects;
+                    static::query("UPDATE `call` SET running_projects = :num  WHERE id = :call", $values);
+                }
+            }
+
+            return (int) $got->messengers;
+        }
+
+        /*
+         * Numero de proyectos publicados en una convocatoria
+         */
+        public static function numSuccessProjects ($call) {
+
+            $debug = true;
+
+            $values = array(':call' => $call);
+
+            $sql = "SELECT  COUNT(*) as projects, call.success_projects as num
+                FROM    `call`
+                INNER JOIN call_project
+                    ON call_project.call = call.id
+                INNER JOIN project
+                    ON call_project.project = project.id
+                    AND (project.status IN (4, 5)
+                        OR (project.status = 3 AND project.passed IS NOT NULL)
+                    )
+                WHERE   call.id = :call
+                ";
+
+            if ($debug) {
+                echo \sqldbg($sql, $values);
+                die;
+            }
+
+            $query = static::query($sql, $values);
+            if($got = $query->fetchObject()) {
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->projects != $got->num) {
+                    $values['num'] = (int) $got->projects;
+                    static::query("UPDATE `call` SET success_projects = :num  WHERE id = :call", $values);
+                }
+            }
+
+            return (int) $got->messengers;
+        }
+
+        /*
+         * Añade un proyecto aplicado
+         */
+        public static function addOneApplied ($call, $applied = null) {
+
+            $debug = false;
+
+            if (isset($applied) && !empty($applied)) {
+                $applied++;
+            } else {
+                $sql = "SELECT
+                            COUNT(project.id) as cuantos,
+                            `call`.id as id,
+                            `call`.applied as num
+                        FROM `call`
+                        INNER JOIN call_project
+                            ON  call_project.call = call.id
+                        INNER JOIN project
+                            ON project.id = call_project.project
+                            AND (
+                                  project.status > 1
+                                  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}')
+                              )
+                        WHERE call.id = :call
+                        ";
+
+                $query = static::query($sql, array(':call'=>$call));
+                $applied = $query->fetchColumn(0);
+            }
+
+            $sql = "UPDATE `call` SET applied = :num  WHERE id = :call";
+            $values = array(':call' => $call, ':num' => $applied);
+
+            static::query($sql , $values);
+
+            if ($debug) {
+                echo \sqldbg($sql , $values);
+                die;
+            }
+
+            return true;
         }
 
     }
