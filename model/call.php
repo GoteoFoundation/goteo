@@ -285,9 +285,6 @@ namespace Goteo\Model {
                 }
                 // $call->projects = Call\Project::get($id, array('published'=>true));
 
-                // entradas blog
-                $call->posts = Call\Post::get($id);
-
                 // cuantos en campaña (status 3) y cuantos exitosos
                 $call->runing_projects = 0;
                 $call->success_projects = 0;

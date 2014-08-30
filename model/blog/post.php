@@ -79,7 +79,7 @@ namespace Goteo\Model\Blog {
                 // galeria
                 $post->gallery = Image::getAll($id, 'post');
                 if (empty($post->image)) {
-                    $post->image = Post::setImage($id, $post->gallery[0]);
+                    $post->image = Post::setImage($id, $post->gallery[0]->id);
                 }
 
                 $post->comments = Post\Comment::getAll($id);
@@ -185,7 +185,7 @@ namespace Goteo\Model\Blog {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
                 if (empty($post->image)) {
-                    $post->image = Post::setImage($post->id, $post->gallery[0]);
+                    $post->image = Post::setImage($post->id, $post->gallery[0]->id);
                 }
 
                 // video
@@ -351,7 +351,7 @@ namespace Goteo\Model\Blog {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
                 if (empty($post->image)) {
-                    $post->image = Post::setImage($post->id, $post->gallery[0]);
+                    $post->image = Post::setImage($post->id, $post->gallery[0]->id);
                 }
 
                 // video

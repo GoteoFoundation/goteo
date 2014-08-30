@@ -382,6 +382,9 @@ namespace Goteo\Controller {
                 $call->logo = Model\Image::get($call->logo);
                 // el fondo es el campo  backimage
                 $call->image = Model\Image::get($call->backimage);
+
+                // entradas blog
+                $call->posts = Model\Call\Post::get($id);
             }
 
             // solamente se puede ver publicamente si

@@ -338,6 +338,7 @@ namespace Goteo\Controller\Admin {
 
                 }
 
+                // entradas blog
                 $call->posts = Model\Call\Post::get($call->id);
 
                 return new View(
