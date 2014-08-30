@@ -63,7 +63,7 @@ namespace Goteo\Model\Call {
                             project.description as description,
                             project.maxproj as maxproj,
                             project.called as called,
-                            project.amount_user as amount_user,
+                            project.amount_users as amount_users,
                             project.amount_call as amount_call,
                             $sql_draft
                             IF(project.passed IS NULL, 1, 2) as round
