@@ -265,7 +265,7 @@ namespace Goteo\Library {
          * @param $email
          * @return int ID of the inserted email
          */
-        private function saveEmailToDB($email) {
+        public function saveEmailToDB($email) {
 
             $sql = "INSERT INTO mail (id, email, template, node, lang) VALUES ('', :email, :template, :node, :lang)";
             $values = array (
@@ -285,7 +285,7 @@ namespace Goteo\Library {
          * @param $filename
          * @return
          */
-        private function saveContentToFile($sendId) {
+        public function saveContentToFile($sendId) {
             $email = ($this->massive) ? "any" : $this->to;
             $path = ($this->massive) ? "/news/" : "/sys/";
             $contentId = md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
