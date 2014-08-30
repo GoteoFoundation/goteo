@@ -415,8 +415,12 @@ namespace Goteo\Controller {
 
                 }
 
-                if ($show == 'projects' && ($call->status < 4 || empty($call->projects))) {
-                    throw new Redirection("/call/".$call->id);
+                if ($show == 'projects') {
+
+                    $call->projects = Model\Call\Project::get($call->id, array('published'=>true));
+
+                    if ($call->status < 4 || empty($call->projects))
+                        throw new Redirection("/call/".$call->id);
                 }
 
                 $call->categories = Model\Call\Category::getNames($call->id);

@@ -44,7 +44,7 @@ $tag = array(
 
     <div class="name">
         <?php if (!empty($call->logo)): ?>
-        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img alt="<?php echo $call->name ?>" src="<?php echo $call->logo->getLink(150) ?>" /></a>
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img alt="<?php echo $call->name ?>" src="<?php echo $call->logo->getLink(150, 85, true) ?>" /></a>
         <?php endif ?>
 
         <h3><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>><?php echo $call->name ?></a></h3>

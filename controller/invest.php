@@ -34,6 +34,10 @@ namespace Goteo\Controller {
             $projectData = Model\Project::get($project);
             $methods = self::$methods;
 
+            if (\GOTEO_ENV  != 'real') {
+                $methods['cash'] = 'cash';
+            }
+
             // si no está en campaña no pueden esta qui ni de coña
             if ($projectData->status != 3) {
                 throw new Redirection('/project/'.$project, Redirection::TEMPORARY);
