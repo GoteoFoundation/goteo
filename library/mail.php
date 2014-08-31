@@ -172,6 +172,7 @@ namespace Goteo\Library {
 
                     // Envía el mensaje
                     if ($mail->Send($errors)) {
+                        $this->saveContentToFile();
                         return true;
                     } else {
                         $errors[] = 'Fallo del servidor de correo interno';
@@ -222,26 +223,10 @@ namespace Goteo\Library {
             $email = ($this->massive) ? "any" : $this->to;
             $this->node = $_SESSION['admin_node'];
 
-            if ($this->massive) {
-
-                // @FIXME esto ya no sirve en cli mode
-                if (!empty($_SESSION['NEWSLETTER_SENDID']) ) {
-                    $sendId = $_SESSION['NEWSLETTER_SENDID'];
-                } else {
-                    $sendId = $this->saveEmailToDB($email);
-                    $this->saveContentToFile($sendId);
-                    $_SESSION['NEWSLETTER_SENDID'] = $sendId;
-                }
-
-            } else {
-                $sendId = $this->saveEmailToDB($email);
-                $this->saveContentToFile($sendId);
-            }
-
             // tokens
-            $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+            $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $this->id;
 
-            $viewData['sinoves'] = static::getSinovesLink($sendId);
+            $viewData['sinoves'] = static::getSinovesLink($this->id);
             $viewData['baja'] = SITE_URL . '/user/leave/?email=' . $this->to;
 
             if ($plain) {
@@ -301,7 +286,7 @@ namespace Goteo\Library {
             $path = ($this->massive) ? "/news/" : "/sys/";
             $contentId = md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
 
-            $sql = "UPDATE mail SET content = :content WHERE id = :id";
+            $sql = "UPDATE mail SET html='', content = :content WHERE id = :id";
             $values = array (
                 ':content' => $path . $contentId,
                 ':id' => $sendId,
