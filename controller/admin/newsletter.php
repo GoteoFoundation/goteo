@@ -75,11 +75,13 @@ namespace Goteo\Controller\Admin {
                             // asunto
                             $subject = $tpl->title;
 
-                            $mail = new Mail();
-                            $mail->template = template;
-                            $mail->node = $node;
-                            $mail->lang = $lang;
-                            $mailId = $mail->saveEmailToDB('any');
+                            $mailHandler = new Mail();
+                            $mailHandler->template = $template;
+                            $mailHandler->content = $content;
+                            $mailHandler->node = $node;
+                            $mailHandler->lang = $lang;
+                            $mailId = $mailHandler->saveEmailToDB('any');
+                            $mailHandler->saveContentToFile($mailId);
 
                             // inicializamos el envío
                             if (Sender::initiateSending($mailId, $subject, $recipients, true)) {
