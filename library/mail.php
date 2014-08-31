@@ -224,7 +224,6 @@ namespace Goteo\Library {
             // Caducidad
             // se graba también en la tabla la fecha en la que caduca el contenido (un script auo. borra esos archivos del bucket y registros de la tabla)
 
-            $email = ($this->massive) ? "any" : $this->to;
             $this->node = $_SESSION['admin_node'];
 
             // tokens
@@ -255,9 +254,9 @@ namespace Goteo\Library {
          * @param $email
          * @return int ID of the inserted email
          */
-        public function saveEmailToDB($email = 'any') {
+        public function saveEmailToDB() {
 
-            if (!empty($this->to)) $email = $this->to;
+            $email = ($this->massive) ? "any" : $this->to;
 
             $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
             $values = array (

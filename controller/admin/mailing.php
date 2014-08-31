@@ -219,6 +219,7 @@ namespace Goteo\Controller\Admin {
                     $mailHandler->content = $content;
                     $mailHandler->node = $node;
                     $mailHandler->lang = $comlang;
+                    $mailHandler->massive = true;
                     $mailId = $mailHandler->saveEmailToDB();
 
                     // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
