@@ -419,16 +419,23 @@ namespace Goteo\Library {
          * @param $id
          * @return $url
          */
-        public static function getSinovesLink($id) {
+        public static function getSinovesLink($id, $filename = null) {
 
             $url = '';
 
-            $sql = "SELECT content
+            if (empty($filename)) {
+                $sql = "SELECT content
                 FROM mail
                 WHERE id = :id";
 
-            $query = Model::query($sql, array(':id' => $id));
-            $content = $query->fetchColumn();
+                $query = Model::query($sql, array(':id' => $id));
+                $content = $query->fetchColumn();
+
+                if (empty($content)) return null;
+
+            } else {
+                $content = $filename;
+            }
 
             if (FILE_HANDLER == 's3') {
                 $url = 'http://' . AWS_S3_BUCKET_MAIL . $content;
