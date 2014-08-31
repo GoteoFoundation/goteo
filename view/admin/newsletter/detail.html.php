@@ -1,12 +1,13 @@
 <?php
 
 use Goteo\Library\Text;
+use Goteo\Library\Mail;
 
 $mailing = $this['mailing'];
 $list = $this['list'];
 $detail = $this['detail'];
 
-$link = SITE_URL.'/mail/'.base64_encode(md5(uniqid()).'¬any¬'.$mailing->mail).'/?email=any';
+$link = Mail::getSinovesLink($mailing->mail);
 
 $title = array(
     'receivers' => 'Destinatarios',

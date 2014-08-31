@@ -7,7 +7,7 @@ namespace Goteo\Core {
         static $cache_active = true; //para poder desactivar la cache globalmente si se necesita
         public $read_replica = null;
         public $is_select = false;
-        public $type = "master";
+        public $type = 'master';
 
         public function __construct() {
 
@@ -21,7 +21,7 @@ namespace Goteo\Core {
 
                 //If you use the UTF-8 encoding, you have to use the fourth parameter :
                 if (defined('GOTEO_DB_CHARSET') && GOTEO_DB_DRIVER == 'mysql') {
-                    parent::__construct($dsn, \GOTEO_DB_USERNAME, \GOTEO_DB_PASSWORD, array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
+                    parent::__construct($dsn, \GOTEO_DB_USERNAME, \GOTEO_DB_PASSWORD, array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8'));
                 }
                 else {
                     parent::__construct($dsn, \GOTEO_DB_USERNAME, \GOTEO_DB_PASSWORD);
@@ -29,20 +29,20 @@ namespace Goteo\Core {
 
                 $this->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
 
-                if($this->cache === null && defined("SQL_CACHE_DRIVER") && SQL_CACHE_DRIVER && defined("SQL_CACHE_TIME")) {
+                if($this->cache === null && defined('SQL_CACHE_DRIVER') && SQL_CACHE_DRIVER && defined('SQL_CACHE_TIME')) {
                     require_once PHPFASTCACHE_CLASS;
 
-                    if(SQL_CACHE_DRIVER == "memcache") {
-                        \phpFastCache::setup("storage","memcache");
-                        \phpFastCache::setup("server",array(array(
-                            defined("SQL_CACHE_SERVER") ? SQL_CACHE_SERVER : '127.0.0.1',
-                            defined("SQL_CACHE_PORT") ? SQL_CACHE_PORT : 11211,
+                    if(SQL_CACHE_DRIVER == 'memcache') {
+                        \phpFastCache::setup('storage','memcache');
+                        \phpFastCache::setup('server',array(array(
+                            defined('SQL_CACHE_SERVER') ? SQL_CACHE_SERVER : '127.0.0.1',
+                            defined('SQL_CACHE_PORT') ? SQL_CACHE_PORT : 11211,
                             1)
                         ));
                     }
                     else {
-                        \phpFastCache::setup("storage","files");
-                        \phpFastCache::setup("path", GOTEO_DATA_PATH);
+                        \phpFastCache::setup('storage','files');
+                        \phpFastCache::setup('path', GOTEO_DATA_PATH);
                     }
 
                     $this->cache = \phpFastCache();
@@ -53,22 +53,22 @@ namespace Goteo\Core {
                 $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('\Goteo\Core\CacheStatement', array($this, $this->cache)));
 
                 //Preparamos un objeto para los select que lean de las replicas
-                if(defined("GOTEO_DB_READ_REPLICA_HOST")) {
+                if(defined('GOTEO_DB_READ_REPLICA_HOST')) {
 
                     $dsn = GOTEO_DB_DRIVER . ':host=' . GOTEO_DB_READ_REPLICA_HOST . ';dbname=' . GOTEO_DB_SCHEMA;
                     if (defined('GOTEO_DB_READ_REPLICA_PORT')) {
                         $dsn .= ';port=' . \GOTEO_DB_READ_REPLICA_PORT;
                     }
 
-                    $username = defined("GOTEO_DB_READ_REPLICA_USERNAME") ? GOTEO_DB_READ_REPLICA_USERNAME : GOTEO_DB_USERNAME;
-                    $password = defined("GOTEO_DB_READ_REPLICA_PASSWORD") ? GOTEO_DB_READ_REPLICA_PASSWORD : GOTEO_DB_PASSWORD;
+                    $username = defined('GOTEO_DB_READ_REPLICA_USERNAME') ? GOTEO_DB_READ_REPLICA_USERNAME : GOTEO_DB_USERNAME;
+                    $password = defined('GOTEO_DB_READ_REPLICA_PASSWORD') ? GOTEO_DB_READ_REPLICA_PASSWORD : GOTEO_DB_PASSWORD;
                     if (defined('GOTEO_DB_CHARSET') && GOTEO_DB_DRIVER == 'mysql') {
-                        $this->read_replica = new \PDO($dsn, $username, $password, array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"));
+                        $this->read_replica = new \PDO($dsn, $username, $password, array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8'));
                     }
                     else {
                         $this->read_replica = new \PDO($dsn, $username, $password);
                     }
-                    $this->read_replica->type = "replica";
+                    $this->read_replica->type = 'replica';
                     $this->read_replica->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
 
                     //no queremos que las queries vayan al servidor para preparase si usamos cache
@@ -93,11 +93,11 @@ namespace Goteo\Core {
          */
         public function prepare($statement, $driver_options = array(), $select_from_replica = true) {
 
-            $this->is_select = ( strtolower(rtrim(substr(ltrim($statement),0 ,7))) == "select" );
+            $this->is_select = ( strtolower(rtrim(substr(ltrim($statement),0 ,7))) == 'select' );
             if($this->read_replica && $this->is_select && $select_from_replica) {
                 $this->read_replica->is_select = true;
                 //usamos el objecto replica
-                // echo "[$statement] des de replica";
+                // echo '[$statement] des de replica';
                 return $this->read_replica->prepare($statement, $driver_options);
             }
             else {
@@ -111,9 +111,9 @@ namespace Goteo\Core {
          */
         public function getQueryStats() {
             $ret = array();
-            $ret['replica']['non-cached'] = \Goteo\Core\CacheStatement::$query_stats['replica'][0];
+            $ret['replica']['non-cached'] = \Goteo\Core\CacheStatement::$query_stats['replica'][0] . ' ( ' . \Goteo\Core\CacheStatement::$query_stats['replica'][2] . 's)';
             $ret['replica']['cached'] = \Goteo\Core\CacheStatement::$query_stats['replica'][1];
-            $ret['master']['non-cached'] = \Goteo\Core\CacheStatement::$query_stats['master'][0];
+            $ret['master']['non-cached'] = \Goteo\Core\CacheStatement::$query_stats['master'][0] . ' ( ' . \Goteo\Core\CacheStatement::$query_stats['master'][2] . 's)';
             $ret['master']['cached'] = \Goteo\Core\CacheStatement::$query_stats['master'][1];
             $ret['sql_replica']['non-cached'] = \Goteo\Core\CacheStatement::$queries['replica'][0];
             $ret['sql_replica']['cached'] = \Goteo\Core\CacheStatement::$queries['replica'][1];
@@ -146,8 +146,9 @@ namespace Goteo\Core {
         public $cache_key = '';
         public $input_parameters = null;
         public $execute = null;
-        static $query_stats = array('replica' => array(0, 0), 'master' => array(0, 0));
+        static $query_stats = array('replica' => array(0, 0, 0), 'master' => array(0, 0, 0)); // array(num-non-cached, num-cached, total-time-non-cached )
         static $queries = array('replica' => array(array(), array()), 'master' => array(array(), array()));
+        static $queries_time = 0;
         public $debug = false;
 
         protected function __construct($dbh, $cache=null) {
@@ -157,7 +158,7 @@ namespace Goteo\Core {
             $this->cache_active = \Goteo\Core\DB::$cache_active;
             //si debug es 1, se recojeran en el array las queries no cacheadas
             //si debug es 2, se recojeran todas las queries
-            if(defined("DEBUG_SQL_QUERIES")) $this->debug = DEBUG_SQL_QUERIES;
+            if(defined('DEBUG_SQL_QUERIES')) $this->debug = DEBUG_SQL_QUERIES;
         }
 
         /**
@@ -166,11 +167,11 @@ namespace Goteo\Core {
         public function execute($input_parameters = null) {
             $query = $this->queryString;
 
-            // echo "[".$this->dbh->type.":".intval($this->is_select)."]";
+            // echo '['.$this->dbh->type.':'.intval($this->is_select).']';
             if($this->cache && $this->cache_active) {
                 //Solo aplicamos el cache en sentencias SELECT
                 if($this->is_select) {
-                    $this->cache_key        = "sql-" . md5($query . serialize($input_parameters));
+                    $this->cache_key        = 'sql-' . md5($query . serialize($input_parameters));
                     $this->input_parameters = $input_parameters;
                     //tiempo de cache
                     //salimos, la ejecución de execute se hará cuando se pida el valor
@@ -180,9 +181,11 @@ namespace Goteo\Core {
             //incrementar queries no cacheadas
             self::$query_stats[$this->dbh->type][0]++;
             //si no hay cache se comporta igual
-            if($this->debug) $t = microtime(true);
+            $t = microtime(true);
             $this->execute = parent::execute($input_parameters);
-            if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $query ." | ". print_r($input_parameters,true);
+            $query_time = round(microtime(true) - $t, 4);
+            self::$query_stats[$this->dbh->type][2] += $query_time;
+            if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ' (' . $query_time . 's): ' . $query .' | '. print_r($input_parameters,true);
             return $this->execute;
         }
 
@@ -195,13 +198,15 @@ namespace Goteo\Core {
                     //incrementar queries no cacheadas
                     self::$query_stats[$this->dbh->type][0]++;
 
-                    if($this->debug) $t = microtime(true);
+                    $t = microtime(true);
                     $this->execute =  parent::execute($params);
-                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. " (" . round(microtime(true) - $t, 4) . "s): " . $this->queryString ." | ". print_r($this->input_parameters,true);
+                    $query_time = round(microtime(true) - $t, 4);
+                    self::$query_stats[$this->dbh->type][2] += $query_time;
+                    if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ' (' . $query_time . 's): ' . $this->queryString .' | '. print_r($this->input_parameters,true);
                 }
                 return $this->execute;
             } catch (\PDOException $e) {
-                throw new Exception("Error PDO: " . \trace($e));
+                throw new Exception('Error PDO: ' . \trace($e));
             }
         }
 
@@ -226,7 +231,7 @@ namespace Goteo\Core {
                 if($value !== null) {
                     //incrementar queries cacheadas
                     self::$query_stats[$this->dbh->type][1]++;
-                    if($this->debug>1) self::$queries[$this->dbh->type][1][] = self::$query_stats[$this->dbh->type][1]. ": " . $this->queryString ." | ". print_r($this->input_parameters,true);
+                    if($this->debug>1) self::$queries[$this->dbh->type][1][] = self::$query_stats[$this->dbh->type][1]. ': ' . $this->queryString .' | '. print_r($this->input_parameters,true);
 
                     // echo "[cached [$method $class_name] cache time: [{$this->cache_time}s]";
 
@@ -260,31 +265,31 @@ namespace Goteo\Core {
 
         /* métodos cacheables */
         public function fetchColumn() {
-            return self::_cachedMethod("fetchColumn", func_get_args());
+            return self::_cachedMethod('fetchColumn', func_get_args());
         }
 
         public function fetchObject() {
-            return self::_cachedMethod("fetchObject", func_get_args());
+            return self::_cachedMethod('fetchObject', func_get_args());
         }
 
         public function fetchAll() {
-            return self::_cachedMethod("fetchAll", func_get_args());
+            return self::_cachedMethod('fetchAll', func_get_args());
         }
 
         public function fetch() {
-            return self::_cachedMethod("fetch", func_get_args());
+            return self::_cachedMethod('fetch', func_get_args());
         }
 
         public function columnCount() {
-            return self::_cachedMethod("columnCount", func_get_args());
+            return self::_cachedMethod('columnCount', func_get_args());
         }
 
         /* Otros metodos no cacheables susceptibles de ser usados con SELECT */
         public function rowCount() {
-            return self::_nonCachedMethod("rowCount", func_get_args());
+            return self::_nonCachedMethod('rowCount', func_get_args());
         }
         public function nextRowset() {
-            return self::_nonCachedMethod("nextRowset", func_get_args());
+            return self::_nonCachedMethod('nextRowset', func_get_args());
         }
         /* el resto de métodos no son usados por SELECT, no hace falta definirlos otra vez*/
     }

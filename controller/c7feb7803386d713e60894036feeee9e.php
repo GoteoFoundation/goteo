@@ -132,11 +132,11 @@ namespace Goteo\Controller {
             $log->doAdmin('usws');
             unset($log);
             
-            // Enviar correo informativo a los asesores del proyecto. Añadir siempre a Olivier.
+            // Enviar correo informativo a los asesores del proyecto.
             $project_obj = Model\Project::getMini($project);
-            if (!isset($project->consultants)) {
-                $project_obj->consultants = Model\Project::getConsultants($project);
-            }
+            $project_obj->consultants = Model\Project::getConsultants($project);
+
+            //Añadir siempre a Olivier.
             if (!in_array('olivier', array_keys($project_obj->consultants))) {
                 $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
             }

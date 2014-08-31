@@ -43,10 +43,10 @@ namespace Goteo\Controller\Dashboard {
 
             if ($action == 'select' && !empty($_POST['call'])) {
                 // si se selecciona otra convocatoria
-                $call = Model\call::get($_POST['call']);
+                $call = Model\call::getMini($_POST['call']);
             } elseif (!empty($_SESSION['call']->id)) {
                 // mantener los datos de la convocatoria de trabajo
-                $call = Model\Call::get($_SESSION['call']->id);
+                $call = Model\Call::getMini($_SESSION['call']->id);
             }
 
             if (empty($call)) {
@@ -56,9 +56,9 @@ namespace Goteo\Controller\Dashboard {
             // aqui necesito tener una convocatoria de trabajo,
             // si no hay ninguna ccoge la última
             if ($call instanceof \Goteo\Model\Call) {
-                $_SESSION['call'] = $call;
                 // y con todos los proyectos
-                $call->projects = Model\Call\Project::get($_SESSION['call']->id, array('all'));
+                $call->projects = Model\Call\Project::getMini($_SESSION['call']->id, array('all'));
+                $_SESSION['call'] = $call;
             } else {
                 Message::Error('No se puede trabajar con la convocatoria seleccionada, contacta con nosotros');
                 $call = null;
@@ -102,8 +102,8 @@ namespace Goteo\Controller\Dashboard {
                             $current = $_POST['prev_image']; // la actual
                             if (isset($_POST['image-' . $current . '-remove'])) {
                                 $image = Model\Image::get($current);
-                                $image->remove();
-                                $sponsor->image = '';
+                                $image->remove($errors);
+                                $sponsor->image = null;
                                 $removed = true;
                             }
 

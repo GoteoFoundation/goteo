@@ -51,7 +51,7 @@ if (NODE_ID != GOTEO_NODE) {
 			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
 		}
 	    </script>
-      
+
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
         <!-- custom scrollbars -->
@@ -79,8 +79,8 @@ if (NODE_ID != GOTEO_NODE) {
         <!-- geologin -->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geologin.js"></script>
         <?php endif; ?>
-        
-      
+
+
         <?php if (isset($jscrypt)) : ?>
             <script src="<?php echo SRC_URL ?>/view/js/sha1.min.js"></script>
         <?php endif; ?>
@@ -90,7 +90,7 @@ if (NODE_ID != GOTEO_NODE) {
             <script src="<?php echo SRC_URL ?>/view/js/jquery-ui-1.10.3.autocomplete.min.js"></script>
         <?php endif; ?>
         <?php if (isset($jsreq_ckeditor)) : ?>
-           <script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
+           <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
         <?php endif; ?>
         <script type="text/javascript">
                     jQuery(document).ready(function ($) {
@@ -100,7 +100,7 @@ if (NODE_ID != GOTEO_NODE) {
                            var pos = $(this).offset().left;
                            $('ul.lang').css({left:pos+'px'});
                            $("ul.lang").fadeIn();
-                           $("#lang").css("background","#808285 url('/view/css/bolita.png') 4px 7px no-repeat");
+                           $("#lang").css("background","#808285 url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 7px no-repeat");
 
                        },function() {
                            TID_LANG = setTimeout('$("ul.lang").hide()',100);
@@ -109,12 +109,12 @@ if (NODE_ID != GOTEO_NODE) {
                             try{clearTimeout(TID_LANG)}catch(e){};
                         },function() {
                            TID_LANG = setTimeout('$("ul.lang").hide()',100);
-                           $("#lang").css("background","#59595C url('/view/css/bolita.png') 4px 7px no-repeat");
+                           $("#lang").css("background","#59595C url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 7px no-repeat");
                         });
-                        
-                        
+
+
                     });
-        </script>   
+        </script>
 
 <script type="text/javascript">
 

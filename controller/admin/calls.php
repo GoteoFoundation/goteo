@@ -28,7 +28,7 @@ namespace Goteo\Controller\Admin {
              *
              */
             if (isset($id)) {
-                $call = Model\Call::get($id);
+                $call = Model\Call::getMini($id);
             }
             // si es admin (no superadmin) si no la tiene asignada no puede hacer otra cosa que no sea listar.
             if ($action != 'list'
@@ -248,11 +248,10 @@ namespace Goteo\Controller\Admin {
                 $filters = array('all'=>true); // (siempre todos)
                 $projects   = Model\Call\Project::get($call->id, $filters);
                 $status     = Model\Project::status();
-                // los available son los que aparecen en el discover/call pero tambien los que estan en esdicion
-                //$available  = Model\Call\Project::getAvailable($call->id);
-                // los quitamos por ahora
 
                 // a los seleccionados les añadimos el presupuesto y el máximo
+                // esto lo pasamos a Model\Call\Project::get
+                /*
                 foreach ($projects as &$project) {
                     // su presupuesto
                     // calculo de mincost, maxcost solo si hace falta
@@ -270,6 +269,7 @@ namespace Goteo\Controller\Admin {
                     $called = Model\Call\Project::called($project, $call, $project->amount_call);
                     $project->maxproj = $called->maxproj;
                 }
+                */
 
 
 
@@ -338,6 +338,7 @@ namespace Goteo\Controller\Admin {
 
                 }
 
+                // entradas blog
                 $call->posts = Model\Call\Post::get($call->id);
 
                 return new View(

@@ -35,7 +35,7 @@ namespace Goteo\Controller\Admin {
             if (!empty($id)) {
 
                 // datos del proyecto
-                $project = Model\Project::getMedium($id);
+                $project = Model\Project::getMini($id);
 
                 switch ($action) {
                     case 'info':

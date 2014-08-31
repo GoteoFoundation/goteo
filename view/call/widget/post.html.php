@@ -14,7 +14,7 @@ $post = $this['post'];
     <?php endif; ?>
     <div class="content">
         <h3><a href="<?php echo '/blog/'.$post->id; ?>" target="_blank"><?php echo $post->title; ?></a></h3>
-        <?php if (!empty($post->author)) : ?><div class="author"><a href="/user/profile/<?php echo $post->author ?>"><?php echo Text::get('regular-by') ?> <?php echo $post->user->name ?></a></div><?php endif; ?>
+        <?php if (!empty($post->author)) : ?><div class="author"><a href="/user/profile/<?php echo $post->author ?>"><?php echo Text::get('regular-by') ?> <?php echo $post->user_name ?></a></div><?php endif; ?>
 
         <div class="description"><?php echo Text::recorta($post->text, 150); ?><br /></div>
         

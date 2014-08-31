@@ -15,6 +15,7 @@ namespace Goteo\Model\Blog {
         public
             $id,
             $blog,
+            $project,
             $title,
             $text,
             $image,
@@ -77,7 +78,9 @@ namespace Goteo\Model\Blog {
 
                 // galeria
                 $post->gallery = Image::getAll($id, 'post');
-                $post->image = $post->gallery[0];
+                if (empty($post->image)) {
+                    $post->image = Post::setImage($id, $post->gallery[0]->id);
+                }
 
                 $post->comments = Post\Comment::getAll($id);
                 $post->num_comments = count($post->comments);
@@ -181,7 +184,9 @@ namespace Goteo\Model\Blog {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
-                $post->image = $post->gallery[0];
+                if (empty($post->image)) {
+                    $post->image = Post::setImage($post->id, $post->gallery[0]->id);
+                }
 
                 // video
                 if (!empty($post->media)) {
@@ -345,7 +350,9 @@ namespace Goteo\Model\Blog {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
-                $post->image = $post->gallery[0];
+                if (empty($post->image)) {
+                    $post->image = Post::setImage($post->id, $post->gallery[0]->id);
+                }
 
                 // video
                 if (isset($post->media)) {
@@ -429,6 +436,9 @@ namespace Goteo\Model\Blog {
                 // Luego la imagen
                 if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
+                    // eliminando tabla images
+                    $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                     if ($image->save($errors)) {
                         $this->gallery[] = $image;
 //                        $this->image = $image->id;
@@ -458,6 +468,11 @@ namespace Goteo\Model\Blog {
                         $new->assign($errors);
                         unset($new);
                     }
+                }
+
+                // actualizar campo calculado
+                if ( $this->publish == 1 && $this->owner_type == 'project' ) {
+                    self::numPosts($this->owner_id);
                 }
 
                 return true;
@@ -538,6 +553,61 @@ namespace Goteo\Model\Blog {
                 } else {
                     return false;
                 }
+        }
+
+
+        /*
+         * Numero de entradas de novedaades (publicadads) de un proyecto
+         */
+        public static function numPosts ($project, $published_only = true) {
+
+            $debug = false;
+
+            $values = array(':project' => $project);
+
+            $sql = "SELECT  COUNT(*) as posts, project.num_posts as num
+                FROM    post
+                INNER JOIN project
+                    ON project.id = :project
+                INNER JOIN blog
+                    ON blog.owner = project.id
+                    AND blog.type = 'project'
+                WHERE post.blog = blog.id
+                ";
+
+            if ($published_only)
+                $sql .= 'AND post.publish = 1';
+
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
+            }
+
+            $query = static::query($sql, $values);
+            if($got = $query->fetchObject()) {
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->posts != $got->num) {
+                    static::query("UPDATE project SET num_posts = :num WHERE id = :project", array(':num' => (int) $got->posts, ':project' => $project));
+                }
+            }
+
+            return (int) $got->posts;
+        }
+
+
+        /*
+         * Para aplicar la imagen
+         */
+        public static function setImage ($post, $image) {
+
+            if (!empty($image)) {
+                $sql = "UPDATE post SET `image` = :image WHERE id = :post";
+                self::query($sql, array(':post'=>$post, ':image'=>$image));
+            }
+
+            return $image;
+
         }
 
     }

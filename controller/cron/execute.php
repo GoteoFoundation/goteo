@@ -163,7 +163,7 @@ namespace Goteo\Controller\Cron {
             echo 'El proyecto supera la primera ronda: marcamos fecha';
 
             $errors = array();
-            if ($project->passed($errors)) {
+            if ($project->passDate($errors)) {
                 // se crea el registro de contrato
                 if (Model\Contract::create($project->id, $errors)) {
                     echo ' -> Ok:: se ha creado el registro de contrato';
@@ -229,7 +229,7 @@ namespace Goteo\Controller\Cron {
 
             // marcamos fecha de pase
             $errors = array();
-            if ($project->passed($errors)) {
+            if ($project->passDate($errors)) {
                 // se crea el registro de contrato
                 if (Model\Contract::create($project->id, $errors)) {
                     echo ' -> Ok:: se ha creado el registro de contrato';

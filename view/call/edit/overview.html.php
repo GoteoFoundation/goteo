@@ -15,7 +15,7 @@ foreach ($this['categories'] as $value => $label) {
         'value'     => $value,
         'label'     => $label,
         'checked'   => in_array($value, $call->categories)
-        );            
+        );
 }
 
 // retornos en opcion checkboxes con icono y descripcion
@@ -61,13 +61,13 @@ $superform = array(
     'method'        => 'post',
     'title'         => Text::get('call-overview-main-header'),
     'hint'          => Text::get('guide-call-description'),
-    'class'         => 'aqua',        
+    'class'         => 'aqua',
     'elements'      => array(
         'process_overview' => array (
             'type' => 'hidden',
             'value' => 'overview'
         ),
-        
+
         'name' => array(
             'type'      => 'textbox',
             'title'     => Text::get('call-field-name'),
@@ -77,7 +77,7 @@ $superform = array(
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
         ),
-        
+
         'subtitle' => array(
             'type'      => 'textbox',
             'title'     => Text::get('call-field-subtitle'),
@@ -111,7 +111,7 @@ $superform = array(
                     'type'  => 'html',
                     'class' => 'inline logo-image',
                     'html'  => !empty($call->logo)  ?
-                               '<img src="'.SRC_URL.'/image/' . $call->logo . '" alt="Logo" /><button class="image-remove" type="submit" name="logo-'.$call->logo.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="' . SITE_URL . '/image/' . $call->logo . '" alt="Logo" /><button class="image-remove" type="submit" name="logo-'.$call->logo.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
@@ -141,7 +141,7 @@ $superform = array(
                     'type'  => 'html',
                     'class' => 'inline image-image',
                     'html'  => !empty($call->image) ?
-                               '<img src="'.SRC_URL.'/image/' . $call->image . '" alt="Imagen" /><button class="image-remove" type="submit" name="image-'.$call->image.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="' . SITE_URL . '/image/' . $call->image . '" alt="Imagen" /><button class="image-remove" type="submit" name="image-'.$call->image.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
@@ -171,14 +171,14 @@ $superform = array(
                     'type'  => 'html',
                     'class' => 'inline image-image',
                     'html'  => !empty($call->backimage) ?
-                               '<img src="'.SRC_URL.'/image/' . $call->backimage . '" alt="Imagen" /><button class="image-remove" type="submit" name="backimage-'.$call->backimage.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="' . SITE_URL . '/image/' . $call->backimage . '" alt="Imagen" /><button class="image-remove" type="submit" name="backimage-'.$call->backimage.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
             )
         ),
 
-        'description' => array(            
+        'description' => array(
             'type'      => 'textarea',
             'title'     => Text::get('call-field-description'),
             'required'  => true,
@@ -188,13 +188,13 @@ $superform = array(
             'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
             'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array()
         ),
-        
+
         'description_group' => array(
             'type'      => 'group',
             'class'     => 'inline',
-            'children'  => array(                
+            'children'  => array(
                 'whom' => array(
-                    'type'      => 'textarea',       
+                    'type'      => 'textarea',
                     'title'     => Text::get('call-field-whom'),
                     'required'  => true,
                     'hint'      => Text::get('tooltip-call-whom'),
@@ -203,7 +203,7 @@ $superform = array(
                     'value'     => $call->whom
                 ),
                 'apply' => array(
-                    'type'      => 'textarea',       
+                    'type'      => 'textarea',
                     'title'     => Text::get('call-field-apply'),
                     'required'  => true,
                     'hint'      => Text::get('tooltip-call-apply'),
@@ -221,7 +221,7 @@ $superform = array(
                 ),
             )
         ),
-       
+
         'dossier' => array(
             'type'      => 'textbox',
             'title'     => Text::get('call-field-dossier'),
@@ -232,7 +232,7 @@ $superform = array(
             'ok'        => !empty($okeys['dossier']) ? array($okeys['dossier']) : array()
         ),
 
-        'category' => array(    
+        'category' => array(
             'type'      => 'checkboxes',
             'name'      => 'categories[]',
             'title'     => Text::get('call-field-categories'),
@@ -242,7 +242,7 @@ $superform = array(
             'hint'      => Text::get('tooltip-call-category'),
             'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
             'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
-        ),       
+        ),
 
         'icons' => array(
             'type'      => 'group',
@@ -308,7 +308,7 @@ $superform = array(
                     'view'  => new View('view/project/edit/errors.html.php', array(
                         'project'   => $call,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -322,7 +322,7 @@ $superform = array(
                     )
                 )
             )
-        
+
         )
 
     )
@@ -331,15 +331,15 @@ $superform = array(
 
 
 foreach ($superform['elements'] as $id => &$element) {
-    
+
     if (!empty($this['errors'][$this['step']][$id])) {
         $element['errors'] = arrray();
     }
-    
+
 }
 ?>
 
-<script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	// wysiwyg para la descripción de la convocatoria
