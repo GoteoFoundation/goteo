@@ -511,6 +511,7 @@ namespace Goteo\Controller\Cron {
             $mailHandler->content = $content;
             $mailHandler->node = \GOTEO_NODE;
             $mailHandler->lang = $comlang;
+            $mailHandler->massive = true;
             $mailId = $mailHandler->saveEmailToDB();
 
 
