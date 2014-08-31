@@ -13,7 +13,7 @@ foreach ($contract->docs as $doc) {
     
     // si es gestor o superadmin puede abrirlos
     $doc_html = (isset($_SESSION['user']->roles['manager']) || isset($_SESSION['user']->roles['superadmin']))
-    ? '<a href="/document/' . $doc->id . '/' . $doc->name . '" target="_blank">' . $doc->name . '</a>'
+    ? '<a href="/document/' . $doc->id . '" target="_blank">' . $doc->name . '</a>'
     : '<span style="margin-right: 10px;">' . $doc->name . '</span> <button type="submit" name="docs-'.$doc->id.'-remove" title="Quitar este documento" value="remove" class="image-remove" style="position:relative;"></button>';
         
     

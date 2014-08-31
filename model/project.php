@@ -263,6 +263,7 @@ namespace Goteo\Model {
                                 node.url as node_url, 
                                 project_conf.*,
                                 user.name as user_name,
+                                user.email as user_email,
                                 user.avatar as user_avatar,
                                 IFNULL(user_lang.about, user.about) as user_about,
                                 user.location as user_location,

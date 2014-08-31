@@ -47,7 +47,7 @@ namespace Goteo\Controller {
                 require_once 'library/contract.php';  // Libreria pdf contrato
                 
                 $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';
-                $filename = Model\Contract\Document::$dir . $contract->project . '/' . $pdf_name;
+//                $filename = Model\Contract\Document::$dir . $contract->project . '/' . $pdf_name;
                 
                 // fecha
                 \setlocale(\LC_TIME, 'esp');                
@@ -67,7 +67,10 @@ namespace Goteo\Controller {
 
                         break;
                 }
-                
+
+                /*
+                 * Ya no guardamos el archivo del contrato digital sin firmar
+                 *
                 // si ya está generado, lo abrimos con un get contents
                 if (file_exists($filename)) {
                     header('Content-Type: application/x-download');
@@ -77,6 +80,7 @@ namespace Goteo\Controller {
                     echo file_get_contents($filename);
                     die;
                 }
+                */
 
                 // para generarlo
                 $pdf = new \Pdf;
@@ -88,8 +92,8 @@ namespace Goteo\Controller {
                     echo $pdf->Output();
                     die;
                 } else {
-                    // guardamos el archivo
-                    echo $pdf->Output($filename, 'F');
+                    // YA no guardamos el archivo
+                    // echo $pdf->Output($filename, 'F');
 
                     // y se lo damos para descargar
                     echo $pdf->Output($pdf_name, 'D');
