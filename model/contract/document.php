@@ -107,19 +107,10 @@ namespace Goteo\Model\Contract {
                 $this->original_name = $this->name;
 
                 // verificar que existe el directorio para documentos de este proyecto
-                // para s3 no hace falta
-
-                if (\FILE_HANDLER == 'file' ) {
-                    $extra = array('auto_create_dirs' => true);
-                } else {
-                    $extra = array();
-                }
 
                 $this->filedir = $this->contract.'/';
-                $remote = $this->filedir.$this->name;
-
                 //nombre seguro
-                $this->name = $this->fp->get_save_name($remote);
+                $this->name = $this->fp->get_save_name($this->filedir.$this->name);
 
                 $data = array(
                     ':contract' => $this->contract,
@@ -133,11 +124,11 @@ namespace Goteo\Model\Contract {
 
                     //si es un archivo que se sube
                     if (!empty($this->tmp)) {
-                        $uploaded = $this->fp->upload($this->tmp, $remote, $extra);
+                        $uploaded = $this->fp->upload($this->tmp, $this->filedir.$this->name, array('auto_create_dirs' => true));
 
                         //@FIXME falta checkear que la imagen se ha subido correctamente
                         if (!$uploaded) {
-                            $errors[] = 'fp->upload : <br />'.$this->tmp.' <br />dir: '.$remote.' <br />file name: '.$this->name . '<br />from: '.$this->original_name;
+                            $errors[] = 'fp->upload : <br />'.$this->tmp.' <br />dir: '.$this->dir.'  '.$this->filedir.' <br />file name: '.$this->name . '<br />from: '.$this->original_name;
                             return false;
                         }
                     } else {
@@ -211,7 +202,6 @@ namespace Goteo\Model\Contract {
                 
                 $query = static::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $document) {
-
                     $document->filedir = $document->dir . $document->contract . '/';
                     $array[] = $document;
                 }
@@ -233,15 +223,12 @@ namespace Goteo\Model\Contract {
         public function remove (&$errors = array()) {
             $ok = false;
 
-            $this->filedir = $this->contract.'/';
-            $remote = $this->filedir.$this->name;
-
             try {
                 $sql = "DELETE FROM document WHERE id = ?";
                 $values = array($this->id);
                 if (self::query($sql, $values)) {
                      //esborra de disk
-                    if ($this->fp->delete($remote)) {
+                    if ($this->fp->delete($this->filedir . $this->name)) {
                         $ok = true;
                     } else {
                         $errors[] = 'Se ha borrado el registro pero ha fallado al borrar el archivo';
