@@ -75,8 +75,18 @@ namespace Goteo\Model\Call {
                             project.amount_users as amount_users,
                             project.amount_call as amount_call,
                             project.id REGEXP '[0-9a-f]{5,40}' as draft,
-                            IF(project.passed IS NULL, 1, 2) as round
+                            IF(project.passed IS NULL, 1, 2) as round,
+                            user.id as user_id,
+                            user.name as user_name,
+                            project_conf.noinvest as noinvest,
+                            project_conf.one_round as one_round,
+                            project_conf.days_round1 as days_round1,
+                            project_conf.days_round2 as days_round2
                         FROM project
+                        INNER JOIN user
+                            ON user.id = project.owner
+                        LEFT JOIN project_conf
+                            ON project_conf.project = project.id
                         INNER JOIN call_project
                             ON  call_project.project = project.id
                             AND call_project.call = :call
@@ -98,8 +108,6 @@ namespace Goteo\Model\Call {
                     if (empty($item->amount_call)) {
                         $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
                     }
-
-                    $item->user = Model\User::getMini($item->owner);
 
                     $array[$item->id] = $item;
                 }
