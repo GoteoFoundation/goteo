@@ -224,6 +224,7 @@ namespace Goteo\Library {
 
             if ($this->massive) {
 
+                // @FIXME esto ya no sirve en cli mode
                 if (!empty($_SESSION['NEWSLETTER_SENDID']) ) {
                     $sendId = $_SESSION['NEWSLETTER_SENDID'];
                 } else {

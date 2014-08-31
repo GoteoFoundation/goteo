@@ -81,6 +81,7 @@ namespace Goteo\Model\Blog {
                 if (empty($post->image)) {
                     $post->image = Post::setImage($id, $post->gallery[0]->id);
                 }
+                if (!empty($post->image)) $post->image = Image::get($post->image);
 
                 $post->comments = Post\Comment::getAll($id);
                 $post->num_comments = count($post->comments);
@@ -187,6 +188,7 @@ namespace Goteo\Model\Blog {
                 if (empty($post->image)) {
                     $post->image = Post::setImage($post->id, $post->gallery[0]->id);
                 }
+                if (!empty($post->image)) $post->image = Image::get($post->image);
 
                 // video
                 if (!empty($post->media)) {
@@ -350,9 +352,11 @@ namespace Goteo\Model\Blog {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
+
                 if (empty($post->image)) {
                     $post->image = Post::setImage($post->id, $post->gallery[0]->id);
                 }
+                if (!empty($post->image)) $post->image = Image::get($post->image);
 
                 // video
                 if (isset($post->media)) {

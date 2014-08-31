@@ -329,11 +329,13 @@ namespace Goteo\Controller\Dashboard {
             // - 
 
             // - se crea un registro de tabla mail
-            $mail = new Mail();
-            $mail->template = $template->id;
-            $mail->node = \GOTEO_NODE;
-            $mail->lang = $comlang;
-            $mailId = $mail->saveEmailToDB('any');
+            $mailHandler = new Mail();
+            $mailHandler->template = $template->id;
+            $mailHandler->node = \GOTEO_NODE;
+            $mailHandler->lang = $comlang;
+            $mailHandler->content = $content;
+            $mailId = $mailHandler->saveEmailToDB('any');
+            $mailHandler->saveContentToFile($mailId);
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
             // , también metemos el reply y repplyName (remitente) en la instancia de envío
