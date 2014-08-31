@@ -10,6 +10,7 @@ namespace Goteo\Library {
     class Mail {
 
         public
+            $id, // id registro en tabla mail
             $from = GOTEO_MAIL_FROM,
             $fromName = GOTEO_MAIL_NAME,
             $to = GOTEO_MAIL_FROM,
@@ -104,6 +105,9 @@ namespace Goteo\Library {
                 return false;
             }
 
+            if (empty($this->id)) {
+                $this->saveEmailToDB();
+            }
 
             if($this->validate($errors)) {
                 $mail = $this->mail;
@@ -251,7 +255,9 @@ namespace Goteo\Library {
          * @param $email
          * @return int ID of the inserted email
          */
-        public function saveEmailToDB($email) {
+        public function saveEmailToDB($email = 'any') {
+
+            if (!empty($this->to)) $email = $this->to;
 
             $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
             $values = array (
@@ -263,7 +269,11 @@ namespace Goteo\Library {
                 );
             Model::query($sql, $values);
 
-            return Model::insertId();
+            $id = Model::insertId();
+            $this->id = $id;
+
+            return $id;
+
         }
 
         /**
@@ -272,11 +282,11 @@ namespace Goteo\Library {
          * @param $filename
          * @return
          */
-        public function saveContentToFile($sendId) {
+        public function saveContentToFile() {
 
             //do no need to repeat if already uploaded
             $sql = "SELECT content FROM mail WHERE id = :id";
-            $query = Model::query($sql));
+            $query = Model::query($sql, array(':id' => $this->id));
             $current = (int) $query->fetchColumn();
             if(empty($current)) {
                 return false;
@@ -284,12 +294,12 @@ namespace Goteo\Library {
 
             $email = ($this->massive) ? "any" : $this->to;
             $path = ($this->massive) ? "/news/" : "/sys/";
-            $contentId = md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
+            $contentId = md5("{$this->id}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
 
             $sql = "UPDATE mail SET html='', content = :content WHERE id = :id";
             $values = array (
                 ':content' => $path . $contentId,
-                ':id' => $sendId,
+                ':id' => $this->id,
                 );
             Model::query($sql, $values);
 
