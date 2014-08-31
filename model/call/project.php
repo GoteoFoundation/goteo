@@ -49,10 +49,19 @@ namespace Goteo\Model\Call {
                 }
 
 
+
+
+
                 $sql = "SELECT
                             project.id as id,
                             project.name as name,
                             project.status as status,
+                            project.published as published,
+                            project.created as created,
+                            project.updated as updated,
+                            project.success as success,
+                            project.closed as closed,
+                            project.node as node,
                             project.owner as owner,
                             project.amount as amount,
                             project.mincost as mincost,
@@ -60,6 +69,7 @@ namespace Goteo\Model\Call {
                             project.project_location as location,
                             project.subtitle as subtitle,
                             project.description as description,
+                            project.image as image,
                             project.maxproj as maxproj,
                             project.called as called,
                             project.amount_users as amount_users,
@@ -621,7 +631,7 @@ namespace Goteo\Model\Call {
          */
         public static function numSuccessProjects ($call) {
 
-            $debug = true;
+            $debug = false;
 
             $values = array(':call' => $call);
 
