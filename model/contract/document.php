@@ -110,13 +110,13 @@ namespace Goteo\Model\Contract {
                 // para s3 no hace falta
 
                 if (\FILE_HANDLER == 'file' ) {
-                    $this->filedir = $this->contract.'/';
-                    $remote = $this->filedir.$this->name;
                     $extra = array('auto_create_dirs' => true);
                 } else {
-                    $remote = $this->name;
                     $extra = array();
                 }
+
+                $this->filedir = $this->contract.'/';
+                $remote = $this->filedir.$this->name;
 
                 //nombre seguro
                 $this->name = $this->fp->get_save_name($remote);
@@ -182,11 +182,7 @@ namespace Goteo\Model\Contract {
                 $doc = $query->fetchObject(__CLASS__);
 
                 if ($doc instanceof Document) {
-                    // esto no estoy seguro...
-//                    if (\FILE_HANDLER == 'file' ) {
-                        $doc->filedir = $doc->dir . $doc->contract . '/';
-//                  } else {}
-
+                    $doc->filedir = $doc->dir . $doc->contract . '/';
                 } else {
                     $doc = false;
                 }
@@ -237,12 +233,8 @@ namespace Goteo\Model\Contract {
         public function remove (&$errors = array()) {
             $ok = false;
 
-            if (\FILE_HANDLER == 'file' ) {
-                $this->filedir = $this->contract.'/';
-                $remote = $this->filedir.$this->name;
-            } else {
-                $remote = $this->name;
-            }
+            $this->filedir = $this->contract.'/';
+            $remote = $this->filedir.$this->name;
 
             try {
                 $sql = "DELETE FROM document WHERE id = ?";
