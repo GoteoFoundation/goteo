@@ -80,8 +80,7 @@ namespace Goteo\Controller\Admin {
                             $mailHandler->content = $content;
                             $mailHandler->node = $node;
                             $mailHandler->lang = $lang;
-                            $mailId = $mailHandler->saveEmailToDB('any');
-                            $mailHandler->saveContentToFile($mailId);
+                            $mailId = $mailHandler->saveEmailToDB();
 
                             // inicializamos el envío
                             if (Sender::initiateSending($mailId, $subject, $recipients, true)) {

@@ -511,8 +511,7 @@ namespace Goteo\Controller\Cron {
             $mailHandler->content = $content;
             $mailHandler->node = \GOTEO_NODE;
             $mailHandler->lang = $comlang;
-            $mailId = $mailHandler->saveEmailToDB('any');
-            $mailHandler->saveContentToFile($mailId);
+            $mailId = $mailHandler->saveEmailToDB();
 
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
