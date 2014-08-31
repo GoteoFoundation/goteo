@@ -268,9 +268,10 @@ namespace Goteo\Library {
          */
         public function saveEmailToDB($email) {
 
-            $sql = "INSERT INTO mail (id, email, template, node, lang) VALUES ('', :email, :template, :node, :lang)";
+            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
             $values = array (
                 ':email' => $email,
+                ':html' => $this->content,
                 ':template' => $this->template,
                 ':node' => $this->node,
                 ':lang' => $this->lang
