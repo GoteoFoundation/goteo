@@ -7,7 +7,7 @@ namespace Goteo\Controller {
 
     class Img extends \Goteo\Core\Controller {
 
-        public function index($params = '200x200', $filename) {
+        public function index($params = '200x200', $filename = null) {
 
             //  $width = 200, $height = 200, $crop = false
             if (preg_match('/(\d+)x(\d+)([c]?)/', $params, $matches)) {

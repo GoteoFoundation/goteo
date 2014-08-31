@@ -334,10 +334,9 @@ namespace Goteo\Controller {
             // tratar el que suben
             if(!empty($_FILES['doc_upload']['name'])) {
                 // procesarlo aqui con el submodelo Contract\Doc
-                $newdoc = new Model\Contract\Document(
-                        array('contract' => $contract->project)
-                    );
-                $newdoc->setFile($_FILES['doc_upload']);
+                $newdoc = new Model\Contract\Document($_FILES['doc_upload']);
+                $newdoc->contract = $contract->project;
+
                 if ($newdoc->save($errors)) {
                     $contract->docs[] = $newdoc;
                 }
