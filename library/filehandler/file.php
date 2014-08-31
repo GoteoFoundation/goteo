@@ -45,7 +45,7 @@ namespace Goteo\Library\FileHandler {
             }
 
             if (isset($extra['error_mode'])) {
-                $obj->error_mode($error_mode);
+                $obj->error_mode($extra['error_mode']);
             }
 
             return $obj;

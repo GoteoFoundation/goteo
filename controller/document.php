@@ -8,14 +8,14 @@ namespace Goteo\Controller {
 
     class Document extends \Goteo\Core\Controller {
 
-        public function index($id, $name = null) {
+        public function index($id, $filename = null) {
             try {
                 $doc = Model\Contract\Document::get($id);
 
                 if (!$doc instanceof Model\Contract\Document)
-                    throw new Error('404', 'No tenemos el documento '.$name);
+                    throw new Error('404', 'No tenemos el documento '.$filename);
 
-                // pero ojo porque al ser el archivo privado quizás habrá que coger los contenidos
+                // pero ojo porque al ser el archivo privado quizï¿½s habrï¿½ que coger los contenidos
                 // mime type en el header
                 $fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
                 $fp->setPath($doc->filedir);
