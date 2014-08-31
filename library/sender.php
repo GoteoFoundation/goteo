@@ -151,14 +151,16 @@ namespace Goteo\Library {
                     mailer_content.mail as mail,
                     mailer_content.subject as subject,
                     DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date,
-                    mailer_content.blocked as blocked
+                    mailer_content.blocked as blocked,
+                    mail.content as filename
                 FROM mailer_content
+                LEFT JOIN mail ON mail.id = mailer_content.mail
                 ORDER BY id DESC
                 ";
 
             if ($query = Model::query($sql)) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $mailing) {
-                    $mailing->link = Mail::getSinovesLink($mailing->mail);
+                    $mailing->link = Mail::getSinovesLink($mailing->mail, $mailing->filename);
                     $list[] = $mailing;
                 }
             }
@@ -201,7 +203,7 @@ namespace Goteo\Library {
                     $sqlFilter
                 ORDER BY user.id";
 
-            if ($query = Model::query($sql, $values)) {
+            if ($query = Model::query($sql)) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
                     $list[] = $user;
                 }

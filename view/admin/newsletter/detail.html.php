@@ -39,7 +39,7 @@ $title = array(
         </thead>
         <tbody>
             <tr>
-                <td><a href="<?php echo $link; ?>" target="_blank">[Si no ves]</a></td>
+                <td><?php if (!empty($link)) : ?><a href="<?php echo $link; ?>" target="_blank">[Si no ves]</a><?php endif; ?></td>
                 <td><?php echo $mailing->date; ?></td>
                 <td style="width:15%"><?php echo $mailing->receivers; ?></td>
                 <td style="width:15%"><?php echo $mailing->sended; ?></td>
