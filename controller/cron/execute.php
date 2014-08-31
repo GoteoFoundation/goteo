@@ -12,6 +12,9 @@ namespace Goteo\Controller\Cron {
     class Execute {
 
         public static function process ($debug = false) {
+
+            $debug = true;
+            
             // revision de proyectos: dias, conseguido y cambios de estado
             // proyectos en campaña que estén a 5 días de terminar primera ronda a o a 3 de terminar la segunda
 
@@ -684,7 +687,7 @@ namespace Goteo\Controller\Cron {
                     }
 
                     if ($cancelAll) {
-                        if ($debug) echo 'Cancelar todo<br />';
+                        if ($debug) echo 'Cancelando aporte '.$invest->id.' ['.$invest->method.']<br />';
                         self::cron_cancel_payment($invest, $project, $userData);
                     } elseif ($execute && empty($invest->payment)) {
                         // si hay que ejecutar
