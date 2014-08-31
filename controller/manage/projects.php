@@ -80,7 +80,10 @@ namespace Goteo\Controller\Manage {
             
             if ($action == 'unsetflag') {
                 Model\Contract::setStatus($id, array($subaction => 0));
-                
+
+                /*
+                 * Ya no hacemos esto porque no guardamos el documento del contrato
+                 *
                 // si están quitando pdf, eliminamos el registro de contrato y archivo
                 if ($subaction == 'pdf') {
                     list($num, $cdate) = Model\Contract::getNum($id);
@@ -90,6 +93,7 @@ namespace Goteo\Controller\Manage {
                         unlink($filename);
                     }
                 }
+                */
                 
                 throw new Redirection('/manage/projects/#'.$id);
             }

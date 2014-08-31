@@ -263,6 +263,7 @@ namespace Goteo\Model {
                                 node.url as node_url, 
                                 project_conf.*,
                                 user.name as user_name,
+                                user.email as user_email,
                                 user.avatar as user_avatar,
                                 IFNULL(user_lang.about, user.about) as user_about,
                                 user.location as user_location,
@@ -501,6 +502,7 @@ namespace Goteo\Model {
                     project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
+                    project.owner as owner,
                     user.id as user_id,
                     user.name as user_name,
                     project_conf.noinvest as noinvest,
@@ -572,6 +574,7 @@ namespace Goteo\Model {
                 $Widget->id = $project->project;
                 $Widget->status = $project->status;
                 $Widget->name = $project->name;
+                $Widget->owner = $project->owner;
                 $Widget->description = $project->description;
                 $Widget->published = $project->published;
                 $Widget->created = $project->created;
