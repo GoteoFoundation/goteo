@@ -2,38 +2,48 @@
 
 namespace Goteo\Controller\Cron {
 
+    use Goteo\Core\Exception;
     use Goteo\Model,
         Goteo\Library\Text,
         Goteo\Library\Feed,
         Goteo\Library\Template,
         Goteo\Library\Tpv,
+        Goteo\Library\Paypal,
         Goteo\Library\Mail;
 
     class Execute {
 
-        public static function process ($debug = false) {
-            // revision de proyectos: dias, conseguido y cambios de estado
-            // proyectos en campaña que estén a 5 días de terminar primera ronda a o a 3 de terminar la segunda
+        public static function process () {
 
-            if ($debug) echo 'Comenzamos con los proyectos en campaña (esto está en '.\LANG.')<br /><br />';
+            $debug = true;
 
-            $projects = Model\Project::getActive($debug);
-            foreach ($projects as $project) {
-                self::cron_process_project($project, $debug);
+            try {
+
+                // revision de proyectos: dias, conseguido y cambios de estado
+                // proyectos en campaña que estén a 5 días de terminar primera ronda a o a 3 de terminar la segunda
+
+                if ($debug) echo 'Comenzamos con los proyectos en campaña (esto está en '.\LANG.')<br /><br />';
+
+                $projects = Model\Project::getActive($debug);
+                foreach ($projects as $project) {
+                    self::cron_process_project($project, $debug);
+                }
+
+                echo '<hr/>';
+
+            } catch (Exception $e) {
+
+                // mail de aviso
+                $mailHandler = new Mail();
+                $mailHandler->to = \GOTEO_FAIL_MAIL;
+                $mailHandler->subject = 'El cron execute ha dado excepción';
+                $mailHandler->content = 'El cron/execute ha dado una excepción. '.$e->getMessage();
+                $mailHandler->html = false;
+                $mailHandler->template = null;
+                $mailHandler->send();
+                unset($mailHandler);
+
             }
-
-            echo '<hr/>';
-
-            /*
-            // Comprobamos convocatorias activas
-            // Julian: 06/07/2014  ya no hacemos este cambio de estado automático
-            // el cambio de estado lo controlará el convocador (o admin responsable)
-            // ponemos un botón en el panel admin, el feed se generará entonces
-            $calls = Model\Call::getActive(4);
-            foreach ($calls as $call) {
-                self::cron_process_call($call);
-            }
-            */
 
         }
 
@@ -684,7 +694,7 @@ namespace Goteo\Controller\Cron {
                     }
 
                     if ($cancelAll) {
-                        if ($debug) echo 'Cancelar todo<br />';
+                        if ($debug) echo 'Cancelando aporte '.$invest->id.' ['.$invest->method.']<br />';
                         self::cron_cancel_payment($invest, $project, $userData);
                     } elseif ($execute && empty($invest->payment)) {
                         // si hay que ejecutar
