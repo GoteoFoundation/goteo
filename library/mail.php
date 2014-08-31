@@ -288,6 +288,15 @@ namespace Goteo\Library {
          * @return
          */
         public function saveContentToFile($sendId) {
+
+            //do no need to repeat if already uploaded
+            $sql = "SELECT content FROM mail WHERE id = :id";
+            $query = Model::query($sql));
+            $current = (int) $query->fetchColumn();
+            if(empty($current)) {
+                return false;
+            }
+
             $email = ($this->massive) ? "any" : $this->to;
             $path = ($this->massive) ? "/news/" : "/sys/";
             $contentId = md5("{$sendId}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
