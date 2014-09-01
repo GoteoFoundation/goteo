@@ -193,7 +193,7 @@ namespace Goteo\Controller {
                         $path = '<a href="/translate">Traductor</a>' . $path;
                     }
                 }
-                
+
                 return $path;
             }
 

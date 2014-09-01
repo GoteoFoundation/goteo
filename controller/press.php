@@ -8,7 +8,12 @@ namespace Goteo\Controller {
         Goteo\Library\Text;
 
     class Press extends \Goteo\Core\Controller {
-        
+
+        public function __construct() {
+            //activamos la cache para todo el controlador press
+            \Goteo\Core\DB::cache(true);
+        }
+
         public function index () {
 
             $page = Page::get('press', \NODE_ID);
@@ -23,7 +28,7 @@ namespace Goteo\Controller {
              );
 
         }
-        
+
     }
-    
+
 }

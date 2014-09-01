@@ -31,7 +31,7 @@ namespace Goteo\Controller {
             if (count($reviews) == 0) {
                 $message = 'No tienes asignada ninguna revisión de proyectos';
             }
-            
+
             return new View (
                 'view/review/index.html.php',
                 array(
@@ -49,7 +49,7 @@ namespace Goteo\Controller {
          * Sección, Mi actividad
          * Opciones:
          *      'summary' resumen de los proyectos que tengo actualmente asignados para revisar
-         * 
+         *
          */
         public function activity ($option = 'summary', $action = 'list') {
 
@@ -88,7 +88,7 @@ namespace Goteo\Controller {
          *
          */
         public function reviews ($option = 'summary', $action = 'list', $id = null) {
-            
+
             $user    = $_SESSION['user'];
 
             $errors = array();

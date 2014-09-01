@@ -9,7 +9,12 @@ namespace Goteo\Controller {
         Goteo\Library\Mail;
 
     class Legal extends \Goteo\Core\Controller {
-        
+
+        public function __construct() {
+            //activamos la cache para todo el controlador legal
+            \Goteo\Core\DB::cache(true);
+        }
+
         public function index ($id = null) {
 
             if (empty($id)) {
@@ -28,7 +33,7 @@ namespace Goteo\Controller {
              );
 
         }
-        
+
     }
-    
+
 }

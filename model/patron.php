@@ -510,7 +510,6 @@ namespace Goteo\Model {
         public static function delete ($id) {
 
             $query = self::query("SELECT user FROM patron WHERE id = :id", array(':id' => $id));
-            $query->cacheTime(0);
             if($u = $query->fetchObject()) {
                 $sql = "DELETE FROM patron WHERE id = :id";
                 if (self::query($sql, array(':id' => $id))) {
@@ -526,7 +525,6 @@ namespace Goteo\Model {
          */
         public static function setActive ($id, $active = false) {
             $query = self::query("SELECT user FROM patron WHERE id = :id", array(':id' => $id));
-            $query->cacheTime(0);
             if($u = $query->fetchObject()) {
                 $sql = "UPDATE patron SET active = :active WHERE id = :id";
                 if (self::query($sql, array(':id'=>$id, ':active'=>$active))) {
@@ -543,14 +541,14 @@ namespace Goteo\Model {
          * Para poner un padrino en home
          */
         public static function add_home ($id) {
-            
+
             if(!self::in_home($id))
-            
+
             {
                 $order=self::next_easy();
 
                 $sql = "INSERT INTO patron_order (`id`, `order`) VALUES (:id, :order)";
-                
+
                 if (self::query($sql, array(':id'=>$id,':order'=>$order))) {
                     return true;
                 } else {
@@ -568,7 +566,7 @@ namespace Goteo\Model {
          */
 
         public static function remove_home ($id) {
-            
+
             $sql = "DELETE FROM patron_order WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
@@ -582,7 +580,7 @@ namespace Goteo\Model {
          * Para que salga antes  (disminuir el order)
          */
         public static function up ($id) {
-            
+
             return Check::reorder($id, 'up', 'patron_order', 'id', 'order');
         }
 
@@ -590,7 +588,7 @@ namespace Goteo\Model {
          * Para que un proyecto salga despues  (aumentar el order)
          */
         public static function down ($id) {
-           
+
             return Check::reorder($id, 'down', 'patron_order', 'id', 'order');
         }
 
@@ -629,16 +627,16 @@ namespace Goteo\Model {
 
          $query = self::query('SELECT `order` FROM patron_order WHERE id = :id'
                     , array(':id'=>$id));
-        
-        if($order=$query->fetchColumn(0)) 
+
+        if($order=$query->fetchColumn(0))
             return $order;
-        
-        else return 0;    
+
+        else return 0;
         }
 
         // orden para siguiente apadrinamiento
 
-        
+
         public static function next ($user = null, $node = \GOTEO_NODE) {
             if (isset($user)) {
                 $query = self::query('SELECT `order` FROM patron WHERE user = :user'

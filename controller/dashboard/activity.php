@@ -27,12 +27,12 @@ namespace Goteo\Controller\Dashboard {
             }
             return $lists;
         }
-        
-        
+
+
         // eventos a mostrar en su muro
         public static function wall ($user) {
             return null;
-            
+
             /*
              * Depurar antes de poner esto
              *
@@ -48,7 +48,6 @@ namespace Goteo\Controller\Dashboard {
 
         // acciones de certificado de donativo
         public static function donor ($user, $action = 'view') {
-
             $errors = array();
 
             $year = date('Y');
@@ -198,7 +197,7 @@ namespace Goteo\Controller\Dashboard {
                 }
                 */
 
-                // para generar: 
+                // para generar:
                 // preparamos los datos para el pdf
                 // generamos el pdf y lo mosteramos con la vista específica
                 // estos pdf se guardan en el bucket de documentos /certs
@@ -257,7 +256,7 @@ namespace Goteo\Controller\Dashboard {
 
 
             return $donation;
-            
+
         }
 
     }

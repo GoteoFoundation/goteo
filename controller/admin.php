@@ -246,7 +246,7 @@ namespace Goteo\Controller {
                     'list' => array('label' => 'Listando', 'item' => false),
                     'add' => array('label' => 'Nueva Agrupación', 'item' => false),
                     'edit' => array('label' => 'Editando Agrupación', 'item' => true),
-                    'translate' => array('label' => 'Traduciendo Agrupación', 'item' => true)        
+                    'translate' => array('label' => 'Traduciendo Agrupación', 'item' => true)
                 )
             ),
             'pages' => array(
@@ -448,8 +448,6 @@ namespace Goteo\Controller {
 
         // preparado para index unificado
         public function index($option = 'index', $action = 'list', $id = null, $subaction = null) {
-            //desactivamos la cache para el admin
-            \Goteo\Core\DB::cache(false);
             if ($option == 'index') {
                 $BC = self::menu(array('option' => $option, 'action' => null, 'id' => null));
                 define('ADMIN_BCPATH', $BC);
@@ -462,7 +460,6 @@ namespace Goteo\Controller {
                 $SubC = 'Goteo\Controller\Admin' . \chr(92) . \ucfirst($option);
                 $ret = $SubC::process($action, $id, self::setFilters($option), $subaction);
             }
-            \Goteo\Core\DB::cache(true);
             return $ret;
         }
 
