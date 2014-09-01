@@ -8,6 +8,11 @@ namespace Goteo\Controller {
 
 	class Newsletter extends \Goteo\Core\Controller {
 
+        public function __construct() {
+            //activamos la cache para todo el controlador newsletter
+            \Goteo\Core\DB::cache(true);
+        }
+
 	    // última newsletter enviada
 		public function index () {
 

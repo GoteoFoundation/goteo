@@ -6,9 +6,14 @@ namespace Goteo\Controller {
         Goteo\Library;
 
     class Rss extends \Goteo\Core\Controller {
-        
+
+        public function __construct() {
+            //activamos la cache para todo el controlador index
+            \Goteo\Core\DB::cache(true);
+        }
+
         public function index () {
-            
+
             // sacamos su blog
             $blog = Model\Blog::get(\GOTEO_NODE, 'node');
 
@@ -18,7 +23,7 @@ namespace Goteo\Controller {
             echo '<pre>'.print_r($tags, true).'</pre>';
             echo '<pre>'.print_r($blog->posts, true).'</pre>';
             die;
-             * 
+             *
              */
 
             // al ser xml no usaremos vista
@@ -42,7 +47,7 @@ namespace Goteo\Controller {
 
             // le preparamos los datos y se los pasamos
         }
-        
+
     }
-    
+
 }
