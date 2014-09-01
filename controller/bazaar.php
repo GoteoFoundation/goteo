@@ -13,11 +13,8 @@ namespace Goteo\Controller {
         Goteo\Library\Tpv;
 
     class Bazaar extends \Goteo\Core\Controller {
-
+    
         public function index($id = null, $show = null) {
-
-            //activamos la cache solo para el metodo index
-            \Goteo\Core\DB::cache(true);
 
             $ogimages = array();
 
@@ -39,7 +36,7 @@ namespace Goteo\Controller {
             if ($id !== null) {
                 $item=Model\Bazar::get($id);
                 if (!$item instanceof Model\Bazar)
-                    throw new Redirection("/bazaar");
+                    throw new Redirection("/bazaar"); 
 
                 if ($item->project->status != 3)
                     throw new Redirection('/bazaar');
@@ -94,13 +91,13 @@ namespace Goteo\Controller {
             $item_image = !empty($item->imgsrc) ? $URL.$item->imgsrc : $URL.'/view/bazar/img/carro.png';
 
             $vdata["share"] = (object) array(
-                'description'=>$page->description,
-                'bazar_url'=>$bazar_url,
-                'bazar_twitter_url'=>'http://twitter.com/home?status=' . urlencode($bazar_title . ': ' . $bazar_url),
-                'bazar_facebook_url'=>'http://facebook.com/sharer.php?u=' . urlencode($bazar_url) . '&t=' . urlencode($bazar_title),
-                'item_url'=>$item_url,
-                'item_twitter_url'=>'http://twitter.com/home?status=' . urlencode($item_title . ': ' . $item_url),
-                'item_facebook_url'=>'http://facebook.com/sharer.php?u=' . urlencode($item_url) . '&t=' . urlencode($item_title),
+                'description'=>$page->description, 
+                'bazar_url'=>$bazar_url, 
+                'bazar_twitter_url'=>'http://twitter.com/home?status=' . urlencode($bazar_title . ': ' . $bazar_url), 
+                'bazar_facebook_url'=>'http://facebook.com/sharer.php?u=' . urlencode($bazar_url) . '&t=' . urlencode($bazar_title), 
+                'item_url'=>$item_url, 
+                'item_twitter_url'=>'http://twitter.com/home?status=' . urlencode($item_title . ': ' . $item_url), 
+                'item_facebook_url'=>'http://facebook.com/sharer.php?u=' . urlencode($item_url) . '&t=' . urlencode($item_title), 
             );
 
             $vdata['page'] = $page;
@@ -119,7 +116,7 @@ namespace Goteo\Controller {
         /*
         * Metodo para procesar el aporte
         * es como controller/invest::index pero hace varias cosas de modo diferente
-        *
+        * 
         */
         public function pay($reward = null) {
             if (empty($reward))
@@ -195,11 +192,11 @@ namespace Goteo\Controller {
                     throw new Redirection("/bazaar/{$reward}/fail");
                 }
 
-                // dirección de envio
+                // dirección de envio 
                 $address = $formData;
 
 
-                // verificación de impulsor
+                // verificación de impulsor 
                 if ($project->owner == $formData['user']) {
                     Message::Error(Text::get('invest-owner-error'));
                     throw new Redirection("/bazaar/{$item->id}/fail");
@@ -284,5 +281,5 @@ namespace Goteo\Controller {
         }
 
     }
-
+		
 }

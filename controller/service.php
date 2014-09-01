@@ -8,12 +8,7 @@ namespace Goteo\Controller {
         Goteo\Library\Text;
 
     class Service extends \Goteo\Core\Controller {
-
-        public function __construct() {
-            //activamos la cache para todo el controlador service
-            \Goteo\Core\DB::cache(true);
-        }
-
+        
         public function index ($id = null) {
 
             if (empty($id)) {
@@ -32,7 +27,7 @@ namespace Goteo\Controller {
              );
 
         }
-
+        
     }
-
+    
 }

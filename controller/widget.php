@@ -9,12 +9,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error;
 
     class Widget extends \Goteo\Core\Controller {
-
-        public function __construct() {
-            //activamos la cache para todo el controlador index
-            \Goteo\Core\DB::cache(true);
-        }
-
+        
         public function project ($id) {
 
             $project  = Project::getMedium($id, LANG);
@@ -24,7 +19,7 @@ namespace Goteo\Controller {
             }
 
             return new View('view/widget/project.html.php', array('project' => $project, 'global' => true));
-
+            
             throw new Redirection('/fail', Redirection::TEMPORARY);
         }
 
@@ -39,5 +34,5 @@ namespace Goteo\Controller {
 
 
     }
-
+    
 }

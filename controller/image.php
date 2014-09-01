@@ -6,10 +6,6 @@ namespace Goteo\Controller {
         Goteo\Model;
 
     class Image extends \Goteo\Core\Controller {
-        public function __construct() {
-            //activamos la cache para todo el controlador image
-            \Goteo\Core\DB::cache(true);
-        }
 
         public function index($id, $width = 200, $height = 200, $crop = false) {
             if ($image = Model\Image::get($id)) {

@@ -8,11 +8,6 @@ namespace Goteo\Controller {
 
     class Faq extends \Goteo\Core\Controller {
 
-        public function __construct() {
-            //activamos la cache para todo el controlador faq
-            \Goteo\Core\DB::cache(true);
-        }
-
         public function index ($current = 'node') {
 
             // si llega una pregunta  ?q=70
@@ -31,7 +26,7 @@ namespace Goteo\Controller {
 
             foreach ($sections as $id=>$name) {
                 $qs = Model\Faq::getAll($id);
-
+                
                 if (empty($qs)) {
                     if ($id == $current && $current != 'node') {
                         throw new \Goteo\Core\Redirection('/faq');

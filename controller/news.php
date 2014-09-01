@@ -8,11 +8,6 @@ namespace Goteo\Controller {
 
     class News extends \Goteo\Core\Controller {
 
-        public function __construct() {
-            //activamos la cache para todo el controlador news
-            \Goteo\Core\DB::cache(true);
-        }
-
         public function index () {
 
             $page = Page::get('news');

@@ -11,17 +11,12 @@ namespace Goteo\Controller {
 
     class Community extends \Goteo\Core\Controller {
 
-        public function __construct() {
-            //activamos la cache para todo el controlador index
-            \Goteo\Core\DB::cache(true);
-        }
-
         public function index ($show = 'activity', $category = null) {
 
             if (defined('GOTEO_EASY') && \GOTEO_EASY === true) {
                 throw new Redirection('/');
             }
-
+            
             $page = Page::get('community');
 
             $items = array();
@@ -64,7 +59,7 @@ namespace Goteo\Controller {
                             if (!empty($investor->campaign)) continue;
                             // estos dos tampoco
                             if (in_array($investor->user, array('aportaciones', 'colectivoafinidadrebelde'))) continue;
-
+                            
                             if (\array_key_exists($investor->user, $investors)) {
                                 // si es otro proyecto y ya está en el array, añadir uno
                                 if ($investors[$investor->user]->lastproject != $projectId) {
@@ -94,7 +89,7 @@ namespace Goteo\Controller {
 
                 // feed público
                 case 'activity':
-
+                    
                     $items = array();
 
                     $items['goteo']     = Feed::getAll('goteo', 'public', 50);

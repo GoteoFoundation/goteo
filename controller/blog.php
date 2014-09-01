@@ -8,12 +8,7 @@ namespace Goteo\Controller {
         Goteo\Model;
 
     class Blog extends \Goteo\Core\Controller {
-
-        public function __construct() {
-            //activamos la cache para todo el controlador blog
-            \Goteo\Core\DB::cache(true);
-        }
-
+        
         public function index ($post = null) {
 
             if (!empty($post)) {
@@ -79,7 +74,7 @@ namespace Goteo\Controller {
              );
 
         }
-
+        
     }
-
+    
 }
