@@ -336,6 +336,9 @@ namespace Goteo\Model {
                     $this->logo = '';
                 }
             }
+            if (is_null($this->logo)) {
+                $this->logo = '';
+            }
 
             $fields = array(
                 'name',

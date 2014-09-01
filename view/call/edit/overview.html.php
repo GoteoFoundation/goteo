@@ -111,7 +111,7 @@ $superform = array(
                     'type'  => 'html',
                     'class' => 'inline logo-image',
                     'html'  => !empty($call->logo)  ?
-                               '<img src="' . SITE_URL . '/image/' . $call->logo . '" alt="Logo" /><button class="image-remove" type="submit" name="logo-'.$call->logo.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="' . SITE_URL . '/image/' . $call->logo . '" alt="Logo" /><button class="image-remove" type="submit" name="logo-'.md5($call->logo).'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
@@ -141,7 +141,7 @@ $superform = array(
                     'type'  => 'html',
                     'class' => 'inline image-image',
                     'html'  => !empty($call->image) ?
-                               '<img src="' . SITE_URL . '/image/' . $call->image . '" alt="Imagen" /><button class="image-remove" type="submit" name="image-'.$call->image.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="' . SITE_URL . '/image/' . $call->image . '" alt="Imagen" /><button class="image-remove" type="submit" name="image-'.md5($call->image).'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
@@ -171,7 +171,7 @@ $superform = array(
                     'type'  => 'html',
                     'class' => 'inline image-image',
                     'html'  => !empty($call->backimage) ?
-                               '<img src="' . SITE_URL . '/image/' . $call->backimage . '" alt="Imagen" /><button class="image-remove" type="submit" name="backimage-'.$call->backimage.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="' . SITE_URL . '/image/' . $call->backimage . '" alt="Imagen" /><button class="image-remove" type="submit" name="backimage-'.md5($call->backimage).'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 

@@ -430,7 +430,7 @@ namespace Goteo\Controller {
                 }
 
                 // tratar si quitan la imagen
-                if (!empty($_POST['avatar-' . $user->avatar->id . '-remove'])) {
+                if (!empty($_POST['avatar-' . $user->avatar->hash . '-remove'])) {
                     $user->avatar->remove($errors);
                     $user->avatar = null;
                 }

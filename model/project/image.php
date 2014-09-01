@@ -32,7 +32,7 @@ namespace Goteo\Model\Project {
 	 	public static function get ($id, $section = null) {
             
             $URL = \SITE_URL;
-            
+
             
             $array = array ();
             try {
@@ -50,7 +50,7 @@ namespace Goteo\Model\Project {
                     WHERE project = :id 
                     $sqlFilter
                     ORDER BY `order` ASC, image DESC";
-                
+
                 $query = static::query($sql, $values);
                 $images = $query->fetchAll(\PDO::FETCH_OBJ);
                 foreach ($images as $image) {
@@ -112,7 +112,7 @@ namespace Goteo\Model\Project {
          */
         public static function update ($project, $image, $field, $value) {
             
-            $sql = "UPDATE project_image SET `$field` = :val WHERE project = :project AND image = :image";
+            $sql = "UPDATE project_image SET `$field` = :val WHERE project = :project AND MD5(image) = :image";
             if (self::query($sql, array(':project'=>$project, ':image'=>$image, ':val'=>$value))) {
                 return true;
             } else {
