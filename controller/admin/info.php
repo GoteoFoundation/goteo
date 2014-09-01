@@ -51,7 +51,7 @@ namespace Goteo\Controller\Admin {
 
                     // tratar las imagenes que quitan
                     foreach ($post->gallery as $key=>$image) {
-                        if (!empty($_POST["gallery-{$image->id}-remove"])) {
+                        if (!empty($_POST["gallery-{$image->hash}-remove"])) {
                             $image->remove($errors, 'info');
                             unset($post->gallery[$key]);
                             if ($post->image == $image->id) {

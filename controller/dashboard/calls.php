@@ -99,9 +99,8 @@ namespace Goteo\Controller\Dashboard {
                                     ));
 
                             // tratar si quitan la imagen
-                            $current = $_POST['prev_image']; // la actual
-                            if (isset($_POST['image-' . $current . '-remove'])) {
-                                $image = Model\Image::get($current);
+                            if (isset($_POST['image-' . md5($sponsor->image) . '-remove'])) {
+                                $image = Model\Image::get($sponsor->image);
                                 $image->remove($errors);
                                 $sponsor->image = null;
                                 $removed = true;

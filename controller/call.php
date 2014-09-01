@@ -566,7 +566,7 @@ namespace Goteo\Controller {
             }
 
             // tratar si quitan la imagen
-            if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
+            if (!empty($_POST['avatar-' . $user->avatar->hash .  '-remove'])) {
                 $user->avatar->remove($errors);
                 $user->avatar = null;
             }
@@ -698,7 +698,7 @@ namespace Goteo\Controller {
 
             // Logo e imagen de fondo
             // tratar si quitan el logo
-            if (!empty($_POST['logo-' . $call->logo .  '-remove'])) {
+            if (!empty($_POST['logo-' . md5($call->logo) .  '-remove'])) {
                 $logo = Model\Image::get($call->logo);
                 $logo->remove($errors);
                 $call->logo = null;
@@ -710,7 +710,7 @@ namespace Goteo\Controller {
             }
 
             // tratar si quitan la imagen
-            if (!empty($_POST['image-' . $call->image .  '-remove'])) {
+            if (!empty($_POST['image-' . md5($call->image) .  '-remove'])) {
                 $image = Model\Image::get($call->image);
                 $image->remove($errors);
                 $call->image = null;
@@ -722,7 +722,7 @@ namespace Goteo\Controller {
             }
             
             // tratar si quitan la imagen de fondo de las paginas
-            if (!empty($_POST['backimage-' . $call->backimage .  '-remove'])) {
+            if (!empty($_POST['backimage-' . md5($call->backimage) .  '-remove'])) {
                 $backimage = Model\Image::get($call->backimage);
                 $backimage->remove($errors);
                 $call->backimage = null;

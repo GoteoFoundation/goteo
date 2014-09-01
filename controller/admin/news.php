@@ -102,9 +102,8 @@ namespace Goteo\Controller\Admin {
 
 
                     // tratar si quitan la imagen
-                        $current = $_POST['image']; // la actual
-                        if (isset($_POST['image-' . $current .  '-remove'])) {
-                            $image = Model\Image::get($current);
+                        if (isset($_POST['image-' . md5($item->image) .  '-remove'])) {
+                            $image = Model\Image::get($item->image);
                             $image->remove($errors);
                             $item->image = null;
                             $removed = true;
