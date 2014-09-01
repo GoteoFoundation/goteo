@@ -77,7 +77,14 @@ namespace Goteo\Model {
         $sponsors = array(), // patrocinadores de la convocatoria
         $banners  = array(), // banners de la convocatoria
 
-        $expired = false; // si ha finalizado el tiempo de inscripcion
+        $expired = false, // si ha finalizado el tiempo de inscripcion
+        $num_projects, // proyectos seleccionados
+        $rest, // queda por repartir
+        $used, // comprometido
+        $applied, // proyectos aplicados
+        $running_projects, // proyectos seleccionados en campaña
+        $success_projects // proyectos seleccionados exitosos
+        ;
 
         /**
          * Sobrecarga de métodos 'getter'.
@@ -1474,25 +1481,43 @@ namespace Goteo\Model {
                 SELECT SUM(invest.amount) as amount
                 FROM invest
                 WHERE invest.campaign = 1
-                AND invest.call = ?
+                AND invest.call = :id
                 AND invest.status IN ('0', '1', '3')";
-            $query = self::query($sql, array($this->id));
+            $values = array(':id' => $this->id);
+            $query = self::query($sql, $values);
+
             $used = $query->fetchColumn();
 
             // actualizar el campo calculado
-            if ($used->amount != $this->used) {
-                static::query("UPDATE `call` SET used = :new WHERE id = :call", array(':new' => (int) $used->amount, ':call'=>$this->id));
+            if ($used != $this->used) {
+                static::query("UPDATE `call` SET used = :new WHERE id = :call", array(':new' => (int) $used, ':call'=>$this->id));
             }
 
-            return (int) $used->amount;
+            return (int) $used;
         }
 
-        public function getRest($used = 0) {
+        public function getRest($used = null) {
 
-            $rest = $this->amount - $used;
+            if (isset($used)) {
+                $rest = $this->amount - $used;
+            } else {
+                $sql = "
+                SELECT SUM(invest.amount) as amount
+                FROM invest
+                WHERE invest.campaign = 1
+                AND invest.call = :id
+                AND invest.status IN ('0', '1', '3')";
+                $values = array(':id' => $this->id);
+                $query = self::query($sql, $values);
+
+                $used = $query->fetchColumn();
+
+                $rest = $this->amount - $used;
+            }
+
 
             // actualizar el campo calculado
-            if ($rest != $this->rest) {
+            if ($this->rest != $rest) {
                 static::query("UPDATE `call` SET rest = :new WHERE id = :call", array(':new' => (int) $rest, ':call'=>$this->id));
             }
 
