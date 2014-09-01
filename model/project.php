@@ -2259,7 +2259,7 @@ namespace Goteo\Model {
             $values = array();
             // si es un nodo, filtrado
             if (\NODE_ID != \GOTEO_NODE) {
-                $sqlFilter = "AND project.node = :node";
+                $sqlFilter = " AND project.node = :node";
                 $values[':node'] = NODE_ID;
             } else {
                 $sqlFilter = "";
@@ -2345,7 +2345,7 @@ namespace Goteo\Model {
 
             }
 
-            $where.=$sqlFilter;
+            $where.= $sqlFilter;
 
             if(self::default_lang(\LANG)=='es') {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
