@@ -578,7 +578,7 @@ namespace Goteo\Library {
            // si enlace -> título como texto del enlace
            if (!empty($item->url)) {
                 // si imagen -> segun enlace:
-                if (!empty($item->image)) {
+                if ($item->image && $item->image instanceOf \Goteo\Model\Image) {
 
                     if (substr($item->url, 0, 5) == '/user') {
                         $content .= '<div class="content-avatar">
