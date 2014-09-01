@@ -84,7 +84,7 @@ namespace Goteo\Controller\Admin {
                             $mailId = $mailHandler->saveEmailToDB();
 
                             // inicializamos el envío
-                            if (Sender::initiateSending($mailId, $subject, $recipients, true)) {
+                            if (Sender::initiateSending($mailId, $subject, $recipients, 1)) {
                                 // ok...
                             } else {
                                 Message::Error('No se ha podido iniciar el mailing con asunto "'.$subject.'"');
