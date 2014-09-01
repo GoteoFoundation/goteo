@@ -183,6 +183,9 @@ namespace Goteo\Controller\Dashboard {
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
+                /*
+                 * Ya no guardamos el pdf, lo generamos cada vez
+                 *
                 $fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
 
                 // borramos el pdf anterior y generamos de nuevo
@@ -193,6 +196,7 @@ namespace Goteo\Controller\Dashboard {
                         $fp->delete($donation->pdf);
                     }
                 }
+                */
 
                 // para generar: 
                 // preparamos los datos para el pdf
@@ -205,22 +209,33 @@ namespace Goteo\Controller\Dashboard {
 
 
                 $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
+                // actualizamos el nombre de archivo descargado
+                $donation->setPdf($filename);
 
                 $debug = false;
-
-                if ($debug)
-                    header('Content-type: text/html');
 
                 require_once 'library/pdf.php';  // Libreria pdf
                 $pdf = donativeCert($donation);
 
-                $fp->setPath('pdfs/donativos/');
-
                 if ($debug) {
+                    header('Content-type: text/html');
                     echo 'FIN';
                     echo '<hr><pre>' . print_r($pdf, true) . '</pre>';
-                } else {
-                        //guardar pdf en temporal y luego subir a remoto (s3 o data/ si es local)
+                }
+
+                // y se lo damos para descargar
+                echo $pdf->Output($filename, 'D');
+
+                die;
+
+                /*
+                 * Código OBSOLETO
+                 * Ya no grabamos el archivo pdf
+                 *
+                else {
+                        $fp->setPath('pdfs/donativos/');
+
+                    //guardar pdf en temporal y luego subir a remoto (s3 o data/ si es local)
                         $tmp = tempnam(sys_get_temp_dir(), 'goteo-img');
                         $pdf->Output($tmp, 'F');
                         //guardamos a remoto (acceso privado)
@@ -231,13 +246,12 @@ namespace Goteo\Controller\Dashboard {
                         unlink($tmp);
 
                 }
-
                 header('Content-type: application/pdf');
-                // y forzamos la descarga (desde static.goteo.org)
                 header("Content-disposition: attachment; filename={$donation->pdf}");
                 header("Content-Transfer-Encoding: binary");
                 echo $fp->get_contents($filename);
-                die;
+                */
+
             }
             // fin action download
 
