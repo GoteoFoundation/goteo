@@ -63,7 +63,7 @@ $sql = "SELECT
         mailer_send.name,
         mailer_send.email,
         mailer_content.id as mailing_id,
-        mailer_content.mail as mail_id,
+        mailer_content.mail as mail_id
     FROM mailer_send
     RIGHT JOIN mailer_content ON mailer_content.id=mailer_send.mailing AND mailer_content.active=1
     WHERE mailer_send.id = ?
