@@ -140,6 +140,38 @@ namespace Goteo\Model {
 
             return $promos;
         }
+        /*
+         * Lista de destacados para Admin
+         */
+        public static function getList ($activeonly = false, $node = \GOTEO_NODE) {
+
+            $list = array();
+
+            $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
+
+            $query = static::query("
+                SELECT
+                    promote.id as id,
+                    promote.project as project,
+                    project.name as name,
+                    project.status as status,
+                    promote.active as active,
+                    promote.order as `order`
+                FROM    promote
+                LEFT JOIN project
+                    ON project.id = promote.project
+                WHERE promote.node = :node
+                $sqlFilter
+                ORDER BY promote.order ASC, title ASC
+                ", array(':node' => $node));
+
+            foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
+                $list[] = $promo;
+            }
+                // print_r($promos);die;
+
+            return $list;
+        }
 
         /*
          * Lista de proyectos disponibles para destacar
