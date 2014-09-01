@@ -259,7 +259,6 @@ namespace Goteo\Library {
 
 
                 $query = Model::query($sql, $values);
-                $query->cacheTime(60);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
                     // si es la columan goteo, vamos a cambiar el html por el del post traducido
@@ -332,7 +331,6 @@ namespace Goteo\Library {
                         ";
 
                 $query = Model::query($sql, $values);
-                $query->cacheTime(60);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
                     //hace tanto
@@ -416,7 +414,6 @@ namespace Goteo\Library {
                         ";
 
                 $query = Model::query($sql, $values);
-                $query->cacheTime(60);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
                     //hace tanto
@@ -465,8 +462,6 @@ namespace Goteo\Library {
                     ':scope' => $this->scope,
                     ':type' => $this->type
                 ));
-                //esta consulta sin cache
-                $query->cacheTime(0);
                 if ($query->fetchColumn(0) != false) {
                     $this->unique_issue = true;
                     return true;

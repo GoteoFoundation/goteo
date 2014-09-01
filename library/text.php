@@ -167,6 +167,7 @@ namespace Goteo\Library {
                 $texto = $id;
             }
             if(!$nocache) {
+                //dejamos la cache como estaba
                 \Goteo\Core\DB::cache($current_cache);
             }
 

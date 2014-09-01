@@ -10,6 +10,9 @@ namespace Goteo\Core {
          * Comprueba si es un nodo válido
          */
         public static function isValid ($id) {
+            //activamos la cache para este metodo
+            $current_cache = \Goteo\Core\DB::cache();
+            \Goteo\Core\DB::cache(true);
 
             $query = Model::query("
                 SELECT
@@ -22,14 +25,21 @@ namespace Goteo\Core {
                     ':id' => $id
                 )
             );
-            $query->cacheTime(3600);
-            return (bool) $query->fetchColumn();
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+            $ret = (bool) $query->fetchColumn();
+            //dejamos la cache como estaba
+            \Goteo\Core\DB::cache($current_cache);
+            return $ret;
         }
 
         /*
          * Comprueba si es un nodo esta activo
          */
         public static function isActive ($id) {
+
+            //activamos la cache para este metodo
+            $current_cache = \Goteo\Core\DB::cache();
+            \Goteo\Core\DB::cache(true);
 
             $query = Model::query("
                 SELECT
@@ -44,8 +54,11 @@ namespace Goteo\Core {
                     ':id' => $id
                 )
             );
-            $query->cacheTime(3600);
-            return (bool) $query->fetchColumn();
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+            $ret = (bool) $query->fetchColumn();
+            //dejamos la cache como estaba
+            \Goteo\Core\DB::cache($current_cache);
+            return $ret;
         }
 
         /**
@@ -55,6 +68,10 @@ namespace Goteo\Core {
          * @return <type>
          */
         public static function activeNodes ($current = \GOTEO_NODE) {
+
+            //activamos la cache para este metodo
+            $current_cache = \Goteo\Core\DB::cache();
+            \Goteo\Core\DB::cache(true);
 
             $list = array();
 
@@ -67,10 +84,12 @@ namespace Goteo\Core {
                 AND id != 'testnode'
                 ORDER BY `name` ASC
                 ");
-            $sql->cacheTime(3600);
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
             foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[] = $item;
             }
+            //dejamos la cache como estaba
+            \Goteo\Core\DB::cache($current_cache);
 
             return $list;
         }
@@ -96,7 +115,6 @@ namespace Goteo\Core {
                     ':id' => $id
                 )
             );
-            $query->cacheTime(3600);
             $config = $query->fetch(\PDO::FETCH_OBJ);
 
             if (!empty($config)) {
