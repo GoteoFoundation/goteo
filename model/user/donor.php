@@ -3,6 +3,7 @@
 namespace Goteo\Model\User {
 
     use Goteo\Library\Check,
+        Goteo\Library\FileHandler\File,
         Goteo\Library\Text;
 
 
@@ -254,25 +255,47 @@ namespace Goteo\Model\User {
             }
         }
 
+        /*
+         * Nombre del archivo de certificado guardado
+         */
+        public function getPdf($user, $year) {
+            try {
+                $sql = "SELECT pdf FROM user_donation WHERE user = :user AND year = :year";
+                if ($filename = self::query($sql, array(':user' => $user, 'year' => $year))) {
+                    return $filename->fetchColumn();
+                } else {
+                    return null;
+                }
+            } catch (\PDOException $e) {
+                $errors[] = "No se puede recuperar pdf." . $e->getMessage();
+                return false;
+            }
+        }
+
 
         /*
          * Resetear pdf
          */
         static public function resetPdf($xfilename) {
+            $ok = false;
+
             try {
                 $sql = "UPDATE user_donation SET pdf = NULL WHERE MD5(pdf) = :pdf";
                 if (self::query($sql, array(':pdf'=>$xfilename))) {
-                    $path = 'data/pdfs/donativos/'.$xfilename;
-                    unset($path);
 
-                    return true;
-                } else {
-                    return false;
+                    $fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
+                    $fp->setPath('certs/');
+
+                    $fp->delete($xfilename);
+
+                    $ok = true;
                 }
             } catch (\PDOException $e) {
                 $errors[] = "Los datos no se han guardado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
             }
+
+            return $ok;
         }
 
 

@@ -138,7 +138,7 @@ namespace Goteo\Controller {
 
             // segun el tipo cargamos la lista
             if (isset($_GET['list'])) {
-                $viewData['list']  = Model\Project::published($type, null, true);
+                $viewData['list']  = Model\Project::published($type, 99, true);
 
                 return new View(
                     'view/discover/list.html.php',
@@ -146,7 +146,7 @@ namespace Goteo\Controller {
                  );
             } else {
 
-                $projects = Model\Project::published($type);
+                $projects = Model\Project::published($type, 99);
                 // random para retorno cumplido
                 if ($type == 'fulfilled') shuffle ($projects);
                 $viewData['list'] = $projects;
@@ -160,85 +160,10 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Resultados para los
+         * Alias a mostrar todas las convocatorias
          */
         public function call () {
-            //@TODO: que muestre los proyectos seleccionados de una convocatoria (pero ya tenemos la página de convocatoria para esto...)
-            return $this->calls();
-
-            // antenemos actualizados los datos de convocatoria
-            $_SESSION['call'] = Model\Call::get($_SESSION['call']->id);
-
-            if (!$_SESSION['call'] instanceof Model\Call || $_SESSION['assign_mode'] !== true || $_SESSION['call']->status >= 3) {
-                throw new Redirection('/dashboard/calls/projects');
-            } else {
-                $call = $_SESSION['call'];
-            }
-
-            $viewData = array();
-
-            // segun el tipo cargamos el título de la página
-            $viewData['title'] = Text::get('discover-group-call-header') . ' ' . $_SESSION['call']->name;
-
-            // Resumen de busqueda en aviso azul
-            $categories = Model\Category::getList();  // categorias que se usan en proyectos
-            $locs = Model\Location::getProjLocs();  //localizaciones de royectos
-            $icons = Model\Icon::getList(); // iconos que se usan en proyectos
-
-
-            $message = '';
-
-            // sacamos parametros de la convocatoria
-            // para cada parametro, si no hay ninguno es todos los valores
-            $params = array('category'=>array(), 'location'=>array(), 'reward'=>array());
-
-            // categorias
-            $txt_categories = array();
-            foreach ($call->categories as $category) {
-                $params['category'][] = "'{$category}'";
-                $txt_categories[] = $categories[$category];
-            }
-            if (!empty($txt_categories)) {
-                $message .= 'Categoria/s: <strong>' . implode('</strong>, <strong>', $txt_categories).'</strong><br />';
-            }
-
-            // localizacion (separamos la localizacion de la convocatoria y las hacemos md5)
-            if (!empty($call->call_location)) {
-                $locations = \explode(',', $call->call_location);
-
-                // solo ponemos las localidades que existan en proyectos
-                $existing_locations = Model\Location::getProjLocs();
-
-                $txt_locations = array();
-                foreach ($locations as $location ) {
-                    $call_loc = md5(trim($location));
-                    if (!empty($call_loc) && isset($existing_locations[$call_loc])) {
-                        $params['location'][] = "'".$call_loc."'";
-                        $txt_locations[] = $locs[$call_loc];
-                    }
-                }
-                if (!empty($txt_locations)) {
-                   $message .= 'Localidad/es: <strong>' . implode('</strong>, <strong>', $txt_locations).'</strong><br />';
-                }
-            }
-
-            // retornos
-            $txt_icons = array();
-            foreach ($call->icons as $icon) {
-                $params['reward'][] = "'{$icon}'";
-                $txt_icons[] = $icons[$icon]->name;
-            }
-            if (!empty($txt_icons)) {
-               $message .= 'Retorno/s de tipo: <strong>' . implode('</strong>, <strong>', $txt_icons).'</strong><br />';
-            }
-
-
-            Message::Info($message);
-
-            $viewData['list'] = \Goteo\Library\Search::params($params, true);
-
-            return new View('view/discover/assign.html.php', $viewData);
-
+            throw new Redirection('/discover/calls');
         }
 
          /*

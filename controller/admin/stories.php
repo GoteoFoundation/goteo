@@ -175,7 +175,6 @@ namespace Goteo\Controller\Admin {
                     case 'preview':
                             // datos del elemento
                             $story = Model\Stories::get($id);
-                            $story->project = (!empty($story->project)) ? Model\Project::getMedium($story->project) : null;
 
                             return new View(
                                 'view/admin/stories/preview.html.php',

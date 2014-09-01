@@ -326,6 +326,9 @@ namespace Goteo\Model {
             // Primero tratamos la imagen
             if (is_array($this->logo) && !empty($this->logo['name'])) {
                 $image = new Image($this->logo);
+                // eliminando tabla images
+                $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                 if ($image->save($errors)) {
                     $this->logo = $image->id;
                 } else {

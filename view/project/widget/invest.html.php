@@ -176,6 +176,7 @@ if ($step == 'start') : ?>
     <div class="buttons">
         <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
         <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
+        <?php if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?><button type="submit" class="process pay-cash" name="method"  value="cash">CASH</button><?php endif; ?>
     </div>
 <br />
     

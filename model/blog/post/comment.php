@@ -169,6 +169,9 @@ namespace Goteo\Model\Blog\Post {
                 $values[":$field"] = $this->$field;
             }
 
+            //eliminamos etiquetas script,iframe..
+            $values[':text']=Text::tags_filter($values[':text']);
+
             try {
                 $sql = "REPLACE INTO comment SET " . $set;
                 self::query($sql, $values);

@@ -9,6 +9,9 @@ ini_set("display_errors",1);
 //Estoy en mantenimiento
 define('GOTEO_MAINTENANCE', null);
 
+//secreto interno para generación de ID's CAMBIAR!!!!
+define('GOTEO_MISC_SECRET', 'gl,+PQ7`}i8fv}CX0B7qhbqnV[3RHpq0\KPQg|1I|dTz=m=u6BJ;k27mzLuo');
+
 //Estoy en alto rendimiento
 define('GOTEO_EASY', null);
 
@@ -91,6 +94,9 @@ define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
 define('GOTEO_URL', 'http://example.com');
+//url de recursos estaticos (imagenes CSS)
+define('SRC_URL', 'https://static.example.com');
+
 // ssl
 define('GOTEO_SSL', false);
 
@@ -105,12 +111,11 @@ define('FILE_HANDLER', 'file');
 define('LOG_HANDLER', 'file');
 
 
-//S3 bucket
-define('AWS_S3_BUCKET', 'static.example.com');
-define('AWS_S3_PREFIX', '');
-//bucket para logs
-define('AWS_S3_LOG_BUCKET', 'bucket');
-define('AWS_S3_LOG_PREFIX', 'applogs/');
+//S3 buckets
+define('AWS_S3_BUCKET_STATIC', 'static.example.com');
+define('AWS_S3_BUCKET_MAIL', 'mail-archive.example.com');
+define('AWS_S3_BUCKET_DOCUMENT', 'document.example.com');
+define('AWS_S3_BUCKET_PRESS', 'press.example.com');
 
 // Cron params
 define('CRON_PARAM', '--------------');

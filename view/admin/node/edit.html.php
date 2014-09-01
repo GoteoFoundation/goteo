@@ -54,7 +54,7 @@ if (!$node instanceof Model\Node) {
                 'type' => 'hidden',
                 'value' => $node->logo->id,
             ),
-            
+
             'thelogo' => array(
                 'type'      => 'group',
                 'title'     => 'Logo',
@@ -69,7 +69,7 @@ if (!$node instanceof Model\Node) {
                         'type'  => 'html',
                         'class' => 'inline avatar-image',
                         'html'  => is_object($node->logo) ?
-                                   $node->logo . '<img src="'.SRC_URL.'/image/' . $node->logo->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="logo-'.$node->logo->id.'-remove" title="Quitar este logo" value="remove">X</button>' :
+                                   $node->logo . '<img src="' . SITE_URL . '/image/' . $node->logo->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="logo-'.$node->logo->id.'-remove" title="Quitar este logo" value="remove">X</button>' :
                                    ''
                     )
 
@@ -82,7 +82,7 @@ if (!$node instanceof Model\Node) {
                 'title'     => 'Email',
                 'value'     => $node->email,
             ),
-            
+
             'location' => array(
                 'type'      => 'textbox',
                 'size'      => 20,

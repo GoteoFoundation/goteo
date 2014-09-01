@@ -97,16 +97,12 @@ namespace Goteo\Model {
 	                    user.name as project_user_name,
                         banner.image as image,
                         banner.order as `order`,
-                        banner.active as `active`,
-                    	image.id AS image_id,
-                    	image.name AS image_name
+                        banner.active as `active`
                     FROM    banner
                     LEFT JOIN project
                         ON project.id = banner.project
 	                LEFT JOIN user
 	                    ON user.id = project.owner
-	                LEFT JOIN image
-	                    ON image.id = banner.image
                     LEFT JOIN banner_lang
                         ON  banner_lang.id = banner.id
                         AND banner_lang.lang = :lang
@@ -119,15 +115,8 @@ namespace Goteo\Model {
 
             $used_projects = array();
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
-                // metodo antiguo: una sql por cada banner
-                // $banner->image = !empty($banner->image) ? Image::get($banner->image) : null;
-                // nos ahorramos las llamadas sql a image pues en la vista solo se usa el nombre y la id (de la funcion getLink)
-                if(empty($banner->image)) $banner->image = null;
-                else {
-                    $banner->image = new Image;
-                    $banner->image->name = $banner->image_name;
-                    $banner->image->id = $banner->image_id;
-                }
+                // ahora Image::get ya no hace consulta sql porque el nombre de la imagene stá en la tabla
+                $banner->image = Image::get($banner->image);
                 $banner->status = $status[$banner->status];
 
                 //mincost, maxcost, si mincost es zero, lo calculamos:
@@ -245,7 +234,10 @@ namespace Goteo\Model {
             // Imagen de fondo de banner
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
-                if ($image->save()) {
+                // eliminando tabla images
+                $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
+                if ($image->save($errors)) {
                     $this->image = $image->id;
                 } else {
                     \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));

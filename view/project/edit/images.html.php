@@ -14,7 +14,7 @@ foreach ($project->gallery as $image) {
         'type'  => 'html',
         'class' => 'inline gallery-image',
         'html'  => is_object($image) ?
-                   $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove" onclick="document.getElementById(\'proj-superform\').action += \'#images\';"></button>' :
+                   $image . '<img src="' . SITE_URL . '/image/' . $image->id . '/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove" onclick="document.getElementById(\'proj-superform\').action += \'#images\';"></button>' :
                    ''
     );
 
@@ -60,20 +60,20 @@ $superform = array(
     'method'        => 'post',
     'title'         => Text::get('images-main-header'),
     'hint'          => Text::get('guide-project-images'),
-    'class'         => 'aqua',        
+    'class'         => 'aqua',
     'elements'      => array(
         'process_images' => array (
             'type' => 'hidden',
             'value' => 'images'
         ),
-        
+
 
         'anchor-images' => array(
             'type' => 'html',
             'html' => '<a name="images"></a>'
         ),
-        
-        'images' => array(        
+
+        'images' => array(
             'title'     => Text::get('overview-fields-images-title'),
             'type'      => 'group',
             'required'  => true,
@@ -90,7 +90,7 @@ $superform = array(
                     'onclick' => "document.getElementById('proj-superform').action += '#images';"
                 )
             )
-        ),        
+        ),
         'gallery' => array(
             'type'  => 'group',
             'title' => Text::get('overview-field-image_gallery'),
@@ -107,7 +107,7 @@ $superform = array(
                     'view'  => new View('view/project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -121,7 +121,7 @@ $superform = array(
                     )
                 )
             )
-        
+
         )
 
     )
@@ -130,11 +130,11 @@ $superform = array(
 
 
 foreach ($superform['elements'] as $id => &$element) {
-    
+
     if (!empty($this['errors'][$this['step']][$id])) {
         $element['errors'] = arrray();
     }
-    
+
 }
 
 echo new SuperForm($superform);

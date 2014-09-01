@@ -4,6 +4,8 @@ namespace Goteo\Model {
     use Goteo\Core\Model;
     use Goteo\Library\Text,
         Goteo\Model\Project,
+        Goteo\Model\User,
+        Goteo\Model\Invest,
         Goteo\Model\Image,
         Goteo\Library\Check;
 
@@ -34,7 +36,6 @@ namespace Goteo\Model {
                         stories.id as id,
                         stories.node as node,
                         stories.project as project,
-                        project.name as name,
                         IFNULL(stories_lang.title, stories.title) as title,
                         IFNULL(stories_lang.description, stories.description) as description,
                         IFNULL(stories_lang.review, stories.review) as review,
@@ -42,19 +43,51 @@ namespace Goteo\Model {
                         stories.image as image,
                         stories.order as `order`,
                         stories.post as `post`,
-                        stories.active as `active`
+                        stories.active as `active`,
+
+                        project.id as project_id,
+                        project.name as project_name,
+                        project.amount as project_amount,
+                        project.num_investors as project_num_investors,
+                        project.id as project_id,
+
+                        user.id as user_id,
+                        user.name as user_name
+
                     FROM    stories
+                    LEFT JOIN project
+                        ON project.id = stories.project
+                    LEFT JOIN user
+                        ON user.id = project.owner
                     LEFT JOIN stories_lang
                         ON  stories_lang.id = stories.id
                         AND stories_lang.lang = :lang
-                    LEFT JOIN project
-                        ON project.id = stories.project
                     WHERE stories.id = :id
                     ", array(':id'=>$id, ':lang' => $lang));
                 $story = $query->fetchObject(__CLASS__);
 
-                $story->image = Image::get($story->image);
+                $story->image = !empty($story->image) ? Image::get($story->image) : null;
 
+                $user = new User;
+                $user->id = $story->user_id;
+                $user->name = $story->user_name;
+
+                $project = new Project;
+                $project->id = $story->project_id;
+                $project->name = $story->project_name;
+                $project->amount = $story->project_amount;
+                $project->num_investors = $story->project_num_investors;
+                $project->user = $user;
+
+                if(empty($project->amount)) {
+                    $project->amount = Invest::invested($project->id);
+                }
+                if(empty($project->num_investors)) {
+                    $project->num_investors = Invest::numInvestors($project->id);
+                }
+
+
+                $story->project = $project;
                 return $story;
         }
 
@@ -73,15 +106,21 @@ namespace Goteo\Model {
             if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(stories_lang.title, stories.title) as title,
                                     IFNULL(stories_lang.description, stories.description) as description,
-                                    IFNULL(stories_lang.review, stories.review) as review";
+                                    IFNULL(stories_lang.review, stories.review) as review,
+                                    IFNULL(open_tag_lang.name, open_tag.name) as open_tags_name";
                 }
             else {
                     $different_select=" IFNULL(stories_lang.title, IFNULL(eng.title, stories.title)) as title,
                                         IFNULL(stories_lang.description, IFNULL(eng.description, stories.description)) as description,
-                                        IFNULL(stories_lang.review, IFNULL(eng.review, stories.review)) as review";
+                                        IFNULL(stories_lang.review, IFNULL(eng.review, stories.review)) as review,
+                                        IFNULL(open_tag_lang.name, IFNULL(eng_open_tag.name, open_tag.name)) as open_tags_name";
                     $eng_join=" LEFT JOIN stories_lang as eng
                                     ON  eng.id = stories.id
                                     AND eng.lang = 'en'";
+
+                    $eng_join_open_tags=" LEFT JOIN open_tag_lang as eng_open_tag
+                                    ON  eng_open_tag.id = open_tag.id
+                                    AND eng_open_tag.lang = 'en'";
                 }
 
             $query = static::query("
@@ -94,12 +133,34 @@ namespace Goteo\Model {
                     stories.image as image,
                     stories.order as `order`,
                     stories.post as `post`,
-                    stories.active as `active`
+                    stories.active as `active`,
+                    open_tag.post as open_tags_post,
+
+                    project.id as project_id,
+                    project.name as project_name,
+                    project.amount as project_amount,
+                    project.num_investors as project_num_investors,
+                    project.id as project_id,
+
+                    user.id as user_id,
+                    user.name as user_name
                 FROM    stories
+                LEFT JOIN project
+                    ON project.id = stories.project
+                LEFT JOIN user
+                    ON user.id = project.owner
                 LEFT JOIN stories_lang
                     ON  stories_lang.id = stories.id
                     AND stories_lang.lang = :lang
                 $eng_join
+                LEFT JOIN project_open_tag
+                    ON  project_open_tag.project = stories.project
+                LEFT JOIN open_tag
+                    ON  open_tag.id = project_open_tag.open_tag
+                LEFT JOIN open_tag_lang
+                    ON  open_tag_lang.id = open_tag.id
+                    AND open_tag_lang.lang = :lang
+                $eng_join_open_tags
                 WHERE stories.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC
@@ -108,8 +169,27 @@ namespace Goteo\Model {
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $story) {
                 $story->image = !empty($story->image) ? Image::get($story->image) : null;
                 $story->status = $status[$story->status];
-                $story->project = (!empty($story->project)) ? Project::getMedium($story->project) : null;
 
+                $user = new User;
+                $user->id = $story->user_id;
+                $user->name = $story->user_name;
+
+                $project = new Project;
+                $project->id = $story->project_id;
+                $project->name = $story->project_name;
+                $project->amount = $story->project_amount;
+                $project->num_investors = $story->project_num_investors;
+                $project->user = $user;
+
+                if(empty($project->amount)) {
+                    $project->amount = Invest::invested($project->id);
+                }
+                if(empty($project->num_investors)) {
+                    $project->num_investors = Invest::numInvestors($project->id);
+                }
+
+
+                $story->project = $project;
                 $stories[] = $story;
             }
 
@@ -184,7 +264,10 @@ namespace Goteo\Model {
             // Imagen de fondo de stories
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
-                if ($image->save()) {
+                // eliminando tabla images
+                $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
+                if ($image->save($errors)) {
                     $this->image = $image->id;
                 } else {
                     \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));

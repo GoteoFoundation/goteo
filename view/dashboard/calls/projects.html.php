@@ -26,7 +26,7 @@ $status = Model\Project::status();
     <a class="button red" href="/call/delete/<?php echo $call->id ?>" onclick="return confirm('<?php echo Text::get('dashboard-call-delete_alert') ?>')"><?php echo Text::get('regular-delete') ?></a>
     <?php endif ?>
 
-    <p>Actualmente esta convocatoria est&aacute; en estado <stron><?php echo $callStatus; ?></strong></p>
+    <p>Actualmente esta convocatoria est&aacute; en estado <strong><?php echo $callStatus; ?></strong></p>
 </div>
 
 <div class="widget gestrew">

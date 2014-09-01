@@ -13,7 +13,7 @@ $data     = Model\Blog\Post::get($id, $_SESSION['translate_lang']);
 
 $bodyClass = 'admin';
 ?>
-<script type="text/javascript" src="/view/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){

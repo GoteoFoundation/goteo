@@ -44,7 +44,7 @@ namespace Goteo\Controller {
         }
 
         public function delete ($id) {
-            $call = Model\Call::get($id);
+            $call = Model\Call::getMini($id);
             if ($call->delete()) {
                 if ($_SESSION['call']->id == $id) {
                     unset($_SESSION['call']);
@@ -379,11 +379,12 @@ namespace Goteo\Controller {
                 Message::Error('Ha habido algun errror al cargar la convocatoria solicitada');
                 throw new Redirection("/");
             } else {
-                $the_logo = empty($call->logo) ? 1 : $call->logo;
-                $call->logo = Model\Image::get($the_logo);
+                $call->logo = Model\Image::get($call->logo);
                 // el fondo es el campo  backimage
-                $the_image = empty($call->backimage) ? 1 : $call->backimage;
-                $call->image = Model\Image::get($the_image);
+                $call->image = Model\Image::get($call->backimage);
+
+                // entradas blog
+                $call->posts = Model\Call\Post::get($id);
             }
 
             // solamente se puede ver publicamente si
@@ -414,8 +415,12 @@ namespace Goteo\Controller {
 
                 }
 
-                if ($show == 'projects' && ($call->status < 4 || empty($call->projects))) {
-                    throw new Redirection("/call/".$call->id);
+                if ($show == 'projects') {
+
+                    $call->projects = Model\Call\Project::get($call->id, array('published'=>true));
+
+                    if ($call->status < 4 || empty($call->projects))
+                        throw new Redirection("/call/".$call->id);
                 }
 
                 $call->categories = Model\Call\Category::getNames($call->id);
@@ -478,14 +483,15 @@ namespace Goteo\Controller {
                 }
 
                 // filtro proyectos por categoria
-                if ($show == 'projects') {
+                if ($show == 'projects' || $show == 'info') {
+                    $filters = array(
+                        'published' => true
+                    );
                     if (isset($_GET['filter']) && is_numeric($_GET['filter'])) {
-                        $filters = array(
-                            'category' => $_GET['filter'],
-                            'published' => true
-                        );
-                        $call->projects = Model\Call\Project::get($call->id, $filters);
-                        }
+                        $filters['category'] = $_GET['filter'];
+                        $filter = $_GET['filter'];
+                    }
+                    $call->projects = Model\Call\Project::get($call->id, $filters);
                 }
 
                 echo new View('view/call/'.$show.'.html.php', array ('call' => $call, 'social' => $social, 'filter' => $filter));
@@ -496,7 +502,7 @@ namespace Goteo\Controller {
         }
 
         private function apply ($id) {
-            $call = Model\Call::get($id, LANG);
+            $call = Model\Call::getMini($id);
 
             if (!$call instanceof Model\Call) {
                 Message::Error(Text::get('call-apply-failed'));
@@ -529,7 +535,7 @@ namespace Goteo\Controller {
                 return false;
             }
 
-            $user = Model\User::get($call->owner);
+            $user = $call->user;
 
             // tratar la imagen y ponerla en la propiedad avatar
             // __FILES__
@@ -561,8 +567,8 @@ namespace Goteo\Controller {
 
             // tratar si quitan la imagen
             if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
-                $user->avatar->remove('user');
-                $user->avatar = '';
+                $user->avatar->remove($errors);
+                $user->avatar = null;
             }
 
             $user->interests = $_POST['user_interests'];
@@ -694,8 +700,8 @@ namespace Goteo\Controller {
             // tratar si quitan el logo
             if (!empty($_POST['logo-' . $call->logo .  '-remove'])) {
                 $logo = Model\Image::get($call->logo);
-                $logo->remove();
-                $call->logo = '';
+                $logo->remove($errors);
+                $call->logo = null;
             }
 
             // tratar el logo que suben
@@ -706,8 +712,8 @@ namespace Goteo\Controller {
             // tratar si quitan la imagen
             if (!empty($_POST['image-' . $call->image .  '-remove'])) {
                 $image = Model\Image::get($call->image);
-                $image->remove();
-                $call->image = '';
+                $image->remove($errors);
+                $call->image = null;
             }
 
             // tratar la imagen que suben
@@ -718,8 +724,8 @@ namespace Goteo\Controller {
             // tratar si quitan la imagen de fondo de las paginas
             if (!empty($_POST['backimage-' . $call->backimage .  '-remove'])) {
                 $backimage = Model\Image::get($call->backimage);
-                $backimage->remove();
-                $call->backimage = '';
+                $backimage->remove($errors);
+                $call->backimage = null;
             }
 
             // tratar la imagen que suben

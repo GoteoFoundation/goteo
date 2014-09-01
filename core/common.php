@@ -50,6 +50,23 @@ namespace {
     }
 
     /**
+     * Incrusta parametros en un sql para podel lanzarlo en la consola
+     *
+     * @param   string  $sql  sentencia
+     * @param   array  $values   parametros
+     */
+    function sqldbg ($sql, $values = array()) {
+
+        $vals = array();
+        $keys = array();
+        foreach ($values as $key=>$val) {
+            $keys[] = $key;
+            $vals[] = "'{$val}'";
+        }
+        echo str_replace($keys, $vals, $sql);
+    }
+
+    /**
      * Genera un mktime (UNIX_TIMESTAMP) a partir de una fecha (DATE/DATETIME/TIMESTAMP)
      * @param $str
      */

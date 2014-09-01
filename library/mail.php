@@ -4,22 +4,24 @@ namespace Goteo\Library {
 
 	use Goteo\Core\Model,
         Goteo\Core\Exception,
+        Goteo\Library\FileHandler\File,
         Goteo\Core\View;
 
     class Mail {
 
         public
-            $url = SITE_URL,
+            $id, // id registro en tabla mail
             $from = GOTEO_MAIL_FROM,
             $fromName = GOTEO_MAIL_NAME,
             $to = GOTEO_MAIL_FROM,
             $toName = GOTEO_MAIL_NAME,
             $subject,
             $content,
+            $node,
             $cc = false,
             $bcc = false,
-            $reply = false,
-            $replyName,
+            $reply = GOTEO_MAIL_FROM,
+            $replyName = GOTEO_MAIL_NAME,
             $attachments = array(),
             $html = true,
             $massive = false,
@@ -103,6 +105,9 @@ namespace Goteo\Library {
                 return false;
             }
 
+            if (empty($this->id)) {
+                $this->saveEmailToDB();
+            }
 
             if($this->validate($errors)) {
                 $mail = $this->mail;
@@ -171,6 +176,7 @@ namespace Goteo\Library {
 
                     // Envía el mensaje
                     if ($mail->Send($errors)) {
+                        $this->saveContentToFile();
                         return true;
                     } else {
                         $errors[] = 'Fallo del servidor de correo interno';
@@ -207,51 +213,24 @@ namespace Goteo\Library {
 
             // grabamos el contenido en la tabla de envios
             // especial para masivos, solo grabamos un sinoves
-            if ($this->massive) {
-                if (!empty($_SESSION['NEWSLETTER_SENDID']) ) {
-                    $sendId = $_SESSION['NEWSLETTER_SENDID'];
-                } else {
-                    $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
-                    $values = array (
-                        ':email' => 'any',
-                        ':html' => $this->content,
-                        ':template' => $this->template,
-                        ':node' => $_SESSION['admin_node'],
-                        ':lang' => $this->lang
-                    );
-                    $query = Model::query($sql, $values);
 
-                    $sendId = Model::insertId();
-                    $_SESSION['NEWSLETTER_SENDID'] = $sendId;
-                }
-                // tokens
-                $sinoves_token = md5(uniqid()) . '¬any¬' . $sendId;
-                $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
+            // 'mail-file'
+            // el contenido se guarda en un bucket
+            // para mails normales, se genera md5 (id.email.template.Secret)
+            // para newsletter, se usa directamente id de registro tabla 'mail'
+            // en el campo 'content' de la tabla grabamos el nombre del archivo
+            // la dirección del bucket no se graba en la tabla (diferente para beta y real, desde settings)
 
-            } else {
-                $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
-                $values = array (
-                    ':email' => $this->to,
-                    ':html' => $this->content,
-                    ':template' => $this->template,
-                    ':node' => $_SESSION['admin_node'],
-                    ':lang' => $this->lang
-                );
-                $query = Model::query($sql, $values);
+            // Caducidad
+            // se graba también en la tabla la fecha en la que caduca el contenido (un script auo. borra esos archivos del bucket y registros de la tabla)
 
-                $sendId = Model::insertId();
-                // tokens
-                $leave_token = $sinoves_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
-                $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $sendId;
-            }
+            $this->node = $_SESSION['admin_node'];
 
-            if (!empty($sendId)) {
-                $viewData['sinoves'] = $this->url . '/mail/' . \mybase64_encode($sinoves_token) . '/?email=' . $this->to;
-            } else {
-                $viewData['sinoves'] = $this->url . '/contact';
-            }
+            // tokens
+            $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $this->id;
 
-            $viewData['baja'] = $this->url . '/user/leave/?email=' . $this->to;
+            $viewData['sinoves'] = static::getSinovesLink($this->id);
+            $viewData['baja'] = SITE_URL . '/user/leave/?email=' . $this->to;
 
             if ($plain) {
                 return strip_tags($this->content) . '
@@ -260,7 +239,7 @@ namespace Goteo\Library {
             } else {
                 // para plantilla boletin
                 if ($this->template == 33) {
-                    $viewData['baja'] = $this->url . '/user/unsuscribe/' . \mybase64_encode($leave_token);
+                    $viewData['baja'] = SITE_URL . '/user/unsuscribe/' . \mybase64_encode($leave_token);
                     return new View (GOTEO_PATH.'view/email/newsletter.html.php', $viewData);
                 } elseif (!empty($this->node) && $this->node != GOTEO_NODE) {
                     return new View (GOTEO_PATH.'nodesys/'.$this->node.'/view/email/default.html.php', $viewData);
@@ -268,6 +247,73 @@ namespace Goteo\Library {
                     return new View (GOTEO_PATH.'view/email/goteo.html.php', $viewData);
                 }
             }
+        }
+
+        /**
+         * Save email metadata to DB
+         * @param $email
+         * @return int ID of the inserted email
+         */
+        public function saveEmailToDB() {
+
+            $email = ($this->massive) ? "any" : $this->to;
+
+            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
+            $values = array (
+                ':email' => $email,
+                ':html' => $this->content,
+                ':template' => $this->template,
+                ':node' => $this->node,
+                ':lang' => $this->lang
+                );
+            Model::query($sql, $values);
+
+            $id = Model::insertId();
+            $this->id = $id;
+
+            return $id;
+
+        }
+
+        /**
+         * Store HTML email body generating previously an unique ID for the filename
+         * @param $sendId
+         * @param $filename
+         * @return
+         */
+        public function saveContentToFile() {
+
+            //do no need to repeat if already uploaded
+            $sql = "SELECT content FROM mail WHERE id = :id";
+            $query = Model::query($sql, array(':id' => $this->id));
+            $current = (int) $query->fetchColumn();
+            if(empty($current)) {
+                return false;
+            }
+
+            $email = ($this->massive) ? "any" : $this->to;
+            $path = ($this->massive) ? "/news/" : "/sys/";
+            $contentId = md5("{$this->id}_{$email}_{$this->template}_" . GOTEO_MISC_SECRET) . ".html";
+
+            $sql = "UPDATE mail SET html='', content = :content WHERE id = :id";
+            $values = array (
+                ':content' => $path . $contentId,
+                ':id' => $this->id,
+                );
+            Model::query($sql, $values);
+
+            // Necesitamos constante de donde irán los mails: MAIL_PATH = /data/mail
+            // MAIL_PATH + $path
+            if (FILE_HANDLER == 'file') {
+                $path = 'mail' . $path;
+            }
+
+            // Guardar al sistema de archivos
+            $fpremote = File::factory(array('bucket' => AWS_S3_BUCKET_MAIL));
+            $fpremote->setPath($path);
+
+            $headers = array("Content-Type" => "text/html; charset=UTF-8");
+            $fpremote->put_contents($contentId, $this->content, 0, 'public-read', array(), $headers);
         }
 
         /**
@@ -367,6 +413,37 @@ namespace Goteo\Library {
 
         }
 
+        /**
+         * Devuelve el enlace para Sinoves
+         * @param $id
+         * @return $url
+         */
+        public static function getSinovesLink($id, $filename = null) {
+
+            $url = '';
+
+            if (empty($filename)) {
+                $sql = "SELECT content
+                FROM mail
+                WHERE id = :id";
+
+                $query = Model::query($sql, array(':id' => $id));
+                $content = $query->fetchColumn();
+
+                if (empty($content)) return null;
+
+            } else {
+                $content = $filename;
+            }
+
+            if (FILE_HANDLER == 's3') {
+                $url = 'http://' . AWS_S3_BUCKET_MAIL . $content;
+            } elseif (FILE_HANDLER == 'file') {
+                $url = SITE_URL . '/mail' . $content;
+            }
+
+            return $url;
+        }
 
         /**
          * Control de límite de mails que se pueden enviar al día

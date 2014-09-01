@@ -146,10 +146,11 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                 <td colspan="7"><?php 
                     if ($project->status < 3) {
                         echo "Información al <strong>{$project->progress}%</strong>";
-                    } elseif ($project->status == 3 && $project->round > 0) {
+                    } elseif ($project->status == 3) {
+                        echo "Lleva {$this->days_active} días de campaña.&nbsp;&nbsp;&nbsp;";
                         echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;";
-                        echo "<strong>Conseguido:</strong> ".\amount_format($project->invested)."€&nbsp;&nbsp;&nbsp;";
-                        echo "<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messegers}";
+                        echo "<strong>Conseguido:</strong> ".\amount_format($project->amount)."€&nbsp;&nbsp;&nbsp;";
+                        echo "<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messengers}";
 
                     }
 
@@ -192,7 +193,7 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
                     &nbsp;|&nbsp;
                     <?php if ($project->status == 0) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}"; ?>">[Reabrir edición]</a><?php endif; ?>
                     <?php if ($project->status < 2) : ?><a href="<?php echo "/admin/projects/review/{$project->id}"; ?>" onclick="return confirm('El creador no podrá editarlo más, ok?');">[A revisión]</a><?php endif; ?>
-                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}"; ?>" onclick="return confirm('El proyecto va a comenzar los {$project->days_round1} dias de la primera ronda de campaña, ¿comenzamos?');">[Publicar]</a><?php endif; ?>
+                    <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}"; ?>" onclick="return confirm('El proyecto va a comenzar su campaña, ¿comenzamos?');">[Publicar]</a><?php endif; ?>
                     <?php if ($project->status > 1 && $project->status < 4) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}"; ?>" <?php if ($project->status == 3) : ?>onclick="return confirm('ALERTA!! El proyecto esta en campaña! Con esto lo vamos a despublicar ¿Ok?');"<?php endif; ?>>[A negociación]</a><?php endif; ?>
                     <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}"; ?>" onclick="return confirm('El proyecto pasara a ser un caso de éxito, ok?');">[Retorno Cumplido]</a><?php endif; ?>
                     <?php if ($project->status == 5) : ?><a href="<?php echo "/admin/projects/unfulfill/{$project->id}"; ?>" onclick="return confirm('Lo echamos un paso atras, ok?');">[Retorno Pendiente]</a><?php endif; ?>

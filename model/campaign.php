@@ -82,7 +82,7 @@ namespace Goteo\Model {
         public static function available ($current = null, $node = \GOTEO_NODE) {
 
             if (!empty($current)) {
-                $sqlCurr = " AND `call` != '$current'";
+                $sqlCurr = " AND call.id != '$current'";
             } else {
                 $sqlCurr = "";
             }
@@ -92,8 +92,12 @@ namespace Goteo\Model {
                     call.name as name,
                     call.status as status
                 FROM    `call`
-                WHERE status IN ('3', '4')
-                AND call.id NOT IN (SELECT `call` FROM campaign WHERE campaign.node = :node{$sqlCurr} )
+                LEFT JOIN campaign
+                  ON campaign.node = :node
+                  AND campaign.call = call.id
+                WHERE call.status IN ('3', '4')
+                AND campaign.call IS NULL
+                {$sqlCurr}
                 ORDER BY name ASC
                 ";
 

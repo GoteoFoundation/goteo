@@ -10,7 +10,7 @@ namespace Goteo\Library {
         function __construct($type, $content) {
             $this->type = $type;
             $this->content = $content;
-            $_SESSION['messages'][] = $this;
+            $_SESSION['messages'][md5($content)] = $this;
         }
 
         public static function Info($text) {

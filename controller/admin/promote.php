@@ -140,14 +140,17 @@ namespace Goteo\Controller\Admin {
             }
 
 
-            $promoted = Model\Promote::getAll(false, $node);
+            $promoted = Model\Promote::getList(false, $node);
+            // estados de proyectos
+            $status = Model\Project::status();
 
             return new View(
                 'view/admin/index.html.php',
                 array(
                     'folder' => 'promote',
                     'file' => 'list',
-                    'promoted' => $promoted
+                    'promoted' => $promoted,
+                    'status' => $status
                 )
             );
             

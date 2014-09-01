@@ -40,7 +40,7 @@
 			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
 		}
         </script>
-        
+
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
 
@@ -66,7 +66,7 @@
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/nodejump.js"></script>
 
         <?php if (defined('NODE_ANALYTICS_TRACKER')) echo NODE_ANALYTICS_TRACKER; ?>
-        
+
     </head>
 
     <body class="node <?php if (isset($bodyClass)) echo ' ' . htmlspecialchars($bodyClass) ?>">
@@ -93,4 +93,3 @@
         <noscript><!-- Please enable JavaScript --></noscript>
 
         <div id="wrapper">
-        

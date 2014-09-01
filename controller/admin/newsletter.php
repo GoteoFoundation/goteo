@@ -7,6 +7,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
 		Goteo\Library\Text,
         Goteo\Model,
+        Goteo\Library\Mail,
         Goteo\Library\Message,
 		Goteo\Library\Template,
         Goteo\Library\Newsletter as Boletin,
@@ -74,20 +75,16 @@ namespace Goteo\Controller\Admin {
                             // asunto
                             $subject = $tpl->title;
 
-                            // creamos instancia
-                            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
-                            $values = array (
-                                ':email' => 'any',
-                                ':html' => $content,
-                                ':template' => $template,
-                                ':node' => $node,
-                                ':lang' => $lang
-                            );
-                            $query = \Goteo\Core\Model::query($sql, $values);
-                            $mailId = \Goteo\Core\Model::insertId();
+                            $mailHandler = new Mail();
+                            $mailHandler->template = $template;
+                            $mailHandler->content = $content;
+                            $mailHandler->node = $node;
+                            $mailHandler->lang = $lang;
+                            $mailHandler->massive = true;
+                            $mailId = $mailHandler->saveEmailToDB();
 
                             // inicializamos el envío
-                            if (Sender::initiateSending($mailId, $subject, $recipients, true)) {
+                            if (Sender::initiateSending($mailId, $subject, $recipients, 1)) {
                                 // ok...
                             } else {
                                 Message::Error('No se ha podido iniciar el mailing con asunto "'.$subject.'"');

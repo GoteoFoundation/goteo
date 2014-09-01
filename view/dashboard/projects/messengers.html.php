@@ -3,22 +3,22 @@ use Goteo\Core\View,
     Goteo\Library\Text;
 
 $project = $this['project'];
-$messegers = $this['messegers'];
+$messengers = $this['messengers'];
 
 // participantes ordenados por nombre
-uasort($messegers, function ($a, $b) {
+uasort($messengers, function ($a, $b) {
         if ($a->name == $b->name) return 0;
         return ($a->name > $b->name) ? 1 : -1;
         }
     );
 
 ?>
-<?php if (!empty($messegers)) : ?>
+<?php if (!empty($messengers)) : ?>
 <div class="widget gestrew">
     <h2 class="title">Usuarios que participan en los mensajes</h2>
     
     <div id="invests-list">
-            <?php foreach ($messegers as $user=>$userMsg) :
+            <?php foreach ($messengers as $user=>$userMsg) :
 
                 // al impulsor no lo mostramos
                 if ($user == $project->owner) continue;
