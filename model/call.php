@@ -1486,21 +1486,36 @@ namespace Goteo\Model {
                 AND invest.status IN ('0', '1', '3')";
             $values = array(':id' => $this->id);
             $query = self::query($sql, $values);
-//            die(\sqldbg($sql, $values));
 
             $used = $query->fetchColumn();
 
             // actualizar el campo calculado
-            if ($used->amount != $this->used) {
-                static::query("UPDATE `call` SET used = :new WHERE id = :call", array(':new' => (int) $used->amount, ':call'=>$this->id));
+            if ($used != $this->used) {
+                static::query("UPDATE `call` SET used = :new WHERE id = :call", array(':new' => (int) $used, ':call'=>$this->id));
             }
 
-            return (int) $used->amount;
+            return (int) $used;
         }
 
-        public function getRest($used = 0) {
+        public function getRest($used = null) {
 
-            $rest = $this->amount - $used;
+            if (isset($used)) {
+                $rest = $this->amount - $used;
+            } else {
+                $sql = "
+                SELECT SUM(invest.amount) as amount
+                FROM invest
+                WHERE invest.campaign = 1
+                AND invest.call = :id
+                AND invest.status IN ('0', '1', '3')";
+                $values = array(':id' => $this->id);
+                $query = self::query($sql, $values);
+
+                $used = $query->fetchColumn();
+
+                $rest = $this->amount - $used;
+            }
+
 
             // actualizar el campo calculado
             if ($this->rest != $rest) {
