@@ -8,7 +8,7 @@ namespace Goteo\Controller {
         Goteo\Library\Paypal;
 
     class Cron extends \Goteo\Core\Controller {
-        
+
         /**
          *
          */
@@ -77,15 +77,15 @@ namespace Goteo\Controller {
             } else {
                echo 'Lanzamiento automatico<br />';
             }
-            
+
             $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
             if ($debug) echo 'Modo debug activado<hr />';
-            
+
             // lanzamos subcontrolador
             Cron\Verify::process($debug);
             // también el tratamiento de geologin
             Cron\Geoloc::process($debug);
-            
+
             // recogemos el buffer para grabar el log
             /*
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
@@ -106,6 +106,7 @@ namespace Goteo\Controller {
                     'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
                die;
             } else {
+
                 Cron\Cleanup::process();
                 die();
             }
@@ -126,17 +127,17 @@ namespace Goteo\Controller {
                echo 'Lanzamiento automatico<br />';
             }
             */
-            
+
             // lanzamos subcontrolador
             Cron\Geoloc::process();
-            
+
             // Por el momento no grabamos log de esto, lo lanzamos manual
             /*
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
              */
-            
+
             die();
         }
 
@@ -155,7 +156,7 @@ namespace Goteo\Controller {
 
             @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                 'Se ha lanzado manualmente el cron '. __FUNCTION__ .' para el proyecto '.$project.' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
-            
+
             // a ver si existe el bloqueo
             $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'.block';
             if (file_exists($block_file)) {
@@ -183,7 +184,7 @@ namespace Goteo\Controller {
                         'No se ha podido crear el archivo '.$block_file.' el '.date('d-m-Y').' a las ' . date ('H:i:s'));
                 }
             }
-            
+
             $projectData = Model\Project::getMini($project);
 
             // necesitamos la cuenta del proyecto y que sea la misma que cuando el preapproval
@@ -200,7 +201,7 @@ namespace Goteo\Controller {
                 $mailHandler->template = null;
                 $mailHandler->send();
                 unset($mailHandler);
-                
+
                 die('El proyecto '.$projectData->name.' no tiene la cuenta PayPal!!');
             }
 
@@ -261,7 +262,7 @@ namespace Goteo\Controller {
                     echo 'No hay archivo de bloqueo '.$block_file.'!<br />';
                 }
             }
-            
+
             // recogemos el buffer para grabar el log
             $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
@@ -278,27 +279,27 @@ namespace Goteo\Controller {
          *
          *  tiene en cuenta que se envía cada tantos días
          */
-        
+
         public function daily () {
             if (!\defined('CRON_EXEC')) {
                 @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
                     'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
 //                die('Este proceso no necesitamos lanzarlo manualmente');
             }
-            
+
             // temporalmente debug fijo (quitarlo al quitar monitorización)
 //            $debug = (isset($_GET['debug']) && $_GET['debug'] == 'debug') ? true : false;
             $debug = true;
-            
+
             if ($debug) echo 'Modo debug activado<hr />';
-            
+
             // subcontrolador Auto-tips
             Cron\Daily::Projects($debug);
 
             // subcontrolador progreso convocatorias
             Cron\Daily::Calls($debug);
-            
-            
+
+
             if ($debug) {
                 // recogemos el buffer para grabar el log
                 $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
@@ -317,6 +318,7 @@ namespace Goteo\Controller {
                     'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
                die;
             } else {
+
                 Cron\Imgrename::process();
                 die();
             }

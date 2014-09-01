@@ -68,7 +68,6 @@ namespace Goteo\Library {
                     ";
 
 			$query = Model::query($sql, $values);
-            $query->cacheTime(3600);
             return $query->fetchObject()->text;
 		}
 
@@ -89,7 +88,6 @@ namespace Goteo\Library {
                     ";
 
 			$query = Model::query($sql, $values);
-            $query->cacheTime(3600);
             return $query->fetchObject()->text;
 		}
 
@@ -139,13 +137,19 @@ namespace Goteo\Library {
                         AND text.lang = :lang
                     $eng_join
                     WHERE purpose.text = :id
-                    
-                    ";          
+
+                    ";
+
+            if(!$nocache) {
+                //activamos la cache para este metodo
+                $current_cache = \Goteo\Core\DB::cache();
+                \Goteo\Core\DB::cache(true);
+            }
 
             $query = Model::query($sql, $values);
             //el cache de idiomas lo mantenemos hasta una hora
-            $query->cacheTime(3600);
-			if ($exist = $query->fetchObject()) {
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+            if ($exist = $query->fetchObject()) {
                 $tmptxt = $_cache[$id][$lang] = $exist->text;
 
                 //contamos cuantos argumentos necesita el texto
@@ -157,11 +161,14 @@ namespace Goteo\Library {
                     $texto = $nocache ? $exist->text : $tmptxt;
                 }
 
-			} else {
+            } else {
                 // para catalogar textos nuevos
-//				Model::query("REPLACE INTO purpose (text, purpose, html, `group`) VALUES (:text, :purpose, NULL, 'new')", array(':text' => $id, ':purpose' => $id));
+//              Model::query("REPLACE INTO purpose (text, purpose, html, `group`) VALUES (:text, :purpose, NULL, 'new')", array(':text' => $id, ':purpose' => $id));
                 $texto = $id;
-			}
+            }
+            if(!$nocache) {
+                \Goteo\Core\DB::cache($current_cache);
+            }
 
             $texto = nl2br($texto);
 
@@ -171,7 +178,6 @@ namespace Goteo\Library {
 		static public function getPurpose ($id) {
 			// buscamos la explicación del texto en la tabla
 			$query = Model::query("SELECT purpose, html FROM purpose WHERE `text` = :id", array(':id' => $id));
-            $query->cacheTime(3600);
 			$exist = $query->fetchObject();
 			if (!empty($exist->purpose)) {
                 return $exist->purpose;
@@ -190,7 +196,6 @@ namespace Goteo\Library {
             {
                 // lo miramos en la tabla de propósitos
                 $query = Model::query("SELECT html FROM purpose WHERE text = :id", array(':id' => $id));
-                $query->cacheTime(3600);
                 $purpose = $query->fetchObject();
                 if ($purpose->html == 1)
                     return true;
@@ -244,7 +249,6 @@ namespace Goteo\Library {
 
             try {
                 $query = Model::query($sql, $values);
-                $query->cacheTime(3600);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
                     $texts[] = $text;
                 }
@@ -443,7 +447,6 @@ namespace Goteo\Library {
             // seleccionar toda la tabla,
             $sql = "SELECT ".implode(', ', $fields)." FROM {$table}{$sqlFilter}";
 			$query = Model::query($sql, $values);
-            $query->cacheTime(3600);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row) {
                 // para cada campo
                 foreach ($fields as $field) {
@@ -762,7 +765,7 @@ namespace Goteo\Library {
          */
         public static function tags_filter($text) {
 
-            $paterns = array ('#<script(.*?)</script>#i', '#<iframe(.*?)</iframe>#i', 
+            $paterns = array ('#<script(.*?)</script>#i', '#<iframe(.*?)</iframe>#i',
                               '#<embed(.*?)</embed>#i', '#<form(.*?)</form>#i');
             $sus = array ('', '', '','','');
             $text = preg_replace($paterns,$sus,$text);
