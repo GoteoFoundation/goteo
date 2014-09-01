@@ -4,6 +4,8 @@ namespace Goteo\Model {
     use Goteo\Core\Model;
     use Goteo\Library\Text,
         Goteo\Model\Project,
+        Goteo\Model\User,
+        Goteo\Model\Invest,
         Goteo\Model\Image,
         Goteo\Library\Check;
 
@@ -101,8 +103,21 @@ namespace Goteo\Model {
                     stories.order as `order`,
                     stories.post as `post`,
                     stories.active as `active`,
-                    open_tag.post as open_tags_post
+                    open_tag.post as open_tags_post,
+
+                    project.id as project_id,
+                    project.name as project_name,
+                    project.amount as project_amount,
+                    project.num_investors as project_num_investors,
+                    project.id as project_id,
+
+                    user.id as user_id,
+                    user.name as user_name
                 FROM    stories
+                LEFT JOIN project
+                    ON project.id = stories.project
+                LEFT JOIN user
+                    ON user.id = project.owner
                 LEFT JOIN stories_lang
                     ON  stories_lang.id = stories.id
                     AND stories_lang.lang = :lang
@@ -123,7 +138,27 @@ namespace Goteo\Model {
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $story) {
                 $story->image = !empty($story->image) ? Image::get($story->image) : null;
                 $story->status = $status[$story->status];
-                $story->project = (!empty($story->project)) ? Project::getMedium($story->project) : null;
+
+                $user = new User;
+                $user->id = $story->user_id;
+                $user->name = $story->user_name;
+
+                $project = new Project;
+                $project->id = $story->project_id;
+                $project->name = $story->project_name;
+                $project->amount = $story->project_amount;
+                $project->num_investors = $story->project_num_investors;
+                $project->user = $user;
+
+                if(empty($project->amount)) {
+                    $project->amount = Invest::invested($project->id);
+                }
+                if(empty($project->num_investors)) {
+                    $project->num_investors = Invest::numInvestors($project->id);
+                }
+
+
+                $story->project = $project;
                 $stories[] = $story;
             }
 
