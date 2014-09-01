@@ -36,7 +36,6 @@ namespace Goteo\Model {
                         stories.id as id,
                         stories.node as node,
                         stories.project as project,
-                        project.name as name,
                         IFNULL(stories_lang.title, stories.title) as title,
                         IFNULL(stories_lang.description, stories.description) as description,
                         IFNULL(stories_lang.review, stories.review) as review,
@@ -44,19 +43,51 @@ namespace Goteo\Model {
                         stories.image as image,
                         stories.order as `order`,
                         stories.post as `post`,
-                        stories.active as `active`
+                        stories.active as `active`,
+
+                        project.id as project_id,
+                        project.name as project_name,
+                        project.amount as project_amount,
+                        project.num_investors as project_num_investors,
+                        project.id as project_id,
+
+                        user.id as user_id,
+                        user.name as user_name
+
                     FROM    stories
+                    LEFT JOIN project
+                        ON project.id = stories.project
+                    LEFT JOIN user
+                        ON user.id = project.owner
                     LEFT JOIN stories_lang
                         ON  stories_lang.id = stories.id
                         AND stories_lang.lang = :lang
-                    LEFT JOIN project
-                        ON project.id = stories.project
                     WHERE stories.id = :id
                     ", array(':id'=>$id, ':lang' => $lang));
                 $story = $query->fetchObject(__CLASS__);
 
-                $story->image = Image::get($story->image);
+                $story->image = !empty($story->image) ? Image::get($story->image) : null;
 
+                $user = new User;
+                $user->id = $story->user_id;
+                $user->name = $story->user_name;
+
+                $project = new Project;
+                $project->id = $story->project_id;
+                $project->name = $story->project_name;
+                $project->amount = $story->project_amount;
+                $project->num_investors = $story->project_num_investors;
+                $project->user = $user;
+
+                if(empty($project->amount)) {
+                    $project->amount = Invest::invested($project->id);
+                }
+                if(empty($project->num_investors)) {
+                    $project->num_investors = Invest::numInvestors($project->id);
+                }
+
+
+                $story->project = $project;
                 return $story;
         }
 
