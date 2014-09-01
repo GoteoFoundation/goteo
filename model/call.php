@@ -77,7 +77,14 @@ namespace Goteo\Model {
         $sponsors = array(), // patrocinadores de la convocatoria
         $banners  = array(), // banners de la convocatoria
 
-        $expired = false; // si ha finalizado el tiempo de inscripcion
+        $expired = false, // si ha finalizado el tiempo de inscripcion
+        $num_projects, // proyectos seleccionados
+        $rest, // queda por repartir
+        $used, // comprometido
+        $applied, // proyectos aplicados
+        $running_projects, // proyectos seleccionados en campaña
+        $success_projects // proyectos seleccionados exitosos
+        ;
 
         /**
          * Sobrecarga de métodos 'getter'.
@@ -320,14 +327,15 @@ namespace Goteo\Model {
                 $call->banners  = Call\Banner::getList($id, $lang);
 
                 // campos calculados
+                $keepUpdated = true;
 
                 // riego comprometido
-                if (empty($call->used)) {
+                if (empty($call->used) || $keepUpdated) {
                     $call->used = $call->getUsed();
                 }
 
                 // riego restante
-                if (empty($call->rest)) {
+                if (empty($call->rest) || $keepUpdated) {
                     $call->rest = $call->getRest($call->used);
                 }
 
@@ -1474,9 +1482,12 @@ namespace Goteo\Model {
                 SELECT SUM(invest.amount) as amount
                 FROM invest
                 WHERE invest.campaign = 1
-                AND invest.call = ?
+                AND invest.call = :id
                 AND invest.status IN ('0', '1', '3')";
-            $query = self::query($sql, array($this->id));
+            $values = array(':id' => $this->id);
+            $query = self::query($sql, $values);
+//            die(\sqldbg($sql, $values));
+
             $used = $query->fetchColumn();
 
             // actualizar el campo calculado
@@ -1492,7 +1503,7 @@ namespace Goteo\Model {
             $rest = $this->amount - $used;
 
             // actualizar el campo calculado
-            if ($rest != $this->rest) {
+            if ($this->rest != $rest) {
                 static::query("UPDATE `call` SET rest = :new WHERE id = :call", array(':new' => (int) $rest, ':call'=>$this->id));
             }
 
