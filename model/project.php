@@ -345,10 +345,7 @@ namespace Goteo\Model {
                 $project->user->about = $project->user_about;
                 $project->user->location = $project->user_location;
 
-                $project->user->avatar = Image::get($project->user->avatar);
-                if (empty($project->user->avatar->id) || !$project->user->avatar instanceof Image) {
-                    $project->user->avatar = Image::get(1);
-                }
+                $project->user->avatar = Image::get($project->user_avatar);
 
                 $project->user->webs = User\Web::get($project->user_id);
 
