@@ -18,9 +18,19 @@ namespace Goteo\Library {
                         IFNULL(short, name) as short
                     FROM lang WHERE id = :id
                     ";
+
+            //activamos la cache para este metodo
+            $current_cache = \Goteo\Core\DB::cache();
+            \Goteo\Core\DB::cache(true);
+
             $query = Model::query($sql, array(':id' => $id));
-            $query->cacheTime(3600);
-            return $query->fetchObject();
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+            $ret = $query->fetchObject();
+
+            //dejamos la cache como estaba
+            \Goteo\Core\DB::cache($current_cache);
+
+            return $ret;
         }
 
         /*
@@ -41,11 +51,19 @@ namespace Goteo\Library {
             }
             $sql .= "ORDER BY id ASC";
 
+            //activamos la cache para este metodo
+            $current_cache = \Goteo\Core\DB::cache();
+            \Goteo\Core\DB::cache(true);
+
             $query = Model::query($sql);
-            $query->cacheTime(3600);
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $lang) {
                 $array[$lang->id] = $lang;
             }
+
+            //dejamos la cache como estaba
+            \Goteo\Core\DB::cache($current_cache);
+
             return $array;
         }
 
@@ -118,9 +136,19 @@ namespace Goteo\Library {
 
         static public function locale() {
             $sql = "SELECT locale FROM lang WHERE id = :id";
+
+            //activamos la cache para este metodo
+            $current_cache = \Goteo\Core\DB::cache();
+            \Goteo\Core\DB::cache(true);
+
             $query = Model::query($sql, array(':id' => \LANG));
-            $query->cacheTime(3600);
-            return $query->fetchColumn();
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+            $ret = $query->fetchColumn();
+
+            //dejamos la cache como estaba
+            \Goteo\Core\DB::cache($current_cache);
+
+            return $ret;
         }
 
         /*
@@ -150,11 +178,19 @@ namespace Goteo\Library {
 
 //            die(str_replace(':id', "'$id'", $sql));
 
+            //activamos la cache para este metodo
+            $current_cache = \Goteo\Core\DB::cache();
+            \Goteo\Core\DB::cache(true);
+
             $query = Model::query($sql, array(':id' => $id));
-            $query->cacheTime(3600);
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $lang) {
                 $array[$lang->id] = $lang->name;
             }
+
+            //dejamos la cache como estaba
+            \Goteo\Core\DB::cache($current_cache);
+
             return $array;
         }
 

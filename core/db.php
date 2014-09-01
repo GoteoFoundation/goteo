@@ -4,7 +4,7 @@ namespace Goteo\Core {
 
     class DB extends \PDO {
         public $cache = null;
-        static $cache_active = true; //para poder desactivar la cache globalmente si se necesita
+        static $cache_active = false; //para poder desactivar la cache globalmente si se necesita
         public $read_replica = null;
         public $is_select = false;
         public $type = 'master';
@@ -46,6 +46,10 @@ namespace Goteo\Core {
                     }
 
                     $this->cache = \phpFastCache();
+                    //clean cache if requested
+                    if(isset($_GET['cleancache'])) {
+                        $this->cache->clean();
+                    }
                 }
 
                 //no queremos que las queries vayan al servidor para preparase si usamos cache
