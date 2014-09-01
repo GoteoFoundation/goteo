@@ -138,7 +138,7 @@ namespace Goteo\Controller {
 
             // segun el tipo cargamos la lista
             if (isset($_GET['list'])) {
-                $viewData['list']  = Model\Project::published($type, null, true);
+                $viewData['list']  = Model\Project::published($type, 99, true);
 
                 return new View(
                     'view/discover/list.html.php',
@@ -146,7 +146,7 @@ namespace Goteo\Controller {
                  );
             } else {
 
-                $projects = Model\Project::published($type);
+                $projects = Model\Project::published($type, 99);
                 // random para retorno cumplido
                 if ($type == 'fulfilled') shuffle ($projects);
                 $viewData['list'] = $projects;
