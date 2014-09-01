@@ -109,8 +109,8 @@ namespace Goteo\Model\Contract {
                 // verificar que existe el directorio para documentos de este proyecto
 
                 $this->filedir = $this->contract.'/';
-                //nombre seguro
-                $this->name = $this->fp->get_save_name($this->filedir.$this->name);
+                //nombre seguro (quitamos el path!)
+                $this->name = basename($this->fp->get_save_name($this->filedir.$this->name));
 
                 $data = array(
                     ':contract' => $this->contract,
@@ -124,7 +124,8 @@ namespace Goteo\Model\Contract {
 
                     //si es un archivo que se sube
                     if (!empty($this->tmp)) {
-                        $uploaded = $this->fp->upload($this->tmp, $this->filedir.$this->name, array('auto_create_dirs' => true));
+                        //subimos archivo con permisos privados
+                        $uploaded = $this->fp->upload($this->tmp, $this->filedir.$this->name, array('auto_create_dirs' => true, 'perms' => 'bucket-owner-full-control'));
 
                         //@FIXME falta checkear que la imagen se ha subido correctamente
                         if (!$uploaded) {
@@ -163,12 +164,12 @@ namespace Goteo\Model\Contract {
          * @return object instanceof Document or false if it doesn't exist
          */
 	 	public static function get ($id) {
-            
+
             try {
-                $sql = "SELECT * 
-                    FROM document 
+                $sql = "SELECT *
+                    FROM document
                     WHERE id = :id";
-                
+
                 $query = static::query($sql, array(':id' => $id));
                 $doc = $query->fetchObject(__CLASS__);
 
@@ -177,7 +178,7 @@ namespace Goteo\Model\Contract {
                 } else {
                     $doc = false;
                 }
-                
+
                 return $doc;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
@@ -190,22 +191,22 @@ namespace Goteo\Model\Contract {
          * @return array of documents or false if it doesn't exist
          */
 	 	public static function getDocs ($id) {
-            
+
             $array = array ();
             try {
                 $values = array(':id' => $id);
-                
-                $sql = "SELECT * 
-                    FROM document 
-                    WHERE contract = :id 
+
+                $sql = "SELECT *
+                    FROM document
+                    WHERE contract = :id
                     ORDER BY id DESC";
-                
+
                 $query = static::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $document) {
                     $document->filedir = $document->dir . $document->contract . '/';
                     $array[] = $document;
                 }
-                
+
                 if(empty($array)) {
                     $array = false;
                 }
@@ -222,7 +223,9 @@ namespace Goteo\Model\Contract {
          */
         public function remove (&$errors = array()) {
             $ok = false;
+            $this->filedir = $this->contract.'/';
 
+            $this->fp->delete($this->filedir . $this->name);
             try {
                 $sql = "DELETE FROM document WHERE id = ?";
                 $values = array($this->id);
@@ -243,7 +246,7 @@ namespace Goteo\Model\Contract {
             return $ok;
         }
 
-        
+
 		/**
 		* Returns a secure name to store in file system, if the generated filename exists returns a non-existing one
 		* @param $name original name to be changed-sanitized
@@ -261,7 +264,7 @@ namespace Goteo\Model\Contract {
 			return $name;
 		}
 		*/
-        
+
     }
-    
+
 }
