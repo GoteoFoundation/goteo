@@ -1040,11 +1040,12 @@ namespace Goteo\Model {
                 // quitar las que tiene y no vienen
                 // añadir las que vienen y no tiene
 
-                // project_conf
-                // FIXME: Salvar al completo? / No machacar con valores vacíos
-                $conf = Project\Conf::get($this->id);
-                $conf->one_round = $this->one_round;
-                $conf->save();
+                // project_conf, solo si ha marcado one round
+                if ($this->one_round) {
+                    $conf = Project\Conf::get($this->id);
+                    $conf->one_round = $this->one_round;
+                    $conf->save();
+                }
 
                 //categorias
                 $tiene = Project\Category::get($this->id);
