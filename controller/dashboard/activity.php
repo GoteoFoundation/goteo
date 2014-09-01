@@ -5,6 +5,7 @@ namespace Goteo\Controller\Dashboard {
     use Goteo\Model,
         Goteo\Core\Redirection,
 		Goteo\Library\Message,
+        Goteo\Library\FileHandler\File,
         Goteo\Library\Text,
 		Goteo\Library\Check,
         Goteo\Library\Listing;
@@ -182,24 +183,28 @@ namespace Goteo\Controller\Dashboard {
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
+                $fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
 
-                //@TODO borramos el pdf anterior y generamos de nuevo
-                if (!empty($donation->pdf) && file_exists('data/pdfs/donativos/' . $donation->pdf)) {
-                    unlink('data/pdfs/donativos/' . $donation->pdf);
-                } 
+                // borramos el pdf anterior y generamos de nuevo
+                if (!empty($donation->pdf)) {
+                    $fp->setPath('certs/');
 
+                    if ($fp->exists($donation->pdf)) {
+                        $fp->delete($donation->pdf);
+                    }
+                }
 
                 // para generar: 
                 // preparamos los datos para el pdf
                 // generamos el pdf y lo mosteramos con la vista específica
-                // estos pdf se guardan en /data/pdfs/donativos
+                // estos pdf se guardan en el bucket de documentos /certs
                 // el formato del archivo es: Ymd_nif_userid
 
                 $objeto = new \Goteo\Library\Num2char($donation->amount, null);
                 $donation->amount_char = $objeto->getLetra();
 
-                $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
 
+                $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
 
                 $debug = false;
 
@@ -209,20 +214,30 @@ namespace Goteo\Controller\Dashboard {
                 require_once 'library/pdf.php';  // Libreria pdf
                 $pdf = donativeCert($donation);
 
+                $fp->setPath('pdfs/donativos/');
+
                 if ($debug) {
                     echo 'FIN';
                     echo '<hr><pre>' . print_r($pdf, true) . '</pre>';
                 } else {
-                    $pdf->Output('data/pdfs/donativos/' . $filename, 'F');
-                    $donation->setPdf($filename);
-//                            throw new Redirection('/dashboard/activity/donor/download/'.$donation->pdf);
-                    header('Content-type: application/pdf');
-                    header("Content-disposition: attachment; filename={$donation->pdf}");
-                    header("Content-Transfer-Encoding: binary");
-                    echo $pdf->Output('', 'S');
-                    die;
+                        //guardar pdf en temporal y luego subir a remoto (s3 o data/ si es local)
+                        $tmp = tempnam(sys_get_temp_dir(), 'goteo-img');
+                        $pdf->Output($tmp, 'F');
+                        //guardamos a remoto (acceso privado)
+                        if($fp->upload($tmp, $filename, 'bucket-owner-full-control')) {
+                            // si se graba lo ponemos en el registro para que a la próxima se cargue
+                            $donation->setPdf($filename);
+                        }
+                        unlink($tmp);
+
                 }
 
+                header('Content-type: application/pdf');
+                // y forzamos la descarga (desde static.goteo.org)
+                header("Content-disposition: attachment; filename={$donation->pdf}");
+                header("Content-Transfer-Encoding: binary");
+                echo $fp->get_contents($filename);
+                die;
             }
             // fin action download
 

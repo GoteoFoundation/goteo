@@ -100,7 +100,7 @@ $filters = $this['filters'];
                 <td><?php echo $this['status'][$call->status]; ?></td>
                 <td><?php echo $call->amount; ?></td>
                 <td><?php echo $call->rest; ?></td>
-                <td><?php echo count($call->projects); ?></td>
+                <td><?php echo $call->num_projects; ?></td>
             </tr>
             <tr>
                 <td colspan="7"> GESTI&Oacute;N:&nbsp;

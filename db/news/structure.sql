@@ -15,3 +15,6 @@ ALTER TABLE `news` ADD `description` TEXT NULL COMMENT 'Entradilla' AFTER `title
 ALTER TABLE `news` ADD `image` INT( 10 ) NULL ,
 ADD `press_banner` BOOLEAN NULL DEFAULT '0' COMMENT 'Para aparecer en banner prensa',
 ADD `media_name` TINYTEXT  NULL COMMENT 'Medio de prensa en que se publica';
+
+-- campo imagen a nombre archivo
+ALTER TABLE `news` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';

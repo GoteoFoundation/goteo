@@ -46,7 +46,7 @@ if ($this['action'] == 'none') return;
 
         $post  = $this['post']; // si edit
         if (empty($post->author)) $post->author = $_SESSION['user']->id;
-        
+
         $allow = array(
             array(
                 'value'     => 1,
@@ -64,7 +64,7 @@ if ($this['action'] == 'none') return;
                 'type'  => 'html',
                 'class' => 'inline gallery-image',
                 'html'  => is_object($image) ?
-                           $image . '<img src="'.SRC_URL.'/image/'.$image->id.'/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
+                           $image . '<img src="' . SITE_URL . '/image/' . $image->id . '/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->id.'-remove" title="Quitar imagen" value="remove"></button>' :
                            ''
             );
 
@@ -195,7 +195,7 @@ $(document).ready(function(){
                 'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),
                 'value'     => (string) $post->media
             ),
-            
+
             'media-upload' => array(
                 'name' => "upload",
                 'type'  => 'submit',

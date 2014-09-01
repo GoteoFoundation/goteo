@@ -46,8 +46,8 @@ namespace Goteo\Controller\Dashboard {
  
             // tratar si quitan la imagen
             if (!empty($_POST['avatar-' . $user->avatar->id . '-remove'])) {
-                $user->avatar->remove();
-                $user->avatar = '';
+                $user->avatar->remove($errors);
+                $user->avatar = null;
             }
 
             // Tratamiento de la imagen vip mediante el modelo User\Vip
@@ -59,7 +59,7 @@ namespace Goteo\Controller\Dashboard {
 
                 // tratar si quitan la imagen vip
                 if ($vip->image instanceof Image && !empty($_POST['vip_image-' . $vip->image->id . '-remove'])) {
-                    $vip->image->remove();
+                    $vip->image->remove($errors);
                     $vip->remove();
                 }
             }

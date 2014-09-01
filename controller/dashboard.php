@@ -237,7 +237,7 @@ namespace Goteo\Controller {
 
                 switch ($option) {
                     // gestionar retornos (o mensaje a los mensajeros)
-                    case 'messegers':
+                    case 'messengers':
                     case 'rewards':
                         // sacamos del post el filtro y el orden
                         if ($action == 'filter') {
@@ -395,8 +395,8 @@ namespace Goteo\Controller {
                     break;
 
                 // listar mensajeadores
-                case 'messegers':
-                    $viewData['messegers'] = Model\Message::getMessegers($project->id);
+                case 'messengers':
+                    $viewData['messengers'] = Model\Message::getMessengers($project->id);
                     break;
 
                 // editar colaboraciones
@@ -1008,7 +1008,7 @@ namespace Goteo\Controller {
                         'updates' => Text::get('dashboard-menu-projects-updates'),
                         'supports' => Text::get('dashboard-menu-projects-supports'),
                         'rewards' => Text::get('dashboard-menu-projects-rewards'),
-                        'messegers' => Text::get('dashboard-menu-projects-messegers'),
+                        'messengers' => Text::get('dashboard-menu-projects-messegers'),
                         'contract' => Text::get('dashboard-menu-projects-contract'),
                         'commons' => Text::get('dashboard-menu-projects-commons')
                     )

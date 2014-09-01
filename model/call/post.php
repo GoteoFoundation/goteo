@@ -17,19 +17,70 @@ namespace Goteo\Model\Call {
          * @return instance of post
          */
 		public static function get ($call) {
+
+            $debug = false;
+
             try {
                 $list = array();
-                $values = array(':call'=>$call);
+                $values = array(':call'=>$call, ':lang'=>\LANG);
 
+                // traduccion default english
+                if(self::default_lang(\LANG)=='es') {
+                    $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                    IFNULL(post_lang.text, post.text) as `text`";
+                }
+                else {
+                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                        IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`";
+                    $eng_join=" LEFT JOIN post_lang as eng
+                                    ON  eng.id = post.id
+                                    AND eng.lang = 'en'";
+                }
+
+
+                // image, author, id, title, text
                 $sql = "SELECT
-                            post as id
+                            post.id as id,
+                            $different_select,
+                            post.image as `image`,
+                            DATE_FORMAT(post.date, '%d-%m-%Y') as date,
+                            DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
+                            post.author as author,
+                            user.name as user_name
                         FROM call_post
+                        INNER JOIN post
+                          ON post.id = call_post.post
+                        LEFT JOIN user
+                          ON user.id = post.author
+                        LEFT JOIN post_lang
+                            ON  post_lang.id = post.id
+                            AND post_lang.lang = :lang
+                            AND post_lang.blog = post.blog
+                        $eng_join
                         WHERE call_post.call = :call
+                        ORDER BY post.date DESC, post.id DESC
                         ";
-                
+
+
+                if ($debug) {
+
+                    echo \sqldbg($sql, $values);
+                    die;
+
+                }
+
                 $query = static::query($sql, $values);
-                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $post) {
-                    $list[] = Model\Blog\Post::get($post->id, \LANG);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Blog\Post') as $post) {
+
+                    if (empty($post->image)) {
+                        // galeria
+                        $gallery = Model\Image::getAll($post->id, 'post');
+                        $post->image = Model\Blog\Post::setImage($post->id, $gallery[0]->id);
+                    }
+
+                    $post->image = Model\Image::get($post->image);
+
+                    $list[] = $post;
                 }
                 
                 return $list;

@@ -83,4 +83,24 @@ ALTER TABLE `call` ADD `tweet` tinytext DEFAULT NULL AFTER `dossier` ;
 ALTER TABLE `call` ADD `fbappid` tinytext DEFAULT NULL AFTER `tweet` ;
 
 -- Modalidad del maximo por proyecto
-ALTER TABLE `call` ADD `modemaxp` VARCHAR(3) DEFAULT 'imp' COMMENT 'Modalidad del m�ximo por proyecto: imp = importe, per = porcentaje' AFTER `maxdrop`;
+ALTER TABLE `call` ADD `modemaxp` VARCHAR(3) DEFAULT 'imp' COMMENT 'Modalidad del máximo por proyecto: imp = importe, per = porcentaje' AFTER `maxdrop`;
+
+
+-- Añadido numero de proyectos asignados
+ALTER TABLE `call` ADD COLUMN `num_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos asignados';
+
+-- Importe riego disponible
+ALTER TABLE `call` ADD COLUMN `rest` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Importe riego disponible';
+
+-- Importe riego comprometido
+ALTER TABLE `call` ADD COLUMN `used` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Importe riego comprometido';
+
+-- Numero de proyectos que han aplicado
+ALTER TABLE `call` ADD COLUMN `applied` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos aplicados';
+
+-- Añadido numero de proyectos en campaña
+ALTER TABLE `call` ADD COLUMN `running_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos en campaña';
+
+-- Añadido numero de proyectos exitosos
+ALTER TABLE `call` ADD COLUMN `success_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos exitosos';
+

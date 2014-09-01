@@ -120,7 +120,10 @@ namespace Goteo\Controller\Cron {
                 case 'tip_0':
                     $tpl = 57;
 
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
+                    // necesitamos saber los consultores (lo hemos quitado del Project::get  )
+                    $project->consultants = Model\Project::getConsultants($project->id);
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
                     if(empty($project->consultants)) {
                         $consultants = 'Enric Senabre';
                     } else {
@@ -273,9 +276,8 @@ namespace Goteo\Controller\Cron {
             
             if ($debug) echo 'toConsultants: ';
 
-            if (!isset($project->consultants)) {
-                $project->consultants = Model\Project::getConsultants($project->id);
-            }
+            // ya no está por defecto en el ::get()
+            $project->consultants = Model\Project::getConsultants($project->id);
 
             /// tipo de envio
             switch ($type) {
@@ -297,7 +299,7 @@ namespace Goteo\Controller\Cron {
                 case 'tip_0':
                     $tpl = 57;
 
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Enric
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
                     if (empty($project->consultants)) { 
                         $consultants = array('esenabre' => 'Enric Senabre');
                     } else {
@@ -504,20 +506,13 @@ namespace Goteo\Controller\Cron {
             // content
             $content = \str_replace($search, $replace, $template->text);
 
-
-
-
-            // - se crea un registro de tabla mail
-            $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
-            $values = array (
-                ':email' => 'any',
-                ':html' => $content,
-                ':template' => $tpl,
-                ':node' => \GOTEO_NODE,
-                ':lang' => $comlang
-            );
-            $query = \Goteo\Core\Model::query($sql, $values);
-            $mailId = \Goteo\Core\Model::insertId();
+            $mailHandler = new Mail();
+            $mailHandler->template = $tpl;
+            $mailHandler->content = $content;
+            $mailHandler->node = \GOTEO_NODE;
+            $mailHandler->lang = $comlang;
+            $mailHandler->massive = true;
+            $mailId = $mailHandler->saveEmailToDB();
 
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)

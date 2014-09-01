@@ -16,4 +16,7 @@ CREATE TABLE `stories` (
 -- post no obligatorio
 ALTER TABLE `stories` CHANGE `post` `post` BIGINT( 20 ) UNSIGNED NULL DEFAULT NULL;
 
+-- campo imagen a nombre archivo
+ALTER TABLE `stories` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
+
 

@@ -8,6 +8,9 @@ namespace Goteo\Core {
         protected $resources = array();
 
         public static function check ($url = \GOTEO_REQUEST_URI, $user = null, $node = \GOTEO_NODE) {
+
+            $debug = false;
+
             $url = static::fixURL($url);
 
             if(is_null($user)) {
@@ -29,7 +32,8 @@ namespace Goteo\Core {
             }
             $roles = $user->roles;
             array_walk($roles, function (&$role) { $role = $role->id; });
-            $query = User::query("
+
+            $sql = "
                 SELECT
                     acl.allow
                 FROM acl
@@ -39,14 +43,21 @@ namespace Goteo\Core {
                 AND (:url LIKE REPLACE(acl.url, '*', '%'))
                 ORDER BY acl.id DESC
                 LIMIT 1
-                ",
-                array(
-                    ':node'   => $node,
-                    ':roles'  => implode(', ', $roles),
-                    ':user'   => $id,
-                    ':url'    => $url
-                )
+                ";
+
+            $values = array(
+                ':node'   => $node,
+                ':roles'  => implode(', ', $roles),
+                ':user'   => $id,
+                ':url'    => $url
             );
+
+            if ($debug) {
+                echo \sqldbg($sql, $values);
+                die;
+            }
+
+            $query = User::query($sql, $values);
             return (bool) $query->fetchColumn();
         }
 

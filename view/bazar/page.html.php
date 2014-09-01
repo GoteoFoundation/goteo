@@ -19,8 +19,8 @@ if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; }
 	<div class="caja"><p class="precio"><?php echo $item->amount; ?>&euro;</p></div>
 	<img class="item" src="<?php echo $item->imgsrc; ?>" title="<?php echo htmlspecialchars($item->title); ?>" alt="IMG" />
 	<nav>
-	  <a href="<?php echo htmlspecialchars($share->item_facebook_url) ?>" target="_blank" title="<?php echo Text::get('spread-facebook'); ?>"><img class="face" src="/view/bazar/img/facebook.svg"></a>
-	  <a href="<?php echo htmlspecialchars($share->item_twitter_url) ?>" target="_blank" title="<?php echo Text::get('spread-twitter'); ?>"><img class="twit" src="/view/bazar/img/twitter.svg"></a>
+	  <a href="<?php echo htmlspecialchars($share->item_facebook_url) ?>" target="_blank" title="<?php echo Text::get('spread-facebook'); ?>"><img class="face" src="<?php echo SRC_URL; ?>/view/bazar/img/facebook.svg"></a>
+	  <a href="<?php echo htmlspecialchars($share->item_twitter_url) ?>" target="_blank" title="<?php echo Text::get('spread-twitter'); ?>"><img class="twit" src="<?php echo SRC_URL; ?>/view/bazar/img/twitter.svg"></a>
 	</nav>
 </article>
 <article class="header prod">

@@ -62,11 +62,11 @@ namespace Goteo\Model {
         /*
          * Lista de hilos de un proyecto
          */
-        public static function getAll ($project, $lang = null) {
+        public static function getAll ($project, $lang = \LANG) {
 
             $messages = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(message_lang.message, message.message) as message";
                 }
             else {
@@ -174,10 +174,16 @@ namespace Goteo\Model {
                 }
             }
 
+            //eliminamos etiquetas script,iframe..
+            $values[':message']=Text::tags_filter($values[':message']);
+
             try {
                 $sql = "REPLACE INTO message SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
+
+                // actualizar campo calculado
+                self::numMessengers($this->project);
 
                 return true;
             } catch(\PDOException $e) {
@@ -203,6 +209,9 @@ namespace Goteo\Model {
                     $values[":$field"] = $this->$ffield;
                 }
             }
+
+            //eliminamos etiquetas script,iframe..
+            $values[':message']=Text::tags_filter($values[':message']);
 
             try {
                 $sql = "REPLACE INTO message_lang SET " . $set;
@@ -262,22 +271,41 @@ namespace Goteo\Model {
         /*
          * Numero de usuarios mensajeros de un proyecto
          */
-        public static function numMessegers ($id) {
-            $sql = "SELECT COUNT(DISTINCT(message.user)) FROM message WHERE project = :id";
-            $query = self::query($sql, array(':id'=>$id));
-            $num = $query->fetchColumn();
+        public static function numMessengers ($project) {
 
-            if (empty($num)) {
-                return false;
-            } else {
-                return $num;
+            $debug = false;
+
+            $values = array(':project' => $project);
+
+            $sql = "SELECT  COUNT(*) as messengers, project.num_messengers as num, project.num_investors as pop
+                FROM    message
+                INNER JOIN project
+                    ON project.id = message.project
+                WHERE   message.project = :project
+                ";
+
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
             }
+
+            $query = static::query($sql, $values);
+            if($got = $query->fetchObject()) {
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->messengers != $got->num) {
+                    static::query("UPDATE project SET num_messengers = :num, popularity = :pop WHERE id = :project", array(':num' => (int) $got->messengers, 'pop' => ( $got->messengers + $got->pop), ':project' => $project));
+                }
+            }
+
+            return (int) $got->messengers;
         }
+
 
         /*
          * Lista de usuarios mensajeros de un proyecto
          */
-        public static function getMessegers ($id) {
+        public static function getMessengers ($id) {
             $list = array();
 
             $sql = "SELECT 

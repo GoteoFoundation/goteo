@@ -1,10 +1,11 @@
 <?php
 
 use Goteo\Library\Text;
+use Goteo\Library\Mail;
 
 $mailing = $this['mailing'];
 
-$link = SITE_URL.'/mail/'.base64_encode(md5(uniqid()).'¬any¬'.$mailing->mail).'/?email=any';
+$link = Mail::getSinovesLink($mailing->mail);
 
 // mostrar enlace de si no ves y boton para activar
 ?>

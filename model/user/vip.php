@@ -44,6 +44,9 @@ namespace Goteo\Model\User {
             // Imagen
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
+                // eliminando tabla images
+                $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+
                 if ($image->save($errors)) {
                     $image = $image->id;
                 } else {

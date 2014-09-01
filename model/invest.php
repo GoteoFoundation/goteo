@@ -407,8 +407,6 @@ namespace Goteo\Model {
                                 $this->call = $this->called->id;
                             }
 
-                        } else {
-                            unset($this->called);
                         }
                     }
 
@@ -460,7 +458,7 @@ namespace Goteo\Model {
                 }
 
                 // mantenimiento de registros relacionados (usuario, proyecto, ...)
-                $this->keepUpdated();
+                $this->keepUpdated($this->called->id);
 
                 return true;
 
@@ -726,10 +724,20 @@ namespace Goteo\Model {
 
             $query = static::query($sql, $values);
             $got = $query->fetchObject();
-            if(!isset ($only) && !isset($call)) {
+            if(!isset ($only)) {
                 //actualiza el el amount en proyecto (aunque se quede a cero)
                 static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+
+            } elseif ($only == 'users') {
+                // actualiza el amount invertido por los usuarios
+                static::query("UPDATE project SET amount_users = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+
+            } elseif ($only == 'call' && !empty($call)) {
+                // actualiza el amount invertido por el convocador
+                static::query("UPDATE project SET amount_call = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+
             }
+
             return (int) $got->much;
         }
 
@@ -826,18 +834,31 @@ namespace Goteo\Model {
         }
 
         public static function numInvestors ($project) {
+
+            $debug = false;
+
             $values = array(':project' => $project);
 
-            $sql = "SELECT  COUNT(DISTINCT(user)) as investors
+            $sql = "SELECT  COUNT(DISTINCT(invest.user)) as investors, project.num_investors as num, project.num_messengers as pop
                 FROM    invest
-                WHERE   project = :project
+                INNER JOIN project
+                    ON project.id = invest.project
+                WHERE   invest.project = :project
                 AND     invest.status IN ('0', '1', '3', '4')
                 ";
 
+            if ($debug) {
+                echo \trace($values);
+                echo $sql;
+                die;
+            }
+
             $query = static::query($sql, $values);
             if($got = $query->fetchObject()) {
-                //actualiza el numero de inversores en proyecto (aunque sea ninguno)
-                static::query("UPDATE project SET num_investors = :num WHERE id = :project", array(':num' => (int) $got->investors, ':project' => $project));
+                // si ha cambiado, actualiza el numero de inversores en proyecto
+                if ($got->investors != $got->num) {
+                    static::query("UPDATE project SET num_investors = :num, popularity = :pop WHERE id = :project", array(':num' => (int) $got->investors, ':pop' => ( $got->investors + $got->pop), ':project' => $project));
+                }
             }
 
             return (int) $got->investors;
@@ -1737,7 +1758,7 @@ namespace Goteo\Model {
          *
          * @return success boolean
          */
-        public function keepUpdated() {
+        public function keepUpdated($call_id = null) {
 
             // numero de proyectos aportados
             User::numInvested($this->user);
@@ -1752,7 +1773,13 @@ namespace Goteo\Model {
             self::numInvestors($this->project); // inversores
 
 
-         }
+            // si es aporte de riego
+            if (!empty($call_id)) {
+                self::invested($this->project, 'users');
+                self::invested($this->project, 'call', $call_id);
+            }
+
+        }
 
     }
 

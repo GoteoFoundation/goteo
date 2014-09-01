@@ -77,7 +77,7 @@ namespace Goteo\Model\Project {
                 $sql = "SELECT image FROM project_image WHERE project = ? AND (section = '' OR section IS NULL) ORDER BY `order` ASC, image DESC LIMIT 1";
                 $query = self::query($sql, array($id));
                 $first = $query->fetchColumn(0);
-                return Model\Image::get($first);
+                return $first;
                 
             } catch(\PDOException $e) {
                 return false;
@@ -118,6 +118,22 @@ namespace Goteo\Model\Project {
             } else {
                 return false;
             }
+
+        }
+
+        /*
+         * Para aplicar la imagen del widget
+         */
+        public static function setFirst ($project) {
+
+            $first = static::getFirst($project);
+
+            if (!empty($first)) {
+                $sql = "UPDATE project SET `image` = :image WHERE id = :project";
+                self::query($sql, array(':project'=>$project, ':image'=>$first));
+            }
+
+            return $first;
 
         }
 

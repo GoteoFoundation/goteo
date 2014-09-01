@@ -45,7 +45,7 @@ foreach ($this['items'] as $iId=>$iObj) {
     <label for="promo-image">Imagen del regalo:</label><br />
         <input type="hidden" name="prev_image" value="<?php echo $promo->image ?>" />
     <?php if (!empty($promo->img)) : ?>
-        <img src="<?php echo SITE_URL.'/data/images/'.$promo->img->name; ?>" title="Imagen regalo" alt="falta imagen"/>
+        <img src="<?php echo SRC_URL.'/images/'.$promo->img->name; ?>" title="Imagen regalo" alt="falta imagen"/>
         <br />
     <?php endif; ?>
     <input type="file" id="promo-image" name="image" />

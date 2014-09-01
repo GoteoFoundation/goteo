@@ -6,11 +6,9 @@ use Goteo\Core\View,
 
 $call = $this['call'];
 
-$the_logo = empty($call->logo) ? 1 : $call->logo;
-$call->logo = Model\Image::get($the_logo);
+$call->logo = Model\Image::get($call->logo);
 // la imagen es el campo image
-$the_image = empty($call->image) ? 1 : $call->image;
-$call->image = Model\Image::get($the_image);
+$call->image = Model\Image::get($call->image);
 
 $call->categories = Model\Call\Category::getNames($call->id);
 $call->icons = Model\Call\Icon::getNames($call->id);
@@ -46,7 +44,7 @@ $tag = array(
 
     <div class="name">
         <?php if (!empty($call->logo)): ?>
-        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img alt="<?php echo $call->name ?>" src="<?php echo $call->logo->getLink(150) ?>" /></a>
+        <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"><img alt="<?php echo $call->name ?>" src="<?php echo $call->logo->getLink(150, 85, true) ?>" /></a>
         <?php endif ?>
 
         <h3><a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>"<?php echo $blank; ?>><?php echo $call->name ?></a></h3>

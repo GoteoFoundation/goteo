@@ -15,3 +15,6 @@ ALTER TABLE `node`
 
 -- mail de contacto para impulsores
 ALTER TABLE `node` ADD `email` VARCHAR( 255 ) NOT NULL AFTER `name`;
+
+-- campo imagen a nombre archivo
+ALTER TABLE `node` CHANGE `logo` `logo` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';

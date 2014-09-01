@@ -79,7 +79,7 @@ $status = Model\Project::status();
     <?php if (!empty($story->image)) : ?>
         <br />
         <input type="hidden" name="prev_image" value="<?php echo $story->image->id ?>" />
-        <img src="<?php echo $story->image->getLink() ?>" title="Fondo historia" alt="falta imagen"/>
+        <img src="<?php echo $story->image->getLink(940, 385, true) ?>" title="Fondo historia" alt="falta imagen"/>
     <?php endif; ?>
 </p>
 

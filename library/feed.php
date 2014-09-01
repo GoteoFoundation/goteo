@@ -3,11 +3,12 @@ namespace Goteo\Library {
 
 	use Goteo\Core\Model,
         Goteo\Model\Blog\Post,
-        Goteo\Library\Text;
+        Goteo\Library\Text,
+        Goteo\Model\Image;
 
-	/*
-	 * Clase para loguear eventos
-	 */
+    /*
+     * Clase para loguear eventos
+     */
     class Feed {
 
         public
@@ -162,6 +163,8 @@ namespace Goteo\Library {
 		 */
 		public static function getAll($type = 'all', $scope = 'public', $limit = '99', $node = null) {
 
+            $debug = false;
+
             $list = array();
 
             try {
@@ -221,6 +224,40 @@ namespace Goteo\Library {
                         LIMIT $limit
                         ";
 
+                if ($debug) {
+                    echo \trace($values);
+                    echo $sql;
+                    die;
+                }
+
+                // @FIXME  Ahorrrarnos la consulta para cada entrada de blog (multiples)
+                /*
+                 * Post como campo calculado (y traducido)
+                 *
+                 *
+,
+                            post.title as post_title,
+                            post.text as post_text,
+                            post.image as post_image,
+                            post.owner_type as post_owner_type,
+                            post.owner_id as post_owner_type
+
+
+                                 *
+                 *
+                        LEFT JOIN post
+                            ON post.id = feed.post
+                            AND feed.type = 'goteo'
+                            AND feed.target_type = 'blog'
+
+
+
+                 *
+                 * */
+
+
+
+
                 $query = Model::query($sql, $values);
                 $query->cacheTime(60);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
@@ -254,6 +291,9 @@ namespace Goteo\Library {
 
                     //hace tanto
                     $item->timeago = self::time_ago($item->timer);
+
+                    // imagen
+                    $item->image = Image::get($item->image);
 
 
                     $list[] = $item;
@@ -547,13 +587,13 @@ namespace Goteo\Library {
 
                     if (substr($item->url, 0, 5) == '/user') {
                         $content .= '<div class="content-avatar">
-                        <a href="'.$item->url.'" class="avatar"><img src="'.SRC_URL.'/image/'.$item->image.'/32/32/1" /></a>
+                        <a href="'.$item->url.'" class="avatar"><img src="'.$item->image->getLink(32, 32, true).'" /></a>
                         <a href="'.$item->url.'" class="username">'.$item->title.'</a>
                         <span class="datepub">'.$pub_timeago.'</span>
                         </div>';
                     } else {
                         $content .= '<div class="content-image">
-                        <a href="'.$item->url.'" class="image"><img src="'.SRC_URL.'/image/'.$item->image.'/90/60/1" /></a>
+                        <a href="'.$item->url.'" class="image"><img src="'.$item->image->getLink(90, 60, true).'" /></a>
                         <a href="'.$item->url.'" class="project light-blue">'.$item->title.'</a>
                         <span class="datepub">'.$pub_timeago.'</span>
                         </div>';

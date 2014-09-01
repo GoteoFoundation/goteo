@@ -52,7 +52,7 @@ namespace Goteo\Model\Project {
         public function validate(&$errors = array()) {
             // TODO
             //if (!in_array($this->watch, array('0','1'))) return false;
-            //if (!in_array($this->one_round, array('0','1'))) return false;
+            if (!isset($this->one_round)) $this->one_round = 0;
             //if (!in_array($this->noinvest, array('0','1'))) return false;
 
             return true;

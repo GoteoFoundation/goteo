@@ -79,7 +79,7 @@ foreach ($projects as $project) {
         <?php if (!empty($banner->image)) : ?>
             <br/>
             <input type="hidden" name="prev_image" value="<?php echo $banner->image->id ?>"/>
-            <img src="<?php echo $banner->image->getLink() ?>" title="Fondo banner" alt="falta imagen"/>
+            <img src="<?php echo $banner->image->getLink(700, 150, true) ?>" title="Fondo banner" alt="falta imagen"/>
         <?php endif; ?>
     </p>
 
