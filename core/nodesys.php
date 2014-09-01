@@ -75,7 +75,7 @@ namespace Goteo\Core {
 
             $list = array();
 
-            $sql = Model::query("
+            $query = Model::query("
                 SELECT
                     id, name, url
                 FROM node
@@ -85,7 +85,7 @@ namespace Goteo\Core {
                 ORDER BY `name` ASC
                 ");
             $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
-            foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $item) {
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[] = $item;
             }
             //dejamos la cache como estaba
