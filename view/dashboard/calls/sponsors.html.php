@@ -31,7 +31,7 @@ if ($this['action'] == 'add' || $this['action'] == 'edit') : ?>
                 <br />
                 <input type="hidden" name="prev_image" value="<?php echo $sponsor->image->id ?>" />
                 <img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="falta imagen"/>
-                <input type="submit" name="image-<?php echo $sponsor->image->id; ?>-remove" value="Quitar" />
+                <input type="submit" name="image-<?php echo $sponsor->image->hash; ?>-remove" value="Quitar" />
             <?php endif; ?>
         </p>
 

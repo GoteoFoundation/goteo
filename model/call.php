@@ -267,7 +267,6 @@ namespace Goteo\Model {
                 $call->user->name = $call->user_name;
                 $call->user->email = $call->user_email;
                 $call->user->lang = $call->user_lang;
-                $call->user->avatar = $call->user_avatar;
                 $call->user->facebook = $call->user_facebook;
                 $call->user->google = $call->user_google;
                 $call->user->twitter = $call->user_twitter;
@@ -275,10 +274,7 @@ namespace Goteo\Model {
                 $call->user->linkedin = $call->user_linkedin;
 
 
-                $call->user->avatar = Image::get($call->user->avatar);
-                if (empty($call->user->avatar->id) || !$call->user->avatar instanceof Image) {
-                    $call->user->avatar = Image::get(1);
-                }
+                $call->user->avatar = Image::get($call->user_avatar);
 
                 $call->user->webs = User\Web::get($call->user_id);
 

@@ -203,6 +203,10 @@ namespace Goteo\Model {
                             unset($data[':avatar']);
                         }
                     }
+                    if(is_null($this->avatar)) {
+                        $data[':avatar'] = '';
+                    }
+
 
                     // Perfil público
                     if(isset($this->name)) {

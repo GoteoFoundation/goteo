@@ -69,7 +69,7 @@ if (!$node instanceof Model\Node) {
                         'type'  => 'html',
                         'class' => 'inline avatar-image',
                         'html'  => is_object($node->logo) ?
-                                   $node->logo . '<img src="' . SITE_URL . '/image/' . $node->logo->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="logo-'.$node->logo->id.'-remove" title="Quitar este logo" value="remove">X</button>' :
+                                   $node->logo . '<img src="' . SITE_URL . '/image/' . $node->logo->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="logo-'.$node->logo->hash.'-remove" title="Quitar este logo" value="remove">X</button>' :
                                    ''
                     )
 

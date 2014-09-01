@@ -15,7 +15,7 @@ $images = $this['images'];
 $sections = $this['sections'];
 
 function the_section($current, $image, $sections) {
-    $select = '<select name="section_image_'.$image.'">';
+    $select = '<select name="section_image_'.md5($image).'">';
     foreach ($sections as $secId => $secName) {
         $curSec = ($secId == $current) ? ' selected="selected"' : '';
         $select .= '<option value="'.$secId.'"'.$curSec.'>'.$secName.'</option>';
@@ -26,11 +26,11 @@ function the_section($current, $image, $sections) {
 }
 
 function the_link($current, $image) {
-    return '<input type="text" name="url_image_'.$image.'"  value="'.$current.'" style="width: 100%;"/>';
+    return '<input type="text" name="url_image_'.md5($image).'"  value="'.$current.'" style="width: 100%;"/>';
 }
 
 function the_order($current, $image) {
-    return '<input type="text" name="order_image_'.$image.'"  value="'.$current.'" style="width: 20px;"/>';
+    return '<input type="text" name="order_image_'.md5($image).'"  value="'.$current.'" style="width: 20px;"/>';
 }
 
 ?>
