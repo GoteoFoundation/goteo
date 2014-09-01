@@ -223,7 +223,9 @@ namespace Goteo\Model\Contract {
          */
         public function remove (&$errors = array()) {
             $ok = false;
+            $this->filedir = $this->contract.'/';
 
+            $this->fp->delete($this->filedir . $this->name);
             try {
                 $sql = "DELETE FROM document WHERE id = ?";
                 $values = array($this->id);
