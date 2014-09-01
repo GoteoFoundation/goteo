@@ -505,6 +505,7 @@ namespace Goteo\Model {
                     project.owner as owner,
                     user.id as user_id,
                     user.name as user_name,
+                    user.email as user_email,
                     project_conf.noinvest as noinvest,
                     project_conf.one_round as one_round,
                     project_conf.days_round1 as days_round1,
@@ -643,6 +644,7 @@ namespace Goteo\Model {
                 $Widget->user = new User;
                 $Widget->user->id = $project->user_id;
                 $Widget->user->name = $project->user_name;
+                $Widget->user->email = $project->user_email;
 
                 // calcular dias sin consultar sql
                 $Widget->days = $project->days;
