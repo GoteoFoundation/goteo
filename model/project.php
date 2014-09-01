@@ -574,7 +574,7 @@ namespace Goteo\Model {
         public static function getWidget($project) {
 
                 $Widget = new Project();
-                $Widget->id = $project->project;
+                $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
                 $Widget->status = $project->status;
                 $Widget->name = $project->name;
                 $Widget->owner = $project->owner;
