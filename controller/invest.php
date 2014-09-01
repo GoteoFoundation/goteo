@@ -286,6 +286,9 @@ namespace Goteo\Controller {
                 unset($log);
             }
 
+            // recalculo
+            $invest->keepUpdated($callData->id);
+
             // texto recompensa
             // @TODO quitar esta lacra de N recompensas porque ya es solo una recompensa siempre
             $rewards = $invest->rewards;
@@ -293,8 +296,8 @@ namespace Goteo\Controller {
             $txt_rewards = implode(', ', $rewards);
 
             // recaudado y porcentaje
-            $amount = $projectData->invested;
-            $percent = floor(($projectData->invested / $projectData->mincost) * 100);
+            $amount = $projectData->amount;
+            $percent = floor(($projectData->amount / $projectData->mincost) * 100);
 
 
             // email de agradecimiento al cofinanciador
