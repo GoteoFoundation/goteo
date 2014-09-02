@@ -27,6 +27,7 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('status' => '-1', 'projectStatus' => 'all', 'contractStatus' => 'all', 'proj_name' => '', 'owner' => '', 'name' => '', 'node' => '', 'prepay' => '0', 'order' => 'date')
             ),
+            /*
             'accounts' => array(
                 'label' => 'Aportes delicados (solo con incidencia, manuales, fantasmas y casos conflictivos)',
                 'actions' => array(
@@ -35,6 +36,7 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('id' => '', 'methods' => '', 'investStatus' => 'all', 'projects' => '', 'name' => '', 'calls' => '', 'review' => '', 'types' => '', 'date_from' => '', 'date_until' => '', 'issue' => 'all', 'procStatus' => 'all', 'amount' => '')
             ),
+            */
             'reports' => array(
                 'label' => 'Informes (financieros)',
                 'actions' => array(
