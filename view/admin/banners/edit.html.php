@@ -25,7 +25,7 @@ foreach ($projects as $project) {
     $items[] = '{ value: "' . str_replace('"', '\"', $project->name) . '", id: "' . $project->id . '" }';
 }
 ?>
-<form method="post" action="/admin/banners" enctype="multipart/form-data">
+<form method="post" action="/admin/banners/save/<?php echo $banner->id; ?>" enctype="multipart/form-data">
     <input type="hidden" name="action" value="<?php echo $this['action'] ?>"/>
     <input type="hidden" name="order" value="<?php echo $banner->order ?>"/>
     <input type="hidden" name="id" value="<?php echo $banner->id; ?>"/>
@@ -80,6 +80,7 @@ foreach ($projects as $project) {
             <br/>
             <input type="hidden" name="prev_image" value="<?php echo $banner->image->id ?>"/>
             <img src="<?php echo $banner->image->getLink(700, 150, true) ?>" title="Fondo banner" alt="falta imagen"/>
+            <input type="submit" name="image-<?php echo $banner->image->hash; ?>-remove" value="Quitar" />
         <?php endif; ?>
     </p>
 

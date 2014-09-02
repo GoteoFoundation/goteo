@@ -245,7 +245,7 @@ namespace Goteo\Model {
                 }
             }
             if (is_null($this->image)) {
-                $this->logo = '';
+                $this->image = '';
             }
 
             $fields = array(

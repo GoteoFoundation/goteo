@@ -43,9 +43,10 @@ foreach ($this['items'] as $iId=>$iObj) {
 
 <p>
     <label for="promo-image">Imagen del regalo:</label><br />
-        <input type="hidden" name="prev_image" value="<?php echo $promo->image ?>" />
-    <?php if (!empty($promo->img)) : ?>
-        <img src="<?php echo SRC_URL.'/images/'.$promo->img->name; ?>" title="Imagen regalo" alt="falta imagen"/>
+        <input type="hidden" name="prev_image" value="<?php echo $promo->image->id ?>" />
+    <?php if ($promo->image instanceof Model\Image) : ?>
+        <img src="<?php echo SRC_URL.'/images/'.$promo->image->name; ?>" title="Imagen regalo" alt="falta imagen"/>
+        <input type="submit" name="image-<?php echo $promo->image->hash; ?>-remove" value="Quitar" />
         <br />
     <?php endif; ?>
     <input type="file" id="promo-image" name="image" />

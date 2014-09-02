@@ -80,6 +80,7 @@ $status = Model\Project::status();
         <br />
         <input type="hidden" name="prev_image" value="<?php echo $story->image->id ?>" />
         <img src="<?php echo $story->image->getLink(940, 385, true) ?>" title="Fondo historia" alt="falta imagen"/>
+        <input type="submit" name="image-<?php echo $story->image->hash; ?>-remove" value="Quitar" />
     <?php endif; ?>
 </p>
 
