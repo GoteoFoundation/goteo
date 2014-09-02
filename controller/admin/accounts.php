@@ -144,7 +144,7 @@ namespace Goteo\Controller\Admin {
 
                     if ($new != $invest->status && isset($new) && isset($status[$new])) {
                         if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
-                            Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $_SESSION['user']->name . ' ha cambiado el estado del apote a '.$status[$new]);
+                            Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $_SESSION['user']->name . ' ha cambiado el estado a '.$status[$new]);
                             Message::Info('Se ha actualizado el estado del aporte');
                         } else {
                             Message::Error('Ha fallado al actualizar el estado del aporte');
