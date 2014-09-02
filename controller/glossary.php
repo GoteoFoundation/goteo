@@ -6,7 +6,12 @@ namespace Goteo\Controller {
         Goteo\Model;
 
     class Glossary extends \Goteo\Core\Controller {
-        
+
+        public function __construct() {
+            //activamos la cache para todo el controlador glossary
+            \Goteo\Core\DB::cache(true);
+        }
+
         public function index () {
 
             // Términos por página
@@ -26,7 +31,7 @@ namespace Goteo\Controller {
 
                 // tratar el texto para las entradas
                 $post->text = str_replace(array('%SITE_URL%'), array(SITE_URL), $post->text);
-                
+
                 $posts[] = $post;
 
                 // y la inicial en el indice
@@ -53,7 +58,7 @@ namespace Goteo\Controller {
              );
 
         }
-        
+
     }
-    
+
 }

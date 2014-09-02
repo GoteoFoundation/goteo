@@ -50,9 +50,7 @@ namespace Goteo\Model {
                 $item->admins = self::getAdmins($id);
 
                 // logo
-                if (!empty($item->logo)) {
-                    $item->logo = Image::get($item->logo);
-                }
+                $item->logo = Image::get($item->logo);
 
                 return $item;
         }
@@ -178,6 +176,10 @@ namespace Goteo\Model {
 
             if (!isset($this->active))
                 $this->active = 0;
+
+            if (isset($this->logo->id)) {
+                $this->logo = $this->logo->id;
+            }
 
             if (empty($errors))
                 return true;
@@ -335,6 +337,9 @@ namespace Goteo\Model {
                     \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->logo = '';
                 }
+            }
+            if (is_null($this->logo)) {
+                $this->logo = '';
             }
 
             $fields = array(

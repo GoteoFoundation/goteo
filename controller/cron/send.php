@@ -506,15 +506,17 @@ namespace Goteo\Controller\Cron {
             // content
             $content = \str_replace($search, $replace, $template->text);
 
-            $mail = new Mail();
-            $mail->template = tpl;
-            $mail->node = \GOTEO_NODE;
-            $mail->lang = $comlang;
-            $mailId = $mail->saveEmailToDB('any');
+            $mailHandler = new Mail();
+            $mailHandler->template = $tpl;
+            $mailHandler->content = $content;
+            $mailHandler->node = \GOTEO_NODE;
+            $mailHandler->lang = $comlang;
+            $mailHandler->massive = true;
+            $mailId = $mailHandler->saveEmailToDB();
+
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
-            // - initiateSending ($mailId, $subject, $receivers, $autoactive = 0)
-            if (\Goteo\Library\Sender::initiateSending($mailId, $subject, $receivers, 1)) 
+            if (\Goteo\Library\Sender::initiateSending($mailId, $subject, $receivers, 1))
                 return false;
             else
                 return true;

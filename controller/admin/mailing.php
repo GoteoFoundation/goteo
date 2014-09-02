@@ -214,11 +214,13 @@ namespace Goteo\Controller\Admin {
 
                     // montamos el mailing
                     // - se crea un registro de tabla mail
-                    $mail = new Mail();
-                    $mail->template = templateId;
-                    $mail->node = $node;
-                    $mail->lang = $comlang;
-                    $mailId = $mail->saveEmailToDB('any');
+                    $mailHandler = new Mail();
+                    $mailHandler->template = $templateId;
+                    $mailHandler->content = $content;
+                    $mailHandler->node = $node;
+                    $mailHandler->lang = $comlang;
+                    $mailHandler->massive = true;
+                    $mailId = $mailHandler->saveEmailToDB();
 
                     // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
                     // - initiateSending ($mailId, $subject, $receivers, $autoactive = 0)

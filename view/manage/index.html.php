@@ -23,21 +23,9 @@ include 'view/header.html.php';
 
             <div class="admin-center">
 
-            <a href="/manage/donors">Certificados 2013</a>
+            <a href="/manage/donors">Certificados</a>
 
-<!--
-            <div class="widget board">
-                <ul>
-                    <li><a href="/manage/projects">Proyectos</a></li>
-                    <li><a href="/manage/accounts">Incidencias</a></li>
-                    <li><a href="/manage/reports">Informes</a></li>
-                    <li><a href="/manage/donors">Certificados</a></li>
-                </ul>
-            </div>
--->
-
-
-<?php if (!empty($this['folder']) && !empty($this['file'])) : 
+<?php if (!empty($this['folder']) && !empty($this['file'])) :
         if ($this['folder'] == 'base') {
             $path = 'view/manage/'.$this['file'].'.html.php';
         } else {

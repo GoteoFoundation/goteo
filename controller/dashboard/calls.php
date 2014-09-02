@@ -12,21 +12,21 @@ namespace Goteo\Controller\Dashboard {
 
         /**
          * Verificación de convocatoria de trabajo
-         * 
+         *
          * @param object $user instancia Model\User del convocador
          * @param string $action por si es 'select'
          * @return array(call, calls)
          */
         public static function verifyCalls($user, $action) {
-            
+
             $calls = Model\Call::ofmine($user->id);
 
             // si no tiene, no debería estar aquí
             if (empty($calls) || !is_array($calls)) {
                 return array(null, null);
             }
-            
-            
+
+
             // comprobamos que tenga los permisos para editar y borrar
             foreach ($calls as $call) {
 
@@ -63,14 +63,14 @@ namespace Goteo\Controller\Dashboard {
                 Message::Error('No se puede trabajar con la convocatoria seleccionada, contacta con nosotros');
                 $call = null;
             }
-            
+
             return array($call, $calls);
         }
-        
-        
+
+
         /**
          * Procesa la gestión de patrocinadores
-         * 
+         *
          * @param int $id del registro de sponsor
          * @param string(50) $call Id de la convocatoria
          * @param string $action  (add, edit, deletye, up, down)
@@ -99,9 +99,8 @@ namespace Goteo\Controller\Dashboard {
                                     ));
 
                             // tratar si quitan la imagen
-                            $current = $_POST['prev_image']; // la actual
-                            if (isset($_POST['image-' . $current . '-remove'])) {
-                                $image = Model\Image::get($current);
+                            if (isset($_POST['image-' . md5($sponsor->image) . '-remove'])) {
+                                $image = Model\Image::get($sponsor->image);
                                 $image->remove($errors);
                                 $sponsor->image = null;
                                 $removed = true;

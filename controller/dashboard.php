@@ -21,7 +21,7 @@ namespace Goteo\Controller {
          * Sección, Mi actividad
          * Opciones:
          *      'summary' portada y proyectos del usuario y a los que ha aportado,
-         *      'donor' gestión del certificado de donativo 
+         *      'donor' gestión del certificado de donativo
          *      'comunity'//'wall' relacion con la comunidad
          */
         public function activity($option = 'summary', $action = 'view') {
@@ -32,14 +32,14 @@ namespace Goteo\Controller {
             }
 
             $user = $_SESSION['user'];
-            
+
             $viewData = array(
                                 'menu' => self::menu(),
                                 'section' => __FUNCTION__,
                                 'option' => $option,
                                 'action' => $action
                             );
-            
+
             // portada
             if ($option == 'summary') {
                 $page = Page::get('dashboard');
@@ -62,7 +62,7 @@ namespace Goteo\Controller {
                     throw new Redirection('/dashboard', Redirection::TEMPORARY);
                 }
             }
-            
+
             return new View('view/dashboard/index.html.php', $viewData);
         }
 
@@ -76,7 +76,6 @@ namespace Goteo\Controller {
          */
 
         public function profile($option = 'profile', $action = 'edit') {
-
             // tratamos el post segun la opcion y la acion
             $user = $_SESSION['user'];
 
@@ -90,7 +89,7 @@ namespace Goteo\Controller {
 
                 $log_action = null;
                 $errors = array();
-                
+
                 switch ($option) {
                     // perfil publico
                     case 'profile':
@@ -106,7 +105,7 @@ namespace Goteo\Controller {
                     case 'location':
                         $errors = Dashboard\Location::process();
                         break;
-                        
+
                     //cambio de email y contraseña
                     case 'access':
                         Dashboard\Profile::process_access($user, $errors, $log_action);
@@ -189,7 +188,6 @@ namespace Goteo\Controller {
                     break;
             }
 
-
             return new View('view/dashboard/index.html.php', $viewData);
         }
 
@@ -203,7 +201,7 @@ namespace Goteo\Controller {
          *      'gestionar retornos' resumen recompensas/cofinanciadores/conseguido  y lista de cofinanciadores y recompensas esperadas
          *      'participantes' para comunicarse con los participantes en mensajes
          *      'pagina publica' enlace a la página pública del proyecto
-         * 
+         *
          *      NEW: 'analytics' grafico de evolución de recaudación del proyecto
          *
          */
@@ -224,14 +222,14 @@ namespace Goteo\Controller {
                 $response = new \Goteo\Controller\Sacaexcel;
                 return $response->index('investors', $project->id);
             }
-            
-            // ojo si no tiene retornos  
+
+            // ojo si no tiene retornos
             if ($option == 'commons' && empty($project->social_rewards)) {
                 Message::Error('Este proyecto no tiene retornos colectivos');
                 throw new Redirection('/dashboard/projects/');
             }
-            
-            
+
+
             // procesamiento de formularios
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -244,7 +242,7 @@ namespace Goteo\Controller {
                             $_SESSION['dashboard-rewards-filter'] = (isset($_POST['filter'])) ? $_POST['filter'] : $_SESSION['dashboard-rewards-filter'];
                             $_SESSION['dashboard-rewards-order']  = (isset($_POST['order']))  ?  $_POST['order'] : $_SESSION['dashboard-rewards-order'];
                         }
-                        
+
                         //procesamos el envio de mails
                         if ($action == 'message') {
                             Dashboard\Projects::process_mailing($option, $project);
@@ -266,7 +264,7 @@ namespace Goteo\Controller {
                     case 'updates':
                         // verificación: si no llega blog correcto no lo procesamos
                         if (empty($_POST['blog']) || $_POST['blog'] != $blog->id) throw new Redirection('/dashboard/projects/summary');
-                        
+
                         list($action, $id) = Dashboard\Projects::process_updates($action, $project, $errors);
                         break;
 
@@ -278,14 +276,14 @@ namespace Goteo\Controller {
                 }
             }
 
-            // SubControlador para add, edit, delete y list  
+            // SubControlador para add, edit, delete y list
             // devuelve $post en las acciones add y edit y $posts en delete y list
             // maneja por referencia $action, $posts y $errors
             if ($option == 'updates') {
                 list($post, $posts) = Dashboard\Projects::prepare_updates($action, $id, $blog->id);
             }
 
-            
+
             // view data basico para esta seccion
             $viewData = array(
                 'menu' => self::menu(),
@@ -437,16 +435,16 @@ namespace Goteo\Controller {
                         $contract = null;
                         $show = 'off';
                     } else {
-                        
+
                         // veamos si quiere editarlo
-                        if ($action == 'edit') 
+                        if ($action == 'edit')
                             throw new Redirection('/contract/edit/'.$project->id);
-                        
+
                         // o si quiere ver el borrador/pdf
-                        if ($action == 'view') 
+                        if ($action == 'view')
                             throw new Redirection('/contract/'.$project->id);
-                        
-                        
+
+
                         // a ver si tiene registro
                         $contract = Model\Contract::get($project->id);
 
@@ -468,7 +466,7 @@ namespace Goteo\Controller {
                             $show = 'edit'; // hay registro y se puede editar
                         }
                     }
-                    
+
                     $viewData['contract'] = $contract;
                     $viewData['content'] = Dashboard\Projects::prepare_content($show);
                     $viewData['footer'] = Dashboard\Projects::prepare_content('siempre');
@@ -481,8 +479,8 @@ namespace Goteo\Controller {
             return new View('view/dashboard/index.html.php', $viewData);
         }
         // Fin de la sección Mis proyectos
-        
-        
+
+
 
         /*
          * Seccion, Mis traducciones
@@ -916,7 +914,7 @@ namespace Goteo\Controller {
             $errors = array();
 
             list($call, $calls) = Dashboard\Calls::verifyCalls($user, $action);
-            
+
             // view data basico para esta seccion
             $viewData = array(
                 'menu' => self::menu(),
@@ -933,8 +931,8 @@ namespace Goteo\Controller {
 
                     /*
                      * Ya no hay Modo Asignar proyectos
-                     * y tampoco permitimos desasignar 
-                     * 
+                     * y tampoco permitimos desasignar
+                     *
                     if ($action == 'assign_mode' && $id == 'on') {
                         if ($call->status < 3) {
                             $_SESSION['assign_mode'] = true;
@@ -1099,17 +1097,17 @@ namespace Goteo\Controller {
 
 
             // si tiene permiso para ir al admin
-            if (ACL::check('/admin')) 
+            if (ACL::check('/admin'))
                 $menu['activity']['options']['admin'] = Text::get('dashboard-menu-admin_board');
 
             // si tiene permiso para ir a las revisiones
-            if (ACL::check('/review')) 
+            if (ACL::check('/review'))
                 $menu['activity']['options']['review'] = Text::get('dashboard-menu-review_board');
 
             // si tiene permiso para ir a las traducciones
-            if (ACL::check('/translate')) 
+            if (ACL::check('/translate'))
                 $menu['activity']['options']['translate'] = Text::get('dashboard-menu-translate_board');
-            
+
             return $menu;
         }
 

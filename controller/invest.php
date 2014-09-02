@@ -34,6 +34,10 @@ namespace Goteo\Controller {
             $projectData = Model\Project::get($project);
             $methods = self::$methods;
 
+            if (\GOTEO_ENV  != 'real') {
+                $methods['cash'] = 'cash';
+            }
+
             // si no está en campaña no pueden esta qui ni de coña
             if ($projectData->status != 3) {
                 throw new Redirection('/project/'.$project, Redirection::TEMPORARY);
@@ -208,7 +212,7 @@ namespace Goteo\Controller {
             /*
             // esto es posible porque el cambio de estado se hace en la comunicación online
             if ($invest->method == 'tpv') {
-                // si el aporte no está en estado "cobrado por goteo" (1) 
+                // si el aporte no está en estado "cobrado por goteo" (1)
                 if ($invest->status != '1') {
                     @mail(\GOTEO_FAIL_MAIL,
                         'Aporte tpv no pagado ' . $invest->id,
@@ -282,6 +286,9 @@ namespace Goteo\Controller {
                 unset($log);
             }
 
+            // recalculo
+            $invest->keepUpdated($callData->id);
+
             // texto recompensa
             // @TODO quitar esta lacra de N recompensas porque ya es solo una recompensa siempre
             $rewards = $invest->rewards;
@@ -289,8 +296,8 @@ namespace Goteo\Controller {
             $txt_rewards = implode(', ', $rewards);
 
             // recaudado y porcentaje
-            $amount = $projectData->invested;
-            $percent = floor(($projectData->invested / $projectData->mincost) * 100);
+            $amount = $projectData->amount;
+            $percent = floor(($projectData->amount / $projectData->mincost) * 100);
 
 
             // email de agradecimiento al cofinanciador
@@ -318,7 +325,7 @@ namespace Goteo\Controller {
             }
 
             $URL = \SITE_URL;
-            
+
             // Dirección en el mail (y version para regalo)
             $txt_address = Text::get('invest-address-address-field') . ' ' . $invest->address->address;
             $txt_address .= '<br> ' . Text::get('invest-address-zipcode-field') . ' ' . $invest->address->zipcode;
@@ -354,7 +361,7 @@ namespace Goteo\Controller {
             }
 
             unset($mailHandler);
-            
+
             // si es un regalo
             if ($invest->address->regalo && !empty($invest->address->emaildest)) {
                 // Notificación al destinatario de regalo
@@ -418,7 +425,7 @@ namespace Goteo\Controller {
 
             // log
             Model\Invest::setDetail($invest->id, 'confirmed', 'El usuario regresó a /invest/confirmed');
-            
+
             // mandarlo a la pagina de gracias
             throw new Redirection($retUrl);
         }

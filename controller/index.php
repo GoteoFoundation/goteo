@@ -23,6 +23,11 @@ namespace Goteo\Controller {
 
     class Index extends \Goteo\Core\Controller {
 
+        public function __construct() {
+            //activamos la cache para todo el controlador index
+            \Goteo\Core\DB::cache(true);
+        }
+
         public function index () {
 
             if (NODE_ID != GOTEO_NODE) {
@@ -78,12 +83,12 @@ namespace Goteo\Controller {
             $news =  (isset($order['news'])) ? News::getAll(true) : array();
 
             foreach ($news as $idNew => &$new) {
-                
+
                 //comprobamos si esta activo el campo banner prensa y si tiene imagen asociada
 
                 if ((!$new->press_banner)||(!$new->image instanceof \Goteo\Model\Image))
                         unset($news[$idNew]);
-                
+
             }
 
             // Banners siempre

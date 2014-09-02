@@ -55,6 +55,7 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         public function edit ($id) {
+
             $call = Model\Call::get($id, null);
 
             // si es admin (no superadmin) (y no es el autor) si no la tiene asignada, fuera.
@@ -66,7 +67,7 @@ namespace Goteo\Controller {
                 Message::Error('No tienes permiso para editar esta convocatoria');
                 throw new Redirection("/admin/calls");
             }
-            
+
             if (isset($_GET['from']) && $_GET['from'] == 'dashboard') {
                 // Evento Feed
                 $log = new Feed();
@@ -133,25 +134,25 @@ namespace Goteo\Controller {
                     )
                 );
             }
-                        
-            
-            foreach ($_REQUEST as $k => $v) {                
+
+
+            foreach ($_REQUEST as $k => $v) {
                 if (strncmp($k, 'view-step-', 10) === 0 && !empty($v) && !empty($steps[substr($k, 10)])) {
                     $step = substr($k, 10);
-                }                
+                }
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
                 foreach ($steps as $id => &$data) {
-                    
+
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$call, &$errors))) {
                         // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
                         if (!in_array($id, $_SESSION['stepped'])) {
                             $_SESSION['stepped'][$id] = $id;
                         }
                     }
-                    
+
                 }
 
                 // guardamos los datos que hemos tratado y los errores de los datos
@@ -225,7 +226,7 @@ namespace Goteo\Controller {
 
             //re-evaluar los errores
             $call->check();
-            
+
             // variables para la vista
             $viewData = array(
                 'call' => $call,
@@ -260,7 +261,7 @@ namespace Goteo\Controller {
                         }
                     }
                     break;
-                
+
                 case 'overview':
                     $viewData['categories'] = Model\Call\Category::getAll();
                     $viewData['icons'] = Model\Icon::getAll();
@@ -281,7 +282,7 @@ namespace Goteo\Controller {
                                 $viewData["banner-{$last->id}-edit"] = true;
                             }
                         }
-                        
+
                         foreach ($_POST as $k => $v) {
                             if (!empty($v) && preg_match('/sponsor-(\d+)-edit/', $k, $r)) {
                                 $viewData[$k] = true;
@@ -300,7 +301,6 @@ namespace Goteo\Controller {
                 case 'preview':
                     break;
             }
-
 
             $view = new View (
                 "view/call/edit.html.php",
@@ -382,6 +382,9 @@ namespace Goteo\Controller {
                 $call->logo = Model\Image::get($call->logo);
                 // el fondo es el campo  backimage
                 $call->image = Model\Image::get($call->backimage);
+
+                // entradas blog
+                $call->posts = Model\Call\Post::get($id);
             }
 
             // solamente se puede ver publicamente si
@@ -412,8 +415,12 @@ namespace Goteo\Controller {
 
                 }
 
-                if ($show == 'projects' && ($call->status < 4 || empty($call->projects))) {
-                    throw new Redirection("/call/".$call->id);
+                if ($show == 'projects') {
+
+                    $call->projects = Model\Call\Project::get($call->id, array('published'=>true));
+
+                    if ($call->status < 4 || empty($call->projects))
+                        throw new Redirection("/call/".$call->id);
                 }
 
                 $call->categories = Model\Call\Category::getNames($call->id);
@@ -449,7 +456,7 @@ namespace Goteo\Controller {
 
                     // configuración especial de buzz
                     $buzzConf = $call->getConf();
-                    
+
                     if (!empty($social->tags)) {
                         // si solo un hashtag
                         if (isset($buzzConf) && $buzzConf->first) {
@@ -458,7 +465,7 @@ namespace Goteo\Controller {
                             $tsQuery .= implode(', OR ', $social->tags);
                         }
                     }
-                    
+
                     if (!empty($social->author)) {
                         // propios
                         if (!isset($buzzConf) || $buzzConf->own)  {
@@ -470,7 +477,7 @@ namespace Goteo\Controller {
                             $tsQuery .= ($tsQuery == '') ? '@' . $social->author : ' OR @' . $social->author;
                         }
                     }
-                    
+
                     $social->buzz_debug = "https://api.twitter.com/1.1/search/tweets.json?q=".  urlencode($tsQuery);
                     $social->buzz = Buzz::getTweets($tsQuery, true);
                 }
@@ -501,7 +508,7 @@ namespace Goteo\Controller {
                 Message::Error(Text::get('call-apply-failed'));
                 throw new Redirection("/");
             }
-            
+
             if ($call->expired) {
                 Message::Error(Text::get('call-apply-expired'));
                 throw new Redirection("/project/create");
@@ -546,20 +553,20 @@ namespace Goteo\Controller {
                 'user_identica'=>'identica',
                 'user_linkedin'=>'linkedin'
             );
-                        
+
             foreach ($fields as $fieldPost=>$fieldTable) {
                 if (isset($_POST[$fieldPost])) {
                     $user->$fieldTable = $_POST[$fieldPost];
                 }
             }
-            
+
             // Avatar
             if(!empty($_FILES['avatar_upload']['name'])) {
                 $user->avatar = $_FILES['avatar_upload'];
             }
 
             // tratar si quitan la imagen
-            if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
+            if (!empty($_POST['avatar-' . $user->avatar->hash .  '-remove'])) {
                 $user->avatar->remove($errors);
                 $user->avatar = null;
             }
@@ -569,16 +576,16 @@ namespace Goteo\Controller {
             //tratar webs existentes
             foreach ($user->webs as $i => &$web) {
                 // luego aplicar los cambios
-                
+
                 if (isset($_POST['web-'. $web->id . '-url'])) {
                     $web->url = $_POST['web-'. $web->id . '-url'];
                 }
-                
+
                 //quitar las que quiten
                 if (!empty($_POST['web-' . $web->id .  '-remove'])) {
                     unset($user->webs[$i]);
-                }                                                    
-                
+                }
+
             }
 
             //tratar nueva web
@@ -691,7 +698,7 @@ namespace Goteo\Controller {
 
             // Logo e imagen de fondo
             // tratar si quitan el logo
-            if (!empty($_POST['logo-' . $call->logo .  '-remove'])) {
+            if (!empty($_POST['logo-' . md5($call->logo) .  '-remove'])) {
                 $logo = Model\Image::get($call->logo);
                 $logo->remove($errors);
                 $call->logo = null;
@@ -703,7 +710,7 @@ namespace Goteo\Controller {
             }
 
             // tratar si quitan la imagen
-            if (!empty($_POST['image-' . $call->image .  '-remove'])) {
+            if (!empty($_POST['image-' . md5($call->image) .  '-remove'])) {
                 $image = Model\Image::get($call->image);
                 $image->remove($errors);
                 $call->image = null;
@@ -713,9 +720,9 @@ namespace Goteo\Controller {
             if(!empty($_FILES['image_upload']['name'])) {
                 $call->image = $_FILES['image_upload'];
             }
-            
+
             // tratar si quitan la imagen de fondo de las paginas
-            if (!empty($_POST['backimage-' . $call->backimage .  '-remove'])) {
+            if (!empty($_POST['backimage-' . md5($call->backimage) .  '-remove'])) {
                 $backimage = Model\Image::get($call->backimage);
                 $backimage->remove($errors);
                 $call->backimage = null;

@@ -51,15 +51,11 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         public function edit ($id, $step = 'userProfile') {
-            //no queremos que lea de la cache la deshabilitaremos globalmente
-            \Goteo\Core\DB::cache(false);
+
             $project = Model\Project::get($id, null);
 
             // para que tenga todas las imágenes
             $project->gallery = Model\Image::getAll($id, 'project');
-
-            //volvemos a activar la cache global
-            \Goteo\Core\DB::cache(true);
 
             // aunque pueda acceder edit, no lo puede editar si
             if ($project->owner != $_SESSION['user']->id // no es su proyecto
@@ -351,7 +347,6 @@ namespace Goteo\Controller {
                     break;
             }
 
-
             $view = new View (
                 "view/project/edit.html.php",
                 $viewData
@@ -459,6 +454,9 @@ namespace Goteo\Controller {
         }
 
         private function view ($id, $show, $post = null) {
+            //activamos la cache para esta llamada
+            \Goteo\Core\DB::cache(true);
+
             $project = Model\Project::get($id, LANG);
 
             // recompensas
@@ -696,7 +694,7 @@ namespace Goteo\Controller {
             }
 
             // tratar si quitan la imagen
-            if (!empty($_POST['avatar-' . $user->avatar->id .  '-remove'])) {
+            if (!empty($_POST['avatar-' . $user->avatar->hash .  '-remove'])) {
                 $user->avatar->remove($errors);
                 $user->avatar = null;
             }
@@ -896,7 +894,7 @@ namespace Goteo\Controller {
 
             // tratar las imagenes que quitan
             foreach ($project->gallery as $key=>$image) {
-                if (!empty($_POST["gallery-{$image->id}-remove"])) {
+                if (!empty($_POST["gallery-".$image->hash."-remove"])) {
                     $image->remove($errors, 'project');
                     unset($project->gallery[$key]);
                 }

@@ -300,6 +300,7 @@ namespace Goteo\Model {
                     $image = new Image;
                     $image->name = $id;
                     $image->id = $id;
+                    $image->hash = md5($id);
 
                     if ($debug) echo "Not numeric, from name: <br />";
                     if ($debug) echo \trace($image);
@@ -355,6 +356,10 @@ namespace Goteo\Model {
          */
         public function remove(&$errors = array(), $which = null) {
 
+            // no borramos nunca la imagen de la gota
+            if ($this->id == 'la_gota.png') return false;
+
+            $this->fp->delete($this->id);
             try {
                 if (\is_string($which) && \in_array($which, self::$types)) {
                     $sql = "DELETE FROM {$which}_image WHERE image = ?";
@@ -362,7 +367,7 @@ namespace Goteo\Model {
                 }
 
                 //esborra de disk
-                $this->fp->delete($this->name);
+                $this->fp->delete($this->id);
 
                 return true;
             } catch(\PDOException $e) {

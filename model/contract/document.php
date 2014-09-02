@@ -16,43 +16,31 @@ namespace Goteo\Model\Contract {
             $type,
             $size,
             $tmp,
-            $filedir;
+            $filedir,
+            $dir = 'contracts/';
         private $fp;
-
-        // ruta en data a contract_docs (Hay alli un .htaccess para prohibir el acceso publico si es local)
-        public static $dir = 'contracts/';
 
         /**
          * Constructor.
          *
          * @param type array	$file	Array $_FILES.
          */
-        public function setFile ($file) {
+        public function __construct ($file = null) {
 
-            $this->filedir = self::$dir . $this->contract . '/';
-
-            if(is_array($file) && !empty($file['name'])) {
+            if(is_array($file)) {
                 $this->name = $file['name'];
                 $this->type = $file['type'];
                 $this->tmp = $file['tmp_name'];
                 $this->error = $file['error'];
                 $this->size = $file['size'];
-
-                $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
-
-                return true;
-            } else {
-                return false;
             }
-        }
-        /**
-         * Retorna nombre "seguro", que no existe ya
-         */
-        public function save_name() {
-            //un nombre que no exista
-            $name = $this->fp->get_save_name(self::$dir . $this->name);
-            if(self::$dir) $name = substr($name, strlen(self::$dir));
-            return $name;
+            elseif(is_string($file)) {
+                $this->name = basename($file);
+                $this->tmp = $file;
+            }
+
+            $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
+            $this->fp->setPath($this->dir);
         }
 
 		/**
@@ -66,25 +54,45 @@ namespace Goteo\Model\Contract {
 			if(empty($this->contract)) {
                 $errors[] = 'Sin id de proyecto/contrato';
             }
-			if(is_uploaded_file($this->tmp)) {
-				if($this->error !== UPLOAD_ERR_OK) {
-					$errors[] = $this->error;
-				}
 
-				if(empty($this->tmp) || $this->tmp == "none") {
-					$errors[] = Text::get('error-image-tmp');
-				}
+            // checkeo de errores de $_FILES
+            if($this->error !== UPLOAD_ERR_OK) {
+                switch($this->error) {
+                    case UPLOAD_ERR_INI_SIZE:
+                        $errors['image'] = Text::get('error-image-size-too-large');
+                        break;
+                    case UPLOAD_ERR_FORM_SIZE:
+                        $errors['image'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+                        break;
+                    case UPLOAD_ERR_PARTIAL:
+                        $errors['image'] = 'The uploaded file was only partially uploaded';
+                        break;
+                    case UPLOAD_ERR_NO_FILE:
+                        if (isset($_POST['upload']))
+                            $errors['image'] = 'No file was uploaded';
+                        break;
+                    case UPLOAD_ERR_NO_TMP_DIR:
+                        $errors['image'] = 'Missing a temporary folder';
+                        break;
+                    case UPLOAD_ERR_CANT_WRITE:
+                        $errors['image'] = 'Failed to write file to disk';
+                        break;
+                    case UPLOAD_ERR_EXTENSION:
+                        $errors['image'] = 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions';
+                        break;
+                }
+                return false;
+            }
 
-				if(!empty($this->size)) {
-					$max_upload_size = 2 * 1024 * 1024; // = 2097152 (2 megabytes)
-					if($this->size > $max_upload_size) {
-						$errors[] = Text::get('error-image-size-too-large');
-					}
-				}
-				else {
-					$errors[] = Text::get('error-image-size');
-				}
-			}
+            if(empty($this->tmp) || $this->tmp == "none") {
+                $errors['image'] = Text::get('error-image-tmp');
+            }
+
+            if(empty($this->size)) {
+                $errors['image'] = Text::get('error-image-size');
+            }
+
+
             return empty($errors);
 		}
 
@@ -93,33 +101,37 @@ namespace Goteo\Model\Contract {
          * (non-PHPdoc)
          * @see Goteo\Core.Model::save()
          */
-        public function save(&$errors = array()) {
+        public function save(&$errors = array())
+        {
+            if ($this->validate($errors)) {
+                $this->original_name = $this->name;
 
-            try {
+                // verificar que existe el directorio para documentos de este proyecto
 
-                if($this->validate($errors)) {
-                    //nombre seguro
-                    $name = $this->save_name();
+                $this->filedir = $this->contract.'/';
+                //nombre seguro (quitamos el path!)
+                $this->name = basename($this->fp->get_save_name($this->filedir.$this->name));
 
-                    $data = array(
-                        ':contract' => $this->contract,
-                        ':name' => $name,
-                        ':type' => $this->type,
-                        ':size' => $this->size,
+                $data = array(
+                    ':contract' => $this->contract,
+                    ':name' => $this->name,
+                    ':type' => $this->type,
+                    ':size' => $this->size,
 
-                    );
+                );
+
+                try {
 
                     //si es un archivo que se sube
-                    if(!empty($this->tmp)) {
+                    if (!empty($this->tmp)) {
+                        //subimos archivo con permisos privados
+                        $uploaded = $this->fp->upload($this->tmp, $this->filedir.$this->name, array('auto_create_dirs' => true, 'perms' => 'bucket-owner-full-control'));
 
-                        $destino = $this->filedir . $name;
-
-                        //subir el archivo
-                        if(!$this->fp->upload($this->tmp, $destino, 'bucket-owner-full-control')) {
-                            $errors[] = $this->tmp . ' no se ha podido ubicar en '.$destino;
+                        //@FIXME falta checkear que la imagen se ha subido correctamente
+                        if (!$uploaded) {
+                            $errors[] = 'fp->upload : <br />'.$this->tmp.' <br />dir: '.$this->dir.'  '.$this->filedir.' <br />file name: '.$this->name . '<br />from: '.$this->original_name;
                             return false;
                         }
-
                     } else {
                         $errors[] = Text::get('error-image-tmp');
                         return false;
@@ -131,43 +143,42 @@ namespace Goteo\Model\Contract {
                     // Ejecuta SQL.
                     if (self::query($query, $data)) {
                         $this->id = self::insertId();
-                        $this->name = $name;
                         return true;
                     } else {
                         $errors[] = "Fallo sql: $query " . print_r($data, true);
                         return false;
                     }
+                } catch (\PDOException $e) {
+                    $errors[] = "No se ha podido guardar el archivo en la base de datos: " . $e->getMessage();
+                    return false;
                 }
-                
-                return false;
-                
-            } catch(\PDOException $e) {
-                $errors[] = "No se ha podido guardar el archivo en la base de datos: " . $e->getMessage();
-                return false;
             }
-		}
-        
+
+            return false;
+
+        }
+
         /**
          * Get documentdata
          * @param varcahr(50) $id  Document identifier
          * @return object instanceof Document or false if it doesn't exist
          */
 	 	public static function get ($id) {
-            
+
             try {
-                $sql = "SELECT * 
-                    FROM document 
+                $sql = "SELECT *
+                    FROM document
                     WHERE id = :id";
-                
+
                 $query = static::query($sql, array(':id' => $id));
                 $doc = $query->fetchObject(__CLASS__);
 
                 if ($doc instanceof Document) {
-                    $doc->filedir = self::$dir . '/' . $doc->contract . '/';
+                    $doc->filedir = $doc->dir . $doc->contract . '/';
                 } else {
                     $doc = false;
                 }
-                
+
                 return $doc;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
@@ -180,22 +191,22 @@ namespace Goteo\Model\Contract {
          * @return array of documents or false if it doesn't exist
          */
 	 	public static function getDocs ($id) {
-            
+
             $array = array ();
             try {
                 $values = array(':id' => $id);
-                
-                $sql = "SELECT * 
-                    FROM document 
-                    WHERE contract = :id 
+
+                $sql = "SELECT *
+                    FROM document
+                    WHERE contract = :id
                     ORDER BY id DESC";
-                
+
                 $query = static::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $document) {
-                    $document->filedir = self::$dir . $document->contract . '/';
+                    $document->filedir = $document->dir . $document->contract . '/';
                     $array[] = $document;
                 }
-                
+
                 if(empty($array)) {
                     $array = false;
                 }
@@ -212,12 +223,10 @@ namespace Goteo\Model\Contract {
          */
         public function remove (&$errors = array()) {
             $ok = false;
+            $this->filedir = $this->contract.'/';
 
+            $this->fp->delete($this->filedir . $this->name);
             try {
-                if(!($this->fp instanceof File)) {
-                    $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
-                }
-
                 $sql = "DELETE FROM document WHERE id = ?";
                 $values = array($this->id);
                 if (self::query($sql, $values)) {
@@ -237,7 +246,7 @@ namespace Goteo\Model\Contract {
             return $ok;
         }
 
-        
+
 		/**
 		* Returns a secure name to store in file system, if the generated filename exists returns a non-existing one
 		* @param $name original name to be changed-sanitized
@@ -255,7 +264,7 @@ namespace Goteo\Model\Contract {
 			return $name;
 		}
 		*/
-        
+
     }
-    
+
 }

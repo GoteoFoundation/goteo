@@ -263,6 +263,7 @@ namespace Goteo\Model {
                                 node.url as node_url, 
                                 project_conf.*,
                                 user.name as user_name,
+                                user.email as user_email,
                                 user.avatar as user_avatar,
                                 IFNULL(user_lang.about, user.about) as user_about,
                                 user.location as user_location,
@@ -342,11 +343,9 @@ namespace Goteo\Model {
                 $project->user->email = $project->user_email;
                 $project->user->lang = $project->user_lang;
                 $project->user->about = $project->user_about;
+                $project->user->location = $project->user_location;
 
-                $project->user->avatar = Image::get($project->user->avatar);
-                if (empty($project->user->avatar->id) || !$project->user->avatar instanceof Image) {
-                    $project->user->avatar = Image::get(1);
-                }
+                $project->user->avatar = Image::get($project->user_avatar);
 
                 $project->user->webs = User\Web::get($project->user_id);
 
@@ -387,6 +386,9 @@ namespace Goteo\Model {
 				$project->supports = Project\Support::getAll($id, $lang);
 
                 // extra conf
+                if (empty($project->days_round1)) $project->days_round1 = 40;
+                if (empty($project->days_round2)) $project->days_round2 = 40;
+
                 $project->days_total = ($project->one_round) ? $project->days_round1 : ( $project->days_round1 + $project->days_round2 );
 
                 //-----------------------------------------------------------------
@@ -432,7 +434,7 @@ namespace Goteo\Model {
                 }
 
                 // podría estar asignado a alguna convocatoria
-                $project->called = Call\Project::miniCalled($project);
+                $project->called = Call\Project::called($project->id);
 
                 // recomendaciones de padrinos
                 $project->patrons = Patron::getRecos($project->id);
@@ -496,6 +498,9 @@ namespace Goteo\Model {
                     $project->user->avatar = Image::get(1);
                 }
 
+                // convocado
+                $project->called = Call\Project::miniCalled($project->id);
+
 				return $project;
 
 			} catch(\PDOException $e) {
@@ -512,6 +517,7 @@ namespace Goteo\Model {
 
                 $sql ="
                 SELECT
+                    project.id as id,
                     project.id as project,
                     project.status as status,
                     project.published as published,
@@ -526,8 +532,11 @@ namespace Goteo\Model {
                     project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
+                    project.owner as owner,
                     user.id as user_id,
                     user.name as user_name,
+                    user.email as user_email,
+                    user.lang as user_lang,
                     project_conf.noinvest as noinvest,
                     project_conf.one_round as one_round,
                     project_conf.days_round1 as days_round1,
@@ -594,9 +603,10 @@ namespace Goteo\Model {
         public static function getWidget($project) {
 
                 $Widget = new Project();
-                $Widget->id = $project->project;
+                $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
                 $Widget->status = $project->status;
                 $Widget->name = $project->name;
+                $Widget->owner = $project->owner;
                 $Widget->description = $project->description;
                 $Widget->published = $project->published;
                 $Widget->created = $project->created;
@@ -665,6 +675,8 @@ namespace Goteo\Model {
                 $Widget->user = new User;
                 $Widget->user->id = $project->user_id;
                 $Widget->user->name = $project->user_name;
+                $Widget->user->email = $project->user_email;
+                $Widget->user->lang = $project->user_lang;
 
                 // calcular dias sin consultar sql
                 $Widget->days = $project->days;
@@ -1059,11 +1071,12 @@ namespace Goteo\Model {
                 // quitar las que tiene y no vienen
                 // añadir las que vienen y no tiene
 
-                // project_conf
-                // FIXME: Salvar al completo? / No machacar con valores vacíos
-                $conf = Project\Conf::get($this->id);
-                $conf->one_round = $this->one_round;
-                $conf->save();
+                // project_conf, solo si ha marcado one round
+                if ($this->one_round) {
+                    $conf = Project\Conf::get($this->id);
+                    $conf->one_round = $this->one_round;
+                    $conf->save();
+                }
 
                 //categorias
                 $tiene = Project\Category::get($this->id);
@@ -1771,6 +1784,11 @@ namespace Goteo\Model {
                 $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
                 self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
 
+                // si está en una convocatoria hay que actualizar el numero de proyectos aplicados
+                if (isset($this->called)) {
+                    Call\Project::addOneApplied($this->called->id, $this->called->applied);
+                }
+
                 return true;
 
             } catch (\PDOException $e) {
@@ -1826,6 +1844,12 @@ namespace Goteo\Model {
                 // actualizar numero de proyectos publicados del usuario
                 User::updateOwned($this->owner);
 
+                // si está en una convocatoria hay que actualizar el numero de proyectos en marcha
+                if (isset($this->called)) {
+                    Call\Project::numRunningProjects($this->called->id);
+                }
+
+
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al publicar el proyecto. ' . $e->getMessage();
@@ -1871,6 +1895,12 @@ namespace Goteo\Model {
 			try {
 				$sql = "UPDATE project SET status = :status, success = :success WHERE id = :id";
 				self::query($sql, array(':status'=>4, ':success'=>date('Y-m-d'), ':id'=>$this->id));
+
+                // si está en una convocatoria hay que actualizar el numero de proyectos en marcha
+                if (isset($this->called)) {
+                    Call\Project::numSuccessProjects($this->called->id);
+                }
+
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar por financiado el proyecto. ' . $e->getMessage();
@@ -1882,10 +1912,16 @@ namespace Goteo\Model {
          * Marcamos la fecha del paso a segunda ronda
          * @return: boolean
          */
-        public function passed(&$errors = array()) {
+        public function passDate(&$errors = array()) {
 			try {
 				$sql = "UPDATE project SET passed = :passed WHERE id = :id";
 				self::query($sql, array(':passed'=>date('Y-m-d'), ':id'=>$this->id));
+
+                // si está en una convocatoria hay que actualizar el numero de proyectos en marcha
+                if (isset($this->called)) {
+                    Call\Project::numSuccessProjects($this->called->id);
+                }
+
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo SQL al marcar fecha de paso de ronda. ' . $e->getMessage();
@@ -1901,6 +1937,12 @@ namespace Goteo\Model {
 			try {
 				$sql = "UPDATE project SET status = :status WHERE id = :id";
 				self::query($sql, array(':status'=>5, ':id'=>$this->id));
+
+                // si está en una convocatoria hay que actualizar el numero de proyectos en marcha
+                if (isset($this->called)) {
+                    Call\Project::numSuccessProjects($this->called->id);
+                }
+
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar el retorno por cunplido para el proyecto. ' . $e->getMessage();
@@ -1988,6 +2030,7 @@ namespace Goteo\Model {
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE user_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
@@ -2154,7 +2197,7 @@ namespace Goteo\Model {
                 $diff = $today - $published;
                 $days = floor($diff/60/60/24);
             }
-            if($days) return $days;
+            if($days) return (int) $days;
             // días desde el published
             $sql = "
                 SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(CONCAT(published, DATE_FORMAT(now(), ' %H:%i:%s')))), '%j') as days
@@ -2249,7 +2292,7 @@ namespace Goteo\Model {
             $values = array();
             // si es un nodo, filtrado
             if (\NODE_ID != \GOTEO_NODE) {
-                $sqlFilter = "AND project.node = :node";
+                $sqlFilter = " AND project.node = :node";
                 $values[':node'] = NODE_ID;
             } else {
                 $sqlFilter = "";
@@ -2335,7 +2378,7 @@ namespace Goteo\Model {
 
             }
 
-            $where.=$sqlFilter;
+            $where.= $sqlFilter;
 
             if(self::default_lang(\LANG)=='es') {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
@@ -2498,15 +2541,15 @@ namespace Goteo\Model {
                     DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) as rest_primera,
                     DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) as rest_total
                 FROM  project
-                LEFT JOIN project_conf on project = id
+                LEFT JOIN project_conf ON project_conf.project = project.id
                 WHERE project.status = 3
                 AND (
                     ((passed IS NULL OR passed = '0000-00-00') AND
-                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) BETWEEN 0 AND 5
+                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) BETWEEN -3 AND 5
                     )
                     OR
                     ((success IS NULL OR success = '0000-00-00') AND
-                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) BETWEEN 0 AND 3
+                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) BETWEEN -3 AND 3
                     )
                 )
                 ORDER BY name ASC
@@ -2660,8 +2703,12 @@ namespace Goteo\Model {
                         project.id,
                         project.id REGEXP '[0-9a-f]{5,40}' as draft,
                         project.name as name,
-                        project.updated as updated,
                         project.status as status,
+                        project.published as published,
+                        project.created as created,
+                        project.updated as updated,
+                        project.success as success,
+                        project.closed as closed,
                         project.node as node,
                         project.mincost as mincost,
                         project.maxcost as maxcost,
@@ -2696,14 +2743,13 @@ namespace Goteo\Model {
 
 
             if ($debug) {
-                echo \trace($values);
-                echo $sql;
+                echo \sqldbg($sql, $values);
                 die;
             }
 
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') as $proj) {
                 //$the_proj = self::getMedium($proj['id']);
 
                 $proj->user = new User;
@@ -2716,6 +2762,11 @@ namespace Goteo\Model {
                 //añadir lo que haga falta
                 $proj->consultants = self::getConsultants($proj->id);
                 $proj->called = Call\Project::miniCalled($proj->id);
+
+                // extra conf
+                $proj->days_total = ($proj->one_round) ? $proj->days_round1 : ( $proj->days_round1 + $proj->days_round2 );
+
+                $proj->setDays();
 
                 //calculo de maxcost, min_cost sólo si hace falta
                 if(empty($proj->mincost)) {
@@ -2737,6 +2788,7 @@ namespace Goteo\Model {
 
                 $projects[] = $proj;
             }
+
             return $projects;
         }
 

@@ -62,7 +62,8 @@ $sql = "SELECT
         mailer_send.user,
         mailer_send.name,
         mailer_send.email,
-        mailer_content.id as mailing_id
+        mailer_content.id as mailing_id,
+        mailer_content.mail as mail_id
     FROM mailer_send
     RIGHT JOIN mailer_content ON mailer_content.id=mailer_send.mailing AND mailer_content.active=1
     WHERE mailer_send.id = ?
@@ -107,6 +108,8 @@ Model::query("UPDATE mailer_send SET blocked = 1 WHERE id = '{$user->id}' AND ma
 $itime = microtime(true);
 try {
     $mailHandler = new Mail($debug);
+
+    $mailHandler->id = $user->mail_id;
 
     // reply, si es especial
     if (!empty($mailing->reply)) {

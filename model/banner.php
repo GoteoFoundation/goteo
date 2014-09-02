@@ -244,6 +244,9 @@ namespace Goteo\Model {
                     $this->image = '';
                 }
             }
+            if (is_null($this->image)) {
+                $this->image = '';
+            }
 
             $fields = array(
                 'id',

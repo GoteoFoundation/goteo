@@ -131,8 +131,7 @@ namespace Goteo\Library {
 //                    $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
                     foreach ($home_promotes as $key => $promote) {
                         try {
-                            $the_project = \Goteo\Model\Project::getMedium($promote->project, $lang);
-                            $promotes_content .= new View('view/email/newsletter_project.html.php', array('promote'=>$promote, 'project'=>$the_project));
+                            $promotes_content .= new View('view/email/newsletter_project.html.php', array('promote'=>$promote, 'project'=>$promote->projectData));
                         } catch (\Goteo\Core\Error $e) {
                             continue;
                         }

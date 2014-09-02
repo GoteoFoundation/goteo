@@ -45,7 +45,7 @@ namespace Goteo\Controller\Dashboard {
             }
  
             // tratar si quitan la imagen
-            if (!empty($_POST['avatar-' . $user->avatar->id . '-remove'])) {
+            if (!empty($_POST['avatar-' . $user->avatar->hash . '-remove'])) {
                 $user->avatar->remove($errors);
                 $user->avatar = null;
             }
@@ -58,7 +58,7 @@ namespace Goteo\Controller\Dashboard {
                 }
 
                 // tratar si quitan la imagen vip
-                if ($vip->image instanceof Image && !empty($_POST['vip_image-' . $vip->image->id . '-remove'])) {
+                if ($vip->image instanceof Image && !empty($_POST['vip_image-' . $vip->image->hash . '-remove'])) {
                     $vip->image->remove($errors);
                     $vip->remove();
                 }

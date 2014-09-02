@@ -57,8 +57,19 @@ namespace Goteo\Core {
                 die;
             }
 
+            //activamos la cache para este metodo
+            $current_cache = \Goteo\Core\DB::cache();
+            \Goteo\Core\DB::cache(true);
+
             $query = User::query($sql, $values);
-            return (bool) $query->fetchColumn();
+            //comentado de momento asi se usa el cache corto (si esta definido), comentar con Julian si se puede usar el largo
+            // $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+            $ret = (bool) $query->fetchColumn();
+
+            //dejamos la cache como estaba
+            \Goteo\Core\DB::cache($current_cache);
+
+            return $ret;
         }
 
         static protected function fixURL ($url) {

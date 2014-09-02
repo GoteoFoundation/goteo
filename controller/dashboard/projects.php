@@ -14,7 +14,7 @@ namespace Goteo\Controller\Dashboard {
 
 /*
  * las opciones para /dashboard/projects:
- * 
+ *
  *      'updates' actualizaciones
  *      'supports' editar colaboraciones
  *      'widgets' ofrece el código para poner su proyecto en otras páginas (vertical y horizontal)
@@ -23,25 +23,25 @@ namespace Goteo\Controller\Dashboard {
  *      'messengers' gestionar colaboradores
  *      'contract' contrato
  *      'account'  cuentas
- */            
+ */
     class Projects {
-            
+
         /**
          * Verificación de proyecto de trabajo
-         * 
+         *
          * @param object $user instancia Model\User del convocador
          * @param string $action por si es 'select'
          * @return array(project, projects)
          */
         public static function verifyProject($user, $action) {
-            
+
             $projects = Model\Project::ofmine($user->id); // sus proyectos
 
             // si no tiene, no debería estar aquí
             if (empty($projects) || !is_array($projects)) {
                 return array(null, null);
             }
-            
+
             // comprobamos que tenga los permisos para editar y borrar
             foreach ($projects as $proj) {
 
@@ -76,28 +76,28 @@ namespace Goteo\Controller\Dashboard {
                 Message::Error('No se puede trabajar con el proyecto seleccionado, contacta con nosotros');
                 $project = null;
             }
-            
+
             // devolvemos lista de proyectos y proyecto de trabajo
             return array($project, $projects);
         }
-        
+
         /**
          * Verifica que todo está correcto para publicar novedades
-         * 
+         *
          * @param type $project Instancia de proyecto de trabajo
          * @return \Goteo\Controller\Dashboard\Blog
          * @throws Redirection a Mis Proyectos si hay algo mal
          */
         public static function verifyBlog($project) {
-            
+
             $errors = array();
-            
+
             // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
             if ($project->status < 3 || $project->status == 6) {
                 Message::Error(Text::get('dashboard-project-blog-wrongstatus'));
                 throw new Redirection('/dashboard/projects/summary');
             }
-            
+
             // si no tiene registro de blog se lo creamos
             $blog = Model\Blog::get($project->id);
             if (!$blog instanceof Model\Blog) {
@@ -125,10 +125,10 @@ namespace Goteo\Controller\Dashboard {
         }
 
 
-        
+
         /**
          * Gestiona las acciones de gestión de updates
-         * 
+         *
          * @param type $action (por referencia)
          * @param type $id del post a gestionar
          * @param type $blog id del blog del proyecto
@@ -151,7 +151,7 @@ namespace Goteo\Controller\Dashboard {
                                     )
                     );
                     return array($post, null);
-                    
+
                     break;
                 case 'edit':
                     if (empty($id)) {
@@ -190,7 +190,7 @@ namespace Goteo\Controller\Dashboard {
                     break;
             }
         }
-        
+
         /**
         * Prepara el contenido a mostrar segun estado de contrato
         *
@@ -219,10 +219,10 @@ namespace Goteo\Controller\Dashboard {
             return $content[$shwCnt[$show]];
         }
 
-        
+
         /**
          * Realiza el envio masivo a participantees o cofinanciadores
-         * 
+         *
          * @param type $option 'messengers' || 'rewards'
          * @param type $project Instancia del proyecto de trabajo
          * @return boolean
@@ -326,14 +326,16 @@ namespace Goteo\Controller\Dashboard {
 
             // - en la plantilla hay que cambiar %NAME% por %USERNAME% para que sender reemplace
 
-            // - 
+            // -
 
             // - se crea un registro de tabla mail
-            $mail = new Mail();
-            $mail->template = $template->id;
-            $mail->node = \GOTEO_NODE;
-            $mail->lang = $comlang;
-            $mailId = $mail->saveEmailToDB('any');
+            $mailHandler = new Mail();
+            $mailHandler->template = $template->id;
+            $mailHandler->node = \GOTEO_NODE;
+            $mailHandler->lang = $comlang;
+            $mailHandler->content = $content;
+            $mailHandler->massive = true;
+            $mailId = $mailHandler->saveEmailToDB();
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
             // , también metemos el reply y repplyName (remitente) en la instancia de envío
@@ -343,14 +345,14 @@ namespace Goteo\Controller\Dashboard {
                 Message::Error(Text::get('dashboard-investors-mail-fail', 'la cola de envíos')); // cambiar este texto
             }
 
-            
+
             return true;
         }
-        
-        
+
+
         /**
          * procesar algo respecto al contrato....
-         * 
+         *
          * @param object $project Instancia de proyecto de trabajo
          * @param array $errors (por referncia)
          * @return boolean
@@ -358,11 +360,11 @@ namespace Goteo\Controller\Dashboard {
         public static function process_contract ($project, &$errors = array()) {
 
         }
-        
-        
+
+
         /**
          * Graba las colaboraciones con lo recibido por POST
-         * 
+         *
          * @param object $project Instancia de proyecto de trabajo
          * @param array $errors (por referncia)
          * @return object $project Instancia de proyecto modificada
@@ -451,21 +453,21 @@ namespace Goteo\Controller\Dashboard {
 
             // guardamos los datos que hemos tratado y los errores de los datos
             $project->save($errors);
-            
+
             return $project;
         }
-        
-        
+
+
         /**
          * Graba un registro de novedad con lo recibido por POST
-         * 
+         *
          * @param array  $action (add o edit) y $id del post
          * @param object $project Instancia de proyecto de trabajo
          * @param array $errors (por referncia)
          * @return array $action por si se queda editando o sale a la lista y $id por si es un add y se queda editando
          */
         public static function process_updates ($action, $project, &$errors = array()) {
-            
+
 
             $editing = false;
 
@@ -504,7 +506,7 @@ namespace Goteo\Controller\Dashboard {
 
             // tratar las imagenes que quitan
             foreach ($post->gallery as $key => $image) {
-                if (!empty($_POST["gallery-{$image->id}-remove"])) {
+                if (!empty($_POST["gallery-{$image->hash}-remove"])) {
                     $image->remove($errors, 'post');
                     unset($post->gallery[$key]);
                     if ($post->image == $image->id) {
@@ -535,7 +537,7 @@ namespace Goteo\Controller\Dashboard {
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($project->id);
-                    $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/project/' . $project->id . '/updates/' . $post->id, 
+                    $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/project/' . $project->id . '/updates/' . $post->id,
                             \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('blog', Text::get('project-menu-updates')),
@@ -562,13 +564,13 @@ namespace Goteo\Controller\Dashboard {
             }
 
             return array($action, $id);
-            
+
         }
-        
+
         /**
          * Método de datos para la vista del gráfico goteo-analytics
          * @param object $project Instancia del proyecto a visualizar
-         * @return mixed 
+         * @return mixed
          */
         public static function graph ($id) {
 
@@ -605,12 +607,12 @@ namespace Goteo\Controller\Dashboard {
                 }
             }
 
-            $data = array('invests' => $invests, 
+            $data = array('invests' => $invests,
                         'dates' => $dates,
                         'minimum' => $minimum,
                         'optimum' => $optimum
                     );
-    
+
             return json_encode($data);
         }
 

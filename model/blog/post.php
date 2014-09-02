@@ -82,8 +82,9 @@ namespace Goteo\Model\Blog {
                 // galeria
                 $post->gallery = Image::getAll($id, 'post');
                 if (empty($post->image)) {
-                    $post->image = Post::setImage($id, $post->gallery[0]);
+                    $post->image = Post::setImage($id, $post->gallery[0]->id);
                 }
+                if (!empty($post->image)) $post->image = Image::get($post->image);
 
                 $post->comments = Post\Comment::getAll($id);
                 $post->num_comments = count($post->comments);
@@ -104,7 +105,7 @@ namespace Goteo\Model\Blog {
                     $post->user = $post->project->user;
                     $post->author = $post->project->user->id;
                 }
-                
+
                 return $post;
         }
 
@@ -132,8 +133,8 @@ namespace Goteo\Model\Blog {
                     $eng_join=" LEFT JOIN post_lang as eng
                                     ON  eng.id = post.id
                                     AND eng.lang = 'en'";
-                }            
-            
+                }
+
             $sql = "
                 SELECT
                     post.id as id,
@@ -185,21 +186,22 @@ namespace Goteo\Model\Blog {
             if (!empty($limit)) {
                 $sql .= "LIMIT $limit";
             }
-            
+
             $query = static::query($sql, $values);
-                
+
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
                 if (empty($post->image)) {
-                    $post->image = Post::setImage($post->id, $post->gallery[0]);
+                    $post->image = Post::setImage($post->id, $post->gallery[0]->id);
                 }
+                if (!empty($post->image)) $post->image = Image::get($post->image);
 
                 // video
                 if (!empty($post->media)) {
                     $post->media = new Media($post->media);
                 }
-                
+
                 $post->num_comments = Post\Comment::getCount($post->id);
 
                 $post->tags = Post\Tag::getAll($post->id);
@@ -257,7 +259,7 @@ namespace Goteo\Model\Blog {
                     $eng_join=" LEFT JOIN post_lang as eng
                                     ON  eng.id = post.id
                                     AND eng.lang = 'en'";
-                }                        
+                }
 
             $sql = "
                 SELECT
@@ -361,9 +363,11 @@ namespace Goteo\Model\Blog {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
                 // galeria
                 $post->gallery = Image::getAll($post->id, 'post');
+
                 if (empty($post->image)) {
-                    $post->image = Post::setImage($post->id, $post->gallery[0]);
+                    $post->image = Post::setImage($post->id, $post->gallery[0]->id);
                 }
+                if (!empty($post->image)) $post->image = Image::get($post->image);
 
                 // video
                 if (isset($post->media)) {
@@ -395,7 +399,7 @@ namespace Goteo\Model\Blog {
             return $list;
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->title))
                 $errors['title'] = 'Falta título';
 
@@ -520,7 +524,7 @@ namespace Goteo\Model\Blog {
             try {
                 $sql = "REPLACE INTO post_lang SET " . $set;
                 self::query($sql, $values);
-                
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
@@ -532,7 +536,7 @@ namespace Goteo\Model\Blog {
          * Para quitar una entrada
          */
         public static function delete ($id) {
-            
+
             $sql = "DELETE FROM post WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
 
@@ -623,5 +627,5 @@ namespace Goteo\Model\Blog {
         }
 
     }
-    
+
 }

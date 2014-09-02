@@ -5,7 +5,7 @@ namespace Goteo\Model {
     use Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Model;
-    
+
     class Contract extends \Goteo\Core\Model {
 
         public
@@ -13,19 +13,19 @@ namespace Goteo\Model {
             $number, //numero de contrato
             $date, // día anterior a la publicación
             $enddate, // un año después de la fecha del contrato
-            $pdf, // si está generado aquí viene el nomre de archivo en  
+            $pdf, // si está generado aquí viene el nomre de archivo en
             $type, //  0 = persona física; 1 = representante asociacion; 2 = apoderado entidad mercantil
-                
+
             // datos del representante
             $name,
             $nif,
-            $office, // Cargo en la asociación o empresa	
+            $office, // Cargo en la asociación o empresa
             $address,
             $location,
             $region,
             $zipcode,
             $country,
-                
+
             // datos de la entidad
             $entity_name,
             $entity_cif,
@@ -34,13 +34,13 @@ namespace Goteo\Model {
             $entity_region,
             $entity_zipcode,
             $entity_country,
-            
+
             // datos de cuentas (se guardan en project_account para procesos y aquí para el pdf)
             $bank,
             $bank_owner,
             $paypal,
             $paypal_owner,
-                
+
             // datos de registro
             $reg_name,  // Nombre del registro en el que está incrita la entidad (nombre completo y ciudad)
             $reg_number, // Número de registro
@@ -48,21 +48,21 @@ namespace Goteo\Model {
             $reg_id, // Número en el registro mercantil
             $reg_idname, // Nombre del notario
             $reg_idloc, // Ciudad de actuacióndel notario
-                
+
             // proyecto
             $project_name,
             $project_url,
             $project_owner, // Id del impulsor
             $project_user, // Nombre del impulsor
             $project_profile, // URL del perfil del impulsor
-                
+
             $project_description, // descripción del proyecto
             $project_invest, // objetivo de financiación
             $project_return, // retornos comprometidos
-            
+
             // seguimiento (es un objeto, cada atributo es un valor de seguimiento)
             $status,
-                
+
             // documentación
             $docs = array();
 
@@ -86,9 +86,9 @@ namespace Goteo\Model {
         }
 
         /**
-         * Creación de registro de contrato. 
+         * Creación de registro de contrato.
          * Esto lo lanzará el cron/execute cuando el proyecto pase la primera ronda.
-         * 
+         *
          * @param varchar(50) $id del proyecto
          * @return true (el control de errores habrá que hacerlo por email)
          */
@@ -123,13 +123,13 @@ namespace Goteo\Model {
 
             // campos de descripción del proyecto
             $contract->project_description = $projData->description;
-            
+
             // texto montado desde costes
             $contract->project_invest = self::txtInvest($projData);
-            
+
             // texto montado desde retornos
             $contract->project_return = self::txtReturn($projData);
-            
+
             // cuentas
             $account = \Goteo\Model\Project\Account::get($projData->id);
 
@@ -142,18 +142,18 @@ namespace Goteo\Model {
         }
 
 
-        
+
         /**
          * Datos de contrato del proyecto
          * si no hay, precargamos con los datos del proyecto
-         * 
+         *
          * @param varchar(50) $id  Project identifier
          * @return instancia de contrato
          */
 	 	public static function get ($id) {
 
             $sql = "
-                SELECT *, DATE_FORMAT(date, '%d%m%Y') as txtdate 
+                SELECT *, DATE_FORMAT(date, '%d%m%Y') as txtdate
                 FROM contract
                 WHERE contract.project = ?
             ";
@@ -167,12 +167,12 @@ namespace Goteo\Model {
 
                 // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
                 $contract->draft = ($contract->status->ready) ? false : true;
-                
+
 
                 // cargamos los documentos
                 $contract->docs = Contract\Document::getDocs($id);
-            
-                
+
+
                 return $contract;
             } else {
                 // aun no tenemos datos de contrato
@@ -190,16 +190,16 @@ namespace Goteo\Model {
             return true;
         }
 
-        
+
         /*
          * Segun sie s una grabación parcial de impulsor o una grabación completa de admin
-         * 
+         *
          */
 		public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
 			try {
-                
+
                 $fields = array(
                     'project',
                     'number',
@@ -258,13 +258,13 @@ namespace Goteo\Model {
                 } else {
                     return true;
                 }
-                
+
 			} catch(\PDOException $e) {
 				$errors[] = "Los datos de contrato no se han gaurdado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
 			}
 		}
-        
+
         /*
          * Lista de contratos existentes para gestión
          */
@@ -290,8 +290,8 @@ namespace Goteo\Model {
 
             return $list;
         }
-        
-        
+
+
         /*
          * Lista de Proyectos que han rellenado algo del contrato
          */
@@ -315,8 +315,8 @@ namespace Goteo\Model {
 
             return $list;
         }
-        
-        
+
+
         /*
          * Obtener numero y fecha de contrato
          */
@@ -324,7 +324,7 @@ namespace Goteo\Model {
 
             $query = static::query("
                 SELECT number, DATE_FORMAT(date, '%d%m%Y') as cdate
-                FROM contract 
+                FROM contract
                 WHERE project = ?
                 ", array($id));
 
@@ -339,7 +339,7 @@ namespace Goteo\Model {
                 return array($num, $date);
             }
         }
-        
+
         /*
          * Obtener estado de contrato
          */
@@ -347,7 +347,7 @@ namespace Goteo\Model {
 
             $query = static::query("
                 SELECT *
-                FROM contract_status 
+                FROM contract_status
                 WHERE contract_status.contract = ?
                 ", array($id));
 
@@ -355,7 +355,7 @@ namespace Goteo\Model {
 
             return $status;
         }
-        
+
         /**
          * Metodo para aplicar cambios al estado del contrato
          * @param varchar(50) $id del proyecto
@@ -363,7 +363,7 @@ namespace Goteo\Model {
          * @return bool si se ejecuta la sentencia o no
          */
         public static function setStatus($id, $statuses) {
-            
+
             $fields = array();
             $values = array();
 
@@ -381,27 +381,27 @@ namespace Goteo\Model {
                 $sqlend = " WHERE contract = :id";
                 $values[':id'] = $id;
             }
-            
+
             foreach ($statuses as $key => $value) {
                 $fields[] = "{$key} = :{$key}";
                 $values[":{$key}"] = $value;
-                
+
                 // fecha
                 $fields[] = "{$key}_date = :d{$key}";
                 $values[":d{$key}"] = date('Y-m-d');
-                
+
                 // usuario
                 $fields[] = "{$key}_user = :u{$key}";
                 $values[":u{$key}"] = $_SESSION['user']->id;
             }
-            
+
             $sql .= " contract_status SET ";
             $sql .= implode(', ', $fields);
             $sql .= $sqlend;
 
             return (static::query($sql, $values)) ? true : false;
         }
-        
+
         /**
          * Metodo para rellenar campo pdf
          * @param varchar(50) $id del proyecto
@@ -409,15 +409,15 @@ namespace Goteo\Model {
          * @return bool si ok
          */
         public static function setPdf($id, $pdf) {
-            
+
             $sql = "UPDATE contract SET pdf = :pdf WHERE contract = :id";
             $values = array(':id' => $id, ':pdf'=>$pdf);
-            
+
             return (static::query($sql, $values)) ? true : false;
         }
-        
 
-        
+
+
         /*
          * comprueba los campos obligatorios
          * y los obligatorios por tipo de promotor
@@ -451,7 +451,7 @@ namespace Goteo\Model {
             } else {
                  $okeys['promoter']['birthdate'] = 'ok';
             }
-            
+
             if (empty($this->address)) {
                 $errors['promoter']['address'] = Text::get('mandatory-project-field-address');
             } else {
@@ -483,7 +483,7 @@ namespace Goteo\Model {
             }
 
             /***************** FIN Revisión del paso PROMOTOR *****************/
-            
+
             /***************** Revisión de campos del paso ENTIDAD *****************/
             if ($this->type > 0) {  // solo obligatorios para representante
                 if (empty($this->entity_name)) {
@@ -536,7 +536,7 @@ namespace Goteo\Model {
                 } else {
                      $okeys['entity']['entity_country'] = 'ok';
                 }
-                
+
                 // y los legales
                 // para representantes de asociación
                 if ($this->type == 1) {
@@ -585,10 +585,10 @@ namespace Goteo\Model {
                          $okeys['entity']['reg_idloc'] = 'ok';
                     }
                 }
-                
+
             }
             /***************** FIN Revisión del paso ENTIDAD *****************/
-            
+
             /***************** Revisión de campos del paso CUENTAS  *****************/
             if (!empty($this->paypal) && empty($this->paypal_owner)) {
                 $errors['accounts']['paypal_owner'] = Text::get('mandatory-contract-paypal_owner');
@@ -607,7 +607,7 @@ namespace Goteo\Model {
             }
             /***************** FIN Revisión del paso CUENTAS *****************/
 
-            
+
             /***************** Revisión de campos del paso DOCUMENTACIÓN  *****************/
             if (empty($this->docs)) {
                 $errors['documents']['docs'] = Text::get('mandatory-contract-docs');
@@ -615,10 +615,10 @@ namespace Goteo\Model {
                 $okeys['documents']['docs'] = 'ok';
             }
             /***************** FIN Revisión del paso DOCUMENTACIÓN *****************/
-            
+
             $this->finishable = (\array_empty($errors));
         }
- 
+
         // para guardar los fallos en los datos
         public static function blankErrors() {
             return array(
@@ -628,31 +628,31 @@ namespace Goteo\Model {
                 'documents'    => array()
             );
         }
- 
+
         // para montar el texto de objetivo de financiación
         public static function txtInvest($projData) {
             $txt_invest_min = array();
             $txt_invest_opt = array();
             foreach ($projData->costs as $costData) {
-                if ($costData->required) 
+                if ($costData->required)
                     $txt_invest_min[] = $costData->cost;
                 else
                     $txt_invest_opt[] = $costData->cost;
             }
-            
-            return 'El objetivo de la campaña en Goteo es financiar los costes de: 
+
+            return 'El objetivo de la campaña en Goteo es financiar los costes de:
 - '
                 . implode('
 - ', $txt_invest_min)
-                . '. 
+                . '.
 
-En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gastos de: 
-- ' 
+En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gastos de:
+- '
                 . implode('
 - ', $txt_invest_opt)
                 . '.';
         }
-        
+
         // para montar el texto de retornos
         public static function txtReturn($projData) {
             $licenses = array();
@@ -660,17 +660,17 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             foreach (Model\License::getAll() as $l) {
                 $licenses[$l->id] = $l;
             }
-            
+
             $rews = 'El retorno colectivo que ofrece el proyecto consistirá en:';
             foreach ($projData->social_rewards as $social) {
                 $rews .= "
 
 - {$social->icon_name}: {$social->reward} Será publicado bajo licencia {$licenses[$social->license]->name} ({$licenses[$social->license]->url})";
             }
-            
+
             return $rews;
         }
- 
+
         /*
          * Estados de proceso de contrato
          */
@@ -688,7 +688,7 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
                 'closed' => 'Contrato cumplido'
                 );
         }
-        
+
         /*
          * Estados de proceso de contrato
          */
@@ -721,5 +721,5 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
         }
 
 	}
-    
+
 }

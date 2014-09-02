@@ -10,7 +10,7 @@ namespace Goteo\Controller {
         Goteo\Library\Listing;
 
     class Discover extends \Goteo\Core\Controller {
-    
+
         public static $types = array(
                 'popular',
                 'recent',
@@ -19,6 +19,11 @@ namespace Goteo\Controller {
                 'archive',
                 'fulfilled'
             );
+
+        public function __construct() {
+            //activamos la cache para todo el controlador index
+            \Goteo\Core\DB::cache(true);
+        }
 
         /*
          * Descubre proyectos, página general
@@ -37,14 +42,14 @@ namespace Goteo\Controller {
 
             // si estamos en easy-mode limitamos a 3 proyectos por grupo (en la portada)
             $limit = (defined('GOTEO_EASY') && \GOTEO_EASY === true) ? 3 : 30;
-            
+
             // cada tipo tiene sus grupos
             foreach ($types as $type) {
                 $projects = Model\Project::published($type, $limit);
                 if (empty($projects)) continue;
                 // random para exitosos y retorno cumplido
                 if ($type == 'success' || $type == 'fulfilled') shuffle ($projects);
-                
+
                 $viewData['lists'][$type] = Listing::get($projects);
             }
 
@@ -67,7 +72,7 @@ namespace Goteo\Controller {
             if (!empty($category)) {
                 $_POST['category'][] = $category;
             }
-            
+
 			if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query']) && !isset($category)) {
                 $errors = array();
 
@@ -89,7 +94,7 @@ namespace Goteo\Controller {
                         $params[$param][] = "'{$value}'";
                     }
                 }
-                
+
                 if (isset($_GET['status'])) {
                     $params['status'] = $_GET['status'];
                 }
@@ -115,7 +120,7 @@ namespace Goteo\Controller {
              );
 
         }
-        
+
         /*
          * Descubre proyectos, ver todos los de un tipo
          */
@@ -138,7 +143,7 @@ namespace Goteo\Controller {
 
             // segun el tipo cargamos la lista
             if (isset($_GET['list'])) {
-                $viewData['list']  = Model\Project::published($type, null, true);
+                $viewData['list']  = Model\Project::published($type, 99, true);
 
                 return new View(
                     'view/discover/list.html.php',
@@ -146,7 +151,7 @@ namespace Goteo\Controller {
                  );
             } else {
 
-                $projects = Model\Project::published($type);
+                $projects = Model\Project::published($type, 99);
                 // random para retorno cumplido
                 if ($type == 'fulfilled') shuffle ($projects);
                 $viewData['list'] = $projects;
@@ -210,5 +215,5 @@ namespace Goteo\Controller {
         }
 
     }
-    
+
 }

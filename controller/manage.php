@@ -27,6 +27,7 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('status' => '-1', 'projectStatus' => 'all', 'contractStatus' => 'all', 'proj_name' => '', 'owner' => '', 'name' => '', 'node' => '', 'prepay' => '0', 'order' => 'date')
             ),
+            /*
             'accounts' => array(
                 'label' => 'Aportes delicados (solo con incidencia, manuales, fantasmas y casos conflictivos)',
                 'actions' => array(
@@ -35,6 +36,7 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('id' => '', 'methods' => '', 'investStatus' => 'all', 'projects' => '', 'name' => '', 'calls' => '', 'review' => '', 'types' => '', 'date_from' => '', 'date_until' => '', 'issue' => 'all', 'procStatus' => 'all', 'amount' => '')
             ),
+            */
             'reports' => array(
                 'label' => 'Informes (financieros)',
                 'actions' => array(
@@ -51,24 +53,26 @@ namespace Goteo\Controller {
                 'filters' => array('year' => '', 'status' => '', 'user' => '')
             )
         );
-        
+
         /*
          * Panel para gestionar asuntos financieros y legales
          */
         public function index($option = 'projects', $action = 'list', $id = null, $subaction = null) {
-            
+
             if ($option == 'index') {
                 $BC = self::menu(array('option' => $option, 'action' => null, 'id' => null));
                 define('ADMIN_BCPATH', $BC);
                 $tasks = Model\Task::getAll(array(), \GOTEO_NODE, true);
-                return new View('view/manage/index.html.php', array('tasks' => $tasks));
+                $ret = new View('view/manage/index.html.php', array('tasks' => $tasks));
             } else {
                 $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
                 define('ADMIN_BCPATH', $BC);
                 $SubC = 'Goteo\Controller\Manage' . \chr(92) . \ucfirst($option);
                 $filters = self::setFilters($option);
-                return $SubC::process($action, $id, $subaction, $filters);
+                $ret = $SubC::process($action, $id, $subaction, $filters);
             }
+
+            return $ret;
         }
 
         /*
@@ -80,7 +84,7 @@ namespace Goteo\Controller {
             //   devolveremos el contenido html para pintar el camino de migas de pan
             //   con enlaces a lo anterior
             $menu = self::$options;
-            
+
             if (empty($BC)) {
                 return $menu;
             } else {
@@ -124,7 +128,7 @@ namespace Goteo\Controller {
                 } else {
                     $path = '<a href="/manage">'.Text::get('regular-manage_board').'</a>' . $path;
                 }
-                
+
                 return $path;
             }
 

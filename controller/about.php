@@ -11,7 +11,12 @@ namespace Goteo\Controller {
         Goteo\Library\Template;
 
     class About extends \Goteo\Core\Controller {
-        
+
+        public function __construct() {
+            //activamos la cache para todo el controlador about
+            \Goteo\Core\DB::cache(true);
+        }
+
         public function index ($id = null) {
 
             // si llegan a la de mantenimiento sin estar en mantenimiento
@@ -72,7 +77,7 @@ namespace Goteo\Controller {
                             'content' => $page->content
                         )
                      );
- * 
+ *
  */
                 }
 
@@ -92,7 +97,7 @@ namespace Goteo\Controller {
              );
 
         }
-        
+
     }
-    
+
 }

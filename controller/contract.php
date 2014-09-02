@@ -13,26 +13,26 @@ namespace Goteo\Controller {
         Goteo\Library\Feed,
         Goteo\Model;
 
-//@TODO: ACL, cerrado para todos y se abre al impulsor 
+//@TODO: ACL, cerrado para todos y se abre al impulsor
     //      o bien, abierto y se verifica por código
-    
-    
-    
+
+
+
     class Contract extends \Goteo\Core\Controller {
 
         /**
          * La vista por defecto del contrato ES el pdf
-         * 
+         *
          * @param string(50) $id del proyecto
          * @return \Goteo\Core\View   Pdf
          */
         public function index($id = null) {
-            
+
             $contract = Model\Contract::get($id); // datos del contrato
 
             // solamente se puede ver si....
             // Es un admin, es el impulsor
-            // 
+            //
             $grant = false;
             if ($contract->project_user == $_SESSION['user']->id)  // es el dueño del proyecto
                 $grant = true;
@@ -43,16 +43,16 @@ namespace Goteo\Controller {
 
             // si lo puede ver
             if ($grant) {
-                
+
                 require_once 'library/contract.php';  // Libreria pdf contrato
-                
+
                 $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';
-                $filename = Model\Contract\Document::$dir . $contract->project . '/' . $pdf_name;
-                
+//                $filename = Model\Contract\Document::$dir . $contract->project . '/' . $pdf_name;
+
                 // fecha
-                \setlocale(\LC_TIME, 'esp');                
+                \setlocale(\LC_TIME, 'esp');
                 $contract->date = strftime('%e de %B de %Y', strtotime($contract->date));
-                
+
                 // texto para "... en adelante EL IMPULSOR"
                 switch ($contract->type) {
                     case 0: // persona
@@ -67,7 +67,10 @@ namespace Goteo\Controller {
 
                         break;
                 }
-                
+
+                /*
+                 * Ya no guardamos el archivo del contrato digital sin firmar
+                 *
                 // si ya está generado, lo abrimos con un get contents
                 if (file_exists($filename)) {
                     header('Content-Type: application/x-download');
@@ -77,6 +80,7 @@ namespace Goteo\Controller {
                     echo file_get_contents($filename);
                     die;
                 }
+                */
 
                 // para generarlo
                 $pdf = new \Pdf;
@@ -88,14 +92,14 @@ namespace Goteo\Controller {
                     echo $pdf->Output();
                     die;
                 } else {
-                    // guardamos el archivo
-                    echo $pdf->Output($filename, 'F');
+                    // YA no guardamos el archivo
+                    // echo $pdf->Output($filename, 'F');
 
                     // y se lo damos para descargar
                     echo $pdf->Output($pdf_name, 'D');
 
                     Model\Contract::setStatus($id, array('pdf'=>1));
-                    
+
                     die;
                 }
 
@@ -135,9 +139,8 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar los datos de contrato
         public function edit ($id, $step = 'promoter') {
-
             $contract = Model\Contract::get($id);
-            
+
             // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados
             if ($contract->project_user != $_SESSION['user']->id // no es su proyecto
                 && $contract->status->owner // cerrado por
@@ -150,7 +153,7 @@ namespace Goteo\Controller {
 
             // checkeamos errores
             $contract->check();
-            
+
             // todos los pasos, entrando en datos del promotor por defecto
             $steps = array(
                 'promoter' => array(
@@ -184,32 +187,32 @@ namespace Goteo\Controller {
                     'num' => ''
                 )
             );
-            
-                        
-            
-            foreach ($_REQUEST as $k => $v) {                
+
+
+
+            foreach ($_REQUEST as $k => $v) {
                 if (strncmp($k, 'view-step-', 10) === 0 && !empty($v) && !empty($steps[substr($k, 10)])) {
                     $step = substr($k, 10);
-                }                
+                }
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
                 foreach ($steps as $id => &$data) {
-                    
+
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$contract, &$errors))) {
                         // ok
                     }
-                    
+
                 }
 
                 // guardamos los datos que hemos tratado y los errores de los datos
                 $contract->save($errors);
-                
+
                 // checkeamos de nuevo
                 $contract->check();
             }
-            
+
             if (!empty($errors)) {
                 Message::Error(implode('<br />', $errors));
             }
@@ -238,7 +241,7 @@ namespace Goteo\Controller {
                 return false;
             }
 
-            // campos que guarda este paso. Verificar luego. 
+            // campos que guarda este paso. Verificar luego.
             $fields = array(
                 'type',
                 'name',
@@ -266,7 +269,7 @@ namespace Goteo\Controller {
                 return false;
             }
 
-            // campos que guarda este paso. Verificar luego. 
+            // campos que guarda este paso. Verificar luego.
             $fields = array(
                 'office',
                 'entity_name',
@@ -301,7 +304,7 @@ namespace Goteo\Controller {
 
             // también en la tabla de cuentas
             $accounts = Model\Project\Account::get($contract->project);
-            
+
             $fields = array(
                 'bank',
                 'bank_owner',
@@ -313,9 +316,9 @@ namespace Goteo\Controller {
                 $contract->$field = $_POST[$field];
                 $accounts->$field = $_POST[$field];
             }
-            
+
             $accounts->save($errors);
-            
+
             return true;
         }
 
@@ -330,10 +333,9 @@ namespace Goteo\Controller {
             // tratar el que suben
             if(!empty($_FILES['doc_upload']['name'])) {
                 // procesarlo aqui con el submodelo Contract\Doc
-                $newdoc = new Model\Contract\Document(
-                        array('contract' => $contract->project)
-                    );
-                $newdoc->setFile($_FILES['doc_upload']);
+                $newdoc = new Model\Contract\Document($_FILES['doc_upload']);
+                $newdoc->contract = $contract->project;
+
                 if ($newdoc->save($errors)) {
                     $contract->docs[] = $newdoc;
                 }
@@ -347,7 +349,7 @@ namespace Goteo\Controller {
                     }
                 }
             }
-            
+
             // y los campos de descripción
             $fields = array(
                 'project_description',
@@ -360,9 +362,9 @@ namespace Goteo\Controller {
                     $contract->$field = $_POST[$field];
                 }
             }
-            
-            
-            
+
+
+
             return true;
         }
 
@@ -411,8 +413,8 @@ namespace Goteo\Controller {
                     Message::Error('Ha habido algún error al cerrar los datos de contrato');
                     return false;
                 }
-            }            
-            
+            }
+
             return true;
         }
 

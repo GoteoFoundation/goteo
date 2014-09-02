@@ -63,7 +63,7 @@ include 'view/call/header.html.php';
             <ul id="project-list">
                 <?php
                 foreach ($call->projects as $proj) {
-                    $project = Project::getMedium($proj->id);
+                    $project = Project::getWidget($proj);
                     $project->per_amount = round(($project->amount / $project->mincost) * 100);
                     echo new View('view/project/widget/tiny_project.html.php', array('project' => $project));
                 }
