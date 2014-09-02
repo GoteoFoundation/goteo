@@ -33,8 +33,7 @@ namespace Goteo\Controller\Admin {
                             'subtitle',
                             'email',
                             'location',
-                            'description',
-                            'logo'
+                            'description'
                         );
 
                         foreach ($fields as $field) {
@@ -45,13 +44,16 @@ namespace Goteo\Controller\Admin {
 
                         // tratar si quitan la imagen
                         if (!empty($_POST['logo-' . $node->logo->hash .  '-remove'])) {
-                            $node->logo->remove($errors);
+                            if ($node->logo instanceof Model\Image) $node->logo->remove($errors);
                             $node->logo = null;
                         }
 
                         // tratar la imagen y ponerla en la propiedad logo
                         if(!empty($_FILES['logo_upload']['name'])) {
+                            if ($node->logo instanceof Model\Image) $node->logo->remove($errors);
                             $node->logo = $_FILES['logo_upload'];
+                        } else {
+                            $node->logo = (isset($node->logo->id)) ? $node->logo->id : null;
                         }
 
                         /// este es el único save que se lanza desde un metodo process_

@@ -20,22 +20,27 @@ namespace Goteo\Controller\Admin {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // objeto
-                $banner = new Model\Banner(array(
-                    'id' => $_POST['id'],
-                    'node' => $node,
-                    'project' => $_POST['item'],
-                    'title' => $_POST['title'],
-                    'description' => $_POST['description'],
-                    'url' => $_POST['url'],
-                    'order' => $_POST['order'],
-                    'active' => $_POST['active']
-                ));
+                $banner = Model\Banner::get($id);
+                $banner->node = $node;
+                $banner->project = $_POST['item'];
+                $banner->title = $_POST['title'];
+                $banner->description = $_POST['description'];
+                $banner->url = $_POST['url'];
+                $banner->order = $_POST['order'];
+                $banner->active = $_POST['active'];
 
-                // imagen
+                // tratar si quitan la imagen
+                if (!empty($_POST['image-' . $banner->image->hash .  '-remove'])) {
+                    if ($banner->image instanceof Model\Image) $banner->image->remove($errors);
+                    $banner->image = null;
+                }
+
+                // nueva imagen
                 if(!empty($_FILES['image']['name'])) {
+                    if ($banner->image instanceof Model\Image) $banner->image->remove($errors);
                     $banner->image = $_FILES['image'];
                 } else {
-                    $banner->image = $_POST['prev_image'];
+                    $banner->image = $banner->image->id;
                 }
 
 				if ($banner->save($errors)) {
