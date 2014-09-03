@@ -1,6 +1,7 @@
 -- NOTA:
 -- Estos comandos son solo para actualizar nombres de imagen en las tablas (alters en otro script)
-
+-- Ya está aplicado hasta real
+-- no necesario lanzar mas, mantenido como histórico
 
 
 -- bazaar
