@@ -1950,17 +1950,17 @@ namespace Goteo\Model {
             self::query("START TRANSACTION");
             try {
                 //borrar todos los registros
-                self::query("DELETE FROM project_category WHERE project = ?", array($this->id));
-                self::query("DELETE FROM cost WHERE project = ?", array($this->id));
-                self::query("DELETE FROM reward WHERE project = ?", array($this->id));
-                self::query("DELETE FROM support WHERE project = ?", array($this->id));
-                //self::query("DELETE FROM image WHERE id IN (SELECT image FROM project_image WHERE project = ?)", array($this->id)); // no more image table
-                self::query("DELETE FROM project_image WHERE project = ?", array($this->id));
-                self::query("DELETE FROM message WHERE project = ?", array($this->id));
-                self::query("DELETE FROM project_account WHERE project = ?", array($this->id));
-                self::query("DELETE FROM review WHERE project = ?", array($this->id));
-                self::query("DELETE FROM call_project WHERE project = ?", array($this->id));
-                self::query("DELETE FROM project_lang WHERE id = ?", array($this->id));
+                self::query("DELETE FROM project_category WHERE project = ?", array($this->id)); // categorias
+                self::query("DELETE FROM cost WHERE project = ?", array($this->id)); // necesidades
+                self::query("DELETE FROM reward WHERE project = ?", array($this->id)); // recompensas y retornos
+                self::query("DELETE FROM support WHERE project = ?", array($this->id)); // colaboraciones
+                self::query("DELETE FROM project_image WHERE project = ?", array($this->id)); // imágenes
+                self::query("DELETE FROM message WHERE project = ?", array($this->id)); // mensajes
+                self::query("DELETE FROM project_account WHERE project = ?", array($this->id)); // cuentas
+                self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
+                self::query("DELETE FROM call_project WHERE project = ?", array($this->id)); // convocado
+                self::query("DELETE FROM user_project WHERE project = ?", array($this->id)); // asesores
+                self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
                 self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
