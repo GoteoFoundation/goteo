@@ -495,7 +495,7 @@ class SocialAuth {
 
 		//actualizar la imagen de avatar si no tiene!
 		if($this->user_data['profile_image_url']) {
-			$query = Goteo\Core\Model::query('SELECT id FROM image WHERE id = (SELECT avatar FROM user WHERE id = ?)', array($username));
+			$query = Goteo\Core\Model::query('SELECT avatar FROM user WHERE id = ?', array($username));
 			if(!($query->fetchColumn())) {
 
 				$img = new Goteo\Model\Image($this->user_data['profile_image_url']);
@@ -550,7 +550,7 @@ class SocialAuth {
 
 		//Si no tiene imagen, importar de gravatar.com?
 		if(!$user->avatar || $user->avatar->id == 1) {
-			$query = Goteo\Core\Model::query('SELECT id FROM image WHERE id = (SELECT avatar FROM user WHERE id = ?)', array($username));
+			$query = Goteo\Core\Model::query('SELECT avatar FROM user WHERE id = ?', array($username));
 			if(!($query->fetchColumn())) {
 				$url = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($user->email)));
 				$url .= "?d=404";
