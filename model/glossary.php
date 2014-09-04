@@ -32,7 +32,9 @@ namespace Goteo\Model {
                         IFNULL(glossary_lang.title, glossary.title) as title,
                         IFNULL(glossary_lang.text, glossary.text) as text,
                         IFNULL(glossary_lang.legend, glossary.legend) as legend,
-                        glossary.media as `media`
+                        glossary.media as `media`,
+                        glossary.image as `image`,
+                        glossary.gallery as `gallery`
                     FROM    glossary
                     LEFT JOIN glossary_lang
                         ON  glossary_lang.id = glossary.id
@@ -47,9 +49,17 @@ namespace Goteo\Model {
                     $glossary->media = new Media($glossary->media);
                 }
 
-                // galeria
-                $glossary->gallery = Image::getAll($id, 'glossary');
-                $glossary->image = $glossary->gallery[0];
+                // campo calculado gallery
+                if (!empty($glossary->gallery)) {
+                    $glossary->gallery = unserialize($glossary->gallery);
+                } else {
+                    $glossary->setGallery();
+                }
+
+                if (empty($glossary->image)) {
+                    $glossary->setImage($image);
+                }
+
 
                 return $glossary;
         }
@@ -79,7 +89,9 @@ namespace Goteo\Model {
                 SELECT
                     glossary.id as id,
                     $different_select,
-                    glossary.media as `media`
+                    glossary.media as `media`,
+                    glossary.image as `image`,
+                    glossary.gallery as `gallery`
                 FROM    glossary
                 LEFT JOIN glossary_lang
                     ON  glossary_lang.id = glossary.id
@@ -183,6 +195,50 @@ namespace Goteo\Model {
                 // que elimine tambien sus imágenes
                 $sql = "DELETE FROM glossary_image WHERE glossary = :id";
                 self::query($sql, array(':id'=>$id));
+
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
+         * Recalcular galeria
+         */
+        public function setGallery () {
+
+            // sacar galeria de glossary_image
+            $gallery = Image::getAll($this->id, 'glossary');
+
+            // poner en la instancia
+            $this->gallery = $gallery;
+
+            // guardar serializado en la base de datos
+            $sql = "UPDATE glossary SET gallery = :gallery WHERE id = :id";
+            if (self::query($sql, array(':gallery'=>serialize($gallery), ':id'=>$this->id))) {
+
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        /*
+         * Recalcular imagen principa
+         */
+        public function setImage () {
+
+            // sacar imagen de la galeria
+            $image = $this->gallery[0];
+
+            // poner en la instancia
+            $this->image = $image;
+
+            // guardar en la base de datos
+            $sql = "UPDATE glossary SET image = :image WHERE id = :id";
+            if (self::query($sql, array(':image'=>$image, ':id'=>$this->id))) {
 
                 return true;
             } else {
