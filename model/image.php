@@ -256,13 +256,14 @@ namespace Goteo\Model {
             return empty($errors);
 		}
 
-		/**
-		 * Imagen.
-		 *
-		 * @param type int	$id
-		 * @return type object	Image
-		 */
-	    static public function get ($id, $debug = false) {
+        /**
+         * Imagen.
+         *
+         * @param type int    $id
+         * @return type object    Image
+         */
+        static public function get($id, $debug = false)
+        {
 
             if ($debug) echo "Request image $id<br />";
             try {
@@ -280,8 +281,9 @@ namespace Goteo\Model {
                         break;
                 }
 
-                if (is_numeric($id)) {
-
+                /*
+                 *  No existe mas la tabla imágenes
+                 *
                     $query = static::query("
                     SELECT
                         id,
@@ -294,28 +296,23 @@ namespace Goteo\Model {
                     $image = $query->fetchObject(__CLASS__);
 
                     if ($debug) echo "Numeric, from table: ".\trace($image);
+                */
 
+                $image = new Image;
+                $image->name = $id;
+                $image->id = $id;
+                $image->hash = md5($id);
 
-                } else {
-                    $image = new Image;
-                    $image->name = $id;
-                    $image->id = $id;
-                    $image->hash = md5($id);
-
-                    if ($debug) echo "Not numeric, from name: <br />";
-                    if ($debug) echo \trace($image);
-                    if ($debug) echo $image->getLink(150, 85);
-
-
-                }
-
+                if ($debug) echo "Not numeric, from name: <br />";
+                if ($debug) echo \trace($image);
+                if ($debug) echo $image->getLink(150, 85);
                 if ($debug) die;
 
-                    return $image;
-            } catch(\PDOException $e) {
+                return $image;
+            } catch (\PDOException $e) {
                 return false;
             }
-		}
+        }
 
         /**
          * Galeria de imágenes de un usuario / proyecto
