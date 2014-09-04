@@ -1565,8 +1565,13 @@ namespace Goteo\Model {
 
             // si solo contamos
             $sqlS = ($justCount) ? 'COUNT(DISTINCT(invest.user))' : 'DISTINCT(invest.user) as id';
-            $sql = "SELECT $sqlS
+            $sql = "SELECT $sqlS,
+                           user.id as user_id,
+                           user.name as user_name,
+                           user.avatar as user_avatar
                     FROM  invest
+                    LEFT JOIN user
+                    ON user.id=invest.id
                     WHERE invest.call = :id
                     AND invest.status IN ('0', '1', '3')
                     AND invest.droped IS NOT NULL
@@ -1591,7 +1596,14 @@ namespace Goteo\Model {
                 $list = array();
                 $query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
-                    $list[] = User::getMini($item->id);
+                    // owner
+                    $user = new Model\User;
+                    $user->name = $item->user_name;
+                    $user->id = $item->id;
+                    $user->avatar = Model\Image::get($item->user_avatar);
+
+                    $list[] = $user;
+
                 }
                 return $list;
             }

@@ -52,7 +52,11 @@ namespace Goteo\Model\Blog\Post {
                     DATE_FORMAT(comment.date, '%d | %m | %Y') as date,
                     comment.date as timer,
                     comment.text,
-                    comment.user
+                    comment.user,
+                    user.id as user_id,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar
                 FROM    comment
                 INNER JOIN user
                     ON  user.id = comment.user
@@ -64,7 +68,15 @@ namespace Goteo\Model\Blog\Post {
             $query = static::query($sql, array($post));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
-                $comment->user = \Goteo\Model\User::getMini($comment->user);
+                
+                 // owner
+                    $user = new Model\User;
+                    $user->name = $comment->user_name;
+                    $user->email = $comment->user_email;
+                    $user->id = $comment->user_id;
+                    $user->avatar = Model\Image::get($comment->user_avatar);
+
+                    $comment->user = $user;
 
                 // reconocimiento de enlaces y saltos de linea
                 $comment->text = nl2br(Text::urlink($comment->text));
