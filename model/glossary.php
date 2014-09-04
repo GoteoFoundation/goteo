@@ -51,15 +51,16 @@ namespace Goteo\Model {
 
                 // campo calculado gallery
                 if (!empty($glossary->gallery)) {
-                    $glossary->gallery = unserialize($glossary->gallery);
+                    $glossary->gallery = Image::getGallery($glossary->gallery);
                 } else {
                     $glossary->setGallery();
                 }
 
-                if (empty($glossary->image)) {
-                    $glossary->setImage($image);
+                if (!empty($glossary->image)) {
+                    $glossary->image = Image::get($glossary->image);
+                } else {
+                    $glossary->setImage();
                 }
-
 
                 return $glossary;
         }
@@ -105,15 +106,27 @@ namespace Goteo\Model {
             $query = static::query($sql, array(':lang'=>\LANG));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $glossary) {
-                // galeria
-                $glossary->gallery = Image::getAll($glossary->id, 'glossary');
-                $glossary->image = $glossary->gallery[0];
 
                 // video
                 if (!empty($glossary->media)) {
                     $glossary->media = new Media($glossary->media);
                 }
-                
+
+                // campo calculado gallery
+                if (!empty($glossary->gallery)) {
+                    $glossary->gallery = Image::getGallery($glossary->gallery);
+                } else {
+                    $glossary->setGallery();
+                }
+
+                if (!empty($glossary->image)) {
+                    $glossary->image = Image::get($glossary->image);
+                } else {
+                    $glossary->setImage();
+                }
+
+
+
                 $list[$glossary->id] = $glossary;
             }
 
@@ -164,7 +177,6 @@ namespace Goteo\Model {
                     $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                     if ($image->save($errors)) {
-                        $this->gallery[] = $image;
 
                         /**
                          * Guarda la relación NM en la tabla 'glossary_image'.
@@ -172,6 +184,12 @@ namespace Goteo\Model {
                         if(!empty($image->id)) {
                             self::query("REPLACE glossary_image (glossary, image) VALUES (:glossary, :image)", array(':glossary' => $this->id, ':image' => $image->id));
                         }
+
+                        // Actualiza el campo calculado
+                        $this->setGallery();
+                        $this->setImage();
+
+
                     } else {
                         Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
@@ -214,15 +232,13 @@ namespace Goteo\Model {
             // poner en la instancia
             $this->gallery = $gallery;
 
-            // guardar serializado en la base de datos
-            $sql = "UPDATE glossary SET gallery = :gallery WHERE id = :id";
-            if (self::query($sql, array(':gallery'=>serialize($gallery), ':id'=>$this->id))) {
-
-                return true;
-            } else {
-                return false;
+            if (!empty($gallery)) {
+                // guardar serializado en la base de datos
+                $sql = "UPDATE glossary SET gallery = :gallery WHERE id = :id";
+                self::query($sql, array(':gallery'=>base64_encode(serialize($gallery)), ':id'=>$this->id));
             }
 
+            return true;
         }
 
         /*
@@ -238,7 +254,7 @@ namespace Goteo\Model {
 
             // guardar en la base de datos
             $sql = "UPDATE glossary SET image = :image WHERE id = :id";
-            if (self::query($sql, array(':image'=>$image, ':id'=>$this->id))) {
+            if (self::query($sql, array(':image'=>$image->id, ':id'=>$this->id))) {
 
                 return true;
             } else {

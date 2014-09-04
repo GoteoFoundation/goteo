@@ -521,6 +521,12 @@ namespace Goteo\Model {
     	    return implode(DIRECTORY_SEPARATOR, $pathinfo) . '.' . $new;
     	}
 
+        public static function getGallery($gallery) {
+
+            return base64_decode(unserialize($gallery));
+
+        }
+
 	}
 
 }
