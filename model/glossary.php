@@ -32,7 +32,9 @@ namespace Goteo\Model {
                         IFNULL(glossary_lang.title, glossary.title) as title,
                         IFNULL(glossary_lang.text, glossary.text) as text,
                         IFNULL(glossary_lang.legend, glossary.legend) as legend,
-                        glossary.media as `media`
+                        glossary.media as `media`,
+                        glossary.image as `image`,
+                        glossary.gallery as `gallery`
                     FROM    glossary
                     LEFT JOIN glossary_lang
                         ON  glossary_lang.id = glossary.id
@@ -47,9 +49,18 @@ namespace Goteo\Model {
                     $glossary->media = new Media($glossary->media);
                 }
 
-                // galeria
-                $glossary->gallery = Image::getAll($id, 'glossary');
-                $glossary->image = $glossary->gallery[0];
+                // campo calculado gallery
+                if (!empty($glossary->gallery)) {
+                    $glossary->gallery = Image::getGallery($glossary->gallery);
+                } else {
+                    $glossary->setGallery();
+                }
+
+                if (!empty($glossary->image)) {
+                    $glossary->image = Image::get($glossary->image);
+                } else {
+                    $glossary->setImage();
+                }
 
                 return $glossary;
         }
@@ -79,7 +90,9 @@ namespace Goteo\Model {
                 SELECT
                     glossary.id as id,
                     $different_select,
-                    glossary.media as `media`
+                    glossary.media as `media`,
+                    glossary.image as `image`,
+                    glossary.gallery as `gallery`
                 FROM    glossary
                 LEFT JOIN glossary_lang
                     ON  glossary_lang.id = glossary.id
@@ -93,15 +106,27 @@ namespace Goteo\Model {
             $query = static::query($sql, array(':lang'=>\LANG));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $glossary) {
-                // galeria
-                $glossary->gallery = Image::getAll($glossary->id, 'glossary');
-                $glossary->image = $glossary->gallery[0];
 
                 // video
                 if (!empty($glossary->media)) {
                     $glossary->media = new Media($glossary->media);
                 }
-                
+
+                // campo calculado gallery
+                if (!empty($glossary->gallery)) {
+                    $glossary->gallery = Image::getGallery($glossary->gallery);
+                } else {
+                    $glossary->setGallery();
+                }
+
+                if (!empty($glossary->image)) {
+                    $glossary->image = Image::get($glossary->image);
+                } else {
+                    $glossary->setImage();
+                }
+
+
+
                 $list[$glossary->id] = $glossary;
             }
 
@@ -152,7 +177,6 @@ namespace Goteo\Model {
                     $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                     if ($image->save($errors)) {
-                        $this->gallery[] = $image;
 
                         /**
                          * Guarda la relación NM en la tabla 'glossary_image'.
@@ -160,6 +184,11 @@ namespace Goteo\Model {
                         if(!empty($image->id)) {
                             self::query("REPLACE glossary_image (glossary, image) VALUES (:glossary, :image)", array(':glossary' => $this->id, ':image' => $image->id));
                         }
+
+                        // Actualiza el campo calculado
+                        $this->setGallery();
+                        $this->setImage();
+
                     } else {
                         Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
@@ -189,6 +218,22 @@ namespace Goteo\Model {
                 return false;
             }
 
+        }
+
+        /*
+         * Recalcular galeria
+         */
+        public function setGallery () {
+            $this->gallery = Image::setGallery('glossary', $this->id);
+            return true;
+        }
+
+        /*
+         * Recalcular imagen principal
+         */
+        public function setImage () {
+            $this->image = Image::setImage('glossary', $this->id, $this->gallery);
+            return true;
         }
 
     }

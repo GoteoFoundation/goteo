@@ -349,23 +349,59 @@ namespace Goteo\Model {
 
                 $project->user->webs = User\Web::get($project->user_id);
 
-                // galeria
-                $project->gallery = Project\Image::getGallery($project->id);
+                // campo calculado gallery
+                // en el caso de la entidad proyecto, el campo gallery en la tabla viene serializado por las secciones
+                if (!empty($project->gallery)) {
 
-                // imágenes por sección
-                foreach (Project\Image::sections() as $sec => $val) {
-                    if ($sec != '') {
-                        $project->secGallery[$sec] = Project\Image::get($project->id, $sec);
+                    $gallery = array();
+
+                    // viene serializado de la tabla
+                    $galleries = unserialize($project->gallery);
+
+                    // galerías de sección
+                    foreach ($galleries as $sec => $section) {
+
+                        foreach ($section as $item) {
+                            if (empty($sec)) {
+                                $gallery[] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            } else {
+                                $project->secGallery[$sec][] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            }
+                        }
+
                     }
+
+                    $project->gallery = $gallery;
+
+                } else {
+
+                    // setGallery en Project\Image  procesa todas las secciones
+                    $galleries = Project\Image::setGallery($project->id);
+
+                    // galerías de sección
+                    foreach ($galleries as $sec => $section) {
+                        if (empty($sec)) {
+                            $project->gallery = $section;
+                        } else {
+                            $project->secGallery[$sec] = $section;
+                        }
+                    }
+
                 }
 
-                // imagen
+                // image from main gallery
                 if (!empty($project->image)) {
                     $project->image = Image::get($project->image);
                 } else {
-                    $first = Project\Image::setFirst($project->id);
-                    $project->image = Image::get($first);
+                    $project->image = Project\Image::setImage($project->id, $project->gallery);
                 }
+
 
                 // categorias
                 $project->categories = Project\Category::get($id);
@@ -595,12 +631,57 @@ namespace Goteo\Model {
                 $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
 
 
-                // imagen
-                if (!empty($project->image)) {
-                    $Widget->image = Image::get($project->image);
+                // campo calculado gallery
+                // en el caso de la entidad proyecto, el campo gallery en la tabla viene serializado por las secciones
+                if (!empty($project->gallery)) {
+
+                    $gallery = array();
+
+                    // viene serializado de la tabla
+                    $galleries = unserialize($project->gallery);
+
+                    // galerías de sección
+                    foreach ($galleries as $sec => $section) {
+
+                        foreach ($section as $item) {
+                            if (empty($sec)) {
+                                $gallery[] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            } else {
+                                $project->secGallery[$sec][] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            }
+                        }
+
+                    }
+
+                    $project->gallery = $gallery;
+
                 } else {
-                    $first = Project\Image::setFirst($project->project);
-                    $Widget->image = Image::get($first);
+
+                    // setGallery en Project\Image  procesa todas las secciones
+                    $galleries = Project\Image::setGallery($project->id);
+
+                    // galerías de sección
+                    foreach ($galleries as $sec => $section) {
+                        if (empty($sec)) {
+                            $project->gallery = $section;
+                        } else {
+                            $project->secGallery[$sec] = $section;
+                        }
+                    }
+
+                }
+
+                // image from main gallery
+                if (!empty($project->image)) {
+                    $project->image = Image::get($project->image);
+                } else {
+                    $project->image = Project\Image::setImage($project->id, $project->gallery);
                 }
 
                 $Widget->amount = $project->amount;
@@ -974,6 +1055,13 @@ namespace Goteo\Model {
                         if(!empty($image->id)) {
                             self::query("REPLACE project_image (project, image) VALUES (:project, :image)", array(':project' => $this->id, ':image' => $image->id));
                         }
+
+                        // recalculamos las galerias e imagen
+
+                        // setGallery en Project\Image  procesa todas las secciones
+                        $galleries = Project\Image::setGallery($this->id);
+                        Project\Image::setImage($this->id, $galleries['']);
+
                     }
                 }
 

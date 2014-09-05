@@ -131,3 +131,10 @@ ALTER TABLE `project` ADD COLUMN `called` VARCHAR(50) COMMENT 'Convocatoria en l
 
 -- Máximo dinero que puede conseguir un proyecto de la convocatoria
 ALTER TABLE `project` ADD COLUMN `maxproj` INT(5) COMMENT 'Dinero que puede conseguir un proyecto de la convocatoria';
+
+
+-- Proyecto
+
+-- Campo calculado para imágenes de la galería  (mayor porque tiene secciones)
+ALTER TABLE `project` ADD `gallery` VARCHAR( 10000 ) NULL COMMENT 'Galería de imagenes';
+

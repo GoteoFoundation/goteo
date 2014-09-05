@@ -363,10 +363,14 @@ namespace Goteo\Controller {
                     // a ver los datos del post
                     $postData = Model\Blog\Post::get($post);
 
-                    // Evento Feed
-                    $log = new Feed();
+
+                    // si es entrada de proyecto
                     if (!empty($project)) {
+
                         $projectData = Model\Project::getMini($project);
+
+                        // Evento Feed
+                        $log = new Feed();
                         $log->setTarget($projectData->id);
                         $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" en las %s del proyecto %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -375,7 +379,60 @@ namespace Goteo\Controller {
                             Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
                             Feed::item('project', $projectData->name, $projectData->id)
                         ));
+                        $log->populate('usuario escribe comentario en blog/novedades', '/admin/projects', $log_html);
+                        $log->doAdmin('user');
+
+                        // Evento público
+                        $log_html = Text::html('feed-updates-comment',
+                            Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
+                            Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
+                            Feed::item('project', $projectData->name, $projectData->id)
+                        );
+                        $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
+                        $log->doPublic('community');
+                        unset($log);
+
+                        //Notificación al autor del proyecto
+
+                        //  idioma de preferencia
+                        $prefer = Model\User::getPreferences($projectData->user->id);
+                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
+
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(31, $comlang);
+
+                        // Sustituimos los datos
+                        $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
+
+                        $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                        $project_url = SITE_URL . '/project/' . $projectData->id . '/updates/'.$postData->id.'#comment'.$comment->id;
+
+                        $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
+                        $replace = array($_POST['message'], $projectData->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
+                        $content = \str_replace($search, $replace, $template->text);
+
+                        // que no pete si no puede enviar el mail al autor
+                        try {
+                            $mailHandler = new Mail();
+
+                            $mailHandler->to = $projectData->user->email;
+                            $mailHandler->toName = $projectData->user->name;
+                            $mailHandler->subject = $subject;
+                            $mailHandler->content = $content;
+                            $mailHandler->html = true;
+                            $mailHandler->template = $template->id;
+                            $mailHandler->send($errors);
+
+                            unset($mailHandler);
+                        } catch (Exception $e) {
+                            @mail(\GOTEO_FAIL_MAIL, 'FAIL '. __FUNCTION__ .' en ' . SITE_URL,
+                                'Ha fallado a enviar mail a autor '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Objeto '. \trace($mailHandler));
+                        }
+
                     } else {
+
+                        // Evento Feed
+                        $log = new Feed();
                         $log->setTarget('goteo', 'blog');
                         $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" del blog de %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -383,61 +440,25 @@ namespace Goteo\Controller {
                             Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
                             Feed::item('blog', 'Goteo', '/')
                         ));
-                    }
-                    $log->populate('usuario escribe comentario en blog/novedades', '/admin/projects', $log_html);
-                    $log->doAdmin('user');
+                        $log->populate('usuario escribe comentario en blog/novedades', '/admin/projects', $log_html);
+                        $log->doAdmin('user');
 
-                    // Evento público
-                    if (!empty($project)) {
-                        $projectData = Model\Project::getMini($project);
-                        $log_html = Text::html('feed-updates-comment',
-                                            Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
-                                            Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
-                                            Feed::item('project', $projectData->name, $projectData->id)
-                                            );
-                    } else {
+                        // Evento público
                         $log_html = Text::html('feed-blog-comment',
-                                            Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
-                                            Feed::item('blog', 'Goteo', '/')
-                                            );
+                            Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
+                            Feed::item('blog', 'Goteo', '/')
+                        );
+                        $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
+                        $log->doPublic('community');
+                        unset($log);
+
                     }
-                    $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
-                    $log->doPublic('community');
-                    unset($log);
-
-                    //Notificación al autor del proyecto
-
-                    //  idioma de preferencia
-                    $prefer = Model\User::getPreferences($projectData->user->id);
-                    $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
-
-                    // Obtenemos la plantilla para asunto y contenido
-                    $template = Template::get(31, $comlang);
-
-                    // Sustituimos los datos
-                    $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
-
-                    $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
-                    $project_url = SITE_URL . '/project/' . $projectData->id . '/updates/'.$postData->id.'#comment'.$comment->id;
-
-                    $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
-                    $replace = array($_POST['message'], $projectData->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
-                    $content = \str_replace($search, $replace, $template->text);
-
-                    $mailHandler = new Mail();
-
-                    $mailHandler->to = $projectData->user->email;
-                    $mailHandler->toName = $projectData->user->name;
-                    $mailHandler->subject = $subject;
-                    $mailHandler->content = $content;
-                    $mailHandler->html = true;
-                    $mailHandler->template = $template->id;
-                    $mailHandler->send($errors);
-
-                    unset($mailHandler);
 
                 } else {
                     // error
+                    @mail(\GOTEO_FAIL_MAIL, 'FAIL '. __FUNCTION__ .' en ' . SITE_URL,
+                        'No ha grabado el comentario en post. '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id . ' Errores: '.implode('<br />', $errors));
+
                 }
 			}
 

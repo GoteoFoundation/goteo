@@ -31,7 +31,7 @@ $translator = ACL::check('/translate') ? true : false;
             <tr>
                 <td><a href="/bazaar/<?php echo $promo->id; ?>" target="_blank" title="Preview">[Ver]</a></td>
                 <td><?php echo ($promo->active) ? '<strong>'.$promo->title.'</strong>' : $promo->title; ?></td>
-                <td style="width:105px;text-align: left;"><?php if (isset($promo->img)) : ?><img src="<?php echo SRC_URL.'/images/'.$promo->img->name; ?>" alt="image"  style="width:100x;height:100px;"/><?php endif; ?></td>
+                <td style="width:105px;text-align: left;"><?php if (isset($promo->img)) : ?><img src="<?php echo SRC_URL.'/images/'.$promo->image->id; ?>" alt="image"  style="width:100x;height:100px;"/><?php endif; ?></td>
                 <td><?php echo $promo->amount; ?>&euro;</td>
                 <td><?php echo $promo->status; ?></td>
                 <td><?php echo $promo->order; ?></td>
