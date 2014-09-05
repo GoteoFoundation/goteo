@@ -189,7 +189,6 @@ namespace Goteo\Model {
                         $this->setGallery();
                         $this->setImage();
 
-
                     } else {
                         Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
@@ -225,42 +224,16 @@ namespace Goteo\Model {
          * Recalcular galeria
          */
         public function setGallery () {
-
-            // sacar galeria de glossary_image
-            $gallery = Image::getAll($this->id, 'glossary');
-
-            // poner en la instancia
-            $this->gallery = $gallery;
-
-            if (!empty($gallery)) {
-                // guardar serializado en la base de datos
-                $sql = "UPDATE glossary SET gallery = :gallery WHERE id = :id";
-                self::query($sql, array(':gallery'=>base64_encode(serialize($gallery)), ':id'=>$this->id));
-            }
-
+            $this->gallery = Image::setGallery('glossary', $this->id);
             return true;
         }
 
         /*
-         * Recalcular imagen principa
+         * Recalcular imagen principal
          */
         public function setImage () {
-
-            // sacar imagen de la galeria
-            $image = $this->gallery[0];
-
-            // poner en la instancia
-            $this->image = $image;
-
-            // guardar en la base de datos
-            $sql = "UPDATE glossary SET image = :image WHERE id = :id";
-            if (self::query($sql, array(':image'=>$image->id, ':id'=>$this->id))) {
-
-                return true;
-            } else {
-                return false;
-            }
-
+            $this->image = Image::setImage('glossary', $this->id, $this->gallery);
+            return true;
         }
 
     }
