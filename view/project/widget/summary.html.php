@@ -15,14 +15,13 @@ $level = (int) $this['level'] ?: 3;
 
 /* funcion codigo para imágenes */
 function putImages ($images) {
-    
     $code = '';
 
     if (!empty($images)) {
         foreach ($images as $image) { 
             if (!empty($image->link)) {
                 $code .= '<div class="free-image">
-                    <a href="'.$image->link.'"><img src="'.$image->imageData->getLink(580, 580).'" alt="image" /></a>
+                    <a href="'.$image->link.'" target="_blank"><img src="'.$image->imageData->getLink(580, 580).'" alt="image" /></a>
                 </div>';
             } else {
                 $code .= '<div class="free-image">
@@ -65,7 +64,7 @@ function putImages ($images) {
 		<div class="prjct-gallery-container">
 			<?php $i = 1; foreach ($project->gallery as $image) : ?>
 			<div class="gallery-image" id="gallery-image-<?php echo $i ?>">
-				<img src="<?php echo $image->getLink(580, 580); ?>" alt="<?php echo $project->name; ?>" />
+				<img src="<?php echo $image->imageData->getLink(580, 580); ?>" alt="<?php echo $project->name; ?>" />
 			</div>
 			<?php $i++; endforeach; ?>
 		</div>
@@ -74,7 +73,7 @@ function putImages ($images) {
             <ul class="slderpag">
                 <?php $i = 1; foreach ($project->gallery as $image) : ?>
                 <li><a href="#" id="navi-gallery-image-<?php echo $i ?>" rel="gallery-image-<?php echo $i ?>" class="navi-gallery-image">
-                <?php echo htmlspecialchars($image->name) ?></a>
+                <?php echo htmlspecialchars($image->imageData->name) ?></a>
                 </li>
                 <?php $i++; endforeach ?>
             </ul>
@@ -83,7 +82,7 @@ function putImages ($images) {
 	</div>
     <?php elseif (!empty($project->gallery)) : ?>
         <div class="gallery-image" id="gallery-image-<?php echo $i ?>"style="display:block;">
-            <img src="<?php echo $project->gallery[0]->getLink(580, 580); ?>" alt="<?php echo $project->name; ?>" />
+            <img src="<?php echo $project->gallery[0]->imageData->getLink(580, 580); ?>" alt="<?php echo $project->name; ?>" />
         </div>
     <?php endif; ?>
 

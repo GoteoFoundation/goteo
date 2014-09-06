@@ -47,16 +47,13 @@ namespace Goteo\Controller\Cron {
                 $log_text = \vsprintf($log_text, array(Feed::item('project', $project->name, $project->id)));
                 if ($debug) echo $log_text;
 
-                // galeria
-                $project->gallery = Model\Project\Image::getGallery($project->id);
-
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($project->id);
                 $log->populate('Publicación automática de un proyecto', '/admin/projects', $log_text);
                 $log->doAdmin('admin');
 
-                $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
+                $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->image);
                 $log->doPublic('projects');
                 unset($log);
             }

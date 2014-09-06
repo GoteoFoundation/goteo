@@ -50,10 +50,11 @@ namespace Goteo\Controller\Admin {
                     foreach ($post->gallery as $key=>$image) {
                         if (!empty($_POST["gallery-{$image->hash}-remove"])) {
                             $image->remove($errors, 'glossary');
-                            unset($post->gallery[$key]);
-                            if ($post->image == $image->id) {
-                                $post->image = '';
-                            }
+
+                            // Actualiza el campo calculado
+                            $post->setGallery();
+                            $post->setImage();
+
                             $editing = true;
                         }
                     }

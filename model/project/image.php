@@ -26,6 +26,9 @@ namespace Goteo\Model\Project {
         
         /**
          * Get the images for a project
+         *
+         * Se usa en la gestión de imágenes de proyecto en admin/project/images
+         *
          * @param varcahr(50) $id  Project identifier
          * @return array of categories identifiers
          */
@@ -68,45 +71,98 @@ namespace Goteo\Model\Project {
             }
 		}
 
-        /*
-         * la primera para el widget
+        /**
+         * Get list of image names
+         *
+         * Se usa para guardar serializado en el campo gallery
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return array of images and urls
          */
-        public static function getFirst ($id) {
+	 	public static function getList ($id, $section = null) {
 
+            $array = array ();
             try {
-                $sql = "SELECT image FROM project_image WHERE project = ? AND (section = '' OR section IS NULL) ORDER BY `order` ASC, image DESC LIMIT 1";
-                $query = self::query($sql, array($id));
-                $first = $query->fetchColumn(0);
-                return $first;
-                
-            } catch(\PDOException $e) {
-                return false;
-            }
+                $values = array(':id' => $id);
 
-        }
-        
+                if (!empty($section)) {
+                    $sqlFilter = " AND section = :section";
+                    $values[':section'] = $section;
+                } else {
+                    $sqlFilter = " AND (section = '' OR section IS NULL)";
+                }
+
+                $sql = "SELECT image, url
+                    FROM project_image
+                    WHERE project = :id
+                    $sqlFilter
+                    ORDER BY `order` ASC";
+
+                $query = static::query($sql, $values);
+                $images = $query->fetchAll(\PDO::FETCH_OBJ);
+                foreach ($images as $image) {
+                    if (!empty($image->url)) {
+                        $image->link = (substr($image->url, 0, strlen('http')) == 'http') ? $image->url : 'http://'.$image->url;
+                    } else {
+                        $image->link = '';
+                    }
+
+                    $array[] = array('img'=>$image->image, 'url'=>$image->link);
+                }
+
+                return $array;
+            } catch(\PDOException $e) {
+				throw new \Goteo\Core\Exception($e->getMessage());
+            }
+		}
+
         /*
          * Solo imágenes para galeria
          */
-        public static function getGallery ($id) {
+        public static function setGallery ($id) {
 
-            $gallery = array();
+            $galleries = array();
 
-            try {
-                $sql = "SELECT image FROM project_image WHERE project = ? AND (section = '' OR section IS NULL) ORDER BY `order` ASC, image DESC";
-                $query = self::query($sql, array($id));
-                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
-                    $gallery[] = Model\Image::get($image['image']);
-                }
-
-                return $gallery;
-            } catch(\PDOException $e) {
-                return false;
+            // galerías de sección
+            foreach (static::sections() as $sec => $val) {
+                // sacar galeria de glossary_image
+                // no puede ser de Model\Image porque estas imagenes de seccion llevan enlace
+                $galleries[$sec] = self::getList($id, $sec);
             }
 
+            $serGalery = serialize($galleries);
+            if (strlen($serGalery) > 10000) {
+                // tenemos un problema, hay que aumentar el campo
+                @mail(\GOTEO_FAIL_MAIL,
+                    'Galeria de proyecto serializada no cabe. ',
+                    'Galeria de proyecto serializada no cabe. '.SITE_URL.' '. \trace($serGalery));
+
+            }
+
+            // guardar serializado en la tabla proyecto
+            $sql = "UPDATE project SET gallery = :gallery WHERE id = :id";
+            self::query($sql, array(':gallery'=>$serGalery, ':id'=>$id));
+
+            return $galleries;
         }
-        
-        
+
+        /*
+         * Recalcular imagen principal
+         */
+        public function setImage ($id, $gallery) {
+
+            // sacar objeto imagen de la galeria
+            $image = $gallery[0]->imageData;
+
+            // guardar en la base de datos
+            $sql = "UPDATE project SET image = :image WHERE id = :id";
+            self::query($sql, array(':image'=>$image->id, ':id'=>$id));
+
+            return $image;
+
+        }
+
+
         /*
          * Para aplicar una seccion o un enlace
          */
@@ -118,22 +174,6 @@ namespace Goteo\Model\Project {
             } else {
                 return false;
             }
-
-        }
-
-        /*
-         * Para aplicar la imagen del widget
-         */
-        public static function setFirst ($project) {
-
-            $first = static::getFirst($project);
-
-            if (!empty($first)) {
-                $sql = "UPDATE project SET `image` = :image WHERE id = :project";
-                self::query($sql, array(':project'=>$project, ':image'=>$first));
-            }
-
-            return $first;
 
         }
 
@@ -173,6 +213,33 @@ namespace Goteo\Model\Project {
                 'play-video' => Text::get('overview-field-play-video')
             ); 
        }
+
+
+
+
+
+        // quizás no usamos esto para proyecto....
+
+        /*
+         * Recalcular galeria
+         * Para proyecto hay secciones y orden
+         *
+        public function setGallery () {
+            // $section
+            $this->gallery[] = Image::setGallery('project', $this->id);
+            return true;
+        }
+
+        /*
+         * Recalcular imagen principal
+         * Para widget es la primera de la galería principal
+         *
+        public function setImage () {
+            $this->image = Image::setImage('project', $this->id, $this->gallery);
+            return true;
+        }
+
+*/
 
     }
     

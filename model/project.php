@@ -267,7 +267,8 @@ namespace Goteo\Model {
                                 user.avatar as user_avatar,
                                 IFNULL(user_lang.about, user.about) as user_about,
                                 user.location as user_location,
-                                user.id as user_id
+                                user.id as user_id,
+                                user.id as user_twitter
                 FROM project
 				LEFT JOIN project_conf
 				    ON project_conf.project = project.id
@@ -349,23 +350,74 @@ namespace Goteo\Model {
 
                 $project->user->webs = User\Web::get($project->user_id);
 
-                // galeria
-                $project->gallery = Project\Image::getGallery($project->id);
+                $project->user->twitter = $project->user_twitter;
 
-                // imágenes por sección
-                foreach (Project\Image::sections() as $sec => $val) {
-                    if ($sec != '') {
-                        $project->secGallery[$sec] = Project\Image::get($project->id, $sec);
+                // campo calculado gallery
+                // en el caso de la entidad proyecto, el campo gallery en la tabla viene serializado por las secciones
+                if (!empty($project->gallery)) {
+
+                    $gallery = array();
+
+                    // viene serializado de la tabla
+                    $galleries = unserialize($project->gallery);
+
+                    // galerías de sección
+                    foreach ($galleries as $sec => $section) {
+
+                        foreach ($section as $item) {
+                            if (empty($sec)) {
+                                $gallery[] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            } else {
+                                $project->secGallery[$sec][] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            }
+                        }
+
                     }
+
+                    $project->gallery = $gallery;
+
+                } else {
+
+                    $gallery = array();
+
+                    // setGallery en Project\Image  procesa todas las secciones
+                    $galleries = Project\Image::setGallery($project->id);
+
+                    foreach ($galleries as $sec => $section) {
+
+                        foreach ($section as $item) {
+                            if (empty($sec)) {
+                                $gallery[] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            } else {
+                                $project->secGallery[$sec][] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            }
+                        }
+
+                    }
+
+                    $project->gallery = $gallery;
+
                 }
 
-                // imagen
+                // image from main gallery
                 if (!empty($project->image)) {
                     $project->image = Image::get($project->image);
                 } else {
-                    $first = Project\Image::setFirst($project->id);
-                    $project->image = Image::get($first);
+                    $project->image = Project\Image::setImage($project->id, $project->gallery);
                 }
+
 
                 // categorias
                 $project->categories = Project\Category::get($id);
@@ -498,6 +550,7 @@ namespace Goteo\Model {
                     project.maxcost as maxcost,
                     project.amount as amount,
                     project.image as image,
+                    project.gallery as gallery,
                     project.num_investors as num_investors,
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,
@@ -595,12 +648,70 @@ namespace Goteo\Model {
                 $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
 
 
-                // imagen
+                // campo calculado gallery
+                // en el caso de la entidad proyecto, el campo gallery en la tabla viene serializado por las secciones
+                if (!empty($project->gallery)) {
+
+                    $gallery = array();
+
+                    // viene serializado de la tabla
+                    $galleries = unserialize($project->gallery);
+
+                    // galerías de sección
+                    foreach ($galleries as $sec => $section) {
+
+                        foreach ($section as $item) {
+                            if (empty($sec)) {
+                                $gallery[] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            } else {
+                                $Widget->secGallery[$sec][] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            }
+                        }
+
+                    }
+
+                    $Widget->gallery = $gallery;
+
+                } else {
+
+                    $gallery = array();
+
+                    // setGallery en Project\Image  procesa todas las secciones
+                    $galleries = Project\Image::setGallery($project->id);
+
+                    foreach ($galleries as $sec => $section) {
+
+                        foreach ($section as $item) {
+                            if (empty($sec)) {
+                                $gallery[] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            } else {
+                                $Widget->secGallery[$sec][] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            }
+                        }
+
+                    }
+
+                    $Widget->gallery = $gallery;
+
+                }
+
+                // image from main gallery
                 if (!empty($project->image)) {
                     $Widget->image = Image::get($project->image);
                 } else {
-                    $first = Project\Image::setFirst($project->project);
-                    $Widget->image = Image::get($first);
+                    $Widget->image = Project\Image::setImage($project->id, $gallery);
                 }
 
                 $Widget->amount = $project->amount;
@@ -974,6 +1085,13 @@ namespace Goteo\Model {
                         if(!empty($image->id)) {
                             self::query("REPLACE project_image (project, image) VALUES (:project, :image)", array(':project' => $this->id, ':image' => $image->id));
                         }
+
+                        // recalculamos las galerias e imagen
+
+                        // setGallery en Project\Image  procesa todas las secciones
+                        $galleries = Project\Image::setGallery($this->id);
+                        Project\Image::setImage($this->id, $galleries['']);
+
                     }
                 }
 
@@ -2219,6 +2337,7 @@ namespace Goteo\Model {
                     project.maxcost as maxcost,
                     project.amount as amount,
                     project.image as image,
+                    project.gallery as gallery,
                     project.num_investors as num_investors,
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,
@@ -2375,6 +2494,7 @@ namespace Goteo\Model {
                     project.maxcost as maxcost,
                     project.amount as amount,
                     project.image as image,
+                    project.gallery as gallery,
                     project.num_investors as num_investors,
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,
@@ -2686,6 +2806,7 @@ namespace Goteo\Model {
                         project.node as node,
                         project.amount as amount,
                         project.image as image,
+                        project.gallery as gallery,
                         project.num_investors as num_investors,
                         project.num_messengers as num_messengers,
                         project.num_posts as num_posts,

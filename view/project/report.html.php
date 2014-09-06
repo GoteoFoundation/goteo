@@ -8,11 +8,8 @@ $Data    = $this['Data'];
 $admin = (isset($this['admin']) && $this['admin'] === true) ? true : false;
 
 $total_issues = 0;
-$showed_issues = 0;
 foreach ($Data['issues'] as $issue) {
     $total_issues += $issue->amount;
-    if (in_array($issue->status, array(0, 1, 3)))
-        $showed_issues += $issue->amount;
 }
 
 // si tiene registro de contrato
@@ -31,7 +28,7 @@ $cName = "P-{$cNum}-{$cDate}";
     $sumData['drop'] = $Data['drop']['total']['amount'];
     $sumData['ghost'] = $Data['ghost']['total']['amount'];
     $sumData['fail']  = $total_issues;
-    $sumData['shown'] = $sumData['total'] + $showed_issues + $sumData['drop'] + $sumData['ghost'];
+    $sumData['shown'] = $sumData['total'] + $sumData['fail'] + $sumData['drop'] + $sumData['ghost'];
     $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
     $sumData['cash_goteo'] = $Data['cash']['total']['amount']  * 0.08;
     $sumData['tpv_goteo'] = $Data['tpv']['total']['amount']  * 0.08;

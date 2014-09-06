@@ -104,7 +104,10 @@ if ($project->status == 3 && $project->noinvest) {
 
     </div>
 
-    <?php if ($_SESSION['assign_mode'] === true) : // boton para asignar ?>
+    <?php
+    /*
+
+    if ($_SESSION['assign_mode'] === true) : // boton para asignar ?>
     <div class="buttons" id="assign_<?php echo $project->id ?>">
         <?php if (!isset($_SESSION['call']->projects[$project->id])) : ?>
             <a class="button weak" href="#" onclick="return projAssign('<?php echo $project->id ?>');"><?php echo Text::get('regular-call-assign_this'); ?></a>
@@ -112,33 +115,17 @@ if ($project->status == 3 && $project->noinvest) {
             <span style="color:red;"><?php echo Text::get('regular-call-assigned'); ?></span>
         <?php endif; ?>
     </div>
-    <?php endif; ?>
+    <?php endif;
+     
+    */
+    ?>
 
 
     <?php
     
-    
-    /*
-     * quitamos los botones
-     *
-    if ($this['dashboard'] === true) : // si estamos en el dashboard no hay (apoyar y el ver se abre en una ventana nueva) ?>
-    <div class="buttons">
-        <?php if ($this['own'] === true) : // si es propio puede ir a editarlo ?>
-        <a class="button red suportit" href="<?php echo SITE_URL ?>/project/edit/<?php echo $project->id ?>"><?php echo Text::get('regular-edit'); ?></a>
-        <?php endif; ?>
-        <a class="button view" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>" target="_blank"><?php echo Text::get('regular-view_project'); ?></a>
-    </div>
-    <?php else : // normal ?>
-    <div class="buttons">
-        <?php if ($project->status == 3) : // si esta en campa�a se puede aportar ?>
-        <a class="button violet supportit" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/invest"<?php echo $blank; ?>><?php echo Text::get('regular-invest_it'); ?></a>
-        <?php else : ?>
-        <a class="button view" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>/updates"<?php echo $blank; ?>><?php echo Text::get('regular-see_blog'); ?></a>
-        <?php endif; ?>
-        <a class="button view" href="<?php echo SITE_URL ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo Text::get('regular-view_project'); ?></a>
-    </div>
-    <?php endif;
-     *
-     */
+    if ($_SESSION['user']->id == 'root') {
+        echo "<!-- ".print_r($project, 1)." -->";
+    }
+
     ?>
 </div>
