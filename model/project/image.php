@@ -88,7 +88,7 @@ namespace Goteo\Model\Project {
                 if (!empty($section)) {
                     $sqlFilter = " AND section = :section";
                     $values[':section'] = $section;
-                } elseif (isset($section) && $section == '') {
+                } else {
                     $sqlFilter = " AND (section = '' OR section IS NULL)";
                 }
 

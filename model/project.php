@@ -381,17 +381,30 @@ namespace Goteo\Model {
 
                 } else {
 
+                    $gallery = array();
+
                     // setGallery en Project\Image  procesa todas las secciones
                     $galleries = Project\Image::setGallery($project->id);
 
-                    // galerías de sección
                     foreach ($galleries as $sec => $section) {
-                        if (empty($sec)) {
-                            $project->gallery = $section;
-                        } else {
-                            $project->secGallery[$sec] = $section;
+
+                        foreach ($section as $item) {
+                            if (empty($sec)) {
+                                $gallery[] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            } else {
+                                $project->secGallery[$sec][] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            }
                         }
+
                     }
+
+                    $project->gallery = $gallery;
 
                 }
 
@@ -664,17 +677,30 @@ namespace Goteo\Model {
 
                 } else {
 
+                    $gallery = array();
+
                     // setGallery en Project\Image  procesa todas las secciones
                     $galleries = Project\Image::setGallery($project->id);
 
-                    // galerías de sección
                     foreach ($galleries as $sec => $section) {
-                        if (empty($sec)) {
-                            $project->gallery = $section;
-                        } else {
-                            $project->secGallery[$sec] = $section;
+
+                        foreach ($section as $item) {
+                            if (empty($sec)) {
+                                $gallery[] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            } else {
+                                $project->secGallery[$sec][] = (object) array(
+                                    'imageData'=>Image::get($item['img']) ,
+                                    'link' => $item['url']
+                                );
+                            }
                         }
+
                     }
+
+                    $project->gallery = $gallery;
 
                 }
 
