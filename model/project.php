@@ -267,7 +267,8 @@ namespace Goteo\Model {
                                 user.avatar as user_avatar,
                                 IFNULL(user_lang.about, user.about) as user_about,
                                 user.location as user_location,
-                                user.id as user_id
+                                user.id as user_id,
+                                user.id as user_twitter
                 FROM project
 				LEFT JOIN project_conf
 				    ON project_conf.project = project.id
@@ -348,6 +349,8 @@ namespace Goteo\Model {
                 $project->user->avatar = Image::get($project->user_avatar);
 
                 $project->user->webs = User\Web::get($project->user_id);
+
+                $project->user->twitter = $project->user_twitter;
 
                 // campo calculado gallery
                 // en el caso de la entidad proyecto, el campo gallery en la tabla viene serializado por las secciones
@@ -664,7 +667,7 @@ namespace Goteo\Model {
                                     'link' => $item['url']
                                 );
                             } else {
-                                $project->secGallery[$sec][] = (object) array(
+                                $Widget->secGallery[$sec][] = (object) array(
                                     'imageData'=>Image::get($item['img']) ,
                                     'link' => $item['url']
                                 );
@@ -673,7 +676,7 @@ namespace Goteo\Model {
 
                     }
 
-                    $project->gallery = $gallery;
+                    $Widget->gallery = $gallery;
 
                 } else {
 
@@ -691,7 +694,7 @@ namespace Goteo\Model {
                                     'link' => $item['url']
                                 );
                             } else {
-                                $project->secGallery[$sec][] = (object) array(
+                                $Widget->secGallery[$sec][] = (object) array(
                                     'imageData'=>Image::get($item['img']) ,
                                     'link' => $item['url']
                                 );
@@ -700,15 +703,15 @@ namespace Goteo\Model {
 
                     }
 
-                    $project->gallery = $gallery;
+                    $Widget->gallery = $gallery;
 
                 }
 
                 // image from main gallery
                 if (!empty($project->image)) {
-                    $project->image = Image::get($project->image);
+                    $Widget->image = Image::get($project->image);
                 } else {
-                    $project->image = Project\Image::setImage($project->id, $project->gallery);
+                    $Widget->image = Project\Image::setImage($project->id, $gallery);
                 }
 
                 $Widget->amount = $project->amount;
