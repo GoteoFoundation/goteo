@@ -130,18 +130,18 @@ namespace Goteo\Model\Project {
                 $galleries[$sec] = self::getList($id, $sec);
             }
 
-            $serGalery = serialize($galleries);
-            if (strlen($serGalery) > 10000) {
+            $sGallery = serialize($galleries);
+            if (strlen($sGallery) > 10000) {
                 // tenemos un problema, hay que aumentar el campo
                 @mail(\GOTEO_FAIL_MAIL,
                     'Galeria de proyecto serializada no cabe. ',
-                    'Galeria de proyecto serializada no cabe. '.SITE_URL.' '. \trace($serGalery));
+                    'Galeria de proyecto serializada no cabe. '.SITE_URL.' '. \trace($sGallery));
 
             }
 
             // guardar serializado en la tabla proyecto
             $sql = "UPDATE project SET gallery = :gallery WHERE id = :id";
-            self::query($sql, array(':gallery'=>$serGalery, ':id'=>$id));
+            self::query($sql, array(':gallery'=>$sGallery, ':id'=>$id));
 
             return $galleries;
         }

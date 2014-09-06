@@ -683,7 +683,7 @@ namespace Goteo\Model {
                     $gallery = array();
 
                     // setGallery en Project\Image  procesa todas las secciones
-                    $galleries = Project\Image::setGallery($project->id);
+                    $galleries = Project\Image::setGallery($Widget->id);
 
                     foreach ($galleries as $sec => $section) {
 
@@ -711,15 +711,15 @@ namespace Goteo\Model {
                 if (!empty($project->image)) {
                     $Widget->image = Image::get($project->image);
                 } else {
-                    $Widget->image = Project\Image::setImage($project->id, $gallery);
+                    $Widget->image = Project\Image::setImage($Widget->id, $gallery);
                 }
 
                 $Widget->amount = $project->amount;
                 $Widget->invested = $project->amount;
 
                 //de momento... habria que mejorarlo
-                $Widget->categories = Project\Category::getNames($project->project, 2);
-                $Widget->rewards = Project\Reward::getWidget($project->project);
+                $Widget->categories = Project\Category::getNames($Widget->id, 2);
+                $Widget->rewards = Project\Reward::getWidget($Widget->id);
 
             /*
             // esto no hace falta en el widget
