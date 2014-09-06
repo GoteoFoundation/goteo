@@ -152,20 +152,13 @@ namespace Goteo\Model\Project {
         public function setImage ($id, $gallery) {
 
             // sacar objeto imagen de la galeria
-            if (isset($gallery[0]->imageData)) {
-                $image = $gallery[0]->imageData;
-            } else{
-                $image = $gallery[0]['img'];
-            }
-
-            // poner en la instancia
-            $the_image = $image;
+            $image = $gallery[0]->imageData;
 
             // guardar en la base de datos
             $sql = "UPDATE project SET image = :image WHERE id = :id";
             self::query($sql, array(':image'=>$image->id, ':id'=>$id));
 
-            return $the_image;
+            return $image;
 
         }
 
