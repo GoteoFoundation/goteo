@@ -1077,7 +1077,7 @@ namespace Goteo\Model {
                     $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                     if ($image->save($errors)) {
-                        $this->gallery[] = $image;
+                        $this->images[] = $image;
 
                         /**
                          * Guarda la relación NM en la tabla 'project_image'.
