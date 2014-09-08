@@ -2797,7 +2797,7 @@ namespace Goteo\Model {
                         project.status as status,
                         project.published as published,
                         project.created as created,
-                        project.updated as updated,
+                        IFNULL(project.updated, project.created) as updated,
                         project.success as success,
                         project.closed as closed,
                         project.node as node,
