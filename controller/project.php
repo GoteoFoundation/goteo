@@ -54,9 +54,6 @@ namespace Goteo\Controller {
 
             $project = Model\Project::get($id, null);
 
-            // para que tenga todas las imágenes
-            $project->gallery = Model\Image::getAll($id, 'project');
-
             // aunque pueda acceder edit, no lo puede editar si
             if ($project->owner != $_SESSION['user']->id // no es su proyecto
                 && (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) // es admin pero no es admin de central
@@ -141,6 +138,11 @@ namespace Goteo\Controller {
                 if (strncmp($k, 'view-step-', 10) === 0 && !empty($v) && !empty($steps[substr($k, 10)])) {
                     $step = substr($k, 10);
                 }
+            }
+
+            if ($step == 'images') {
+                // para que tenga todas las imágenes al procesar el post
+                $project->images = Model\Image::getAll($id, 'project');
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
@@ -893,16 +895,16 @@ namespace Goteo\Controller {
             }
 
             // tratar las imagenes que quitan
-            foreach ($project->gallery as $key=>$image) {
-                if (!empty($_POST["gallery-".$image->hash."-remove"])) {
-                    $image->remove($errors, 'project');
+            foreach ($project->images as $key=>$image) {
+                if (!empty($_POST["gallery-".$image->imageData->hash."-remove"])) {
+                    $image->imageData->remove($errors, 'project');
                     // recalculamos las galerias e imagen
 
                     // setGallery en Project\Image  procesa todas las secciones
                     $galleries = Model\Project\Image::setGallery($project->id);
                     Model\Project\Image::setImage($project->id, $galleries['']);
 
-                    unset($project->gallery[$key]);
+                    unset($project->images[$key]);
                 }
             }
 

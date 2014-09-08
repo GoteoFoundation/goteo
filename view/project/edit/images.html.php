@@ -9,7 +9,7 @@ $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
 
 $images = array();
-foreach ($project->gallery as $image) {
+foreach ($project->images as $image) {
     $images[] = array(
         'type'  => 'html',
         'class' => 'inline gallery-image',
