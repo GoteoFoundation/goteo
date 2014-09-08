@@ -904,7 +904,7 @@ namespace Goteo\Model {
                 }
                 return $id;
             } catch (\PDOException $e) {
-                throw new Goteo\Core\Exception('Fallo al verificar id única para la convocatoria. ' . $e->getMessage());
+                throw new Exception('Fallo al verificar id única para la convocatoria. ' . $e->getMessage());
             }
         }
 
@@ -1062,9 +1062,9 @@ namespace Goteo\Model {
 
             // en aplicación, en campaña o finalizadas
             if ($wProj) {
-                $sqlFilter .= " WHERE call.status > 2";
+                $sqlFilter = " WHERE call.status > 2";
             } else {
-                $sqlFilter .= " WHERE call.status IN ('1', '2', '3', '4')"; // desde edicion hasta en campaña
+                $sqlFilter = " WHERE call.status IN ('1', '2', '3', '4')"; // desde edicion hasta en campaña
             }
 
             $sql = "SELECT call.id, call.name
@@ -1072,7 +1072,7 @@ namespace Goteo\Model {
                     $sqlFilter
                     ORDER BY name ASC";
 
-            $query = self::query($sql, $values);
+            $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $call) {
                 $calls[$call->id] = $call->name;
             }
@@ -1129,13 +1129,13 @@ namespace Goteo\Model {
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
                     case 'updated':
-                        $sqlOrder .= " ORDER BY updated DESC";
+                        $sqlOrder = " ORDER BY updated DESC";
                         break;
                     case 'name':
-                        $sqlOrder .= " ORDER BY name ASC";
+                        $sqlOrder = " ORDER BY name ASC";
                         break;
                     default:
-                        $sqlOrder .= " ORDER BY {$filters['order']}";
+                        $sqlOrder = " ORDER BY {$filters['order']}";
                         break;
                 }
             }
@@ -1351,7 +1351,6 @@ namespace Goteo\Model {
                 $errors['userPersonal']['address'] = Text::get('mandatory-project-field-address');
             } else {
                 $okeys['userPersonal']['address'] = 'ok';
-                ++$score;
             }
 
             if (empty($this->zipcode)) {
@@ -1597,10 +1596,10 @@ namespace Goteo\Model {
                 $query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
                     // owner
-                    $user = new Model\User;
+                    $user = new User;
                     $user->name = $item->user_name;
                     $user->id = $item->id;
-                    $user->avatar = Model\Image::get($item->user_avatar);
+                    $user->avatar = Image::get($item->user_avatar);
 
                     $list[] = $user;
 
