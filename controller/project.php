@@ -896,8 +896,8 @@ namespace Goteo\Controller {
 
             // tratar las imagenes que quitan
             foreach ($project->images as $key=>$image) {
-                if (!empty($_POST["gallery-".$image->imageData->hash."-remove"])) {
-                    $image->imageData->remove($errors, 'project');
+                if (!empty($_POST["gallery-".$image->hash."-remove"])) {
+                    $image->remove($errors, 'project');
                     // recalculamos las galerias e imagen
 
                     // setGallery en Project\Image  procesa todas las secciones
