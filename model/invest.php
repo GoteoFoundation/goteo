@@ -1667,8 +1667,13 @@ namespace Goteo\Model {
                         invest.id as invest,
                         invest.user as user,
                         invest.amount as amount,
-                        invest.status as status
+                        invest.status as status,
+                        user.id as user_id,
+                        user.name as user_name,
+                        user.email as user_email
                     FROM invest
+                    INNER JOIN user
+                        ON user.id=invest.user
                     WHERE invest.project = :id
                     AND invest.issue = 1
                     $sqlFilter
@@ -1682,9 +1687,10 @@ namespace Goteo\Model {
                 if (in_array($item->id, $drops))
                     $item->statusName .= ' (CAPITAL RIEGO)';
 
-                $user = User::getMini($item->user);
-                $item->userName = $user->name;
-                $item->userEmail = $user->email;
+                // datos del usuario. Eliminación de user::getMini
+
+                $item->userName = $item->user_name;
+                $item->userEmail = $item->user_email;
 
                 $list[] = $item;
             }

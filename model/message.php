@@ -41,7 +41,7 @@ namespace Goteo\Model {
                 $message = $query->fetchObject(__CLASS__);
                 
                 // datos del usuario. Eliminación de user::getMini
-                //$message->user = User::getMini($message->user);
+        
                 $user = new User;
                 $user->id = $message->user_id;
                 $user->name = $message->user_name;
@@ -123,8 +123,7 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
                 
                 // datos del usuario. Eliminación User::getMini
-                //$message->user = User::getMini($message->user);
-
+        
                 $user = new User;
                 $user->id = $message->user_id;
                 $user->name = $message->user_name;
@@ -368,7 +367,7 @@ namespace Goteo\Model {
                     $list[$msg->user]->messages[] = $msgData;
                 } else {
                     //Eliminación User::getMini
-                    //$user = User::getMini($msg->user);
+                   
                     $user = new User;
                     $user->id = $msg->user_id;
                     $user->name = $msg->user_name;
