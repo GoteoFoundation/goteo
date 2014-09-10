@@ -624,7 +624,7 @@ namespace Goteo\Model {
             }
 
             // sacar objeto imagen de la galeria
-            $image = ($gallery === 'empty') ? 'empty' : $gallery[0];
+            $image = (empty($gallery) || $gallery === 'empty') ? 'empty' : $gallery[0];
 
             // poner en la instancia
             $the_image = ($image === 'empty') ? 'empty' : $image->id;
