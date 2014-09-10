@@ -589,13 +589,9 @@ namespace Goteo\Model {
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
 
-                // @LACRA
-                if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
-                    $user->avatar = Image::get(1);
-                }
-                // esto ya lo debería hacer el Image::get
-
                 $user->interests = User\Interest::get($id);
+
+                // campo calculado tipo lista para las webs del usuario
                 $user->webs = User\Web::get($id);
 
                 // Nodo
@@ -632,12 +628,6 @@ namespace Goteo\Model {
                 $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
 
                 $user->avatar = Image::get($user->avatar);
-
-                // @LACRA
-                if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
-                    $user->avatar = Image::get(1);
-                }
-                // esto ya debería hacerlo el Image::get
 
                 return $user;
             } catch(\PDOException $e) {
