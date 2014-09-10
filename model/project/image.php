@@ -102,7 +102,7 @@ namespace Goteo\Model\Project {
                 $images = $query->fetchAll(\PDO::FETCH_OBJ);
                 foreach ($images as $image) {
                     if (!empty($image->url)) {
-                        $image->link = (substr($image->url, 0, strlen('http')) == 'http') ? $image->url : 'http://'.$image->url;
+                        $image->link = $image->url;
                     } else {
                         $image->link = '';
                     }
