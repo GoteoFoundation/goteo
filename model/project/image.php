@@ -59,7 +59,7 @@ namespace Goteo\Model\Project {
                 foreach ($images as $image) {
                     $image->imageData = Model\Image::get($image->image);
                     if (!empty($image->url)) {
-                        $image->link = (substr($image->url, 0, strlen('http')) == 'http') ? $image->url : SRC_URL.'/'.$image->url;
+                        $image->link = $image->url;
                     }
                     
                     $array[] = $image;

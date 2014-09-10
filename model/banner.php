@@ -120,7 +120,7 @@ namespace Goteo\Model {
                 $banner->status = $status[$banner->status];
 
                 //mincost, maxcost, si mincost es zero, lo calculamos:
-                if(empty($banner->project_mincost)) {
+                if(!empty($banner->project) && empty($banner->project_mincost)) {
                     $calc = Project::calcCosts($banner->project);
                     $banner->project_mincost = $calc->mincost;
                     $banner->project_maxcost = $calc->maxcost;
@@ -131,7 +131,7 @@ namespace Goteo\Model {
                 // $banner->project_social_rewards = Project\Reward::getAll($banner->project, 'social', \LANG);
                 //
                 // usado para obtener los rewards de golpe
-                $used_projects[$banner->project] = $banner->id;
+                if (!empty($banner->project)) $used_projects[$banner->project] = $banner->id;
                 $banners[$banner->id] = $banner;
             }
 
