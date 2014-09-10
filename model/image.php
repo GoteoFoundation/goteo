@@ -599,14 +599,16 @@ namespace Goteo\Model {
             // sacar galeria de glossary_image
             $gallery = Image::getList($id, $which, $section);
 
-            // poner en la instancia
-            $the_gallery = Image::getGallery($gallery);
-
-            if (!empty($gallery)) {
-                // guardar serializado en la base de datos
-                $sql = "UPDATE $which SET gallery = :gallery WHERE id = :id";
-                self::query($sql, array(':gallery'=>$gallery, ':id'=>$id));
+            if (empty($gallery)) {
+                $the_gallery = $gallery = 'empty';
+            } else {
+                // poner en la instancia
+                $the_gallery = Image::getGallery($gallery);
             }
+
+            // guardar serializado en la base de datos
+            $sql = "UPDATE $which SET gallery = :gallery WHERE id = :id";
+            self::query($sql, array(':gallery'=>$gallery, ':id'=>$id));
 
             return $the_gallery;
         }
@@ -622,16 +624,16 @@ namespace Goteo\Model {
             }
 
             // sacar objeto imagen de la galeria
-            $image = $gallery[0];
+            $image = ($gallery === 'empty') ? 'empty' : $gallery[0];
 
             // poner en la instancia
-            $the_image = $image;
+            $the_image = ($image === 'empty') ? 'empty' : $image->id;
 
             // guardar en la base de datos
             $sql = "UPDATE $which SET image = :image WHERE id = :id";
-            self::query($sql, array(':image'=>$image->id, ':id'=>$id));
+            self::query($sql, array(':image'=>$the_image, ':id'=>$id));
 
-            return $the_image;
+            return $image;
 
         }
 

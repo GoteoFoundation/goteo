@@ -55,18 +55,22 @@ namespace Goteo\Model {
                 // video
                 $post->media = new Media($post->media);
 
-                // campo calculado gallery
-                if (!empty($post->gallery)) {
-                    $post->gallery = Image::getGallery($post->gallery);
-                } else {
-                    $post->setGallery();
-                }
+            // campo calculado gallery
+            if (!empty($post->gallery) && $post->gallery !== 'empty') {
+                $post->gallery = Image::getGallery($post->gallery);
+            } elseif ($post->gallery !== 'empty') {
+                $post->setGallery();
+            } else {
+                $post->gallery = array();
+            }
 
-                if (!empty($post->image)) {
-                    $post->image = Image::get($post->image);
-                } else {
-                    $post->setImage();
-                }
+            if (!empty($post->image) && $post->image !== 'empty') {
+                $post->image = Image::get($post->image);
+            } elseif ($post->image !== 'empty') {
+                $post->setImage();
+            } else {
+                $post->image = null;
+            }
 
                 // autor
                 if (!empty($post->author)) $post->user = User::getMini($post->author);
@@ -155,17 +159,22 @@ namespace Goteo\Model {
                 $post->media = new Media($post->media);
 
                 // campo calculado gallery
-                if (!empty($post->gallery)) {
+                if (!empty($post->gallery) && $post->gallery !== 'empty') {
                     $post->gallery = Image::getGallery($post->gallery);
-                } else {
+                } elseif ($post->gallery !== 'empty') {
                     $post->setGallery();
+                } else {
+                    $post->gallery = array();
                 }
 
-                if (!empty($post->image)) {
+                if (!empty($post->image) && $post->image !== 'empty') {
                     $post->image = Image::get($post->image);
-                } else {
+                } elseif ($post->image !== 'empty') {
                     $post->setImage();
+                } else {
+                    $post->image = null;
                 }
+
 
                 $post->type = $post->home == 1 ? 'home' : 'footer';
 
