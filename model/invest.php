@@ -745,7 +745,6 @@ namespace Goteo\Model {
          * Aportes individuales a un proyecto
          */
         public static function investors ($project, $projNum = false, $showall = false) {
-            $worth = array();
             $investors = array();
 
             $sql = "
@@ -756,17 +755,7 @@ namespace Goteo\Model {
                     user.worth as worth,
                     invest.amount as amount,
                     DATE_FORMAT(invest.invested, '%d/%m/%Y') as date,
-                    ";
-/*            if ($projNum) {
-                $sql .= "(SELECT
-                        COUNT(DISTINCT(project))
-                     FROM invest as invb
-                     WHERE invb.user = invest.user
-                     AND  invb.status IN ('0', '1', '3')
-                     ) as projects,";
-            }
-*/
-            $sql .= "user.hide as hide,
+                    user.hide as hide,
                     invest.droped as droped,
                     invest.campaign as campaign,
                     invest.call as `call`,
@@ -783,10 +772,6 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
 
                 $investor->avatar = Image::get($investor->avatar);
-                if (empty($investor->avatar->id) || !$investor->avatar instanceof Image) {
-                    $investor->avatar = Image::get(1);
-                }
-
 
                 // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
                 if (!$showall && ($investor->hide == 1 || $investor->anonymous == 1)) {
@@ -809,16 +794,12 @@ namespace Goteo\Model {
 
                 } else {
 
-                    if (!isset($worth[$investor->user])) {
-                        $worth[$investor->user] = \Goteo\Model\User::calcWorth($investor->user);
-                    }
-
                     $investors[] = (object) array(
                         'user' => $investor->user,
                         'name' => $investor->name,
                         'projects' => $investor->projects,
                         'avatar' => $investor->avatar,
-                        'worth' => $worth[$investor->user],
+                        'worth' => $investor->worth,
                         'amount' => $investor->amount,
                         'date' => $investor->date,
                         'droped' => $investor->droped,

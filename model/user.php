@@ -1592,14 +1592,6 @@ namespace Goteo\Model {
             return $projects;
         }
 
-        public static function calcWorth($userId) {
-            $query = self::query("SELECT id FROM worthcracy WHERE amount <= (SELECT SUM(amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3')) ORDER BY amount DESC LIMIT 1", array($userId));
-            $worth = $query->fetchColumn();
-            self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $userId, ':worth' => $worth));
-
-            return $worth;
-        }
-
         /**
          * Metodo para cancelar la cuenta de usuario
          * Nos e borra nada, se desactiva y se oculta.
