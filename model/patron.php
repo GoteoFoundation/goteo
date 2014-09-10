@@ -3,7 +3,9 @@ namespace Goteo\Model {
 
     use \Goteo\Library\Text,
         \Goteo\Model,
-        \Goteo\Library\Check;
+        \Goteo\Library\Check,
+        \Goteo\Model\User,
+        \Goteo\Model\Image;
 
     class Patron extends \Goteo\Core\Model {
 

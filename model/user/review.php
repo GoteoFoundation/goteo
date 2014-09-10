@@ -159,8 +159,6 @@ namespace Goteo\Model\User {
                     $user->name = $share['user_name'];
                     $user->avatar = \Goteo\Model\Image::get($share['user_avatar']);
 
-                    $message->user = $user;
-
                     $array[$share['id']] = (object) array(
                         'user'   => $share['id'],
                         'avatar' => $user->avatar,
