@@ -56,16 +56,20 @@ namespace Goteo\Model {
                 }
 
                 // campo calculado gallery
-                if (!empty($info->gallery)) {
+                if (!empty($info->gallery) && $info->gallery !== 'empty') {
                     $info->gallery = Image::getGallery($info->gallery);
-                } else {
+                } elseif ($info->gallery !== 'empty') {
                     $info->setGallery();
+                } else {
+                    $info->gallery = array();
                 }
 
-                if (!empty($info->image)) {
+                if (!empty($info->image) && $info->image !== 'empty') {
                     $info->image = Image::get($info->image);
-                } else {
+                } elseif ($info->image !== 'empty') {
                     $info->setImage();
+                } else {
+                    $info->image = null;
                 }
 
                 return $info;
@@ -126,16 +130,20 @@ namespace Goteo\Model {
                 }
 
                 // campo calculado gallery
-                if (!empty($info->gallery)) {
+                if (!empty($info->gallery) && $info->gallery !== 'empty') {
                     $info->gallery = Image::getGallery($info->gallery);
-                } else {
+                } elseif ($info->gallery !== 'empty') {
                     $info->setGallery();
+                } else {
+                    $info->gallery = array();
                 }
 
-                if (!empty($info->image)) {
+                if (!empty($info->image) && $info->image !== 'empty') {
                     $info->image = Image::get($info->image);
-                } else {
+                } elseif ($info->image !== 'empty') {
                     $info->setImage();
+                } else {
+                    $info->image = null;
                 }
 
 

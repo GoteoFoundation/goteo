@@ -50,16 +50,20 @@ namespace Goteo\Model {
                 }
 
                 // campo calculado gallery
-                if (!empty($glossary->gallery)) {
+                if (!empty($glossary->gallery) && $glossary->gallery !== 'empty') {
                     $glossary->gallery = Image::getGallery($glossary->gallery);
-                } else {
+                } elseif ($glossary->gallery !== 'empty') {
                     $glossary->setGallery();
+                } else {
+                    $glossary->gallery = array();
                 }
 
-                if (!empty($glossary->image)) {
+                if (!empty($glossary->image) && $glossary->image !== 'empty') {
                     $glossary->image = Image::get($glossary->image);
-                } else {
+                } elseif ($glossary->image !== 'empty') {
                     $glossary->setImage();
+                } else {
+                    $glossary->image = null;
                 }
 
                 return $glossary;
@@ -113,19 +117,21 @@ namespace Goteo\Model {
                 }
 
                 // campo calculado gallery
-                if (!empty($glossary->gallery)) {
+                if (!empty($glossary->gallery) && $glossary->gallery !== 'empty') {
                     $glossary->gallery = Image::getGallery($glossary->gallery);
-                } else {
+                } elseif ($glossary->gallery !== 'empty') {
                     $glossary->setGallery();
-                }
-
-                if (!empty($glossary->image)) {
-                    $glossary->image = Image::get($glossary->image);
                 } else {
-                    $glossary->setImage();
+                    $glossary->gallery = array();
                 }
 
-
+                if (!empty($glossary->image) && $glossary->image !== 'empty') {
+                    $glossary->image = Image::get($glossary->image);
+                } elseif ($glossary->image !== 'empty') {
+                    $glossary->setImage();
+                } else {
+                    $glossary->image = null;
+                }
 
                 $list[$glossary->id] = $glossary;
             }

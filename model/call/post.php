@@ -75,16 +75,20 @@ namespace Goteo\Model\Call {
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Blog\Post') as $post) {
 
                     // campo calculado gallery
-                    if (!empty($post->gallery)) {
+                    if (!empty($post->gallery) && $post->gallery !== 'empty') {
                         $post->gallery = Image::getGallery($post->gallery);
-                    } else {
+                    } elseif ($post->gallery !== 'empty') {
                         $post->setGallery();
+                    } else {
+                        $post->gallery = array();
                     }
 
-                    if (!empty($post->image)) {
+                    if (!empty($post->image) && $post->image !== 'empty') {
                         $post->image = Image::get($post->image);
-                    } else {
+                    } elseif ($post->image !== 'empty') {
                         $post->setImage();
+                    } else {
+                        $post->image = null;
                     }
 
                     $list[] = $post;
