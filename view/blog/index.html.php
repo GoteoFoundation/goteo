@@ -33,7 +33,7 @@ if ($this['show'] == 'list') {
                     $ogmeta['image'][] = $pbimg->getLink(500, 285);
                 }
             }
-        } elseif (!empty($post->image)) {
+        } elseif ((!empty($post->image))&&($post->image instanceof Image)) {
             $ogmeta['image'][] = $post->image->getLink(500, 285);
         }
     }
@@ -50,7 +50,7 @@ if ($this['show'] == 'list') {
                 $ogmeta['image'][] = $pbimg->getLink(500, 285);
             }
         }
-    } elseif (!empty($post->image)) {
+    } elseif ((!empty($post->image))&&($post->image instanceof Image)) {
         $ogmeta['image'] = $post->image->getLink(500, 285);
     }
 }

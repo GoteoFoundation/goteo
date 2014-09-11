@@ -41,12 +41,18 @@ namespace Goteo\Model {
                         post.media as `media`,
                         DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                         post.author as author,
-                        post.order as `order`
+                        post.order as `order`,
+                        user.id as user_id,
+                        user.name as user_name,
+                        user.email as user_email,
+                        user.avatar as user_avatar
                     FROM    post
                     LEFT JOIN post_lang
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
                         AND post_lang.blog = post.blog
+                    LEFT JOIN user
+                        ON user.id=post.author
                     WHERE post.id = :id
                     ", array(':id' => $id, ':lang'=>$lang));
 
@@ -73,8 +79,17 @@ namespace Goteo\Model {
             }
 
                 // autor
-                if (!empty($post->author)) $post->user = User::getMini($post->author);
+                if (!empty($post->author)) {
 
+                    // datos del usuario. Eliminación de user::getMini
+                    $user = new User;
+                    $user->id = $post->user_id;
+                    $user->name = $post->user_name;
+                    $user->email = $post->user_email;
+                    $user->avatar = Image::get($post->user_avatar);
+
+                    $post->user = $user;
+                }
                 return $post;
 
         }
@@ -139,7 +154,12 @@ namespace Goteo\Model {
                     post.home as home,
                     post.footer as footer,
                     blog.type as owner_type,
-                    blog.owner as owner_id
+                    blog.owner as owner_id,
+                    user.id as user_id,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar,
+                    user.node as user_node
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
@@ -147,6 +167,8 @@ namespace Goteo\Model {
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
                     AND post_lang.blog = post.blog
+                LEFT JOIN user
+                    ON user.id=post.author
                 $eng_join
                 $sqlFilter
                 ORDER BY `order` ASC, title ASC
@@ -193,7 +215,17 @@ namespace Goteo\Model {
                         break;
 
                     case 'node':
-                        $post->user   = User::getMini($post->author);
+                        
+                        // datos del usuario. Eliminación de user::getMini
+        
+                        $user = new User;
+                        $user->id = $post->user_id;
+                        $user->name = $post->user_name;
+                        $user->email = $post->user_email;
+                        $user->node = $post->user_node;
+                        $user->avatar = Image::get($post->user_avatar);
+
+                        $post->user = $user;
                         /*
                         $node_blog = Node::get($post->owner_id);
                         $post->owner_name = $node_blog->name;

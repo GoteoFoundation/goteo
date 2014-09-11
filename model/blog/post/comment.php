@@ -3,7 +3,9 @@
 namespace Goteo\Model\Blog\Post {
 
     use Goteo\Library\Text,
-        Goteo\Library\Feed;
+        Goteo\Library\Feed,
+        Goteo\Model\User,
+        Goteo\Model\Image;
 
     class Comment extends \Goteo\Core\Model {
 
@@ -52,7 +54,11 @@ namespace Goteo\Model\Blog\Post {
                     DATE_FORMAT(comment.date, '%d | %m | %Y') as date,
                     comment.date as timer,
                     comment.text,
-                    comment.user
+                    comment.user,
+                    user.id as user_id,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar
                 FROM    comment
                 INNER JOIN user
                     ON  user.id = comment.user
@@ -64,7 +70,15 @@ namespace Goteo\Model\Blog\Post {
             $query = static::query($sql, array($post));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
-                $comment->user = \Goteo\Model\User::getMini($comment->user);
+                
+                 // owner
+                    $user = new User;
+                    $user->id = $comment->user_id;
+                    $user->name = $comment->user_name;
+                    $user->email = $comment->user_email;
+                    $user->avatar = Image::get($comment->user_avatar);
+
+                    $comment->user = $user;
 
                 // reconocimiento de enlaces y saltos de linea
                 $comment->text = nl2br(Text::urlink($comment->text));
@@ -92,12 +106,14 @@ namespace Goteo\Model\Blog\Post {
                     comment.post,
                     DATE_FORMAT(comment.date, '%d | %m | %Y') as date,
                     comment.text,
-                    comment.user
+                    comment.user,
+                    user.name as user_name,
+                    user.avatar as user_avatar
                 FROM    comment
+                INNER JOIN post ON post.id = comment.post AND post.blog = ?
                 INNER JOIN user
                     ON  user.id = comment.user
                     AND (user.hide = 0 OR user.hide IS NULL)
-                WHERE comment.post IN (SELECT id FROM post WHERE blog = ?)
                 ORDER BY comment.date DESC, comment.id DESC
                 ";
             if (!empty($limit)) {
@@ -107,8 +123,11 @@ namespace Goteo\Model\Blog\Post {
             $query = static::query($sql, array($blog));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
-                
-                $comment->user = \Goteo\Model\User::getMini($comment->user);
+
+                $user = new User;
+                $user->id = $comment->user;
+                $user->name = $comment->user_name;
+                $user->avatar = Image::get($comment->user_avatar);
 
                 // reconocimiento de enlaces y saltos de linea
                 $comment->text = nl2br(Text::urlink($comment->text));
@@ -123,19 +142,31 @@ namespace Goteo\Model\Blog\Post {
          *  Devuelve cuantos comentarios tiene una entrada
          */
         public static function getCount ($post) {
-                $query = static::query("
+
+                $sql="
                     SELECT
-                        COUNT(comment.id) as cuantos
+                        COUNT(comment.id) as comments,
+                        post.num_comments as num
                     FROM    comment
+                    INNER JOIN post
+                        ON  post.id = comment.post
                     INNER JOIN user
                         ON  user.id = comment.user
                         AND (user.hide = 0 OR user.hide IS NULL)
-                    WHERE comment.post = :post
-                    ", array(':post' => $post));
+                    WHERE comment.post = :post";
 
-                $count = $query->fetchObject();
+                $values=array(':post' => $post);
 
-                return (int) $count->cuantos;
+                $query = static::query($sql, $values);
+                if($got = $query->fetchObject()) {
+                    // si ha cambiado, actualiza el numero de comentarios en un post
+                    if ($got->comments != $got->num) {
+                        static::query("UPDATE post SET num_comments = :num WHERE id = :post", array(':num' => (int) $got->comments, ':post' => $post));
+                    }
+                }
+
+                return (int) $got->comments;
+
         }
 
         public function validate (&$errors = array()) { 
@@ -177,6 +208,9 @@ namespace Goteo\Model\Blog\Post {
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 
+                // actualizar campo calculado
+                self::getCount($this->post);
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
@@ -192,6 +226,10 @@ namespace Goteo\Model\Blog\Post {
             $sql = "DELETE FROM comment WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
+
+                // actualizar campo calculado
+                self::getCount($this->post);
+
             } else {
                 return false;
             }
