@@ -57,6 +57,7 @@ namespace Goteo\Model\Blog {
                         post.home as home,
                         post.footer as footer,
                         post.author as author,
+                        post.num_comments as num_comments,
                         CONCAT(blog.type, '-', blog.owner) as owner,
                         blog.type as owner_type,
                         blog.owner as owner_id,
@@ -102,7 +103,6 @@ namespace Goteo\Model\Blog {
                 if (!isset($post->num_comments)) {
                        $post->num_comments = Post\Comment::getCount($post->id);
                 }
-                $post->num_comments = count($post->comments);
 
                 //tags
                 $post->tags = Post\Tag::getAll($id);
@@ -304,6 +304,7 @@ namespace Goteo\Model\Blog {
                     post.home as home,
                     post.footer as footer,
                     post.author as author,
+                    post.num_comments as num_comments,
                     blog.type as owner_type,
                     blog.owner as owner_id,
                     user.name as user_name
@@ -418,8 +419,6 @@ namespace Goteo\Model\Blog {
                 if (!isset($post->num_comments)) {
                     $post->num_comments = Post\Comment::getCount($post->id);
                 }
-
-                //$post->num_comments = Post\Comment::getCount($post->id);
 
                 // datos del autor del  post
                 switch ($post->owner_type) {
