@@ -48,6 +48,7 @@ namespace Goteo\Model\Blog {
                         IFNULL(post_lang.text, post.text) as text,
                         IFNULL(post_lang.legend, post.legend) as legend,
                         post.image as `image`,
+                        post.gallery as gallery,
                         IFNULL(post_lang.media, post.media) as `media`,
                         post.date as `date`,
                         DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
@@ -79,12 +80,22 @@ namespace Goteo\Model\Blog {
                     $post->media = new Media($post->media);
                 }
 
-                // galeria
-                $post->gallery = Image::getAll($id, 'post');
-                if (empty($post->image)) {
-                    $post->image = Post::setImage($id, $post->gallery[0]->id);
+                // campo calculado gallery
+                if (!empty($post->gallery) && $post->gallery !== 'empty') {
+                    $post->gallery = Image::getGallery($post->gallery);
+                } elseif ($post->gallery !== 'empty') {
+                    $post->setGallery();
+                } else {
+                    $post->gallery = array();
                 }
-                if (!empty($post->image)) $post->image = Image::get($post->image);
+
+                if (!empty($post->image) && $post->image !== 'empty') {
+                    $post->image = Image::get($post->image);
+                } elseif ($post->image !== 'empty') {
+                    $post->setImage();
+                } else {
+                    $post->image = null;
+                }
 
                 $post->comments = Post\Comment::getAll($id);
                 $post->num_comments = count($post->comments);
@@ -143,6 +154,7 @@ namespace Goteo\Model\Blog {
                     blog.owner as owner,
                     $different_select,
                     post.image as `image`,
+                    post.gallery as gallery,
                     DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                     post.publish as publish,
@@ -190,12 +202,23 @@ namespace Goteo\Model\Blog {
             $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
-                // galeria
-                $post->gallery = Image::getAll($post->id, 'post');
-                if (empty($post->image)) {
-                    $post->image = Post::setImage($post->id, $post->gallery[0]->id);
+
+                // campo calculado gallery
+                if (!empty($post->gallery) && $post->gallery !== 'empty') {
+                    $post->gallery = Image::getGallery($post->gallery);
+                } elseif ($post->gallery !== 'empty') {
+                    $post->setGallery();
+                } else {
+                    $post->gallery = array();
                 }
-                if (!empty($post->image)) $post->image = Image::get($post->image);
+
+                if (!empty($post->image) && $post->image !== 'empty') {
+                    $post->image = Image::get($post->image);
+                } elseif ($post->image !== 'empty') {
+                    $post->setImage();
+                } else {
+                    $post->image = null;
+                }
 
                 // video
                 if (!empty($post->media)) {
@@ -267,6 +290,7 @@ namespace Goteo\Model\Blog {
                     post.blog as blog,
                     $different_select,
                     post.image as `image`,
+                    post.gallery as gallery,
                     post.media as `media`,
                     DATE_FORMAT(post.date, '%d-%m-%Y') as fecha,
                     post.publish as publish,
@@ -361,13 +385,23 @@ namespace Goteo\Model\Blog {
             $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
-                // galeria
-                $post->gallery = Image::getAll($post->id, 'post');
 
-                if (empty($post->image)) {
-                    $post->image = Post::setImage($post->id, $post->gallery[0]->id);
+                // campo calculado gallery
+                if (!empty($post->gallery) && $post->gallery !== 'empty') {
+                    $post->gallery = Image::getGallery($post->gallery);
+                } elseif ($post->gallery !== 'empty') {
+                    $post->setGallery();
+                } else {
+                    $post->gallery = array();
                 }
-                if (!empty($post->image)) $post->image = Image::get($post->image);
+
+                if (!empty($post->image) && $post->image !== 'empty') {
+                    $post->image = Image::get($post->image);
+                } elseif ($post->image !== 'empty') {
+                    $post->setImage();
+                } else {
+                    $post->image = null;
+                }
 
                 // video
                 if (isset($post->media)) {
@@ -465,6 +499,13 @@ namespace Goteo\Model\Blog {
                         if(!empty($image->id)) {
                             self::query("REPLACE post_image (post, image) VALUES (:post, :image)", array(':post' => $this->id, ':image' => $image->id));
                         }
+
+
+                        // Actualiza el campo calculado
+                        $this->setGallery();
+                        $this->setImage();
+
+
                     }
                     else {
                         Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
@@ -613,17 +654,19 @@ namespace Goteo\Model\Blog {
 
 
         /*
-         * Para aplicar la imagen
+        * Recalcular galeria
+        */
+        public function setGallery () {
+            $this->gallery = Image::setGallery('post', $this->id);
+            return true;
+        }
+
+        /*
+         * Recalcular imagen principal
          */
-        public static function setImage ($post, $image) {
-
-            if (!empty($image)) {
-                $sql = "UPDATE post SET `image` = :image WHERE id = :post";
-                self::query($sql, array(':post'=>$post, ':image'=>$image));
-            }
-
-            return $image;
-
+        public function setImage () {
+            $this->image = Image::setImage('post', $this->id, $this->gallery);
+            return true;
         }
 
     }

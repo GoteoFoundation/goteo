@@ -345,6 +345,41 @@ namespace Goteo\Model {
         }
 
         /**
+         * Lista de imágenes de galeria
+         *
+         *  Para proyecto hay que usar Project\Image::getList  por el tema de secciones y
+         *
+         *
+         * @param  varchar(50)  $id  entity item id  user | project | post | info | glossary
+         * @param  string       $which    entity
+         * @return string       list of filenames
+         */
+        public static function getList ($id, $which) {
+
+            if (!\is_string($which) || !\in_array($which, self::$types)) {
+                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
+                return false;
+            }
+
+            $gallery = array();
+
+            try {
+                $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
+                if ($which == 'project') $sql .= " ORDER BY section ASC, `order` ASC";
+                $query = self::query($sql, array($id));
+                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
+                    $gallery[] = $image['image'];
+                }
+
+                return implode(', ', $gallery);
+            } catch(\PDOException $e) {
+                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
+                return false;
+            }
+
+        }
+
+        /**
          * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
          *
          * @param  string       $which    'project', 'post', 'glossary', 'info'
@@ -369,6 +404,7 @@ namespace Goteo\Model {
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = $e->getMessage();
+                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
                 return false;
             }
         }
@@ -520,6 +556,88 @@ namespace Goteo\Model {
     	    unset($pathinfo["extension"]);
     	    return implode(DIRECTORY_SEPARATOR, $pathinfo) . '.' . $new;
     	}
+
+        /**
+         * Este método crea un array de objetod Image a partir de una lista de archivos
+         *
+         * @param $list string list of files separatd by commas
+         * @return array of Image objects
+         */
+        public static function getGallery($list, $debug = false) {
+
+            $gallery = array();
+
+            if ($debug) echo $list.'<br />';
+
+            if (empty($list))
+                return $gallery;
+
+            $items = explode(',', $list);
+
+            foreach ($items as $item) {
+                if ($debug) echo '*'.trim($item).'*';
+                $gallery[] = static::get( trim($item) );
+            }
+
+            if ($debug) echo \trace($gallery);
+            if ($debug) die;
+
+                return $gallery;
+
+        }
+
+        /*
+         * Recalcular galeria
+         */
+        public function setGallery ($which, $id, $section = '') {
+
+            if (!\is_string($which) || !\in_array($which, self::$types)) {
+                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
+                return array();
+            }
+
+            // sacar galeria de glossary_image
+            $gallery = Image::getList($id, $which, $section);
+
+            if (empty($gallery)) {
+                $the_gallery = $gallery = 'empty';
+            } else {
+                // poner en la instancia
+                $the_gallery = Image::getGallery($gallery);
+            }
+
+            // guardar serializado en la base de datos
+            $sql = "UPDATE $which SET gallery = :gallery WHERE id = :id";
+            self::query($sql, array(':gallery'=>$gallery, ':id'=>$id));
+
+            return $the_gallery;
+        }
+
+        /*
+         * Recalcular imagen principal
+         */
+        public function setImage ($which, $id, $gallery) {
+
+            if (!\is_string($which) || !\in_array($which, self::$types)) {
+                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
+                return false;
+            }
+
+            // sacar objeto imagen de la galeria
+            $image = (empty($gallery) || $gallery === 'empty') ? 'empty' : $gallery[0];
+
+            // poner en la instancia
+            $the_image = ($image === 'empty') ? 'empty' : $image->id;
+
+            // guardar en la base de datos
+            $sql = "UPDATE $which SET image = :image WHERE id = :id";
+            self::query($sql, array(':image'=>$the_image, ':id'=>$id));
+
+            return $image;
+
+        }
+
+
 
 	}
 

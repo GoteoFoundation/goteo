@@ -589,13 +589,9 @@ namespace Goteo\Model {
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
 
-                // @LACRA
-                if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
-                    $user->avatar = Image::get(1);
-                }
-                // esto ya lo debería hacer el Image::get
-
                 $user->interests = User\Interest::get($id);
+
+                // campo calculado tipo lista para las webs del usuario
                 $user->webs = User\Web::get($id);
 
                 // Nodo
@@ -632,12 +628,6 @@ namespace Goteo\Model {
                 $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
 
                 $user->avatar = Image::get($user->avatar);
-
-                // @LACRA
-                if (empty($user->avatar->id) || !$user->avatar instanceof Image) {
-                    $user->avatar = Image::get(1);
-                }
-                // esto ya debería hacerlo el Image::get
 
                 return $user;
             } catch(\PDOException $e) {
@@ -1557,6 +1547,7 @@ namespace Goteo\Model {
                     project.maxcost as maxcost,
                     project.amount as amount,
                     project.image as image,
+                    project.gallery as gallery,
                     project.num_investors as num_investors,
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,
@@ -1599,14 +1590,6 @@ namespace Goteo\Model {
                 $projects[] = Project::getWidget($proj);
             }
             return $projects;
-        }
-
-        public static function calcWorth($userId) {
-            $query = self::query("SELECT id FROM worthcracy WHERE amount <= (SELECT SUM(amount) FROM invest WHERE user = ? AND status IN ('0', '1', '3')) ORDER BY amount DESC LIMIT 1", array($userId));
-            $worth = $query->fetchColumn();
-            self::query('UPDATE user SET worth = :worth WHERE id = :id', array(':id' => $userId, ':worth' => $worth));
-
-            return $worth;
         }
 
         /**

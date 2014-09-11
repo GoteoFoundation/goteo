@@ -2,7 +2,8 @@
 
 namespace Goteo\Model\Call {
 
-    use Goteo\Model;
+    use Goteo\Model,
+        Goteo\Model\Image;
 
     class Post extends \Goteo\Core\Model {
 
@@ -43,6 +44,7 @@ namespace Goteo\Model\Call {
                             post.id as id,
                             $different_select,
                             post.image as `image`,
+                            post.gallery as `gallery`,
                             DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                             DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                             post.author as author,
@@ -72,13 +74,22 @@ namespace Goteo\Model\Call {
                 $query = static::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Blog\Post') as $post) {
 
-                    if (empty($post->image)) {
-                        // galeria
-                        $gallery = Model\Image::getAll($post->id, 'post');
-                        $post->image = Model\Blog\Post::setImage($post->id, $gallery[0]->id);
+                    // campo calculado gallery
+                    if (!empty($post->gallery) && $post->gallery !== 'empty') {
+                        $post->gallery = Image::getGallery($post->gallery);
+                    } elseif ($post->gallery !== 'empty') {
+                        $post->setGallery();
+                    } else {
+                        $post->gallery = array();
                     }
 
-                    $post->image = Model\Image::get($post->image);
+                    if (!empty($post->image) && $post->image !== 'empty') {
+                        $post->image = Image::get($post->image);
+                    } elseif ($post->image !== 'empty') {
+                        $post->setImage();
+                    } else {
+                        $post->image = null;
+                    }
 
                     $list[] = $post;
                 }
@@ -149,6 +160,22 @@ namespace Goteo\Model\Call {
                 return false;
 			}
 		}
+
+        /*
+         * Recalcular galeria
+         */
+        public function setGallery () {
+            $this->gallery = Image::setGallery('post', $this->id);
+            return true;
+        }
+
+        /*
+         * Recalcular imagen principal
+         */
+        public function setImage () {
+            $this->image = Image::setImage('post', $this->id, $this->gallery);
+            return true;
+        }
 
     }
     

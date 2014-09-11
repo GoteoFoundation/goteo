@@ -65,7 +65,7 @@
                 <a class="next">next</a>
 			<!-- carrusel de imagenes -->
 		</div>
-	<?php elseif (!empty($post->image)) : ?>
+	<?php elseif ( $post->image instanceof \Goteo\Model\Image ) : ?>
         <div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
             <img src="<?php echo $post->image->getLink(500, 285); ?>" alt="<?php echo htmlspecialchars($post->title); ?>" />
         </div>

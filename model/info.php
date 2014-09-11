@@ -37,6 +37,8 @@ namespace Goteo\Model {
                         IFNULL(info_lang.text, info.text) as text,
                         IFNULL(info_lang.legend, info.legend) as legend,
                         info.media as `media`,
+                        info.image as `image`,
+                        info.gallery as `gallery`,
                         info.publish as `publish`,
                         info.order as `order`
                     FROM    info
@@ -53,9 +55,22 @@ namespace Goteo\Model {
                     $info->media = new Media($info->media);
                 }
 
-                // galeria
-                $info->gallery = Image::getAll($id, 'info');
-                $info->image = $info->gallery[0];
+                // campo calculado gallery
+                if (!empty($info->gallery) && $info->gallery !== 'empty') {
+                    $info->gallery = Image::getGallery($info->gallery);
+                } elseif ($info->gallery !== 'empty') {
+                    $info->setGallery();
+                } else {
+                    $info->gallery = array();
+                }
+
+                if (!empty($info->image) && $info->image !== 'empty') {
+                    $info->image = Image::get($info->image);
+                } elseif ($info->image !== 'empty') {
+                    $info->setImage();
+                } else {
+                    $info->image = null;
+                }
 
                 return $info;
         }
@@ -86,6 +101,8 @@ namespace Goteo\Model {
                         info.id as id,
                         $different_select,
                         info.media as `media`,
+                        info.image as `image`,
+                        info.gallery as `gallery`,
                         info.publish as `publish`,
                         info.order as `order`
                     FROM    info
@@ -106,15 +123,30 @@ namespace Goteo\Model {
             $query = static::query($sql, array(':node'=>$node, ':lang'=>\LANG));
                 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $info) {
-                // galeria
-                $info->gallery = Image::getAll($info->id, 'info');
-                $info->image = $info->gallery[0];
 
                 // video
                 if (!empty($info->media)) {
                     $info->media = new Media($info->media);
                 }
-                
+
+                // campo calculado gallery
+                if (!empty($info->gallery) && $info->gallery !== 'empty') {
+                    $info->gallery = Image::getGallery($info->gallery);
+                } elseif ($info->gallery !== 'empty') {
+                    $info->setGallery();
+                } else {
+                    $info->gallery = array();
+                }
+
+                if (!empty($info->image) && $info->image !== 'empty') {
+                    $info->image = Image::get($info->image);
+                } elseif ($info->image !== 'empty') {
+                    $info->setImage();
+                } else {
+                    $info->image = null;
+                }
+
+
                 $list[$info->id] = $info;
             }
 
@@ -179,6 +211,11 @@ namespace Goteo\Model {
                         if(!empty($image->id)) {
                             self::query("REPLACE info_image (info, image) VALUES (:info, :image)", array(':info' => $this->id, ':image' => $image->id));
                         }
+
+                        // Actualiza el campo calculado
+                        $this->setGallery();
+                        $this->setImage();
+
                     } else {
                         Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
@@ -239,6 +276,22 @@ namespace Goteo\Model {
             $order = $query->fetchColumn(0);
             return ++$order;
 
+        }
+
+        /*
+         * Recalcular galeria
+         */
+        public function setGallery () {
+            $this->gallery = Image::setGallery('info', $this->id);
+            return true;
+        }
+
+        /*
+         * Recalcular imagen principal
+         */
+        public function setImage () {
+            $this->image = Image::setImage('info', $this->id, $this->gallery);
+            return true;
         }
 
     }
