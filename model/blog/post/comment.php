@@ -142,7 +142,22 @@ namespace Goteo\Model\Blog\Post {
          *  Devuelve cuantos comentarios tiene una entrada
          */
         public static function getCount ($post) {
-                $query = static::query("
+
+                $sql="
+                    SELECT
+                        COUNT(comment.id) as comments,
+                        post.num_comments as num
+                    FROM    comment
+                    INNER JOIN post
+                        ON  post.id = comment.post
+                    INNER JOIN user
+                        ON  user.id = comment.user
+                        AND (user.hide = 0 OR user.hide IS NULL)
+                    WHERE comment.post = :post";
+
+                $values=array(':post' => $post);
+
+                /*$query = static::query("
                     SELECT
                         COUNT(comment.id) as cuantos
                     FROM    comment
@@ -150,11 +165,21 @@ namespace Goteo\Model\Blog\Post {
                         ON  user.id = comment.user
                         AND (user.hide = 0 OR user.hide IS NULL)
                     WHERE comment.post = :post
-                    ", array(':post' => $post));
+                    ", array(':post' => $post));*/
 
-                $count = $query->fetchObject();
+                //$count = $query->fetchObject();
 
-                return (int) $count->cuantos;
+                $query = static::query($sql, $values);
+                if($got = $query->fetchObject()) {
+                    // si ha cambiado, actualiza el numero de comentarios en un post
+                    if ($got->comments != $got->num) {
+                        static::query("UPDATE post SET num_comments = :num WHERE id = :post", array(':num' => (int) $got->comments, ':post' => $post));
+                    }
+                }
+
+                return (int) $got->comments;
+
+                //return (int) $count->cuantos;
         }
 
         public function validate (&$errors = array()) { 
@@ -196,6 +221,9 @@ namespace Goteo\Model\Blog\Post {
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
 
+                // actualizar campo calculado
+                self::getCount($this->post);
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
@@ -211,6 +239,10 @@ namespace Goteo\Model\Blog\Post {
             $sql = "DELETE FROM comment WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
+
+                // actualizar campo calculado
+                self::getCount($this->post);
+
             } else {
                 return false;
             }
