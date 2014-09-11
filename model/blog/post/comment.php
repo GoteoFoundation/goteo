@@ -157,18 +157,6 @@ namespace Goteo\Model\Blog\Post {
 
                 $values=array(':post' => $post);
 
-                /*$query = static::query("
-                    SELECT
-                        COUNT(comment.id) as cuantos
-                    FROM    comment
-                    INNER JOIN user
-                        ON  user.id = comment.user
-                        AND (user.hide = 0 OR user.hide IS NULL)
-                    WHERE comment.post = :post
-                    ", array(':post' => $post));*/
-
-                //$count = $query->fetchObject();
-
                 $query = static::query($sql, $values);
                 if($got = $query->fetchObject()) {
                     // si ha cambiado, actualiza el numero de comentarios en un post
@@ -179,7 +167,6 @@ namespace Goteo\Model\Blog\Post {
 
                 return (int) $got->comments;
 
-                //return (int) $count->cuantos;
         }
 
         public function validate (&$errors = array()) { 
