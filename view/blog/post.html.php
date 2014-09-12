@@ -31,8 +31,7 @@
 		</script>
     <?php endif; ?>
 	<h<?php echo $level + 1?>><a href="<?php echo $url.$post->id; ?>"><?php echo $post->title; ?></a></h<?php echo $level + 1?>>
-	<?php if (!empty($post->author) && $post->owner_type != 'project') : ?><span class="categories"><?php echo Text::get('regular-by') ?> <a href="/blog/?author=<?php echo $post->author; ?>"><?php echo $post->user->name; ?></a></span><?php endif; ?>
-	<?php if (!empty($post->author) && $post->owner_type == 'project') : ?><span class="categories"><?php echo Text::get('regular-by') ?> <a href="/project/<?php echo $post->owner_id; ?>/updates"><?php echo $post->user->name; ?></a></span><?php endif; ?>
+    <span class="categories"><?php echo Text::get('regular-by') ?> <a href="<?php echo ($post->owner_type == 'project') ? '/project/'.$post->owner_id.'/updates' : '/blog/?author='.$post->author ; ?>"><?php echo $post->user->name; ?></a></span>
 	<span class="date"><?php echo $post->fecha; ?></span>
 	<?php if (!empty($post->tags)) : $sep = '';?>
 		<span class="categories">
