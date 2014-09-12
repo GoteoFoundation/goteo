@@ -139,21 +139,31 @@ namespace Goteo\Model\User {
             try {
                $sql = "SELECT 
                             DISTINCT(user_review.user) as id,
-                            user_review.ready as ready
+                            user_review.ready as ready,
+                            user.id as user_id,
+                            user.name as user_name,
+                            user.email as user_email,
+                            user.avatar as user_avatar
                         FROM user_review
+                        LEFT JOIN user
+                        ON user.id=user_review.user
                         WHERE user_review.review = :id
                         ";
                 $query = static::query($sql, array(':id'=>$review));
                 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $share) {
 
-                    // nombre i avatar
-                    $user = \Goteo\Model\User::getMini($share['id']);
+                    // nombre y avatar
+                    // datos del usuario. Eliminación de user::getMini
+        
+                    $user = new \Goteo\Model\User;
+                    $user->name = $share['user_name'];
+                    $user->avatar = \Goteo\Model\Image::get($share['user_avatar']);
 
                     $array[$share['id']] = (object) array(
                         'user'   => $share['id'],
                         'avatar' => $user->avatar,
                         'name'   => $user->name,
-                        'ready'  => $user->ready
+                        'ready'  => $share['ready']
                     );
                 }
 

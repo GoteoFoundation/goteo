@@ -3,7 +3,7 @@
 // puede ser resumen en la lista o completa
 	use Goteo\Library\Text,
 		Goteo\Model\Blog\Post,
-		Goteo\Model\Image;;
+		Goteo\Model\Image;
 
     $post = Post::get($this['post'], LANG);
     $level = (int) $this['level'] ?: 3;

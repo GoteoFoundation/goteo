@@ -6,6 +6,9 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Model\User,
+        Goteo\Model\Image;
+
     class Task extends \Goteo\Core\Model {
 
         public
@@ -24,10 +27,26 @@ namespace Goteo\Model {
          */
         static public function get($id) {
             try {
-                $query = static::query("SELECT * FROM task WHERE id = ?", array($id));
+                $sql="SELECT 
+                            task.*,
+                            user.id as user_id,
+                            user.name as user_name,
+                            user.email as user_email
+                      FROM task
+                      LEFT JOIN user
+                      ON user.id=task.done 
+                      WHERE task.id = ?";
+                $query = static::query($sql, array($id));
                 $item = $query->fetchObject(__CLASS__);
                 if (!empty($item->done)) {
-                    $item->user = \Goteo\Model\User::getMini($item->done);
+
+                     // datos del usuario. Eliminación de user::getMini
+                    $user = new User;
+                    $user->id = $item->user_id;
+                    $user->name = $item->user_name;
+                    $user->email = $item->user_email;
+
+                    $item->user = $user;
                 }
                 return $item;
             } catch (\PDOException $e) {
@@ -51,24 +70,24 @@ namespace Goteo\Model {
             $and = " WHERE";
             if (!empty($filters['done'])) {
                 if ($filters['done'] == 'done') {
-                    $sqlFilter .= "$and done IS NOT NULL";
+                    $sqlFilter .= "$and task.done IS NOT NULL";
                     $and = " AND";
                 } else {
-                    $sqlFilter .= "$and done IS NULL";
+                    $sqlFilter .= "$and task.done IS NULL";
                     $and = " AND";
                 }
             }
             if (!empty($filters['user'])) {
-                $sqlFilter .= "$and done = :user";
+                $sqlFilter .= "$and task.done = :user";
                 $values[':user'] = $filters['user'];
                 $and = " AND";
             }
             if (!empty($filters['node'])) {
-                $sqlFilter .= "$and node = :node";
+                $sqlFilter .= "$and task.node = :node";
                 $values[':node'] = $filters['node'];
                 $and = " AND";
             } elseif (!empty($node)) {
-                $sqlFilter .= "$and node = :node";
+                $sqlFilter .= "$and task.node = :node";
                 $values[':node'] = $node;
                 $and = " AND";
             }
@@ -77,8 +96,13 @@ namespace Goteo\Model {
                 $and = " AND";
             }
 
-            $sql = "SELECT *
+            $sql = "SELECT task.*,
+                           user.id as user_id,
+                           user.name as user_name,
+                           user.email as user_email
                     FROM task
+                    LEFT JOIN user
+                         ON user.id=task.done
                     $sqlFilter
                     ORDER BY datetime DESC
                     ";
@@ -88,7 +112,13 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 if (!empty($item->done)) {
-                    $item->user = \Goteo\Model\User::getMini($item->done);
+                    // datos del usuario. Eliminación de user::getMini
+                    $user = new User;
+                    $user->id = $item->user_id;
+                    $user->name = $item->user_name;
+                    $user->email = $item->user_email;
+
+                    $item->user = $user;
                 }
                 $list[] = $item;
             }

@@ -57,9 +57,11 @@ namespace Goteo\Model\Blog {
                         post.home as home,
                         post.footer as footer,
                         post.author as author,
+                        post.num_comments as num_comments,
                         CONCAT(blog.type, '-', blog.owner) as owner,
                         blog.type as owner_type,
-                        blog.owner as owner_id
+                        blog.owner as owner_id,
+                        user.name as user_name
                     FROM    post
                     INNER JOIN blog
                         ON  blog.id = post.blog
@@ -67,6 +69,8 @@ namespace Goteo\Model\Blog {
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
                         AND post_lang.blog = post.blog
+                    LEFT JOIN user
+                        ON user.id=post.author
                     WHERE post.id = :id
                     ", array(':id' => $id, ':lang'=>$lang));
 
@@ -95,7 +99,10 @@ namespace Goteo\Model\Blog {
                 }
 
                 $post->comments = Post\Comment::getAll($id);
-                $post->num_comments = count($post->comments);
+
+                if (!isset($post->num_comments)) {
+                       $post->num_comments = Post\Comment::getCount($post->id);
+                }
 
                 //tags
                 $post->tags = Post\Tag::getAll($id);
@@ -106,7 +113,8 @@ namespace Goteo\Model\Blog {
 
                 // autor
                 if (!empty($post->author)) {
-                    $post->user = User::getMini($post->author);
+                    $post->user=new User;
+                    $post->user->name = $post->user_name;
                 } else if ($post->owner_type == 'project') {
                     $post->project = Project::getMini($post->owner_id);
                     $post->user = $post->project->user;
@@ -157,11 +165,15 @@ namespace Goteo\Model\Blog {
                     post.home as home,
                     post.footer as footer,
                     post.author as author,
+                    post.num_comments as num_comments,
                     blog.type as owner_type,
-                    blog.owner as owner_id
+                    blog.owner as owner_id,
+                    user.name as user_name
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
+                LEFT JOIN user
+                        ON user.id=post.author
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
@@ -218,8 +230,10 @@ namespace Goteo\Model\Blog {
                     $post->media = new Media($post->media);
                 }
 
-                $post->num_comments = Post\Comment::getCount($post->id);
-
+                if (!isset($post->num_comments)) {
+                      $post->num_comments = Post\Comment::getCount($post->id);
+                }
+               
                 $post->tags = Post\Tag::getAll($post->id);
 
                 // agregamos html si es texto plano
@@ -239,7 +253,8 @@ namespace Goteo\Model\Blog {
                         break;
 
                     case 'node':
-                        $post->user   = User::getMini($post->author);
+                        $post->user   = new User;
+                        $post->user->name=$post->user_name;
                         $node_blog = Node::get($post->owner_id);
                         $post->owner_name = $node_blog->name;
                         break;
@@ -289,8 +304,10 @@ namespace Goteo\Model\Blog {
                     post.home as home,
                     post.footer as footer,
                     post.author as author,
+                    post.num_comments as num_comments,
                     blog.type as owner_type,
-                    blog.owner as owner_id
+                    blog.owner as owner_id,
+                    user.name as user_name
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
@@ -298,6 +315,8 @@ namespace Goteo\Model\Blog {
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
                     AND post_lang.blog = post.blog
+                LEFT JOIN user
+                        ON user.id=post.author
                 $eng_join
                 ";
 
@@ -397,7 +416,9 @@ namespace Goteo\Model\Blog {
                     $post->media = new Media($post->media);
                 }
 
-                $post->num_comments = Post\Comment::getCount($post->id);
+                if (!isset($post->num_comments)) {
+                    $post->num_comments = Post\Comment::getCount($post->id);
+                }
 
                 // datos del autor del  post
                 switch ($post->owner_type) {
@@ -409,7 +430,8 @@ namespace Goteo\Model\Blog {
                         break;
 
                     case 'node':
-                        $post->user   = User::getMini($post->author);
+                        $post->user   = new user;
+                        $post->user->name=$post->user_name;
                         $node_blog = Node::get($post->owner_id);
                         $post->owner_name = $node_blog->name;
                         break;
