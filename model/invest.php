@@ -822,6 +822,7 @@ namespace Goteo\Model {
 
             $sql = "
                 SELECT
+                    invest.user as id,
                     invest.user as user,
                     user.name as name,
                     user.avatar as avatar,
@@ -851,7 +852,7 @@ namespace Goteo\Model {
 
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User') as $investor) {
 
                 // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
                 if ( $investor->hide == 1 || $investor->anonymous == 1 ) {
@@ -865,9 +866,9 @@ namespace Goteo\Model {
                 $investors[$investor->user] = (object) array(
                     'user' => $investor->user,
                     'name' => $investor->name,
-                    'projects' => $investor->projects,
+                    'projects' => (isset($investor->projects)) ? $investor->projects : $investor->get_numInvested,
                     'avatar' => Image::get($investor->avatar),
-                    'worth' => $investor->worth,
+                    'worth' => (isset($investor->worth)) ? $investor->worth : $investor->get_worth,
                     'amount' => $investor->amount,
                     'date' => $investor->date
                 );

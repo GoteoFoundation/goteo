@@ -167,6 +167,7 @@ namespace Goteo\Model\User {
                     $values[':interest'] = $category;
                 }
                 $sql = "SELECT
+                            user.id as id,
                             user.id as user,
                             user.name as name,
                             user.avatar as avatar,
@@ -192,10 +193,13 @@ namespace Goteo\Model\User {
                 }
 
                 $query = static::query($sql, $values);
-                $shares = $query->fetchAll(\PDO::FETCH_OBJ);
+                $shares = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User');
                 foreach ($shares as $share) {
 
                     $share->avatar = Image::get($share->avatar);
+                    $share->invests = (isset($share->invests)) ? $share->invests : $share->get_numInvested;
+                    $share->projects = (isset($share->projects)) ? $share->projects : $share->get_numOwned;
+                    $share->amount = (isset($share->amount)) ? $share->amount : $share->get_amount;
 
                     $array[] = $share;
                 }
