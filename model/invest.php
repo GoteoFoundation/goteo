@@ -814,6 +814,73 @@ namespace Goteo\Model {
             return $investors;
         }
 
+        /*
+         * Aportes individuales a un proyecto
+         */
+        public static function myInvestors ($owner, $limit = 999) {
+            $investors = array();
+
+            $sql = "
+                SELECT
+                    invest.user as user,
+                    user.name as name,
+                    user.avatar as avatar,
+                    user.worth as worth,
+                    user.num_invested as projects,
+                    SUM(invest.amount) as amount,
+                    DATE_FORMAT(invest.invested, '%d/%m/%Y') as date,
+                    user.hide as hide,
+                    invest.anonymous as anonymous
+                FROM    invest
+                INNER JOIN project
+                    ON project.id = invest.project
+                    AND project.owner = :id
+                    AND project.status > 2
+                INNER JOIN user
+                    ON  user.id = invest.user
+                WHERE   (invest.campaign IS NULL OR invest.campaign = '' )
+                AND     invest.status IN ('0', '1', '3', '4')
+                GROUP BY invest.user
+                ORDER BY amount DESC
+                LIMIT {$limit}
+                ";
+
+            $values = array(':id'=>$owner);
+
+            //die(\sqldbg($sql, $values));
+
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
+
+                // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
+                if ( $investor->hide == 1 || $investor->anonymous == 1 ) {
+                    // mantenemos la fecha del anonimo mas reciente
+                    $investor->date = empty($investors['anonymous']->date) ? $investor->date : $investors['anonymous']->date;
+                    $investor->user = 'anonymous';
+                    $investors->avatar = 1;
+                    $investors->name = Text::get('regular-anonymous');
+                }
+
+                $investors[$investor->user] = (object) array(
+                    'user' => $investor->user,
+                    'name' => $investor->name,
+                    'projects' => $investor->projects,
+                    'avatar' => Image::get($investor->avatar),
+                    'worth' => $investor->worth,
+                    'amount' => $investor->amount,
+                    'date' => $investor->date
+                );
+
+
+            }
+
+            return $investors;
+        }
+
+        /*
+         *  Numero de inversores en un proyecto
+         */
         public static function numInvestors ($project) {
 
             $debug = false;

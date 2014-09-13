@@ -559,7 +559,8 @@ namespace Goteo\Controller {
                 }
 
                 // sin debug no da echoes
-
+                // no hace mucha falta optimizar ya que los metodos-operadores están en cortocircuito
+                // http://php.net/manual/es/language.operators.logical.php
                 if (Model\User::isOwner($uLoged, true)
                     || Model\User::isInvestor($uLoged, $uProfile)
                     || Model\User::isInvestor($uProfile, $uLoged)
@@ -628,6 +629,13 @@ namespace Goteo\Controller {
             $viewData['projects'] = $projects;
 
             //mis cofinanciadores
+            $investors = Model\Invest::myInvestors($id, 5);
+            $viewData['investors'] = $investors;
+
+/*
+ *   esto lo hacemos en myInvestors
+ *
+ *
             // array de usuarios con:
             //  foto, nombre, nivel, cantidad a mis proyectos, fecha ultimo aporte, nº proyectos que cofinancia
             $investors = array();
@@ -663,8 +671,8 @@ namespace Goteo\Controller {
                     }
                 }
             }
+*/
 
-            $viewData['investors'] = $investors;
 
             if ($dbg) {
                 $tf = microtime(true);
@@ -678,9 +686,17 @@ namespace Goteo\Controller {
                 $ti = microtime(true);
 
             // comparten intereses
-            $viewData['shares'] = Model\User\Interest::share($id, $category);
-            if ($show == 'sharemates' && empty($viewData['shares'])) {
-                $show = 'profile';
+            if ($show == 'profile'){
+                $viewData['shares'] = Model\User\Interest::share($id, null, 6);
+            }
+
+            if ($show == 'sharemates') {
+
+                $viewData['shares'] = Model\User\Interest::share($id, $category, 20);
+                if ($show == 'sharemates' && empty($viewData['shares'])) {
+                    $show = 'profile';
+                }
+
             }
 
             if ($dbg) {

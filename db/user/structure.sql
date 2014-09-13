@@ -62,3 +62,10 @@ ALTER TABLE `user`
 ALTER TABLE `user` CHANGE `avatar` `avatar` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
   
   
+-- cambio en los campos calculados (null y null por defecto)
+ALTER TABLE `user` CHANGE `num_patron` `num_patron` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos patronizados',
+CHANGE `num_patron_active` `num_patron_active` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos patronizados activos',
+CHANGE `num_invested` `num_invested` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos cofinanciados',
+CHANGE `num_owned` `num_owned` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos publicados';
+  
+  
