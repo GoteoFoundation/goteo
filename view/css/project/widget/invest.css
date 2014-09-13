@@ -111,7 +111,7 @@ div.widget.project-invest div.individual ul li.disabled{
 }
 
 div.widget.project-invest.method div.buttons {
-    width: 50%;
+    width: 60%;
     float:left;
 }
 
@@ -122,7 +122,7 @@ div.widget.project-invest.method button {
 
 div.widget.project-invest.method button.pay-tpv {
     background: url('/view/css/button/logos_tarjetas.png') no-repeat 0 0 transparent;
-    width: 253px;
+    width: 310px;
     height: 38px;
     text-indent: 2000px;
     padding: 3px;
