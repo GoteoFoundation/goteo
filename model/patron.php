@@ -162,12 +162,12 @@ namespace Goteo\Model {
 
              if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(patron_lang.title, patron.title) as title,
-                                    IFNULL(patron_lang.description, patron.description) as description";
+                                    IFNULL(patron_lang.description, patron.description) as patron_description";
                  $different_select_project=" IFNULL(project_lang.description, project.description) as description";
                 }
             else {
                 $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title)) as title,
-                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description)) as description";
+                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description)) as patron_description";
                 $eng_join=" LEFT JOIN patron_lang as eng
                                 ON  eng.id = patron.id
                                 AND eng.lang = 'en'";
@@ -180,6 +180,7 @@ namespace Goteo\Model {
             $sql = "SELECT
                         patron.project as project,
                         $different_select,
+                        project.name as name,
                         project.published as published,
                         project.created as created,
                         project.updated as updated,

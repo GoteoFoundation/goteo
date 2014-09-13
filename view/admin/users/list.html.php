@@ -148,9 +148,9 @@ $pagedResults = new \Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] 
                 <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" <?php echo (!empty($adminNode)) ? 'style="color: green;" title="'.$adminNode.'"' : 'title="Ver perfil público"'; ?>><?php echo substr($user->name, 0, 20); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 20); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
-                <td><?php echo (!empty($user->num_owned)) ? $user->num_owned : $user->get_numOwned; ?></td>
-                <td><?php echo (!empty($user->num_invested)) ? $user->num_invested : $user->get_numInvested; ?></td>
-                <td><?php echo (!empty($user->amount)) ? \amount_format($user->amount) : \amount_format($user->get_amount); ?> &euro;</td>
+                <td><?php echo (isset($user->num_owned)) ? $user->num_owned : $user->get_numOwned; ?></td>
+                <td><?php echo (isset($user->num_invested)) ? $user->num_invested : $user->get_numInvested; ?></td>
+                <td><?php echo (isset($user->amount)) ? \amount_format($user->amount) : \amount_format($user->get_amount); ?> &euro;</td>
                 <td><?php echo $user->register_date; ?></td>
             </tr>
             <tr>
