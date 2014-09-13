@@ -105,7 +105,7 @@ shuffle($recos);
             echo new View('view/project/widget/project.html.php', array(
                 'project' => $reco->projectData,
                 'balloon' => '<h4>' . htmlspecialchars($reco->title) . '</h4>' .
-                             '<blockquote>' . $reco->description . '</blockquote>', 
+                             '<blockquote>' . $reco->patron_description . '</blockquote>', 
                 'investor' => $user
             ));
     endforeach ?>
