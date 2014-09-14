@@ -26,7 +26,8 @@ namespace Goteo\Library {
             $text,  // id del texto dinamico
             $params,  // (array serializado en bd) parametros para el texto dinamico
             $target_type, // tipo de objetivo del evento (user, project, call, node, etc..) normalmente project
-            $target_id; // id registro del objetivo (normalmente varchar(50))
+            $target_id, // id registro del objetivo (normalmente varchar(50))
+            $post = null; // id entrada de blog relacionada
 
         static public $admin_types = array(
             'all' => array(
@@ -133,6 +134,11 @@ namespace Goteo\Library {
         public function setTarget ($id, $type = 'project') {
             $this->target_id = $id;
             $this->target_type = $type;
+        }
+
+        // establece el post relacionado
+        public function setPost ($post) {
+            $this->post = $post;
         }
 
         public function doAdmin ($type = 'system') {
@@ -477,13 +483,14 @@ namespace Goteo\Library {
                     ':type' => $this->type,
                     ':html' => $this->html,
                     ':target_type' => $this->target_type,
-                    ':target_id' => $this->target_id
+                    ':target_id' => $this->target_id,
+                    ':post' => $this->post
                 );
 
 				$sql = "INSERT INTO feed
-                            (id, title, url, scope, type, html, image, target_type, target_id)
+                            (id, title, url, scope, type, html, image, target_type, target_id, post)
                         VALUES
-                            ('', :title, :url, :scope, :type, :html, :image, :target_type, :target_id)
+                            ('', :title, :url, :scope, :type, :html, :image, :target_type, :target_id, :post)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;
