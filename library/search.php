@@ -128,7 +128,7 @@ namespace Goteo\Library {
                 ', $where);
             }
 
-            $sql .= " ORDER BY project.status ASC, project.name ASC";
+            $sql .= " ORDER BY project.status ASC, project.published DESC";
             // Limite
             if (!empty($limit) && \is_numeric($limit)) {
                 $sql .= " LIMIT $limit";

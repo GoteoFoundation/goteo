@@ -74,9 +74,6 @@ namespace Goteo\Model {
          */
         public static function getAll ($highlights = false) {
 
-            //activamos la cache
-            \Goteo\Core\DB::cache(true);
-
             $list = array();
 
             if(self::default_lang(\LANG)=='es') {

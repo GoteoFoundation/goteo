@@ -5,6 +5,9 @@ use Goteo\Model\Category,
     Goteo\Model\Location,
     Goteo\Library\Text;
 
+//activamos la cache
+\Goteo\Core\DB::cache(true);
+
 $categories = Category::getList();  // categorias que se usan en proyectos
 $locations = Location::getProjLocs();  //localizaciones de royectos
 $rewards = Icon::getList(); // iconos que se usan en proyectos

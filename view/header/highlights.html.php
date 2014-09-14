@@ -1,7 +1,10 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Model\News; 
+    Goteo\Model\News;
+
+//activamos la cache
+\Goteo\Core\DB::cache(true);
 
 $highlights = News::getAll(true);
 
