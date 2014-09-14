@@ -70,19 +70,19 @@ namespace Goteo\Model {
 	            return $this->getToken();
 	        }
 	        if($name == "get_numInvested") {
-                return !empty($this->num_invested) ? $this->num_invested : self::numInvested($this->id);
+                return self::numInvested($this->id);
             }
 	        if($name == "support") {
 	            return $this->getSupport();
 	        }
 	        if($name == "get_numOwned") {
-                return (!empty($this->num_owned)) ? $this->num_owned : self::updateOwned($this->id);
+                return self::updateOwned($this->id);
 	        }
 	        if($name == "get_worth") {
-                return (!empty($this->worth)) ? $this->worth : self::updateWorth($this->id, $this->amount);
+                return self::updateWorth($this->id, $this->amount);
 	        }
 	        if($name == "get_amount") {
-                return (!empty($this->amount)) ? $this->amount : self::updateAmount($this->id);
+                return self::updateAmount($this->id);
 	        }
 	        if($name == "geoloc") {
 	            return User\Location::get($this->id);
@@ -1287,7 +1287,7 @@ namespace Goteo\Model {
                         num_invested = :nproj
                      WHERE id = :id", array(':id' => $id, ':nproj' => $inv->num_invested));
             }
-            return $inv->nproj;
+            return $inv->num_invested;
         }
 
 	    /**

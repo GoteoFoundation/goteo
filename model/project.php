@@ -457,19 +457,19 @@ namespace Goteo\Model {
                 // campos calculados para los números del menu
 
                 //consultamos y actualizamos el numero de inversores
-                if($project->status >= 3 && $project->amount > 0 && empty($project->num_investors)) {
+                if($project->status >= 3 && $project->amount > 0 && !isset($project->num_investors)) {
                     $project->num_investors = Invest::numInvestors($id);
                 }
 
                 //mensajes y mensajeros
                 // solo cargamos mensajes en la vista mensajes
-                if ($project->status >= 3 && empty($project->num_messengers)) {
+                if ($project->status >= 3 && !isset($project->num_messengers)) {
                     $project->num_messengers = Message::numMessengers($id);
                 }
 
                 // novedades
                 // solo cargamos blog en la vista novedades
-                if ($project->status >= 3 && empty($project->num_posts)) {
+                if ($project->status >= 3 && !isset($project->num_posts)) {
                     $project->num_posts =  Blog\Post::numPosts($id);
                 }
 
@@ -512,14 +512,43 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del proyecto en la instancia
-				$query = self::query("SELECT id, name, owner, comment, lang, status, node FROM project WHERE id = ?", array($id));
+				$query = self::query("SELECT
+                                        project.id as id, 
+                                        project.name as name, 
+                                        project.owner as owner, 
+                                        project.comment as comment, 
+                                        project.lang as lang, 
+                                        project.status as status, 
+                                        project.node as node,
+                                        user.id as user_id,
+                                        user.name as user_name,
+                                        user.avatar as user_avatar,
+                                        user.email as user_email,
+                                        IFNULL(user.lang, 'es') as user_lang,
+                                        user.node as user_node
+                                      FROM project
+                                      LEFT JOIN user
+                                      ON user.id=project.owner
+                                      WHERE project.id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
 
                 // primero, que no lo grabe
                 $project->dontsave = true;
 
                 // owner
-                $project->user = User::getMini($project->owner);
+                $project->user=new user;
+                $project->user->id=$project->user_id;
+                $project->user->name=$project->user_name;
+                $project->user->email=$project->user_email;
+                $project->user->lang=$project->user_lang;
+                $project->user->node=$project->user_node;
+
+                $project->user->avatar = Image::get($project->user_avatar);
+
+                // @LACRA
+                if (empty($project->user->avatar->id) || !$project->user->avatar instanceof Image) {
+                    $project->user->avatar = Image::get(1);
+                }
 
                 // convocado
                 $project->called = Call\Project::miniCalled($project->id);
@@ -542,9 +571,12 @@ namespace Goteo\Model {
                 SELECT
                     project.id as id,
                     project.id as project,
+                    project.name as name,
+                    project.description as description,
                     project.status as status,
                     project.published as published,
                     project.created as created,
+                    project.success as success,
                     project.updated as updated,
                     project.mincost as mincost,
                     project.maxcost as maxcost,
@@ -555,7 +587,6 @@ namespace Goteo\Model {
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,
                     project.days as days,
-                    project.name as name,
                     project.owner as owner,
                     user.id as user_id,
                     user.name as user_name,
@@ -720,31 +751,6 @@ namespace Goteo\Model {
                 //de momento... habria que mejorarlo
                 $Widget->categories = Project\Category::getNames($Widget->id, 2);
                 $Widget->rewards = Project\Reward::getWidget($Widget->id);
-
-            /*
-            // esto no hace falta en el widget
-                if(!empty($project->num_investors)) {
-                    $Widget->num_investors = $project->num_investors;
-                } else {
-                    $Widget->num_investors = Invest::numInvestors($project->project);
-                }
-
-                //mensajes y mensajeros
-                // solo cargamos mensajes en la vista mensajes
-                if (!empty($project->num_messengers)) {
-                    $Widget->num_messengers = $project->num_messengers;
-                } else {
-                    $Widget->num_messengers = Message::numMessengers($project->project);
-                }
-
-                // novedades
-                // solo cargamos blog en la vista novedades
-                if (!empty($project->num_posts)) {
-                    $Widget->num_posts = $project->num_posts;
-                } else {
-                    $Widget->num_posts =  Blog\Post::numPosts($project->project);
-                }
-*/
 
                 if(!empty($project->mincost) && !empty($project->maxcost)) {
                     $Widget->mincost = $project->mincost;
@@ -2483,6 +2489,7 @@ namespace Goteo\Model {
             $sql ="
                 SELECT
                     project.id as project,
+                    project.name as name,
                     $different_select2,
                     project.status as status,
                     project.published as published,
@@ -2499,7 +2506,6 @@ namespace Goteo\Model {
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,
                     project.days as days,
-                    project.name as name,
                     $different_select
                     user.id as user_id,
                     user.name as user_name,
@@ -2861,19 +2867,19 @@ namespace Goteo\Model {
                 $proj->setDays();
 
                 //calculo de maxcost, min_cost sólo si hace falta
-                if(empty($proj->mincost)) {
+                if(!isset($proj->mincost)) {
                     $costs = self::calcCosts($proj->id);
                     $proj->mincost = $costs->mincost;
                     $proj->maxcost = $costs->maxcost;
                 }
 
                 //cálculo de mensajeros
-                if (empty($proj->num_messengers)) {
+                if (!isset($proj->num_messengers)) {
                     $proj->num_messengers = Message::numMessengers($proj->id);
                 }
 
                 //cálculo de número de cofinanciadores
-                if(empty($proj->num_investors)) {
+                if(!isset($proj->num_investors)) {
                     $proj->num_investors = Invest::numInvestors($proj->id);
                }
 

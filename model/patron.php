@@ -3,7 +3,9 @@ namespace Goteo\Model {
 
     use \Goteo\Library\Text,
         \Goteo\Model,
-        \Goteo\Library\Check;
+        \Goteo\Library\Check,
+        \Goteo\Model\User,
+        \Goteo\Model\Image;
 
     class Patron extends \Goteo\Core\Model {
 
@@ -37,18 +39,32 @@ namespace Goteo\Model {
                         IFNULL(patron_lang.description, patron.description) as description,
                         patron.link as link,
                         patron.order as `order`,
-                        patron.active as `active`
+                        patron.active as `active`,
+                        user.id as user_id,
+                        user.name as user_name,
+                        user.email as user_email,
+                        user.avatar as user_avatar
                     FROM    patron
                     LEFT JOIN patron_lang
                         ON patron_lang.id = patron.id
                         AND patron_lang.lang = :lang
                     INNER JOIN project
                         ON project.id = patron.project
+                    INNER JOIN user
+                        ON user.id=patron.user
                     WHERE patron.id = :id
                     AND patron.node = :node
                     ", array(':id'=>$id, ':node'=>$node, ':lang'=>$lang));
                 $patron = $query->fetchObject(__CLASS__);
-                $patron->user = Model\User::getMini($patron->user);
+
+                // datos del usuario. Eliminación de user::getMini
+                $user = new User;
+                $user->id = $patron->user_id;
+                $user->name = $patron->user_name;
+                $user->email = $patron->user_email;
+                $user->avatar = Image::get($patron->user_avatar);
+
+                $patron->user = $user;
 
                 return $patron;
         }
@@ -88,7 +104,11 @@ namespace Goteo\Model {
                     $different_select,
                     patron.link as link,
                     patron_order.order as `order`,
-                    patron.active as `active`
+                    patron.active as `active`,
+                    user.id as user_id,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar
                 FROM    patron
                 LEFT JOIN patron_lang
                     ON patron_lang.id = patron.id
@@ -98,6 +118,8 @@ namespace Goteo\Model {
                     ON patron_order.id = patron.user
                 INNER JOIN project
                     ON project.id = patron.project
+                INNER JOIN user
+                ON user.id = patron.user
                 WHERE patron.node = :node
                 $sqlFilter
                 ORDER BY `order` ASC, name ASC
@@ -107,7 +129,16 @@ namespace Goteo\Model {
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100, false);
-                $promo->user = Model\User::getMini($promo->user);
+               
+                // datos del usuario. Eliminación User::getMini
+ 
+                $user = new User;
+                $user->id = $promo->user_id;
+                $user->name = $promo->user_name;
+                $user->email = $promo->user_email;
+                $user->avatar = Image::get($promo->user_avatar);
+                $promo->user = $user;
+
                 $promo->status = $status[$promo->status];
                 $promos[] = $promo;
             }
@@ -131,12 +162,12 @@ namespace Goteo\Model {
 
              if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(patron_lang.title, patron.title) as title,
-                                    IFNULL(patron_lang.description, patron.description) as description";
+                                    IFNULL(patron_lang.description, patron.description) as patron_description";
                  $different_select_project=" IFNULL(project_lang.description, project.description) as description";
                 }
             else {
                 $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title)) as title,
-                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description)) as description";
+                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description)) as patron_description";
                 $eng_join=" LEFT JOIN patron_lang as eng
                                 ON  eng.id = patron.id
                                 AND eng.lang = 'en'";
@@ -149,6 +180,7 @@ namespace Goteo\Model {
             $sql = "SELECT
                         patron.project as project,
                         $different_select,
+                        project.name as name,
                         project.published as published,
                         project.created as created,
                         project.updated as updated,
@@ -267,7 +299,7 @@ namespace Goteo\Model {
                 }
                 //si no existe el numero de recomendaciones lo actualizamos
                 $user->num_patron_active = $item->num_patron_active;
-                if(empty($item->num_patron_active)) {
+                if(!isset($item->num_patron_active)) {
                     $nums = self::calcPatrons($item->id);
                     $user->num_patron_active = $nums->num_patron_active;
                 }
@@ -321,7 +353,7 @@ namespace Goteo\Model {
                     }
 
                     // solo en caso de que no tenga grabado el numero de proyectos apadrinados
-                    if (empty($item->num_patron_active)) {
+                    if (!isset($item->num_patron_active)) {
                         $patrons = static::calcPatrons($item->id);
                         $item->num_patron = $patrons->num_patron;
                         $item->num_patron_active = $patrons->num_patron_active;
@@ -351,21 +383,36 @@ namespace Goteo\Model {
             $values = array(':node' => $node, ':project'=>$project, ':lang'=>\LANG);
 
             $sql = "SELECT
-                        user,
+                        patron.user,
                         IFNULL(patron_lang.title, patron.title) as title,
                         IFNULL(patron_lang.description, patron.description) as description,
-                        patron.link as link
+                        patron.link as link,
+                        user.id as user_id,
+                        user.name as user_name,
+                        user.email as user_email,
+                        user.avatar as user_avatar
                     FROM patron
                     LEFT JOIN patron_lang
                         ON patron_lang.id = patron.id
                         AND patron_lang.lang = :lang
+                    INNER JOIN user
+                        ON user.id=patron.user
                     WHERE patron.project = :project
                     AND patron.active = 1
                     AND patron.node = :node
                     ORDER BY `order` ASC";
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $reco) {
-                $recoData = Model\User::getMini($reco['user']);
+                // datos del usuario. Eliminación User::getMini
+        
+                $user = new User;
+                $user->id = $reco['user_id'];
+                $user->name = $reco['user_name'];
+                $user->email = $reco['user_email'];
+                $user->avatar = Image::get($reco['user_avatar']);
+
+                $recoData = $user;
+
                 $vipData = Model\User\Vip::get($reco['user']);
                 if (!empty($vipData->image)) {
                     $recoData->avatar = $vipData->image;

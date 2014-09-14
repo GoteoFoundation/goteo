@@ -200,7 +200,7 @@ namespace Goteo\Controller {
 
 
                 // verificación de impulsor
-                if ($project->owner == $formData['user']) {
+                if ($projectData->owner == $formData['user']) {
                     Message::Error(Text::get('invest-owner-error'));
                     throw new Redirection("/bazaar/{$item->id}/fail");
                 }

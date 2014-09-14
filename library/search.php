@@ -2,50 +2,13 @@
 
 namespace Goteo\Library {
 
-    use Goteo\Core\Model,
-        Goteo\Model\Project;
+    use Goteo\Model\Project;
 
 	/*
 	 * Clase para realizar búsquedas de proyectos
 	 *
 	 */
     class Search {
-
-        /**
-         * Metodo para buscar un textxto entre todos los contenidos de texto de un proyecto
-         * @param string $value
-         * @return array results
-         */
-		public static function text ($value) {
-
-            $results = array();
-
-            $values = array(':text'=>"%$value%");
-
-            $sql = "SELECT id
-                    FROM project
-                    WHERE status > 2
-                    AND (name LIKE :text
-                        OR description LIKE :text
-                        OR motivation LIKE :text
-                        OR about LIKE :text
-                        OR goal LIKE :text
-                        OR related LIKE :text
-                        OR keywords LIKE :text
-                        OR location LIKE :text
-                        )
-                    ORDER BY name ASC";
-
-            try {
-                $query = Model::query($sql, $values);
-                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $match) {
-                    $results[] = Project::getMedium($match->id);
-                }
-                return $results;
-            } catch (\PDOException $e) {
-                throw new Exception('Fallo la sentencia de busqueda');
-            }
-		}
 
         /**
          * Metodo para realizar una busqueda por parametros
@@ -57,10 +20,12 @@ namespace Goteo\Library {
 
             $results = array();
             $where   = array();
-            $values  = array();
+            $values  = array(':lang' => \LANG);
 
+
+            // @TODO : estos siguientes deberían ser JOINs
             if (!empty($params['category'])) {
-                $where[] = 'AND id IN (
+                $where[] = 'AND project.id IN (
                                     SELECT distinct(project)
                                     FROM project_category
                                     WHERE category IN ('. implode(', ', $params['category']) . ')
@@ -68,11 +33,11 @@ namespace Goteo\Library {
             }
 
             if (!empty($params['location'])) {
-                $where[] = 'AND MD5(project_location) IN ('. implode(', ', $params['location']) .')';
+                $where[] = 'AND MD5(project.project_location) IN ('. implode(', ', $params['location']) .')';
             }
 
             if (!empty($params['reward'])) {
-                $where[] = 'AND id IN (
+                $where[] = 'AND project.id IN (
                                     SELECT DISTINCT(project)
                                     FROM reward
                                     WHERE icon IN ('. implode(', ', $params['reward']) . ')
@@ -80,52 +45,101 @@ namespace Goteo\Library {
             }
 
             if (!empty($params['query'])) {
-                $where[] = ' AND (name LIKE :text
-                                OR description LIKE :text
-                                OR motivation LIKE :text
-                                OR about LIKE :text
-                                OR goal LIKE :text
-                                OR related LIKE :text
-                                OR keywords LIKE :text
-                                OR location LIKE :text
+                $where[] = ' AND (project.name LIKE :text
+                                OR project.description LIKE :text
+                                OR project.motivation LIKE :text
+                                OR project.about LIKE :text
+                                OR project.goal LIKE :text
+                                OR project.related LIKE :text
+                                OR project.keywords LIKE :text
+                                OR project.location LIKE :text
                             )';
                 $values[':text'] = "%{$params['query']}%";
             }
 
             
             if (!empty($params['node'])) {
-                $where[] = ' AND node = :node';
+                $where[] = ' AND project.node = :node';
                 $values[':node'] = NODE_ID;
             }
 
             if (!empty($params['status'])) {
-                $where[] = ' AND status = :status';
+                $where[] = ' AND project.status = :status';
                 $values[':status'] = $params['status'];
             }
 
             $minstatus = ($showall) ? '1' : '2';
             $maxstatus = ($showall) ? '4' : '7';
 
-            $sql = "SELECT id
-                    FROM project
-                    WHERE status > $minstatus
-                    AND status < $maxstatus
-                    ";
-            
-            if (!empty($where)) {
-                $sql .= implode (' ', $where);
+            $different_select="project.popularity as popularity,";
+
+            if(Project::default_lang(\LANG)=='es') {
+                $different_select2=" IFNULL(project_lang.description, project.description) as description";
+            }
+            else {
+                $different_select2=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+                $eng_join=" LEFT JOIN project_lang as eng
+                                ON  eng.id = project.id
+                                AND eng.lang = 'en'";
             }
 
-            $sql .= " ORDER BY status ASC, name ASC";
+            $sql ="
+                SELECT
+                    project.id as project,
+                    $different_select2,
+                    project.status as status,
+                    project.published as published,
+                    project.created as created,
+                    project.updated as updated,
+                    project.success as success,
+                    project.closed as closed,
+                    project.mincost as mincost,
+                    project.maxcost as maxcost,
+                    project.amount as amount,
+                    project.image as image,
+                    project.gallery as gallery,
+                    project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
+                    project.days as days,
+                    project.name as name,
+                    $different_select
+                    user.id as user_id,
+                    user.name as user_name,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
+                FROM  project
+                INNER JOIN user
+                    ON user.id = project.owner
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
+                LEFT JOIN project_lang
+                            ON  project_lang.id = project.id
+                            AND project_lang.lang = :lang
+                $eng_join
+                WHERE project.status > $minstatus
+                    AND project.status < $maxstatus
+                ";
+
+            if (!empty($where)) {
+                $sql .= implode ('
+                ', $where);
+            }
+
+            $sql .= " ORDER BY project.status ASC, project.name ASC";
             // Limite
             if (!empty($limit) && \is_numeric($limit)) {
                 $sql .= " LIMIT $limit";
             }
 
+//            die(\sqldbg($sql, $values));
+
             try {
-                $query = Model::query($sql, $values);
-                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $match) {
-                    $results[] = Project::getMedium($match->id);
+                $query = Project::query($sql, $values);
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
+                    $results[] = Project::getWidget($row);
                 }
                 return $results;
             } catch (\PDOException $e) {

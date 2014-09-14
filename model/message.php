@@ -3,7 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Text,
-        Goteo\Library\Feed;
+        Goteo\Library\Feed,
+        Goteo\Model\Image;
 
     class Message extends \Goteo\Core\Model {
 
@@ -23,15 +24,32 @@ namespace Goteo\Model {
          *  Devuelve datos de un mensaje
          */
         public static function get ($id) {
-                $query = static::query("
-                    SELECT  *
+
+                $sql="
+                    SELECT  message.*,
+                            user.id as user_id,
+                            user.name as user_name,
+                            user.email as user_email,
+                            user.avatar as user_avatar
                     FROM    message
-                    WHERE   id = :id
-                    ", array(':id' => $id));
+                    INNER JOIN user
+                    ON user.id=message.user
+                    WHERE   message.id = :id
+                    ";
+
+                $query = static::query($sql, array(':id' => $id));
                 $message = $query->fetchObject(__CLASS__);
                 
-                // datos del usuario
-                $message->user = User::getMini($message->user);
+                // datos del usuario. Eliminación de user::getMini
+        
+                $user = new User;
+                $user->id = $message->user_id;
+                $user->name = $message->user_name;
+                $user->email = $message->user_email;
+                $user->avatar = Image::get($message->user_avatar);
+
+                $message->user = $user;
+
 
                 // reconocimiento de enlaces y saltos de linea
                 $message->message = nl2br(Text::urlink($message->message));
@@ -85,8 +103,14 @@ namespace Goteo\Model {
                     message.date as date,
                     $different_select,
                     message.blocked as blocked,
-                    message.closed as closed
+                    message.closed as closed,
+                    user.id as user_id,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar
                 FROM  message
+                INNER JOIN user
+                ON user.id=message.user
                 LEFT JOIN message_lang
                     ON  message_lang.id = message.id
                     AND message_lang.lang = :lang
@@ -97,8 +121,16 @@ namespace Goteo\Model {
                 ";
             $query = static::query($sql, array(':project'=>$project, ':lang'=>$lang));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
-                // datos del usuario
-                $message->user = User::getMini($message->user);
+                
+                // datos del usuario. Eliminación User::getMini
+        
+                $user = new User;
+                $user->id = $message->user_id;
+                $user->name = $message->user_name;
+                $user->email = $message->user_email;
+                $user->avatar = Image::get($message->user_avatar);
+
+                $message->user = $user;
                 
                 // reconocimiento de enlaces y saltos de linea
                 $message->message = nl2br(Text::urlink($message->message));
@@ -311,10 +343,17 @@ namespace Goteo\Model {
             $sql = "SELECT 
                         message.user as user,
                         message.message as text,
-                        respond.message as thread_text
+                        respond.message as thread_text,
+                        user.id as user_id,
+                        user.name as user_name,
+                        user.email as user_email,
+                        user.avatar as user_avatar
+
                     FROM message
                     LEFT JOIN message as respond
                         ON respond.id = message.thread
+                    INNER JOIN user
+                        ON user.id=message.user
                     WHERE message.project = :id";
             $query = self::query($sql, array(':id'=>$id));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $msg) {
@@ -327,7 +366,14 @@ namespace Goteo\Model {
                 if (isset($list[$msg->user])) {
                     $list[$msg->user]->messages[] = $msgData;
                 } else {
-                    $user = User::getMini($msg->user);
+                    //Eliminación User::getMini
+                   
+                    $user = new User;
+                    $user->id = $msg->user_id;
+                    $user->name = $msg->user_name;
+                    $user->email = $msg->user_email;
+                    $user->avatar = Image::get($msg->user_avatar);
+
                     $user->messages = array();
                     $user->messages[] = $msgData;
                     $list[$msg->user] = $user;

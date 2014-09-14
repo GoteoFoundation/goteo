@@ -265,7 +265,7 @@ namespace Goteo\Controller\Admin {
                 array(
                     'folder' => 'news',
                     'file' => 'list',
-                    'news' => $model::getAll()
+                    'news' => $model::getList()
                 )
             );
             

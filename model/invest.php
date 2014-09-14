@@ -814,6 +814,74 @@ namespace Goteo\Model {
             return $investors;
         }
 
+        /*
+         * Aportes individuales a un proyecto
+         */
+        public static function myInvestors ($owner, $limit = 999) {
+            $investors = array();
+
+            $sql = "
+                SELECT
+                    invest.user as id,
+                    invest.user as user,
+                    user.name as name,
+                    user.avatar as avatar,
+                    user.worth as worth,
+                    user.num_invested as projects,
+                    SUM(invest.amount) as amount,
+                    DATE_FORMAT(invest.invested, '%d/%m/%Y') as date,
+                    user.hide as hide,
+                    invest.anonymous as anonymous
+                FROM    invest
+                INNER JOIN project
+                    ON project.id = invest.project
+                    AND project.owner = :id
+                    AND project.status > 2
+                INNER JOIN user
+                    ON  user.id = invest.user
+                WHERE   (invest.campaign IS NULL OR invest.campaign = '' )
+                AND     invest.status IN ('0', '1', '3', '4')
+                GROUP BY invest.user
+                ORDER BY amount DESC
+                LIMIT {$limit}
+                ";
+
+            $values = array(':id'=>$owner);
+
+            //die(\sqldbg($sql, $values));
+
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User') as $investor) {
+
+                // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
+                if ( $investor->hide == 1 || $investor->anonymous == 1 ) {
+                    // mantenemos la fecha del anonimo mas reciente
+                    $investor->date = empty($investors['anonymous']->date) ? $investor->date : $investors['anonymous']->date;
+                    $investor->user = 'anonymous';
+                    $investors->avatar = 1;
+                    $investors->name = Text::get('regular-anonymous');
+                }
+
+                $investors[$investor->user] = (object) array(
+                    'user' => $investor->user,
+                    'name' => $investor->name,
+                    'projects' => (isset($investor->projects)) ? $investor->projects : $investor->get_numInvested,
+                    'avatar' => Image::get($investor->avatar),
+                    'worth' => (isset($investor->worth)) ? $investor->worth : $investor->get_worth,
+                    'amount' => $investor->amount,
+                    'date' => $investor->date
+                );
+
+
+            }
+
+            return $investors;
+        }
+
+        /*
+         *  Numero de inversores en un proyecto
+         */
         public static function numInvestors ($project) {
 
             $debug = false;
@@ -1648,8 +1716,13 @@ namespace Goteo\Model {
                         invest.id as invest,
                         invest.user as user,
                         invest.amount as amount,
-                        invest.status as status
+                        invest.status as status,
+                        user.id as user_id,
+                        user.name as user_name,
+                        user.email as user_email
                     FROM invest
+                    INNER JOIN user
+                        ON user.id=invest.user
                     WHERE invest.project = :id
                     AND invest.issue = 1
                     $sqlFilter
@@ -1663,9 +1736,10 @@ namespace Goteo\Model {
                 if (in_array($item->id, $drops))
                     $item->statusName .= ' (CAPITAL RIEGO)';
 
-                $user = User::getMini($item->user);
-                $item->userName = $user->name;
-                $item->userEmail = $user->email;
+                // datos del usuario. Eliminación de user::getMini
+
+                $item->userName = $item->user_name;
+                $item->userEmail = $item->user_email;
 
                 $list[] = $item;
             }

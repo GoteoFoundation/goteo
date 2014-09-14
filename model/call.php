@@ -286,16 +286,16 @@ namespace Goteo\Model {
                 $call->icons = Call\Icon::get($id);
 
                 // proyectos (solo se cargan en la página de listado de proyectos)
-                if (empty($call->num_projects)) {
+                if (!isset($call->num_projects)) {
                     $call->num_projects = Call\Project::numProjects($id);
                 }
                 // $call->projects = Call\Project::get($id, array('published'=>true));
 
                 // cuantos en campaña (status 3) y cuantos exitosos (status 4 o 5)
-                if (empty($call->running_projects)) {
+                if (!isset($call->running_projects)) {
                     $call->running_projects = Call\Project::numRunningProjects($id);
                 }
-                if (empty($call->success_projects)) {
+                if (!isset($call->success_projects)) {
                     $call->success_projects = Call\Project::numSuccessProjects($id);
                 }
 
@@ -326,17 +326,17 @@ namespace Goteo\Model {
                 $keepUpdated = true;
 
                 // riego comprometido
-                if (empty($call->used) || $keepUpdated) {
+                if (!isset($call->used) || $keepUpdated) {
                     $call->used = $call->getUsed();
                 }
 
                 // riego restante
-                if (empty($call->rest) || $keepUpdated) {
+                if (!isset($call->rest) || $keepUpdated) {
                     $call->rest = $call->getRest($call->used);
                 }
 
                 // proyectos asignados
-                if (empty($call->applied)) {
+                if (!isset($call->applied)) {
                     // número de proyectos presentados a la campaña
                     $applied = $call->getConf('applied');
                     $call->applied = (isset($applied)) ? $applied : $call->getApplied();
@@ -904,7 +904,7 @@ namespace Goteo\Model {
                 }
                 return $id;
             } catch (\PDOException $e) {
-                throw new Goteo\Core\Exception('Fallo al verificar id única para la convocatoria. ' . $e->getMessage());
+                throw new Exception('Fallo al verificar id única para la convocatoria. ' . $e->getMessage());
             }
         }
 
@@ -1026,17 +1026,17 @@ namespace Goteo\Model {
                 // campos calculados
 
                 // riego comprometido
-                if (empty($call->used)) {
+                if (!isset($call->used)) {
                     $call->used = $call->getUsed();
                 }
 
                 // riego restante
-                if (empty($call->rest)) {
+                if (!isset($call->rest)) {
                     $call->rest = $call->getRest($call->used);
                 }
 
                 // proyectos asignados
-                if (empty($call->applied)) {
+                if (!isset($call->applied)) {
                     // número de proyectos presentados a la campaña
                     $applied = $call->getConf('applied');
                     $call->applied = (isset($applied)) ? $applied : $call->getApplied();
@@ -1062,9 +1062,9 @@ namespace Goteo\Model {
 
             // en aplicación, en campaña o finalizadas
             if ($wProj) {
-                $sqlFilter .= " WHERE call.status > 2";
+                $sqlFilter = " WHERE call.status > 2";
             } else {
-                $sqlFilter .= " WHERE call.status IN ('1', '2', '3', '4')"; // desde edicion hasta en campaña
+                $sqlFilter = " WHERE call.status IN ('1', '2', '3', '4')"; // desde edicion hasta en campaña
             }
 
             $sql = "SELECT call.id, call.name
@@ -1072,7 +1072,7 @@ namespace Goteo\Model {
                     $sqlFilter
                     ORDER BY name ASC";
 
-            $query = self::query($sql, $values);
+            $query = self::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $call) {
                 $calls[$call->id] = $call->name;
             }
@@ -1129,13 +1129,13 @@ namespace Goteo\Model {
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
                     case 'updated':
-                        $sqlOrder .= " ORDER BY updated DESC";
+                        $sqlOrder = " ORDER BY updated DESC";
                         break;
                     case 'name':
-                        $sqlOrder .= " ORDER BY name ASC";
+                        $sqlOrder = " ORDER BY name ASC";
                         break;
                     default:
-                        $sqlOrder .= " ORDER BY {$filters['order']}";
+                        $sqlOrder = " ORDER BY {$filters['order']}";
                         break;
                 }
             }
@@ -1351,7 +1351,6 @@ namespace Goteo\Model {
                 $errors['userPersonal']['address'] = Text::get('mandatory-project-field-address');
             } else {
                 $okeys['userPersonal']['address'] = 'ok';
-                ++$score;
             }
 
             if (empty($this->zipcode)) {
@@ -1565,8 +1564,13 @@ namespace Goteo\Model {
 
             // si solo contamos
             $sqlS = ($justCount) ? 'COUNT(DISTINCT(invest.user))' : 'DISTINCT(invest.user) as id';
-            $sql = "SELECT $sqlS
+            $sql = "SELECT $sqlS,
+                           user.id as user_id,
+                           user.name as user_name,
+                           user.avatar as user_avatar
                     FROM  invest
+                    LEFT JOIN user
+                    ON user.id=invest.id
                     WHERE invest.call = :id
                     AND invest.status IN ('0', '1', '3')
                     AND invest.droped IS NOT NULL
@@ -1591,7 +1595,14 @@ namespace Goteo\Model {
                 $list = array();
                 $query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
-                    $list[] = User::getMini($item->id);
+                    // owner
+                    $user = new User;
+                    $user->name = $item->user_name;
+                    $user->id = $item->id;
+                    $user->avatar = Image::get($item->user_avatar);
+
+                    $list[] = $user;
+
                 }
                 return $list;
             }

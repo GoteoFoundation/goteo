@@ -35,7 +35,7 @@ switch ($this['type']) {
             $text = Text::recorta($item->text, 200);
             $list[] = "
 				<div>
-					<!--span class='avatar'><img src='" . SITE_URL . "/image/$item->user->avatar->id/50/50/1' alt='' /></span-->
+					<!--span class='avatar'><img src='" . $item->user->avatar->getLink(50, 50, true) . "' alt='' /></span-->
 					<span class='date'>{$item->date}</span>
 					<div class='high-comment'>
 						<strong><a href=\"/blog/{$item->post}\">{$item->user->name}</a></strong>

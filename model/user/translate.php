@@ -297,18 +297,17 @@ namespace Goteo\Model\User {
              $array = array ();
             try {
                $sql = "SELECT 
-                            DISTINCT(user) as id
+                            DISTINCT(user) as id,
+                            user.name as user_name
                         FROM user_translate
+                        LEFT JOIN user
+                        ON user.id=user_translate.user
                         WHERE type = :type
                         AND item = :item
                         ";
                 $query = static::query($sql, array(':type'=>$type, ':item'=>$item));
                 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-
-                    // nombre i avatar
-                    $user = \Goteo\Model\User::getMini($row['id']);
-
-                    $array[$row['id']] = $user->name;
+                    $array[$row['id']] = $row['user_name'];
                 }
 
                 return $array;

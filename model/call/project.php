@@ -346,7 +346,7 @@ namespace Goteo\Model\Call {
                     $call->user = $user;
 
                     // proyectos asignados
-                    if (empty($call->applied)) {
+                    if (!isset($call->applied)) {
                         $call->applied = $call->getApplied();
                     }
 

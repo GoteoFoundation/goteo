@@ -56,10 +56,13 @@ namespace Goteo\Model\Blog {
                         post.publish as publish,
                         post.home as home,
                         post.footer as footer,
-                        post.author as author,
                         CONCAT(blog.type, '-', blog.owner) as owner,
+                        post.num_comments as num_comments,
                         blog.type as owner_type,
-                        blog.owner as owner_id
+                        blog.owner as owner_id,
+                        IFNULL ( project.owner, post.author ) as author,
+                        IFNULL( impulsor.name, user.name ) as user_name,
+                        IFNULL (project.name, node.name )  as owner_name
                     FROM    post
                     INNER JOIN blog
                         ON  blog.id = post.blog
@@ -67,15 +70,25 @@ namespace Goteo\Model\Blog {
                         ON  post_lang.id = post.id
                         AND post_lang.lang = :lang
                         AND post_lang.blog = post.blog
+                    LEFT JOIN user
+                        ON user.id=post.author
+                    LEFT JOIN project
+                            ON project.id = blog.owner
+                            AND blog.type = 'project'
+                    LEFT JOIN user as impulsor
+                          ON impulsor.id = project.owner
+                          AND blog.type = 'project'
+                    LEFT JOIN node
+                            ON node.id = blog.owner
+                            AND blog.type = 'node'
                     WHERE post.id = :id
                     ", array(':id' => $id, ':lang'=>$lang));
 
                 $post = $query->fetchObject(__CLASS__);
 
-                // video
-                if (isset($post->media)) {
-                    $post->media = new Media($post->media);
-                }
+
+                $post->user   = new User;
+                $post->user->name = $post->user_name;
 
                 // campo calculado gallery
                 if (!empty($post->gallery) && $post->gallery !== 'empty') {
@@ -94,8 +107,16 @@ namespace Goteo\Model\Blog {
                     $post->image = null;
                 }
 
+                // video
+                if (isset($post->media)) {
+                    $post->media = new Media($post->media);
+                }
+
                 $post->comments = Post\Comment::getAll($id);
-                $post->num_comments = count($post->comments);
+
+                if (!isset($post->num_comments)) {
+                       $post->num_comments = Post\Comment::getCount($post->id);
+                }
 
                 //tags
                 $post->tags = Post\Tag::getAll($id);
@@ -104,14 +125,44 @@ namespace Goteo\Model\Blog {
                 if(strip_tags($post->text) == $post->text)
                     $post->text = nl2br(Text::urlink($post->text));
 
-                // autor
-                if (!empty($post->author)) {
-                    $post->user = User::getMini($post->author);
-                } else if ($post->owner_type == 'project') {
-                    $post->project = Project::getMini($post->owner_id);
-                    $post->user = $post->project->user;
-                    $post->author = $post->project->user->id;
-                }
+                return $post;
+        }
+
+        /*
+         *  Devuelve datos básicos de una entrada
+         */
+        public static function getMini ($id) {
+
+            $lang = \LANG;
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'post_lang', $lang);
+
+                $query = static::query("
+                    SELECT
+                        post.id as id,
+                        post.blog as blog,
+                        IFNULL(post_lang.title, post.title) as title,
+                        IFNULL(post_lang.text, post.text) as text,
+                        post.image as `image`,
+                        post.date as `date`,
+                        DATE_FORMAT(post.date, '%d | %m | %Y') as fecha
+                        blog.type as owner_type,
+                        blog.owner as owner_id
+                    FROM    post
+                    INNER JOIN blog
+                        ON  blog.id = post.blog
+                    LEFT JOIN post_lang
+                        ON  post_lang.id = post.id
+                        AND post_lang.lang = :lang
+                        AND post_lang.blog = post.blog
+                    LEFT JOIN node
+                            ON node.id = blog.owner
+                            AND blog.type = 'node'
+                    WHERE post.id = :id
+                    ", array(':id' => $id, ':lang'=>$lang));
+
+                $post = $query->fetchObject(__CLASS__);
 
                 return $post;
         }
@@ -156,17 +207,31 @@ namespace Goteo\Model\Blog {
                     post.publish as publish,
                     post.home as home,
                     post.footer as footer,
-                    post.author as author,
+                    post.num_comments as num_comments,
                     blog.type as owner_type,
-                    blog.owner as owner_id
+                    blog.owner as owner_id,
+                    IFNULL ( project.owner, post.author ) as author,
+                    IFNULL( impulsor.name, user.name ) as user_name,
+                    IFNULL (project.name, node.name )  as owner_name
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
+                LEFT JOIN user
+                        ON user.id=post.author
                 LEFT JOIN post_lang
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
                     AND post_lang.blog = post.blog
                 $eng_join
+                LEFT JOIN project
+                        ON project.id = blog.owner
+                        AND blog.type = 'project'
+                LEFT JOIN user as impulsor
+                      ON impulsor.id = project.owner
+                      AND blog.type = 'project'
+                LEFT JOIN node
+                        ON node.id = blog.owner
+                        AND blog.type = 'node'
                 ";
             if (!empty($blog)) {
                 $sql .= " WHERE post.blog = :blog
@@ -181,7 +246,7 @@ namespace Goteo\Model\Blog {
                 $sql .= " AND post.publish = 1
                 ";
                 if (empty($blog)) {
-                $sql .= " AND blog.owner IN (SELECT id FROM node WHERE active = 1)
+                $sql .= " AND node.active = 1
                     AND blog.owner != 'testnode'
                 ";
                 }
@@ -192,9 +257,14 @@ namespace Goteo\Model\Blog {
                 $sql .= "LIMIT $limit";
             }
 
+//            die(\sqldbg($sql, $values));
+
             $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
+
+                $post->user   = new User;
+                $post->user->name = $post->user_name;
 
                 // campo calculado gallery
                 if (!empty($post->gallery) && $post->gallery !== 'empty') {
@@ -218,32 +288,15 @@ namespace Goteo\Model\Blog {
                     $post->media = new Media($post->media);
                 }
 
-                $post->num_comments = Post\Comment::getCount($post->id);
-
+                if (!isset($post->num_comments)) {
+                      $post->num_comments = Post\Comment::getCount($post->id);
+                }
+               
                 $post->tags = Post\Tag::getAll($post->id);
 
                 // agregamos html si es texto plano
                 if(strip_tags($post->text) == $post->text)
                     $post->text = nl2br(Text::urlink($post->text));
-
-                // reconocimiento de enlaces y saltos de linea
-//                $post->text = nl2br(Text::urlink($post->text));
-
-                // datos del autor
-                switch ($post->owner_type) {
-                    case 'project':
-                        $proj_blog = Project::getMini($post->owner_id);
-                        $post->author = $proj_blog->owner;
-                        $post->user   = $proj_blog->user;
-                        $post->owner_name = $proj_blog->name;
-                        break;
-
-                    case 'node':
-                        $post->user   = User::getMini($post->author);
-                        $node_blog = Node::get($post->owner_id);
-                        $post->owner_name = $node_blog->name;
-                        break;
-                }
 
                 $list[$post->id] = $post;
             }
@@ -288,9 +341,12 @@ namespace Goteo\Model\Blog {
                     post.publish as publish,
                     post.home as home,
                     post.footer as footer,
-                    post.author as author,
+                    post.num_comments as num_comments,
                     blog.type as owner_type,
-                    blog.owner as owner_id
+                    blog.owner as owner_id,
+                    IFNULL ( project.owner, post.author ) as author,
+                    IFNULL( impulsor.name, user.name ) as user_name,
+                    IFNULL (project.name, node.name )  as owner_name
                 FROM    post
                 INNER JOIN blog
                     ON  blog.id = post.blog
@@ -298,7 +354,18 @@ namespace Goteo\Model\Blog {
                     ON  post_lang.id = post.id
                     AND post_lang.lang = :lang
                     AND post_lang.blog = post.blog
+                LEFT JOIN user
+                        ON user.id=post.author
                 $eng_join
+                LEFT JOIN project
+                        ON project.id = blog.owner
+                        AND blog.type = 'project'
+                LEFT JOIN user as impulsor
+                      ON impulsor.id = project.owner
+                      AND blog.type = 'project'
+                LEFT JOIN node
+                        ON node.id = blog.owner
+                        AND blog.type = 'node'
                 ";
 
             if (in_array($filters['show'], array('all', 'home', 'footer'))) {
@@ -375,6 +442,9 @@ namespace Goteo\Model\Blog {
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
 
+                $post->user   = new User;
+                $post->user->name = $post->user_name;
+
                 // campo calculado gallery
                 if (!empty($post->gallery) && $post->gallery !== 'empty') {
                     $post->gallery = Image::getGallery($post->gallery);
@@ -397,22 +467,8 @@ namespace Goteo\Model\Blog {
                     $post->media = new Media($post->media);
                 }
 
-                $post->num_comments = Post\Comment::getCount($post->id);
-
-                // datos del autor del  post
-                switch ($post->owner_type) {
-                    case 'project':
-                        $proj_blog = Project::getMini($post->owner_id);
-                        $post->author = $proj_blog->owner;
-                        $post->user   = $proj_blog->user;
-                        $post->owner_name = $proj_blog->name;
-                        break;
-
-                    case 'node':
-                        $post->user   = User::getMini($post->author);
-                        $node_blog = Node::get($post->owner_id);
-                        $post->owner_name = $node_blog->name;
-                        break;
+                if (!isset($post->num_comments)) {
+                    $post->num_comments = Post\Comment::getCount($post->id);
                 }
 
                 $list[$post->id] = $post;
