@@ -571,9 +571,12 @@ namespace Goteo\Model {
                 SELECT
                     project.id as id,
                     project.id as project,
+                    project.name as name,
+                    project.description as description,
                     project.status as status,
                     project.published as published,
                     project.created as created,
+                    project.success as success,
                     project.updated as updated,
                     project.mincost as mincost,
                     project.maxcost as maxcost,
@@ -584,7 +587,6 @@ namespace Goteo\Model {
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,
                     project.days as days,
-                    project.name as name,
                     project.owner as owner,
                     user.id as user_id,
                     user.name as user_name,
@@ -2487,6 +2489,7 @@ namespace Goteo\Model {
             $sql ="
                 SELECT
                     project.id as project,
+                    project.name as name,
                     $different_select2,
                     project.status as status,
                     project.published as published,
@@ -2503,7 +2506,6 @@ namespace Goteo\Model {
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,
                     project.days as days,
-                    project.name as name,
                     $different_select
                     user.id as user_id,
                     user.name as user_name,
