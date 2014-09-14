@@ -457,19 +457,19 @@ namespace Goteo\Model {
                 // campos calculados para los números del menu
 
                 //consultamos y actualizamos el numero de inversores
-                if($project->status >= 3 && $project->amount > 0 && empty($project->num_investors)) {
+                if($project->status >= 3 && $project->amount > 0 && !isset($project->num_investors)) {
                     $project->num_investors = Invest::numInvestors($id);
                 }
 
                 //mensajes y mensajeros
                 // solo cargamos mensajes en la vista mensajes
-                if ($project->status >= 3 && empty($project->num_messengers)) {
+                if ($project->status >= 3 && !isset($project->num_messengers)) {
                     $project->num_messengers = Message::numMessengers($id);
                 }
 
                 // novedades
                 // solo cargamos blog en la vista novedades
-                if ($project->status >= 3 && empty($project->num_posts)) {
+                if ($project->status >= 3 && !isset($project->num_posts)) {
                     $project->num_posts =  Blog\Post::numPosts($id);
                 }
 
@@ -749,31 +749,6 @@ namespace Goteo\Model {
                 //de momento... habria que mejorarlo
                 $Widget->categories = Project\Category::getNames($Widget->id, 2);
                 $Widget->rewards = Project\Reward::getWidget($Widget->id);
-
-            /*
-            // esto no hace falta en el widget
-                if(!empty($project->num_investors)) {
-                    $Widget->num_investors = $project->num_investors;
-                } else {
-                    $Widget->num_investors = Invest::numInvestors($project->project);
-                }
-
-                //mensajes y mensajeros
-                // solo cargamos mensajes en la vista mensajes
-                if (!empty($project->num_messengers)) {
-                    $Widget->num_messengers = $project->num_messengers;
-                } else {
-                    $Widget->num_messengers = Message::numMessengers($project->project);
-                }
-
-                // novedades
-                // solo cargamos blog en la vista novedades
-                if (!empty($project->num_posts)) {
-                    $Widget->num_posts = $project->num_posts;
-                } else {
-                    $Widget->num_posts =  Blog\Post::numPosts($project->project);
-                }
-*/
 
                 if(!empty($project->mincost) && !empty($project->maxcost)) {
                     $Widget->mincost = $project->mincost;
@@ -2890,19 +2865,19 @@ namespace Goteo\Model {
                 $proj->setDays();
 
                 //calculo de maxcost, min_cost sólo si hace falta
-                if(empty($proj->mincost)) {
+                if(!isset($proj->mincost)) {
                     $costs = self::calcCosts($proj->id);
                     $proj->mincost = $costs->mincost;
                     $proj->maxcost = $costs->maxcost;
                 }
 
                 //cálculo de mensajeros
-                if (empty($proj->num_messengers)) {
+                if (!isset($proj->num_messengers)) {
                     $proj->num_messengers = Message::numMessengers($proj->id);
                 }
 
                 //cálculo de número de cofinanciadores
-                if(empty($proj->num_investors)) {
+                if(!isset($proj->num_investors)) {
                     $proj->num_investors = Invest::numInvestors($proj->id);
                }
 

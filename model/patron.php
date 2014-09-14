@@ -299,7 +299,7 @@ namespace Goteo\Model {
                 }
                 //si no existe el numero de recomendaciones lo actualizamos
                 $user->num_patron_active = $item->num_patron_active;
-                if(empty($item->num_patron_active)) {
+                if(!isset($item->num_patron_active)) {
                     $nums = self::calcPatrons($item->id);
                     $user->num_patron_active = $nums->num_patron_active;
                 }
@@ -353,7 +353,7 @@ namespace Goteo\Model {
                     }
 
                     // solo en caso de que no tenga grabado el numero de proyectos apadrinados
-                    if (empty($item->num_patron_active)) {
+                    if (!isset($item->num_patron_active)) {
                         $patrons = static::calcPatrons($item->id);
                         $item->num_patron = $patrons->num_patron;
                         $item->num_patron_active = $patrons->num_patron_active;
