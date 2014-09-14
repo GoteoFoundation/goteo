@@ -131,6 +131,7 @@ namespace Goteo\Controller\Admin {
                             // Evento Feed
                             $log = new Feed();
                             $log->setTarget('goteo', 'blog');
+                            $log->setPost($post->id);
                             $log->populate('nueva entrada blog Goteo (admin)', '/admin/blog',
                                 \vsprintf('El admin %s ha %s en el blog Goteo la entrada "%s"', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -147,7 +148,7 @@ namespace Goteo\Controller\Admin {
                             unset($log);
                         } else {
                             //sino lo quitamos
-                            \Goteo\Core\Model::query("DELETE FROM feed WHERE url = '/blog/{$post->id}' AND scope = 'public' AND type = 'goteo'");
+                            \Goteo\Core\Model::query("DELETE FROM feed WHERE post = '{$post->id}' AND scope = 'public' AND type = 'goteo'");
                         }
 
                         // tratar si han marcado pendiente de traducir

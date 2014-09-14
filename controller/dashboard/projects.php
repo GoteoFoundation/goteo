@@ -537,6 +537,7 @@ namespace Goteo\Controller\Dashboard {
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($project->id);
+                    $log->setPost($post->id);
                     $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/project/' . $project->id . '/updates/' . $post->id,
                             \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
