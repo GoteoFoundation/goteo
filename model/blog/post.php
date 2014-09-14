@@ -129,6 +129,45 @@ namespace Goteo\Model\Blog {
         }
 
         /*
+         *  Devuelve datos básicos de una entrada
+         */
+        public static function getMini ($id) {
+
+            $lang = \LANG;
+
+                //Obtenemos el idioma de soporte
+                $lang=self::default_lang_by_id($id, 'post_lang', $lang);
+
+                $query = static::query("
+                    SELECT
+                        post.id as id,
+                        post.blog as blog,
+                        IFNULL(post_lang.title, post.title) as title,
+                        IFNULL(post_lang.text, post.text) as text,
+                        post.image as `image`,
+                        post.date as `date`,
+                        DATE_FORMAT(post.date, '%d | %m | %Y') as fecha
+                        blog.type as owner_type,
+                        blog.owner as owner_id
+                    FROM    post
+                    INNER JOIN blog
+                        ON  blog.id = post.blog
+                    LEFT JOIN post_lang
+                        ON  post_lang.id = post.id
+                        AND post_lang.lang = :lang
+                        AND post_lang.blog = post.blog
+                    LEFT JOIN node
+                            ON node.id = blog.owner
+                            AND blog.type = 'node'
+                    WHERE post.id = :id
+                    ", array(':id' => $id, ':lang'=>$lang));
+
+                $post = $query->fetchObject(__CLASS__);
+
+                return $post;
+        }
+
+        /*
          * Lista de entradas
          * de mas nueva a mas antigua
          * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'

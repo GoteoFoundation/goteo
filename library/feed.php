@@ -26,7 +26,8 @@ namespace Goteo\Library {
             $text,  // id del texto dinamico
             $params,  // (array serializado en bd) parametros para el texto dinamico
             $target_type, // tipo de objetivo del evento (user, project, call, node, etc..) normalmente project
-            $target_id; // id registro del objetivo (normalmente varchar(50))
+            $target_id, // id registro del objetivo (normalmente varchar(50))
+            $post = null; // id entrada de blog relacionada
 
         static public $admin_types = array(
             'all' => array(
@@ -135,6 +136,11 @@ namespace Goteo\Library {
             $this->target_type = $type;
         }
 
+        // establece el post relacionado
+        public function setPost ($post) {
+            $this->post = $post;
+        }
+
         public function doAdmin ($type = 'system') {
             $this->doEvent('admin', $type);
         }
@@ -168,7 +174,7 @@ namespace Goteo\Library {
             $list = array();
 
             try {
-                $values = array(':scope' => $scope);
+                $values = array(':scope' => $scope, ':lang' => \LANG);
 
                 $sqlType = '';
                 if ($type != 'all') {
@@ -204,19 +210,56 @@ namespace Goteo\Library {
                         OR (feed.target_type = 'node' AND feed.target_id = :node)
                         OR (feed.target_type = 'blog')
                     )";
+                    // @FIXME : Cambiar los subselects anteriores por un join optimizdo para 3 tablas
+//                    $sqlInnerNode = " INNER JOIN ";
                     $values[':node'] = $node;
                 }
+
+
+                if(\Goteo\Core\Model::default_lang(\LANG)=='es') {
+                    $different_select=" IFNULL(post_lang.title, post.title) as post_title,
+                                    IFNULL(post_lang.text, post.text) as post_text";
+                }
+                else {
+                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as post_title,
+                                        IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as post_text";
+                    $eng_join=" LEFT JOIN post_lang as eng
+                                    ON  eng.id = post.id
+                                    AND eng.lang = 'en'";
+                }
+
+
 
                 $sql = "SELECT
                             feed.id as id,
                             feed.title as title,
                             feed.url as url,
-                            feed.image as image,
+                            IFNULL(post.image, feed.image) as image,
                             DATE_FORMAT(feed.datetime, '%H:%i %d|%m|%Y') as date,
                             feed.datetime as timer,
                             feed.html as html,
-                            feed.target_type
+                            feed.target_type,
+                            blog.type as post_owner_type,
+                            blog.owner as post_owner_id,
+                            post.date as post_date,
+                            node.id as node_id,
+                            $different_select
                         FROM feed
+                        LEFT JOIN post
+                            ON post.id = feed.post
+                            AND feed.type = 'goteo'
+                            AND feed.target_type = 'blog'
+                        LEFT JOIN blog
+                            ON blog.id = post.blog
+                        LEFT JOIN node
+                            ON node.id = blog.owner
+                            AND blog.type = 'node'
+                            AND blog.owner != '".\GOTEO_NODE."'
+                            AND node.active = 1
+                        LEFT JOIN post_lang
+                            ON post_lang.id = post.id
+                            AND post_lang.lang = :lang
+                        $eng_join
                         WHERE feed.scope = :scope
                         $sqlType
                         $sqlNode
@@ -225,66 +268,34 @@ namespace Goteo\Library {
                         ";
 
                 if ($debug) {
-                    echo \trace($values);
-                    echo $sql;
-                    die;
+                    die (\sqldbg($sql, $values));
                 }
-
-                // @FIXME  Ahorrrarnos la consulta para cada entrada de blog (multiples)
-                /*
-                 * Post como campo calculado (y traducido)
-                 *
-                 *
-,
-                            post.title as post_title,
-                            post.text as post_text,
-                            post.image as post_image,
-                            post.owner_type as post_owner_type,
-                            post.owner_id as post_owner_type
-
-
-                                 *
-                 *
-                        LEFT JOIN post
-                            ON post.id = feed.post
-                            AND feed.type = 'goteo'
-                            AND feed.target_type = 'blog'
-
-
-
-                 *
-                 * */
-
-
-
 
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
-                    // si es la columan goteo, vamos a cambiar el html por el del post traducido
+                    // si es la columna goteo, vamos a cambiar el html por el del post traducido
                     if ($type == 'goteo' && $item->target_type == 'blog') {
                         // primero sacamos la id del post de la url
                         $matches = array();
 
                         \preg_match('(\d+)', $item->url, $matches);
                         if (!empty($matches[0])) {
-                            //  luego hacemos get del post
-                            $post = Post::get($matches[0], LANG);
 
-                            if ($post->owner_type == 'node' && $post->owner_id != \GOTEO_NODE) {
-                                if (!\Goteo\Core\NodeSys::isActive($post->owner_id)) {
-                                    continue;
-                                }
+                            // solo posts de nodos activos
+                            if ($item->post_owner_type == 'node'
+                                && $item->post_owner_id != \GOTEO_NODE
+                                && empty($item->node_id)) {
+                                continue;
                             }
 
                             // y substituimos el $item->html por el $post->html
-                            $item->html = Text::recorta($post->text, 250);
-                            $item->title = $post->title;
-                            $item->image = $post->image->id;
+                            $item->html = Text::recorta($item->post_text, 250);
+                            $item->title = $item->post_title;
 
                             // arreglo la fecha de publicación
                             $parts = explode(' ', $item->timer);
-                            $item->timer = $post->date . ' ' . $parts[1];
+                            $item->timer = $item->post_date . ' ' . $parts[1];
                         }
                     }
 
@@ -477,13 +488,14 @@ namespace Goteo\Library {
                     ':type' => $this->type,
                     ':html' => $this->html,
                     ':target_type' => $this->target_type,
-                    ':target_id' => $this->target_id
+                    ':target_id' => $this->target_id,
+                    ':post' => $this->post
                 );
 
 				$sql = "INSERT INTO feed
-                            (id, title, url, scope, type, html, image, target_type, target_id)
+                            (id, title, url, scope, type, html, image, target_type, target_id, post)
                         VALUES
-                            ('', :title, :url, :scope, :type, :html, :image, :target_type, :target_id)
+                            ('', :title, :url, :scope, :type, :html, :image, :target_type, :target_id, :post)
                         ";
 				if (Model::query($sql, $values)) {
                     return true;
