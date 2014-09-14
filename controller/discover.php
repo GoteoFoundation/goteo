@@ -40,12 +40,9 @@ namespace Goteo\Controller {
                 $types[] = 'others';
             }
 
-            // si estamos en easy-mode limitamos a 3 proyectos por grupo (en la portada)
-            $limit = (defined('GOTEO_EASY') && \GOTEO_EASY === true) ? 3 : 30;
-
             // cada tipo tiene sus grupos
             foreach ($types as $type) {
-                $projects = Model\Project::published($type, $limit);
+                $projects = Model\Project::published($type, 33);
                 if (empty($projects)) continue;
                 // random para exitosos y retorno cumplido
                 if ($type == 'success' || $type == 'fulfilled') shuffle ($projects);
@@ -78,7 +75,7 @@ namespace Goteo\Controller {
 
                 $query = \strip_tags($_GET['query']); // busqueda de texto
 
-                $results = \Goteo\Library\Search::params(array('query' => $query));
+                $results = \Goteo\Library\Search::params(array('query' => $query), false, 33);
 
 			} elseif (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searcher']) || !empty($category))) {
 
@@ -104,7 +101,7 @@ namespace Goteo\Controller {
                 $params['query'] = $query;
 
                 // para cada parametro, si no hay ninguno es todos los valores
-                $results = \Goteo\Library\Search::params($params);
+                $results = \Goteo\Library\Search::params($params, false, 33);
 
             } else {
                 throw new Redirection('/discover', Redirection::PERMANENT);
@@ -144,7 +141,7 @@ namespace Goteo\Controller {
 
             // segun el tipo cargamos la lista
             if (isset($_GET['list'])) {
-                $viewData['list']  = Model\Project::published($type, 99, true);
+                $viewData['list']  = Model\Project::published($type, null, true);
 
                 return new View(
                     'view/discover/list.html.php',
@@ -152,7 +149,7 @@ namespace Goteo\Controller {
                  );
             } else {
 
-                $projects = Model\Project::published($type, 99);
+                $projects = Model\Project::published($type, 33);
                 // random para retorno cumplido
                 if ($type == 'fulfilled') shuffle ($projects);
                 $viewData['list'] = $projects;
