@@ -163,12 +163,12 @@ namespace Goteo\Library {
 		 */
 		public static function getAll($type = 'all', $scope = 'public', $limit = '99', $node = null) {
 
-            $debug = false;
+            $debug = true;
 
             $list = array();
 
             try {
-                $values = array(':scope' => $scope);
+                $values = array(':scope' => $scope, ':lang' => \LANG);
 
                 $sqlType = '';
                 if ($type != 'all') {
@@ -204,19 +204,58 @@ namespace Goteo\Library {
                         OR (feed.target_type = 'node' AND feed.target_id = :node)
                         OR (feed.target_type = 'blog')
                     )";
+                    // @FIXME : Cambiar los subselects anteriores por un join optimizdo para 3 tablas
+//                    $sqlInnerNode = " INNER JOIN ";
                     $values[':node'] = $node;
                 }
+
+
+                if(\Goteo\Core\Model::default_lang(\LANG)=='es') {
+                    $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                    IFNULL(post_lang.text, post.text) as `text`";
+                }
+                else {
+                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                        IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`";
+                    $eng_join=" LEFT JOIN post_lang as eng
+                                    ON  eng.id = post.id
+                                    AND eng.lang = 'en'";
+                }
+
+
 
                 $sql = "SELECT
                             feed.id as id,
                             feed.title as title,
                             feed.url as url,
-                            feed.image as image,
+                            IFNULL(post.image, feed.image) as image,
                             DATE_FORMAT(feed.datetime, '%H:%i %d|%m|%Y') as date,
                             feed.datetime as timer,
                             feed.html as html,
-                            feed.target_type
+                            feed.target_type,
+                            IFNULL(post_lang.title, post.title) as post_title,
+                            IFNULL(post_lang.text, post.text) as post_text,
+                            blog.type as post_owner_type,
+                            blog.owner as post_owner_id,
+                            post.date as post_date,
+                            node.id as node_id,
+                            $different_select
                         FROM feed
+                        LEFT JOIN post
+                            ON post.id = feed.post
+                            AND feed.type = 'goteo'
+                            AND feed.target_type = 'blog'
+                        LEFT JOIN blog
+                            ON blog.id = post.blog
+                        LEFT JOIN node
+                            ON node.id = blog.owner
+                            AND blog.type = 'node'
+                            AND blog.owner != '".\GOTEO_NODE."'
+                            AND node.active = 1
+                        LEFT JOIN post_lang
+                            ON post_lang.id = post.id
+                            AND post_lang.lang = :lang
+                        $eng_join
                         WHERE feed.scope = :scope
                         $sqlType
                         $sqlNode
@@ -225,65 +264,35 @@ namespace Goteo\Library {
                         ";
 
                 if ($debug) {
-                    echo \trace($values);
-                    echo $sql;
-                    die;
+                    die (\sqldbg($sql, $values));
                 }
-
-                // @FIXME  Ahorrrarnos la consulta para cada entrada de blog (multiples)
-                /*
-                 * Post como campo calculado (y traducido)
-                 *
-                 *
-,
-                            post.title as post_title,
-                            post.text as post_text,
-                            post.image as post_image,
-                            post.owner_type as post_owner_type,
-                            post.owner_id as post_owner_type
-
-
-                                 *
-                 *
-                        LEFT JOIN post
-                            ON post.id = feed.post
-                            AND feed.type = 'goteo'
-                            AND feed.target_type = 'blog'
-
-
-
-                 *
-                 * */
-
-
-
 
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
-                    // si es la columan goteo, vamos a cambiar el html por el del post traducido
+                    // si es la columna goteo, vamos a cambiar el html por el del post traducido
                     if ($type == 'goteo' && $item->target_type == 'blog') {
                         // primero sacamos la id del post de la url
                         $matches = array();
 
                         \preg_match('(\d+)', $item->url, $matches);
                         if (!empty($matches[0])) {
-                            //  luego hacemos get del post
-                            $post = Post::get($matches[0], LANG);
+                            $post= \Goteo\Model\Blog\Post::getMini($item->url);
 
-                            if ($post->owner_type == 'node' && $post->owner_id != \GOTEO_NODE) {
-                                if (!\Goteo\Core\NodeSys::isActive($post->owner_id)) {
-                                    continue;
-                                }
+                            // solo posts de nodos activos
+                            if ($post->owner_type == 'node'
+                                && $post->owner_id != \GOTEO_NODE
+                                && empty($post->owner_id)) {
+                                continue;
                             }
 
                             // y substituimos el $item->html por el $post->html
                             $item->html = Text::recorta($post->text, 250);
                             $item->title = $post->title;
-                            $item->image = $post->image->id;
+                            $item->image = !empty($post->image) ? $post->image : $item->image;
 
                             // arreglo la fecha de publicación
-                            $parts = explode(' ', $item->timer);
+                            $parts = explode(' ', $post->timer);
                             $item->timer = $post->date . ' ' . $parts[1];
                         }
                     }

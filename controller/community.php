@@ -39,6 +39,7 @@ namespace Goteo\Controller {
 
             switch ($show) {
 
+                /*
                 // compartiendo intereses global
                 case 'sharemates':
                     $categories = Interest::getAll();
@@ -91,7 +92,7 @@ namespace Goteo\Controller {
                     $viewData['investors'] = $investors;
 
                     break;
-
+*/
                 // feed público
                 case 'activity':
 
