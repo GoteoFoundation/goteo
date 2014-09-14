@@ -169,7 +169,7 @@ namespace Goteo\Library {
 		 */
 		public static function getAll($type = 'all', $scope = 'public', $limit = '99', $node = null) {
 
-            $debug = true;
+            $debug = false;
 
             $list = array();
 
@@ -217,12 +217,12 @@ namespace Goteo\Library {
 
 
                 if(\Goteo\Core\Model::default_lang(\LANG)=='es') {
-                    $different_select=" IFNULL(post_lang.title, post.title) as title,
-                                    IFNULL(post_lang.text, post.text) as `text`";
+                    $different_select=" IFNULL(post_lang.title, post.title) as post_title,
+                                    IFNULL(post_lang.text, post.text) as post_text";
                 }
                 else {
-                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
-                                        IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`";
+                    $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as post_title,
+                                        IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as post_text";
                     $eng_join=" LEFT JOIN post_lang as eng
                                     ON  eng.id = post.id
                                     AND eng.lang = 'en'";
@@ -239,8 +239,6 @@ namespace Goteo\Library {
                             feed.datetime as timer,
                             feed.html as html,
                             feed.target_type,
-                            IFNULL(post_lang.title, post.title) as post_title,
-                            IFNULL(post_lang.text, post.text) as post_text,
                             blog.type as post_owner_type,
                             blog.owner as post_owner_id,
                             post.date as post_date,
@@ -283,23 +281,21 @@ namespace Goteo\Library {
 
                         \preg_match('(\d+)', $item->url, $matches);
                         if (!empty($matches[0])) {
-                            $post= \Goteo\Model\Blog\Post::getMini($item->url);
 
                             // solo posts de nodos activos
-                            if ($post->owner_type == 'node'
-                                && $post->owner_id != \GOTEO_NODE
-                                && empty($post->owner_id)) {
+                            if ($item->post_owner_type == 'node'
+                                && $item->post_owner_id != \GOTEO_NODE
+                                && empty($item->node_id)) {
                                 continue;
                             }
 
                             // y substituimos el $item->html por el $post->html
-                            $item->html = Text::recorta($post->text, 250);
-                            $item->title = $post->title;
-                            $item->image = !empty($post->image) ? $post->image : $item->image;
+                            $item->html = Text::recorta($item->post_text, 250);
+                            $item->title = $item->post_title;
 
                             // arreglo la fecha de publicación
-                            $parts = explode(' ', $post->timer);
-                            $item->timer = $post->date . ' ' . $parts[1];
+                            $parts = explode(' ', $item->timer);
+                            $item->timer = $item->post_date . ' ' . $parts[1];
                         }
                     }
 
