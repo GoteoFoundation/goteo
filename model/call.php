@@ -286,16 +286,16 @@ namespace Goteo\Model {
                 $call->icons = Call\Icon::get($id);
 
                 // proyectos (solo se cargan en la página de listado de proyectos)
-                if (empty($call->num_projects)) {
+                if (!isset($call->num_projects)) {
                     $call->num_projects = Call\Project::numProjects($id);
                 }
                 // $call->projects = Call\Project::get($id, array('published'=>true));
 
                 // cuantos en campaña (status 3) y cuantos exitosos (status 4 o 5)
-                if (empty($call->running_projects)) {
+                if (!isset($call->running_projects)) {
                     $call->running_projects = Call\Project::numRunningProjects($id);
                 }
-                if (empty($call->success_projects)) {
+                if (!isset($call->success_projects)) {
                     $call->success_projects = Call\Project::numSuccessProjects($id);
                 }
 
@@ -326,17 +326,17 @@ namespace Goteo\Model {
                 $keepUpdated = true;
 
                 // riego comprometido
-                if (empty($call->used) || $keepUpdated) {
+                if (!isset($call->used) || $keepUpdated) {
                     $call->used = $call->getUsed();
                 }
 
                 // riego restante
-                if (empty($call->rest) || $keepUpdated) {
+                if (!isset($call->rest) || $keepUpdated) {
                     $call->rest = $call->getRest($call->used);
                 }
 
                 // proyectos asignados
-                if (empty($call->applied)) {
+                if (!isset($call->applied)) {
                     // número de proyectos presentados a la campaña
                     $applied = $call->getConf('applied');
                     $call->applied = (isset($applied)) ? $applied : $call->getApplied();
@@ -1026,17 +1026,17 @@ namespace Goteo\Model {
                 // campos calculados
 
                 // riego comprometido
-                if (empty($call->used)) {
+                if (!isset($call->used)) {
                     $call->used = $call->getUsed();
                 }
 
                 // riego restante
-                if (empty($call->rest)) {
+                if (!isset($call->rest)) {
                     $call->rest = $call->getRest($call->used);
                 }
 
                 // proyectos asignados
-                if (empty($call->applied)) {
+                if (!isset($call->applied)) {
                     // número de proyectos presentados a la campaña
                     $applied = $call->getConf('applied');
                     $call->applied = (isset($applied)) ? $applied : $call->getApplied();

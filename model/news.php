@@ -47,9 +47,35 @@ namespace Goteo\Model {
         }
 
         /*
+         * Lista de noticias para admin
+         */
+        public static function getList () {
+
+            $list = array();
+
+            $sql = static::query("
+                SELECT
+                    news.id as id,
+                    news.title as title,
+                    news.order as `order`
+                FROM news
+                ORDER BY `order` ASC, title ASC
+                ", array(':lang'=>\LANG));
+            
+            foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+                $list[] = $item;
+            }
+
+            return $list;
+        }
+
+        /*
          * Lista de noticias
          */
         public static function getAll ($highlights = false) {
+
+            //activamos la cache
+            \Goteo\Core\DB::cache(true);
 
             $list = array();
 
@@ -80,7 +106,7 @@ namespace Goteo\Model {
                 $eng_join
                 ORDER BY `order` ASC, title ASC
                 ", array(':lang'=>\LANG));
-            
+
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 if ($highlights) {
                     $item->title = Text::recorta($item->title, 80);
@@ -94,7 +120,7 @@ namespace Goteo\Model {
             return $list;
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->title))
                 $errors[] = 'Falta título';
                 //Text::get('mandatory-news-title');
