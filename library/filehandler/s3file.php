@@ -361,11 +361,13 @@ namespace Goteo\Library\FileHandler {
             $name = $remote_original;
             $remote = $this->get_path($remote_original);
 
-            /*
-            $name = basename($remote_original);
+            // limpia el nombre del archivo
             $name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(Model::idealiza($name, true)));
+            /*
+             * // Ningun comentario de porqué está comentado esto ?¿
+            $name = basename($remote_original);
             $remote = $this->get_path($name);
-
+            $name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(Model::idealiza($name, true)));
             $prefix = preg_replace ( "/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/e", "'\$1'", $this );
             */
 
