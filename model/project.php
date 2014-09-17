@@ -268,7 +268,7 @@ namespace Goteo\Model {
                                 IFNULL(user_lang.about, user.about) as user_about,
                                 user.location as user_location,
                                 user.id as user_id,
-                                user.id as user_twitter
+                                user.twitter as user_twitter
                 FROM project
 				LEFT JOIN project_conf
 				    ON project_conf.project = project.id
