@@ -36,6 +36,11 @@ namespace Goteo\Controller {
          */
         public function login($username = '') {
 
+            // si está logueado, redirigir a dashboard
+            if (Model\User::isLogged()) {
+                throw new Redirection('/dashboard/activity');
+            }
+
 /*
             // esto debería verificar que esté instalado el certificado SSL
             if (GOTEO_ENV != 'local' && $_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['HTTPS'] !== 'on') {
@@ -54,7 +59,7 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['login'])) {
                 $username = \strtolower($_POST['username']);
                 $password = $_POST['password'];
-                if (false !== ($user = (\Goteo\Model\User::login($username, $password)))) {
+                if (false !== ($user = (Model\User::login($username, $password)))) {
                     $_SESSION['user'] = $user;
 
                     // creamos una cookie
@@ -748,6 +753,7 @@ namespace Goteo\Controller {
          * @param type string	$token
          */
         public function activate($token) {
+            $errors = array();
             $query = Model\User::query('SELECT id FROM user WHERE token = ?', array($token));
             if ($id = $query->fetchColumn()) {
                 $user = Model\User::get($id);
