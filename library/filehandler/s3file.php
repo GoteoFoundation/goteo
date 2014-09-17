@@ -359,18 +359,12 @@ namespace Goteo\Library\FileHandler {
             if(empty($remote_original)) return false;
 
             $name = $remote_original;
-            $remote = $this->get_path($remote_original);
 
             // limpia el nombre del archivo
             $name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(Model::idealiza($name, true)));
-            /*
-             * // Ningun comentario de porqué está comentado esto ?¿
-            $name = basename($remote_original);
-            $remote = $this->get_path($name);
-            $name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(Model::idealiza($name, true)));
-            $prefix = preg_replace ( "/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/e", "'\$1'", $this );
-            */
 
+            //comprueba que no exista un archivo con el mismo nombre, si es asi genera uno nuevo
+            $remote = $this->get_path($name);
             $info = $this->link->getObjectInfo($this->bucket, $remote);
             while($info !== false) {
                 $name = preg_replace ( "/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/e", "'\$1-'.(\$3+1).'\$4'", $name );
