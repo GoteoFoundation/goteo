@@ -79,7 +79,8 @@ namespace Goteo\Library\FileHandler {
             $ok = false;
 
             //if local is a stream, copy locally
-            if(substr($local,0,7) == 'http://') {
+            if(substr($local,0,2) == '//') $local = (HTTPS_ON ? 'https:' : 'http:') . $local;
+            if(substr($local,0,7) == 'http://' || substr($local, 0 , 8) == 'https://') {
                 $tmp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()]=tmpfile())));
                 file_put_contents($tmp, file_get_contents($local));
                 $local = $tmp;
@@ -93,7 +94,7 @@ namespace Goteo\Library\FileHandler {
                 if(copy($local, $remote)) {
                     $ok = true;
                 } else {
-                    return $this->throwError("file-error-uploading-to: " . $this->last_error);
+                    return $this->throwError("file-error-uploading-to: [$local => $remote] (folder perms perhaps?)");
                 }
             }
 
@@ -114,17 +115,17 @@ namespace Goteo\Library\FileHandler {
             $ok = false;
 
             if (!isset($extra['auto_delete_dirs'])) {
-		$auto_delete_dirs = false;
+                $auto_delete_dirs = false;
             }
 
             if(unlink($remote)) {
                 $ok = true;
                 if($auto_delete_dirs) {
-			$this->delete_empty_dir(dirname($remote), is_string($auto_delete_dirs) ? $auto_delete_dirs : false);
+        			$this->delete_empty_dir(dirname($remote), is_string($auto_delete_dirs) ? $auto_delete_dirs : false);
                 }
             } else {
-		return $this->throwError("file-error-deleting-to: " . $this->last_error);
-		}
+                return $this->throwError("file-error-deleting-to: " . $this->last_error);
+            }
 
             return $ok;
         }
@@ -210,7 +211,8 @@ namespace Goteo\Library\FileHandler {
 
             $ok = false;
 
-            if(substr($local,0,7) == 'http://') {
+            if(substr($local,0,2) == '//') $local = (HTTPS_ON ? 'https:' : 'http:') . $local;
+            if(substr($local,0,7) == 'http://' || substr($local, 0 , 8) == 'https://') {
                 $tmp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()]=tmpfile())));
                 file_put_contents($tmp, file_get_contents($local));
                 $local = $tmp;
