@@ -25,7 +25,7 @@ $sponsors = $this['sponsors'];
     <div class="slides_container" style="min-height: 75px;">
         <?php $i = 1; foreach ($sponsors as $sponsor) : ?>
         <div class="logo" id="footer-sponsor-<?php echo $i ?>">
-            <a href="<?php echo $sponsor->url ?>" title="<?php echo htmlspecialchars($sponsor->name) ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150) ?>" alt="<?php echo htmlspecialchars($sponsor->name) ?>" /></a>
+            <a href="<?php echo $sponsor->url ?>" title="<?php echo htmlspecialchars($sponsor->name) ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?php echo htmlspecialchars($sponsor->name) ?>" /></a>
         </div>
         <?php $i++; endforeach; ?>
     </div>

@@ -13,7 +13,7 @@ include 'view/call/prologue.html.php';
 <div id="main" class="onecol">
     <ul id="list">
         <li class="item" id="description">
-            <img src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->logo->getLink(150) ?>" alt="<?php echo $call->user->name ?>" />
+            <img src="<?php if ($call->image instanceof Goteo\Model\Image) echo $call->logo->getLink(150, 85) ?>" alt="<?php echo $call->user->name ?>" />
                 <h2 class="title"><?php echo Text::get('call-splash-campaign_title') ?><br /><?php echo $call->name ?></h2>
 
                 <?php if ($call->status == 3) : //inscripcion ?>
@@ -35,7 +35,7 @@ include 'view/call/prologue.html.php';
                 <?php foreach ($call->sponsors as $sponsor) : ?>
                     <div>
                         <a href="<?php echo $sponsor->url ?>" target="_blank" title="<?php echo $sponsor->name ?>"><img src="<?php if ($sponsor->image instanceof \Goteo\Model\Image)
-                echo $sponsor->image->getLink(130); ?>" alt="<?php echo $sponsor->name ?>" /></a>
+                echo $sponsor->image->getLink(150, 85); ?>" alt="<?php echo $sponsor->name ?>" /></a>
                     </div>
                 <?php endforeach; ?>
             </li>

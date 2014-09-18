@@ -494,7 +494,7 @@ namespace Goteo\Controller {
                     $call->projects = Model\Call\Project::get($call->id, $filters);
                 }
 
-                echo new View('view/call/'.$show.'.html.php', array ('call' => $call, 'social' => $social, 'filter' => $filter));
+                return new View('view/call/'.$show.'.html.php', array ('call' => $call, 'social' => $social, 'filter' => $filter));
             } else {
                 // no lo puede ver
                 throw new Redirection("/");

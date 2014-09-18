@@ -520,7 +520,8 @@ namespace Goteo\Controller\Cron {
 
         /**
          * Una convocatoria ha finalizado
-         */
+         * OBSOLETO, ya no se hace esto automático
+         *
         protected static function cron_call_has_finished($call) {
             $errors = array();
             echo 'La convocatoria '.$call->name.': ';
@@ -551,10 +552,11 @@ namespace Goteo\Controller\Cron {
                 echo 'Le queda algun proyecto en primera ronda.<br />';
             }
         }
+         */
 
         /**
          *
-         */
+         *
         protected static function cron_process_call($call) {
             // tiene que tener presupuesto
             // si le quedan cero
@@ -563,6 +565,7 @@ namespace Goteo\Controller\Cron {
                 self::cron_call_has_finished($call);
             }
         }
+         */
 
 
         /**
