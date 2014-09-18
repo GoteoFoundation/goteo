@@ -195,7 +195,8 @@ namespace Goteo\Library\FileHandler {
 
             $ok = false;
 
-            if(substr($local,0,7) == 'http://') {
+            if(substr($local,0,2) == '//') $local = (HTTPS_ON ? 'https:' : 'http:') . $local;
+            if(substr($local,0,7) == 'http://' || substr($local, 0 , 8) == 'https://') {
                 $tmp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()]=tmpfile())));
                 file_put_contents($tmp, file_get_contents($local));
                 $local = $tmp;

@@ -476,6 +476,9 @@ namespace Goteo\Model {
             //si no existe o es nuevo, creamos el archivo
             if (defined("FILE_HANDLER") && FILE_HANDLER == 's3' && defined("AWS_SECRET") && defined("AWS_KEY")) {
                 $url_original = SRC_URL . '/images/' . $this->name;
+                if(substr($url_original, 0, 2) === '//') {
+                    $url_original = (HTTPS_ON ? 'https:' : 'http:' ) . $url_original;
+                }
             }
             else {
                 $url_original = dirname(__DIR__) . '/data/images/' . $this->name;
