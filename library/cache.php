@@ -112,6 +112,38 @@ namespace Goteo\Library {
 		}
 
 		/**
+		 * Deletes a cached file
+		 * @param  [type] $remote cached file to delete
+		 * @return [type]         [description]
+		 */
+		function del_file($remote) {
+			$f = $this->get_path($remote);
+			if($this->type == 'local') {
+				return @unlink($f);
+			}
+			if($this->type == 'remote') {
+				return $this->file->delete($f);
+			}
+		}
+
+		/**
+		 * @FIXME
+		 * Dirty method to quickly delete local files by using system calls
+		 * @return [type] [description]
+		 */
+		function rm($remote) {
+			$f = $this->get_path($remote);
+			if($this->type == 'local') {
+				try {
+					exec("rm -fr $f", $buffer, $result);
+					if($result == 0) return true;
+				}
+				catch(Exception $e) {
+				}
+			}
+			return false;
+		}
+		/**
 		 * Comprueba si existe una URL
 		 * @param  [type]  $url_original [description]
 		 * @param  boolean $check_alive  [description]

@@ -95,8 +95,11 @@ define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
 define('GOTEO_URL', 'http://example.com');
-//url de recursos estaticos (imagenes CSS)
-define('SRC_URL', 'https://static.example.com');
+//url de recursos estaticos (imagenes, CSS)
+define('SRC_URL', '//static.example.com');
+//Opcional: si se define la constante DATA_URL se usara en lugar de GOTEO_URL para el contenido de data
+//IMPORTANTE: definir la ruta completa sin / al final
+//define('DATA_URL', '//data.example.com/data');
 
 // ssl
 define('GOTEO_SSL', false);

@@ -80,24 +80,6 @@ namespace Goteo\Model {
         }
 
         /**
-         * Retorna URL del archivo o ruta absluta si es local
-         */
-        public function url( $path = null) {
-            if($path === null) $path = $this->dir_originals . $this->name;
-            //url del archivo o ruta absoluta si es local
-
-            // @TODO: El uso de $fp debe ser independiente de su implementación
-            if($this->fp instanceof LocalFile) {
-                $url = SRC_URL . '/data/' . $path;
-                die($url);
-            } else {
-                $url = SRC_URL . '/' . $path;
-            }
-
-            return $url;
-        }
-
-        /**
          * (non-PHPdoc)
          * @see Goteo\Core.Model::save()
          *
@@ -128,7 +110,7 @@ namespace Goteo\Model {
 
                         //@FIXME falta checkear que la imagen se ha subido correctamente
                         if (!$uploaded) {
-                            $errors[] = 'fp->upload : <br />'.$this->tmp.' <br />dir: '.$this->dir_originals.' <br />file name: '.$this->name . '<br />from: '.$this->original_name;
+                            $errors[] = 'fp->upload : <br />'.$this->tmp.' <br />dir: '.$this->dir_originals.' <br />file name: '.$this->name . '<br />from: '.$this->original_name . '<br />upload error: '.$this->fp->last_error;
                             return false;
                         }
                     }
@@ -398,6 +380,13 @@ namespace Goteo\Model {
                     $query = self::query($sql, array($this->id));
                 }
 
+                //@FIXME
+                //Borra todos los caches generados
+                $c = new Cache($this->dir_cache);
+                //esto se tendria que hacer más cuidadosamente
+                //pero por el momento usaremos la funcion exec() ejecutando rm
+                $c->rm('*/' . $this->name);
+
                 //esborra de disk
                 $this->fp->delete($this->id);
 
@@ -427,10 +416,18 @@ namespace Goteo\Model {
             $cache = $width . 'x' . $height . $tc .'/' .$this->name;
 
 
+            //cache local en /data/cache
+            //NOTA: se podria implementar cache remota en S3,
+            //pero para ello hay que solucionar un problema
+            //con la funcion ->get_file() pues al no ser local la consulta
+            //por saber si existe el fichero o no puede ser prohibitibamente larga
             $c = new Cache($this->dir_cache);
 
             if($c->get_file($cache)) {
-                return SITE_URL . '/data/' . $this->dir_cache . $cache;
+                //la cache existe ponemos el link adecuado
+                //Si existe la constante DATA_URL la usaremos en vez de SITE_URL
+                if(defined('DATA_URL')) return DATA_URL . '/' . $this->dir_cache . $cache;
+                else                    return SITE_URL . '/data/' . $this->dir_cache . $cache;
             } else {
 
                 if (is_numeric($this->id)) {
@@ -458,11 +455,12 @@ namespace Goteo\Model {
             //comprueba si existe el archivo en cache
             if($c->get_file($cache)) {
                 //si existe, servimos el fichero inmediatamante (via redireccion http)
-                //PERO continuamos la ejecuciÃ³n del script para recrear el cache si estÃ¡ expirado
+                //PERO continuamos la ejecucion del script para recrear el cache si esta expirado
                 ob_end_clean();
                 header('Connection: close', true);
 
-                $url_cache = SITE_URL . '/data/' . $this->dir_cache . $cache;
+                if(defined('DATA_URL')) $url_cache = DATA_URL . '/' . $this->dir_cache . $cache;
+                else                    $url_cache = SITE_URL . '/data/' . $this->dir_cache . $cache;
 
                 self::stream($url_cache, false);
                 //close connection with browser
@@ -478,6 +476,9 @@ namespace Goteo\Model {
             //si no existe o es nuevo, creamos el archivo
             if (defined("FILE_HANDLER") && FILE_HANDLER == 's3' && defined("AWS_SECRET") && defined("AWS_KEY")) {
                 $url_original = SRC_URL . '/images/' . $this->name;
+                if(substr($url_original, 0, 2) === '//') {
+                    $url_original = (HTTPS_ON ? 'https:' : 'http:' ) . $url_original;
+                }
             }
             else {
                 $url_original = dirname(__DIR__) . '/data/images/' . $this->name;
@@ -513,6 +514,7 @@ namespace Goteo\Model {
          */
         static function stream($file, $exit = true) {
             //redirection if is http stream
+            if(substr($file,0,2) == '//') $file = (HTTPS_ON ? 'https:' : 'http:') . $file;
             if(substr($file, 0 , 7) == 'http://' || substr($file, 0 , 8) == 'https://') {
                 header("Location: $file");
             }
