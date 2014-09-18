@@ -22,6 +22,9 @@ use Goteo\Core\Resource,
 require_once 'config.php';
 require_once 'core/common.php';
 
+// montar SITE_URL como el dispatcher para el enlace de darse de baja.
+define('SITE_URL', GOTEO_URL);
+
 // Autoloader
 spl_autoload_register(
 
