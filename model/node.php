@@ -50,7 +50,7 @@ namespace Goteo\Model {
                 $item->admins = self::getAdmins($id);
 
                 // logo
-                $item->logo = Image::get($item->logo);
+                $item->logo = (!empty($item->logo)) ? Image::get($item->logo) : null;
 
                 return $item;
         }

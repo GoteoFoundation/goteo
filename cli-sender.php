@@ -40,6 +40,9 @@ use Goteo\Core\Resource,
 require_once 'config.php';
 require_once 'core/common.php';
 
+// montar SITE_URL como el dispatcher para el enlace de darse de baja.
+define('SITE_URL', GOTEO_URL);
+
 // Limite para sender, (deja margen para envios individuales)
 $LIMIT = (defined("GOTEO_MAIL_SENDER_QUOTA") ? GOTEO_MAIL_SENDER_QUOTA : 40000);
 
