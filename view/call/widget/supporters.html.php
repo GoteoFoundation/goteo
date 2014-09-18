@@ -6,13 +6,9 @@ use Goteo\Library\Text,
 
 $call = $this['call'];
 
-$supporters = $call->getSupporters();
-$cuantos = count($supporters);
+$cuantos = $call->getSupporters(true);
+$supporters = $call->getFaces();
 
-// para quitar los que no tengan imagen, los que tengan gotas o al convocador
-foreach ($supporters as $kay=>$item) {
-    if (!$item->avatar instanceof Image || $item->avatar->id == 1 || $item->id == $call->owner) unset($supporters[$kay]);
-}
 ?>
 <div id="supporters">
 	<h8 class="title"><?php echo Text::get('call-header-supporters', $cuantos) ?></h8>

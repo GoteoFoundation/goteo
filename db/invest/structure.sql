@@ -44,3 +44,7 @@ ALTER TABLE `invest` ADD `call` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_ge
 
 -- para marcar incidencia
 ALTER TABLE `invest` ADD `issue` INT( 1 ) NULL DEFAULT NULL COMMENT 'Problemas con el cobro del aporte';
+
+-- indice para aportes que generan riego
+ALTER TABLE `invest` ADD INDEX `convocatoria` ( `call` ) ;
+

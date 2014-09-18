@@ -1522,7 +1522,7 @@ namespace Goteo\Model {
 
         /*
          * Mira si hay que pasarla a estado exitosa
-         */
+         *
         public function checkSuccess() {
             // dame los proyectos que tienen capital riego y aun no han conseguido el mínimo
             $sql = "SELECT
@@ -1553,6 +1553,7 @@ namespace Goteo\Model {
             // si ninguno, exitosa
             return ($query->fetchColumn() > 0) ? false : true;
         }
+        */
 
 
         /*
@@ -1563,18 +1564,29 @@ namespace Goteo\Model {
             $values = array(':id' => $this->id);
 
             // si solo contamos
-            $sqlS = ($justCount) ? 'COUNT(DISTINCT(invest.user))' : 'DISTINCT(invest.user) as id';
-            $sql = "SELECT $sqlS,
+            if ($justCount) {
+                $sql = "SELECT COUNT(DISTINCT(invest.user)) as cuantos
+                    FROM  invest
+                    WHERE invest.call = :id
+                    AND invest.status IN ('0', '1', '3')
+                    AND invest.droped IS NOT NULL
+                ";
+            } else {
+                $sql = "SELECT
+                           invest.user as id,
                            user.id as user_id,
                            user.name as user_name,
                            user.avatar as user_avatar
                     FROM  invest
-                    LEFT JOIN user
-                    ON user.id=invest.id
+                    INNER JOIN user
+                    ON user.id = invest.user
                     WHERE invest.call = :id
                     AND invest.status IN ('0', '1', '3')
                     AND invest.droped IS NOT NULL
+                    GROUP BY invest.user
             ";
+
+            }
 
             // si estamos filtrando cierto usuario
             if (!empty($user)) {
@@ -1598,7 +1610,7 @@ namespace Goteo\Model {
                     // owner
                     $user = new User;
                     $user->name = $item->user_name;
-                    $user->id = $item->id;
+                    $user->id = $item->user_id;
                     $user->avatar = Image::get($item->user_avatar);
 
                     $list[] = $user;
@@ -1606,6 +1618,48 @@ namespace Goteo\Model {
                 }
                 return $list;
             }
+
+        }
+
+        /*
+         * Lista de cofinanciadores con cara para el último recuadro de convocatoria
+         */
+        public function getFaces() {
+
+            $values = array(':id' => $this->id, ':owner' => $this->owner);
+
+            $sql = "SELECT
+                   invest.user as id,
+                   user.id as user_id,
+                   user.name as user_name,
+                   user.avatar as user_avatar
+                FROM  invest
+                LEFT JOIN user
+                ON user.id=invest.user
+                WHERE invest.call = :id
+                AND invest.status IN ('0', '1', '3')
+                AND invest.droped IS NOT NULL
+                AND invest.user != :owner
+                AND user.avatar IS NOT NULL AND user.avatar != ''
+                GROUP BY invest.user
+                LIMIT 42
+            ";
+
+            $list = array();
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                // owner
+                $user = new User;
+                $user->name = $item->user_name;
+                $user->id = $item->user_id;
+                $user->avatar = Image::get($item->user_avatar);
+
+                if (!$user->avatar instanceof Image || $user->avatar->id == 'la_gota.png') continue;
+
+                $list[] = $user;
+
+            }
+            return $list;
 
         }
 
