@@ -1578,8 +1578,8 @@ namespace Goteo\Model {
                            user.name as user_name,
                            user.avatar as user_avatar
                     FROM  invest
-                    LEFT JOIN user
-                    ON user.id=invest.user
+                    INNER JOIN user
+                    ON user.id = invest.user
                     WHERE invest.call = :id
                     AND invest.status IN ('0', '1', '3')
                     AND invest.droped IS NOT NULL
