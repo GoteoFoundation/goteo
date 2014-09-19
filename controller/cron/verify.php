@@ -48,9 +48,17 @@ namespace Goteo\Controller\Cron {
             $query2 = Model\Project::query($sql2);
             $count2 = $query2->rowCount();
             if ($debug) echo "Eliminados $count2 registros de mail.<br />";
-            
-            // eliminamos registros de imágenes cuyo archivo no esté en el directorio de imágenes
 
+            // eliminamos log antiguo
+            $sql3 = "DELETE
+                FROM `log`
+                WHERE DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 10
+                ";
+
+            // echo $sql . '<br />';
+            $query3 = Model\Project::query($sql3);
+            $count3 = $query1->rowCount();
+            if ($debug) echo "Eliminados $count3 registros de log.<br />";
 
             // busco aportes incompletos con codigo de autorización
             $sql5 = "SELECT * FROM invest WHERE status = -1 AND transaction IS NOT NULL";
