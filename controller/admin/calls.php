@@ -113,7 +113,7 @@ namespace Goteo\Controller\Admin {
                             if ($registry->save($errors)) {
                                 Message::Info('Proyecto seleccionado correctamente');
 
-                                $projectData = Model\Project::get($_POST['project']);
+                                $projectData = Model\Project::getMini($_POST['project']);
 
                                 // Evento feed
                                 $log = new Feed();
@@ -131,7 +131,7 @@ namespace Goteo\Controller\Admin {
                                     $log->populate($projectData->name, '/project/'.$projectData->id,
                                         \vsprintf('Ha sido seleccionado en la convocatoria %s', array(
                                             Feed::item('call', $call->name, $call->id))
-                                        ), $projectData->gallery[0]->id);
+                                        ), $projectData->image);
                                     $log->doPublic('projects');
                                 }
                                 unset($log);

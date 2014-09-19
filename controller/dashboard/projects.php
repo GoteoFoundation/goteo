@@ -544,7 +544,10 @@ namespace Goteo\Controller\Dashboard {
                                 Feed::item('blog', Text::get('project-menu-updates')),
                                 Feed::item('project', $project->name, $project->id),
                                 Feed::item('update', $post->title, $project->id . '/updates/' . $post->id)
-                            )));
+                                )
+                            ),
+                        $project->image
+                    );
                     $log->unique = true;
                     $log->doAdmin('user');
 
