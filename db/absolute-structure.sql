@@ -1,11 +1,3 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
-
 CREATE TABLE `acl` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `node_id` varchar(50) NOT NULL,
@@ -25,7 +17,7 @@ CREATE TABLE `banner` (
   `node` varchar(50) NOT NULL,
   `project` varchar(50) DEFAULT NULL,
   `order` smallint(5) unsigned NOT NULL DEFAULT '1',
-  `image` int(10) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   `active` int(1) NOT NULL DEFAULT '0',
   `title` tinytext,
   `description` text,
@@ -38,6 +30,30 @@ CREATE TABLE `banner_lang` (
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
   `description` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
+  UNIQUE KEY `id_lang` (`id`,`lang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `bazar` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `reward` bigint(20) unsigned DEFAULT NULL,
+  `project` varchar(50) DEFAULT NULL,
+  `title` tinytext,
+  `description` text,
+  `amount` int(5) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
+  `order` smallint(5) NOT NULL DEFAULT '9999',
+  `active` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='productos del catalogo';
+
+CREATE TABLE `bazar_lang` (
+  `id` bigint(20) unsigned NOT NULL,
+  `lang` varchar(2) NOT NULL,
+  `title` tinytext,
+  `description` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -72,9 +88,9 @@ CREATE TABLE `call` (
   `zipcode` varchar(10) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `country` varchar(50) DEFAULT NULL,
-  `logo` varchar(256) DEFAULT NULL,
-  `image` varchar(256) DEFAULT NULL,
-  `backimage` varchar(255) DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL COMMENT 'Logo. Contiene nombre de archivo',
+  `image` varchar(255) DEFAULT NULL COMMENT 'Imagen widget. Contiene nombre de archivo',
+  `backimage` varchar(255) DEFAULT NULL COMMENT 'Imagen background. Contiene nombre de archivo',
   `description` text,
   `whom` text,
   `apply` text,
@@ -99,6 +115,12 @@ CREATE TABLE `call` (
   `maxdrop` int(6) DEFAULT NULL COMMENT 'Riego maximo por aporte',
   `modemaxp` varchar(3) DEFAULT 'imp' COMMENT 'Modalidad del máximo por proyecto: imp = importe, per = porcentaje',
   `maxproj` int(6) DEFAULT NULL COMMENT 'Riego maximo por proyecto',
+  `num_projects` int(10) unsigned DEFAULT NULL COMMENT 'Número de proyectos publicados',
+  `rest` int(10) unsigned DEFAULT NULL COMMENT 'Importe riego disponible',
+  `used` int(10) unsigned DEFAULT NULL COMMENT 'Importe riego comprometido',
+  `applied` int(10) unsigned DEFAULT NULL COMMENT 'Número de proyectos aplicados',
+  `running_projects` int(10) unsigned DEFAULT NULL COMMENT 'Número de proyectos en campaña',
+  `success_projects` int(10) unsigned DEFAULT NULL COMMENT 'Número de proyectos exitosos',
   PRIMARY KEY (`id`),
   KEY `owner` (`owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Convocatorias';
@@ -108,16 +130,17 @@ CREATE TABLE `call_banner` (
   `call` varchar(50) NOT NULL,
   `name` tinytext NOT NULL,
   `url` tinytext,
-  `image` int(10) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   `order` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Banners de convocatorias';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Banners de convocatorias';
 
 CREATE TABLE `call_banner_lang` (
   `id` int(20) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `name` tinytext,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -126,6 +149,17 @@ CREATE TABLE `call_category` (
   `category` int(12) NOT NULL,
   UNIQUE KEY `call_category` (`call`,`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Categorias de las convocatorias';
+
+CREATE TABLE `call_conf` (
+  `call` varchar(50) NOT NULL,
+  `applied` int(4) DEFAULT NULL COMMENT 'Para fijar numero de proyectos recibidos',
+  `limit1` set('normal','minimum','unlimited','none') NOT NULL DEFAULT 'normal' COMMENT 'tipo limite riego primera ronda',
+  `limit2` set('normal','minimum','unlimited','none') NOT NULL DEFAULT 'none' COMMENT 'tipo limite riego segunda ronda',
+  `buzz_first` int(1) NOT NULL DEFAULT '0' COMMENT 'Solo primer hashtag en el buzz',
+  `buzz_own` int(1) NOT NULL DEFAULT '1' COMMENT 'Tweets  propios en el buzz',
+  `buzz_mention` int(1) NOT NULL DEFAULT '1' COMMENT 'Menciones en el buzz',
+  PRIMARY KEY (`call`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Configuración de convocatoria';
 
 CREATE TABLE `call_icon` (
   `call` varchar(50) NOT NULL,
@@ -145,6 +179,7 @@ CREATE TABLE `call_lang` (
   `dossier` tinytext,
   `tweet` tinytext,
   `resources` text COMMENT 'Recursos de capital riego',
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -165,7 +200,7 @@ CREATE TABLE `call_sponsor` (
   `call` varchar(50) NOT NULL,
   `name` tinytext NOT NULL,
   `url` tinytext,
-  `image` int(10) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   `order` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
@@ -196,6 +231,7 @@ CREATE TABLE `category_lang` (
   `lang` varchar(2) NOT NULL,
   `name` tinytext,
   `description` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -208,11 +244,17 @@ CREATE TABLE `comment` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Comentarios';
 
+CREATE TABLE `conf` (
+  `key` varchar(255) NOT NULL COMMENT 'Clave',
+  `value` varchar(255) NOT NULL COMMENT 'Valor'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Para guardar pares para configuraciones, bloqueos etc';
+
 CREATE TABLE `contract` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `project` varchar(50) NOT NULL,
-  `number` int(11) DEFAULT NULL,
-  `date` varchar(12) DEFAULT NULL COMMENT 'dia anterior a la publicacion',
+  `number` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL COMMENT 'dia anterior a la publicacion',
+  `enddate` date NOT NULL COMMENT 'finalización, un año despues de la fecha de contrato',
+  `pdf` varchar(255) DEFAULT NULL COMMENT 'Archivo pdf contrato',
   `type` varchar(1) NOT NULL DEFAULT '0' COMMENT '0 = persona física; 1 = representante asociacion; 2 = apoderado entidad mercantil',
   `name` tinytext,
   `nif` varchar(10) DEFAULT NULL,
@@ -220,36 +262,65 @@ CREATE TABLE `contract` (
   `address` tinytext,
   `location` varchar(255) DEFAULT NULL,
   `region` varchar(255) DEFAULT NULL,
+  `zipcode` varchar(8) DEFAULT NULL,
   `country` varchar(50) DEFAULT NULL,
   `entity_name` tinytext,
   `entity_cif` varchar(10) DEFAULT NULL,
   `entity_address` tinytext,
   `entity_location` varchar(255) DEFAULT NULL,
   `entity_region` varchar(255) DEFAULT NULL,
+  `entity_zipcode` varchar(8) DEFAULT NULL,
   `entity_country` varchar(50) DEFAULT NULL,
-  `reg_name` tinytext COMMENT 'Registro de asociaciones o nombre del notario',
-  `reg_number` tinytext COMMENT 'Número de registro o número de protocolo del notario',
-  `reg_id` tinytext COMMENT 'Número en el registro mercantil',
+  `reg_name` tinytext COMMENT 'Nombre y ciudad del registro en el que esta inscrita la entidad',
+  `reg_date` date DEFAULT NULL,
+  `reg_number` tinytext COMMENT 'Número de registro',
+  `reg_loc` tinytext COMMENT 'NO SE USA (borrar)',
+  `reg_id` tinytext COMMENT 'Número de protocolo del notario',
+  `reg_idname` tinytext COMMENT 'Nombre del notario',
+  `reg_idloc` tinytext COMMENT 'Ciudad de actuación del notario',
   `project_name` tinytext COMMENT 'Nombre del proyecto',
   `project_url` varchar(255) DEFAULT NULL COMMENT 'URL del proyecto',
   `project_owner` tinytext COMMENT 'Nombre del impulsor',
   `project_user` tinytext COMMENT 'Nombre del usuario autor del proyecto',
   `project_profile` varchar(255) DEFAULT NULL COMMENT 'URL del perfil del autor del proyecto',
   `project_description` text COMMENT 'Breve descripción del proyecto',
+  `project_invest` text COMMENT 'objetivo del crowdfunding',
+  `project_return` text COMMENT 'retornos',
   `bank` tinytext,
   `bank_owner` tinytext,
   `paypal` tinytext,
   `paypal_owner` tinytext,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `project` (`project`)
+  `birthdate` date DEFAULT NULL,
+  PRIMARY KEY (`project`),
+  UNIQUE KEY `numero` (`number`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Contratos';
 
 CREATE TABLE `contract_status` (
-  `contract` bigint(20) unsigned NOT NULL,
+  `contract` varchar(50) NOT NULL COMMENT 'Id del proyecto',
   `owner` int(1) NOT NULL DEFAULT '0' COMMENT 'El impulsor ha dado por rellenados los datos',
-  `admin` int(1) NOT NULL DEFAULT '0' COMMENT 'El admin ha dado por válidos los datos',
-  `pdf` varchar(255) DEFAULT NULL,
+  `owner_date` date DEFAULT NULL COMMENT 'Fecha que se cambia el flag',
+  `owner_user` varchar(50) DEFAULT NULL COMMENT 'Usuario que cambia el flag',
+  `admin` int(1) NOT NULL DEFAULT '0' COMMENT 'El admin ha comenzado a revisar los datos',
+  `admin_date` date DEFAULT NULL COMMENT 'Fecha que se cambia el flag',
+  `admin_user` varchar(50) DEFAULT NULL COMMENT 'Usuario que cambia el flag',
+  `ready` int(1) NOT NULL DEFAULT '0' COMMENT 'Datos verificados y correctos',
+  `ready_date` date DEFAULT NULL COMMENT 'Fecha que se cambia el flag',
+  `ready_user` varchar(50) DEFAULT NULL COMMENT 'Usuario que cambia el flag',
+  `pdf` int(1) NOT NULL COMMENT 'El impulsor ha descargado el pdf',
+  `pdf_date` date DEFAULT NULL COMMENT 'Fecha que se cambia el flag',
+  `pdf_user` varchar(50) DEFAULT NULL COMMENT 'Usuario que cambia el flag',
+  `recieved` int(1) NOT NULL DEFAULT '0' COMMENT 'Se ha recibido el contrato firmado',
+  `recieved_date` date DEFAULT NULL COMMENT 'Fecha que se cambia el flag',
+  `recieved_user` varchar(50) DEFAULT NULL COMMENT 'Usuario que cambia el flag',
+  `payed` int(1) NOT NULL DEFAULT '0' COMMENT 'Se ha realizado el pago al proyecto',
+  `payed_date` date DEFAULT NULL COMMENT 'Fecha que se cambia el flag',
+  `payed_user` varchar(50) DEFAULT NULL COMMENT 'Usuario que cambia el flag',
+  `prepay` int(1) NOT NULL DEFAULT '0' COMMENT 'Ha habido pago avanzado',
+  `prepay_date` date DEFAULT NULL COMMENT 'Fecha que se cambia el flag',
+  `prepay_user` varchar(50) DEFAULT NULL COMMENT 'Usuario que cambia el flag',
+  `closed` int(1) NOT NULL DEFAULT '0' COMMENT 'Contrato finiquitado',
+  `closed_date` date DEFAULT NULL COMMENT 'Fecha que se cambia el flag',
+  `closed_user` varchar(50) DEFAULT NULL COMMENT 'Usuario que cambia el flag',
   PRIMARY KEY (`contract`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Seguimiento de estado de contrato';
 
@@ -269,10 +340,13 @@ CREATE TABLE `cost` (
 
 CREATE TABLE `cost_lang` (
   `id` int(20) NOT NULL,
+  `project` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `cost` tinytext,
   `description` text,
-  UNIQUE KEY `id_lang` (`id`,`lang`)
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
+  UNIQUE KEY `id_lang` (`id`,`lang`),
+  KEY `project` (`project`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `criteria` (
@@ -290,8 +364,18 @@ CREATE TABLE `criteria_lang` (
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
   `description` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `document` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `contract` varchar(50) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `type` varchar(20) DEFAULT NULL,
+  `size` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `faq` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -309,6 +393,7 @@ CREATE TABLE `faq_lang` (
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
   `description` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -320,9 +405,10 @@ CREATE TABLE `feed` (
   `scope` varchar(50) NOT NULL,
   `type` varchar(50) NOT NULL,
   `html` text NOT NULL,
-  `image` int(10) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   `target_type` varchar(10) DEFAULT NULL COMMENT 'tipo de objetivo',
   `target_id` varchar(50) DEFAULT NULL COMMENT 'registro objetivo',
+  `post` int(20) unsigned DEFAULT NULL COMMENT 'Entrada de blog',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `scope` (`scope`),
@@ -337,8 +423,8 @@ CREATE TABLE `geologin` (
   `lat` decimal(14,12) DEFAULT NULL,
   `msg` tinytext,
   `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `assigned` int(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Guarda dats de login';
+  PRIMARY KEY (`user`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Guarda dats de login';
 
 CREATE TABLE `glossary` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -346,13 +432,15 @@ CREATE TABLE `glossary` (
   `text` longtext COMMENT 'texto de la entrada',
   `media` tinytext,
   `legend` text,
+  `gallery` varchar(2000) DEFAULT NULL COMMENT 'Galería de imagenes',
+  `image` varchar(255) DEFAULT NULL COMMENT 'Imagen principal',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Entradas para el glosario';
 
 CREATE TABLE `glossary_image` (
   `glossary` bigint(20) NOT NULL,
-  `image` int(10) unsigned NOT NULL,
+  `image` varchar(255) NOT NULL DEFAULT '' COMMENT 'Contiene nombre de archivo',
   PRIMARY KEY (`glossary`,`image`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -362,6 +450,7 @@ CREATE TABLE `glossary_lang` (
   `title` tinytext,
   `text` longtext,
   `legend` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -387,6 +476,7 @@ CREATE TABLE `icon_lang` (
   `lang` varchar(2) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `description` tinytext,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -395,14 +485,6 @@ CREATE TABLE `icon_license` (
   `license` varchar(50) NOT NULL,
   UNIQUE KEY `icon` (`icon`,`license`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Licencias para cada icono, solo social';
-
-CREATE TABLE `image` (
-  `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `type` varchar(20) DEFAULT NULL,
-  `size` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -413,13 +495,15 @@ CREATE TABLE `info` (
   `publish` tinyint(1) NOT NULL DEFAULT '0',
   `order` int(11) DEFAULT '1',
   `legend` text,
+  `gallery` varchar(2000) DEFAULT NULL COMMENT 'Galería de imagenes',
+  `image` varchar(255) DEFAULT NULL COMMENT 'Imagen principal',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Entradas about';
 
 CREATE TABLE `info_image` (
   `info` bigint(20) NOT NULL,
-  `image` int(10) unsigned NOT NULL,
+  `image` varchar(255) NOT NULL DEFAULT '' COMMENT 'Contiene nombre de archivo',
   PRIMARY KEY (`info`,`image`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -429,6 +513,7 @@ CREATE TABLE `info_lang` (
   `title` tinytext,
   `text` longtext,
   `legend` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -436,7 +521,7 @@ CREATE TABLE `invest` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user` varchar(50) NOT NULL,
   `project` varchar(50) NOT NULL,
-  `account` varchar(256) NOT NULL,
+  `account` varchar(256) NOT NULL COMMENT 'Solo para aportes de cash',
   `amount` int(6) NOT NULL,
   `status` int(1) NOT NULL COMMENT '-1 en proceso, 0 pendiente, 1 cobrado, 2 devuelto, 3 pagado al proyecto',
   `anonymous` tinyint(1) DEFAULT NULL,
@@ -456,7 +541,10 @@ CREATE TABLE `invest` (
   `call` varchar(50) DEFAULT NULL COMMENT 'campaña dedonde sale el dinero',
   `issue` int(1) DEFAULT NULL COMMENT 'Problemas con el cobro del aporte',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
+  UNIQUE KEY `id` (`id`),
+  KEY `usuario` (`user`),
+  KEY `proyecto` (`project`),
+  KEY `convocatoria` (`call`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Aportes monetarios a proyectos';
 
 CREATE TABLE `invest_address` (
@@ -468,6 +556,10 @@ CREATE TABLE `invest_address` (
   `country` varchar(50) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `nif` varchar(10) DEFAULT NULL,
+  `namedest` tinytext,
+  `emaildest` tinytext,
+  `regalo` int(1) DEFAULT '0',
+  `message` text,
   PRIMARY KEY (`invest`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Dirección de entrega de recompensa';
 
@@ -480,11 +572,22 @@ CREATE TABLE `invest_detail` (
   KEY `invest` (`invest`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Detalles de los aportes';
 
+CREATE TABLE `invest_node` (
+  `user_id` varchar(50) NOT NULL,
+  `user_node` varchar(50) NOT NULL,
+  `project_id` varchar(50) NOT NULL,
+  `project_node` varchar(50) NOT NULL,
+  `invest_id` bigint(20) NOT NULL,
+  `invest_node` varchar(50) NOT NULL COMMENT 'Nodo en el que se hace el aporte',
+  UNIQUE KEY `invest` (`invest_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Aportes por usuario/nodo a proyecto/nodo';
+
 CREATE TABLE `invest_reward` (
   `invest` bigint(20) unsigned NOT NULL,
   `reward` bigint(20) unsigned NOT NULL,
   `fulfilled` tinyint(1) NOT NULL DEFAULT '0',
-  UNIQUE KEY `invest` (`invest`,`reward`)
+  UNIQUE KEY `invest` (`invest`,`reward`),
+  KEY `reward` (`reward`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Recompensas elegidas al aportar';
 
 CREATE TABLE `lang` (
@@ -512,6 +615,7 @@ CREATE TABLE `license_lang` (
   `name` varchar(100) DEFAULT NULL,
   `description` tinytext,
   `url` varchar(256) DEFAULT NULL,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -523,16 +627,15 @@ CREATE TABLE `location` (
   `lon` decimal(16,14) NOT NULL,
   `lat` decimal(16,14) NOT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT '0',
-  UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `coordenadas` (`lon`,`lat`)
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Geolocalización';
 
 CREATE TABLE `location_item` (
   `location` int(20) unsigned NOT NULL,
-  `item` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `type` varchar(7) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`location`,`item`,`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabla de relacion localizaciones y registros';
+  `item` varchar(50) NOT NULL,
+  `type` varchar(7) NOT NULL,
+  KEY `itemtipo` (`item`,`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabla de relacion localizaciones y registros';
 
 CREATE TABLE `mail` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -541,29 +644,53 @@ CREATE TABLE `mail` (
   `template` int(20) DEFAULT NULL,
   `node` varchar(50) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lang` varchar(2) DEFAULT NULL COMMENT 'Idioma en el que se solicitó la plantilla',
+  `content` varchar(50) DEFAULT NULL COMMENT 'ID del archivo con HTML estático',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
+  KEY `email` (`email`(255))
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Contenido enviado por email para el -si no ves-';
 
 CREATE TABLE `mailer_content` (
-  `id` int(1) NOT NULL AUTO_INCREMENT,
+  `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
   `active` int(1) NOT NULL DEFAULT '1',
   `mail` int(20) NOT NULL,
   `subject` text NOT NULL,
   `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `blocked` int(1) DEFAULT NULL,
+  `reply` varchar(255) DEFAULT NULL COMMENT 'Email remitente',
+  `reply_name` text COMMENT 'Nombre remitente',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Contenido a enviar';
 
+CREATE TABLE `mailer_control` (
+  `email` char(150) NOT NULL,
+  `bounces` int(10) unsigned NOT NULL,
+  `complaints` int(10) unsigned NOT NULL,
+  `action` enum('allow','deny') DEFAULT 'allow',
+  `last_reason` char(255) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Lista negra para bounces y complaints';
+
+CREATE TABLE `mailer_limit` (
+  `hora` time NOT NULL COMMENT 'Hora envio',
+  `num` int(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Cuantos',
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`hora`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Para limitar el número de envios diarios';
+
 CREATE TABLE `mailer_send` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `mailing` int(20) unsigned NOT NULL COMMENT 'Id de mailer_content',
   `user` varchar(50) NOT NULL,
   `email` varchar(256) NOT NULL,
   `name` varchar(100) NOT NULL,
   `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sended` int(1) DEFAULT NULL,
   `error` text,
-  UNIQUE KEY `id` (`id`)
+  `blocked` int(1) DEFAULT NULL,
+  UNIQUE KEY `id` (`id`),
+  KEY `mailing` (`mailing`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Destinatarios pendientes y realizados';
 
 CREATE TABLE `message` (
@@ -583,6 +710,7 @@ CREATE TABLE `message_lang` (
   `id` int(20) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `message` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -592,6 +720,9 @@ CREATE TABLE `news` (
   `description` text COMMENT 'Entradilla',
   `url` tinytext NOT NULL,
   `order` int(11) NOT NULL DEFAULT '1',
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
+  `press_banner` tinyint(1) DEFAULT '0' COMMENT 'Para aparecer en banner prensa',
+  `media_name` tinytext COMMENT 'Medio de prensa en que se publica',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Noticias en la cabecera';
@@ -602,16 +733,18 @@ CREATE TABLE `news_lang` (
   `title` tinytext,
   `description` text,
   `url` tinytext,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `node` (
   `id` varchar(50) NOT NULL,
   `name` varchar(256) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `url` varchar(255) NOT NULL,
   `subtitle` text,
-  `logo` int(20) unsigned DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   `location` varchar(100) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`id`)
@@ -638,6 +771,26 @@ CREATE TABLE `node_lang` (
   `lang` varchar(2) NOT NULL,
   `subtitle` text,
   `description` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
+  UNIQUE KEY `id_lang` (`id`,`lang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `open_tag` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` tinytext,
+  `description` text,
+  `order` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `post` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Agrupacion de los proyectos';
+
+CREATE TABLE `open_tag_lang` (
+  `id` bigint(20) unsigned NOT NULL,
+  `lang` varchar(2) NOT NULL,
+  `name` tinytext,
+  `description` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -664,6 +817,7 @@ CREATE TABLE `page_node` (
   `name` tinytext,
   `description` text,
   `content` longtext,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `page` (`page`,`node`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Contenidos de las paginas';
 
@@ -677,8 +831,8 @@ CREATE TABLE `patron` (
   `link` tinytext,
   `order` smallint(5) unsigned NOT NULL DEFAULT '1',
   `active` int(1) NOT NULL DEFAULT '0',
-  UNIQUE KEY `user_project_node` (`node`,`project`,`user`),
-  UNIQUE KEY `id` (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_project_node` (`node`,`project`,`user`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Proyectos recomendados por padrinos';
 
 CREATE TABLE `patron_lang` (
@@ -686,8 +840,15 @@ CREATE TABLE `patron_lang` (
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
   `description` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `patron_order` (
+  `id` varchar(50) NOT NULL,
+  `order` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Orden de los padrinos';
 
 CREATE TABLE `post` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -695,7 +856,7 @@ CREATE TABLE `post` (
   `title` tinytext,
   `text` longtext COMMENT 'texto de la entrada',
   `media` tinytext,
-  `image` int(10) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   `date` date NOT NULL COMMENT 'fehca de publicacion',
   `order` int(11) DEFAULT '1',
   `allow` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Permite comentarios',
@@ -704,24 +865,32 @@ CREATE TABLE `post` (
   `publish` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Publicado',
   `legend` text,
   `author` varchar(50) DEFAULT NULL,
+  `gallery` varchar(2000) DEFAULT NULL COMMENT 'Galería de imagenes',
+  `num_comments` int(10) unsigned DEFAULT NULL COMMENT 'Número de comentarios que recibe el post',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
+  UNIQUE KEY `id` (`id`),
+  KEY `portada` (`home`),
+  KEY `pie` (`footer`),
+  KEY `publicadas` (`publish`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Entradas para la portada';
 
 CREATE TABLE `post_image` (
   `post` bigint(20) NOT NULL,
-  `image` int(10) unsigned NOT NULL,
+  `image` varchar(255) NOT NULL DEFAULT '' COMMENT 'Contiene nombre de archivo',
   PRIMARY KEY (`post`,`image`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `post_lang` (
   `id` bigint(20) unsigned NOT NULL,
+  `blog` int(20) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
   `text` longtext,
   `legend` text,
   `media` tinytext,
-  UNIQUE KEY `id_lang` (`id`,`lang`)
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
+  UNIQUE KEY `id_lang` (`id`,`lang`),
+  KEY `blog` (`blog`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `post_node` (
@@ -748,7 +917,13 @@ CREATE TABLE `project` (
   `owner` varchar(50) NOT NULL COMMENT 'usuario que lo ha creado',
   `node` varchar(50) NOT NULL COMMENT 'nodo en el que se ha creado',
   `amount` int(6) DEFAULT NULL COMMENT 'acumulado actualmente',
+  `mincost` int(5) DEFAULT NULL COMMENT 'minimo coste',
+  `maxcost` int(5) DEFAULT NULL COMMENT 'optimo',
   `days` int(3) NOT NULL DEFAULT '0' COMMENT 'Dias restantes',
+  `num_investors` int(10) unsigned DEFAULT NULL COMMENT 'Numero inversores',
+  `popularity` int(10) unsigned DEFAULT NULL COMMENT 'Popularidad del proyecto',
+  `num_messengers` int(10) unsigned DEFAULT NULL COMMENT 'Número de personas que envían mensajes',
+  `num_posts` int(10) unsigned DEFAULT NULL COMMENT 'Número de post',
   `created` date DEFAULT NULL,
   `updated` date DEFAULT NULL,
   `published` date DEFAULT NULL,
@@ -763,7 +938,7 @@ CREATE TABLE `project` (
   `zipcode` varchar(10) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `country` varchar(50) DEFAULT NULL,
-  `image` varchar(256) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   `description` text,
   `motivation` text,
   `video` varchar(256) DEFAULT NULL,
@@ -791,8 +966,15 @@ CREATE TABLE `project` (
   `post_zipcode` varchar(10) DEFAULT NULL,
   `post_location` varchar(255) DEFAULT NULL,
   `post_country` varchar(50) DEFAULT NULL,
+  `amount_users` int(10) unsigned DEFAULT NULL COMMENT 'Recaudación proveniente de los usuarios',
+  `amount_call` int(10) unsigned DEFAULT NULL COMMENT 'Recaudación proveniente de la convocatoria',
+  `called` varchar(50) DEFAULT NULL COMMENT 'Convocatoria en la que está',
+  `maxproj` int(5) DEFAULT NULL COMMENT 'Dinero que puede conseguir un proyecto de la convocatoria',
+  `gallery` varchar(10000) DEFAULT NULL COMMENT 'Galería de imagenes',
   PRIMARY KEY (`id`),
-  KEY `owner` (`owner`)
+  KEY `owner` (`owner`),
+  KEY `nodo` (`node`),
+  KEY `estado` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Proyectos de la plataforma';
 
 CREATE TABLE `project_account` (
@@ -811,6 +993,16 @@ CREATE TABLE `project_category` (
   UNIQUE KEY `project_category` (`project`,`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Categorias de los proyectos';
 
+CREATE TABLE `project_conf` (
+  `project` varchar(50) NOT NULL,
+  `noinvest` int(1) NOT NULL DEFAULT '0' COMMENT 'No se permiten más aportes',
+  `watch` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Vigilar el proyecto',
+  `days_round1` int(4) DEFAULT '40' COMMENT 'Días que dura la primera ronda desde la publicación del proyecto',
+  `days_round2` int(4) DEFAULT '40' COMMENT 'Días que dura la segunda ronda desde la publicación del proyecto',
+  `one_round` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Si el proyecto tiene una unica ronda',
+  PRIMARY KEY (`project`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Configuraciones para proyectos';
+
 CREATE TABLE `project_data` (
   `project` varchar(50) NOT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -826,11 +1018,12 @@ CREATE TABLE `project_data` (
 
 CREATE TABLE `project_image` (
   `project` varchar(50) NOT NULL,
-  `image` int(10) unsigned NOT NULL,
+  `image` varchar(255) NOT NULL DEFAULT '' COMMENT 'Contiene nombre de archivo',
   `section` varchar(50) DEFAULT NULL,
   `url` tinytext,
   `order` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`project`,`image`)
+  PRIMARY KEY (`project`,`image`),
+  KEY `proyecto-seccion` (`project`,`section`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `project_lang` (
@@ -846,8 +1039,15 @@ CREATE TABLE `project_lang` (
   `keywords` tinytext,
   `media` varchar(255) DEFAULT NULL,
   `subtitle` tinytext,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `project_open_tag` (
+  `project` varchar(50) NOT NULL,
+  `open_tag` int(12) NOT NULL,
+  UNIQUE KEY `project_open_tag` (`project`,`open_tag`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Agrupacion de los proyectos';
 
 CREATE TABLE `promote` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -859,7 +1059,8 @@ CREATE TABLE `promote` (
   `active` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `project_node` (`node`,`project`),
-  UNIQUE KEY `id` (`id`)
+  UNIQUE KEY `id` (`id`),
+  KEY `activos` (`active`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Proyectos destacados';
 
 CREATE TABLE `promote_lang` (
@@ -867,6 +1068,7 @@ CREATE TABLE `promote_lang` (
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
   `description` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -920,17 +1122,25 @@ CREATE TABLE `reward` (
   `amount` int(5) DEFAULT NULL,
   `units` int(5) DEFAULT NULL,
   `fulsocial` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Retorno colectivo cumplido',
+  `url` tinytext COMMENT 'Localización del Retorno cumplido',
+  `order` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'Orden para retornos colectivos',
+  `bonus` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Retorno colectivo adicional',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
+  UNIQUE KEY `id` (`id`),
+  KEY `project` (`project`),
+  KEY `icon` (`icon`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Retornos colectivos e individuales';
 
 CREATE TABLE `reward_lang` (
   `id` int(20) NOT NULL,
+  `project` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `reward` tinytext,
   `description` text,
   `other` tinytext,
-  UNIQUE KEY `id_lang` (`id`,`lang`)
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
+  UNIQUE KEY `id_lang` (`id`,`lang`),
+  KEY `project` (`project`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `role` (
@@ -943,12 +1153,37 @@ CREATE TABLE `sponsor` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` tinytext NOT NULL,
   `url` tinytext,
-  `image` int(10) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   `order` int(11) NOT NULL DEFAULT '1',
   `node` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Patrocinadores';
+
+CREATE TABLE `stories` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `node` varchar(50) NOT NULL,
+  `project` varchar(50) DEFAULT NULL,
+  `order` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
+  `active` int(1) NOT NULL DEFAULT '0',
+  `title` tinytext,
+  `description` text,
+  `review` text,
+  `url` tinytext,
+  `post` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Historias existosas';
+
+CREATE TABLE `stories_lang` (
+  `id` bigint(20) unsigned NOT NULL,
+  `lang` varchar(2) NOT NULL,
+  `title` tinytext,
+  `description` text,
+  `review` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
+  UNIQUE KEY `id_lang` (`id`,`lang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `support` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -963,10 +1198,13 @@ CREATE TABLE `support` (
 
 CREATE TABLE `support_lang` (
   `id` int(20) NOT NULL,
+  `project` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `support` tinytext,
   `description` text,
-  UNIQUE KEY `id_lang` (`id`,`lang`)
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
+  UNIQUE KEY `id_lang` (`id`,`lang`),
+  KEY `project` (`project`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tag` (
@@ -979,6 +1217,7 @@ CREATE TABLE `tag_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `name` tinytext,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -991,11 +1230,12 @@ CREATE TABLE `task` (
   `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Tareas pendientes de admin';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tareas pendientes de admin';
 
 CREATE TABLE `template` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` tinytext NOT NULL,
+  `group` varchar(50) NOT NULL DEFAULT 'general' COMMENT 'Agrupación de uso',
   `purpose` tinytext NOT NULL,
   `title` tinytext NOT NULL,
   `text` text NOT NULL,
@@ -1008,6 +1248,7 @@ CREATE TABLE `template_lang` (
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
   `text` text,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1015,6 +1256,7 @@ CREATE TABLE `text` (
   `id` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL DEFAULT 'es',
   `text` text NOT NULL,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   PRIMARY KEY (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Textos multi-idioma';
 
@@ -1032,22 +1274,29 @@ CREATE TABLE `user` (
   `about` text,
   `keywords` tinytext,
   `active` tinyint(1) NOT NULL,
-  `avatar` int(11) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   `contribution` text,
   `twitter` tinytext,
   `facebook` tinytext,
   `google` tinytext,
   `identica` tinytext,
   `linkedin` tinytext,
+  `amount` int(7) DEFAULT NULL COMMENT 'Cantidad total aportada',
+  `num_patron` int(10) unsigned DEFAULT NULL COMMENT 'Num. proyectos patronizados',
+  `num_patron_active` int(10) unsigned DEFAULT NULL COMMENT 'Num. proyectos patronizados activos',
   `worth` int(7) DEFAULT NULL,
   `created` timestamp NULL DEFAULT NULL,
   `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `token` tinytext NOT NULL,
   `hide` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'No se ve publicamente',
   `confirmed` int(1) NOT NULL DEFAULT '0',
-  `lang` varchar(2) DEFAULT NULL,
+  `lang` varchar(2) DEFAULT 'es',
   `node` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `num_invested` int(10) unsigned DEFAULT NULL COMMENT 'Num. proyectos cofinanciados',
+  `num_owned` int(10) unsigned DEFAULT NULL COMMENT 'Num. proyectos publicados',
+  PRIMARY KEY (`id`),
+  KEY `nodo` (`node`),
+  KEY `coordenadas` (`location`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `user_call` (
@@ -1060,7 +1309,8 @@ CREATE TABLE `user_donation` (
   `user` varchar(50) NOT NULL,
   `amount` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `nif` varchar(10) DEFAULT NULL,
+  `surname` varchar(255) DEFAULT NULL COMMENT 'Apellido',
+  `nif` varchar(12) DEFAULT NULL,
   `address` tinytext,
   `zipcode` varchar(10) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
@@ -1076,7 +1326,9 @@ CREATE TABLE `user_donation` (
 CREATE TABLE `user_interest` (
   `user` varchar(50) NOT NULL,
   `interest` int(12) NOT NULL,
-  UNIQUE KEY `user_interest` (`user`,`interest`)
+  UNIQUE KEY `user_interest` (`user`,`interest`),
+  KEY `usuario` (`user`),
+  KEY `interes` (`interest`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Intereses de los usuarios';
 
 CREATE TABLE `user_lang` (
@@ -1124,8 +1376,16 @@ CREATE TABLE `user_prefer` (
   `rounds` int(1) NOT NULL DEFAULT '0',
   `mailing` int(1) NOT NULL DEFAULT '0',
   `email` int(1) NOT NULL DEFAULT '0',
+  `tips` int(1) NOT NULL DEFAULT '0',
+  `comlang` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Preferencias de notificacion de usuario';
+
+CREATE TABLE `user_project` (
+  `user` varchar(50) NOT NULL,
+  `project` varchar(50) NOT NULL,
+  UNIQUE KEY `user` (`user`,`project`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `user_review` (
   `user` varchar(50) NOT NULL,
@@ -1161,7 +1421,7 @@ CREATE TABLE `user_translate` (
 
 CREATE TABLE `user_vip` (
   `user` varchar(50) NOT NULL,
-  `image` int(10) unsigned NOT NULL,
+  `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   PRIMARY KEY (`user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Datos usuario colaborador';
 
@@ -1184,5 +1444,7 @@ CREATE TABLE `worthcracy_lang` (
   `id` int(2) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `name` tinytext NOT NULL,
+  `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

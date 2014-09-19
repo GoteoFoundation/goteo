@@ -6,4 +6,8 @@ CREATE TABLE `task` (
 `done` VARCHAR( 50 ) NULL DEFAULT NULL ,
 `datetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
 PRIMARY KEY ( `id` )
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Tareas pendientes de admin';
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Tareas pendientes de admin';
+
+
+-- engine
+ALTER TABLE `task` ENGINE = InnoDB;
