@@ -97,7 +97,7 @@ namespace Goteo\Controller {
                 }
 
 
-                $query = \strip_tags($_GET['query']); // busqueda de texto
+                $query = \strip_tags($_POST['query']); // busqueda de texto
                 $params['query'] = $query;
 
                 // para cada parametro, si no hay ninguno es todos los valores
