@@ -415,29 +415,25 @@ namespace Goteo\Model {
             $tc = ($crop ? 'c' : '');
             $cache = $width . 'x' . $height . $tc .'/' .$this->name;
 
+            if (is_numeric($this->id)) {
+                // controlador antigo por id
+                // ESTO ESTA OBSOLETO Y NO DEBERIA DARSE MAS
+                return SITE_URL . '/image/' . $this->id .'/'. $width . '/' . $height . '/' . $crop;
+            } else {
+                /*
+                En vez de retornar la URL del controlador:
 
-            //cache local en /data/cache
-            //NOTA: se podria implementar cache remota en S3,
-            //pero para ello hay que solucionar un problema
-            //con la funcion ->get_file() pues al no ser local la consulta
-            //por saber si existe el fichero o no puede ser prohibitibamente larga
-            $c = new Cache($this->dir_cache);
+                return SITE_URL . '/img/' . $cache;
 
-            if($c->get_file($cache)) {
-                //la cache existe ponemos el link adecuado
+                Retornaremos el directorio data como si la cache ya estuviera generada
+                Si la cache no existe ya se encargara el dispatche (index.php)de llamar al controlador
+                para que la genere
+
+                */
+
                 //Si existe la constante DATA_URL la usaremos en vez de SITE_URL
                 if(defined('DATA_URL')) return DATA_URL . '/' . $this->dir_cache . $cache;
                 else                    return SITE_URL . '/data/' . $this->dir_cache . $cache;
-            } else {
-
-                if (is_numeric($this->id)) {
-                    // controlador antigo por id
-                    return SITE_URL . '/image/' . $this->id .'/'. $width . '/' . $height . '/' . $crop;
-                } else {
-                    // controlador nuevo por nombre de archivo
-                    return SITE_URL . '/img/' . $cache;
-                }
-
             }
 
 		}
