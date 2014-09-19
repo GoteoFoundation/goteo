@@ -216,22 +216,6 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
     if(USE_PROXY)
     curl_setopt ($ch, CURLOPT_PROXY, PROXY_HOST.":".PROXY_PORT);
 
-    //setting the MsgStr as POST FIELD to curl
-    $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
-    $logger = &Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
-
-    $logger->log('##### PAYPAL call '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
-    
-    
-    if (TRUST_ALL_CONNECTION == true){
-    	
-    	$log_data='TRUST_ALL_CONNECTION is set to true, Server and peer certificate verification are turned off';
-    	$logger->warning($log_data);
-    	
-    }
-    
-    $logger->log("request: $MsgStr");
-
     curl_setopt($ch,CURLOPT_POSTFIELDS,$MsgStr);
     
     if(isset($_SESSION['curl_error_no'])) {
@@ -244,10 +228,11 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
    
     //getting response from server
     $response = curl_exec($ch);
-    $logger->log("response: $response");
-    $logger->log('##### END PAYPAL call '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
-    $logger->close();
-    
+
+
+    // LOGGER
+    \Goteo\Library\Feed::logger('paypal callerservices', 'user', $_SESSION['user']->id, $MsgStr.'<br /> Curl response: '.trim(htmlentities($response)), $endpoint);
+
     if (curl_errno($ch)) {
         // moving to display page to display curl errors
         die('curl_error: ' . curl_errno($ch) . '<br />' . curl_error($ch));

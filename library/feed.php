@@ -640,5 +640,39 @@ namespace Goteo\Library {
            return $content;
         }
 
+
+        /* Logger, simple metodo para grabar en la tabla de logs */
+        static public function logger( $scope, $target_type, $target_id, $text, $url = '' ) {
+
+            try {
+                $values = array(
+                    ':scope' => $scope,
+                    ':target_type' => $target_type,
+                    ':target_id' => $target_id,
+                    ':text' => $text,
+                    ':url' => $url
+                );
+
+                $sql = "INSERT INTO log
+                            (id, scope, target_type, target_id, text, url)
+                        VALUES
+                            ('', :scope, :target_type, :target_id, :text, :url)
+                        ";
+                if (Model::query($sql, $values)) {
+                    return true;
+                }
+
+            } catch(\PDOException $e) {
+                @mail(\GOTEO_FAIL_MAIL,
+                    'PDO Exception evento feed: ' . SITE_URL,
+                    "Ha fallado Feed PDO Exception<br /> {$sql} con " . print_r($values, true) . '<br />' .$e->getMessage() );
+                return false;
+            }
+
+        }
+
+
+
+
     }
 }
