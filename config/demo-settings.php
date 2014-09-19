@@ -34,9 +34,6 @@ define('AWS_KEY', '--------------');
 define('AWS_SECRET', '----------------------------------');
 define('AWS_REGION', 'eu-west-1');
 
-//Mail management: ses, phpmailer
-define('MAIL_HANDLER', 'phpmailer');
-
 // Database
 define('GOTEO_DB_DRIVER', 'mysql');
 define('GOTEO_DB_HOST', 'localhost');

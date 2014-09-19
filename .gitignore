@@ -1,4 +1,10 @@
-/data/
+/data/*
+!/data/.htaccess
+/logs/*
+!/logs/.htaccess
+!/logs/README
+!/logs/cron/*
+!/logs/cron/README
 /nodesys/_*
 config/*
 !config/demo-settings.php
