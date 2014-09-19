@@ -181,7 +181,7 @@ function tpvcall($data, $endpoint)
     $response = curl_exec($ch);
 
     // LOGGER
-    \Goteo\Library\Feed::logger('tpv call', 'invest', \substr($the_data['MerchantID'], 0, -4), 'Data:'. implode(' ', $the_data).'<br /> Curl response: '.trim(htmlentities($response)), $endpoint);
+    \Goteo\Library\Feed::logger('tpv call', 'invest', \substr($the_data['Num_operacion'], 0, -4), 'Data:'. implode(' ', $the_data).'<br /> Curl response: '.trim(htmlentities($response)), $endpoint);
 
 //    curl_getinfo($ch);
 

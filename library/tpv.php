@@ -90,7 +90,7 @@ namespace Goteo\Library {
                 }
 
                 // LOGGER
-                Feed::logger('tpv request', 'invest', $invest->id, $MsgStr, SITE_URL.'/'.$_SERVER['REQUEST_URI']);
+                Feed::logger('tpv request', 'invest', $invest->id, $MsgStr, SITE_URL.$_SERVER['REQUEST_URI']);
 
                 Invest::setDetail($invest->id, 'tpv-conection', 'Ha iniciado la comunicacion con el tpv, operacion numero ' . $token . '. Proceso libary/tpv::pay');
 

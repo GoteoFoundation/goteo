@@ -131,16 +131,16 @@ namespace Goteo\Controller {
             $mailHandler = new Mail();
             $mailHandler->to = \GOTEO_FAIL_MAIL;
             $mailHandler->toName = 'Tpv Monitor Goteo.org';
-            $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:I:s d/m/Y');
-            $mailHandler->content = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:I:s d/m/Y').'<br /><br />';
+            $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y');
+            $mailHandler->content = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y').'<br /><br />';
 
             if ($_POST['Codigo_error']) {
-                $mailHandler->content = 'Error:'.self::$errcode[$_POST['Codigo_error']].'<hr />';
+                $mailHandler->content .= 'Error:'.self::$errcode[$_POST['Codigo_error']].'<hr />';
             }
 
-            $mailHandler->content .= 'GET:<br /><pre>' . print_r($_GET, true) . '</pre><hr />';
-            $mailHandler->content .= 'POST:<pre>' . print_r($_POST, true) . '</pre><hr />';
-            $mailHandler->content .= 'SERVER:<pre>' . print_r($_SERVER, true) . '</pre>';
+            $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
+            $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
+            $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
 
             $mailHandler->html = true;
             $mailHandler->template = null;
@@ -163,7 +163,7 @@ namespace Goteo\Controller {
                 }
 
                 // LOGGER
-                Feed::logger('tpv response', 'invest', $id, $response, SITE_URL.'/'.$_SERVER['REQUEST_URI']);
+                Feed::logger('tpv response', 'invest', $id, $response, SITE_URL.$_SERVER['REQUEST_URI']);
 
                 if (!empty($_POST['Referencia'])) {
 
@@ -254,7 +254,7 @@ namespace Goteo\Controller {
             echo 'Simulacrum<br />';
 
             // LOGGER
-            Feed::logger('tpv', 'invest', '999', 'Simulacrum', SITE_URL.'/'.$_SERVER['REQUEST_URI']);
+            Feed::logger('tpv', 'invest', '999', 'Simulacrum', SITE_URL.$_SERVER['REQUEST_URI']);
 
 /*
             // monitorizando todo lo que llega aqui

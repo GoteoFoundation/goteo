@@ -231,7 +231,6 @@ namespace Goteo\Controller\Cron {
 
                     $monitors[] = 'enric@goteo.org';
                     $monitors[] = 'olivier@goteo.org';
-                    $monitors[] = 'monitorizing@goteo.org';
                     $monitors[] = 'dev@goteo.org';
                     $monitors[] = 'pablo@anche.no';
 
