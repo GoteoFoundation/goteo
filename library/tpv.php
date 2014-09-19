@@ -89,13 +89,8 @@ namespace Goteo\Library {
                     $MsgStr .= "{$n}:'{$v}'; ";
                 }
 
-                $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
-                $logger = &\Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
-
-                $logger->log('##### TPV ['.$invest->id.'] '.date('d/m/Y').' User:'.$_SESSION['user']->id.'#####');
-
-                $logger->log("Charge request: $MsgStr");
-                $logger->close();
+                // LOGGER
+                Feed::logger('tpv request', 'invest', $invest->id, $MsgStr, SITE_URL.'/'.$_SERVER['REQUEST_URI']);
 
                 Invest::setDetail($invest->id, 'tpv-conection', 'Ha iniciado la comunicacion con el tpv, operacion numero ' . $token . '. Proceso libary/tpv::pay');
 

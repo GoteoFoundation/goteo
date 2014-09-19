@@ -162,13 +162,8 @@ namespace Goteo\Controller {
                     $response .= "{$n}:'{$v}'; ";
                 }
 
-                $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
-                $logger = &\Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
-
-                $logger->log("response: $response");
-                $logger->log('##### END TPV ['.$id.'] '.date('d/m/Y').' '.$_POST['Ds_MerchantData'].'#####');
-                $logger->close();
-
+                // LOGGER
+                Feed::logger('tpv response', 'invest', $id, $response, SITE_URL.'/'.$_SERVER['REQUEST_URI']);
 
                 if (!empty($_POST['Referencia'])) {
 
@@ -258,7 +253,10 @@ namespace Goteo\Controller {
         public function simulacrum () {
             echo 'Simulacrum<br />';
 
+            // LOGGER
+            Feed::logger('tpv', 'invest', '999', 'Simulacrum', SITE_URL.'/'.$_SERVER['REQUEST_URI']);
 
+/*
             // monitorizando todo lo que llega aqui
             // mail de aviso
             $mailHandler = new Mail();
@@ -281,6 +279,7 @@ namespace Goteo\Controller {
             unset($mailHandler);
 
 
+*/
 
             die;
         }
