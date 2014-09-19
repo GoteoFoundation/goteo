@@ -120,7 +120,7 @@ namespace Goteo\Library {
             $this->title = $title;
             $this->url = $url;
             $this->html = $html;
-            $this->image = $image;
+            $this->image = ($image instanceof Image) ? $image->id : $image;
         }
 
         /**
@@ -169,7 +169,7 @@ namespace Goteo\Library {
 		 */
 		public static function getAll($type = 'all', $scope = 'public', $limit = '99', $node = null) {
 
-            $debug = false;
+            $debug = ($_GET['debug'] == '1');
 
             $list = array();
 
@@ -229,26 +229,34 @@ namespace Goteo\Library {
                 }
 
 
-
+                // todas las entradas de feed que tengan valor post cargan los datos del post, blog, traducción
                 $sql = "SELECT
                             feed.id as id,
                             feed.title as title,
                             feed.url as url,
-                            IFNULL(post.image, feed.image) as image,
+
                             DATE_FORMAT(feed.datetime, '%H:%i %d|%m|%Y') as date,
                             feed.datetime as timer,
                             feed.html as html,
-                            feed.target_type,
+                            feed.target_type as target_type,
+                            feed.target_id as target_id,
+                            feed.type as columna,
+
+                            feed.image as image,
+
+
+                            feed.post as post_id,
                             blog.type as post_owner_type,
                             blog.owner as post_owner_id,
                             post.date as post_date,
+                            post.image as post_image,
+
                             node.id as node_id,
+
                             $different_select
                         FROM feed
                         LEFT JOIN post
                             ON post.id = feed.post
-                            AND feed.type = 'goteo'
-                            AND feed.target_type = 'blog'
                         LEFT JOIN blog
                             ON blog.id = post.blog
                         LEFT JOIN node
@@ -274,8 +282,8 @@ namespace Goteo\Library {
                 $query = Model::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
-                    // si es la columna goteo, vamos a cambiar el html por el del post traducido
-                    if ($type == 'goteo' && $item->target_type == 'blog') {
+                    // si es una entrada de post , vamos a cambiar el html por el del post traducido
+                    if (!empty($item->post_id)) {
                         // primero sacamos la id del post de la url
                         $matches = array();
 
@@ -302,8 +310,15 @@ namespace Goteo\Library {
                     //hace tanto
                     $item->timeago = self::time_ago($item->timer);
 
-                    // imagen
+                    // IMAGEN
+                    // si es una entrada de blog o novedades, cogemos la imagen de esa entrada
+                    if (isset($item->post) && !empty($item->post_image)) {
+                        $item->image = Image::get($item->post_image);
+                    }
+
+                    // si no tiene, cargamos segun el target
                     $item->image = Image::get($item->image);
+
 
 
                     $list[] = $item;

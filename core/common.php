@@ -63,7 +63,7 @@ namespace {
             $keys[] = $key;
             $vals[] = "'{$val}'";
         }
-        echo str_replace($keys, $vals, $sql);
+        echo nl2br(str_replace($keys, $vals, $sql));
     }
 
     /**
