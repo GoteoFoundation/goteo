@@ -231,10 +231,7 @@ function call($MsgStr, $endpoint, $sandboxEmailAddress = '')
 
 
     // LOGGER
-    \Goteo\Library\Feed::logger('paypal callerservices', 'user', $_SESSION['user']->id, $MsgStr.'<br /> Curl response: '.trim(htmlentities($response)), $endpoint);
-
-    die($MsgStr.'<br /> Curl response: '.trim(htmlentities($response)));
-
+    \Goteo\Library\Feed::logger('paypal', 'user', $_SESSION['user']->id, $MsgStr.'<br /> Curl response: '.trim(htmlentities($response)), $endpoint);
 
     if (curl_errno($ch)) {
         // moving to display page to display curl errors
