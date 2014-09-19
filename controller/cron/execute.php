@@ -92,7 +92,7 @@ namespace Goteo\Controller\Cron {
                         Feed::item('project', $project->name, $project->id),
                         $project->days,
                         $project->round
-                ));
+                ), $project->image);
                 $log->doAdmin('project');
 
                 // evento público
@@ -144,7 +144,7 @@ namespace Goteo\Controller\Cron {
                         Feed::item('project', $project->name, $project->id),
                         $project->amount,
                         $per_amount
-                ));
+                ), $project->image);
                 $log->doPublic('projects');
                 unset($log);
 
@@ -199,7 +199,7 @@ namespace Goteo\Controller\Cron {
                         Feed::item('project', $project->name, $project->id),
                         $project->amount,
                         \round($per_amount)
-                ));
+                ), $project->image);
                 $log->doPublic('projects');
                 unset($log);
 
@@ -277,7 +277,7 @@ namespace Goteo\Controller\Cron {
                         Feed::item('project', $project->name, $project->id),
                         $project->amount,
                         \round($per_amount)
-                    ));
+                    ), $project->image);
                 $log->doPublic('projects');
                 unset($log);
 
@@ -333,7 +333,7 @@ namespace Goteo\Controller\Cron {
                                 Feed::item('project', $project->name, $project->id),
                                 $project->amount,
                                 \round($per_amount)
-                                ));
+                                ), $project->image);
                 $log->doPublic('projects');
                 unset($log);
 

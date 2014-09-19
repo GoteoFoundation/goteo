@@ -520,6 +520,7 @@ namespace Goteo\Model {
                                         project.lang as lang, 
                                         project.status as status, 
                                         project.node as node,
+                                        project.image as image,
                                         user.id as user_id,
                                         user.name as user_name,
                                         user.avatar as user_avatar,

@@ -137,7 +137,8 @@ namespace Goteo\Controller\Admin {
                                 Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                 Feed::item('relevant', 'Publicado'),
                                 Feed::item('blog', $post->title, $post->id)
-                            )));
+                            )), $post->image
+                            );
                             $log->doAdmin('admin');
 
                             // evento público

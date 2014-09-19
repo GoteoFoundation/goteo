@@ -581,7 +581,7 @@ namespace Goteo\Controller\Admin {
 
                 if ($action == 'publish') {
                     // si es publicado, hay un evento publico
-                    $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->gallery[0]->id);
+                    $log->populate($project->name, '/project/'.$project->id, Text::html('feed-new_project'), $project->image);
                     $log->doPublic('projects');
                 }
 
