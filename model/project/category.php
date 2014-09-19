@@ -83,6 +83,8 @@ namespace Goteo\Model\Project {
          */
 		public static function getNames ($project = null, $limit = null) {
 
+            $lang = \LANG;
+
             $array = array ();
             try {
                 $sqlFilter = "";
@@ -90,7 +92,7 @@ namespace Goteo\Model\Project {
                     $sqlFilter = " WHERE category.id IN (SELECT category FROM project_category WHERE project = '$project')";
                 }
 
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(category_lang.name, category.name) as name";
                 }
                 else {
@@ -116,7 +118,7 @@ namespace Goteo\Model\Project {
                 if (!empty($limit)) {
                     $sql .= " LIMIT $limit";
                 }
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>$lang));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     // la 15 es de testeos

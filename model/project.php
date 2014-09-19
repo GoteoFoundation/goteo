@@ -749,8 +749,8 @@ namespace Goteo\Model {
                 $Widget->amount = $project->amount;
                 $Widget->invested = $project->amount;
 
-                //de momento... habria que mejorarlo
-                $Widget->categories = Project\Category::getNames($Widget->id, 2);
+                // @TODO : hay que hacer campos calculados conn traducción para esto
+                $Widget->cat_names = Project\Category::getNames($Widget->id, 2);
                 $Widget->rewards = Project\Reward::getWidget($Widget->id);
 
                 if(!empty($project->mincost) && !empty($project->maxcost)) {
