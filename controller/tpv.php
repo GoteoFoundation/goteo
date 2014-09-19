@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Model\User,
         Goteo\Core\Error,
 		Goteo\Library\Feed,
+		Goteo\Library\Mail,
 		Goteo\Library\Text,
         Goteo\Core\Redirection;
 
@@ -123,8 +124,31 @@ namespace Goteo\Controller {
         
 
         public function comunication () {
-//            @mail(\GOTEO_FAIL_MAIL, 'Comunicacion online', 'Este GET<pre>' . print_r($_GET, true) . '</pre> y este POST:<pre>' . print_r($_POST, true) . '</pre>');
-            
+
+
+            // monitorizando todo lo que llega aqui
+            // mail de aviso
+            $mailHandler = new Mail();
+            $mailHandler->to = \GOTEO_FAIL_MAIL;
+            $mailHandler->toName = 'Tpv Monitor Goteo.org';
+            $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:I:s d/m/Y');
+            $mailHandler->content = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:I:s d/m/Y').'<br /><br />';
+
+            if ($_POST['Codigo_error']) {
+                $mailHandler->content = 'Error:'.self::$errcode[$_POST['Codigo_error']].'<hr />';
+            }
+
+            $mailHandler->content .= 'GET:<br /><pre>' . print_r($_GET, true) . '</pre><hr />';
+            $mailHandler->content .= 'POST:<pre>' . print_r($_POST, true) . '</pre><hr />';
+            $mailHandler->content .= 'SERVER:<pre>' . print_r($_SERVER, true) . '</pre>';
+
+            $mailHandler->html = true;
+            $mailHandler->template = null;
+            $mailHandler->send();
+            unset($mailHandler);
+
+
+
             if (isset($_POST['Num_operacion'])) {
                 $_POST['invest'] = $id = \substr($_POST['Num_operacion'], 0, -4);
                 
@@ -233,7 +257,31 @@ namespace Goteo\Controller {
 
         public function simulacrum () {
             echo 'Simulacrum<br />';
-            @mail(\GOTEO_FAIL_MAIL, 'Test request', 'Recibido este POST:<pre>' . print_r($_POST, true) . '</pre>');
+
+
+            // monitorizando todo lo que llega aqui
+            // mail de aviso
+            $mailHandler = new Mail();
+            $mailHandler->to = \GOTEO_FAIL_MAIL;
+            $mailHandler->toName = 'Tpv Monitor Goteo.org';
+            $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:I:s d/m/Y');
+            $mailHandler->content = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:I:s d/m/Y').'<br /><br />';
+
+            if ($_POST['Codigo_error']) {
+                $mailHandler->content = 'Error:'.self::$errcode[$_POST['Codigo_error']].'<hr />';
+            }
+
+            $mailHandler->content .= 'GET:<br /><pre>' . print_r($_GET, true) . '</pre><hr />';
+            $mailHandler->content .= 'POST:<pre>' . print_r($_POST, true) . '</pre><hr />';
+            $mailHandler->content .= 'SERVER:<pre>' . print_r($_SERVER, true) . '</pre>';
+
+            $mailHandler->html = true;
+            $mailHandler->template = null;
+            $mailHandler->send();
+            unset($mailHandler);
+
+
+
             die;
         }
 
