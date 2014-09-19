@@ -73,7 +73,7 @@ if ($project->status == 3 && $project->noinvest) {
         <?php if ($project->image instanceof Image): ?>
         <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->id ?>" src="<?php echo $project->image->getLink(226, 130, true) ?>" /></a>
         <?php endif ?>
-        <?php if (!empty($project->categories)): ?>
+        <?php if (!empty($project->cat_names)): ?>
         <div class="categories">
         <?php $sep = ''; foreach ($project->cat_names as $key=>$value) :
             echo $sep.htmlspecialchars($value);
