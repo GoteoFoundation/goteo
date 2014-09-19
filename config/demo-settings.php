@@ -104,10 +104,6 @@ define('SRC_URL', '//static.example.com');
 // ssl
 define('GOTEO_SSL', false);
 
-//Sessions
-//session handler: php, dynamodb
-define('SESSION_HANDLER', 'php');
-
 //Files management: s3, file
 define('FILE_HANDLER', 'file');
 
