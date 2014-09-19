@@ -26,7 +26,6 @@ if (!empty($_GET['date']) && !empty($_GET['type'])) {
         <div style="float:left;margin:5px;">
             <label for="type-filter">Tipo de proceso:</label><br />
             <select id="type-filter" name="type">
-                <option value="invest"<?php if ($type == 'invest') echo ' selected="selected"';?>>Aportes</option>
                 <option value="execute"<?php if ($type == 'execute') echo ' selected="selected"';?>>Cargos</option>
                 <option value="verify"<?php if ($type == 'verify') echo ' selected="selected"';?>>Verificaciones</option>
                 <option value="daily"<?php if ($type == 'daily') echo ' selected="selected"';?>>Avisos</option>
