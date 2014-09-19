@@ -69,7 +69,7 @@ set_error_handler (
 /**
  * Sesión.
  */
-session_name('goteo');
+session_name('goteo-'.GOTEO_ENV);
 session_start();
 
 /* Sistema nodos */
