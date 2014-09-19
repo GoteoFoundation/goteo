@@ -168,15 +168,6 @@ function tpvcall($data, $endpoint)
     }
     curl_setopt($ch, CURLOPT_POSTFIELDS, implode('&', $the_data)); // datos clave=>valor del POST
 
-    //setting the MsgStr as POST FIELD to curl
-    $conf = array('mode' => 0600, 'timeFormat' => '%X %x');
-    $logger = &Log::singleton('file', 'logs/'.date('Ymd').'_invest.log', 'caller', $conf);
-
-    $logger->log('##### TPV call '.date('d/m/Y').' #####');
-    
-    $logger->log("endpoint: $endpoint");
-    $logger->log("request: " . implode(' ', $the_data));
-
     
     if(isset($_SESSION['curl_error_no'])) {
 	    unset($_SESSION['curl_error_no']);
@@ -189,12 +180,11 @@ function tpvcall($data, $endpoint)
     //getting response from server
     $response = curl_exec($ch);
 
+    // LOGGER
+    \Goteo\Library\Feed::logger('tpv call', 'invest', \substr($the_data['MerchantID'], 0, -4), 'Data:'. implode(' ', $the_data).'<br /> Curl response: '.trim(htmlentities($response)), $endpoint);
+
 //    curl_getinfo($ch);
 
-    $logger->log("response: ".trim(htmlentities($response)));
-    $logger->log('##### END TPV call '.date('d/m/Y').' #####');
-    $logger->close();
-    
     if (curl_errno($ch)) {
         @mail(\GOTEO_FAIL_MAIL,
             'Ha fallado el handler de tpv en ' . SITE_URL,

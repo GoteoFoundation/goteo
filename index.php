@@ -69,7 +69,7 @@ set_error_handler (
 /**
  * Sesión.
  */
-session_name('goteo');
+session_name('goteo-'.GOTEO_ENV);
 session_start();
 
 /* Sistema nodos */
@@ -156,8 +156,14 @@ try {
     if (!ACL::check($uri)) {
         Message::Info(Text::get('user-login-required-access'));
 
+        //si es directorio data/cache se supone que es un archivo cache que no existe y que hay que generar
+        if(strpos($uri, 'data/cache/') !== false && $segments && $segments[3]) {
+            //simularemos la llamada al controlador img: img/XXXxXXX/imagen.jpg
+            array_shift($segments);
+            $segments[0] = 'img';
+        }
         //si es un cron (ejecutandose) con los parámetros adecuados, no redireccionamos
-        if ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
+        elseif ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
             define('CRON_EXEC', true);
         } else {
             throw new Redirection(SEC_URL."/user/login/?return=".rawurlencode($uri));
@@ -247,11 +253,9 @@ try {
     header("Location: {$url}");
 
 } catch (Error $error) {
-
     include "view/error.html.php";
 
 } catch (Exception $exception) {
-
     // Default error (500)
     include "view/error.html.php";
 }
