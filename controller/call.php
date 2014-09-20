@@ -373,6 +373,9 @@ namespace Goteo\Controller {
         }
 
         private function view ($id, $show = 'index') {
+            //activamos la cache para esta llamada
+            \Goteo\Core\DB::cache(true);
+
             $call = Model\Call::get($id, LANG);
 
             if (!$call instanceof Model\Call) {
