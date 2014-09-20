@@ -8,4 +8,4 @@ CREATE TABLE `template_lang` (
 
 
 -- pendiente de traducir
-ALTER TABLE `template_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+ALTER TABLE `template_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducciÃ³n';

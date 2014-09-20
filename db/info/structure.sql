@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS `info` (
 -- los alters
 ALTER TABLE `info` ADD `legend` TEXT NULL ;
 
--- Campo calculado para im·genes de la galerÌa
-ALTER TABLE `info` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'GalerÌa de imagenes';
+-- Campo calculado para im√°genes de la galer√≠a
+ALTER TABLE `info` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'Galer√≠a de imagenes';
 
 -- imagen principal
 ALTER TABLE `info` ADD `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Imagen principal';

@@ -8,4 +8,4 @@ CREATE TABLE `user_login` (
 
 
 -- alters
--- añadido campo datetime con current timestamp
+-- aÃ±adido campo datetime con current timestamp

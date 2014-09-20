@@ -36,7 +36,7 @@ if (NODE_ID != GOTEO_NODE) {
         <meta property="og:url" content="<?php echo $ogmeta['url'] ?>" />
 <?php else : ?>
         <meta property="og:title" content="Goteo.org" />
-        <meta property="og:description" content="<?php echo utf8_decode(GOTEO_META_DESCRIPTION) ?>" />
+        <meta property="og:description" content="<?php echo GOTEO_META_DESCRIPTION ?>" />
         <meta property="og:image" content="<?php echo SRC_URL ?>/goteo_logo.png" />
         <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>

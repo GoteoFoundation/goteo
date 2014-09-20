@@ -7,4 +7,4 @@ CREATE TABLE `location` (
   `lat` decimal(16,14) NOT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Geolocalización';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='GeolocalizaciÃ³n';

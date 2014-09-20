@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS support (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Colaboraciones';
 
 -- Alteraciones de la tabla original por si no se puede pasar el create de arriba
--- Cambiando ids numéricos por SERIAL
+-- Cambiando ids numÃ©ricos por SERIAL
 ALTER TABLE `support` CHANGE `id` `id` SERIAL NOT NULL AUTO_INCREMENT ;
 
--- Para marcar el mensaje que inicia la conversación sobre la colaboración
+-- Para marcar el mensaje que inicia la conversaciÃ³n sobre la colaboraciÃ³n
 ALTER TABLE `support` ADD `thread` BIGINT UNSIGNED NULL COMMENT 'De la tabla message';

@@ -20,7 +20,7 @@ UPDATE `template` SET `group` = 'tips' WHERE `id` =13;
 UPDATE `template` SET `group` = 'tips' WHERE `id` =14;
 UPDATE `template` SET `group` = 'tips' WHERE `id` =25;
 
--- Comunicación
+-- ComunicaciÃ³n
 UPDATE `template` SET `group` = 'contact' WHERE `id` =1;
 UPDATE `template` SET `group` = 'contact' WHERE `id` =2;
 UPDATE `template` SET `group` = 'contact' WHERE `id` =3;

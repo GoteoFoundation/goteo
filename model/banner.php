@@ -19,7 +19,7 @@ namespace Goteo\Model {
          *  Devuelve datos de un banner de proyecto
          */
         public static function get ($id, $lang = null) {
-                
+
                 //Obtenemos el idioma de soporte
                 $lang=self::default_lang_by_id($id, "banner_lang", $lang);
 
@@ -54,7 +54,7 @@ namespace Goteo\Model {
 
         /**
          * Lista de proyectos en banners
-         * La funci�n Banner::getAll esta en los archivos:
+         * La funcion Banner::getAll esta en los archivos:
          * controller/index.php OK
          * controller/admin/banners.php (PARECE OK, FALTA COMPROBAR en el admin: parece que se usa en view/admin/banners/list.html.php pero solo usa los campos de la tabla banner)
          * view/node/header.html.php (PARECE OK, FALTA COMPROBAR en el nodo, parece que se usa en view/node/banners.html.php campos: url, title, description, image->name )

@@ -4,8 +4,8 @@ CREATE TABLE `template` (
 `purpose` TINYTEXT NOT NULL ,
 `title` TINYTEXT NOT NULL ,
 `text` TEXT NOT NULL
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Plantillas emails autom·ticos';
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Plantillas emails autom√°ticos';
 
 
 -- Agrupacion de usos de las plantillas
-ALTER TABLE `template` ADD `group` VARCHAR( 50 ) NOT NULL DEFAULT 'general' COMMENT 'AgrupaciÛn de uso' AFTER `name`;
+ALTER TABLE `template` ADD `group` VARCHAR( 50 ) NOT NULL DEFAULT 'general' COMMENT 'Agrupaci√≥n de uso' AFTER `name`;
