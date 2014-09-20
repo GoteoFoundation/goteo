@@ -3,9 +3,20 @@ function keep_alive() {
 	$.getJSON('/json/keep_alive',function(data){
 		if(data.logged) {
 			//do nothing...
-			//alert(data.userid);
+			// console.log(data.userid);
+			setTimeout(keep_alive,1000);
 		}
-		setTimeout(keep_alive,350000);
+		if(data.info) {
+			//session expired
+			if(data.expires <= 0) {
+				alert(data.info);
+				location.reload();
+			}
+			else
+				if(confirm(data.info)) {
+					location.reload();
+				}
+		}
 	});
 
 }
