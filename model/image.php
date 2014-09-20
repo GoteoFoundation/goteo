@@ -370,25 +370,31 @@ namespace Goteo\Model {
          */
         public function remove(&$errors = array(), $which = null) {
 
+            /*
+            NOTA: El borrado de archivos no debe hacerse aqui pues en casos de sistemas
+                  distribuidos puede haber problemas porque las instancias web pueden no tener
+                  el cache generado.
+                  Otro problema (sobretodo si se usan CDN) es la cache de proxy sobre los archivos generados
+
+            @FIXME: crear un script en cron que repase todas las tablas con imagenes y borre
+                    del disco y el cache:
+
+                    //borrado disco:
+                    $this->fp->delete($this->id);
+
+                    //borrado cache (hack horrible por mejorar):
+                    $c = new Cache($this->dir_cache);
+                    $c->rm('*\/' . $this->name);
+
+             */
             // no borramos nunca la imagen de la gota
             if ($this->id == 'la_gota.png') return false;
 
-            $this->fp->delete($this->id);
             try {
                 if (\is_string($which) && \in_array($which, self::$types)) {
                     $sql = "DELETE FROM {$which}_image WHERE image = ?";
                     $query = self::query($sql, array($this->id));
                 }
-
-                //@FIXME
-                //Borra todos los caches generados
-                $c = new Cache($this->dir_cache);
-                //esto se tendria que hacer más cuidadosamente
-                //pero por el momento usaremos la funcion exec() ejecutando rm
-                $c->rm('*/' . $this->name);
-
-                //esborra de disk
-                $this->fp->delete($this->id);
 
                 return true;
             } catch(\PDOException $e) {
@@ -412,29 +418,25 @@ namespace Goteo\Model {
 		 */
 		public function getLink ($width = 'auto', $height = 'auto', $crop = false) {
 
-            $tc = ($crop ? 'c' : '');
-            $cache = $width . 'x' . $height . $tc .'/' .$this->name;
+            if($crop === true) $crop = 'c';
+            //metodos: c (crop)
+            $crop = in_array($crop, array('c')) ? $crop : '';
+            $cache = $width . 'x' . $height . $crop . '/' .$this->name;
 
-            if (is_numeric($this->id)) {
-                // controlador antigo por id
-                // ESTO ESTA OBSOLETO Y NO DEBERIA DARSE MAS
-                return SITE_URL . '/image/' . $this->id .'/'. $width . '/' . $height . '/' . $crop;
-            } else {
-                /*
-                En vez de retornar la URL del controlador:
+            /*
+            En vez de retornar la URL del controlador:
 
-                return SITE_URL . '/img/' . $cache;
+            return SITE_URL . '/img/' . $cache;
 
-                Retornaremos el directorio data como si la cache ya estuviera generada
-                Si la cache no existe ya se encargara el dispatche (index.php)de llamar al controlador
-                para que la genere
+            Retornaremos el directorio data como si la cache ya estuviera generada
+            Si la cache no existe ya se encargara el dispatche (index.php)de llamar al controlador
+            para que la genere
 
-                */
+            */
 
-                //Si existe la constante DATA_URL la usaremos en vez de SITE_URL
-                if(defined('DATA_URL')) return DATA_URL . '/' . $this->dir_cache . $cache;
-                else                    return SITE_URL . '/data/' . $this->dir_cache . $cache;
-            }
+            //Si existe la constante DATA_URL la usaremos en vez de SITE_URL
+            if(defined('DATA_URL')) return DATA_URL . '/' . $this->dir_cache . $cache;
+            else                    return SITE_URL . '/data/' . $this->dir_cache . $cache;
 
 		}
 

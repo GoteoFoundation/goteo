@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS `glossary_lang` (
 ALTER TABLE `glossary_lang` ADD `legend` TEXT NULL ;
 
 -- pendiente de traducir
-ALTER TABLE `glossary_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+ALTER TABLE `glossary_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducciÃ³n';

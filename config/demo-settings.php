@@ -9,6 +9,9 @@ ini_set("display_errors",1);
 //Estoy en mantenimiento
 define('GOTEO_MAINTENANCE', null);
 
+//Tiempo máximo de sesion en segundos
+define('GOTEO_SESSION_TIME', 3600);
+
 //secreto interno para generación de ID's CAMBIAR!!!!
 define('GOTEO_MISC_SECRET', 'gl,+PQ7`}i8fv}CX0B7qhbqnV[3RHpq0\KPQg|1I|dTz=m=u6BJ;k27mzLuo');
 
@@ -94,9 +97,11 @@ define('GOTEO_DEFAULT_LANG', 'es');
 define('GOTEO_URL', 'http://example.com');
 //url de recursos estaticos (imagenes, CSS)
 define('SRC_URL', '//static.example.com');
-//Opcional: si se define la constante DATA_URL se usara en lugar de GOTEO_URL para el contenido de data
-//IMPORTANTE: definir la ruta completa sin / al final
-//define('DATA_URL', '//data.example.com/data');
+//Opcional: si se define la constante DATA_URL se usara en lugar de SRC_URL para el contenido de data
+//Sirve para utilzar con CDN que hagan mirror de SITE_URL
+//IMPORTANTE: definir la ruta sin / al final (con el prefijo "/data" si aplica)
+//define('DATA_URL', '//cdn-example.com/data');
+//define('DATA_URL', '//data.cdn-example.com');
 
 // ssl
 define('GOTEO_SSL', false);

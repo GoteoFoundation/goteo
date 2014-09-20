@@ -31,7 +31,7 @@ ALTER TABLE `user` ADD `confirmed` INT( 1 ) NOT NULL DEFAULT '0';
 -- idioma preferido
 ALTER TABLE `user` ADD `lang` VARCHAR( 2 ) NULL DEFAULT NULL;
 
--- nodo donde se registró
+-- nodo donde se registrÃ³
 ALTER TABLE `user` ADD `node` VARCHAR( 50 ) NULL DEFAULT NULL;
 
 -- cantidad aportada en goteo
@@ -50,7 +50,7 @@ ALTER TABLE `user`
   CHANGE `lang` `lang` varchar(2)  COLLATE utf8_general_ci NULL DEFAULT 'es' after `confirmed` ,
   CHANGE `node` `node` varchar(50)  COLLATE utf8_general_ci NULL after `lang` ;
 
--- numero proyectos cofinanciados  
+-- numero proyectos cofinanciados
 ALTER TABLE `user`
   ADD COLUMN `num_invested` int(10) unsigned   NOT NULL DEFAULT 0 COMMENT 'Num. proyectos cofinanciados';
 
@@ -60,12 +60,11 @@ ALTER TABLE `user`
 
 -- campo imagen a nombre archivo
 ALTER TABLE `user` CHANGE `avatar` `avatar` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
-  
-  
+
+
 -- cambio en los campos calculados (null y null por defecto)
 ALTER TABLE `user` CHANGE `num_patron` `num_patron` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos patronizados',
 CHANGE `num_patron_active` `num_patron_active` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos patronizados activos',
 CHANGE `num_invested` `num_invested` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos cofinanciados',
 CHANGE `num_owned` `num_owned` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos publicados';
-  
-  
+

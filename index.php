@@ -71,6 +71,17 @@ set_error_handler (
  */
 session_name('goteo-'.GOTEO_ENV);
 session_start();
+if(!$_SESSION['init_time']) {
+    $_SESSION['init_time'] = START_TIME;
+}
+if(START_TIME > $_SESSION['init_time'] + (defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600 )) {
+    // session expirada
+    session_unset();
+    session_destroy();
+    session_write_close();
+    session_regenerate_id(true);
+    session_start();
+}
 
 /* Sistema nodos */
 // Get Node and check it
@@ -221,6 +232,11 @@ try {
             if ($result instanceof Resource\MIME) {
                 $mime_type = $result->getMIME();
                 header("Content-type: $mime_type");
+                if($mime_type == 'text/html') {
+                    //renovar tiempo de sesion si es tipo html
+                    $_SESSION['init_time'] = START_TIME;
+                    $_SESSION['init_time_advised'] = false;
+                }
             }
 
             //esto suele llamar a un metodo magic: __toString de la vista View
@@ -235,11 +251,13 @@ try {
                 echo '<b>SQL STATS:</b><br> '.print_r(Goteo\Core\DB::getQueryStats(), 1);
                 echo '<b>END:</b> '.(microtime(true) - START_TIME ) . 's';
                 echo '</pre></div>';
+
+               echo '<!-- '.(microtime(true) - START_TIME ) . 's -->';
             }
 
 
             // Farewell
-            die('<!-- '.(microtime(true) - START_TIME ) . 's -->');
+            die;
 
         }
 

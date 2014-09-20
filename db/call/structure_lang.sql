@@ -22,4 +22,4 @@ ALTER TABLE `call_lang` ADD `tweet` tinytext DEFAULT NULL AFTER `dossier` ;
 ALTER TABLE `call_lang` ADD `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `lang`;
 
 -- pendiente de traducir
-ALTER TABLE `call_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+ALTER TABLE `call_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducciÃ³n';

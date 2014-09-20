@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Goteo\Core\View,
     Goteo\Model\Image,
@@ -21,7 +21,7 @@ $fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
 // metas og: para que al compartir en facebook coja las imagenes de novedades
 $ogmeta = array(
     'title' => 'Goteo.org',
-    'description' => 'Goteo.org',
+    'description' => GOTEO_META_DESCRIPTION,
     'url' => SITE_URL
 );
 if (!empty($this['posts'])) {
@@ -74,9 +74,9 @@ include 'view/header.html.php';
 <div id="main">
 
     <?php foreach ($this['order'] as $item=>$itemData) {
-        
+
         if ($item=="news")
-            { 
+            {
                 $bannerPrensa = new View("view/home/news.html.php",$this);
                 continue;
             }
