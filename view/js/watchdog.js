@@ -4,7 +4,7 @@ function keep_alive() {
 		if(data.logged) {
 			//do nothing...
 			// console.log(data.userid);
-			setTimeout(keep_alive,1000);
+			setTimeout(keep_alive,30000);
 		}
 		if(data.info) {
 			//session expired
