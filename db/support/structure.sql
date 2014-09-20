@@ -17,4 +17,5 @@ ALTER TABLE `support` CHANGE `id` `id` SERIAL NOT NULL AUTO_INCREMENT ;
 ALTER TABLE `support` ADD `thread` BIGINT UNSIGNED NULL COMMENT 'De la tabla message';
 
 -- Indice para hilos de mensajes
-ALTER TABLE `support` ADD INDEX `hilo` ( `thread` ) 
+ALTER TABLE `support` ADD INDEX `hilo` ( `thread` ); 
+ALTER TABLE `support` ADD INDEX `proyecto` ( `project` ); 

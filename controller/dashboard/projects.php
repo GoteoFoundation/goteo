@@ -387,6 +387,15 @@ namespace Goteo\Controller\Dashboard {
                     if (!empty($support->thread)) {
                         // actualizar ese mensaje
                         $msg = Model\Message::get($support->thread);
+
+                        // ojo si tenemos id pero no hay mensaje
+                        if (!$msg instanceof Model\Message) {
+                            $msg = new Model\Message(array(
+                                'user' => $project->owner,
+                                'project' => $project->id
+                            ));
+                        }
+
                         $msg->date = date('Y-m-d');
                         $msg->message = "{$support->support}: {$support->description}";
                         $msg->blocked = true;
