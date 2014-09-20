@@ -48,7 +48,7 @@ namespace Goteo\Library {
         static public function slash ($id) {
             // sacamos el contenido del texto
             $text = call_user_func_array ( 'static::get' , \func_get_args() );
-            return \addslashes($text);
+            return \addslashes(strip_tags(nl2br($text)));
         }
 
         static public function getAdmin ($id) {

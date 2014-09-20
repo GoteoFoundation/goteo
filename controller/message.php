@@ -105,7 +105,7 @@ namespace Goteo\Controller {
                             ";
                         $query = Model\Project::query($sql, array(':user' => $thread->user->id));
                         $prefer = $query->fetchObject();
-                        if (!$prefer->spam) {
+                        if (!empty($thread->user->name) && !$prefer->spam) {
                             // Mail al autor del thread
                             $comlang = !empty($prefer->lang) ? $prefer->lang : $thread->user->lang;
                             // Obtenemos la plantilla para asunto y contenido

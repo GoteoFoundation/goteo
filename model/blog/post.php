@@ -84,7 +84,7 @@ namespace Goteo\Model\Blog {
                     WHERE post.id = :id
                     ", array(':id' => $id, ':lang'=>$lang));
 
-                $post = $query->fetchObject(__CLASS__);
+                $post = $query->fetchObject('\Goteo\Model\Blog\Post');
 
 
                 $post->user   = new User;
