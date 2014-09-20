@@ -59,7 +59,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
         <!-- end custom fancybox-->
 
-        <!-- vigilante de sesi�n -->
+        <!-- vigilante de sesion -->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
 
         <!-- saltos entre nodos -->
