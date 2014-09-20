@@ -3,6 +3,7 @@ namespace Goteo\Controller {
 
     use Goteo\Model,
         Goteo\Model\User,
+        Goteo\Library\Text,
         Goteo\Library\Feed;
 
     class JSON extends \Goteo\Core\Controller {
@@ -11,7 +12,7 @@ namespace Goteo\Controller {
 
 		/**
 		 * Método de datos para la visualización de goteo-analytics
-         * 
+         *
          * @param varchar(50) $id Id de proyecto
          * @return array formato json
 		 * */
@@ -44,22 +45,22 @@ namespace Goteo\Controller {
                 }
             }
 
-            $this->result = array('invests' => $invests, 
+            $this->result = array('invests' => $invests,
                             'dates' => $dates,
                             'minimum' => $minimum,
                             'optimum' => $optimum);
 
 			return $this->output();
 		}
-        
-        
+
+
 		/**
 		 * Localizaciones para autocomplete
 		 * */
 		public function locations() {
 
             $locations = Model\Location::getAll();
-            
+
             // ordenar por nombre
             uasort($locations,
                 function ($a, $b) {
@@ -67,7 +68,7 @@ namespace Goteo\Controller {
                     return ($a->name > $b->name) ? 1 : -1;
                     }
                 );
-            
+
 			foreach ($locations as $loc) {
                 $this->result[] = $loc->name;
             }
@@ -81,12 +82,25 @@ namespace Goteo\Controller {
 		public function keep_alive() {
 
 			$this->result = array(
-				'logged'=>false
+                'logged'  => false,
+                'expires' => 0,
+				'info' => ''
 			);
-			if($_SESSION['user'] instanceof User) {
-				$this->result['logged'] = true;
-				$this->result['userid'] = $_SESSION['user']->id;
-			}
+
+            $init = (int) $_SESSION['init_time'];
+            $session_time = defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600 ;
+            if($_SESSION['user'] instanceof User) {
+                $this->result['logged'] = true;
+                $this->result['userid'] = $_SESSION['user']->id;
+				$this->result['expires'] = START_TIME + $session_time - $init;
+                if(START_TIME > $init + $session_time - 5 && empty($_SESSION['init_time_advised'])) {
+                    $this->result['info'] = Text::get('session-about-to-expire');;
+                    $_SESSION['init_time_advised'] = true;
+                }
+            }
+            elseif(empty($init)) {
+                $this->result['info'] = Text::get('session-expired');;
+            }
 
 			return $this->output();
 		}
@@ -141,15 +155,15 @@ namespace Goteo\Controller {
 		public function months($full = true) {
 
             $fmt = ($full) ? '%B' : '%b';
-            
+
             $months = array();
-            
+
             for( $i = 1; $i <= 12; $i++ ) {
                 $months[ $i ] = strftime( $fmt, mktime( 0, 0, 0, $i, 1 ) );
-            }            
-            
+            }
+
             $this->result['months'] = $months;
-            
+
             return $this->output();
 		}
 

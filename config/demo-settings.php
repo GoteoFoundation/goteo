@@ -9,6 +9,9 @@ ini_set("display_errors",1);
 //Estoy en mantenimiento
 define('GOTEO_MAINTENANCE', null);
 
+//Tiempo máximo de sesion en segundos
+define('GOTEO_SESSION_TIME', 3600);
+
 //secreto interno para generación de ID's CAMBIAR!!!!
 define('GOTEO_MISC_SECRET', 'gl,+PQ7`}i8fv}CX0B7qhbqnV[3RHpq0\KPQg|1I|dTz=m=u6BJ;k27mzLuo');
 
