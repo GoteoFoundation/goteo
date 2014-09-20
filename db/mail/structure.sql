@@ -12,10 +12,10 @@ ADD `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ;
 ALTER TABLE `mail` ADD `node` VARCHAR( 50 ) NULL AFTER `template` ;
 
 -- para verificaciones de idioma alternativo
-ALTER TABLE `mail`  ADD `lang` VARCHAR(2) NULL DEFAULT NULL COMMENT 'Idioma en el que se solicitÛ la plantilla'
+ALTER TABLE `mail`  ADD `lang` VARCHAR(2) NULL DEFAULT NULL COMMENT 'Idioma en el que se solicit√≥ la plantilla'
 
 -- almacenamiento del html en Amazon S3
-ALTER TABLE `mail` ADD `content` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ID del archivo con HTML est·tico';
+ALTER TABLE `mail` ADD `content` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ID del archivo con HTML est√°tico';
 
 -- cuando se pueda quitar...
 ALTER TABLE `mail` DROP `html`;

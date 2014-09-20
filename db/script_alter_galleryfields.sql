@@ -1,7 +1,7 @@
--- Glossary 
+-- Glossary
 
--- Campo calculado para imágenes de la galería
-ALTER TABLE `glossary` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'Galería de imagenes';
+-- Campo calculado para imÃ¡genes de la galerÃ­a
+ALTER TABLE `glossary` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'GalerÃ­a de imagenes';
 
 -- imagen principal
 ALTER TABLE `glossary` ADD `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Imagen principal';
@@ -9,8 +9,8 @@ ALTER TABLE `glossary` ADD `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Ima
 
 -- Info
 
--- Campo calculado para imágenes de la galería
-ALTER TABLE `info` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'Galería de imagenes';
+-- Campo calculado para imÃ¡genes de la galerÃ­a
+ALTER TABLE `info` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'GalerÃ­a de imagenes';
 
 -- imagen principal
 ALTER TABLE `info` ADD `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Imagen principal';
@@ -18,12 +18,12 @@ ALTER TABLE `info` ADD `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Imagen 
 
 -- Post
 
--- Campo calculado para imágenes de la galería
-ALTER TABLE `post` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'Galería de imagenes';
+-- Campo calculado para imÃ¡genes de la galerÃ­a
+ALTER TABLE `post` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'GalerÃ­a de imagenes';
 
 
 -- Proyecto
 
--- Campo calculado para imágenes de la galería  (mayor porque tiene secciones)
-ALTER TABLE `project` ADD `gallery` VARCHAR( 10000 ) NULL COMMENT 'Galería de imagenes';
+-- Campo calculado para imÃ¡genes de la galerÃ­a  (mayor porque tiene secciones)
+ALTER TABLE `project` ADD `gallery` VARCHAR( 10000 ) NULL COMMENT 'GalerÃ­a de imagenes';
 

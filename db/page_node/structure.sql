@@ -11,4 +11,4 @@ ALTER TABLE `page_node` ADD `name` TINYTEXT NULL AFTER `lang` ,
 ADD `description` TEXT NULL AFTER `name`;
 
 -- pendiente de traducir
-ALTER TABLE `page_node` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+ALTER TABLE `page_node` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducciÃ³n';

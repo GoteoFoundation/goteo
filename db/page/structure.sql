@@ -3,4 +3,4 @@ CREATE TABLE IF NOT EXISTS `page` (
 `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
 `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci ,
 `url` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci ,
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Páginas institucionales';
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'PÃ¡ginas institucionales';

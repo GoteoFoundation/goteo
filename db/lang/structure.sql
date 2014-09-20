@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS lang (
-  id varchar(2) NOT NULL COMMENT 'Código ISO-639',
+  id varchar(2) NOT NULL COMMENT 'CÃ³digo ISO-639',
   `name` varchar(20) NOT NULL,
   `active` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (id)

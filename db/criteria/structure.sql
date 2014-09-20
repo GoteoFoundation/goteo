@@ -4,4 +4,4 @@ CREATE TABLE `criteria` (
 `title` TINYTEXT NULL ,
 `description` TEXT NULL ,
 `order` TINYINT NOT NULL DEFAULT '1'
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Criterios de puntuación';
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Criterios de puntuaciÃ³n';
