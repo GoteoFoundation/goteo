@@ -1917,6 +1917,10 @@ namespace Goteo\Model {
 				$sql = "UPDATE project SET passed = NULL, status = :status, published = :published WHERE id = :id";
 				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
 
+                /*
+                 * Estos mensajes se automantinen en el paso del superform y en dashboard
+                 *
+                 *
                 // borramos mensajes anteriores que sean de colaboraciones
                 self::query("DELETE FROM message WHERE id IN (SELECT thread FROM support WHERE project = ?)", array($this->id));
 
@@ -1936,6 +1940,7 @@ namespace Goteo\Model {
                     }
                     unset($msg);
                 }
+                */
 
                 // actualizar numero de proyectos publicados del usuario
                 User::updateOwned($this->owner);
