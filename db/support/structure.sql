@@ -15,3 +15,7 @@ ALTER TABLE `support` CHANGE `id` `id` SERIAL NOT NULL AUTO_INCREMENT ;
 
 -- Para marcar el mensaje que inicia la conversación sobre la colaboración
 ALTER TABLE `support` ADD `thread` BIGINT UNSIGNED NULL COMMENT 'De la tabla message';
+
+-- Indice para hilos de mensajes
+ALTER TABLE `support` ADD INDEX `hilo` ( `thread` ); 
+ALTER TABLE `support` ADD INDEX `proyecto` ( `project` ); 

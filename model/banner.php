@@ -43,7 +43,7 @@ namespace Goteo\Model {
                         ON project.id = banner.project
                     WHERE banner.id = :id
                     ", array(':id'=>$id, ':lang' => $lang));
-                $banner = $query->fetchObject(__CLASS__);
+                $banner = $query->fetchObject('\Goteo\Model\Banner');
 
                 $banner->image = Image::get($banner->image);
 
