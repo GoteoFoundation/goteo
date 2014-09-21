@@ -359,8 +359,9 @@ $(function () {
         }).appendTo($form);
 
        $.post($form.attr('action'), $form.serializeArray(), function(html) {
-            costs.html($(html).find('#' + costs_id).html());
-            costs.triggerHandler('sfafterupdate', [costs, html]);
+            //costs.html($(html).find('#' + costs_id).html());
+            //costs.triggerHandler('sfafterupdate', [costs, html]);
+            Superform.update(costs, null, html);
        });
        //fin del hack, esto era el contenido antiguo:
        //
