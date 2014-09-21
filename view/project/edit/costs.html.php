@@ -279,47 +279,88 @@ echo new SuperForm(array(
 $(function () {
 
     var costs = $('div#<?php echo $sfid ?> li.element#costs');
+    var costs_id = $(costs).attr('id');
 
     costs.delegate('li.element.cost input.edit', 'click', function (event) {
-        var data = {};
-        data[this.name] = '1';
+        // hack para superar un error insondable del superform
+        var $form = $(this).closest('form');
+        var form_id = $form.attr('id');
+        $('<input>').attr({
+            type: 'hidden',
+            value: 1,
+            name: this.name
+        }).appendTo($form);
+       $form.find('[name="cost-add"]').remove();
+
+       $.post($form.attr('action'), $form.serializeArray(), function(html) {
+            costs.html($(html).find('#' + costs_id).html());
+            costs.triggerHandler('sfafterupdate', [costs, html]);
+       });
+
+        // var data = {};
+        // data[this.name] = '1';
         //Superform.update(this, data);
-        Superform.update(costs, data);
+        // Superform.update(costs, data);
         event.preventDefault();
     });
 
     costs.delegate('li.element.editcost input.ok', 'click', function (event) {
-        var data = {};
-        data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        //Superform.update($(this).parents('li.element.editcost'), data);
-        Superform.update(costs, data);
+        // hack para superar un error insondable del superform
+        var $form = $(this).closest('form');
+        var form_id = $form.attr('id');
+        $('<input>').attr({
+            type: 'hidden',
+            value: '0',
+            name: this.name.substring(0, this.name.length-2) + 'edit'
+        }).appendTo($form);
+       $form.find('[name="cost-add"]').remove();
+
+       $.post($form.attr('action'), $form.serializeArray(), function(html) {
+            costs.html($(html).find('#' + costs_id).html());
+            costs.triggerHandler('sfafterupdate', [costs, html]);
+       });
+        // var data = {};
+        // data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
+        // //Superform.update($(this).parents('li.element.editcost'), data);
+        // Superform.update(costs, data);
         event.preventDefault();
     });
 
-    costs.delegate('li.element.editcost input.remove, li.element.cost input.remove', 'click', function (event) {
-        var data = {};
-        data[this.name] = '1';
-        Superform.update(costs, data);
+    costs.delegate('li.element.cost input.remove', 'click', function (event) {
+        // hack para superar un error insondable del superform
+        var $form = $(this).closest('form');
+        var form_id = $form.attr('id');
+
+       $('<input>').attr({
+            type: 'hidden',
+            value: 1,
+            name: this.name
+        }).appendTo($form);
+       $form.find('[name="cost-add"]').remove();
+
+       $.post($form.attr('action'), $form.serializeArray(), function(html) {
+            costs.html($(html).find('#' + costs_id).html());
+            costs.triggerHandler('sfafterupdate', [costs, html]);
+       });
+        // var data = {};
+        // data[this.name] = '1';
+        // Superform.update(costs, data);
         event.preventDefault();
     });
 
     costs.delegate('#cost-add input', 'click', function (event) {
         // hack para superar un error insondable del superform
-       var $form = $(this).closest('form');
-       var form_id = $form.attr('id');
+        var $form = $(this).closest('form');
+        var form_id = $form.attr('id');
        $('<input>').attr({
             type: 'hidden',
             value: 1,
             name: this.name
         }).appendTo($form);
 
-       var el_id = $(costs).attr('id');
        $.post($form.attr('action'), $form.serializeArray(), function(html) {
-         if (html) {
-            // console.log('<!-- SFEL#' + el_id + ' -->');
-            // console.log($(html).find('#' + el_id).html());
-            $('#' + el_id).html($(html).find('#' + el_id).html());
-            }
+            costs.html($(html).find('#' + costs_id).html());
+            costs.triggerHandler('sfafterupdate', [costs, html]);
        });
        //fin del hack, esto era el contenido antiguo:
        //
