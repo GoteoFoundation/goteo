@@ -312,12 +312,11 @@ namespace Goteo\Library {
 
                     // IMAGEN
                     // si es una entrada de blog o novedades, cogemos la imagen de esa entrada
-                    if (isset($item->post) && !empty($item->post_image)) {
+                    if (isset($item->post_id) && !empty($item->post_image)) {
                         $item->image = Image::get($item->post_image);
+                    } else {
+                        $item->image = Image::get($item->image);
                     }
-
-                    // si no tiene, cargamos segun el target
-                    $item->image = Image::get($item->image);
 
 
 
