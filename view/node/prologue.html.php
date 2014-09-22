@@ -65,6 +65,10 @@
         <!-- saltos entre nodos -->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/nodejump.js"></script>
 
+        <?php if (isset($superform)) : ?>
+            <script src="<?php echo SRC_URL ?>/view/js/superform.js"></script>
+        <?php endif; ?>
+
         <?php if (defined('NODE_ANALYTICS_TRACKER')) echo NODE_ANALYTICS_TRACKER; ?>
 
     </head>
