@@ -11,10 +11,10 @@ CREATE TABLE IF NOT EXISTS `invest_address` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Dirección de entrega de recompensa';
 
 
---- alters
+-- alters
 ALTER TABLE `invest_address` ADD `name` VARCHAR( 255 ) NULL ,
 ADD `nif` VARCHAR( 10 ) NULL ;
 
---- alters
+-- alters
 ALTER TABLE `invest_address` ADD `namedest` TINYTEXT NULL, ADD `emaildest` TINYTEXT NULL, ADD `regalo` INT(1)  NULL DEFAULT '0';
 ALTER TABLE `invest_address` ADD `message` TEXT NULL;
