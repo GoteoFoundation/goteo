@@ -143,9 +143,13 @@ namespace Goteo\Controller {
             if ($step == 'images') {
                 // para que tenga todas las imágenes al procesar el post
                 $project->images = Model\Image::getAll($id, 'project');
+                $fragment = '#images';
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
+
+               // @DEBUG  die( \trace($_POST) );
+
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
 
                 foreach ($steps as $id => &$data) {
@@ -164,9 +168,104 @@ namespace Goteo\Controller {
 
                 // hay que mostrar errores en la imagen
                 if (!empty($errors['image'])) {
-                    $project->errors['images']['image'] = $errors['image'];
-                    $project->okeys['images']['image'] = null;
+                    Message::Error(implode('<br />', $errors['image']));
                 }
+
+
+                // en los pasos de listas de items (webs, costes, retornos, colaboracioens)
+                foreach ($_POST as $k => $v) {
+
+                    // webs
+                    if (!empty($v) && preg_match('/web-(\d+)-edit/', $k, $r)) {
+                        $_SESSION['superform_item_edit'] = $k;
+                        $fragment = "#$k";
+                        break;
+                    }
+
+
+                    // costes
+                    if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
+                        $_SESSION['superform_item_edit'] = $k;
+                        $fragment = "#$k";
+                        break;
+                    }
+
+
+                    // recompensa
+                    if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {
+                        $_SESSION['superform_item_edit'] = $k;
+                        $fragment = "#$k";
+                        break;
+                    }
+
+
+                    // colaboraciones
+                    if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
+                        $_SESSION['superform_item_edit'] = $k;
+                        $fragment = "#$k";
+                        break;
+                    }
+
+                }
+
+                // nueva web
+                if (isset($_POST['web-add'])) {
+                    $last = end($project->user->webs);
+                    if ($last !== false) {
+                        $k = "web-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["web-{$last->id}-edit"] = true;
+                        //$fragment = "#$k";
+                        $fragment = "#webs";
+                    }
+                }
+
+                // nuevo coste
+                if (isset($_POST['cost-add'])) {
+                    $last = end($project->costs);
+                    if ($last !== false) {
+                        $k = "cost-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["cost-{$last->id}-edit"] = true;
+                        $fragment = "#$k";
+                    }
+                }
+
+                // nuevo retorno / recompensa
+                if (!empty($_POST['social_reward-add'])) {
+                    $last = end($project->social_rewards);
+                    if ($last !== false) {
+                        $k = "social_reward-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["social_reward-{$last->id}-edit"] = true;
+                        $fragment = "#$k";
+                    }
+                }
+
+                if (!empty($_POST['individual_reward-add'])) {
+                    $last = end($project->individual_rewards);
+                    if ($last !== false) {
+                        $k = "individual_reward-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["individual_reward-{$last->id}-edit"] = true;
+                        $fragment = "#$k";
+                    }
+                }
+
+                // nueva colaboración
+                if (!empty($_POST['support-add'])) {
+                    $last = end($project->supports);
+                    if ($last !== false) {
+                        $k = "support-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["support-{$last->id}-edit"] = true;
+                        $fragment = "#$k";
+                    }
+                }
+
+
+
+
 
                 // si estan enviando el proyecto a revisión
                 if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
@@ -210,12 +309,32 @@ namespace Goteo\Controller {
                     }
                 }
 
+                // redirect para que no muestre "reenviar los datos" al recargar la página
+                throw new Redirection("/project/edit/{$project->id}/{$step}{$fragment}");
+
+
 
             } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST)) {
+
+                // mail de aviso
+                $mailHandler = new Mail();
+                $mailHandler->to = \GOTEO_FAIL_MAIL;
+                $mailHandler->toName = 'Goteo Fail Mail';
+                $mailHandler->subject = 'FORM CAPACITY OVERFLOW en '.\SITE_URL;
+                $mailHandler->content = 'FORM CAPACITY OVERFLOW en el formulario de proyecto. Llega request method '.$_SERVER['REQUEST_METHOD'].'<hr />';
+                $mailHandler->content .= ' y post <pre>' . print_r( $_POST, true) . '</pre><hr />';
+                $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
+
+                $mailHandler->html = true;
+                $mailHandler->template = 11;
+                $mailHandler->send($errors);
+                unset($mailHandler);
+
+
                 throw new Error(Error::INTERNAL, 'FORM CAPACITY OVERFLOW');
             }
 
-            //re-evaluar el proyecto
+            // checkear errores
             $project->check();
 
             // variables para la vista
@@ -229,37 +348,16 @@ namespace Goteo\Controller {
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
                 case 'userProfile':
-                    $owner = Model\User::get($project->owner, null);
-                    // si es el avatar por defecto no lo mostramos aqui
-                    if ($owner->avatar->id == 1) {
-                        unset($owner->avatar);
-                    }
-                    $viewData['user'] = $owner;
+                    $viewData['user'] = $project->user;
                     $viewData['interests'] = Model\User\Interest::getAll();
-
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/web-(\d+)-edit/', $k, $r)) {
-                                $viewData[$k] = true;
-                            }
-                        }
-
-                        if (!empty($_POST['web-add'])) {
-                            $last = end($owner->webs);
-                            if ($last !== false) {
-                                $viewData["web-{$last->id}-edit"] = true;
-                            }
-                        }
-                    }
                     break;
+
                 case 'userPersonal':
                     $viewData['account'] = Model\Project\Account::get($project->id);
                     break;
 
                 case 'overview':
                     $viewData['categories'] = Model\Project\Category::getAll();
-//                    $viewData['currently'] = Model\Project::currentStatus();
-//                    $viewData['scope'] = Model\Project::scope();
                     break;
 
                 case 'images':
@@ -268,70 +366,16 @@ namespace Goteo\Controller {
 
                 case 'costs':
                     $viewData['types'] = Model\Project\Cost::types();
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
-                                $viewData[$k] = true;
-                            }
-                        }
-
-                        if (!empty($_POST['cost-add'])) {
-                            $last = end($project->costs);
-                            if ($last !== false) {
-                                $viewData["cost-{$last->id}-edit"] = true;
-                            }
-                        }
-                    }
                     break;
 
                 case 'rewards':
                     $viewData['stypes'] = Model\Project\Reward::icons('social');
                     $viewData['itypes'] = Model\Project\Reward::icons('individual');
                     $viewData['licenses'] = Model\Project\Reward::licenses();
-//                    $viewData['types'] = Model\Project\Support::types();
-
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {
-                                $viewData[$k] = true;
-                            }
-                        }
-
-                        if (!empty($_POST['social_reward-add'])) {
-                            $last = end($project->social_rewards);
-                            if ($last !== false) {
-                                $viewData["social_reward-{$last->id}-edit"] = true;
-                            }
-                        }
-                        if (!empty($_POST['individual_reward-add'])) {
-
-                            $last = end($project->individual_rewards);
-
-                            if ($last !== false) {
-                                $viewData["individual_reward-{$last->id}-edit"] = true;
-                            }
-                        }
-                    }
-
-
                     break;
 
                 case 'supports':
                     $viewData['types'] = Model\Project\Support::types();
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
-                                $viewData[$k] = true;
-                            }
-                        }
-
-                        if (!empty($_POST['support-add'])) {
-                            $last = end($project->supports);
-                            if ($last !== false) {
-                                $viewData["support-{$last->id}-edit"] = true;
-                            }
-                        }
-                    }
 
                     break;
 
@@ -348,6 +392,14 @@ namespace Goteo\Controller {
                     $viewData['types'] = Model\Project\Cost::types();
                     break;
             }
+
+
+            // elemento abierto
+            if (isset($_SESSION['superform_item_edit'])) {
+                $viewData[$_SESSION['superform_item_edit']] = true;
+                unset($_SESSION['superform_item_edit']);
+            }
+
 
             $view = new View (
                 "view/project/edit.html.php",
@@ -961,7 +1013,7 @@ namespace Goteo\Controller {
             }
 
             // ronda unica
-            $project->one_round = empty($_POST['one_round']) ? 0 : 1;
+            $project->one_round = !empty($_POST['one_round']) ? 1 : 0;
 
             return true;
         }
