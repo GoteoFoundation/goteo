@@ -3,7 +3,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
-            
+
 
 $call = $this['call'];
 
@@ -11,10 +11,10 @@ $banners = array();
 $sponsors = array();
 
 foreach ($call->banners as $banner) {
-       
+
     // a ver si es el que estamos editando o no
     if (!empty($this["banner-{$banner->id}-edit"])) {
-                
+
         // a este grupo le ponemos estilo de edicion
         $banners["banner-{$banner->id}"] = array(
                 'type'      => 'group',
@@ -73,7 +73,7 @@ foreach ($call->banners as $banner) {
 
                         )
                     ),
-                            
+
                     "banner-{$banner->id}-buttons" => array(
                         'type' => 'group',
                         'class' => 'buttons',
@@ -99,7 +99,7 @@ foreach ($call->banners as $banner) {
             'view'      => 'view/call/edit/banners/banner.html.php',
             'data'      => array('banner' => $banner),
         );
-        
+
     }
 
 }
@@ -183,7 +183,7 @@ foreach ($call->sponsors as $sponsor) {
                     )
                 )
             );
-        
+
     } else {
 
         $sponsors["sponsor-{$sponsor->id}"] = array(
@@ -191,7 +191,7 @@ foreach ($call->sponsors as $sponsor) {
             'view'      => 'view/call/edit/sponsors/sponsor.html.php',
             'data'      => array('sponsor' => $sponsor),
         );
-        
+
     }
 }
 
@@ -205,13 +205,13 @@ echo new SuperForm(array(
     'method'        => 'post',
     'title'         => Text::get('call-supports-main-header'),
     'hint'          => Text::get('guide-call-supports'),
-    'class'         => 'aqua',    
+    'class'         => 'aqua',
     'elements'      => array(
         'process_supports' => array (
             'type' => 'hidden',
             'value' => 'supports'
         ),
-        
+
         'tweet' => array(
             'type'      => 'textbox',
             'title'     => Text::get('call-field-tweet'),
@@ -239,7 +239,7 @@ echo new SuperForm(array(
                 )
             )
         ),
-        
+
         'sponsors' => array(
             'type'      => 'group',
             'title'     => 'Sponsors',
@@ -253,7 +253,7 @@ echo new SuperForm(array(
                 )
             )
         ),
-        
+
         'footer' => array(
             'type'      => 'group',
             'children'  => array(
@@ -262,7 +262,7 @@ echo new SuperForm(array(
                     'view'  => new View('view/project/edit/errors.html.php', array(
                         'call'   => $call,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -277,7 +277,7 @@ echo new SuperForm(array(
                 )
             )
         )
-               
+
     )
 
 ));
@@ -289,62 +289,62 @@ $(function () {
     var banners = $('div#<?php echo $sfid ?> li.element#banners');
 
     banners.delegate('li.element.banner input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(banners, data);
-        event.preventDefault();
+        banners.superform({data:data});
     });
 
     banners.delegate('li.element.editbanner input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(banners, data);
-        event.preventDefault();
+        banners.superform({data:data});
     });
 
     banners.delegate('li.element.editbanner input.remove, li.element.banner input.remove', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(banners, data);
-        event.preventDefault();
+        banners.superform({data:data});
     });
 
     banners.delegate('#banner-add input', 'click', function (event) {
+       event.preventDefault();
        var data = {};
        data[this.name] = '1';
-       Superform.update(banners, data);
-       event.preventDefault();
+       banners.superform({data:data});
     });
 
     /* sponsors buttons */
     var sponsors = $('div#<?php echo $sfid ?> li.element#sponsors');
 
     sponsors.delegate('li.element.sponsor input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(sponsors, data);
-        event.preventDefault();
+        sponsors.superform({data:data});
     });
 
     sponsors.delegate('li.element.editsponsor input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(sponsors, data);
-        event.preventDefault();
+        sponsors.superform({data:data});
     });
 
     sponsors.delegate('li.element.editsponsor input.remove, li.element.sponsor input.remove', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(sponsors, data);
-        event.preventDefault();
+        sponsors.superform({data:data});
     });
 
     sponsors.delegate('#sponsor-add input', 'click', function (event) {
+       event.preventDefault();
        var data = {};
        data[this.name] = '1';
-       Superform.update(sponsors, data);
-       event.preventDefault();
+       sponsors.superform({data:data});
     });
 
 });

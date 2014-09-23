@@ -3,6 +3,9 @@
     <option value="<?php echo $option['value'] ?>"<?php if ($option['value'] == $this['value']) echo ' selected="selected"' ?>><?php echo $option['label'] ?></option>
     <?php endforeach ?>
 </select>
+<?php
+/* ya no hace falta
 <script type="text/javascript">
 <?php include __DIR__ . '/select.js.src.php' ?>
 </script>
+*/
