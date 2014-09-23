@@ -3,8 +3,6 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-define('ADMIN_NOAUTOSAVE', true);
-
 $blog  = $this['blog'];
 $posts = $this['posts'];
 
@@ -58,6 +56,8 @@ $errors = $this['errors'];
     <form method="post" action="/dashboard/translates/updates/save/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
 
     <?php echo new SuperForm(array(
+        //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
+        // 'autoupdate'    => false,
 
         'action'        => '',
         'level'         => 3,
@@ -125,7 +125,7 @@ $errors = $this['errors'];
                 'errors'    => array(),
                 'value'     => (string) $post->media
             ),
-            
+
             'media-upload' => array(
                 'name' => "upload",
                 'type'  => 'submit',

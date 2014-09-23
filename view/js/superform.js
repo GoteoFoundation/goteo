@@ -15,13 +15,35 @@
      * @return {[type]}         [description]
      */
     $.fn.superform = function( options ) {
+        var t = this;
+        var caller = t.get(0);
+
+        // Si es un string no hay llamada post, actualiza el target con el string enviado
+        if(typeof options === 'string') {
+            if(t.length && caller instanceof HTMLElement) {
+                var new_el = $(options).find('#' + $(t).attr('id'));
+                // console.log('old',$(t).html());
+                // console.log('new',$(new_el).html());
+                //evento de antes de actualizar
+                t.trigger('sfbeforeupdate', [options, new_el]);
+
+                var promises = _superformUpdateElement($(t), $(new_el));
+
+                //evento de despues de actualizar
+                $.when.apply( $, promises ).always(function(){
+                    t.trigger('sfafterupdate', [options, new_el]);
+                });
+
+
+            }
+            return;
+        }
 
         // This is the easiest way to have default options.
         var settings = $.extend({
             // Si es un objeto, debe contener los parametros adicionales para enviar via post
             // Si no es un objecto, no se hace el envio ajax
-            // Si es un string, actualiza el target con el string enviado
-            data: null,
+            data: {},
             //el objecto a sustituirle el html por el retornado por la llamada ajax
             //si es false o null, no se realizará ninguna sustitucion html, por defect el objecto que hace la llamada
             //IMPORTANTE: debe contener obligatoriamente un id unico
@@ -35,8 +57,7 @@
         // Greenify the collection based on the settings variable.
         // console.log(settings);
         var frm = $(settings.form);
-        var t = this;
-        var caller = t.get(0);
+
 
         //si no es un formulario, no hacemos nada con este plugin
         if( ! frm.is('form') ) {
@@ -45,8 +66,9 @@
         }
 
         var data = frm.serializeArray();
+        // console.log(frm[0].id, data);
         var action = frm.attr('action');
-        //elemento a actualizar
+        //elemento a actualizar, por defecto el que realiza la llamada
         var el = $(settings.target);
 
         if(typeof settings.data === 'object' && settings.data !== null && (action)) {
@@ -65,13 +87,16 @@
                 });
             });
 
+            // console.log('sending data:', data);
             //poner en el elemento html que hace la llamada una variable para impedir actualizaciones paralelas
-            caller.superform_updating = $.post(action, data, function(html, status) {
+            el.addClass('updating busy');
+            caller.superform_updating = true;
+            $.post(action, data, function(html, status) {
                 //actualizar el nodo si target es un elemento html
                 if(status !== 'success') {
                     alert('Error, status return not success: ' +  status);
                 }
-                if(el.length && el.get(0) instanceof HTMLElement) {
+                if(el.length && caller instanceof HTMLElement) {
                     if( ! el.attr('id')) {
                         //cuando se envie por ajax solo el contenido (y no toda la pagina entera)
                         //se puede saltar este paso i sustituir el elemnto por el codigo pasado
@@ -79,8 +104,19 @@
                     }
                     else {
                         //actualizar html
-                        var new_el = $(html).find('#' + el.attr('id'));
-                        _superformUpdateElement(el, new_el);
+                        var new_el = $(html).find('li.element#' + el.attr('id'));
+
+                        //evento de antes de actualizar
+                        t.trigger('sfbeforeupdate', [html, new_el]);
+
+                        var promises = _superformUpdateElement(el, new_el);
+
+                        //evento de despues de actualizar
+                        $.when.apply( $, promises ).always(function(){
+                            // el.removeClass('updating busy');
+                            el.attr('class', new_el.attr('class'));
+                            t.trigger('sfafterupdate', [html, new_el]);
+                        });
 
                     }
                     // console.log('update:',el.attr('id'),data);
@@ -91,68 +127,306 @@
                 caller.superform_updating = null;
             });
         }
-        else if(typeof settings.data === 'string') {
-            if(el.length && el.get(0) instanceof HTMLElement) {
-                _superformUpdateElement(el, data);
-            }
-        }
     };
 
     /**
-     * Sustituye elegantemente (slide) un pedazo de codigo html en la pagina
+     * Sustituye elegantemente (slide) un elemento jquery por otro
      */
-    var _superformUpdateElement = function(old_el, new_el) {
-        console.log(new_el.html());
+    var _superformUpdateElement = function(el, new_el) {
+        // console.log(new_el.html());
         //pintado directo:
-        // old_el.html(new_el.html()).slideDown('slow');
+        // el.html(new_el.html()).slideDown('slow');
+        // return;
 
-        //
-        //
+        //array de promesas para lanzar el evento sfafterupdate una vez se han acabado las animaciones
+        var promises = [];
 
-        //
+        // console.log('el: ', el[0].id, ' new_el: ', new_el[0].id);
+
+        //miramos si hay apartado div.contents
+        var cont = el.children('div.contents');
+        var new_cont = new_el.children('div.contents');
+
+        //elemento que tiene el foco (se ha hecho click)
+        var focused = $(':focus').first();
+
+        //ya existe, sustituimos o borramos
+        if (cont.length) {
+            //console.log(cont.html());
+            // console.log(new_cont.html());
+            //no esta en el nuevo, borramos
+            if (!new_cont.length) {
+                // console.log('no hay contenido, borramos actual');
+                cont.slideUp('slow', function(){
+                    cont.remove();
+                });
+            //esta en el nuevo, sustituimos
+            } else if (!focused.length || (!$.contains(cont[0], focused[0]))) {
+                cont.replaceWith(new_cont);
+            }
+        //no existe, añadimos
+        } else if (new_cont.length) {
+            el.append(new_cont);
+        }
+
+        // if(new_cont.length) console.log('nuevo contendido:', new_cont.html());
+
+        //miramos si hay apartado feedback
+        var feed = el.children('div.feedback');
+        var new_feed = new_el.children('div.feedback');
+        //si existe nuevo feedback los sustituimos
+        // console.log('old',feed.html());
+        if (new_feed.length) {
+            // console.log('new',new_feed.html());
+            //existe el antiguo, sustituimos
+            if (feed.length) {
+                feed.html(new_feed.html());
+            //no existe el antiguo, añadimos
+            } else {
+                el.append(new_feed);
+            }
+        //no existe el nuevo, borramos el antiguo
+        } else if (feed.length) {
+            feed.remove();
+        }
+
+
         // miraremos todos los hijos del objecto a pintar y los añadiremos si no estan en el elemento
         // Antiguos y nuevos elementos:
-        var old_elements = old_el.children('div.children').children('div.elements').children('ol').children('li.element');
+        var ol = el.children('div.children').children('div.elements').children('ol');
+        var elements = ol.children('li.element');
         var new_elements = new_el.children('div.children').children('div.elements').children('ol').children('li.element');
+
+        if (!elements.length && new_elements.length) {
+            // console.log('preparamos nuevo contenido');
+            el.children('div.children').remove();
+            var c = $('<div class="children"><div class="elements"><ol></ol></div></div>');
+            el.append(c);
+            ol = el.children('div.children').children('div.elements').children('ol');
+        }
 
         //buscamos todos los elementos nuevos
         new_elements.each(function (i, new_child) {
             $new_child = $(new_child);
             var new_child_id = $new_child.attr('id');
-            var $old_child = old_elements.filter('li.element#' + new_child_id);
+            var $child = elements.filter('li.element#' + new_child_id);
 
-            //si el nuevo elemento existe, lo sustituimos
-            if($old_child.length) {
-                $old_child.html($new_child.html()).slideUp('slow').slideDown('slow');
-            }
-            //si no existe lo añadimos y los mostramos con slidedown
-            else {
-                $new_child.hide();
-                if(i > 0) {
-                    //añadir el elemento en la posicion que toca
-                    $new_child.insertAfter( old_elements.filter(':eq(' + (i-1) + ')') );
+            /*
+            //si el nuevo elemento existe, lo esconderemos (y borraremos)
+            if($child.length) {
+                if($child.html() != $new_child.html()) {
+                    console.log($new_child);
+                    var promise = $.Deferred();
+                    $child.slideUp('slow', function(){
+                        $(this).remove();
+                        promise.resolve();
+                    });
+                    promises.push(promise);
                 }
                 else {
-                    //no hay ningun elemento, añadir al principio
-                    $new_child.prependTo( old_elements.parent() );
+                    //si nada ha cambiado pasamos al siguiente elemento
+                    // $new_child.css('color','red');
+                    return true;
                 }
-                //mostrar el elemento "graciosamente"
-                $new_child.slideDown('slow');
             }
-
-            //borrar elementos antiguos que no existen ya no estan en los nuevos
-            old_elements.each(function (i, old_child) {
-                var $old_child = $(old_child);
-                if (!new_elements.filter('li.element#' + $old_child.attr('id')).length) {
-                    $old_child.slideUp('slow', function () {
-                        $old_child.remove();
-                    });
-                }
+            // añadimos el nuevo elemento y los mostramos con slidedown
+            $new_child.hide();
+            if(i > 0) {
+                //añadir el elemento en la posicion que toca
+                $new_child.insertAfter( elements.filter(':eq(' + (i-1) + ')') );
+            }
+            else {
+                //no hay ningun elemento, añadir al principio
+                $new_child.prependTo( elements.parent() );
+            }
+            var promise2 = $.Deferred();
+            //mostrar el elemento "graciosamente"
+            $new_child.slideDown('slow', function(){
+                promise2.resolve();
             });
+            promises.push(promise2);
+            //*/
 
-            console.log('i:'+i+' id: '+new_child_id, 'old',$old_child.html(), 'new:', $new_child.html());
+            //*
+            //metodo antiguo
+            if ($child.length) {
+                    // var new_el = $(html).find('li.element#' + new_child_id);
+                // console.log('delegamos child', $new_child[0].id, ' class ', $child.attr('class'), ' new class ', $new_child.attr('class'));
+                // console.log('html actual:',$child.html());
+                $child.attr('class', $new_child.attr('class'));
+                _superformUpdateElement($child, $new_child);
+                // $child.appendTo($child.parent());
+            } else {
+                // console.log('añadimos hijo con nuevo contenido: ', $new_child.attr('id'),$new_child.attr('class'));
+                $new_child.hide();
+                $new_child.appendTo(ol);
+                if(!$new_child.hasClass('hidden')) {
+                    var promise = $.Deferred();
+                    $new_child.slideDown('slow', function(){
+                        promise.resolve();
+                    });
+                    promises.push(promise);
+                }
+            }
+            //*/
+            // console.log('i:'+i+' id: '+new_child_id, 'old',$child.html(), 'new:', $new_child.html());
         });
 
+        //borrar elementos antiguos que no existen ya no estan en los nuevos
+        elements.each(function (i, child) {
+            var $child = $(child);
+            if (!new_elements.filter('li.element#' + $child.attr('id')).length) {
+                var promise = $.Deferred();
+                $child.slideUp('slow', function () {
+                    $child.remove();
+                    promise.resolve();
+                });
+                promises.push(promise);
+            }
+        });
+
+        return promises;
     };
 
 }( jQuery ));
+
+$(function() {
+
+    //Probablemente esto no deberia estar aqui pues no forma parte del plugin en si
+    //inicializacion de datepicker
+    $('div.superform').delegate('li.element input.datepicker', 'focus', function(event) {
+        var input = $(event.target);
+        if(input[0].__datepicker === undefined) {
+            input[0].__datepicker = 1;
+            // console.log(input[0]);
+            if(typeof DatePickerLocale === 'undefined') {
+                DatePickerLocale = {
+                    days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    daysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                    daysMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+                    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    week: []
+                };
+            }
+            input.DatePicker({
+                format: 'Y-m-d',
+                date: input.val(),
+                current: input.val(),
+                starts: 1,
+                position: 'bottom',
+                eventName: 'click',
+                onBeforeShow: function(){
+                    input.DatePickerSetDate(input.val(), true);
+                },
+                onChange: function(formatted, dates){
+                        input.val(formatted);
+                        input.DatePickerHide();
+                        input.focus();
+                },
+                locale: DatePickerLocale
+            });
+        }
+
+
+    });
+
+    //auto escondido de feedback
+    $('div.superform').delegate('li.element', 'click', function (event) {
+        $(event.target).parents('li.element').each(function (i, li) {
+
+            var fb = $(li).find('div.feedback#superform-feedback-for-' + li.id).not(':empty').first();
+            if (fb.length) {
+                setTimeout(function () {
+                    $('div.superform div.feedback').not(fb).fadeOut(200);
+                });
+                setTimeout(function () {
+                    fb.fadeIn(200);
+                });
+
+                return false;
+            }
+
+        });
+
+    });
+
+    //auto-actualizacion de elementos si el superform tiene la clase autoupdate
+    //Checkboxes, radios i select
+    $('div.superform.autoupdate').delegate('li.element input[type="checkbox"],li.element input[type="radio"],li.element select', 'change', function (event) {
+        var input = $(event.target);
+        var li = input.closest('div.superform > div.elements > ol > li.element');
+        // var li = input.closest('li.element');
+        // alert(li[0].id)
+        if(li[0].__updating === undefined) {
+            li[0].__updating = null;
+        }
+        clearTimeout(li[0].__updating);
+
+        li[0].__updating = setTimeout(function () {
+            li.superform();
+        }, 700);
+    });
+
+    $('div.superform.autoupdate').delegate('li.element input[type="radio"],li.element select', 'click', function (event) {
+        var input = $(event.target);
+        var li = input.closest('li.group');
+        $(this).closest('li.group').first().find('input[type="radio"][name="' + input.attr('name') + '"]').each(function(i, r){
+            try {
+              if (input.attr('id') == r.id) {
+                  $('div.children#' + r.id + '-children').slideDown(400);
+              } else {
+                  $('div.children#' + r.id + '-children').slideUp(400);
+              }
+            } catch (e) {}
+        });
+
+    });
+    //input text i textareas
+    $('div.superform.autoupdate').delegate('li.element input[type="text"],li.element textarea', 'keydown paste focus', function (event) {
+
+        var input = $(event.target);
+        var li = input.closest('div.superform > div.elements > ol > li.element');
+        // var li = input.closest('li.element');
+
+        //definimos las variables la primera vez
+        if(li[0].__updating === undefined) {
+
+            li[0].__lastVal = input.val();
+            li[0].__updating = null;
+
+            li[0].__update = function (input, li) {
+               var val = input.val();
+               if (val != li[0].__lastVal) {
+                   li[0].__lastVal = val;
+                   li.superform();
+               } else {
+                    li.removeClass('busy');
+               }
+            };
+        }
+
+        clearTimeout(li[0].__updating);
+        if(event.type === 'keydown') {
+
+            li[0].__updating = setTimeout(function () {
+               li[0].__update(input, li);
+            }, 700);
+        }
+
+        if(event.type === 'paste') {
+            li[0].__update(input, li);
+        }
+
+        if(event.type === 'focusin') {
+
+            input.one('blur', function () {
+                li[0].__update(input, li);
+            });
+
+        }
+
+    });
+
+    //
+});

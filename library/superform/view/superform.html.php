@@ -1,9 +1,10 @@
 <?php use Goteo\Core\View ?>
 
-<div class="superform<?php if (isset($this['class'])) echo ' '. htmlspecialchars($this['class']) ?>"<?php if (isset($this['id'])) echo 'id="'. htmlspecialchars($this['id']) . '"' ?>>
+<div class="superform <?php echo $this['autoupdate'] ? ' autoupdate' : '' ?><?php if (isset($this['class'])) echo ' '. htmlspecialchars($this['class']) ?>"<?php if (isset($this['id'])) echo ' id="'. htmlspecialchars($this['id']) . '"' ?>>
 
 
-
+<?php
+/* ya no hace falta
     <script type="text/javascript">
 
     <?php if (!defined('ADMIN_NOAUTOSAVE')) :
@@ -11,6 +12,8 @@
     endif; ?>
 
     </script>
+*/
+?>
 
     <?php if (isset($this['title'])): ?>
     <h<?php echo $this['level'] ?>><?php echo htmlspecialchars($this['title']) ?></h<?php echo $this['level'] ?>>

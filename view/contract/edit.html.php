@@ -10,9 +10,10 @@ $contract = $this['contract'];
 
 $steps  = new View('view/contract/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $contract->errors));
 
-if (!$contract->status->owner) 
+if (!$contract->status->owner)
     Message::Info(Text::get('form-ajax-info'));
 
+$superform = true;
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>

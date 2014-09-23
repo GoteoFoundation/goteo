@@ -86,6 +86,8 @@ if (NODE_ID != GOTEO_NODE) {
         <?php endif; ?>
 
         <?php if (isset($superform)) : ?>
+            <script src="<?php echo SRC_URL ?>/view/js/datepicker.min.js"></script>
+            <script src="<?php echo SRC_URL ?>/view/js/datepicker/datepicker.<?php echo LANG; ?>.js"></script>
             <script src="<?php echo SRC_URL ?>/view/js/superform.js"></script>
         <?php endif; ?>
 

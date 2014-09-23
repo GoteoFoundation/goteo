@@ -279,7 +279,6 @@ echo new SuperForm(array(
 $(function () {
 
     var costs = $('div#<?php echo $sfid ?> li.element#costs');
-    var costs_id = $(costs).attr('id');
 
     //abrir editor
     costs.delegate('li.element.cost input.edit', 'click', function (event) {
@@ -289,60 +288,16 @@ $(function () {
         costs.superform({
             data : data
         });
-/*
-        // hack para superar un error insondable del superform
-        var $form = $(this).closest('form');
-        var form_id = $form.attr('id');
-        $('<input>').attr({
-            type: 'hidden',
-            value: 1,
-            name: this.name
-        }).appendTo($form);
-       $form.find('[name="cost-add"]').remove();
-
-       $.post($form.attr('action'), $form.serializeArray(), function(html) {
-            costs.html($(html).find('#' + costs_id).html());
-            costs.triggerHandler('sfafterupdate', [costs, html]);
-       });
-
-        // var data = {};
-        // data[this.name] = '1';
-        //Superform.update(this, data);
-        // Superform.update(costs, data);
-        event.preventDefault();
-        */
     });
 
     //guardar datos
-    costs.delegate('li.element.editcost input.ok', 'click', function (event) {
+    costs.delegate('li.element.cost input.ok', 'click', function (event) {
         event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
         costs.superform({
             data : data
         });
-
-        //
-        /*
-        // hack para superar un error insondable del superform
-        var $form = $(this).closest('form');
-        var form_id = $form.attr('id');
-        $('<input>').attr({
-            type: 'hidden',
-            value: '0',
-            name: this.name.substring(0, this.name.length-2) + 'edit'
-        }).appendTo($form);
-       $form.find('[name="cost-add"]').remove();
-
-       $.post($form.attr('action'), $form.serializeArray(), function(html) {
-            costs.html($(html).find('#' + costs_id).html());
-            costs.triggerHandler('sfafterupdate', [costs, html]);
-       });
-        // var data = {};
-        // data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        // //Superform.update($(this).parents('li.element.editcost'), data);
-        // Superform.update(costs, data);
-        */
     });
 
     costs.delegate('li.element.cost input.remove', 'click', function (event) {
@@ -365,9 +320,10 @@ $(function () {
         });
     });
 
-    costs.bind('sfafterupdate', function (ev, el, html) {
-        Superform.updateElement($('li#cost-meter'), null, html);
-        Superform.updateElement($('li#schedule'), null, html);
+    costs.bind('sfafterupdate', function (event, html, new_el) {
+        //Como html es un string, solo actualiza contenido, no reenvia los datos
+        $('li#cost-meter').superform(html);
+        $('li#schedule').superform(html)
     });
 
 });

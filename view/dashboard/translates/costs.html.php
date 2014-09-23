@@ -129,17 +129,17 @@ $(function () {
     var costs = $('div#<?php echo $sfid ?> li.element#costs');
 
     costs.delegate('li.element.cost input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(costs, data);
-        event.preventDefault();
+        costs.superform({data:data});
     });
 
     costs.delegate('li.element.editcost input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(costs, data);
-        event.preventDefault();
+        costs.superform({data:data});
     });
 
 });

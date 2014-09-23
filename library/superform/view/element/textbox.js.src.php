@@ -1,3 +1,4 @@
+//obsoleto
 $(function () {
 
     var li= $('li.element#<?php echo $this['id'] ?>');
@@ -6,39 +7,35 @@ $(function () {
 
     if (input.length) {
 
-       var lastVal = input.val();      
-       
+       var lastVal = input.val();
+
        var updating = null;
 
        var update = function () {
-       
+
            var val = input.val();
-       
+
            clearTimeout(updating);
 
-           if (val != lastVal) {    
-           
+           if (val != lastVal) {
+
                lastVal = val;
-               
-               li.addClass('busy');
-                                             
-               updating = setTimeout(function () {               
-                   window.Superform.update(input, function () {
-                       li.removeClass('busy');
-                   });
-               });  
-               
-           } else {           
+
+               updating = setTimeout(function () {
+                   li.superform();
+               });
+
+           } else {
                 li.removeClass('busy');
            }
-           
+
        };
-       
+
        input.keydown(function () {
-       
-           if (!updating) {   
-               li.addClass('busy');                       
-           } else {               
+
+           if (!updating) {
+               li.addClass('busy');
+           } else {
                clearTimeout(updating);
            }
 
@@ -46,22 +43,22 @@ $(function () {
                update();
            }, 700);
        });
-      
-      input.bind('paste', function () {             
-          update();          
+
+      input.bind('paste', function () {
+          update();
       });
-       
+
        input.focus(function () {
-       
+
           updating = null;
-          
-          input.one('blur', function () {               
+
+          input.one('blur', function () {
               updating = update();
           });
-          
+
        });
 
     }
-   
+
 });
 

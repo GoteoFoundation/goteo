@@ -16,6 +16,7 @@ if (!empty($this['success'])) {
 
 $steps  = new View('view/call/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step']));
 
+$superform = true;
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>

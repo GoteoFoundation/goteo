@@ -3,7 +3,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
-            
+
 
 $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();
@@ -15,14 +15,14 @@ $individual_rewards = array();
 $txt_details = Text::get('regular-see_details');
 
 foreach ($project->social_rewards as $social_reward) {
-       
+
     // a ver si es el que estamos editando o no
     if (!empty($this["social_reward-{$social_reward->id}-edit"])) {
-                
+
         $types = array();
-                        
+
         foreach ($this['stypes'] as $type) {
-            
+
             $licenses = array();
 
             if (!empty($type->licenses)) {
@@ -92,9 +92,9 @@ foreach ($project->social_rewards as $social_reward) {
                 'checked' => $type->id == $social_reward->icon ? true : false,
                 'children' => $children
             );
-                
-        }                       
-        
+
+        }
+
         // a este grupo le ponemos estilo de edicion
         $social_rewards["social_reward-{$social_reward->id}"] = array(
                 'type'      => 'group',
@@ -136,7 +136,7 @@ foreach ($project->social_rewards as $social_reward) {
                         'errors'    => !empty($errors["social_reward-{$social_reward->id}-icon"]) ? array($errors["social_reward-{$social_reward->id}-icon"]) : array(),
                         'ok'        => !empty($okeys["social_reward-{$social_reward->id}-icon"]) ? array($okeys["social_reward-{$social_reward->id}-icon"]) : array(),
                         'hint'      => Text::get('tooltip-project-social_reward-type')
-                    ),                    
+                    ),
                     "social_reward-{$social_reward->id}-buttons" => array(
                         'type' => 'group',
                         'class' => 'buttons',
@@ -162,7 +162,7 @@ foreach ($project->social_rewards as $social_reward) {
             'view'      => 'view/project/edit/rewards/reward.html.php',
             'data'      => array('reward' => $social_reward, 'licenses' => $this['licenses'], 'types' => $this['stypes']),
         );
-        
+
     }
 
 }
@@ -198,7 +198,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                     )
                 );
             }
-            
+
             $types["individual_reward-{$individual_reward->id}-icon-{$type->id}"] =  array(
                 'name'  => "individual_reward-{$individual_reward->id}-icon",
                 'value' => $type->id,
@@ -292,7 +292,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                     )
                 )
             );
-        
+
     } else {
 
         $individual_rewards["individual_reward-{$individual_reward->id}"] = array(
@@ -300,7 +300,7 @@ foreach ($project->individual_rewards as $individual_reward) {
             'view'      => 'view/project/edit/rewards/reward.html.php',
             'data'      => array('reward' => $individual_reward, 'types' => $this['itypes']),
         );
-        
+
     }
 }
 
@@ -313,14 +313,14 @@ echo new SuperForm(array(
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('rewards-main-header'),
-    'hint'          => Text::get('guide-project-rewards'),    
-    'class'         => 'aqua',    
+    'hint'          => Text::get('guide-project-rewards'),
+    'class'         => 'aqua',
     'elements'      => array(
         'process_rewards' => array (
             'type' => 'hidden',
             'value' => 'rewards'
         ),
-        
+
         'social_rewards' => array(
             'type'      => 'group',
             'required'  => true,
@@ -337,7 +337,7 @@ echo new SuperForm(array(
                 )
             )
         ),
-        
+
         'individual_rewards' => array(
             'type'      => 'group',
             'required'  => true,
@@ -354,7 +354,7 @@ echo new SuperForm(array(
                 )
             )
         ),
-        
+
         'footer' => array(
             'type'      => 'group',
             'children'  => array(
@@ -363,7 +363,7 @@ echo new SuperForm(array(
                     'view'  => new View('view/project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -378,7 +378,7 @@ echo new SuperForm(array(
                 )
             )
         )
-               
+
     )
 
 ));
@@ -390,62 +390,62 @@ $(function () {
     var socials = $('div#<?php echo $sfid ?> li.element#social_rewards');
 
     socials.delegate('li.element.social_reward input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(socials, data);
-        event.preventDefault();
+        socials.superform({data:data});
     });
 
     socials.delegate('li.element.editsocial_reward input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(socials, data);
-        event.preventDefault();
+        socials.superform({data:data});
     });
 
     socials.delegate('li.element.editsocial_reward input.remove, li.element.social_reward input.remove', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(socials, data);
-        event.preventDefault();
+        socials.superform({data:data});
     });
 
     socials.delegate('#social_reward-add input', 'click', function (event) {
+       event.preventDefault();
        var data = {};
        data[this.name] = '1';
-       Superform.update(socials, data);
-       event.preventDefault();
+       socials.superform({data:data});
     });
 
     /* individual_rewards buttons */
     var individuals = $('div#<?php echo $sfid ?> li.element#individual_rewards');
 
     individuals.delegate('li.element.individual_reward input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(individuals, data);
-        event.preventDefault();
+        individuals.superform({data:data});
     });
 
     individuals.delegate('li.element.editindividual_reward input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(individuals, data);
-        event.preventDefault();
+        individuals.superform({data:data});
     });
 
     individuals.delegate('li.element.editindividual_reward input.remove, li.element.individual_reward input.remove', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(individuals, data);
-        event.preventDefault();
+        individuals.superform({data:data});
     });
 
     individuals.delegate('#individual_reward-add input', 'click', function (event) {
+       event.preventDefault();
        var data = {};
        data[this.name] = '1';
-       Superform.update(individuals, data);
-       event.preventDefault();
+       individuals.superform({data:data});
     });
 
 });
