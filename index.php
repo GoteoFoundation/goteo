@@ -166,7 +166,6 @@ if (empty($_COOKIE['goteo_cookies'])) {
 try {
     // Check permissions on requested URI
     if (!ACL::check($uri)) {
-        Message::Info(Text::get('user-login-required-access'));
 
         //si es directorio data/cache se supone que es un archivo cache que no existe y que hay que generar
         if(strpos($uri, 'data/cache/') !== false && $segments && $segments[3]) {
@@ -178,6 +177,8 @@ try {
         elseif ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
             define('CRON_EXEC', true);
         } else {
+            Message::Info(Text::get('user-login-required-access'));
+            die("ACL check falla para ( $uri ) ".\trace($_SESSION));
             throw new Redirection(SEC_URL."/user/login/?return=".rawurlencode($uri));
         }
     }
