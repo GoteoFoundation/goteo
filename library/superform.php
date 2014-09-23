@@ -73,7 +73,7 @@ namespace Goteo\Library {
                     switch ($k) {
 
                         case 'autoupdate':
-                            $this->autoupdate = (bool) $autoupdate;
+                            $this->autoupdate = (bool) $v;
                             break;
 
                         case 'elements':
