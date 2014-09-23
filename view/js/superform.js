@@ -255,7 +255,7 @@
                 // console.log('html actual:',$child.html());
                 $child.attr('class', $new_child.attr('class'));
                 _superformUpdateElement($child, $new_child);
-                // $child.appendTo($child.parent());
+                $child.appendTo($child.parent());
             } else {
                 // console.log('añadimos hijo con nuevo contenido: ', $new_child.attr('id'),$new_child.attr('class'));
                 $new_child.hide();
