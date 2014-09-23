@@ -81,6 +81,7 @@ if(START_TIME > $_SESSION['init_time'] + (defined('GOTEO_SESSION_TIME') ? GOTEO_
     session_write_close();
     session_regenerate_id(true);
     session_start();
+    Message::Info(Text::get('session-expired'));
 }
 
 /* Sistema nodos */
@@ -243,14 +244,17 @@ try {
             echo $result;
 
             // if($mime_type == "text/html" && GOTEO_ENV != 'real') {
-            if($mime_type == "text/html" && defined('DEBUG_SQL_QUERIES')) {
-                echo '<div style="position:static;top:10px;left:10px;padding:10px;z-index:1000;background:rgba(255,255,255,0.6)">[<a href="#" onclick="$(this).parent().remove();return false;">cerrar</a>]<pre>';
-                echo '<b>Server IP:</b> '.$_SERVER['SERVER_ADDR'] . '<br>';
-                echo '<b>Client IP:</b> '.$_SERVER['REMOTE_ADDR'] . '<br>';
-                echo '<b>X-Forwarded-for:</b> '.$_SERVER['HTTP_X_FORWARDED_FOR'] . '<br>';
-                echo '<b>SQL STATS:</b><br> '.print_r(Goteo\Core\DB::getQueryStats(), 1);
-                echo '<b>END:</b> '.(microtime(true) - START_TIME ) . 's';
-                echo '</pre></div>';
+            if($mime_type == "text/html"){
+
+                if(defined('DEBUG_SQL_QUERIES')) {
+                    echo '<div style="position:static;top:10px;left:10px;padding:10px;z-index:1000;background:rgba(255,255,255,0.6)">[<a href="#" onclick="$(this).parent().remove();return false;">cerrar</a>]<pre>';
+                    echo '<b>Server IP:</b> '.$_SERVER['SERVER_ADDR'] . '<br>';
+                    echo '<b>Client IP:</b> '.$_SERVER['REMOTE_ADDR'] . '<br>';
+                    echo '<b>X-Forwarded-for:</b> '.$_SERVER['HTTP_X_FORWARDED_FOR'] . '<br>';
+                    echo '<b>SQL STATS:</b><br> '.print_r(Goteo\Core\DB::getQueryStats(), 1);
+                    echo '<b>END:</b> '.(microtime(true) - START_TIME ) . 's';
+                    echo '</pre></div>';
+                }
 
                echo '<!-- '.(microtime(true) - START_TIME ) . 's -->';
             }

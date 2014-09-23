@@ -3,7 +3,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
-            
+
 $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
@@ -36,7 +36,7 @@ foreach ($project->supports as $support) {
         $supports["support-{$support->id}"] = array(
                 'type'      => 'group',
                 'class'     => 'support editsupport',
-                'children'  => array(                    
+                'children'  => array(
                     "support-{$support->id}-edit" => array(
                         'type'  => 'hidden',
                         'value' => '1'
@@ -117,9 +117,9 @@ echo new SuperForm(array(
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('supports-main-header'),
-    'hint'          => Text::get('guide-project-supports'),    
+    'hint'          => Text::get('guide-project-supports'),
     'class'         => 'aqua',
-    'elements'      => array(        
+    'elements'      => array(
         'process_supports' => array (
             'type' => 'hidden',
             'value' => 'supports'
@@ -144,7 +144,7 @@ echo new SuperForm(array(
                     'view'  => new View('view/project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -169,31 +169,31 @@ $(function () {
     var supports = $('div#<?php echo $sfid ?> li.element#supports');
 
     supports.delegate('li.element.support input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(supports, data);
-        event.preventDefault();
+        supports.superform({data:data});
     });
 
     supports.delegate('li.element.editsupport input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(supports, data);
-        event.preventDefault();
+        supports.superform({data:data});
     });
 
     supports.delegate('li.element.editsupport input.remove, li.element.support input.remove', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(supports, data);
-        event.preventDefault();
+        supports.superform({data:data});
     });
 
     supports.delegate('#support-add input', 'click', function (event) {
+       event.preventDefault();
        var data = {};
        data[this.name] = '1';
-       Superform.update(supports, data);
-       event.preventDefault();
+       supports.superform({data:data});
     });
 
 });

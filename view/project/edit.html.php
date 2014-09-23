@@ -17,6 +17,7 @@ if (!empty($this['success'])) {
     Goteo\Library\Message::Info(Text::get('form-ajax-info'));
 }
 
+$superform = true;
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>

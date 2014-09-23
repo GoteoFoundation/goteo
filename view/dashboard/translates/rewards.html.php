@@ -265,34 +265,34 @@ $(function () {
     var socials = $('div#<?php echo $sfid ?> li.element#social_rewards');
 
     socials.delegate('li.element.social_reward input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(socials, data);
-        event.preventDefault();
+        socials.superform({data:data});
     });
 
     socials.delegate('li.element.editsocial_reward input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(socials, data);
-        event.preventDefault();
+        socials.superform({data:data});
     });
 
     /* individual_rewards buttons */
     var individuals = $('div#<?php echo $sfid ?> li.element#individual_rewards');
 
     individuals.delegate('li.element.individual_reward input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(individuals, data);
-        event.preventDefault();
+        individuals.superform({data:data});
     });
 
     individuals.delegate('li.element.editindividual_reward input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(individuals, data);
-        event.preventDefault();
+        individuals.superform({data:data});
     });
 
 });

@@ -9,8 +9,8 @@ function keep_alive() {
 		if(data.info) {
 			//session expired
 			if(data.expires <= 0) {
-				alert(data.info);
-				location.reload();
+				// alert(data.info);
+				// location.reload();
 			}
 			else
 				if(confirm(data.info)) {

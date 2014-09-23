@@ -44,10 +44,9 @@ foreach ($project->errors as $st => $errors) {
 </div>
 
 <script type="text/javascript">
-$(function () {    
-    $('div.superform').one('sfafterupdate', function (ev, el, html) {
-        Superform.updateElement($('li#errors'), null, html);
+$(function () {
+    $('div.superform').one('sfafterupdate', function (event, html, new_el) {
+        $('li#errors').superform(html);
     });
 });
 </script>
-    

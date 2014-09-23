@@ -19,7 +19,7 @@ ALTER TABLE `bazar` CHANGE `reward` `reward` BIGINT(20) UNSIGNED NULL, CHANGE `p
 ALTER TABLE `bazar` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
 
 
---- Charset
+-- Charset
 ALTER TABLE `bazar` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 ALTER TABLE `bazar` CHANGE `project` `project` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,

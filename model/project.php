@@ -258,9 +258,9 @@ namespace Goteo\Model {
 
             try {
 				// metemos los datos del proyecto en la instancia
-                $sql = "SELECT project.*, 
-                                node.name as node_name, 
-                                node.url as node_url, 
+                $sql = "SELECT project.*,
+                                node.name as node_name,
+                                node.url as node_url,
                                 project_conf.*,
                                 user.name as user_name,
                                 user.email as user_email,
@@ -293,7 +293,7 @@ namespace Goteo\Model {
                 if(!empty($lang) && $lang!=$project->lang)
                 {
                     //Obtenemos el idioma de soporte
-                    $lang=self::default_lang_by_id($id, 'project_lang', $lang); 
+                    $lang=self::default_lang_by_id($id, 'project_lang', $lang);
 
                     $sql = "
                         SELECT
@@ -513,12 +513,12 @@ namespace Goteo\Model {
             try {
 				// metemos los datos del proyecto en la instancia
 				$query = self::query("SELECT
-                                        project.id as id, 
-                                        project.name as name, 
-                                        project.owner as owner, 
-                                        project.comment as comment, 
-                                        project.lang as lang, 
-                                        project.status as status, 
+                                        project.id as id,
+                                        project.name as name,
+                                        project.owner as owner,
+                                        project.comment as comment,
+                                        project.lang as lang,
+                                        project.status as status,
                                         project.node as node,
                                         project.image as image,
                                         user.id as user_id,
@@ -962,7 +962,7 @@ namespace Goteo\Model {
             try {
                 $sql = "REPLACE INTO project_open_tag (`project`, `open_tag`) VALUES(:project, :open_tag)";
                 if (self::query($sql, $values)) {
-                    
+
                     return true;
                 } else {
                     $errors[] = 'No se ha creado el registro `project_open_tag`';
@@ -1168,11 +1168,11 @@ namespace Goteo\Model {
                 // añadir las que vienen y no tiene
 
                 // project_conf, solo si ha marcado one round
-                if ($this->one_round) {
+                // if ($this->one_round) {
                     $conf = Project\Conf::get($this->id);
                     $conf->one_round = $this->one_round;
                     $conf->save();
-                }
+                // }
 
                 //categorias
                 $tiene = Project\Category::get($this->id);
@@ -2407,7 +2407,7 @@ namespace Goteo\Model {
                 case 'popular':
                     // de los que estan en campaña,
                     // los que tienen más usuarios entre cofinanciadores y mensajeros
-                    
+
                     $different_select="project.popularity as popularity,";
                     $where="project.status= 3 AND popularity >20";
                     $order="popularity DESC";
@@ -2416,7 +2416,7 @@ namespace Goteo\Model {
 
                 case 'outdate':
                     // los que les quedan 15 dias o menos
-                   
+
                     $where="days <= 15 AND days > 0 AND status = 3";
                     $order="popularity ASC";
                     break;
@@ -2425,38 +2425,38 @@ namespace Goteo\Model {
                     // Cambio de criterio: Los últimos 9
                     //,  DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
                     //        HAVING day <= 15 AND day IS NOT NULL
-                   
+
                     $where="project.status = 3 AND project.passed IS NULL";
                     $order="published DESC";
                     $limit = 9;
                     break;
                 case 'success':
                     // los que han conseguido el mínimo
-                    
+
                     $where="status IN ('3', '4', '5') AND project.amount >= mincost";
                     $order="published DESC";
                     break;
                 case 'almost-fulfilled':
                     // para gestión de retornos
-                   
+
                     $where="status IN ('4','5')";
                     $order="name ASC";
                     break;
                 case 'fulfilled':
                     // retorno cumplido
-        
+
                     $where="status IN ('5')";
                     $order="name ASC";
                     break;
                 case 'available':
                     // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
-                    
+
                     $where="status < 6";
                     $order="name ASC";
                     break;
                 case 'archive':
                     // caducados, financiados o casos de exito
-                  
+
                     $where="status = 6";
                     $order="closed DESC";
                     break;
@@ -2466,14 +2466,14 @@ namespace Goteo\Model {
                     // cambio de criterio, en otros nodos no filtramos por followers,
                     //   mostramos todos los que estan en campaña (los nuevos primero)
                     //  limitamos a 40
-                    
+
                     $where="project.status = 3";
                     $order="closed DESC";
                     $limit = 40;
                     break;
                 default:
                     // todos los que estan 'en campaña', en cualquier nodo
-                    
+
                     $where="project.status = 3";
                     $order="name ASC";
                     $limit = 40;
@@ -2536,7 +2536,7 @@ namespace Goteo\Model {
 
             $projects = array();
             $query = self::query($sql, $values);
-            
+
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
                 if ($mini) {
                     $projects[$proj->id] = $proj->name;
@@ -2782,7 +2782,7 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND success = :success";
                 $values[':success'] = $filters['success'];
             }
-            
+
             //el Order
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
@@ -2861,7 +2861,7 @@ namespace Goteo\Model {
                 $proj->user->name = $proj->user_name;
                 $proj->user->email = $proj->user_email;
                 $proj->user->lang = $proj->user_lang;
-                
+
 
                 //añadir lo que haga falta
                 $proj->consultants = self::getConsultants($proj->id);

@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
-            
+
 $project = $this['project'];
 $errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
@@ -12,13 +12,13 @@ $costs = array();
 
 
 if (!empty($project->costs)) {
-    
-    foreach ($project->costs as $cost) {     
-        
+
+    foreach ($project->costs as $cost) {
+
         $req_class = $cost->required ? 'required_cost-yes' : 'required_cost-no';
 
         $ch = array();
-        
+
         if (!empty($this["cost-{$cost->id}-edit"])) {
 
             $costTypes = array();
@@ -36,9 +36,9 @@ if (!empty($project->costs)) {
             }
 
             $costs["cost-{$cost->id}"] = array(
-                'type'      => 'group',      
+                'type'      => 'group',
                 'class'     => 'cost editcost '.$req_class,
-                'children'  => array(                         
+                'children'  => array(
                     "cost-{$cost->id}-edit" => array(
                         'type'  => 'hidden',
                         'value' => '1'
@@ -76,7 +76,7 @@ if (!empty($project->costs)) {
                         'errors'    => !empty($errors["cost-{$cost->id}-description"]) ? array($errors["cost-{$cost->id}-description"]) : array(),
                         'ok'        => !empty($okeys["cost-{$cost->id}-description"]) ? array($okeys["cost-{$cost->id}-description"]) : array(),
                         'value'     => $cost->description
-                    ),                                       
+                    ),
                     "cost-{$cost->id}-amount" => array(
                         'type'      => 'textbox',
                         'required'  => true,
@@ -134,7 +134,7 @@ if (!empty($project->costs)) {
                                 'value'     => $cost->until
                             )
                         )
-                    ),        
+                    ),
                     "cost-{$cost->id}-buttons" => array(
                         'type' => 'group',
                         'class' => 'buttons',
@@ -149,37 +149,37 @@ if (!empty($project->costs)) {
                                 'label' => Text::get('form-remove-button'),
                                 'class' => 'inline remove weak'
                             )
-                        )                        
-                    )                    
+                        )
+                    )
                 )
             );
-            
+
         } else {
-            $costs["cost-{$cost->id}"] = array(                
+            $costs["cost-{$cost->id}"] = array(
                 'class'     => 'cost ' . $req_class,
                 'view'      => 'view/project/edit/costs/cost.html.php',
-                'data'      => array('cost' => $cost),                
+                'data'      => array('cost' => $cost),
             );
-            
+
         }
-        
-        
-    }    
+
+
+    }
 }
 
 $sfid = 'sf-project-costs';
 
 echo new SuperForm(array(
-    
+
     'id'            => $sfid,
 
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('costs-main-header'),
-    'hint'          => Text::get('guide-project-costs'),    
-    'class'         => 'aqua',      
-    'elements'      => array(        
+    'hint'          => Text::get('guide-project-costs'),
+    'class'         => 'aqua',
+    'elements'      => array(
         'process_costs' => array (
             'type' => 'hidden',
             'value' => 'costs'
@@ -197,10 +197,10 @@ echo new SuperForm(array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
                     'class' => 'add red',
-                )                
+                )
             )
         ),
-        
+
         'cost-meter' => array(
             'title'     => Text::get('costs-fields-metter-title'),
             'required'  => true,
@@ -212,7 +212,7 @@ echo new SuperForm(array(
             )),
             'hint'      => Text::get('tooltip-project-totals')
         ),
-        
+
         /* aligerando
         'resource' => array(
             'type'      => 'textarea',
@@ -225,7 +225,7 @@ echo new SuperForm(array(
             'value'     => $project->resource
         ),
         */
-        
+
         'schedule' => array(
             'type'      => 'html',
             'class'     => 'schedule',
@@ -254,7 +254,7 @@ echo new SuperForm(array(
                     'view'  => new View('view/project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -268,52 +268,63 @@ echo new SuperForm(array(
                     )
                 )
             )
-        
+
         )
-        
+
     )
 
 ));
 ?>
 <script type="text/javascript">
 $(function () {
-    
-    var costs = $('div#<?php echo $sfid ?> li.element#costs');    
-    
+
+    var costs = $('div#<?php echo $sfid ?> li.element#costs');
+
+    //abrir editor
     costs.delegate('li.element.cost input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        //Superform.update(this, data);
-        Superform.update(costs, data); 
-        event.preventDefault();
+        costs.superform({
+            data : data
+        });
     });
-    
-    costs.delegate('li.element.editcost input.ok', 'click', function (event) {
+
+    //guardar datos
+    costs.delegate('li.element.cost input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        //Superform.update($(this).parents('li.element.editcost'), data);        
-        Superform.update(costs, data);         
-        event.preventDefault();
+        costs.superform({
+            data : data
+        });
     });
-    
-    costs.delegate('li.element.editcost input.remove, li.element.cost input.remove', 'click', function (event) {        
+
+    costs.delegate('li.element.cost input.remove', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(costs, data);
-        event.preventDefault();
+        costs.superform({
+            data : data
+        });
     });
-    
+
     costs.delegate('#cost-add input', 'click', function (event) {
-       var data = {};
-       data[this.name] = '1';
-       Superform.update(costs, data); 
-       event.preventDefault();
+        // hack para superar un error insondable del superform
+        event.preventDefault();
+        var data = {};
+        data[this.name] = '1';
+        //envia los datos y actualiza el contenido con la respuesta
+        costs.superform({
+            data : data
+        });
     });
-    
-    costs.bind('sfafterupdate', function (ev, el, html) {
-        Superform.updateElement($('li#cost-meter'), null, html);
-        Superform.updateElement($('li#schedule'), null, html);
+
+    costs.bind('sfafterupdate', function (event, html, new_el) {
+        //Como html es un string, solo actualiza contenido, no reenvia los datos
+        $('li#cost-meter').superform(html);
+        $('li#schedule').superform(html)
     });
-        
+
 });
 </script>

@@ -570,7 +570,7 @@ namespace Goteo\Controller {
             if ($grant) {
 
                 $project->cat_names = Model\Project\Category::getNames($id);
-                
+
                 if ($show == 'home') {
                     // para el widget embed
                     $project->rewards = array_merge($project->social_rewards, $project->individual_rewards);

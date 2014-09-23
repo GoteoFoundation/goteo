@@ -111,16 +111,16 @@ $(function () {
     var banners = $('div#<?php echo $sfid ?> li.element#banners');
 
     banners.delegate('li.element.banner input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(banners, data);
-        event.preventDefault();
+        banners.superform({data:data});
     });
 
     banners.delegate('li.element.editbanner input.ok', 'click', function (event) {
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(banners, data);
+        banners.superform({data:data});
         event.preventDefault();
     });
 
