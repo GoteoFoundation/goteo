@@ -1,4 +1,4 @@
-<?php use Goteo\Core\View ?>
+<?php use Goteo\Core\View; ?>
 
 <div class="superform <?php echo $this['autoupdate'] ? ' autoupdate' : '' ?><?php if (isset($this['class'])) echo ' '. htmlspecialchars($this['class']) ?>"<?php if (isset($this['id'])) echo ' id="'. htmlspecialchars($this['id']) . '"' ?>>
 
