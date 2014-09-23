@@ -2539,7 +2539,7 @@ namespace Goteo\Model {
             
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
                 if ($mini) {
-                    $projects[$proj->id] = $proj->name;
+                    $projects[$proj->project] = $proj->name;
                 } else {
                     $projects[]=self::getWidget($proj);
                 }
