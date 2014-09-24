@@ -63,19 +63,19 @@ namespace Goteo\Controller\Cron {
 
             foreach ($projects as $project) {
                 // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
-                // FIXME: la segunda condicion del if
+                // FIXME: la segunda condicion del if (depende de days_total)
                 if ($project->days > $project->days_round1 + 2 || $project->days > 360) {
                     // if ($debug) echo "Proyecto <strong>{$project->name}</strong> SKIP<br/>"; // no necesitamos este feedback
                     continue;
                 }
 
-                if ($debug) echo "Proyecto <strong>{$project->name}</strong>, Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias<br />";
+                if ($debug) echo "Proyecto <strong>{$project->name}</strong>, Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias, conseguido {$project->amount}<br />";
                 
                 // primero los que no se bloquean
                 //Solicitud de datos del contrato
                 if ($project->days == $project->days_round1 + 1) {
                     // si ha superado el mínimo
-                    if ($project->invested >= $project->mincost) {
+                    if ($project->amount >= $project->mincost) {
                         if ($debug) echo "Solicitud de datos contrato<br />";
                         Send::toOwner('1d_after', $project);
                     } else {
@@ -84,6 +84,7 @@ namespace Goteo\Controller\Cron {
                 }
 
                 // Recuerdo al autor proyecto, 2 meses despues de campaña finalizada
+                // FIXME  (depende de days_total)
                 if ($project->days == 140) {
                         // si quedan recompensas/retornos pendientes por cumplir
                         if (!Model\Project\Reward::areFulfilled($project->id) || !Model\Project\Reward::areFulfilled($project->id, 'social') ) {
@@ -95,6 +96,7 @@ namespace Goteo\Controller\Cron {
                 }
                 
                 // Recuerdo al autor proyecto, 8 meses despues de campaña finalizada
+                // FIXME  (depende de days_total)
                 if ($project->days == 320) {
                         // si quedan retornos pendientes por cumplir
                         if (!Model\Project\Reward::areFulfilled($project->id, 'social') ) {
@@ -114,7 +116,8 @@ namespace Goteo\Controller\Cron {
                 
                 // flag de aviso
                 $avisado = false;
-                
+
+                // TODO : se comentó que para proyectos con campañas cortas, los consejos se envien proporcionalmente
                 // Consejos/avisos puntuales
                 switch ($project->days) {
                     
@@ -237,7 +240,7 @@ namespace Goteo\Controller\Cron {
                     
                     case 15: // Sigue los avances y calcula lo que falta
                         // si no ha llegado al mínimo
-                        if ($project->invested < $project->mincost) {
+                        if ($project->amount < $project->mincost) {
                             if ($debug) echo "No ha llegado al mínimo<br />";
                             Send::toOwner('tip_15', $project);
                         } else {
@@ -247,7 +250,7 @@ namespace Goteo\Controller\Cron {
                     
                     case 25: // No bajes la guardia!
                         // si no ha llegado al mínimo
-                        if ($project->invested < $project->mincost) {
+                        if ($project->amount < $project->mincost) {
                             if ($debug) echo "No ha llegado al mínimo<br />";
                             Send::toOwner('two_weeks', $project);
                         } else {
@@ -257,7 +260,7 @@ namespace Goteo\Controller\Cron {
                     
                     case 32: // Al proyecto le faltan 8 días para archivarse
                         // si no ha llegado al mínimo
-                        if ($project->invested < $project->mincost) {
+                        if ($project->amount < $project->mincost) {
                             if ($debug) echo "No ha llegado al mínimo<br />";
                             Send::toOwner('8_days', $project);
                         } else {
@@ -267,7 +270,7 @@ namespace Goteo\Controller\Cron {
                     
                     case 38: // Al proyecto le faltan 2 días para archivarse 
                         // si no ha llegado al mínimo pero está por encima del 70%
-                        if ($project->invested < $project->mincost && $project->percent >= 70) {
+                        if ($project->amount < $project->mincost && $project->percent >= 70) {
                             if ($debug) echo "No ha llegado al mínimo<br />";
                             Send::toOwner('2_days', $project);
                         } else {
