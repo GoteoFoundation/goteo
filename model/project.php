@@ -451,7 +451,7 @@ namespace Goteo\Model {
                 if($project->status >= 3 && empty($project->amount)) {
                     $project->amount = Invest::invested($id);
                 }
-                $project->invested = $project->amount;
+                $project->invested = $project->amount; // compatibilidad, ->invested no debe usarse
 
 
                 // campos calculados para los números del menu
@@ -747,7 +747,8 @@ namespace Goteo\Model {
                 }
 
                 $Widget->amount = $project->amount;
-                $Widget->invested = $project->amount;
+                $Widget->invested = $project->amount; // compatibilidad, ->invested no debe usarse
+                $Widget->num_investors = $project->num_investors;
 
                 // @TODO : hay que hacer campos calculados conn traducción para esto
                 $Widget->cat_names = Project\Category::getNames($Widget->id, 2);
@@ -2593,28 +2594,46 @@ namespace Goteo\Model {
         {
             $projects = array();
 
+            // en cron Daily solo se miran proyectos:
+            // en campaña (hasta el día siguiente a final de primera ronda)
+            //, 2 meses post-financiado (80 + 60 = 140 días)
+            //, 8 meses post financiado  (80 + 240 = 320 días)
             $sql = "SELECT
                     id, status,
                     DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%j') as dias
                 FROM  project
                 WHERE status IN ('3', '4')
-                HAVING status = 3 OR (status = 4 AND  dias > 138)
-                ORDER BY days ASC";
+                HAVING ( status = 3 AND dias BETWEEN 0 AND 42 ) OR (status = 4 AND ( dias BETWEEN 138 AND 142 OR dias BETWEEN 318 AND 322 ) )
+                ORDER BY dias ASC";
 
 
             $query = self::query($sql);
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $the_proj = self::getMedium($proj->id);
-                $the_proj->percent = floor(($the_proj->invested / $the_proj->mincost) * 100);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+
+                // FIXME  (depende de days_total, complicado tenerlo en cuenta en la consulta sql )
+                /*
+                if ($proj->status == 4 &&
+                    (
+                        ( $proj->dias < 138  &&  $proj->dias > 142 )
+                    ||
+                        ( $proj->dias < 318 &&  $proj->dias > 322 )
+                    )
+                )
+                    continue;
+                */
+
+
+                $the_proj = self::getMedium($proj->id); // ya coge la configuración de rondas
+
+                // porcentaje conseguido
+                $the_proj->percent = floor(($the_proj->amount / $the_proj->mincost) * 100);
+
+                // en days mantenemos el número de días de campaña
                 $the_proj->days = (int) $proj->dias - 1;
+
+                // número de recomendaciones de padrinos
                 $the_proj->patrons = Patron::numRecos($proj->id);
 
-                // extra conf
-                $project_conf = Project\Conf::get($proj->id);
-                $the_proj->days_round1 = $project_conf->days_round1;
-                $the_proj->days_round2 = $project_conf->days_round2;
-                $the_proj->one_round = $the_proj->one_round;
-                $the_proj->days_total = ($the_proj->one_round) ? $the_proj->days_round1 : $the_proj->days_round1 + $the_proj->days_round2;
 
                 $projects[] = $the_proj;
             }

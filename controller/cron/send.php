@@ -154,7 +154,7 @@ namespace Goteo\Controller\Cron {
                 case 'tip_3': // template 43, "Una acción a diario, por pequeña que sea"
                     $tpl = 43;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%');
-                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->invested);
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->amount);
                     break;
                 
                 case 'tip_4': // template 44, "Llama a todas las puertas"
@@ -166,7 +166,7 @@ namespace Goteo\Controller\Cron {
                 case 'tip_5': // template 45, "Busca dónde está tu comunidad"
                     $tpl = 45;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%NUMBACKERS%');
-                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->invested, $project->num_investors);
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->amount, $project->num_investors);
                     break;
                 
                 case 'tip_8': // template 47, "Agradece en público e individualmente"
