@@ -2451,10 +2451,16 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos publicados
+         * @param $type string
+         * @param $limit int
+         * @param $mini boolean
+         * @param $page int
+         * @param $offset int
          * @return: array of Model\Project
          */
-        public static function published($type = 'all', $limit = 12, $mini = false)
+        public static function published($type = 'all', $limit = 9, $mini = false, $page = 1)
         {
+            $offset = $limit * ($page - 1);
             $different_select='';
 
             $values = array();
@@ -2494,7 +2500,6 @@ namespace Goteo\Model {
                    
                     $where="project.status = 3 AND project.passed IS NULL";
                     $order="published DESC";
-                    $limit = 9;
                     break;
                 case 'success':
                     // los que han conseguido el mínimo
@@ -2557,7 +2562,7 @@ namespace Goteo\Model {
                                 ON  eng.id = project.id
                                 AND eng.lang = 'en'";
             }
-
+            
             $sql ="
                 SELECT
                     project.id as project,
@@ -2597,9 +2602,9 @@ namespace Goteo\Model {
                 WHERE
                 $where
                 ORDER BY $order
-                LIMIT $limit
+                LIMIT $offset,$limit
                 ";
-
+            
             $projects = array();
             $query = self::query($sql, $values);
             
