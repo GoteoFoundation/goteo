@@ -178,7 +178,6 @@ try {
             define('CRON_EXEC', true);
         } else {
             Message::Info(Text::get('user-login-required-access'));
-            die("ACL check falla para ( $uri ) ".\trace($_SESSION));
             throw new Redirection(SEC_URL."/user/login/?return=".rawurlencode($uri));
         }
     }
