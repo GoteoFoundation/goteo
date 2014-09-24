@@ -2383,6 +2383,72 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /**
+         * Cuenta el numero de items segun el tipo
+         * @param type $type popular|outdate|recent|success|almost-fulfilled|fulfilled|available|archivo|others
+         * @return int total
+         * @see published
+         */
+        public static function published_count($type = 'all') {
+
+            $values = array();
+
+            if (\NODE_ID != \GOTEO_NODE) {
+                $sqlFilter = " AND project.node = :node";
+                $values[':node'] = NODE_ID;
+            } else {
+                $sqlFilter = "";
+            }
+
+            switch ($type) {
+                case 'popular':
+                    $where="project.status= 3 AND popularity >20";
+                    break;
+                case 'outdate':
+                    $where="days <= 15 AND days > 0 AND status = 3";
+                    break;
+                case 'recent':
+                    $where="project.status = 3 AND project.passed IS NULL";
+                    break;
+                case 'success':
+                    $where="status IN ('3', '4', '5') AND project.amount >= mincost";
+                    break;
+                case 'almost-fulfilled':
+                    $where="status IN ('4','5')";
+                    break;
+                case 'fulfilled':
+                    $where="status IN ('5')";
+                    break;
+                case 'available':
+                    $where="status < 6";
+                    break;
+                case 'archive':
+                    $where="status = 6";
+                    break;
+                case 'others':
+                    if (!empty($sqlFilter)) {
+                        $sqlFilter = \str_replace('=', '!=', $sqlFilter);
+                    }
+                    $where="project.status = 3";
+                    break;
+                default:
+                    $where="project.status = 3";
+            }
+
+            $where .= $sqlFilter;
+
+            $sql ="
+                SELECT COUNT(id)
+                FROM project
+                WHERE $where
+                ";
+            $query = self::query($sql, $values);
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+
+            return $query->fetchColumn();
+        }
+
+
         /*
          * Lista de proyectos publicados
          * @return: array of Model\Project
