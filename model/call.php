@@ -1707,7 +1707,6 @@ namespace Goteo\Model {
 			try {
 	            $sql = "REPLACE INTO user_call (`user`, `call`) VALUES(:user, :call)";
 				if (self::query($sql, $values)) {
-                    ACL::allow('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
     				return true;
                 } else {
                     $errors[] = 'No se ha creado el registro `user_call`';
@@ -1731,7 +1730,6 @@ namespace Goteo\Model {
 
             try {
                 if (self::query("DELETE FROM user_call WHERE `call` = :call AND `user` = :user", $values)) {
-                    ACL::deny('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
                     return true;
                 } else {
                     return false;

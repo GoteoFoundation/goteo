@@ -56,11 +56,25 @@ namespace Goteo\Controller {
 
             // si es un salto a otro panel
             if (in_array($option, array('admin', 'review', 'translate'))) {
-                if (ACL::check('/'.$option)) {
+
+                // si tiene algún rol de admin
+                if ( $option == 'admin' &&  ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) )
                     throw new Redirection('/'.$option, Redirection::TEMPORARY);
-                } else {
+                else
                     throw new Redirection('/dashboard', Redirection::TEMPORARY);
-                }
+
+                // si tiene rol de revisor
+                if ( $option == 'review' && isset($_SESSION['user']->roles['checker']) )
+                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
+                else
+                    throw new Redirection('/dashboard', Redirection::TEMPORARY);
+
+                // si tiene rol de traductor
+                if ( $option == 'translate' &&  isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) || isset($_SESSION['user']->roles['translator']) )
+                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
+                else
+                    throw new Redirection('/dashboard', Redirection::TEMPORARY);
+
             }
 
             return new View('view/dashboard/index.html.php', $viewData);
@@ -512,12 +526,6 @@ namespace Goteo\Controller {
             $calls = Model\User\Translate::getMyCalls($user->id);
             $nodes = Model\User\Translate::getMyNodes($user->id);
 
-            foreach ($nodes as $node) {
-                // compruebo que puedo traducir todos los nodos asignados
-                if (!ACL::check('/translate/node/' . $node->id . '/*')) {
-                    ACL::allow('/translate/node/' . $node->id . '/*', '*', 'translator', $user->id);
-                }
-            }
 
             // al seleccionar controlamos: translate_type y translateproject/translate_call
             if ($action == 'select' && !empty($_POST['type'])) {
@@ -1096,16 +1104,16 @@ namespace Goteo\Controller {
 
 
 
-            // si tiene permiso para ir al admin
-            if (ACL::check('/admin'))
+            // si tiene algún rol de admin
+            if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) )
                 $menu['activity']['options']['admin'] = Text::get('dashboard-menu-admin_board');
 
-            // si tiene permiso para ir a las revisiones
-            if (ACL::check('/review'))
+            // si tiene rol de revisor
+            if ( isset($_SESSION['user']->roles['checker']) )
                 $menu['activity']['options']['review'] = Text::get('dashboard-menu-review_board');
 
-            // si tiene permiso para ir a las traducciones
-            if (ACL::check('/translate'))
+            // si tiene rol de traductor
+            if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['translator']) )
                 $menu['activity']['options']['translate'] = Text::get('dashboard-menu-translate_board');
 
             return $menu;

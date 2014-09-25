@@ -42,20 +42,6 @@ namespace Goteo\Controller\Dashboard {
                 return array(null, null);
             }
 
-            // comprobamos que tenga los permisos para editar y borrar
-            foreach ($projects as $proj) {
-
-                // comprueba que puede editar sus proyectos
-                if (!ACL::check('/project/edit/' . $proj->id)) {
-                    ACL::allow('/project/edit/' . $proj->id . '/', '*', 'user', $user);
-                }
-
-                // y borrarlos
-                if (!ACL::check('/project/delete/' . $proj->id)) {
-                    ACL::allow('/project/delete/' . $proj->id . '/', '*', 'user', $user);
-                }
-            }
-
             // si está seleccionando otro proyecto
             if ($action == 'select' && !empty($_POST['project'])) {
                 $project = Model\Project::get($_POST['project']);

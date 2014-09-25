@@ -48,21 +48,27 @@ $nodes = Nodesys::activeNodes();
                         <li><a href="/dashboard/activity"><span><?php echo Text::get('dashboard-menu-activity'); ?></span></a></li>
                         <li><a href="/dashboard/profile"><span><?php echo Text::get('dashboard-menu-profile'); ?></span></a></li>
                         <li><a href="/dashboard/projects"><span><?php echo Text::get('dashboard-menu-projects'); ?></span></a></li>
-                        <?php if (ACL::check('/call/create')) : ?>
-                        <li><a href="/dashboard/calls"><span><?php echo Text::get('dashboard-menu-calls'); ?></span></a></li>
+
+                        <?php if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) : ?>
+                            <li><a href="/dashboard/calls"><span><?php echo Text::get('dashboard-menu-calls'); ?></span></a></li>
                         <?php endif; ?>
-                        <?php if (ACL::check('/translate')) : ?>
-                        <li><a href="/translate"><span><?php echo Text::get('regular-translate_board'); ?></span></a></li>
+
+                        <?php if ( isset($_SESSION['user']->roles['translator']) ||  isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) : ?>
+                            <li><a href="/translate"><span><?php echo Text::get('regular-translate_board'); ?></span></a></li>
                         <?php endif; ?>
-                        <?php if (ACL::check('/review')) : ?>
-                        <li><a href="/review"><span><?php echo Text::get('regular-review_board'); ?></span></a></li>
+
+                        <?php if ( isset($_SESSION['user']->roles['checker']) ) : ?>
+                            <li><a href="/review"><span><?php echo Text::get('regular-review_board'); ?></span></a></li>
                         <?php endif; ?>
-                        <?php if (ACL::check('/admin')) : ?>
-                        <li><a href="/admin"><span><?php echo Text::get('regular-admin_board'); ?></span></a></li>
+
+                        <?php if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) : ?>
+                            <li><a href="/admin"><span><?php echo Text::get('regular-admin_board'); ?></span></a></li>
                         <?php endif; ?>
-                        <?php if (ACL::check('/manage')) : ?>
-                        <li><a href="/manage"><span><?php echo Text::get('regular-manage_board'); ?></span></a></li>
+
+                        <?php if ( isset($_SESSION['user']->roles['manager']) ) : ?>
+                            <li><a href="/review"><span><?php echo Text::get('regular-manage_board'); ?></span></a></li>
                         <?php endif; ?>
+
                         <li class="logout"><a href="/user/logout"><span><?php echo Text::get('regular-logout'); ?></span></a></li>
                     </ul>
                 </div>

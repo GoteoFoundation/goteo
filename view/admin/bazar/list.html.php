@@ -2,7 +2,7 @@
 use Goteo\Library\Text,
     Goteo\Core\ACL;
 
-$translator = ACL::check('/translate') ? true : false;
+$translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 ?>
 <a href="/admin/bazar/add" class="button">Nuevo Elemento</a>&nbsp;&nbsp;&nbsp;<a href="/bazaar" class="button" target="_blank">Ver catalogo</a>
 

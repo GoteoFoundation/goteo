@@ -36,7 +36,25 @@ namespace Goteo\Controller {
         }
 
         public function delete ($id) {
+            // redirección según usuario
+            $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
+
             $project = Model\Project::get($id);
+
+            // no lo puede eliminar si
+            $grant = false;
+            if ($project->owner == $_SESSION['user']->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
+            )
+                $grant = true;
+
+            if (!$grant) {
+                Message::Info('No tienes permiso para eliminar este proyecto');
+
+                throw new Redirection($goto);
+            }
+
             $errors = array();
             if ($project->delete($errors)) {
                 Message::Info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
@@ -46,23 +64,29 @@ namespace Goteo\Controller {
             } else {
                 Message::Info("No se han podido borrar los datos del proyecto '<strong>{$project->name}</strong>'. Error:" . implode(', ', $errors));
             }
-            throw new Redirection("/dashboard/projects");
+            throw new Redirection($goto);
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         public function edit ($id, $step = 'userProfile') {
+            // redirección según usuario
+            $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
 
             $project = Model\Project::get($id, null);
 
-            // aunque pueda acceder edit, no lo puede editar si
-            if ($project->owner != $_SESSION['user']->id // no es su proyecto
-                && (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) // es admin pero no es admin de central
-                && (isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) // no es de su nodo
-                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
-                && (isset($_SESSION['user']->roles['checker']) && !Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // no lo tiene asignado
-                ) {
+            $grant = false;
+            // Substituye ACL, solo lo puede editar si...
+            if ($project->owner == $_SESSION['user']->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
+                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
+                || (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es revisor
+            )
+                $grant = true;
+
+            if (!$grant) {
                 Message::Info('No tienes permiso para editar este proyecto');
-                throw new Redirection('/admin/projects');
+                throw new Redirection($goto);
             }
 
             // si no tenemos SESSION stepped es porque no venimos del create
@@ -77,7 +101,8 @@ namespace Goteo\Controller {
                      'supports'     => 'supports'
                 );
 
-            if ($project->status != 1 && !ACL::check('/project/edit/todos')) {
+            // al impulsor se le proibe ver ningun paso cuando ya no está en edición
+            if ($project->status != 1 && $project->owner == $_SESSION['user']->id ) {
                 // solo puede estar en preview
                 $step = 'preview';
 
@@ -426,10 +451,6 @@ namespace Goteo\Controller {
             if ($project->create(NODE_ID)) {
                 $_SESSION['stepped'] = array();
 
-                // permisos para editarlo y borrarlo
-                ACL::allow('/project/edit/'.$project->id.'/', '*', 'user', $_SESSION['user']->id);
-                ACL::allow('/project/delete/'.$project->id.'/', '*', 'user', $_SESSION['user']->id);
-
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($_SESSION['user']->id, 'user');
@@ -553,18 +574,16 @@ namespace Goteo\Controller {
 
             // solamente se puede ver publicamente si...
             $grant = false;
-            if ($project->status > 2) // está publicado
+            if ( $project->status > 2 // está publicado
+                || $project->owner == $_SESSION['user']->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
+                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
+                || (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es revisor
+                || (isset($_SESSION['user']->roles['caller']) && Model\Call\Project::is_assigned($_SESSION['user']->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
+            )
                 $grant = true;
-            elseif ($project->owner == $_SESSION['user']->id)  // es el dueño
-                $grant = true;
-            elseif (ACL::check('/project/edit/todos'))  // es un admin
-                $grant = true;
-            elseif (ACL::check('/project/view/todos'))  // es un usuario con permiso
-                $grant = true;
-            elseif (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es un revisor y lo tiene asignado
-                $grant = true;
-            elseif (isset($_SESSION['user']->roles['caller']) && Model\Call\Project::is_assigned($_SESSION['user']->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
-                $grant = true;
+
 
             // si lo puede ver
             if ($grant) {
