@@ -2458,7 +2458,7 @@ namespace Goteo\Model {
          * @param $offset int
          * @return: array of Model\Project
          */
-        public static function published($type = 'all', $limit = 9, $mini = false, $page = 1)
+        public static function published($type = 'all', $limit = 9, $page = 1)
         {
             $offset = $limit * ($page - 1);
             $different_select='';
@@ -2609,11 +2609,7 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
             
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
-                if ($mini) {
-                    $projects[$proj->project] = $proj->name;
-                } else {
-                    $projects[]=self::getWidget($proj);
-                }
+                $projects[]=self::getWidget($proj);
             }
             return $projects;
         }
