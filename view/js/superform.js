@@ -80,17 +80,15 @@
         }
 
         var data = frm.serializeArray();
-        // console.log(frm[0].id, data);
         var action = frm.attr('action');
         //elemento a actualizar, por defecto el que realiza la llamada
         var el = $(settings.target);
 
         if(typeof settings.data === 'object' && settings.data !== null && (action)) {
             //si todavia se está realizando la llamada ajax en el elemento, salimos
-            if (caller.superform_updating) {
-                alert('Already updating!');
-                // caller.superform_updating.abort();
-                return;
+            if (frm[0].xhr) {
+                frm[0].xhr.abort();
+                // alert('Already updating!');
             }
 
             //añadir los elementos pasados
@@ -104,18 +102,24 @@
             // console.log('sending data:', data);
             //poner en el elemento html que hace la llamada una variable para impedir actualizaciones paralelas
             el.addClass('updating busy');
-            caller.superform_updating = true;
             //evento de antes de empezar ajax
             t.trigger('superform.ajax.started', [el]);
-            $.post(action, data, function(html, status) {
-                caller.superform_updating = null;
+
+            // console.log(frm[0].id, data);
+
+            frm[0].xhr = $.ajax({
+                type:       'POST',
+                url:        action,
+                cache:      false,
+                data:       data
+            }).done( function(html, status, xhr) {
                 //ajax finalizado
                 t.trigger('superform.ajax.done', [html, el]);
                 //actualizar el nodo si target es un elemento html
-                if(status !== 'success') {
-                    alert('Error, status return not success: ' +  status);
-                }
                 _superformUpdate(t, el, html);
+            }).fail( function(html, status, xhr) {
+                // console.log(status);
+                if(status != 'abort') alert('Error, status return not success: ' +  status);
             });
         }
     };
@@ -234,46 +238,8 @@
             var new_child_id = $new_child.attr('id');
             var $child = elements.filter('li.element#' + new_child_id);
 
-            /*
-            //si el nuevo elemento existe, lo esconderemos (y borraremos)
-            if($child.length) {
-                if($child.html() != $new_child.html()) {
-                    console.log($new_child);
-                    var promise = $.Deferred();
-                    $child.slideUp('slow', function(){
-                        $(this).remove();
-                        promise.resolve();
-                    });
-                    promises.push(promise);
-                }
-                else {
-                    //si nada ha cambiado pasamos al siguiente elemento
-                    // $new_child.css('color','red');
-                    return true;
-                }
-            }
-            // añadimos el nuevo elemento y los mostramos con slidedown
-            $new_child.hide();
-            if(i > 0) {
-                //añadir el elemento en la posicion que toca
-                $new_child.insertAfter( elements.filter(':eq(' + (i-1) + ')') );
-            }
-            else {
-                //no hay ningun elemento, añadir al principio
-                $new_child.prependTo( elements.parent() );
-            }
-            var promise2 = $.Deferred();
-            //mostrar el elemento "graciosamente"
-            $new_child.slideDown('slow', function(){
-                promise2.resolve();
-            });
-            promises.push(promise2);
-            //*/
-
-            //*
-            //metodo antiguo
             if ($child.length) {
-                    // var new_el = $(html).find('li.element#' + new_child_id);
+                // var new_el = $(html).find('li.element#' + new_child_id);
                 // console.log('delegamos child', $new_child[0].id, ' class ', $child.attr('class'), ' new class ', $new_child.attr('class'));
                 // console.log('html actual:',$child.html());
                 $child.attr('class', $new_child.attr('class'));
@@ -291,7 +257,7 @@
                     promises.push(promise);
                 }
             }
-            //*/
+
             // console.log('i:'+i+' id: '+new_child_id, 'old',$child.html(), 'new:', $new_child.html());
         });
 
@@ -313,6 +279,10 @@
 
 }( jQuery ));
 
+/**
+ * Inicializacion de campos automaticos
+ * @return {[type]} [description]
+ */
 $(function() {
 
     //Probablemente esto no deberia estar aqui pues no forma parte del plugin en si
