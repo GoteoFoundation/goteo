@@ -142,29 +142,39 @@ namespace Goteo\Controller {
             $viewData['total'] = Model\Project::published_count($type);
             $viewData['pages'] = ceil($viewData['total'] / 9);
 
+            $items_per_page = 9;
+            
+            if (is_numeric($_GET['page'])) {
+                
+                // redirige a la última página
+                if ($_GET['page'] > $viewData['pages']) {
+                    throw new Redirection("/discover/view/$type?page=" . $viewData['pages']);
+                } elseif ($_GET['page'] < 1) {
+                    throw new Redirection("/discover/view/$type?page=1");
+                } else {
+                    $page = $_GET['page'];
+                }
+                
+            } else {
+                $page = 1;
+            }
+            
+            $viewData['list'] = Model\Project::published($type, $items_per_page, $page);
+            
             // segun el tipo cargamos la lista
             if (isset($_GET['list'])) {
-                $viewData['list']  = Model\Project::published($type, null, true);
 
                 return new View(
                     'view/discover/list.html.php',
                     $viewData
                  );
-            } else {
-
-                if (is_numeric($_GET['page'])) {
-                    $page = $_GET['page'];
-                } else {
-                    $page = 1;
-                }
                 
-                $items_per_page = 9;
-                $projects = Model\Project::published($type, $items_per_page, false, $page);
+            } else {
+                
                 // random para retorno cumplido
                 if ($type == 'fulfilled') {
-                    shuffle($projects);
+                    shuffle($viewData['list']);
                 }
-                $viewData['list'] = $projects;
 
                 return new View(
                     'view/discover/view.html.php',
