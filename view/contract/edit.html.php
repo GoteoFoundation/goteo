@@ -38,6 +38,15 @@ include 'view/prologue.html.php';
 
             <?php echo $steps ?>
 
+            <script type="text/javascript">
+            $(function () {
+                $('div.superform').bind('superform.ajax.done', function (event, html, new_el) {
+                    $('li#errors').superform(html);
+                });
+            });
+            </script>
+
+
         </form>
 
     </div>
