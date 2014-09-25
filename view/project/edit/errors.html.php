@@ -42,11 +42,3 @@ foreach ($project->errors as $st => $errors) {
     <?php endif; ?>
 
 </div>
-
-<script type="text/javascript">
-$(function () {
-    $('div.superform').one('sfafterupdate', function (event, html, new_el) {
-        $('li#errors').superform(html);
-    });
-});
-</script>

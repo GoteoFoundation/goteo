@@ -1,7 +1,36 @@
 /**
  *
  * Plugin para realizar cambios Ajax en el Super form
- * metodos: update y updateElement
+ * La estructura html de superform es:
+ *
+ * <div class="superform  autoupdate">
+ *
+ *   <div class="elements">
+ *     <ol>
+ *         <li class="element" id="campo">
+ *
+ *             <div class="contents">
+ *             ... contenido final...
+ *             </div>
+ *
+ *             <div class="feedback" id="superform-feedback-for-campo">
+ *             ... contenido feedback ...
+ *             </div>
+ *
+ *             <div class="children">
+ *                 ... estructura iterativa, se repite a partir de div.elements ...
+ *                 <div class="elements">
+ *                     ...
+ *                 </div>
+ *
+ *             </div>
+ *
+ *         </li>
+ *
+ *     </ol>
+ *   </div>
+ *
+ * </div>
  *
  *  El plugins debe buscar el elemento form en el que esta contenido
  * Ejemplos
@@ -20,22 +49,7 @@
 
         // Si es un string no hay llamada post, actualiza el target con el string enviado
         if(typeof options === 'string') {
-            if(t.length && caller instanceof HTMLElement) {
-                var new_el = $(options).find('#' + $(t).attr('id'));
-                // console.log('old',$(t).html());
-                // console.log('new',$(new_el).html());
-                //evento de antes de actualizar
-                t.trigger('sfbeforeupdate', [options, new_el]);
-
-                var promises = _superformUpdateElement($(t), $(new_el));
-
-                //evento de despues de actualizar
-                $.when.apply( $, promises ).always(function(){
-                    t.trigger('sfafterupdate', [options, new_el]);
-                });
-
-
-            }
+            _superformUpdate(t, t, options);
             return;
         }
 
@@ -91,44 +105,53 @@
             //poner en el elemento html que hace la llamada una variable para impedir actualizaciones paralelas
             el.addClass('updating busy');
             caller.superform_updating = true;
+            //evento de antes de empezar ajax
+            t.trigger('superform.ajax.started', [el]);
             $.post(action, data, function(html, status) {
+                caller.superform_updating = null;
+                //ajax finalizado
+                t.trigger('superform.ajax.done', [html, el]);
                 //actualizar el nodo si target es un elemento html
                 if(status !== 'success') {
                     alert('Error, status return not success: ' +  status);
                 }
-                if(el.length && caller instanceof HTMLElement) {
-                    if( ! el.attr('id')) {
-                        //cuando se envie por ajax solo el contenido (y no toda la pagina entera)
-                        //se puede saltar este paso i sustituir el elemnto por el codigo pasado
-                        alert('Error, not id present in the target!');
-                    }
-                    else {
-                        //actualizar html
-                        var new_el = $(html).find('li.element#' + el.attr('id'));
-
-                        //evento de antes de actualizar
-                        t.trigger('sfbeforeupdate', [html, new_el]);
-
-                        var promises = _superformUpdateElement(el, new_el);
-
-                        //evento de despues de actualizar
-                        $.when.apply( $, promises ).always(function(){
-                            // el.removeClass('updating busy');
-                            el.attr('class', new_el.attr('class'));
-                            t.trigger('sfafterupdate', [html, new_el]);
-                        });
-
-                    }
-                    // console.log('update:',el.attr('id'),data);
-                }
-                else {
-                    // alert('not updating');
-                }
-                caller.superform_updating = null;
+                _superformUpdate(t, el, html);
             });
         }
     };
 
+    /**
+     * Realiza la sustitucion html y lanzan los eventos
+     */
+    var _superformUpdate = function(t, el, html) {
+        var caller = t.get(0);
+        if(el.length && caller instanceof HTMLElement) {
+            if( ! el.attr('id')) {
+                alert('Error, not id present in the target!');
+            }
+            else {
+                //actualizar html
+                var new_el = $(html).find('li.element#' + el.attr('id'));
+
+                //evento de antes de actualizar
+                t.trigger('superform.dom.started', [html, new_el]);
+
+                var promises = _superformUpdateElement(el, new_el);
+
+                //evento de despues de actualizar
+                $.when.apply( $, promises ).always(function(){
+                    // el.removeClass('updating busy');
+                    el.attr('class', new_el.attr('class'));
+                    t.trigger('superform.dom.done', [html, new_el]);
+                });
+
+            }
+            // console.log('update:',el.attr('id'),data);
+        }
+        else {
+            // alert('not updating');
+        }
+    };
     /**
      * Sustituye elegantemente (slide) un elemento jquery por otro
      */
@@ -138,7 +161,7 @@
         // el.html(new_el.html()).slideDown('slow');
         // return;
 
-        //array de promesas para lanzar el evento sfafterupdate una vez se han acabado las animaciones
+        //array de promesas para lanzar el evento superform.dom.done una vez se han acabado las animaciones
         var promises = [];
 
         // console.log('el: ', el[0].id, ' new_el: ', new_el[0].id);
