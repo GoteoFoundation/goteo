@@ -139,11 +139,10 @@ namespace Goteo\Controller {
             // segun el tipo cargamos el título de la página
             $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
-            $viewData['total'] = Model\Project::published_count($type);
-            $viewData['pages'] = ceil($viewData['total'] / 9);
-
             $items_per_page = 9;
-            
+            $viewData['total'] = Model\Project::published_count($type);
+            $viewData['pages'] = ceil($viewData['total'] / $items_per_page);
+
             if (is_numeric($_GET['page'])) {
                 
                 // redirige a la última página
