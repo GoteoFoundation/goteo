@@ -2834,7 +2834,6 @@ namespace Goteo\Model {
                         project.node as node,
                         project.mincost as mincost,
                         project.maxcost as maxcost,
-                        project.node as node,
                         project.amount as amount,
                         project.image as image,
                         project.gallery as gallery,
