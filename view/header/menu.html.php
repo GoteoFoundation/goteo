@@ -49,7 +49,7 @@ $nodes = Nodesys::activeNodes();
                         <li><a href="/dashboard/profile"><span><?php echo Text::get('dashboard-menu-profile'); ?></span></a></li>
                         <li><a href="/dashboard/projects"><span><?php echo Text::get('dashboard-menu-projects'); ?></span></a></li>
 
-                        <?php if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) : ?>
+                        <?php if ( isset($_SESSION['user']->roles['caller']) ) : ?>
                             <li><a href="/dashboard/calls"><span><?php echo Text::get('dashboard-menu-calls'); ?></span></a></li>
                         <?php endif; ?>
 
@@ -66,7 +66,7 @@ $nodes = Nodesys::activeNodes();
                         <?php endif; ?>
 
                         <?php if ( isset($_SESSION['user']->roles['manager']) ) : ?>
-                            <li><a href="/review"><span><?php echo Text::get('regular-manage_board'); ?></span></a></li>
+                            <li><a href="/manage"><span><?php echo Text::get('regular-manage_board'); ?></span></a></li>
                         <?php endif; ?>
 
                         <li class="logout"><a href="/user/logout"><span><?php echo Text::get('regular-logout'); ?></span></a></li>
