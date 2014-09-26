@@ -38,7 +38,7 @@ $status = Model\Project::status();
     <?php if (!empty($call->projects)) : ?>
     <table>
         <tr>
-            <th></th>
+            <th>Impulsor</th>
             <th>Proyecto</th>
             <th>Estado</th>
             <th>Riego</th>
@@ -46,7 +46,7 @@ $status = Model\Project::status();
         </tr>
         <?php foreach ($call->projects as $proj) : ?>
         <tr>
-            <td><a href="/project/<?php echo $proj->name ?>" target="_blank">[Ver]</a></td>
+            <td><a href="/user/<?php echo $proj->owner ?>" target="_blank">[Ver]</a></td>
             <td><a href="/project/<?php echo $proj->name ?>" target="_blank"><?php echo $proj->name ?></a></td>
             <td><?php echo $status[$proj->status] ?></td>
             <td><?php echo $proj->amount ?></td>
