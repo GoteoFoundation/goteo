@@ -157,6 +157,13 @@ namespace Goteo\Core {
                 $default_lang = (in_array($lang, array('es','ca', 'gl', 'eu', 'en'))) ? 'es' : 'en';
             
             return $default_lang;
+            } else {
+
+                // @ FIXME
+                // si $lang es null (piden el idioma original), devolvemos 'es' a piñon
+                // porque en los modelos se hace ``self::default_lang($lang)=='es'``
+                // y si no damos 'es' mete el IFNULL para inglés y (al no tener registro para "*_lang.lang = null") devuelve contenido en inglés
+                return 'es';
             }
 
         }
