@@ -335,7 +335,8 @@ namespace Goteo\Controller {
                 }
 
                 // redirect para que no muestre "reenviar los datos" al recargar la página
-                throw new Redirection("/project/edit/{$project->id}/{$step}{$fragment}");
+                // throw new Redirection("/project/edit/{$project->id}/{$step}{$fragment}");
+                // Julian 26/09/2014  el redirect provoca que los errores no se muestren corregidos en la lista de abajo
 
 
 
