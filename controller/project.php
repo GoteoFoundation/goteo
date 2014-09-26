@@ -30,7 +30,7 @@ namespace Goteo\Controller {
         public function raw ($id) {
             $project = Model\Project::get($id, LANG);
             $project->check();
-            \trace($project->call);
+            \trace($project->called);
             \trace($project);
             die;
         }

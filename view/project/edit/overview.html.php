@@ -156,7 +156,7 @@ $superform = array(
         
         'media' => array(
             'type'      => 'textbox',
-            'required'  => is_object($project->call) ? false : true, // solo obligatorio si no está aplicando a convocatoria
+            'required'  => is_object($project->called) ? false : true, // solo obligatorio si no está aplicando a convocatoria
             'title'     => Text::get('overview-field-media'),
             'hint'      => Text::get('tooltip-project-media'),
             'errors'    => !empty($errors['media']) ? array($errors['media']) : array(),

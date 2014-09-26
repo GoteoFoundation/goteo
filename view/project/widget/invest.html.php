@@ -66,7 +66,7 @@ $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
 <div class="widget project-invest project-called">
 <?php if ($allready > 0) : ?>
     <p><?php echo Text::html('invest-called-allready', $call->name) ?></p>
-<?php elseif ($call->project_got >= $call->maxproj) : ?>
+<?php elseif ($project->amount_call >= $call->maxproj) : ?>
     <p><?php echo Text::html('invest-called-maxproj', $call->name) ?></p>
 <?php elseif ($rest > 0) : ?>
     <input type="hidden" id="rest" name="rest" value="<?php echo $rest ?>" />

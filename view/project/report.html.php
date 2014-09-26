@@ -3,7 +3,7 @@
 use Goteo\Model\Contract;
 
 $project = $this['project'];
-$called = $project->call;
+$called = $project->called;
 $Data    = $this['Data'];
 $admin = (isset($this['admin']) && $this['admin'] === true) ? true : false;
 
@@ -81,7 +81,7 @@ $cName = "P-{$cNum}-{$cDate}";
         </tr>
         <?php if (!empty($called)) : ?>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total Capital Riego: <strong><?php echo \amount_format($sumData['drop']).' &euro;'; ?></strong> (Transferencia del convocador '<?php echo $project->call->user->name ?>' directamente al impulsor)</td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total Capital Riego: <strong><?php echo \amount_format($sumData['drop']).' &euro;'; ?></strong> (Transferencia del convocador '<?php echo $project->called->user->name ?>' directamente al impulsor)</td>
         </tr>
         <?php endif; ?>
         <?php if (!empty($sumData['ghost'])) : ?>

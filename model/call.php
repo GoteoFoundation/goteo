@@ -323,15 +323,14 @@ namespace Goteo\Model {
                 $call->banners  = Call\Banner::getList($id, $lang);
 
                 // campos calculados
-                $keepUpdated = true;
 
                 // riego comprometido
-                if (!isset($call->used) || $keepUpdated) {
+                if (!isset($call->used)) {
                     $call->used = $call->getUsed();
                 }
 
                 // riego restante
-                if (!isset($call->rest) || $keepUpdated) {
+                if (!isset($call->rest)) {
                     $call->rest = $call->getRest($call->used);
                 }
 
