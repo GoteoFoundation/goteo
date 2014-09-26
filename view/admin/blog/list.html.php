@@ -1,13 +1,13 @@
 <?php
 use Goteo\Library\Text,
-    Goteo\Core\ACL;
+    Goteo\Model\User\Translate;
 
 // paginacion
 require_once 'library/pagination/pagination.php';
 
-$translator = ACL::check('/translate') ? true : false;
 $node = $this['node'];
-$transNode = ACL::check('/translate/node/'.$node) ? true : false;
+$transNode = Translate::is_legal($_SESSION['user']->id, $node, 'node') ? true : false;
+$translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 
 $filters = $this['filters'];
 if (empty($filters['show'])) $filters['show'] = 'all';

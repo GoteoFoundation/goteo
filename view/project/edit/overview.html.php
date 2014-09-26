@@ -107,7 +107,12 @@ $superform = array(
             'type' => 'hidden',
             'value' => 'overview'
         ),
-        
+
+        'anchor-overview' => array(
+            'type' => 'html',
+            'html' => '<a name="overview"></a>'
+        ),
+
         'name' => array(
             'type'      => 'textbox',
             'title'     => Text::get('overview-field-name'),

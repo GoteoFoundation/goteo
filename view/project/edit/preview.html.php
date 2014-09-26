@@ -53,6 +53,11 @@ $elements      = array(
         'value' => 'preview'
     ),
 
+    'anchor-preview' => array(
+        'type' => 'html',
+        'html' => '<a name="preview"></a>'
+    ),
+
     'preview' => array(
         'type'      => 'html',
         'class'     => 'fullwidth',

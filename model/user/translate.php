@@ -198,7 +198,6 @@ namespace Goteo\Model\User {
 			try {
 	            $sql = "REPLACE INTO user_translate (user, type, item) VALUES(:user, :type, :item)";
 				if (self::query($sql, $values)) {
-                    ACL::allow('/translate/'.$this->type.'/'.$this->item.'/*', '*', 'translator', $this->user);
     				return true;
                 } else {
                     $errors[] = 'No se ha creado el registro `user_translate`';
@@ -228,7 +227,7 @@ namespace Goteo\Model\User {
 
             try {
                 if (self::query("DELETE FROM user_translate WHERE type = :type AND item = :item AND user = :user", $values)) {
-                    ACL::deny('/translate/'.$this->type.'/'.$this->item.'/*', '*', 'translator', $this->user);    				return true;
+                    return true;
                 } else {
                     return false;
                 }

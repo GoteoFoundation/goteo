@@ -185,6 +185,11 @@ echo new SuperForm(array(
             'value' => 'costs'
         ),
 
+        'anchor-costs' => array(
+            'type' => 'html',
+            'html' => '<a name="costs"></a>'
+        ),
+
         'costs' => array(
             'type'      => 'group',
             'required'  => true,
