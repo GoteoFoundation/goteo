@@ -348,8 +348,8 @@ $(function() {
     //Checkboxes, radios i select
     $('div.superform.autoupdate').delegate('li.element input[type="checkbox"],li.element input[type="radio"],li.element select', 'change', function (event) {
         var input = $(event.target);
-        var li = input.closest('div.superform > div.elements > ol > li.element');
-        // var li = input.closest('li.element');
+        // var li = input.closest('div.superform > div.elements > ol > li.element');
+        var li = input.closest('li.element');
         // alert(li[0].id)
         if(li[0].__updating === undefined) {
             li[0].__updating = null;
@@ -379,8 +379,8 @@ $(function() {
     $('div.superform.autoupdate').delegate('li.element input[type="text"],li.element textarea', 'keydown paste focus', function (event) {
 
         var input = $(event.target);
-        var li = input.closest('div.superform > div.elements > ol > li.element');
-        // var li = input.closest('li.element');
+        // var li = input.closest('div.superform > div.elements > ol > li.element');
+        var li = input.closest('li.element');
 
         //definimos las variables la primera vez
         if(li[0].__updating === undefined) {
