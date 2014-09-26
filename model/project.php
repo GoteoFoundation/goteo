@@ -10,6 +10,7 @@ namespace Goteo\Model {
         Goteo\Model\Message,
         Goteo\Model\Blog,
         Goteo\Model\Call,
+        Goteo\Model\Invest,
         Goteo\Model\Patron,
         Goteo\Model\Node
         ;
@@ -131,7 +132,10 @@ namespace Goteo\Model {
             $watch = 0,
             $days_round1 = 40,
             $days_round2 = 40,
-            $one_round = 0
+            $one_round = 0,
+
+            $called = null // si está en una convocatoria
+
 
         ;
 
@@ -144,7 +148,7 @@ namespace Goteo\Model {
          */
         public function __get ($name) {
             if($name == "call") {
-	            return Call\Project::miniCalled($this->id);
+	            return Call\Project::calledMini($this->id);
 	        }
             if($name == "allowpp") {
                 return Project\Account::getAllowpp($this->id);
@@ -486,7 +490,27 @@ namespace Goteo\Model {
                 }
 
                 // podría estar asignado a alguna convocatoria
-                $project->called = Call\Project::called($project->id);
+                $call = Call\Project::calledMini($project->id);
+                if ( $call instanceof Call ) {
+
+                    // cuanto han recaudado
+                    // de los usuarios
+                    if (!isset($project->amount_users)) {
+                        $project->amount_users = Invest::invested($project->id, 'users', $call->id);
+                    }
+                    // de la convocatoria
+                    if (!isset($project->amount_call)) {
+                        $project->amount_call = Invest::invested($project->id, 'call', $call->id);
+                    }
+
+                    $call = Call\Project::setDropable($project, $call, $project->amount_call);
+                    $project->called = $call;
+
+                } else {
+
+                    $project->called = null;
+
+                }
 
                 // recomendaciones de padrinos
                 $project->patrons = Patron::getRecos($project->id);
@@ -552,9 +576,29 @@ namespace Goteo\Model {
                 }
 
                 // convocado
-                $project->called = Call\Project::miniCalled($project->id);
+                $call = Call\Project::calledMini($project->id);
 
-				return $project;
+                if ( $call instanceof Call ) {
+
+                    // cuanto han recaudado
+                    // de los usuarios
+                    if (!isset($project->amount_users)) {
+                        $project->amount_users = Invest::invested($project->id, 'users', $call->id);
+                    }
+                    // de la convocatoria
+                    if (!isset($project->amount_call)) {
+                        $project->amount_call = Invest::invested($project->id, 'call', $call->id);
+                    }
+
+                    $project->called = $call;
+
+                } else {
+
+                    $project->called = null;
+
+                }
+
+                return $project;
 
 			} catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
@@ -1605,7 +1649,7 @@ namespace Goteo\Model {
 
             if (empty($this->media)) {
                 // solo error si no está aplicando a una convocatoria
-                if (!isset($this->call)) {
+                if (!isset($this->called)) {
                     $errors['overview']['media'] = Text::get('mandatory-project-field-media');
                 }
             } else {
@@ -2883,9 +2927,33 @@ namespace Goteo\Model {
 
                 //añadir lo que haga falta
                 $proj->consultants = self::getConsultants($proj->id);
-                $proj->called = Call\Project::miniCalled($proj->id);
 
-                // extra conf
+
+                // convocado
+                $call = Call\Project::calledMini($proj->id);
+
+                if ( $call instanceof Call ) {
+
+                    // cuanto han recaudado
+                    // de los usuarios
+                    if (!isset($proj->amount_users)) {
+                        $proj->amount_users = Invest::invested($proj->id, 'users', $call->id);
+                    }
+                    // de la convocatoria
+                    if (!isset($proj->amount_call)) {
+                        $proj->amount_call = Invest::invested($proj->id, 'call', $call->id);
+                    }
+
+                    $proj->called = $call;
+
+                } else {
+
+                    $proj->called = null;
+
+                }
+
+
+                    // extra conf
                 $proj->days_total = ($proj->one_round) ? $proj->days_round1 : ( $proj->days_round1 + $proj->days_round2 );
 
                 $proj->setDays();

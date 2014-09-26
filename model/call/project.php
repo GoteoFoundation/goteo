@@ -102,11 +102,11 @@ namespace Goteo\Model\Call {
                 foreach ($items as $item) {
                     // cuanto han recaudado
                     // de los usuarios
-                    if (empty($item->amount_users)) {
+                    if (!isset($item->amount_users)) {
                         $item->amount_users = Model\Invest::invested($item->id, 'users', $call);
                     }
                     // de la convocatoria
-                    if (empty($item->amount_call)) {
+                    if (!isset($item->amount_call)) {
                         $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
                     }
 
@@ -154,7 +154,9 @@ namespace Goteo\Model\Call {
                             project.id as id,
                             project.name as name,
                             project.status as status,
-                            project.amount as amount
+                            project.amount as amount,
+                            project.amount_users as amount_users,
+                            project.amount_call as amount_call
                         FROM project
                         INNER JOIN call_project
                             ON  call_project.project = project.id
@@ -308,7 +310,7 @@ namespace Goteo\Model\Call {
          * @param varchar50 $project proyecto
          * @return object $call convocatoria
          */
-        public static function miniCalled ($project) {
+        public static function calledMini ($project) {
             try {
 
                 $sql = "
@@ -345,6 +347,16 @@ namespace Goteo\Model\Call {
 
                     $call->user = $user;
 
+                    // riego comprometido
+                    if (!isset($call->used)) {
+                        $call->used = $call->getUsed();
+                    }
+
+                    // riego restante
+                    if (!isset($call->rest)) {
+                        $call->rest = $call->getRest($call->used);
+                    }
+
                     // proyectos asignados
                     if (!isset($call->applied)) {
                         $call->applied = $call->getApplied();
@@ -370,104 +382,111 @@ namespace Goteo\Model\Call {
          * @param int $thisGot riego conseguido
          * @return Model\Call $call convocatoria
          */
-        public static function called ($project, $thisCall = null, $thisGot = null) {
+        public static function setDropable ($project, $thisCall = null, $thisGot = null) {
 
             try {
-                if ($thisCall instanceof Model\Call) {
-                    $called = $thisCall->id;
-                } else {
+                if (!$thisCall instanceof Model\Call) {
                     $sql = "SELECT
-                                call_project.call as id
-                            FROM call_project
-                            INNER JOIN `call`
-                                ON call_project.call = call.id
+                                call.*
+                            FROM `call`
+                            INNER JOIN call_project
+                                ON call.id = call_project.call
+
                             WHERE  call_project.project = :project
-                            AND call.status > 3 AND call.status < 6
                             LIMIT 1
                             ";
 
                     $query = static::query($sql, array(':project'=>$project->id));
-                    $called = $query->fetchColumn();
+                    $call = $query->fetchObject('\Goteo\Model\Call');
+                } else {
+                    $call = $thisCall;
                 }
 
-                if (!empty ($called)) {
-                    $call = (!isset($thisCall) || !$thisCall instanceof Model\Call) ? Model\Call::get($called) : $thisCall;
+                // es regable a menos que la configuración no lo permita para esta ronda
+                // y siempre que no haya superado el óptimo
+                $call->dropable = true;
 
-                    // configuración para esta ronda
-                    $call->conf = ($project->round > 0) ? $call->getConf('limit'.$project->round) : 'none';
+                // configuración para esta ronda
+                $call->conf = ($project->round > 0) ? $call->getConf('limit'.$project->round) : 'none';
 
-                    // calcular el obtenido por este proyecto, si no lo tenemos
-                    $call->project_got = (!isset($thisGot)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
+                // calcular el obtenido por este proyecto, si no lo tenemos
+                $call->project_got = (!isset($thisGot)) ? Model\Invest::invested($project->id, 'call', $call->id) : $thisGot;
 
-                    // limite por proyecto
-                    if (empty($call->maxproj)) {
-                        $call->maxproj = floor($project->maxcost / 2);
-                    } elseif ($call->modemaxp == 'per') {
-                        // recalculo de maxproj si es modalidad porcentaje
-                        $call->rawmaxproj = $call->maxproj = $project->mincost * $call->maxproj / 100;
-                    } else {
-                        // limite bruto
-                        $call->rawmaxproj = $call->maxproj;
-                    }
 
-                    // si no tiene configuracion
-                    if (!isset($call->conf)) {
-                        // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
-                        $call->maxproj = min($call->maxproj, ($call->project_got + floor(($project->maxcost - $project->invested) / 2)));
-                    }
-                    // si la config para esta ronda la config. es el límite normal
-                    elseif($call->conf == 'normal') {
-                        $call->maxproj = $call->rawmaxproj;
-                    }
-                    // si tiene configuración de que en esta ronda el mínimo es más prioritario que el límite
-                    elseif ($call->conf == 'minimum') {
-                        // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al mínimo (la otra mitad la pone el usuario)
-                        $call->maxproj = min($call->maxproj, ($call->project_got + floor(($project->mincost - $project->invested) / 2)));
-                    }
-                    // si tiene configurado ilimitado, el límite por proyecto SUBE!!!
-                    elseif ($call->conf == 'unlimited') {
-                        // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
-                        $call->maxproj = $call->project_got + floor(($project->maxcost - $project->invested) / 2);
-                    }
 
-                    // y que no sea negativo
-                    if ($call->maxproj < 0) $call->maxproj = 0;
-
-                    // es regable a menos que la configuración no lo permita para esta ronda
-                    // y siempre que no haya superado el óptimo
-                    $call->dropable = true;
-                    if (isset($call->conf) && $call->conf == 'none') {
-                        $call->dropable = false;
-                        $call->maxproj = 0;
-                    }
-
-                    // por defecto no permite en segunda ronda
-                    if (!isset($call->conf) && $project->round == 2) {
-                        $call->dropable = false;
-                        $call->maxproj = 0;
-                    }
-
-                    // si está limitado a cubrir costes, no puede regarse más
-                    if ($call->conf == 'minimum' && $project->invested >= $project->maxcost) {
-                        $call->dropable = false;
-                        $call->maxproj = 0;
-                    }
-
-                    // si no está en campaña ni de coña puede obtener riego
-                    if ($project->status != 3) {
-                        $call->dropable = false;
-                        $call->maxproj = 0;
-                    }
-
+                if (isset($call->conf) && $call->conf == 'none') {
+                    $call->dropable = false;
+                    $call->maxproj = 0;
                     return $call;
                 }
 
+                // por defecto no permite en segunda ronda
+                if (!isset($call->conf) && $project->round == 2) {
+                    $call->dropable = false;
+                    $call->maxproj = 0;
+                    return $call;
+                }
+
+                // si está limitado a cubrir costes, no puede regarse más
+                if ($call->conf == 'minimum' && $project->invested >= $project->maxcost) {
+                    $call->dropable = false;
+                    $call->maxproj = 0;
+                    return $call;
+                }
+
+                // si no está en campaña ni de coña puede obtener riego
+                if ($project->status != 3) {
+                    $call->dropable = false;
+                    $call->maxproj = 0;
+                    return $call;
+                }
+
+
+                // limite por proyecto
+                if (empty($call->maxproj)) {
+                    $call->maxproj = floor($project->maxcost / 2);
+                } elseif ($call->modemaxp == 'per') {
+                    // recalculo de maxproj si es modalidad porcentaje
+                    $call->rawmaxproj = $call->maxproj = $project->mincost * $call->maxproj / 100;
+                } else {
+                    // limite bruto
+                    $call->rawmaxproj = $call->maxproj;
+                }
+
+                // si no tiene configuracion
+                if (!isset($call->conf)) {
+                    // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
+                    $call->maxproj = min($call->maxproj, ($call->project_got + floor(($project->maxcost - $project->invested) / 2)));
+                }
+                // si la config para esta ronda la config. es el límite normal
+                elseif($call->conf == 'normal') {
+                    $call->maxproj = $call->rawmaxproj;
+                }
+                // si tiene configuración de que en esta ronda el mínimo es más prioritario que el límite
+                elseif ($call->conf == 'minimum') {
+                    // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al mínimo (la otra mitad la pone el usuario)
+                    $call->maxproj = min($call->maxproj, ($call->project_got + floor(($project->mincost - $project->invested) / 2)));
+                }
+                // si tiene configurado ilimitado, el límite por proyecto SUBE!!!
+                elseif ($call->conf == 'unlimited') {
+                    // lo que ya ha conseguido más la mitad de lo que le faltaría para llegar al óptimo (la otra mitad la pone el usuario)
+                    $call->maxproj = $call->project_got + floor(($project->maxcost - $project->invested) / 2);
+                }
+
+                // y que no sea negativo
+                if ($call->maxproj < 0) $call->maxproj = 0;
+
+                return $call;
+
             } catch(\PDOException $e) {
+
+                // @FIXME aviso de excepción en el calculo de si un proyecto puede conseguir riego y cuanto
                 return null;
             }
 
-            return null;
         }
+
+
 
         /*
          * Método para calcular cuanto puede generar este aporte concreto
