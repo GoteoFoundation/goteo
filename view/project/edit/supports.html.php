@@ -124,6 +124,12 @@ echo new SuperForm(array(
             'type' => 'hidden',
             'value' => 'supports'
         ),
+
+        'anchor-supports' => array(
+            'type' => 'html',
+            'html' => '<a name="supports"></a>'
+        ),
+
         'supports' => array(
             'type'      => 'group',
             'title'     => Text::get('supports-fields-support-title'),

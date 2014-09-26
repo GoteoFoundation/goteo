@@ -93,6 +93,12 @@ echo new SuperForm(array(
             'type' => 'hidden',
             'value' => 'userProfile'
         ),
+
+        'anchor-profile' => array(
+            'type' => 'html',
+            'html' => '<a name="profile"></a>'
+        ),
+
         'user_name' => array(
             'type'      => 'textbox',
             'required'  => true,
