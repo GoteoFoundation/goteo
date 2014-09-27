@@ -2399,11 +2399,14 @@ namespace Goteo\Model {
             $total = $query->fetchColumn();
             
             //rango
-            if ($page > $total) {
+            if ($total == 0) {
+                $page = 1;
+            } elseif ($page > $total) {
                 $page = $total;
             } elseif ($page < 1) {
                 $page = 1;
             }
+
             $offset = $items_per_page * ($page - 1);
             $pages = ceil($total / $items_per_page);
 
@@ -2520,6 +2523,7 @@ namespace Goteo\Model {
                 FROM project
                 WHERE $where
                 ";
+
             $ret = self::published_count($sql_count, $values, $page, $limit);
             $offset = $ret['offset'];
             $pages = $ret['pages'];
