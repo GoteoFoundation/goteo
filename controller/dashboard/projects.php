@@ -45,12 +45,11 @@ namespace Goteo\Controller\Dashboard {
 
 
             try {
-
                 // si está seleccionando otro proyecto
                 if ( $action == 'select' && !empty($_POST['project']) ) {
                     $project = Model\Project::getMedium($_POST['project']);
 
-                } elseif ( isset($_SESSION['project']) ) {
+                } elseif ( isset($_SESSION['project']) && !empty($_SESSION['project']->id) ) {
                     // mantener los datos del proyecto de trabajo
                     $project = Model\Project::getMedium($_SESSION['project']->id);
 
@@ -63,7 +62,7 @@ namespace Goteo\Controller\Dashboard {
             } catch(\Goteo\Core\Error $e) {
 
                 // Capturar el posible 404 por cambio de id
-                unset($_SESSION['project']);
+                $_SESSION['project'] = null;
                 throw new Redirection('/dashboard/projects/'.$option.'/'.$action);
 
             }
