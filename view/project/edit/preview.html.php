@@ -90,24 +90,26 @@ if ($project->finishable) {
         );
 }
 
-// Footer
-$elements['footer'] = array(
-    'type'      => 'group',
-    'children'  => array(
-        'errors' => array(
-            'title' => Text::get('form-footer-errors_title'),
-            'view'  => new View('view/project/edit/errors.html.php', array(
-                'project'   => $project,
-                'step'      => $this['step']
-            ))                    
-        ),
-        'buttons'  => array(
-            'type'  => 'group',
-            'children' => $buttons
+// Footer, solo si sigue en edición
+if ($project->status == 1) {
+    $elements['footer'] = array(
+        'type'      => 'group',
+        'children'  => array(
+            'errors' => array(
+                'title' => Text::get('form-footer-errors_title'),
+                'view'  => new View('view/project/edit/errors.html.php', array(
+                        'project'   => $project,
+                        'step'      => $this['step']
+                    ))
+            ),
+            'buttons'  => array(
+                'type'  => 'group',
+                'children' => $buttons
+            )
         )
-    )
 
-);
+    );
+}
 
 // lanzamos el superform
 echo new SuperForm(array(
