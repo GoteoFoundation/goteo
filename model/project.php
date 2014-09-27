@@ -2204,7 +2204,7 @@ namespace Goteo\Model {
                         try {
 
 //                            echo 'en transaccion <br />';
-
+// @FIXME : estos 4 primeros se pueden hacer en una sola sentencia con un STR_REPLACE
                             // acls
                             $acls = self::query("SELECT * FROM acl WHERE url like :id", array(':id'=>"%{$this->id}%"));
                             foreach ($acls->fetchAll(\PDO::FETCH_OBJ) as $rule) {

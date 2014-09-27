@@ -158,7 +158,8 @@ namespace Goteo\Controller\Admin {
                     
                     if ($_POST['proceed'] == 'rebase' && !empty($_POST['newid'])) {
 
-                        $newid = $_POST['newid'];
+                        // verificamos que el nuevo id sea 
+                        $newid = Model\Project::idealiza($_POST['newid']);
 
                         // pimero miramos que no hay otro proyecto con esa id
                         $test = Model\Project::getMini($newid);
