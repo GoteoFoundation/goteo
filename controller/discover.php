@@ -140,12 +140,9 @@ namespace Goteo\Controller {
             $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
             $page = (is_numeric($_GET['page'])) ? $_GET['page'] : 1;
-            
             $items_per_page = 9;
-            $viewData['pages'] = Model\Project::published_count($type, $items_per_page, $page);
-            // Muevo control de página dentro de published_count()
-
-            $viewData['list'] = Model\Project::published($type, $items_per_page, $page);
+            $viewData['list'] = Model\Project::published($type, $items_per_page, $page, $pages);
+            $viewData['pages'] = $pages;
             
             // segun el tipo cargamos la lista
             if (isset($_GET['list'])) {

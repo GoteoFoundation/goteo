@@ -2385,65 +2385,14 @@ namespace Goteo\Model {
 
         /**
          * Cuenta el numero de items segun el tipo
-         * @param type $type popular|outdate|recent|success|almost-fulfilled|fulfilled|available|archivo|others
-         * @param int $items_per_page
+         * @param type $sql
          * @param int $page Numero de página que se muestra
+         * @param int $items_per_page
          * @return int $pages
          * @see published
          */
-        public static function published_count($type = 'all', $items_per_page = 9, &$page) {
+        public static function published_count($sql, &$page, $items_per_page = 9) {
 
-            $values = array();
-
-            if (\NODE_ID != \GOTEO_NODE) {
-                $sqlFilter = " AND project.node = :node";
-                $values[':node'] = NODE_ID;
-            } else {
-                $sqlFilter = "";
-            }
-
-            switch ($type) {
-                case 'popular':
-                    $where="project.status= 3 AND popularity >20";
-                    break;
-                case 'outdate':
-                    $where="days <= 15 AND days > 0 AND status = 3";
-                    break;
-                case 'recent':
-                    $where="project.status = 3 AND project.passed IS NULL";
-                    break;
-                case 'success':
-                    $where="status IN ('3', '4', '5') AND project.amount >= mincost";
-                    break;
-                case 'almost-fulfilled':
-                    $where="status IN ('4','5')";
-                    break;
-                case 'fulfilled':
-                    $where="status IN ('5')";
-                    break;
-                case 'available':
-                    $where="status < 6";
-                    break;
-                case 'archive':
-                    $where="status = 6";
-                    break;
-                case 'others':
-                    if (!empty($sqlFilter)) {
-                        $sqlFilter = \str_replace('=', '!=', $sqlFilter);
-                    }
-                    $where="project.status = 3";
-                    break;
-                default:
-                    $where="project.status = 3";
-            }
-
-            $where .= $sqlFilter;
-
-            $sql ="
-                SELECT COUNT(id)
-                FROM project
-                WHERE $where
-                ";
             $query = self::query($sql, $values);
             $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
 
@@ -2455,9 +2404,10 @@ namespace Goteo\Model {
             } elseif ($page < 1) {
                 $page = 1;
             }
-            
+            $offset = $items_per_page * ($page - 1);
             $pages = ceil($total / $items_per_page);
-            return $pages;
+
+            return array('pages' => $pages, 'offset' => $offset);
         }
 
 
@@ -2467,12 +2417,12 @@ namespace Goteo\Model {
          * @param $limit int
          * @param $mini boolean
          * @param $page int
-         * @param $offset int
+         * @param $pages int
          * @return: array of Model\Project
          */
-        public static function published($type = 'all', $limit = 9, $page = 1)
+        public static function published($type = 'all', $limit = 9, $page = 1, &$pages)
         {
-            $offset = $limit * ($page - 1);
+            
             $different_select='';
 
             $values = array();
@@ -2564,7 +2514,16 @@ namespace Goteo\Model {
             }
 
             $where.= $sqlFilter;
-
+            
+            $sql_count ="
+                SELECT COUNT(id)
+                FROM project
+                WHERE $where
+                ";
+            $ret = self::published_count($sql_count, $page, $limit);
+            $offset = $ret['offset'];
+            $pages = $ret['pages'];
+            
             if(self::default_lang(\LANG)=='es') {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
             }
