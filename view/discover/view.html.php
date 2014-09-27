@@ -30,7 +30,7 @@ include 'view/header.html.php' ?>
                 } ?>
             </div>
 
-            <?php echo new View('view/discover/pagination.html.php', array('pages' => $this['pages'])); ?>
+            <?php echo new View('view/discover/pagination.html.php', $this); ?>
         </div>        
 
         <?php include 'view/footer.html.php' ?>

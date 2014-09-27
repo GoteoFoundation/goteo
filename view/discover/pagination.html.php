@@ -2,7 +2,7 @@
 <?php
     use Goteo\Library\Text;
     
-    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+    $currentPage = $this['currentPage'];
 
     if ($currentPage != 1) {
         if($currentPage > 4) {

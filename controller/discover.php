@@ -143,6 +143,7 @@ namespace Goteo\Controller {
             $items_per_page = 9;
             $viewData['list'] = Model\Project::published($type, $items_per_page, $page, $pages);
             $viewData['pages'] = $pages;
+            $viewData['currentPage'] = $page;
             
             // segun el tipo cargamos la lista
             if (isset($_GET['list'])) {
