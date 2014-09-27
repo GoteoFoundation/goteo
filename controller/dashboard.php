@@ -226,7 +226,7 @@ namespace Goteo\Controller {
             $errors = array();
 
             // verificación de proyectos y proyecto de trabajo
-            list($project, $projects) = Dashboard\Projects::verifyProject($user, $action);
+            list($project, $projects) = Dashboard\Projects::verifyProject($user, $action, $option);
 
             // teniendo proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
             if ($option == 'updates') $blog = Dashboard\Projects::verifyBlog($project);

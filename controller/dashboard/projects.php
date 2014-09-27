@@ -30,10 +30,11 @@ namespace Goteo\Controller\Dashboard {
          * Verificación de proyecto de trabajo
          *
          * @param object $user instancia Model\User del convocador
-         * @param string $action por si es 'select'
+         * @param string $action por si es 'select' y para el redirect
+         * @param string $option para el redirect
          * @return array(project, projects)
          */
-        public static function verifyProject($user, $action) {
+        public static function verifyProject($user, $action = 'list', $option = 'summary') {
 
             $projects = Model\Project::ofmine($user->id); // sus proyectos
 
@@ -42,18 +43,31 @@ namespace Goteo\Controller\Dashboard {
                 return array(null, null);
             }
 
-            // si está seleccionando otro proyecto
-            if ($action == 'select' && !empty($_POST['project'])) {
-                $project = Model\Project::get($_POST['project']);
-            } elseif (!empty($_SESSION['project']->id)) {
-                // mantener los datos del proyecto de trabajo
-                $project = Model\Project::get($_SESSION['project']->id);
+
+            try {
+
+                // si está seleccionando otro proyecto
+                if ( $action == 'select' && !empty($_POST['project']) ) {
+                    $project = Model\Project::getMedium($_POST['project']);
+
+                } elseif ( isset($_SESSION['project']) ) {
+                    // mantener los datos del proyecto de trabajo
+                    $project = Model\Project::getMedium($_SESSION['project']->id);
+
+                } else {
+                    // si no hay proyecto de trabajo, coger el primero
+                    $project = $projects[0];
+
+                }
+
+            } catch(\Goteo\Core\Error $e) {
+
+                // Capturar el posible 404 por cambio de id
+                unset($_SESSION['project']);
+                throw new Redirection('/dashboard/projects/'.$option.'/'.$action);
+
             }
 
-            // si aun no tiene proyecto de trabajo, coge el primero
-            if (empty($project)) {
-                $project = $projects[0];
-            }
 
             // tiene que volver con un proyecto de trabajo
             if ($project instanceof \Goteo\Model\Project) {
