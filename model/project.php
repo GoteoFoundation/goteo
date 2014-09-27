@@ -602,7 +602,9 @@ namespace Goteo\Model {
 
 			} catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
-			}
+			} catch(\Goteo\Core\Error $e) {
+                throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
+            }
 		}
 
         /*
@@ -2204,7 +2206,7 @@ namespace Goteo\Model {
                         try {
 
 //                            echo 'en transaccion <br />';
-
+// @FIXME : estos 4 primeros se pueden hacer en una sola sentencia con un STR_REPLACE
                             // acls
                             $acls = self::query("SELECT * FROM acl WHERE url like :id", array(':id'=>"%{$this->id}%"));
                             foreach ($acls->fetchAll(\PDO::FETCH_OBJ) as $rule) {
@@ -2400,6 +2402,7 @@ namespace Goteo\Model {
                     project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
+                    project.owner as owner,
                     user.id as user_id,
                     user.name as user_name,
                     project_conf.noinvest as noinvest,
@@ -2415,7 +2418,7 @@ namespace Goteo\Model {
                     ON  project_lang.id = project.id
                     AND project_lang.lang = :lang
                 $eng_join
-                WHERE owner = :owner
+                WHERE project.owner = :owner
                 $sqlFilter
                 ORDER BY  project.status ASC, project.created DESC
                 ";

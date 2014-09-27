@@ -39,7 +39,13 @@ namespace Goteo\Controller {
             // redirección según usuario
             $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
 
-            $project = Model\Project::get($id);
+            // preveer posible cambio de id
+            try {
+                $project = Model\Project::getMini($id, null);
+
+            } catch(\Goteo\Core\Error $e) {
+                throw new Redirection('/dashboard/projects');
+            }
 
             // no lo puede eliminar si
             $grant = false;
@@ -72,7 +78,13 @@ namespace Goteo\Controller {
             // redirección según usuario
             $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
 
-            $project = Model\Project::get($id, null);
+            // preveer posible cambio de id
+            try {
+                $project = Model\Project::get($id, null);
+
+            } catch(\Goteo\Core\Error $e) {
+                throw new Redirection('/dashboard/projects');
+            }
 
             $grant = false;
             // Substituye ACL, solo lo puede editar si...
