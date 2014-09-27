@@ -2386,10 +2386,12 @@ namespace Goteo\Model {
         /**
          * Cuenta el numero de items segun el tipo
          * @param type $type popular|outdate|recent|success|almost-fulfilled|fulfilled|available|archivo|others
-         * @return int total
+         * @param int $items_per_page
+         * @param int $page Numero de página que se muestra
+         * @return int $pages
          * @see published
          */
-        public static function published_count($type = 'all') {
+        public static function published_count($type = 'all', $items_per_page = 9, &$page) {
 
             $values = array();
 
@@ -2445,7 +2447,17 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
             $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
 
-            return $query->fetchColumn();
+            $total = $query->fetchColumn();
+            
+            //rango
+            if ($page > $total) {
+                $page = $total;
+            } elseif ($page < 1) {
+                $page = 1;
+            }
+            
+            $pages = ceil($total / $items_per_page);
+            return $pages;
         }
 
 

@@ -139,25 +139,12 @@ namespace Goteo\Controller {
             // segun el tipo cargamos el título de la página
             $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
-            $items_per_page = 9;
-            $viewData['total'] = Model\Project::published_count($type);
-            $viewData['pages'] = ceil($viewData['total'] / $items_per_page);
-
-            if (is_numeric($_GET['page'])) {
-                
-                // redirige a la última página
-                if ($_GET['page'] > $viewData['pages']) {
-                    throw new Redirection("/discover/view/$type?page=" . $viewData['pages']);
-                } elseif ($_GET['page'] < 1) {
-                    throw new Redirection("/discover/view/$type?page=1");
-                } else {
-                    $page = $_GET['page'];
-                }
-                
-            } else {
-                $page = 1;
-            }
+            $page = (is_numeric($_GET['page'])) ? $_GET['page'] : 1;
             
+            $items_per_page = 9;
+            $viewData['pages'] = Model\Project::published_count($type, $items_per_page, $page);
+            // Muevo control de página dentro de published_count()
+
             $viewData['list'] = Model\Project::published($type, $items_per_page, $page);
             
             // segun el tipo cargamos la lista
