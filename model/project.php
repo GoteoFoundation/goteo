@@ -2391,7 +2391,7 @@ namespace Goteo\Model {
          * @return int $pages
          * @see published
          */
-        public static function published_count($sql, &$page, $items_per_page = 9) {
+        public static function published_count($sql, $values, &$page, $items_per_page = 9) {
 
             $query = self::query($sql, $values);
             $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
@@ -2520,7 +2520,7 @@ namespace Goteo\Model {
                 FROM project
                 WHERE $where
                 ";
-            $ret = self::published_count($sql_count, $page, $limit);
+            $ret = self::published_count($sql_count, $values, $page, $limit);
             $offset = $ret['offset'];
             $pages = $ret['pages'];
             
