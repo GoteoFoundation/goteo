@@ -4,6 +4,7 @@ use Goteo\Library\Text,
     Goteo\Library\Normalform;
 
 $call = $this['call'];
+$dropconf = $this['dropconf'];
 $this['level'] = 3;
 
 $maxp_modes = array(
@@ -47,7 +48,7 @@ echo new NormalForm(array(
             'hint'      => Text::get('tooltip-call-amount'),
             'errors'    => !empty($errors['amount']) ? array($errors['amount']) : array(),
             'ok'        => !empty($okeys['amount']) ? array($okeys['amount']) : array(),
-            'value'     => $call->amount
+            'value'     => $dropconf->amount
         ),
 
 
@@ -60,7 +61,7 @@ echo new NormalForm(array(
             'hint'      => Text::get('tooltip-call-maxdrop'),
             'errors'    => !empty($errors['maxdrop']) ? array($errors['maxdrop']) : array(),
             'ok'        => !empty($okeys['maxdrop']) ? array($okeys['maxdrop']) : array(),
-            'value'     => $call->maxdrop
+            'value'     => $dropconf->maxdrop
         ),
 
         'maxproj' => array(
@@ -72,7 +73,7 @@ echo new NormalForm(array(
             'hint'      => Text::get('tooltip-call-maxproj'),
             'errors'    => !empty($errors['maxproj']) ? array($errors['maxproj']) : array(),
             'ok'        => !empty($okeys['maxproj']) ? array($okeys['maxproj']) : array(),
-            'value'     => $call->maxproj
+            'value'     => $dropconf->maxproj
         ),
 
         'modemaxp' => array(
@@ -84,7 +85,7 @@ echo new NormalForm(array(
             'hint'      => Text::get('tooltip-call-modemaxp'),
             'errors'    => !empty($errors['modemaxp']) ? array($errors['modemaxp']) : array(),
             'ok'        => !empty($okeys['modemaxp']) ? array($okeys['modemaxp']) : array(),
-            'value'     => $call->modemaxp
+            'value'     => $dropconf->modemaxp
         ),
 
 

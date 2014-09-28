@@ -1830,6 +1830,23 @@ namespace Goteo\Model {
         }
 
         /**
+         * Para recuperar configuración de convocatoria
+         * @return  objeto
+         */
+        public function getDropConf () {
+
+            $query = static::query("
+                SELECT
+                  amount, maxdrop, maxproj, modemaxp
+                FROM `call`
+                WHERE id = :id
+                ", array(':id' => $this->id));
+
+            return $query->fetchObject();
+        }
+
+
+        /**
          * Actualizar los valores de configuración económica de convocatoria
          *
          * @params conf array of config values
@@ -1841,6 +1858,7 @@ namespace Goteo\Model {
             $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;
             $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ;
             $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ;
+            $dropconf['modemaxp'] = is_numeric($dropconf['modemaxp']) ? $dropconf['modemaxp'] : null ;
 
             
             $fields = array(
