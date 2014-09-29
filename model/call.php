@@ -1855,10 +1855,10 @@ namespace Goteo\Model {
         public function setDropconf ($dropconf = array(), &$errors = array()) {
 
             // verificación 
-            $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;
-            $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ;
-            $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ;
-            $dropconf['modemaxp'] = is_numeric($dropconf['modemaxp']) ? $dropconf['modemaxp'] : null ;
+            $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;  // presupuesto de la convocatoria
+            $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ; // riego máximo por aporte
+            $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ; // riego máximo por proyecto
+            $dropconf['modemaxp'] = !empty($dropconf['modemaxp']) ? $dropconf['modemaxp'] : 'imp' ; // modalidad de maximo por proyecto: importe (imp) o porcentaje (per)
 
             
             $fields = array(

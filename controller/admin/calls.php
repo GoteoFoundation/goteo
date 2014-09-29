@@ -373,16 +373,13 @@ namespace Goteo\Controller\Admin {
 
             if ($action == 'dropconf') {
 
-                $dropconf = $call->getDropconf();
-
                 return new View(
                             'view/admin/index.html.php',
                             array(
                                 'folder' => 'calls',
                                 'file' => 'dropconf',
                                 'action' => 'list',
-                                'call' => $call,
-                                'dropconf' => $dropconf
+                                'call' => $call
                             )
                 );
             }                
