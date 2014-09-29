@@ -27,6 +27,8 @@ namespace Goteo\Model\Project {
             try {
                 $array = array();
 
+            // @FIXME #42 : se está suponiendo erroneamente que el contenido original es español
+            // no se está teniendo en cuenta el idioma original del proyecto
             if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(support_lang.support, support.support) as support,
                             		IFNULL(support_lang.description, support.description) as description";

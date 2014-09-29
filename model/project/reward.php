@@ -52,6 +52,8 @@ namespace Goteo\Model\Project {
                     $values[':icon'] = $icon;
                 }
 
+                // @FIXME #42 : se está suponiendo erroneamente que el contenido original es español
+                // no se está teniendo en cuenta el idioma original del proyecto
                 if(self::default_lang($lang)=='es') {
                     $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward,
                                         IFNULL(reward_lang.description, reward.description) as description,
