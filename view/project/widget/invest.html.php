@@ -24,7 +24,7 @@ if (isset($_SESSION['invest-amount'])) {
 if ($project->called instanceof Call && $project->called->dropable) {
     $call = $project->called;
     $rest = $call->rest;
-    $maxdrop = Call\Project::currMaxdrop($project);
+    $maxdrop = Call\Project::setMaxdrop($project);
 
     // a ver si este usuario ya ha regado este proyecto
     if ($_SESSION['user'] instanceof User) {

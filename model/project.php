@@ -503,7 +503,7 @@ namespace Goteo\Model {
                         $project->amount_call = Invest::invested($project->id, 'call', $call->id);
                     }
 
-                    $call = Call\Project::setDropable($project, $call, $project->amount_call);
+                    $call = Call\Project::setDropable($project, $call);
                     $project->called = $call;
 
                 } else {
