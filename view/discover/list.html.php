@@ -4,9 +4,9 @@
             <th>Proyecto</th>
             <th>Url</th>
         </tr>
-        <?php foreach ($this['list'] as $id=>$name) : ?>
+        <?php foreach ($this['list'] as $id=>$project) : ?>
         <tr>
-            <?php echo "<td>{$name}</td><td>".SITE_URL."/project/{$id}</td>"; ?>
+            <?php echo "<td>{$project->name}</td><td>".SITE_URL."/project/{$project->id}</td>"; ?>
         </tr>
         <?php endforeach; ?>
     </table>
