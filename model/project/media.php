@@ -18,7 +18,7 @@ namespace Goteo\Model\Project {
             
             if($autoplay)
                 $cod_auto="&autoplay=1";
-            return '<iframe width="100%" height="100%" src="'
+            return '<iframe width="100%" height="100%" style="max-width:none !important;" src="'
                    . ($https ? 'https' : 'http') . '://www.youtube.com/embed/'
                    . $video . '?wmode=Opaque'.$cod_auto.'" frameborder="0" allowfullscreen></iframe>';
 
