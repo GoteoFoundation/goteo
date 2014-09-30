@@ -22,6 +22,10 @@ if (!empty($project->social_rewards)) {
                     'type'      => 'group',
                     'class'     => 'reward social_reward editsocial_reward',
                     'children'  => array(
+                        "social_reward-{$social_reward->id}-edit" => array(
+                            'type'      => 'hidden',
+                            'value'      => '1'
+                        ),
                         "social_reward-{$social_reward->id}-reward-orig" => array(
                             'title'     => Text::get('rewards-field-social_reward-reward'),
                             'type'      => 'html',
@@ -119,6 +123,10 @@ if (!empty($project->individual_rewards)) {
                     'type'      => 'group',
                     'class'     => 'reward individual_reward editindividual_reward',
                     'children'  => array(
+                        "individual_reward-{$individual_reward->id}-edit" => array(
+                            'type'      => 'hidden',
+                            'value'      => '1'
+                        ),
                         "individual_reward-{$individual_reward->id}-reward-orig" => array(
                             'title'     => Text::get('rewards-field-individual_reward-reward'),
                             'type'      => 'html',
