@@ -2446,12 +2446,49 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /**
+         * Cuenta el numero de items segun el tipo
+         * @param type $sql
+         * @param int $page Numero de página que se muestra
+         * @param int $items_per_page
+         * @return int $pages
+         * @see published
+         */
+        public static function published_count($sql, $values, &$page, $items_per_page = 9) {
+
+            $query = self::query($sql, $values);
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+
+            $total = $query->fetchColumn();
+            
+            //rango
+            if ($total == 0) {
+                $page = 1;
+            } elseif ($page > $total) {
+                $page = $total;
+            } elseif ($page < 1) {
+                $page = 1;
+            }
+
+            $offset = $items_per_page * ($page - 1);
+            $pages = ceil($total / $items_per_page);
+
+            return array('pages' => $pages, 'offset' => $offset);
+        }
+
+
         /*
          * Lista de proyectos publicados
+         * @param $type string
+         * @param $limit int
+         * @param $mini boolean
+         * @param $page int
+         * @param $pages int
          * @return: array of Model\Project
          */
-        public static function published($type = 'all', $limit = 12, $mini = false)
+        public static function published($type = 'all', $limit = 9, $page = 1, &$pages)
         {
+            
             $different_select='';
 
             $values = array();
@@ -2491,7 +2528,6 @@ namespace Goteo\Model {
 
                     $where="project.status = 3 AND project.passed IS NULL";
                     $order="published DESC";
-                    $limit = 9;
                     break;
                 case 'success':
                     // los que han conseguido el mínimo
@@ -2544,7 +2580,17 @@ namespace Goteo\Model {
             }
 
             $where.= $sqlFilter;
+            
+            $sql_count ="
+                SELECT COUNT(id)
+                FROM project
+                WHERE $where
+                ";
 
+            $ret = self::published_count($sql_count, $values, $page, $limit);
+            $offset = $ret['offset'];
+            $pages = $ret['pages'];
+            
             if(self::default_lang(\LANG)=='es') {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
             }
@@ -2554,7 +2600,7 @@ namespace Goteo\Model {
                                 ON  eng.id = project.id
                                 AND eng.lang = 'en'";
             }
-
+            
             $sql ="
                 SELECT
                     project.id as project,
@@ -2594,18 +2640,14 @@ namespace Goteo\Model {
                 WHERE
                 $where
                 ORDER BY $order
-                LIMIT $limit
+                LIMIT $offset,$limit
                 ";
-
+            
             $projects = array();
             $query = self::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
-                if ($mini) {
-                    $projects[$proj->id] = $proj->name;
-                } else {
-                    $projects[]=self::getWidget($proj);
-                }
+                $projects[]=self::getWidget($proj);
             }
             return $projects;
         }
