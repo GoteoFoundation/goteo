@@ -294,7 +294,7 @@ namespace Goteo\Model {
                 if(!empty($lang) && $lang!=$project->lang)
                 {
                     //Obtenemos el idioma de soporte segun si está traducido  a ese idioma o no
-                    $lang=self::default_lang_by_id($id, 'project_lang', $lang); 
+                    $trans_lang=self::default_lang_by_id($id, 'project_lang', $lang);
 
                     $sql = "
                         SELECT
@@ -307,15 +307,16 @@ namespace Goteo\Model {
                             IFNULL(project_lang.reward, project.reward) as reward,
                             IFNULL(project_lang.keywords, project.keywords) as keywords,
                             IFNULL(project_lang.media, project.media) as media,
-                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle,
-                            IFNULL(project_lang.lang, project.lang) as lang
+                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle
                         FROM project
                         LEFT JOIN project_lang
                             ON  project_lang.id = project.id
                             AND project_lang.lang = :lang
                         WHERE project.id = :id
                         ";
-                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
+                    // no veo que haga falta cambiar el idioma a la instancia del proyecto
+                    //, IFNULL(project_lang.lang, project.lang) as lang
+                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$trans_lang));
 
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
                         $project->$field = $value;

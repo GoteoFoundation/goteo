@@ -631,6 +631,7 @@ namespace Goteo\Controller {
 
                             case 'costs':
                                 if ($action == 'save') {
+
                                     foreach ($project->costs as $key => $cost) {
                                         if (isset($_POST['cost-' . $cost->id . '-cost'])) {
                                             $cost->cost_lang = $_POST['cost-' . $cost->id . '-cost'];
@@ -944,6 +945,7 @@ namespace Goteo\Controller {
                     }
 
                     $viewData['user'] = Model\User::get($user->id, $_SESSION['translate_lang']);
+                    $viewData['original'] = Model\User::get($user->id);
             }
 
             if (!empty($errors)) {
