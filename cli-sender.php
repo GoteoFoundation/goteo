@@ -113,6 +113,7 @@ if (!$fail) {
 
         // evento feed
         $log = new Feed();
+        $log->setTarget($mailing->id, 'mailing');
         $log->populate('Envio masivo (cron)', '/admin/mailing/newsletter', 'Se ha completado el envio masivo con asunto "'.$mailing->subject.'"');
         $log->doAdmin('system');
         unset($log);

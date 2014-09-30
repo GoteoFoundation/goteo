@@ -19,15 +19,18 @@ namespace Goteo\Library {
                         user.id as user,
                         user.name as name,
                         user.email as email,
-                        user.lang as lang
+                        user.lang as lang,
+                        user_prefer.comlang as comlang
                     FROM user
                     INNER JOIN user_interest
                         ON  user_interest.user = user.id
                         AND user_interest.interest = 15
+                    LEFT JOIN user_prefer
+                        ON user_prefer.user = user.id
                     ORDER BY user.id ASC
                     ";
 
-            if ($query = Model::query($sql, $values)) {
+            if ($query = Model::query($sql)) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
                     $list[] = $receiver;
                 }
@@ -48,17 +51,17 @@ namespace Goteo\Library {
                         user.id as user,
                         user.name as name,
                         user.email as email,
-                        user.lang as lang
+                        user.lang as lang,
+                        user_prefer.comlang as comlang
                     FROM user
                     LEFT JOIN user_prefer
                         ON user_prefer.user = user.id
-                    WHERE user.id != 'root'
-                    AND user.active = 1
+                    WHERE user.active = 1
                     AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
                     ORDER BY user.id ASC
                     ";
 
-            if ($query = Model::query($sql, $values)) {
+            if ($query = Model::query($sql)) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
                     $list[] = $receiver;
                 }
