@@ -24,6 +24,10 @@ if (!empty($project->costs)) {
                 'type'      => 'group',
                 'class'     => 'cost editcost '.$req_class,
                 'children'  => array(
+                    "cost-{$cost->id}-edit" => array(
+                        'type'      => 'hidden',
+                        'value'      => '1'
+                    ),
                     "cost-{$cost->id}-cost-orig" => array(
                         'title'     => Text::get('costs-field-cost'),
                         'type'      => 'html',
