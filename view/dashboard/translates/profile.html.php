@@ -4,9 +4,8 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 $user = $this['user'];
+$original = $this['original'];
 $errors = $this['errors'];
-
-$original = \Goteo\Model\User::get($user->id);
 
 $sfid = 'sf-project-profile';
 ?>

@@ -290,10 +290,11 @@ namespace Goteo\Model {
                     throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
                 }
 
+                // si nos estan pidiendo el idioma original no traducimos nada, damos lo que sacamos de
                 if(!empty($lang) && $lang!=$project->lang)
                 {
-                    //Obtenemos el idioma de soporte
-                    $lang=self::default_lang_by_id($id, 'project_lang', $lang); 
+                    //Obtenemos el idioma de soporte segun si está traducido  a ese idioma o no
+                    $trans_lang=self::default_lang_by_id($id, 'project_lang', $lang);
 
                     $sql = "
                         SELECT
@@ -306,15 +307,16 @@ namespace Goteo\Model {
                             IFNULL(project_lang.reward, project.reward) as reward,
                             IFNULL(project_lang.keywords, project.keywords) as keywords,
                             IFNULL(project_lang.media, project.media) as media,
-                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle,
-                            IFNULL(project_lang.lang, project.lang) as lang
+                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle
                         FROM project
                         LEFT JOIN project_lang
                             ON  project_lang.id = project.id
                             AND project_lang.lang = :lang
                         WHERE project.id = :id
                         ";
-                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
+                    // no veo que haga falta cambiar el idioma a la instancia del proyecto
+                    //, IFNULL(project_lang.lang, project.lang) as lang
+                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$trans_lang));
 
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
                         $project->$field = $value;
@@ -422,6 +424,19 @@ namespace Goteo\Model {
                 // categorias
                 $project->categories = Project\Category::get($id);
 
+
+                // @FIXME #42 : para contenidos adicionales (cost, reward, support) se está suponiendo erroneamente que el contenido original es español
+                // no se está teniendo en cuenta el idioma original del proyecto
+                // @TODO :
+                //        o pasamos el idioma original a estos getAll y modificamos el código
+                //        o modificamos registro _lang para idioma original  al modificarse estos contenidos (no arregla casos ya existentes)
+
+                // si se está solicitando el mismo idioma del proyecto, queremos que estos getAll nos den el contenido original
+                // para eso hacemos $lang = null ya que luego ya no se usa mas esta variable
+                if ($lang == $project->lang) {
+                    $lang = null;
+                }
+
                 // costes y los sumammos
 				$project->costs = Project\Cost::getAll($id, $lang);
                 $project->minmax();
@@ -431,11 +446,11 @@ namespace Goteo\Model {
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
-                // asesores
-                // $project->consultants = Project::getConsultants($id);
-
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
+
+                // Fin contenidos adicionales
+
 
                 // extra conf
                 if (empty($project->days_round1)) $project->days_round1 = 40;
