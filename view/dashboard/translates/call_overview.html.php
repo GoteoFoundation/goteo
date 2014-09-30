@@ -4,6 +4,7 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 $call = $this['call'];
+$original = $this['original'];
 $errors = $this['errors'];
 
 $categories = array();
@@ -43,7 +44,6 @@ foreach ($this['scope'] as $value => $label) {
 }
 
 
-$original = \Goteo\Model\Call::get($call->id);
 ?>
 <form method="post" action="/dashboard/translates/overview/save" class="project" enctype="multipart/form-data">
 <?php echo new SuperForm(array(

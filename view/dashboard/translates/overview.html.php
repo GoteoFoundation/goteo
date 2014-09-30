@@ -3,10 +3,9 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
-$errors = $this['errors'];
-
-$original = \Goteo\Model\Project::get($project->id);
+$project  = $this['project'];
+$original = $this['original'];
+$errors   = $this['errors'];
 
 // media del proyecto
 if (!empty($project->media->url)) {

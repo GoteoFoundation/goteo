@@ -56,15 +56,15 @@ function item_select(type) {
     </form>
 
     <?php if ($_SESSION['translate_type'] == 'project' && !empty($_SESSION['translate_project'])) : ?>
-    <p><?php echo Text::html('dashboard-translate-doing_project', $_SESSION['translate_project']->name, $this['project']->lang_name) ?></p>
+    <p><?php echo Text::html('dashboard-translate-doing_project', $this['project']->name, $this['original']->lang_name) ?></p>
     <?php endif; ?>
 
     <?php if ($_SESSION['translate_type'] == 'call' && !empty($_SESSION['translate_call'])) : ?>
-    <p><?php echo Text::html('dashboard-translate-doing_call', $_SESSION['translate_call']->name, $this['call']->lang_name) ?></p>
+    <p><?php echo Text::html('dashboard-translate-doing_call', $this['call']->name, $this['original']->lang_name) ?></p>
     <?php endif; ?>
 
     <?php if ($_SESSION['translate_type'] == 'node' && !empty($_SESSION['translate_node'])) : ?>
-    <p><?php echo Text::html('dashboard-translate-doing_node', $_SESSION['translate_node']->name) ?></p>
+    <p><?php echo Text::html('dashboard-translate-doing_node', $this['node']->name) ?></p>
     <?php endif; ?>
 
     <?php if (!empty($_SESSION['translate_type']) && $_SESSION['translate_type'] != 'profile') : ?>
