@@ -52,14 +52,28 @@ namespace Goteo\Model\Project {
                     $values[':icon'] = $icon;
                 }
 
-                // @FIXME #42 : se está suponiendo erroneamente que el contenido original es español
-                // no se está teniendo en cuenta el idioma original del proyecto
-                if(self::default_lang($lang)=='es') {
+                // FIXES #42
+                $join = " LEFT JOIN reward_lang
+                            ON  reward_lang.id = reward.id
+                            AND reward_lang.project = :project
+                            AND reward_lang.lang = :lang
+                ";
+                $eng_join = '';
+
+                // tener en cuenta si se solicita el contenido original
+                if (!isset($lang)) {
+                    $different_select=" reward.reward as reward,
+                                        reward.description as description,
+                                        reward.other as other";
+                    $join = '';
+                    unset($values[':lang']);
+
+                } elseif(self::default_lang($lang)=='es') {
                     $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward,
                                         IFNULL(reward_lang.description, reward.description) as description,
                                         IFNULL(reward_lang.other, reward.other) as other";
-                    }
-                else {
+
+                } else {
                         $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward,
                                             IFNULL(reward_lang.description, IFNULL(eng.description, reward.description)) as description,
                                             IFNULL(reward_lang.other, IFNULL(eng.other, reward.other)) as other";
@@ -72,7 +86,7 @@ namespace Goteo\Model\Project {
                 $sql = "SELECT
                             reward.id as id,
                             reward.project as project,
-                            $different_select,
+                            {$different_select} ,
                             reward.type as type,
                             reward.icon as icon,
                             reward.license as license,
@@ -82,11 +96,8 @@ namespace Goteo\Model\Project {
                             reward.url,
                             reward.bonus
                         FROM    reward
-                        LEFT JOIN reward_lang
-                            ON  reward_lang.id = reward.id
-                            AND reward_lang.project = :project
-                            AND reward_lang.lang = :lang
-                        $eng_join
+                        {$join}
+                        {$eng_join}
                         WHERE   reward.project = :project
                             AND type= :type
                         $sqlFilter

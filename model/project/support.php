@@ -27,37 +27,52 @@ namespace Goteo\Model\Project {
             try {
                 $array = array();
 
-            // @FIXME #42 : se está suponiendo erroneamente que el contenido original es español
-            // no se está teniendo en cuenta el idioma original del proyecto
-            if(self::default_lang($lang)=='es') {
-                $different_select=" IFNULL(support_lang.support, support.support) as support,
-                            		IFNULL(support_lang.description, support.description) as description";
-                }
-            else {
+                // FIXES #42
+                $values = array(':project'=>$project, ':lang'=>$lang);
+
+                $join = " LEFT JOIN support_lang
+                            ON  support_lang.id = support.id
+                            AND support_lang.project = :project
+                            AND support_lang.lang = :lang
+                ";
+                $eng_join = '';
+
+                // tener en cuenta si se solicita el contenido original
+                if (!isset($lang)) {
+                    $different_select=" support.support as support,
+                                        support.description as description";
+                    $join = '';
+                    unset($values[':lang']);
+
+                } elseif(self::default_lang($lang)=='es') {
+                    $different_select=" IFNULL(support_lang.support, support.support) as support,
+                                        IFNULL(support_lang.description, support.description) as description";
+
+                } else {
                     $different_select=" IFNULL(support_lang.support, IFNULL(eng.support, support.support)) as support,
-                            			IFNULL(support_lang.description, IFNULL(eng.description, support.description)) as description";
+                                        IFNULL(support_lang.description, IFNULL(eng.description, support.description)) as description";
+
                     $eng_join=" LEFT JOIN support_lang as eng
                                     ON  eng.id = support.id
                                     AND eng.project = :project
-                                    AND eng.lang = 'en'";
+                                    AND eng.lang = 'en'
+                                    ";
                 }
+
                 $sql = "SELECT
                             support.id as id,
                             support.project as project,
                             support.type as type,
-                            $different_select,
+                            {$different_select} ,
                             support.thread as thread
                         FROM support
-                        LEFT JOIN support_lang
-                            ON  support_lang.id = support.id
-                            AND support_lang.project = :project
-                            AND support_lang.lang = :lang
-                        $eng_join
+                        {$join}
+                        {$eng_join}
                         WHERE support.project = :project
                         ORDER BY support.id ASC
                         ";
 
-				$query = self::query($sql, array(':project'=>$project, ':lang'=>$lang));
+				$query = self::query($sql, $values);
 				foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
                     $array[$item->id] = $item;
                 }
@@ -119,7 +134,7 @@ namespace Goteo\Model\Project {
     			if (empty($this->id)) $this->id = self::insertId();
 				return true;
 			} catch(\PDOException $e) {
-				$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+				$errors[] = "La colaboración {$values[':support']} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
 			}
 		}
