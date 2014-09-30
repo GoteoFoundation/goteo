@@ -10,3 +10,4 @@ config/*
 !config/demo-settings.php
 !config/paypal.php
 .idea
+/nbproject/private/

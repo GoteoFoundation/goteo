@@ -56,11 +56,25 @@ namespace Goteo\Controller {
 
             // si es un salto a otro panel
             if (in_array($option, array('admin', 'review', 'translate'))) {
-                if (ACL::check('/'.$option)) {
+
+                // si tiene algún rol de admin
+                if ( $option == 'admin' &&  ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) )
                     throw new Redirection('/'.$option, Redirection::TEMPORARY);
-                } else {
+                else
                     throw new Redirection('/dashboard', Redirection::TEMPORARY);
-                }
+
+                // si tiene rol de revisor
+                if ( $option == 'review' && isset($_SESSION['user']->roles['checker']) )
+                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
+                else
+                    throw new Redirection('/dashboard', Redirection::TEMPORARY);
+
+                // si tiene rol de traductor
+                if ( $option == 'translate' &&  isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) || isset($_SESSION['user']->roles['translator']) )
+                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
+                else
+                    throw new Redirection('/dashboard', Redirection::TEMPORARY);
+
             }
 
             return new View('view/dashboard/index.html.php', $viewData);
@@ -212,7 +226,7 @@ namespace Goteo\Controller {
             $errors = array();
 
             // verificación de proyectos y proyecto de trabajo
-            list($project, $projects) = Dashboard\Projects::verifyProject($user, $action);
+            list($project, $projects) = Dashboard\Projects::verifyProject($user, $action, $option);
 
             // teniendo proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
             if ($option == 'updates') $blog = Dashboard\Projects::verifyBlog($project);
@@ -512,12 +526,6 @@ namespace Goteo\Controller {
             $calls = Model\User\Translate::getMyCalls($user->id);
             $nodes = Model\User\Translate::getMyNodes($user->id);
 
-            foreach ($nodes as $node) {
-                // compruebo que puedo traducir todos los nodos asignados
-                if (!ACL::check('/translate/node/' . $node->id . '/*')) {
-                    ACL::allow('/translate/node/' . $node->id . '/*', '*', 'translator', $user->id);
-                }
-            }
 
             // al seleccionar controlamos: translate_type y translateproject/translate_call
             if ($action == 'select' && !empty($_POST['type'])) {
@@ -552,28 +560,41 @@ namespace Goteo\Controller {
             switch ($_SESSION['translate_type']) {
                 case 'project':
                     try {
-                        // si lo que tenemos en sesion no es una instancia de proyecto (es una id de proyecto)
-                        if ($_SESSION['translate_project'] instanceof Model\Project) {
-                            $project = Model\Project::get($_SESSION['translate_project']->id, $_SESSION['translate_lang']);
+                        // si lo tenemos en sesion una id de proyecto
+                        if ( isset($_SESSION['translate_project']) ) {
+
+                            $id = (is_object($_SESSION['translate_project'])) ? $_SESSION['translate_project']->id : $_SESSION['translate_project'];
+
+                            // instancia original
+                            $project_original = Model\Project::get($id, null); // $lang = null para sacar idioma original
+
+                            // instancia traducción
+                            $project = Model\Project::get($id, $_SESSION['translate_lang']);
+
                         } else {
-                            $project = Model\Project::get($_SESSION['translate_project'], $_SESSION['translate_lang']);
+
+                            // no tenemos proyecto
+                            $project_original = null;
+                            $project = null;
                         }
+
                     } catch (\Goteo\Core\Error $e) {
-                        $project = null;
+                        Message::Error('Ha fallado al cargar los datos del proyecto');
+                        $_SESSION['translate_type'] = 'profile';
+                        throw new Redirection('/dashboard/translates');
                     }
 
-                    if (!$project instanceof Model\Project) {
+                    if (!$project instanceof Model\Project || !$project_original instanceof Model\Project) {
                         Message::Error('Ha fallado al cargar los datos del proyecto');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
 
                     $_SESSION['translate_project'] = $project;
-                    $project->lang_name = $langs[$project->lang]->name;
+                    $project_original->lang_name = $langs[$project_original->lang]->name;
 
-                    // solo quitamos el idioma original si es 'es' (lo tendremos en la tabla project_lang)
-                    if ($project->lang == 'es')
-                        unset($viewData['langs'][$project->lang]);
+                    // quitamos el idioma original del desplegable de idiomas
+                    unset($viewData['langs'][$project_original->lang]);
 
 //// Control de traduccion de proyecto
                     if ($option == 'updates') {
@@ -618,6 +639,7 @@ namespace Goteo\Controller {
 
                             case 'costs':
                                 if ($action == 'save') {
+
                                     foreach ($project->costs as $key => $cost) {
                                         if (isset($_POST['cost-' . $cost->id . '-cost'])) {
                                             $cost->cost_lang = $_POST['cost-' . $cost->id . '-cost'];
@@ -754,28 +776,48 @@ namespace Goteo\Controller {
                     }
 
                     $viewData['project'] = $project;
+                    $viewData['original'] = $project_original;
 //// FIN Control de traduccion de proyecto
                     break;
 
                 case 'call':
                     try {
-                        // si lo que tenemos en sesion no es una instancia de convocatoria (es una id de convocatoria)
-                        if ($_SESSION['translate_call'] instanceof Model\Call) {
-                            $call = Model\Call::get($_SESSION['translate_call']->id, $_SESSION['translate_lang']);
+                        // si lo tenemos en sesion una id de convocatoria
+                        if ( isset($_SESSION['translate_call']) ) {
+
+                            $id = (is_object($_SESSION['translate_call'])) ? $_SESSION['translate_call']->id : $_SESSION['translate_call'];
+
+                            // instancia original
+                            $call_original = Model\Call::get($id, null); // $lang = null para sacar idioma original
+
+                            // instancia traducción
+                            $call = Model\Call::get($id, $_SESSION['translate_lang']);
+
                         } else {
-                            $call = Model\Call::get($_SESSION['translate_call'], $_SESSION['translate_lang']);
+
+                            // no tenemos convocatoria
+                            $call_original = null;
+                            $call = null;
                         }
+
                     } catch (\Goteo\Core\Error $e) {
-                        $call = null;
-                    }
-                    if (!$call instanceof Model\Call) {
                         Message::Error('Ha fallado al cargar los datos de la convocatoria');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
+
+                    if (!$call instanceof Model\Call || !$call_original instanceof Model\Call) {
+                        Message::Error('Ha fallado al cargar los datos de la convocatoria');
+                        $_SESSION['translate_type'] = 'profile';
+                        throw new Redirection('/dashboard/translates');
+                    }
+
                     $_SESSION['translate_call'] = $call;
-                    $call->lang_name = $langs[$call->lang]->name;
-                    unset($viewData['langs'][$call->lang]); // quitamos el idioma original
+                    $call_original->lang_name = $langs[$call_original->lang]->name;
+
+                    // quitamos el idioma original del desplegable de idiomas
+                    unset($viewData['langs'][$call_original->lang]);
+
 //// Control de traduccion de convocatoria
                     // tratar lo que llega por post para guardar los datos
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -847,32 +889,52 @@ namespace Goteo\Controller {
 
 
                     $viewData['call'] = $call;
+                    $viewData['original'] = $call_original;
 //// FIN Control de traduccion de convocatoria
                     break;
 
                 case 'node':
                     try {
-                        // si lo que tenemos en sesion no es una instancia de convocatoria (es una id de convocatoria)
-                        if ($_SESSION['translate_node'] instanceof Model\Node) {
-                            $node = Model\Node::get($_SESSION['translate_node']->id, $_SESSION['translate_lang']);
+                        // si lo tenemos en sesion una id de convocatoria
+                        if ( isset($_SESSION['translate_node']) ) {
+
+                            $id = (is_object($_SESSION['translate_node'])) ? $_SESSION['translate_node']->id : $_SESSION['translate_node'];
+
+                            // instancia original
+                            $node_original = Model\Node::get($id, null); // $lang = null para sacar idioma original
+
+                            // instancia traducción
+                            $node = Model\Node::get($id, $_SESSION['translate_lang']);
+
                         } else {
-                            $node = Model\Node::get($_SESSION['translate_node'], $_SESSION['translate_lang']);
+
+                            // no tenemos convocatoria
+                            $node_original = null;
+                            $node = null;
                         }
+
                     } catch (\Goteo\Core\Error $e) {
-                        $node = null;
-                    }
-                    if (!$node instanceof Model\Node) {
                         Message::Error('Ha fallado al cargar los datos del nodo');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
+
+                    if (!$node instanceof Model\Node || !$node_original instanceof Model\Node) {
+                        Message::Error('Ha fallado al cargar los datos del nodo');
+                        $_SESSION['translate_type'] = 'profile';
+                        throw new Redirection('/dashboard/translates');
+                    }
+
                     $_SESSION['translate_node'] = $node;
-                    $node->lang_name = $langs['es']->name;
+
+                    // el original del nodo siempre es en español (?¿)
+                    $node_original->lang_name = $langs['es']->name;
                     unset($viewData['langs']['es']); // quitamos el idioma original
                     // la traducción de contenidos se hace en /traslate/node/list/id-nodo
 
                     $viewData['option'] = 'node_overview';
                     $viewData['node'] = $node;
+                    $viewData['original'] = $node_original;
                     break;
                 default: // profile
                     $viewData['option'] = 'profile';
@@ -891,6 +953,7 @@ namespace Goteo\Controller {
                     }
 
                     $viewData['user'] = Model\User::get($user->id, $_SESSION['translate_lang']);
+                    $viewData['original'] = Model\User::get($user->id);
             }
 
             if (!empty($errors)) {
@@ -1096,16 +1159,16 @@ namespace Goteo\Controller {
 
 
 
-            // si tiene permiso para ir al admin
-            if (ACL::check('/admin'))
+            // si tiene algún rol de admin
+            if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) )
                 $menu['activity']['options']['admin'] = Text::get('dashboard-menu-admin_board');
 
-            // si tiene permiso para ir a las revisiones
-            if (ACL::check('/review'))
+            // si tiene rol de revisor
+            if ( isset($_SESSION['user']->roles['checker']) )
                 $menu['activity']['options']['review'] = Text::get('dashboard-menu-review_board');
 
-            // si tiene permiso para ir a las traducciones
-            if (ACL::check('/translate'))
+            // si tiene rol de traductor
+            if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['translator']) )
                 $menu['activity']['options']['translate'] = Text::get('dashboard-menu-translate_board');
 
             return $menu;

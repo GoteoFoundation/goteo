@@ -6,10 +6,6 @@ use Goteo\Core\View,
 // en la página de cofinanciadores, paginación de 20 en 20
 require_once 'library/pagination/pagination.php';
 
-$pagedResults = new \Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
-
-
-
 $bodyClass = 'discover';
 
 include 'view/prologue.html.php';
@@ -27,18 +23,14 @@ include 'view/header.html.php' ?>
         <div id="main">
 
             <div class="widget projects">
-                <?php while ($project = $pagedResults->fetchPagedRow()) :
-                        echo new View('view/project/widget/project.html.php', array(
+                <?php foreach ($this['list'] as $project) {
+                     echo new View('view/project/widget/project.html.php', array(
                             'project' => $project
                             ));
-                endwhile; ?>
+                } ?>
             </div>
 
-            <ul id="pagination">
-                <?php   $pagedResults->setLayout(new DoubleBarLayout());
-                        echo $pagedResults->fetchPagedNavigation(); ?>
-            </ul>
-
+            <?php echo new View('view/discover/pagination.html.php', $this); ?>
         </div>        
 
         <?php include 'view/footer.html.php' ?>

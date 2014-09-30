@@ -31,39 +31,55 @@ namespace Goteo\Model\Project {
             try {
                 $array = array();
 
-	            if(self::default_lang($lang)=='es') {
+                // FIXES #42
+                $values = array(':project'=>$project, ':lang'=>$lang);
+
+                $join = " LEFT JOIN cost_lang
+                        ON  cost_lang.id = cost.id
+                        AND cost_lang.project = :project
+                        AND cost_lang.lang = :lang
+                ";
+                $eng_join = '';
+
+                // tener en cuenta si se solicita el contenido original
+                if (!isset($lang)) {
+                    $different_select=" cost.cost as cost,
+                                        cost.description as description";
+                    $join = '';
+                    unset($values[':lang']);
+
+                } elseif(self::default_lang($lang)=='es') {
 	                $different_select=" IFNULL(cost_lang.cost, cost.cost) as cost,
                         				IFNULL(cost_lang.description, cost.description) as description";
-	                }
-	            else {
-	                    $different_select=" IFNULL(cost_lang.cost, IFNULL(eng.cost, cost.cost)) as cost,
-                        					IFNULL(cost_lang.description, IFNULL(eng.description, cost.description)) as description";
-	                    $eng_join=" LEFT JOIN cost_lang as eng
-	                                    ON  eng.id = cost.id
-                                        AND eng.project = :project
-	                                    AND eng.lang = 'en'";
-	                }                
+
+	            } else {
+                    $different_select=" IFNULL(cost_lang.cost, IFNULL(eng.cost, cost.cost)) as cost,
+                                        IFNULL(cost_lang.description, IFNULL(eng.description, cost.description)) as description";
+                    $eng_join=" LEFT JOIN cost_lang as eng
+                                    ON  eng.id = cost.id
+                                    AND eng.project = :project
+                                    AND eng.lang = 'en'
+                                    ";
+                }
 
                 $sql = "
                     SELECT
                         cost.id as id,
                         cost.project as project,
-                        $different_select,
+                        {$different_select} ,
                         cost.type as type,
                         cost.amount as amount,
                         cost.required as required,
                         cost.from as `from`,
                         cost.until as `until`
                     FROM cost
-                    LEFT JOIN cost_lang
-                        ON  cost_lang.id = cost.id
-                        AND cost_lang.project = :project
-                        AND cost_lang.lang = :lang
-                    $eng_join
+                    {$join}
+                    {$eng_join}
                     WHERE cost.project = :project
-                    ORDER BY cost.id ASC";
+                    ORDER BY cost.id ASC
+                    ";
 
-				$query = self::query($sql, array(':project'=>$project,':lang'=>$lang));
+				$query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                     $array[$item->id] = $item;
                 }

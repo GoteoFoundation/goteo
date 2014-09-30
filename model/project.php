@@ -10,6 +10,7 @@ namespace Goteo\Model {
         Goteo\Model\Message,
         Goteo\Model\Blog,
         Goteo\Model\Call,
+        Goteo\Model\Invest,
         Goteo\Model\Patron,
         Goteo\Model\Node
         ;
@@ -131,7 +132,10 @@ namespace Goteo\Model {
             $watch = 0,
             $days_round1 = 40,
             $days_round2 = 40,
-            $one_round = 0
+            $one_round = 0,
+
+            $called = null // si está en una convocatoria
+
 
         ;
 
@@ -144,7 +148,7 @@ namespace Goteo\Model {
          */
         public function __get ($name) {
             if($name == "call") {
-	            return Call\Project::miniCalled($this->id);
+	            return Call\Project::calledMini($this->id);
 	        }
             if($name == "allowpp") {
                 return Project\Account::getAllowpp($this->id);
@@ -290,10 +294,11 @@ namespace Goteo\Model {
                     throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
                 }
 
+                // si nos estan pidiendo el idioma original no traducimos nada, damos lo que sacamos de
                 if(!empty($lang) && $lang!=$project->lang)
                 {
-                    //Obtenemos el idioma de soporte
-                    $lang=self::default_lang_by_id($id, 'project_lang', $lang);
+                    //Obtenemos el idioma de soporte segun si está traducido  a ese idioma o no
+                    $trans_lang=self::default_lang_by_id($id, 'project_lang', $lang);
 
                     $sql = "
                         SELECT
@@ -306,15 +311,16 @@ namespace Goteo\Model {
                             IFNULL(project_lang.reward, project.reward) as reward,
                             IFNULL(project_lang.keywords, project.keywords) as keywords,
                             IFNULL(project_lang.media, project.media) as media,
-                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle,
-                            IFNULL(project_lang.lang, project.lang) as lang
+                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle
                         FROM project
                         LEFT JOIN project_lang
                             ON  project_lang.id = project.id
                             AND project_lang.lang = :lang
                         WHERE project.id = :id
                         ";
-                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
+                    // no veo que haga falta cambiar el idioma a la instancia del proyecto
+                    //, IFNULL(project_lang.lang, project.lang) as lang
+                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$trans_lang));
 
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
                         $project->$field = $value;
@@ -422,6 +428,19 @@ namespace Goteo\Model {
                 // categorias
                 $project->categories = Project\Category::get($id);
 
+
+                // @FIXME #42 : para contenidos adicionales (cost, reward, support) se está suponiendo erroneamente que el contenido original es español
+                // no se está teniendo en cuenta el idioma original del proyecto
+                // @TODO :
+                //        o pasamos el idioma original a estos getAll y modificamos el código
+                //        o modificamos registro _lang para idioma original  al modificarse estos contenidos (no arregla casos ya existentes)
+
+                // si se está solicitando el mismo idioma del proyecto, queremos que estos getAll nos den el contenido original
+                // para eso hacemos $lang = null ya que luego ya no se usa mas esta variable
+                if ($lang == $project->lang) {
+                    $lang = null;
+                }
+
                 // costes y los sumammos
 				$project->costs = Project\Cost::getAll($id, $lang);
                 $project->minmax();
@@ -431,11 +450,11 @@ namespace Goteo\Model {
 				// retornos individuales
 				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
-                // asesores
-                // $project->consultants = Project::getConsultants($id);
-
 				// colaboraciones
 				$project->supports = Project\Support::getAll($id, $lang);
+
+                // Fin contenidos adicionales
+
 
                 // extra conf
                 if (empty($project->days_round1)) $project->days_round1 = 40;
@@ -486,7 +505,27 @@ namespace Goteo\Model {
                 }
 
                 // podría estar asignado a alguna convocatoria
-                $project->called = Call\Project::called($project->id);
+                $call = Call\Project::calledMini($project->id);
+                if ( $call instanceof Call ) {
+
+                    // cuanto han recaudado
+                    // de los usuarios
+                    if (!isset($project->amount_users)) {
+                        $project->amount_users = Invest::invested($project->id, 'users', $call->id);
+                    }
+                    // de la convocatoria
+                    if (!isset($project->amount_call)) {
+                        $project->amount_call = Invest::invested($project->id, 'call', $call->id);
+                    }
+
+                    $call = Call\Project::setDropable($project, $call);
+                    $project->called = $call;
+
+                } else {
+
+                    $project->called = null;
+
+                }
 
                 // recomendaciones de padrinos
                 $project->patrons = Patron::getRecos($project->id);
@@ -552,13 +591,35 @@ namespace Goteo\Model {
                 }
 
                 // convocado
-                $project->called = Call\Project::miniCalled($project->id);
+                $call = Call\Project::calledMini($project->id);
 
-				return $project;
+                if ( $call instanceof Call ) {
+
+                    // cuanto han recaudado
+                    // de los usuarios
+                    if (!isset($project->amount_users)) {
+                        $project->amount_users = Invest::invested($project->id, 'users', $call->id);
+                    }
+                    // de la convocatoria
+                    if (!isset($project->amount_call)) {
+                        $project->amount_call = Invest::invested($project->id, 'call', $call->id);
+                    }
+
+                    $project->called = $call;
+
+                } else {
+
+                    $project->called = null;
+
+                }
+
+                return $project;
 
 			} catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
-			}
+			} catch(\Goteo\Core\Error $e) {
+                throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
+            }
 		}
 
         /*
@@ -1605,7 +1666,7 @@ namespace Goteo\Model {
 
             if (empty($this->media)) {
                 // solo error si no está aplicando a una convocatoria
-                if (!isset($this->call)) {
+                if (!isset($this->called)) {
                     $errors['overview']['media'] = Text::get('mandatory-project-field-media');
                 }
             } else {
@@ -2160,7 +2221,7 @@ namespace Goteo\Model {
                         try {
 
 //                            echo 'en transaccion <br />';
-
+// @FIXME : estos 4 primeros se pueden hacer en una sola sentencia con un STR_REPLACE
                             // acls
                             $acls = self::query("SELECT * FROM acl WHERE url like :id", array(':id'=>"%{$this->id}%"));
                             foreach ($acls->fetchAll(\PDO::FETCH_OBJ) as $rule) {
@@ -2356,6 +2417,7 @@ namespace Goteo\Model {
                     project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
+                    project.owner as owner,
                     user.id as user_id,
                     user.name as user_name,
                     project_conf.noinvest as noinvest,
@@ -2371,7 +2433,7 @@ namespace Goteo\Model {
                     ON  project_lang.id = project.id
                     AND project_lang.lang = :lang
                 $eng_join
-                WHERE owner = :owner
+                WHERE project.owner = :owner
                 $sqlFilter
                 ORDER BY  project.status ASC, project.created DESC
                 ";
@@ -2384,12 +2446,49 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /**
+         * Cuenta el numero de items segun el tipo
+         * @param type $sql
+         * @param int $page Numero de página que se muestra
+         * @param int $items_per_page
+         * @return int $pages
+         * @see published
+         */
+        public static function published_count($sql, $values, &$page, $items_per_page = 9) {
+
+            $query = self::query($sql, $values);
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+
+            $total = $query->fetchColumn();
+            
+            //rango
+            if ($total == 0) {
+                $page = 1;
+            } elseif ($page > $total) {
+                $page = $total;
+            } elseif ($page < 1) {
+                $page = 1;
+            }
+
+            $offset = $items_per_page * ($page - 1);
+            $pages = ceil($total / $items_per_page);
+
+            return array('pages' => $pages, 'offset' => $offset);
+        }
+
+
         /*
          * Lista de proyectos publicados
+         * @param $type string
+         * @param $limit int
+         * @param $mini boolean
+         * @param $page int
+         * @param $pages int
          * @return: array of Model\Project
          */
-        public static function published($type = 'all', $limit = 12, $mini = false)
+        public static function published($type = 'all', $limit = 9, $page = 1, &$pages)
         {
+            
             $different_select='';
 
             $values = array();
@@ -2429,7 +2528,6 @@ namespace Goteo\Model {
 
                     $where="project.status = 3 AND project.passed IS NULL";
                     $order="published DESC";
-                    $limit = 9;
                     break;
                 case 'success':
                     // los que han conseguido el mínimo
@@ -2482,7 +2580,17 @@ namespace Goteo\Model {
             }
 
             $where.= $sqlFilter;
+            
+            $sql_count ="
+                SELECT COUNT(id)
+                FROM project
+                WHERE $where
+                ";
 
+            $ret = self::published_count($sql_count, $values, $page, $limit);
+            $offset = $ret['offset'];
+            $pages = $ret['pages'];
+            
             if(self::default_lang(\LANG)=='es') {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
             }
@@ -2492,7 +2600,7 @@ namespace Goteo\Model {
                                 ON  eng.id = project.id
                                 AND eng.lang = 'en'";
             }
-
+            
             $sql ="
                 SELECT
                     project.id as project,
@@ -2532,18 +2640,14 @@ namespace Goteo\Model {
                 WHERE
                 $where
                 ORDER BY $order
-                LIMIT $limit
+                LIMIT $offset,$limit
                 ";
-
+            
             $projects = array();
             $query = self::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
-                if ($mini) {
-                    $projects[$proj->id] = $proj->name;
-                } else {
-                    $projects[]=self::getWidget($proj);
-                }
+                $projects[]=self::getWidget($proj);
             }
             return $projects;
         }
@@ -2834,7 +2938,6 @@ namespace Goteo\Model {
                         project.node as node,
                         project.mincost as mincost,
                         project.maxcost as maxcost,
-                        project.node as node,
                         project.amount as amount,
                         project.image as image,
                         project.gallery as gallery,
@@ -2884,9 +2987,33 @@ namespace Goteo\Model {
 
                 //añadir lo que haga falta
                 $proj->consultants = self::getConsultants($proj->id);
-                $proj->called = Call\Project::miniCalled($proj->id);
 
-                // extra conf
+
+                // convocado
+                $call = Call\Project::calledMini($proj->id);
+
+                if ( $call instanceof Call ) {
+
+                    // cuanto han recaudado
+                    // de los usuarios
+                    if (!isset($proj->amount_users)) {
+                        $proj->amount_users = Invest::invested($proj->id, 'users', $call->id);
+                    }
+                    // de la convocatoria
+                    if (!isset($proj->amount_call)) {
+                        $proj->amount_call = Invest::invested($proj->id, 'call', $call->id);
+                    }
+
+                    $proj->called = $call;
+
+                } else {
+
+                    $proj->called = null;
+
+                }
+
+
+                    // extra conf
                 $proj->days_total = ($proj->one_round) ? $proj->days_round1 : ( $proj->days_round1 + $proj->days_round2 );
 
                 $proj->setDays();

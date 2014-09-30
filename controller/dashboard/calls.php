@@ -27,20 +27,6 @@ namespace Goteo\Controller\Dashboard {
             }
 
 
-            // comprobamos que tenga los permisos para editar y borrar
-            foreach ($calls as $call) {
-
-                // compruebo que puedo editar mis proyectos
-                if (!ACL::check('/call/edit/' . $call->id)) {
-                    ACL::allow('/call/edit/' . $call->id . '/', '*', 'caller', $user);
-                }
-
-                // y borrarlos
-                if (!ACL::check('/call/delete/' . $call->id)) {
-                    ACL::allow('/call/delete/' . $call->id . '/', '*', 'caller', $user);
-                }
-            }
-
             if ($action == 'select' && !empty($_POST['call'])) {
                 // si se selecciona otra convocatoria
                 $call = Model\call::getMini($_POST['call']);

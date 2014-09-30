@@ -321,6 +321,11 @@ echo new SuperForm(array(
             'value' => 'rewards'
         ),
 
+        'anchor-rewards' => array(
+            'type' => 'html',
+            'html' => '<a name="rewards"></a>'
+        ),
+
         'social_rewards' => array(
             'type'      => 'group',
             'required'  => true,

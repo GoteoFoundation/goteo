@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Core\ACL;
 
-$translator = ACL::check('/translate') ? true : false;
+$translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 
 $filters = $this['filters'];
 

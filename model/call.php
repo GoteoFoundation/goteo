@@ -323,15 +323,14 @@ namespace Goteo\Model {
                 $call->banners  = Call\Banner::getList($id, $lang);
 
                 // campos calculados
-                $keepUpdated = true;
 
                 // riego comprometido
-                if (!isset($call->used) || $keepUpdated) {
+                if (!isset($call->used)) {
                     $call->used = $call->getUsed();
                 }
 
                 // riego restante
-                if (!isset($call->rest) || $keepUpdated) {
+                if (!isset($call->rest)) {
                     $call->rest = $call->getRest($call->used);
                 }
 
@@ -1707,7 +1706,6 @@ namespace Goteo\Model {
 			try {
 	            $sql = "REPLACE INTO user_call (`user`, `call`) VALUES(:user, :call)";
 				if (self::query($sql, $values)) {
-                    ACL::allow('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
     				return true;
                 } else {
                     $errors[] = 'No se ha creado el registro `user_call`';
@@ -1731,7 +1729,6 @@ namespace Goteo\Model {
 
             try {
                 if (self::query("DELETE FROM user_call WHERE `call` = :call AND `user` = :user", $values)) {
-                    ACL::deny('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
                     return true;
                 } else {
                     return false;
@@ -1833,6 +1830,23 @@ namespace Goteo\Model {
         }
 
         /**
+         * Para recuperar configuración de convocatoria
+         * @return  objeto
+         */
+        public function getDropConf () {
+
+            $query = static::query("
+                SELECT
+                  amount, maxdrop, maxproj, modemaxp
+                FROM `call`
+                WHERE id = :id
+                ", array(':id' => $this->id));
+
+            return $query->fetchObject();
+        }
+
+
+        /**
          * Actualizar los valores de configuración económica de convocatoria
          *
          * @params conf array of config values
@@ -1841,9 +1855,10 @@ namespace Goteo\Model {
         public function setDropconf ($dropconf = array(), &$errors = array()) {
 
             // verificación 
-            $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;
-            $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ;
-            $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ;
+            $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;  // presupuesto de la convocatoria
+            $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ; // riego máximo por aporte
+            $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ; // riego máximo por proyecto
+            $dropconf['modemaxp'] = !empty($dropconf['modemaxp']) ? $dropconf['modemaxp'] : 'imp' ; // modalidad de maximo por proyecto: importe (imp) o porcentaje (per)
 
             
             $fields = array(
