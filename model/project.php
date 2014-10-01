@@ -2680,6 +2680,43 @@ namespace Goteo\Model {
         }
 
         /**
+         * Obtiene los proyectos que llevan $months meses con status=4 (proyecto financiado) y
+         *
+         * @param int $months
+         * @return $projects
+         */
+        public static function getFunded($months = 10) {
+            $success_date = date('Y-m-d', strtotime("-$months month"));
+
+            $projects = self::getList(
+                            array('status' => 4, 'success' => $success_date),
+                            null,
+                            0,
+                            $dummy
+                        );
+
+            return $projects;
+        }
+
+
+        /**
+         * Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
+         *
+         * @param type $date
+         * @return $projects
+         */
+        public static function getPublishToday() {
+            $projects = self::getList(
+                            array('status' => 2, 'published' => date('Y-m-d') ),
+                            null,
+                            0,
+                            $dummy
+                        );
+
+            return $projects;
+        }
+
+        /**
          * Saca una lista completa de proyectos
          *
          * @param string node id
