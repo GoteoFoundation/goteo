@@ -52,10 +52,18 @@ namespace Goteo\Controller\Admin {
                             // separamos destinatarios en idiomas
                             $receivers = array();
                             foreach ($users as $usr) {
+
                                 // idioma de preferencia
                                 $comlang = !empty($usr->comlang) ? $usr->comlang : $usr->lang;
                                 if (empty($comlang)) $comlang = LANG;
-                                $receivers[$comlang][$usr->user] = $usr;
+
+                                // he visto un 'eN' raro en beta, pongo esto hasta que confirme en real
+                                $comlang = strtolower($comlang);
+
+                                // piñon para newsletter issue #48 
+                                $newslang = ($comlang == 'es' || $comlang == 'ca') ? 'es' : 'en';
+
+                                $receivers[$newslang][$usr->user] = $usr;
                             }
                         }
 
