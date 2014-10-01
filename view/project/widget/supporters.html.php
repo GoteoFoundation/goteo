@@ -23,7 +23,7 @@ $pagedResults = new \Paginated($project->investors, 20, isset($_GET['page']) ? $
     
     <h<?php echo $level ?> class="title"><?php echo Text::get('project-menu-supporters'); ?></h<?php echo $level ?>>
     
-    <dl class="summary<?php if (isset($this['droped'])) echo ' drop'; ?>">
+    <dl class="summary<?php if (!empty($project->amount_call)) echo ' drop'; ?>">
         <dt class="supporters"><?php echo Text::get('project-menu-supporters'); ?></dt>
         <dd class="supporters"><?php echo $project->num_investors ?></dd>
         
