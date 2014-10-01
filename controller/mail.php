@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\Redirection,
+        Goteo\Core\Model,
         Goteo\Library\Mail as Mailer;
 
     class Mail extends \Goteo\Core\Controller {
