@@ -20,9 +20,43 @@ namespace Goteo\Controller {
                 $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
 
+                /*
+                    // este metodo no se puede usar si no se ha grabado el contenido
+                    // y ahora mismo no se está grabando
                 if (!empty($parts[2])) {
-                    $link = Mailer::getSinovesLink($parts[2]);
+
+                    // $link = Mailer::getSinovesLink($parts[2]);
                 }
+                */
+
+                // revert al antiguo sinoves que saca de la tabla mail
+                if(count($parts) > 2 && ($_GET['email'] == $parts[1] || $parts[1] == 'any' ) && !empty($parts[2])) {
+
+                    // cogemos el md5 del archivo a cargar del campo 'content' de la tabla 'mail'
+                    // montamos url (segun newsletter)  y hacemos get_content
+                    // pasamos el contenido a la vista
+
+                    // cogemos el contenido de la bbdd y lo pintamos aqui tal cual
+                    if ($query = Model::query('SELECT html, template FROM mail WHERE email = ? AND id = ?', array($parts[1], $parts[2]))) {
+                        $mail = $query->fetchObj();
+                        $content = $mail->html;
+                        $template = $mail->template;
+
+
+                        if ($template == 33) {
+                            return new View ('view/email/newsletter.html.php', array('content'=>$content, 'baja' => ''));
+                        } else {
+                            $baja = SEC_URL . '/user/leave/?email=' . $parts[1];
+
+                            if (NODE_ID != \GOTEO_NODE && \file_exists('nodesys/'.NODE_ID.'/view/email/default.html.php')) {
+                                return new View ('nodesys/'.NODE_ID.'/view/email/default.html.php', array('content'=>$content, 'baja' => $baja));
+                            } else {
+                                return new View ('view/email/goteo.html.php', array('content'=>$content, 'baja' => $baja));
+                            }
+                        }
+                    }
+                }
+
             }
 
             throw new Redirection($link);
