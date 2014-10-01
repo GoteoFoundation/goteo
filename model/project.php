@@ -717,7 +717,7 @@ namespace Goteo\Model {
         /*
          *  Datos extra para un widget de proyectos
          */
-        public static function getWidget($project) {
+        public static function getWidget($project, $lang = \LANG) {
 
                 $Widget = new Project();
                 $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
@@ -812,7 +812,7 @@ namespace Goteo\Model {
                 $Widget->num_investors = $project->num_investors;
 
                 // @TODO : hay que hacer campos calculados conn traducción para esto
-                $Widget->cat_names = Project\Category::getNames($Widget->id, 2);
+                $Widget->cat_names = Project\Category::getNames($Widget->id, 2, $lang);
                 $Widget->rewards = Project\Reward::getWidget($Widget->id);
 
                 if(!empty($project->mincost) && !empty($project->maxcost)) {

@@ -48,9 +48,6 @@ spl_autoload_register(
 );
 
 
-// set Lang
-define('LANG', 'es');
-
 $debug = true;
 
 $id = $argv[1];
@@ -94,10 +91,15 @@ if (!$mailing->active) {
 }
 
 // cogemos el contenido y la plantilla desde el historial
-$query = Model::query('SELECT html, template FROM mail WHERE id = ?', array($mailing->mail));
+$query = Model::query('SELECT html, template, lang FROM mail WHERE id = ?', array($mailing->mail));
 $data = $query->fetch(\PDO::FETCH_ASSOC);
 $content = $data['html'];
 $template = $data['template'];
+$lang = (!empty($data['lang'])) ? $data['lang'] : 'es';
+// set Lang
+define('LANG', $lang);
+
+
 if (empty($content)) {
     die("Mailing {$user->mailing_id} sin contenido!\n");
 }
@@ -113,6 +115,7 @@ try {
     $mailHandler = new Mail($debug);
 
     $mailHandler->id = $user->mail_id;
+    $mailHandler->lang = $lang;
 
     // reply, si es especial
     if (!empty($mailing->reply)) {
