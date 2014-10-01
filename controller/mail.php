@@ -4,6 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Core\Redirection,
         Goteo\Core\Model,
+        Goteo\Core\View,
         Goteo\Library\Mail as Mailer;
 
     class Mail extends \Goteo\Core\Controller {
@@ -39,7 +40,7 @@ namespace Goteo\Controller {
 
                     // cogemos el contenido de la bbdd y lo pintamos aqui tal cual
                     if ($query = Model::query('SELECT html, template FROM mail WHERE email = ? AND id = ?', array($parts[1], $parts[2]))) {
-                        $mail = $query->fetchObj();
+                        $mail = $query->fetchObject();
                         $content = $mail->html;
                         $template = $mail->template;
 
