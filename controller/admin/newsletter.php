@@ -60,8 +60,8 @@ namespace Goteo\Controller\Admin {
                                 // he visto un 'eN' raro en beta, pongo esto hasta que confirme en real
                                 $comlang = strtolower($comlang);
 
-                                // piñon para newsletter issue #48 
-                                $newslang = ($comlang == 'es' || $comlang == 'ca') ? 'es' : 'en';
+                                // piñon para newsletter issue #48
+                                $newslang = (in_array($comlang, array('es', 'ca', 'gl', 'eu'))) ? 'es' : 'en';
 
                                 $receivers[$newslang][$usr->user] = $usr;
                             }
