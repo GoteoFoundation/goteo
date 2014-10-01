@@ -132,7 +132,7 @@ namespace Goteo\Model {
 
 
                 // aquí usará getWidget para sacar todo esto
-                $promo->projectData = Project::getWidget($promo);
+                $promo->projectData = Project::getWidget($promo, $lang);
 
                 $promos[] = $promo;
             }

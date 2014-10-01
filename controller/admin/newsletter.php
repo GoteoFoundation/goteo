@@ -99,6 +99,9 @@ namespace Goteo\Controller\Admin {
                             }
                         }
 
+                        // cancelamos idioma variable usado para generar contenido de newsletter
+                        unset($_SESSION['VAR_LANG']);
+
                     }
 
                     throw new Redirection('/admin/newsletter');

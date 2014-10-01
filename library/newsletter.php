@@ -105,6 +105,10 @@ namespace Goteo\Library {
         }
 
 		static public function getContent ($content, $lang = LANG) {
+
+            // necesitamos generar contenido en diferentes idiomas
+            $_SESSION['VAR_LANG'] = $lang;
+
             // orden de los elementos en portada
             $order = \Goteo\Model\Home::getAll();
 

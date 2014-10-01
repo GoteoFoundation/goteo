@@ -7,10 +7,10 @@ $promote = $this['promote'];
 $project = $this['project'];
 
 
-$categories = Category::getNames($project->id, 2);
 $url = SITE_URL.'/project/'.$project->id;
 
-// retornos
+// retornos, no se pinta
+/*
 $icons = array();
 $q = 1;
 foreach ($project->social_rewards as $social) {
@@ -21,6 +21,7 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
     $icons[] = $individual->icon;
     if ($q >= 5) break; $q++;
 }
+*/
 ?>
 
 <div style="width: 600px; background-color: #ffffff;padding: 20px 10px 20px 20px;margin-top: 20px;">
@@ -45,7 +46,7 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
         <?php endif ?>
     </div>
     
-    <div style="font-size: 12px;text-transform: uppercase; padding-bottom:10px; padding-top:10px; color: #38b5b1;"><?php echo Text::get('project-view-categories-title'); ?>: <?php $sep = ''; foreach ($categories as $key=>$value) {echo $sep.htmlspecialchars($value); $sep = ', '; } ?></div>
+    <div style="font-size: 12px;text-transform: uppercase; padding-bottom:10px; padding-top:10px; color: #38b5b1;"><?php echo Text::get('project-view-categories-title'); ?>: <?php $sep = ''; foreach ($project->cat_names as $key=>$value) {echo $sep.htmlspecialchars($value); $sep = ', '; } ?></div>
     
     <div style="width:600px;vertical-align:top;border-right:2px solid #f1f1f1;line-height:15px;padding-right:10px;">
         <a style="text-decoration:none;font-size:14px;color: #797979;" href="<?php echo $url; ?>"><?php echo Text::recorta($project->description, 500); ?></a>

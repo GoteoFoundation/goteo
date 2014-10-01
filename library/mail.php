@@ -235,7 +235,7 @@ namespace Goteo\Library {
             // $viewData['sinoves'] = static::getSinovesLink($sendId);
             // no podemos usar este porque el content no se graba hasta despues de enviado
             // y el método no tiene esta prueba de fallo
-            
+
             $viewData['baja'] = SITE_URL . '/user/leave/?email=' . $this->to;
 
             if ($plain) {
