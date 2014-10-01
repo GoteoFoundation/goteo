@@ -165,6 +165,7 @@ namespace Goteo\Library {
 
                     // si estoy en entorno local ni lo intento
                     if (GOTEO_ENV == 'local') {
+                        // add any debug here
                         $errors[] = 'No envía porque está en local';
                         $errors[] = "Asunto: {$this->subject}";
                         $errors[] = "Destinatario: {$this->to}";
@@ -227,9 +228,14 @@ namespace Goteo\Library {
             $this->node = $_SESSION['admin_node'];
 
             // tokens
+            $sinoves_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $this->id;
             $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $this->id;
 
-            $viewData['sinoves'] = static::getSinovesLink($this->id);
+            $viewData['sinoves'] = SITE_URL . '/mail/' . \mybase64_encode($sinoves_token) . '/?email=' . $this->to;
+            // $viewData['sinoves'] = static::getSinovesLink($sendId);
+            // no podemos usar este porque el content no se graba hasta despues de enviado
+            // y el método no tiene esta prueba de fallo
+
             $viewData['baja'] = SITE_URL . '/user/leave/?email=' . $this->to;
 
             if ($plain) {
@@ -241,8 +247,10 @@ namespace Goteo\Library {
                 if ($this->template == 33) {
                     $viewData['baja'] = SITE_URL . '/user/unsuscribe/' . \mybase64_encode($leave_token);
                     return new View (GOTEO_PATH.'view/email/newsletter.html.php', $viewData);
+
                 } elseif (!empty($this->node) && $this->node != GOTEO_NODE) {
                     return new View (GOTEO_PATH.'nodesys/'.$this->node.'/view/email/default.html.php', $viewData);
+
                 } else {
                     return new View (GOTEO_PATH.'view/email/goteo.html.php', $viewData);
                 }
