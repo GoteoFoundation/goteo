@@ -2383,36 +2383,6 @@ namespace Goteo\Model {
             return $projects;
         }
 
-        /**
-         * Cuenta el numero de items segun el tipo
-         * @param type $sql
-         * @param int $page Numero de página que se muestra
-         * @param int $items_per_page
-         * @return int $pages
-         * @see published
-         */
-        public static function published_count($sql, $values, &$page, $items_per_page = 9) {
-
-            $query = self::query($sql, $values);
-            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
-
-            $total = $query->fetchColumn();
-            
-            //rango
-            if ($total == 0) {
-                $page = 1;
-            } elseif ($page > $total) {
-                $page = $total;
-            } elseif ($page < 1) {
-                $page = 1;
-            }
-
-            $offset = $items_per_page * ($page - 1);
-            $pages = ceil($total / $items_per_page);
-
-            return array('pages' => $pages, 'offset' => $offset);
-        }
-
 
         /*
          * Lista de proyectos publicados
@@ -2524,7 +2494,7 @@ namespace Goteo\Model {
                 WHERE $where
                 ";
 
-            $ret = self::published_count($sql_count, $values, $page, $limit);
+            $ret = self::doPagination($sql_count, $values, $page, $limit);
             $offset = $ret['offset'];
             $pages = $ret['pages'];
             
