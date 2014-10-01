@@ -2,6 +2,7 @@
 <?php
     use Goteo\Library\Text;
     
+    $queryVars = $this['queryVars'];
     $currentPage = $this['currentPage'];
 
     if ($currentPage != 1) {
