@@ -2719,10 +2719,14 @@ namespace Goteo\Model {
         /**
          * Saca una lista completa de proyectos
          *
+         * @param array filters
          * @param string node id
+         * @param int limit items per page or 0 for unlimited
+         * @param int page
+         * @param int pages
          * @return array of project instances
          */
-        public static function getList($filters = array(), $node = null) {
+        public static function getList($filters = array(), $node = null, $limit = 10, &$pages, $page = 1) {
 
             $debug = (isset($_GET['dbg']) && $_GET['dbg'] == 'debug');
 
@@ -2847,6 +2851,26 @@ namespace Goteo\Model {
                 }
             }
 
+            $where = "project.id != ''
+                      $sqlFilter
+                      $sqlOrder";
+
+            if ($limit != 0) {
+                $sql_count ="
+                    SELECT COUNT(id)
+                    FROM project
+                    WHERE $where
+                    ";
+
+                $ret = self::doPagination($sql_count, $values, $page, $limit);
+                $offset = $ret['offset'];
+                $pages = $ret['pages'];
+
+                $limit_cond = "LIMIT $offset,$limit";
+            } else {
+                $limit_cond = "";
+            }
+
             // la select
             //@Javier: esto es de admin pero meter los campos en la select y no usar getMedium ni getWidget.
             // Si la lista de proyectos necesita campos calculados lo añadimos aqui  (ver view/admin/projects/list.html.php)
@@ -2887,11 +2911,8 @@ namespace Goteo\Model {
                     ON user.id=project.owner
 
                     $sqlConsultantFilter
-                    WHERE project.id != ''
-                        $sqlFilter
-                        $sqlOrder
-
-                    LIMIT 999
+                    WHERE $where
+                    $limit_cond
                     ";
 
 
