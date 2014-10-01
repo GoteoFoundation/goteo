@@ -21,7 +21,7 @@ namespace Goteo\Controller {
 
                 $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
-die(\trace($parts));
+
                 /*
                     // este metodo no se puede usar si no se ha grabado el contenido
                     // y ahora mismo no se está grabando
