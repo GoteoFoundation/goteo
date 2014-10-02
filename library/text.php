@@ -95,6 +95,11 @@ namespace Goteo\Library {
 
             $lang = LANG;
 
+            // lang variable para generar contenido en distintos idiomas (/admin/newsletter)
+            if (isset($_SESSION['VAR_LANG']) && !empty($_SESSION['VAR_LANG'])) {
+                $lang = $_SESSION['VAR_LANG'];
+            }
+
             if (\defined('GOTEO_ADMIN_NOCACHE')) {
                 $nocache = true;
             } else {

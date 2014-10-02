@@ -17,6 +17,8 @@ namespace Goteo\Controller\Admin {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
+            $debug = false;
+
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 
             switch ($action) {
@@ -43,22 +45,36 @@ namespace Goteo\Controller\Admin {
                         // sin idiomas
                         $nolang = $_POST['nolang'];
                         if ($nolang) {
-                            $receivers[LANG] = $users;
+                            foreach ($users as $usr) {
+                                $receivers[LANG][$usr->user] = $usr;
+                            }
                         } else {
                             // separamos destinatarios en idiomas
                             $receivers = array();
                             foreach ($users as $usr) {
+
                                 // idioma de preferencia
-                                $prefer = Model\User::getPreferences($usr->user);
-                                $comlang = !empty($prefer->comlang) ? $prefer->comlang : $usr->lang;
+                                $comlang = !empty($usr->comlang) ? $usr->comlang : $usr->lang;
                                 if (empty($comlang)) $comlang = LANG;
-                                $receivers[$comlang][$usr->user] = $usr;
+
+                                // he visto un 'eN' raro en beta, pongo esto hasta que confirme en real
+                                $comlang = strtolower($comlang);
+
+                                // piñon para newsletter issue #48
+                                $newslang = (in_array($comlang, array('es', 'ca', 'gl', 'eu'))) ? 'es' : 'en';
+
+                                $receivers[$newslang][$usr->user] = $usr;
                             }
                         }
 
                         // idiomas que vamos a enviar
                         $langs = array_keys($receivers);
 
+                        if ($debug) {
+                            echo \trace($receivers);
+                            echo \trace($langs);
+                            die;
+                        }
 
                         // para cada idioma
                         foreach ($langs as $lang) {
@@ -90,6 +106,9 @@ namespace Goteo\Controller\Admin {
                                 Message::Error('No se ha podido iniciar el mailing con asunto "'.$subject.'"');
                             }
                         }
+
+                        // cancelamos idioma variable usado para generar contenido de newsletter
+                        unset($_SESSION['VAR_LANG']);
 
                     }
 

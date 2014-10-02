@@ -20,10 +20,7 @@ namespace Goteo\Controller\Admin {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // objeto
-                if(is_null($id))
-                    $banner=new Model\Banner;
-                else
-                    $banner = Model\Banner::get($id);
+                $banner = (isset($id)) ? Model\Banner::get($id) : new Model\Banner;
                 $banner->node = $node;
                 $banner->project = $_POST['item'];
                 $banner->title = $_POST['title'];
