@@ -123,6 +123,8 @@ namespace Goteo\Model {
 
                         // no guardamos en tabla, id es el nombre del archivo
                         $this->id = $this->name;
+                        //generamos hash
+                        $this->hash = md5($this->id);
 
                     } else {
 

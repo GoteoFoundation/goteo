@@ -1139,7 +1139,7 @@ namespace Goteo\Model {
                 $this->contract_nif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->contract_nif);
                 $this->entity_cif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->entity_cif);
 
-                // Image
+                // Nueva imagen desde post, será un array de tipo _FILES[]
                 if (is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
                     // eliminando tabla images
@@ -2460,7 +2460,7 @@ namespace Goteo\Model {
             $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
 
             $total = $query->fetchColumn();
-            
+
             //rango
             if ($total == 0) {
                 $page = 1;
@@ -2488,7 +2488,7 @@ namespace Goteo\Model {
          */
         public static function published($type = 'all', $limit = 9, $page = 1, &$pages)
         {
-            
+
             $different_select='';
 
             $values = array();
@@ -2580,7 +2580,7 @@ namespace Goteo\Model {
             }
 
             $where.= $sqlFilter;
-            
+
             $sql_count ="
                 SELECT COUNT(id)
                 FROM project
@@ -2590,7 +2590,7 @@ namespace Goteo\Model {
             $ret = self::published_count($sql_count, $values, $page, $limit);
             $offset = $ret['offset'];
             $pages = $ret['pages'];
-            
+
             if(self::default_lang(\LANG)=='es') {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
             }
@@ -2600,7 +2600,7 @@ namespace Goteo\Model {
                                 ON  eng.id = project.id
                                 AND eng.lang = 'en'";
             }
-            
+
             $sql ="
                 SELECT
                     project.id as project,
@@ -2642,7 +2642,7 @@ namespace Goteo\Model {
                 ORDER BY $order
                 LIMIT $offset,$limit
                 ";
-            
+
             $projects = array();
             $query = self::query($sql, $values);
 
