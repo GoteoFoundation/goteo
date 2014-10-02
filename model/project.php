@@ -1787,6 +1787,10 @@ namespace Goteo\Model {
                 if (count($this->individual_rewards) >= 3) {
                     ++$score;
                 }
+                else {
+                    $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
+
+                }
             }
 
             $anyerror = false;
