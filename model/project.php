@@ -1139,12 +1139,11 @@ namespace Goteo\Model {
                 $this->contract_nif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->contract_nif);
                 $this->entity_cif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->entity_cif);
 
-                // Image
+                // Nueva imagen desde post, será un array de tipo _FILES[]
                 if (is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
                     // eliminando tabla images
                     $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
-
                     if ($image->save($errors)) {
                         $this->images[] = $image;
 
@@ -1161,6 +1160,11 @@ namespace Goteo\Model {
                         $galleries = Project\Image::setGallery($this->id);
                         Project\Image::setImage($this->id, $galleries['']);
 
+                    }
+                    else {
+                        // print_r($errors);
+                        // Si hay errores al colgar una imagen, mostrar error correspondiente
+                        $fail = true;
                     }
                 }
 
@@ -1375,6 +1379,7 @@ namespace Goteo\Model {
 
                 //listo
                 return !$fail;
+
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
                 //Text::get('save-project-fail');
@@ -1786,6 +1791,10 @@ namespace Goteo\Model {
                 $okeys['rewards']['individual_rewards'] = 'ok';
                 if (count($this->individual_rewards) >= 3) {
                     ++$score;
+                }
+                else {
+                    $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
+
                 }
             }
 
@@ -2460,7 +2469,7 @@ namespace Goteo\Model {
             $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
 
             $total = $query->fetchColumn();
-            
+
             //rango
             if ($total == 0) {
                 $page = 1;
@@ -2488,7 +2497,7 @@ namespace Goteo\Model {
          */
         public static function published($type = 'all', $limit = 9, $page = 1, &$pages)
         {
-            
+
             $different_select='';
 
             $values = array();
@@ -2580,7 +2589,7 @@ namespace Goteo\Model {
             }
 
             $where.= $sqlFilter;
-            
+
             $sql_count ="
                 SELECT COUNT(id)
                 FROM project
@@ -2590,7 +2599,7 @@ namespace Goteo\Model {
             $ret = self::published_count($sql_count, $values, $page, $limit);
             $offset = $ret['offset'];
             $pages = $ret['pages'];
-            
+
             if(self::default_lang(\LANG)=='es') {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
             }
@@ -2600,7 +2609,7 @@ namespace Goteo\Model {
                                 ON  eng.id = project.id
                                 AND eng.lang = 'en'";
             }
-            
+
             $sql ="
                 SELECT
                     project.id as project,
@@ -2642,7 +2651,7 @@ namespace Goteo\Model {
                 ORDER BY $order
                 LIMIT $offset,$limit
                 ";
-            
+
             $projects = array();
             $query = self::query($sql, $values);
 
