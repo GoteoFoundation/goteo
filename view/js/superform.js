@@ -136,11 +136,19 @@
             else {
                 //actualizar html
                 var new_el = $(html).find('li.element#' + el.attr('id'));
+                //obtener el foco
+                var $focused = $(document.activeElement);
+                // console.log($focused,$focused[0].tagName,$focused.attr('class'),$focused.attr('id'));
+                var focusedElement = $focused[0].tagName.toLowerCase() + '#' + $focused.attr('id');
+                console.log(focusedElement);
 
                 //evento de antes de actualizar
                 t.trigger('superform.dom.started', [html, new_el]);
 
                 var promises = _superformUpdateElement(el, new_el);
+
+                //recuperar foco
+                $(focusedElement).focus();
 
                 //evento de despues de actualizar
                 $.when.apply( $, promises ).always(function(){
@@ -348,8 +356,8 @@ $(function() {
     //Checkboxes, radios i select
     $('div.superform.autoupdate').delegate('li.element input[type="checkbox"],li.element input[type="radio"],li.element select', 'change', function (event) {
         var input = $(event.target);
-        // var li = input.closest('div.superform > div.elements > ol > li.element');
-        var li = input.closest('li.element');
+        var li = input.closest('div.superform > div.elements > ol > li.element');
+        // var li = input.closest('li.element');
         // alert(li[0].id)
         if(li[0].__updating === undefined) {
             li[0].__updating = null;
@@ -360,7 +368,7 @@ $(function() {
             li.superform();
         }, 700);
     });
-
+/*
     $('div.superform.autoupdate').delegate('li.element input[type="radio"],li.element select', 'click', function (event) {
         var input = $(event.target);
         var li = input.closest('li.group');
@@ -375,12 +383,15 @@ $(function() {
         });
 
     });
+*/
     //input text i textareas
     $('div.superform.autoupdate').delegate('li.element input[type="text"],li.element textarea', 'keydown paste focus', function (event) {
 
         var input = $(event.target);
-        // var li = input.closest('div.superform > div.elements > ol > li.element');
-        var li = input.closest('li.element');
+        //elemento padre
+        var li = input.closest('div.superform > div.elements > ol > li.element');
+        // elemento immediatamente superior
+        // var li = input.closest('li.element');
 
         //definimos las variables la primera vez
         if(li[0].__updating === undefined) {

@@ -394,6 +394,7 @@ $(function () {
     /* social rewards buttons */
     var socials = $('div#<?php echo $sfid ?> li.element#social_rewards');
 
+    //abrir el selector de licencias
     socials.delegate('li.element.social_reward input.edit', 'click', function (event) {
         event.preventDefault();
         var data = {};
@@ -401,6 +402,7 @@ $(function () {
         socials.superform({data:data});
     });
 
+    //boton ok, cierra el selector
     socials.delegate('li.element.editsocial_reward input.ok', 'click', function (event) {
         event.preventDefault();
         var data = {};
@@ -408,18 +410,33 @@ $(function () {
         socials.superform({data:data});
     });
 
+    //borra la licencia
     socials.delegate('li.element.editsocial_reward input.remove, li.element.social_reward input.remove', 'click', function (event) {
         event.preventDefault();
         var data = {};
         data[this.name] = '1';
         socials.superform({data:data});
     });
-
+    //añadir nueva licencia
     socials.delegate('#social_reward-add input', 'click', function (event) {
        event.preventDefault();
        var data = {};
        data[this.name] = '1';
        socials.superform({data:data});
+    });
+    //despliege de radio buttons en las licencias
+    socials.delegate('li.element input[type="radio"]', 'change', function(event){
+        var input = $(event.target);
+        var li = input.closest('li.group');
+        $(this).closest('li.group').first().find('input[type="radio"][name="' + input.attr('name') + '"]').each(function(i, r){
+            try {
+              if (input.attr('id') == r.id) {
+                  $('div.children#' + r.id + '-children').slideDown(400);
+              } else {
+                  $('div.children#' + r.id + '-children').slideUp(400);
+              }
+            } catch (e) {}
+        })
     });
 
     /* individual_rewards buttons */
