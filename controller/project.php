@@ -205,7 +205,7 @@ namespace Goteo\Controller {
 
                 // hay que mostrar errores en la imagen
                 if (!empty($errors['image'])) {
-                    Message::Error(implode('<br />', $errors['image']));
+                    Message::Error(is_array($errors['image']) ? implode('<br />', $errors['image']) : $errors['image']);
                 }
 
 
@@ -354,6 +354,10 @@ namespace Goteo\Controller {
 
             } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST)) {
 
+                // print_r($_POST);
+                // print_r($_FILES);
+                // throw new Error(Error::INTERNAL, 'EROR: '.print_r($_FILES,1));
+                // die;
                 // mail de aviso
                 $mailHandler = new Mail();
                 $mailHandler->to = \GOTEO_FAIL_MAIL;

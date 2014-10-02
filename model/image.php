@@ -182,33 +182,33 @@ namespace Goteo\Model {
 		public function validate(&$errors = array()) {
 
 			if(empty($this->name)) {
-                $errors['image'] = Text::get('error-image-name');
+                $errors['image'][] = Text::get('error-image-name');
             }
 
             // checkeo de errores de $_FILES
             if($this->error !== UPLOAD_ERR_OK) {
                 switch($this->error) {
                     case UPLOAD_ERR_INI_SIZE:
-                        $errors['image'] = Text::get('error-image-size-too-large');
+                        $errors['image'][] = Text::get('error-image-size-too-large');
                         break;
                     case UPLOAD_ERR_FORM_SIZE:
-                        $errors['image'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+                        $errors['image'][] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
                         break;
                     case UPLOAD_ERR_PARTIAL:
-                        $errors['image'] = 'The uploaded file was only partially uploaded';
+                        $errors['image'][] = 'The uploaded file was only partially uploaded';
                         break;
                     case UPLOAD_ERR_NO_FILE:
                         if (isset($_POST['upload']))
-                            $errors['image'] = 'No file was uploaded';
+                            $errors['image'][] = 'No file was uploaded';
                         break;
                     case UPLOAD_ERR_NO_TMP_DIR:
-                        $errors['image'] = 'Missing a temporary folder';
+                        $errors['image'][] = 'Missing a temporary folder';
                         break;
                     case UPLOAD_ERR_CANT_WRITE:
-                        $errors['image'] = 'Failed to write file to disk';
+                        $errors['image'][] = 'Failed to write file to disk';
                         break;
                     case UPLOAD_ERR_EXTENSION:
-                        $errors['image'] = 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions';
+                        $errors['image'][] = 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions';
                         break;
                 }
                 return false;
@@ -222,19 +222,19 @@ namespace Goteo\Model {
                     'image/svg+xml',
                 );
                 if(!in_array($this->type, $allowed_types)) {
-                    $errors['image'] = Text::get('error-image-type-not-allowed');
+                    $errors['image'][] = Text::get('error-image-type-not-allowed');
                 }
             }
             else {
-                $errors['image'] = Text::get('error-image-type');
+                $errors['image'][] = Text::get('error-image-type');
             }
 
             if(empty($this->tmp) || $this->tmp == "none") {
-                $errors['image'] = Text::get('error-image-tmp');
+                $errors['image'][] = Text::get('error-image-tmp');
             }
 
             if(empty($this->size)) {
-                $errors['image'] = Text::get('error-image-size');
+                $errors['image'][] = Text::get('error-image-size');
             }
 
             return empty($errors);

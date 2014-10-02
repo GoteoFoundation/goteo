@@ -1144,7 +1144,6 @@ namespace Goteo\Model {
                     $image = new Image($this->image);
                     // eliminando tabla images
                     $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
-
                     if ($image->save($errors)) {
                         $this->images[] = $image;
 
@@ -1161,6 +1160,11 @@ namespace Goteo\Model {
                         $galleries = Project\Image::setGallery($this->id);
                         Project\Image::setImage($this->id, $galleries['']);
 
+                    }
+                    else {
+                        // print_r($errors);
+                        // Si hay errores al colgar una imagen, mostrar error correspondiente
+                        $fail = true;
                     }
                 }
 
@@ -1375,6 +1379,7 @@ namespace Goteo\Model {
 
                 //listo
                 return !$fail;
+
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
                 //Text::get('save-project-fail');
