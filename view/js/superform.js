@@ -79,12 +79,32 @@
             return;
         }
 
-        var data = frm.serializeArray();
-        var action = frm.attr('action');
+        //objecto para $.ajax
+        var post = {
+                type:       'POST',
+                url:        frm.attr('action'),
+                cache:      false
+            };
+
+        try {
+            //si se quiere metodo tracicional (no sube archivos):
+            // throw new Exception();
+            //metdo html5
+            post.data = new FormData(frm[0]);
+            //con este metodo jquery no hade falte que procese el formulario:
+            post.contentType = false;
+            post.processData = false;
+        }
+        catch(e) {
+            //metodo serializado
+            post.data = frm.serializeArray();
+        }
+
+        // console.log(typeof post.data);
         //elemento a actualizar, por defecto el que realiza la llamada
         var el = $(settings.target);
 
-        if(typeof settings.data === 'object' && settings.data !== null && (action)) {
+        if(typeof settings.data === 'object' && settings.data !== null && (post.url)) {
             //si todavia se está realizando la llamada ajax en el elemento, salimos
             if (frm[0].xhr) {
                 frm[0].xhr.abort();
@@ -93,32 +113,33 @@
 
             //añadir los elementos pasados
             $.each(settings.data, function (k, v) {
-                data.push({
-                    name: k,
-                    value: v
-                });
+                try {
+                    //metodo html5
+                    post.data.append(k, v);
+                }
+                catch(e) {
+                    post.data.push({
+                        name: k,
+                        value: v
+                    });
+                }
             });
 
-            // console.log('sending data:', data);
+            // console.log('sending data:', post.data);
             //poner en el elemento html que hace la llamada una variable para impedir actualizaciones paralelas
             el.addClass('updating busy');
             //evento de antes de empezar ajax
             t.trigger('superform.ajax.started', [el]);
 
-            // console.log(frm[0].id, data);
+            // console.log(frm[0].id, post.data);
 
-            frm[0].xhr = $.ajax({
-                type:       'POST',
-                url:        action,
-                cache:      false,
-                data:       data
-            }).done( function(html, status, xhr) {
+            frm[0].xhr = $.ajax(post).done( function(html, status, xhr) {
                 //ajax finalizado
                 t.trigger('superform.ajax.done', [html, el]);
                 //actualizar el nodo si target es un elemento html
                 _superformUpdate(t, el, html);
             }).fail( function(html, status, xhr) {
-                // console.log(status);
+                // console.log(html,status,xhr);
                 if(status != 'abort') alert('Error, status return not success: ' +  status);
             });
         }
@@ -136,11 +157,11 @@
             else {
                 //actualizar html
                 var new_el = $(html).find('li.element#' + el.attr('id'));
-                //obtener el foco
+                //obtener el foco por si se esta escribiendo en algun text/textarea
                 var $focused = $(document.activeElement);
                 // console.log($focused,$focused[0].tagName,$focused.attr('class'),$focused.attr('id'));
                 var focusedElement = $focused[0].tagName.toLowerCase() + '#' + $focused.attr('id');
-                console.log(focusedElement);
+                // console.log(focusedElement);
 
                 //evento de antes de actualizar
                 t.trigger('superform.dom.started', [html, new_el]);
@@ -294,6 +315,9 @@
 $(function() {
 
     //Probablemente esto no deberia estar aqui pues no forma parte del plugin en si
+    //
+    //
+
     //inicializacion de datepicker
     $('div.superform').delegate('li.element input.datepicker', 'focus', function(event) {
         var input = $(event.target);
@@ -350,6 +374,50 @@ $(function() {
 
         });
 
+    });
+
+
+    // Deteccion de campos tipo FILE, si el tamaño és demasiado grande
+    // @FIXME verificar tipos de campos multiple
+    $('div.superform').delegate('input[type="file"]', 'change', function(event){
+        var input = $(event.target);
+        //2 M, tamaño máximo aunque esto seria mejor desde una variable global de configuración
+        var MAX_FILE_SIZE = 2;
+        //Esto solo funciona en HTML5
+        try {
+            //el mensaje de error deberia venir de configuraciones globales también
+            if(this.files[0].size > MAX_FILE_SIZE * 1024 * 1024) {
+                alert('File too big! Please try a smaller file than ' + MAX_FILE_SIZE + 'Mb.');
+                input.val('');
+                return false;
+            }
+            //auto-actualizacion si lleva la clase autoupdate
+            // @TODO, poner barra de progreso
+            /*
+            if(input.closest('div.superform').hasClass('autoupdate')) {
+                // input.closest('form').submit();
+                var li = input.closest('div.superform > div.elements > ol > li.element');
+                // alert(li[0].id)
+                if(li[0].__updating === undefined) {
+                    li[0].__updating = null;
+                }
+                clearTimeout(li[0].__updating);
+
+                var files = {};
+                files[this.name] = this.files[0];
+                console.log('files',files);
+                li[0].__updating = setTimeout(function () {
+                    li.superform({data:files});
+                    li.one('superform.ajax.done', function (event, html, new_el) {
+                        //Como html es un string, solo actualiza contenido, no reenvia los datos
+                        //Actualizar galeria
+                       $('li.element#gallery').superform(html);
+                    });
+                }, 10);
+            }
+            */
+
+        }catch(e){}
     });
 
     //auto-actualizacion de elementos si el superform tiene la clase autoupdate
