@@ -81,9 +81,7 @@ namespace Goteo\Model\Project {
          * @param void
          * @return array
          */
-		public static function getNames ($project = null, $limit = null) {
-
-            $lang = \LANG;
+		public static function getNames ($project = null, $limit = null, $lang = \LANG) {
 
             $array = array ();
             try {
