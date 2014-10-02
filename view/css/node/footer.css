@@ -8,18 +8,18 @@ div#footer div.block p{line-height:20px}
 div#footer div.block ul li{line-height:16px;margin-bottom:5px;font-size:11px}
 div#footer div.block ul li a{font-size:12px;color:#a1a1a4}
 
-div#footer div.block.about{width:195px;padding:0 15px 0}
+div#footer div.block.about{width:215px;padding:0 15px 0}
 div#footer div.block.about span.title{background: url("/view/css/header/goteo.png") no-repeat scroll left center transparent;	display: block;	height: 36px;	text-indent: 2000px;	width: 105px;	overflow:hidden;margin-bottom:5px}
 div#footer div.block.about span.title:hover{background:url("/view/css/header/goteo.png") no-repeat scroll center right transparent}
 div#footer div.block.about p a, div#footer div.block.about p span {font-size:12px;color:#57c6c5;}
 
-div#footer div.block.help{width:165px}
+div#footer div.block.help{width:135px}
 div#footer div.block.help span.title{color:#e85e5e;}
 
-div#footer div.block.creators{width:185px}
+div#footer div.block.creators{width:203px;}
 div#footer div.block.creators span.title{color:#1ab3b0}
 
-div#footer div.block.investors{width:185px}
+div#footer div.block.investors{width:177px}
 div#footer div.block.investors span.title{color:#0a4f99;}
 
 div#footer div.block.social{width:110px !important}
