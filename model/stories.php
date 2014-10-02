@@ -163,6 +163,7 @@ namespace Goteo\Model {
                 $eng_join_open_tags
                 WHERE stories.node = :node
                 $sqlFilter
+                GROUP BY id
                 ORDER BY `order` ASC
                 ", array(':node' => $node, ':lang' => \LANG));
 
