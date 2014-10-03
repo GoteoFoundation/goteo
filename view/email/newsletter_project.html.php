@@ -41,8 +41,14 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
     </div>
     
     <div style="width: 226px; padding-bottom:10px;">
-        <?php if (!empty($project->image) && ($project->image instanceof Image)): ?>
-        <a href="<?php echo $url ?>"><img alt="<?php echo $project->name ?>" src="<?php echo $project->image->getLink(255, 130, true) ?>" width="255" height="130" /></a>
+        <?php if (!empty($project->image) && ($project->image instanceof Image)):
+
+            $url_imagen = $project->image->getLink(255, 130, true);
+            if (strpos($url_imagen, '//') === 0) {
+                $url_imagen = 'http://'.substr($url_imagen, 2);
+            }
+            ?>
+        <a href="<?php echo $url ?>"><img alt="<?php echo $project->name ?>" src="<?php echo $url_imagen; ?>" width="255" height="130" /></a>
         <?php endif ?>
     </div>
     
