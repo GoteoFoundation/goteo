@@ -49,6 +49,12 @@ foreach ($project->supports as $support) {
             'type'      => 'group',
             'class'     => 'support editsupport',
             'children'  => array(
+
+                "support-{$support->id}-edit" => array(
+                    'type' => 'hidden',
+                    'value' => 1
+                ),
+
                 "support-{$support->id}-support" => array(
                     'title'     => Text::get('supports-field-support'),
                     'type'      => 'textbox',
