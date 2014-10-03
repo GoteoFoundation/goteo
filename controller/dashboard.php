@@ -214,21 +214,42 @@ namespace Goteo\Controller {
             // verificación de proyectos y proyecto de trabajo
             list($project, $projects) = Dashboard\Projects::verifyProject($user, $action);
 
-            // teniendo proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
-            if ($option == 'updates') $blog = Dashboard\Projects::verifyBlog($project);
+            // verificación de registros según $option
+            switch ($option) {
+                case 'updates':
+                    // teniendo proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
+                    $blog = Dashboard\Projects::verifyBlog($project);
 
-            // sacaexcel de cofinanciadores
-            if ($option == 'rewards' && $action == 'table') {
-                $response = new \Goteo\Controller\Sacaexcel;
-                return $response->index('investors', $project->id);
+                    // SubControlador para add, edit, delete y list
+                    // devuelve $post en las acciones add y edit y $posts en delete y list
+                    // maneja por referencia $action, $posts y $errors
+                    list($post, $posts) = Dashboard\Projects::prepare_updates($action, $id, $blog->id);
+
+                    break;
+
+                case 'rewards':
+                    // sacaexcel de cofinanciadores
+                    if ($action == 'table') {
+                        $response = new \Goteo\Controller\Sacaexcel;
+                        return $response->index('investors', $project->id);
+                    }
+
+                    break;
+
+                case 'commons':
+                    // retornos colectivos
+                    $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social');
+
+                    if ($project->status != 4 && empty($project->social_rewards)) {
+                        Message::Error('Este proyecto no tiene retornos colectivos');
+                        throw new Redirection('/dashboard/projects/');
+                    }
+
+                    break;
+
+                case '':
+                    break;
             }
-
-            // ojo si no tiene retornos
-            if ($option == 'commons' && empty($project->social_rewards)) {
-                Message::Error('Este proyecto no tiene retornos colectivos');
-                throw new Redirection('/dashboard/projects/');
-            }
-
 
             // procesamiento de formularios
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -274,15 +295,13 @@ namespace Goteo\Controller {
                         break;
 
                 }
+
+                // redirección
+
+
             }
 
-            // SubControlador para add, edit, delete y list
-            // devuelve $post en las acciones add y edit y $posts en delete y list
-            // maneja por referencia $action, $posts y $errors
-            if ($option == 'updates') {
-                list($post, $posts) = Dashboard\Projects::prepare_updates($action, $id, $blog->id);
-            }
-
+            // Preparación de la vista
 
             // view data basico para esta seccion
             $viewData = array(
@@ -304,7 +323,7 @@ namespace Goteo\Controller {
                 // gestionar recompensas
                 case 'rewards':
                     // recompensas ofrecidas
-                    $viewData['rewards'] = Model\Project\Reward::getAll($project->id, 'individual', LANG);
+                    $viewData['rewards'] = Model\Project\Reward::getAll($project->id, 'individual');
                     // aportes para este proyecto
                     $viewData['invests'] = Model\Invest::getAll($project->id);
                     // ver por (esto son orden y filtros)
@@ -339,7 +358,7 @@ namespace Goteo\Controller {
                                 $reward = Model\Project\Reward::get($_GET['reward_id']);
 
                                 // en dashboard, impulsor solo puede editar retornos bonus y solo cuando proyecto estado 4
-                                if ( $project->status != 4 || !$reward->bonus ) {
+                                if ( $project->status != 4 && !$reward->bonus ) {
                                     throw new Redirection('/dashboard/projects/commons');
                                 }
                             }
@@ -555,13 +574,13 @@ namespace Goteo\Controller {
                         // si lo tenemos en sesion una id de proyecto
                         if ( isset($_SESSION['translate_project']) ) {
 
-                            $id = (is_object($_SESSION['translate_project'])) ? $_SESSION['translate_project']->id : $_SESSION['translate_project'];
+                            $proj_id = (is_object($_SESSION['translate_project'])) ? $_SESSION['translate_project']->id : $_SESSION['translate_project'];
 
                             // instancia original
-                            $project_original = Model\Project::get($id, null); // $lang = null para sacar idioma original
+                            $project_original = Model\Project::get($proj_id, null); // $lang = null para sacar idioma original
 
                             // instancia traducción
-                            $project = Model\Project::get($id, $_SESSION['translate_lang']);
+                            $project = Model\Project::get($proj_id, $_SESSION['translate_lang']);
 
                         } else {
 
