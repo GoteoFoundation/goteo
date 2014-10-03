@@ -40,7 +40,7 @@ namespace Goteo\Model\Blog {
                 //Obtenemos el idioma de soporte
                 $lang=self::default_lang_by_id($id, 'post_lang', $lang);
 
-                $query = static::query("
+                $sql = "
                     SELECT
                         post.id as id,
                         post.blog as blog,
@@ -82,7 +82,11 @@ namespace Goteo\Model\Blog {
                             ON node.id = blog.owner
                             AND blog.type = 'node'
                     WHERE post.id = :id
-                    ", array(':id' => $id, ':lang'=>$lang));
+                    ";
+
+                $values = array(':id' => $id, ':lang'=>$lang);
+
+                $query = static::query($sql, $values);
 
                 $post = $query->fetchObject('\Goteo\Model\Blog\Post');
 
