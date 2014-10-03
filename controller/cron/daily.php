@@ -26,7 +26,7 @@ namespace Goteo\Controller\Cron {
             // Publicación automática de campañas:
             // Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
             // A esos les cambia el estado a publicado.
-            $projects = Model\Project::getList(array('status' => 2, 'published' => date('Y-m-d') ));
+            $projects = Model\Project::getPublishToday();
             if ($debug) {
                 echo 'Publicación de proyectos automática: ';
                 if (count($projects) > 0) {
@@ -340,8 +340,7 @@ namespace Goteo\Controller\Cron {
             
             // Obtiene los proyectos que llevan 10 meses con status=4 (proyecto financiado) y
             // envía un correo a los asesores del proyecto en caso de que no consten aún los retornos colectivos
-            $success_date = date('Y-m-d', strtotime("-10 month"));
-            $projects = Model\Project::getList(array('status' => 4, 'success' => $success_date));
+            $projects = Model\Project::getFunded(10);
 
             $filtered_projects = array_filter($projects, 
                 function($project) {

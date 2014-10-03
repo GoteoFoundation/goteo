@@ -121,7 +121,7 @@ namespace Goteo\Controller {
                         $invest->called = null;
                     } else  {
                         $invest->called = $projectData->called;
-                        $invest->maxdrop = Model\Call\Project::currMaxdrop($projectData, $invest->amount);
+                        $invest->maxdrop = Model\Call\Project::setMaxdrop($projectData, $invest->amount);
                     }
 
                 } else {

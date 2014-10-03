@@ -4,7 +4,7 @@ use Goteo\Library\Text,
 
 $status = $this['status'];
 
-$translator = ACL::check('/translate') ? true : false;
+$translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 ?>
 <a href="/admin/promote/add" class="button">Nuevo destacado</a>
 

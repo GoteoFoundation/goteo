@@ -500,6 +500,8 @@ namespace Goteo\Model\Blog {
         public function save (&$errors = array()) {
             if (empty($this->blog)) return false;
 
+            $set = '';
+
             $fields = array(
                 'id',
                 'blog',
@@ -588,6 +590,8 @@ namespace Goteo\Model\Blog {
         }
 
         public function saveLang (&$errors = array()) {
+
+            $set = '';
 
             $fields = array(
                 'id'=>'id',

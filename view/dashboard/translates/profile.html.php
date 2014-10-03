@@ -19,6 +19,7 @@ $sfid = 'sf-project-profile';
     'method'        => 'post',
     'title'         => '',
     'hint'          => Text::get('guide-project-user-information'),
+    /*
     'footer'        => array(
         'view-step-preview' => array(
             'type'  => 'submit',
@@ -27,6 +28,7 @@ $sfid = 'sf-project-profile';
             'class' => 'next'
         )
     ),
+    */
     'elements'      => array(
         'process_userProfile' => array (
             'type' => 'hidden',

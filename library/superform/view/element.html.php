@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Goteo\Core\View;
 
@@ -10,17 +10,16 @@ $element = $this['element'];
 <?php endif ?>
 
 <?php if ('' !== ($innerHTML = $element->getInnerHTML())): ?>
-<div class="contents">    
-    <?php echo $innerHTML?>            
+<div class="contents">
+    <?php echo $innerHTML?>
 </div>
 <?php endif ?>
 
 <?php if (!empty($element->errors) || !empty($element->hint)): ?>
-<div class="feedback" id="superform-feedback-for-<?php echo htmlspecialchars($element->id) ?>"
-    <?php if (in_array($element->id, array('user_avatar', 'images')) && !empty($element->errors)) echo ' style="display:block;"'; ?>>
+<div class="feedback" id="superform-feedback-for-<?php echo htmlspecialchars($element->id) ?>"<?php if (in_array($element->id, array('user_avatar', 'images')) && !empty($element->errors)) echo ' style="display:block;"'; ?>>
 
     <?php if (!empty($element->errors)): ?>
-    <div class="error">        
+    <div class="error">
         <?php foreach ($element->errors as $error): ?>
         <blockquote><?php echo $error ?></blockquote>
         <?php endforeach ?>
@@ -32,7 +31,7 @@ $element = $this['element'];
         <blockquote><?php echo $element->hint ?></blockquote>
     </div>
     <?php endif ?>
-    
+
 </div>
 <?php endif ?>
 

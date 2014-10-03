@@ -1,9 +1,7 @@
 <?php
 
-use Goteo\Library\Text;
-
-// paginacion
-require_once 'library/pagination/pagination.php';
+use Goteo\Core\View,
+    Goteo\Library\Text;
 
 $filters = $this['filters'];
 
@@ -12,7 +10,6 @@ foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/translates" class="button">Asignar traductores</a>
 
@@ -109,14 +106,12 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
 <?php elseif (empty($this['projects'])) : ?>
     <p>No se han encontrado registros</p>
-<?php else: ?>
-    <p><strong>OJO!</strong> Resultado limitado a 999 registros como máximo.</p>
 <?php endif; ?>
 </div>
 
     
-<?php if (!empty($this['projects'])) : 
-    while ($project = $pagedResults->fetchPagedRow()) : 
+<?php if (!empty($this['projects'])) {
+    foreach ($this['projects'] as $project) {
 ?>
 <div class="widget board">
     <table>
@@ -225,9 +220,8 @@ $pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_G
 
     </table>
 </div>
-<?php endwhile; ?>
-<ul id="pagination">
-<?php   $pagedResults->setLayout(new DoubleBarLayout());
-        echo $pagedResults->fetchPagedNavigation($the_filters); ?>
-</ul>
-<?php endif; ?>
+    <?php }
+        $this['queryVars'] = $the_filters;
+        echo new View('view/pagination.html.php', $this);
+    }
+    ?>

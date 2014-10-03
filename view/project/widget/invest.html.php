@@ -24,7 +24,7 @@ if (isset($_SESSION['invest-amount'])) {
 if ($project->called instanceof Call && $project->called->dropable) {
     $call = $project->called;
     $rest = $call->rest;
-    $maxdrop = Call\Project::currMaxdrop($project);
+    $maxdrop = Call\Project::setMaxdrop($project);
 
     // a ver si este usuario ya ha regado este proyecto
     if ($_SESSION['user'] instanceof User) {
@@ -66,7 +66,7 @@ $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
 <div class="widget project-invest project-called">
 <?php if ($allready > 0) : ?>
     <p><?php echo Text::html('invest-called-allready', $call->name) ?></p>
-<?php elseif ($call->project_got >= $call->maxproj) : ?>
+<?php elseif ($project->amount_call >= $call->maxproj) : ?>
     <p><?php echo Text::html('invest-called-maxproj', $call->name) ?></p>
 <?php elseif ($rest > 0) : ?>
     <input type="hidden" id="rest" name="rest" value="<?php echo $rest ?>" />

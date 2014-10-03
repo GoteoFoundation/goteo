@@ -93,6 +93,12 @@ echo new SuperForm(array(
             'type' => 'hidden',
             'value' => 'userProfile'
         ),
+
+        'anchor-profile' => array(
+            'type' => 'html',
+            'html' => '<a name="profile"></a>'
+        ),
+
         'user_name' => array(
             'type'      => 'textbox',
             'required'  => true,
@@ -138,12 +144,12 @@ echo new SuperForm(array(
                 ),
                 'avatar-current' => array(
                     'type' => 'hidden',
-                    'value' => $user->avatar->id == 1 ? '' : $user->avatar->id,
+                    'value' => $user->avatar->id == 'la_gota.png' ? '' : $user->avatar->id,
                 ),
                 'avatar-image' => array(
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
-                    'html'  => is_object($user->avatar) &&  $user->avatar->id != 1 ?
+                    'html'  => is_object($user->avatar) &&  $user->avatar->id != 'la_gota.png' ?
                                $user->avatar . '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
@@ -173,29 +179,12 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['interests']) ? array($okeys['interests']) : array(),
             'options'   => $interests
         ),
-        /* Aligerando superform
-        'user_keywords' => array(
-            'type'      => 'textbox',
-            'required'  => true,
-            'size'      => 20,
-            'title'     => Text::get('profile-field-keywords'),
-            'hint'      => Text::get('tooltip-user-keywords'),
-            'errors'    => !empty($errors['keywords']) ? array($errors['keywords']) : array(),
-            'ok'        => !empty($okeys['keywords']) ? array($okeys['keywords']) : array(),
-            'value'     => $user->keywords
+
+        'anchor-webs' => array(
+            'type' => 'html',
+            'html' => '<a name="webs"></a>'
         ),
-        'user_contribution' => array(
-            'type'      => 'textarea',
-            'required'  => true,
-            'cols'      => 40,
-            'rows'      => 4,
-            'title'     => Text::get('profile-field-contribution'),
-            'hint'      => Text::get('tooltip-user-contribution'),
-            'errors'    => !empty($errors['contribution']) ? array($errors['contribution']) : array(),
-            'ok'        => !empty($okeys['contribution']) ? array($okeys['contribution']) : array(),
-            'value'     => $user->contribution
-        ),
-         */
+
         'user_webs' => array(
             'type'      => 'group',
             'required'  => true,
@@ -300,31 +289,31 @@ $(function () {
     var webs = $('div#<?php echo $sfid ?> li.element#user_webs');
 
     webs.delegate('li.element.web input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(webs, data);
-        event.preventDefault();
+        webs.superform({data:data});
     });
 
     webs.delegate('li.element.editweb input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(webs, data);
-        event.preventDefault();
+        webs.superform({data:data});
     });
 
     webs.delegate('li.element.editweb input.remove, li.element.web input.remove', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(webs, data);
-        event.preventDefault();
+        webs.superform({data:data});
     });
 
     webs.delegate('#web-add input', 'click', function (event) {
+       event.preventDefault();
        var data = {};
        data[this.name] = '1';
-       Superform.update(webs, data);
-       event.preventDefault();
+       webs.superform({data:data});
     });
 
 });

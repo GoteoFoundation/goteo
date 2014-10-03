@@ -61,6 +61,14 @@ namespace Goteo\Controller {
 
             // muy especial para traducción de nodo
             if ($table == 'node') {
+
+                // verificar si este usuario puede traducir este nodo
+                if ( !Model\User\Translate::is_legal($_SESSION['user']->id, $id, 'node') ) {
+                    Message::Info(Text::get('user-login-required-access'));
+                    throw new Redirection('/dashboard/translates');
+                }
+
+
                 $BC = self::menu(array(
                     'section' => 'node',
                     'node' => $action,

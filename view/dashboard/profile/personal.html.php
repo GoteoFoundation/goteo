@@ -3,8 +3,6 @@
 use Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-define('ADMIN_NOAUTOSAVE', true);
-
 $errors = $this['errors'];
 $personal = $this['personal'];
 $this['level'] = 3;
@@ -14,6 +12,8 @@ $this['level'] = 3;
 
 <?php
 echo new SuperForm(array(
+    //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
+    // 'autoupdate'    => false,
 
     'level'         => $this['level'],
     'method'        => 'post',

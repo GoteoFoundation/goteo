@@ -36,9 +36,9 @@ namespace Goteo\Controller {
             $grant = false;
             if ($contract->project_user == $_SESSION['user']->id)  // es el dueño del proyecto
                 $grant = true;
-            elseif (ACL::check('/project/edit/'.$id))  // puede editar el proyecto
+            elseif (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE)  // es un admin de central
                 $grant = true;
-            elseif (ACL::check('/project/edit/todos'))  // es un admin
+            elseif (isset($_SESSION['user']->roles['superadmin'])) // es superadmin
                 $grant = true;
 
             // si lo puede ver

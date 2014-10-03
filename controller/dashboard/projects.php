@@ -30,10 +30,11 @@ namespace Goteo\Controller\Dashboard {
          * Verificación de proyecto de trabajo
          *
          * @param object $user instancia Model\User del convocador
-         * @param string $action por si es 'select'
+         * @param string $action por si es 'select' y para el redirect
+         * @param string $option para el redirect
          * @return array(project, projects)
          */
-        public static function verifyProject($user, $action) {
+        public static function verifyProject($user, $action = 'list', $option = 'summary') {
 
             $projects = Model\Project::ofmine($user->id); // sus proyectos
 
@@ -42,38 +43,38 @@ namespace Goteo\Controller\Dashboard {
                 return array(null, null);
             }
 
-            // comprobamos que tenga los permisos para editar y borrar
-            foreach ($projects as $proj) {
 
-                // comprueba que puede editar sus proyectos
-                if (!ACL::check('/project/edit/' . $proj->id)) {
-                    ACL::allow('/project/edit/' . $proj->id . '/', '*', 'user', $user);
+            try {
+                // si está seleccionando otro proyecto
+                if ( $action == 'select' && !empty($_POST['project']) ) {
+                    $_SESSION['project'] = (object) array ('id' => $_POST['project']);
+                    throw new Redirection('/dashboard/projects/'.$option);
+
+                } elseif ( isset($_SESSION['project']) && !empty($_SESSION['project']->id) ) {
+                    // mantener los datos del proyecto de trabajo
+                    $project = Model\Project::get($_SESSION['project']->id);
+
+                } else {
+                    // si no hay proyecto de trabajo, coger el primero
+                    $project = Model\Project::get($projects[0]->id);;
+
                 }
 
-                // y borrarlos
-                if (!ACL::check('/project/delete/' . $proj->id)) {
-                    ACL::allow('/project/delete/' . $proj->id . '/', '*', 'user', $user);
-                }
+            } catch(\Goteo\Core\Error $e) {
+
+                // Capturar el posible 404 por cambio de id
+                $_SESSION['project'] = null;
+                throw new Redirection('/dashboard/projects/'.$option);
+
             }
 
-            // si está seleccionando otro proyecto
-            if ($action == 'select' && !empty($_POST['project'])) {
-                $project = Model\Project::get($_POST['project']);
-            } elseif (!empty($_SESSION['project']->id)) {
-                // mantener los datos del proyecto de trabajo
-                $project = Model\Project::get($_SESSION['project']->id);
-            }
-
-            // si aun no tiene proyecto de trabajo, coge el primero
-            if (empty($project)) {
-                $project = $projects[0];
-            }
 
             // tiene que volver con un proyecto de trabajo
             if ($project instanceof \Goteo\Model\Project) {
                 $_SESSION['project'] = $project; // lo guardamos en sesión para la próxima verificación
             } else {
-                Message::Error('No se puede trabajar con el proyecto seleccionado, contacta con nosotros');
+                Message::Error('No se puede trabajar con el proyecto seleccionado');
+                throw new Redirection('/dashboard/projects/');
                 $project = null;
             }
 

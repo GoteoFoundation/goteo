@@ -42,12 +42,3 @@ foreach ($contract->errors as $st => $errors) {
     <?php endif; ?>
 
 </div>
-
-<script type="text/javascript">
-$(function () {    
-    $('div.superform').one('sfafterupdate', function (ev, el, html) {
-        Superform.updateElement($('li#errors'), null, html);
-    });
-});
-</script>
-    

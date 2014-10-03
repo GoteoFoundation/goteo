@@ -83,8 +83,12 @@ $level = (int) $this['level'] ?: 3;
                         <?php if (!empty($_SESSION['user'])) : ?>
                         <a class="" href="#" onclick="answer('<?php echo $message->id; ?>', '<?php echo $response ?>')"><?php echo Text::get('project-messages-answer_it'); ?></a>
                         <?php endif; ?>
-                        <?php // si puede borrar este mensaje
-                        if (\Goteo\Core\ACL::check("/message/delete/{$message->id}/{$project->id}")) : ?>
+                        <?php // puede borrar este mensaje si es el impulsor o un admin central o su nodo
+                        if ( $_SESSION['user']->id == $project->owner
+                            || ( isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE )
+                            || ( isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node'] )
+                            || isset($_SESSION['user']->roles['superadmin'])
+                        ) : ?>
                                 <a href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>"><?php echo Text::get('regular-delete'); ?></a>
                         <?php endif ?>
                    </div>
@@ -107,8 +111,12 @@ $level = (int) $this['level'] ?: 3;
                            </h<?php echo $level ?>>
                            <div class="date"><span>Hace <?php echo $child->timeago; ?></span></div>
                            <blockquote><?php echo $child->message; ?></blockquote>
-                           <?php // si puede borrar este mensaje
-                           if (\Goteo\Core\ACL::check("/message/delete/{$child->id}/{$project->id}")) : ?>
+                            <?php // puede borrar este mensaje si es el impulsor o un admin central o su nodo
+                            if ( $_SESSION['user']->id == $project->owner
+                                || ( isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE )
+                                || ( isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node'] )
+                                || isset($_SESSION['user']->roles['superadmin'])
+                            ) : ?>
                            <div class="actions">
                                 <a href="/message/delete/<?php echo $child->id; ?>/<?php echo $project->id; ?>"><?php echo Text::get('regular-delete'); ?></a>
                            </div>
