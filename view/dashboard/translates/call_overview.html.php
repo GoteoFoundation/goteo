@@ -47,6 +47,7 @@ foreach ($this['scope'] as $value => $label) {
 ?>
 <form method="post" action="/dashboard/translates/overview/save" class="project" enctype="multipart/form-data">
 <?php echo new SuperForm(array(
+    'autoupdate'    => false,
     'level'         => 3,
     'action'        => '',
     'method'        => 'post',

@@ -81,6 +81,7 @@ $sfid = 'sf-call-banners';
     'title'         => '',
     'hint'          => Text::get('guide-call-supports'),
     'class'         => 'aqua',
+    /*
     'footer'        => array(
         'view-step-preview' => array(
             'type'  => 'submit',
@@ -89,6 +90,7 @@ $sfid = 'sf-call-banners';
             'class' => 'next'
         )
     ),
+    */
     'elements'      => array(
         'process_banners' => array (
             'type' => 'hidden',

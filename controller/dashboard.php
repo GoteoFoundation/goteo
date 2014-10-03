@@ -251,9 +251,6 @@ namespace Goteo\Controller {
                     break;
 
                 case 'commons':
-                    // retornos colectivos
-                    $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social');
-
                     if ($project->status != 4 && empty($project->social_rewards)) {
                         Message::Error('Este proyecto no tiene retornos colectivos');
                         throw new Redirection('/dashboard/projects/');
@@ -261,7 +258,7 @@ namespace Goteo\Controller {
 
                     break;
 
-                case '':
+                case 'supports':
                     break;
             }
 
@@ -281,8 +278,6 @@ namespace Goteo\Controller {
                         //procesamos el envio de mails
                         if ($action == 'message') {
                             Dashboard\Projects::process_mailing($option, $project);
-                            // y lo devolvemos a donde estaba
-                            throw new Redirection('/dashboard/projects/' . $option);
                         }
                         break;
 
@@ -301,6 +296,10 @@ namespace Goteo\Controller {
                         if (empty($_POST['blog']) || $_POST['blog'] != $blog->id) throw new Redirection('/dashboard/projects/summary');
 
                         list($action, $id) = Dashboard\Projects::process_updates($action, $project, $errors);
+
+                        // redirección
+                        throw new Redirection('/dashboard/projects/'.$option);
+
                         break;
 
                     // gestión retornos
@@ -309,10 +308,6 @@ namespace Goteo\Controller {
                         break;
 
                 }
-
-                // redirección
-
-
             }
 
             // Preparación de la vista
@@ -451,7 +446,7 @@ namespace Goteo\Controller {
                         }
                     }
 
-                    $project->supports = Model\Project\Support::getAll($project->id);
+                  //  $project->supports = Model\Project\Support::getAll($project->id);
                     break;
 
                 // publicar actualizaciones

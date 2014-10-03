@@ -100,6 +100,7 @@ $sfid = 'sf-project-costs';
     'title'         => '',
     'hint'          => Text::get('guide-project-supports'),
     'class'         => 'aqua',
+    /*
     'footer'        => array(
         'view-step-preview' => array(
             'type'  => 'submit',
@@ -108,6 +109,7 @@ $sfid = 'sf-project-costs';
             'class' => 'next'
         )
     ),
+    */
     'elements'      => array(
         'process_costs' => array (
             'type' => 'hidden',

@@ -57,7 +57,7 @@ $errors = $this['errors'];
 
     <?php echo new SuperForm(array(
         //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
-        // 'autoupdate'    => false,
+        'autoupdate'    => false,
 
         'action'        => '',
         'level'         => 3,
