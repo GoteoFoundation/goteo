@@ -935,11 +935,13 @@ namespace Goteo\Model {
 
             $debug = false;
 
+            $lang = \LANG;
+
             $sqlFilter = '';
             $sqlJoin = '';
 
             $list = array();
-            $values = array();
+            $values = array(':lang'=>$lang);
 
             if (in_array($status, array(3, 4, 5))) {
                 $sqlFilter .= " WHERE call.status = $status"; // solo cierto estado
@@ -959,7 +961,7 @@ namespace Goteo\Model {
             }
 
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(call_lang.name, call.name) as name,
                             IFNULL(call_lang.subtitle, call.subtitle) as subtitle,
                             IFNULL(call_lang.resources, call.resources) as resources
@@ -988,9 +990,9 @@ namespace Goteo\Model {
                          user.email as user_email,
                       $different_select
                     FROM  `call`
+                    LEFT JOIN call_lang ON  call_lang.id = call.id AND call_lang.lang = :lang
                     LEFT JOIN user ON user.id = `call`.owner
                     $sqlJoin
-                    LEFT JOIN call_lang ON  call_lang.id = call.id
                     $eng_join
                     $sqlFilter
                     ORDER BY `call`.name ASC";
@@ -1080,7 +1082,7 @@ namespace Goteo\Model {
 
         /**
          * Saca una lista completa de convocatorias
-         *  para gestión
+         *  para gestión /admin/calls
          *
          * @param array filters
          * @return array of call instances
