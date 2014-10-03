@@ -297,9 +297,6 @@ namespace Goteo\Controller {
 
                         list($action, $id) = Dashboard\Projects::process_updates($action, $project, $errors);
 
-                        // redirección
-                        throw new Redirection('/dashboard/projects/'.$option);
-
                         break;
 
                     // gestión retornos
