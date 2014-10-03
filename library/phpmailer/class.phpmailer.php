@@ -417,6 +417,7 @@ class PHPMailer {
               strpos($address, 'javicarrillo83@gmail.com') !== false ||
               strpos($address, 'ivan@microstudi.net') !== false ||
               strpos($address, 'esenabre@gmail.com') !== false ||
+              strpos($address, 'mmtarres@gmail.com') !== false ||
               strpos($address, 'olivierschulbaum@gmail.com') !== false
               ) {
             return $this->AddAnAddress('to', $address, $name);
