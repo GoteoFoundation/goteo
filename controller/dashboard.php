@@ -297,6 +297,13 @@ namespace Goteo\Controller {
 
                         list($action, $id) = Dashboard\Projects::process_updates($action, $project, $errors);
 
+                        // redirección si han pulsado guardar
+                        if ($action == 'edit') {
+                            throw new Redirection('/dashboard/projects/'.$option.'/'.$action.'/'.$id);
+                        } else {
+                            throw new Redirection('/dashboard/projects/'.$option.'/'.$action);
+                        }
+
                         break;
 
                     // gestión retornos
