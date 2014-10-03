@@ -2455,36 +2455,6 @@ namespace Goteo\Model {
             return $projects;
         }
 
-        /**
-         * Cuenta el numero de items segun el tipo
-         * @param type $sql
-         * @param int $page Numero de página que se muestra
-         * @param int $items_per_page
-         * @return int $pages
-         * @see published
-         */
-        public static function published_count($sql, $values, &$page, $items_per_page = 9) {
-
-            $query = self::query($sql, $values);
-            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
-
-            $total = $query->fetchColumn();
-
-            //rango
-            if ($total == 0) {
-                $page = 1;
-            } elseif ($page > $total) {
-                $page = $total;
-            } elseif ($page < 1) {
-                $page = 1;
-            }
-
-            $offset = $items_per_page * ($page - 1);
-            $pages = ceil($total / $items_per_page);
-
-            return array('pages' => $pages, 'offset' => $offset);
-        }
-
 
         /*
          * Lista de proyectos publicados
@@ -2596,7 +2566,7 @@ namespace Goteo\Model {
                 WHERE $where
                 ";
 
-            $ret = self::published_count($sql_count, $values, $page, $limit);
+            $ret = self::doPagination($sql_count, $values, $page, $limit);
             $offset = $ret['offset'];
             $pages = $ret['pages'];
 
@@ -2800,12 +2770,53 @@ namespace Goteo\Model {
         }
 
         /**
+         * Obtiene los proyectos que llevan $months meses con status=4 (proyecto financiado) y
+         *
+         * @param int $months
+         * @return $projects
+         */
+        public static function getFunded($months = 10) {
+            $success_date = date('Y-m-d', strtotime("-$months month"));
+
+            $projects = self::getList(
+                            array('status' => 4, 'success' => $success_date),
+                            null,
+                            0,
+                            $dummy
+                        );
+
+            return $projects;
+        }
+
+
+        /**
+         * Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
+         *
+         * @param type $date
+         * @return $projects
+         */
+        public static function getPublishToday() {
+            $projects = self::getList(
+                            array('status' => 2, 'published' => date('Y-m-d') ),
+                            null,
+                            0,
+                            $dummy
+                        );
+
+            return $projects;
+        }
+
+        /**
          * Saca una lista completa de proyectos
          *
+         * @param array filters
          * @param string node id
+         * @param int limit items per page or 0 for unlimited
+         * @param int page
+         * @param int pages
          * @return array of project instances
          */
-        public static function getList($filters = array(), $node = null) {
+        public static function getList($filters = array(), $node = null, $limit = 10, &$pages, $page = 1) {
 
             $debug = (isset($_GET['dbg']) && $_GET['dbg'] == 'debug');
 
@@ -2930,6 +2941,26 @@ namespace Goteo\Model {
                 }
             }
 
+            $where = "project.id != ''
+                      $sqlFilter
+                      $sqlOrder";
+
+            if ($limit != 0) {
+                $sql_count ="
+                    SELECT COUNT(id)
+                    FROM project
+                    WHERE $where
+                    ";
+
+                $ret = self::doPagination($sql_count, $values, $page, $limit);
+                $offset = $ret['offset'];
+                $pages = $ret['pages'];
+
+                $limit_cond = "LIMIT $offset,$limit";
+            } else {
+                $limit_cond = "";
+            }
+
             // la select
             //@Javier: esto es de admin pero meter los campos en la select y no usar getMedium ni getWidget.
             // Si la lista de proyectos necesita campos calculados lo añadimos aqui  (ver view/admin/projects/list.html.php)
@@ -2969,11 +3000,8 @@ namespace Goteo\Model {
                     ON user.id=project.owner
 
                     $sqlConsultantFilter
-                    WHERE project.id != ''
-                        $sqlFilter
-                        $sqlOrder
-
-                    LIMIT 999
+                    WHERE $where
+                    $limit_cond
                     ";
 
 

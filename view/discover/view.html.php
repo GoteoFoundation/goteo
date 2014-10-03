@@ -3,9 +3,6 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-// en la página de cofinanciadores, paginación de 20 en 20
-require_once 'library/pagination/pagination.php';
-
 $bodyClass = 'discover';
 
 include 'view/prologue.html.php';
@@ -30,7 +27,7 @@ include 'view/header.html.php' ?>
                 } ?>
             </div>
 
-            <?php echo new View('view/discover/pagination.html.php', $this); ?>
+            <?php echo new View('view/pagination.html.php', $this); ?>
         </div>        
 
         <?php include 'view/footer.html.php' ?>
