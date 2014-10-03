@@ -131,6 +131,7 @@ $sfid = 'sf-project-supports';
     'title'         => '',
     'hint'          => Text::get('guide-project-supports'),
     'class'         => 'aqua',
+    /*
     'footer'        => array(
         'view-step-preview' => array(
             'type'  => 'submit',
@@ -139,6 +140,7 @@ $sfid = 'sf-project-supports';
             'class' => 'next'
         )
     ),
+    */
     'elements'      => array(
         'process_supports' => array (
             'type' => 'hidden',

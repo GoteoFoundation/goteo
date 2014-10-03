@@ -47,15 +47,16 @@ namespace Goteo\Controller\Dashboard {
             try {
                 // si está seleccionando otro proyecto
                 if ( $action == 'select' && !empty($_POST['project']) ) {
-                    $project = Model\Project::getMedium($_POST['project']);
+                    $_SESSION['project'] = (object) array ('id' => $_POST['project']);
+                    throw new Redirection('/dashboard/projects/'.$option);
 
                 } elseif ( isset($_SESSION['project']) && !empty($_SESSION['project']->id) ) {
                     // mantener los datos del proyecto de trabajo
-                    $project = Model\Project::getMedium($_SESSION['project']->id);
+                    $project = Model\Project::get($_SESSION['project']->id);
 
                 } else {
                     // si no hay proyecto de trabajo, coger el primero
-                    $project = $projects[0];
+                    $project = Model\Project::get($projects[0]->id);;
 
                 }
 
@@ -63,7 +64,7 @@ namespace Goteo\Controller\Dashboard {
 
                 // Capturar el posible 404 por cambio de id
                 $_SESSION['project'] = null;
-                throw new Redirection('/dashboard/projects/'.$option.'/'.$action);
+                throw new Redirection('/dashboard/projects/'.$option);
 
             }
 
@@ -72,7 +73,8 @@ namespace Goteo\Controller\Dashboard {
             if ($project instanceof \Goteo\Model\Project) {
                 $_SESSION['project'] = $project; // lo guardamos en sesión para la próxima verificación
             } else {
-                Message::Error('No se puede trabajar con el proyecto seleccionado, contacta con nosotros');
+                Message::Error('No se puede trabajar con el proyecto seleccionado');
+                throw new Redirection('/dashboard/projects/');
                 $project = null;
             }
 

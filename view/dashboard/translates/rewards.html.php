@@ -228,6 +228,7 @@ $sfid = 'sf-project-rewards';
     'title'         => '',
     'hint'          => Text::get('guide-project-supports'),
     'class'         => 'aqua',
+    /*
     'footer'        => array(
         'view-step-preview' => array(
             'type'  => 'submit',
@@ -236,6 +237,7 @@ $sfid = 'sf-project-rewards';
             'class' => 'next'
         )
     ),
+    */
     'elements'      => array(
         'process_rewards' => array (
             'type' => 'hidden',
