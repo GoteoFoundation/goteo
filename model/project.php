@@ -2479,8 +2479,6 @@ namespace Goteo\Model {
                 $sqlFilter = "";
             }
 
-            $values[':lang'] = \LANG;
-
             // segun el tipo (ver controller/discover.php)
             switch ($type) {
                 case 'popular':
@@ -2621,6 +2619,8 @@ namespace Goteo\Model {
                 ORDER BY $order
                 LIMIT $offset,$limit
                 ";
+
+            $values[':lang'] = \LANG;
 
             $projects = array();
             $query = self::query($sql, $values);
