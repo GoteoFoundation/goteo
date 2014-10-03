@@ -10,9 +10,10 @@ $contract = $this['contract'];
 
 $steps  = new View('view/contract/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $contract->errors));
 
-if (!$contract->status->owner) 
+if (!$contract->status->owner)
     Message::Info(Text::get('form-ajax-info'));
 
+$superform = true;
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
@@ -36,6 +37,15 @@ include 'view/prologue.html.php';
             <?php echo new View("view/contract/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
 
             <?php echo $steps ?>
+
+            <script type="text/javascript">
+            $(function () {
+                $('div.superform').bind('superform.ajax.done', function (event, html, new_el) {
+                    $('li#errors').superform(html);
+                });
+            });
+            </script>
+
 
         </form>
 

@@ -12,7 +12,7 @@ if ($option == 'location') $jsreq_autocomplete = true;
 
 // funcionalidades con ckeditor
 $jsreq_ckeditor = $this['ckeditor'];
-
+$superform = true;
 include 'view/prologue.html.php';
 include 'view/header.html.php'; ?>
 

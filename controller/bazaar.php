@@ -53,7 +53,7 @@ namespace Goteo\Controller {
                 $page->home = false;
 
                 // veamos si puede usar paypal
-                $item->project->called = Model\Call\Project::miniCalled($item->project->id);
+                $item->project->called = Model\Call\Project::calledMini($item->project->id);
                 if ($item->project->called) {
                     $item->project->allowpp = false;
                 } else {
@@ -234,7 +234,7 @@ namespace Goteo\Controller {
                         $invest->called = null;
                     } else  {
                         $invest->called = $projectData->called;
-                        $invest->maxdrop = Model\Call\Project::currMaxdrop($projectData, $invest->amount);
+                        $invest->maxdrop = Model\Call\Project::setMaxdrop($projectData, $invest->amount);
                     }
                 } else {
                     $invest->called = null;

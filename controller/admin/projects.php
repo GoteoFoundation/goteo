@@ -158,7 +158,8 @@ namespace Goteo\Controller\Admin {
                     
                     if ($_POST['proceed'] == 'rebase' && !empty($_POST['newid'])) {
 
-                        $newid = $_POST['newid'];
+                        // verificamos que el nuevo id sea 
+                        $newid = Model\Project::idealiza($_POST['newid']);
 
                         // pimero miramos que no hay otro proyecto con esa id
                         $test = Model\Project::getMini($newid);
@@ -594,11 +595,16 @@ namespace Goteo\Controller\Admin {
                 }
             }
 
-
-
-
             if (!empty($filters['filtered'])) {
-                $projects = Model\Project::getList($filters, $_SESSION['admin_node']);
+                $page = (is_numeric($_GET['page'])) ? $_GET['page'] : 1;
+                $items_per_page = 10;
+
+                $projects = Model\Project::getList($filters,
+                                                    $_SESSION['admin_node'],
+                                                    $items_per_page,
+                                                    $pages,
+                                                    $page
+                            );
             } else {
                 $projects = array();
             }
@@ -628,7 +634,9 @@ namespace Goteo\Controller\Admin {
                     'calls' => $calls,
                     'nodes' => $nodes,
                     'open_tags' => $open_tags,
-                    'orders' => $orders
+                    'orders' => $orders,
+                    'pages' => $pages,
+                    'currentPage' => $page
                 )
             );
             

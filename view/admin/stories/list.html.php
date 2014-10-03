@@ -1,11 +1,11 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Core\ACL;
+    Goteo\Model\User\Translate;
 
 $node = $this['node'];
-$transNode = ACL::check('/translate/node/'.$node) ? true : false;
-$translator = ACL::check('/translate') ? true : false;
+$transNode = Translate::is_legal($_SESSION['user']->id, $node, 'node') ? true : false;
+$translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 ?>
 <a href="/admin/stories/add" class="button">Nueva historia exitosa</a>
 

@@ -139,20 +139,26 @@ namespace Goteo\Controller {
             // segun el tipo cargamos el título de la página
             $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
+            $page = (is_numeric($_GET['page'])) ? $_GET['page'] : 1;
+            $items_per_page = 9;
+            $viewData['list'] = Model\Project::published($type, $items_per_page, $page, $pages);
+            $viewData['pages'] = $pages;
+            $viewData['currentPage'] = $page;
+            
             // segun el tipo cargamos la lista
             if (isset($_GET['list'])) {
-                $viewData['list']  = Model\Project::published($type, null, true);
 
                 return new View(
                     'view/discover/list.html.php',
                     $viewData
                  );
+                
             } else {
-
-                $projects = Model\Project::published($type, 33);
+                
                 // random para retorno cumplido
-                if ($type == 'fulfilled') shuffle ($projects);
-                $viewData['list'] = $projects;
+                if ($type == 'fulfilled') {
+                    shuffle($viewData['list']);
+                }
 
                 return new View(
                     'view/discover/view.html.php',

@@ -22,6 +22,10 @@ if (!empty($project->social_rewards)) {
                     'type'      => 'group',
                     'class'     => 'reward social_reward editsocial_reward',
                     'children'  => array(
+                        "social_reward-{$social_reward->id}-edit" => array(
+                            'type'      => 'hidden',
+                            'value'      => '1'
+                        ),
                         "social_reward-{$social_reward->id}-reward-orig" => array(
                             'title'     => Text::get('rewards-field-social_reward-reward'),
                             'type'      => 'html',
@@ -119,6 +123,10 @@ if (!empty($project->individual_rewards)) {
                     'type'      => 'group',
                     'class'     => 'reward individual_reward editindividual_reward',
                     'children'  => array(
+                        "individual_reward-{$individual_reward->id}-edit" => array(
+                            'type'      => 'hidden',
+                            'value'      => '1'
+                        ),
                         "individual_reward-{$individual_reward->id}-reward-orig" => array(
                             'title'     => Text::get('rewards-field-individual_reward-reward'),
                             'type'      => 'html',
@@ -220,6 +228,7 @@ $sfid = 'sf-project-rewards';
     'title'         => '',
     'hint'          => Text::get('guide-project-supports'),
     'class'         => 'aqua',
+    /*
     'footer'        => array(
         'view-step-preview' => array(
             'type'  => 'submit',
@@ -228,6 +237,7 @@ $sfid = 'sf-project-rewards';
             'class' => 'next'
         )
     ),
+    */
     'elements'      => array(
         'process_rewards' => array (
             'type' => 'hidden',
@@ -265,34 +275,34 @@ $(function () {
     var socials = $('div#<?php echo $sfid ?> li.element#social_rewards');
 
     socials.delegate('li.element.social_reward input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(socials, data);
-        event.preventDefault();
+        socials.superform({data:data});
     });
 
     socials.delegate('li.element.editsocial_reward input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(socials, data);
-        event.preventDefault();
+        socials.superform({data:data});
     });
 
     /* individual_rewards buttons */
     var individuals = $('div#<?php echo $sfid ?> li.element#individual_rewards');
 
     individuals.delegate('li.element.individual_reward input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(individuals, data);
-        event.preventDefault();
+        individuals.superform({data:data});
     });
 
     individuals.delegate('li.element.editindividual_reward input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(individuals, data);
-        event.preventDefault();
+        individuals.superform({data:data});
     });
 
 });

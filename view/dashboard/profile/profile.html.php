@@ -4,8 +4,6 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-define('ADMIN_NOAUTOSAVE', true);
-
 $user   = $this['user'];
 $errors = $this['errors'];
 $this['level'] = 3;
@@ -94,7 +92,12 @@ $sfid = 'sf-project-profile';
 
 <form method="post" action="/dashboard/profile/profile" class="project" enctype="multipart/form-data">
 
-<?php $superarray = array(
+<?php
+
+$superarray = array(
+    //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
+    //'autoupdate'    => false,
+
     'id'            => $sfid,
     'action'        => '',
     'level'         => $this['level'],
@@ -324,31 +327,31 @@ $(function () {
     var webs = $('div#<?php echo $sfid ?> li.element#user_webs');
 
     webs.delegate('li.element.web input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(webs, data);
-        event.preventDefault();
+        webs.superform({data:data});
     });
 
     webs.delegate('li.element.editweb input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(webs, data);
-        event.preventDefault();
+        webs.superform({data:data});
     });
 
     webs.delegate('li.element.editweb input.remove, li.element.web input.remove', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(webs, data);
-        event.preventDefault();
+        webs.superform({data:data});
     });
 
     webs.delegate('#web-add input', 'click', function (event) {
+       event.preventDefault();
        var data = {};
        data[this.name] = '1';
-       Superform.update(webs, data);
-       event.preventDefault();
+       webs.superform({data:data});
     });
 
 });

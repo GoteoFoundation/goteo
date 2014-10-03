@@ -323,15 +323,14 @@ namespace Goteo\Model {
                 $call->banners  = Call\Banner::getList($id, $lang);
 
                 // campos calculados
-                $keepUpdated = true;
 
                 // riego comprometido
-                if (!isset($call->used) || $keepUpdated) {
+                if (!isset($call->used)) {
                     $call->used = $call->getUsed();
                 }
 
                 // riego restante
-                if (!isset($call->rest) || $keepUpdated) {
+                if (!isset($call->rest)) {
                     $call->rest = $call->getRest($call->used);
                 }
 
@@ -936,11 +935,13 @@ namespace Goteo\Model {
 
             $debug = false;
 
+            $lang = \LANG;
+
             $sqlFilter = '';
             $sqlJoin = '';
 
             $list = array();
-            $values = array();
+            $values = array(':lang'=>$lang);
 
             if (in_array($status, array(3, 4, 5))) {
                 $sqlFilter .= " WHERE call.status = $status"; // solo cierto estado
@@ -960,7 +961,7 @@ namespace Goteo\Model {
             }
 
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(call_lang.name, call.name) as name,
                             IFNULL(call_lang.subtitle, call.subtitle) as subtitle,
                             IFNULL(call_lang.resources, call.resources) as resources
@@ -989,9 +990,9 @@ namespace Goteo\Model {
                          user.email as user_email,
                       $different_select
                     FROM  `call`
+                    LEFT JOIN call_lang ON  call_lang.id = call.id AND call_lang.lang = :lang
                     LEFT JOIN user ON user.id = `call`.owner
                     $sqlJoin
-                    LEFT JOIN call_lang ON  call_lang.id = call.id
                     $eng_join
                     $sqlFilter
                     ORDER BY `call`.name ASC";
@@ -1081,7 +1082,7 @@ namespace Goteo\Model {
 
         /**
          * Saca una lista completa de convocatorias
-         *  para gestión
+         *  para gestión /admin/calls
          *
          * @param array filters
          * @return array of call instances
@@ -1707,7 +1708,6 @@ namespace Goteo\Model {
 			try {
 	            $sql = "REPLACE INTO user_call (`user`, `call`) VALUES(:user, :call)";
 				if (self::query($sql, $values)) {
-                    ACL::allow('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
     				return true;
                 } else {
                     $errors[] = 'No se ha creado el registro `user_call`';
@@ -1731,7 +1731,6 @@ namespace Goteo\Model {
 
             try {
                 if (self::query("DELETE FROM user_call WHERE `call` = :call AND `user` = :user", $values)) {
-                    ACL::deny('/translate/call/'.$this->id.'/*', '*', 'admin', $user);
                     return true;
                 } else {
                     return false;
@@ -1833,6 +1832,23 @@ namespace Goteo\Model {
         }
 
         /**
+         * Para recuperar configuración de convocatoria
+         * @return  objeto
+         */
+        public function getDropConf () {
+
+            $query = static::query("
+                SELECT
+                  amount, maxdrop, maxproj, modemaxp
+                FROM `call`
+                WHERE id = :id
+                ", array(':id' => $this->id));
+
+            return $query->fetchObject();
+        }
+
+
+        /**
          * Actualizar los valores de configuración económica de convocatoria
          *
          * @params conf array of config values
@@ -1841,9 +1857,10 @@ namespace Goteo\Model {
         public function setDropconf ($dropconf = array(), &$errors = array()) {
 
             // verificación 
-            $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;
-            $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ;
-            $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ;
+            $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;  // presupuesto de la convocatoria
+            $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ; // riego máximo por aporte
+            $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ; // riego máximo por proyecto
+            $dropconf['modemaxp'] = !empty($dropconf['modemaxp']) ? $dropconf['modemaxp'] : 'imp' ; // modalidad de maximo por proyecto: importe (imp) o porcentaje (per)
 
             
             $fields = array(

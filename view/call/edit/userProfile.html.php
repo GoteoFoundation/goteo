@@ -300,31 +300,31 @@ $(function () {
     var webs = $('div#<?php echo $sfid ?> li.element#user_webs');
 
     webs.delegate('li.element.web input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(webs, data);
-        event.preventDefault();
+        webs.superform({data:data});
     });
 
     webs.delegate('li.element.editweb input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(webs, data);
-        event.preventDefault();
+        webs.superform({data:data});
     });
 
     webs.delegate('li.element.editweb input.remove, li.element.web input.remove', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(webs, data);
-        event.preventDefault();
+        webs.superform({data:data});
     });
 
     webs.delegate('#web-add input', 'click', function (event) {
+       event.preventDefault();
        var data = {};
        data[this.name] = '1';
-       Superform.update(webs, data);
-       event.preventDefault();
+       webs.superform({data:data});
     });
 
 });

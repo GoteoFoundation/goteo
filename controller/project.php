@@ -30,13 +30,37 @@ namespace Goteo\Controller {
         public function raw ($id) {
             $project = Model\Project::get($id, LANG);
             $project->check();
-            \trace($project->call);
+            \trace($project->called);
             \trace($project);
             die;
         }
 
         public function delete ($id) {
-            $project = Model\Project::get($id);
+            // redirección según usuario
+            $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
+
+            // preveer posible cambio de id
+            try {
+                $project = Model\Project::getMini($id, null);
+
+            } catch(\Goteo\Core\Error $e) {
+                throw new Redirection('/dashboard/projects');
+            }
+
+            // no lo puede eliminar si
+            $grant = false;
+            if ($project->owner == $_SESSION['user']->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
+            )
+                $grant = true;
+
+            if (!$grant) {
+                Message::Info('No tienes permiso para eliminar este proyecto');
+
+                throw new Redirection($goto);
+            }
+
             $errors = array();
             if ($project->delete($errors)) {
                 Message::Info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
@@ -46,23 +70,35 @@ namespace Goteo\Controller {
             } else {
                 Message::Info("No se han podido borrar los datos del proyecto '<strong>{$project->name}</strong>'. Error:" . implode(', ', $errors));
             }
-            throw new Redirection("/dashboard/projects");
+            throw new Redirection($goto);
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         public function edit ($id, $step = 'userProfile') {
+            // redirección según usuario
+            $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
 
-            $project = Model\Project::get($id, null);
+            // preveer posible cambio de id
+            try {
+                $project = Model\Project::get($id, null);
 
-            // aunque pueda acceder edit, no lo puede editar si
-            if ($project->owner != $_SESSION['user']->id // no es su proyecto
-                && (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) // es admin pero no es admin de central
-                && (isset($_SESSION['admin_node']) && $project->node != $_SESSION['admin_node']) // no es de su nodo
-                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
-                && (isset($_SESSION['user']->roles['checker']) && !Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // no lo tiene asignado
-                ) {
+            } catch(\Goteo\Core\Error $e) {
+                throw new Redirection('/dashboard/projects');
+            }
+
+            $grant = false;
+            // Substituye ACL, solo lo puede editar si...
+            if ($project->owner == $_SESSION['user']->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
+                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
+                || (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es revisor
+            )
+                $grant = true;
+
+            if (!$grant) {
                 Message::Info('No tienes permiso para editar este proyecto');
-                throw new Redirection('/admin/projects');
+                throw new Redirection($goto);
             }
 
             // si no tenemos SESSION stepped es porque no venimos del create
@@ -77,7 +113,8 @@ namespace Goteo\Controller {
                      'supports'     => 'supports'
                 );
 
-            if ($project->status != 1 && !ACL::check('/project/edit/todos')) {
+            // al impulsor se le proibe ver ningun paso cuando ya no está en edición
+            if ($project->status != 1 && $project->owner == $_SESSION['user']->id ) {
                 // solo puede estar en preview
                 $step = 'preview';
 
@@ -143,9 +180,13 @@ namespace Goteo\Controller {
             if ($step == 'images') {
                 // para que tenga todas las imágenes al procesar el post
                 $project->images = Model\Image::getAll($id, 'project');
+                $fragment = '#images';
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
+
+               // @DEBUG  die( \trace($_POST) );
+
                 $errors = array(); // errores al procesar, no son errores en los datos del proyecto
 
                 foreach ($steps as $id => &$data) {
@@ -164,9 +205,104 @@ namespace Goteo\Controller {
 
                 // hay que mostrar errores en la imagen
                 if (!empty($errors['image'])) {
-                    $project->errors['images']['image'] = $errors['image'];
-                    $project->okeys['images']['image'] = null;
+                    Message::Error(is_array($errors['image']) ? implode('<br />', $errors['image']) : $errors['image']);
                 }
+
+
+                // en los pasos de listas de items (webs, costes, retornos, colaboracioens)
+                foreach ($_POST as $k => $v) {
+
+                    // webs
+                    if (!empty($v) && preg_match('/web-(\d+)-edit/', $k, $r)) {
+                        $_SESSION['superform_item_edit'] = $k;
+                        $fragment = "#$k";
+                        break;
+                    }
+
+
+                    // costes
+                    if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
+                        $_SESSION['superform_item_edit'] = $k;
+                        $fragment = "#$k";
+                        break;
+                    }
+
+
+                    // recompensa
+                    if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {
+                        $_SESSION['superform_item_edit'] = $k;
+                        $fragment = "#$k";
+                        break;
+                    }
+
+
+                    // colaboraciones
+                    if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
+                        $_SESSION['superform_item_edit'] = $k;
+                        $fragment = "#$k";
+                        break;
+                    }
+
+                }
+
+                // nueva web
+                if (isset($_POST['web-add'])) {
+                    $last = end($project->user->webs);
+                    if ($last !== false) {
+                        $k = "web-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["web-{$last->id}-edit"] = true;
+                        //$fragment = "#$k";
+                        $fragment = "#webs";
+                    }
+                }
+
+                // nuevo coste
+                if (isset($_POST['cost-add'])) {
+                    $last = end($project->costs);
+                    if ($last !== false) {
+                        $k = "cost-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["cost-{$last->id}-edit"] = true;
+                        $fragment = "#$k";
+                    }
+                }
+
+                // nuevo retorno / recompensa
+                if (!empty($_POST['social_reward-add'])) {
+                    $last = end($project->social_rewards);
+                    if ($last !== false) {
+                        $k = "social_reward-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["social_reward-{$last->id}-edit"] = true;
+                        $fragment = "#$k";
+                    }
+                }
+
+                if (!empty($_POST['individual_reward-add'])) {
+                    $last = end($project->individual_rewards);
+                    if ($last !== false) {
+                        $k = "individual_reward-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["individual_reward-{$last->id}-edit"] = true;
+                        $fragment = "#$k";
+                    }
+                }
+
+                // nueva colaboración
+                if (!empty($_POST['support-add'])) {
+                    $last = end($project->supports);
+                    if ($last !== false) {
+                        $k = "support-{$last->id}-edit";
+                        $_SESSION['superform_item_edit'] = $k;
+                        // $viewData["support-{$last->id}-edit"] = true;
+                        $fragment = "#$k";
+                    }
+                }
+
+
+
+
 
                 // si estan enviando el proyecto a revisión
                 if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
@@ -210,12 +346,37 @@ namespace Goteo\Controller {
                     }
                 }
 
+                // redirect para que no muestre "reenviar los datos" al recargar la página
+                // throw new Redirection("/project/edit/{$project->id}/{$step}{$fragment}");
+                // Julian 26/09/2014  el redirect provoca que los errores no se muestren corregidos en la lista de abajo
+
+
 
             } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST)) {
+
+                // print_r($_POST);
+                // print_r($_FILES);
+                // throw new Error(Error::INTERNAL, 'EROR: '.print_r($_FILES,1));
+                // die;
+                // mail de aviso
+                $mailHandler = new Mail();
+                $mailHandler->to = \GOTEO_FAIL_MAIL;
+                $mailHandler->toName = 'Goteo Fail Mail';
+                $mailHandler->subject = 'FORM CAPACITY OVERFLOW en '.\SITE_URL;
+                $mailHandler->content = 'FORM CAPACITY OVERFLOW en el formulario de proyecto. Llega request method '.$_SERVER['REQUEST_METHOD'].'<hr />';
+                $mailHandler->content .= ' y post <pre>' . print_r( $_POST, true) . '</pre><hr />';
+                $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
+
+                $mailHandler->html = true;
+                $mailHandler->template = 11;
+                $mailHandler->send($errors);
+                unset($mailHandler);
+
+
                 throw new Error(Error::INTERNAL, 'FORM CAPACITY OVERFLOW');
             }
 
-            //re-evaluar el proyecto
+            // checkear errores
             $project->check();
 
             // variables para la vista
@@ -229,37 +390,16 @@ namespace Goteo\Controller {
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
                 case 'userProfile':
-                    $owner = Model\User::get($project->owner, null);
-                    // si es el avatar por defecto no lo mostramos aqui
-                    if ($owner->avatar->id == 1) {
-                        unset($owner->avatar);
-                    }
-                    $viewData['user'] = $owner;
+                    $viewData['user'] = $project->user;
                     $viewData['interests'] = Model\User\Interest::getAll();
-
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/web-(\d+)-edit/', $k, $r)) {
-                                $viewData[$k] = true;
-                            }
-                        }
-
-                        if (!empty($_POST['web-add'])) {
-                            $last = end($owner->webs);
-                            if ($last !== false) {
-                                $viewData["web-{$last->id}-edit"] = true;
-                            }
-                        }
-                    }
                     break;
+
                 case 'userPersonal':
                     $viewData['account'] = Model\Project\Account::get($project->id);
                     break;
 
                 case 'overview':
                     $viewData['categories'] = Model\Project\Category::getAll();
-//                    $viewData['currently'] = Model\Project::currentStatus();
-//                    $viewData['scope'] = Model\Project::scope();
                     break;
 
                 case 'images':
@@ -268,70 +408,16 @@ namespace Goteo\Controller {
 
                 case 'costs':
                     $viewData['types'] = Model\Project\Cost::types();
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
-                                $viewData[$k] = true;
-                            }
-                        }
-
-                        if (!empty($_POST['cost-add'])) {
-                            $last = end($project->costs);
-                            if ($last !== false) {
-                                $viewData["cost-{$last->id}-edit"] = true;
-                            }
-                        }
-                    }
                     break;
 
                 case 'rewards':
                     $viewData['stypes'] = Model\Project\Reward::icons('social');
                     $viewData['itypes'] = Model\Project\Reward::icons('individual');
                     $viewData['licenses'] = Model\Project\Reward::licenses();
-//                    $viewData['types'] = Model\Project\Support::types();
-
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {
-                                $viewData[$k] = true;
-                            }
-                        }
-
-                        if (!empty($_POST['social_reward-add'])) {
-                            $last = end($project->social_rewards);
-                            if ($last !== false) {
-                                $viewData["social_reward-{$last->id}-edit"] = true;
-                            }
-                        }
-                        if (!empty($_POST['individual_reward-add'])) {
-
-                            $last = end($project->individual_rewards);
-
-                            if ($last !== false) {
-                                $viewData["individual_reward-{$last->id}-edit"] = true;
-                            }
-                        }
-                    }
-
-
                     break;
 
                 case 'supports':
                     $viewData['types'] = Model\Project\Support::types();
-                    if ($_POST) {
-                        foreach ($_POST as $k => $v) {
-                            if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
-                                $viewData[$k] = true;
-                            }
-                        }
-
-                        if (!empty($_POST['support-add'])) {
-                            $last = end($project->supports);
-                            if ($last !== false) {
-                                $viewData["support-{$last->id}-edit"] = true;
-                            }
-                        }
-                    }
 
                     break;
 
@@ -348,6 +434,14 @@ namespace Goteo\Controller {
                     $viewData['types'] = Model\Project\Cost::types();
                     break;
             }
+
+
+            // elemento abierto
+            if (isset($_SESSION['superform_item_edit'])) {
+                $viewData[$_SESSION['superform_item_edit']] = true;
+                unset($_SESSION['superform_item_edit']);
+            }
+
 
             $view = new View (
                 "view/project/edit.html.php",
@@ -373,10 +467,6 @@ namespace Goteo\Controller {
             $project = new Model\Project;
             if ($project->create(NODE_ID)) {
                 $_SESSION['stepped'] = array();
-
-                // permisos para editarlo y borrarlo
-                ACL::allow('/project/edit/'.$project->id.'/', '*', 'user', $_SESSION['user']->id);
-                ACL::allow('/project/delete/'.$project->id.'/', '*', 'user', $_SESSION['user']->id);
 
                 // Evento Feed
                 $log = new Feed();
@@ -501,24 +591,22 @@ namespace Goteo\Controller {
 
             // solamente se puede ver publicamente si...
             $grant = false;
-            if ($project->status > 2) // está publicado
+            if ( $project->status > 2 // está publicado
+                || $project->owner == $_SESSION['user']->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
+                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
+                || (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es revisor
+                || (isset($_SESSION['user']->roles['caller']) && Model\Call\Project::is_assigned($_SESSION['user']->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
+            )
                 $grant = true;
-            elseif ($project->owner == $_SESSION['user']->id)  // es el dueño
-                $grant = true;
-            elseif (ACL::check('/project/edit/todos'))  // es un admin
-                $grant = true;
-            elseif (ACL::check('/project/view/todos'))  // es un usuario con permiso
-                $grant = true;
-            elseif (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es un revisor y lo tiene asignado
-                $grant = true;
-            elseif (isset($_SESSION['user']->roles['caller']) && Model\Call\Project::is_assigned($_SESSION['user']->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
-                $grant = true;
+
 
             // si lo puede ver
             if ($grant) {
 
                 $project->cat_names = Model\Project\Category::getNames($id);
-                
+
                 if ($show == 'home') {
                     // para el widget embed
                     $project->rewards = array_merge($project->social_rewards, $project->individual_rewards);
@@ -961,7 +1049,7 @@ namespace Goteo\Controller {
             }
 
             // ronda unica
-            $project->one_round = empty($_POST['one_round']) ? 0 : 1;
+            $project->one_round = !empty($_POST['one_round']) ? 1 : 0;
 
             return true;
         }

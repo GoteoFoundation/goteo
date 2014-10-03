@@ -1,22 +1,24 @@
-<input name="<?php echo htmlspecialchars($this['name']) ?>" type="text"<?php if (isset($this['class'])) echo ' class="' . htmlspecialchars($this['class']) . '"'?>  value="<?php if (isset($this['value'])) echo htmlspecialchars($this['value']) ?>"<?php if (isset($this['size'])) echo 'size="' . ((int) $this['size']) . '"' ?> />
+<input name="<?php echo htmlspecialchars($this['name']) ?>" type="text"<?php if (isset($this['class'])) echo ' class="datepicker ' . htmlspecialchars($this['class']) . '"'?>  value="<?php if (isset($this['value'])) echo htmlspecialchars($this['value']) ?>"<?php if (isset($this['size'])) echo ' size="' . ((int) $this['size']) . '"' ?> />
+<?php
+/* esto ya no hace falta
 <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/datepicker.min.js"></script>
 <script type="text/javascript">
-    
+
     (function () {
-    
+
         var dp = $('#<?php echo $this['id'] ?> input');
 
-        dp.DatePicker({           
+        dp.DatePicker({
             format: 'Y-m-d',
             date: '<?php echo $this['value'] ?>',
             current: '<?php echo $this['value'] ?>',
             starts: 1,
-            position: 'bottom',      
+            position: 'bottom',
             eventName: 'click',
             onBeforeShow: function(){
-                dp.DatePickerSetDate(dp.val(), true);                
+                dp.DatePickerSetDate(dp.val(), true);
             },
-            onChange: function(formatted, dates){                    
+            onChange: function(formatted, dates){
                     dp.val(formatted);
                     dp.DatePickerHide();
                     dp.focus();
@@ -29,8 +31,10 @@
                 monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                 week: []
             }
-        });                
-               
+        });
+
     })();
 </script>
+
+*/
 

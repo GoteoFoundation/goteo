@@ -7,7 +7,7 @@ PRIMARY KEY ( `id` )
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Noticias en la cabecera';
 
 
---- alters
+-- alters
 ALTER TABLE `news` ADD `description` TEXT NULL COMMENT 'Entradilla' AFTER `title` ;
 
 -- alter para banner prensa

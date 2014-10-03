@@ -51,81 +51,11 @@ echo new SuperForm(array(
             'type' => 'hidden',
             'value' => 'userPersonal'
         ),
-        
-        /* Radio Tipo de persona
-         * Aligerando superform
-        'contract_entity-radioset' => array(
-            'type'      => 'group',
-            'title'     => Text::get('personal-field-contract_entity'),
-            'hint'      => Text::get('tooltip-project-contract_entity'),
-            'children'  => array(
-                'contract_entity-person' =>  array(
-                    'name'  => 'contract_entity',
-                    'value' => false,
-                    'type'  => 'radio',
-                    'class' => 'inline',
-                    'label' => Text::get('personal-field-contract_entity-person'),
-                    'id'    => 'contract_entity-person',
-                    'checked' => !$project->contract_entity ? true : false,
-                    'children' => array(
-                        // vacio si es persona física 
-                        'contract_entity-person' => array(
-                            'type' => 'hidden',
-                            'name' => "post_address-same",
-                            'value' => 'person'
-                        ),
-                    )
-                ),
-                'contract_entity-entity' =>  array(
-                    'name'  => 'contract_entity',
-                    'value' => true,
-                    'type'  => 'radio',
-                    'class' => 'inline',
-                    'label' => Text::get('personal-field-contract_entity-entity'),
-                    'id'    => 'contract_entity-entity',
-                    'checked' => $project->contract_entity ? true : false,
-                    'children' => array(
-                        // A desplegar si es persona jurídica
-                        'entity_name' => array(
-                            'type'      => 'textbox',
-                            'class'     => 'inline',
-                            'required'  => true,
-                            'size'      => 20,
-                            'title'     => Text::get('personal-field-entity_name'),
-                            'hint'      => Text::get('tooltip-project-entity_name'),
-                            'errors'    => !empty($errors['entity_name']) ? array($errors['entity_name']) : array(),
-                            'ok'        => !empty($okeys['entity_name']) ? array($okeys['entity_name']) : array(),
-                            'value'     => $project->entity_name
-                        ),
-                        
-                        'entity_cif' => array(
-                            'type'      => 'textbox',
-                            'class'     => 'inline',
-                            'required'  => true,
-                            'title'     => Text::get('personal-field-entity_cif'),
-                            'size'      => 15,
-                            'hint'      => Text::get('tooltip-project-entity_cif'),
-                            'errors'    => !empty($errors['entity_cif']) ? array($errors['entity_cif']) : array(),
-                            'ok'        => !empty($okeys['entity_cif']) ? array($okeys['entity_cif']) : array(),
-                            'value'     => $project->entity_cif
-                        ),
-                        
-                        'entity_office' => array(
-                            'type'      => 'textbox',
-                            'class'     => 'inline',
-                            'required'  => true,
-                            'size'      => 20,
-                            'title'     => Text::get('personal-field-entity_office'),
-                            'hint'      => Text::get('tooltip-project-entity_office'),
-                            'errors'    => !empty($errors['entity_office']) ? array($errors['entity_office']) : array(),
-                            'ok'        => !empty($okeys['entity_office']) ? array($okeys['entity_office']) : array(),
-                            'value'     => $project->entity_office
-                        )
-                    )
-                )
-            )
+
+        'anchor-personal' => array(
+            'type' => 'html',
+            'html' => '<a name="personal"></a>'
         ),
-        */
 
         'contract' => array(
             'type'      => 'group',

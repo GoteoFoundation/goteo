@@ -3,8 +3,6 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-define('ADMIN_NOAUTOSAVE', true);
-
 $blog  = $this['blog'];
 $posts = $this['posts'];
 $project = $this['project'];
@@ -116,6 +114,8 @@ $(document).ready(function(){
     <form method="post" action="/dashboard/projects/updates/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
 
     <?php echo new SuperForm(array(
+        //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
+        'autoupdate'    => false,
 
         'action'        => '',
         'level'         => $this['level'],

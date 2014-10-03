@@ -8,5 +8,5 @@ CREATE TABLE `call_conf` (
 PRIMARY KEY (`call`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Configuración de convocatoria';
 
---- Y este se me olvidaba
+-- Y este se me olvidaba
 ALTER TABLE `call_conf`  ADD `applied` INT(4) NULL DEFAULT NULL COMMENT 'Para fijar numero de proyectos recibidos' AFTER `call`;

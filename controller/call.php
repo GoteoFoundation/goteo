@@ -44,7 +44,26 @@ namespace Goteo\Controller {
         }
 
         public function delete ($id) {
+            // redirección según usuario
+            $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/calls' : '/dashboard/projects';
+
             $call = Model\Call::getMini($id);
+
+            // no lo puede eliminar si
+            $grant = false;
+            if ($call->owner == $_SESSION['user']->id // es el convocador
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
+            )
+                $grant = true;
+
+            if (!$grant) {
+                Message::Info('No tienes permiso para eliminar esta convocatoria');
+
+                throw new Redirection($goto);
+            }
+
+
             if ($call->delete()) {
                 if ($_SESSION['call']->id == $id) {
                     unset($_SESSION['call']);
@@ -55,18 +74,25 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         public function edit ($id) {
+            // redirección según usuario
+            $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/calls' : '/dashboard/projects';
 
             $call = Model\Call::get($id, null);
 
-            // si es admin (no superadmin) (y no es el autor) si no la tiene asignada, fuera.
-            if (isset($_SESSION['user']->roles['admin'])
-                && !isset($_SESSION['user']->roles['superadmin']) // no es superadmin
-                && $call->owner != $_SESSION['user']->id // no es el autor
-                && !$call->isAdmin($_SESSION['user']->id) // no la tiene asignada
-                ) {
-                Message::Error('No tienes permiso para editar esta convocatoria');
-                throw new Redirection("/admin/calls");
+            $grant = false;
+            // Substituye ACL, solo lo puede editar si...
+            if ($call->owner == $_SESSION['user']->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || $call->isAdmin($_SESSION['user']->id) // la tiene asignada
+                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
+            )
+                $grant = true;
+
+            if (!$grant) {
+                Message::Info('No tienes permiso para editar esta convocatoria');
+                throw new Redirection($goto);
             }
+
 
             if (isset($_GET['from']) && $_GET['from'] == 'dashboard') {
                 // Evento Feed
@@ -91,7 +117,8 @@ namespace Goteo\Controller {
                 );
 
             // aqui uno que pueda entrar a editar siempre puede ir a todos los pasos
-            if ($call->status != 1 && !ACL::check('/call/edit/todos')) {
+            // excepto el autor si ya no está en edición
+            if ($call->status != 1 && $call->owner == $_SESSION['user']->id) {
                 // solo puede estar en preview
                 $step = 'preview';
 
@@ -338,10 +365,6 @@ namespace Goteo\Controller {
                 if ($call->create($name, $caller, $errors)) {
                     $_SESSION['stepped'] = array();
 
-                    // permisos para editarlo y borrarlo
-                    ACL::allow('/call/edit/'.$call->id.'/', '*', 'caller', $_SESSION['user']->id);
-                    ACL::allow('/call/delete/'.$call->id.'/', '*', 'caller', $_SESSION['user']->id);
-
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($call->id, 'call');
@@ -394,10 +417,12 @@ namespace Goteo\Controller {
             // - es el dueño
             // - es un admin con permiso
             // - es otro usuario y el proyecto esta available: en aceptacion, en campaña, financiado
-            if (($call->status > 2) ||
-                $call->owner == $_SESSION['user']->id ||
-                ACL::check('/call/edit/todos') ||
-                ACL::check('/call/view/todos')) {
+            if (($call->status > 2)
+                || $call->owner == $_SESSION['user']->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || $call->isAdmin($_SESSION['user']->id) // la tiene asignada
+                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
+            ) {
 
                 if (!\in_array($show, array('index', 'splash', 'info', 'projects', 'terms'))) {
                     $show = 'index';

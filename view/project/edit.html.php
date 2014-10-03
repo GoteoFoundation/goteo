@@ -17,6 +17,7 @@ if (!empty($this['success'])) {
     Goteo\Library\Message::Info(Text::get('form-ajax-info'));
 }
 
+$superform = true;
 include 'view/prologue.html.php';
 
     include 'view/header.html.php'; ?>
@@ -39,11 +40,19 @@ include 'view/prologue.html.php';
             <input type="hidden" name="view-step-<?php echo $this['step'] ?>" value="please" />
 
             <?php echo $status ?>
-            <?php echo $steps ?>
+            <?php if (count($this['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación ?>
 
             <?php echo new View("view/project/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
 
-            <?php echo $steps ?>
+            <?php if (count($this['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación ?>
+
+            <script type="text/javascript">
+            $(function () {
+                $('div.superform').bind('superform.ajax.done', function (event, html, new_el) {
+                    $('li#errors').superform(html);
+                });
+            });
+            </script>
 
         </form>
 

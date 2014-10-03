@@ -24,6 +24,10 @@ if (!empty($project->supports)) {
                 'type'      => 'group',
                 'class'     => 'support editsupport',
                 'children'  => array(
+                    "support-{$support->id}-edit" => array(
+                        'type'      => 'hidden',
+                        'value'      => '1'
+                    ),
                     "support-{$support->id}-support-orig" => array(
                         'title'     => Text::get('supports-field-support'),
                         'type'      => 'html',
@@ -97,7 +101,8 @@ $sfid = 'sf-project-supports';
     'title'         => '',
     'hint'          => Text::get('guide-project-supports'),
     'class'         => 'aqua',
-    'footer'        => array(
+    /*
+     'footer'        => array(
         'view-step-preview' => array(
             'type'  => 'submit',
             'name'  => 'save-supports',
@@ -105,6 +110,7 @@ $sfid = 'sf-project-supports';
             'class' => 'next'
         )
     ),
+    */
     'elements'      => array(
         'process_supports' => array (
             'type' => 'hidden',
@@ -127,17 +133,17 @@ $(function () {
     var supports = $('div#<?php echo $sfid ?> li.element#supports');
 
     supports.delegate('li.element.support input.edit', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name] = '1';
-        Superform.update(supports, data);
-        event.preventDefault();
+        supports.superform({data:data});
     });
 
     supports.delegate('li.element.editsupport input.ok', 'click', function (event) {
+        event.preventDefault();
         var data = {};
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
-        Superform.update(supports, data);
-        event.preventDefault();
+        supports.superform({data:data});
     });
 
 });

@@ -284,7 +284,6 @@ namespace Goteo\Model {
 			try {
 	            $sql = "REPLACE INTO user_node (user, node) VALUES(:user, :node)";
 				if (self::query($sql, $values)) {
-                    ACL::allow('/translate/node/'.$this->id.'/*', '*', 'admin', $user);
     				return true;
                 } else {
                     $errors[] = 'No se ha creado el registro `user_node`';
@@ -308,7 +307,6 @@ namespace Goteo\Model {
 
             try {
                 if (self::query("DELETE FROM user_node WHERE node = :node AND user = :user", $values)) {
-                    ACL::deny('/translate/node/'.$this->id.'/*', '*', 'admin', $user);
                     return true;
                 } else {
                     return false;
