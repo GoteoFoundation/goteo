@@ -208,6 +208,33 @@ namespace Goteo\Core {
 
         }
 
+        /**
+         * Cuenta el numero de items y lo divide en páginas
+         * @param type $sql
+         * @param int $page Numero de página que se muestra
+         * @param int $items_per_page
+         * @return array ($pages,$offset)
+         */
+        public static function doPagination($sql, $values, &$page, $items_per_page = 9) {
+
+            $query = self::query($sql, $values);
+            $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
+
+            $total = $query->fetchColumn();
+
+            if ($total == 0) {
+                $page = 1;
+            } elseif ($page > $total) {
+                $page = $total;
+            } elseif ($page < 1) {
+                $page = 1;
+            }
+
+            $offset = $items_per_page * ($page - 1);
+            $pages = ceil($total / $items_per_page);
+
+            return array('pages' => $pages, 'offset' => $offset);
+        }
 
     }
 
