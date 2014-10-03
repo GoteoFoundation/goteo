@@ -577,13 +577,13 @@ namespace Goteo\Controller {
                         // si lo tenemos en sesion una id de proyecto
                         if ( isset($_SESSION['translate_project']) ) {
 
-                            $id = (is_object($_SESSION['translate_project'])) ? $_SESSION['translate_project']->id : $_SESSION['translate_project'];
+                            $proj_id = (is_object($_SESSION['translate_project'])) ? $_SESSION['translate_project']->id : $_SESSION['translate_project'];
 
                             // instancia original
-                            $project_original = Model\Project::get($id, null); // $lang = null para sacar idioma original
+                            $project_original = Model\Project::get($proj_id, null); // $lang = null para sacar idioma original
 
                             // instancia traducción
-                            $project = Model\Project::get($id, $_SESSION['translate_lang']);
+                            $project = Model\Project::get($proj_id, $_SESSION['translate_lang']);
 
                         } else {
 
