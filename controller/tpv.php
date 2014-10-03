@@ -125,28 +125,34 @@ namespace Goteo\Controller {
 
         public function comunication () {
 
+            $monitor = true;
+
             $errors = array();
 
             // monitorizando todo lo que llega aqui
-            // mail de aviso
-            $mailHandler = new Mail();
-            $mailHandler->to = \GOTEO_FAIL_MAIL;
-            $mailHandler->toName = 'Tpv Monitor Goteo.org';
-            $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y');
-            $mailHandler->content = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y').'<br /><br />';
+            if ($monitor) {
 
-            if ($_POST['Codigo_error']) {
-                $mailHandler->content .= 'Error:'.self::$errcode[$_POST['Codigo_error']].'<hr />';
+                // mail de aviso
+                $mailHandler = new Mail();
+                $mailHandler->to = \GOTEO_FAIL_MAIL;
+                $mailHandler->toName = 'Tpv Monitor Goteo.org';
+                $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y');
+                $mailHandler->content = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y').'<br /><br />';
+
+                if ($_POST['Codigo_error']) {
+                    $mailHandler->content .= 'Error:'.self::$errcode[$_POST['Codigo_error']].'<hr />';
+                }
+
+                $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
+                $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
+                $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
+
+                $mailHandler->html = true;
+                $mailHandler->template = 11;
+                $mailHandler->send($errors);
+                unset($mailHandler);
+
             }
-
-            $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
-            $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
-            $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
-
-            $mailHandler->html = true;
-            $mailHandler->template = 11;
-            $mailHandler->send($errors);
-            unset($mailHandler);
 
 
 
@@ -189,7 +195,20 @@ namespace Goteo\Controller {
                         if (Invest::query($sql, $values)) {
                             Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se ha completado correctamente. Proceso controller/tpv');
                         } else {
-                            @mail(\GOTEO_FAIL_MAIL, 'Error db en comunicacion online', 'En la grabación de referencia, num auth. y estado. Ha fallado: '.$sql.' '.print_r($values, true).'<hr /><pre>' . print_r($invest, true) . '</pre>');
+                            $mailHandler = new Mail();
+                            $mailHandler->to = \GOTEO_FAIL_MAIL;
+                            $mailHandler->toName = 'Tpv Monitor Goteo.org';
+                            $mailHandler->subject = 'Error db en comunicacion online '.date('H:i:s d/m/Y');
+                            $mailHandler->content = 'Error db en comunicacion online '.date('H:i:s d/m/Y').'<br /> Ha fallado: '.$sql.' <pre>'.print_r($values, true).'</pre><pre>' . print_r($invest, true) . '</pre><hr />';
+                            $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
+                            $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
+                            $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
+
+                            $mailHandler->html = true;
+                            $mailHandler->template = 11;
+                            $mailHandler->send($errors);
+                            unset($mailHandler);
+
                         }
 
                         // si tiene capital riego asociado pasa al mismo estado
@@ -197,7 +216,19 @@ namespace Goteo\Controller {
                             Invest::query("UPDATE invest SET status = 1 WHERE id = :id", array(':id' => $invest->droped));
                         }
                     } catch (\PDOException $e) {
-                        @mail(\GOTEO_FAIL_MAIL, 'Error db en comunicacion online', 'En la grabación de referencia, num auth. y estado. Ha dado un PDO::Exception<br /><pre>' . print_r($invest, true) . '</pre>');
+                        $mailHandler = new Mail();
+                        $mailHandler->to = \GOTEO_FAIL_MAIL;
+                        $mailHandler->toName = 'Tpv Monitor Goteo.org';
+                        $mailHandler->subject = 'Exception en comunicacion online '.date('H:i:s d/m/Y'). ' ' . \SITE_URL;
+                        $mailHandler->content = 'Exception en comunicacion online '.date('H:i:s d/m/Y').'<br />'.$e->getMessage().'<hr /> <pre>' . print_r($invest, true) . '</pre><hr />';
+                        $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
+                        $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
+                        $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
+
+                        $mailHandler->html = true;
+                        $mailHandler->template = 11;
+                        $mailHandler->send($errors);
+                        unset($mailHandler);
                     }
                     $_POST['result'] = 'Transaccion ok';
 
@@ -210,7 +241,21 @@ namespace Goteo\Controller {
                     $Cerr = (string) $_POST['Codigo_error'];
                     $errTxt = self::$errcode[$Cerr];
                     Invest::setDetail($invest->id, 'tpv-response-error', 'El tpv ha comunicado el siguiente Codigo error: '.$Cerr.' - '.$errTxt.'. El aporte a quedado \'En proceso\'. Proceso controller/tpv');
-                    @mail(\GOTEO_FAIL_MAIL, 'Error en TPV', 'Codigo error: '.$Cerr.' '.$errTxt.'<br /><pre>' . print_r($_POST, true) . '</pre>');
+
+                    $mailHandler = new Mail();
+                    $mailHandler->to = \GOTEO_FAIL_MAIL;
+                    $mailHandler->toName = 'Tpv Monitor Goteo.org';
+                    $mailHandler->subject = 'Codigo Error TPV en comunicacion online '.date('H:i:s d/m/Y'). ' ' . \SITE_URL;
+                    $mailHandler->content = 'Codigo error: '.$Cerr.' '.$errTxt.'<br />';
+                    $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
+                    $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
+                    $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
+
+                    $mailHandler->html = true;
+                    $mailHandler->template = 11;
+                    $mailHandler->send($errors);
+                    unset($mailHandler);
+
                     $invest->cancel('ERR '.$Cerr);
                     $_POST['result'] = 'Fail';
 
@@ -243,7 +288,7 @@ namespace Goteo\Controller {
                 }
                 unset($log);
             } else {
-                echo 'Se esperaban recibir datos de comunicación online del TPV.';
+//                echo 'Se esperaban recibir datos de comunicación online del TPV.';
 //                @mail(\GOTEO_FAIL_MAIL, 'Comunicacion online sin datos', 'Este GET<pre>' . print_r($_GET, true) . '</pre> y este POST:<pre>' . print_r($_POST, true) . '</pre>');
 //                throw new Redirection('/', Error::BAD_REQUEST);
             }
