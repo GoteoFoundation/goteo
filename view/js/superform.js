@@ -137,6 +137,7 @@
                 //ajax finalizado
                 t.trigger('superform.ajax.done', [html, el]);
                 //actualizar el nodo si target es un elemento html
+                //si no hay el el id esperado, no actualizar nada
                 _superformUpdate(t, el, html);
             }).fail( function(html, status, xhr) {
                 // console.log(html,status,xhr);
@@ -153,32 +154,41 @@
         if(el.length && caller instanceof HTMLElement) {
             if( ! el.attr('id')) {
                 alert('Error, not id present in the target!');
+                return false;
             }
-            else {
-                //actualizar html
-                var new_el = $(html).find('li.element#' + el.attr('id'));
-                //obtener el foco por si se esta escribiendo en algun text/textarea
-                var $focused = $(document.activeElement);
-                // console.log($focused,$focused[0].tagName,$focused.attr('class'),$focused.attr('id'));
-                var focusedElement = $focused[0].tagName.toLowerCase() + '#' + $focused.attr('id');
-                // console.log(focusedElement);
 
-                //evento de antes de actualizar
-                t.trigger('superform.dom.started', [html, new_el]);
+            //obtener el mismo elemento del codigo html de la respuesta
+            var new_el = $(html).find('li.element#' + el.attr('id'));
 
-                var promises = _superformUpdateElement(el, new_el);
-
-                //recuperar foco
-                $(focusedElement).focus();
-
-                //evento de despues de actualizar
-                $.when.apply( $, promises ).always(function(){
-                    // el.removeClass('updating busy');
-                    el.attr('class', new_el.attr('class'));
-                    t.trigger('superform.dom.done', [html, new_el]);
-                });
-
+            //verificar si existe dicho elemento
+            if( ! new_el.attr('id')) {
+                // alert('Error, the expected id is not present in html response!');
+                t.trigger('superform.dom.error', [html, new_el]);
+                t.trigger('superform.dom.done', [html, new_el]);
+                return false;
             }
+            //actualizar html
+            //obtener el foco por si se esta escribiendo en algun text/textarea
+            var $focused = $(document.activeElement);
+            // console.log($focused,$focused[0].tagName,$focused.attr('class'),$focused.attr('id'));
+            var focusedElement = $focused[0].tagName.toLowerCase() + '#' + $focused.attr('id');
+            // console.log(focusedElement);
+
+            //evento de antes de actualizar
+            t.trigger('superform.dom.started', [html, new_el]);
+
+            var promises = _superformUpdateElement(el, new_el);
+
+            //recuperar foco
+            $(focusedElement).focus();
+
+            //evento de despues de actualizar
+            $.when.apply( $, promises ).always(function(){
+                // el.removeClass('updating busy');
+                el.attr('class', new_el.attr('class'));
+                t.trigger('superform.dom.done', [html, new_el]);
+            });
+
             // console.log('update:',el.attr('id'),data);
         }
         else {
@@ -436,22 +446,7 @@ $(function() {
             li.superform();
         }, 700);
     });
-/*
-    $('div.superform.autoupdate').delegate('li.element input[type="radio"],li.element select', 'click', function (event) {
-        var input = $(event.target);
-        var li = input.closest('li.group');
-        $(this).closest('li.group').first().find('input[type="radio"][name="' + input.attr('name') + '"]').each(function(i, r){
-            try {
-              if (input.attr('id') == r.id) {
-                  $('div.children#' + r.id + '-children').slideDown(400);
-              } else {
-                  $('div.children#' + r.id + '-children').slideUp(400);
-              }
-            } catch (e) {}
-        });
 
-    });
-*/
     //input text i textareas
     $('div.superform.autoupdate').delegate('li.element input[type="text"],li.element textarea', 'keydown paste focus', function (event) {
 
