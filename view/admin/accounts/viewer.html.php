@@ -9,6 +9,7 @@ use Goteo\Core\View;
         <div style="float:left;margin:5px;">
             <label for="type-filter">Tipo de proceso:</label><br />
             <select id="type-filter" name="type">
+                <option value="log"<?php if ($type == 'log') echo ' selected="selected"';?>>--</option>
                 <option value="execute"<?php if ($type == 'execute') echo ' selected="selected"';?>>Cargos</option>
                 <option value="verify"<?php if ($type == 'verify') echo ' selected="selected"';?>>Verificaciones</option>
                 <option value="daily"<?php if ($type == 'daily') echo ' selected="selected"';?>>Avisos</option>

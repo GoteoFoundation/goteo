@@ -312,10 +312,12 @@ namespace Goteo\Library {
 
                     // IMAGEN
                     // si es una entrada de blog o novedades, cogemos la imagen de esa entrada
-                    if (isset($item->post_id) && !empty($item->post_image)) {
+                    if ( isset($item->post_id) && !empty($item->post_image) && $item->post_image != 'empty' ) {
                         $item->image = Image::get($item->post_image);
-                    } else {
+                    } elseif ( !empty($item->image) && $item->image != 'empty' ) {
                         $item->image = Image::get($item->image);
+                    } else {
+                        $item->image = Image::get(1);
                     }
 
 
@@ -604,7 +606,7 @@ namespace Goteo\Library {
            // si enlace -> título como texto del enlace
            if (!empty($item->url)) {
                 // si imagen -> segun enlace:
-                if ($item->image && $item->image instanceOf \Goteo\Model\Image) {
+                if ($item->image && $item->image instanceof \Goteo\Model\Image) {
 
                     if (substr($item->url, 0, 5) == '/user') {
                         $content .= '<div class="content-avatar">
@@ -679,7 +681,14 @@ namespace Goteo\Library {
             try {
                 $list = array();
 
-                $sql = "SELECT * FROM log ORDER BY id DESC LIMIT 10";
+                $sql = "SELECT *,DATE_FORMAT(datetime, '%d/%m/%Y %H:%i') as date FROM log";
+
+
+                if (empty($date)) {
+                    $sql .= " ORDER BY datetime DESC LIMIT 10";
+                } else {
+                    $sql .= " WHERE datetime LIKE '{$date}%' ORDER BY datetime DESC";
+                }
 
                 $query = Model::query($sql);
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
