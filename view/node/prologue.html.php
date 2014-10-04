@@ -62,9 +62,6 @@
         <!-- vigilante de sesion -->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
 
-        <!-- saltos entre nodos -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/nodejump.js"></script>
-
         <?php if (isset($superform)) : ?>
             <script src="<?php echo SRC_URL ?>/view/js/datepicker.min.js"></script>
             <script src="<?php echo SRC_URL ?>/view/js/datepicker/datepicker.<?php echo LANG; ?>.js"></script>
