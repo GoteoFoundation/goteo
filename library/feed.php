@@ -670,6 +670,33 @@ namespace Goteo\Library {
 
         }
 
+        /*
+         * método simple para leer logs
+        */
+        static public function getLog( $date = null ) {
+
+            // si no tenemos una fecha mostramos los 10 últimos eventos
+            try {
+                $list = array();
+
+                $sql = "SELECT * FROM log ORDER BY id DESC LIMIT 10";
+
+                $query = Model::query($sql);
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+
+                    //hace tanto
+                    $item->timeago = self::time_ago($item->datetime);
+
+                    $list[] = $item;
+                }
+                return $list;
+
+            } catch(\PDOException $e) {
+                die($e->getMessage());
+                return false;
+            }
+
+        }
 
 
 

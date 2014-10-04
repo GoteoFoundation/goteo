@@ -2,23 +2,6 @@
 
 use Goteo\Core\View;
 
-$date = !empty($_GET['date']) ? $_GET['date'] : date('Y-m-d');
-$type = in_array($_GET['type'], array('invest', 'execute', 'daily', 'verify')) ? $_GET['type'] : 'invest';
-if (!empty($_GET['date']) && !empty($_GET['type'])) {
-    $showlog = true;
-    if ($type == 'invest') {
-        $file = GOTEO_PATH.'logs/'.str_replace('-', '', $date).'_invest.log';
-    } else {
-        $file = GOTEO_PATH.'logs/cron/'.str_replace('-', '', $date).'_'.$type.'.log';
-    }
-
-    if (file_exists($file)) {
-        $content = file_get_contents($file);
-    }
-
-} else {
-    $showlog = false;
-}
 ?>
 <div class="widget">
     <h3>Seleccionar log por tipo y fecha</h3>
@@ -40,7 +23,6 @@ if (!empty($_GET['date']) && !empty($_GET['type'])) {
         </div>
     </form>
 </div>
-
-<?php if ($showlog) echo '<strong>archivo:</strong> ' . $file . '<br /><br />';
-if (!empty($content)) echo nl2br($content); else echo 'No encontrado'; ?>
-<br /><br /><br />
+<div style="width:780px; height:1000px; overflow: scroll;">
+    <?php echo $this['content']; ?>
+</div>
