@@ -68,7 +68,9 @@ $nodes = Nodesys::activeNodes(\NODE_ID);
                         <?php // si estamos en easy mode no pintamos estos enlaces
                         if (!defined('GOTEO_EASY') || \GOTEO_EASY !== true) : ?>
                         <li><a href="/community/activity"><span><?php echo Text::get('community-menu-activity'); ?></span></a></li>
+<?php /* quitamos Compartiendo por ahora
                         <li><a href="/community/sharemates"><span><?php echo Text::get('community-menu-sharemates'); ?></span></a></li>
+ */ ?>
                         <?php endif; ?>
                         <!-- nodos activos -->
                         <?php  foreach ($nodes as $node) : ?>
