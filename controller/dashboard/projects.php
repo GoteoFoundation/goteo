@@ -544,6 +544,17 @@ namespace Goteo\Controller\Dashboard {
 
                 // si ha marcado publish, grabamos evento de nueva novedad en proyecto
                 if ((bool) $post->publish) {
+
+                    // imagen de proyecto si la entrada no tiene imagen
+
+                    if (is_object($post->image)) {
+                        $image = $post->image->id;
+                    } elseif (!empty($post->image)) {
+                        $image = $post->image;
+                    }  else {
+                        $image = (!empty($project->image->id)) ? $project->image->id : 'empty';
+                    }
+
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($project->id);
@@ -556,14 +567,18 @@ namespace Goteo\Controller\Dashboard {
                                 Feed::item('update', $post->title, $project->id . '/updates/' . $post->id)
                                 )
                             ),
-                        $project->image
+                        $image
                     );
                     $log->unique = true;
                     $log->doAdmin('user');
 
                     // evento público
-                    $log->populate($post->title, '/project/' . $project->id . '/updates/' . $post->id, Text::html('feed-new_update', Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id), Feed::item('blog', Text::get('project-menu-updates')), Feed::item('project', $project->name, $project->id)
-                            ), $post->gallery[0]->id);
+                    $log->populate($post->title,
+                            '/project/' . $project->id . '/updates/' . $post->id,
+                            Text::html('feed-new_update', Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('blog', Text::get('project-menu-updates')),
+                            Feed::item('project', $project->name, $project->id)
+                        ), $image);
                     $log->doPublic('projects');
 
                     // si no ha encontrado otro, lanzamos la notificación a cofinanciadores

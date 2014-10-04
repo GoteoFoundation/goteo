@@ -295,10 +295,11 @@ namespace Goteo\Library {
                                 && $item->post_owner_id != \GOTEO_NODE
                                 && empty($item->node_id)) {
                                 continue;
+                            } elseif ($item->post_owner_type == 'node') {
+                                // y substituimos el $item->html por el $post->html solo para entradas de nodo
+                                $item->html = Text::recorta($item->post_text, 250);
                             }
 
-                            // y substituimos el $item->html por el $post->html
-                            $item->html = Text::recorta($item->post_text, 250);
                             $item->title = $item->post_title;
 
                             // arreglo la fecha de publicación
