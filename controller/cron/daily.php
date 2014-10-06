@@ -446,6 +446,9 @@ namespace Goteo\Controller\Cron {
 
                 // a ver cuanto le queda de capital riego
                 $rest = $campaign->rest;
+                if (empty($rest)) {
+                    continue;
+                }
 
                 $doFeed = false;
                 if ($rest < 100) {

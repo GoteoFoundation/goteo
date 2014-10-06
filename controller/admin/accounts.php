@@ -557,11 +557,25 @@ namespace Goteo\Controller\Admin {
 
             // visor de logs
             if ($action == 'viewer') {
+
+                $date = !empty($_GET['date']) ? $_GET['date'] : date('Y-m-d');
+                $type = in_array($_GET['type'], array('log', 'execute', 'daily', 'verify')) ? $_GET['type'] : 'log';
+                if ($type == 'log') {
+                    $recent = Feed::getLog($date);
+                    $content = '<pre>'.print_r($recent, 1).'</pre>';
+                } elseif ( !empty($type) ) {
+                    $content = @file_get_contents(GOTEO_PATH.'logs/cron/'.str_replace('-', '', $date).'_'.$type.'.log');
+                    $content = nl2br($content);
+                } else {
+                    throw new Redirection('/admin/accounts/viewer/');
+                }
+
                 return new View(
                     'view/admin/index.html.php',
                     array(
                         'folder' => 'accounts',
-                        'file' => 'viewer'
+                        'file' => 'viewer',
+                        'content' => $content
                     )
                 );
             }

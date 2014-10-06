@@ -295,10 +295,11 @@ namespace Goteo\Library {
                                 && $item->post_owner_id != \GOTEO_NODE
                                 && empty($item->node_id)) {
                                 continue;
+                            } elseif ($item->post_owner_type == 'node') {
+                                // y substituimos el $item->html por el $post->html solo para entradas de nodo
+                                $item->html = Text::recorta($item->post_text, 250);
                             }
 
-                            // y substituimos el $item->html por el $post->html
-                            $item->html = Text::recorta($item->post_text, 250);
                             $item->title = $item->post_title;
 
                             // arreglo la fecha de publicación
@@ -312,10 +313,12 @@ namespace Goteo\Library {
 
                     // IMAGEN
                     // si es una entrada de blog o novedades, cogemos la imagen de esa entrada
-                    if (isset($item->post_id) && !empty($item->post_image)) {
+                    if ( isset($item->post_id) && !empty($item->post_image) && $item->post_image != 'empty' ) {
                         $item->image = Image::get($item->post_image);
-                    } else {
+                    } elseif ( !empty($item->image) && $item->image != 'empty' ) {
                         $item->image = Image::get($item->image);
+                    } else {
+                        $item->image = Image::get(1);
                     }
 
 
@@ -604,7 +607,7 @@ namespace Goteo\Library {
            // si enlace -> título como texto del enlace
            if (!empty($item->url)) {
                 // si imagen -> segun enlace:
-                if ($item->image && $item->image instanceOf \Goteo\Model\Image) {
+                if ($item->image && $item->image instanceof \Goteo\Model\Image) {
 
                     if (substr($item->url, 0, 5) == '/user') {
                         $content .= '<div class="content-avatar">
@@ -670,6 +673,40 @@ namespace Goteo\Library {
 
         }
 
+        /*
+         * método simple para leer logs
+        */
+        static public function getLog( $date = null ) {
+
+            // si no tenemos una fecha mostramos los 10 últimos eventos
+            try {
+                $list = array();
+
+                $sql = "SELECT *,DATE_FORMAT(datetime, '%d/%m/%Y %H:%i') as date FROM log";
+
+
+                if (empty($date)) {
+                    $sql .= " ORDER BY datetime DESC LIMIT 10";
+                } else {
+                    $sql .= " WHERE datetime LIKE '{$date}%' ORDER BY datetime DESC";
+                }
+
+                $query = Model::query($sql);
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+
+                    //hace tanto
+                    $item->timeago = self::time_ago($item->datetime);
+
+                    $list[] = $item;
+                }
+                return $list;
+
+            } catch(\PDOException $e) {
+                die($e->getMessage());
+                return false;
+            }
+
+        }
 
 
 
