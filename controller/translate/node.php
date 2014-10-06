@@ -66,7 +66,8 @@ namespace Goteo\Controller\Translate {
                             'title' => $_POST['title'],
                             'text' => $_POST['text'],
                             'legend' => $_POST['legend'],
-                            'lang' => $_POST['lang']
+                            'lang' => $_POST['lang'],
+                            'blog' => $_POST['blog']
                         ), $errors)
                         ) {
                             Message::Info('La entrada <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
