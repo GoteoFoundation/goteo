@@ -20,5 +20,9 @@ DELETE FROM `acl` WHERE `acl`.`id` = 69;
 DELETE FROM `acl` WHERE `acl`.`id` = 70;
 DELETE FROM `acl` WHERE `acl`.`id` = 84;
 
+-- extraña restricción en /translate/node
+DELETE FROM `acl` WHERE `acl`.`id` = 76;
+
+
 -- eliminamos los temporales
 DELETE FROM `acl` WHERE id > 999;

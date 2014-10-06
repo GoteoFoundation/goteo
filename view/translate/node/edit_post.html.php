@@ -60,6 +60,11 @@ $(document).ready(function(){
             'value'     => $_SESSION['translate_lang']
         ),
 
+        'blog' => array(
+            'type'      => 'hidden',
+            'value'     => $original->blog
+        ),
+
         'title-orig' => array(
             'type'      => 'html',
             'title'     => 'Título',
