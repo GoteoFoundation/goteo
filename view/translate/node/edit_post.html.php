@@ -60,6 +60,11 @@ $(document).ready(function(){
             'value'     => $_SESSION['translate_lang']
         ),
 
+        'blog' => array(
+            'type'      => 'hidden',
+            'value'     => $original->blog
+        ),
+
         'title-orig' => array(
             'type'      => 'html',
             'title'     => 'Título',
@@ -75,7 +80,7 @@ $(document).ready(function(){
         'text-orig' => array(
             'type'      => 'html',
             'title'     => 'Texto entrada',
-            'html'     => htmlentities($original->text)
+            'html'     => '<div style="width: 650px; height: 400px; overflow:scroll;">'.$original->text.'</div>'
         ),
         'text' => array(
             'type'      => 'textarea',
