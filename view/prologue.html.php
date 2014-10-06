@@ -72,9 +72,6 @@ if (NODE_ID != GOTEO_NODE) {
         <!-- vigilante de sesion -->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
 
-        <!-- saltos entre nodos -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/nodejump.js"></script>
-
         <?php if (!isset($_SESSION['impersonating']) && $_SESSION['user'] instanceof \Goteo\Model\User && empty($_SESSION['user']->geoloc) && !$_SESSION['user']->geologed && !$_SESSION['user']->unlocable) : ?>
         <!-- geologin -->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geologin.js"></script>
