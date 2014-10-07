@@ -125,11 +125,11 @@ namespace Goteo\Controller {
 
         public function comunication () {
 
-            $monitor = true;
+            // si se quieren recibir emails con lo que llega a la comunicación online, poner a true
+            $monitor = false;
 
             $errors = array();
 
-            // monitorizando todo lo que llega aqui
             if ($monitor) {
 
                 // mail de aviso
@@ -195,6 +195,8 @@ namespace Goteo\Controller {
                         if (Invest::query($sql, $values)) {
                             Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se ha completado correctamente. Proceso controller/tpv');
                         } else {
+
+                            // notificación del error a dev@goteo.org
                             $mailHandler = new Mail();
                             $mailHandler->to = \GOTEO_FAIL_MAIL;
                             $mailHandler->toName = 'Tpv Monitor Goteo.org';
@@ -216,6 +218,8 @@ namespace Goteo\Controller {
                             Invest::query("UPDATE invest SET status = 1 WHERE id = :id", array(':id' => $invest->droped));
                         }
                     } catch (\PDOException $e) {
+
+                        // notificación del error a dev@goteo.org
                         $mailHandler = new Mail();
                         $mailHandler->to = \GOTEO_FAIL_MAIL;
                         $mailHandler->toName = 'Tpv Monitor Goteo.org';
@@ -242,6 +246,7 @@ namespace Goteo\Controller {
                     $errTxt = self::$errcode[$Cerr];
                     Invest::setDetail($invest->id, 'tpv-response-error', 'El tpv ha comunicado el siguiente Codigo error: '.$Cerr.' - '.$errTxt.'. El aporte a quedado \'En proceso\'. Proceso controller/tpv');
 
+                    // notificación del error a dev@goteo.org
                     $mailHandler = new Mail();
                     $mailHandler->to = \GOTEO_FAIL_MAIL;
                     $mailHandler->toName = 'Tpv Monitor Goteo.org';
