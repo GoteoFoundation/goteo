@@ -63,7 +63,7 @@ $nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>')
             <?php if ($nodeData->logo instanceof \Goteo\Model\Image) : ?>
             <div class="node-logo">
                 <span><?php echo Text::get('node-header-sponsorby'); ?></span>
-                <img src="<?php echo $nodeData->logo->getLink(150, 75) ?>" alt="<?php echo htmlspecialchars($nodeData->subtitle) ?>" />
+                <img src="<?php echo $nodeData->logo->getLink(150, 85, true) ?>" alt="<?php echo htmlspecialchars($nodeData->subtitle) ?>" />
             </div>
             <?php endif; ?>
         </div>
