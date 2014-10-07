@@ -184,14 +184,21 @@ namespace Goteo\Model {
                 $sqlCurr = "";
             }
 
+            // para nodo tambien los financiados
+            if ($node == \GOTEO_NODE) {
+                $sqlFilter = " AND status = 3";
+            } else {
+                $sqlFilter = " AND (status = 3 OR status = 4)";
+            }
+
             $query = static::query("
                 SELECT
                     project.id as id,
                     project.name as name,
                     project.status as status
                 FROM    project
-                WHERE status = 3
-                AND project.id NOT IN (SELECT project FROM promote WHERE promote.node = :node{$sqlCurr} )
+                WHERE project.id NOT IN (SELECT project FROM promote WHERE promote.node = :node{$sqlCurr} )
+                {$sqlFilter}
                 ORDER BY name ASC
                 ", array(':node' => $node));
 
