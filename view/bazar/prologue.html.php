@@ -44,6 +44,18 @@
           })();
 
         </script>
+<script>
+var _prum = [['id', '5434f3beabe53dcd6ff6f0cf'],
+             ['mark', 'firstbyte', (new Date()).getTime()]];
+(function() {
+    var s = document.getElementsByTagName('script')[0]
+      , p = document.createElement('script');
+    p.async = 'async';
+    p.src = '//rum-static.pingdom.net/prum.min.js';
+    s.parentNode.insertBefore(p, s);
+})();
+</script>
+
     </head>
 
     <body>
