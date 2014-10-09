@@ -34,12 +34,12 @@ $data    = $this['data'];
 
         <div style="float:left;margin:5px;display: none;" id="date-filter-from">
             <label for="date-filter-from">Fecha desde</label><br />
-            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_from'], 'id'=>'date-filter-from', 'name'=>'date_from')); ?>
+            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_from'], 'id'=>'date-filter-from', 'name'=>'date_from', 'js' => true)); ?>
         </div>
 
         <div style="float:left;margin:5px;display: none;" id="date-filter-until">
             <label for="date-filter-until">Fecha hasta</label><br />
-            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_until'], 'id'=>'date-filter-until', 'name'=>'date_until')); ?>
+            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_until'], 'id'=>'date-filter-until', 'name'=>'date_until', 'js' => true)); ?>
         </div>
 
         <br clear="both" />
