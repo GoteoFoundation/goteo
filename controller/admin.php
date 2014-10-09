@@ -39,7 +39,7 @@ namespace Goteo\Controller {
                     'report' => array('label' => 'Informe de proyecto', 'item' => true),
                     'viewer' => array('label' => 'Viendo logs', 'item' => false)
                 ),
-                'filters' => array('id' => '', 'methods' => '', 'investStatus' => 'all', 'projects' => '', 'name' => '', 'calls' => '', 'review' => '', 'types' => '', 'date_from' => '', 'date_until' => '', 'issue' => 'all', 'procStatus' => 'all', 'amount' => '')
+                'filters' => array('id' => '', 'methods' => '', 'investStatus' => 'all', 'projects' => '', 'name' => '', 'calls' => '', 'review' => '', 'types' => '', 'date_from' => '', 'date_until' => '', 'issue' => 'all', 'procStatus' => 'all', 'amount' => '', 'maxamount' => '')
             ),
             'banners' => array(
                 'label' => 'Banners',

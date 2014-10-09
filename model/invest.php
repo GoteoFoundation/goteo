@@ -183,6 +183,10 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND invest.amount >= :amount";
                 $values[':amount'] = $filters['amount'];
             }
+            if (!empty($filters['maxamount'])) {
+                $sqlFilter .= " AND invest.amount <= :maxamount";
+                $values[':maxamount'] = $filters['maxamount'];
+            }
             if (!empty($filters['users'])) {
                 $sqlFilter .= " AND invest.user = :users";
                 $values[':users'] = $filters['users'];

@@ -575,7 +575,9 @@ namespace Goteo\Controller\Admin {
                     array(
                         'folder' => 'accounts',
                         'file' => 'viewer',
-                        'content' => $content
+                        'content' => $content,
+                        'date' => $date,
+                        'type' => $type
                     )
                 );
             }
