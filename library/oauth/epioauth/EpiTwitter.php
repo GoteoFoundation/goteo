@@ -3,10 +3,10 @@
  *  Class to integrate with Twitter's API.
  *    Authenticated calls are done using OAuth and require access tokens for a user.
  *    API calls which do not require authentication do not require tokens (i.e. search/trends)
- * 
+ *
  *  Full documentation available on github
  *    http://wiki.github.com/jmathai/twitter-async
- * 
+ *
  *  @author Jaisen Mathai <jaisen@jmathai.com>
  */
 class EpiTwitter extends EpiOAuth
@@ -19,11 +19,14 @@ class EpiTwitter extends EpiOAuth
   protected $authorizeUrl   = 'https://api.twitter.com/oauth/authorize';
   protected $authenticateUrl= 'https://api.twitter.com/oauth/authenticate';
   protected $apiUrl         = 'https://api.twitter.com';
-  protected $apiVersionedUrl= 'http://api.twitter.com';
-  protected $searchUrl      = 'http://search.twitter.com';
   protected $userAgent      = 'EpiTwitter (http://github.com/jmathai/twitter-async/tree/)';
   protected $apiVersion     = '1.1';
   protected $isAsynchronous = false;
+  /**
+   * The Twitter API version 1.0 search URL.
+   * @var string
+   */
+  protected $searchUrl      = 'http://search.twitter.com';
 
   /* OAuth methods */
   public function delete($endpoint, $params = null)
@@ -55,6 +58,11 @@ class EpiTwitter extends EpiOAuth
   public function post_basic($endpoint, $params = null, $username = null, $password = null)
   {
     return $this->request_basic('POST', $endpoint, $params, $username, $password);
+  }
+
+  public function useApiUrl($url = '')
+  {
+    $this->apiUrl = rtrim( $url, '/' );
   }
 
   public function useApiVersion($version = null)
@@ -103,13 +111,12 @@ class EpiTwitter extends EpiOAuth
 
   private function getApiUrl($endpoint)
   {
-    return "{$this->apiUrl}/{$this->apiVersion}{$endpoint}";
-    if(preg_match('@^/(trends|search)[./]?(?=(json|daily|current|weekly))@', $endpoint))
-      return "{$this->searchUrl}{$endpoint}";
-    elseif(!empty($this->apiVersion))
-      return "{$this->apiVersionedUrl}/{$this->apiVersion}{$endpoint}";
-    else
-      return "{$this->apiUrl}{$endpoint}";
+    if ($this->apiVersion === '1' && preg_match('@^/search[./]?(?=(json|daily|current|weekly))@', $endpoint))
+    {
+      return $this->searchUrl.$endpoint;
+    }
+
+    return $this->apiUrl.'/'.$this->apiVersion.$endpoint;
   }
 
   private function request($method, $endpoint, $params = null)
@@ -181,28 +188,28 @@ class EpiTwitterJson implements ArrayAccess, Countable, IteratorAggregate
   {
     return count($this->response);
   }
-  
+
   // Next four functions are to support ArrayAccess interface
   // 1
-  public function offsetSet($offset, $value) 
+  public function offsetSet($offset, $value)
   {
     $this->response[$offset] = $value;
   }
 
   // 2
-  public function offsetExists($offset) 
+  public function offsetExists($offset)
   {
     return isset($this->response[$offset]);
   }
-  
+
   // 3
-  public function offsetUnset($offset) 
+  public function offsetUnset($offset)
   {
     unset($this->response[$offset]);
   }
 
   // 4
-  public function offsetGet($offset) 
+  public function offsetGet($offset)
   {
     return isset($this->response[$offset]) ? $this->response[$offset] : null;
   }
@@ -243,7 +250,7 @@ class EpiTwitterJson implements ArrayAccess, Countable, IteratorAggregate
   }
 }
 
-class EpiTwitterException extends Exception 
+class EpiTwitterException extends Exception
 {
   public static function raise($response, $debug)
   {
