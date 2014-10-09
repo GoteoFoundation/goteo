@@ -60,6 +60,11 @@ $emails = Invest::emails(true);
             <input type="text" id ="amount-filter" name="amount" value ="<?php echo $filters['amount']?>" />
         </div>
 
+        <div style="float:left;margin:5px;">
+            <label for="amount-filter">Importe hasta:</label><br />
+            <input type="text" id ="maxamount-filter" name="maxamount" value ="<?php echo $filters['maxamount']?>" />
+        </div>
+
         <br clear="both" />
         
         <div style="float:left;margin:5px;">
@@ -69,11 +74,11 @@ $emails = Invest::emails(true);
 
         <div style="float:left;margin:5px;" id="date-filter-from">
             <label for="date-filter-from">Fecha desde</label><br />
-            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_from'], 'id'=>'date-filter-from', 'name'=>'date_from')); ?>
+            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_from'], 'id'=>'date-filter-from', 'name'=>'date_from', 'js' => true)); ?>
         </div>
         <div style="float:left;margin:5px;" id="date-filter-until">
             <label for="date-filter-until">Fecha hasta</label><br />
-            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_until'], 'id'=>'date-filter-until', 'name'=>'date_until')); ?>
+            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_until'], 'id'=>'date-filter-until', 'name'=>'date_until', 'js' => true)); ?>
         </div>
 
         <div style="float:left;margin:5px;">

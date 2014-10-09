@@ -2,6 +2,9 @@
 
 use Goteo\Core\View;
 
+$type = $this['type'];
+$date = $this['date'];
+
 ?>
 <div class="widget">
     <h3>Seleccionar log por tipo y fecha</h3>
@@ -17,7 +20,7 @@ use Goteo\Core\View;
         </div>
         <div style="float:left;margin:5px;" id="hdate">
             <label for="hdate">Fecha del log:</label><br />
-            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$date, 'id'=>'hdate', 'name'=>'date')); ?>
+            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$date, 'id'=>'hdate', 'name'=>'date', 'js' => true)); ?>
         </div>
         <div style="float:left;margin:5px;">
             <input type="submit" value="Ver" />
