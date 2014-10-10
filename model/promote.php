@@ -188,7 +188,7 @@ namespace Goteo\Model {
             if ($node == \GOTEO_NODE) {
                 $sqlFilter = " AND status = 3";
             } else {
-                $sqlFilter = " AND (status = 3 OR status = 4)";
+                $sqlFilter = " AND (status = 3 OR status = 4 OR status = 5)";
             }
 
             $query = static::query("
