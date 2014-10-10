@@ -26,18 +26,6 @@ foreach ($projects as $project) {
     <input type="hidden" name="id" value="<?php echo $promo->id; ?>" />
     <input type="hidden" id="item" name="item" value="<?php echo $promo->project; ?>" />
 
-<!--
-<p>
-    <label for="promo-project">Proyecto:</label><br />
-    <select id="promo-project" name="project">
-        <option value="" >Seleccionar el proyecto a destacar</option>
-    <?php foreach ($projects as $project) : ?>
-        <option value="<?php echo $project->id; ?>"<?php if ($promo->project == $project->id) echo' selected="selected"';?>><?php echo $project->name . ' ('. $status[$project->status] . ')'; ?></option>
-    <?php endforeach; ?>
-    </select>
-</p>
--->
-
 <div>
     <label for="projects-filter">Proyecto: (autocomplete nombre)</label><br />
     <input type="text" name="project" id="projects-filter" value="<?php echo $preval;?>" size="60" />
