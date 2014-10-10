@@ -52,7 +52,7 @@ namespace Goteo\Controller\Dashboard {
 
             // Tratamiento de la imagen vip mediante el modelo User\Vip
             if ($vip instanceof Model\User\Vip) {
-                if (isset($_FILES['avatar_upload']) && $_FILES['avatar_upload']['error'] != UPLOAD_ERR_NO_FILE) {
+                if (isset($_FILES['vip_image_upload']) && $_FILES['vip_image_upload']['error'] != UPLOAD_ERR_NO_FILE) {
                     $vip->image = $_FILES['vip_image_upload'];
                     $vip->save($errors);
                 }
