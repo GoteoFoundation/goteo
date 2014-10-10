@@ -822,7 +822,11 @@ namespace Goteo\Controller {
                 $project->errors['userProfile']['avatar'] = $project->errors['userProfile']['image'];
             }
 
-            $user = Model\User::flush();
+
+            // actualizar perfil propio solo si es el impulsor
+            if ($_SESSION['user']->id == $project->owner) {
+                Model\User::flush();
+            }
             $project->user = $user;
             return true;
         }

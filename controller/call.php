@@ -625,7 +625,9 @@ namespace Goteo\Controller {
 
             /// este es el único save que se lanza desde un metodo process_
             $user->save($call->errors['userProfile']);
-            $user = Model\User::flush();
+            if ($_SESSION['user'] == $call->owner)
+                Model\User::flush();
+
             return true;
         }
 
