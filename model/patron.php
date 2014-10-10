@@ -375,12 +375,19 @@ namespace Goteo\Model {
          * para pintar los padrinos en la página de proyecto
          *
          * @param varchar50 $project
+         * @param varchar50 $node  (para mostrar solo apadrinamientos en un mismo nodo)
+         *
          */
-        public static function getRecos($project, $node = \GOTEO_NODE) {
+        public static function getRecos($project, $node = null) {
 
             $recos = array();
 
-            $values = array(':node' => $node, ':project'=>$project, ':lang'=>\LANG);
+            $values = array(':project'=>$project, ':lang'=>\LANG);
+
+            if (!empty($node)) {
+                $values[':node'] = $node;
+                $sqlFilter = ' AND patron.node = :node';
+            }
 
             $sql = "SELECT
                         patron.user,
@@ -399,7 +406,7 @@ namespace Goteo\Model {
                         ON user.id=patron.user
                     WHERE patron.project = :project
                     AND patron.active = 1
-                    AND patron.node = :node
+                    {$sqlFilter}
                     ORDER BY `order` ASC";
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $reco) {
