@@ -12,12 +12,21 @@ $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 $projects = Model\Promote::available($promo->project, $node);
 $status = Model\Project::status();
 
+//para autocomplete
+$items = array();
+
+foreach ($projects as $project) {
+    $items[] = '{ value: "'.str_replace('"','\"',$project->name).'", id: "'.$project->id.'" }';
+        if($promo->project === $project->id) $preval=$project->name;
+}
 ?>
 <form method="post" action="/admin/promote">
     <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
     <input type="hidden" name="order" value="<?php echo $promo->order ?>" />
     <input type="hidden" name="id" value="<?php echo $promo->id; ?>" />
+    <input type="hidden" id="item" name="item" value="<?php echo $promo->project; ?>" />
 
+<!--
 <p>
     <label for="promo-project">Proyecto:</label><br />
     <select id="promo-project" name="project">
@@ -27,6 +36,13 @@ $status = Model\Project::status();
     <?php endforeach; ?>
     </select>
 </p>
+-->
+
+<div>
+    <label for="projects-filter">Proyecto: (autocomplete nombre)</label><br />
+    <input type="text" name="project" id="projects-filter" value="<?php echo $preval;?>" size="60" />
+</div>
+
 
 <?php if ($node == \GOTEO_NODE) : ?>
 <p>
@@ -55,3 +71,20 @@ $status = Model\Project::status();
     </p>
 
 </form>
+<script type="text/javascript">
+$(function () {
+
+    var items = [<?php echo implode(', ', $items); ?>];
+
+    /* Autocomplete para elementos */
+    $( "#projects-filter" ).autocomplete({
+      source: items,
+      minLength: 1,
+      autoFocus: true,
+      select: function( event, ui) {
+                $("#item").val(ui.item.id);
+            }
+    });
+
+});
+</script>
