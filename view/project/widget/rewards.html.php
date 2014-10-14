@@ -78,35 +78,35 @@ uasort($project->individual_rewards,
         <?php endforeach; ?>
         </ul>
     </div>
-
-        <?php if (!empty($project->bonus_rewards)) : ?>
-            <div class="social">
-                <h<?php echo $level + 1 ?> class="title"><?php echo Text::get('project-rewards-bonus_reward-title'); ?></h<?php echo $level + 1 ?>>
-                <ul>
-                    <?php foreach ($project->bonus_rewards as $bonus) : ?>
-                        <li class="<?php echo $bonus->icon ?>">
-                            <h<?php echo $level + 1 ?> class="name"><?php echo htmlspecialchars($bonus->icon_name) . ': ' .htmlspecialchars($bonus->reward) ?></h<?php echo $level + 1 ?>
-                            <p><?php echo htmlspecialchars($bonus->description)?></p>
-                            <?php if (!empty($bonus->license) && array_key_exists($bonus->license, $licenses)): ?>
-                                <div class="license <?php echo htmlspecialchars($bonus->license) ?>">
-                                    <h<?php echo $level + 2 ?>><?php echo Text::get('regular-license'); ?></h<?php echo $level + 2 ?>>
-                                    <a href="<?php echo htmlspecialchars($licenses[$bonus->license]->url) ?>" target="_blank">
-                                        <strong><?php echo htmlspecialchars($licenses[$bonus->license]->name) ?></strong>
-
-                                        <?php if (!empty($licenses[$bonus->license]->description)): ?>
-                                            <p><?php echo htmlspecialchars($licenses[$bonus->license]->description) ?></p>
-                                        <?php endif ?>
-                                    </a>
-                                </div>
-                            <?php endif ?>
-                            <?php if ($bonus->url) : ?><a href="<?php echo $bonus->url ?>" target="_blank" class="button green tipsy" title="<?php echo Text::get('social_reward-access_title'); ?>"><?php echo Text::get('social_reward-access'); ?></a><?php endif; ?>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        <?php endif; // end of bonus rewards ?>
-
     <?php endif; // end of social rewards ?>
+
+
+    <?php if (!empty($project->bonus_rewards) && (!isset($only) || $only == 'social')) : ?>
+        <div class="social">
+            <h<?php echo $level + 1 ?> class="title"><?php echo Text::get('project-rewards-bonus_reward-title'); ?></h<?php echo $level + 1 ?>>
+            <ul>
+                <?php foreach ($project->bonus_rewards as $bonus) : ?>
+                    <li class="<?php echo $bonus->icon ?>">
+                        <h<?php echo $level + 1 ?> class="name"><?php echo htmlspecialchars($bonus->icon_name) . ': ' .htmlspecialchars($bonus->reward) ?></h<?php echo $level + 1 ?>
+                        <p><?php echo htmlspecialchars($bonus->description)?></p>
+                        <?php if (!empty($bonus->license) && array_key_exists($bonus->license, $licenses)): ?>
+                            <div class="license <?php echo htmlspecialchars($bonus->license) ?>">
+                                <h<?php echo $level + 2 ?>><?php echo Text::get('regular-license'); ?></h<?php echo $level + 2 ?>>
+                                <a href="<?php echo htmlspecialchars($licenses[$bonus->license]->url) ?>" target="_blank">
+                                    <strong><?php echo htmlspecialchars($licenses[$bonus->license]->name) ?></strong>
+
+                                    <?php if (!empty($licenses[$bonus->license]->description)): ?>
+                                        <p><?php echo htmlspecialchars($licenses[$bonus->license]->description) ?></p>
+                                    <?php endif ?>
+                                </a>
+                            </div>
+                        <?php endif ?>
+                        <?php if ($bonus->url) : ?><a href="<?php echo $bonus->url ?>" target="_blank" class="button green tipsy" title="<?php echo Text::get('social_reward-access_title'); ?>"><?php echo Text::get('social_reward-access'); ?></a><?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; // end of bonus rewards ?>
 
     <a class="more" href="/project/<?php echo $project->id; ?>/rewards"><?php echo Text::get('regular-see_more'); ?></a>
 
