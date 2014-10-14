@@ -19,6 +19,14 @@ namespace Goteo\Controller\Admin {
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+                $el_item = $_POST['item'];
+                error_log($el_item);
+                if (!empty($el_item)) {
+                    $_POST['project'] = $el_item;
+                } else {
+                    $_POST['project'] = null;
+                }
+
                 // objeto
                 $promo = new Model\Promote(array(
                     'id' => $id,
@@ -120,7 +128,8 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'promote',
                             'file' => 'edit',
                             'action' => 'add',
-                            'promo' => (object) array('order' => $next, 'node'=>$node)
+                            'promo' => (object) array('order' => $next, 'node'=>$node),
+                            'autocomplete' => true
                         )
                     );
                     break;
@@ -133,7 +142,8 @@ namespace Goteo\Controller\Admin {
                             'folder' => 'promote',
                             'file' => 'edit',
                             'action' => 'edit',
-                            'promo' => $promo
+                            'promo' => $promo,
+                            'autocomplete' => true
                         )
                     );
                     break;
