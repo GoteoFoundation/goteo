@@ -166,11 +166,11 @@ namespace Goteo\Model {
                  $different_select_project=" IFNULL(project_lang.description, project.description) as description";
                 }
             else {
-                $different_select=" IFNULL(patron_lang.title, IFNULL(patron.title, patron.title)) as title,
-                                    IFNULL(patron_lang.description, IFNULL(patron.description, patron.description)) as patron_description";
-                $eng_join=" LEFT JOIN patron_lang as eng
-                                ON  eng.id = patron.id
-                                AND eng.lang = 'en'";
+                $different_select=" IFNULL(patron_lang.title, IFNULL(en.title, patron.title)) as title,
+                                    IFNULL(patron_lang.description, IFNULL(en.description, patron.description)) as patron_description";
+                $eng_join=" LEFT JOIN patron_lang as en
+                                ON  en.id = patron.id
+                                AND en.lang = 'en'";
                 $different_select_project=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
                 $eng_join_project=" LEFT JOIN project_lang as eng
                                     ON  eng.id = project.id
