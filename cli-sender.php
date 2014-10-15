@@ -14,17 +14,64 @@ ini_set("display_errors",1);
 define("MAIL_MAX_RATE", 14); // envios por segundo máximos
 define("MAIL_MAX_CONCURRENCY", 50); //numero máximo de procesos simultaneos para enviar mail (pero no se llegará a esta cifra si el ratio de envios es mayor que MAIL_MAX_RATE)
 define("PHP_CLI", "/usr/bin/php"); //ruta al ejecutable PHP
-define("LOCK_FILE", sys_get_temp_dir() . '/' . basename(__FILE__) . '.lock');
+//Archivo de bloqueo en la carpeta logs
+define("LOCK_FILE",  __DIR__ . '/logs/' . basename(__FILE__) . '.lock');
 // set Lang
 define('LANG', 'es');
 
-// Comprueba que no se este ejecutando
-exec("ps x | grep " . escapeshellarg(escapeshellcmd(basename(__FILE__))) . " | grep -v grep | awk '{ print $1 }'", $commands);
+/**
+ * Comprueba si se está ejecutando un proceso cli-sendmail.php con un pid determinado
+ * @param  [type] $pid [description]
+ * @return [type]      [description]
+ */
+function check_pid($args, $pid=null) {
+    $filter = escapeshellarg(escapeshellcmd(__DIR__ . "/cli-sendmail.php $args"));
+    $order = "ps x | grep $filter | grep -v grep | awk '{ print $1 }'";
+    // $order = "pgrep -f $filter";
+    $lines = shell_exec($order);
+    if($lines) {
+        // echo "[$pid] ";print_r($lines);print_r($order);
+        if($pid) {
+            $lines = array_map('trim', explode("\n", $lines));
+            if(in_array($pid, $lines)) {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+}
 
-if (count($commands)>1) {
-    //echo `ps x`;
+
+// Comprueba que no se este ejecutando
+//
+$lock_file = fopen(LOCK_FILE, 'c');
+$got_lock = flock($lock_file, LOCK_EX | LOCK_NB, $wouldblock);
+if ($lock_file === false || (!$got_lock && !$wouldblock)) {
+    throw new Exception(
+        "Unexpected error opening or locking lock file. Perhaps you " .
+        "don't  have permission to write to the lock file or its " .
+        "containing directory?"
+    );
+}
+else if (!$got_lock && $wouldblock) {
     die("Ya existe una copia de " . basename(__FILE__) . " en ejecución!\n");
 }
+
+// Lock acquired; let's write our PID to the lock file for the convenience
+// of humans who may wish to terminate the script.
+ftruncate($lock_file, 0);
+fwrite($lock_file, getmypid() . "\n");
+
+// exec("ps x | grep " . escapeshellarg(escapeshellcmd(basename(__FILE__))) . " | grep -v grep | awk '{ print $1 }'", $commands);
+
+// if (count($commands)>1) {
+//     //echo `ps x`;
+//     die("Ya existe una copia de " . basename(__FILE__) . " en ejecución!\n");
+// }
+
+// print_r($commands);
 
 //system timezone
 date_default_timezone_set("Europe/Madrid");
@@ -228,26 +275,8 @@ if ($debug) echo "dbg: FIN, tiempo de ejecución total " . round(microtime(true)
 // limpiamos antiguos procesados
 Sender::cleanOld();
 
-/**
- * Comprueba si se está ejecutando un proceso cli-sendmail.php con un pid determinado
- * @param  [type] $pid [description]
- * @return [type]      [description]
- */
-function check_pid($args, $pid=null) {
-    $filter = escapeshellarg(escapeshellcmd(__DIR__ . "/cli-sendmail.php $args"));
-    $order = "ps x | grep $filter | grep -v grep | awk '{ print $1 }'";
-    // $order = "pgrep -f $filter";
-    $lines = shell_exec($order);
-    if($lines) {
-        // echo "[$pid] ";print_r($lines);print_r($order);
-        if($pid) {
-            $lines = array_map('trim', explode("\n", $lines));
-            if(in_array($pid, $lines)) {
-                return true;
-            }
-        }
-        else {
-            return true;
-        }
-    }
-}
+// All done; we blank the PID file and explicitly release the lock
+// (although this should be unnecessary) before terminating.
+ftruncate($lock_file, 0);
+flock($lock_file, LOCK_UN);
+unlink(LOCK_FILE);
