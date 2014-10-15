@@ -207,11 +207,10 @@ namespace Goteo\Model {
 
         // ya no validamos esto
         public function validate (&$errors = array()) {
-            if (empty($this->node))
-                $errors[] = 'Falta nodo';
+            // if (empty($this->node))                $errors[] = 'Falta nodo';
 
-            if ($this->active && empty($this->project))
-                $errors[] = 'Se muestra y no tiene proyecto';
+            if (empty($this->project))
+                $errors[] = 'Hay que destacar un proyecto';
 
             if (empty($errors))
                 return true;
@@ -220,7 +219,7 @@ namespace Goteo\Model {
         }
 
         public function save (&$errors = array()) {
-//            if (!$this->validate($errors)) return false;
+            if (!$this->validate($errors)) return false;
 
             $fields = array(
                 'id',
