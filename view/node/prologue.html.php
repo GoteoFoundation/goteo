@@ -62,10 +62,28 @@
         <!-- vigilante de sesion -->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
 
+        <?php if (!isset($_SESSION['impersonating']) && $_SESSION['user'] instanceof \Goteo\Model\User && empty($_SESSION['user']->geoloc) && !$_SESSION['user']->geologed && !$_SESSION['user']->unlocable) : ?>
+            <!-- geologin -->
+            <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geologin.js"></script>
+        <?php endif; ?>
+
+
+        <?php if (isset($jscrypt)) : ?>
+            <script src="<?php echo SRC_URL ?>/view/js/sha1.min.js"></script>
+        <?php endif; ?>
+
         <?php if (isset($superform)) : ?>
             <script src="<?php echo SRC_URL ?>/view/js/datepicker.min.js"></script>
             <script src="<?php echo SRC_URL ?>/view/js/datepicker/datepicker.<?php echo LANG; ?>.js"></script>
             <script src="<?php echo SRC_URL ?>/view/js/superform.js"></script>
+        <?php endif; ?>
+
+        <?php if (isset($jsreq_autocomplete)) : ?>
+            <link href="<?php echo SRC_URL ?>/view/css/jquery-ui-1.10.3.autocomplete.min.css" rel="stylesheet" />
+            <script src="<?php echo SRC_URL ?>/view/js/jquery-ui-1.10.3.autocomplete.min.js"></script>
+        <?php endif; ?>
+        <?php if (isset($jsreq_ckeditor)) : ?>
+            <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
         <?php endif; ?>
 
         <?php if (defined('NODE_ANALYTICS_TRACKER')) echo NODE_ANALYTICS_TRACKER; ?>
