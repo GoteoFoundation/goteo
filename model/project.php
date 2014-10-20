@@ -2949,6 +2949,7 @@ namespace Goteo\Model {
                 $sql_count ="
                     SELECT COUNT(id)
                     FROM project
+                    $sqlConsultantFilter
                     WHERE $where
                     ";
 
