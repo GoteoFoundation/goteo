@@ -1,7 +1,7 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\SuperForm;
+    Goteo\Library\NormalForm;
 
 $user = $this['user'];
 $errors = $this['errors'];
@@ -33,7 +33,7 @@ extract($_POST);
 <form action="<?php echo SEC_URL; ?>/dashboard/profile/access" method="post" enctype="multipart/form-data">
 
 <?php
-echo new SuperForm(array(
+echo new NormalForm(array(
 
     'level'         => $this['level'],
     'method'        => 'post',

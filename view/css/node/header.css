@@ -140,11 +140,11 @@ div.node-banners-container div.node-banner a.expand {padding: 0;position: absolu
 
 
 /* paginación de los banners*/
-div#node-banners-controler{position: absolute;width: 100%; top: 448px;z-index:100;overflow:auto;height:auto;text-align:center}
+div#node-banners-controler{position: absolute;width: 100%; top: 440px;z-index:100;overflow:auto;height:auto;text-align:center}
 ul.bannerspage{list-style:none; z-index:100;  padding:0;  margin:0; display:inline-block}
 ul.bannerspage li{ cursor:pointer;  display:block;  float:left;  overflow:hidden; margin:0px 4px 5px 4px}
 ul.bannerspage li a{display:block;width:12px;height:12px;margin-top:2px;-webkit-border-radius: 100px;-moz-border-radius: 100px;border-radius: 100px;}
-ul.bannerspage li a{background-color:#d9cfd2;color:#d9cfd2;}
+ul.bannerspage li a{background-color:#d9cfd2;color:#d9cfd2; width:12px !important;}
 ul.bannerspage li a:hover{ background-color:#808184;  color:#808184}
 /* fin paginación de los banners*/
 
