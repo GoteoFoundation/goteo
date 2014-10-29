@@ -29,6 +29,7 @@ if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance
      && !isset($_POST['Num_operacion'])
     ) {
     header('Location: /about/maintenance');
+    die;
 }
 
 // Autoloader
