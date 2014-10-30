@@ -1,3 +1,5 @@
+config
+!config/README
 dist
 *.log
 node_modules
