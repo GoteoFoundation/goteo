@@ -1275,6 +1275,7 @@ namespace Goteo\Model {
                     }
                 }
                 foreach ($guarda as $key=>$item) {
+                    $item->project_date = $this->created; // fecha de creación del proyecto para verificar fechas de la tarea
                     if (!$item->save($errors))
                         $fail = true;
                 }
@@ -1282,6 +1283,7 @@ namespace Goteo\Model {
                 foreach ($tiene as $key => $row) {
                     // a ver la diferencia con el que viene
                     if ($row != $viene[$key]) {
+                        $viene[$key]->project_date = $this->created; // fecha de creación del proyecto para verificar fechas de la tarea
                         if (!$viene[$key]->save($errors))
                             $fail = true;
                     }
