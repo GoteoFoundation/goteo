@@ -46,11 +46,20 @@ foreach ($costs as $cost) {
     
 }
 
-if ($from && $until):
+//Minimo, la fecha de creacion del proyecto o si por una hecatombe esta
+//no existe, 40 dias atras
+$min = strtotime($project->created);
+if(!$min) $min = time() - 40*24*3600;
+$max = 365*24*3600;
+if($from < $min ) $from = $min;
+if($until > $from + $max ) $until = $from + $max;
+
+if ($from && $until && $until >= $from):
 
 $diff = date_diff(new DateTime("@$until"), new DateTime("@$from"), true);
 
 $a = $diff->format('%a');
+// print_r("[".date('d/m/Y',$from)."] [".date('d/m/Y', $until) ."] [$a]");return;
 
 //$max_weeks = 52;
 //$min_weeks = 4;
