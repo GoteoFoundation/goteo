@@ -45,7 +45,6 @@
      */
     $.fn.superform = function( options ) {
         var t = this;
-        var caller = t.get(0);
 
         // Si es un string no hay llamada post, actualiza el target con el string enviado
         if(typeof options === 'string') {
@@ -133,15 +132,15 @@
 
             // console.log(frm[0].id, post.data);
 
-            frm[0].xhr = $.ajax(post).done( function(html, status, xhr) {
+            frm[0].xhr = $.ajax(post).done( function(html) {
                 //ajax finalizado
                 t.trigger('superform.ajax.done', [html, el]);
                 //actualizar el nodo si target es un elemento html
                 //si no hay el el id esperado, no actualizar nada
                 _superformUpdate(t, el, html);
-            }).fail( function(html, status, xhr) {
+            }).fail( function(html, status) {
                 // console.log(html,status,xhr);
-                if(status != 'abort') alert('Error, status return not success: ' +  status);
+                if(status !== 'abort') alert('Error, status return not success: ' +  status);
             });
         }
     };
@@ -354,7 +353,7 @@ $(function() {
                 onBeforeShow: function(){
                     input.DatePickerSetDate(input.val(), true);
                 },
-                onChange: function(formatted, dates){
+                onChange: function(formatted){
                         input.val(formatted);
                         input.DatePickerHide();
                         input.focus();
@@ -464,7 +463,7 @@ $(function() {
 
             li[0].__update = function (input, li) {
                var val = input.val();
-               if (val != li[0].__lastVal) {
+               if (val !== li[0].__lastVal) {
                    li[0].__lastVal = val;
                    li.superform();
                } else {

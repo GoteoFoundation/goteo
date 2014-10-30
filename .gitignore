@@ -1,3 +1,5 @@
+dist
+*.log
 node_modules
 app/data/*
 !app/data/.htaccess

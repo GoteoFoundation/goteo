@@ -5,14 +5,6 @@ function send_gl_form(gl_lat, gl_lon, gl_msg) {
         dataType:   'html',
         data:       ({geologin: 'record', lat: gl_lat, lon: gl_lon, msg:gl_msg})
     });
-}    
-    
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(setPosition, setMsg);
-    } else{
-        send_gl_form(null, null, "Geolocation is not supported by the browser.");
-    }
 }
 
 function setPosition(position) {
@@ -21,24 +13,32 @@ function setPosition(position) {
 
 function setMsg(error) {
   var msg;
-  switch(error.code) 
+  switch(error.code)
     {
     case error.PERMISSION_DENIED:
-      msg = "User denied the request for Geolocation."
+      msg = "User denied the request for Geolocation.";
       break;
     case error.POSITION_UNAVAILABLE:
-      msg = "Location information is unavailable."
+      msg = "Location information is unavailable.";
       break;
     case error.TIMEOUT:
-      msg = "The request to get user location timed out."
+      msg = "The request to get user location timed out.";
       break;
     case error.UNKNOWN_ERROR:
-      msg = "An unknown error occurred."
+      msg = "An unknown error occurred.";
       break;
     }
     send_gl_form(null, null, msg);
 }
 
-jQuery(document).ready(function($) {
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(setPosition, setMsg);
+    } else{
+        send_gl_form(null, null, "Geolocation is not supported by the browser.");
+    }
+}
+
+jQuery(document).ready(function() {
     getLocation();
 });
