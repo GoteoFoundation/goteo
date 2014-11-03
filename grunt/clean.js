@@ -5,46 +5,37 @@
 //  to clean up our output directories before the remaining tasks copy new files
 //  to them.
 //
-// module.exports = function(grunt) {
+module.exports = function(grunt) {
 
-//     'use strict';
+    'use strict';
 
-//     grunt.config('clean', {
-//         // For the "server" task, we only need to clean the .tmp folder.
-//         // server: {
-//         //     src : [
-//         //          '.tmp',
-//         //          'php/**/*',
-//         //          '!php/php.ini'
-//         //     ]
-//         // },
-//         // For the "dist" task, we need to clean out several folders.
-//         dist: {
-//             options : {
-//                 // "no-write": true,
-//                 // expand:true,
-//             },
-//             files: [{
-//                 dot : true,
-//                 src: [
-//                     // '.tmp',
-//                     // 'php/**/*',
-//                     // '!php/php.ini',
-//                     'dist/*',
-//                     'dist/**/*',
-//                     '!dist/**/',
-//                     // '!dist/**',
-//                     // '!dist/view',
-//                     // 'dist/view/**/*',
-//                     '!dist/**/*.{png,jpg,jpeg,gif}',
-//                     '!dist/data*',
-//                     '!dist/logs*',
-//                     '!dist/config*',
-//                     '!dist/.git*'
-//                 ]
-//             }]
-//         }
-//     });
+    grunt.config('clean', {
+        // For the "server" task, we only need to clean the .tmp folder.
+        server: {
+            src : [
+                 '.tmp',
+                 'php/**/*',
+                 '!php/php.ini'
+            ]
+        },
+        // For the "dist" task, we need to clean out several folders.
+        dist: {
+            options : {
+                // "no-write": true,
+                // expand:true,
+            },
+            files: [{
+                dot : true,
+                src: [
+                    '.tmp',
+                    'php/**/*',
+                    '!php/php.ini',
+                    // '<%= goteo.dist %>/**/view/css/{goteo,node,config}*.css',
+                    '<%= goteo.dist %>/prologue.html.php',
+                ]
+            }]
+        }
+    });
 
-//     grunt.loadNpmTasks('grunt-contrib-clean');
-// };
+    grunt.loadNpmTasks('grunt-contrib-clean');
+};

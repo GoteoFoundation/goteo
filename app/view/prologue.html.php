@@ -40,7 +40,12 @@ if (NODE_ID != GOTEO_NODE) {
         <meta property="og:image" content="<?php echo SRC_URL ?>/goteo_logo.png" />
         <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.min.css" />
+
+
+    <!-- build:css view/css/goteo.css -->
+    <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.css" />
+    <!-- endbuild -->
+
       <!--[if IE]>
       <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
       <![endif]-->

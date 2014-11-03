@@ -64,7 +64,7 @@ define('GOTEO_DATA_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data' . DIR
  * Carga de configuración local si existe
  * Si no se carga el real (si existe)
 **/
-$config_file = GOTEO_PATH . 'config/settings.php';
+$config_file = GOTEO_PATH . '../config/settings.php';
 if (file_exists($config_file)) { //en .gitignore
     require $config_file;
 } else {

@@ -8,9 +8,9 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= goteo.app %>/view/css/',
-          src: ['goteo.min.css'],
-          dest: '<%= goteo.dist %>/view/css'
+          cwd: '<%= goteo.app %>',
+          src: ['**/view/css/{goteo,config,node}.css'],
+          dest: '<%= goteo.dist %>'
         }]
       }
 

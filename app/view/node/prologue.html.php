@@ -30,6 +30,7 @@
         <meta property="og:image" content="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID; ?>/view/css/logo.png" />
         <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>
+
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/goteo.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/config.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/node.css" />

@@ -6,12 +6,12 @@ module.exports = function(grunt) {
     'use strict';
 
     grunt.config('php', {
-        dev: {  //Configuration options for the "server" task (i.e. during development).
+        local: {  //Configuration options for the "server" task (i.e. during development).
             options: {
                 /*keepalive: true,*/
                 ini: '../php/php.ini',
-                hostname: '<%= goteo.devURL %>',
-                port: '<%= goteo.devPort %>',
+                hostname: '<%= goteo.localURL %>',
+                port: '<%= goteo.localPort %>',
                 base: '<%= goteo.app %>', //Set the document root to the app folder.
                 router: '../router.php',
                 keepalive: true,
@@ -22,8 +22,8 @@ module.exports = function(grunt) {
             options: {
                 //keepalive: true,
                 ini: '../php/php.ini',
-                hostname: '<%= goteo.devURL %>',
-                port: '<%= goteo.devPort %>',
+                hostname: '<%= goteo.localURL %>',
+                port: '<%= goteo.localPort %>',
                 base: '<%= goteo.dist %>', //Set the document root to the dist folder.
                 router: '../router.php',
                 // router: '../router-dist.php',
