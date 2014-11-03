@@ -43,6 +43,11 @@ module.exports = function(grunt) {
     // Default task. Just linter
     grunt.registerTask('default', ['lint']);
     grunt.registerTask('lint', ['jshint', 'phplint']);
+    //pre-commit ready hook
+    //$ cd {repo}
+    //$ nano .git/hooks/pre-commit
+    // grunt precommit
+    grunt.registerTask('precommit', ['lint']);
 
     //build task, generates the distribution files
     //ready to deploy on a web server
