@@ -52,7 +52,7 @@ module.exports = function(grunt) {
     // grunt precommit
     //
     // $ chmod +x .git/hooks/pre-commit
-    grunt.registerTask('precommit', ['lint']);
+    grunt.registerTask('precommit', ['newer:lint']
 
     //build task, generates the distribution files
     //ready to deploy on a web server
