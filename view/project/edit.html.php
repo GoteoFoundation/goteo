@@ -9,7 +9,7 @@ $bodyClass = 'project-edit';
 $project = $this['project'];
 
 $status = new View('view/project/edit/status.html.php', array('status' => $this['project']->status, 'progress' => $this['project']->progress));
-$steps  = new View('view/project/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $this['project']->errors));
+$steps  = new View('view/project/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $this['project']->errors, 'id_project' => $this['project']->id));
 
 if (!empty($this['success'])) {
     Goteo\Library\Message::Info($this['success']);
