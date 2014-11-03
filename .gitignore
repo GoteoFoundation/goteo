@@ -3,6 +3,11 @@ config
 dist
 *.log
 node_modules
+php
+!php/php.ini
+.tmp
+
+
 app/data/*
 !app/data/.htaccess
 app/logs/*
