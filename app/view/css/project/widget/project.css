@@ -207,6 +207,7 @@ div.widget.project > .author a {
     text-transform: none;
 	position:relative;
 	z-index:100;
+    height: 15px;
 }
 
 div.widget.project > .title a:hover{

@@ -93,22 +93,44 @@ namespace Goteo\Model\Project {
             // Estos son errores que no permiten continuar
             if (empty($this->project))
                 $errors[] = 'No hay proyecto al que asignar el coste';
-                //Text::get('validate-cost-noproject');
-/*
-            if (empty($this->cost))
-                $errors[] = 'No hay descripción de coste';
-                //Text::get('mandatory-cost-name');
 
-            if (empty($this->type))
-                $errors[] = 'No hay tipo de coste';
-                //Text::get('mandatory-cost-description');
-*/
+            // limite de fechas
+
+            // verificamos que tenemos fecha de creación del proyecto
+            if (empty($this->project_date) || $this->project_date == '0000-00-00')
+                $this->project_date = date('Y-m-d');
+
+            $dateMin = new \DateTime($this->project_date);  // entre fecha creacion del proyecto
+            // echo \trace($dateMin);
+
+            $dateBase = new \DateTime($this->project_date);
+            $dateMax = $dateBase->add(new \DateInterval('P2Y')); // y dos años después
+            // echo \trace($dateMax);
+
             if (empty($this->from) || $this->from == '0000-00-00') {
                 $this->from = date('Y-m-d');
+            } else {
+                //  tiene que estar dentro del limite de fechas
+                $dateFrom = new \DateTime($this->from);
+                if ($dateFrom > $dateMax)
+                    $this->from = $dateMax->format('Y-m-d');
+
+                if ($dateFrom < $dateMin)
+                    $this->from = $dateMin->format('Y-m-d');
+
             }
 
             if (empty($this->until) || $this->until == '0000-00-00') {
                 $this->until = date('Y-m-d');
+            } else {
+                //  tiene que estar dentro del limite de fechas
+                $dateUntil = new \DateTime($this->until);
+                if ($dateUntil > $dateMax)
+                    $this->until = $dateMax->format('Y-m-d');
+
+                if ($dateUntil < $dateMin)
+                    $this->until = $dateMin->format('Y-m-d');
+
             }
 
             //cualquiera de estos errores hace fallar la validación
@@ -119,6 +141,11 @@ namespace Goteo\Model\Project {
         }
 
 		public function save (&$errors = array()) {
+
+            if (!$this->validate($errors)) {
+                return false;
+            }
+
 
 			$fields = array(
 				'id',
