@@ -10,7 +10,7 @@ namespace Goteo\Controller\Admin {
 
     class Base {
 
-        public static function process ($action = 'list', $id = null) {
+        public static function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
             
         }
 
