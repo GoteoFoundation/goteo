@@ -30,6 +30,12 @@ $elements = array(
         'subtitle'  => '(Segun esta fecha se calculan los días)',
         'value'     => !empty($project->published) ? $project->published : null
     ),
+    'passed' => array(
+        'type'      => 'datebox',
+        'title'     => 'Fecha de paso a segunda ronda',
+        'subtitle'  => '(marca fin de primera ronda)',
+        'value'     => !empty($project->passed) ? $project->passed : null
+    ),
     'success' => array(
         'type'      => 'datebox',
         'title'     => 'Fecha de éxito',
@@ -40,12 +46,6 @@ $elements = array(
         'type'      => 'datebox',
         'title'     => 'Fecha de cierre',
         'value'     => !empty($project->closed) ? $project->closed : null
-    ),
-    'passed' => array(
-        'type'      => 'datebox',
-        'title'     => 'Fecha de paso a segunda ronda',
-        'subtitle'  => '(marca fin de primera ronda)',
-        'value'     => !empty($project->passed) ? $project->passed : null
     )
 
 );
