@@ -194,7 +194,7 @@ namespace Goteo\Model\Project {
          */
         public static function finish($project) {
 
-            $debug = false;
+            $debug = true;
 
             try {
 
@@ -235,7 +235,7 @@ namespace Goteo\Model\Project {
 
                     $one_round = 0;
                     $days_round1 = $project->days_round1;
-                    $days_round2 = $project->days_round1 - $project->days_active + 1;
+                    $days_round2 = $project->days_active - $project->days_round1 + 1;
 
                 } else {
                     // no está en campaña
