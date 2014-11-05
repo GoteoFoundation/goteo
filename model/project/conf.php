@@ -194,7 +194,7 @@ namespace Goteo\Model\Project {
          */
         public static function finish($project) {
 
-            $debug = true;
+            $debug = false;
 
             try {
 
