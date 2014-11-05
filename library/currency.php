@@ -5,15 +5,18 @@ namespace Goteo\Library {
 /*
  * Clase para gestionar las monedas
  */
+    use \Goteo\Library\Mail;
 
     class Currency {
+
 
         const
             TEXT_RequestRatesFailed = 'Unable to fetch the currency rates feed.',
             TEXT_AmountMustBeNumeric = 'The given amount to convert must be numeric.',
             TEXT_LocaleNotAvailable = 'The given locale `%s` is not installed on this system.';
 
-        private $debug = false;
+        private $debug;
+        private $cache;
 
         static public $currencies = array(
 
@@ -36,6 +39,10 @@ namespace Goteo\Library {
         );
 
         public function __construct($debug = false) {
+            require_once PHPFASTCACHE_CLASS;
+
+            $this->cache = phpFastCache();
+
             $this->debug = $debug;
         }
 
@@ -68,22 +75,30 @@ namespace Goteo\Library {
          * @param int $ttl caching time in seconds
          * @return array
          */
-        public function getRates($base='USD', $ttl=86400)
+        public function getRates($base='EUR', $ttl=86400)
         {
             // check cache
-            //@TODO
-            /*
-            if ($this->f3->exists('RATES.'.$base))
-                return $this->f3->get('RATES.'.$base);
-            */
+            if ($this->cache->isExisting('RATES.'.$base)) {
+                if ($this->debug) die('cached');
+                return $this->cache->get('RATES.'.$base);
+            }
 
             // feed request
             $feed_url = 'http://themoneyconverter.com/rss-feed/'.$base.'/rss.xml';
-            $response = self::doRequest($feed_url); //@TODO
+            $response = self::doRequest($feed_url, true); //@TODO
             $file = '<?xml version="1.0" encoding="UTF-8" ?> '.$response['body'];
             @$feed=simplexml_load_string($file);
             if (!$feed) {
-                die (self::TEXT_RequestRatesFailed);
+                // mail de aviso
+                $mailHandler = new Mail();
+                $mailHandler->to = \GOTEO_FAIL_MAIL;
+                $mailHandler->subject = 'No coge divisas';
+                $mailHandler->content = 'Library\Currency->getRates  no obtiene feed desde '.$feed_url.' la respuesta es de '.strlen($response['body']);
+                $mailHandler->html = false;
+                $mailHandler->template = null;
+                $mailHandler->send();
+                unset($mailHandler);
+
                 return false;
             }
 
@@ -98,6 +113,21 @@ namespace Goteo\Library {
                 $tc = explode('/',$rate->title);
                 $ex = explode(' = ',$rate->description);
                 list($val,$name) = explode(' ',$ex[1],2);
+
+                if (empty($val) ||empty($name)) {
+                    // mail de aviso
+                    $mailHandler = new Mail();
+                    $mailHandler->to = \GOTEO_FAIL_MAIL;
+                    $mailHandler->subject = 'No coge divisas';
+                    $mailHandler->content = 'Library\Currency->getRates  no obtiene nombre o valor para alguna divisa <pre>'.print_r($rate , 1).'</pre>';
+                    $mailHandler->html = false;
+                    $mailHandler->template = null;
+                    $mailHandler->send();
+                    unset($mailHandler);
+
+                    return false;
+                }
+
                 $rates[$tc[0]] = array(
                     'value'=>$val,
                     'name'=>$name,
@@ -106,7 +136,7 @@ namespace Goteo\Library {
             }
 
             // set cache
-            // return $this->f3->set('RATES.'.$base,$rates,$ttl); //@TODO
+            $this->cache->set('RATES.'.$base,$rates,$ttl);
             return $rates;
         }
 

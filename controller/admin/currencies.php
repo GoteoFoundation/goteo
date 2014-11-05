@@ -16,14 +16,36 @@ namespace Goteo\Controller\Admin {
             //  testing currency feature development
             echo '<h1>testing currency feature development</h1>';
 
-            $currencies = Currency::$currencies;
-            echo \trace($currencies);
-            echo "<br />";
+            switch ($action) {
+                case 'list':
 
-            $Convert = new Currency();
-            $usd = $Convert->getRates('EUR');
+                    echo \trace(Currency::$currencies);
 
-            echo \trace($usd);
+                    break;
+
+                case 'test':
+                    $Lib = new Currency();
+
+                    // get rates test
+                    $usd = $Lib->getRates('EUR');
+                    echo \trace($usd);
+
+                    break;
+
+                case 'convert':
+                    $Lib = new Currency();
+
+                    $amount = (empty($id)) ? 1 : $id;
+
+                    foreach (Currency::$currencies as $curId=>$curData) {
+                        echo "{$amount} EUR = ".$Lib->convert($amount, 'EUR', $curId)." $curId<br />";
+                    }
+
+                    break;
+            }
+
+
+
 
             die;
 
