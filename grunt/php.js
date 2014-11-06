@@ -6,29 +6,27 @@ module.exports = function(grunt) {
     'use strict';
 
     grunt.config('php', {
-        local: {  //Configuration options for the "server" task (i.e. during development).
+        options: {
+            ini: '../var/php/php.ini',
+            hostname: '<%= goteo.localURL %>',
+            port: '<%= goteo.localPort %>',
+            livereload: 35729,
+            // keepalive: true,
+        },
+        // Configuration options for the "server" task (i.e. during development).
+        livereload: {
             options: {
-                /*keepalive: true,*/
-                ini: '../php/php.ini',
-                hostname: '<%= goteo.localURL %>',
-                port: '<%= goteo.localPort %>',
-                base: '<%= goteo.app %>', //Set the document root to the app folder.
-                router: '../router.php',
-                keepalive: true,
-                open: true
-            }
+                base: '<%= goteo.app %>', //Set the document root to the src folder.
+                // router: '../var/php/router_dev.php',
+                router: '../var/php/router.php',
+                open: true,
+            },
         },
         dist: { // The "server" task can pass in a "dist" arguement. Configure the server accordingly.
             options: {
-                //keepalive: true,
-                ini: '../php/php.ini',
-                hostname: '<%= goteo.localURL %>',
-                port: '<%= goteo.localPort %>',
                 base: '<%= goteo.dist %>', //Set the document root to the dist folder.
-                router: '../router.php',
-                // router: '../router-dist.php',
-                keepalive: true,
-                open: true
+                router: '../var/php/router.php',
+                open: false
             }
         }
     });

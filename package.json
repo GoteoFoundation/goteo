@@ -36,6 +36,7 @@
     "grunt-notify": "^0.3.1",
     "grunt-php": "^1.1.1",
     "grunt-phplint": "0.0.5",
+    "grunt-processhtml": "^0.3.3",
     "grunt-sync": "^0.2.0",
     "grunt-usemin": "^2.6.0",
     "jshint-stylish": "^1.0.0",

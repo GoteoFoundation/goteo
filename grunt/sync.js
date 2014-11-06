@@ -13,6 +13,7 @@ module.exports = function(grunt) {
             src: [
                 '**',
                 '!**/*.{png,jpg,jpeg,gif}',
+                // "!**/view/css/{goteo,config,node}.css",
                 "!config/**",
                 "!data/**",
                 "data/.htaccess",
@@ -29,6 +30,7 @@ module.exports = function(grunt) {
         ignoreInDest: [
                         "data",
                         '**/*.{png,jpg,jpeg,gif}',
+                        // "**/view/css/{goteo,config,node}.css",
                         "config/**",
                         "data/**",
                         "logs/**",

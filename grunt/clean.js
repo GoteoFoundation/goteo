@@ -30,8 +30,8 @@ module.exports = function(grunt) {
                     '.tmp',
                     'php/**/*',
                     '!php/php.ini',
-                    // '<%= goteo.dist %>/**/view/css/{goteo,node,config}*.css',
-                    '<%= goteo.dist %>/prologue.html.php',
+                    '<%= goteo.dist %>/**/view/css/{goteo,node,config}*.css',
+                    '<%= goteo.dist %>/view/prologue.html.php',
                 ]
             }]
         }

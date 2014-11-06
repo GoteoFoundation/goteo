@@ -1,12 +1,17 @@
+/node_modules/
+/vendor/
+/bower_components/
+*.log
+.tmp
+var/php
+!var/php/php.ini
+!var/php/router.php
+!var/php/router_dev.php
+composer.lock
+
 config
 !config/README
 dist
-*.log
-node_modules
-php
-!php/php.ini
-.tmp
-
 
 app/data/*
 !app/data/.htaccess

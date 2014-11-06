@@ -46,6 +46,11 @@ if (NODE_ID != GOTEO_NODE) {
     <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.css" />
     <!-- endbuild -->
 
+        <!-- processhtml:remove:dist -->
+        <script src="//localhost:35729/livereload.js"></script>
+        <!-- /processhtml -->
+
+
       <!--[if IE]>
       <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
       <![endif]-->
