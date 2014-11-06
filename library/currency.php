@@ -42,7 +42,20 @@ namespace Goteo\Library {
         public function __construct($debug = false) {
             require_once PHPFASTCACHE_CLASS;
 
-            $this->cache = phpFastCache();
+            if(SQL_CACHE_DRIVER == 'memcache') {
+                \phpFastCache::setup('storage','memcache');
+                \phpFastCache::setup('server',array(array(
+                    defined('SQL_CACHE_SERVER') ? SQL_CACHE_SERVER : '127.0.0.1',
+                    defined('SQL_CACHE_PORT') ? SQL_CACHE_PORT : 11211,
+                    1)
+                ));
+            }
+            else {
+                \phpFastCache::setup('storage','files');
+                \phpFastCache::setup('path', GOTEO_DATA_PATH);
+            }
+
+            $this->cache = \phpFastCache();
 
             $this->debug = $debug;
         }
