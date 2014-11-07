@@ -118,7 +118,7 @@ body.project-edit div#main.costs div.superform li.element.editcost div.children 
     min-width: 3em;
     float: left;
     padding-right: 2em;
-    background-image: url('/view/css/euro/m.png');    
+    /*background-image: url('/view/css/euro/m.png');*/   
     background-repeat: no-repeat;
     background-position: 3.7em center;
     font-size: 16px;
@@ -220,7 +220,7 @@ body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.minim
 }
 
 body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.minimum > span > strong {
-    background: url("/view/css/euro/violet/l.png") no-repeat right center;
+    /*background: url("/view/css/euro/violet/l.png") no-repeat right center;*/
     color: #96238F;
     padding-right: 31px;
     padding-left: 5px;
@@ -260,7 +260,7 @@ body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.optim
 body.project-edit div#main.costs div.superform li.element.cost-meter dl dd.optimum > strong {
     margin-left: -270px;
     padding-right: 31px;
-    background: url("/view/css/euro/light-violet/l.png") no-repeat right center;
+    /*background: url("/view/css/euro/light-violet/l.png") no-repeat right center;*/
 	color:#BB70B6;
 }
 

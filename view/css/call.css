@@ -261,22 +261,6 @@ div.call div.data .light {
 	color: #ba72b5;
 }
 
-
-div.call div.data span.euro {
-    background: url("/view/css/euro/violet/xl.png") no-repeat right center;
-    color: #96238F;
-    display: inline-block;
-    height: 27px;
-    width: 27px;
-    line-height: 2000px;
-    margin-bottom: -1px;
-    overflow: hidden;
-}
-
-div.call div.data .light span.euro {
-    background: url("/view/css/euro/light-violet/xl.png") no-repeat right center;
-}
-
 /* Retornos */
 div.call div.data li#numbers dl.return {
 	min-height: 80px; 

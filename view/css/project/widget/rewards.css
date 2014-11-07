@@ -80,18 +80,16 @@ div.widget.project-rewards > div.individual ul li div.amount,
 	text-transform:uppercase;
 }
 
-div.widget.project-rewards > div.individual ul li div.amount span.euro,
-#rewards-summary > div.individual ul li div.amount span.euro {
+div.widget.project-rewards > div.individual ul li div.amount span.figure,
+#rewards-summary > div.individual ul li div.amount span.figure {
     margin: 0px 0px 0px 2px;
-    background: url('/view/css/euro/violet/s.png') no-repeat right center;
     display: inline-block;
     background-color: #e7e7e7;
     border-right: #e7e7e7 solid 5px;
-	font-size: 14px;
-	padding-left: 8px;
-	padding-right: 20px;
-	line-height: 28px;
-	font-weight: bold;
+    font-size: 14px;
+    padding-left: 8px;
+    line-height: 28px;
+    font-weight: bold;
 }
 
 div.widget.project-rewards > div.individual ul li div.investors,

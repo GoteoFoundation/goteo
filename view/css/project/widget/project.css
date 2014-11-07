@@ -120,7 +120,6 @@ div.widget.project div.image div.investor div.invest span.amount {
     font-weight: bold;
     font-size: 16px;
     line-height: 18px !important;
-    background: url("/view/css/euro/violet/s.png") no-repeat right center;
     padding-right: 19px;
 }
 
@@ -274,15 +273,7 @@ div.widget.project div.meter div.obtained strong {
     padding-right: 15px;
     border-right: 1px solid #a7a9ac;
 }
-div.widget.project div.meter div.obtained span.euro {
-    width: 19px;
-    height: 19px;
-    line-height: 2000px;
-    overflow: hidden;
-    display: inline-block;
-    background:  url('/view/css/euro/violet/m.png') no-repeat center;
-    margin-bottom: -1px;
-}
+
 div.widget.project div.meter div.obtained span.percent {
     font-size: 26px;
     font-weight: bold;
@@ -455,20 +446,6 @@ div.widget.project div.meter dl dd.minimum > * {
 div.widget.project div.meter dl .reached,
 div.widget.project div.meter dl .supporters {
     display:  none;    
-}
-
-div.widget.project div.meter dl span.euro {
-    width: 16px;
-    height: 16px;
-    line-height: 2000px;
-    overflow: hidden;
-    display: inline-block;
-    background:  url('/view/css/euro/light-violet/s.png') no-repeat center;
-    margin-bottom: -1px;
-}
-
-div.widget.project div.meter dl .minimum span.euro {
-    background-image: url('/view/css/euro/violet/s.png');
 }
 
 div.widget.project div.meter dl .days {

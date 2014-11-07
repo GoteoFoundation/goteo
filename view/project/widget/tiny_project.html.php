@@ -71,7 +71,7 @@ $url = '';
     <h4 class="author"><?php echo Text::get('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($user->id) ?>" target="_blank"><?php echo htmlspecialchars(Text::recorta($user->name,40)) ?></a></h4>
     <span class="obtained"><?php echo Text::get('project-view-metter-got'); ?></span>
     <div class="obtained">
-        <strong><?php echo \amount_format($amount) ?> <span class="euro">&euro;</span></strong>
+        <strong><?php echo \amount_format($amount) ?></strong>
         <span class="percent"><?php echo $per_amount ?> &#37;</span>
     </div>
     <?php

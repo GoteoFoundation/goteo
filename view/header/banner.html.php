@@ -37,9 +37,9 @@ else :
     </div>
     <ul class="financ-meter">
         <li><?php echo $mreach ?></li>
-        <li class="reached"><?php echo \amount_format($banner->project_amount) ?> <img src="<?php echo SRC_URL ?>/view/css/euro/blue/s.png" alt="&euro;" /></li>
+        <li class="reached"><?php echo \amount_format($banner->project_amount) ?></li>
         <li><?php echo $mof ?></li>
-        <li class="optimun"><?php echo ($banner->project_amount >= $banner->project_mincost) ? \amount_format($banner->project_maxcost) : \amount_format($banner->project_mincost); ?> <img src="<?php echo SRC_URL ?>/view/css/euro/violet/s.png" alt="&euro;" /></li>
+        <li class="optimun"><?php echo ($banner->project_amount >= $banner->project_mincost) ? \amount_format($banner->project_maxcost) : \amount_format($banner->project_mincost); ?></li>
         <?php if ($banner->project_days > 0) : ?>
         <li><?php echo $mrest ?></li>
         <li class="days"><?php echo $banner->project_days ?> <?php echo Text::get('regular-days') ?></li>
