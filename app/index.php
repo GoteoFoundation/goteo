@@ -103,8 +103,7 @@ if ($SSL
     && $_SESSION['user'] instanceof \Goteo\Model\User
     && !\HTTPS_ON
 ) {
-    $jump = '/jump.php?action=go&url='.urlencode(SEC_URL.$_SERVER['REQUEST_URI']);
-    header('Location: '.$jump);
+    header('Location: ' . SEC_URL . $_SERVER['REQUEST_URI']);
     die;
 }
 /* Fin inicializacion constantes *_URL */
