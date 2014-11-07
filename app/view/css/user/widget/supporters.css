@@ -122,8 +122,7 @@ div.widget.user-supporters .supporters ul li dl dd.amount {
     color: #96238f;
 }
 
-div.widget.user-supporters .supporters ul li dl dd.amount {
-    background: url("/view/css/euro/violet/s.png") no-repeat scroll right center transparent;        
+div.widget.user-supporters .supporters ul li dl dd.amount {        
     height: 20px;    
     line-height: 21px;
     padding-right: 18px;

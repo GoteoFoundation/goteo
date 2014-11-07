@@ -122,6 +122,14 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('section' => 'project')
             ),
+            'currencies' => array(
+                'label' => 'Divisas',
+                'actions' => array(
+                    'list' => array('label' => 'Listando', 'item' => false),
+                    'test' => array('label' => 'Listando', 'item' => false)
+                ),
+                'filters' => array()
+            ),
             'faq' => array(
                 'label' => 'FAQs',
                 'actions' => array(
@@ -813,7 +821,8 @@ namespace Goteo\Controller {
                                 'calls' => $options['calls'],
                                 'transcalls' => $options['transcalls'],
                                 'nodes' => $options['nodes'],
-                                'transnodes' => $options['transnodes']
+                                'transnodes' => $options['transnodes'],
+                                'currencies' => $options['currencies']
                             )
                         )
                     );

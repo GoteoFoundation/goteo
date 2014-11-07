@@ -67,7 +67,7 @@ switch ($order) {
             foreach ($rewards as $rewardId=>$rewardData) : ?>
             <div class="reward <?php if(($num % 4)==0)echo " last"?>">
             	<div class="orden"><?php echo $num; ?></div>
-                <span class="aporte"><?php echo Text::get('dashboard-rewards-amount_group') ?><span class="num"><?php echo $rewardData->amount; ?></span> <span class="euro">&nbsp;</span></span>
+                <span class="aporte"><?php echo Text::get('dashboard-rewards-amount_group') ?><span class="num"><?php echo $rewardData->amount; ?></span></span>
                 <span class="cofinanciadores"><?php echo Text::get('dashboard-rewards-num_taken') ?><span class="num"><?php echo $rewardData->getTaken(); ?></span></span>
                 <div class="tiporec"><ul><li class="<?php echo $rewardData->icon; ?>"><?php echo Text::recorta($rewardData->reward, 40); ?></li></ul></div>
                 <div class="contenedorrecompensa">	

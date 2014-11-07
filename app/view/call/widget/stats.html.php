@@ -11,7 +11,7 @@ $call = $this['call'];
             <?php if (!empty($call->amount)) : //con dinero   ?>
                 <dl class="block long last">
                     <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
-                    <dd class="money"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
+                    <dd class="money"><?php echo \amount_format($call->amount) ?></dd>
                 </dl>
             <?php else: ?>
                 <dl class="block long category">
@@ -74,11 +74,11 @@ $call = $this['call'];
             <?php if (!empty($call->amount)) : //con dinero   ?>
                 <dl class="block long last">
                     <dt><?php echo Text::get('call-splash-whole_budget-header') ?></dt>
-                    <dd class="money light"><?php echo \amount_format($call->amount) ?> <span class="euro">&euro;</span></dd>
+                    <dd class="money light"><?php echo \amount_format($call->amount) ?></dd>
                 </dl>
                 <dl class="block long">
                     <dt><?php echo Text::get('call-splash-remain_budget-header') ?></dt>
-                    <dd class="money"><?php echo \amount_format($call->rest) ?> <span class="euro">&euro;</span></dd>
+                    <dd class="money"><?php echo \amount_format($call->rest) ?></dd>
                 </dl>
             <?php else : // sin dinero, con recursos   ?>
                 <dl class="block long return">

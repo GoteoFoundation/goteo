@@ -10,11 +10,11 @@ use Goteo\Library\Text,
         <p class="title"><?php echo Text::get('node-side-sumcalls-header'); ?></p>
         <div style="margin-bottom:6px">
         	<p class="text"><?php echo Text::get('node-side-sumcalls-budget'); ?></p>
-    	    <p class="quantity all"><span><?php echo \amount_format($this['sumcalls']['budget']) ?></span><span class="euro">&euro;</span></p>
+    	    <p class="quantity all"><span><?php echo \amount_format($this['sumcalls']['budget']) ?></span></p>
         </div>
         <div>
 	        <p class="text"><?php echo Text::get('node-side-sumcalls-rest'); ?></p>
-	        <p class="quantity rest"><span><?php echo \amount_format($this['sumcalls']['rest']) ?></span><span class="euro">&euro;</span></p>
+	        <p class="quantity rest"><span><?php echo \amount_format($this['sumcalls']['rest']) ?></span></p>
         </div>
     </div>
     <div class="half calls rounded-corners">

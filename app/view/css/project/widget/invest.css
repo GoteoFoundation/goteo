@@ -76,7 +76,6 @@ div.widget.project-invest.address table tr td label {
     padding-bottom: 5px;
 }
 div.widget.project-invest #amount {
-    background: url('/view/css/euro/violet/l.png') no-repeat left center #E7E7E7;
     color: #96238F;
     padding-left: 40px;
     width: 100px;
@@ -147,7 +146,6 @@ div.widget.project-invest div.reminder {
 }
 
 div.widget.project-invest div.reminder #amount-reminder {
-    background: url('/view/css/euro/violet/s.png') no-repeat right center transparent;
     color: #96238F;
     font-size: 20px;
     font-weight: bold;

@@ -12,7 +12,7 @@ div.widget.worthcracy ul {
     list-style: none;
     position: relative;
     display: inline-block;
-    background: url('/view/css/euro/xl.png') no-repeat right center;
+    /*background: url('/view/css/euro/xl.png') no-repeat right center;*/
 }
 
 div.widget.worthcracy ul li {
@@ -97,7 +97,7 @@ div.side-worthcracy ul {
     list-style: none;
     position: relative;
     display: inline-block;
-    background: url('/view/css/euro/s.png') no-repeat right 24px;
+/*    background: url('/view/css/euro/s.png') no-repeat right 24px;*/
 	padding: 2em 20px 1em 0;
 }
 
@@ -175,7 +175,7 @@ div.widget.user-worthcracy div.worth-amount {
     left: 35px;
     line-height: 33px;
     padding-right: 30px;
-    background: url('/view/css/euro/violet/l.png') no-repeat center right;
+   /* background: url('/view/css/euro/violet/l.png') no-repeat center right;*/
     border-bottom: 1px solid #95268D;
 }
 

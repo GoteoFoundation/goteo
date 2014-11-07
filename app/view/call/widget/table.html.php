@@ -50,8 +50,8 @@ foreach ($call->projects as $key => $proj) {
                     </a>
                 </th>
                 <td class="min"><?php if (!empty($call->amount))
-                echo \amount_format($proj->amount_call) . ' &euro;'; ?></td>
-                <td class="max"><?php echo \amount_format($proj->amount_users) ?> &euro;</td>
+                echo \amount_format($proj->amount_call); ?></td>
+                <td class="max"><?php echo \amount_format($proj->amount_users) ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
@@ -59,8 +59,8 @@ foreach ($call->projects as $key => $proj) {
         <tr>
             <th class="total"><?php echo Text::get('regular-total'); ?></th>
             <th class="min"><?php if (!empty($call->amount))
-            echo \amount_format($tot_call) . ' &euro;'; ?></th>
-            <th class="max"><?php echo \amount_format($tot_users) ?> &euro;</th>
+            echo \amount_format($tot_call); ?></th>
+            <th class="max"><?php echo \amount_format($tot_users) ?></th>
         </tr>
     </tfoot>
 </table>

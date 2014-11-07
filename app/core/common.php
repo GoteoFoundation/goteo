@@ -101,7 +101,7 @@ namespace {
      * Numberformat para importes
      */
     function amount_format($amount, $decs = 0) {
-        return number_format($amount, $decs, ',', '.');
+        return "&euro; ".number_format($amount, $decs, ',', '.');
     }
 
     /*

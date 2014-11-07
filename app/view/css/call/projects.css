@@ -131,16 +131,6 @@
     border-right: 1px solid #a7a9ac;
 }
 
-#project-list li div.obtained span.euro {
-    width: 16px;
-    height: 16px;
-    line-height: 2000px;
-    overflow: hidden;
-    display: inline-block;
-    background:  url('/view/css/euro/violet/s.png') no-repeat center;
-    margin-bottom: -1px;
-}
-
 #project-list li div.obtained span.percent {
     font-size: 18px;
     font-weight: bold;

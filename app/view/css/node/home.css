@@ -68,8 +68,6 @@ div.side_widget.convocatorias > div > div > p.text{font-size:10px;margin:0 0 5px
 div.side_widget.convocatorias > div > div > p.quantity{font-size:30px;margin:0;height:auto;overflow:hidden}
 div.side_widget.convocatorias > div > div > p.quantity.all{color:#94278a}
 div.side_widget.convocatorias > div > div > p.quantity.rest{color:#1ab3b0}
-div.side_widget.convocatorias > div > div > p.quantity.all > span.euro{ background:url('/view/css/euro/violet/xl.png') no-repeat 0 2px}
-div.side_widget.convocatorias > div > div > p.quantity.rest > span.euro{background:url('/view/css/euro/blue/xl.png') no-repeat 0 2px}
 
 div.side_widget.convocatorias > div.half{text-transform:uppercase;}
 div.side_widget.convocatorias > div.half.calls{color:#e02828;text-align:center}
@@ -96,7 +94,6 @@ div.side_widget.summary > div > p.quantity.success{font-size:29px;color:#e12828}
 div.side_widget.summary > div > p.quantity.investors{font-size:26px;color:#0c4e99}
 div.side_widget.summary > div > p.quantity.supporters{font-size:26px;color:#00b259}
 div.side_widget.summary > div > p.quantity.amount > a{}
-div.side_widget.summary > div > p.quantity.amount span.euro{ background:url('/view/css/euro/violet/xl.png') no-repeat 0 2px}
 /* fin de resumen de proyecto */
 
 /* sponsors */
@@ -289,16 +286,6 @@ body.node.home div.node-projects ul li div.obtained strong {
     color: #96238F;
     padding-right: 10px;
     border-right: 1px solid #a7a9ac;
-}
-
-body.node.home div.node-projects ul li div.obtained span.euro {
-    width: 16px;
-    height: 16px;
-    line-height: 2000px;
-    overflow: hidden;
-    display: inline-block;
-    background:  url('/view/css/euro/violet/s.png') no-repeat center;
-    margin-bottom: -1px;
 }
 
 body.node.home div.node-projects ul li div.obtained span.percent {

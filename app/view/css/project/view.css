@@ -305,12 +305,10 @@ div.widget.project-invest-amount.called  p strong {
 }
 
 #project-called div.amount dl dd.light-violet span {
-    background: url('/view/css/euro/light-violet/m.png') no-repeat right 6px transparent;
     color: #BB70B6;
 }
 
 #project-called div.amount dl dd.violet span {
-    background: url('/view/css/euro/violet/m.png') no-repeat right 6px transparent;
     color: #96238F;
 }
 

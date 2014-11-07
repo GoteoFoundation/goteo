@@ -55,7 +55,6 @@ div.widget.project-supporters dl.summary dt.reached {
 }
 
 div.widget.project-supporters dl.summary dd.reached {
-    background: url("/view/css/euro/violet/l.png") no-repeat scroll right center transparent;
     padding-right: 30px;
     color: #96238F;
 }
@@ -77,7 +76,6 @@ div.widget.project-supporters dl.summary dt.droped {
 }
 
 div.widget.project-supporters dl.summary dd.droped {
-    background: url("/view/css/euro/l.png") no-repeat scroll right center transparent;
     padding-right: 30px;
     color: #58595B;
 }
@@ -227,7 +225,6 @@ div.widget.project-supporters .supporters ul li dl dd.amount {
 }
 
 div.widget.project-supporters .supporters ul li dl dd.amount {
-    background: url('/view/css/euro/violet/m.png') no-repeat scroll right center;
     padding-right: 22px;
 	height: 25px;
 }
@@ -237,7 +234,6 @@ div.widget.project-supporters .supporters ul li dl dd.amount .euro {
 }
 
 div.widget.project-supporters .supporters ul li dl dd.amount.campaign {
-    background: url('/view/css/euro/m.png') no-repeat scroll right center !important;
     color: #58595B !important;
 }
 
@@ -456,7 +452,6 @@ div.widget.project-investors .investors ul li dl dd.amount {
 }
 
 div.widget.project-investors .investors ul li dl dd.amount {
-    background: transparent url('/view/css/euro/violet/s.png') no-repeat scroll right center;
     padding-right: 18px;
 }
 
@@ -555,7 +550,6 @@ div.widget.project-investors .investors ul li .avatar{left:6px}
 div.widget.project-investors .investors ul li dl dt.amount{top:20px}
 div.widget.project-investors .investors ul li dl dd.amount{top:32px}
 div.widget.project-investors .investors ul li dl dd.amount.campaign {
-    background: url('/view/css/euro/s.png') no-repeat scroll right center !important;
     color: #59595C !important;
 }
 div.widget.project-investors .investors ul li dl dt.projects, div.widget.project-investors .investors ul li dl dd.projects{font-size:0.8em}
