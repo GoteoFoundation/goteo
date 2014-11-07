@@ -188,7 +188,6 @@ body.dashboard div#main div.widget.gestrew div.reward.last{margin-right:0;}
 body.dashboard div#main div.widget.gestrew div.reward div.orden{color:#fff;display:inline-block;font-weight:bold;font-size:13pt;background-color:#e7e7e7;border:2px solid #a7a9ac;color:#a7a9ac;width:20px;text-align:center;}
 body.dashboard div#main div.widget.gestrew div.reward span.aporte{color: #96238F;display: inline-block;font-size: 8pt;text-transform: uppercase;line-height:22px;}
 body.dashboard div#main div.widget.gestrew div.reward span.num{font-size:12pt;}
-body.dashboard div#main div.widget.gestrew div.reward span.aporte > span.euro{ background:url('/view/css/euro/violet/m.png') no-repeat; height:20px; width:20px;display:inline-block;}
 body.dashboard div#main div.widget.gestrew div.reward span.cofinanciadores{color:#40509F;display:block;text-transform:uppercase;margin-left:29px;font-size:8pt;line-height:20px;}
 body.dashboard div#main div.widget.gestrew div.reward div.tiporec{display:block;border-bottom:#8D878E 1px solid;margin-bottom:5px;}
 body.dashboard div#main div.widget.gestrew div.reward ul { list-style: none outside none; padding:0px; margin: 0px 0px 3px 0px; float:none; font-size:12px; }
@@ -226,7 +225,6 @@ body.dashboard div#invests-list div.investor div.left{float:left;margin-right:10
 body.dashboard div#invests-list div.investor div.left span{display:block;}
 body.dashboard div#invests-list div.investor div.left span.username{margin-bottom:2px}
 body.dashboard div#invests-list div.investor div.left span.username a{color: #58595B;font-size: 9pt;font-weight: bold;text-decoration: none;}
-body.dashboard div#invests-list div.investor div.left span.amount{display:inline-block;background: url("/view/css/euro/violet/m.png") no-repeat scroll right center transparent;clear: left;color: #96238F;font-size: 11pt;font-weight: bold;line-height: 25px;padding-right: 30px;width: auto;}
 body.dashboard div#invests-list div.investor div.left label.amount,
 body.dashboard div#invests-list div.investor div.left span.date{display:block;color:#223E98;font-size:8pt;padding-left:0;width:100%}
 body.dashboard div#invests-list div.investor div.left span.status{text-transform:uppercase}

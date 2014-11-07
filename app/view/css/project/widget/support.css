@@ -76,12 +76,7 @@ div.widget.project-support dl dd.minimum {
     height: 45px;
     margin-top: 0;
     padding-right: 28px;
-    background: url('/view/css/euro/light-violet/l.png') no-repeat right center;
     display: inline-block;
-}
-
-div.widget.project-support dl dd.minimum {
-    background-image: url('/view/css/euro/violet/l.png');
 }
 
 div.widget.project-support dl dd.optimum strong{
@@ -109,7 +104,6 @@ div.widget.project-support dl dt.reached {
 
 div.widget.project-support dl dd.reached {        
     padding-right: 20px;
-    background: url('/view/css/euro/violet/s.png') no-repeat right top;
     display: inline-block;
 	color:#96238F;
 }

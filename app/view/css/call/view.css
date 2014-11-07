@@ -813,21 +813,6 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 	color: #ba72b5;
 }
 
-span.euro {
-    background: url("/view/css/euro/violet/xl.png") no-repeat right center;
-    color: #96238F;
-    display: inline-block;
-    height: 27px;
-    width: 27px;
-    line-height: 2000px;
-    margin-bottom: -1px;
-    overflow: hidden;
-}
-
-.light span.euro {
-    background: url("/view/css/euro/light-violet/xl.png") no-repeat right center;
-}
-
 /* Retornos */
 
 .return ul {

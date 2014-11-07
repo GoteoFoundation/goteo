@@ -37,7 +37,7 @@ uasort($project->individual_rewards,
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?>">
 
-            <div class="amount"><?php echo Text::get('regular-investing'); ?> <span class="euro"><?php echo \amount_format($individual->amount); ?></span></div>
+            <div class="amount"><?php echo Text::get('regular-investing'); ?> <span class="figure"><?php echo \amount_format($individual->amount); ?></span></div>
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->icon_name) . ': ' . htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>
             <p><?php echo htmlspecialchars($individual->description)?></p>
 
