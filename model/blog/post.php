@@ -526,7 +526,8 @@ namespace Goteo\Model\Blog {
             }
 
             //eliminamos etiquetas script,iframe..
-            $values[':text']=Text::tags_filter($values[':text']);
+            if(!User::isAdmin($this->author))
+                $values[':text']=Text::tags_filter($values[':text']);
 
             try {
                 $sql = "REPLACE INTO post SET " . $set;
@@ -612,7 +613,8 @@ namespace Goteo\Model\Blog {
             }
 
             //eliminamos etiquetas script,iframe..
-            $values[':text']=Text::tags_filter($values[':text']);
+            if(User::isAdmin($this->author))
+                $values[':text']=Text::tags_filter($values[':text']);
 
             try {
                 $sql = "REPLACE INTO post_lang SET " . $set;
