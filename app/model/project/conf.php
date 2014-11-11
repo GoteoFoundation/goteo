@@ -183,6 +183,104 @@ namespace Goteo\Model\Project {
             }
         }
 
+        /**
+         * Cambiar el numero de días para que termine la ronda esta noche
+         *
+         * Si el proyecto está en primera ronda cambia el número de días y marca 'Ronda única'.
+         * Si el proyecto está en segunda ronda cambia el númerio de días de segunda ronda teniendo en cuenta el número de días configurados en la primera.
+         *
+         * @param varcahr(50) $project  Project instance  from ::get()
+         * @return bool
+         */
+        public static function finish($project) {
+
+            $debug = false;
+
+            try {
+
+                // datos actuales
+                if ($debug) {
+                    echo "
+                    Id: {$project->id}<br />
+                    Ronda: {$project->round}<br />
+                    Dias que le quedan: {$project->days}<br />
+                    Dias que lleva: {$project->days_active}<br />
+                    --<br />
+                    Primera: {$project->days_round1}<br />
+                    Segunda: {$project->days_round2}<br />
+                    Unica: {$project->one_round}<br />
+                    --<br />
+                    Paso a segunda: {$project->passed}<br />
+                    Pasará a segunda: {$project->willpass}<br />
+                    --<br />
+                    Config one round:<br />
+                    ";
+                    var_dump($project->round);
+                    var_dump($project->one_round);
+                    var_dump(is_null($project->one_round));
+                    echo "<br /><br />";
+                }
+
+                // segun esté en primera o en segunda ronda
+                if ($project->round === 1) {
+                    // * Si el proyecto está en primera ronda cambia el número de días y marca 'Ronda única'.
+
+                    $one_round = 1;
+                    $days_round1 = $project->days_active + 1;
+                    $days_round2 = $project->days_round2;
+
+                } elseif ($project->round === 2) {
+                    // * Si el proyecto está en segunda ronda cambia el númerio de días de segunda ronda
+                    //        teniendo en cuenta el número de días configurados en la primera (40 por defecto al no tener configuración)
+
+                    $one_round = 0;
+                    $days_round1 = $project->days_round1;
+                    $days_round2 = $project->days_active - $project->days_round1 + 1;
+
+                } else {
+                    // no está en campaña
+                    if ($debug) die('No tiene ronda');
+                    return false;
+                }
+
+                if ($debug) {
+                    echo "NEW: <br />
+                    one round {$one_round}<br />
+                    days first round {$days_round1}<br />
+                    days second round {$days_round2}<br />";
+                }
+
+                $values = array(':project'=>$project->id, ':round1'=>$days_round1, ':round2'=>$days_round2, ':one'=>$one_round);
+
+                // por la configuración de ronda unica (comprobando si null) sabemos si tiene registro de configuración o no
+                if (is_null($project->one_round)) {
+
+                    // hacer un replace
+                    $sql = "REPLACE INTO project_conf (project, days_round1, days_round2, one_round)
+                    VALUES(:project, :round1, :round2, :one)";
+
+                } else {
+
+                    // hacer un update
+                    $sql = "UPDATE project_conf SET days_round1 = :round1, days_round2 = :round2, one_round = :one WHERE project = :project";
+                    $values = array(':project'=>$project->id, ':round1'=>$days_round1, ':round2'=>$days_round2, ':one'=>$one_round);
+
+                }
+
+                if ($debug) {
+                    echo \sqldbg($sql, $values);
+                }
+                self::query($sql, $values);
+
+                if ($debug) die;
+
+                return true;
+
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
 	}
     
 }

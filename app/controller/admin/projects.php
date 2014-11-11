@@ -521,21 +521,19 @@ namespace Goteo\Controller\Admin {
             // cortar el grifo
             if ($action == 'noinvest') {
                 if (Model\Project\Conf::closeInvest($project->id)) {
-                    //Message::Info('Se ha cortado el grifo al proyecto <strong>'.$project->name.'</strong>');
-                    $log_text = 'El admin %s ha <span class="red">cortado el grifo</span> al proyecto %s';
+                    $log_text = 'El admin %s ha <span class="red">cerrado el grifo</span> al proyecto %s';
                 } else {
-                    //Message::Error('Ha fallado al cortar el grifo al proyecto <strong>'.$project->name.'</strong>');
-                    $log_text = 'Al admin %s le ha <span class="red">fallado al cortar el grifo</span> al proyecto %s';
+                    Message::Error('Ha fallado <strong>cerrar el grifo</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado al cerrar el grifo</span> al proyecto %s';
                 }
             }
 
             // abrir el grifo
             if ($action == 'openinvest') {
                 if (Model\Project\Conf::openInvest($project->id)) {
-                    //Message::Info('Se ha abierto el grifo al proyecto <strong>'.$project->name.'</strong>');
                     $log_text = 'El admin %s ha <span class="red">abierto el grifo</span> al proyecto %s';
                 } else {
-                    //Message::Error('Ha fallado al abrir el grifo al proyecto <strong>'.$project->name.'</strong>');
+                    Message::Error('Ha fallado <strong>abrir el grifo</strong>');
                     $log_text = 'Al admin %s le ha <span class="red">fallado al abrir el grifo</span> al proyecto %s';
                 }
             }
@@ -543,10 +541,9 @@ namespace Goteo\Controller\Admin {
             // Vigilar
             if ($action == 'watch') {
                 if (Model\Project\Conf::watch($project->id)) {
-                    //Message::Info('Se ha empezado a vigilar el proyecto <strong>'.$project->name.'</strong>');
                     $log_text = 'El admin %s ha empezado a <span class="red">vigilar</span> el proyecto %s';
                 } else {
-                    //Message::Error('Ha fallado la vigilancia del proyecto <strong>'.$project->name.'</strong>');
+                    Message::Error('Ha fallado <strong>empezar a vigilar</strong>');
                     $log_text = 'Al admin %s le ha <span class="red">fallado la vigilancia</span> el proyecto %s';
                 }
             }
@@ -554,11 +551,21 @@ namespace Goteo\Controller\Admin {
             // Dejar de vigilar
             if ($action == 'unwatch') {
                 if (Model\Project\Conf::unwatch($project->id)) {
-                    //Message::Info('Se ha dejado de vigilar el proyecto <strong>'.$project->name.'</strong>');
                     $log_text = 'El admin %s ha <span class="red">dejado de vigilar</span> el proyecto %s';
                 } else {
-                    //Message::Error('Ha fallado dejar de vigilar el proyecto <strong>'.$project->name.'</strong>');
+                    Message::Error('Ha fallado <strong>dejar de vigilar</strong>');
                     $log_text = 'Al admin %s le ha <span class="red">fallado dejar de vigilar</span> el proyecto %s';
+                }
+            }
+
+            // Finalizar campaña
+            if ($action == 'finish') {
+
+                if (Model\Project\Conf::finish($project)) {
+                    $log_text = 'El admin %s ha <span class="red">finalizado la campaña</span> del proyecto %s';
+                } else {
+                    Message::Error('Ha fallado <strong>finalizar campaña</strong>');
+                    $log_text = 'Al admin %s le ha <span class="red">fallado finalizar campaña</span> del proyecto %s';
                 }
             }
 
