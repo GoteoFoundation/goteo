@@ -1,28 +1,19 @@
 <?php
 
-
 namespace Goteo\Library\FileHandler {
 
     use Goteo\Core\Model;
 
-    require_once "library/aws/S3.php"; //AWS SDK normal
-    use \S3;
+    class LocalFile extends BaseFile implements FileInterface {
 
-    class S3File extends BaseFile implements file_interface {
+        static public $base_dir;
 
-	private $bucket, $user, $pass;
-
-	public function __construct($user, $pass, $bucket='', $path='') {
-            parent::__construct($path);
-            $this->user = $user;
-            $this->pass = $pass;
-		$this->bucket = $bucket;
+	public function __construct($path='') {
+            static::$base_dir = GOTEO_DATA_PATH;
             $this->setPath($path);
-
-            S3::setExceptions();
+            parent::__construct($fullpath);
 	}
 
-	////////////////////////////////////
 
         /**
          * Returns false if cannot connect o change to specified path
@@ -30,18 +21,13 @@ namespace Goteo\Library\FileHandler {
         public function connect() {
             $connected = false;
 
-            if($this->link instanceOf \S3) {
+            if($this->link) {
+                $connected = true;
+            } elseif($this->realpath()) {
+                $this->link = true;
                 $connected = true;
             } else {
-
-                $this->link = new \S3($this->user, $this->pass);
-
-                if ($this->link->getBucketLocation($this->bucket) !== false) {
-                    $connected = true;
-                } else {
-                    $this->link = false;
-                    $this->throwError("Failed to connect");
-                }
+                $this->throwError('file-chdir-error');
             }
 
             return $connected;
@@ -52,16 +38,9 @@ namespace Goteo\Library\FileHandler {
          * @return [type] [description]
          */
         public function close() {
-            $ok = true;
-
-            if( !($this->link instanceOf \S3) ) {
-                $ok = false;
-            }
-
             $this->link = null;
-            return $ok;
+            return true;
         }
-
 
         /**
          * Tests a absolute path on the active connection
@@ -70,13 +49,17 @@ namespace Goteo\Library\FileHandler {
          */
         public function realpath($path='') {
             $realpath = false;
+            if (empty($path)) {
+                $remote = $this->path;
+            } else {
+                $remote = $this->get_path($path);
+            }
 
-            if($this->link) {
-                // TODO: getObjectInfo returns false for directories
-                $info = $this->link->getObjectInfo($this->bucket, $path);
-                if ($info !== false) {
-                    $realpath = $path;
-                }
+            $realpath = realpath($remote);
+
+            // TODO: formatPath
+            if($realpath && substr($realpath, 1, -1) != DIRECTORY_SEPARATOR) {
+                $realpath .= DIRECTORY_SEPARATOR;
             }
 
             return $realpath;
@@ -86,14 +69,12 @@ namespace Goteo\Library\FileHandler {
          * stores file on remote (overwrites)
          * @param  string $local  local file (must be absolute or relative to the working document)
          * @param  string $remote remote file (relative to $this->path)
-         * @param  boolean $extra $extra['perms'] is used as a Permission control, string expecte of one of this values:
-         *                        public-read, public-read-write, authenticated-read, bucket-owner-read, bucket-owner-full-control (default public-read)
+         * @param  boolean $extra if $extra['auto_create_dirs'] true tries to autocreates the directory structure on remote
          * @return boolean        returns true if success, false otherwise
          */
         public function upload($local, $remote, $extra = array()) {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote);
-
             $ok = false;
 
             //if local is a stream, copy locally
@@ -105,16 +86,14 @@ namespace Goteo\Library\FileHandler {
             }
 
             if(is_file($local)) {
-
-                if (!isset($extra['perms'])) {
-			         $perms = 'public-read';
-                } else {
-			         $perms = $extra['perms'];
+                if(!isset($extra['auto_create_dirs']) || $extra['auto_create_dirs'] === true) {
+                    $this->mkdir_recursive(dirname($remote));
                 }
 
-                //if ($this->link->putObject(S3::inputFile($local), $this->bucket, $remote, ACL_PUBLIC_READ)) {
-                if ($this->link->putObject(S3::inputFile($local), $this->bucket, $remote, $perms)) {
+                if(copy($local, $remote)) {
                     $ok = true;
+                } else {
+                    return $this->throwError("file-error-uploading-to: [$local => $remote] (folder perms perhaps?)");
                 }
             }
 
@@ -124,10 +103,9 @@ namespace Goteo\Library\FileHandler {
         /**
          * deletes file on remote
          * @param  string  $remote remote file (relative to $this->path) that will be deleted
-         * @param  mixed $extra not used
-         * @return boolean        returns true if success, false otherwise
-         *                        Note that Amazon doesn't give us any idea if the file existed before.
-         *                        So true may be that it existed and was removed or that it didn't exist before
+         * @param  mixed $extra if $extra['auto_delete_dirs'] true deletes empty the directory (and all empty parents) containing the remote file
+         *                      if string, will be used as a prefix to not delete directories that matches
+         * @return boolean      returns true if success, false otherwise
          */
         public function delete($remote, $extra = array()) {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
@@ -135,26 +113,30 @@ namespace Goteo\Library\FileHandler {
 
             $ok = false;
 
-            // TODO
-            /*
-            if (!isset($extra['auto_delete_dirs'])) {
-                $auto_delete_dirs = true;
-            }
-            */
+            $auto_delete_dirs = $extra['auto_delete_dirs'];
 
-            if ($this->link->deleteObject($this->bucket, $remote)) {
+            if(unlink($remote)) {
                 $ok = true;
-                // TODO
-                /*
                 if($auto_delete_dirs) {
-                    $this->delete_empty_dir(dirname($remote), is_string($auto_delete_dirs) ? $auto_delete_dirs : false);
+        			$this->delete_empty_dir(dirname($remote), is_string($auto_delete_dirs) ? $auto_delete_dirs : false);
                 }
-                */
             } else {
-                return $this->throwError("Failed to delete file");
+                return $this->throwError("file-error-deleting-to: " . $this->last_error);
             }
 
             return $ok;
+        }
+
+
+        /**
+         * From: http://php.net/manual/es/function.rmdir.php#110489
+         */
+        private function delTree($dir) {
+            $files = array_diff(scandir($dir), array('.','..'));
+            foreach ($files as $file) {
+                (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
+            }
+            return rmdir($dir);
         }
 
         /**
@@ -171,13 +153,44 @@ namespace Goteo\Library\FileHandler {
 
             $ok = false;
 
-            if (($contents = $this->link->getBucket($this->bucket, $remote)) !== false) {
-                foreach ($contents as $object) {
-                    // print_r($object);
-                    $this->link->deleteObject($this->bucket, $object->name);
-                }
+            if(self::delTree($remote)) {
+                $ok = true;
             } else {
-                return $this->throwError("s3-error-deleting-to: " . $e->getMessage());
+		return $this->throwError("file-error-rmdir-to: " . $this->last_error);
+            }
+
+            return $ok;
+        }
+
+        /**
+         * Deletes a directory if its empty on remote place
+         * @param  string $remote absolute remote dir!
+         * @param  mixed  $top_max_dir, if is string, directories matching will not be deleted (relative to root path)
+         * @return [type]         [description]
+         */
+        protected function delete_empty_dir($remote_dir, $top_max_dir = false) {
+            if(!$this->connect()) return false;
+            //never delete the root path
+            if($remote_dir == $this->path) return true;
+            if(is_string($top_max_dir) && $this->get_path($top_max_dir) == $remote_dir) return true;
+
+            if(is_dir($remote_dir) && count(scandir($remote_dir)) == 2) {
+                if(@rmdir($remote_dir)) return $this->delete_empty_dir(dirname($remote_dir), $top_max_dir);
+            }
+
+            return true;
+        }
+
+        /**
+         * Creates a dir in remote recursively
+         * @param  string $remote_dir absolute remote dir!
+         * @return [type]             [description]
+         */
+        protected function mkdir_recursive($remote_dir) {
+            $ok = true;
+
+            if(!is_dir($remote_dir)) {
+                $ok = @mkdir($remote_dir, 0777, true);
             }
 
             return $ok;
@@ -202,8 +215,10 @@ namespace Goteo\Library\FileHandler {
                 $local = $tmp;
             }
 
-            if (($this->link->getObject($this->bucket, $remote, $local)) !== false) {
+            if(copy($remote, $local)) {
                 $ok = true;
+            } else {
+                return $this->throwError("file-error-downloading-from: " . $this->last_error);
             }
 
             return $ok;
@@ -227,14 +242,14 @@ namespace Goteo\Library\FileHandler {
 
             $ok = false;
 
-            if (($this->link->copyObject($this->bucket, $remote_source, $this->bucket, $remote_dest, $this->s3_acl($auto_create_dirs)))
-                    && ($this->link->deleteObject($this->bucket, $remote_source))) {
+            if($auto_create_dirs) $this->mkdir_recursive(dirname($remote_dest));
+            if(rename($remote_source, $remote_dest)) {
                 $ok = true;
+                if($auto_delete_dirs) $this->delete_empty_dir(dirname($remote_source));
+            } else {
+		return $this->throwError("file-error-renaming-to: " . $this->last_error);
             }
 
-            if (!$ok) {
-                return $this->throwError("Failed to rename file");
-            }
 
             return $ok;
         }
@@ -250,13 +265,7 @@ namespace Goteo\Library\FileHandler {
             $remote = $this->get_path($remote_original);
             $size = -1;
 
-            $info = $this->link->getObjectInfo($this->bucket, $remote);
-            if ($info !== false) {
-                $size = (int) $info->size;
-            } else {
-                $size = -1;
-                // return $this->throwError("Failed to retrieve filesize from remote");
-            }
+            if( !($size = filesize($remote)) ) $size = -1;
 
             return $size;
         }
@@ -272,13 +281,7 @@ namespace Goteo\Library\FileHandler {
             $remote = $this->get_path($remote_original);
             $modified = -1;
 
-            $info = $this->link->getObjectInfo($this->bucket, $remote);
-            if ($info !== false) {
-                $modified = $info['time'];
-            } else {
-                $modified = -1;
-                // return $this->throwError("Failed to retrieve filesize from remote");
-            }
+            if( false === ($modified = @filemtime($remote)) ) $modified = -1;
 
             return $modified;
         }
@@ -291,12 +294,8 @@ namespace Goteo\Library\FileHandler {
         public function exists($filename) {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $filepath = $this->get_path($filename);
-            $ok = false;
 
-            $info = $this->link->getObjectInfo($this->bucket, $filepath);
-            $ok = ($info !== false);
-
-            return $ok;
+            return file_exists($filepath);
         }
 
         /**
@@ -307,13 +306,8 @@ namespace Goteo\Library\FileHandler {
         public function get_contents($remote_original) {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote_original);
-            $data = '';
 
-            if (($object = $this->link->getObject($this->bucket, $remote)) !== false) {
-                $data = $object->body;
-            }
-
-            return $data;
+            return file_get_contents($remote);
         }
 
         /**
@@ -334,21 +328,7 @@ namespace Goteo\Library\FileHandler {
             if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
             $remote = $this->get_path($remote_original);
 
-            $ok = false;
-
-            $body = '';
-            if($flags == FILE_APPEND) {
-                if (($object = $this->link->getObject($this->bucket, $remote)) !== false) {
-                    $body = $object->body;
-                }
-            }
-            $body .= $data;
-
-            if ($this->link->putObject($body, $this->bucket, $remote, $this->s3_acl($perms), $metaHeaders, $requestHeaders)) {
-                $ok = strlen($data);
-            }
-
-            return $ok;
+            return file_put_contents($remote, $data, $flags);
         }
 
         /**
@@ -358,20 +338,16 @@ namespace Goteo\Library\FileHandler {
          */
         public function get_save_name($remote_original) {
             if(!$this->connect()) return false;
-            if(empty($remote_original)) return false;
-
-            $name = $remote_original;
-
-            // limpia el nombre del archivo
+            if(!$remote_original) return false;
+            $dir = dirname($remote_original);
+            if($dir) $dir = "$dir/";
+            $name = basename($remote_original);
             $name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(Model::idealiza($name, true)));
+            $remote = $this->get_path($dir . $name);
 
-            //comprueba que no exista un archivo con el mismo nombre, si es asi genera uno nuevo
-            $remote = $this->get_path($name);
-            $info = $this->link->getObjectInfo($this->bucket, $remote);
-            while($info !== false) {
+            while ( file_exists ( $remote )) {
                 $name = preg_replace ( "/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/e", "'\$1-'.(\$3+1).'\$4'", $name );
-                $remote = $this->get_path($name);
-                $info = $this->link->getObjectInfo($this->bucket, $remote);
+                $remote = $this->get_path($dir . $name);
             }
 
             return $name;
@@ -383,17 +359,9 @@ namespace Goteo\Library\FileHandler {
         public function setPath($path) {
             while($path{0} == DIRECTORY_SEPARATOR) $path = substr($path, 1);
 
-            $this->path = $path;
+            $this->path = static::$base_dir . DIRECTORY_SEPARATOR . $path;
         }
 
-        /**
-         *
-         */
-        private function s3_acl($perm = 'public-read') {
-            if(!is_string($perm) || !in_array($perm, array('public-read', 'public-read-write', 'authenticated-read', 'bucket-owner-read', 'bucket-owner-full-control')))
-                $perm = 'public-read';
-            return $perm;
-        }
     }
 
 }
