@@ -1,5 +1,8 @@
 <?php
 
+//Composer packages
+include_once (__DIR__  . '/../vendor/autoload.php' );
+
 // Autoloader
 spl_autoload_register(
 

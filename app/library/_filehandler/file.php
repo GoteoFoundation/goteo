@@ -2,7 +2,7 @@
 
 namespace Goteo\Library\FileHandler {
 
-    require_once "library/aws/S3.php"; //AWS SDK normal
+    // require_once "library/aws/S3.php"; //AWS SDK normal
     use \S3;
 
     class File {
