@@ -3,7 +3,7 @@
 //Composer packages
 include_once (__DIR__  . '/../vendor/autoload.php' );
 
-// Autoloader
+// Legacy Autoloader
 spl_autoload_register(
 
     function ($cls) {
