@@ -35,7 +35,6 @@ module.exports = function(grunt) {
         goteo: GOTEO
     });
 
-
     // show elapsed time at the end
     require('time-grunt')(grunt);
 
@@ -84,6 +83,16 @@ module.exports = function(grunt) {
         grunt.task.run(['serve']);
     });
 
+
+    //build and uploads
+    grunt.registerTask('deploy', function(){
+
+        grunt.task.run(['build']);
+        // grunt.log.warn(grunt.config.get('settings').filesystem.bucket);
+        if(grunt.config.get('settings').filesystem.handler === 's3') {
+            grunt.task.run(['aws_s3']);
+        }
+    });
 
     grunt.registerTask('build', [
         'clean:dist',
