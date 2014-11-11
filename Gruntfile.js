@@ -10,16 +10,27 @@
 //
 GOTEO = {
     app: 'app',
+    src: 'src',
     dist: 'dist',
     localURL: 'localhost',
-    localPort:8081
+    localPort:8081,
+    configFile: 'config/settings.yml'
 };
 
 module.exports = function(grunt) {
+    if( ! grunt.file.exists(GOTEO.configFile)) {
+        grunt.log.fail( '################################################\n' +
+                        'Please configure a settings file with this name:\n' +
+                        GOTEO.configFile + '\n\n' +
+                        'You can use the config/demo-settings.yml as a sample file\n' +
+                        '################################################\n'
+                    );
+    }
     // Project configuration.
     grunt.initConfig({
         // Metadata.
         pkg: grunt.file.readJSON('package.json'),
+        settings: grunt.file.readYAML(GOTEO.configFile),
         //config values
         goteo: GOTEO
     });
