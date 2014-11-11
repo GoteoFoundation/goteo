@@ -1,0 +1,20 @@
+Goteo settings file
+---
+# Filesystem used by goteo
+filesystem:
+    handler:    local      # 's3' to use AmazonS3 storage, 'local' to use local filesistem
+    # Only need to be defined credentials if filesystem is s3:
+    # AWS credentials
+    aws: &aws1
+        key:        your-aws-key
+        secret:     your-aws-secret
+        region:     eu-west-1
+
+    bucket:
+        static:     static.example.com        # where to store the assets (css, js, images)
+        mail:       mail-archive.example.com  # where to store alternative mail view
+        document:   document.example.com      # TODO ???
+        press:      press.example.com         # TODO ???
+
+
+

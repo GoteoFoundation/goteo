@@ -9,7 +9,7 @@ var/php
 !var/php/router_dev.php
 composer.lock
 
-config
+config/*
 !config/README
 !config/demo-settings.yml
 !config/demo-settings.php
