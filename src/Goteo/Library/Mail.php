@@ -32,15 +32,12 @@ namespace Goteo\Library {
          * Constructor.
          */
         function __construct($exceptions = false) {
-            require_once PHPMAILER_CLASS;
-            require_once PHPMAILER_SMTP;
-            require_once PHPMAILER_POP3;
 
             // Inicializa la instancia PHPMailer.
             $mail = new \PHPMailer($exceptions);
 
             // Define  el idioma para los mensajes de error.
-            $mail->SetLanguage("es", PHPMAILER_LANGS);
+            $mail->setLanguage("es");
 
             // Define la codificación de caracteres del mensaje.
             $mail->CharSet = "UTF-8";
@@ -55,13 +52,13 @@ namespace Goteo\Library {
                     $mail->isMail(); // set mailer to use PHP mail() function.
                     break;
                 case "sendmail":
-                    $mail->IsSendmail(); // set mailer to use $Sendmail program.
+                    $mail->isSendmail(); // set mailer to use $Sendmail program.
                     break;
                 case "qmail":
-                    $mail->IsQmail(); // set mailer to use qmail MTA.
+                    $mail->isQmail(); // set mailer to use qmail MTA.
                     break;
                 case "smtp":
-                    $mail->IsSMTP(); // set mailer to use SMTP
+                    $mail->isSMTP(); // set mailer to use SMTP
                     $mail->SMTPAuth = GOTEO_MAIL_SMTP_AUTH; // enable SMTP authentication
                     $mail->SMTPSecure = GOTEO_MAIL_SMTP_SECURE; // sets the prefix to the servier
                     $mail->Host = GOTEO_MAIL_SMTP_HOST; // specify main and backup server
@@ -79,7 +76,10 @@ namespace Goteo\Library {
          */
 		public function validate(&$errors = array()) {
 		    if(empty($this->to)) {
-		        $errors['email'] = 'El mensaje no tiene destinatario.';
+                $errors['email'] = 'El mensaje no tiene destinatario.';
+            }
+            elseif(!filter_var($this->to, FILTER_VALIDATE_EMAIL)) {
+		        $errors['email'] = 'Email destinatario inválido.';
 		    }
             elseif (self::checkBlocked($this->to, $reason)) {
                 $errors['email'] = "El destinatario esta bloqueado por demasiados rebotes o quejas [$reason]";
@@ -116,67 +116,76 @@ namespace Goteo\Library {
                     $mail->From = $this->from;
                     $mail->FromName = $this->fromName;
 
-                    $mail->AddAddress($this->to, $this->toName);
+                    $address = $this->to;
+
+                    // Para pruebas en beta/local
+                    // TODO: arreglar esto para que sea mas portable
+                    if (GOTEO_ENV !== 'real') {
+                        if (!preg_match('/(.+)goteo\.org|(.+)platoniq\.net|(.+)microstudi.net|(.+)doukeshi\.org|julian\.canaves@gmail\.com|pablo@anche\.no|javicarrillo83@gmail\.com|esenabre@gmail\.com|mmtarres@gmail\.com|olivierschulbaum@gmail\.com/i', $address)) {
+                            $address = str_replace('@', '_', $address).'_from_beta@doukeshi.org';
+                        }
+                    }
+
+                    $mail->addAddress($address, $this->toName);
                     // copia a mail log si no es masivo
                     if (GOTEO_ENV == 'real' && !$this->massive) {
-                        $mail->AddBCC('goteomaillog@gmail.com', 'Verifier');
+                        $mail->addBCC('goteomaillog@gmail.com', 'Verifier');
                     }
                     if($this->cc) {
-                        $mail->AddCC($this->cc);
+                        $mail->addCC($this->cc);
                     }
                     if($this->bcc) {
                         if (is_array($this->bcc)) {
                             foreach ($this->bcc as $ml) {
-                                $mail->AddBCC($ml);
+                                $mail->addBCC($ml);
                             }
                         } else {
-                            $mail->AddBCC($this->bcc);
+                            $mail->addBCC($this->bcc);
                         }
                     }
                     if($this->reply) {
-                        $mail->AddReplyTo($this->reply, $this->replyName);
+                        $mail->addReplyTo($this->reply, $this->replyName);
                     }
                     if (!empty($this->attachments)) {
                         foreach ($this->attachments as $attachment) {
                             if (!empty($attachment['filename'])) {
-                                $mail->AddAttachment($attachment['filename'], $attachment['name'], $attachment['encoding'], $attachment['type']);
+                                $mail->addAttachment($attachment['filename'], $attachment['name'], $attachment['encoding'], $attachment['type']);
                             } else {
-                                $mail->AddStringAttachment($attachment['string'], $attachment['name'], $attachment['encoding'], $attachment['type']);
+                                $mail->addStringAttachment($attachment['string'], $attachment['name'], $attachment['encoding'], $attachment['type']);
                             }
                         }
                     }
                     $mail->Subject = $this->subject;
                     if($this->html) {
-                        $mail->IsHTML(true);
+                        $mail->isHTML(true);
                         $mail->Body    = $this->bodyHTML();
                         $mail->AltBody = $this->bodyText();
 
                         // incrustar el logo de goteo o del nodo
                         if (!empty($this->node) && $this->node != GOTEO_NODE) {
-                            $mail->AddEmbeddedImage(GOTEO_PATH.'/nodesys/'.$this->node.'/view/css/logo.png', 'logo', 'Goteo '.$this->node, 'base64', 'image/png');
+                            $mail->addEmbeddedImage(GOTEO_PATH.'/nodesys/'.$this->node.'/view/css/logo.png', 'logo', 'Goteo '.$this->node, 'base64', 'image/png');
                         } else {
-                            $mail->AddEmbeddedImage(GOTEO_PATH . '/goteo_logo.png', 'logo', 'Goteo', 'base64', 'image/png');
+                            $mail->addEmbeddedImage(GOTEO_PATH . '/app/goteo_logo.png', 'logo', 'Goteo', 'base64', 'image/png');
                         }
                     }
                     else {
-                        $mail->IsHTML(false);
+                        $mail->isHTML(false);
                         $mail->Body    = $this->bodyHTML(true);
                     }
-
                     // si estoy en entorno local ni lo intento
-                    if (GOTEO_ENV == 'local') {
-                        // add any debug here
-                        $errors[] = 'No envía porque está en local';
-                        $errors[] = "Asunto: {$this->subject}";
-                        $errors[] = "Destinatario: {$this->to}";
-                        $errors[] = "Plantilla: {$this->template}";
-                        $errors[] = "<hr />";
+                    // if (GOTEO_ENV == 'local') {
+                    //     // add any debug here
+                    //     $errors[] = 'No envía porque está en local';
+                    //     $errors[] = "Asunto: {$this->subject}";
+                    //     $errors[] = "Destinatario: {$this->to}";
+                    //     $errors[] = "Plantilla: {$this->template}";
+                    //     $errors[] = "<hr />";
 
-                        return true;
-                    }
-
+                    //     return true;
+                    // }
+                    print_r($mail);die;
                     // Envía el mensaje
-                    if ($mail->Send($errors)) {
+                    if ($mail->send($errors)) {
                         $this->saveContentToFile();
                         return true;
                     } else {
@@ -187,7 +196,7 @@ namespace Goteo\Library {
             	} catch(\PDOException $e) {
                     $errors[] = "No se ha podido enviar el mensaje: " . $e->getMessage();
                     return false;
-    			} catch(phpmailerException $e) {
+    			} catch(\phpmailerException $e) {
     			    $errors[] = $e->getMessage();
     			    return false;
     			}

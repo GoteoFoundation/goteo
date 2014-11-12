@@ -16,8 +16,6 @@ class FileTest extends \PHPUnit_Framework_TestCase {
     //read config
     public static function setUpBeforeClass() {
 
-        include(__DIR__ . '/../../../bootstrap.php');
-
         if(defined('FILE_HANDLER') && FILE_HANDLER == 's3') self::$handler = 's3';
 
         //a freak path

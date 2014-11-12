@@ -140,7 +140,7 @@ try {
     if ($debug) echo "dbg: Tiempo de envio: $now segundos\n";
 
 
-} catch (phpmailerException $e) {
+} catch (\Exception $e) {
     die ($e->errorMessage());
 }
 

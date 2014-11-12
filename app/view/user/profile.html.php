@@ -118,7 +118,7 @@ $worthcracy = Worth::getAll();
 
 </div>
 
-<?php 
+<?php
 include 'view/footer.html.php';
 include 'view/epilogue.html.php';
 

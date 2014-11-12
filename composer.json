@@ -1,7 +1,10 @@
 {
 
     "require": {
-        "tpyo/amazon-s3-php-class": "~0.5"
+        "tpyo/amazon-s3-php-class": "~0.5",
+
+    
+    "phpmailer/phpmailer": "~5.2"
     },
 
     "autoload": {

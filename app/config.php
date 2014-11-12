@@ -1,5 +1,7 @@
 <?php
 define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
+
+// ¿ESTO ESTA OBSOLETO?
 // if (function_exists('ini_set')) {
 //     ini_set('include_path', GOTEO_PATH . PATH_SEPARATOR . '.');
 // } else {
@@ -14,21 +16,6 @@ define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 //     throw new Exception("No puedo añadir las librerías PEAR al include_path.");
 // }
 
-/******************************************************
-PhpMailer constants
-*******************************************************/
-if (!defined('PHPMAILER_CLASS')) {
-    define ('PHPMAILER_CLASS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.phpmailer.php');
-}
-if (!defined('PHPMAILER_LANGS')) {
-    define ('PHPMAILER_LANGS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'language' . DIRECTORY_SEPARATOR);
-}
-if (!defined('PHPMAILER_SMTP')) {
-    define ('PHPMAILER_SMTP', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.smtp.php');
-}
-if (!defined('PHPMAILER_POP3')) {
-    define ('PHPMAILER_POP3', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'phpmailer' . DIRECTORY_SEPARATOR . 'class.pop3.php');
-}
 
 /******************************************************
 PhpFastCache constants
