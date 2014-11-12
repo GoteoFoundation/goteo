@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 
     grunt.config('aws_s3', {
         options: {
-                debug : true,
+                // debug : true,
                 accessKeyId: "<%= settings.filesystem.aws.key %>",
                 secretAccessKey: "<%= settings.filesystem.aws.secret %>",
                 region :  "<%= settings.filesystem.aws.region %>",
