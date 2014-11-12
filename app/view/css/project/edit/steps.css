@@ -21,6 +21,10 @@ body.project-edit div#main #project-steps div.steps {
     display: inline-block;        
 }
 
+body.project-edit div#main #project-steps div.steps a {    
+    font-size:0px;        
+}
+
 body.project-edit div#main #project-steps span.step {
     display: inline-block;
     padding: 0 1em;

@@ -72,8 +72,15 @@ namespace Goteo\Controller {
             throw new Redirection("/dashboard/calls");
         }
 
-        //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
-        public function edit ($id) {
+        /**
+         * Formulario edición de convocatoria
+         *
+         * @param $id  Identificador de la convocatoria
+         * @param string $step  Paso que se cargará si se especifica en la url /call/-id-/edit/-Step-
+         * @return View ( /view/call/edit/view.html.php )
+         * @throws \Goteo\Core\Redirection (si es un acceso no permitido)
+         */
+        public function edit ($id, $step = 'userProfile') {
             // redirección según usuario
             $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/calls' : '/dashboard/projects';
 
@@ -132,9 +139,8 @@ namespace Goteo\Controller {
 
 
             } else {
-                // todos los pasos, entrando en userProfile por defecto
-                $step = 'userProfile';
-
+                // todos los pasos
+                // entrando, por defecto, en el paso especificado en url
                 $steps = array(
                     'userProfile' => array(
                         'name' => Text::get('step-1'),
