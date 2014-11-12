@@ -125,13 +125,15 @@ class FileTest extends \PHPUnit_Framework_TestCase {
 
         $extra = array('auto_delete_dirs' => true);
 
-        $this->assertFalse($fp->delete("i-dont-exist.png", $extra));
 
         $this->assertTrue($fp->delete("contents.txt", $extra));
 
         $this->assertTrue($fp->delete("test/img.png", $extra));
 
         if(self::$handler === 'local') {
+            //skipping this test in S3 because delete action always return true
+            $this->assertFalse($fp->delete("i-dont-exist.png", $extra));
+
             //auto_delete_dirs must delete the dir
             $this->assertFalse(is_dir($fp->get_path('test/')));
             //cleaning up test dir
