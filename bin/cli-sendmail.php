@@ -20,8 +20,6 @@ use Goteo\Core\Resource,
     Goteo\Library\Sender;
 
 require_once __DIR__ . '/../app/config.php';
-require_once __DIR__ . '/../app/core/common.php';
-require_once __DIR__ . '/../app/autoload.php';
 
 // montar SITE_URL como el dispatcher para el enlace de darse de baja.
 define('SITE_URL', GOTEO_URL);
