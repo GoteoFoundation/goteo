@@ -14,7 +14,7 @@ if (!empty($this['success'])) {
     Goteo\Library\Message::Info(Text::get('call-form-ajax-info'));
 }
 
-$steps  = new View('view/call/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step']));
+$steps  = new View('view/call/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'id_call' => $call->id));
 
 $superform = true;
 include 'view/prologue.html.php';

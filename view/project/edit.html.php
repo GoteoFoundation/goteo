@@ -8,8 +8,8 @@ $bodyClass = 'project-edit';
 
 $project = $this['project'];
 
-$status = new View('view/project/edit/status.html.php', array('status' => $this['project']->status, 'progress' => $this['project']->progress));
-$steps  = new View('view/project/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $this['project']->errors, 'id_project' => $this['project']->id));
+$status = new View('view/project/edit/status.html.php', array('status' => $project->status, 'progress' => $project->progress));
+$steps  = new View('view/project/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $project->errors, 'id_project' => $project->id));
 
 if (!empty($this['success'])) {
     Goteo\Library\Message::Info($this['success']);
