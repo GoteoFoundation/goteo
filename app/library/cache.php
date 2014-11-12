@@ -16,7 +16,7 @@ namespace Goteo\Library {
 			if($type == 'local') {
 				if(substr($dir, -1, 1) != DIRECTORY_SEPARATOR) $dir .= DIRECTORY_SEPARATOR;
 				$this->type = 'local';
-				$this->dir = dirname(dirname(__FILE__)) . '/data/' . $dir;
+				$this->dir = GOTEO_CACHE_PATH . $dir;
 				if(!is_dir($this->dir)) {
 					mkdir($this->dir, 0777, true);
 				}

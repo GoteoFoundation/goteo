@@ -12,29 +12,7 @@ use Goteo\Core\Resource,
     Goteo\Library\Mail,
     Goteo\Library\AmazonSns;
 
-require_once 'config.php';
-require_once 'core/common.php';
-// Autoloader
-spl_autoload_register(
-
-    function ($cls) {
-
-        $file = __DIR__ . '/' . implode('/', explode('\\', strtolower(substr($cls, 6)))) . '.php';
-        $file = realpath($file);
-
-        if ($file === false) {
-
-            // Try in library
-            $file = __DIR__ . '/library/' . strtolower($cls) . '.php';
-        }
-
-        if ($file !== false) {
-            include $file;
-        }
-
-    }
-
-);
+require_once __DIR__ . '/config.php';
 
 try {
 

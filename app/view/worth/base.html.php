@@ -3,12 +3,12 @@
 use Goteo\Library\Worth;
 use Goteo\Library\Currency;
 
-$currency = $_SESSION['currency'];
+// $currency = $_SESSION['currency'];
 
-echo \trace(Currency::$currencies);
-$curr = Currency::$currencies[$currency];
-echo $curr['html'] . ' ' . $curr['name'];
-die;
+// echo \trace(Currency::$currencies);
+// $curr = Currency::$currencies[$currency];
+// echo $curr['html'] . ' ' . $curr['name'];
+// die;
 
 $worthcracy = isset($this['worthcracy']) ? $this['worthcracy'] : Worth::getAll();
 
@@ -21,11 +21,11 @@ if (!isset($this['level'])) $this['level'] = 9999;
 <ul class="worthcracy">
 <?php foreach ($worthcracy as $level => $worth): ?>
 <li class="worth-<?php echo $level ?><?php if ($level <= $this['level']) echo ' done' ?>">
-    <span class="threshold">+ de <strong><?php echo $worth->amount ?></strong></span>        
+    <span class="threshold">+ de <strong><?php echo $worth->amount ?></strong></span>
     <?php if ($level == $this['level']) : ?>
     <strong class="name"><?php echo htmlspecialchars($worth->name) ?></strong>
     <?php else: ?>
-    <em class="name"><?php echo htmlspecialchars($worth->name) ?></em>        
+    <em class="name"><?php echo htmlspecialchars($worth->name) ?></em>
     <?php endif; ?>
 </li>
 <?php endforeach ?>

@@ -1,2 +1,2 @@
 <?php
-require(dirname(dirname(__DIR__ )). '/config/paypal.php');
+require_once __DIR__. '/../../../config/paypal.php';

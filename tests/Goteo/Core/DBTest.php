@@ -1,0 +1,133 @@
+<?php
+
+namespace Goteo\Tests;
+
+use Goteo\Core\DB,
+    FileSystemCache;
+
+class DBTest extends \PHPUnit_Framework_TestCase {
+
+    public function testInstance() {
+        $db = new DB();
+        $this->assertTrue($db instanceOf DB);
+        $this->assertTrue($db instanceOf \PDO);
+        return $db;
+    }
+
+    /**
+     * Testing a simple query
+     * @depends testInstance
+     */
+    public function testSimpleSelect($db){
+        $sql1 = "SELECT 1 as num";
+        $sql2 = "SELECT 2 as num";
+        // $sql = "SELECT id FROM project LIMIT 1";
+
+        $query = $db->prepare($sql1);
+
+        $this->assertTrue($query instanceOf \PDOStatement);
+        $this->assertTrue($query->execute());
+
+        $res1 = $query->fetchColumn();
+
+        $query = $db->prepare($sql2);
+        $query->execute();
+        $res2 = $query->fetchColumn();
+
+        $this->assertEquals(1, $res1);
+        $this->assertEquals(2, $res2);
+        $this->assertNotEquals($res1, $res2);
+
+        return $db;
+    }
+
+    /**
+     * Testing a non cached sql
+     * @depends testSimpleSelect
+     */
+    public function testNonCachedSelect($db){
+        DB::cache(false);
+        $this->assertFalse(DB::cache());
+
+        $sql = "SELECT RAND() as num";
+
+        $query = $db->prepare($sql);
+        $query->execute();
+        $res1 = $query->fetchColumn();
+        usleep(5000);
+        $query->execute();
+        $res2 = $query->fetchColumn();
+
+        $this->assertNotEquals($res1, $res2);
+
+        return $db;
+    }
+
+    /**
+     * Testing cached sql
+     * @depends testNonCachedSelect
+     */
+    public function testCachedSelect($db){
+        DB::cache(true);
+        $this->assertTrue(DB::cache());
+
+        $sql = "SELECT RAND() as num";
+
+        $query = $db->prepare($sql);
+        $query->cacheTime(1);
+        $this->assertEquals(1, $query->cacheTime());
+        $query->execute();
+        $res1 = $query->fetchColumn();
+
+        usleep(500000);
+        $query = $db->prepare($sql);
+        $query->execute();
+        $query->cacheTime(1);
+        $res2 = $query->fetchColumn();
+
+        $this->assertEquals($res1, $res2);
+
+        usleep(1500001);
+        $query = $db->prepare($sql);
+        $query->execute();
+        $query->cacheTime(1);
+        $res2 = $query->fetchColumn();
+
+        $this->assertNotEquals($res1, $res2);
+
+        return $db;
+    }
+
+    /**
+     * Testing a simple query
+     * @depends testNonCachedSelect
+     */
+    public function testInvalidateCache($db){
+
+        DB::cache(true);
+        $this->assertTrue(DB::cache());
+
+        $sql = "SELECT RAND() as num";
+
+        $query = $db->prepare($sql);
+        $query->cacheTime(1);
+        $this->assertEquals(1, $query->cacheTime());
+        $query->execute();
+        $res1 = $query->fetchColumn();
+
+        usleep(500);
+        DB::invalidateCache();
+
+        $query = $db->prepare($sql);
+        $query->execute();
+        $query->cacheTime(1);
+        $res2 = $query->fetchColumn();
+
+        $this->assertNotEquals($res1, $res2);
+
+
+        return $db;
+    }
+
+    //TODO: insert test, update test
+}

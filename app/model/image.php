@@ -16,8 +16,8 @@ namespace Goteo\Model {
             $tmp,
             $error,
             $size,
-            $dir_originals = 'images/', //directorio archivos originales (relativo a data/ o al bucket s3)
-            $dir_cache = 'cache/', //directorio archivos cache (relativo a data/ o al bucket s3 en cuanto se implemente)
+            $dir_originals = 'images/', //directorio archivos originales (relativo a GOTEO_DATA_PUBLIC_PATH o al bucket s3)
+            $dir_cache = 'cache/', //directorio archivos cache (relativo a GOTEO_DATA_PUBLIC_PATH o al bucket s3 en cuanto se implemente)
             $newstyle = false; // new style es no usar tabla image
 
         private $fp;
@@ -481,7 +481,8 @@ namespace Goteo\Model {
                 }
             }
             else {
-                $url_original = dirname(__DIR__) . '/data/images/' . $this->name;
+                //por sistema de archivos
+                $url_original = GOTEO_DATA_PUBLIC_PATH . 'images/' . $this->name;
             }
 
             $im = new MImage($url_original);

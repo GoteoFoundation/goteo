@@ -3,7 +3,9 @@
 /bower_components/
 *.log
 .tmp
-var/php
+var
+!var/logs/README
+!var/cache/README
 !var/php/php.ini
 !var/php/router.php
 !var/php/router_dev.php
@@ -24,6 +26,3 @@ app/logs/*
 !app/logs/cron/*
 !app/logs/cron/README
 app/nodesys/_*
-app/config/*
-!app/config/demo-settings.php
-!app/config/paypal.php

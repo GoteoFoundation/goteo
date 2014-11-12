@@ -10,10 +10,6 @@ use Goteo\Core\Resource,
     Goteo\Library\Lang;
 
 define('START_TIME', microtime(true));
-require_once 'config.php';
-require_once 'core/common.php';
-
-
 //si el parametro GET vale:
 // 0 se muestra estadísticas de SQL, pero no los logs
 // 1 se hace un log con las queries no cacheadas
@@ -21,6 +17,13 @@ require_once 'core/common.php';
 if(isset($_GET['sqldebug']) && !defined('DEBUG_SQL_QUERIES')) {
     define('DEBUG_SQL_QUERIES', intval($_GET['sqldebug']));
 }
+//clean all caches if requested
+if(isset($_GET['cleancache'])) {
+    \FileSystemCache::invalidateGroup();
+}
+
+require_once __DIR__ . '/config.php';
+
 
 /*
  * Pagina de en mantenimiento
@@ -32,7 +35,6 @@ if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance
     die;
 }
 
-include_once(__DIR__ . '/autoload.php');
 
 /**
  * Sesión.

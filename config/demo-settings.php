@@ -55,7 +55,7 @@ define('GOTEO_DB_PASSWORD', 'db-password');
 
 
 //SELECT queries caching
-//setup it as 'files', 'memcache'
+//setup it as 'files' to enable sql cache
 define('SQL_CACHE_DRIVER', ''); //dejar vacia para no activar cache
 define('SQL_CACHE_TIME', 20); //Segundos de cache para las queries SELECT (puede ser sobreescrito por las query->cacheTime())
 define('SQL_CACHE_LONG_TIME', 3600); //Cache larga para textos
