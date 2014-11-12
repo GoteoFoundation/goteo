@@ -19,34 +19,12 @@ use Goteo\Core\Resource,
     Goteo\Library\Mail,
     Goteo\Library\Sender;
 
-require_once 'config.php';
-require_once 'core/common.php';
+require_once __DIR__ . '/../app/config.php';
+require_once __DIR__ . '/../app/core/common.php';
+require_once __DIR__ . '/../app/autoload.php';
 
 // montar SITE_URL como el dispatcher para el enlace de darse de baja.
 define('SITE_URL', GOTEO_URL);
-
-// Autoloader
-spl_autoload_register(
-
-    function ($cls) {
-
-        $file = __DIR__ . '/' . implode('/', explode('\\', strtolower(substr($cls, 6)))) . '.php';
-        $file = realpath($file);
-
-        if ($file === false) {
-
-            // Try in library
-            $file = __DIR__ . '/library/' . strtolower($cls) . '.php';
-        }
-
-        if ($file !== false) {
-            include $file;
-        }
-
-    }
-
-);
-
 
 $debug = true;
 

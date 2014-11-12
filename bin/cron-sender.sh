@@ -1,11 +1,16 @@
 #!/bin/bash
-cd "$(dirname "$0")"
-LOG="logs/cli-sender-$(date +%Y-%m-%dT%H:%M)"
-LOG_SEND="logs/cli-sendmail-"
-TAR="logs/cli-sendmail-$(date +%Y-%m-%dT%H:%M)"
+
+CURR=$(dirname $(readlink -f $0))
+LOGDIR="$(dirname $CURR)/var/logs/mailing"
+mkdir -p $LOGDIR
+LOG="$LOGDIR/cli-sender-$(date +%Y-%m-%dT%H:%M)"
+LOG_SEND="$LOGDIR/cli-sendmail-"
+TAR="$LOGDIR/cli-sendmail-$(date +%Y-%m-%dT%H:%M)"
+
 echo "procesando envios..."
 echo "cron-sender:$(date)" > "$LOG.log"
-/usr/bin/php $(dirname "$0")/cli-sender.php >> "$LOG.log" 2>&1
+
+/usr/bin/php $CURR/cli-sender.php >> "$LOG.log" 2>&1
 
 echo ">>>>>>> $LOG.log >>>>>>>"
 cat "$LOG.log"
@@ -23,6 +28,6 @@ else
 	rm "$LOG.log"
 fi
 
-echo "Borrando logs de mas de 30 dias:"
-echo "find logs/cli-send* -mtime +30 -exec rm {} \;"
-find logs/cli-send* -mtime +30 -exec rm {} \;
+echo "Borrando logs de mas de 7 dias:"
+echo "find $LOGDIR/cli-send* -mtime +7 -delete"
+find "$LOGDIR/cli-send*" -mtime +30 -delete
