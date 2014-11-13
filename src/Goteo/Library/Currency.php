@@ -6,8 +6,8 @@ namespace Goteo\Library;
 * Clase para gestionar las monedas
 */
 
-use \Goteo\Library\Mail,
-    FileSystemCache;
+use Goteo\Library\Mail,
+    Goteo\Library\Cacher;
 
 class Currency {
 
@@ -197,17 +197,17 @@ class Currency {
     public function getRates($base='EUR', $ttl=86400)
     {
 
-        $key = FileSystemCache::generateCacheKey($base, 'currency/rates');
+        $key = Cacher::generateCacheKey($base, 'currency/rates');
 
         // check cache (if not debugging)
         if (!$this->debug) {
-            $rates = FileSystemCache::retrieve($key);
+            $rates = Cacher::retrieve($key);
         }
 
         if($rates === false) {
             $rates = $this->getData($base);
             // set cache
-            FileSystemCache::store($key, $rates, $ttl);
+            Cacher::store($key, $rates, $ttl);
         }
 
         return $rates;
@@ -240,6 +240,6 @@ class Currency {
      * Invalidates the cache
      */
     static public function invalidateCache() {
-        FileSystemCache::invalidateGroup('currency/rates');
+        Cacher::invalidateGroup('currency/rates');
     }
 }

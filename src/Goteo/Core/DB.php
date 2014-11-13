@@ -2,7 +2,7 @@
 
 namespace Goteo\Core {
 
-    use FileSystemCache;
+    use Goteo\Library\Cacher;
 
     class DB extends \PDO {
         public $cache = null;
@@ -76,7 +76,7 @@ namespace Goteo\Core {
          * Invalidates the cache
          */
         static public function invalidateCache() {
-            FileSystemCache::invalidateGroup('sql/select');
+            Cacher::invalidateGroup('sql/select');
         }
 
         /**
@@ -220,8 +220,8 @@ namespace Goteo\Core {
          */
         public function _cachedMethod($method, $args=null) {
             if($this->cache && $this->is_select && $this->cache_time && $this->cache_active) {
-                $key = FileSystemCache::generateCacheKey($this->cache_key . serialize($args), "sql/select/$method");
-                $value = FileSystemCache::retrieve($key);
+                $key = Cacher::generateCacheKey($this->cache_key . serialize($args), "sql/select/$method");
+                $value = Cacher::retrieve($key);
 
                 if($value !== false) {
                     //incrementar queries cacheadas
@@ -242,7 +242,7 @@ namespace Goteo\Core {
 
             if($this->cache && $this->is_select && $this->cache_time && $this->cache_active) {
                 //guardar en cache
-                FileSystemCache::store($key, $value, $this->cache_time);
+                Cacher::store($key, $value, $this->cache_time);
             }
 
             return $value;
