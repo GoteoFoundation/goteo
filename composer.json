@@ -10,7 +10,10 @@
     "jdorn/file-system-cache": "dev-master",
 
 
-    "intervention/image": "~2.0"
+    "intervention/image": "~2.0",
+
+    
+    "mibe/feedwriter": "~1.0"
 
     },
 
