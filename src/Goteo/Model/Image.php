@@ -437,17 +437,16 @@ namespace Goteo\Model {
             //Si existe la constante GOTEO_DATA_URL la usaremos en vez de SITE_URL
             if(defined('GOTEO_DATA_URL')) return GOTEO_DATA_URL . '/' . $path;
             else                          return SITE_URL . '/img/' . $path;
-		}
+        }
 
-		/**
-		 * Muestra la imagen en pantalla.
-		 * @param type int	$width
-		 * @param type int	$height
-		 */
+        /**
+         * Muestra la imagen en pantalla.
+         * @param type int  $width
+         * @param type int  $height
+         */
         public function display ($width, $height, $crop = false) {
             $width = (int) $width;
             $height = (int) $height;
-
             if($this->cache) {
                 if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
                     //tries to flush the file and exit
@@ -456,20 +455,29 @@ namespace Goteo\Model {
                 }
             }
             $file = $this->dir_originals . $this->name;
-            //Get the url file if is S3
-            if (defined('FILE_HANDLER') && FILE_HANDLER == 's3' && defined('AWS_SECRET') && defined('AWS_KEY')) {
-                $file = SRC_URL . $file;
-                if(substr($file, 0, 2) === '//') {
-                    $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
-                }
+            //By URL
+            if(defined('GOTEO_DATA_URL')) $file =  GOTEO_DATA_URL . '/' . $file;
+            //Get the file by filesystem
+            else                          $file = GOTEO_DATA_PATH . $file;
+            if(substr($file, 0, 2) === '//') {
+                $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
             }
-            else {
-                //Get the file by filesystem
-                $file = GOTEO_DATA_PATH . $file;
-            }
+
+            // die($file);
+            // //Get the url file if is S3
+            // if (defined('FILE_HANDLER') && FILE_HANDLER == 's3' && defined('AWS_SECRET') && defined('AWS_KEY')) {
+            //     $file = SRC_URL . $file;
+            //     if(substr($file, 0, 2) === '//') {
+            //         $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
+            //     }
+            // }
+            // else {
+            //     //Get the file by filesystem
+            //     $file = GOTEO_DATA_PATH . $file;
+            // }
+
             if($width <= 0) $width = null;
             if($height <= 0) $height = null;
-
             try {
                 $img =  ImageManager::make($file);
                 if($crop) {
