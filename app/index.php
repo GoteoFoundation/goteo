@@ -17,12 +17,13 @@ define('START_TIME', microtime(true));
 if(isset($_GET['sqldebug']) && !defined('DEBUG_SQL_QUERIES')) {
     define('DEBUG_SQL_QUERIES', intval($_GET['sqldebug']));
 }
-//clean all caches if requested
-if(isset($_GET['cleancache'])) {
-    \Gote\Library\Cacher::invalidateGroup();
-}
 
 require_once __DIR__ . '/config.php';
+
+//clean all caches if requested
+if(isset($_GET['cleancache'])) {
+    \Goteo\Core\Model::cleanCache();
+}
 
 
 /*

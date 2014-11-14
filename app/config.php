@@ -16,7 +16,7 @@ define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 //     throw new Exception("No puedo añadir las librerías PEAR al include_path.");
 // }
 
-require_once __DIR__ . '/core/common.php';
+require_once __DIR__ . '/../src/Goteo/Core/Helpers.php';
 require_once __DIR__ . '/autoload.php';
 
 

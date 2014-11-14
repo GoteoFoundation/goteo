@@ -97,11 +97,11 @@ define('GOTEO_DEFAULT_LANG', 'es');
 define('GOTEO_URL', 'http://example.com');
 //url de recursos estaticos (imagenes, CSS)
 define('SRC_URL', '//static.example.com');
-//Opcional: si se define la constante DATA_URL se usara en lugar de SRC_URL para el contenido de data
+//Opcional: si se define la constante GOTEO_DATA_URL se usara en lugar de SRC_URL para el contenido de data
 //Sirve para utilzar con CDN que hagan mirror de SITE_URL
 //IMPORTANTE: definir la ruta sin / al final (con el prefijo "/data" si aplica)
-//define('DATA_URL', '//cdn-example.com/data');
-//define('DATA_URL', '//data.cdn-example.com');
+//define('GOTEO_DATA_URL', '//cdn-example.com/data');
+//define('GOTEO_DATA_URL', '//data.cdn-example.com');
 
 // ssl
 define('GOTEO_SSL', false);

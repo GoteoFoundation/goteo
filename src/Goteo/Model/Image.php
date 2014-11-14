@@ -50,7 +50,7 @@ namespace Goteo\Model {
          *
          * @param type array	$file	Array $_FILES.
          */
-        public function __construct ($file = null, Cacher $cache = null) {
+        public function __construct ($file = null) {
 
             if(is_array($file)) {
                 $this->name = $file['name'];
@@ -66,8 +66,12 @@ namespace Goteo\Model {
 
             $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_STATIC));
             $this->fp->setPath($this->dir_originals);
+        }
+
+        public function setCache(Cacher $cache = null) {
             if($cache instanceOf Cacher) {
                 $this->cache = $cache;
+                $this->cache->setCacheGroup($this->dir_originals);
             }
         }
 
@@ -423,28 +427,16 @@ namespace Goteo\Model {
 		 * @param type int $crop
 		 * @return type string
 		 */
-		public function getLink ($width = 'auto', $height = 'auto', $crop = false) {
+		public function getLink ($width = 0, $height = 0, $crop = false) {
 
             if($crop === true) $crop = 'c';
             //metodos: c (crop)
             $crop = in_array($crop, array('c')) ? $crop : '';
-            $cache = $width . 'x' . $height . $crop . '/' .$this->name;
+            $path = (int)$width . 'x' . (int)$height . $crop . '/' .$this->name;
 
-            return SITE_URL . '/img/' . $cache;
-            /*
-            En vez de retornar la URL del controlador:
-
-
-            Retornaremos el directorio data como si la cache ya estuviera generada
-            Si la cache no existe ya se encargara el dispatche (index.php)de llamar al controlador
-            para que la genere
-
-            */
-
-            //Si existe la constante DATA_URL la usaremos en vez de SITE_URL
-            if(defined('DATA_URL')) return DATA_URL . '/' . $this->dir_cache . $cache;
-            else                    return SITE_URL . '/data/' . $this->dir_cache . $cache;
-
+            //Si existe la constante GOTEO_DATA_URL la usaremos en vez de SITE_URL
+            if(defined('GOTEO_DATA_URL')) return GOTEO_DATA_URL . '/' . $path;
+            else                          return SITE_URL . '/img/' . $path;
 		}
 
 		/**
@@ -452,10 +444,18 @@ namespace Goteo\Model {
 		 * @param type int	$width
 		 * @param type int	$height
 		 */
-        public function display ($width, $height, $crop) {
+        public function display ($width, $height, $crop = false) {
+            $width = (int) $width;
+            $height = (int) $height;
 
+            if($this->cache) {
+                if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
+                    //tries to flush the file and exit
+                    if(Cacher::flushFile($cache_file))
+                        return;
+                }
+            }
             $file = $this->dir_originals . $this->name;
-            $cache = GOTEO_CACHE_PATH . $file;
             //Get the url file if is S3
             if (defined('FILE_HANDLER') && FILE_HANDLER == 's3' && defined('AWS_SECRET') && defined('AWS_KEY')) {
                 $file = SRC_URL . $file;
@@ -467,12 +467,9 @@ namespace Goteo\Model {
                 //Get the file by filesystem
                 $file = GOTEO_DATA_PATH . $file;
             }
-            $width = (int) $width;
-            $height = (int) $height;
             if($width <= 0) $width = null;
             if($height <= 0) $height = null;
-            // echo "$file,$cache,$width,$height,$crop";die;
-            //TODO cache
+
             try {
                 $img =  ImageManager::make($file);
                 if($crop) {
@@ -485,13 +482,21 @@ namespace Goteo\Model {
                         $constraint->upsize();
                     });
                 }
+                //store in cache if enabled
+                if($this->cache && $cache_file) {
+                    $img->save($cache_file);
+                }
+                //flush data
                 echo $img->response();
+
             }catch(\Exception $e) {
                 //Shows a fallback image with the error message
                 try {
                     $msg = $e->getMessage();
                     $w = $width ? $width : 32;
                     $h = $height ? $height : 32;
+
+                    //flush data
                     echo $img =  ImageManager::canvas($w, $h, '#DCDCDC')
                                  ->insert($this->fallback_image, 'center')
                     // echo $img =  ImageManager::make($this->fallback_image)
