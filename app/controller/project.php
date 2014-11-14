@@ -113,7 +113,7 @@ namespace Goteo\Controller {
                      'supports'     => 'supports'
                 );
 
-            // al impulsor se le proibe ver ningun paso cuando ya no está en edición
+            // al impulsor se le prohibe ver ningun paso cuando ya no está en edición
             if ($project->status != 1 && $project->owner == $_SESSION['user']->id ) {
                 // solo puede estar en preview
                 $step = 'preview';
