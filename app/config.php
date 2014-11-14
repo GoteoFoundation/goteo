@@ -16,7 +16,7 @@ define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 //     throw new Exception("No puedo añadir las librerías PEAR al include_path.");
 // }
 
-require_once __DIR__ . '/core/common.php';
+require_once __DIR__ . '/../src/Goteo/Core/Helpers.php';
 require_once __DIR__ . '/autoload.php';
 
 
@@ -28,11 +28,11 @@ if (!defined('OAUTH_LIBS')) {
 }
 
 //Uploads
-define('GOTEO_DATA_PUBLIC_PATH', __DIR__ . '/data/');
+define('GOTEO_DATA_PATH', __DIR__ . '/data/');
 //cache
 define('GOTEO_CACHE_PATH', __DIR__ . '/../var/cache/');
 
-\FileSystemCache::$cacheDir = GOTEO_CACHE_PATH;
+\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
 
 /**
  * Carga de configuración local si existe

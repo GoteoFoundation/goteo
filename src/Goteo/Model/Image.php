@@ -4,8 +4,8 @@ namespace Goteo\Model {
 
     use Goteo\Library\Text,
         Goteo\Library\FileHandler\File,
-        Goteo\Library\MImage,
-        Goteo\Library\Cache;
+        Intervention\Image\ImageManagerStatic as ImageManager,
+        Goteo\Library\Cacher;
 
     class Image extends \Goteo\Core\Model {
 
@@ -16,11 +16,13 @@ namespace Goteo\Model {
             $tmp,
             $error,
             $size,
-            $dir_originals = 'images/', //directorio archivos originales (relativo a GOTEO_DATA_PUBLIC_PATH o al bucket s3)
-            $dir_cache = 'cache/', //directorio archivos cache (relativo a GOTEO_DATA_PUBLIC_PATH o al bucket s3 en cuanto se implemente)
+            $dir_originals = 'images/', //directorio archivos originales (relativo a GOTEO_DATA_PATH o al bucket s3)
+            $dir_cache = 'cache/', //directorio archivos cache
+            $fallback_image = 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC3ElEQVRYhb2XW1PiMBzF/f6POiMMBZO0KdBFZEBHnWGViKy7IIEtCmgvn+XsQ5tYLlIuZR8yfUib88v5X5qc+L6PLIfneQvPtHGStXgQBPr5XwA8z9tJMBMAtcvJZKKFkxDb2n+wA+2fj/j9Z7AAdXQHlND7dA7Oy7i9u4fnh3pu+d2jOSCenkEoA+dluJP3vcOwM4Ba+PLyCpyXQShDvd5YeSfDKgiX7A9wVW9ocUIsGMUS+v1XHZ6jJaHneRCiq8UpM2EYBLm8Ac7LmM0+di7HnQCGchyJEwuUchjFEnJ5A4RYsO0KHKeG6XS+E0QqgLJzOJJwnBooM0GIhYJxgVy+AEIscF6NoJiJVusGs9lH9g7c3t1H4pTFOy/oKlCOUMrBeRlXS0l5sANCdMFMC4QyFEsXMIolCNGFlGNQZibEqxqi0+lkA9DrvUTZHu98ueTUnG07X+GIE3Q6nx0O0Gxe62x3nNrCXBAEC2FQECpUj52ndIBNGeu6blTnBkEuX9AdL/mNbTsaglL+lQ/MXHFrowMq25OLu64LwyA4zxXgODXd85ONhjIzEo93rSA4r6Ja/bEdQFI0ubiUUtd5q3UDzw/jNpt8Z4zBYAApJYZyjKEcw7IqsO0KOC8flgNSyjjBosU+vSCG/dzwzRi2XdFh2Qsg+TNJtt2hHG8sV9/30ek8gTETlJloNq+3A0javpyUyQYUJVX4Laz7NlnIh9Ho7/YOfPcfV2GgzMTp2Tlu7+4xn3+uQAxHEvV6I2pMcWKmia8Nwbqy7IguTs/Oo07HTHBuo91+QLv9ACG6Cy5RykEoQ6/3sh/Ad/Fttx90bAmxdKmp9qtcIpRBCLHWzb0B1Oj1XnSMtbiCogzN5jX6g+FKYmYGEI0Q/f4rhOjiunWDer2B7vMvvL1NFwSPciZMu/XsczlJBVh33t+0u8yPZOt6RJrIUQ6lnuchDMO1c/tcyXYG2PfqlTb+AaY7ymbFQPTOAAAAAElFTkSuQmCC',
             $newstyle = false; // new style es no usar tabla image
 
-        private $fp;
+        private $fp,
+                $cache = null;
 
         public static $types = array('project', 'post', 'glossary', 'info');
 
@@ -64,6 +66,13 @@ namespace Goteo\Model {
 
             $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_STATIC));
             $this->fp->setPath($this->dir_originals);
+        }
+
+        public function setCache(Cacher $cache = null) {
+            if($cache instanceOf Cacher) {
+                $this->cache = $cache;
+                $this->cache->setCacheGroup($this->dir_originals);
+            }
         }
 
         /**
@@ -418,28 +427,16 @@ namespace Goteo\Model {
 		 * @param type int $crop
 		 * @return type string
 		 */
-		public function getLink ($width = 'auto', $height = 'auto', $crop = false) {
+		public function getLink ($width = 0, $height = 0, $crop = false) {
 
             if($crop === true) $crop = 'c';
             //metodos: c (crop)
             $crop = in_array($crop, array('c')) ? $crop : '';
-            $cache = $width . 'x' . $height . $crop . '/' .$this->name;
+            $path = (int)$width . 'x' . (int)$height . $crop . '/' .$this->name;
 
-            /*
-            En vez de retornar la URL del controlador:
-
-            return SITE_URL . '/img/' . $cache;
-
-            Retornaremos el directorio data como si la cache ya estuviera generada
-            Si la cache no existe ya se encargara el dispatche (index.php)de llamar al controlador
-            para que la genere
-
-            */
-
-            //Si existe la constante DATA_URL la usaremos en vez de SITE_URL
-            if(defined('DATA_URL')) return DATA_URL . '/' . $this->dir_cache . $cache;
-            else                    return SITE_URL . '/data/' . $this->dir_cache . $cache;
-
+            //Si existe la constante GOTEO_DATA_URL la usaremos en vez de SITE_URL
+            if(defined('GOTEO_DATA_URL')) return GOTEO_DATA_URL . '/' . $path;
+            else                          return SITE_URL . '/img/' . $path;
 		}
 
 		/**
@@ -447,65 +444,75 @@ namespace Goteo\Model {
 		 * @param type int	$width
 		 * @param type int	$height
 		 */
-        public function display ($width, $height, $crop) {
+        public function display ($width, $height, $crop = false) {
+            $width = (int) $width;
+            $height = (int) $height;
 
-            $cache = $width."x$height" . ($crop ? 'c' : '') . "/" . $this->name;
-            $c = new Cache($this->dir_cache);
-            ignore_user_abort(true);
-            //comprueba si existe el archivo en cache
-            if($c->get_file($cache)) {
-                //si existe, servimos el fichero inmediatamante (via redireccion http)
-                //PERO continuamos la ejecucion del script para recrear el cache si esta expirado
-                ob_end_clean();
-                header('Connection: close', true);
-
-                if(defined('DATA_URL')) $url_cache = DATA_URL . '/' . $this->dir_cache . $cache;
-                else                    $url_cache = SITE_URL . '/data/' . $this->dir_cache . $cache;
-
-                self::stream($url_cache, false);
-                //close connection with browser
-                ob_end_flush();
-                flush();
-                //check if file is newer
-                if(!$c->expired($cache, $this->fp->mtime($this->name))) {
-                    exit;
+            if($this->cache) {
+                if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
+                    //tries to flush the file and exit
+                    if(Cacher::flushFile($cache_file))
+                        return;
                 }
-                //continue to force rebuild cache
-
             }
-            //si no existe o es nuevo, creamos el archivo
-            if (defined("FILE_HANDLER") && FILE_HANDLER == 's3' && defined("AWS_SECRET") && defined("AWS_KEY")) {
-                $url_original = SRC_URL . '/images/' . $this->name;
-                if(substr($url_original, 0, 2) === '//') {
-                    $url_original = (HTTPS_ON ? 'https:' : 'http:' ) . $url_original;
+            $file = $this->dir_originals . $this->name;
+            //Get the url file if is S3
+            if (defined('FILE_HANDLER') && FILE_HANDLER == 's3' && defined('AWS_SECRET') && defined('AWS_KEY')) {
+                $file = SRC_URL . $file;
+                if(substr($file, 0, 2) === '//') {
+                    $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
                 }
             }
             else {
-                //por sistema de archivos
-                $url_original = GOTEO_DATA_PUBLIC_PATH . 'images/' . $this->name;
+                //Get the file by filesystem
+                $file = GOTEO_DATA_PATH . $file;
             }
+            if($width <= 0) $width = null;
+            if($height <= 0) $height = null;
 
-            $im = new MImage($url_original);
-            $im->fallback('auto');
-            $im->proportional($crop ? 1 : 2);
-            $im->quality(98);
+            try {
+                $img =  ImageManager::make($file);
+                if($crop) {
+                    $img->fit($width, $height, function ($constraint) {
+                        $constraint->upsize();
+                    });
+                } else {
+                    $img->resize($width, $height, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                }
+                //store in cache if enabled
+                if($this->cache && $cache_file) {
+                    $img->save($cache_file);
+                }
+                //flush data
+                echo $img->response();
 
-            $im->resize($width, $height);
+            }catch(\Exception $e) {
+                //Shows a fallback image with the error message
+                try {
+                    $msg = $e->getMessage();
+                    $w = $width ? $width : 32;
+                    $h = $height ? $height : 32;
 
-            //guardar a cache si no hay errores
-            if(!$im->has_errors()) {
-                //guardar un archivo temporal y subir
-                $tmp = tempnam(sys_get_temp_dir(), 'goteo-img');
-                $im->save($tmp);
-                //subir el archivo a cache
-                $c->put_file($tmp, $cache);
-                unlink($tmp);
+                    //flush data
+                    echo $img =  ImageManager::canvas($w, $h, '#DCDCDC')
+                                 ->insert($this->fallback_image, 'center')
+                    // echo $img =  ImageManager::make($this->fallback_image)
+                                 ->text($msg, round($w/2), round($h/2), function($font){
+                                    $font->align('center');
+                                    $font->valign('middle');
+                                    $font->color('#666666');
+                                 })
+                                 ->response('png');
+                }
+
+                catch(\Exception $e) {
+                    //if the fallback image fails, what can i do?
+                    die($e->getMessage());
+                }
             }
-
-            ignore_user_abort(false);
-
-            //stream del archivo creado y muerte del script
-            $im->flush();
 		}
 
         /**

@@ -2,7 +2,8 @@
 
 namespace Goteo\Core {
 
-	use Goteo\Core\Error;
+	use Goteo\Core\Error,
+        Goteo\Library\Cacher;
 
     abstract class Model {
 
@@ -55,7 +56,12 @@ namespace Goteo\Core {
             static $db = null;
 
             if ($db === null) {
-                $db = new DB;
+                $cacher = null;
+                if(defined('SQL_CACHE_TIME') && SQL_CACHE_TIME) {
+                    $cacher = new Cacher('sql', SQL_CACHE_TIME);
+                }
+
+                $db = new DB($cacher);
             }
 
             $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
@@ -73,6 +79,14 @@ namespace Goteo\Core {
                 throw new Exception("Error PDO: " . \trace($e));
             }
 
+        }
+
+        /**
+         * Clears the sql cache
+         * @return [type] [description]
+         */
+        static function cleanCache() {
+            return (new Cacher('sql'))->clean();
         }
 
         /**
@@ -113,8 +127,9 @@ namespace Goteo\Core {
                 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e',
                 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
                 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ü'=>'u', 'ý'=>'y', 'ý'=>'y',
-                'þ'=>'b', 'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r', 'ª'=>'a', 'º'=>'o', '€'=>'eur',
-                '!'=>'', '¡'=>'', '?'=>'', '¿'=>'', '@'=>'', '^'=>'', '|'=>'', '#'=>'', '~'=>'',
+                'þ'=>'b', 'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r', 'ª'=>'a', 'º'=>'o', 'ẃ'=>'w', 'Ẃ'=>'Ẃ', 'ẁ'=>'w', 'Ẁ'=>'Ẃ',
+                'ý'=>'y', 'Ý'=>'Y', 'ỳ'=>'y', 'Ỳ'=>'Y', 'ś'=>'s', 'Ś'=>'S', 'ẅ'=>'w', 'Ẅ'=>'W',
+                '€'=>'eur','!'=>'', '¡'=>'', '?'=>'', '¿'=>'', '@'=>'', '^'=>'', '|'=>'', '#'=>'', '~'=>'',
                 '%'=>'', '$'=>'', '*'=>'', '+'=>'', '.'=>'-', '`'=>'', '´'=>'', '’'=>'', '”'=>'-', '“'=>'-'
             );
 

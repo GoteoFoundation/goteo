@@ -3,14 +3,14 @@
 namespace Goteo\Tests;
 
 use Goteo\Core\DB,
-    FileSystemCache;
+    Goteo\Library\Cacher;
 
 class DBTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
         $db = new DB();
-        $this->assertTrue($db instanceOf DB);
-        $this->assertTrue($db instanceOf \PDO);
+        $this->assertInstanceOf('Goteo\Core\DB', $db);
+        $this->assertInstanceOf('\PDO', $db);
         return $db;
     }
 
@@ -25,7 +25,7 @@ class DBTest extends \PHPUnit_Framework_TestCase {
 
         $query = $db->prepare($sql1);
 
-        $this->assertTrue($query instanceOf \PDOStatement);
+        $this->assertInstanceOf('\PDOStatement', $query);
         $this->assertTrue($query->execute());
 
         $res1 = $query->fetchColumn();
@@ -43,10 +43,9 @@ class DBTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Testing a non cached sql
-     * @depends testSimpleSelect
      */
-    public function testNonCachedSelect($db){
-        DB::cache(false);
+    public function testNonCachedSelect(){
+        $db = new DB(new Cacher('sql', 2));
         $this->assertFalse(DB::cache());
 
         $sql = "SELECT RAND() as num";
@@ -64,33 +63,54 @@ class DBTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Testing cached sql
+     * Testing statemments and caches instances
      * @depends testNonCachedSelect
      */
+    public function testStatement($db) {
+        DB::cache(true);
+        $this->assertTrue(DB::cache());
+        $query = $db->prepare('SELECT 1');
+        $this->assertEquals($query->cache_time, 2); //specified on constructor
+
+        $query->cacheTime(23);
+
+        $this->assertEquals($query->cache_time, 23);
+
+        $query->cacheTime(6);
+
+        $this->assertEquals($query->cache_time, 6);
+
+        return $db;
+    }
+
+    /**
+     * Testing cached sql
+     */
     public function testCachedSelect($db){
+        $db = new DB(new Cacher('sql', 1));
         DB::cache(true);
         $this->assertTrue(DB::cache());
 
         $sql = "SELECT RAND() as num";
 
         $query = $db->prepare($sql);
-        $query->cacheTime(1);
         $this->assertEquals(1, $query->cacheTime());
         $query->execute();
         $res1 = $query->fetchColumn();
 
         usleep(500000);
+
+        $db = new DB(new Cacher('sql', 1));
         $query = $db->prepare($sql);
         $query->execute();
-        $query->cacheTime(1);
         $res2 = $query->fetchColumn();
 
         $this->assertEquals($res1, $res2);
 
         usleep(1500001);
+
         $query = $db->prepare($sql);
         $query->execute();
-        $query->cacheTime(1);
         $res2 = $query->fetchColumn();
 
         $this->assertNotEquals($res1, $res2);
@@ -110,13 +130,13 @@ class DBTest extends \PHPUnit_Framework_TestCase {
         $sql = "SELECT RAND() as num";
 
         $query = $db->prepare($sql);
-        $query->cacheTime(1);
-        $this->assertEquals(1, $query->cacheTime());
+        $query->cacheTime(5);
+        $this->assertEquals(5, $query->cacheTime());
         $query->execute();
         $res1 = $query->fetchColumn();
 
         usleep(500);
-        DB::invalidateCache();
+        $db->cleanCache();
 
         $query = $db->prepare($sql);
         $query->execute();
@@ -125,6 +145,7 @@ class DBTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertNotEquals($res1, $res2);
 
+        $db->cleanCache();
 
         return $db;
     }
