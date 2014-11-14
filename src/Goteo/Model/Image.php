@@ -449,6 +449,7 @@ namespace Goteo\Model {
             $height = (int) $height;
             if($this->cache) {
                 if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
+                    header('Cache-Control: max-age=2592000');
                     //tries to flush the file and exit
                     if(Cacher::flushFile($cache_file))
                         return;
@@ -492,7 +493,7 @@ namespace Goteo\Model {
                 }
 
                 //30days (60sec * 60min * 24hours * 30days)
-                header('"Cache-Control: max-age=2592000"');
+                header('Cache-Control: max-age=2592000');
                 //flush data
                 echo $img->response();
 
