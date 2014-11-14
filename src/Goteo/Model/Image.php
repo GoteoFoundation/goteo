@@ -5,7 +5,7 @@ namespace Goteo\Model {
     use Goteo\Library\Text,
         Goteo\Library\FileHandler\File,
         Intervention\Image\ImageManagerStatic as ImageManager,
-        Goteo\Library\Cache;
+        Goteo\Library\Cacher;
 
     class Image extends \Goteo\Core\Model {
 
@@ -21,7 +21,8 @@ namespace Goteo\Model {
             $fallback_image = 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC3ElEQVRYhb2XW1PiMBzF/f6POiMMBZO0KdBFZEBHnWGViKy7IIEtCmgvn+XsQ5tYLlIuZR8yfUib88v5X5qc+L6PLIfneQvPtHGStXgQBPr5XwA8z9tJMBMAtcvJZKKFkxDb2n+wA+2fj/j9Z7AAdXQHlND7dA7Oy7i9u4fnh3pu+d2jOSCenkEoA+dluJP3vcOwM4Ba+PLyCpyXQShDvd5YeSfDKgiX7A9wVW9ocUIsGMUS+v1XHZ6jJaHneRCiq8UpM2EYBLm8Ac7LmM0+di7HnQCGchyJEwuUchjFEnJ5A4RYsO0KHKeG6XS+E0QqgLJzOJJwnBooM0GIhYJxgVy+AEIscF6NoJiJVusGs9lH9g7c3t1H4pTFOy/oKlCOUMrBeRlXS0l5sANCdMFMC4QyFEsXMIolCNGFlGNQZibEqxqi0+lkA9DrvUTZHu98ueTUnG07X+GIE3Q6nx0O0Gxe62x3nNrCXBAEC2FQECpUj52ndIBNGeu6blTnBkEuX9AdL/mNbTsaglL+lQ/MXHFrowMq25OLu64LwyA4zxXgODXd85ONhjIzEo93rSA4r6Ja/bEdQFI0ubiUUtd5q3UDzw/jNpt8Z4zBYAApJYZyjKEcw7IqsO0KOC8flgNSyjjBosU+vSCG/dzwzRi2XdFh2Qsg+TNJtt2hHG8sV9/30ek8gTETlJloNq+3A0javpyUyQYUJVX4Laz7NlnIh9Ho7/YOfPcfV2GgzMTp2Tlu7+4xn3+uQAxHEvV6I2pMcWKmia8Nwbqy7IguTs/Oo07HTHBuo91+QLv9ACG6Cy5RykEoQ6/3sh/Ad/Fttx90bAmxdKmp9qtcIpRBCLHWzb0B1Oj1XnSMtbiCogzN5jX6g+FKYmYGEI0Q/f4rhOjiunWDer2B7vMvvL1NFwSPciZMu/XsczlJBVh33t+0u8yPZOt6RJrIUQ6lnuchDMO1c/tcyXYG2PfqlTb+AaY7ymbFQPTOAAAAAElFTkSuQmCC',
             $newstyle = false; // new style es no usar tabla image
 
-        private $fp;
+        private $fp,
+                $cache = null;
 
         public static $types = array('project', 'post', 'glossary', 'info');
 
@@ -49,7 +50,7 @@ namespace Goteo\Model {
          *
          * @param type array	$file	Array $_FILES.
          */
-        public function __construct ($file = null) {
+        public function __construct ($file = null, Cacher $cache = null) {
 
             if(is_array($file)) {
                 $this->name = $file['name'];
@@ -65,6 +66,9 @@ namespace Goteo\Model {
 
             $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_STATIC));
             $this->fp->setPath($this->dir_originals);
+            if($cache instanceOf Cacher) {
+                $this->cache = $cache;
+            }
         }
 
         /**
@@ -452,7 +456,7 @@ namespace Goteo\Model {
 
             $file = $this->dir_originals . $this->name;
             $cache = GOTEO_CACHE_PATH . $file;
-            //By URL
+            //Get the url file if is S3
             if (defined('FILE_HANDLER') && FILE_HANDLER == 's3' && defined('AWS_SECRET') && defined('AWS_KEY')) {
                 $file = SRC_URL . $file;
                 if(substr($file, 0, 2) === '//') {
@@ -460,7 +464,7 @@ namespace Goteo\Model {
                 }
             }
             else {
-                //por sistema de archivos
+                //Get the file by filesystem
                 $file = GOTEO_DATA_PATH . $file;
             }
             $width = (int) $width;
@@ -483,6 +487,7 @@ namespace Goteo\Model {
                 }
                 echo $img->response();
             }catch(\Exception $e) {
+                //Shows a fallback image with the error message
                 try {
                     $msg = $e->getMessage();
                     $w = $width ? $width : 32;
@@ -499,6 +504,7 @@ namespace Goteo\Model {
                 }
 
                 catch(\Exception $e) {
+                    //if the fallback image fails, what can i do?
                     die($e->getMessage());
                 }
             }
