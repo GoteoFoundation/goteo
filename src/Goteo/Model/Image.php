@@ -455,26 +455,22 @@ namespace Goteo\Model {
                 }
             }
             $file = $this->dir_originals . $this->name;
-            //By URL
-            if(defined('GOTEO_DATA_URL')) $file =  GOTEO_DATA_URL . '/' . $file;
-            //Get the file by filesystem
-            else                          $file = GOTEO_DATA_PATH . $file;
-            if(substr($file, 0, 2) === '//') {
-                $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
+
+            // Get the url file if is S3
+            // TODO: more elegant solution, not mixed with assets bucket
+            if($this->fp instanceOf \Goteo\Library\FileHandler\S3File) {
+
+                $file = SRC_URL . '/' . $file;
+                if(substr($file, 0, 2) === '//') {
+                    $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
+                }
+            }
+            else {
+                //Get the file by filesystem
+                $file = GOTEO_DATA_PATH . '/' . $file;
             }
 
             // die($file);
-            // //Get the url file if is S3
-            // if (defined('FILE_HANDLER') && FILE_HANDLER == 's3' && defined('AWS_SECRET') && defined('AWS_KEY')) {
-            //     $file = SRC_URL . $file;
-            //     if(substr($file, 0, 2) === '//') {
-            //         $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
-            //     }
-            // }
-            // else {
-            //     //Get the file by filesystem
-            //     $file = GOTEO_DATA_PATH . $file;
-            // }
 
             if($width <= 0) $width = null;
             if($height <= 0) $height = null;
@@ -494,6 +490,9 @@ namespace Goteo\Model {
                 if($this->cache && $cache_file) {
                     $img->save($cache_file);
                 }
+
+                //30days (60sec * 60min * 24hours * 30days)
+                header('"Cache-Control: max-age=2592000"');
                 //flush data
                 echo $img->response();
 
