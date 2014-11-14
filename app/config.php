@@ -28,7 +28,7 @@ if (!defined('OAUTH_LIBS')) {
 }
 
 //Uploads
-define('GOTEO_DATA_PATH', __DIR__ . '/data/');
+define('GOTEO_DATA_PATH', __DIR__ . '/../var/data/');
 //cache
 define('GOTEO_CACHE_PATH', __DIR__ . '/../var/cache/');
 
