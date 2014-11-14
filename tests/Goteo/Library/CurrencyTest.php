@@ -3,8 +3,7 @@
 
 namespace Goteo\Tests;
 
-use \Goteo\Library\Currency,
-    FileSystemCache;
+use Goteo\Library\Currency;
 
 class CurrencyTest extends \PHPUnit_Framework_TestCase {
 
@@ -34,7 +33,7 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($res1, $res2);
 
         //invalidar cache
-        Currency::invalidateCache();
+        $cur->cleanCache();
 
         //TODO...
         //test USD

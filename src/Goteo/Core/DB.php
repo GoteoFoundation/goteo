@@ -2,7 +2,7 @@
 
 namespace Goteo\Core {
 
-    use FileSystemCache;
+    use Goteo\Library\Cacher;
 
     class DB extends \PDO {
         public $cache = null;
@@ -11,7 +11,7 @@ namespace Goteo\Core {
         public $is_select = false;
         public $type = 'master';
 
-        public function __construct() {
+        public function __construct(Cacher $cache = null) {
 
             try {
 
@@ -31,9 +31,8 @@ namespace Goteo\Core {
 
                 $this->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
 
-                if($this->cache === null && defined('SQL_CACHE_DRIVER') && SQL_CACHE_DRIVER && defined('SQL_CACHE_TIME')) {
-
-                    $this->cache = true;
+                if($cache instanceOf Cacher) {
+                    $this->cache = $cache;
                 }
 
                 //no queremos que las queries vayan al servidor para preparase si usamos cache
@@ -75,8 +74,8 @@ namespace Goteo\Core {
         /**
          * Invalidates the cache
          */
-        static public function invalidateCache() {
-            FileSystemCache::invalidateGroup('sql/select');
+        public function cleanCache() {
+            if($this->cache) $this->cache->clean();
         }
 
         /**
@@ -135,7 +134,7 @@ namespace Goteo\Core {
     class CacheStatement extends \PDOStatement {
         public $dbh;
         public $cache = null;
-        public $cache_time = \SQL_CACHE_TIME;
+        public $cache_time = 0;
         private $cache_active = true;
         public $is_select = false;
         public $cache_key = '';
@@ -151,6 +150,7 @@ namespace Goteo\Core {
             $this->cache = $cache;
             $this->is_select = $dbh->is_select;
             $this->cache_active = \Goteo\Core\DB::$cache_active;
+            if($cache) $this->cache_time = $cache->getCacheTime();
             //si debug es 1, se recojeran en el array las queries no cacheadas
             //si debug es 2, se recojeran todas las queries
             if(defined('DEBUG_SQL_QUERIES')) $this->debug = DEBUG_SQL_QUERIES;
@@ -220,8 +220,8 @@ namespace Goteo\Core {
          */
         public function _cachedMethod($method, $args=null) {
             if($this->cache && $this->is_select && $this->cache_time && $this->cache_active) {
-                $key = FileSystemCache::generateCacheKey($this->cache_key . serialize($args), "sql/select/$method");
-                $value = FileSystemCache::retrieve($key);
+                $key = $this->cache->getKey($this->cache_key . serialize($args), $method);
+                $value = $this->cache->retrieve($key);
 
                 if($value !== false) {
                     //incrementar queries cacheadas
@@ -242,7 +242,7 @@ namespace Goteo\Core {
 
             if($this->cache && $this->is_select && $this->cache_time && $this->cache_active) {
                 //guardar en cache
-                FileSystemCache::store($key, $value, $this->cache_time);
+                $this->cache->store($key, $value, $this->cache_time);
             }
 
             return $value;
