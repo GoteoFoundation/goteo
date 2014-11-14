@@ -6,6 +6,7 @@
 var
 !var/logs/README
 !var/cache/README
+!var/data/README
 !var/php/php.ini
 !var/php/router.php
 !var/php/router_dev.php
