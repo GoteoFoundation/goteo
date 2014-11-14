@@ -34,10 +34,6 @@ namespace Goteo\Core {
                 if($cache instanceOf Cacher) {
                     $this->cache = $cache;
                 }
-                // if($this->cache === null && defined('SQL_CACHE_DRIVER') && SQL_CACHE_DRIVER && defined('SQL_CACHE_TIME')) {
-
-                //     $this->cache = true;
-                // }
 
                 //no queremos que las queries vayan al servidor para preparase si usamos cache
                 $this->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
@@ -138,7 +134,7 @@ namespace Goteo\Core {
     class CacheStatement extends \PDOStatement {
         public $dbh;
         public $cache = null;
-        public $cache_time = \SQL_CACHE_TIME;
+        public $cache_time = 0;
         private $cache_active = true;
         public $is_select = false;
         public $cache_key = '';
@@ -154,6 +150,7 @@ namespace Goteo\Core {
             $this->cache = $cache;
             $this->is_select = $dbh->is_select;
             $this->cache_active = \Goteo\Core\DB::$cache_active;
+            if($cache) $this->cache_time = $cache->getCacheTime();
             //si debug es 1, se recojeran en el array las queries no cacheadas
             //si debug es 2, se recojeran todas las queries
             if(defined('DEBUG_SQL_QUERIES')) $this->debug = DEBUG_SQL_QUERIES;

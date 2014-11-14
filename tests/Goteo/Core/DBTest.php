@@ -8,7 +8,7 @@ use Goteo\Core\DB,
 class DBTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
-        $db = new DB(new Cacher());
+        $db = new DB(new Cacher('sql', 2));
         $this->assertTrue($db instanceOf DB);
         $this->assertTrue($db instanceOf \PDO);
         return $db;
@@ -64,8 +64,30 @@ class DBTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Testing cached sql
+     * Testing statemments and caches instances
      * @depends testNonCachedSelect
+     */
+    public function testStatement($db) {
+        DB::cache(true);
+
+        $this->assertTrue(DB::cache());
+        $query = $db->prepare('SELECT 1');
+        $this->assertEquals($query->cache_time, 2); //specified on constructor
+
+        $query->cacheTime(23);
+
+        $this->assertEquals($query->cache_time, 23);
+
+        $query->cacheTime(6);
+
+        $this->assertEquals($query->cache_time, 6);
+
+        return $db;
+    }
+
+    /**
+     * Testing cached sql
+     * @depends testStatement
      */
     public function testCachedSelect($db){
         DB::cache(true);
@@ -125,6 +147,7 @@ class DBTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertNotEquals($res1, $res2);
 
+        $db->cleanCache();
 
         return $db;
     }

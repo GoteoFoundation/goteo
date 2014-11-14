@@ -24,9 +24,30 @@ class Cacher {
      */
     private $group = 'misc';
 
+    /**
+     * Constructor, set the group to isolate the caches in the instance
+     * @param string  $group cache group
+     * @param integer $time  ttl time by default (infinite)
+     */
     public function __construct($group = '', $time = 0) {
         if($time > 0) $this->cacheTime = (int) $time;
         if($group) $this->group = $group;
+    }
+
+    /**
+     * Sets the default cache time
+     * @return [type] [description]
+     */
+    public function setCacheTime($cacheTime) {
+        return $this->cacheTime = $cacheTime;
+    }
+
+    /**
+     * Returns the cache time
+     * @return [type] [description]
+     */
+    public function getCacheTime() {
+        return $this->cacheTime;
     }
 
      /**
@@ -39,7 +60,6 @@ class Cacher {
         $group = $this->group . '/' . $group;
         return FileSystemCache::generateCacheKey($key_data, $group);
     }
-
 
     /**
      * Stores data in the cache
