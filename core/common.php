@@ -15,7 +15,7 @@ namespace {
                if (strpos($ip, ',') > 0) {
                    // nos quedamos con la primera parte
                    $parts = explode(',', $ip);
-                   $ip = strim($parts[1]); // temporalmente la segunda para investigar
+                   $ip = trim($parts[1]); // temporalmente la segunda para investigar
                }
 			}
 			elseif (isset($_SERVER['HTTP_VIA'])) {
@@ -29,8 +29,8 @@ namespace {
 			}
 		return $ip;
     }
-    
-    
+
+
     /**
      * Traza información sobre el recurso especificado de forma legible.
      *
@@ -105,11 +105,11 @@ namespace {
     }
 
     /*
-     * Verifica si una cadena es sha1 
+     * Verifica si una cadena es sha1
      */
     function is_sha1($str) {
         return (bool) preg_match('/^[0-9a-f]{40}$/i', $str);
-    }    
+    }
 
     /*
      * Asegura una url si está en entorno seguro
@@ -117,7 +117,7 @@ namespace {
     function sec($url) {
         return (defined('SECENV')) ? str_replace('http://', 'https://', $url) : $url;
 
-    }    
+    }
 
     /* problema de la barra en base64*/
     function mybase64_encode($s) {
