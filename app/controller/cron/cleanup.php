@@ -69,7 +69,7 @@ namespace Goteo\Controller\Cron {
             die;
 
             //--------------------------------------
-            $path = GOTEO_DATA_PUBLIC_PATH . 'images';
+            $path = GOTEO_DATA_PATH . 'images';
 
             echo "LIMPIANDO ARCHIVOS DE IMAGENES NO REGISTRADAS<br />";
 

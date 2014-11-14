@@ -2,7 +2,8 @@
 
 namespace Goteo\Core {
 
-	use Goteo\Core\Error;
+	use Goteo\Core\Error,
+        Goteo\Library\Cacher;
 
     abstract class Model {
 
@@ -55,7 +56,12 @@ namespace Goteo\Core {
             static $db = null;
 
             if ($db === null) {
-                $db = new DB;
+                $cacher = null;
+                if(defined('SQL_CACHE_TIME') && SQL_CACHE_TIME) {
+                    $cacher = new Cacher('sql', SQL_CACHE_TIME);
+                }
+
+                $db = new DB($cacher);
             }
 
             $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);

@@ -3,12 +3,12 @@
 namespace Goteo\Tests;
 
 use Goteo\Core\DB,
-    FileSystemCache;
+    Goteo\Library\Cacher;
 
 class DBTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
-        $db = new DB();
+        $db = new DB(new Cacher());
         $this->assertTrue($db instanceOf DB);
         $this->assertTrue($db instanceOf \PDO);
         return $db;
@@ -116,7 +116,7 @@ class DBTest extends \PHPUnit_Framework_TestCase {
         $res1 = $query->fetchColumn();
 
         usleep(500);
-        DB::invalidateCache();
+        $db->cleanCache();
 
         $query = $db->prepare($sql);
         $query->execute();

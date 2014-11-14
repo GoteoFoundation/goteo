@@ -9,9 +9,9 @@ class LocalFile extends BaseFile implements FileInterface {
     static public $base_dir;
 
 	public function __construct($path='') {
-            static::$base_dir = \GOTEO_DATA_PUBLIC_PATH;
-            $this->setPath($path);
-            parent::__construct($fullpath);
+        static::$base_dir = \GOTEO_DATA_PATH;
+        $this->setPath($path);
+        parent::__construct($fullpath);
 	}
 
 

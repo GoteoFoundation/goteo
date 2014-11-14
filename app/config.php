@@ -28,11 +28,11 @@ if (!defined('OAUTH_LIBS')) {
 }
 
 //Uploads
-define('GOTEO_DATA_PUBLIC_PATH', __DIR__ . '/data/');
+define('GOTEO_DATA_PATH', __DIR__ . '/data/');
 //cache
 define('GOTEO_CACHE_PATH', __DIR__ . '/../var/cache/');
 
-\FileSystemCache::$cacheDir = GOTEO_CACHE_PATH;
+\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
 
 /**
  * Carga de configuración local si existe

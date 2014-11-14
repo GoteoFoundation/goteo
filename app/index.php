@@ -19,7 +19,7 @@ if(isset($_GET['sqldebug']) && !defined('DEBUG_SQL_QUERIES')) {
 }
 //clean all caches if requested
 if(isset($_GET['cleancache'])) {
-    \FileSystemCache::invalidateGroup();
+    \Gote\Library\Cacher::invalidateGroup();
 }
 
 require_once __DIR__ . '/config.php';

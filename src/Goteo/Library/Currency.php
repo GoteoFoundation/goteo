@@ -18,6 +18,7 @@ class Currency {
         TEXT_LocaleNotAvailable = 'The given locale `%s` is not installed on this system.';
 
     private $debug;
+    private $cache = null;
     private $source = 'ecb'; // 'tmc' = themoneyconverter.com
 
     static public $currencies = array(
@@ -42,6 +43,8 @@ class Currency {
 
     public function __construct($debug = false) {
         $this->debug = $debug;
+        //TODO: mejor pasar la dependencia por el constructor?
+        $this->cache = new Cacher('currency');
     }
 
     /**
@@ -197,17 +200,17 @@ class Currency {
     public function getRates($base='EUR', $ttl=86400)
     {
 
-        $key = Cacher::generateCacheKey($base, 'currency/rates');
 
         // check cache (if not debugging)
-        if (!$this->debug) {
-            $rates = Cacher::retrieve($key);
+        if ($this->cache && !$this->debug) {
+            $key = $this->cache->getKey($base, 'rates');
+            $rates = $this->cache->retrieve($key);
         }
 
         if($rates === false) {
             $rates = $this->getData($base);
-            // set cache
-            Cacher::store($key, $rates, $ttl);
+            // sets cache
+            if($this->cache) $this->cache->store($key, $rates, $ttl);
         }
 
         return $rates;
@@ -239,7 +242,7 @@ class Currency {
     /**
      * Invalidates the cache
      */
-    static public function invalidateCache() {
-        Cacher::invalidateGroup('currency/rates');
+    public function cleanCache() {
+        if($this->cache) $this->cache->clean();
     }
 }
