@@ -113,7 +113,10 @@ namespace Goteo\Controller\Cron {
                     if ($debug) echo "Bloqueado por preferencias<hr />";
                     continue;
                 }
-                
+
+                // E idioma de preferencia del impulsor
+                $comlang = !empty($prefs->comlang) ? $prefs->comlang : $project->user->lang;
+
                 // flag de aviso
                 $avisado = false;
 
@@ -202,7 +205,7 @@ namespace Goteo\Controller\Cron {
                         // que no se envie a los que solo tienen recompensas de agradecimiento
                         $thanksonly = true;
                         // recompensas
-                        $rewards = Model\Project\Reward::getAll($project->id, 'individual', \LANG);
+                        $rewards = Model\Project\Reward::getAll($project->id, 'individual', $comlang);
                         foreach ($rewards as $rew) {
                             if ($rew->icon != 'thanks') {
                                 $thanksonly = false;

@@ -18,17 +18,12 @@ namespace Goteo\Library {
 		public static function nif ($value, &$type = '') {
 
 			// quitamos puntos y guiones
-			$value = str_replace(array('_', '.', ' ', '-', ','), '', $value);
+			$value = str_replace(array('_', '.', ' ', '-', ',', '/'), '', $value);
 
 			$value = strtoupper($value);
 			for ($i = 0; $i < 9; $i++) {
 				$num[$i] = substr($value, $i, 1);
 			}
-
-            //si no tiene un formato valido devuelve error (incluye numero de empresa belga)
-            if (!preg_match('/((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$|^[0-9]{9,10})/', $value)) {
-                    return false;
-            }
 
 			//comprobacion de NIFs estandar
 			if (preg_match('/(^[0-9]{8}[A-Z]{1}$)/', $value)) {
@@ -94,6 +89,12 @@ namespace Goteo\Library {
                     return true;
             }
 
+            // Siret (cif/nif) in France (14 digits only)
+            if (preg_match('/^\d{14}$/',$value)) {
+					$type = 'siret';
+                    return true;
+            }
+
 			//si todavia no se ha verificado devuelve error
 			return false;
 		}
@@ -104,7 +105,7 @@ namespace Goteo\Library {
 		public static function vat ($value) {
 
 			// quitamos puntos y guiones
-			$value = str_replace(array('_', '.', ' ', '-', ',', '\\', '+', '*'), '', $value);
+			$value = str_replace(array('_', '.', ' ', '-', ',', '\\', '+', '*', '/'), '', $value);
 
 			$value = strtoupper($value);
 
@@ -114,7 +115,8 @@ namespace Goteo\Library {
             $vats[] = '(BG)?[0-9]{9,10}';
             $vats[] = '(CY)?[0-9]{8}[A-Z]';
             $vats[] = '(CZ)?[0-9]{8,10}';
-            $vats[] = '(EE|EL|GR|DE|PT)?[0-9]{9}';
+            $vats[] = '(EE|EL|GR|PT)?[0-9]{9}';
+            $vats[] = '(DE)?[0-9]{9,10}';
             $vats[] = '(FR)?[0-9A-Z]{2}[0-9]{9}';
             $vats[] = '(FI|HU|LU|MT|SI|DK)?[0-9]{8}';
             $vats[] = '(IE)?[0-9][0-9A-Z][0-9]{5}[A-Z]';
