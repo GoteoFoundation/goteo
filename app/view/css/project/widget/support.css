@@ -1,5 +1,6 @@
 div.widget.project-support {
     position: relative;
+    overflow: visible;
 }
 
 /* Detalle de la linea roja (y otras cosillas) en el supertitle del termometro*/
@@ -259,3 +260,95 @@ div.widget.project-support div.tagmark.twolines {
     padding-top: 6px !important;
 }
 /** Fin tagmark **/
+
+div.widget.project-support div.currency {
+    height: 15px;    
+    position: relative;
+    float:left; 
+    padding-left:2px; 
+    width:53px; 
+    font-size:11px; 
+    font-weight: normal;
+    z-index: 200;
+    
+} 
+
+div.widget.project-support div.currency {
+    background: transparent url('header/down-black.png') no-repeat right 30px;
+}
+
+div.widget.project-support div.currency > a {
+    padding: .5em .8em;
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+    display: inline-block;    
+    color: #59595c;
+}
+
+
+
+div.widget.project-support div.currency > a{
+    padding-right:30px;
+    position:relative;
+    top:-3px;
+}
+
+
+div.widget.project-support div.currency:hover {
+    background-color: #faf4f9;   
+}
+
+div.widget.project-support div.currency:hover {
+    background-image: url('header/down-white.png');
+}
+
+div.widget.project-support div.currency:hover * {
+    color: white;
+} 
+
+
+div.widget.project-support div.currency > div {
+    display: none;
+}
+
+div.widget.project-support div.currency:hover > div{
+    display: block;
+    position: absolute;
+    z-index: 200;
+    right: 0;
+    min-width: 100%;
+    top: 100%;
+}
+
+div.widget.project-support div.currency > div > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #ffffff;
+
+
+}
+
+div.widget.project-support div.currency > div > ul > li {
+    border-top: 1px solid #faf4f9; 
+    font-size: 11px;   
+}
+
+div.widget.project-support div.currency > div > ul > li * {
+    color: white;
+    text-transform: none;
+}
+
+div.widget.project-support div.currency > div > ul > li > a {
+    display: block;    
+    padding: .3em 0.5em;
+    z-index: 200;
+
+}
+
+
+div.widget.project-support div.currency > div > ul > li > a:hover {
+    background-color: #faf4f9;
+    text-decoration: none;
+}
