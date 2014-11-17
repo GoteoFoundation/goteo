@@ -525,8 +525,9 @@ namespace Goteo\Model\Blog {
                 $values[":$field"] = $this->$field;
             }
 
-            //eliminamos etiquetas script,iframe..
-            $values[':text']=Text::tags_filter($values[':text']);
+            //eliminamos etiquetas script,iframe.. si no es admin o superadmin
+            if(!(isset($_SESSION['user']->roles['superadmin'])||isset($_SESSION['user']->roles['admin'])))
+                $values[':text']=Text::tags_filter($values[':text']);
 
             try {
                 $sql = "REPLACE INTO post SET " . $set;
@@ -611,8 +612,9 @@ namespace Goteo\Model\Blog {
                 $values[":$field"] = $this->$ffield;
             }
 
-            //eliminamos etiquetas script,iframe..
-            $values[':text']=Text::tags_filter($values[':text']);
+             //eliminamos etiquetas script,iframe.. si no es admin o superadmin
+            if(!(isset($_SESSION['user']->roles['superadmin'])||isset($_SESSION['user']->roles['admin'])))
+                $values[':text']=Text::tags_filter($values[':text']);
 
             try {
                 $sql = "REPLACE INTO post_lang SET " . $set;
