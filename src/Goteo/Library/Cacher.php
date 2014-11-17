@@ -35,6 +35,22 @@ class Cacher {
     }
 
     /**
+     * Sets the default cache group
+     * @return [type] [description]
+     */
+    public function setCacheGroup($group) {
+        return $this->group = $group;
+    }
+
+    /**
+     * Returns the cache group
+     * @return [type] [description]
+     */
+    public function getCacheGroup() {
+        return $this->group;
+    }
+
+    /**
      * Sets the default cache time
      * @return [type] [description]
      */
@@ -68,7 +84,7 @@ class Cacher {
      * @param int $ttl The number of seconds until the cache expires.  (optional)
      * @return boolean True on success, false on failure
      */
-    public static function store(FileSystemCacheKey $key, $data, $ttl=null) {
+    public function store(FileSystemCacheKey $key, $data, $ttl=null) {
         return FileSystemCache::store($key, $data, $ttl);
     }
 
@@ -78,15 +94,84 @@ class Cacher {
      * @param int $newer_than If passed, only return if the cached value was created after this time
      * @return mixed The cached data or FALSE if not found or expired
      */
-    public static function retrieve(FileSystemCacheKey $key, $newer_than=null) {
+    public function retrieve(FileSystemCacheKey $key, $newer_than=null) {
         return FileSystemCache::retrieve($key, $newer_than);
+    }
+
+    /**
+     * Returns a full path of the cache of the requested file
+     * auto-creates parent dirs if necessary
+     *
+     * @param  string $file  file
+     * @param  string $group group
+     * @return string        file
+     */
+    public function getFile($file, $group = '') {
+        $pathinfo = pathinfo($file);
+        $dirname = preg_replace('/[^a-zA-Z0-9_\-]/','',$pathinfo['dirname']);
+
+        $key = $this->getKey($pathinfo['basename'], $dirname . $group);
+
+        $file = self::getCacheDir() . $key->__toString();
+        $dirname = dirname($file);
+        if(!is_dir($dirname)) {
+            mkdir($dirname, 0777, true);
+        }
+
+        return $file;
+    }
+
+    /**
+     * General purpose method to stream directly to the browser the file
+     * @return boolean true if file exists, false otherwise
+     */
+    static function flushFile($file) {
+        if(is_file($file)) {
+            $mime = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $file);
+
+            header('Content-Type: ' . $mime);
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns the full path of the provide key
+     * If dirs need to be created, so will do it
+     * @param FileSystemCacheKey $key
+     */
+    public function getFileCached($key) {
+        $file = self::getCacheDir() . $key->__toString();
+        $dirname = dirname($file);
+        if(!is_dir($dirname)) {
+            mkdir($dirname, 0777, true);
+        }
+        return $file;
+    }
+
+    /**
+     * Gets the cache dir (static value) whit / char at the end
+     */
+    static function getCacheDir($dir) {
+        $dir = FileSystemCache::$cacheDir;
+        if(substr($dir, -1, 1) != DIRECTORY_SEPARATOR) $dir .= DIRECTORY_SEPARATOR;
+        return $dir;
     }
 
     /**
      * Set up the cache dir (static value)
      */
     static function setCacheDir($dir) {
-        return FileSystemCache::$cacheDir = $dir;
+        if(is_dir($dir) && is_writable($dir)) {
+            return FileSystemCache::$cacheDir = $dir;
+        }
+        else {
+            //throw exception maybe?
+            return false;
+        }
     }
 
 

@@ -10,6 +10,7 @@ namespace Goteo\Core {
         public function __construct ($file, $vars = null) {
 
             if (!is_file($file)) {
+                //TODO: no deberia ser una excepcion????
                 die("La vista `{$file}` no existe. ");
             }
 
