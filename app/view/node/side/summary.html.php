@@ -27,6 +27,6 @@ use Goteo\Library\Text,
     </div>
     <div class="line rounded-corners">
     	<p class="text"><?php echo Text::get('node-side-summary-amount'); ?></p>
-        <p class="quantity amount violet"><span><?php echo \amount_format($this['summary']['amount']) ?></span><span class="euro">euros</span></p>
+        <p class="quantity amount violet"><span><?php echo \amount_format($this['summary']['amount']) ?></span></p>
     </div>
 </div>

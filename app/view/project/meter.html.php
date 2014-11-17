@@ -172,16 +172,16 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
         </dl>
 
         <?php if (!$horizontal) { ?>
-        <div class="currency" style="margin-left:116px; font-size:11px; width:115px; padding:5px;">
-            <span style="float:left; width:36px; font-weight: bold; color:#96238F;">€ EUR</span>
-            <span style="margin-left:5px; float:left; width:70px;">
-                <hr style="width:10px; float:left; border: 0; border-top: 1px solid; margin-right: 5px;">
+        <div class="currency">
+            <span class="symbol">€ EUR</span>
+            <span class="change">
+                <hr>
                 CAMBIAR
             </span>
             <div>
                 <ul>
-                    <li><a href=""><span style="font-weight: bold; color:#96238F;">&pound; LIBRA</span></a></li>
-                    <li><a href=""><span style="font-weight: bold; color:#96238F;">$ DOLAR</span></a></li>
+                    <li><a href="#">&pound; GNP</a></li>
+                    <li><a href="#">$ USD</a></li>
                 </ul> 
             </div>   
         </div>
