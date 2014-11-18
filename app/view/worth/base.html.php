@@ -30,3 +30,5 @@ if (!isset($this['level'])) $this['level'] = 9999;
 </li>
 <?php endforeach ?>
 </ul>
+<!-- aqui va la moneda en session -->
+<span class="symbol" >€</span>

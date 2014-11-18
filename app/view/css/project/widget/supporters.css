@@ -225,7 +225,6 @@ div.widget.project-supporters .supporters ul li dl dd.amount {
 }
 
 div.widget.project-supporters .supporters ul li dl dd.amount {
-    padding-right: 22px;
 	height: 25px;
 }
 
@@ -449,14 +448,6 @@ div.widget.project-investors .investors ul li dl dd.amount {
     font-weight: normal;
     color: #96238F;
 	line-height: 28px;
-}
-
-div.widget.project-investors .investors ul li dl dd.amount {
-    padding-right: 18px;
-}
-
-div.widget.project-investors .investors ul li dl dd.amount .euro {
-    display: none;
 }
 
 div.widget.project-investors .investors ul li dl dt.date {
