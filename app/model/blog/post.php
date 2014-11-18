@@ -525,8 +525,8 @@ namespace Goteo\Model\Blog {
                 $values[":$field"] = $this->$field;
             }
 
-            //eliminamos etiquetas script,iframe..
-            if(!User::isAdmin($this->author))
+            //eliminamos etiquetas script,iframe.. si no es admin o superadmin
+            if(!(isset($_SESSION['user']->roles['superadmin'])||isset($_SESSION['user']->roles['admin'])))
                 $values[':text']=Text::tags_filter($values[':text']);
 
             try {
@@ -612,8 +612,8 @@ namespace Goteo\Model\Blog {
                 $values[":$field"] = $this->$ffield;
             }
 
-            //eliminamos etiquetas script,iframe..
-            if(User::isAdmin($this->author))
+             //eliminamos etiquetas script,iframe.. si no es admin o superadmin
+            if(!(isset($_SESSION['user']->roles['superadmin'])||isset($_SESSION['user']->roles['admin'])))
                 $values[':text']=Text::tags_filter($values[':text']);
 
             try {
