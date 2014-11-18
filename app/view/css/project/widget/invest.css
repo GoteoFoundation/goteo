@@ -84,6 +84,16 @@ div.widget.project-invest #amount {
     font-weight: bold;
     margin-right: 20px;
 }
+
+div.widget.project-invest .symbol {
+    position:absolute; 
+    bottom:6px; 
+    left: 20px; 
+    font-size: 24px; 
+    color: #96238F; 
+    font-weight: bold;
+}
+
 div.widget.project-invest #fullname,
 div.widget.project-invest #address,
 div.widget.project-invest #location {
@@ -150,7 +160,6 @@ div.widget.project-invest div.reminder #amount-reminder {
     font-size: 20px;
     font-weight: bold;
     margin-left: 5px;
-    padding-right: 20px;
 }
 
 div.widget.project-invest div.individual ul li {

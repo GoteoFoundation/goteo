@@ -117,8 +117,8 @@ body.project-edit div#main.costs div.superform li.element.editcost div.children 
     max-width: 3em;
     min-width: 3em;
     float: left;
-    padding-right: 2em;
-    /*background-image: url('/view/css/euro/m.png');*/   
+    /*padding-right: 2em;
+    background-image: url('/view/css/euro/m.png');*/   
     background-repeat: no-repeat;
     background-position: 3.7em center;
     font-size: 16px;

@@ -67,7 +67,7 @@ if ($project->status == 3 && $project->noinvest) {
         } ?>
 
         <?php if (isset($this['investor'])) : ?>
-            <div class="investor"><img src="<?php echo $investor->avatar->getLink(34, 34, 1) ?>" alt="<?php echo $investor->name ?>" /><div class="invest"><?php echo Text::get('proj-widget-my_invest'); ?><br /><span class="amount"><?php echo $invest->total ?></span></div></div>
+            <div class="investor"><img src="<?php echo $investor->avatar->getLink(34, 34, 1) ?>" alt="<?php echo $investor->name ?>" /><div class="invest"><?php echo Text::get('proj-widget-my_invest'); ?><br /><span class="amount"><?php echo \amount_format($invest->total); ?></span></div></div>
         <?php endif; ?>
 
         <?php if ($project->image instanceof Image): ?>

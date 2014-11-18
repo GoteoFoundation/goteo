@@ -266,10 +266,12 @@ div.widget.project-support div.currency {
     position: relative;
     float:left; 
     padding-left:2px; 
-    width:53px; 
+    padding:5px;
+    width:115px;  
     font-size:11px; 
     font-weight: normal;
     z-index: 200;
+    margin-left:116px;
     
 } 
 
@@ -277,13 +279,32 @@ div.widget.project-support div.currency {
     background: transparent url('header/down-black.png') no-repeat right 30px;
 }
 
+div.widget.project-support div.currency .symbol {
+    float:left; 
+    font-weight: bold; 
+    color:#96238F;
+}
+
+div.widget.project-support div.currency .change {
+    margin-left:5px; 
+    float:left; 
+    width:70px;
+}
+
+div.widget.project-support div.currency hr {
+    width:10px; 
+    float:left; 
+    border: 0; 
+    border-top: 1px solid; 
+    margin-right: 5px;
+}
+
 div.widget.project-support div.currency > a {
     padding: .5em .8em;
-    font-size: 12px;
+    font-size: 11px;
     height: 40px;
     line-height: 40px;
     display: inline-block;    
-    color: #59595c;
 }
 
 
@@ -296,17 +317,8 @@ div.widget.project-support div.currency > a{
 
 
 div.widget.project-support div.currency:hover {
-    background-color: #faf4f9;   
-}
-
-div.widget.project-support div.currency:hover {
     background-image: url('header/down-white.png');
 }
-
-div.widget.project-support div.currency:hover * {
-    color: white;
-} 
-
 
 div.widget.project-support div.currency > div {
     display: none;
@@ -336,19 +348,22 @@ div.widget.project-support div.currency > div > ul > li {
 }
 
 div.widget.project-support div.currency > div > ul > li * {
-    color: white;
     text-transform: none;
+    font-size:11px;
+    font-weight: bold; 
+    color:#96238F;
 }
 
 div.widget.project-support div.currency > div > ul > li > a {
     display: block;    
     padding: .3em 0.5em;
     z-index: 200;
+    text-decoration: none;
 
 }
 
 
 div.widget.project-support div.currency > div > ul > li > a:hover {
     background-color: #faf4f9;
-    text-decoration: none;
+    
 }
