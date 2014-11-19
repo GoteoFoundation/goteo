@@ -7,7 +7,8 @@ use Goteo\Core\Resource,
     Goteo\Core\NodeSys,
     Goteo\Library\Text,
     Goteo\Library\Message,
-    Goteo\Library\Lang;
+    Goteo\Library\Lang,
+    Goteo\Library\Currency;
 
 define('START_TIME', microtime(true));
 //si el parametro GET vale:
@@ -124,6 +125,10 @@ $uri = '/' . implode('/', $segments);
 // set Lang (forzado para el cron y el admin)
 $forceLang = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
 Lang::set($forceLang);
+
+// set currency
+Currency::set();
+
 
 // cambiamos el locale
 \setlocale(\LC_TIME, Lang::locale());

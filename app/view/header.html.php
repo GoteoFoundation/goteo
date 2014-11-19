@@ -9,7 +9,8 @@ if (NODE_ID != GOTEO_NODE) {
 }
 
 ?>
-<?php include 'view/header/lang.html.php' ?> 
+<?php include 'view/header/currency.html.php' ?>
+<?php include 'view/header/lang.html.php' ?>
 
 
 <div id="header">

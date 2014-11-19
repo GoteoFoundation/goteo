@@ -3,7 +3,7 @@
 namespace Goteo\Library;
 
 /*
-* Clase para gestionar las monedas
+* Clase para gestionar las divisas
 */
 
 use Goteo\Library\Mail,
@@ -13,6 +13,9 @@ class Currency {
 
 
     const
+        DEFAULT_CURRENCY = 'EUR',
+        ECB_URL = 'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',
+        TMC_URL =  'http://themoneyconverter.com/rss-feed/$BASE$/rss.xml',
         TEXT_RequestRatesFailed = 'Unable to fetch the currency rates feed.',
         TEXT_AmountMustBeNumeric = 'The given amount to convert must be numeric.',
         TEXT_LocaleNotAvailable = 'The given locale `%s` is not installed on this system.';
@@ -25,17 +28,20 @@ class Currency {
 
         'EUR' => array(
             'html' => '&euro;',
-            'name' => 'Euro'
+            'name' => 'Euro',
+            'active' => 1
         ),
 
         'USD' => array(
             'html' => '&dollar;',
-            'name' => 'U.S. Dollar'
+            'name' => 'U.S. Dollar',
+            'active' => 1
         ),
 
         'GBP' => array(
             'html' => '&pound;',
-            'name' => 'British Pound'
+            'name' => 'British Pound',
+            'active' => 1
         ),
 
 
@@ -46,6 +52,48 @@ class Currency {
         //TODO: mejor pasar la dependencia por el constructor?
         $this->cache = new Cacher('currency');
     }
+
+
+    /*
+     * Establece la divisa de visualización de la web
+     *
+     * $_GET['currency'] : parametro para cambio de divisa
+     * $_SESSION['currency'] : variable de sesión para mantener la divisa
+     * \CURRENCY : constante divisa de visualización para usar en el código
+     * $_COOKIE['currency'] : cookie para recordar la última divisa que seleccionó el usuario
+     */
+    static public function set($force = null)
+    {
+        // @TODO : cambiar por configuración
+        $default_currency = self::DEFAULT_CURRENCY;
+
+        //echo 'Session: ' . $_SESSION['currency'] . '<br />';
+        //echo 'Get: ' . $_GET['currency'] . '<br />';
+        // si lo estamos forzando
+        if (isset($force)) {
+            $_SESSION['currency'] = $force;
+        } elseif (isset($_GET['currency']) && !empty($_GET['currency'])) {
+            // la estan cambiando
+
+            $newCur = strtoupper($_GET['currency']);
+
+            if (!isset(self::$currencies[$newCur])) $newCur = $default_currency;
+
+                // ponemos el que llega
+            setcookie("goteo_currency", $_GET['currency'], time() + 3600 * 24 * 365);
+            $_SESSION['currency'] = $_GET['currency'];
+        } elseif (empty($_SESSION['lang'])) {
+            //primero miramos si tiene cookie
+            if (isset($_COOKIE['currency'])) {
+                $_SESSION['currency'] = $_COOKIE['currency'];
+            }
+        } else {
+            $_SESSION['currency'] = $default_currency;
+        }
+        // establecemos la constante
+        define('CURRENCY', $_SESSION['currency']);
+    }
+
 
     /**
      *  Do a cUrl request
@@ -87,7 +135,7 @@ class Currency {
         switch ($this->source) {
             case 'ecb': // european central bank
                 //the file is updated daily between 2.15 p.m. and 3.00 p.m. CET
-                $feed_url = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
+                $feed_url = self::ECB_URL;
 
                 if( ini_get('allow_url_fopen') ) {
                     $XML=simplexml_load_file($feed_url);
@@ -102,7 +150,7 @@ class Currency {
 
             case 'tmc': // the money converter . com
                 // feed request
-                $feed_url = 'http://themoneyconverter.com/rss-feed/'.$base.'/rss.xml';
+                $feed_url = str_replace('$BASE$', $base, self::TMC_URL);
                 $response = self::doRequest($feed_url, true); //@TODO
                 $file = '<?xml version="1.0" encoding="UTF-8" ?> '.$response['body'];
                 @$XML=simplexml_load_string($file);
