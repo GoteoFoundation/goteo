@@ -67,31 +67,27 @@ class Currency {
         // @TODO : cambiar por configuración
         $default_currency = self::DEFAULT_CURRENCY;
 
-        //echo 'Session: ' . $_SESSION['currency'] . '<br />';
-        //echo 'Get: ' . $_GET['currency'] . '<br />';
         // si lo estamos forzando
         if (isset($force)) {
-            $_SESSION['currency'] = $force;
+            $newCur = strtoupper($force);
+
         } elseif (isset($_GET['currency']) && !empty($_GET['currency'])) {
-            // la estan cambiando
 
             $newCur = strtoupper($_GET['currency']);
 
             if (!isset(self::$currencies[$newCur])) $newCur = $default_currency;
 
-                // ponemos el que llega
-            setcookie("goteo_currency", $_GET['currency'], time() + 3600 * 24 * 365);
-            $_SESSION['currency'] = $_GET['currency'];
-        } elseif (empty($_SESSION['lang'])) {
+            setcookie("currency", $newCur, time() + 3600 * 24 * 365);
+
+        } elseif (empty($_SESSION['currency'])) {
             //primero miramos si tiene cookie
-            if (isset($_COOKIE['currency'])) {
-                $_SESSION['currency'] = $_COOKIE['currency'];
-            }
+            $newCur = (isset($_COOKIE['currency'])) ? $_COOKIE['currency'] : $default_currency;
         } else {
-            $_SESSION['currency'] = $default_currency;
+            $newCur = $_SESSION['currency'];
         }
-        // establecemos la constante
-        define('CURRENCY', $_SESSION['currency']);
+
+        // return whatever to be set in the constant
+        return $newCur;
     }
 
 
