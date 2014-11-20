@@ -33,7 +33,7 @@ fi
 
 echo "Borrando logs de mas de 7 dias:"
 echo "find $LOGDIR/cli-send* -mtime +7 -delete"
-find "$LOGDIR/cli-send*" -mtime +30 -delete 2>&1 > /dev/null
+find "$LOGDIR/cli-send*" -mtime +30 -delete 2>/dev/null
 
 #exit good, even if no files found
 exit $ret
