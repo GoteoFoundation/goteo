@@ -76,10 +76,33 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
         // set from GET
         $_GET['currency'] = $ccy1;
         $res_get = Currency::set();
-        $this->assertEquals($res_force, strtoupper($ccy1));
+        $this->assertEquals($res_get, strtoupper($ccy1));
 
         return true;
     }
 
+
+    public function testAmountFormatCurrency($cur) {
+
+        $amount = '2000';
+
+        $formated = Currency::amount_format($amount);
+
+        // format depending on currency
+        //
+        switch (\CURRENCY) {
+            case 'EUR':
+                $this->assertRegExp('/\d?\.\d?/');
+                break;
+            case 'USD':
+                $this->assertRegExp('/\d?,\d?/');
+                break;
+            case 'GBP':
+                $this->assertRegExp('/\d?,\d?/');
+                break;
+        }
+
+        return true;
+    }
 
 }

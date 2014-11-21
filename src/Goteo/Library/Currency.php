@@ -27,20 +27,26 @@ class Currency {
     static public $currencies = array(
 
         'EUR' => array(
-            'html' => '&euro;',
             'name' => 'Euro',
+            'html' => '&euro;',
+            'thou' => '.',
+            'dec'  => ',',
             'active' => 1
         ),
 
         'USD' => array(
-            'html' => '&dollar;',
             'name' => 'U.S. Dollar',
+            'html' => '&dollar;',
+            'thou' => ',',
+            'dec'  => '.',
             'active' => 1
         ),
 
         'GBP' => array(
-            'html' => '&pound;',
             'name' => 'British Pound',
+            'html' => '&pound;',
+            'thou' => ',',
+            'dec'  => '.',
             'active' => 1
         ),
 
@@ -88,6 +94,16 @@ class Currency {
 
         // return whatever to be set in the constant
         return $newCur;
+    }
+
+    /*
+     *  Converts and prints depending on the \CURRENCY
+     */
+    public static function amount_format($amount, $decs = 0) {
+
+        $ccy = self::$currencies[\CURRENCY];
+
+        return "{$ccy['html']} ".number_format($amount, $decs, $ccy['dec'], $ccy['thou']);
     }
 
 
