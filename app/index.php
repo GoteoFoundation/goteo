@@ -126,11 +126,9 @@ $uri = '/' . implode('/', $segments);
 $forceLang = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
 Lang::set($forceLang);
 
-// set currency (must be improved)
+// set currency
 $CCY = Currency::set(); // depending on request
 $_SESSION['currency'] = $CCY; // session variable
-define('CURRENCY', $CCY); // constant
-$CURRENCY = Currency::$currencies[$CCY]; // html and name
 // end set currency
 
 // cambiamos el locale

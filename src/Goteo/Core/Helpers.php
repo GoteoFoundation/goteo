@@ -101,6 +101,8 @@ namespace {
      * Numberformat para importes
      */
     function amount_format($amount, $decs = 0) {
+
+
         return \Goteo\Library\Currency::amount_format($amount, $decs);
     }
 
