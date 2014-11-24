@@ -4,10 +4,7 @@ namespace Goteo\Library;
 
 /*
  * Clase para mantener una cache de rates
- *
- * necesita un array de divisas ( desde Library\Currency )
- *
-*/
+ */
 
 use Goteo\Library\Mail,
     Goteo\Library\Cacher;
@@ -18,17 +15,13 @@ class Converter {
     const
         ECB_URL = 'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',
         TMC_URL =  'http://themoneyconverter.com/rss-feed/$BASE$/rss.xml',
-        TEXT_RequestRatesFailed = 'Unable to fetch the currency rates feed.',
-        TEXT_AmountMustBeNumeric = 'The given amount to convert must be numeric.';
+        TEXT_RequestRatesFailed = 'Unable to fetch the currency rates feed.';
 
     private $debug = false; // activate on dev phase only
     private $cache = null;
     private $source = 'ecb'; // 'tmc' = themoneyconverter.com
 
-    public $currencies; // gets those from Currency Library
-
-    public function __construct(Array $currencies) {
-        $this->currencies = $currencies;
+    public function __construct() {
         //TODO: mejor pasar la dependencia por el constructor?
         $this->cache = new Cacher('currency');
     }
@@ -204,38 +197,6 @@ class Converter {
 
     }
 
-
-    /**
-     * @param int|float $amount
-     * @param string    $from    currency ISO code
-     * @param string    $to      currency ISO code
-     * @param int|bool  $decimal precision
-     * @return float|bool
-     */
-    public function convert($amount, $from, $to)
-    {
-        if (!is_float($amount) && !is_numeric($amount)) {
-            trigger_error(self::TEXT_AmountMustBeNumeric);
-
-            // mail de aviso
-            $mailHandler = new Mail();
-            $mailHandler->to = \GOTEO_FAIL_MAIL;
-            $mailHandler->subject = 'Conversión de un no-numerico';
-            $mailHandler->content = 'Library\Converter->convert recibe un valor no-numerico y no se puede convertir. <hr /><pre>'.print_r($_SESSION).'</pre> <hr /><pre>'.print_r($_SERVER).'</pre>';
-            $mailHandler->html = true;
-            $mailHandler->template = null;
-            $mailHandler->send();
-            unset($mailHandler);
-
-            return false;
-        }
-        if($from == $to) return $amount;
-
-        $rates = $this->getRates($from);
-        $result = $rates[$to] * $amount;
-
-        return $result;
-    }
 
     /**
      * Invalidates the cache

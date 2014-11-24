@@ -6,7 +6,8 @@ namespace Goteo\Library;
 * Clase para gestionar las divisas
 */
 
-use Goteo\Library\Converter;
+use Goteo\Library\Mail,
+    Goteo\Library\Converter;
 
 class Currency {
 
@@ -87,13 +88,29 @@ class Currency {
      */
     public static function amount_format($amount, $decs = 0) {
 
-        $converter = new Converter(self::$currencies);
+        // check odd behaviour
+        if (!is_float($amount) && !is_numeric($amount)) {
+            // mail de aviso
+            $mailHandler = new Mail();
+            $mailHandler->to = \GOTEO_FAIL_MAIL;
+            $mailHandler->subject = 'Conversión de un no-numerico';
+            $mailHandler->content = 'Library\Converter->convert recibe un valor no-numerico y no se puede convertir. <hr /><pre>'.print_r($_SESSION).'</pre> <hr /><pre>'.print_r($_SERVER).'</pre>';
+            $mailHandler->html = true;
+            $mailHandler->template = null;
+            $mailHandler->send();
+            unset($mailHandler);
+
+            return '';
+        }
+
+        $converter = new Converter();
 
         $currency = $_SESSION['currency'];
         $ccy = self::$currencies[$currency];
 
         if ($currency != self::DEFAULT_CURRENCY) {
-            $amount = $converter->convert($amount, self::DEFAULT_CURRENCY, $currency);
+            $rates = $converter->getRates(self::DEFAULT_CURRENCY);
+            $amount = $rates[$currency] * $amount;
         }
 
         if ($amount === false) {
