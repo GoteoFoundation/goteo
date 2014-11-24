@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\Error,
+        Goteo\Library\Cacher,
         Goteo\Model;
 
     class Img extends \Goteo\Core\Controller {
@@ -19,10 +20,10 @@ namespace Goteo\Controller {
                 // die("{$width}  {$height} {$crop} {$filename}");
 
                 $image = new Model\Image;
+                $image->setCache(new Cacher());
                 $image->name = $filename;
                 $image->display($width, $height, $crop);
 
-                die(\trace($image));
 
             } else {
                 throw new Error(Error::NOT_FOUND);

@@ -13,7 +13,7 @@ namespace Goteo\Library {
         protected static
 		$twitter_id = OAUTH_TWITTER_ID,
 		$twitter_secret = OAUTH_TWITTER_SECRET;
-        
+
         /**
          * Metodo para obtener buzz de twitter
          * @param string $query; busqueda en twitter sin codificar
@@ -27,7 +27,7 @@ namespace Goteo\Library {
             $doReq = true;
             // primero miramos si tenemos cache y de cuando es
             $filename = 'buzz_'.md5($query).'.json';
-            $data_file = GOTEO_PATH.'logs'.DIRECTORY_SEPARATOR.$filename;
+            $data_file = GOTEO_CACHE_DIR . $filename;
             if (file_exists($data_file)) {
                 $fMod = date ("Y-m-d H:i:s", filemtime($data_file));
                 $fNow = date ("Y-m-d H:i:s");
@@ -37,11 +37,11 @@ namespace Goteo\Library {
                     $result = \file_get_contents($data_file);
                     $doReq = false;
                 }
-            }           
-            
+            }
+
             // si nos piden que limpiemos la cche, forzamos la consulta
             if (isset($_GET['clrbuzzcache'])) $doReq = true;
-            
+
             if ($doReq) {
                 // autenticación (application-only)
                 if (empty(self::$twitter_id) || empty(self::$twitter_secret)) {
@@ -49,25 +49,25 @@ namespace Goteo\Library {
                 }
                 $credentials = base64_encode(rawurlencode(self::$twitter_id).':'.rawurlencode(self::$twitter_secret));
                 $grantstr = "grant_type=client_credentials";
-                
+
                 // solicitar el bearer token
                 $authUrl = "https://api.twitter.com/oauth2/token";
                 $cAuth = curl_init();
-                
+
                 //set the url, number of POST vars, POST data
                 curl_setopt( $cAuth, CURLOPT_URL, $authUrl);
-                
+
                 curl_setopt( $cAuth, CURLOPT_POST, 1);
                 curl_setopt( $cAuth, CURLOPT_HTTPHEADER, array(
                     'Authorization: Basic '.$credentials,
                     'Content-Type: application/x-www-form-urlencoded;charset=UTF-8',
                     'Content-Length: '.strlen($grantstr))
                 );
-                curl_setopt( $cAuth, CURLOPT_POSTFIELDS, $grantstr);                
+                curl_setopt( $cAuth, CURLOPT_POSTFIELDS, $grantstr);
 
                 // verificar SSL
                 curl_setopt( $cAuth, CURLOPT_SSL_VERIFYPEER, true);
-                curl_setopt( $cAuth, CURLOPT_SSL_VERIFYHOST, true);                
+                curl_setopt( $cAuth, CURLOPT_SSL_VERIFYHOST, true);
                 curl_setopt( $cAuth, CURLOPT_CAINFO, '/usr/share/ncat/ca-bundle.crt');
 
                 curl_setopt( $cAuth, CURLOPT_RETURNTRANSFER, 1 );
@@ -82,18 +82,18 @@ namespace Goteo\Library {
                 }
                  */
                 curl_close( $cAuth );
-                
+
                 // parsear respuesta
                 $authRet =json_decode($authRes);
                 if ($authRet->token_type != 'bearer' || empty($authRet->access_token)) {
                     return null;
                 }
-                
+
                 // petición
                 $url = "https://api.twitter.com/1.1/search/tweets.json?q=" . rawurlencode( $query );
-                
+
 //                echo $url.'<hr />';
-                
+
                 $curl = curl_init();
                 curl_setopt( $curl, CURLOPT_URL, $url );
                 curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
@@ -109,7 +109,7 @@ namespace Goteo\Library {
                 // guardamos ahora cache de resultado
                 \file_put_contents($data_file, $result);
             }
-            
+
             if (!empty($result)) {
                 $return =json_decode($result);
 
@@ -159,6 +159,6 @@ namespace Goteo\Library {
 
             return $list;
         }
-        
+
     }
 }

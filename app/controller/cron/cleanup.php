@@ -12,11 +12,11 @@ namespace Goteo\Controller\Cron {
 
             echo "LIMPIANDO REGISTROS DE IMAGENES QUE NO SE USAN<br />";
             echo "Tablas: banner, bazar, call, node, user, call_banner, call_sponsor, feed, glossary_image, info_image, post, post_image, project, project_image, sponsor, user_vip<br /><br />";
-            
+
             // obtenemos arrays de imágenes en uso
             echo 'Imagenes en uso: <br />';
             $en_uso = array();
-            
+
             $sql = "SELECT image as id FROM `banner` WHERE image IS NOT NULL AND image REGEXP '^[0-9]+$'
                     UNION DISTINCT
                     SELECT logo as id FROM `call` WHERE logo IS NOT NULL AND logo REGEXP '^[0-9]+$'
@@ -63,27 +63,27 @@ namespace Goteo\Controller\Cron {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
                 echo $row->id.'<br />';
             }
-            
+
             echo "<hr />";
 
             die;
 
             //--------------------------------------
             $path = GOTEO_DATA_PATH . 'images';
-            
+
             echo "LIMPIANDO ARCHIVOS DE IMAGENES NO REGISTRADAS<br />";
 
             // obtenemos el array de archivos en la carpeta de imágenes
             $archivos_en_carpeta = array();
-            if ($dh = opendir($path)) { 
-                 while (($file = readdir($dh)) !== false) { 
+            if ($dh = opendir($path)) {
+                 while (($file = readdir($dh)) !== false) {
                     $filename = $path . DIRECTORY_SEPARATOR. $file;
-                    if (is_file($filename)){ 
+                    if (is_file($filename)){
                        $archivos_en_carpeta[] = $file;
-                    } 
+                    }
                  }
             }
-            closedir($dh);     
+            closedir($dh);
 
             echo 'Listo!';
 

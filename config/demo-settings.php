@@ -55,7 +55,7 @@ define('GOTEO_DB_PASSWORD', 'db-password');
 
 
 //SELECT queries caching
-//setup it as 'files', 'memcache'
+//setup it as 'files' to enable sql cache
 define('SQL_CACHE_DRIVER', ''); //dejar vacia para no activar cache
 define('SQL_CACHE_TIME', 20); //Segundos de cache para las queries SELECT (puede ser sobreescrito por las query->cacheTime())
 define('SQL_CACHE_LONG_TIME', 3600); //Cache larga para textos
@@ -97,11 +97,11 @@ define('GOTEO_DEFAULT_LANG', 'es');
 define('GOTEO_URL', 'http://example.com');
 //url de recursos estaticos (imagenes, CSS)
 define('SRC_URL', '//static.example.com');
-//Opcional: si se define la constante DATA_URL se usara en lugar de SRC_URL para el contenido de data
+//Opcional: si se define la constante GOTEO_DATA_URL se usara en lugar de SRC_URL para el contenido de data
 //Sirve para utilzar con CDN que hagan mirror de SITE_URL
 //IMPORTANTE: definir la ruta sin / al final (con el prefijo "/data" si aplica)
-//define('DATA_URL', '//cdn-example.com/data');
-//define('DATA_URL', '//data.cdn-example.com');
+//define('GOTEO_DATA_URL', '//cdn-example.com/data');
+//define('GOTEO_DATA_URL', '//data.cdn-example.com');
 
 // ssl
 define('GOTEO_SSL', false);

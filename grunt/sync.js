@@ -12,7 +12,7 @@ module.exports = function(grunt) {
             cwd: '<%= goteo.app %>',
             src: [
                 '**',
-                '!**/*.{png,jpg,jpeg,gif}',
+                '!view/**/*.{png,jpg,jpeg,gif}',
                 // "!**/view/css/{goteo,config,node}.css",
                 "!config/**",
                 "!data/**",

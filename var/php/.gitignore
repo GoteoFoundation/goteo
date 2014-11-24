@@ -1,0 +1,6 @@
+*
+!.gitignore
+!README
+!php.ini
+!router.php
+!router_dev.php

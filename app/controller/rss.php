@@ -13,6 +13,7 @@ namespace Goteo\Controller {
         }
 
         public function index () {
+            date_default_timezone_set('UTC');
 
             // sacamos su blog
             $blog = Model\Blog::get(\GOTEO_NODE, 'node');
@@ -30,22 +31,31 @@ namespace Goteo\Controller {
             // usaremos FeedWriter
 
             // configuracion
+            $url = SITE_URL;
+            if(substr($url, 0, 2) === '//') $url = (HTTPS_ON ? 'https:' : 'http:') . $url;
             $config = array(
                 'title' => 'Goteo Rss',
                 'description' => 'Blog Goteo.org rss',
-                'link' => SITE_URL,
-                'indent' => 6
+                'link' => $url,
+                'image' => $url . '/myicon.png',
+                'selfLink' => $url . '/rss',
+                'date' => \date('Y-m-d\TH:i:s').'Z',
+
+
             );
+
+            foreach($blog->posts as $post) {
+                $post->link = $url . '/blog/' . $post->id;
+            }
 
             $data = array(
                 'tags' => $tags,
                 'posts' => $blog->posts
             );
 
-            \header("Content-Type: application/rss+xml");
-            echo Library\Rss::get($config, $data, $_GET['format']);
-
             // le preparamos los datos y se los pasamos
+            $feed = Library\RSS::get($config, $data, strtoupper($_GET['format']));
+            $feed->printFeed();
         }
 
     }
