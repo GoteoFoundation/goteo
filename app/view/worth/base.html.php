@@ -3,13 +3,6 @@
 use Goteo\Library\Worth;
 use Goteo\Library\Currency;
 
-// $currency = $_SESSION['currency'];
-
-// echo \trace(Currency::$currencies);
-// $curr = Currency::$currencies[$currency];
-// echo $curr['html'] . ' ' . $curr['name'];
-// die;
-
 $worthcracy = isset($this['worthcracy']) ? $this['worthcracy'] : Worth::getAll();
 
 if (!isset($this['level'])) $this['level'] = 9999;
