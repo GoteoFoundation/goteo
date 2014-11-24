@@ -171,6 +171,22 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
 
         </dl>
 
+        <?php if (!$horizontal) { ?>
+        <div class="currency">
+            <span class="symbol">€ EUR</span>
+            <span class="change">
+                <hr>
+                CAMBIAR
+            </span>
+            <div>
+                <ul>
+                    <li><a href="#">&pound; GNP</a></li>
+                    <li><a href="#">$ USD</a></li>
+                </ul> 
+            </div>   
+        </div>
+        <?php } ?>
+       
         <?php if ($activable) : ?>
         <div class="obtained">
             <strong><?php echo \amount_format($reached) ?></strong>

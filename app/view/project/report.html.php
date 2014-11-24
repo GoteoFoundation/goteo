@@ -71,22 +71,22 @@ $cName = "P-{$cNum}-{$cDate}";
             <th style="text-align:left;">1) Resumen de recaudación</th>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Mostrado en el termómetro de Goteo.org al cerrar la campaña (<?php echo (empty($project->success)) ? 'fecha' : date('d/m/Y', strtotime($project->success)); ?>): <strong><?php echo \amount_format($sumData['shown'], 2).' &euro;'; ?></strong></td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Mostrado en el termómetro de Goteo.org al cerrar la campaña (<?php echo (empty($project->success)) ? 'fecha' : date('d/m/Y', strtotime($project->success)); ?>): <strong><?php echo \amount_format($sumData['shown'], 2); ?></strong></td>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Incidencias (Usuarios/as que no tienen fondos en su cuenta, tarjetas desactualizadas, cancelaciones, reembolsos...) : <strong><?php echo \amount_format($sumData['fail'], 2).' &euro;'; ?></strong> (<strong>*</strong> ver listado más abajo)</td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Incidencias (Usuarios/as que no tienen fondos en su cuenta, tarjetas desactualizadas, cancelaciones, reembolsos...) : <strong><?php echo \amount_format($sumData['fail'], 2); ?></strong> (<strong>*</strong> ver listado más abajo)</td>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total recaudado: <strong><?php echo \amount_format($sumData['total'], 2).' &euro;'; ?></strong> (importe de las ayudas monetarias recibidas)</td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total recaudado: <strong><?php echo \amount_format($sumData['total'], 2); ?></strong> (importe de las ayudas monetarias recibidas)</td>
         </tr>
         <?php if (!empty($called)) : ?>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total Capital Riego: <strong><?php echo \amount_format($sumData['drop']).' &euro;'; ?></strong> (Transferencia del convocador '<?php echo $project->called->user->name ?>' directamente al impulsor)</td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total Capital Riego: <strong><?php echo \amount_format($sumData['drop']); ?></strong> (Transferencia del convocador '<?php echo $project->called->user->name ?>' directamente al impulsor)</td>
         </tr>
         <?php endif; ?>
         <?php if (!empty($sumData['ghost'])) : ?>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Otro recibido: <strong><?php echo \amount_format($sumData['ghost']).' &euro;'; ?></strong> (Aporte manual sin ingreso bancario)</td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Otro recibido: <strong><?php echo \amount_format($sumData['ghost']); ?></strong> (Aporte manual sin ingreso bancario)</td>
         </tr>
         <?php endif; ?>
     </table>
@@ -97,10 +97,10 @@ $cName = "P-{$cNum}-{$cDate}";
             <th style="text-align:left;">2) Gastos derivados de la financiación del proyecto</th>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisiones cobradas a Goteo por cada transferencia de tarjeta (0,8&#37;) y PayPal (3,4&#37; + 0,35 por transacción/usuario/a): <strong>total <?php echo \amount_format($sumData['fee_goteo'], 2).' &euro;'; ?></strong></td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisiones cobradas a Goteo por cada transferencia de tarjeta (0,8&#37;) y PayPal (3,4&#37; + 0,35 por transacción/usuario/a): <strong>total <?php echo \amount_format($sumData['fee_goteo'], 2); ?></strong></td>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisión del 8&#37; de Goteo.org: <strong><?php echo \amount_format($sumData['goteo'], 2).' &euro;'; ?></strong></td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisión del 8&#37; de Goteo.org: <strong><?php echo \amount_format($sumData['goteo'], 2); ?></strong></td>
         </tr>
 <?php if ($admin) : ?>
         <!--
@@ -110,7 +110,7 @@ $cName = "P-{$cNum}-{$cDate}";
         -->
 <?php endif; ?>
         <tr>
-            <td>Por el total de estas comisiones  la Fundación Fuentes Abiertas ha emitido la factura <strong>[N&uacute;mero de factura]</strong> por importe de <strong><?php echo \amount_format($sumData['total_fee_project'], 2).' &euro;'; ?></strong>, a nombre de la persona o entidad que firma el contrato</td>
+            <td>Por el total de estas comisiones  la Fundación Fuentes Abiertas ha emitido la factura <strong>[N&uacute;mero de factura]</strong> por importe de <strong><?php echo \amount_format($sumData['total_fee_project'], 2); ?></strong>, a nombre de la persona o entidad que firma el contrato</td>
         </tr>
     </table>
 <br />
@@ -120,20 +120,20 @@ $cName = "P-{$cNum}-{$cDate}";
             <th style="text-align:left;">3) Transferencias de la Fundación Fuentes Abiertas (Goteo.org) a los/as  impulsores/as</th>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Envío a través de PayPal (sin descontar comisiones de PayPal  de 3,4&#37;+ 0,35  por transacción/usuario/a, cobradas automáticamente al receptor del dinero): <strong><?php echo \amount_format($sumData['pp_project'], 2).' &euro;' ?> ([fecha transferencia])</strong></td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Envío a través de PayPal (sin descontar comisiones de PayPal  de 3,4&#37;+ 0,35  por transacción/usuario/a, cobradas automáticamente al receptor del dinero): <strong><?php echo \amount_format($sumData['pp_project'], 2); ?> ([fecha transferencia])</strong></td>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Envío a través de cuenta bancaria: <strong><?php echo \amount_format($sumData['tpv_project'], 2).' &euro;' ?> ([fecha transferencia])</strong></td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Envío a través de cuenta bancaria: <strong><?php echo \amount_format($sumData['tpv_project'], 2); ?> ([fecha transferencia])</strong></td>
         </tr>
         <tr>
-            <td>En estas cantidades ya se ha descontado el importe de la factura [N&uacute;mero de factura] por importe de <?php echo \amount_format($sumData['total_fee_project'], 2).' &euro;'; ?></td>
+            <td>En estas cantidades ya se ha descontado el importe de la factura [N&uacute;mero de factura] por importe de <?php echo \amount_format($sumData['total_fee_project'], 2); ?></td>
         </tr>
     </table>
 <br />
 
     <table>
         <tr>
-            <th style="text-align:left;"><strong>Total dinero enviado a las cuentas bancarias del proyecto: <?php echo \amount_format($sumData['project'], 2).' &euro;' ?></strong> (<?php echo \amount_format($sumData['total'], 2).' &euro;'; ?> - <?php echo \amount_format($sumData['total_fee_project'], 2).' &euro;'; ?>)</th>
+            <th style="text-align:left;"><strong>Total dinero enviado a las cuentas bancarias del proyecto: <?php echo \amount_format($sumData['project'], 2); ?></strong> (<?php echo \amount_format($sumData['total'], 2); ?> - <?php echo \amount_format($sumData['total_fee_project'], 2); ?>)</th>
         </tr>
     </table>
 
@@ -175,7 +175,7 @@ $cName = "P-{$cNum}-{$cDate}";
 <?php if ($admin) : ?>
             <td><?php echo '<a href="/admin/accounts/details/'.$issue->invest.'" target="_blank"'.$warst.'>[Ir al aporte]</a> Usuario <a href="/admin/users/manage/' . $issue->user . '" target="_blank">' . $issue->userName . '</a> [<a href="mailto:'.$issue->userEmail.'">'.$issue->userEmail.'</a>], ' . $issue->statusName . ', ' . $issue->amount . ' euros.'; if (!empty($warst)) echo '  (Aporte: '.$issue->invest.')'; ?></td>
 <?php else: ?>
-            <td<?php echo $warst; ?>>Usuario/a <?php echo $issue->userName; ?>,  <?php echo $issue->statusName; ?>, <?php echo $issue->amount . ' euros.'; if (!empty($warst)) echo '  (Aporte: '.$issue->invest.')';?></td>
+            <td<?php echo $warst; ?>>Usuario/a <?php echo $issue->userName; ?>,  <?php echo $issue->statusName; ?>, <?php echo $issue->amount . ' ss.'; if (!empty($warst)) echo '  (Aporte: '.$issue->invest.')';?></td>
 <?php endif; ?>
         </tr>
         <?php endforeach; ?>
@@ -184,7 +184,7 @@ $cName = "P-{$cNum}-{$cDate}";
     <br />
     <table>
         <tr>
-            <td><strong>TOTAL</strong> (no cobrado)<strong>: <?php echo $sumData['fail']; ?> &euro;</strong></td>
+            <td><strong>TOTAL</strong> (no cobrado)<strong>: <?php echo \amount_format($sumData['fail']); ?></strong></td>
         </tr>
     </table>
 <?php endif; ?>
