@@ -76,7 +76,7 @@ class Currency {
         }
 
         // return whatever to be set in the constant
-        return $newCur;
+        return strtoupper($newCur)  ;
     }
 
     /*
@@ -103,15 +103,25 @@ class Currency {
             return '';
         }
 
-        $converter = new Converter();
+        $default = self::DEFAULT_CURRENCY;
+        $converter = new Converter(); // @FIXME : this instance should be persistent for all the requests of amount_format
 
-        $currency = $_SESSION['currency'];
+        if (!$converter instanceof \Goteo\Library\Converter) {
+            $currency = $default;
+        } else {
+            $currency = $_SESSION['currency'];
+        }
+
+        // currency data (htmnl, name, thous/decs)
         $ccy = self::$currencies[$currency];
 
-        if ($currency != self::DEFAULT_CURRENCY) {
-            $rates = $converter->getRates(self::DEFAULT_CURRENCY);
+        if ($currency != $default) {
+            $rates = $converter->getRates($default);
             $amount = $rates[$currency] * $amount;
         }
+
+        echo 'New amount in '.$currency."\n";
+        var_dump($amount);
 
         if ($amount === false) {
             return '';
