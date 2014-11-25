@@ -150,7 +150,7 @@ $pagedResults = new \Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] 
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
                 <td><?php echo (isset($user->num_owned)) ? $user->num_owned : $user->get_numOwned; ?></td>
                 <td><?php echo (isset($user->num_invested)) ? $user->num_invested : $user->get_numInvested; ?></td>
-                <td><?php echo (isset($user->amount)) ? \amount_format($user->amount) : \amount_format($user->get_amount); ?> &euro;</td>
+                <td><?php echo (isset($user->amount)) ? \euro_format($user->amount) : \euro_format($user->get_amount); ?> &euro;</td>
                 <td><?php echo $user->register_date; ?></td>
             </tr>
             <tr>

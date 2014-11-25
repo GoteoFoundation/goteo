@@ -59,7 +59,7 @@ foreach ($this['invests'] as $invest) {
             , en <?php echo $project->round . 'ª ronda' ?> y le quedan <strong><?php echo $project->days ?> d&iacute;as</strong> para finalizarla
         <?php endif; ?>
         .</p>
-    <p>El proyecto tiene un <strong>coste m&iacute;nimo de <?php echo \amount_format($project->mincost) ?> &euro;</strong>, un coste <strong>&oacute;ptimo de <?php echo \amount_format($project->maxcost) ?> &euro;</strong> y ahora mismo lleva <strong>conseguidos <?php echo \amount_format($project->amount) ?> &euro;</strong>, lo que representa un <strong><?php echo \amount_format(($project->amount / $project->mincost * 100), 2, ',', '') . '%' ?></strong> sobre el m&iacute;nimo.</p>
+    <p>El proyecto tiene un <strong>coste m&iacute;nimo de <?php echo \euro_format($project->mincost) ?> &euro;</strong>, un coste <strong>&oacute;ptimo de <?php echo \euro_format($project->maxcost) ?> &euro;</strong> y ahora mismo lleva <strong>conseguidos <?php echo \euro_format($project->amount) ?> &euro;</strong>, lo que representa un <strong><?php echo \euro_format(($project->amount / $project->mincost * 100), 2, ',', '') . '%' ?></strong> sobre el m&iacute;nimo.</p>
 
     <h3>Informe de aportes</h3>
     <p style="font-style:italic;">Cantidades en bruto (no se tiene en cuenta ejecuciones fallidas ni comisiones PayPal ni SaNostra)</p>
@@ -74,33 +74,33 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <td>PayPal</td>
-            <td style="text-align:right;"><?php echo \amount_format($desglose['paypal']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($goteo['paypal'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($proyecto['paypal'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($desglose['paypal']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($goteo['paypal'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($proyecto['paypal'], 2) ?></td>
         </tr>
         <tr>
             <td>Tpv</td>
-            <td style="text-align:right;"><?php echo \amount_format($desglose['tpv']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($goteo['tpv'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($proyecto['tpv'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($desglose['tpv']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($goteo['tpv'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($proyecto['tpv'], 2) ?></td>
         </tr>
         <tr>
             <td>Cash</td>
-            <td style="text-align:right;"><?php echo \amount_format($desglose['cash']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($goteo['cash'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($proyecto['cash'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($desglose['cash']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($goteo['cash'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($proyecto['cash'], 2) ?></td>
         </tr>
         <tr>
             <td>Riego</td>
-            <td style="text-align:right;"><?php echo \amount_format($desglose['drop']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($desglose['drop']) ?></td>
             <td style="text-align:right;">0</td>
-            <td style="text-align:right;"><?php echo \amount_format($desglose['drop'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($desglose['drop'], 2) ?></td>
         </tr>
         <tr>
             <td>TOTAL</td>
-            <td style="text-align:right;"><?php echo \amount_format(($desglose['paypal'] + $desglose['tpv'] + $desglose['cash'] + $desglose['drop']), 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format(($goteo['paypal'] + $goteo['tpv'] + $goteo['cash']), 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format(($proyecto['paypal'] + $proyecto['tpv'] + $proyecto['cash'] + $desglose['drop']), 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format(($desglose['paypal'] + $desglose['tpv'] + $desglose['cash'] + $desglose['drop']), 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format(($goteo['paypal'] + $goteo['tpv'] + $goteo['cash']), 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format(($proyecto['paypal'] + $proyecto['tpv'] + $proyecto['cash'] + $desglose['drop']), 2) ?></td>
         </tr>
     </table>
 
@@ -117,11 +117,11 @@ foreach ($this['invests'] as $invest) {
         <?php foreach ($this['investStatus'] as $id=>$label) : if (in_array($id, array('-1'))) continue;?>
         <tr>
             <td><?php echo $label ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($estado[$id]['total']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($estado[$id]['paypal']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($estado[$id]['tpv']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($estado[$id]['cash']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($estado[$id]['drop']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($estado[$id]['total']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($estado[$id]['paypal']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($estado[$id]['tpv']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($estado[$id]['cash']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($estado[$id]['drop']) ?></td>
         </tr>
         <?php endforeach; ?>
     </table>
@@ -139,11 +139,11 @@ foreach ($this['invests'] as $invest) {
         <?php foreach ($this['users'] as $user) : ?>
         <tr>
             <td><?php echo $user->name ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($user->amount, 0) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($usuario[$user->user]['paypal']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($usuario[$user->user]['tpv']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($usuario[$user->user]['cash']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($usuario[$user->user]['drop']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($user->amount, 0) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($usuario[$user->user]['paypal']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($usuario[$user->user]['tpv']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($usuario[$user->user]['cash']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($usuario[$user->user]['drop']) ?></td>
         </tr>
         <?php endforeach; ?>
     </table>
@@ -185,9 +185,9 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <th>Importe</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['first']['amount']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['second']['amount']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['total']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['first']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['second']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['total']['amount']) ?></td>
             <td></td>
         </tr>
         <tr>
@@ -197,9 +197,9 @@ foreach ($this['invests'] as $invest) {
             $Data['tpv']['total']['fee']  = $Data['tpv']['total']['amount']  * 0.008;
             ?>
             <th>Comisi&oacute;n</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['first']['fee'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['second']['fee'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['total']['fee'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['first']['fee'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['second']['fee'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['total']['fee'], 2) ?></td>
             <td>banco 0,80&#37; de cada operaci&oacute;n</td>
         </tr>
         <tr>
@@ -209,9 +209,9 @@ foreach ($this['invests'] as $invest) {
             $Data['tpv']['total']['net']  = $Data['tpv']['total']['amount']  - $Data['tpv']['total']['fee'];
             ?>
             <th>Neto</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['first']['net'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['second']['net'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['total']['net'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['first']['net'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['second']['net'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['total']['net'], 2) ?></td>
             <td></td>
         </tr>
         <tr>
@@ -221,9 +221,9 @@ foreach ($this['invests'] as $invest) {
             $Data['tpv']['total']['goteo']  = $Data['tpv']['total']['net']  * 0.08;
             ?>
             <th>Goteo</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['first']['goteo'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['second']['goteo'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['total']['goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['first']['goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['second']['goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['total']['goteo'], 2) ?></td>
             <td>8&#37; del neto</td>
         </tr>
         <tr>
@@ -233,9 +233,9 @@ foreach ($this['invests'] as $invest) {
             $Data['tpv']['total']['project']  = $Data['tpv']['total']['net']  - $Data['tpv']['total']['goteo'];
             ?>
             <th>Proyecto</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['first']['project'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['second']['project'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['tpv']['total']['project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['first']['project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['second']['project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['total']['project'], 2) ?></td>
             <td>92&#37; del neto</td>
         </tr>
     </table>
@@ -267,9 +267,9 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <th>Importe Incidencias</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['fail']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['fail']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['fail']) ?></td>
             <td></td>
         </tr>
         <tr>
@@ -279,9 +279,9 @@ foreach ($this['invests'] as $invest) {
             $Data['paypal']['total']['ok']  = $Data['paypal']['total']['amount'];
             ?>
             <th>Importe</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['ok']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['ok']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['ok']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['ok']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['ok']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['ok']) ?></td>
             <td>Preapprovals ejecutados correctamente</td>
         </tr>
         <tr>
@@ -291,9 +291,9 @@ foreach ($this['invests'] as $invest) {
             $Data['paypal']['total']['goteo']  = $Data['paypal']['total']['ok'] * 0.08;
             ?>
             <th>Goteo</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['goteo'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['goteo'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['goteo'], 2) ?></td>
             <td>8&#37; de las operaciones correctas</td>
         </tr>
         <tr>
@@ -303,9 +303,9 @@ foreach ($this['invests'] as $invest) {
             $Data['paypal']['total']['project']  = $Data['paypal']['total']['ok']  - $Data['paypal']['total']['goteo'];
             ?>
             <th>Proyecto</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['project'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['project'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['project'], 2) ?></td>
             <td>92&#37; de las operaciones correctas</td>
         </tr>
         <tr>
@@ -315,9 +315,9 @@ foreach ($this['invests'] as $invest) {
             $Data['paypal']['total']['fee_total']  = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['ok'] * 0.034);
             ?>
             <th>Comisión Total</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['fee_total'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['fee_total'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['fee_total'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['fee_total'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['fee_total'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['fee_total'], 2) ?></td>
             <td>0,35 por operacion + 3,4&#37; del importe total (100&#37; del correcto)</td>
         </tr>
         <tr>
@@ -327,9 +327,9 @@ foreach ($this['invests'] as $invest) {
             $Data['paypal']['total']['fee_goteo']  = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['goteo'] * 0.034);
             ?>
             <th>Comisión parte Goteo</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['fee_goteo'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['fee_goteo'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['fee_goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['fee_goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['fee_goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['fee_goteo'], 2) ?></td>
             <td>0,35 por operacion + 3,4&#37; del importe de goteo (8&#37; del correcto)</td>
         </tr>
         <tr>
@@ -339,9 +339,9 @@ foreach ($this['invests'] as $invest) {
             $Data['paypal']['total']['fee_project']  = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['project'] * 0.034);
             ?>
             <th>Comisión al Promotor</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['fee_project'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['fee_project'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['fee_project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['fee_project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['fee_project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['fee_project'], 2) ?></td>
             <td>0,35 por operacion + 3,4&#37; del importe del proyecto (92&#37; del correcto)</td>
         </tr>
         <tr>
@@ -351,9 +351,9 @@ foreach ($this['invests'] as $invest) {
             $Data['paypal']['total']['net_goteo']  = $Data['paypal']['total']['goteo']  - $Data['paypal']['total']['fee_goteo'];
             ?>
             <th>Neto Goteo</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['net_goteo'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['net_goteo'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['net_goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['net_goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['net_goteo'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['net_goteo'], 2) ?></td>
             <td></td>
         </tr>
         <tr>
@@ -363,9 +363,9 @@ foreach ($this['invests'] as $invest) {
             $Data['paypal']['total']['net_project']  = $Data['paypal']['total']['project']  - $Data['paypal']['total']['fee_project'];
             ?>
             <th>Neto Proyecto</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['first']['net_project'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['second']['net_project'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['paypal']['total']['net_project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['net_project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['net_project'], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['net_project'], 2) ?></td>
             <td></td>
         </tr>
     </table>
@@ -403,16 +403,16 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <th>Incidencias</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['first']['fail']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['second']['fail']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['total']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['first']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['second']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['total']['fail']) ?></td>
             <td>Aportes manuales con incidencia (?)</td>
         </tr>
         <tr>
             <th>Importe</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['first']['amount']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['second']['amount']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['total']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['first']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['second']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['total']['amount']) ?></td>
             <td>Aportes de cash</td>
         </tr>
         <tr>
@@ -422,9 +422,9 @@ foreach ($this['invests'] as $invest) {
             $Data['cash']['total']['goteo']  = $Data['cash']['total']['amount'] * 0.08;
             ?>
             <th>Goteo</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['first']['goteo']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['second']['goteo']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['total']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['first']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['second']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['total']['goteo']) ?></td>
             <td>8&#37; del importe</td>
         </tr>
         <tr>
@@ -434,9 +434,9 @@ foreach ($this['invests'] as $invest) {
             $Data['cash']['total']['project']  = $Data['cash']['total']['amount']  - $Data['cash']['total']['goteo'];
             ?>
             <th>Proyecto</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['first']['project']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['second']['project']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['cash']['total']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['first']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['second']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['cash']['total']['project']) ?></td>
             <td>92&#37; del importe</td>
         </tr>
     </table>
@@ -474,16 +474,16 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <th>Incidencias</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['first']['fail']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['second']['fail']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['total']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['first']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['second']['fail']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['total']['fail']) ?></td>
             <td>Aportes de Capital Riego activos en campaña cerrada (o o algo así)</td>
         </tr>
         <tr>
             <th>Importe</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['first']['amount']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['second']['amount']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['total']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['first']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['second']['amount']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['total']['amount']) ?></td>
             <td>Capital riego conseguido</td>
         </tr>
         <tr>
@@ -493,9 +493,9 @@ foreach ($this['invests'] as $invest) {
             $Data['drop']['total']['goteo']  = 0;
             ?>
             <th>Goteo</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['first']['goteo']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['second']['goteo']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['total']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['first']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['second']['goteo']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['total']['goteo']) ?></td>
             <td>El riego no tiene comisi&oacute;n Goteo</td>
         </tr>
         <tr>
@@ -505,9 +505,9 @@ foreach ($this['invests'] as $invest) {
             $Data['drop']['total']['project']  = $Data['drop']['total']['amount'];
             ?>
             <th>Proyecto</th>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['first']['project']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['second']['project']) ?></td>
-            <td style="text-align:right;"><?php echo \amount_format($Data['drop']['total']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['first']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['second']['project']) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($Data['drop']['total']['project']) ?></td>
             <td>Todo el riego</td>
         </tr>
     </table>

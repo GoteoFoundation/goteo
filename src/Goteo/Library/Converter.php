@@ -29,19 +29,22 @@ class Converter {
 
     /**
      *  Do a cUrl request
+     *
+     * //@TODO  cambiar $debug por 'debug mode' para unittest
+     *
      */
     private function doRequest($url, $debug = false)
     {
         if ($debug) echo $url.'<hr />';
 
-        $curl = curl_init();
-        curl_setopt( $curl, CURLOPT_URL, $url );
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt( $curl, CURLOPT_USERAGENT, 'Goteo.org Currency Getter');
+        $curl = \curl_init();
+        \curl_setopt( $curl, CURLOPT_URL, $url );
+        \curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+        \curl_setopt( $curl, CURLOPT_USERAGENT, 'Goteo.org Currency Getter');
 
-        $result = curl_exec( $curl );
+        $result = \curl_exec( $curl );
 
-        curl_close( $curl );
+        \curl_close( $curl );
 
         if ($debug)  echo htmlentities($result);
         if ($debug) die;
