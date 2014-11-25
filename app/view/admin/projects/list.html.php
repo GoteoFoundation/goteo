@@ -134,8 +134,8 @@ foreach ($filters as $key=>$value) {
                 <td><?php echo date('d-m-Y', strtotime($project->updated)); ?></td>
                 <td><?php echo ($project->status == 1 && !$project->draft) ? '<span style="color: green;">En negociación</span>' : $this['status'][$project->status]; ?></td>
                 <td style="text-align: center;"><?php echo $project->node; ?></td>
-                <td style="text-align: right;"><?php echo \amount_format($project->mincost).'€'; ?></td>
-                <td style="text-align: right;"><?php echo \amount_format($project->maxcost).'€'; ?></td>
+                <td style="text-align: right;"><?php echo \euro_format($project->mincost).'€'; ?></td>
+                <td style="text-align: right;"><?php echo \euro_format($project->maxcost).'€'; ?></td>
             </tr>
             <tr>
                 <td colspan="7"><?php 
@@ -144,7 +144,7 @@ foreach ($filters as $key=>$value) {
                     } elseif ($project->status == 3) {
                         echo "Lleva {$this->days_active} días de campaña.&nbsp;&nbsp;&nbsp;";
                         echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;";
-                        echo "<strong>Conseguido:</strong> ".\amount_format($project->amount)."€&nbsp;&nbsp;&nbsp;";
+                        echo "<strong>Conseguido:</strong> ".\euro_format($project->amount)."€&nbsp;&nbsp;&nbsp;";
                         echo "<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messengers}";
 
                     }
