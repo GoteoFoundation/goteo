@@ -98,10 +98,20 @@ namespace {
     }
 
     /**
-     * Numberformat para importes
+     * Numberformat para convertir importes
      */
     function amount_format($amount, $decs = 0) {
-        return "&euro; ".number_format($amount, $decs, ',', '.');
+
+
+        return \Goteo\Library\Currency::amount_format($amount, $decs);
+    }
+
+    /**
+     * Numberformat para convertir importes
+     */
+    function euro_format($amount, $decs = 0) {
+
+        return number_format($amount, $decs, ',', '.');
     }
 
     /*

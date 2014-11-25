@@ -7,7 +7,7 @@ div.widget.worthcracy .title {
 }
 
 div.widget.worthcracy ul {
-    padding: 3em 52px 3em 0;
+    padding: 3em 0 3em 0;
     margin: 0;
     list-style: none;
     position: relative;
@@ -175,7 +175,14 @@ div.widget.user-worthcracy div.worth-amount {
     left: 35px;
     line-height: 33px;
     padding-right: 30px;
-   /* background: url('/view/css/euro/violet/l.png') no-repeat center right;*/
     border-bottom: 1px solid #95268D;
+}
+
+div.widget.worthcracy span.symbol {
+    padding-right: 10px; 
+    font-size:30px; 
+    font-weight: bold; 
+    vertical-align:middle;
+    padding-left: 20px;
 }
 

@@ -58,8 +58,11 @@ $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
 
     <form method="post" action="<?php echo SEC_URL.$action; ?>">
-
-    <label><input type="text" id="amount" name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
+    <div style="position:relative;">
+        <!-- incluir la moneda en sesion más tarde -->
+        <label><input type="text" id="amount"  name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
+        <span class="symbol">€</span>
+    </div>
 </div>
 
 <?php if ($call && !empty($call->amount)) : ?>
@@ -122,7 +125,7 @@ if ($step == 'start') : ?>
         <button type="submit" class="button red" name="go-login" value=""><?php echo Text::get('imperative-register'); ?></button>
     </div>
 
-    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
+    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo \amount_format($amount); ?></span></div>
     <div class="reminder"><?php echo Text::html('faq-payment-method'); ?></div>
 
 </div>

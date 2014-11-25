@@ -17,32 +17,76 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * [testInstance description]
-     * @depends testInstance
+     * Test the currency constant setting
      */
-    public function testGetCurrency($cur) {
+    public function testSetCurrency() {
 
-        //test euro
-        $res1 = $cur->getRates('EUR');
-        $this->assertArrayHasKey('USD', $res1);
+        // testing currency
+        $ccy0 = 'eur';
+        $ccy1 = 'usd';
+        $ccy2 = 'gbp';
 
-        usleep(100);
+        // set default
+        $res_default = Currency::set();
+        $this->assertEquals($res_default, Currency::DEFAULT_CURRENCY); // EUR
 
-        //test de cache
-        $res2 = $cur->getRates('EUR');
-        $this->assertEquals($res1, $res2);
 
-        //invalidar cache
-        $cur->cleanCache();
+        // set from force
+        $res_force = Currency::set($ccy1); // USD
+        $this->assertEquals($res_force, strtoupper($ccy1));
 
-        //TODO...
-        //test USD
-        // $res = $cur->getRates('USD');
-        // print_r($res);
-        // $this->assertArrayHasKey('EUR', $res);
+        // set from COOKIE
+        $_COOKIE['currency'] = $ccy2;
+        $res_cookie = Currency::set();
+        $this->assertEquals($res_cookie, strtoupper($ccy2));
 
-        return $cur;
+        // set from SESSION
+        $_SESSION['currency'] = $ccy0;
+        $res_session = Currency::set();
+        $this->assertEquals($res_session, strtoupper($ccy0));
+
+        // set from GET
+        $_GET['currency'] = $ccy1;
+        $res_get = Currency::set();
+        $this->assertEquals($res_get, strtoupper($ccy1));
+
+        return true;
     }
 
+
+    public function testAmountFormatCurrency() {
+
+        $amount = 100000;
+
+        // to euro
+        $_SESSION['currency'] = 'eur';
+
+        $format = Currency::amount_format($amount);
+echo "En euros: ".$format."\n";
+
+        // format must have , or . for miliar
+        $this->assertRegExp('/\d?,{1}\d?/', $format);
+
+
+        // to dollar
+        $_SESSION['currency'] = 'usd';
+
+        $format = Currency::amount_format($amount);
+echo "En dolares: ".$format."\n";
+
+        // format must have , or . for miliar
+        $this->assertRegExp('/\d?\.{1}\d?/', $format);
+
+        // to pound
+        $_SESSION['currency'] = 'usd';
+
+        $format = Currency::amount_format($amount);
+echo "En libras: ".$format."\n";
+
+        // format must have , or . for miliar
+        $this->assertRegExp('/\d?\.{1}\d?/', $format);
+
+        return true;
+    }
 
 }
