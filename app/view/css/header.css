@@ -487,7 +487,7 @@ div#header div#about ul li#lang.active{
 
 div#header div#about ul li#lang a{
 	background: url('lang-triangulo.png') no-repeat scroll 100% bottom transparent;
-	padding-right: 10px;
+	padding-right: 25px;
 	cursor:default;
 }
 
@@ -497,6 +497,17 @@ div#header div#about ul li#lang a:hover{
 div#header div#about ul li > *:hover {
     color: #8ed9d8;
 }
+
+/* Para currency */
+
+div#header div#about ul li#currency a{
+    background: url('lang-triangulo.png') no-repeat scroll 100% bottom transparent;
+    padding-right: 10px;
+    cursor:default;
+}
+
+div#header div#about ul li#currency a:hover{
+    color:#fff}
 
 /* fin del carrusel de micronoticias */
 div#header div#highlights {    
@@ -732,7 +743,7 @@ div#header div#menu > ul > li.dashboard > a > img{
 }
 
 div#header div#menu > h2,
-div#header ul.lang {
+div#header ul.lang, ul.currency {
     display: none;
 }
 
@@ -845,6 +856,46 @@ ul.lang li:hover>a {
 	color: #1EB2B2;
 }
 /* fin del desplegable de idiomas */
+
+/* desplegable de monedas */
+ul.currency{
+    position:absolute;
+    left: 0;
+    top: 25px;
+    z-index: 1000;
+    list-style:none;
+    display:none;
+    background-color: #fff;
+    margin:0;
+    padding:0;
+}
+    
+ul.currency li{
+background-color: #59595C;
+height: 15px;
+padding: 4px 0;
+position: relative;
+width: 70px;
+text-align:center;
+}
+ul.currency li:hover {
+    background: #808285; 
+}
+ul.currency li>a{
+    bottom: 0;
+    color: #FFFFFF;
+    font-size: 11px;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    top: 0;
+    width: 100%;
+    display:block;
+}
+ul.currency li:hover>a {
+    color: #1EB2B2;
+}
+/* fin del desplegable de monedas */
 
 /* Sello de nodo  en pagina proyecto y pagina usuario */
 body.project-show div#sub-header div.nodemark,

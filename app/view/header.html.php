@@ -10,7 +10,7 @@ if (NODE_ID != GOTEO_NODE) {
 
 ?>
 <?php include 'view/header/currency.html.php' ?>
-<?php include 'view/header/lang.html.php' ?>
+<?php include 'view/header/lang.html.php'; ?>
 
 
 <div id="header">
@@ -23,7 +23,8 @@ if (NODE_ID != GOTEO_NODE) {
                 <ul>
                     <li><a href="/about"><?php echo Text::get('regular-header-about'); ?></a></li>
                     <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li>
-                    <li><a href="/faq"><?php echo Text::get('regular-header-faq'); ?></a></li>  
+                    <li><a href="/faq"><?php echo Text::get('regular-header-faq'); ?></a></li> 
+                    <li id="currency"><a href="#" ><?php echo $select_currency." ".$_SESSION['currency']; ?></a></li> 
                     <li id="lang"><a href="#" ><?php echo Lang::get(LANG)->short ?></a></li>                               
                 </ul>
             </div>
