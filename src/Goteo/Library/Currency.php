@@ -120,8 +120,10 @@ class Currency {
             $amount = $rates[$currency] * $amount;
         }
 
+        /*
         echo 'New amount in '.$currency."\n";
         var_dump($amount);
+        */
 
         if ($amount === false) {
             return '';
