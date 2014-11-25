@@ -94,7 +94,7 @@ class Currency {
             $mailHandler = new Mail();
             $mailHandler->to = \GOTEO_FAIL_MAIL;
             $mailHandler->subject = 'Conversión de un no-numerico';
-            $mailHandler->content = 'Library\Converter->convert recibe un valor no-numerico y no se puede convertir. <hr /><pre>'.print_r($_SESSION).'</pre> <hr /><pre>'.print_r($_SERVER).'</pre>';
+            $mailHandler->content = 'Library\Converter->convert recibe un valor no-numerico y no se puede convertir. <hr />'.$_SERVER['REQUEST_URI'];
             $mailHandler->html = true;
             $mailHandler->template = null;
             $mailHandler->send();

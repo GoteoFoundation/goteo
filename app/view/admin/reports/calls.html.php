@@ -127,38 +127,38 @@ elseif ($data instanceof stdClass) : ?>
     <table>
         <tr>
             <td>Importe que aparece AHORA en el term&oacute;metro:</td>
-            <td style="text-align: right;"><?php echo \amount_format($data->total, 2); ?> &euro;</td>
+            <td style="text-align: right;"><?php echo \euro_format($data->total, 2); ?> &euro;</td>
         </tr>
         <tr><td colspan="2"><br /></td></tr>
         <tr>
             <td>Dinero perdido por incidencias no resueltas:</td>
-            <td style="text-align: right;"><?php echo \amount_format($data->issues, 2); ?> &euro;</td>
+            <td style="text-align: right;"><?php echo \euro_format($data->issues, 2); ?> &euro;</td>
         </tr>
         <tr><td colspan="2"><br /></td></tr>
         <tr>
             <td>Dinero enviado al proyecto:</td>
-            <td style="text-align: right;"><?php echo \amount_format($data->project_total, 2); ?> &euro;</td>
+            <td style="text-align: right;"><?php echo \euro_format($data->project_total, 2); ?> &euro;</td>
         </tr>
         <tr>
             <td>Por el banco:</td>
-            <td style="text-align: right;"><strong><?php echo \amount_format($data->project_tpv, 2) ?> &euro;</strong></td>
+            <td style="text-align: right;"><strong><?php echo \euro_format($data->project_tpv, 2) ?> &euro;</strong></td>
         </tr>
         <tr>
             <td>Por paypal:</td>
-            <td style="text-align: right;"><strong><?php echo \amount_format($data->project_paypal, 2) ?> &euro;</strong></td>
+            <td style="text-align: right;"><strong><?php echo \euro_format($data->project_paypal, 2) ?> &euro;</strong></td>
         </tr>
         <tr><td colspan="2"><br /></td></tr>
         <tr>
             <td>Comisiones cobradas a Goteo</td>
-            <td style="text-align: right;"><?php echo \amount_format($data->fee_total, 2); ?> &euro;</td>
+            <td style="text-align: right;"><?php echo \euro_format($data->fee_total, 2); ?> &euro;</td>
         </tr>
         <tr>
             <td>Por el banco:</td>
-            <td style="text-align: right;"><strong><?php echo \amount_format($data->fee_tpv, 2) ?> &euro;</strong></td>
+            <td style="text-align: right;"><strong><?php echo \euro_format($data->fee_tpv, 2) ?> &euro;</strong></td>
         </tr>
         <tr>
             <td>Por paypal:</td>
-            <td style="text-align: right;"><strong><?php echo \amount_format($data->fee_paypal, 2) ?> &euro;</strong></td>
+            <td style="text-align: right;"><strong><?php echo \euro_format($data->fee_paypal, 2) ?> &euro;</strong></td>
         </tr>
         <tr><td colspan="2"><br /></td></tr>
     </table>
