@@ -76,7 +76,7 @@ class Converter {
                     $XML=simplexml_load_file($feed_url);
                     $response['body'] = $XML;
                 } else {
-                    $response = self::doRequest($feed_url, true); //@TODO
+                    $response = self::doRequest($feed_url); //@TODO
                     $file = '<?xml version="1.0" encoding="UTF-8" ?> '.$response['body'];
                     @$XML=simplexml_load_string($file);
                 }
@@ -86,7 +86,7 @@ class Converter {
             case 'tmc': // the money converter . com
                 // feed request
                 $feed_url = str_replace('$BASE$', $base, self::TMC_URL);
-                $response = self::doRequest($feed_url, true); //@TODO
+                $response = self::doRequest($feed_url); //@TODO
                 $file = '<?xml version="1.0" encoding="UTF-8" ?> '.$response['body'];
                 @$XML=simplexml_load_string($file);
                 break;
@@ -132,15 +132,9 @@ class Converter {
                         continue;
                     }
 
-                    //echo '1&euro;='.$rate["rate"].' '.$rate["currency"].'<br/>';
-                    //var_dump($rate);
                     $curId = (string) $rate["currency"];
                     $curVal = (string) $rate["rate"];
-                    //var_dump($curId);
-                    //var_dump($curVal);
                     $rates[$curId] = $curVal;
-                    //var_dump($rates[$curId]);
-
                 }
 
                 break;
@@ -156,7 +150,7 @@ class Converter {
                         $mailHandler = new Mail();
                         $mailHandler->to = \GOTEO_FAIL_MAIL;
                         $mailHandler->subject = 'No coge divisas';
-                        $mailHandler->content = 'Library\Converter->getData  no obtiene valor para '.$tc[0].' <pre>'.print_r($rate , 1).'</pre>';
+                        $mailHandler->content = 'Library\Converter->getData tmc no obtiene valor para '.$tc[0].'</pre>';
                         $mailHandler->html = false;
                         $mailHandler->template = null;
                         $mailHandler->send();
@@ -182,7 +176,7 @@ class Converter {
      */
     public function getRates($base='EUR', $ttl=86400)
     {
-
+        $base = strtoupper($base);
 
         // check cache (if not debugging)
         if ($this->cache && !$this->debug) {
