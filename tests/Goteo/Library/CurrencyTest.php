@@ -17,34 +17,6 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * [testInstance description]
-     * @depends testInstance
-     */
-    public function testGetCurrency($cur) {
-
-        //test euro
-        $res1 = $cur->getRates('EUR');
-        $this->assertArrayHasKey('USD', $res1);
-
-        usleep(100);
-
-        //test de cache
-        $res2 = $cur->getRates('EUR');
-        $this->assertEquals($res1, $res2);
-
-        //invalidar cache
-        $cur->cleanCache();
-
-        //TODO...
-        //test USD
-        // $res = $cur->getRates('USD');
-        // print_r($res);
-        // $this->assertArrayHasKey('EUR', $res);
-
-        return $cur;
-    }
-
-    /**
      * Test the currency constant setting
      */
     public function testSetCurrency() {
@@ -82,25 +54,37 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
     }
 
 
-    public function testAmountFormatCurrency($cur) {
+    public function testAmountFormatCurrency() {
 
-        $amount = '2000';
+        $amount = 100000;
 
-        $formated = Currency::amount_format($amount);
+        // to euro
+        $_SESSION['currency'] = 'eur';
 
-        // format depending on currency
-        //
-        switch (\CURRENCY) {
-            case 'EUR':
-                $this->assertRegExp('/\d?\.\d?/');
-                break;
-            case 'USD':
-                $this->assertRegExp('/\d?,\d?/');
-                break;
-            case 'GBP':
-                $this->assertRegExp('/\d?,\d?/');
-                break;
-        }
+        $format = Currency::amount_format($amount);
+echo "En euros: ".$format."\n";
+
+        // format must have , or . for miliar
+        $this->assertRegExp('/\d?,{1}\d?/', $format);
+
+
+        // to dollar
+        $_SESSION['currency'] = 'usd';
+
+        $format = Currency::amount_format($amount);
+echo "En dolares: ".$format."\n";
+
+        // format must have , or . for miliar
+        $this->assertRegExp('/\d?\.{1}\d?/', $format);
+
+        // to pound
+        $_SESSION['currency'] = 'usd';
+
+        $format = Currency::amount_format($amount);
+echo "En libras: ".$format."\n";
+
+        // format must have , or . for miliar
+        $this->assertRegExp('/\d?\.{1}\d?/', $format);
 
         return true;
     }
