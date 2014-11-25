@@ -107,9 +107,9 @@ class Currency {
         $converter = new Converter(); // @FIXME : this instance should be persistent for all the requests of amount_format
 
         if (!$converter instanceof \Goteo\Library\Converter) {
-            $currency = $default;
+            $currency = strtoupper($default);
         } else {
-            $currency = $_SESSION['currency'];
+            $currency = strtoupper($_SESSION['currency']);
         }
 
         // currency data (htmnl, name, thous/decs)
@@ -119,11 +119,6 @@ class Currency {
             $rates = $converter->getRates($default);
             $amount = $rates[$currency] * $amount;
         }
-
-        /*
-        echo 'New amount in '.$currency."\n";
-        var_dump($amount);
-        */
 
         if ($amount === false) {
             return '';

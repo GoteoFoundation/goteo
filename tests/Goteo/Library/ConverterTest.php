@@ -23,7 +23,8 @@ class ConverterTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers Foo::doSomethingPrivate
      * @depends testInstance
-     */
+     *
+     *
     public function testDoRequest($converter) {
 
         $method = new \ReflectionMethod(
@@ -35,20 +36,22 @@ class ConverterTest extends \PHPUnit_Framework_TestCase {
         $converter = new Converter;
 
         // banco central europeo
-        $params = $method->invokeArgs($converter, array(Converter::ECB_URL, true));
+        $params = $method->invokeArgs($converter, array(Converter::ECB_URL));
         $method->invoke($converter, $params);
 
         // the money converter
-        $params = $method->invokeArgs($converter, array(Converter::TMC_URL, true));
+        $params = $method->invokeArgs($converter, array(Converter::TMC_URL));
         $method->invoke($converter, $params);
 
         return true;
     }
+     */
 
     /**
      * [getData]
      * @depends testInstance
-     */
+     *
+     *
     public function testGetData($converter) {
 
         $method = new \ReflectionMethod(
@@ -67,6 +70,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase {
 
         return true;
     }
+     */
 
     /**
      * [testInstance description]
@@ -74,9 +78,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGetRates($converter) {
         $rates = $converter->getRates('EUR');
-        $this->isType('Array');
-
-        echo \trace($rates);
+        $this->assertArrayHasKey('USD', $rates);
 
         return true;
     }
