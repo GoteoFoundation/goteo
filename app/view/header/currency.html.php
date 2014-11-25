@@ -2,8 +2,11 @@
 use Goteo\Library\Currency;
 
 $currencies = Currency::$currencies;
+
+$select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
+
 ?>
-    <ul class="lang">
+    <ul class="currency">
         <?php foreach ($currencies as $ccyId => $ccy): ?>
             <?php if ($ccyId == $_SESSION['currency']) continue; ?>
             <li >
