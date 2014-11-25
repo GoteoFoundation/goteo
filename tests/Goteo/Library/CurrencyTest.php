@@ -60,31 +60,25 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
 
         // to euro
         $_SESSION['currency'] = 'eur';
-
         $format = Currency::amount_format($amount);
-echo "En euros: ".$format."\n";
-
-        // format must have , or . for miliar
-        $this->assertRegExp('/\d?,{1}\d?/', $format);
+        // echo $format."\n";
+        // format must have . for miliar
+        $this->assertRegExp('/\d?.{1}\d?/', $format);
 
 
         // to dollar
         $_SESSION['currency'] = 'usd';
-
         $format = Currency::amount_format($amount);
-echo "En dolares: ".$format."\n";
-
-        // format must have , or . for miliar
-        $this->assertRegExp('/\d?\.{1}\d?/', $format);
+        // echo $format."\n";
+        // format must have , for miliar
+        $this->assertRegExp('/\d?\,{1}\d?/', $format);
 
         // to pound
-        $_SESSION['currency'] = 'usd';
-
+        $_SESSION['currency'] = 'gbp';
         $format = Currency::amount_format($amount);
-echo "En libras: ".$format."\n";
-
-        // format must have , or . for miliar
-        $this->assertRegExp('/\d?\.{1}\d?/', $format);
+        // echo $format."\n";
+        // format must have , for miliar
+        $this->assertRegExp('/\d?\,{1}\d?/', $format);
 
         return true;
     }
