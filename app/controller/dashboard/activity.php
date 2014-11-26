@@ -50,22 +50,18 @@ namespace Goteo\Controller\Dashboard {
         public static function donor ($user, $action = 'view') {
             $errors = array();
 
-            $year = date('Y');
-            $month = date('m');
-            $day = date('d');
-            // hasta junio es el año anterior
-            if ($month <= 6) {
-                $year--;
-            }
+            $unconfirmable = false;
+            $year = Model\User\Donor::currYear($unconfirmable);
 
             // ver si es donante
             // el método get si solo hay un aporte a un proyecto no financiado devolverá vacio
             $donation = Model\User\Donor::get($user->id, $year);
 
-            if (!$donation || !$donation instanceof Model\User\Donor) {
+            if (isset($donation) || !$donation instanceof Model\User\Donor) {
                 Message::Error(Text::get('dashboard-donor-no_donor', $year));
                 // hacemos que no pueda confirmar pero que pueda poner los datos,
                 //  así verá en el listado de fechas que hay aportes a proyectos pendientes
+                $donation->year = $year; //para obtener las fechas de aportes (si los hay)
                 $donation->confirmable = false;
                 $donation->confirmed = false; // para que no pueda descargar de ningún modo
             }
@@ -73,18 +69,20 @@ namespace Goteo\Controller\Dashboard {
             // getDates da todos los aportes, incluso a proyectos aun no financiados
             $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
 
+            // claro que si no tiene ningún aporte si que lo sacamos de esta página
+            if (empty($donation->dates)) {
+                // tendrá el message de  'dashboard-donor-no_donor' anterior
+                throw new Redirection('/dashboard/activity');
+            }
+
             // no permitir confirmar a partir del 10 de enero
-            if ($year != date('Y')
-                && ( ($month == 1 && $day > 15) || $month > 1 )
-            ) {
+            if ($unconfirmable) {
                 $donation->confirmable = false;
                 if ($action == 'confirm') {
                     Message::Error(Text::get('dashboard-donor-confirm_closed', $year));
                     // aquí si que lo sacamos, no permitimos confirmar
-                    throw new Redirection('/dashboard/activity');
+                    throw new Redirection('/dashboard/activity/donor');
                 }
-            } elseif (!isset($donation->confirmable)) {
-                $donation->confirmable = true;
             }
 
             $donation->amount = 0;
