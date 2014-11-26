@@ -58,15 +58,20 @@ namespace Goteo\Controller\Dashboard {
                 $year--;
             }
 
-            // ver si es donante, cargando sus datos
+            // ver si es donante
+            // el método get si solo hay un aporte a un proyecto no financiado devolverá vacio
             $donation = Model\User\Donor::get($user->id, $year);
-            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
-            $donation->userData = Model\User::getMini($donation->user);
 
             if (!$donation || !$donation instanceof Model\User\Donor) {
                 Message::Error(Text::get('dashboard-donor-no_donor', $year));
-                throw new Redirection('/dashboard/activity');
+                // hacemos que no pueda confirmar pero que pueda poner los datos,
+                //  así verá en el listado de fechas que hay aportes a proyectos pendientes
+                $donation->confirmable = false;
+                $donation->confirmed = false; // para que no pueda descargar de ningún modo
             }
+
+            // getDates da todos los aportes, incluso a proyectos aun no financiados
+            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
 
             // no permitir confirmar a partir del 10 de enero
             if ($year != date('Y')
@@ -75,9 +80,10 @@ namespace Goteo\Controller\Dashboard {
                 $donation->confirmable = false;
                 if ($action == 'confirm') {
                     Message::Error(Text::get('dashboard-donor-confirm_closed', $year));
+                    // aquí si que lo sacamos, no permitimos confirmar
                     throw new Redirection('/dashboard/activity');
                 }
-            } else {
+            } elseif (!isset($donation->confirmable)) {
                 $donation->confirmable = true;
             }
 
