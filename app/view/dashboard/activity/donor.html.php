@@ -97,6 +97,8 @@ switch ($this['action']) :
 <div class="widget">
     <h3><?php echo Text::get('dashboard-activity-donor-header'); ?></h3>
     <p><?php echo Text::get('dashboard-donor-main_guide') ?></p>
+    <?php if ($donation->amount >= 100) // es obligatorio que rellene los datos
+     echo '<p><strong style="color: red;">'.Text::get('dashboard-donor-mandatory').'</strong></p>'; ?>
 </div>
 
 <div class="widget">
@@ -104,7 +106,8 @@ switch ($this['action']) :
         <dt><?php echo Text::get('donor-field-numproj', $donation->year) ?></dt>
         <dd><?php
                 foreach ($donation->dates as $invest) {
-                    echo "En fecha <strong>{$invest->date}</strong> un aporte de <strong>{$invest->amount} euros</strong> al proyecto <strong>{$invest->project}</strong><br />";
+                    $funded = ($invest->funded) ? ' FINANCIADO' : ' PENDIENTE';
+                    echo "En fecha <strong>{$invest->date}</strong> un aporte de <strong>{$invest->amount} euros</strong> al proyecto <strong>{$invest->project}</strong> ({$funded})<br />";
                 } ?>
         </dd>
     </dl>
