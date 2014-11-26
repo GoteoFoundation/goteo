@@ -342,14 +342,20 @@ namespace Goteo\Model\User {
         /*
          * Año fiscal actual
          */
-        static public function currYear() {
+        static public function currYear(&$unconfirmable = false) {
 
             $year = date('Y');
             $month = date('m');
+            $day = date('d');
             // hasta junio es el año anterior
             if ($month <= 6) {
                 $year--;
             }
+
+            // si ha pasado el día limite después de año nuevo ya no se permite confirmar
+            if ($year != date('Y') && ( ($month == 1 && $day > 15) || $month > 1 ) )
+                $unconfirmable = true;
+
 
             return $year;
         }
