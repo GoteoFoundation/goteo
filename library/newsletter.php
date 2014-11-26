@@ -73,6 +73,7 @@ namespace Goteo\Library {
 
         /*
          * Usuarios cofinanciadores del año fiscal actual
+         * solo proyectos financiados
          */
 		static public function getDonors ($year) {
 
@@ -85,12 +86,14 @@ namespace Goteo\Library {
                         user.id as user,
                         user.name as name,
                         user.email as email,
-                        user.lang as lang
+                        IFNULL(user_prefer.comlang, user.lang) as lang
                 FROM  invest
                 INNER JOIN user ON user.id = invest.user
+                LEFT JOIN user_prefer ON user_prefer.user = invest.user
+                INNER JOIN project ON project.id = invest.project AND project.status IN (3, 4, 5) AND project.passed IS NOT NULL
                 WHERE   invest.status IN ('1', '3')
-                AND invest.charged >= '{$year0}-01-01'
-                AND invest.charged < '{$year1}-01-01'
+                AND invest.invested >= '{$year0}-01-01'
+                AND invest.invested < '{$year1}-01-01'
                 GROUP BY invest.user
                 ORDER BY user.email ASC";
 
