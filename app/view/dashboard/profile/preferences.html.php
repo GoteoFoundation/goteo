@@ -2,7 +2,10 @@
 
 use Goteo\Library\Text,
     Goteo\Library\NormalForm,
-    Goteo\Library\Lang;
+    Goteo\Library\Lang,
+    Goteo\Library\Currency;
+
+$currencies = Currency::$currencies;
 
 $errors = $this['errors'];
 $preferences = $this['preferences'];
@@ -27,6 +30,18 @@ foreach ($languages as $value => $objet) {
         'label'     => $objet->name,
         );
 }
+
+//obtenemos todas las monedas
+$currencies = Currency::$currencies;
+
+foreach ($currencies as $ccyId => $ccy) {
+    $curren[] =  array(
+        'value'     => $ccyId,
+        'label'     => $ccy['name'],
+        );
+}
+
+
 
 ?>
 <form method="post" action="/dashboard/profile/preferences" class="project" >
@@ -53,6 +68,13 @@ echo new NormalForm(array(
             'options'   => $langs,
             'class'     => 'currently cols_' . count($allow),
             'value'     => $preferences->comlang
+        ),
+        'comcurrency' => array(
+            'title'     => Text::get('user-preferences-comcurrency'),
+            'type'      => 'select',
+            'options'   => $curren,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => $preferences->comcurrency
         ),
         'updates' => array(
             'title'     => Text::get('user-preferences-updates'),

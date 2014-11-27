@@ -199,6 +199,11 @@ namespace Goteo\Controller {
                     //Si no hay un idioma preferido para notificaciones
                     if(!$viewData['preferences']->comlang)
                         $viewData['preferences']->comlang=LANG;
+
+                    //Si no hay una moneda preferida usamos la de sesión
+                    if(!$viewData['preferences']->comcurrency)
+                        $viewData['preferences']->comcurrency=$_SESSION['currency'];
+
                     break;
             }
 

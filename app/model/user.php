@@ -1429,7 +1429,8 @@ namespace Goteo\Model {
                                       mailing,
                                       email,
                                       tips,
-                                      comlang
+                                      comlang,
+                                      comcurrency
                                   FROM user_prefer
                                   WHERE user = ?'
                 , array($id));

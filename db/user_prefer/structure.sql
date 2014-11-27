@@ -16,3 +16,6 @@ ALTER TABLE `user_prefer` ADD `tips` INT( 1 ) NOT NULL DEFAULT '0';
 
 -- campo para seleccionar el idioma en que se reciben las notificaciones
 ALTER TABLE `user_prefer` ADD `comlang` varchar(2) DEFAULT NULL;
+
+-- campo para seleccionar la moneda en las notificaciones
+ALTER TABLE `user_prefer` ADD `comcurrency` varchar(3) DEFAULT NULL;
