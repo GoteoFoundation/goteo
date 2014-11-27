@@ -1064,9 +1064,8 @@ namespace Goteo\Controller {
                 'activity' => array(
                     'label' => Text::get('dashboard-menu-activity'),
                     'options' => array(
-                        'summary' => Text::get('dashboard-menu-activity-summary')
-                    /* ,
-                      'wall'    => Text::get('dashboard-menu-activity-wall') */
+                        'summary' => Text::get('dashboard-menu-activity-summary'),
+                        'donor' => Text::get('dashboard-menu-activity-donor')
                     )
                 ),
                 'profile' => array(
@@ -1160,17 +1159,11 @@ namespace Goteo\Controller {
              *  descarga de pdf del año pasado hasta junio
              *
              */
-            $year = date('Y');
-            $month = date('m');
-            // hasta junio es el año anterior
-            if ($month <= 6) {
-                $year--;
-            }
-            $donante = Model\User\Donor::get($_SESSION['user']->id, $year);
-            if ($donante instanceof Model\User\Donor) {
-                $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
+            $year = Model\User\Donor::currYear();
+            $donor = Model\User\Donor::get($_SESSION['user']->id, $year);
+            if (isset($donor) && $donor instanceof Model\User\Donor) {
                 // si no ha confirmado
-                if ($year == date('Y') && !$donante->confirmed) {
+                if (!$donor->confirmed) {
                     Message::Info(Text::get('dashboard-donor-remember'));
                 }
             }

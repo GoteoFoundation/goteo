@@ -28,6 +28,8 @@ namespace Goteo\Model\User {
         /**
          * Get invest data if a user is a donor
          * @param varcahr(50) $id  user identifier
+         *
+         * si solo hay un aporte a un proyecto no financiado devolverá vacio
          */
         public static function get($id, $year = null) {
 
@@ -37,7 +39,8 @@ namespace Goteo\Model\User {
 
                 // si ya ha introducido los datos, sacamos de user_donation
                 $sql = "SELECT * FROM user_donation WHERE user = :id AND year = :year";
-                $query = static::query($sql, array(':id' => $id, ':year' => $year));
+                $values = array(':id' => $id, ':year' => $year);
+                $query = static::query($sql, $values);
                 if ($donation = $query->fetchObject(__CLASS__)) {
                     return $donation;
                 } else {
@@ -48,7 +51,7 @@ namespace Goteo\Model\User {
                                 FROM  invest
                                 INNER JOIN project
                                     ON project.id = invest.project
-                                    AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
+                                    AND project.passed IS NOT NULL
                                 INNER JOIN user ON user.id = invest.user
                                 LEFT JOIN invest_address ON invest_address.invest = invest.id
                                 WHERE   invest.user = :id
@@ -299,25 +302,36 @@ namespace Goteo\Model\User {
         }
 
 
+        /**
+         * fechas de aportes realizados por el usuario $user durante el año $year
+         *
+         * @param $user
+         * @param $year
+         * @return array de fechas y proyectos que ha aportado
+         *
+         * getDates da todos los aportes, incluso a proyectos aun no financiados
+         *  y filtra estadod de proyecto, no muestra aportes aproyectos archivados
+         *
+         */
         static public function getDates ($user, $year) {
 
             $fechas = array();
 
-            // Fechas de donativos
-            $sql = "SELECT 
+            $sql = "SELECT
                         DATE_FORMAT(invest.invested, '%d-%m-%Y') as date,
                         invest.amount as amount,
-                        project.name as project
+                        project.name as project,
+                        IF(project.passed IS NULL, 0, 1) as funded
                     FROM invest
                     INNER JOIN project
                         ON project.id = invest.project
-                        AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
+                        AND project.status IN (3, 4, 5)
                     WHERE   invest.status IN ('1', '3')
                     AND invest.user = :id
                     AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
                     ORDER BY invest.invested ASC
                     ";
-//                    echo($sql . '<br />' . $user);
+            // echo($sql . '<br />user: ' . $user . '<br />year: ' . $year);
             $query = static::query($sql, array(':id' => $user));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
                 $fechas[] = $row;
@@ -329,14 +343,20 @@ namespace Goteo\Model\User {
         /*
          * Año fiscal actual
          */
-        static public function currYear() {
+        static public function currYear(&$unconfirmable = false) {
 
             $year = date('Y');
             $month = date('m');
+            $day = date('d');
             // hasta junio es el año anterior
             if ($month <= 6) {
                 $year--;
             }
+
+            // si ha pasado el día limite después de año nuevo ya no se permite confirmar
+            if ($year != date('Y') && ( ($month == 1 && $day > 15) || $month > 1 ) )
+                $unconfirmable = true;
+
 
             return $year;
         }
