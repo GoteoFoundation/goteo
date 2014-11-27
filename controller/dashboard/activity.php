@@ -95,9 +95,10 @@ namespace Goteo\Controller\Dashboard {
                 $donation->confirmable = true;
             }
 
-            $donation->amount = 0;
+            $donation->amount = 0; // para certificado
             foreach ($donation->dates as $inv) {
-                $donation->amount += $inv->amount;
+                if ($inv->funded)
+                    $donation->amount += $inv->amount;
             }
 
 
