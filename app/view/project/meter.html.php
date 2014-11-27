@@ -108,7 +108,9 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                 <div class="done" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_done) ?>%"><strong><?php echo number_format($minimum_done_per) ?>%</strong></div>
             </div>
         </div>
+        <?php if (!$horizontal) { ?>
         <div style="position:relative;">
+        <?php } ?>
         <dl>
             <dt class="optimum"><?php echo Text::get('project-view-metter-optimum'); ?></dt>
             <dd class="optimum"><strong><?php echo \amount_format($optimum) ?></strong> </dd>
