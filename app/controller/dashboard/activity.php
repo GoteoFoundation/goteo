@@ -64,15 +64,18 @@ namespace Goteo\Controller\Dashboard {
                 $donation = new \Goteo\Model\User\Donor();
                 $donation->user = $user->id;
                 $donation->year = $year; //para obtener las fechas de aportes (si los hay)
-                $donation->confirmable = false;
+                $donation->confirmable = false; // si permitimos editar/confirmar se crea registro en user_donor emitiendo un certificado falso
                 $donation->confirmed = false; // para que no pueda descargar de ningún modo
 
                 // aviso que el certificado aun no está disponible
                 Message::Error(Text::get('dashboard-donor-no_donor', $year));
+            } elseif (isset($donor) && $donor instanceof Model\User\Donor && !$donor->confirmed) {
+                // si no ha confirmado
+                Message::Info(Text::get('dashboard-donor-remember'));
             }
 
             // getDates da todos los aportes, incluso a proyectos aun no financiados
-            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
+            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year, false);
 
             // claro que si no tiene ningún aporte si que lo sacamos de esta página
             if (empty($donation->dates)) {
@@ -88,13 +91,14 @@ namespace Goteo\Controller\Dashboard {
                     // aquí si que lo sacamos, no permitimos confirmar
                     throw new Redirection('/dashboard/activity/donor');
                 }
-            } if (!isset($donation->confirmable) && $donation->edited) {
+            } if (!isset($donation->confirmable)) {
                 $donation->confirmable = true;
             }
 
-            $donation->amount = 0;
+            $donation->amount = 0; // para certificado
             foreach ($donation->dates as $inv) {
-                $donation->amount += $inv->amount;
+                if ($inv->funded)
+                    $donation->amount += $inv->amount;
             }
 
 
@@ -208,6 +212,10 @@ namespace Goteo\Controller\Dashboard {
                 $donation->setPdf($filename);
 
                 $debug = false;
+
+                // más datos para certificado
+                $donation->userData = Model\User::getMini($donation->user);
+                $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year); // solo financiados
 
                 require_once 'library/pdf.php';  // Libreria pdf
                 $pdf = donativeCert($donation);
