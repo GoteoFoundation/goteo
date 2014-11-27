@@ -5,6 +5,8 @@ use Goteo\Core\View,
 
 $donation = $this['donation'];
 
+//echo \trace($donation);
+
 if ($donation->country == 'spain' || empty($donation->country)) {
     $sel_spain = ' selected="selected"';
     $sel_other = '';
@@ -113,7 +115,7 @@ switch ($this['action']) :
     </dl>
     <dl>
         <dt><?php echo Text::get('invest-address-name-field') ?></dt>
-        <dd><?php if (!empty($donation->name)) echo $donation->surname.', '.$donation->name ?></dd>
+        <dd><?php if (!empty($donation->name)) echo $donation->name.'   '.$donation->surname ?></dd>
     </dl>
     <dl>
         <dt><?php echo Text::get('invest-address-nif-field') ?></dt>
@@ -126,7 +128,7 @@ switch ($this['action']) :
 
     <p>
       <?php if (!$donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/edit"><?php echo Text::get('dashboard-donor-edit_data'); ?></a><?php endif; ?>
-      <?php if ( $donation->confirmable && $donation->edited && !$donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/confirm" <?php if (!$donation->confirmed) : ?>onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"<?php endif; ?> ><?php echo Text::get('dashboard-donor-confirm_button'); ?></a><?php endif; ?>
+      <?php if ( $donation->edited && !$donation->confirmed && $donation->confirmable) : ?><a class="button" href="/dashboard/activity/donor/confirm" <?php if (!$donation->confirmed) : ?>onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"<?php endif; ?> ><?php echo Text::get('dashboard-donor-confirm_button'); ?></a><?php endif; ?>
       <?php if ( $donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/download" target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
     </p>
 </div>

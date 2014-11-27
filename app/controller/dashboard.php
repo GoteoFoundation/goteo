@@ -1163,7 +1163,7 @@ namespace Goteo\Controller {
             $donor = Model\User\Donor::get($_SESSION['user']->id, $year);
             if (isset($donor) && $donor instanceof Model\User\Donor) {
                 // si no ha confirmado
-                if ($year == date('Y') && !$donor->confirmed) {
+                if (!$donor->confirmed) {
                     Message::Info(Text::get('dashboard-donor-remember'));
                 }
             }

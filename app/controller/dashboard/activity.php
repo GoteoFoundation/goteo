@@ -58,10 +58,10 @@ namespace Goteo\Controller\Dashboard {
             // el método get si solo hay un aporte a un proyecto no financiado devolverá vacio
             $donation = Model\User\Donor::get($user->id, $year);
 
-            if (isset($donation) || !$donation instanceof Model\User\Donor) {
+            if (!isset($donation) || !$donation instanceof \Goteo\Model\User\Donor) {
                 // hacemos que no pueda confirmar pero que pueda poner los datos,
                 //  así verá en el listado de fechas que hay aportes a proyectos pendientes
-                $donation = new \stdClass();
+                $donation = new \Goteo\Model\User\Donor();
                 $donation->user = $user->id;
                 $donation->year = $year; //para obtener las fechas de aportes (si los hay)
                 $donation->confirmable = false;
@@ -88,6 +88,8 @@ namespace Goteo\Controller\Dashboard {
                     // aquí si que lo sacamos, no permitimos confirmar
                     throw new Redirection('/dashboard/activity/donor');
                 }
+            } if (!isset($donation->confirmable) && $donation->edited) {
+                $donation->confirmable = true;
             }
 
             $donation->amount = 0;
@@ -98,7 +100,7 @@ namespace Goteo\Controller\Dashboard {
 
 
             if ($action == 'edit' && $donation->confirmed) {
-                Message::Error(Text::get('dashboard-donor-confirmed'));
+                Message::Error(Text::get('dashboard-donor-confirmed', $donation->year));
                 throw new Redirection('/dashboard/activity/donor');
             }
 
@@ -191,21 +193,6 @@ namespace Goteo\Controller\Dashboard {
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
-                /*
-                 * Ya no guardamos el pdf, lo generamos cada vez
-                 *
-                $fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
-
-                // borramos el pdf anterior y generamos de nuevo
-                if (!empty($donation->pdf)) {
-                    $fp->setPath('certs/');
-
-                    if ($fp->exists($donation->pdf)) {
-                        $fp->delete($donation->pdf);
-                    }
-                }
-                */
-
                 // para generar:
                 // preparamos los datos para el pdf
                 // generamos el pdf y lo mosteramos con la vista específica
@@ -236,33 +223,8 @@ namespace Goteo\Controller\Dashboard {
 
                 die;
 
-                /*
-                 * Código OBSOLETO
-                 * Ya no grabamos el archivo pdf
-                 *
-                else {
-                        $fp->setPath('pdfs/donativos/');
-
-                    //guardar pdf en temporal y luego subir a remoto (s3 o data/ si es local)
-                        $tmp = tempnam(sys_get_temp_dir(), 'goteo-img');
-                        $pdf->Output($tmp, 'F');
-                        //guardamos a remoto (acceso privado)
-                        if($fp->upload($tmp, $filename, 'bucket-owner-full-control')) {
-                            // si se graba lo ponemos en el registro para que a la próxima se cargue
-                            $donation->setPdf($filename);
-                        }
-                        unlink($tmp);
-
-                }
-                header('Content-type: application/pdf');
-                header("Content-disposition: attachment; filename={$donation->pdf}");
-                header("Content-Transfer-Encoding: binary");
-                echo $fp->get_contents($filename);
-                */
-
             }
             // fin action download
-
 
             return $donation;
 
