@@ -114,6 +114,10 @@ switch ($this['action']) :
         </dd>
     </dl>
     <dl>
+        <dt><?php echo Text::get('regular-total') ?></dt>
+        <dd><?php echo $donation->amount ?></dd>
+    </dl>
+    <dl>
         <dt><?php echo Text::get('invest-address-name-field') ?></dt>
         <dd><?php if (!empty($donation->name)) echo $donation->name.'   '.$donation->surname ?></dd>
     </dl>
