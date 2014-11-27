@@ -307,15 +307,20 @@ namespace Goteo\Model\User {
          *
          * @param $user
          * @param $year
+         * @param ( boolean) $fundedonly
+         *    - porque en el certificado no deben a parecer aportes a proyectos no financiados pero en el dashboard sí
+         *
          * @return array de fechas y proyectos que ha aportado
          *
          * getDates da todos los aportes, incluso a proyectos aun no financiados
-         *  y filtra estadod de proyecto, no muestra aportes aproyectos archivados
+         *  y filtra estados de proyecto, no muestra aportes aproyectos archivados
          *
          */
-        static public function getDates ($user, $year) {
+        static public function getDates ($user, $year, $fundedonly = true) {
 
             $fechas = array();
+
+            $sqlFilter = ($fundedonly) ? 'AND project.passed IS NOT NULL' : '';
 
             $sql = "SELECT
                         DATE_FORMAT(invest.invested, '%d-%m-%Y') as date,
@@ -326,6 +331,7 @@ namespace Goteo\Model\User {
                     INNER JOIN project
                         ON project.id = invest.project
                         AND project.status IN (3, 4, 5)
+                        {$sqlFilter}
                     WHERE   invest.status IN ('1', '3')
                     AND invest.user = :id
                     AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')

@@ -212,6 +212,10 @@ namespace Goteo\Controller\Dashboard {
 
                 $debug = false;
 
+                // más datos para certificado
+                $donation->userData = Model\User::getMini($donation->user);
+                $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year); // solo financiados
+
                 require_once 'library/pdf.php';  // Libreria pdf
                 $pdf = donativeCert($donation);
 
