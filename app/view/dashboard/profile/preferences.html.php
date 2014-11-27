@@ -31,7 +31,7 @@ foreach ($languages as $value => $objet) {
         );
 }
 
-//obtenemos todas las monedas
+//obtenemos todas las divisas
 $currencies = Currency::$currencies;
 
 foreach ($currencies as $ccyId => $ccy) {
@@ -69,12 +69,12 @@ echo new NormalForm(array(
             'class'     => 'currently cols_' . count($allow),
             'value'     => $preferences->comlang
         ),
-        'comcurrency' => array(
-            'title'     => Text::get('user-preferences-comcurrency'),
+        'currency' => array(
+            'title'     => Text::get('user-preferences-currency'),
             'type'      => 'select',
             'options'   => $curren,
             'class'     => 'currently cols_' . count($allow),
-            'value'     => $preferences->comcurrency
+            'value'     => $preferences->currency
         ),
         'updates' => array(
             'title'     => Text::get('user-preferences-updates'),

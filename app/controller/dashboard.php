@@ -201,8 +201,8 @@ namespace Goteo\Controller {
                         $viewData['preferences']->comlang=LANG;
 
                     //Si no hay una moneda preferida usamos la de sesión
-                    if(!$viewData['preferences']->comcurrency)
-                        $viewData['preferences']->comcurrency=$_SESSION['currency'];
+                    if(!$viewData['preferences']->currency)
+                        $viewData['preferences']->currency=$_SESSION['currency'];
 
                     break;
             }

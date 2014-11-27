@@ -238,7 +238,7 @@ namespace Goteo\Controller\Dashboard {
                 'email',
                 'tips' ,
                 'comlang',
-                'comcurrency'
+                'currency'
             );
 
             $preferences = array();
