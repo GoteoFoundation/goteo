@@ -476,7 +476,7 @@ div#header div#about ul li {
 
 div#header div#about ul li#lang{
 	background:url('bolita.png') 4px 7px no-repeat;
-	margin-left: 15px;
+	margin-left: 16px;
     padding-right: 22px;
     width: 24px;
 }
@@ -502,7 +502,7 @@ div#header div#about ul li > *:hover {
 
 div#header div#about ul li#currency{
     padding-left: 0px;
-    margin-left: 1em;
+    margin-left: 0.5em;
     width:70px;
     padding-right: 0px;
     text-align: center;
