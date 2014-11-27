@@ -53,17 +53,22 @@ namespace Goteo\Controller\Dashboard {
             $unconfirmable = false;
             $year = Model\User\Donor::currYear($unconfirmable);
 
-            // ver si es donante
+            // ver si es donante ;  echo \trace($user);
+
             // el método get si solo hay un aporte a un proyecto no financiado devolverá vacio
             $donation = Model\User\Donor::get($user->id, $year);
 
             if (isset($donation) || !$donation instanceof Model\User\Donor) {
-                Message::Error(Text::get('dashboard-donor-no_donor', $year));
                 // hacemos que no pueda confirmar pero que pueda poner los datos,
                 //  así verá en el listado de fechas que hay aportes a proyectos pendientes
+                $donation = new \stdClass();
+                $donation->user = $user->id;
                 $donation->year = $year; //para obtener las fechas de aportes (si los hay)
                 $donation->confirmable = false;
                 $donation->confirmed = false; // para que no pueda descargar de ningún modo
+
+                // aviso que el certificado aun no está disponible
+                Message::Error(Text::get('dashboard-donor-no_donor', $year));
             }
 
             // getDates da todos los aportes, incluso a proyectos aun no financiados

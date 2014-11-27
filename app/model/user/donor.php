@@ -330,7 +330,7 @@ namespace Goteo\Model\User {
                     AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
                     ORDER BY invest.invested ASC
                     ";
-//                    echo($sql . '<br />' . $user);
+            // echo($sql . '<br />user: ' . $user . '<br />year: ' . $year);
             $query = static::query($sql, array(':id' => $user));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
                 $fechas[] = $row;
