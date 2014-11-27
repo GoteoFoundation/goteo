@@ -14,6 +14,12 @@ GOTEO = {
     dist: 'dist',
     localURL: 'localhost',
     localPort:8081,
+
+    // to override this parameter, simply copy:
+    // var/php/php.ini file to config/php.ini
+    // and edit it with your own data
+    phpINI: '../var/php/php.ini',
+
     configFile: 'config/settings.yml'
 };
 
@@ -25,6 +31,9 @@ module.exports = function(grunt) {
                         'You can use the config/demo-settings.yml as a sample file\n' +
                         '################################################\n'
                     );
+    }
+    if( grunt.file.exists('config/php.ini')) {
+        GOTEO.phpINI = '../config/php.ini';
     }
     // Project configuration.
     grunt.initConfig({

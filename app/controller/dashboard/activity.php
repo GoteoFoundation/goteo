@@ -117,9 +117,11 @@ namespace Goteo\Controller\Dashboard {
                 $donation->surname = $_POST['surname'];
                 $donation->nif = $_POST['nif'];
                 $donation->address = $_POST['address'];
-                $donation->zipcode = $_POST['zipcode'];
                 $donation->location = $_POST['location'];
+                $donation->zipcode = $_POST['zipcode'];
+                $donation->region = $_POST['region'];
                 $donation->country = $_POST['country'];
+                $donation->countryname = ($donation->country == 'other') ? $_POST['countryname'] : '';
                 $donation->year = $year;
 
                 if ($donation->save($errors)) {
@@ -142,7 +144,8 @@ namespace Goteo\Controller\Dashboard {
                     || empty($donation->nif)
                     || empty($donation->address)
                     || empty($donation->zipcode)
-                    || empty($donation->location)
+                    || empty($donation->location) // ciudad
+                    || empty($donation->region)  // provincia
                     || empty($donation->country)
                 ) {
                     $ok = false;
@@ -154,6 +157,7 @@ namespace Goteo\Controller\Dashboard {
                 // address
                 // zipcode
                 // location
+                // region
                 // country
 
                 // verificar que el nif es correcto
@@ -165,7 +169,7 @@ namespace Goteo\Controller\Dashboard {
                 if ($ok) {
                     // marcamos que los datos estan confirmados
                     if (Model\User\Donor::setConfirmed($user->id, $year)) {
-                        Message::Info(Text::get('dashboard-donor-confirmed'));
+                        Message::Info(Text::get('dashboard-donor-confirmed', $year));
                     }
                 }
 
@@ -191,6 +195,7 @@ namespace Goteo\Controller\Dashboard {
                     || empty($donation->address)
                     || empty($donation->zipcode)
                     || empty($donation->location)
+                    || empty($donation->region)
                     || empty($donation->country)
                 ) {
                     Message::Error(Text::get('validate-donor-mandatory'));
