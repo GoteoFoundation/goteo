@@ -108,10 +108,14 @@ switch ($this['action']) :
         <dt><?php echo Text::get('donor-field-numproj', $donation->year) ?></dt>
         <dd><?php
                 foreach ($donation->dates as $invest) {
-                    $funded = ($invest->funded) ? ' FINANCIADO' : ' PENDIENTE';
+                    $funded = ($invest->funded) ? ' Financiado' : ' Pendiente de financiar';
                     echo "En fecha <strong>{$invest->date}</strong> un aporte de <strong>{$invest->amount} euros</strong> al proyecto <strong>{$invest->project}</strong> ({$funded})<br />";
                 } ?>
         </dd>
+    </dl>
+    <dl>
+        <dt><?php echo Text::get('regular-total') ?></dt>
+        <dd><?php echo $donation->amount ?></dd>
     </dl>
     <dl>
         <dt><?php echo Text::get('invest-address-name-field') ?></dt>
@@ -127,7 +131,7 @@ switch ($this['action']) :
     </dl>
 
     <p>
-      <?php if (!$donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/edit"><?php echo Text::get('dashboard-donor-edit_data'); ?></a><?php endif; ?>
+      <?php if (!$donation->confirmed && $donation->confirmable) : ?><a class="button" href="/dashboard/activity/donor/edit"><?php echo Text::get('dashboard-donor-edit_data'); ?></a><?php endif; ?>
       <?php if ( $donation->edited && !$donation->confirmed && $donation->confirmable) : ?><a class="button" href="/dashboard/activity/donor/confirm" <?php if (!$donation->confirmed) : ?>onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"<?php endif; ?> ><?php echo Text::get('dashboard-donor-confirm_button'); ?></a><?php endif; ?>
       <?php if ( $donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/download" target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
     </p>
