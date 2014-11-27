@@ -5,6 +5,8 @@ use Goteo\Library\Currency;
 
 $worthcracy = isset($this['worthcracy']) ? $this['worthcracy'] : Worth::getAll();
 
+$select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
+
 if (!isset($this['level'])) $this['level'] = 9999;
 
 // level: nivel que hay que resaltar con el "soy"
@@ -24,4 +26,4 @@ if (!isset($this['level'])) $this['level'] = 9999;
 <?php endforeach ?>
 </ul>
 <!-- aqui va la moneda en session -->
-<span class="symbol" >€</span>
+<span class="symbol" ><?php echo $select_currency; ?></span>
