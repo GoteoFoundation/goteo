@@ -91,7 +91,7 @@ namespace Goteo\Controller\Dashboard {
                     // aquí si que lo sacamos, no permitimos confirmar
                     throw new Redirection('/dashboard/activity/donor');
                 }
-            } if (!isset($donation->confirmable) && $donation->edited) {
+            } if (!isset($donation->confirmable)) {
                 $donation->confirmable = true;
             }
 
