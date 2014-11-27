@@ -39,7 +39,8 @@ namespace Goteo\Model\User {
 
                 // si ya ha introducido los datos, sacamos de user_donation
                 $sql = "SELECT * FROM user_donation WHERE user = :id AND year = :year";
-                $query = static::query($sql, array(':id' => $id, ':year' => $year));
+                $values = array(':id' => $id, ':year' => $year);
+                $query = static::query($sql, $values);
                 if ($donation = $query->fetchObject(__CLASS__)) {
                     return $donation;
                 } else {
