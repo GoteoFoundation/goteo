@@ -1,6 +1,7 @@
 <?php
 use Goteo\Library\Text,
-    Goteo\Library\Check;
+    Goteo\Library\Check,
+    Goteo\Library\Currency;
 
 $level = (int) $this['level'] ?: 3;
 
@@ -88,6 +89,10 @@ $optimum_left = 100 - $optimum_done;
 
 $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
 
+$currencies = Currency::$currencies;
+
+$select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
+
 ?>        
     <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : ''; echo $activable ? ' activable' : ''; ?>">
         <h<?php echo $level ?> class="title investment"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
@@ -103,7 +108,7 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
                 <div class="done" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_done) ?>%"><strong><?php echo number_format($minimum_done_per) ?>%</strong></div>
             </div>
         </div>
-
+        <div style="position:relative;">
         <dl>
             <dt class="optimum"><?php echo Text::get('project-view-metter-optimum'); ?></dt>
             <dd class="optimum"><strong><?php echo \amount_format($optimum) ?></strong> </dd>
@@ -170,20 +175,24 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
             <dd class="supporters"><strong><?php echo $num_investors ?></strong></dd>
 
         </dl>
-
         <?php if (!$horizontal) { ?>
         <div class="currency">
-            <span class="symbol">€ EUR</span>
+            <span class="symbol"><?php echo $select_currency." ".$_SESSION['currency']; ?></span>
             <span class="change">
                 <hr>
                 CAMBIAR
             </span>
             <div>
                 <ul>
-                    <li><a href="#">&pound; GNP</a></li>
-                    <li><a href="#">$ USD</a></li>
+                    <?php foreach ($currencies as $ccyId => $ccy): ?>
+                        <?php if ($ccyId == $_SESSION['currency']) continue; ?>
+                            <li>
+                                <a href="?currency=<?php echo $ccyId ?>"><?php echo $ccy['html'].' '.$ccyId; ?></a>
+                            </li>
+                    <?php endforeach ?>
                 </ul> 
             </div>   
+        </div>
         </div>
         <?php } ?>
        
