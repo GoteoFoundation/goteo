@@ -59,11 +59,13 @@ function donativeCert($data) {
     $data->ffa->name = 'Fundación Fuentes Abiertas';
     $data->ffa->cif = 'G57728172';
     $data->ffa->phone = '00 34 871 57 15 57';
-    $data->ffa->email = 'info@fuentesabiertas.org';
+    $data->ffa->email = 'donate@goteo.org';
     $data->ffa->site = 'http://www.fuentesabiertas.org';
     $data->ffa->address = "C/ Forn de l' Olivera 22, planta baja puerta derecha";
     $data->ffa->zipcode = '07012';
     $data->ffa->location= 'Palma de Mallorca, Baleares, España';
+
+    if ($data->country == 'spain') $data->countryname = 'España';
 
     // maquetacion de columnas para los datos de la fundacion y del donante
     $lh = 5; // separacion de linea standard
@@ -112,19 +114,19 @@ function donativeCert($data) {
     $pdf->cell(0,10,"NIF {$data->nif}");
 
     $pdf->Ln($lh);
-    $pdf->cell($w1,10,"{$data->ffa->zipcode} - {$data->ffa->location} -");
+    $pdf->cell($w1,10,"{$data->ffa->zipcode} - {$data->ffa->location}");
     $pdf->cell($s);
-    $pdf->cell(0,10,'');
+    $pdf->cell(0,10,"{$data->address}");
 
     $pdf->Ln($lh);
     $pdf->cell($w1,10,"Tel. {$data->ffa->phone}");
     $pdf->cell($s);
-    $pdf->cell(0,10,'');
+    $pdf->cell(0,10,"{$data->zipcode} - {$data->location}");
 
     $pdf->Ln($lh);
     $pdf->cell($w1,10,$data->ffa->email . ' - ' . $data->ffa->site);
     $pdf->cell($s);
-    $pdf->cell(0,10,'');
+    $pdf->cell(0,10,"{$data->region} - {$data->countryname}");
 
     $pdf->Ln(10);
 
@@ -148,7 +150,7 @@ function donativeCert($data) {
     $pdf->regular();
     $pdf->Write(5,'Que ');
     $pdf->bold();
-    $pdf->Write(5,trim($data->name));
+    $pdf->Write(5,trim($data->name).' '.trim($data->surname).'  ('.$data->nif.')');
     $pdf->regular();
 
     $pdf->Write(5,' ha donado ');
@@ -171,17 +173,13 @@ function donativeCert($data) {
     $pdf->bold();
     $pdf->Write(5,$data->amount_char."euros (".$data->amount." euros)");
     $pdf->regular();
-    $pdf->Write(5,'.');
+    $pdf->Write(5," durante el año ".$data->year.'.');
 
     $pdf->Ln(10);
     $pdf->Write(5,'La Fundación donataria es una entidad sin fines lucrativos a la que resulta de aplicación el régimen fiscal establecido en el Título II la Ley 49/2002, de 23 de diciembre, ya citada.');
 
     $pdf->Ln(10);
-    $pdf->Write(5,'La Fundación destinará la donación recibida a las ayudas concedidas al proyecto o proyectos gestionados desde la plataforma Goteo.org y seleccionados por el/la donante registrado/a con el email "');
-    $pdf->bold();
-    $pdf->Write(5,$data->userData->email);
-    $pdf->regular();
-    $pdf->Write(5,'". Esta actividad es propia de la Fundación y está recogida dentro de los fines fundacionales de la misma (');
+    $pdf->Write(5,'La Fundación destinará la donación a actividades propias de la Fundación y recogidas dentro de los fines fundacionales de la misma (');
     $pdf->blue();
     $pdf->underlined();
     $pdf->Write(5,$data->ffa->site . '/?page_id=36',$data->ffa->site . '/?page_id=36');

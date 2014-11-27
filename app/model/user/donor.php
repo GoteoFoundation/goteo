@@ -10,20 +10,21 @@ namespace Goteo\Model\User {
     class Donor extends \Goteo\Core\Model {
 
         public
-        $user,
-        $amount,
-        $name,
-        $surname,
-        $nif,
-        $address,
-        $zipcode,
-        $location,
-        $country,
-        $year,
-        $edited = 0,
-        $confirmed = 0,
-        $pdf = null,
-        $dates = array();
+            $user,
+            $amount,
+            $name,
+            $surname,
+            $nif,
+            $address,
+            $region,
+            $zipcode,
+            $location,
+            $country,
+            $year,
+            $edited = 0,
+            $confirmed = 0,
+            $pdf = null,
+            $dates = array();
 
         /**
          * Get invest data if a user is a donor
@@ -131,10 +132,11 @@ namespace Goteo\Model\User {
                         user.id as id,
                         user.email,
                         user_donation.name as name,
+                        user_donation.surname as surname,
                         user_donation.nif as nif,
                         user_donation.address as address,
+                        user_donation.region as region,
                         user_donation.zipcode as zipcode,
-                        user_donation.location as location,
                         user_donation.country as country,
                         user_donation.amount as amount,
                         user_donation.numproj as numproj,
@@ -157,6 +159,9 @@ namespace Goteo\Model\User {
                 $per = $pt[$type];
                 $nat = $nt[$type];
 
+                $cp = (string) $item->zipcode;
+                $item->location = ($item->country == 'spain') ? substr($cp, 0, 2) : '99';
+
 // NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
                 $list[] = array($item->nif, '', 
                     $item->surname.', '.$item->name,
@@ -166,8 +171,6 @@ namespace Goteo\Model\User {
         }
 
         public function validate(&$errors = array()) {
-
-            $this->location = ($this->country == 'spain') ? substr($this->zipcode, 0, 2) : '99';
 
             // limpio nombre y apellidos
             $this->name = self::idealiza($this->name);
@@ -198,9 +201,11 @@ namespace Goteo\Model\User {
                 'surname',
                 'nif',
                 'address',
-                'zipcode',
                 'location',
+                'zipcode',
+                'region',
                 'country',
+                'countryname',
                 'year',
                 'edited'
             );
@@ -212,11 +217,12 @@ namespace Goteo\Model\User {
                 if ($set != '')
                     $set .= ', ';
                 $set .= "$field = :$field";
-                $values[":$field"] = $this->$field;
+                $values[":{$field}"] = $this->$field;
             }
 
             try {
                 $sql = "REPLACE INTO user_donation (" . implode(', ', $fields) . ") VALUES (" . implode(', ', array_keys($values)) . ")";
+//                die(sqldbg($sql, $values));
                 self::query($sql, $values);
                 return true;
             } catch (\PDOException $e) {
