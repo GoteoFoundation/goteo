@@ -75,7 +75,7 @@ namespace Goteo\Controller\Dashboard {
             }
 
             // getDates da todos los aportes, incluso a proyectos aun no financiados
-            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
+            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year, false);
 
             // claro que si no tiene ningún aporte si que lo sacamos de esta página
             if (empty($donation->dates)) {
