@@ -64,11 +64,14 @@ namespace Goteo\Controller\Dashboard {
                 $donation = new \Goteo\Model\User\Donor();
                 $donation->user = $user->id;
                 $donation->year = $year; //para obtener las fechas de aportes (si los hay)
-                $donation->confirmable = false;
+                $donation->confirmable = false; // si permitimos editar/confirmar se crea registro en user_donor emitiendo un certificado falso
                 $donation->confirmed = false; // para que no pueda descargar de ningún modo
 
                 // aviso que el certificado aun no está disponible
                 Message::Error(Text::get('dashboard-donor-no_donor', $year));
+            } elseif (isset($donor) && $donor instanceof Model\User\Donor && !$donor->confirmed) {
+                // si no ha confirmado
+                Message::Info(Text::get('dashboard-donor-remember'));
             }
 
             // getDates da todos los aportes, incluso a proyectos aun no financiados
