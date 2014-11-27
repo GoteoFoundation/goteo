@@ -108,14 +108,17 @@ switch ($this['action']) :
         <dt><?php echo Text::get('donor-field-numproj', $donation->year) ?></dt>
         <dd><?php
                 foreach ($donation->dates as $invest) {
-                    $funded = ($invest->funded) ? ' Financiado' : ' Pendiente de financiar';
-                    echo "En fecha <strong>{$invest->date}</strong> un aporte de <strong>{$invest->amount} euros</strong> al proyecto <strong>{$invest->project}</strong> ({$funded})<br />";
+                    $extra = '';
+                    if (!$invest->funded) $extra .= ' (Pendiente de financiar)';
+                    if ($invest->preapproval) $extra .= ' (Preaprovado)';
+                    if ($invest->issue) $extra .= ' (incidencia)';
+                    echo "En fecha <strong>{$invest->date}</strong> un aporte de <strong>{$invest->amount} euros</strong> al proyecto <strong>{$invest->project}</strong> {$extra}<br />";
                 } ?>
         </dd>
     </dl>
     <dl>
         <dt><?php echo Text::get('regular-total') ?></dt>
-        <dd><?php echo $donation->amount ?></dd>
+        <dd><?php echo $donation->amount ?> &euro;</dd>
     </dl>
     <dl>
         <dt><?php echo Text::get('invest-address-name-field') ?></dt>

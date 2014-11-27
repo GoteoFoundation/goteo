@@ -307,8 +307,10 @@ namespace Goteo\Model\User {
          *
          * @param $user
          * @param $year
-         * @param ( boolean) $fundedonly
-         *    - porque en el certificado no deben a parecer aportes a proyectos no financiados pero en el dashboard sí
+         * @param ( boolean) $fundedonly : para filtrar a portes que se muestran en dashboard pero no se muestran en el pdf
+         *    - aportes a proyectos pendientes de financiar
+         *    - aportes preaprobados
+         *    - aportes con incidencias
          *
          * @return array de fechas y proyectos que ha aportado
          *
@@ -320,25 +322,41 @@ namespace Goteo\Model\User {
 
             $fechas = array();
 
-            $sqlFilter = ($fundedonly) ? 'AND project.passed IS NOT NULL' : '';
+            // solo aportes cobrados y a proyectos financiados
+            if ($fundedonly) {
+                $sqlFilter = " AND project.passed IS NOT NULL
+                    AND invest.status IN ('1', '3')
+                    AND (invest.issue IS NULL OR invest.issue = 0)
+                ";
+            } else {
+                // aportes preaprobados, con incidencia y a proyectos pendientes de financiar
+                $sqlFilter = " AND invest.status IN ('0', '1', '3')
+                ";
+
+            }
 
             $sql = "SELECT
                         DATE_FORMAT(invest.invested, '%d-%m-%Y') as date,
                         invest.amount as amount,
                         project.name as project,
-                        IF(project.passed IS NULL, 0, 1) as funded
+                        IF(project.passed IS NULL, 0, 1) as funded,
+                        IF(invest.status = 0, 1, 0) as preapproval,
+                        invest.issue as issue
                     FROM invest
                     INNER JOIN project
                         ON project.id = invest.project
                         AND project.status IN (3, 4, 5)
-                        {$sqlFilter}
-                    WHERE   invest.status IN ('1', '3')
-                    AND invest.user = :id
+                    WHERE invest.user = :id
                     AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
+                    {$sqlFilter}
                     ORDER BY invest.invested ASC
                     ";
-            // echo($sql . '<br />user: ' . $user . '<br />year: ' . $year);
-            $query = static::query($sql, array(':id' => $user));
+
+            $values = array(':id' => $user);
+
+            // echo '<br /><br />user: ' . $user . ' year: ' . $year . ' fundedonly: ' . $fundedonly.'<br />';
+            // echo sqldbg($sql, $values);
+            $query = static::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
                 $fechas[] = $row;
             }
