@@ -30,7 +30,7 @@ div.widget.project-support dl dt {
 div.widget.project-support dl dt,
 div.widget.project-support dl dd {
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 11px;
     display: block;
     min-height: 1.5em;
     line-height: 1.5em;
@@ -277,6 +277,8 @@ div.widget.project-support div.currency {
 
 div.widget.project-support div.currency {
     background: transparent url('header/down-black.png') no-repeat right 30px;
+    position: absolute;
+    top: 91px;
 }
 
 div.widget.project-support div.currency .symbol {
@@ -343,7 +345,7 @@ div.widget.project-support div.currency > div > ul {
 }
 
 div.widget.project-support div.currency > div > ul > li {
-    border-top: 1px solid #faf4f9; 
+    border-top: 2px solid #faf4f9; 
     font-size: 11px;   
 }
 
@@ -366,4 +368,8 @@ div.widget.project-support div.currency > div > ul > li > a {
 div.widget.project-support div.currency > div > ul > li > a:hover {
     background-color: #faf4f9;
     
+}
+
+div.widget.project-support dl dt.minimum {
+    margin-bottom: 30px;
 }
