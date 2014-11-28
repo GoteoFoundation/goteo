@@ -23,3 +23,9 @@ ALTER TABLE `user_donation` ADD `pdf` VARCHAR( 255 ) NULL COMMENT 'nombre del ar
 
 -- Apellido
 ALTER TABLE `user_donation` ADD `surname` VARCHAR( 255 ) NULL COMMENT 'Apellido' AFTER `name` ;
+
+-- provincia
+ALTER TABLE `user_donation` ADD `region` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Provincia' AFTER `location` ;
+
+-- nombre pais
+ALTER TABLE `user_donation` ADD `countryname` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Nombre del pais' AFTER `country` ;

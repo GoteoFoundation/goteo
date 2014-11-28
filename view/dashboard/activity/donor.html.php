@@ -70,11 +70,23 @@ switch ($this['action']) :
             'class'     => '',
             'value'     => $donation->address
         ),
+        'location' => array(
+            'title'     => Text::get('invest-address-location-field').' *',
+            'type'      => 'textbox',
+            'class'     => '',
+            'value'     => $donation->location
+        ),
         'zipcode' => array(
             'title'     => Text::get('invest-address-zipcode-field').' *',
             'type'      => 'textbox',
             'class'     => '',
             'value'     => $donation->zipcode
+        ),
+        'region' => array(
+            'title'     => Text::get('personal-field-region').' *',
+            'type'      => 'textbox',
+            'class'     => '',
+            'value'     => $donation->region
         ),
         'country' => array(
             'title'     => Text::get('donor-address-country-field').' *',
@@ -82,7 +94,9 @@ switch ($this['action']) :
             'html'     => '<select name="country" id="donor_country">
             <option value="spain"'.$sel_spain.'>SPAIN</option>
             <option value="other"'.$sel_other.'>OTHER</option>
-            </select>'
+            </select>
+            <input type="text" name="countryname" value="'.$donation->countryname.'" />
+            '
         )
 
     )
@@ -130,7 +144,7 @@ switch ($this['action']) :
     </dl>
     <dl>
         <dt><?php echo Text::get('invest-address-address-field') ?></dt>
-        <dd><?php echo "{$donation->address}   {$donation->zipcode}  {$donation->country}"; ?></dd>
+        <dd><?php echo "{$donation->address}  -  {$donation->zipcode}  -  {$donation->location}  -  {$donation->region}  -  {$donation->countryname}"; ?></dd>
     </dl>
 
     <p>
