@@ -5,12 +5,12 @@ use Goteo\Library\Text;
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Newsletter Goteo</title>
+<title>Goteo Newsletter</title>
 <style type="text/css">
 .message {
 	font-size:14px; padding-bottom:20px; padding-top:20px;
 	}
-	
+
 .message-highlight-red {
 	color:#E32526;
 	}
@@ -18,12 +18,12 @@ use Goteo\Library\Text;
 .message-highlight-blue {
 	color:#20B3B2;
 	}
-	
+
 .message-highlight-blue a {
 	color:#20B3B2;
 	text-decoration:none;
 	}
-	
+
 img a {
 	border:none;
 	border-style:none
@@ -40,8 +40,8 @@ img a {
 
 <div><!--mensaje - contenido-->
   <?php echo $this['content'] ?>
-</div>  
-  
+</div>
+
 <div style="font-size:11px; color:#20B3B2; padding-bottom:10px; padding-top:10px; border-bottom: 1px solid #20B3B2; border-top: 1px solid #20B3B2;"><?php echo Text::get('mailer-disclaimer') ?></div>
 
 <div style="font-size:12px; color:#20B3B2; padding-top:10px; padding-bottom:10px;"><a href="<?php echo SITE_URL ?>" style="color:#20B3B2; text-decoration:none;">www.goteo.org</a></div>

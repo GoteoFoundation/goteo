@@ -12,6 +12,9 @@ class PDFTest extends \PHPUnit_Framework_TestCase {
         $test = new PDF();
         $this->assertInstanceOf('\Goteo\Library\PDF', $test);
 
+    }
+
+    public function testDonativeCert() {
         $test2 = PDF::donativeCert();
         $this->assertInstanceOf('\Goteo\Library\PDF', $test2);
     }

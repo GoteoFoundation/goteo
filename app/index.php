@@ -62,6 +62,7 @@ $host = strtok($_SERVER['HTTP_HOST'], '.');
 
 if (NodeSys::isValid($host)) {
     define('NODE_ID', $host);
+
 } else {
     define('NODE_ID', GOTEO_NODE);
 }

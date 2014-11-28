@@ -34,6 +34,9 @@ define('GOTEO_CACHE_PATH', __DIR__ . '/../var/cache/');
 \Goteo\Core\View::addViewPath(__DIR__ . '/../src/Goteo/Library/NormalForm/view');
 //SuperForm views
 \Goteo\Core\View::addViewPath(__DIR__ . '/../src/Goteo/Library/SuperForm/view');
+//TODO: PROVISIONAL
+//add view
+\Goteo\Core\View::addViewPath(__DIR__ . '/nodesys');
 
 /**
  * Carga de configuración local si existe

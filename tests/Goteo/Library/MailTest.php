@@ -11,8 +11,8 @@ class MailTest extends \PHPUnit_Framework_TestCase {
      */
     public function testInstance() {
         $mail = new Mail();
-        $this->assertTrue($mail instanceOf Mail);
-        $this->assertTrue($mail->mail instanceOf \PHPMailer);
+        $this->assertInstanceOf('\Goteo\Library\Mail', $mail);
+        $this->assertInstanceOf('\PHPMailer', $mail->mail);
         return $mail;
     }
 
@@ -34,7 +34,37 @@ class MailTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * TODO: mas tests
+     * @depends testValidate
      */
+    public function testMessage($mail) {
+        $mailer = $mail->buildMessage();
+        $this->assertInstanceOf('\PHPMailer', $mailer);
 
+        $this->assertEquals('ivan@microstudi.net', $mailer->getToAddresses()[0][0]);
+
+        $this->assertContains('<img src="cid:logo" alt="Goteo"/>', $mailer->Body);
+        $this->assertContains('<title>Goteo Mailer</title>', $mailer->Body);
+    }
+
+    /**
+     * @depends testValidate
+     */
+    public function testNewsletterMessage($mail) {
+        $mail->template = 33;
+        $mailer = $mail->buildMessage();
+        $this->assertContains('/user/unsuscribe/', $mailer->Body);
+        $this->assertContains('<title>Goteo Newsletter</title>', $mailer->Body);
+    }
+
+    /**
+     * @depends testValidate
+     */
+    public function testNodeMessage($mail) {
+        $mail->template = 0;
+        //cosa rara que hay en el mailer...
+        $_SESSION['admin_node'] = 'testnode';
+        $mail->node = 'testnode';
+        $mailer = $mail->buildMessage();
+        $this->assertContains('<title>Goteo Nodo Test.goteo.org Mailer</title>', $mailer->Body);
+    }
 }

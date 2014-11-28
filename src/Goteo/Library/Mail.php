@@ -110,68 +110,9 @@ namespace Goteo\Library {
             }
 
             if($this->validate($errors)) {
-                $mail = $this->mail;
                 try {
-                    // Construye el mensaje
-                    $mail->From = $this->from;
-                    $mail->FromName = $this->fromName;
+                    $mail = $this->buildMessage();
 
-                    $address = $this->to;
-
-                    // Para pruebas en beta/local
-                    // TODO: arreglar esto para que sea mas portable
-                    if (GOTEO_ENV !== 'real') {
-                        if (!preg_match('/(.+)goteo\.org|(.+)platoniq\.net|(.+)microstudi.net|(.+)doukeshi\.org|julian\.canaves@gmail\.com|pablo@anche\.no|javicarrillo83@gmail\.com|esenabre@gmail\.com|mmtarres@gmail\.com|olivierschulbaum@gmail\.com/i', $address)) {
-                            $address = str_replace('@', '_', $address).'_from_beta@doukeshi.org';
-                        }
-                    }
-
-                    $mail->addAddress($address, $this->toName);
-                    // copia a mail log si no es masivo
-                    if (GOTEO_ENV == 'real' && !$this->massive) {
-                        $mail->addBCC('goteomaillog@gmail.com', 'Verifier');
-                    }
-                    if($this->cc) {
-                        $mail->addCC($this->cc);
-                    }
-                    if($this->bcc) {
-                        if (is_array($this->bcc)) {
-                            foreach ($this->bcc as $ml) {
-                                $mail->addBCC($ml);
-                            }
-                        } else {
-                            $mail->addBCC($this->bcc);
-                        }
-                    }
-                    if($this->reply) {
-                        $mail->addReplyTo($this->reply, $this->replyName);
-                    }
-                    if (!empty($this->attachments)) {
-                        foreach ($this->attachments as $attachment) {
-                            if (!empty($attachment['filename'])) {
-                                $mail->addAttachment($attachment['filename'], $attachment['name'], $attachment['encoding'], $attachment['type']);
-                            } else {
-                                $mail->addStringAttachment($attachment['string'], $attachment['name'], $attachment['encoding'], $attachment['type']);
-                            }
-                        }
-                    }
-                    $mail->Subject = $this->subject;
-                    if($this->html) {
-                        $mail->isHTML(true);
-                        $mail->Body    = $this->bodyHTML();
-                        $mail->AltBody = $this->bodyText();
-
-                        // incrustar el logo de goteo o del nodo
-                        if (!empty($this->node) && $this->node != GOTEO_NODE) {
-                            $mail->addEmbeddedImage(GOTEO_PATH . 'nodesys/'.$this->node.'/view/css/logo.png', 'logo', 'Goteo '.$this->node, 'base64', 'image/png');
-                        } else {
-                            $mail->addEmbeddedImage(GOTEO_PATH . 'app/goteo_logo.png', 'logo', 'Goteo', 'base64', 'image/png');
-                        }
-                    }
-                    else {
-                        $mail->isHTML(false);
-                        $mail->Body    = $this->bodyHTML(true);
-                    }
                     // si estoy en entorno local ni lo intento
                     // if (GOTEO_ENV == 'local') {
                     //     // add any debug here
@@ -203,6 +144,75 @@ namespace Goteo\Library {
             }
             return false;
 		}
+
+        /**
+         * Construye el mensaje
+         * @return [type] [description]
+         */
+        public function buildMessage() {
+            $mail = $this->mail;
+            // Construye el mensaje
+            $mail->From = $this->from;
+            $mail->FromName = $this->fromName;
+
+            $address = $this->to;
+
+            // Para pruebas en beta/local
+            // TODO: arreglar esto para que sea mas portable
+            if (GOTEO_ENV !== 'real') {
+                if (!preg_match('/(.+)goteo\.org|(.+)platoniq\.net|(.+)microstudi.net|(.+)doukeshi\.org|julian\.canaves@gmail\.com|pablo@anche\.no|javicarrillo83@gmail\.com|esenabre@gmail\.com|mmtarres@gmail\.com|olivierschulbaum@gmail\.com/i', $address)) {
+                    $address = str_replace('@', '_', $address).'_from_beta@doukeshi.org';
+                }
+            }
+
+            $mail->addAddress($address, $this->toName);
+            // copia a mail log si no es masivo
+            if (GOTEO_ENV == 'real' && !$this->massive) {
+                $mail->addBCC('goteomaillog@gmail.com', 'Verifier');
+            }
+            if($this->cc) {
+                $mail->addCC($this->cc);
+            }
+            if($this->bcc) {
+                if (is_array($this->bcc)) {
+                    foreach ($this->bcc as $ml) {
+                        $mail->addBCC($ml);
+                    }
+                } else {
+                    $mail->addBCC($this->bcc);
+                }
+            }
+            if($this->reply) {
+                $mail->addReplyTo($this->reply, $this->replyName);
+            }
+            if (!empty($this->attachments)) {
+                foreach ($this->attachments as $attachment) {
+                    if (!empty($attachment['filename'])) {
+                        $mail->addAttachment($attachment['filename'], $attachment['name'], $attachment['encoding'], $attachment['type']);
+                    } else {
+                        $mail->addStringAttachment($attachment['string'], $attachment['name'], $attachment['encoding'], $attachment['type']);
+                    }
+                }
+            }
+            $mail->Subject = $this->subject;
+            if($this->html) {
+                $mail->isHTML(true);
+                $mail->Body    = $this->bodyHTML();
+                $mail->AltBody = $this->bodyText();
+
+                // incrustar el logo de goteo o del nodo
+                if (!empty($this->node) && $this->node != GOTEO_NODE) {
+                    $mail->addEmbeddedImage(GOTEO_PATH . 'nodesys/'.$this->node.'/view/css/logo.png', 'logo', 'Goteo '.$this->node, 'base64', 'image/png');
+                } else {
+                    $mail->addEmbeddedImage(GOTEO_PATH . 'app/goteo_logo.png', 'logo', 'Goteo', 'base64', 'image/png');
+                }
+            }
+            else {
+                $mail->isHTML(false);
+                $mail->Body    = $this->bodyHTML(true);
+            }
+            return $mail;
+        }
 
         /**
          * Cuerpo del mensaje en texto plano para los clientes de correo sin formato.
@@ -258,7 +268,7 @@ namespace Goteo\Library {
                     return View::get('email/newsletter.html.php', $viewData);
 
                 } elseif (!empty($this->node) && $this->node != GOTEO_NODE) {
-                    return View::get('nodesys/'.$this->node.'/view/email/default.html.php', $viewData);
+                    return View::get($this->node.'/view/email/default.html.php', $viewData);
 
                 } else {
                     return View::get('email/goteo.html.php', $viewData);
