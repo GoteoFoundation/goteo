@@ -31,7 +31,7 @@ namespace Goteo\Controller {
 
             $page->debug = (GOTEO_ENV != 'real');
 
-            $vpath = "view/bazar/";
+            $vpath = 'bazar/';
             $vdata = array();
 
             $ogimages[] = $URL.'/view/bazar/img/carro.png';

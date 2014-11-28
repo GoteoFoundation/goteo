@@ -13,14 +13,14 @@ namespace Goteo\Controller\Admin {
             $wordcount = array();
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'base',
                     'file' => 'wordcount',
                     'wordcount' => $wordcount
                 )
             );
-            
+
         }
 
     }

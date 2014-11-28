@@ -24,7 +24,7 @@ namespace Goteo\Controller {
             $page = Page::get($id);
 
             return new View(
-                'view/about/sample.html.php',
+                'about/sample.html.php',
                 array(
                     'name' => $page->name,
                     'description' => $page->description,

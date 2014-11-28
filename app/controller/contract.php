@@ -11,6 +11,7 @@ namespace Goteo\Controller {
         Goteo\Library\Template,
         Goteo\Library\Message,
         Goteo\Library\Feed,
+        Goteo\Library\PDFContract,
         Goteo\Model;
 
 //@TODO: ACL, cerrado para todos y se abre al impulsor
@@ -43,8 +44,6 @@ namespace Goteo\Controller {
 
             // si lo puede ver
             if ($grant) {
-
-                require_once 'library/contract.php';  // Libreria pdf contrato
 
                 $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';
 //                $filename = Model\Contract\Document::$dir . $contract->project . '/' . $pdf_name;
@@ -83,7 +82,7 @@ namespace Goteo\Controller {
                 */
 
                 // para generarlo
-                $pdf = new \Pdf;
+                $pdf = new PDFContract;
                 $pdf->setParameters($contract);
                 $pdf->generate();
 
@@ -225,7 +224,7 @@ namespace Goteo\Controller {
             );
 
             $view = new View (
-                "view/contract/edit.html.php",
+                'contract/edit.html.php',
                 $viewData
             );
 

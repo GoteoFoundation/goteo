@@ -18,7 +18,7 @@ namespace Goteo\Controller {
 
             if ($query = Model::query("SELECT html FROM mail WHERE email = 'any' AND template = 33 ORDER BY id DESC LIMIT 1")) {
                 $content = $query->fetchColumn();
-                return new View ('view/email/newsletter.html.php', array('content'=>$content));
+                return new View ('email/newsletter.html.php', array('content'=>$content));
             }
 		}
 

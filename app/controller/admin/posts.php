@@ -34,7 +34,7 @@ namespace Goteo\Controller\Admin {
 				} else {
                     Message::Error(implode('<br />', $errors));
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'posts',
                             'file' => 'add',
@@ -57,7 +57,7 @@ namespace Goteo\Controller\Admin {
                     $next = Model\Post::next('home');
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'posts',
                             'file' => 'add',
@@ -78,14 +78,14 @@ namespace Goteo\Controller\Admin {
             $posts = Model\Post::getAll('home');
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'posts',
                     'file' => 'list',
                     'posts' => $posts
                 )
             );
-            
+
         }
 
     }

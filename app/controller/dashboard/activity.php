@@ -8,7 +8,8 @@ namespace Goteo\Controller\Dashboard {
         Goteo\Library\FileHandler\File,
         Goteo\Library\Text,
 		Goteo\Library\Check,
-        Goteo\Library\Listing;
+        Goteo\Library\Listing,
+        Goteo\Library\PDF;
 
     class Activity {
 
@@ -222,8 +223,7 @@ namespace Goteo\Controller\Dashboard {
                 $donation->userData = Model\User::getMini($donation->user);
                 $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year); // solo financiados
 
-                require_once 'library/pdf.php';  // Libreria pdf
-                $pdf = donativeCert($donation);
+                $pdf = PDF::donativeCert($donation);
 
                 if ($debug) {
                     header('Content-type: text/html');

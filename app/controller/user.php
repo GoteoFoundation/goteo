@@ -93,10 +93,10 @@ namespace Goteo\Controller {
                 }
             } elseif (empty($_SESSION['user']) && !empty($_COOKIE['goteo_user'])) {
                 // si tenemos cookie de usuario
-                return new View('view/user/login.html.php', array('username'=>$_COOKIE['goteo_user']));
+                return new View('user/login.html.php', array('username'=>$_COOKIE['goteo_user']));
             }
 
-            return new View('view/user/login.html.php');
+            return new View('user/login.html.php');
         }
 
         /**
@@ -164,7 +164,7 @@ namespace Goteo\Controller {
                 }
             }
             return new View(
-                            'view/user/login.html.php',
+                            'user/login.html.php',
                             array(
                                 'errors' => $errors
                             )
@@ -229,7 +229,7 @@ namespace Goteo\Controller {
                     } else {
                         Message::Error(Text::get('login-fail'));
                         return new View(
-                                        'view/user/confirm_account.html.php',
+                                        'user/confirm_account.html.php',
                                         array(
                                             'oauth' => $oauth,
                                             'user' => Model\User::get($u->id)
@@ -251,7 +251,7 @@ namespace Goteo\Controller {
                 }
             }
             return new View(
-                            'view/user/confirm.html.php',
+                            'user/confirm.html.php',
                             array(
                                 'errors' => $errors,
                                 'oauth' => $oauth
@@ -291,7 +291,7 @@ namespace Goteo\Controller {
                         //si falla: error o formulario de confirmación
                         if ($oauth->last_error == 'oauth-goteo-user-not-exists') {
                             return new View(
-                                            'view/user/confirm.html.php',
+                                            'user/confirm.html.php',
                                             array(
                                                 'oauth' => $oauth
                                             )
@@ -299,7 +299,7 @@ namespace Goteo\Controller {
                         } elseif ($oauth->last_error == 'oauth-goteo-user-password-exists') {
                             Message::Error(Text::get($oauth->last_error));
                             return new View(
-                                            'view/user/confirm_account.html.php',
+                                            'user/confirm_account.html.php',
                                             array(
                                                 'oauth' => $oauth,
                                                 'user' => Model\User::get($oauth->user_data['username'])
@@ -317,7 +317,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                            'view/user/login.html.php',
+                            'user/login.html.php',
                             array(
                                 'errors' => $errors
                             )
@@ -470,7 +470,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                            'view/user/edit.html.php',
+                            'user/edit.html.php',
                             array(
                                 'user' => $user,
                                 'errors' => $errors
@@ -618,7 +618,7 @@ namespace Goteo\Controller {
                     // agrupados para carrusel
                     $invested = Listing::get($invest_on);
 
-                    return new View('view/user/patron.html.php', array('user' => $user, 'recos' => $recos, 'lists' => array('invest_on' => $invested)));
+                    return new View('user/patron.html.php', array('user' => $user, 'recos' => $recos, 'lists' => array('invest_on' => $invested)));
                 }
             }
 
@@ -744,7 +744,7 @@ namespace Goteo\Controller {
                 die('Tiempo total antes de saltar a la vista ' . $tt . ' segundos');
 
 
-            return new View('view/user/' . $show . '.html.php', $viewData);
+            return new View('user/' . $show . '.html.php', $viewData);
         }
 
         /**
@@ -863,7 +863,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                            'view/user/recover.html.php',
+                            'user/recover.html.php',
                             array(
                                 'error' => $error,
                                 'message' => $message
@@ -918,7 +918,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                            'view/user/leave.html.php',
+                            'user/leave.html.php',
                             array(
                                 'error' => $error,
                                 'message' => $message
@@ -963,7 +963,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/user/unsuscribe.html.php',
+                'user/unsuscribe.html.php',
                 array(
                     'error' => $error,
                     'message' => $message

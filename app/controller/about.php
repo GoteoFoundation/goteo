@@ -36,7 +36,7 @@ namespace Goteo\Controller {
                 }
                 $page = Page::get($id);
                 return new View(
-                    'view/about/howto.html.php',
+                    'about/howto.html.php',
                     array(
                         'name' => $page->name,
                         'description' => $page->description,
@@ -58,7 +58,7 @@ namespace Goteo\Controller {
                     $posts = Model\Info::getAll(true, \GOTEO_NODE);
 
                     return new View(
-                        'view/about/info.html.php',
+                        'about/info.html.php',
                         array(
                             'posts' => $posts
                         )
@@ -70,7 +70,7 @@ namespace Goteo\Controller {
                     $page = Page::get($id, \NODE_ID);
 
                     return new View(
-                        'view/node/about.html.php',
+                        'node/about.html.php',
                         array(
                             'name' => $page->name,
                             'description' => $page->description,
@@ -88,7 +88,7 @@ namespace Goteo\Controller {
             $page = Page::get($id);
 
             return new View(
-                'view/about/sample.html.php',
+                'about/sample.html.php',
                 array(
                     'name' => $page->name,
                     'description' => $page->description,

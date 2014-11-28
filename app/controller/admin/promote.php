@@ -72,7 +72,7 @@ namespace Goteo\Controller\Admin {
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'promote',
                                     'file' => 'edit',
@@ -83,7 +83,7 @@ namespace Goteo\Controller\Admin {
                             break;
                         case 'edit':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'promote',
                                     'file' => 'edit',
@@ -123,7 +123,7 @@ namespace Goteo\Controller\Admin {
                     $next = Model\Promote::next($node);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'promote',
                             'file' => 'edit',
@@ -137,7 +137,7 @@ namespace Goteo\Controller\Admin {
                     $promo = Model\Promote::get($id);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'promote',
                             'file' => 'edit',
@@ -155,7 +155,7 @@ namespace Goteo\Controller\Admin {
             $status = Model\Project::status();
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'promote',
                     'file' => 'list',
@@ -163,7 +163,7 @@ namespace Goteo\Controller\Admin {
                     'status' => $status
                 )
             );
-            
+
         }
 
     }

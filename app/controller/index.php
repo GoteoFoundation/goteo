@@ -94,7 +94,7 @@ namespace Goteo\Controller {
             // Banners siempre
             $banners   = Banner::getAll(true);
 
-            return new View('view/index.html.php',
+            return new View('index.html.php',
                 array(
                     'banners'   => $banners,
                     'stories'   => $stories,
@@ -234,7 +234,7 @@ namespace Goteo\Controller {
                 $pageData = null;
             }
 
-            return new View('view/node/index.html.php',
+            return new View('node/index.html.php',
                 array(
                     'node'     => $node,
                     'page'     => $pageData,

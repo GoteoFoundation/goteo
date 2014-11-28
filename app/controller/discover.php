@@ -51,7 +51,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/discover/index.html.php',
+                'discover/index.html.php',
                 $viewData
              );
 
@@ -108,7 +108,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/discover/results.html.php',
+                'discover/results.html.php',
                 array(
                     'message' => $message,
                     'results' => $results,
@@ -144,24 +144,24 @@ namespace Goteo\Controller {
             $viewData['list'] = Model\Project::published($type, $items_per_page, $page, $pages);
             $viewData['pages'] = $pages;
             $viewData['currentPage'] = $page;
-            
+
             // segun el tipo cargamos la lista
             if (isset($_GET['list'])) {
 
                 return new View(
-                    'view/discover/list.html.php',
+                    'discover/list.html.php',
                     $viewData
                  );
-                
+
             } else {
-                
+
                 // random para retorno cumplido
                 if ($type == 'fulfilled') {
                     shuffle($viewData['list']);
                 }
 
                 return new View(
-                    'view/discover/view.html.php',
+                    'discover/view.html.php',
                     $viewData
                  );
 
@@ -190,7 +190,7 @@ namespace Goteo\Controller {
 
 
             return new View(
-                'view/discover/calls.html.php',
+                'discover/calls.html.php',
                 $viewData
              );
 
@@ -212,7 +212,7 @@ namespace Goteo\Controller {
 
 
             return new View(
-                'view/discover/patron.html.php',
+                'discover/patron.html.php',
                 $viewData
              );
 

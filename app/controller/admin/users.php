@@ -78,10 +78,10 @@ namespace Goteo\Controller\Admin {
             "nomanager" => array (
                 'sql' => "DELETE FROM user_role WHERE role_id = 'manager' AND user_id = :user",
                 'log' => "Quitado de gestor"
-                )            
+                )
         );
-        
-        
+
+
         public static function process ($action = 'list', $id = null, $filters = array(), $subaction = '') {
 
             // multiples usos
@@ -132,7 +132,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de crear usuario
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'users',
                             'file' => 'add',
@@ -185,7 +185,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de editar usuario
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'users',
                             'file' => 'edit',
@@ -201,10 +201,10 @@ namespace Goteo\Controller\Admin {
                     // si llega post: ejecutamos + mensaje + seguimos editando
 
                     // operación y acción para el feed
-                    
+
                     $sql = self::$manageSubAct[$subaction]['sql'];
                     $log_action = self::$manageSubAct[$subaction]['log'];
-                    
+
                     if (!empty($sql)) {
 
                         $user = Model\User::getMini($id);
@@ -288,7 +288,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de gestión de usuario
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         $viewData
                     );
 
@@ -333,7 +333,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de acceso a suplantación de usuario
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'users',
                             'file'   => 'impersonate',
@@ -345,7 +345,7 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'move':
                     $user = Model\User::get($id);
-                    
+
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $values = array(':id' => $id, ':node' => $_POST['node']);
                         try {
@@ -377,7 +377,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de acceso a suplantación de usuario
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'users',
                             'file'   => 'move',
@@ -404,7 +404,7 @@ namespace Goteo\Controller\Admin {
                     $roles = Model\User::getRolesList();
                     $roles['user'] = 'Solo usuario';
                     $types = array(
-                        'creators' => 'Impulsores', // que tienen algun proyecto 
+                        'creators' => 'Impulsores', // que tienen algun proyecto
                         'investors' => 'Cofinanciadores', // que han aportado a algun proyecto en campaña, financiado, archivado o caso de éxito
                         'supporters' => 'Colaboradores', // que han enviado algun mensaje en respuesta a un mensaje de colaboración
                         'consultants' => 'Asesores'
@@ -421,7 +421,7 @@ namespace Goteo\Controller\Admin {
                     $projects = Model\Invest::projects(true, $node);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'users',
                             'file' => 'list',
@@ -438,7 +438,7 @@ namespace Goteo\Controller\Admin {
                     );
                 break;
             }
-            
+
         }
 
     }

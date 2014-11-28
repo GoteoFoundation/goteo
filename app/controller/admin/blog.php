@@ -97,7 +97,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     $post->tags = $_POST['tags'];
-                    
+
                     // si tenemos un nuevio tag hay que añadirlo
                     if(!empty($_POST['new-tag_save']) && !empty($_POST['new-tag'])) {
 
@@ -201,7 +201,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'blog',
                             'file' => 'list',
@@ -232,7 +232,7 @@ namespace Goteo\Controller\Admin {
                     $message = 'Añadiendo una nueva entrada';
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'blog',
                             'file' => 'edit',
@@ -264,7 +264,7 @@ namespace Goteo\Controller\Admin {
                     $message = 'Editando una entrada existente';
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'blog',
                             'file' => 'edit',
@@ -309,7 +309,7 @@ namespace Goteo\Controller\Admin {
                     $posts = Model\Post::getAll('home', $node);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'blog',
                             'file' => 'order',
@@ -383,7 +383,7 @@ namespace Goteo\Controller\Admin {
                         $posts = Model\Post::getAll('footer');
 
                         return new View(
-                            'view/admin/index.html.php',
+                            'admin/index.html.php',
                             array(
                                 'folder' => 'blog',
                                 'file' => 'footer',

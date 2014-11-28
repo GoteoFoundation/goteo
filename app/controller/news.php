@@ -19,7 +19,7 @@ namespace Goteo\Controller {
             $news = Model\News::getAll();
 
             return new View(
-                'view/news.html.php',
+                'news.html.php',
                 array(
                     'name' => $page->name,
                     'title' => $page->description,

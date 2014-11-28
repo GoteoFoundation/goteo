@@ -11,9 +11,9 @@ namespace Goteo\Controller {
 		Goteo\Library\Text,
         Goteo\Core\Redirection;
 
-    require_once 'library/paypal/stub.php'; // sí, uso el stub de paypal
-    require_once 'library/paypal/log.php'; // sí, uso el log de paypal
-    
+    require_once __DIR__ . '/../Goteo/Library/paypal/stub.php'; // sí, uso el stub de paypal
+    require_once __DIR__ . '/../Goteo/Library/paypal/log.php'; // sí, uso el log de paypal
+
     class Tpv extends \Goteo\Core\Controller {
 
         public static $errcode = array(
@@ -121,7 +121,7 @@ namespace Goteo\Controller {
         public function index () {
             throw new Redirection('/', Error::BAD_REQUEST);
         }
-        
+
 
         public function comunication () {
 
@@ -158,7 +158,7 @@ namespace Goteo\Controller {
 
             if (isset($_POST['Num_operacion'])) {
                 $_POST['invest'] = $id = \substr($_POST['Num_operacion'], 0, -4);
-                
+
                 $invest = Invest::get($id);
 
                 $userData = User::getMini($invest->user);
@@ -339,5 +339,5 @@ $errors = array();
         }
 
     }
-    
+
 }

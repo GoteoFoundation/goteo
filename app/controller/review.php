@@ -33,7 +33,7 @@ namespace Goteo\Controller {
             }
 
             return new View (
-                'view/review/index.html.php',
+                'review/index.html.php',
                 array(
                     'message' => $message,
                     'menu'    => self::menu(),
@@ -63,7 +63,7 @@ namespace Goteo\Controller {
 
             // resumen de los proyectos que tengo actualmente asignados
             return new View (
-                'view/review/index.html.php',
+                'review/index.html.php',
                 array(
                     'menu'    => self::menu(),
                     'message' => $message,
@@ -167,7 +167,7 @@ namespace Goteo\Controller {
                 $viewData['evaluation'] = Model\Review::getEvaluation($review->id, $user->id);
             }
 
-            return new View ('view/review/index.html.php', $viewData);
+            return new View ('review/index.html.php', $viewData);
         }
 
         /*
@@ -211,7 +211,7 @@ namespace Goteo\Controller {
             }
 
             return new View (
-                'view/review/index.html.php',
+                'review/index.html.php',
                 $viewData
             );
         }

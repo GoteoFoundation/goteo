@@ -444,7 +444,7 @@ namespace Goteo\Controller {
 
 
             $view = new View (
-                "view/project/edit.html.php",
+                'project/edit.html.php',
                 $viewData
             );
 
@@ -457,7 +457,7 @@ namespace Goteo\Controller {
             if (empty($_SESSION['user'])) {
                 $_SESSION['jumpto'] = '/project/create';
                 Message::Info(Text::get('user-login-required-to_create'));
-                throw new Redirection(SEC_URL."/user/login");
+                throw new Redirection(SEC_URL.'/user/login');
             }
 
             if ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
@@ -732,7 +732,7 @@ namespace Goteo\Controller {
                     Message::Info(Text::get('project-messages-closed'));
                 }
 
-                return new View('view/project/view.html.php', $viewData);
+                return View::get('project/view.html.php', $viewData);
 
             } else {
                 // no lo puede ver

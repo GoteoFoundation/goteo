@@ -336,7 +336,7 @@ namespace Goteo\Controller {
             }
 
             $view = new View (
-                "view/call/edit.html.php",
+                'call/edit.html.php',
                 $viewData
             );
 
@@ -528,7 +528,7 @@ namespace Goteo\Controller {
                     $call->projects = Model\Call\Project::get($call->id, $filters);
                 }
 
-                return new View('view/call/'.$show.'.html.php', array ('call' => $call, 'social' => $social, 'filter' => $filter));
+                return View::get('call/'.$show.'.html.php', array ('call' => $call, 'social' => $social, 'filter' => $filter));
             } else {
                 // no lo puede ver
                 throw new Redirection("/");

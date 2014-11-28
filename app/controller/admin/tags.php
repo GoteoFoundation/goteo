@@ -22,7 +22,7 @@ namespace Goteo\Controller\Admin {
             switch ($action) {
                 case 'add':
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
@@ -82,7 +82,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
@@ -120,7 +120,7 @@ namespace Goteo\Controller\Admin {
             }
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'base',
                     'file' => 'list',
@@ -137,7 +137,7 @@ namespace Goteo\Controller\Admin {
                     'url' => "$url"
                 )
             );
-            
+
         }
 
     }

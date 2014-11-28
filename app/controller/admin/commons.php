@@ -43,7 +43,7 @@ namespace Goteo\Controller\Admin {
                         $contact = Model\Project::getContact($id);
 
                         return new View(
-                            'view/admin/index.html.php',
+                            'admin/index.html.php',
                             array(
                                 'folder' => 'commons',
                                 'file' => 'info',
@@ -81,7 +81,7 @@ namespace Goteo\Controller\Admin {
                         $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', LANG);
 
                         return new View(
-                            'view/admin/index.html.php',
+                            'admin/index.html.php',
                             array(
                                 'folder' => 'commons',
                                 'file' => 'view',
@@ -132,7 +132,7 @@ namespace Goteo\Controller\Admin {
 
 
                         return new View(
-                            'view/admin/index.html.php',
+                            'admin/index.html.php',
                             array(
                                 'folder' => 'commons',
                                 'file' => 'edit',
@@ -183,7 +183,7 @@ namespace Goteo\Controller\Admin {
             }
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'commons',
                     'file' => 'list',

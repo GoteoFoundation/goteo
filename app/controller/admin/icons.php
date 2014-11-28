@@ -14,7 +14,7 @@ namespace Goteo\Controller\Admin {
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $groups = Model\Icon::groups();
-            
+
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -59,9 +59,9 @@ namespace Goteo\Controller\Admin {
                 }
 				else {
                     Message::Error(implode('<br />', $errors));
-                    
+
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'icons',
                             'file' => 'edit',
@@ -78,7 +78,7 @@ namespace Goteo\Controller\Admin {
                     $icon = Model\Icon::get($id);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'icons',
                             'file' => 'edit',
@@ -92,7 +92,7 @@ namespace Goteo\Controller\Admin {
 
             $icons = Model\Icon::getAll($filters['group']);
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'icons',
                     'file' => 'list',
@@ -101,7 +101,7 @@ namespace Goteo\Controller\Admin {
                     'filters' => $filters
                 )
             );
-            
+
         }
 
     }

@@ -28,9 +28,9 @@ namespace Goteo\Controller\Admin {
 				}
 				else {
                     Message::Error(implode('<br />', $errors));
-                    
+
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'footer',
                             'file' => 'add',
@@ -54,7 +54,7 @@ namespace Goteo\Controller\Admin {
                     $next = Model\Post::next('footer');
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'footer',
                             'file' => 'add',
@@ -74,7 +74,7 @@ namespace Goteo\Controller\Admin {
             $posts = Model\Post::getAll('footer');
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'footer',
                     'file' => 'list',

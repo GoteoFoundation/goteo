@@ -72,7 +72,7 @@ namespace Goteo\Controller\Admin {
                         'emaildest'=> $_POST['emaildest']
                     );
 
-                    
+
                     if ($invest->update($errors)) {
                         Message::Info('Se han actualizado los datos del aporte: recompensa y dirección');
                         throw new Redirection('/admin/rewards');
@@ -83,7 +83,7 @@ namespace Goteo\Controller\Admin {
                 }
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'rewards',
                         'file' => 'edit',
@@ -118,7 +118,7 @@ namespace Goteo\Controller\Admin {
 
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'rewards',
                     'file' => 'list',

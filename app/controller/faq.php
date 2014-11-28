@@ -50,7 +50,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/faq.html.php',
+                'faq.html.php',
                 array(
                     'faqs'     => $faqs,
                     'current'  => $current,

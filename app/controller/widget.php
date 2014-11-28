@@ -23,7 +23,7 @@ namespace Goteo\Controller {
                 throw new Redirection('/', Redirection::TEMPORARY);
             }
 
-            return new View('view/widget/project.html.php', array('project' => $project, 'global' => true));
+            return new View('widget/project.html.php', array('project' => $project, 'global' => true));
 
             throw new Redirection('/fail', Redirection::TEMPORARY);
         }

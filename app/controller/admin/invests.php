@@ -14,7 +14,7 @@ namespace Goteo\Controller\Admin {
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-            
+
             // métodos de pago
             $methods = Model\Invest::methods();
             // estados del proyecto
@@ -54,7 +54,7 @@ namespace Goteo\Controller\Admin {
                 }
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'invests',
                         'file' => 'details',
@@ -94,7 +94,7 @@ namespace Goteo\Controller\Admin {
                 );
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 $viewData
             );
 

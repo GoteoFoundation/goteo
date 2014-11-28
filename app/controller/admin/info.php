@@ -144,7 +144,7 @@ namespace Goteo\Controller\Admin {
                     $message = 'Añadiendo una nueva entrada';
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'info',
                             'file' => 'edit',
@@ -171,7 +171,7 @@ namespace Goteo\Controller\Admin {
                     $message = 'Editando una entrada existente';
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'info',
                             'file' => 'edit',
@@ -187,7 +187,7 @@ namespace Goteo\Controller\Admin {
             $posts = Model\Info::getAll();
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'info',
                     'file' => 'list',

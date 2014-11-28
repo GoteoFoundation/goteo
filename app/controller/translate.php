@@ -49,7 +49,7 @@ namespace Goteo\Controller {
             }
 
             if (empty($table)) {
-                return new View('view/translate/index.html.php', array('menu'=>self::menu()));
+                return new View('translate/index.html.php', array('menu'=>self::menu()));
             }
 
             // para el breadcrumbs segun el contenido
@@ -112,7 +112,7 @@ namespace Goteo\Controller {
             }
 
             // si no pasa nada de esto, a la portada
-            return new View('view/translate/index.html.php', array('menu'=>self::menu()));
+            return new View('translate/index.html.php', array('menu'=>self::menu()));
         }
 
         public function select ($section = '', $action = '', $id = null, $extraAction = null, $extraId = null) {
@@ -129,7 +129,7 @@ namespace Goteo\Controller {
 
                 throw new Redirection("/translate/$section/$action/$id/$filter&page=".$_GET['page']);
             } else {
-                return new View('view/translate/index.html.php', array('menu'=>self::menu()));
+                return new View('translate/index.html.php', array('menu'=>self::menu()));
             }
         }
 
