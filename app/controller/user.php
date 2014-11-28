@@ -9,6 +9,7 @@ namespace Goteo\Controller {
         Goteo\Library\Feed,
         Goteo\Library\Text,
         Goteo\Library\Message,
+        Goteo\Library\OAuth\SocialAuth,
         Goteo\Library\Listing;
 
     class User extends \Goteo\Core\Controller {
@@ -179,11 +180,9 @@ namespace Goteo\Controller {
             //comprovar si venimos de un registro via oauth
             if ($_POST['provider']) {
 
-                require_once OAUTH_LIBS;
-
                 $provider = $_POST['provider'];
 
-                $oauth = new \SocialAuth($provider);
+                $oauth = new SocialAuth($provider);
                 //importar els tokens obtinguts anteriorment via POST
                 if ($_POST['tokens'][$oauth->provider]['token'])
                     $oauth->tokens[$oauth->provider]['token'] = $_POST['tokens'][$oauth->provider]['token'];
@@ -264,12 +263,10 @@ namespace Goteo\Controller {
          */
         public function oauth() {
 
-            require_once OAUTH_LIBS;
-
             $errors = array();
             if (isset($_GET["provider"]) && $_GET["provider"]) {
 
-                $oauth = new \SocialAuth($_GET["provider"]);
+                $oauth = new SocialAuth($_GET["provider"]);
                 if (!$oauth->authenticate()) {
                     //si falla: error, si no siempre se redirige al proveedor
                     Message::Error(Text::get($oauth->last_error));
@@ -280,7 +277,7 @@ namespace Goteo\Controller {
             if (isset($_GET["return"]) && $_GET["return"]) {
 
                 //check twitter activation
-                $oauth = new \SocialAuth($_GET["return"]);
+                $oauth = new SocialAuth($_GET["return"]);
 
                 if ($oauth->login()) {
                     //si ok: redireccion de login!

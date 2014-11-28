@@ -20,13 +20,6 @@ require_once __DIR__ . '/../src/Goteo/Core/Helpers.php';
 require_once __DIR__ . '/autoload.php';
 
 
-/******************************************************
-OAUTH APP's Secrets
-*******************************************************/
-if (!defined('OAUTH_LIBS')) {
-    define ('OAUTH_LIBS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'oauth' . DIRECTORY_SEPARATOR . 'SocialAuth.php');
-}
-
 //Uploads
 define('GOTEO_DATA_PATH', __DIR__ . '/../var/data/');
 //cache

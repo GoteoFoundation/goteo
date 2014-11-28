@@ -1,19 +1,17 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('log_errors', 1);
-error_reporting(E_ALL);
-//*/
+
+namespace Goteo\Library\OAuth;
+use Goteo\Model\User,
+    Goteo\Core\Model;
 
 //Includes all necessary files for oAuth
-$dir = dirname(__FILE__);
 
-include_once("$dir/epioauth/EpiCurl.php");
-include_once("$dir/epioauth/EpiOAuth.php");
-include_once("$dir/epioauth/EpiTwitter.php");
-include_once("$dir/linkedinoauth.php");
-include_once("$dir/facebook.class.php");
-include_once("$dir/openid.php");
+include_once(__DIR__ . '/epioauth/EpiCurl.php');
+include_once(__DIR__ . '/epioauth/EpiOAuth.php');
+include_once(__DIR__ . '/epioauth/EpiTwitter.php');
+include_once(__DIR__ . '/linkedinoauth.php');
+include_once(__DIR__ . '/facebook.class.php');
+include_once(__DIR__ . '/openid.php');
 
 /**
  * Suportat:
@@ -456,7 +454,7 @@ class SocialAuth {
 
 		$username = "";
 		//comprovar si existen tokens
-		$query = Goteo\Core\Model::query('SELECT id FROM user WHERE id = (SELECT user FROM user_login WHERE provider = :provider AND oauth_token = :token AND oauth_token_secret = :secret)', array(':provider' => $this->provider, ':token' => $this->tokens[$this->provider]['token'], ':secret' => $this->tokens[$this->provider]['secret']));
+		$query = Model::query('SELECT id FROM user WHERE id = (SELECT user FROM user_login WHERE provider = :provider AND oauth_token = :token AND oauth_token_secret = :secret)', array(':provider' => $this->provider, ':token' => $this->tokens[$this->provider]['token'], ':secret' => $this->tokens[$this->provider]['secret']));
 
 		$username = $query->fetchColumn();
 
@@ -468,7 +466,7 @@ class SocialAuth {
 			 * por tanto, en caso de que no existan tokens, se deberá preguntar la contraseña al usuario
 			 * si el usuario no tiene contraseña, podemos permitir el acceso directo o denegarlo (mas seguro)
 			 * */
-			$query = Goteo\Core\Model::query('SELECT id,password FROM user WHERE email = ?', array($this->user_data['email']));
+			$query = Model::query('SELECT id,password FROM user WHERE email = ?', array($this->user_data['email']));
 			if($user = $query->fetchObject()) {
 				$username = $user->id;
 				//sin no existe contraseña permitimos acceso
@@ -495,20 +493,20 @@ class SocialAuth {
 
 		//actualizar la imagen de avatar si no tiene!
 		if($this->user_data['profile_image_url']) {
-			$query = Goteo\Core\Model::query('SELECT avatar FROM user WHERE id = ?', array($username));
+			$query = Model::query('SELECT avatar FROM user WHERE id = ?', array($username));
 			if(!($query->fetchColumn())) {
 
 				$img = new Goteo\Model\Image($this->user_data['profile_image_url']);
 				$img->save();
 
 				if($img->id) {
-					Goteo\Core\Model::query("UPDATE user SET avatar = :avatar WHERE id = :user", array(':user'=>$username,':avatar'=>$img->id));
+					Model::query("UPDATE user SET avatar = :avatar WHERE id = :user", array(':user'=>$username,':avatar'=>$img->id));
 				}
 			}
 		}
 
 		//el usuario existe, creamos el objeto
-		$user = Goteo\Model\User::get($username);
+		$user = User::get($username);
 
 		//actualizar datos de usuario si no existen:
 		$update = array();
@@ -520,9 +518,9 @@ class SocialAuth {
 			}
 		}
 		if($update) {
-			Goteo\Core\Model::query("UPDATE user SET ".implode(", ",$update)." WHERE id = :user", $data);
+			Model::query("UPDATE user SET ".implode(", ",$update)." WHERE id = :user", $data);
 			//rebuild user object
-			$user = Goteo\Model\User::get($username);
+			$user = User::get($username);
 		}
 
 		//actualizar las webs
@@ -539,18 +537,18 @@ class SocialAuth {
 				foreach($webs[0] as $web) {
 					$web = strtolower($web);
 					if(!in_array($web,$current_webs)) {
-						Goteo\Core\Model::query("INSERT user_web (user, url) VALUES (:user, :url)", array(':user' => $username, ':url' => $web));
+						Model::query("INSERT user_web (user, url) VALUES (:user, :url)", array(':user' => $username, ':url' => $web));
 						$updated = true;
 					}
 				}
 				//rebuild user object
-				if($updated) $user = Goteo\Model\User::get($username);
+				if($updated) $user = User::get($username);
 			}
 		}
 
 		//Si no tiene imagen, importar de gravatar.com?
 		if(!$user->avatar || $user->avatar->id == 1) {
-			$query = Goteo\Core\Model::query('SELECT avatar FROM user WHERE id = ?', array($username));
+			$query = Model::query('SELECT avatar FROM user WHERE id = ?', array($username));
 			if(!($query->fetchColumn())) {
 				$url = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($user->email)));
 				$url .= "?d=404";
@@ -559,8 +557,8 @@ class SocialAuth {
 				$img->save();
 
 				if($img->id) {
-					Goteo\Core\Model::query("UPDATE user SET avatar = :avatar WHERE id = :user", array(':user'=>$username,':avatar'=>$img->id));
-					$user = Goteo\Model\User::get($username);
+					Model::query("UPDATE user SET avatar = :avatar WHERE id = :user", array(':user'=>$username,':avatar'=>$img->id));
+					$user = User::get($username);
 				}
 			}
 		}
@@ -588,11 +586,11 @@ class SocialAuth {
 	 * Guarda los tokens generados en el usuario
 	 * */
 	public function saveTokensToUser($goteouser) {
-		$query = Goteo\Core\Model::query('SELECT id FROM user WHERE id = ?', array($goteouser));
+		$query = Model::query('SELECT id FROM user WHERE id = ?', array($goteouser));
 		if($id = $query->fetchColumn()) {
 			foreach($this->tokens as $provider => $token) {
 				if($token['token']) {
-					$query = Goteo\Core\Model::query("REPLACE user_login (user,provider,oauth_token,oauth_token_secret) VALUES (:user,:provider,:token,:secret)",array(':user'=>$goteouser,':provider'=>$provider,':token'=>$token['token'],':secret'=>$token['secret']));
+					$query = Model::query("REPLACE user_login (user,provider,oauth_token,oauth_token_secret) VALUES (:user,:provider,:token,:secret)",array(':user'=>$goteouser,':provider'=>$provider,':token'=>$token['token'],':secret'=>$token['secret']));
 				}
 			}
 		}
@@ -603,4 +601,3 @@ class SocialAuth {
 	}
 }
 
-?>
