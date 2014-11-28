@@ -2,8 +2,12 @@
 
 namespace Goteo\Tests;
 
-use \Goteo\Core\View,
-    \Goteo\Core\View\Exception;
+use Goteo\Core\View,
+    Goteo\Core\Redirection,
+    Goteo\Core\View\Exception,
+    Goteo\Model\Project,
+    Goteo\Model\Image,
+    Goteo\Model\User;
 
 class ViewTest extends \PHPUnit_Framework_TestCase {
 
@@ -25,8 +29,6 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
                 self::$views[] = $file;
             }
         }
-        //some views uses it
-        define('NODE_ID', GOTEO_NODE);
     }
 
     public function testInstance() {
@@ -47,12 +49,34 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
 
     }
     public function testGoteoViews() {
+        global $_SESSION;
+        $project = new Project();
+        $project->user = new User();
+        $project->user->avatar = new Image();
+        $post = new \Goteo\Model\Blog\Post();
+        $post->gallery = 'empty';
+        $post->image = new Image();
+        $call = new \Goteo\Model\Call();
+        $call->logo =new Image();
+        $vars = array(
+            'project' => $project,
+            'user' => $project->user,
+            'post' => $post,
+            'call' => $call
+            );
+
+        $_SESSION['user'] = $project->user;
         foreach(self::$views as $view) {
-            $v = new View($view);
-            $this->assertInstanceOf('\Goteo\Core\View', $v);
-            $out = $v->render();
+            try {
+                $v = new View($view, $vars);
+                $this->assertInstanceOf('\Goteo\Core\View', $v);
+                $out = $v->render();
+                $this->assertInternalType('string', $out);
+            }
+            catch(\Goteo\Core\Redirection $e) {
+                echo "La vista [$view] lanza una exception de redireccion!\nEsto no deberia hacerse aqui!\n";
+            }
             // echo $out;
-            $this->assertInternalType('string', $out);
         }
     }
 }

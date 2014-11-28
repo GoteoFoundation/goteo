@@ -183,7 +183,7 @@ namespace Goteo\Library {
 
                     //     return true;
                     // }
-                    print_r($mail);die;
+
                     // Envía el mensaje
                     if ($mail->send($errors)) {
                         $this->saveContentToFile();
@@ -255,13 +255,13 @@ namespace Goteo\Library {
                 // para plantilla boletin
                 if ($this->template == 33) {
                     $viewData['baja'] = SITE_URL . '/user/unsuscribe/' . \mybase64_encode($leave_token);
-                    return new View (GOTEO_PATH.'view/email/newsletter.html.php', $viewData);
+                    return View::get('email/newsletter.html.php', $viewData);
 
                 } elseif (!empty($this->node) && $this->node != GOTEO_NODE) {
-                    return new View (GOTEO_PATH.'nodesys/'.$this->node.'/view/email/default.html.php', $viewData);
+                    return View::get('nodesys/'.$this->node.'/view/email/default.html.php', $viewData);
 
                 } else {
-                    return new View (GOTEO_PATH.'view/email/goteo.html.php', $viewData);
+                    return View::get('email/goteo.html.php', $viewData);
                 }
             }
         }

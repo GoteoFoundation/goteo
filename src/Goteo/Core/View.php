@@ -67,6 +67,10 @@ namespace Goteo\Core {
 
                 return ob_get_clean();
             }
+            catch(\Goteo\Core\Redirection $e) {
+                // echo "La vista [$view] lanza una exception de redireccion!\nEsto no deberia hacerse aqui!\n";
+                return ob_get_clean();
+            }
             //TODO: catch not found and show 404 file
             catch(\Exception $e) {
                 throw new View\Exception("Error in Included view [{$this->file}]\nView Exception Message:\n" . $e->getMessage()."\n", 1);

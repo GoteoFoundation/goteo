@@ -6,7 +6,6 @@ namespace Goteo\Library\FileHandler {
     use Goteo\Core\Model;
 
     // no hace falta, se incluye via composer
-    // require_once "library/aws/S3.php"; //AWS SDK normal
     use \S3;
 
     class S3File extends BaseFile implements FileInterface {
