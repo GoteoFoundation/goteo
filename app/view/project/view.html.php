@@ -74,9 +74,9 @@ foreach ($blog->posts as $bpost) {
 }
 
 
-include 'view/prologue.html.php' ?>
+include __DIR__ . '/../prologue.html.php' ?>
 
-<?php include 'view/header.html.php' ?>
+<?php include __DIR__ . '/../header.html.php' ?>
 
         <div id="sub-header">
             <div class="project-header">
@@ -114,7 +114,7 @@ include 'view/prologue.html.php' ?>
 
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 
         <div id="main" class="threecols">
@@ -262,5 +262,5 @@ include 'view/prologue.html.php' ?>
 
         </div>
 
-        <?php include 'view/footer.html.php' ?>
-		<?php include 'view/epilogue.html.php' ?>
+        <?php include __DIR__ . '/../footer.html.php' ?>
+		<?php include __DIR__ . '/../epilogue.html.php' ?>

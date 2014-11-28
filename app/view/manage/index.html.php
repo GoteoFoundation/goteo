@@ -9,15 +9,15 @@ if (LANG != 'es') {
 
 $bodyClass = 'admin';
 
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 ?>
 
         <div id="sub-header" style="margin-bottom: 10px;">
             <div class="breadcrumbs">Panel Gestor&iacute;a<?php // echo ADMIN_BCPATH; ?></div>
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main">
 
@@ -27,9 +27,9 @@ include 'view/header.html.php';
 
 <?php if (!empty($this['folder']) && !empty($this['file'])) :
         if ($this['folder'] == 'base') {
-            $path = 'view/manage/'.$this['file'].'.html.php';
+            $path = __DIR__ . '/../manage/'.$this['file'].'.html.php';
         } else {
-            $path = 'view/manage/'.$this['folder'].'/'.$this['file'].'.html.php';
+            $path = __DIR__ . '/../manage/'.$this['folder'].'/'.$this['file'].'.html.php';
         }
 
             echo View::get($path, $this);
@@ -61,5 +61,5 @@ include 'view/header.html.php';
         </div> <!-- fin main -->
 
 <?php
-    include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+    include __DIR__ . '/../footer.html.php';
+include __DIR__ . '/../epilogue.html.php';

@@ -26,8 +26,8 @@ foreach ($items as $item) {
 // paginacion
 $pagedResults = new Paginated($news, 7, isset($_GET['page']) ? $_GET['page'] : 1);
 
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/prologue.html.php';
+include __DIR__ . '/header.html.php';
 ?>
 <div id="sub-header-secondary">
     <div class="clearfix">
@@ -65,6 +65,6 @@ include 'view/header.html.php';
     </div>
 </div>
 <?php
-include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/footer.html.php';
+include __DIR__ . '/epilogue.html.php';
 ?>

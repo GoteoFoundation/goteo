@@ -11,8 +11,8 @@ $dbg = false;
 if ($dbg) $ti = microtime(true);
 
 $bodyClass = 'user-profile';
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $user = $this['user'];
 $worthcracy = Worth::getAll();
@@ -55,7 +55,7 @@ $worthcracy = Worth::getAll();
 
 <?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -119,8 +119,8 @@ $worthcracy = Worth::getAll();
 </div>
 
 <?php
-include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/../footer.html.php';
+include __DIR__ . '/../epilogue.html.php';
 
 if ($dbg) {
     $tf = microtime(true);
@@ -128,4 +128,3 @@ if ($dbg) {
     echo 'Tiempo de pintado = '.$tp.' segundos<br />';
 }
 
-?>

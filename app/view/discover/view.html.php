@@ -5,9 +5,9 @@ use Goteo\Core\View,
 
 $bodyClass = 'discover';
 
-include 'view/prologue.html.php';
+include __DIR__ . '/../prologue.html.php';
 
-include 'view/header.html.php' ?>
+include __DIR__ . '/../header.html.php' ?>
 
 
         <div id="sub-header">
@@ -30,6 +30,6 @@ include 'view/header.html.php' ?>
             <?php echo View::get('pagination.html.php', $this); ?>
         </div>
 
-        <?php include 'view/footer.html.php' ?>
+        <?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

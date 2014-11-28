@@ -7,8 +7,8 @@ use Goteo\Core\View,
     Goteo\Core\Redirection;
 
 $bodyClass = 'user-profile';
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $user = $this['user'];
 $worthcracy = Worth::getAll();
@@ -36,7 +36,7 @@ if (empty($shares)) {
 
 <?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -121,6 +121,6 @@ if (empty($shares)) {
 
 </div>
 
-<?php include 'view/footer.html.php' ?>
+<?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

@@ -8,7 +8,7 @@ $page  = $this['page'];
 echo View::get('bazar/prologue.html.php', array('ogmeta'=>$this['ogmeta'], 'title'=>$page->title, 'description'=>$page->description));
 echo View::get('bazar/header.html.php', array('page'=>$this['page']));
 
-if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; }
+if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; }
 
 echo '<section id="contenedor">';
 

@@ -9,9 +9,9 @@ $pagedResults = new Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['pa
 
 $bodyClass = 'discover';
 
-include 'view/prologue.html.php';
+include __DIR__ . '/../prologue.html.php';
 
-include 'view/header.html.php' ?>
+include __DIR__ . '/../header.html.php' ?>
 
 
         <div id="sub-header">
@@ -38,6 +38,6 @@ include 'view/header.html.php' ?>
 
         </div>
 
-        <?php include 'view/footer.html.php' ?>
+        <?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

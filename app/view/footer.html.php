@@ -9,7 +9,7 @@ use Goteo\Library\Text,
 \Goteo\Core\DB::cache(true);
 
 if (NODE_ID != GOTEO_NODE) {
-    include 'view/node/footer.html.php';
+    include __DIR__ . '/node/footer.html.php';
     return;
 }
 
@@ -31,8 +31,8 @@ jQuery(document).ready(function($) {
     <div id="footer">
         <?php if( $bannerPrensa && count($this[news]) ) {?>
         <div id="press_banner">
-            <?php echo $bannerPrensa;?> 
-        </div> 
+            <?php echo $bannerPrensa;?>
+        </div>
         <?php }?>
 		<div class="w940" style="padding:20px;">
         	<div class="block categories">
@@ -75,10 +75,10 @@ jQuery(document).ready(function($) {
 				$(function(){
 					$('#slides_sponsor').slides({
 						container: 'slides_container',
-						effect: 'fade', 
+						effect: 'fade',
 						crossfade: false,
 						fadeSpeed: 350,
-						play: 5000, 
+						play: 5000,
 						pause: 1
 					});
 				});
@@ -100,7 +100,7 @@ jQuery(document).ready(function($) {
             </div>
 
             <div class="block services">
-                
+
                 <h6 class="title"><?php echo Text::get('footer-header-services') ?></h6>
                 <ul>
                     <li><a href="/service/resources"><?php echo Text::get('footer-service-resources') ?></a></li>
@@ -110,9 +110,9 @@ jQuery(document).ready(function($) {
  */ ?>
                     <li><a href="/service/workshop"><?php echo Text::get('footer-service-workshop') ?></a></li>
                 </ul>
-                
+
             </div>
-         
+
             <div class="block social" style="border-right:#ebe9ea 2px solid;">
                 <h6 class="title"><?php echo Text::get('footer-header-social') ?></h6>
                 <ul>
@@ -130,9 +130,9 @@ jQuery(document).ready(function($) {
 
     <div id="sub-footer">
 		<div class="w940">
-		
-           
-                
+
+
+
                 <ul>
                     <li><a href="/about"><?php echo Text::get('regular-header-about'); ?></a></li>
                     <li><a href="/user/login"><?php echo Text::get('regular-login'); ?></a></li>
@@ -142,14 +142,14 @@ jQuery(document).ready(function($) {
                     <li><a href="/legal/terms"><?php echo Text::get('regular-footer-terms'); ?></a></li>
                     <li><a href="/legal/privacy"><?php echo Text::get('regular-footer-privacy'); ?></a></li>
                 </ul>
-    
+
                 <div class="platoniq">
                    <span class="text"><a href="#" class="poweredby"><?php echo Text::get('footer-platoniq-iniciative') ?></a></span>
                    <span class="logo"><a href="http://fuentesabiertas.org" target="_blank" class="foundation">FFA</a></span>
                    <span class="logo"><a href="http://www.youcoop.org" target="_blank" class="growby">Platoniq</a></span>
                 </div>
-    
-       
+
+
         </div>
 
     </div>

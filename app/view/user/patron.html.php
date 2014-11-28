@@ -6,8 +6,8 @@ use Goteo\Core\View,
     Goteo\Model\User\Interest;
 
 $bodyClass = 'home patron';
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $user = $this['user'];
 $recos = $this['recos'];
@@ -60,7 +60,7 @@ shuffle($recos);
 
 </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -156,6 +156,6 @@ shuffle($recos);
 
 </div>
 
-<?php include 'view/footer.html.php' ?>
+<?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

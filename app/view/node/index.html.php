@@ -5,8 +5,8 @@ use Goteo\Core\View,
 
 $bodyClass = 'home';
 
-include 'view/node/prologue.html.php';
-include 'view/node/header.html.php';
+include __DIR__ . '/../node/prologue.html.php';
+include __DIR__ . '/../node/header.html.php';
 ?>
 
 <?php if (isset($this['side_order']['searcher']) || isset($this['side_order']['categories'])) : ?>
@@ -35,7 +35,7 @@ include 'view/node/header.html.php';
 </script>
 <?php endif; ?>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="node-main">
     <div id="side">
@@ -60,5 +60,5 @@ include 'view/node/header.html.php';
     ?>
     </div>
 </div>
-<?php include 'view/node/footer.html.php'; ?>
-<?php include 'view/epilogue.html.php'; ?>
+<?php include __DIR__ . '/../node/footer.html.php'; ?>
+<?php include __DIR__ . '/../epilogue.html.php'; ?>

@@ -29,6 +29,6 @@ $investors = $project->agregateInvestors();
         </div>
 
     <div class="side-worthcracy">
-    <?php include 'view/worth/base.html.php' ?>
+    <?php include __DIR__ . '/../../worth/base.html.php' ?>
     </div>
 </div>

@@ -16,8 +16,8 @@ $go_up = Text::get('regular-go_up');
 // paginacion
 $pagedResults = new Paginated($posts, $this['tpp'], isset($_GET['page']) ? $_GET['page'] : 1);
 
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 ?>
 	<div id="sub-header-secondary">
 		<div class="clearfix">
@@ -117,5 +117,5 @@ include 'view/header.html.php';
 
 	</div>
 <?php
-    include 'view/footer.html.php';
-	include 'view/epilogue.html.php';
+    include __DIR__ . '/../footer.html.php';
+	include __DIR__ . '/../epilogue.html.php';

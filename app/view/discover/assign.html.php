@@ -12,9 +12,9 @@ $pagedResults = new Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['pa
 
 $bodyClass = 'discover';
 
-include 'view/prologue.html.php';
+include __DIR__ . '/../prologue.html.php';
 
-include 'view/header.html.php' ?>
+include __DIR__ . '/../header.html.php' ?>
 
 <script type="text/javascript">
 function projAssign(projId) {
@@ -39,7 +39,7 @@ function projAssign(projId) {
 
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main">
 
@@ -58,6 +58,6 @@ function projAssign(projId) {
 
         </div>
 
-        <?php include 'view/footer.html.php' ?>
+        <?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

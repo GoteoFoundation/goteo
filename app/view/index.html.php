@@ -6,7 +6,7 @@ use Goteo\Core\View,
 
 // si es un nodo
 if (NODE_ID != GOTEO_NODE) {
-    include 'view/node/index.html.php';
+    include __DIR__ . '/node/index.html.php';
     return;
 }
 
@@ -39,8 +39,8 @@ if (!empty($this['posts'])) {
 }
 
 
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/prologue.html.php';
+include __DIR__ . '/header.html.php';
 ?>
 <script type="text/javascript">
     $(function(){
@@ -69,7 +69,7 @@ include 'view/header.html.php';
     </div>
 </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -81,10 +81,10 @@ include 'view/header.html.php';
                 continue;
             }
 
-        if (!empty($this[$item])) echo View::get("view/home/{$item}.html.php", $this);
+        if (!empty($this[$item])) echo View::get("home/{$item}.html.php", $this);
     } ?>
 
 </div>
 
-<?php include 'view/footer.html.php'; ?>
-<?php include 'view/epilogue.html.php'; ?>
+<?php include __DIR__ . '/footer.html.php'; ?>
+<?php include __DIR__ . '/epilogue.html.php'; ?>

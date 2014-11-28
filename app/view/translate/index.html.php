@@ -15,14 +15,14 @@ if ($_SESSION['translate_lang'] == 'es') {
 
 $bodyClass = 'admin';
 
-include 'view/prologue.html.php';
-include 'view/header.html.php'; ?>
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php'; ?>
 
         <div id="sub-header" style="margin-bottom: 10px;">
             <div class="breadcrumbs"><?php echo defined('ADMIN_BCPATH') ? ADMIN_BCPATH : "<strong>Traductor</strong>"; ?></div>
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main">
 
@@ -61,5 +61,5 @@ include 'view/header.html.php'; ?>
 
         </div>
 <?php
-include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/../footer.html.php';
+include __DIR__ . '/../epilogue.html.php';

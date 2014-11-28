@@ -3,7 +3,7 @@
 use \Goteo\Library\Text;
 
 if (NODE_ID != GOTEO_NODE) {
-    include 'view/node/prologue.html.php';
+    include __DIR__ . '/node/prologue.html.php';
     return;
 }
 

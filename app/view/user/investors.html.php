@@ -8,8 +8,8 @@ use Goteo\Core\View,
     Goteo\Util\Pagination\DoubleBarLayout;
 
 $bodyClass = 'user-profile';
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $user = $this['user'];
 $worthcracy = Worth::getAll();
@@ -19,7 +19,7 @@ $pagedResults = new Paginated($this['investors'], 20, isset($_GET['page']) ? $_G
 ?>
 <?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -53,6 +53,6 @@ $pagedResults = new Paginated($this['investors'], 20, isset($_GET['page']) ? $_G
 
 </div>
 
-<?php include 'view/footer.html.php' ?>
+<?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>
