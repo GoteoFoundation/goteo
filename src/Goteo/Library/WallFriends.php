@@ -25,32 +25,26 @@ namespace Goteo\Library {
          * @param   type mixed  $id     Identificador
          * @return  type object         Objeto
          */
-        public function __construct ($id = '', $all_avatars=true, $with_title = true) {
-			if($id && $this->project = Project::get($id)) {
-				$this->show_title = $with_title;
-				$this->investors = $this->project->agregateInvestors();
+        public function __construct (Project $prj, $all_avatars=true, $with_title = true) {
+            $this->project = $prj;
 
-				$avatars = array();
-				foreach($this->investors as $i) {
-					if($i->avatar->id != 1 || $all_avatars)
-						$avatars[$i->user] = $i->amount;
+			$this->show_title = $with_title;
+			$this->investors = $this->project->agregateInvestors();
 
-				}
-				$this->avatars = self::pondera($avatars,$this->max_multiplier);
-
-				//arsort($this->avatars);
-
-				$keys = array_keys( $this->avatars );
-				shuffle( $keys );
-				$this->avatars = array_merge( array_flip( $keys ) , $this->avatars );
-				//print_r($this->project);die;
+			$avatars = array();
+			foreach($this->investors as $i) {
+				if($i->avatar->id != 1 || $all_avatars)
+					$avatars[$i->user] = $i->amount;
 
 			}
-			else {
-				//quizá otro mensaje de error?
-                return false;
-//                throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
-			}
+			$this->avatars = self::pondera($avatars,$this->max_multiplier);
+
+			//arsort($this->avatars);
+
+			$keys = array_keys( $this->avatars );
+			shuffle( $keys );
+			$this->avatars = array_merge( array_flip( $keys ) , $this->avatars );
+			//print_r($this->project);die;
 
         }
 

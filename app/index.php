@@ -162,9 +162,9 @@ try {
     // Get controller name
     if (!empty($segments) && class_exists("Goteo\\Controller\\{$segments[0]}")) {
         // Take first segment as controller
-        $controller = array_shift($segments);
+        $controller = ucfirst(array_shift($segments));
     } else {
-        $controller = 'index';
+        $controller = 'Index';
     }
 
     // Continue

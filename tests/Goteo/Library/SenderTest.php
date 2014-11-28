@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Goteo\Tests;
+namespace Goteo\Library\Tests;
 
 use Goteo\Library\Sender;
 

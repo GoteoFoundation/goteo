@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Tests;
+namespace Goteo\Library\Tests;
 
 use Goteo\Model,
     Goteo\Library\Mail;

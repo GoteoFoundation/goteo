@@ -3,13 +3,13 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\View,
+        Goteo\Model,
         Goteo\Model\Node,
         Goteo\Model\Home,
         Goteo\Model\Project,
         Goteo\Model\Banner,
         Goteo\Model\Stories,
         Goteo\Model\News,
-        Goteo\Model\Call,
         Goteo\Model\Post,  // esto son entradas en portada o en footer
         Goteo\Model\Promote,
         Goteo\Model\Patron,
@@ -59,8 +59,8 @@ namespace Goteo\Controller {
 
             // capital riego
             if (isset($order['drops'])) {
-                $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
-                $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
+                $calls     = Model\Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
+                $campaigns = Model\Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
 
                 $drops = (!empty($calls) || !empty($campaigns)) ? true : false;
             }

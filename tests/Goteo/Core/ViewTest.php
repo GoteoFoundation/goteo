@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Tests;
+namespace Goteo\Core\Tests;
 
 use Goteo\Core\View,
     Goteo\Core\Redirection,
@@ -48,6 +48,10 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
     public function testView() {
 
     }
+    /**
+     * Agressive test of all views
+     * @return [type] [description]
+     */
     public function testGoteoViews() {
         global $_SESSION;
         $project = new Project();

@@ -9,9 +9,8 @@ namespace Goteo\Controller {
         Goteo\Controller\Cron\Send,
         Goteo\Library\Text,
         Goteo\Library\Check,
-        Goteo\Library\Mail,
+        Goteo\Library,
         Goteo\Library\Template,
-        Goteo\Library\Message,
         Goteo\Library\Feed,
         Goteo\Model;
 
@@ -56,19 +55,19 @@ namespace Goteo\Controller {
                 $grant = true;
 
             if (!$grant) {
-                Message::Info('No tienes permiso para eliminar este proyecto');
+                Model\Message::Info('No tienes permiso para eliminar este proyecto');
 
                 throw new Redirection($goto);
             }
 
             $errors = array();
             if ($project->delete($errors)) {
-                Message::Info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
+                Model\Message::Info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
                 if ($_SESSION['project']->id == $id) {
                     unset($_SESSION['project']);
                 }
             } else {
-                Message::Info("No se han podido borrar los datos del proyecto '<strong>{$project->name}</strong>'. Error:" . implode(', ', $errors));
+                Model\Message::Info("No se han podido borrar los datos del proyecto '<strong>{$project->name}</strong>'. Error:" . implode(', ', $errors));
             }
             throw new Redirection($goto);
         }
@@ -97,7 +96,7 @@ namespace Goteo\Controller {
                 $grant = true;
 
             if (!$grant) {
-                Message::Info('No tienes permiso para editar este proyecto');
+                Model\Message::Info('No tienes permiso para editar este proyecto');
                 throw new Redirection($goto);
             }
 
@@ -205,7 +204,7 @@ namespace Goteo\Controller {
 
                 // hay que mostrar errores en la imagen
                 if (!empty($errors['image'])) {
-                    Message::Error(is_array($errors['image']) ? implode('<br />', $errors['image']) : $errors['image']);
+                    Model\Message::Error(is_array($errors['image']) ? implode('<br />', $errors['image']) : $errors['image']);
                 }
 
 
@@ -314,7 +313,7 @@ namespace Goteo\Controller {
                             $_SESSION['project'] = $project;
                         }
 
-                        Message::Info(Text::get('project-review-request_mail-success'));
+                        Model\Message::Info(Text::get('project-review-request_mail-success'));
 
                         // email a los de goteo
                         $sent1 = Send::toConsultants('project_to_review_consultant', $project);
@@ -323,9 +322,9 @@ namespace Goteo\Controller {
                         $sent2 = Send::toOwner('project_to_review', $project);
 
                         if ($sent1 && $sent2) {
-                            Message::Info(Text::get('project-review-confirm_mail-success'));
+                            Model\Message::Info(Text::get('project-review-confirm_mail-success'));
                         } else {
-                            Message::Error(Text::get('project-review-confirm_mail-fail'));
+                            Model\Message::Error(Text::get('project-review-confirm_mail-fail'));
                         }
 
                         // Evento Feed
@@ -341,8 +340,8 @@ namespace Goteo\Controller {
 
                         throw new Redirection("/dashboard?ok");
                     } else {
-                        Message::Error(Text::get('project-review-request_mail-fail'));
-                        Message::Error(implode('<br />', $errors));
+                        Model\Message::Error(Text::get('project-review-request_mail-fail'));
+                        Model\Message::Error(implode('<br />', $errors));
                     }
                 }
 
@@ -359,7 +358,7 @@ namespace Goteo\Controller {
                 // throw new Error(Error::INTERNAL, 'EROR: '.print_r($_FILES,1));
                 // die;
                 // mail de aviso
-                $mailHandler = new Mail();
+                $mailHandler = new Model\Mail();
                 $mailHandler->to = \GOTEO_FAIL_MAIL;
                 $mailHandler->toName = 'Goteo Fail Mail';
                 $mailHandler->subject = 'FORM CAPACITY OVERFLOW en '.\SITE_URL;
@@ -456,7 +455,7 @@ namespace Goteo\Controller {
 
             if (empty($_SESSION['user'])) {
                 $_SESSION['jumpto'] = '/project/create';
-                Message::Info(Text::get('user-login-required-to_create'));
+                Model\Message::Info(Text::get('user-login-required-to_create'));
                 throw new Redirection(SEC_URL.'/user/login');
             }
 
@@ -507,7 +506,7 @@ namespace Goteo\Controller {
                         $content = \str_replace($search, $replace, $template->text);
 
 
-                        $mailHandler = new Mail();
+                        $mailHandler = new Model\Mail();
 
                         $mailHandler->to = $_SESSION['user']->email;
                         $mailHandler->toName = $_SESSION['user']->name;
@@ -516,9 +515,9 @@ namespace Goteo\Controller {
                         $mailHandler->html = true;
                         $mailHandler->template = $template->id;
                         if ($mailHandler->send($errors)) {
-                            Message::Info(Text::get('assign-call-success', $callData->name));
+                            Model\Message::Info(Text::get('assign-call-success', $callData->name));
                         } else {
-                            Message::Error(Text::get('project-review-confirm_mail-fail'));
+                            Model\Message::Error(Text::get('project-review-confirm_mail-fail'));
                             \mail(\GOTEO_FAIL_MAIL, 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $_SESSION['user']->email . ' con esta instancia <pre>'.print_r($mailHandler, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
                         }
 
@@ -577,15 +576,15 @@ namespace Goteo\Controller {
 
                 if ($project->published > date('Y-m-d')) {
                     // si la fecha es en el futuro, es que se publicará
-                    Message::Info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
+                    Model\Message::Info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
                 } else {
                     // si la fecha es en el pasado, es que la campaña ha sido cancelada
-                    Message::Info(Text::get('project-unpublished'));
+                    Model\Message::Info(Text::get('project-unpublished'));
                 }
 
             } elseif ($project->status < 3) {
                 // mensaje de no publicado siempre que no esté en campaña
-                Message::Info(Text::get('project-not_published'));
+                Model\Message::Info(Text::get('project-not_published'));
             }
 
 
@@ -629,12 +628,12 @@ namespace Goteo\Controller {
 
                     // si no está en campaña no pueden estar aqui ni de coña
                     if ($project->status != 3) {
-                        Message::Info(Text::get('project-invest-closed'));
+                        Model\Message::Info(Text::get('project-invest-closed'));
                         throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
                     }
 
                     if ($project->noinvest) {
-                        Message::Error(Text::get('investing_closed'));
+                        Model\Message::Error(Text::get('investing_closed'));
                         throw new Redirection('/project/'.$id);
                     }
 
@@ -670,7 +669,7 @@ namespace Goteo\Controller {
                             $step = 'confirm';
                         } elseif ($step != 'start' && empty($_SESSION['user'])) {
                             // si no está validado solo puede estar en start
-                            Message::Info(Text::get('user-login-required-to_invest'));
+                            Model\Message::Info(Text::get('user-login-required-to_invest'));
                             $step = 'start';
                         } elseif ($step == 'start') {
                             // para cuando salte
@@ -693,7 +692,7 @@ namespace Goteo\Controller {
                      */
 
                     /*
-                        Message::Info(Text::get('user-login-required-to_invest'));
+                        Model\Message::Info(Text::get('user-login-required-to_invest'));
                         throw new Redirection("/user/login");
                      */
 
@@ -705,7 +704,7 @@ namespace Goteo\Controller {
                     $project->messages = Model\Message::getAll($project->id);
 
                     if (empty($_SESSION['user'])) {
-                        Message::Info(Text::html('user-login-required'));
+                        Model\Message::Info(Text::html('user-login-required'));
                     }
                 }
 
@@ -724,12 +723,12 @@ namespace Goteo\Controller {
                     $viewData['owner'] = $project->owner;
 
                     if (empty($_SESSION['user'])) {
-                        Message::Info(Text::html('user-login-required'));
+                        Model\Message::Info(Text::html('user-login-required'));
                     }
                 }
 
                 if ($show == 'messages' && $project->status < 3) {
-                    Message::Info(Text::get('project-messages-closed'));
+                    Model\Message::Info(Text::get('project-messages-closed'));
                 }
 
                 return View::get('project/view.html.php', $viewData);

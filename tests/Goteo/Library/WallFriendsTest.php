@@ -1,15 +1,16 @@
 <?php
 
 
-namespace Goteo\Tests;
+namespace Goteo\Library\Tests;
 
-use Goteo\Library\WallFriends;
+use Goteo\Library\WallFriends,
+    Goteo\Model\Project;
 
 class WallFriendsTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
 
-        $converter = new WallFriends();
+        $converter = new WallFriends(new Project);
 
         $this->assertInstanceOf('\Goteo\Library\WallFriends', $converter);
 

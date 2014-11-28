@@ -6,9 +6,9 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\View,
         Goteo\Model,
+        Goteo\Library,
         Goteo\Library\Feed,
         Goteo\Library\Text,
-        Goteo\Library\Message,
         Goteo\Library\OAuth\SocialAuth,
         Goteo\Library\Listing;
 
@@ -54,7 +54,7 @@ namespace Goteo\Controller {
                 $_SESSION['invest-amount'] = $_POST['amount'];
                 $msg = Text::get('user-login-required-login');
                 $msg .= (!empty($_POST['amount'])) ? '. ' . Text::get('invest-alert-investing') . ' ' . $_POST['amount'] . '&euro;' : '';
-                Message::Info($msg);
+                Model\Message::Info($msg);
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['login'])) {
@@ -90,7 +90,7 @@ namespace Goteo\Controller {
                         throw new Redirection('/dashboard');
                     }
                 } else {
-                    Message::Error(Text::get('login-fail'));
+                    Model\Message::Error(Text::get('login-fail'));
                 }
             } elseif (empty($_SESSION['user']) && !empty($_COOKIE['goteo_user'])) {
                 // si tenemos cookie de usuario
@@ -144,7 +144,7 @@ namespace Goteo\Controller {
                 $user->save($errors);
 
                 if (empty($errors)) {
-                    Message::Info(Text::get('user-register-success'));
+                    Model\Message::Info(Text::get('user-register-success'));
 
                     $_SESSION['user'] = Model\User::get($user->id);
 
@@ -160,7 +160,7 @@ namespace Goteo\Controller {
                     }
                 } else {
                     foreach ($errors as $field => $text) {
-                        Message::Error($text);
+                        Model\Message::Error($text);
                     }
                 }
             }
@@ -223,10 +223,10 @@ namespace Goteo\Controller {
                         //y fuerza que pueda logear en caso de que no esté activo
                         if (!$oauth->goteoLogin(true)) {
                             //si no: registrar errores
-                            Message::Error(Text::get($oauth->last_error));
+                            Model\Message::Error(Text::get($oauth->last_error));
                         }
                     } else {
-                        Message::Error(Text::get('login-fail'));
+                        Model\Message::Error(Text::get('login-fail'));
                         return new View(
                                         'user/confirm_account.html.php',
                                         array(
@@ -240,12 +240,12 @@ namespace Goteo\Controller {
                     //y fuerza que pueda logear en caso de que no esté activo
                     if (!$oauth->goteoLogin(true)) {
                         //si no: registrar errores
-                        Message::Error(Text::get($oauth->last_error));
+                        Model\Message::Error(Text::get($oauth->last_error));
                     }
                 } elseif ($errors) {
                     foreach ($errors as $err => $val) {
                         if ($err != 'email' && $err != 'userid')
-                            Message::Error($val);
+                            Model\Message::Error($val);
                     }
                 }
             }
@@ -269,7 +269,7 @@ namespace Goteo\Controller {
                 $oauth = new SocialAuth($_GET["provider"]);
                 if (!$oauth->authenticate()) {
                     //si falla: error, si no siempre se redirige al proveedor
-                    Message::Error(Text::get($oauth->last_error));
+                    Model\Message::Error(Text::get($oauth->last_error));
                 }
             }
 
@@ -281,7 +281,7 @@ namespace Goteo\Controller {
 
                 if ($oauth->login()) {
                     //si ok: redireccion de login!
-                    //Message::Info("USER INFO:\n".print_r($oauth->user_data,true));
+                    //Model\Message::Info("USER INFO:\n".print_r($oauth->user_data,true));
                     //si es posible, login en goteo (redirecciona a user/dashboard o a user/confirm)
                     //y fuerza que pueda logear en caso de que no esté activo
                     if (!$oauth->goteoLogin()) {
@@ -294,7 +294,7 @@ namespace Goteo\Controller {
                                             )
                             );
                         } elseif ($oauth->last_error == 'oauth-goteo-user-password-exists') {
-                            Message::Error(Text::get($oauth->last_error));
+                            Model\Message::Error(Text::get($oauth->last_error));
                             return new View(
                                             'user/confirm_account.html.php',
                                             array(
@@ -304,12 +304,12 @@ namespace Goteo\Controller {
                             );
                         }
                         else
-                            Message::Error(Text::get($oauth->last_error));
+                            Model\Message::Error(Text::get($oauth->last_error));
                     }
                 }
                 else {
                     //si falla: error
-                    Message::Error(Text::get($oauth->last_error));
+                    Model\Message::Error(Text::get($oauth->last_error));
                 }
             }
 
@@ -344,7 +344,7 @@ namespace Goteo\Controller {
             );
             if($row = $query->fetchObject()) {
                 if (!empty($row->id)) {
-                    Message::Error(Text::get('error-user-email-exists'));
+                    Model\Message::Error(Text::get('error-user-email-exists'));
                     return false;
                 }
             }
@@ -367,12 +367,12 @@ namespace Goteo\Controller {
                 $_SESSION['user'] = Model\User::get($user->id);
                 // creamos una cookie
                 setcookie("goteo_user", $user->id, time() + 3600 * 24 * 365);
-                Message::Info(Text::get('user-register-success'));
+                Model\Message::Info(Text::get('user-register-success'));
                 return $user->id;
             }
 
             if (!empty($errors)) {
-                Message::Error(implode('<br />', $errors));
+                Model\Message::Error(implode('<br />', $errors));
             }
 
             return false;
@@ -510,7 +510,7 @@ namespace Goteo\Controller {
                 // la subpágina de mensaje también está restringida
                 if ($show == 'message') {
                     $_SESSION['jumpto'] = '/user/profile/' . $id . '/message';
-                    Message::Info(Text::get('user-login-required-to_message'));
+                    Model\Message::Info(Text::get('user-login-required-to_message'));
                     throw new Redirection(SEC_URL."/user/login");
                 }
 
@@ -518,7 +518,7 @@ namespace Goteo\Controller {
                 // a menos que este perfil sea de un vip, no pueden verlo
                 if (!isset($user->roles['vip'])) {
                     $_SESSION['jumpto'] = '/user/profile/' . $id . '/' . $show;
-                    Message::Info(Text::get('user-login-required-to_see'));
+                    Model\Message::Info(Text::get('user-login-required-to_see'));
                     throw new Redirection(SEC_URL."/user/login");
                 }
             }
@@ -575,7 +575,7 @@ namespace Goteo\Controller {
 
             // si ya esta en la página de mensaje
             if ($show == 'message' && !$user->messageable) {
-                Message::Info(Text::get('user-message-restricted'));
+                Model\Message::Info(Text::get('user-message-restricted'));
                 throw new Redirection('/user/profile/' . $id);
             } else {
                 // para el controller/message::personal
@@ -758,7 +758,7 @@ namespace Goteo\Controller {
                     $user->confirmed = true;
                     $user->active = true;
                     if ($user->save($errors)) {
-                        Message::Info(Text::get('user-activate-success'));
+                        Model\Message::Info(Text::get('user-activate-success'));
                         $_SESSION['user'] = $user;
 
                         // Evento Feed
@@ -774,13 +774,13 @@ namespace Goteo\Controller {
 
                         unset($log);
                     } else {
-                        Message::Error($errors);
+                        Model\Message::Error($errors);
                     }
                 } else {
-                    Message::Info(Text::get('user-activate-already-active'));
+                    Model\Message::Info(Text::get('user-activate-already-active'));
                 }
             } else {
-                Message::Error(Text::get('user-activate-fail'));
+                Model\Message::Error(Text::get('user-activate-fail'));
             }
             throw new Redirection('/dashboard');
         }
@@ -799,18 +799,18 @@ namespace Goteo\Controller {
                     $user->email = $token;
                     $errors = array();
                     if ($user->save($errors)) {
-                        Message::Info(Text::get('user-changeemail-success'));
+                        Model\Message::Info(Text::get('user-changeemail-success'));
 
                         // Refresca la sesión.
                         Model\User::flush();
                     } else {
-                        Message::Error($errors);
+                        Model\Message::Error($errors);
                     }
                 } else {
-                    Message::Error(Text::get('user-changeemail-fail'));
+                    Model\Message::Error(Text::get('user-changeemail-fail'));
                 }
             } else {
-                Message::Error(Text::get('user-changeemail-fail'));
+                Model\Message::Error(Text::get('user-changeemail-fail'));
             }
             throw new Redirection('/dashboard');
         }
@@ -891,10 +891,10 @@ namespace Goteo\Controller {
                         if (!empty($id)) {
                             // el token coincide con el email y he obtenido una id
                             if (Model\User::cancel($id)) {
-                                Message::Info(Text::get('leave-process-completed'));
+                                Model\Message::Info(Text::get('leave-process-completed'));
                                 throw new Redirection(SEC_URL.'/user/login');
                             } else {
-                                Message::Error(Text::get('leave-process-fail'));
+                                Model\Message::Error(Text::get('leave-process-fail'));
                                 throw new Redirection(SEC_URL.'/user/login');
                             }
                         }

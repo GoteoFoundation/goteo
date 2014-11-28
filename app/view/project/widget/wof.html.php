@@ -7,7 +7,8 @@ use Goteo\Core\Error,
 
 $project = $this['project'];
 
-$wof = new WallFriends($project->id);
+// if($project instanceof \Goteo\Model\Project)
+    $wof = new WallFriends($project);
 if (!$wof instanceof \Goteo\Library\WallFriends) return;
 
 $URL = \SITE_URL;
