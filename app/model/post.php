@@ -59,24 +59,28 @@ namespace Goteo\Model {
                 $post = $query->fetchObject(__CLASS__);
 
                 // video
-                $post->media = new Media($post->media);
+                if (isset($post->media)) {
+                    $post->media = new Media($post->media);
+                }
 
-            // campo calculado gallery
-            if (!empty($post->gallery) && $post->gallery !== 'empty') {
-                $post->gallery = Image::getGallery($post->gallery);
-            } elseif ($post->gallery !== 'empty') {
-                $post->setGallery();
-            } else {
-                $post->gallery = array();
-            }
+                if($post instanceOf \Goteo\Model\Post) {
+                    // campo calculado gallery
+                    if (!empty($post->gallery) && $post->gallery !== 'empty') {
+                        $post->gallery = Image::getGallery($post->gallery);
+                    } elseif ($post->gallery !== 'empty') {
+                        $post->setGallery();
+                    } else {
+                        $post->gallery = array();
+                    }
 
-            if (!empty($post->image) && $post->image !== 'empty') {
-                $post->image = Image::get($post->image);
-            } elseif ($post->image !== 'empty') {
-                $post->setImage();
-            } else {
-                $post->image = null;
-            }
+                    if (!empty($post->image) && $post->image !== 'empty') {
+                        $post->image = Image::get($post->image);
+                    } elseif ($post->image !== 'empty') {
+                        $post->setImage();
+                    } else {
+                        $post->image = null;
+                    }
+                }
 
                 // autor
                 if (!empty($post->author)) {
@@ -215,9 +219,9 @@ namespace Goteo\Model {
                         break;
 
                     case 'node':
-                        
+
                         // datos del usuario. Eliminación de user::getMini
-        
+
                         $user = new User;
                         $user->id = $post->user_id;
                         $user->name = $post->user_name;
@@ -274,8 +278,8 @@ namespace Goteo\Model {
                     $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title";
                     $eng_join=" LEFT JOIN post_lang as eng
                                     ON  eng.id = post.id
-                                    AND eng.lang = 'en'"; 
-                }           
+                                    AND eng.lang = 'en'";
+                }
 
             $sql = "
                 SELECT
@@ -317,7 +321,7 @@ namespace Goteo\Model {
                     $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title";
                     $eng_join=" LEFT JOIN post_lang as eng
                                     ON  eng.id = post.id
-                                    AND eng.lang = 'en'";            
+                                    AND eng.lang = 'en'";
                  }
 
             $query = static::query("
