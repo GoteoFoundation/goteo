@@ -14,11 +14,11 @@ $project->reward     = nl2br(Text::urlink($project->reward));
 $level = (int) $this['level'] ?: 3;
 
 /* funcion codigo para imágenes */
-function putImages ($images) {
+$putImages = function ($images) {
     $code = '';
 
     if (!empty($images)) {
-        foreach ($images as $image) { 
+        foreach ($images as $image) {
             if (!empty($image->link)) {
                 $code .= '<div class="free-image">
                     <a href="'.$image->link.'" target="_blank"><img src="'.$image->imageData->getLink(580, 580).'" alt="image" /></a>
@@ -28,7 +28,7 @@ function putImages ($images) {
                     <img src="'.$image->imageData->getLink(580, 580).'" alt="image" />
                 </div>';
             }
-            
+
         }
     }
 
@@ -49,14 +49,14 @@ function putImages ($images) {
 		</script>
     <?php endif; ?>
 <div class="widget project-summary">
-    
+
     <h<?php echo $level ?>><?php echo htmlspecialchars($project->name) ?></h<?php echo $level ?>>
-        
+
     <?php if (!empty($project->description)): ?>
     <div class="description">
 <!--        <h<?php echo $level + 1?>><?php # echo Text::get('overview-field-description'); ?></h<?php echo $level + 1?>>         -->
         <?php echo $project->description; ?>
-    </div>    
+    </div>
     <?php endif ?>
 
     <?php if (count($project->gallery) > 1): ?>
@@ -93,17 +93,17 @@ function putImages ($images) {
     <div class="about">
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-about'); ?></h<?php echo $level + 1?>>
         <?php echo $project->about; ?>
-    </div>    
-    <?php echo putImages($project->secGallery['about']); ?>
+    </div>
+    <?php echo $putImages($project->secGallery['about']); ?>
     <?php endif ?>
-    
+
     <?php if (!empty($project->motivation)): ?>
     <a name="motivation"></a>
     <div class="motivation">
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-motivation'); ?></h<?php echo $level + 1?>>
         <?php echo $project->motivation; ?>
     </div>
-    <?php echo putImages($project->secGallery['motivation']); ?>
+    <?php echo $putImages($project->secGallery['motivation']); ?>
     <?php endif ?>
     <?php if (!empty($project->video->url)):  // video bajo motivación ?>
     <div class="project-motivation-video">
@@ -118,21 +118,21 @@ function putImages ($images) {
     <div class="goal">
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-goal'); ?></h<?php echo $level + 1?>>
         <?php echo $project->goal; ?>
-    </div>    
-    <?php echo putImages($project->secGallery['goal']); ?>
+    </div>
+    <?php echo $putImages($project->secGallery['goal']); ?>
     <?php endif ?>
-    
+
     <?php if (!empty($project->reward)): ?>
     <a name="reward"></a>
     <div class="reward">
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-reward'); ?></h<?php echo $level + 1?>>
         <?php echo $project->reward ?>
     </div>
-    <?php echo putImages($project->secGallery['reward']); ?>
+    <?php echo $putImages($project->secGallery['reward']); ?>
     <?php elseif ((empty($project->reward) && !empty($project->secGallery['reward']))) : ?>
         <a name="reward"></a>
         <h<?php echo $level + 1?> style="margin-bottom: 5px;"><?php echo Text::get('overview-field-reward'); ?></h<?php echo $level + 1?>>
-        <?php echo putImages($project->secGallery['reward']); ?>
+        <?php echo $putImages($project->secGallery['reward']); ?>
     <?php endif; ?>
 
     <?php if (!empty($project->related)): ?>
@@ -141,8 +141,8 @@ function putImages ($images) {
         <h<?php echo $level + 1?>><?php echo Text::get('overview-field-related'); ?></h<?php echo $level + 1?>>
         <?php echo $project->related ?>
     </div>
-    <?php echo putImages($project->secGallery['related']); ?>
+    <?php echo $putImages($project->secGallery['related']); ?>
     <?php endif ?>
 
-    
+
 </div>

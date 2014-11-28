@@ -14,12 +14,12 @@ if (!empty($this['success'])) {
     Goteo\Library\Message::Info(Text::get('call-form-ajax-info'));
 }
 
-$steps  = new View('view/call/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'id_call' => $call->id));
+$steps  = View::get('call/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'id_call' => $call->id));
 
 $superform = true;
-include 'view/prologue.html.php';
+include __DIR__ . '/../prologue.html.php';
 
-    include 'view/header.html.php'; ?>
+    include __DIR__ . '/../header.html.php'; ?>
 
     <div id="sub-header">
         <div class="project-header">
@@ -30,7 +30,7 @@ include 'view/prologue.html.php';
         </div>
     </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
     <div id="main" class="<?php echo htmlspecialchars($this['step']) ?>">
 
@@ -40,7 +40,7 @@ include 'view/prologue.html.php';
 
             <?php echo $steps ?>
 
-            <?php echo new View("view/call/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
+            <?php if($this['step']) echo View::get("call/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
 
             <?php echo $steps ?>
 
@@ -48,6 +48,6 @@ include 'view/prologue.html.php';
 
     </div>
 
-    <?php include 'view/footer.html.php' ?>
+    <?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

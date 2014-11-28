@@ -7,8 +7,8 @@ $item  = $this['item'];
 $page  = $this['page'];
 $share = $this['share'];
 
-echo new View("view/bazar/prologue.html.php", array('ogmeta'=>$this['ogmeta'], 'title'=>$page->title, 'description'=>$page->description));
-echo new View("view/bazar/header.html.php", array('page'=>$this['page']));
+echo View::get('bazar/prologue.html.php', array('ogmeta'=>$this['ogmeta'], 'title'=>$page->title, 'description'=>$page->description));
+echo View::get('bazar/header.html.php', array('page'=>$this['page']));
 
 if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; }
 ?>
@@ -28,11 +28,11 @@ if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; }
 	<div id="proj-name"><a href="/project/<?php echo $item->project->id; ?>" target="_blank"><?php echo $item->project->name.'<br />'.Text::get('regular-by').' '. $item->project->user->name; ?></a></div>
 </article>
 
-<?php echo new View("view/bazar/form.html.php", $this); ?>
+<?php echo View::get('bazar/form.html.php', $this); ?>
 
 </section>
 
 <?php
-echo new View("view/bazar/footer.html.php", array("share"=>$this['share'], 'text'=>$page->txt2));
-echo new View("view/bazar/epilogue.html.php");
+echo View::get('bazar/footer.html.php', array("share"=>$this['share'], 'text'=>$page->txt2));
+echo View::get('bazar/epilogue.html.php');
 ?>

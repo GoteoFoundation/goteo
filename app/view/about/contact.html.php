@@ -19,8 +19,8 @@ if ($showCaptcha) {
     $RECAPTCHA .= '/challenge?k='. RECAPTCHA_PUBLIC_KEY;
 }
 
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 ?>
 <style>#recaptcha_widget_div{display:none;}</style>
 <?php if (\NODE_ID == \GOTEO_NODE) : ?>
@@ -31,7 +31,7 @@ include 'view/header.html.php';
     </div>
 <?php endif; ?>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
     <div id="main">
 
         <div class="widget contact-message">
@@ -67,9 +67,9 @@ include 'view/header.html.php';
                                 <div class="field">
                                     <label for="tag"><?php echo Text::get('contact-tag-field'); ?></label><br />
                                     <select name="tag" id="tag">
-                                        <?php foreach ($tags as $key => $val) { 
+                                        <?php foreach ($tags as $key => $val) {
                                             $sel = ($key == $this['data']['tag']) ? ' selected="selected"' : '';
-                                            echo '<option value="'.$key.'"'.$sel.'>'.$val.'</option>'; 
+                                            echo '<option value="'.$key.'"'.$sel.'>'.$val.'</option>';
                                         } ?>
                                     </select>
                                 </div>
@@ -92,7 +92,7 @@ include 'view/header.html.php';
                                 </div>
                             </td>
                         </tr>
-                        
+
                         <?php if ($showCaptcha) { ?>
                         <tr>
                             <td colspan="2">
@@ -125,6 +125,6 @@ include 'view/header.html.php';
 
     </div>
 
-<?php include 'view/footer.html.php' ?>
+<?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

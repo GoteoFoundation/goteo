@@ -34,15 +34,15 @@ if (empty($shares)) {
 
 ?>
 
-<?php echo new View('view/user/widget/header.html.php', array('user'=>$user)) ?>
+<?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
 <?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
 
 <div id="main">
 
     <div class="center">
-       
-       
+
+
        <!-- lista de categorías -->
         <div class="widget categorylist">
             <h3 class="title"><?php echo Text::get('profile-sharing_interests-header');?></h3>
@@ -52,7 +52,7 @@ if (empty($shares)) {
                 <ul>
                     <li><a href="#" class="active">Por categorías</a></li>
                     <li class="separator">|</li>
-                    <li><a href="#">Por tags</a></li>                
+                    <li><a href="#">Por tags</a></li>
                 </ul>
             </div>
 			-->
@@ -73,7 +73,7 @@ if (empty($shares)) {
             </div>
         </div>
         <!-- fin lista de categorías -->
-        
+
         <!-- detalle de categoría (cabecera de categoría) -->
         <?php foreach ($shares as $catId => $sharemates) :
             if (count($sharemates) == 0) continue;
@@ -83,7 +83,7 @@ if (empty($shares)) {
                 <h3 class="title"><?php echo $categories[$catId] ?></h3>
                 <div class="users">
                     <ul>
-                    <?php 
+                    <?php
                     $cnt = 1;
                     foreach ($sharemates as $mate) :
                         if (empty($this['category']) && $cnt > 6) break;
@@ -99,7 +99,7 @@ if (empty($shares)) {
 <!--                                <span class="contact"><a href="/user/profile/<?php echo htmlspecialchars($mate->user) ?>/message"><?php echo Text::get('regular-send_message'); ?></a></span> -->
                             </div>
                         </li>
-                    <?php 
+                    <?php
                     $cnt ++;
                     endforeach; ?>
                     </ul>
@@ -112,11 +112,11 @@ if (empty($shares)) {
         </div>
         <?php endforeach; ?>
         <!-- fin detalle de categoría (cabecera de categoría) -->
-        
+
     </div>
     <div class="side">
-        <?php if (!empty($_SESSION['user'])) echo new View('view/user/widget/investors.html.php', $this) ?>
-        <?php echo new View('view/user/widget/user.html.php', $this) ?>
+        <?php if (!empty($_SESSION['user'])) echo View::get('user/widget/investors.html.php', $this) ?>
+        <?php echo View::get('user/widget/user.html.php', $this) ?>
     </div>
 
 </div>

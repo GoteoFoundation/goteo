@@ -4,8 +4,8 @@
 	$bodyClass = 'discover';
 	include 'view/prologue.html.php';
 	include 'view/header.html.php' ?>
-	
-	<script type="text/javascript">	
+
+	<script type="text/javascript">
 		jQuery(document).ready(function ($) {
 			/* todo esto para cada tipo de grupo */
 			<?php foreach ($this['lists'] as $type=>$list) :
@@ -44,7 +44,7 @@
         </div>
 
         <div id="main">
-            <?php echo new View('view/discover/searcher.html.php',
+            <?php echo View::get('discover/searcher.html.php',
                                 array(
                                     'categories' => $categories,
                                     'locations'  => $locations,
@@ -66,9 +66,9 @@
                         </div>
 
                         <?php foreach ($projects['items'] as $project) :
-                            echo new View('view/project/widget/project.html.php', array('project' => $project));
+                            echo View::get('project/widget/project.html.php', array('project' => $project));
                         endforeach; ?>
-                        
+
                         <div class="discover-arrow-right">
                             <a class="discover-arrow" href="/discover/view/<?php echo $type; ?>" rev="<?php echo $type ?>" rel="<?php echo $type.'-'.$projects['next'] ?>">&nbsp;</a>
                         </div>
@@ -76,7 +76,7 @@
                     </div>
                 <?php endforeach; ?>
 
-                
+
                 <!-- carrusel de imagenes -->
                 <div class="navi-bar">
                     <ul class="navi">
@@ -90,9 +90,9 @@
             </div>
 
         <?php endforeach; ?>
-        
-        </div>        
+
+        </div>
 
         <?php include 'view/footer.html.php' ?>
-    
+
 <?php include 'view/epilogue.html.php' ?>

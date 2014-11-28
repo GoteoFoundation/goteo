@@ -2,7 +2,9 @@
 
 use Goteo\Library\Text,
     Goteo\Core\View,
-    Goteo\Model\Blog\Post;
+    Goteo\Model\Blog\Post,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $URL = \SITE_URL;
 
@@ -28,9 +30,7 @@ if (empty($this['post'])) {
 
 if ($this['show'] == 'list') {
     // paginacion
-    require_once 'library/pagination/pagination.php';
-
-    $pagedResults = new \Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
+    $pagedResults = new Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
 }
 
 // segun lo que tengamos que mostrar :  lista o entrada
@@ -38,23 +38,23 @@ if ($this['show'] == 'list') {
 
 $level = (int) $this['level'] ?: 3;
 ?>
-<div class="project-updates"> 
+<div class="project-updates">
     <!-- una entrada -->
     <?php if ($action == 'post') : ?>
     <div class="post widget">
-        <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'post', 'url' => '/project/'.$project->id.'/updates/')); ?>
-        <?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/project/'.$project->id.'/updates/' . $post->id, $post->title, $project->user->twitter))); ?>
+        <?php echo View::get('blog/post.html.php', array('post' => $post->id, 'show' => 'post', 'url' => '/project/'.$project->id.'/updates/')); ?>
+        <?php echo View::get('blog/share.html.php', array('urls' => Text::shareLinks($URL . '/project/'.$project->id.'/updates/' . $post->id, $post->title, $project->user->twitter))); ?>
     </div>
-    <?php echo new View('view/blog/comments.html.php', array('post' => $post->id, 'owner' => $project->owner)); ?>
-    <?php echo new View('view/blog/sendComment.html.php', array('post' => $post->id, 'project' => $project->id)); ?>
+    <?php echo View::get('blog/comments.html.php', array('post' => $post->id, 'owner' => $project->owner)); ?>
+    <?php echo View::get('blog/sendComment.html.php', array('post' => $post->id, 'project' => $project->id)); ?>
     <?php endif ?>
     <!-- Lista de entradas -->
     <?php if ($action == 'list') : ?>
         <?php if (!empty($posts)) : ?>
             <?php while ($post = $pagedResults->fetchPagedRow()) : ?>
                 <div class="widget post">
-                    <?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'list', 'url' => '/project/'.$project->id.'/updates/')); ?>
-                    <?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/project/'.$project->id.'/updates/' . $post->id, $post->title, $project->user->twitter))); ?>
+                    <?php echo View::get('blog/post.html.php', array('post' => $post->id, 'show' => 'list', 'url' => '/project/'.$project->id.'/updates/')); ?>
+                    <?php echo View::get('blog/share.html.php', array('urls' => Text::shareLinks($URL . '/project/'.$project->id.'/updates/' . $post->id, $post->title, $project->user->twitter))); ?>
 					<div class="comments-num"><a href="/project/<?php echo $project->id; ?>/updates/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
                 </div>
             <?php endwhile; ?>
@@ -66,5 +66,5 @@ $level = (int) $this['level'] ?: 3;
             <p><?php echo Text::get('blog-no_posts'); ?></p>
         <?php endif; ?>
     <?php endif; ?>
-    
+
 </div>

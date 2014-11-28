@@ -26,7 +26,7 @@ $campaigns = $this['calls']['campaigns'];
         <div class="slder_calls"<?php if (count($calls) == 1) : ?> style="overflow: hidden; position: relative; display: block;"<?php endif ?>>
         <?php foreach ($calls as $call) : ?>
             <div class="slder_slide">
-            <?php echo new View('view/call/widget/call.html.php', array('call' => $call)); ?>
+            <?php echo View::get('call/widget/call.html.php', array('call' => $call)); ?>
             </div>
         <?php endforeach; ?></div>
         <div class="arrow-right"><?php if (count($calls) > 1) : ?><a class="next">next</a><?php endif ?></div>
@@ -48,7 +48,7 @@ $campaigns = $this['calls']['campaigns'];
         <div class="slder_campaigns"<?php if (count($campaigns) == 1) : ?> style="overflow: hidden; position: relative; display: block;"<?php endif ?>>
         <?php foreach ($campaigns as $campaign)  : ?>
             <div class="slder_slide">
-            <?php echo new View('view/call/widget/call.html.php', array('call' => $campaign)); ?>
+            <?php echo View::get('call/widget/call.html.php', array('call' => $campaign)); ?>
             </div>
         <?php endforeach; ?></div>
         <div class="arrow-right"><?php if (count($campaigns) > 1) : ?><a class="next">next</a><?php endif ?></div>

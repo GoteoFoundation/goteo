@@ -46,7 +46,7 @@ echo new NormalForm(array(
         ),
 
         'data' => array(
-            'type'  => 'html',
+            'type'  => 'HTML',
             'title' => Text::get('dashboard-menu-profile-access'),
             'hint'  => Text::get('tooltip-dashboard-user-access_data'),
             'html'  => '<strong>'.Text::get('login-access-username-field').': </strong>'.$user->id.'<br /><strong>'.Text::get('login-register-email-field').': </strong>'.$user->email
@@ -58,7 +58,7 @@ echo new NormalForm(array(
             'hint'      => Text::get('tooltip-dashboard-user-change_email'),
             'children'  => array(
                 'user_nemail' => array(
-                    'type'  => 'textbox',
+                    'type'  => 'TextBox',
                     'class' => 'inline',
                     'title' => Text::get('login-register-email-field'),
                     'hint'  => Text::get('tooltip-dashboard-user-new_email'),
@@ -66,7 +66,7 @@ echo new NormalForm(array(
                     'value' => $user_nemail
                 ),
                 'user_remail' => array(
-                    'type'  => 'textbox',
+                    'type'  => 'TextBox',
                     'class' => 'inline',
                     'title' => Text::get('login-register-confirm-field'),
                     'hint'  => Text::get('tooltip-dashboard-user-confirm_email'),
@@ -91,12 +91,12 @@ echo new NormalForm(array(
                 'user_password' => $old_pass ,
                  */
                 'pass_anchor' => array(
-                    'type'  => 'html',
+                    'type'  => 'HTML',
                     'class' => 'inline',
                     'html'  => '<a name="password"></a>' . $messge
                 ),
                 'user_npassword' => array(
-                    'type'  => 'password',
+                    'type'  => 'Password',
                     'class' => 'inline',
                     'title' => Text::get('user-changepass-new'),
                     'hint'  => Text::get('tooltip-dashboard-user-new_password'),
@@ -104,7 +104,7 @@ echo new NormalForm(array(
                     'value' => $user_npassword
                 ),
                 'user_rpassword' => array(
-                    'type'  => 'password',
+                    'type'  => 'Password',
                     'class' => 'inline',
                     'title' => Text::get('user-changepass-confirm'),
                     'hint'  => Text::get('tooltip-dashboard-user-confirm_password'),
@@ -112,7 +112,7 @@ echo new NormalForm(array(
                     'value' => $user_rpassword
                 ),
                 'change_password' => array(
-                    'type'      => 'submit',
+                    'type'      => 'Submit',
                     'label'     => Text::get('form-apply-button'),
                     'class'     => 'save'
                 )

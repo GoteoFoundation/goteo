@@ -64,15 +64,15 @@ $elements      = array(
         'html'      =>   '<div class="project-preview" style="position: relative"><div>'
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
-                       . new View('view/project/widget/support.html.php', array('project' => $project))
-                       . new View('view/project/widget/collaborations.html.php', array('project' => $project))
-                       . new View('view/project/widget/rewards.html.php', array('project' => $project))
-                       . new View('view/user/widget/user.html.php', array('user' => $project->user))
-                       . new View('view/project/widget/media.html.php', array('project' => $project))
-                       . new View('view/project/widget/share.html.php', array('project' => $project))
-                       . new View('view/project/widget/summary.html.php', array('project' => $project))
-                       . new View('view/project/widget/needs.html.php', array('project' => $project, 'types' => $types))
-                       . new View('view/project/widget/schedule.html.php', array('project' => $project))
+                       . View::get('project/widget/support.html.php', array('project' => $project))
+                       . View::get('project/widget/collaborations.html.php', array('project' => $project))
+                       . View::get('project/widget/rewards.html.php', array('project' => $project))
+                       . View::get('user/widget/user.html.php', array('user' => $project->user))
+                       . View::get('project/widget/media.html.php', array('project' => $project))
+                       . View::get('project/widget/share.html.php', array('project' => $project))
+                       . View::get('project/widget/summary.html.php', array('project' => $project))
+                       . View::get('project/widget/needs.html.php', array('project' => $project, 'types' => $types))
+                       . View::get('project/widget/schedule.html.php', array('project' => $project))
                        . '</div>'
                        . '</div></div>'
     )
@@ -97,7 +97,7 @@ if ($project->status == 1) {
         'children'  => array(
             'errors' => array(
                 'title' => Text::get('form-footer-errors_title'),
-                'view'  => new View('view/project/edit/errors.html.php', array(
+                'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
                     ))
@@ -112,7 +112,7 @@ if ($project->status == 1) {
 }
 
 // lanzamos el superform
-echo new SuperForm(array(
+echo SuperForm::get(array(
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',

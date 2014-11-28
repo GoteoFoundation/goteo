@@ -27,7 +27,7 @@ include 'view/header.html.php'; ?>
         <div id="main">
 
             <div class="widget">
-                <?php echo new View ('view/translate/langs/selector.html.php', $this); ?>
+                <?php echo View::get('translate/langs/selector.html.php', $this); ?>
             </div>
 
             <?php if (!empty($this['errors'])) : ?>
@@ -40,7 +40,7 @@ include 'view/header.html.php'; ?>
 
             <?php
             if (!empty($this['section']) && !empty($this['action'])) :
-                echo new View ('view/translate/'.$this['section'].'/'.$this['action'].'.html.php', $this);
+                echo View::get('translate/'.$this['section'].'/'.$this['action'].'.html.php', $this);
             else :
                 foreach ($this['menu'] as $sCode=>$section) :
                     if ($sCode == 'node') continue;

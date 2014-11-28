@@ -27,20 +27,20 @@ shuffle($final);
 
 $call->projects = array_merge($call->projects, $final);
 
-include 'view/call/prologue.html.php';
-include 'view/call/header.html.php';
+include __DIR__ . '/../call/prologue.html.php';
+include __DIR__ . '/../call/header.html.php';
 ?>
 
 <div id="main">
-    <?php echo new View('view/call/widget/title.html.php', $this); ?>
+    <?php echo View::get('call/widget/title.html.php', $this); ?>
     <div id="banners-social">
-        <?php echo new View('view/call/widget/banners.html.php', $this) ?>
-        <?php echo new View('view/call/widget/social.html.php', $this) ?>
+        <?php echo View::get('call/widget/banners.html.php', $this) ?>
+        <?php echo View::get('call/widget/social.html.php', $this) ?>
     </div>
 
     <div id="info">
         <div id="content">
-			
+
             <h2 class="title"><?php echo Text::get('call-splash-selected_projects-header') ?></h2>
 
             <p class="subtitle">
@@ -65,7 +65,7 @@ include 'view/call/header.html.php';
                 foreach ($call->projects as $proj) {
                     $project = Project::getWidget($proj);
                     $project->per_amount = round(($project->amount / $project->mincost) * 100);
-                    echo new View('view/project/widget/tiny_project.html.php', array('project' => $project));
+                    echo View::get('project/widget/tiny_project.html.php', array('project' => $project));
                 }
                 ?>
             </ul>
@@ -73,16 +73,16 @@ include 'view/call/header.html.php';
             <p style="padding-left: 15px;">
                 <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/info" class="button info"><?php echo Text::get('call-splash-more_info-button') ?></a>
             </p>
-            
+
         </div>
-        <?php echo new View('view/call/side.html.php', $this); ?>
+        <?php echo View::get('call/side.html.php', $this); ?>
     </div>
 
-    <?php echo new View('view/call/widget/social-responsive.html.php', $this) ?>
-    <?php echo new View('view/call/bottom.html.php', $this); ?>
+    <?php echo View::get('call/widget/social-responsive.html.php', $this) ?>
+    <?php echo View::get('call/bottom.html.php', $this); ?>
 </div>
 
 <?php
-include 'view/call/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/../call/footer.html.php';
+include __DIR__ . '/../epilogue.html.php';
 ?>

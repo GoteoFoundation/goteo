@@ -4,8 +4,8 @@ use Goteo\Library\Text,
 
 $bodyClass = 'community about';
 
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/prologue.html.php';
+include __DIR__ . '/header.html.php';
 ?>
 
     <div id="sub-header">
@@ -17,17 +17,17 @@ include 'view/header.html.php';
     <div id="main">
 
     <?php if ($this['show'] == 'activity') : /* ahora el feed*/ ?>
-        <?php echo new View('view/community/feed.html.php', $this) ?>
+        <?php echo View::get('community/feed.html.php', $this) ?>
     <?php /* Hasta aqui el feed*/ else : /*a ahora sharemates global*/ ?>
         <div class="center">
-            <?php echo new View('view/community/sharemates.html.php', $this) ?>
+            <?php echo View::get('community/sharemates.html.php', $this) ?>
         </div>
         <div class="side">
-            <?php echo new View('view/community/investors.html.php', $this) ?>
+            <?php echo View::get('community/investors.html.php', $this) ?>
         </div>
     <?php /* Hasta qui sharemates global */ endif; ?>
 
     </div>
 
-<?php include 'view/footer.html.php' ?>
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/footer.html.php' ?>
+<?php include __DIR__ . '/epilogue.html.php' ?>

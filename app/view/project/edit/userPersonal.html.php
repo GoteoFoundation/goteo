@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $project = $this['project'];
-$errors = $project->errors[$this['step']] ?: array();         
+$errors = $project->errors[$this['step']] ?: array();
 $okeys  = $project->okeys[$this['step']] ?: array();
 $account = $this['account'];
 
@@ -40,12 +40,12 @@ $campos_cuentas['bank'] = array(
 
 
 
-echo new SuperForm(array(
+echo SuperForm::get(array(
 
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('personal-main-header'),
-    'hint'          => Text::get('guide-project-contract-information'),    
+    'hint'          => Text::get('guide-project-contract-information'),
     'elements'      => array(
         'process_userPersonal' => array (
             'type' => 'hidden',
@@ -278,10 +278,10 @@ echo new SuperForm(array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -295,9 +295,9 @@ echo new SuperForm(array(
                     )
                 )
             )
-        
+
         )
-        
+
     )
 
 ));

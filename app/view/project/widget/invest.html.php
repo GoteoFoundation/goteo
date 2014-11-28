@@ -36,7 +36,7 @@ if ($project->called instanceof Call && $project->called->dropable) {
     $allowpp = false;
 } else {
     $call = null;
-    
+
     $allowpp = $project->allowpp;
 }
 
@@ -62,7 +62,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 
     <form method="post" action="<?php echo SEC_URL.$action; ?>">
     <div style="position:relative;">
-        
+
         <label><input type="text" id="amount"  name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
         <span class="symbol"><?php echo $select_currency; ?></span>
     </div>
@@ -84,10 +84,10 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 </div>
 <?php endif; ?>
 
-    
+
 <div class="widget project-invest project-invest-individual_rewards">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-individual-header') ?></h<?php echo $level ?>>
-    
+
     <div class="individual">
         <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-rewards-individual_reward-title'); ?></h<?php echo $level+1 ?>>
         <ul>
@@ -95,7 +95,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
             <!-- <span class="chkbox"></span> -->
         <?php foreach ($project->individual_rewards as $individual) : ?>
         <li class="<?php echo $individual->icon ?><?php if ($individual->none) echo ' disabled' ?>">
-            
+
             <label class="amount" for="reward_<?php echo $individual->id; ?>">
                 <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo $individual->amount; ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
                 <span class="amount"><?php echo \amount_format($individual->amount); ?></span>
@@ -110,7 +110,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                 echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
             <?php endif; ?>
             </label>
-            
+
         </li>
         <?php endforeach ?>
         </ul>
@@ -185,7 +185,7 @@ if ($step == 'start') : ?>
         <?php if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?><button type="submit" class="process pay-cash" name="method"  value="cash">CASH</button><?php endif; ?>
     </div>
 <br />
-    
+
     <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
 
     <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
@@ -195,7 +195,7 @@ if ($step == 'start') : ?>
 
 </form>
 
-<?php echo new View('view/project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
+<?php echo View::get('project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
 
 <a name="commons"></a>
 <div class="widget project-invest">
@@ -227,9 +227,9 @@ if ($step == 'start') : ?>
 </div>
 
 <script type="text/javascript">
-    
+
     $(function () {
-        
+
         var update = function () {
 
             var $reward = null;
@@ -256,7 +256,7 @@ if ($step == 'start') : ?>
                  $('#resign_reward').closest('li').addClass('chosed');
                }
             });
-        };    
+        };
 
         var reset_reward = function (chosen) {
 
@@ -322,7 +322,7 @@ if ($step == 'start') : ?>
                 reset_reward(i);
             }
             <?php endif; ?>
-            
+
             if (greater(a, curr)) {
                 reset_reminder(a);
             }
@@ -396,6 +396,6 @@ if ($step == 'start') : ?>
 /* Seteo inicial por url */
         reset_amount('<?php echo $amount ?>');
 
-    });    
-    
+    });
+
 </script>

@@ -26,7 +26,7 @@ $allow = array(
 $images = array();
 foreach ($post->gallery as $image) {
     $images[] = array(
-        'type'  => 'html',
+        'type'  => 'HTML',
         'class' => 'inline gallery-image',
         'html'  => is_object($image) ?
                    $image . '<img src="' . SITE_URL . '/image/' . $image->id . '/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->hash.'-remove" title="Quitar imagen" value="remove"></button>' :
@@ -77,32 +77,32 @@ $(document).ready(function(){
                 'class' => 'next'
             ),
             'pending' => array(
-                'type'  => 'checkbox',
+                'type'  => 'CheckBox',
                 'name'  => 'pending',
                 'label' => Text::get('mark-pending'),
             )
         ),
         'elements'      => array(
             'id' => array (
-                'type' => 'hidden',
+                'type' => 'Hidden',
                 'value' => $post->id
             ),
             'order' => array (
-                'type' => 'hidden',
+                'type' => 'Hidden',
                 'value' => $post->order
             ),
             'node' => array (
-                'type' => 'hidden',
+                'type' => 'Hidden',
                 'value' => $post->node
             ),
             'title' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'size'      => 20,
                 'title'     => 'Idea',
                 'value'     => $post->title,
             ),
             'text' => array(
-                'type'      => 'textarea',
+                'type'      => 'TextArea',
                 'cols'      => 40,
                 'rows'      => 4,
                 'title'     => 'Explicación de la idea',
@@ -110,7 +110,7 @@ $(document).ready(function(){
             ),
             'image' => array(
                 'title'     => 'Imagen',
-                'type'      => 'group',
+                'type'      => 'Group',
                 'class'     => 'image',
                 'children'  => array(
                     'image_upload'    => array(
@@ -123,14 +123,14 @@ $(document).ready(function(){
             ),
 
             'gallery' => array(
-                'type'  => 'group',
+                'type'  => 'Group',
                 'title' => Text::get('overview-field-image_gallery'),
                 'class' => 'inline',
                 'children'  => $images
             ),
 
             'media' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'title'     => 'Vídeo',
                 'class'     => 'media',
                 'value'     => (string) $post->media,
@@ -138,13 +138,13 @@ $(document).ready(function(){
                     'media-preview' => array(
                         'title' => 'Vista previa',
                         'class' => 'media-preview inline',
-                        'type'  => 'html',
+                        'type'  => 'HTML',
                         'html'  => !empty($post->media) ? $post->media->getEmbedCode() : ''
                     )
                 )
             ),
             'legend' => array(
-                'type'      => 'textarea',
+                'type'      => 'TextArea',
                 'title'     => Text::get('regular-media_legend'),
                 'value'     => $post->legend,
             ),

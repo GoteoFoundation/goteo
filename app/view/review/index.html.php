@@ -26,7 +26,7 @@ include 'view/header.html.php';
             </div>
         </div>
 
-        <?php  echo new View ('view/review/menu.html.php', $this) ?>
+        <?php  echo View::get('review/menu.html.php', $this) ?>
 
 <?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
 
@@ -51,7 +51,7 @@ include 'view/header.html.php';
             } ?>
 
             <?php if (!empty($this['section']) && !empty($this['option'])) {
-                echo new View ('view/review/'.$this['section'].'/'.$this['option'].'.html.php', $this);
+                echo View::get('review/'.$this['section'].'/'.$this['option'].'.html.php', $this);
             } ?>
 
         </div>

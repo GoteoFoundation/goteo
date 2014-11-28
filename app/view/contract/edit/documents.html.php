@@ -32,11 +32,11 @@ foreach ($contract->docs as $doc) {
 $descfields = (!isset($_SESSION['user']->roles['manager']) && !isset($_SESSION['user']->roles['superadmin']))
     ? array()
     : array(
-            'type' => 'group',
+            'type' => 'Group',
             'title'     => 'Proyecto',
             'children'  => array(
                 'project_description' => array(
-                    'type'      => 'textarea',
+                    'type'      => 'TextArea',
                     'title'     => 'Descripción del proyecto',
                     'hint'      => Text::get('tooltip-contract-project_description'),
                     'required'  => true,
@@ -45,7 +45,7 @@ $descfields = (!isset($_SESSION['user']->roles['manager']) && !isset($_SESSION['
                     'value'     => $contract->project_description
                 ),
                 'project_invest' => array(
-                    'type'      => 'textarea',
+                    'type'      => 'TextArea',
                     'title'     => 'Objetivos de financiación',
                     'required'  => true,
                     'hint'      => Text::get('tooltip-contract-project_invest'),
@@ -54,7 +54,7 @@ $descfields = (!isset($_SESSION['user']->roles['manager']) && !isset($_SESSION['
                     'value'     => $contract->project_invest
                 ),
                 'project_return' => array(
-                    'type'      => 'textarea',
+                    'type'      => 'TextArea',
                     'title'     => 'Retornos comprometidos',
                     'hint'      => Text::get('tooltip-contract-project_return'),
                     'required'  => true,
@@ -66,8 +66,6 @@ $descfields = (!isset($_SESSION['user']->roles['manager']) && !isset($_SESSION['
             )
         );
 
-
-
 $superform = array(
     'level'         => $this['level'],
     'action'        => '',
@@ -77,13 +75,13 @@ $superform = array(
     'class'         => 'aqua',
     'elements'      => array(
         'process_documents' => array (
-            'type' => 'hidden',
+            'type' => 'Hidden',
             'value' => 'documents'
         ),
 
         'docs' => array(
             'title'     => 'Documentación',
-            'type'      => 'group',
+            'type'      => 'Group',
             'required'  => true,
             'hint'      => Text::get('tooltip-contract-docs'),
             'errors'    => !empty($errors['docs']) ? array($errors['docs']) : array(),
@@ -99,7 +97,7 @@ $superform = array(
             )
         ),
         'documents' => array(
-            'type'  => 'group',
+            'type'  => 'Group',
             'title' => 'Documentos subidos',
             'class' => 'inline',
             'children'  => $docs
@@ -109,17 +107,17 @@ $superform = array(
 
 
         'footer' => array(
-            'type'      => 'group',
+            'type'      => 'Group',
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/contract/edit/errors.html.php', array(
+                    'view'  => new View('contract/edit/errors.html.php', array(
                         'contract'   => $contract,
                         'step'      => $this['step']
                     ))
                 ),
                 'buttons'  => array(
-                    'type'  => 'group',
+                    'type'  => 'Group',
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
@@ -137,13 +135,12 @@ $superform = array(
 
 );
 
-
 foreach ($superform['elements'] as $id => &$element) {
 
     if (!empty($this['errors'][$this['step']][$id])) {
-        $element['errors'] = arrray();
+        $element['errors'] = array();
     }
 
 }
 
-echo new SuperForm($superform);
+echo SuperForm::get($superform);

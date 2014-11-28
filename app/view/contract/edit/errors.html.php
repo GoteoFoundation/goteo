@@ -5,6 +5,7 @@ $contract = $this['contract'];
 $step = $this['step'];
 $step_errors = count($contract->errors[$step]);
 $total_errors = 0;
+
 foreach ($contract->errors as $st => $errors) {
     $total_errors += count($errors);
 }

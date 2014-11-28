@@ -1,6 +1,8 @@
 <?php
 use Goteo\Library\Text,
-    Goteo\Core\View;
+    Goteo\Core\View,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $posts = $this['posts'];
 $index = $this['index'];
@@ -12,17 +14,15 @@ $bodyClass = 'glossary';
 $go_up = Text::get('regular-go_up');
 
 // paginacion
-require_once 'library/pagination/pagination.php';
-
-$pagedResults = new \Paginated($posts, $this['tpp'], isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($posts, $this['tpp'], isset($_GET['page']) ? $_GET['page'] : 1);
 
 include 'view/prologue.html.php';
-include 'view/header.html.php'; 
+include 'view/header.html.php';
 ?>
 	<div id="sub-header-secondary">
 		<div class="clearfix">
             <h2><a href="/glossary">GOTEO<span class="red"><?php echo Text::get('footer-resources-glossary');?></span></a></h2>
-            <?php echo new View('view/header/share.html.php') ?>
+            <?php echo View::get('header/share.html.php') ?>
 		</div>
 	</div>
 

@@ -10,7 +10,7 @@ if (LANG != 'es') {
 $bodyClass = 'admin';
 
 include 'view/prologue.html.php';
-include 'view/header.html.php'; 
+include 'view/header.html.php';
 ?>
 
         <div id="sub-header" style="margin-bottom: 10px;">
@@ -32,9 +32,9 @@ include 'view/header.html.php';
             $path = 'view/manage/'.$this['folder'].'/'.$this['file'].'.html.php';
         }
 
-            echo new View ($path, $this);
+            echo View::get($path, $this);
        else :
-           
+
         // Central pendientes
     ?>
         <div class="widget admin-home">

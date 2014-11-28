@@ -71,7 +71,7 @@ foreach ($user->webs as $web) {
 
         $user_webs["web-{$web->id}"] = array(
             'class'     => 'web',
-            'view'      => 'view/project/edit/webs/web.html.php',
+            'view'      => 'project/edit/webs/web.html.php',
             'data'      => array('web' => $web),
         );
 
@@ -81,7 +81,7 @@ foreach ($user->webs as $web) {
 
 $sfid = 'sf-project-profile';
 
-echo new SuperForm(array(
+echo SuperForm::get(array(
     'id'            => $sfid,
     'action'        => '',
     'level'         => $this['level'],
@@ -262,7 +262,7 @@ echo new SuperForm(array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
                     ))

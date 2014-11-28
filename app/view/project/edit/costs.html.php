@@ -157,7 +157,7 @@ if (!empty($project->costs)) {
         } else {
             $costs["cost-{$cost->id}"] = array(
                 'class'     => 'cost ' . $req_class,
-                'view'      => 'view/project/edit/costs/cost.html.php',
+                'view'      => 'project/edit/costs/cost.html.php',
                 'data'      => array('cost' => $cost),
             );
 
@@ -169,7 +169,7 @@ if (!empty($project->costs)) {
 
 $sfid = 'sf-project-costs';
 
-echo new SuperForm(array(
+echo SuperForm::get(array(
 
     'id'            => $sfid,
 
@@ -179,6 +179,7 @@ echo new SuperForm(array(
     'title'         => Text::get('costs-main-header'),
     'hint'          => Text::get('guide-project-costs'),
     'class'         => 'aqua',
+
     'elements'      => array(
         'process_costs' => array (
             'type' => 'hidden',
@@ -212,30 +213,30 @@ echo new SuperForm(array(
             'class'     => 'cost-meter',
             'errors'    => !empty($errors["total-costs"]) ? array($errors["total-costs"]) : array(),
             'ok'        => !empty($okeys["total-costs"]) ? array($okeys["total-costs"]) : array(),
-            'view'      => new View('view/project/edit/costs/meter.html.php', array(
+            'view'      => new View('project/edit/costs/meter.html.php', array(
                 'project'   => $project
             )),
             'hint'      => Text::get('tooltip-project-totals')
         ),
 
-        /* aligerando
-        'resource' => array(
-            'type'      => 'textarea',
-            'cols'      => 40,
-            'rows'      => 4,
-            'title'     => Text::get('costs-field-resoure'),
-            'hint'      => Text::get('tooltip-project-resource'),
-            'errors'    => !empty($errors["resource"]) ? array($errors["resource"]) : array(),
-            'ok'        => !empty($okeys["resource"]) ? array($okeys["resource"]) : array(),
-            'value'     => $project->resource
-        ),
-        */
+        //  aligerando
+        // 'resource' => array(
+        //     'type'      => 'textarea',
+        //     'cols'      => 40,
+        //     'rows'      => 4,
+        //     'title'     => Text::get('costs-field-resoure'),
+        //     'hint'      => Text::get('tooltip-project-resource'),
+        //     'errors'    => !empty($errors["resource"]) ? array($errors["resource"]) : array(),
+        //     'ok'        => !empty($okeys["resource"]) ? array($okeys["resource"]) : array(),
+        //     'value'     => $project->resource
+        // ),
+
 
         'schedule' => array(
             'type'      => 'html',
             'class'     => 'schedule',
             'hint'      => Text::get('tooltip-project-schedule'),
-            'html'      => new View('view/project/widget/schedule.html.php', array('project' => $project))
+            'html'      => View::get('project/widget/schedule.html.php', array('project' => $project))
         ),
 
         'rounds' => array(
@@ -256,7 +257,7 @@ echo new SuperForm(array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
                     ))
@@ -279,6 +280,8 @@ echo new SuperForm(array(
     )
 
 ));
+
+
 ?>
 <script type="text/javascript">
 $(function () {

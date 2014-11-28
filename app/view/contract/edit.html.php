@@ -8,15 +8,15 @@ $bodyClass = 'project-edit';
 
 $contract = $this['contract'];
 
-$steps  = new View('view/contract/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $contract->errors));
+$steps  = View::get('contract/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $contract->errors));
 
 if (!$contract->status->owner)
     Message::Info(Text::get('form-ajax-info'));
 
 $superform = true;
-include 'view/prologue.html.php';
+include __DIR__ . '/../prologue.html.php';
 
-    include 'view/header.html.php'; ?>
+    include __DIR__ . '/../header.html.php'; ?>
 
     <div id="sub-header">
         <div class="project-header">
@@ -24,7 +24,7 @@ include 'view/prologue.html.php';
         </div>
     </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
     <div id="main" class="<?php echo htmlspecialchars($this['step']) ?>">
 
@@ -34,7 +34,7 @@ include 'view/prologue.html.php';
 
             <?php echo $steps ?>
 
-            <?php echo new View("view/contract/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
+            <?php if($this['step']) echo View::get("contract/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)); ?>
 
             <?php echo $steps ?>
 
@@ -51,6 +51,6 @@ include 'view/prologue.html.php';
 
     </div>
 
-    <?php include 'view/footer.html.php' ?>
+    <?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

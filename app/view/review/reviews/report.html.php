@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Model\Criteria;
 
-echo new View ('view/review/reviews/selector.html.php', $this);
+echo View::get('review/reviews/selector.html.php', $this);
 
 $review   = $this['review'];
 $evaluation = $this['evaluation'];

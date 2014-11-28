@@ -33,7 +33,7 @@
 <div id="project-code">
     <?php
         // el proyecto de trabajo
-        echo new View('view/project/widget/project.html.php', array('project'=>$project));
+        echo View::get('project/widget/project.html.php', array('project'=>$project));
     ?>
 </div>
 <div id="widget-code">

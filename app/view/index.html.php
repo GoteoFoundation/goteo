@@ -54,7 +54,7 @@ include 'view/header.html.php';
     <div class="clearfix">
         <div class="slides_container">
             <?php if (!empty($this['banners'])) : foreach ($this['banners'] as $id=>$banner) : ?>
-            <div class="subhead-banner"><?php echo new View('view/header/banner.html.php', array('banner'=>$banner)); ?></div>
+            <div class="subhead-banner"><?php echo View::get('header/banner.html.php', array('banner'=>$banner)); ?></div>
             <?php endforeach; endif;
             if (count($this['banners']) == 1) : ?>
             <div class="subhead-banner"><?php echo Text::html('main-banner-header'); ?></div>
@@ -77,11 +77,11 @@ include 'view/header.html.php';
 
         if ($item=="news")
             {
-                $bannerPrensa = new View("view/home/news.html.php",$this);
+                $bannerPrensa = View::get('home/news.html.php',$this);
                 continue;
             }
 
-        if (!empty($this[$item])) echo new View("view/home/{$item}.html.php", $this);
+        if (!empty($this[$item])) echo View::get("view/home/{$item}.html.php", $this);
     } ?>
 
 </div>

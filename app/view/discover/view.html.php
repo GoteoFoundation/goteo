@@ -21,15 +21,15 @@ include 'view/header.html.php' ?>
 
             <div class="widget projects">
                 <?php foreach ($this['list'] as $project) {
-                     echo new View('view/project/widget/project.html.php', array(
+                     echo View::get('project/widget/project.html.php', array(
                             'project' => $project
                             ));
                 } ?>
             </div>
 
-            <?php echo new View('view/pagination.html.php', $this); ?>
-        </div>        
+            <?php echo View::get('pagination.html.php', $this); ?>
+        </div>
 
         <?php include 'view/footer.html.php' ?>
-    
+
 <?php include 'view/epilogue.html.php' ?>

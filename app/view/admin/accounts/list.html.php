@@ -54,7 +54,7 @@ $emails = Invest::emails(true);
             </select>
         </div>
         <?php endforeach; ?>
-        
+
         <div style="float:left;margin:5px;">
             <label for="amount-filter">Importe desde:</label><br />
             <input type="text" id ="amount-filter" name="amount" value ="<?php echo $filters['amount']?>" />
@@ -66,7 +66,7 @@ $emails = Invest::emails(true);
         </div>
 
         <br clear="both" />
-        
+
         <div style="float:left;margin:5px;">
             <label for="name-filter">Alias/Email del usuario:</label><br />
             <input type="text" id ="name-filter" name="name" value ="<?php echo $filters['name']?>" />
@@ -74,11 +74,11 @@ $emails = Invest::emails(true);
 
         <div style="float:left;margin:5px;" id="date-filter-from">
             <label for="date-filter-from">Fecha desde</label><br />
-            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_from'], 'id'=>'date-filter-from', 'name'=>'date_from', 'js' => true)); ?>
+            <?php echo View::get('superform/element/datebox.html.php', array('value'=>$filters['date_from'], 'id'=>'date-filter-from', 'name'=>'date_from', 'js' => true)); ?>
         </div>
         <div style="float:left;margin:5px;" id="date-filter-until">
             <label for="date-filter-until">Fecha hasta</label><br />
-            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$filters['date_until'], 'id'=>'date-filter-until', 'name'=>'date_until', 'js' => true)); ?>
+            <?php echo View::get('superform/element/datebox.html.php', array('value'=>$filters['date_until'], 'id'=>'date-filter-until', 'name'=>'date_until', 'js' => true)); ?>
         </div>
 
         <div style="float:left;margin:5px;">
@@ -103,7 +103,7 @@ $emails = Invest::emails(true);
 <?php $Total = 0; foreach ($this['list'] as $invest) { $Total += $invest->amount; } ?>
     <p><strong>TOTAL:</strong>  <?php echo number_format($Total, 0, '', '.') ?> &euro;</p>
     <p><strong>OJO!</strong> Resultado limitado a 999 registros como máximo.</p>
-    
+
     <table width="100%">
         <thead>
             <tr>

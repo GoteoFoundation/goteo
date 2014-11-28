@@ -1,1 +1,1 @@
-<?php include 'view/error/default.html.php' ?>
+<?php include __DIR__ . '/default.html.php' ?>

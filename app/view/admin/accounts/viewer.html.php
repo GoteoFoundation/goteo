@@ -20,7 +20,7 @@ $date = $this['date'];
         </div>
         <div style="float:left;margin:5px;" id="hdate">
             <label for="hdate">Fecha del log:</label><br />
-            <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$date, 'id'=>'hdate', 'name'=>'date', 'js' => true)); ?>
+            <?php echo View::get('superform/element/datebox.html.php', array('value'=>$date, 'id'=>'hdate', 'name'=>'date', 'js' => true)); ?>
         </div>
         <div style="float:left;margin:5px;">
             <input type="submit" value="Ver" />

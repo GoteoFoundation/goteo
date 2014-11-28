@@ -1,9 +1,8 @@
 <?php
 
-use Goteo\Library\Text;
-
-// paginacion
-require_once 'library/pagination/pagination.php';
+use Goteo\Library\Text,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $filters = $this['filters'];
 $users = $this['users'];
@@ -31,7 +30,7 @@ foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new \Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/users/add" class="button">Crear usuario</a>
 

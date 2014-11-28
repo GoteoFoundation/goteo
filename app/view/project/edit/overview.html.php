@@ -15,7 +15,7 @@ foreach ($this['categories'] as $value => $label) {
         'value'     => $value,
         'label'     => $label,
         'checked'   => in_array($value, $project->categories)
-        );            
+        );
 }
 
 /*
@@ -25,8 +25,8 @@ $currently = array();
 foreach ($this['currently'] as $value => $label) {
     $currently[] =  array(
         'value'     => $value,
-        'label'     => $label        
-        );            
+        'label'     => $label
+        );
 }
 
 $scope = array();
@@ -101,7 +101,7 @@ $superform = array(
     'method'        => 'post',
     'title'         => Text::get('overview-main-header'),
     'hint'          => Text::get('guide-project-description'),
-    'class'         => 'aqua',        
+    'class'         => 'aqua',
     'elements'      => array(
         'process_overview' => array (
             'type' => 'hidden',
@@ -122,7 +122,7 @@ $superform = array(
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array()
         ),
-        
+
         'subtitle' => array(
             'type'      => 'textbox',
             'title'     => Text::get('overview-field-subtitle'),
@@ -137,23 +137,23 @@ $superform = array(
             'type' => 'html',
             'html' => '<a name="images"></a>'
         ),
-        
+
         'description' => array(
             'type'      => 'textarea',
             'title'     => Text::get('overview-field-description'),
             'required'  => true,
             'hint'      => Text::get('tooltip-project-description'),
-            'value'     => $project->description,            
+            'value'     => $project->description,
             'errors'    => !empty($errors['description']) ? array($errors['description']) : array(),
             'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array()
         ),
-        
+
         // video principal del proyecto
         'anchor-media' => array(
             'type' => 'html',
             'html' => '<a name="media"></a>'
         ),
-        
+
         'media' => array(
             'type'      => 'textbox',
             'required'  => is_object($project->called) ? false : true, // solo obligatorio si no está aplicando a convocatoria
@@ -171,9 +171,9 @@ $superform = array(
             'class' => 'inline media-upload',
             'onclick' => "document.getElementById('proj-superform').action += '#media';"
         ),
-        
+
         'media-preview' => $media,
-        
+
         // universal subtitles video principal
         'media_usubs' => array(
             'type'      => 'checkbox',
@@ -188,12 +188,12 @@ $superform = array(
             'value'     => 1
         ),
         // fin media
-        
+
         'description_group' => array(
             'type' => 'group',
-            'children'  => array(                
+            'children'  => array(
                 'about' => array(
-                    'type'      => 'textarea',       
+                    'type'      => 'textarea',
                     'title'     => Text::get('overview-field-about'),
                     'required'  => true,
                     'hint'      => Text::get('tooltip-project-about'),
@@ -202,7 +202,7 @@ $superform = array(
                     'value'     => $project->about
                 ),
                 'motivation' => array(
-                    'type'      => 'textarea',       
+                    'type'      => 'textarea',
                     'title'     => Text::get('overview-field-motivation'),
                     'required'  => true,
                     'hint'      => Text::get('tooltip-project-motivation'),
@@ -228,11 +228,11 @@ $superform = array(
                 ),
 
                 'reward' => $reward
-                
+
             )
         ),
-       
-        'category' => array(    
+
+        'category' => array(
             'type'      => 'checkboxes',
             'name'      => 'categories[]',
             'title'     => Text::get('overview-field-categories'),
@@ -242,14 +242,14 @@ $superform = array(
             'hint'      => Text::get('tooltip-project-category'),
             'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
             'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
-        ),       
+        ),
 
         // video motivacion
         'anchor-video' => array(
             'type' => 'html',
             'html' => '<a name="video"></a>'
         ),
-        
+
         'video' => array(
             'type'      => 'textbox',
             'required'  => false,
@@ -284,7 +284,7 @@ $superform = array(
             'checked'   => (bool) $project->video_usubs
         ),
         // fin video motivacion
-        
+
         /*
         'keywords' => array(
             'type'      => 'textbox',
@@ -298,7 +298,7 @@ $superform = array(
          */
 
         /* Aligerando superform
-        'currently' => array(    
+        'currently' => array(
             'title'     => Text::get('overview-field-currently'),
             'type'      => 'slider',
 //            'required'  => true,
@@ -335,16 +335,16 @@ $superform = array(
             'value'     => $project->scope
         ),
          */
-        
+
         'footer' => array(
             'type'      => 'group',
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -358,7 +358,7 @@ $superform = array(
                     )
                 )
             )
-        
+
         )
 
     )
@@ -367,11 +367,11 @@ $superform = array(
 
 
 foreach ($superform['elements'] as $id => &$element) {
-    
+
     if (!empty($this['errors'][$this['step']][$id])) {
         $element['errors'] = arrray();
     }
-    
+
 }
 
-echo new SuperForm($superform);
+echo SuperForm::get($superform);

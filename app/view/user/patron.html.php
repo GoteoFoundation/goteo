@@ -52,12 +52,12 @@ shuffle($recos);
 <div id="sub-header">
     <div>
         <h2><span class="greenblue"><?php echo $user->name ?></span><br /><?php echo Text::html('profile-patron-header', count($recos)) ?></h2>
-        
+
         <?php if (!empty($user->node) && $user->node != \GOTEO_NODE) : ?>
         <div class="nodemark"><a class="node-jump" href="<?php echo $user->nodeData->url ?>" ><img src ="/nodesys/<?php echo $user->node ?>/sello.png" alt="<?php echo htmlspecialchars($user->nodeData->name) ?>" title="Nodo <?php echo htmlspecialchars($user->nodeData->name) ?>"/></a></div>
         <?php endif; ?>
     </div>
-    
+
 </div>
 
 <?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
@@ -101,11 +101,11 @@ shuffle($recos);
 
     <div class="widget projects">
 
-    <?php foreach ($recos as $reco) : 
-            echo new View('view/project/widget/project.html.php', array(
+    <?php foreach ($recos as $reco) :
+            echo View::get('project/widget/project.html.php', array(
                 'project' => $reco->projectData,
                 'balloon' => '<h4>' . htmlspecialchars($reco->title) . '</h4>' .
-                             '<blockquote>' . $reco->patron_description . '</blockquote>', 
+                             '<blockquote>' . $reco->patron_description . '</blockquote>',
                 'investor' => $user
             ));
     endforeach ?>
@@ -127,9 +127,9 @@ shuffle($recos);
 
                     <?php foreach ($projects['items'] as $project) :
                         if ($type == 'my_projects')  {
-                            echo new View('view/project/widget/project.html.php', array('project' => $project));
+                            echo View::get('project/widget/project.html.php', array('project' => $project));
                         } else {
-                            echo new View('view/project/widget/project.html.php', array('project' => $project, 'investor' => $user));
+                            echo View::get('project/widget/project.html.php', array('project' => $project, 'investor' => $user));
                         }
                     endforeach; ?>
 
@@ -152,7 +152,7 @@ shuffle($recos);
 
         </div>
         <?php endforeach; ?>
-    
+
 
 </div>
 

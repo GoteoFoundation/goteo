@@ -38,7 +38,7 @@ $go_up = Text::get('regular-go_up');
 		<div id="sub-header-secondary">
             <div class="clearfix">
                 <h2>GOTEO<span class="red">FAQ</span></h2>
-                <?php echo new View('view/header/share.html.php') ?>
+                <?php echo View::get('header/share.html.php') ?>
             </div>
         </div>
 <?php endif; ?>
@@ -47,7 +47,7 @@ $go_up = Text::get('regular-go_up');
 				<div class="faq-page-title"><?php echo Text::get('regular-faq') ?>
                     <span class="line"></span>
                 </div>
-                
+
                 <div class="goask"><?php echo Text::get('faq-ask-question'); ?></div>
                 <div class="goask-button"><a class="button green" href="/contact"><?php echo Text::get('regular-ask'); ?></a></div>
 
@@ -63,7 +63,7 @@ $go_up = Text::get('regular-go_up');
 
                 <h3 style="color: <?php echo $this['colors'][$current] ?>;" ><?php echo $this['sections'][$current]; ?></h3>
                 <ol>
-                    <?php foreach ($this['faqs'][$current] as $question)  : 
+                    <?php foreach ($this['faqs'][$current] as $question)  :
                         if (empty($question->title)) continue;
                         ?>
                         <li>

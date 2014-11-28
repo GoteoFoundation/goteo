@@ -7,14 +7,14 @@ $bodyClass = 'info';
 
 $call = $this['call'];
 
-include 'view/call/prologue.html.php';
-include 'view/call/header.html.php';
+include __DIR__ . '/../call/prologue.html.php';
+include __DIR__ . '/../call/header.html.php';
 ?>
 <div id="main">
-    <?php echo new View('view/call/widget/title.html.php', $this); ?>
+    <?php echo View::get('call/widget/title.html.php', $this); ?>
     <div id="banners-social">
-        <?php echo new View('view/call/widget/banners.html.php', $this) ?>
-        <?php echo new View('view/call/widget/social.html.php', $this) ?>
+        <?php echo View::get('call/widget/banners.html.php', $this) ?>
+        <?php echo View::get('call/widget/social.html.php', $this) ?>
     </div>
 
     <div id="info">
@@ -28,7 +28,7 @@ include 'view/call/header.html.php';
                 <?php endif; ?>
 
                 <?php if (($call->status > 3 ) && $call->num_projects > 0)
-                        echo new View('view/call/widget/table.html.php', $this);
+                        echo View::get('call/widget/table.html.php', $this);
                 ?>
 
                 <?php if (!empty($call->whom)) : // si hay contenido  ?>
@@ -58,15 +58,15 @@ include 'view/call/header.html.php';
         <?php endif; ?>
             </p>
         </div>
-        <?php echo new View('view/call/side.html.php', $this); ?>
+        <?php echo View::get('call/side.html.php', $this); ?>
     </div>
 
-    <?php echo new View('view/call/widget/social-responsive.html.php', $this) ?>
+    <?php echo View::get('call/widget/social-responsive.html.php', $this) ?>
 
-    <?php echo new View('view/call/bottom.html.php', $this); ?>
+    <?php echo View::get('call/bottom.html.php', $this); ?>
 </div>
 
 <?php
-include 'view/call/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/../call/footer.html.php';
+include __DIR__ . '/../epilogue.html.php';
 ?>

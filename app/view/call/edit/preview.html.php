@@ -22,7 +22,7 @@ foreach ($this['steps'] as $id => $data) {
 // boton de revisar que no sirve para mucho
 $buttons = array(
     'review' => array(
-        'type'  => 'submit',
+        'type'  => 'Submit',
         'name'  => $goto,
         'label' => Text::get('form-self_review-button'),
         'class' => 'retry'
@@ -32,14 +32,14 @@ $buttons = array(
 // si es enviable ponemos el boton
 if ($finishable) {
     $buttons['finish'] = array(
-        'type'  => 'submit',
+        'type'  => 'Submit',
         'name'  => 'finish',
         'label' => Text::get('form-send_review-button'),
         'class' => 'confirm red'
     );
 } else {
     $buttons['nofinish'] = array(
-        'type'  => 'submit',
+        'type'  => 'Submit',
         'name'  => 'nofinish',
         'label' => Text::get('form-send_review-button'),
         'class' => 'confirm disabled',
@@ -50,12 +50,12 @@ if ($finishable) {
 // elementos generales de preview
 $elements      = array(
     'process_preview' => array (
-        'type' => 'hidden',
+        'type' => 'Hidden',
         'value' => 'preview'
     ),
 
     'splash' => array(
-        'type'      => 'html',
+        'type'      => 'HTML',
         'class'     => 'fullwidth',
         'html'      =>  '<table><tr><td>'
                         . '<a href="/call/'.$call->id.'/?preview=apply" class="button" target="_blank">'.Text::get('call-see_apply-button').'</a>'
@@ -69,17 +69,17 @@ $elements      = array(
 
 // Footer
 $elements['footer'] = array(
-    'type'      => 'group',
+    'type'      => 'Group',
     'children'  => array(
         'errors' => array(
             'title' => Text::get('form-footer-errors_title'),
-            'view'  => new View('view/project/edit/errors.html.php', array(
+            'view'  => new View('project/edit/errors.html.php', array(
                 'project'   => $call,
                 'step'      => $this['step']
-            ))                    
+            ))
         ),
         'buttons'  => array(
-            'type'  => 'group',
+            'type'  => 'Group',
             'children' => $buttons
         )
     )
@@ -87,7 +87,7 @@ $elements['footer'] = array(
 );
 
 // lanzamos el superform
-echo new SuperForm(array(
+echo SuperForm::get(array(
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',

@@ -1,11 +1,12 @@
 <?php
 use Goteo\Core\View,
     Goteo\Library\Text,
+    Goteo\Model\Call,
     Goteo\Model;
 
 $call = $this['call'];
 
-$callStatus = call::status($call->status);
+$callStatus = Call::status($call->status);
 $status = Model\Project::status();
 
 ?>

@@ -7,11 +7,13 @@ namespace Goteo\Core {
         private
             $file;
 
+        protected static $views_path = array();
+
+
         public function __construct ($file, $vars = null) {
 
-            if (!is_file($file)) {
-                //TODO: no deberia ser una excepcion????
-                die("La vista `{$file}` no existe. ");
+            if (!is_string($file)) {
+                throw new View\Exception("Unknow file [$file]", 1);
             }
 
             $this->file = $file;
@@ -20,6 +22,13 @@ namespace Goteo\Core {
                 $this->set($vars);
             }
 
+        }
+
+        static public function addViewPath($path) {
+            if(is_dir($path)) {
+                if(substr($path,-1, 1) !== '/' ) $path .= '/';
+                if(!in_array($path, self::$views_path)) self::$views_path[] = $path;
+            }
         }
 
         public function set ($var) {
@@ -31,29 +40,71 @@ namespace Goteo\Core {
             } else if (is_string($var) && func_num_args() >= 2) {
                 $this[$var] = func_get_arg(1);
             } else {
-                throw new View\Exception;
+                throw new View\Exception("Error args number in var [$var]", 1);
             }
 
         }
 
         public function getMIME () {
 
-            // @todo Adivinar por la extensión
+            // @TODO Adivinar por la extensión
             return 'text/html';
         }
 
-        public function __toString () {
+        public function getViewPath() {
+            foreach(self::$views_path as $path) {
+                if(is_file($path . $this->file)) return $path . $this->file;
+            }
+            throw new View\Exception("View [{$this->file}] not found!", 1);
+        }
+
+        public function render() {
             try {
+                $file = $this->getViewPath();
                 ob_start();
 
-                include $this->file;
+                include $file;
 
                 return ob_get_clean();
-            } catch(Exception $e) {
-                print($e);
-                die($e->getMessage());
+            }
+            //TODO: catch not found and show 404 file
+            catch(\Exception $e) {
+                throw new View\Exception("Error in Included view [{$this->file}]\nView Exception Message:\n" . $e->getMessage()."\n", 1);
+            }
+            catch(View\Exception $e) {
+                throw new View\Exception("Error in View [{$this->file}]\nView Exception Message:\n" . $e->getMessage()."\n", 1);
+                // print($e);
+                // die($e->getMessage());
             }
 
+        }
+
+        /**
+         * Convenient method to shortcut:
+         *     echo (new View('my_view.html.php'))->render();
+         * Change by:
+         *     echo View::get('my_view.html.php');
+         *
+         * @param  [type] $view [description]
+         * @return [type]       [description]
+         */
+        static public function get($view, $vars = null) {
+            return (new View($view, $vars))->render();
+        }
+
+        /**
+         * This method should be avoided, cannot throw an exception
+         * @return string [description]
+         */
+        public function __toString () {
+            //__toString method shall not throw an Exception
+            try {
+                return $this->render();
+            }
+            catch(\Exception $e) {
+                // print($e);
+                die($e->getMessage());
+            }
         }
 
 

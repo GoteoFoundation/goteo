@@ -101,7 +101,7 @@ if (!empty($project->social_rewards)) {
 
             $social_rewards["social_reward-{$social_reward->id}"] = array(
                 'class'     => 'reward social_reward',
-                'view'      => 'view/dashboard/translates/rewards/reward.html.php',
+                'view'      => 'dashboard/translates/rewards/reward.html.php',
                 'data'      => array('reward' => $social_reward, 'licenses' => $this['licenses']),
             );
 
@@ -204,7 +204,7 @@ if (!empty($project->individual_rewards)) {
 
             $individual_rewards["individual_reward-{$individual_reward->id}"] = array(
                 'class'     => 'reward individual_reward',
-                'view'      => 'view/dashboard/translates/rewards/reward.html.php',
+                'view'      => 'dashboard/translates/rewards/reward.html.php',
                 'data'      => array('reward' => $individual_reward),
             );
 
@@ -218,7 +218,7 @@ $sfid = 'sf-project-rewards';
 
 <form method="post" action="/dashboard/translates/rewards/save" class="project" enctype="multipart/form-data">
 
-<?php echo new SuperForm(array(
+<?php echo SuperForm::get(array(
 
     'id'            => $sfid,
 
