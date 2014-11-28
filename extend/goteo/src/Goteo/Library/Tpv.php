@@ -5,7 +5,7 @@ namespace Goteo\Library {
         Goteo\Model\Project,
         Goteo\Core\Redirection;
 
-    require_once 'library/tpv/wshandler.php';  // Libreria para comunicaciones con el webservice TPV y log
+    require_once __DIR__ . '/Tpv/wshandler.php';  // Libreria para comunicaciones con el webservice TPV y log
 
 	/*
 	 * Clase para usar el tpv de SaNostra mediante CECA
@@ -59,7 +59,7 @@ namespace Goteo\Library {
                 // Clave_encriptacion+MerchantID+AcquirerBIN+TerminalID+Num_operacion+Importe+Tipo Moneda+Exponente+ +Cadena SHA1+URL_OK+URL_NOK
                 $sign_code = $clave.$MerchantID.$AcquirerBIN.$TerminalID.$token.$amount.$currency.$exponent.$cypher.$Url_OK.$Url_NOK;
                 $Firma = sha1($sign_code);
-                
+
 //                echo 'Carro: '.$sign_code . '<br />Da: ' . $Firma . '<hr />';
 
 
@@ -104,7 +104,7 @@ namespace Goteo\Library {
                 @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion TPV  en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br />' . $ex->getMessage());
                 return false;
 			}
-            
+
         }
 
         public static function cancelPreapproval ($invest, &$errors = array(), $fail = false) {
@@ -206,5 +206,5 @@ namespace Goteo\Library {
         }
 
 	}
-	
+
 }

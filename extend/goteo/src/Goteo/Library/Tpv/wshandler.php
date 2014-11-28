@@ -7,27 +7,27 @@ This file contains methods to make calls to Ceca "webservice"
 Called by /library/tpv.php
 
 ****************************************************/
-require_once 'library/paypal/stub.php'; // sí, uso el stub de paypal
-require_once 'library/paypal/log.php'; // sí, uso el log de paypal
+require_once __DIR__ . '/../../../../../Goteo/Library/paypal/stub.php'; // sí, uso el stub de paypal
+require_once __DIR__ . '/../../../../../Goteo/Library/paypal/log.php'; // sí, uso el log de paypal
 
 class WSHandler {
-	
+
 	/*
 	 * public variables
 	 */
-	
-    
-    
+
+
+
     /*
      * Error ID
      */
     public $error_id = '';
-    
+
     /*
-     * Error Message  
+     * Error Message
      */
     public $error_message = '';
-    
+
     /*
      * Result FAILURE or SUCCESS
      */
@@ -37,17 +37,17 @@ class WSHandler {
      * Last Error
      */
     private $LastError;
-	
-      	
+
+
    	/*
    	 * Calls the actual WEB Service and returns the response.
    	 */
    	function callWebService($data, $url) {
-		
+
 		$response = null;
-		
+
 		try {
-			
+
 		    $response = tpvcall($data, $url);
 		    $isFault = false;
 			if(empty($response) || trim($response) == '')
@@ -58,16 +58,16 @@ class WSHandler {
 				$errorData->errorId = 'API Error' ;
 		  		$errorData->message = 'response is empty.' ;
 		  		$fault->error = $errorData;
-				
+
 		  		$this->isSuccess = 'Failure' ;
 		  		$this->LastError = $fault;
 		        $response = null;
-	   			
+
 	   		}
 	   		else
-	   		{      
+	   		{
 		   		$isFault = false;
-		   	
+
 		   		$this->isSuccess = 'Success' ;
 				if($isFault)
 		        {
@@ -82,14 +82,14 @@ class WSHandler {
 		}
 	   return $response;
 	}
-	
+
     /*
      * Returns Error ID
      */
     function getErrorId() {
 		$errorId  = '';
 		if($this->LastError != null) {
-		
+
 	     	if(is_array($this->LastError->error))
 	        {
 	        	$errorId  = $this->LastError->error[0]->errorId ;
@@ -109,7 +109,7 @@ class WSHandler {
     function getErrorMessage() {
     	$errorMessage = '';
     	if($this->LastError != null) {
-    		
+
     		if(is_array($this->LastError->error))
 	        {
 	        	$errorMessage = $this->LastError->error[0]->message ;
@@ -122,7 +122,7 @@ class WSHandler {
         return $errorMessage ;
 
     }
-    
+
     /*
      * Returns Last error
      */
@@ -168,15 +168,15 @@ function tpvcall($data, $endpoint)
     }
     curl_setopt($ch, CURLOPT_POSTFIELDS, implode('&', $the_data)); // datos clave=>valor del POST
 
-    
+
     if(isset($_SESSION['curl_error_no'])) {
 	    unset($_SESSION['curl_error_no']);
     }
     if(isset($_SESSION['curl_error_msg'])) {
 	    unset($_SESSION['curl_error_msg']);
     }
-    
-   
+
+
     //getting response from server
     $response = curl_exec($ch);
 
@@ -197,4 +197,3 @@ function tpvcall($data, $endpoint)
 
     return $response;
 }
-?>
