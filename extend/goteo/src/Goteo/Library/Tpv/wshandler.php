@@ -7,8 +7,8 @@ This file contains methods to make calls to Ceca "webservice"
 Called by /library/tpv.php
 
 ****************************************************/
-require_once __DIR__ . '/../../../../../Goteo/Library/paypal/stub.php'; // sí, uso el stub de paypal
-require_once __DIR__ . '/../../../../../Goteo/Library/paypal/log.php'; // sí, uso el log de paypal
+require_once __DIR__ . '/../../../../../../src/Goteo/Library/paypal/stub.php'; // sí, uso el stub de paypal
+require_once __DIR__ . '/../../../../../../src/Goteo/Library/paypal/log.php'; // sí, uso el log de paypal
 
 class WSHandler {
 
