@@ -27,6 +27,7 @@ namespace Goteo\Controller {
             }
 
             $showCaptcha = (GOTEO_ENV == 'real');
+
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
@@ -70,7 +71,7 @@ namespace Goteo\Controller {
 
                 if ($showCaptcha) {
                     // verificamos el captcha
-                    require 'library/recaptchalib.php';
+                    require_once __DIR__ . '/../../src/Goteo/Library/recaptchalib/recaptchalib.php';
                     $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response"]);
                     if (!$resp->is_valid) {
                         $errors['recaptcha'] = Text::get('error-contact-captcha');

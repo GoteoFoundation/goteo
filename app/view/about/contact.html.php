@@ -13,7 +13,7 @@ $_SESSION['msg_token'] = uniqid(rand(), true);
 
 if ($showCaptcha) {
     // recaptcha
-    require_once 'library/recaptchalib.php';
+    require_once __DIR__ . '/../../../src/Goteo/Library/recaptchalib/recaptchalib.php';
 
     $RECAPTCHA = (\HTTPS_ON) ? RECAPTCHA_API_SECURE_SERVER : RECAPTCHA_API_SERVER;
     $RECAPTCHA .= '/challenge?k='. RECAPTCHA_PUBLIC_KEY;
