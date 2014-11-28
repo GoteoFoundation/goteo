@@ -257,6 +257,7 @@ namespace Goteo\Model {
 
         /*
          *  Cargamos los datos del proyecto
+         *  TODO: better exception throwing (namespaced)
          */
         public static function get($id, $lang = null) {
 

@@ -32,7 +32,15 @@ define('GOTEO_DATA_PATH', __DIR__ . '/../var/data/');
 //cache
 define('GOTEO_CACHE_PATH', __DIR__ . '/../var/cache/');
 
+//Cache dir in libs
 \Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
+//Default views
+//General views
+\Goteo\Core\View::addViewPath(__DIR__ . '/view');
+//NormalForm views
+\Goteo\Core\View::addViewPath(__DIR__ . '/../src/Goteo/Library/NormalForm/view');
+//SuperForm views
+\Goteo\Core\View::addViewPath(__DIR__ . '/../src/Goteo/Library/SuperForm/view');
 
 /**
  * Carga de configuración local si existe

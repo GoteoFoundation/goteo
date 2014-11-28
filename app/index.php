@@ -135,7 +135,7 @@ $_SESSION['currency'] = $CCY; // session variable
 \setlocale(\LC_TIME, Lang::locale());
 /* Cookie para la ley de cookies */
 if (empty($_COOKIE['goteo_cookies'])) {
-    setcookie("goteo_cookies", '1', time() + 3600 * 24 * 365);
+    setcookie('goteo_cookies', '1', time() + 3600 * 24 * 365);
     Message::Info(Text::get('message-cookies'));
 }
 
@@ -251,9 +251,9 @@ try {
     header("Location: {$url}");
 
 } catch (Error $error) {
-    include "view/error.html.php";
+    include 'error.html.php';
 
 } catch (Exception $exception) {
     // Default error (500)
-    include "view/error.html.php";
+    include 'error.html.php';
 }
