@@ -12,7 +12,7 @@ $sfid = 'sf-project-profile';
 
 <form method="post" action="/dashboard/translates/profile/save" class="project" enctype="multipart/form-data">
 
-<?php echo new SuperForm(array(
+<?php echo SuperForm::get(array(
     'id'            => $sfid,
     'action'        => '',
     'level'         => 3,

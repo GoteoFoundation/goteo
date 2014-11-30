@@ -130,7 +130,7 @@ namespace Goteo\Controller\Translate {
             }
 
             return new View(
-                'view/translate/index.html.php',
+                'translate/index.html.php',
                 array(
                     'section' => 'pages',
                     'action' => $action,

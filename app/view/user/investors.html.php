@@ -3,23 +3,23 @@
 use Goteo\Core\View,
     Goteo\Library\Worth,
     Goteo\Library\Text,
-    Goteo\Model\User\Interest;
+    Goteo\Model\User\Interest,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $bodyClass = 'user-profile';
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $user = $this['user'];
 $worthcracy = Worth::getAll();
 
 // en la página de cofinanciadores, paginación de 20 en 20
-require_once 'library/pagination/pagination.php';
-
-$pagedResults = new \Paginated($this['investors'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($this['investors'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
-<?php echo new View('view/user/widget/header.html.php', array('user'=>$user)) ?>
+<?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -34,7 +34,7 @@ $pagedResults = new \Paginated($this['investors'], 20, isset($_GET['page']) ? $_
             <div class="supporters">
                 <ul>
                 <?php while ($investor = $pagedResults->fetchPagedRow()) : ?>
-                    <li class="activable"><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>
+                    <li class="activable"><?php echo View::get('user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>
                 <?php endwhile ?>
                 </ul>
             </div>
@@ -47,12 +47,12 @@ $pagedResults = new \Paginated($this['investors'], 20, isset($_GET['page']) ? $_
         </div>
     </div>
     <div class="side">
-        <?php echo new View('view/user/widget/sharemates.html.php', $this) ?>
-        <?php echo new View('view/user/widget/user.html.php', $this) ?>
+        <?php echo View::get('user/widget/sharemates.html.php', $this) ?>
+        <?php echo View::get('user/widget/user.html.php', $this) ?>
     </div>
 
 </div>
 
-<?php include 'view/footer.html.php' ?>
+<?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

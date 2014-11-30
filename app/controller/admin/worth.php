@@ -50,7 +50,7 @@ namespace Goteo\Controller\Admin {
                     Message::Error(implode('<br />', $errors));
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'worth',
                             'file' => 'edit',
@@ -66,7 +66,7 @@ namespace Goteo\Controller\Admin {
                     $worth = WorthLib::getAdmin($id);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'worth',
                             'file' => 'edit',
@@ -80,14 +80,14 @@ namespace Goteo\Controller\Admin {
             $worthcracy = WorthLib::getAll();
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'worth',
                     'file' => 'list',
                     'worthcracy' => $worthcracy
                 )
             );
-            
+
         }
 
     }

@@ -67,7 +67,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'node',
                             'file' => 'edit',
@@ -108,7 +108,7 @@ namespace Goteo\Controller\Admin {
                     $nodeLang = Model\Node::get($node->id, $_SESSION['translate_lang']);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'node',
                             'file' => 'translate',
@@ -117,14 +117,14 @@ namespace Goteo\Controller\Admin {
                             'nodeLang' => $nodeLang
                         )
                     );
-                    
 
-                    
+
+
                     break;
 
                 case 'admins':
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'node',
                             'file' => 'admins',
@@ -135,7 +135,7 @@ namespace Goteo\Controller\Admin {
 
                 default:
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'node',
                             'file' => 'list',

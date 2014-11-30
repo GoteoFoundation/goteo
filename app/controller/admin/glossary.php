@@ -102,7 +102,7 @@ namespace Goteo\Controller\Admin {
                     $message = 'Añadiendo un nuevo término';
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'glossary',
                             'file' => 'edit',
@@ -129,7 +129,7 @@ namespace Goteo\Controller\Admin {
                     $message = 'Editando un término existente';
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'glossary',
                             'file' => 'edit',
@@ -145,7 +145,7 @@ namespace Goteo\Controller\Admin {
             $posts = Model\Glossary::getAll();
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'glossary',
                     'file' => 'list',

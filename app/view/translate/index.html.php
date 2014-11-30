@@ -15,19 +15,19 @@ if ($_SESSION['translate_lang'] == 'es') {
 
 $bodyClass = 'admin';
 
-include 'view/prologue.html.php';
-include 'view/header.html.php'; ?>
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php'; ?>
 
         <div id="sub-header" style="margin-bottom: 10px;">
             <div class="breadcrumbs"><?php echo defined('ADMIN_BCPATH') ? ADMIN_BCPATH : "<strong>Traductor</strong>"; ?></div>
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main">
 
             <div class="widget">
-                <?php echo new View ('view/translate/langs/selector.html.php', $this); ?>
+                <?php echo View::get('translate/langs/selector.html.php', $this); ?>
             </div>
 
             <?php if (!empty($this['errors'])) : ?>
@@ -40,7 +40,7 @@ include 'view/header.html.php'; ?>
 
             <?php
             if (!empty($this['section']) && !empty($this['action'])) :
-                echo new View ('view/translate/'.$this['section'].'/'.$this['action'].'.html.php', $this);
+                echo View::get('translate/'.$this['section'].'/'.$this['action'].'.html.php', $this);
             else :
                 foreach ($this['menu'] as $sCode=>$section) :
                     if ($sCode == 'node') continue;
@@ -61,5 +61,5 @@ include 'view/header.html.php'; ?>
 
         </div>
 <?php
-include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/../footer.html.php';
+include __DIR__ . '/../epilogue.html.php';

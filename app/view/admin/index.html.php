@@ -24,15 +24,15 @@ $bodyClass = 'admin';
 $jsreq_autocomplete = $this['autocomplete'];
 
 
-include 'view/prologue.html.php';
-include 'view/header.html.php'; 
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 ?>
 
         <div id="sub-header" style="margin-bottom: 10px;">
             <div class="breadcrumbs"><?php echo ADMIN_BCPATH; ?></div>
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main">
 
@@ -68,16 +68,16 @@ include 'view/header.html.php';
             <?php endif; ?>
 
 
-<?php if (!empty($this['folder']) && !empty($this['file'])) : 
+<?php if (!empty($this['folder']) && !empty($this['file'])) :
         if ($this['folder'] == 'base') {
-            $path = 'view/admin/'.$this['file'].'.html.php';
+            $path = 'admin/'.$this['file'].'.html.php';
         } else {
-            $path = 'view/admin/'.$this['folder'].'/'.$this['file'].'.html.php';
+            $path = 'admin/'.$this['folder'].'/'.$this['file'].'.html.php';
         }
 
-            echo new View ($path, $this);
+            echo View::get($path, $this);
        else :
-           
+
             /* PORTADA ADMIN */
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 
@@ -148,7 +148,7 @@ include 'view/header.html.php';
                     </div>
 
                     <a href="/admin/recent/<?php echo isset($_GET['feed']) ? '?feed='.$_GET['feed'] : ''; ?>" style="margin-top:10px;float:right;text-transform:uppercase">Ver más</a>
-                    
+
                 </div>
             </div>
 
@@ -165,5 +165,5 @@ include 'view/header.html.php';
         </div> <!-- fin main -->
 
 <?php
-    include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+    include __DIR__ . '/../footer.html.php';
+include __DIR__ . '/../epilogue.html.php';

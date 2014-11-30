@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Tests;
+namespace Goteo\Core\Tests;
 
 class TestResource implements \Goteo\Core\Resource {
     public function __toString(){

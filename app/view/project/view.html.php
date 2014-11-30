@@ -74,9 +74,9 @@ foreach ($blog->posts as $bpost) {
 }
 
 
-include 'view/prologue.html.php' ?>
+include __DIR__ . '/../prologue.html.php' ?>
 
-<?php include 'view/header.html.php' ?>
+<?php include __DIR__ . '/../header.html.php' ?>
 
         <div id="sub-header">
             <div class="project-header">
@@ -100,7 +100,7 @@ include 'view/prologue.html.php' ?>
             </div>
 
             <div class="sub-menu">
-                <?php echo new View('view/project/view/menu.html.php',
+                <?php echo View::get('project/view/menu.html.php',
                             array(
                                 'project' => $project,
                                 'show' => $show,
@@ -114,7 +114,7 @@ include 'view/prologue.html.php' ?>
 
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 
         <div id="main" class="threecols">
@@ -123,34 +123,34 @@ include 'view/prologue.html.php' ?>
             <?php
             // el lateral es diferente segun el show (y el invest)
             echo
-                new View('view/project/widget/support.html.php', array('project' => $project));
+                View::get('project/widget/support.html.php', array('project' => $project));
 
             // seleccionado para capital riego
             if ($project->called) {
-                echo new View('view/project/widget/called.html.php', array('project' => $project));
+                echo View::get('project/widget/called.html.php', array('project' => $project));
             }
 
             if ((!empty($project->investors) &&
                 !empty($step) &&
                 in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail')) )
                 || $show == 'messages' ) {
-                echo new View('view/project/widget/investors.html.php', array('project' => $project));
+                echo View::get('project/widget/investors.html.php', array('project' => $project));
             }
 
             if ($project->status == 5 && $show != 'rewards' && $show != 'messages') {
-                echo new View('view/project/widget/rewards.html.php', array('project' => $project, 'only'=>'social'));
+                echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>'social'));
             }
-            
+
             if (!empty($project->supports)) {
-                echo new View('view/project/widget/collaborations.html.php', array('project' => $project));
+                echo View::get('project/widget/collaborations.html.php', array('project' => $project));
             }
 
             if ($show != 'rewards' && $show != 'messages') {
                 $only_rew = ($project->status == 5) ? 'individual' : null;
-                echo new View('view/project/widget/rewards.html.php', array('project' => $project, 'only'=>$only_rew));
+                echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>$only_rew));
             }
 
-            echo new View('view/user/widget/user.html.php', array('user' => $project->user));
+            echo View::get('user/widget/user.html.php', array('user' => $project->user));
 
             ?>
             </div>
@@ -163,16 +163,16 @@ include 'view/prologue.html.php' ?>
                     case 'needs':
                         if ($this['non-economic']) {
                             echo
-                                new View('view/project/widget/non-needs.html.php',
+                                View::get('project/widget/non-needs.html.php',
                                     array('project' => $project, 'types' => Support::types()));
                         } else {
                         echo
-                            new View('view/project/widget/needs.html.php', array('project' => $project, 'types' => Cost::types())),
-                            new View('view/project/widget/schedule.html.php', array('project' => $project)),
-                            new View('view/project/widget/sendMsg.html.php', array('project' => $project));
+                            View::get('project/widget/needs.html.php', array('project' => $project, 'types' => Cost::types())),
+                            View::get('project/widget/schedule.html.php', array('project' => $project)),
+                            View::get('project/widget/sendMsg.html.php', array('project' => $project));
                         }
                         break;
-						
+
                     case 'supporters':
 
 						// segun el paso de aporte
@@ -181,72 +181,72 @@ include 'view/prologue.html.php' ?>
                             switch ($step) {
                                 case 'continue':
                                     echo
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest_redirect.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp']));
+                                        View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
+                                        View::get('project/widget/invest_redirect.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp']));
                                     break;
-									
+
                                 case 'ok':
                                     echo
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)), new View('view/project/widget/spread.html.php',array('project' => $project));
+                                        View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)), View::get('project/widget/spread.html.php',array('project' => $project));
 										//sacarlo de div#center
-										$printSendMsg=true;										
+										$printSendMsg=true;
                                     break;
-									
+
                                 case 'fail':
                                     echo
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'allowpp'=> $this['allowpp']));
+                                        View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
+                                        View::get('project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'allowpp'=> $this['allowpp']));
                                     break;
                                 default:
                                     echo
-                                        new View('view/project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        new View('view/project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp']));
+                                        View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
+                                        View::get('project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp']));
                                     break;
                             }
                         } else {
                             echo
-                                new View('view/project/widget/supporters.html.php', $this),
-                                new View('view/worth/legend.html.php');
+                                View::get('project/widget/supporters.html.php', $this),
+                                View::get('worth/legend.html.php');
                         }
                         break;
-						
+
                     case 'messages':
                         echo
-                            new View('view/project/widget/messages.html.php', array('project' => $project));
+                            View::get('project/widget/messages.html.php', array('project' => $project));
                         break;
-                   
+
 				    case 'rewards':
                         if ($project->status == 5) {
-                            echo new View('view/project/widget/rewards-summary.html.php', array('project' => $project, 'only'=>'social'));
-                            echo new View('view/project/widget/rewards-summary.html.php', array('project' => $project, 'only'=>'individual'));
+                            echo View::get('project/widget/rewards-summary.html.php', array('project' => $project, 'only'=>'social'));
+                            echo View::get('project/widget/rewards-summary.html.php', array('project' => $project, 'only'=>'individual'));
                         } else {
-                            echo new View('view/project/widget/rewards-summary.html.php', array('project' => $project));
+                            echo View::get('project/widget/rewards-summary.html.php', array('project' => $project));
                         }
                         break;
-                    
+
 					case 'updates':
                         echo
-                            new View('view/project/widget/updates.html.php', array('project' => $project, 'blog' => $blog, 'post' => $post));
+                            View::get('project/widget/updates.html.php', array('project' => $project, 'blog' => $blog, 'post' => $post));
                         break;
-                    
+
 					case 'home':
-					
+
                     default:
                         if (!empty($project->media->url)) {
-                            echo new View('view/project/widget/media.html.php', array('project' => $project));
+                            echo View::get('project/widget/media.html.php', array('project' => $project));
                         }
 
-                        echo new View('view/project/widget/langs.html.php', array('project' => $project));
+                        echo View::get('project/widget/langs.html.php', array('project' => $project));
 
-                        echo new View('view/project/widget/share.html.php', array('project' => $project));
+                        echo View::get('project/widget/share.html.php', array('project' => $project));
                         if (!empty($project->patrons)) {
-                            echo new View('view/project/widget/patrons.html.php', array('patrons' => $project->patrons));
+                            echo View::get('project/widget/patrons.html.php', array('patrons' => $project->patrons));
                         }
-                        echo new View('view/project/widget/summary.html.php', array('project' => $project));
+                        echo View::get('project/widget/summary.html.php', array('project' => $project));
 
                         // wall of friends, condicional
                         if (round(($project->invested / $project->mincost) * 100) > 20) {
-                            echo new View('view/project/widget/wof.html.php', array('project' => $project));
+                            echo View::get('project/widget/wof.html.php', array('project' => $project));
                         }
 
                         break;
@@ -256,11 +256,11 @@ include 'view/prologue.html.php' ?>
 
 			<?php
 				if($printSendMsg){
-					 echo new View('view/project/widget/sendMsg.html.php',array('project' => $project));
+					 echo View::get('project/widget/sendMsg.html.php',array('project' => $project));
 				}
             ?>
 
         </div>
 
-        <?php include 'view/footer.html.php' ?>
-		<?php include 'view/epilogue.html.php' ?>
+        <?php include __DIR__ . '/../footer.html.php' ?>
+		<?php include __DIR__ . '/../epilogue.html.php' ?>

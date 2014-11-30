@@ -49,7 +49,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/glossary/index.html.php',
+                'glossary/index.html.php',
                 array(
                     'tpp'   => $tpp,
                     'index' => $index,

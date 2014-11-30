@@ -2,18 +2,17 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Model\Invest,
-        Goteo\Model\Project,
+    use Goteo\Model,
         Goteo\Model\User,
         Goteo\Core\Error,
-		Goteo\Library\Feed,
-		Goteo\Library\Mail,
+		Goteo\Library,
+        Goteo\Library\Feed,
 		Goteo\Library\Text,
         Goteo\Core\Redirection;
 
-    require_once 'library/paypal/stub.php'; // sí, uso el stub de paypal
-    require_once 'library/paypal/log.php'; // sí, uso el log de paypal
-    
+    require_once __DIR__ . '/../../src/Goteo/Library/paypal/stub.php'; // sí, uso el stub de paypal
+    require_once __DIR__ . '/../../src/Goteo/Library/paypal/log.php'; // sí, uso el log de paypal
+
     class Tpv extends \Goteo\Core\Controller {
 
         public static $errcode = array(
@@ -121,7 +120,7 @@ namespace Goteo\Controller {
         public function index () {
             throw new Redirection('/', Error::BAD_REQUEST);
         }
-        
+
 
         public function comunication () {
 
@@ -133,7 +132,7 @@ namespace Goteo\Controller {
             if ($monitor) {
 
                 // mail de aviso
-                $mailHandler = new Mail();
+                $mailHandler = new Library\Mail();
                 $mailHandler->to = \GOTEO_FAIL_MAIL;
                 $mailHandler->toName = 'Tpv Monitor Goteo.org';
                 $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y');
@@ -158,11 +157,11 @@ namespace Goteo\Controller {
 
             if (isset($_POST['Num_operacion'])) {
                 $_POST['invest'] = $id = \substr($_POST['Num_operacion'], 0, -4);
-                
-                $invest = Invest::get($id);
+
+                $invest = Model\Invest::get($id);
 
                 $userData = User::getMini($invest->user);
-                $projectData = Project::getMini($invest->project);
+                $projectData = Model\Project::getMini($invest->project);
 
                 $response = '';
                 foreach ($_POST as $n => $v) {
@@ -192,12 +191,12 @@ namespace Goteo\Controller {
                                     charged = :charged,
                                     transaction = :transaction
                                 WHERE id = :id";
-                        if (Invest::query($sql, $values)) {
-                            Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se ha completado correctamente. Proceso controller/tpv');
+                        if (Model\Invest::query($sql, $values)) {
+                            Model\Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se ha completado correctamente. Proceso controller/tpv');
                         } else {
 
                             // notificación del error a dev@goteo.org
-                            $mailHandler = new Mail();
+                            $mailHandler = new Library\Mail();
                             $mailHandler->to = \GOTEO_FAIL_MAIL;
                             $mailHandler->toName = 'Tpv Monitor Goteo.org';
                             $mailHandler->subject = 'Error db en comunicacion online '.date('H:i:s d/m/Y');
@@ -215,12 +214,12 @@ namespace Goteo\Controller {
 
                         // si tiene capital riego asociado pasa al mismo estado
                         if (!empty($invest->droped)) {
-                            Invest::query("UPDATE invest SET status = 1 WHERE id = :id", array(':id' => $invest->droped));
+                            Model\Invest::query("UPDATE invest SET status = 1 WHERE id = :id", array(':id' => $invest->droped));
                         }
                     } catch (\PDOException $e) {
 
                         // notificación del error a dev@goteo.org
-                        $mailHandler = new Mail();
+                        $mailHandler = new Library\Mail();
                         $mailHandler->to = \GOTEO_FAIL_MAIL;
                         $mailHandler->toName = 'Tpv Monitor Goteo.org';
                         $mailHandler->subject = 'Exception en comunicacion online '.date('H:i:s d/m/Y'). ' ' . \SITE_URL;
@@ -244,10 +243,10 @@ namespace Goteo\Controller {
 
                     $Cerr = (string) $_POST['Codigo_error'];
                     $errTxt = self::$errcode[$Cerr];
-                    Invest::setDetail($invest->id, 'tpv-response-error', 'El tpv ha comunicado el siguiente Codigo error: '.$Cerr.' - '.$errTxt.'. El aporte a quedado \'En proceso\'. Proceso controller/tpv');
+                    Model\Invest::setDetail($invest->id, 'tpv-response-error', 'El tpv ha comunicado el siguiente Codigo error: '.$Cerr.' - '.$errTxt.'. El aporte a quedado \'En proceso\'. Proceso controller/tpv');
 
                     // notificación del error a dev@goteo.org
-                    $mailHandler = new Mail();
+                    $mailHandler = new Library\Mail();
                     $mailHandler->to = \GOTEO_FAIL_MAIL;
                     $mailHandler->toName = 'Tpv Monitor Goteo.org';
                     $mailHandler->subject = 'Codigo Error TPV en comunicacion online '.date('H:i:s d/m/Y'). ' ' . \SITE_URL;
@@ -311,7 +310,7 @@ $errors = array();
 
             // monitorizando todo lo que llega aqui
             // mail de aviso
-            $mailHandler = new Mail();
+            $mailHandler = new Library\Mail();
             $mailHandler->to = \GOTEO_FAIL_MAIL;
             $mailHandler->toName = 'Tpv Monitor Goteo.org';
             $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y');
@@ -339,5 +338,5 @@ $errors = array();
         }
 
     }
-    
+
 }

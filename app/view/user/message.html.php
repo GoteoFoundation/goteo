@@ -6,8 +6,8 @@ use Goteo\Core\View,
     Goteo\Model\User\Interest;
 
 $bodyClass = 'user-profile';
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $user = $this['user'];
 $worthcracy = Worth::getAll();
@@ -32,7 +32,7 @@ $_SESSION['msg_token'] = uniqid(rand(), true);
 	});
 </script>
 
-<?php echo new View('view/user/widget/header.html.php', array('user'=>$user)) ?>
+<?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
 <div id="main">
 
@@ -45,10 +45,10 @@ $_SESSION['msg_token'] = uniqid(rand(), true);
 
         <form method="post" action="/message/personal/<?php echo $user->id; ?>">
             <input type="hidden" name="msg_token" value="<?php echo $_SESSION['msg_token'] ; ?>" />
-            
+
             <label for="contact-subject"><?php echo Text::get('contact-subject-field'); ?></label>
             <input id="contact-subject" type="text" name="subject" value="" placeholder="" />
-            
+
             <label for="message"><?php echo Text::get('contact-message-field'); ?></label>
             <textarea id="message" name="message" cols="50" rows="5"></textarea>
 
@@ -67,20 +67,20 @@ $_SESSION['msg_token'] = uniqid(rand(), true);
     </div>
     <?php endif; ?>
 
-        <?php echo new View('view/user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth)) ?>
+        <?php echo View::get('user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth)) ?>
 
-        <?php echo new View('view/user/widget/about.html.php', array('user' => $user)) ?>
+        <?php echo View::get('user/widget/about.html.php', array('user' => $user)) ?>
 
-        <?php echo new View('view/user/widget/social.html.php', array('user' => $user)) ?>
+        <?php echo View::get('user/widget/social.html.php', array('user' => $user)) ?>
 
     </div>
     <div class="side">
-        <?php echo new View('view/user/widget/investors.html.php', $this) ?>
-        <?php echo new View('view/user/widget/sharemates.html.php', $this) ?>
+        <?php echo View::get('user/widget/investors.html.php', $this) ?>
+        <?php echo View::get('user/widget/sharemates.html.php', $this) ?>
     </div>
 
 </div>
 
-<?php include 'view/footer.html.php' ?>
+<?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

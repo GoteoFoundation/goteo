@@ -5,8 +5,16 @@ use Goteo\Library\Text,
 
 $page = Page::get('error');
 
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
+
+use Goteo\Core\Error;
+
+if (!isset($error) || !($error instanceof Error)) {
+    $error = new Error;
+}
+
 ?>
 
     <div id="sub-header">
@@ -15,7 +23,7 @@ include 'view/header.html.php';
         </div>
     </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
     <div id="main">
         <div class="widget">
@@ -24,5 +32,5 @@ include 'view/header.html.php';
         </div>
     </div>
 
-<?php include 'view/footer.html.php' ?>
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../footer.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

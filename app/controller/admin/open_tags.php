@@ -46,8 +46,8 @@ namespace Goteo\Controller\Admin {
                         }
 
                         throw new Redirection('/admin/open_tags');
-                    }     
-            
+                    }
+
                     else {
                     Message::Error(implode('<br />', $errors));
 
@@ -57,7 +57,7 @@ namespace Goteo\Controller\Admin {
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'open_tags',
                                     'file' => 'edit',
@@ -70,7 +70,7 @@ namespace Goteo\Controller\Admin {
                             break;
                         case 'edit':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'open_tags',
                                     'file' => 'edit',
@@ -89,15 +89,15 @@ namespace Goteo\Controller\Admin {
 
 
             switch ($action) {
-                
+
                 case 'edit':
-                
+
                     $open_tag = Model\Open_tag::get($id);
                         // elementos disponibles
                         $items = Model\Post::getAutocomplete();
 
                         return new View(
-                            'view/admin/index.html.php',
+                            'admin/index.html.php',
                             array(
                                 'folder' => 'open_tags',
                                 'file' => 'edit',
@@ -117,7 +117,7 @@ namespace Goteo\Controller\Admin {
                     $items = Model\Post::getAutocomplete();
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'open_tags',
                             'file' => 'edit',
@@ -127,7 +127,7 @@ namespace Goteo\Controller\Admin {
                             'autocomplete' => true
                         )
                     );
-                    break;    
+                    break;
 
                 case 'up':
                     $model::up($id);
@@ -143,7 +143,7 @@ namespace Goteo\Controller\Admin {
             }
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'base',
                     'file' => 'list',
@@ -164,7 +164,7 @@ namespace Goteo\Controller\Admin {
                     'url' => "$url"
                 )
             );
-            
+
         }
 
     }

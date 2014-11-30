@@ -14,13 +14,13 @@ namespace Goteo\Controller\Admin {
         public static function process ($action = 'list', $id = null) {
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-            
+
             $feed = empty($_GET['feed']) ? 'all' : $_GET['feed'];
 
             $items = Feed::getAll($feed, 'admin', 50, $node);
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'recent',
                     'file' => $action,

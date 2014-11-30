@@ -15,7 +15,7 @@ namespace Goteo\Controller\Admin {
 
             $errors = array();
 
-            
+
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -25,7 +25,7 @@ namespace Goteo\Controller\Admin {
                 if (!empty($el_item)) {
                     list($el_reward, $el_project, $el_amount) = explode('¬', $el_item);
                 } else {
-                    $el_reward = $el_project = $el_amount = null;                    
+                    $el_reward = $el_project = $el_amount = null;
                 }
 
                 // objeto
@@ -66,7 +66,7 @@ namespace Goteo\Controller\Admin {
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'bazar',
                                     'file' => 'edit',
@@ -79,7 +79,7 @@ namespace Goteo\Controller\Admin {
                             break;
                         case 'edit':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'bazar',
                                     'file' => 'edit',
@@ -123,7 +123,7 @@ namespace Goteo\Controller\Admin {
                     $items = Model\Bazar::available();
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'bazar',
                             'file' => 'edit',
@@ -141,7 +141,7 @@ namespace Goteo\Controller\Admin {
                     $items = Model\Bazar::available($promo->reward);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'bazar',
                             'file' => 'edit',
@@ -158,14 +158,14 @@ namespace Goteo\Controller\Admin {
             $items = Model\Bazar::getList();
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'bazar',
                     'file' => 'list',
                     'items' => $items
                 )
             );
-            
+
         }
 
     }

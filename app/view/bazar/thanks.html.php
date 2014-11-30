@@ -8,10 +8,10 @@ $page = $this['page'];
 $share = $this['share'];
 $item = $this['item'];
 
-echo new View("view/bazar/prologue.html.php", array('ogmeta'=>$this['ogmeta'], 'title'=>$page->title, 'description'=>$page->description));
-echo new View("view/bazar/header.html.php", array('page'=>$this['page']));
+echo View::get('bazar/prologue.html.php', array('ogmeta'=>$this['ogmeta'], 'title'=>$page->title, 'description'=>$page->description));
+echo View::get('bazar/header.html.php', array('page'=>$this['page']));
 
-if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; }
+if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; }
 ?>
 
 <section id="contenedor">
@@ -41,5 +41,5 @@ if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; }
 </section>
 
 <?php
-echo new View("view/bazar/footer.html.php", array("share"=>$this['share'], 'text'=>$page->txt3));
-echo new View("view/bazar/epilogue.html.php");
+echo View::get('bazar/footer.html.php', array("share"=>$this['share'], 'text'=>$page->txt3));
+echo View::get('bazar/epilogue.html.php');

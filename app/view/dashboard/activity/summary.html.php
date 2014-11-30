@@ -59,13 +59,13 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
                 </div>
 
                 <?php foreach ($projects['items'] as $project) :
-                        echo new View('view/project/widget/project.html.php', array(
+                        echo View::get('project/widget/project.html.php', array(
                             'project'   => $project,
                             'balloon' => '<h4>' . htmlspecialchars($this['status'][$project->status]) . '</h4>' .
                                          '<blockquote>' . $waitfor[$project->status] . '</blockquote>',
                             'dashboard' => true,
                             'own'       => true
-                        ));                    
+                        ));
                 endforeach; ?>
 
                 <div class="discover-arrow-right">
@@ -106,7 +106,7 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
                     $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
                     ?>
                 <div style="float:left;">
-                      <?php  echo new View('view/project/widget/project.html.php', array(
+                      <?php  echo View::get('project/widget/project.html.php', array(
                             'project' => $project,
                             'investor'  => $user
                         )); ?>
@@ -146,4 +146,4 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 <?php endif; ?>
 
 <!-- nivel de meritocracia -->
-<?php echo new View('view/user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth, 'amount' => $support['amount'])) ?>
+<?php echo View::get('user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth, 'amount' => $support['amount'])) ?>

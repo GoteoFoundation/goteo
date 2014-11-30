@@ -24,12 +24,12 @@ uasort($investors,
         <ul>
             <?php $c=1; foreach ($investors as $user => $investor):
                 if ($user == 'anonymous') continue; ?>
-            <li class="activable"><?php echo new View('view/user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>
+            <li class="activable"><?php echo View::get('user/widget/supporter.html.php', array('user' => $investor, 'worthcracy' => $worthcracy)) ?></li>
             <?php if ($c>=10) break; else $c++; endforeach; ?>
         </ul>
     </div>
-    
+
     <div class="side-worthcracy">
-    <?php include 'view/worth/base.html.php' ?>
+    <?php include __DIR__ . '/../worth/base.html.php' ?>
     </div>
 </div>

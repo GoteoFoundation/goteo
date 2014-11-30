@@ -59,13 +59,13 @@ $(document).ready(function(){
         'class'         => 'aqua',
         'footer'        => array(
             'view-step-preview' => array(
-                'type'  => 'submit',
+                'type'  => 'Submit',
                 'name'  => 'save-post',
                 'label' => Text::get('regular-save'),
                 'class' => 'next'
             ),
             'pending' => array(
-                'type'  => 'checkbox',
+                'type'  => 'CheckBox',
                 'name'  => 'pending',
                 'label' => Text::get('mark-pending'),
             )
@@ -76,13 +76,13 @@ $(document).ready(function(){
                 'value' => $post->id
             ),
             'title' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'size'      => 20,
                 'title'     => 'Término',
                 'value'     => $post->title,
             ),
             'text' => array(
-                'type'      => 'textarea',
+                'type'      => 'TextArea',
                 'cols'      => 40,
                 'rows'      => 4,
                 'title'     => 'Explicación del término',
@@ -90,7 +90,7 @@ $(document).ready(function(){
             ),
             'image' => array(
                 'title'     => 'Imagen',
-                'type'      => 'group',
+                'type'      => 'Group',
                 'class'     => 'image',
                 'children'  => array(
                     'image_upload'    => array(
@@ -103,14 +103,14 @@ $(document).ready(function(){
             ),
 
             'gallery' => array(
-                'type'  => 'group',
+                'type'  => 'Group',
                 'title' => Text::get('overview-field-image_gallery'),
                 'class' => 'inline',
                 'children'  => $images
             ),
 
             'media' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'title'     => 'Vídeo',
                 'class'     => 'media',
                 'value'     => (string) $post->media,
@@ -118,13 +118,13 @@ $(document).ready(function(){
                     'media-preview' => array(
                         'title' => 'Vista previa',
                         'class' => 'media-preview inline',
-                        'type'  => 'html',
+                        'type'  => 'HTML',
                         'html'  => !empty($post->media) ? $post->media->getEmbedCode() : ''
                     )
                 )
             ),
             'legend' => array(
-                'type'      => 'textarea',
+                'type'      => 'TextArea',
                 'title'     => Text::get('regular-media_legend'),
                 'value'     => $post->legend,
             )

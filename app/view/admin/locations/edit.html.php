@@ -10,7 +10,7 @@ $location = $this['location'];
         <p>
             <a href="https://maps.google.com/maps?q=<?php echo urlencode($location->name) ?>" target="_blank">Ver en google maps, por nombre</a>
         </p>
-        
+
         <table>
             <tr>
                 <td>
@@ -54,6 +54,6 @@ $location = $this['location'];
     </form>
 
     <!-- mapa -->
-    <?php echo new View('view/widget/map.html.php', array('lat'=>$location->lat,'lon'=>$location->lon, 'name'=>$location->name)); ?>
+    <?php echo View::get('widget/map.html.php', array('lat'=>$location->lat,'lon'=>$location->lon, 'name'=>$location->name)); ?>
 
 </div>

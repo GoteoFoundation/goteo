@@ -69,7 +69,7 @@ namespace Goteo\Controller\Admin {
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'patron',
                                     'file' => 'edit',
@@ -82,7 +82,7 @@ namespace Goteo\Controller\Admin {
                             break;
                         case 'edit':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'patron',
                                     'file' => 'edit',
@@ -152,7 +152,7 @@ namespace Goteo\Controller\Admin {
                     $user = (isset($_GET['user'])) ? (object) array('id'=>$_GET['user']) : null;
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'patron',
                             'file' => 'edit',
@@ -167,7 +167,7 @@ namespace Goteo\Controller\Admin {
                     $promo = Model\Patron::get($id);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'patron',
                             'file' => 'edit',
@@ -207,7 +207,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'patron',
                             'file' => 'order',
@@ -217,15 +217,15 @@ namespace Goteo\Controller\Admin {
                     break;
 
                     case 'up':
-                   
+
                     Model\Patron::up($id);
                     throw new Redirection('/admin/patron/reorder');
                     break;
 
                 case 'down':
-                   
+
                     Model\Patron::down($id);
-                    
+
                     throw new Redirection('/admin/patron/reorder');
                     break;
 
@@ -247,7 +247,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'patron',
                             'file' => 'view',
@@ -274,7 +274,7 @@ namespace Goteo\Controller\Admin {
             }
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'patron',
                     'file' => 'list',

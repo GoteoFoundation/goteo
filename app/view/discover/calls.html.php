@@ -2,22 +2,22 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
-    Goteo\Model\Call;
+    Goteo\Model\Call,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
 $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
 $success = Call::getActive(5); // convocatorias en modalidad 2; repartiendo capital riego
 
 // en la página de cofinanciadores, paginación de 20 en 20
-require_once 'library/pagination/pagination.php';
-
-$pagedResults = new \Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
 
 $bodyClass = 'discover';
 
-include 'view/prologue.html.php';
+include __DIR__ . '/../prologue.html.php';
 
-include 'view/header.html.php' ?>
+include __DIR__ . '/../header.html.php' ?>
 
 
         <div id="sub-header">
@@ -55,7 +55,7 @@ include 'view/header.html.php' ?>
                 </div>
 
             <?php while ($call = $pagedResults->fetchPagedRow()) {
-                echo new View('view/call/widget/call.html.php', array('call' => $call));
+                echo View::get('call/widget/call.html.php', array('call' => $call));
             } ?>
             </div>
 
@@ -64,8 +64,8 @@ include 'view/header.html.php' ?>
                         echo $pagedResults->fetchPagedNavigation(); ?>
             </ul>
 
-        </div>        
+        </div>
 
-        <?php include 'view/footer.html.php' ?>
-    
-<?php include 'view/epilogue.html.php' ?>
+        <?php include __DIR__ . '/../footer.html.php' ?>
+
+<?php include __DIR__ . '/../epilogue.html.php' ?>

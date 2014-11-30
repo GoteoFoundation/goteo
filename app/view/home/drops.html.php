@@ -39,7 +39,7 @@ $campaigns = $this['campaigns'];
         <div class="slder_calls">
         <?php foreach ($calls as $call) : ?>
             <div class="slder_slide">
-            <?php echo new View('view/call/widget/call.html.php', array('call' => $call)); ?>
+            <?php echo View::get('call/widget/call.html.php', array('call' => $call)); ?>
             </div>
         <?php endforeach; ?>
         </div>
@@ -62,7 +62,7 @@ $campaigns = $this['campaigns'];
         <div class="slder_campaigns">
         <?php foreach ($campaigns as $call)  : ?>
             <div class="slder_slide">
-            <?php echo new View('view/call/widget/call.html.php', array('call' => $call)); ?>
+            <?php echo View::get('call/widget/call.html.php', array('call' => $call)); ?>
             </div>
         <?php endforeach; ?>
         </div>

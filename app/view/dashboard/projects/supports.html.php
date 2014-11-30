@@ -112,7 +112,7 @@ foreach ($project->supports as $support) {
 
         $supports["support-{$support->id}"] = array(
             'class'     => 'support',
-            'view'      => 'view/project/edit/supports/support.html.php',
+            'view'      => 'project/edit/supports/support.html.php',
             'data'      => array('support' => $support),
         );
     }
@@ -127,7 +127,7 @@ $sfid = 'sf-project-supports';
 
 <form method="post" action="/dashboard/projects/supports/save" class="project" enctype="multipart/form-data">
 
-<?php echo new SuperForm(array(
+<?php echo SuperForm::get(array(
 
     'id'            => $sfid,
 

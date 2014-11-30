@@ -77,7 +77,7 @@ namespace Goteo\Controller {
 
             }
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -207,7 +207,7 @@ namespace Goteo\Controller {
                     break;
             }
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -513,7 +513,7 @@ namespace Goteo\Controller {
 
             $viewData['project'] = $project;
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
         // Fin de la sección Mis proyectos
 
@@ -983,7 +983,7 @@ namespace Goteo\Controller {
                 Message::Error('HA HABIDO ERRORES: <br />' . implode('<br />', $errors));
             }
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -1060,7 +1060,7 @@ namespace Goteo\Controller {
             $viewData['errors'] = $errors;
             $viewData['call'] = $call;
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
 
         private static function menu() {
@@ -1069,9 +1069,8 @@ namespace Goteo\Controller {
                 'activity' => array(
                     'label' => Text::get('dashboard-menu-activity'),
                     'options' => array(
-                        'summary' => Text::get('dashboard-menu-activity-summary')
-                    /* ,
-                      'wall'    => Text::get('dashboard-menu-activity-wall') */
+                        'summary' => Text::get('dashboard-menu-activity-summary'),
+                        'donor' => Text::get('dashboard-menu-activity-donor')
                     )
                 ),
                 'profile' => array(
@@ -1152,35 +1151,6 @@ namespace Goteo\Controller {
                     )
                 );
             }
-
-            // si es donante, ponemos la opción
-            /*
-             * Tema: certificados todo el año,
-             * el sistema debe poder manejar :
-             *   usuarios con aportes en el año pasado y con aportes en el año actual:
-             *   proyectos que no se financian hasta que pas el año.
-             *
-             *  confirmación de datos del año pasado hasta 15-20 de enero
-             *
-             *  descarga de pdf del año pasado hasta junio
-             *
-             */
-            $year = date('Y');
-            $month = date('m');
-            // hasta junio es el año anterior
-            if ($month <= 6) {
-                $year--;
-            }
-            $donante = Model\User\Donor::get($_SESSION['user']->id, $year);
-            if ($donante instanceof Model\User\Donor) {
-                $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
-                // si no ha confirmado
-                if ($year == date('Y') && !$donante->confirmed) {
-                    Message::Info(Text::get('dashboard-donor-remember'));
-                }
-            }
-
-
 
             // si tiene algún rol de admin
             if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) )

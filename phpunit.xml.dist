@@ -14,8 +14,11 @@
     bootstrap                   = "tests/bootstrap.php">
 
     <testsuites>
-        <testsuite name="Test Suite">
+        <testsuite name="Test Goteo Core">
             <directory>tests</directory>
+        </testsuite>
+        <testsuite name="Test Goteo Extension">
+            <directory>extend/*/tests</directory>
         </testsuite>
     </testsuites>
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Tests;
+namespace Goteo\Core\Tests;
 
 use Goteo\Core\DB,
     Goteo\Library\Cacher;
@@ -8,6 +8,7 @@ use Goteo\Core\DB,
 class DBTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
+        DB::cache(false);
         $db = new DB();
         $this->assertInstanceOf('Goteo\Core\DB', $db);
         $this->assertInstanceOf('\PDO', $db);

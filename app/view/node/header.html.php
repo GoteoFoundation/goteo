@@ -9,7 +9,7 @@ $banners = Banner::getAll(true, NODE_ID);
 
 $nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>'), $nodeData->description);
 ?>
-<?php include 'view/header/lang.html.php' ?>
+<?php include __DIR__ . '/../header/lang.html.php' ?>
 <div id="header">
     <h1><?php echo Text::get('regular-main-header'); ?></h1>
     <div id="super-header">
@@ -68,6 +68,6 @@ $nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>')
             <?php endif; ?>
         </div>
     </div>
-    <?php include 'view/node/menu.html.php' ?>
-    <?php include 'view/node/banners.html.php' ?>
+    <?php include __DIR__ . '/../node/menu.html.php' ?>
+    <?php include __DIR__ . '/../node/banners.html.php' ?>
 </div>

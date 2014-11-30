@@ -54,7 +54,7 @@ namespace Goteo\Controller\Admin {
                             Message::Error('Fallo al crear, revisar los campos');
 
                             return new View(
-                                            'view/admin/index.html.php',
+                                            'admin/index.html.php',
                                             array(
                                                 'folder' => 'nodes',
                                                 'file' => 'add',
@@ -97,7 +97,7 @@ namespace Goteo\Controller\Admin {
                             Message::Error('Fallo al actualizar, revisar los campos');
 
                             return new View(
-                                            'view/admin/index.html.php',
+                                            'admin/index.html.php',
                                             array(
                                                 'folder' => 'nodes',
                                                 'file' => 'edit',
@@ -113,7 +113,7 @@ namespace Goteo\Controller\Admin {
             switch ($action) {
                 case 'add':
                     return new View(
-                                    'view/admin/index.html.php',
+                                    'admin/index.html.php',
                                     array(
                                         'folder' => 'nodes',
                                         'file' => 'add',
@@ -126,7 +126,7 @@ namespace Goteo\Controller\Admin {
                     $node = Model\Node::get($id);
 
                     return new View(
-                                    'view/admin/index.html.php',
+                                    'admin/index.html.php',
                                     array(
                                         'folder' => 'nodes',
                                         'file' => 'edit',
@@ -150,7 +150,7 @@ namespace Goteo\Controller\Admin {
                     $admins = Model\User::getAdmins(true);
 
                     return new View(
-                                    'view/admin/index.html.php',
+                                    'admin/index.html.php',
                                     array(
                                         'folder' => 'nodes',
                                         'file' => 'admins',
@@ -171,7 +171,7 @@ namespace Goteo\Controller\Admin {
             $admins = Model\Node::getAdmins();
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'nodes',
                     'file' => 'list',

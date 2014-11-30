@@ -71,7 +71,7 @@ $elements = array(
 <?php foreach ($elements as $id=>$element) : ?>
     <div id="<?php echo $id ?>">
         <h4><?php echo $element['title'] ?>:</h4>
-        <?php echo new View('library/superform/view/element/datebox.html.php', array('value'=>$element['value'], 'id'=>$id, 'name'=>$id, 'js' => true)); ?>
+        <?php echo View::get('superform/element/datebox.html.php', array('value'=>$element['value'], 'id'=>$id, 'name'=>$id, 'js' => true)); ?>
         <?php if (!empty($element['subtitle'])) echo $element['subtitle'].'<br />'; ?>
     </div>
         <br />

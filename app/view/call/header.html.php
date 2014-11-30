@@ -4,7 +4,7 @@
         Goteo\Core\ACL;
 ?>
 
-<?php include 'view/header/lang.html.php' ?>
+<?php include __DIR__ . '/../header/lang.html.php' ?>
 
 <div id="header">
     <h1><?php echo Text::get('regular-main-header'); ?></h1>

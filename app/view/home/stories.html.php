@@ -7,7 +7,7 @@ $stories = $this['stories'];
 ?>
 <div class="widget stories-home" style="padding:0;">
 
-    
+
 
 	<script type="text/javascript">
     $(function(){
@@ -23,9 +23,9 @@ $stories = $this['stories'];
 <div id="stories-banners" class="rounded-corners-bottom">
     <div class="stories-banners-container rounded-corners-bottom">
 
-        <?php foreach ($stories as $story) : 
+        <?php foreach ($stories as $story) :
 
-        echo new View('view/stories/story.html.php', array('story'=>$story));
+        echo View::get('stories/story.html.php', array('story'=>$story));
 
         endforeach; ?>
 

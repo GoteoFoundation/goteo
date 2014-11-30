@@ -228,7 +228,7 @@ namespace Goteo\Controller\Admin {
 
                 // cambiar fechas
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'calls',
                         'file' => 'add',
@@ -273,7 +273,7 @@ namespace Goteo\Controller\Admin {
 
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'calls',
                         'file' => 'projects',
@@ -303,7 +303,7 @@ namespace Goteo\Controller\Admin {
                 $admins = Model\User::getAdmins();
 
                 return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'calls',
                                     'file' => 'admins',
@@ -341,7 +341,7 @@ namespace Goteo\Controller\Admin {
                 $call->posts = Model\Call\Post::get($call->id);
 
                 return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'calls',
                                     'file' => 'posts',
@@ -360,7 +360,7 @@ namespace Goteo\Controller\Admin {
                 $conf = $call->getConf();
 
                 return new View(
-                            'view/admin/index.html.php',
+                            'admin/index.html.php',
                             array(
                                 'folder' => 'calls',
                                 'file' => 'conf',
@@ -374,7 +374,7 @@ namespace Goteo\Controller\Admin {
             if ($action == 'dropconf') {
 
                 return new View(
-                            'view/admin/index.html.php',
+                            'admin/index.html.php',
                             array(
                                 'folder' => 'calls',
                                 'file' => 'dropconf',
@@ -382,7 +382,7 @@ namespace Goteo\Controller\Admin {
                                 'call' => $call
                             )
                 );
-            }                
+            }
 
             // si es admin, solo las suyas
             if (isset($_SESSION['user']->roles['admin'])) {
@@ -400,7 +400,7 @@ namespace Goteo\Controller\Admin {
             );
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'calls',
                     'file' => 'list',

@@ -68,7 +68,7 @@ namespace Goteo\Controller\Admin {
                     Message::Error(implode('<br />', $errors));
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'licenses',
                             'file' => 'edit',
@@ -92,7 +92,7 @@ namespace Goteo\Controller\Admin {
                     $next = Model\License::next();
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'licenses',
                             'file' => 'edit',
@@ -107,7 +107,7 @@ namespace Goteo\Controller\Admin {
                     $license = Model\License::get($id);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'licenses',
                             'file' => 'edit',
@@ -126,7 +126,7 @@ namespace Goteo\Controller\Admin {
             $licenses = Model\License::getAll($filters['icon'], $filters['group']);
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'licenses',
                     'file' => 'list',
@@ -136,7 +136,7 @@ namespace Goteo\Controller\Admin {
                     'icons'    => $icons
                 )
             );
-            
+
         }
 
     }

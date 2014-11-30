@@ -98,7 +98,7 @@ foreach ($project->supports as $support) {
 
         $supports["support-{$support->id}"] = array(
             'class'     => 'support',
-            'view'      => 'view/project/edit/supports/support.html.php',
+            'view'      => 'project/edit/supports/support.html.php',
             'data'      => array('support' => $support),
         );
 
@@ -109,7 +109,7 @@ foreach ($project->supports as $support) {
 
 $sfid = 'sf-project-supports';
 
-echo new SuperForm(array(
+echo SuperForm::get(array(
 
     'id'            => $sfid,
 
@@ -147,7 +147,7 @@ echo new SuperForm(array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
                     ))

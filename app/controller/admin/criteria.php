@@ -51,9 +51,9 @@ namespace Goteo\Controller\Admin {
 
                 } else {
                     Message::Error(implode('<br />', $errors));
-                    
+
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'criteria',
                             'file' => 'edit',
@@ -77,7 +77,7 @@ namespace Goteo\Controller\Admin {
                     $next = Model\Criteria::next($filters['section']);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'criteria',
                             'file' => 'edit',
@@ -94,7 +94,7 @@ namespace Goteo\Controller\Admin {
                     $criteria->cuantos = ($cuantos -1);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'criteria',
                             'file' => 'edit',
@@ -112,7 +112,7 @@ namespace Goteo\Controller\Admin {
             $criterias = Model\Criteria::getAll($filters['section']);
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'criteria',
                     'file' => 'list',
@@ -121,7 +121,7 @@ namespace Goteo\Controller\Admin {
                     'filters' => $filters
                 )
             );
-            
+
         }
 
     }

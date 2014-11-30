@@ -2,7 +2,9 @@
 use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Model\Image,
-    Goteo\Model\Blog\Post;
+    Goteo\Model\Blog\Post,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $URL = \SITE_URL;
 
@@ -56,22 +58,19 @@ if ($this['show'] == 'list') {
 }
 
 
-// paginacion
-require_once 'library/pagination/pagination.php';
+$pagedResults = new Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
 
-$pagedResults = new \Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
-
-include 'view/prologue.html.php';
-include 'view/header.html.php'; 
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 ?>
 	<div id="sub-header-secondary">
 		<div class="clearfix">
 			<h2><a href="/blog">GOTEO<span class="red">BLOG</span></a></h2>
-            <?php echo new View('view/header/share.html.php') ?>
+            <?php echo View::get('header/share.html.php') ?>
 		</div>
 	</div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 	<div id="main" class="threecols">
 		<div id="blog-content">
@@ -79,8 +78,8 @@ include 'view/header.html.php';
 				<?php if (!empty($posts)) : ?>
 					<?php while ($post = $pagedResults->fetchPagedRow()) : ?>
 						<div class="widget blog-content-module">
-							<?php echo new View('view/blog/post.html.php', array('post' => $post->id, 'show' => 'list')); ?>
-							<?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/blog/' . $post->id, $post->title))); ?>
+							<?php echo View::get('blog/post.html.php', array('post' => $post->id, 'show' => 'list')); ?>
+							<?php echo View::get('blog/share.html.php', array('urls' => Text::shareLinks($URL . '/blog/' . $post->id, $post->title))); ?>
                             <div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 						</div>
 					<?php endwhile; ?>
@@ -94,21 +93,21 @@ include 'view/header.html.php';
 			<?php endif; ?>
 			<?php if ($this['show'] == 'post') : ?>
 				<div class="widget post">
-					<?php echo new View('view/blog/post.html.php', $this); ?>
-                    <?php echo new View('view/blog/share.html.php', array('urls' => Text::shareLinks($URL . '/blog/' . $post->id, $post->title))); ?>
+					<?php echo View::get('blog/post.html.php', $this); ?>
+                    <?php echo View::get('blog/share.html.php', array('urls' => Text::shareLinks($URL . '/blog/' . $post->id, $post->title))); ?>
 					<div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 				</div>
-                <?php echo new View('view/blog/comments.html.php', $this) ?>
-                <?php echo new View('view/blog/sendComment.html.php', $this) ?>
+                <?php echo View::get('blog/comments.html.php', $this) ?>
+                <?php echo View::get('blog/sendComment.html.php', $this) ?>
 			<?php endif; ?>
 		</div>
 		<div id="blog-sidebar">
-			<?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'posts')) ; ?>
-			<?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'tags')) ; ?>
-			<?php echo new View('view/blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'feed')) ; ?>
+			<?php echo View::get('blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'posts')) ; ?>
+			<?php echo View::get('blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'tags')) ; ?>
+			<?php echo View::get('blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'feed')) ; ?>
 		</div>
 
 	</div>
 <?php
-    include 'view/footer.html.php';
-	include 'view/epilogue.html.php';
+    include __DIR__ . '/../footer.html.php';
+	include __DIR__ . '/../epilogue.html.php';

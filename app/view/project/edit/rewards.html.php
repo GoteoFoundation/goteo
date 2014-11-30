@@ -159,7 +159,7 @@ foreach ($project->social_rewards as $social_reward) {
 
         $social_rewards["social_reward-{$social_reward->id}"] = array(
             'class'     => 'reward social_reward',
-            'view'      => 'view/project/edit/rewards/reward.html.php',
+            'view'      => 'project/edit/rewards/reward.html.php',
             'data'      => array('reward' => $social_reward, 'licenses' => $this['licenses'], 'types' => $this['stypes']),
         );
 
@@ -297,7 +297,7 @@ foreach ($project->individual_rewards as $individual_reward) {
 
         $individual_rewards["individual_reward-{$individual_reward->id}"] = array(
             'class'     => 'reward individual_reward',
-            'view'      => 'view/project/edit/rewards/reward.html.php',
+            'view'      => 'project/edit/rewards/reward.html.php',
             'data'      => array('reward' => $individual_reward, 'types' => $this['itypes']),
         );
 
@@ -306,7 +306,7 @@ foreach ($project->individual_rewards as $individual_reward) {
 
 $sfid = 'sf-project-rewards';
 
-echo new SuperForm(array(
+echo SuperForm::get(array(
 
     'id'            => $sfid,
     'action'        => '',
@@ -365,7 +365,7 @@ echo new SuperForm(array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
                     ))

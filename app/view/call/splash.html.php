@@ -7,7 +7,7 @@ $bodyClass = 'splash';
 
 $call = $this['call'];
 
-include 'view/call/prologue.html.php';
+include __DIR__ . '/../call/prologue.html.php';
 ?>
 
 <div id="main" class="onecol">
@@ -27,7 +27,7 @@ include 'view/call/prologue.html.php';
             <p><?php echo $call->description ?></p>
         </li>
         <li class="item" id="numbers">
-            <?php echo new View('view/call/widget/stats.html.php', $this); ?>
+            <?php echo View::get('call/widget/stats.html.php', $this); ?>
         </li>
         <?php if (!empty($call->sponsors)) : ?>
             <li class="item" id="sponsors">
@@ -45,4 +45,4 @@ include 'view/call/prologue.html.php';
 
 <a href="<?php echo SITE_URL ?>/service/resources" id="capital" target="_blank">Goteo.org</a>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

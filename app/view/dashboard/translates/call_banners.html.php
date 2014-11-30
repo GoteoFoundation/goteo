@@ -26,12 +26,12 @@ if (!empty($call->banners)) {
                 'children'  => array(
                     "banner-{$banner->id}-banner-orig" => array(
                         'title'     => Text::get('call-field-banner-name'),
-                        'type'      => 'html',
+                        'type'      => 'HTML',
                         'html'      => $original->name
                     ),
                     "banner-{$banner->id}-name" => array(
                         'title'     => '',
-                        'type'      => 'textbox',
+                        'type'      => 'TextBox',
                         'size'      => 100,
                         'class'     => 'inline',
                         'value'     => $banner->name,
@@ -57,7 +57,7 @@ if (!empty($call->banners)) {
 
             $banners["banner-{$banner->id}"] = array(
                 'class'     => 'banner',
-                'view'      => 'view/dashboard/translates/call_banners/call_banner.html.php',
+                'view'      => 'dashboard/translates/call_banners/call_banner.html.php',
                 'data'      => array('banner' => $banner),
             );
         }
@@ -73,7 +73,7 @@ $sfid = 'sf-call-banners';
 
 <form method="post" action="/dashboard/translates/banners/save" class="call" enctype="multipart/form-data">
 
-<?php echo new SuperForm(array(
+<?php echo SuperForm::get(array(
     'id'            => $sfid,
     'action'        => '',
     'level'         => 3,

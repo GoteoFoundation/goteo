@@ -2,6 +2,5 @@
 
 use Goteo\Core\View;
 
-echo new View('view/project/report.html.php', $this);
+echo View::get('project/report.html.php', $this);
 
-?>

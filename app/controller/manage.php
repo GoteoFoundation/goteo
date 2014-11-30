@@ -63,7 +63,7 @@ namespace Goteo\Controller {
                 $BC = self::menu(array('option' => $option, 'action' => null, 'id' => null));
                 define('ADMIN_BCPATH', $BC);
                 $tasks = Model\Task::getAll(array(), \GOTEO_NODE, true);
-                $ret = new View('view/manage/index.html.php', array('tasks' => $tasks));
+                $ret = new View('manage/index.html.php', array('tasks' => $tasks));
             } else {
                 $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
                 define('ADMIN_BCPATH', $BC);

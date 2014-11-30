@@ -84,7 +84,7 @@ namespace Goteo\Controller\Admin {
 
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'transnodes',
                             'file'   => 'edit',
@@ -103,7 +103,7 @@ namespace Goteo\Controller\Admin {
             $translators = Model\User::getAll(array('role'=>'translator'));
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'transnodes',
                     'file' => 'list',
@@ -114,7 +114,7 @@ namespace Goteo\Controller\Admin {
                     'translators' => $translators
                 )
             );
-            
+
         }
 
     }

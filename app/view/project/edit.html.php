@@ -8,8 +8,8 @@ $bodyClass = 'project-edit';
 
 $project = $this['project'];
 
-$status = new View('view/project/edit/status.html.php', array('status' => $project->status, 'progress' => $project->progress));
-$steps  = new View('view/project/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $project->errors, 'id_project' => $project->id));
+$status = View::get('project/edit/status.html.php', array('status' => $project->status, 'progress' => $project->progress));
+$steps  = View::get('project/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $project->errors, 'id_project' => $project->id));
 
 if (!empty($this['success'])) {
     Goteo\Library\Message::Info($this['success']);
@@ -18,9 +18,9 @@ if (!empty($this['success'])) {
 }
 
 $superform = true;
-include 'view/prologue.html.php';
+include __DIR__ . '/../prologue.html.php';
 
-    include 'view/header.html.php'; ?>
+    include __DIR__ . '/../header.html.php'; ?>
 
     <div id="sub-header">
         <div class="project-header">
@@ -31,7 +31,7 @@ include 'view/prologue.html.php';
         </div>
     </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
     <div id="main" class="<?php echo htmlspecialchars($this['step']) ?>">
 
@@ -42,7 +42,7 @@ include 'view/prologue.html.php';
             <?php echo $status ?>
             <?php if (count($this['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación ?>
 
-            <?php echo new View("view/project/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
+            <?php if($this['step']) echo View::get("project/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)); ?>
 
             <?php if (count($this['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación ?>
 
@@ -58,6 +58,6 @@ include 'view/prologue.html.php';
 
     </div>
 
-    <?php include 'view/footer.html.php' ?>
+    <?php include __DIR__ . '/../footer.html.php' ?>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

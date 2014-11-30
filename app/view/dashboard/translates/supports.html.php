@@ -77,7 +77,7 @@ if (!empty($project->supports)) {
 
             $supports["support-{$support->id}"] = array(
                 'class'     => 'support',
-                'view'      => 'view/dashboard/translates/supports/support.html.php',
+                'view'      => 'dashboard/translates/supports/support.html.php',
                 'data'      => array('support' => $support),
             );
         }

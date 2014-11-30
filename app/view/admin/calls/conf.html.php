@@ -53,7 +53,7 @@ echo new NormalForm(array(
 
     'footer'        => array(
         'view-step-overview' => array(
-            'type'  => 'submit',
+            'type'  => 'Submit',
             'label' => Text::get('form-apply-button'),
             'class' => 'next',
             'name'  => 'save-conf'
@@ -62,22 +62,22 @@ echo new NormalForm(array(
     'elements'      => array(
 
         'limits' => array(
-            'type'      => 'group',
+            'type'      => 'Group',
             'title'     => 'Límite de Capital Riego que puede conseguir un proyecto',
             'children'  => array(
                 'limit_1st' => array(
-                    'type'  => 'html',
+                    'type'  => 'HTML',
                     'class' => 'inline',
                     'html'  => limitSel('En primera ronda', 'limit1', $conf->limit1)
                 ),
                 'limit_2nd' => array(
-                    'type'  => 'html',
+                    'type'  => 'HTML',
                     'class' => 'inline',
                     'html'  => limitSel('En segunda ronda', 'limit2', $conf->limit2)
                 ),
 
                 'legend'    => array(
-                    'type'  => 'html',
+                    'type'  => 'HTML',
                     'class' => 'inline',
                     'html'  => '<fieldset><legend>Límites</legend><p>'.$legend.'</p></fieldset>'
                 )
@@ -86,26 +86,26 @@ echo new NormalForm(array(
         ),
 
         'buzz' => array(
-            'type'      => 'group',
+            'type'      => 'Group',
             'title'     => 'Carrusel de tweets',
             'children'  => array(
                 'buzz_own' => array(
                     'title'     => Text::get('call-conf-buzz_own'),
-                    'type'      => 'slider',
+                    'type'      => 'Slider',
                     'options'   => $allow,
                     'class'     => 'currently cols_' . count($allow),
                     'value'     => (int) $conf->buzz_own
                 ),
                 'buzz_mention' => array(
                     'title'     => Text::get('call-conf-buzz_mention'),
-                    'type'      => 'slider',
+                    'type'      => 'Slider',
                     'options'   => $allow,
                     'class'     => 'currently cols_' . count($allow),
                     'value'     => (int) $conf->buzz_mention
                 ),
                 'buzz_first' => array(
                     'title'     => Text::get('call-conf-buzz_first'),
-                    'type'      => 'slider',
+                    'type'      => 'Slider',
                     'options'   => $allow,
                     'class'     => 'currently cols_' . count($allow),
                     'value'     => (int) $conf->buzz_first
@@ -114,7 +114,7 @@ echo new NormalForm(array(
         ),
 
         'applied' => array(
-            'type'  => 'textbox',
+            'type'  => 'TextBox',
             'class'     => 'inline reward-amount',
             'title' => Text::get('call-conf-applied'),
             'size'  => 5,

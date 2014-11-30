@@ -30,20 +30,20 @@ if (!$node instanceof Model\Node) {
         ),
         'elements'      => array(
             'name' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'size'      => 20,
                 'title'     => 'Nombre',
                 'value'     => $node->name,
             ),
             'subtitle' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'size'      => 20,
                 'title'     => 'Título',
                 'value'     => $node->subtitle,
             ),
 
             'description' => array(
-                'type'      => 'textarea',
+                'type'      => 'TextArea',
                 'cols'      => 40,
                 'rows'      => 4,
                 'title'     => 'Presentación',
@@ -51,7 +51,7 @@ if (!$node instanceof Model\Node) {
             ),
 
             'logo' => array(
-                'type' => 'hidden',
+                'type' => 'Hidden',
                 'value' => $node->logo->id,
             ),
 
@@ -66,7 +66,7 @@ if (!$node instanceof Model\Node) {
                         'class' => 'inline avatar_upload'
                     ),
                     'logo-image' => array(
-                        'type'  => 'html',
+                        'type'  => 'HTML',
                         'class' => 'inline avatar-image',
                         'html'  => is_object($node->logo) ?
                                    $node->logo . '<img src="' . SITE_URL . '/image/' . $node->logo->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="logo-'.$node->logo->hash.'-remove" title="Quitar este logo" value="remove">X</button>' :
@@ -77,14 +77,14 @@ if (!$node instanceof Model\Node) {
             ),
 
             'email' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'size'      => 20,
                 'title'     => 'Email',
                 'value'     => $node->email,
             ),
 
             'location' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'size'      => 20,
                 'title'     => 'Localización',
                 'value'     => $node->location

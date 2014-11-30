@@ -109,7 +109,7 @@ foreach ($filters as $key=>$value) {
 <?php endif; ?>
 </div>
 
-    
+
 <?php if (!empty($this['projects'])) {
     foreach ($this['projects'] as $project) {
 ?>
@@ -138,7 +138,7 @@ foreach ($filters as $key=>$value) {
                 <td style="text-align: right;"><?php echo \euro_format($project->maxcost).'€'; ?></td>
             </tr>
             <tr>
-                <td colspan="7"><?php 
+                <td colspan="7"><?php
                     if ($project->status < 3) {
                         echo "Información al <strong>{$project->progress}%</strong>";
                     } elseif ($project->status == 3) {
@@ -164,7 +164,7 @@ foreach ($filters as $key=>$value) {
                     IR A:&nbsp;
                     <a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a>
                     <a href="/admin/users/?id=<?php echo $project->owner; ?>" target="_blank">[Impulsor]</a>
-                    <?php if (!isset($_SESSION['admin_node']) 
+                    <?php if (!isset($_SESSION['admin_node'])
                             || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE)
                             || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
                     <a href="/admin/accounts/?projects=<?php echo $project->id; ?>" title="Ver sus aportes">[Aportes]</a>
@@ -227,6 +227,6 @@ foreach ($filters as $key=>$value) {
 </div>
     <?php }
         $this['queryVars'] = $the_filters;
-        echo new View('view/pagination.html.php', $this);
+        echo View::get('pagination.html.php', $this);
     }
     ?>

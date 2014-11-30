@@ -12,7 +12,7 @@ namespace Goteo\Controller\Admin {
     class Texts {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
-            
+
 
             // valores de filtro
             $groups    = Text::groups();
@@ -29,7 +29,7 @@ namespace Goteo\Controller\Admin {
             switch ($action) {
                 case 'list':
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'texts',
                             'file' => 'list',
@@ -103,7 +103,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'texts',
                             'file' => 'edit',
@@ -140,7 +140,7 @@ namespace Goteo\Controller\Admin {
                 default:
                     throw new Redirection("/admin");
             }
-            
+
         }
 
     }

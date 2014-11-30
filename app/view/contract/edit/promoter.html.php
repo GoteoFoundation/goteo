@@ -5,21 +5,21 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $contract = $this['contract'];
-$errors = $contract->errors[$this['step']] ?: array();         
+$errors = $contract->errors[$this['step']] ?: array();
 $okeys  = $contract->okeys[$this['step']] ?: array();
 
-echo new SuperForm(array(
+echo SuperForm::get(array(
 
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('contract-step-promoter'),
-    'hint'          => Text::get('guide-contract-promoter'),    
+    'hint'          => Text::get('guide-contract-promoter'),
     'elements'      => array(
         'process_promoter' => array (
             'type' => 'hidden',
             'value' => 'promoter'
         ),
-        
+
         /* Radio Tipo de persona */
         'contract_entity-radioset' => array(
             'type'      => 'group',
@@ -85,7 +85,7 @@ echo new SuperForm(array(
             'ok'        => !empty($okeys['birthdate']) ? array($okeys['birthdate']) : array(),
             'value'     => $contract->birthdate
         ),
-                
+
         /* Domicilio fiscal */
         'fiscaladdr' => array(
             'type'      => 'group',
@@ -150,10 +150,10 @@ echo new SuperForm(array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/contract/edit/errors.html.php', array(
+                    'view'  => new View('contract/edit/errors.html.php', array(
                         'contract'   => $contract,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -167,9 +167,9 @@ echo new SuperForm(array(
                     )
                 )
             )
-        
+
         )
-        
+
     )
 
 ));

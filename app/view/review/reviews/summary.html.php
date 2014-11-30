@@ -1,7 +1,7 @@
 <?php
 use Goteo\Core\View;
 
-echo new View ('view/review/reviews/selector.html.php', $this);
+echo View::get('review/reviews/selector.html.php', $this);
 
 $review = $this['review'];
 

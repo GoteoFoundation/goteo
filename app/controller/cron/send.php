@@ -110,7 +110,7 @@ namespace Goteo\Controller\Cron {
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NUMBACKERS%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->num_investors);
                     break;
-                
+
                 case 'project_to_review': // template 8, "Confirmacion de proyecto enviado"
                     $tpl = 8;
                     $search  = array('%USERNAME%', '%PROJECTNAME%');
@@ -150,55 +150,55 @@ namespace Goteo\Controller\Cron {
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%PORCENTAJE%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->percent);
                     break;
-                
+
                 case 'tip_3': // template 43, "Una acción a diario, por pequeña que sea"
                     $tpl = 43;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->amount);
                     break;
-                
+
                 case 'tip_4': // template 44, "Llama a todas las puertas"
                     $tpl = 44;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%BACKERSURL%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/'.$project->id.'/supporters');
                     break;
-                
+
                 case 'tip_5': // template 45, "Busca dónde está tu comunidad"
                     $tpl = 45;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%NUMBACKERS%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->amount, $project->num_investors);
                     break;
-                
+
                 case 'tip_8': // template 47, "Agradece en público e individualmente"
                     $tpl = 47;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%MESSAGESURL%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/'.$project->id.'/messages');
                     break;
-                
+
                 case 'tip_9': // template 48, "Busca prescriptores e implícalos"
                     $tpl = 48;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%PORCENTAJE%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->percent);
                     break;
-                
+
                 case 'tip_10': // template 49, "Luce tus recompensas y retornos"
                     $tpl = 49;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%LOWREWARD%', '%HIGHREWARD%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->lower, $project->higher);
                     break;
-                
+
                 case 'tip_11': // template 50, "Refresca tu mensaje de motivacion"
                     $tpl = 50;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id);
                     break;
-                
+
                 case 'tip_15': // template 51, "Sigue los avances y calcula lo que falta"
                     $tpl = 51;
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%DIASCAMPAÑA%', '%DAYSTOGO%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->days, $project->days);
                     break;
-                
+
             }
 
             if (!empty($tpl)) {
@@ -212,7 +212,7 @@ namespace Goteo\Controller\Cron {
                 $template = Template::get($tpl, $comlang);
 
                 // Sustituimos los datos
-                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
+                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                 $content = \str_replace($search, $replace, $template->text);
                 // iniciamos mail
                 $mailHandler = new Mail();
@@ -229,11 +229,6 @@ namespace Goteo\Controller\Cron {
                         $monitors[] = $user->email;
                     }
 
-                    $monitors[] = 'enric@goteo.org';
-                    $monitors[] = 'olivier@goteo.org';
-                    $monitors[] = 'dev@goteo.org';
-                    $monitors[] = 'pablo@anche.no';
-
                     $mailHandler->bcc = $monitors;
                 }
 
@@ -242,7 +237,7 @@ namespace Goteo\Controller\Cron {
                 // si es un proyecto de nodo: reply al mail del nodo
                 // si es de centra: reply a MAIL_GOTEO
                 $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : \GOTEO_CONTACT_MAIL;
-                
+
                 $mailHandler->subject = $subject;
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
@@ -272,7 +267,7 @@ namespace Goteo\Controller\Cron {
             $debug = \defined('CRON_EXEC');
             $error_sending = false;
             $tpl = null;
-            
+
             if ($debug) echo 'toConsultants: ';
 
             // ya no está por defecto en el ::get()
@@ -284,13 +279,13 @@ namespace Goteo\Controller\Cron {
                     $tpl = 56;
 
                     $contact = Model\Project::getContact($project->id);
-                    $info_html = new View('view/admin/commons/contact.html.php', array('contact' => $contact));
+                    $info_html = new View('admin/commons/contact.html.php', array('contact' => $contact));
 
                     $search  = array('%PROJECTNAME%', '%URL%', '%INFO%');
                     $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id, $info_html);
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
-                    if (empty($project->consultants)) { 
+                    if (empty($project->consultants)) {
                         $project->consultants = array('olivier' => 'Olivier');
                     }
                     break;
@@ -299,7 +294,7 @@ namespace Goteo\Controller\Cron {
                     $tpl = 57;
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
-                    if (empty($project->consultants)) { 
+                    if (empty($project->consultants)) {
                         $consultants = array('esenabre' => 'Enric Senabre');
                     } else {
                         $consultants_copy = $project->consultants;
@@ -337,7 +332,7 @@ namespace Goteo\Controller\Cron {
                 // Obtenemos la plantilla para asunto y contenido
                 $template = Template::get($tpl);
                 // Sustituimos los datos
-                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title); 
+                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                 $pre_content = \str_replace($search, $replace, $template->text);
 
                 foreach ($project->consultants as $id=>$name) {
@@ -350,7 +345,7 @@ namespace Goteo\Controller\Cron {
                     $mailHandler = new Mail();
                     $mailHandler->to = $consultant->email;
                     $mailHandler->toName = $name;
-                    
+
                     if ($debug) echo $consultant->email . ', ';
 
                     $mailHandler->subject = $subject;
@@ -429,12 +424,12 @@ namespace Goteo\Controller\Cron {
                         $post_content = "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
                         // y preparar los enlaces para compartir en redes sociales
                         $share_urls = Text::shareLinks($post_url, $post->title);
-                        
+
                         $search  = array('%PROJECTNAME%', '%UPDATEURL%', '%POST%', '%SHAREFACEBOOK%', '%SHARETWITTER%');
                         $replace = array($project->name, $post_url, $post_content, $share_urls['facebook'], $share_urls['twitter']);
                     break;
             }
-            
+
 
             if (empty($tpl)) return false;
 
@@ -477,7 +472,7 @@ namespace Goteo\Controller\Cron {
                         );
                 }
             }
-            
+
             // preparamos el contenido
             // veamos los idiomas que necesitamos
             // array_keys
@@ -491,7 +486,7 @@ namespace Goteo\Controller\Cron {
 
             // Obtenemos la plantilla para asunto y contenido
             $template = Template::get($tpl, $comlang);
-            
+
 
             // - subject
             if (!empty($post)) {
@@ -521,7 +516,7 @@ namespace Goteo\Controller\Cron {
                 return true;
 
         }
-        
+
         /**
          * A los destinatarios de recompensa (regalo)
          * solo tipo 'fail' por ahora
@@ -588,13 +583,13 @@ namespace Goteo\Controller\Cron {
                 echo '<p>'.str_replace('?', $project->id, $sql).'</p>';
                 $anyfail = true;
             }
-            
+
             if ($anyfail)
                 return false;
             else
                 return true;
 
         }
-        
+
     }
 }

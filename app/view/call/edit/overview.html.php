@@ -20,7 +20,7 @@ foreach ($this['categories'] as $value => $label) {
 
 // retornos en opcion checkboxes con icono y descripcion
 $icons = array();
-
+if(!is_array($rewards)) $rewards = array();
 foreach ($this['icons'] as $id=>$icon) {
     $rewards["icon-{$icon->id}"] =  array(
         'name'  => "icons[]",
@@ -305,7 +305,7 @@ $superform = array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $call,
                         'step'      => $this['step']
                     ))
@@ -333,7 +333,7 @@ $superform = array(
 foreach ($superform['elements'] as $id => &$element) {
 
     if (!empty($this['errors'][$this['step']][$id])) {
-        $element['errors'] = arrray();
+        $element['errors'] = array();
     }
 
 }
@@ -365,4 +365,4 @@ $(document).ready(function(){
 </script>
 
 <?php
-echo new SuperForm($superform);
+echo SuperForm::get($superform);

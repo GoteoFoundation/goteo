@@ -7,14 +7,14 @@ $bodyClass = 'info';
 
 $call = $this['call'];
 
-include 'view/call/prologue.html.php';
-include 'view/call/header.html.php';
+include __DIR__ . '/../call/prologue.html.php';
+include __DIR__ . '/../call/header.html.php';
 ?>
 <div id="main">
-    <?php echo new View('view/call/widget/title.html.php', $this); ?>
+    <?php echo View::get('call/widget/title.html.php', $this); ?>
     <div id="banners-social">
-        <?php echo new View('view/call/widget/banners.html.php', $this) ?>
-        <?php echo new View('view/call/widget/social.html.php', $this) ?>
+        <?php echo View::get('call/widget/banners.html.php', $this) ?>
+        <?php echo View::get('call/widget/social.html.php', $this) ?>
     </div>
 
     <div id="info" class="stats-container">
@@ -39,21 +39,21 @@ include 'view/call/header.html.php';
                 echo Text::recorta($call->resources, 200);
             } ?></a>
             </p>
-            
+
             <p class="subtitle" style="color: #58595b; font-size: 12px;"><?php echo $call->subtitle ?></p>
 
-            <?php echo new View('view/call/widget/stats.html.php', $this); ?>
-            
+            <?php echo View::get('call/widget/stats.html.php', $this); ?>
+
         </div>
-        <?php echo new View('view/call/widget/buzz.html.php', $this); ?>
+        <?php echo View::get('call/widget/buzz.html.php', $this); ?>
     </div>
 
-    <?php echo new View('view/call/widget/social-responsive.html.php', $this) ?>
-    
-    <?php echo new View('view/call/bottom.html.php', $this); ?>
+    <?php echo View::get('call/widget/social-responsive.html.php', $this) ?>
+
+    <?php echo View::get('call/bottom.html.php', $this); ?>
 </div>
 
 <?php
-include 'view/call/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/../call/footer.html.php';
+include __DIR__ . '/../epilogue.html.php';
 ?>

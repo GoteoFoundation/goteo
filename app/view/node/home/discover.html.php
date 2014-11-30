@@ -17,7 +17,7 @@ foreach ($this['discover'] as $cat => $projects) :
     <ul>
         <?php foreach ($projs as $project) {
             $project->per_amount = round(($project->amount / $project->mincost) * 100);
-            echo new View('view/project/widget/tiny_project.html.php', array('project'=>$project));
+            echo View::get('project/widget/tiny_project.html.php', array('project'=>$project));
         } ?>
     </ul>
 
@@ -34,7 +34,7 @@ foreach ($this['discover'] as $cat => $projects) :
     <ul>
         <?php foreach ($projects as $project) {
             $project->per_amount = round(($project->amount / $project->mincost) * 100);
-            echo new View('view/project/widget/tiny_project.html.php', array('project'=>$project));
+            echo View::get('project/widget/tiny_project.html.php', array('project'=>$project));
         } ?>
     </ul>
 

@@ -1,9 +1,8 @@
 <?php
 use Goteo\Library\Text,
-    Goteo\Model\User\Translate;
-
-// paginacion
-require_once 'library/pagination/pagination.php';
+    Goteo\Model\User\Translate,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $node = $this['node'];
 $transNode = Translate::is_legal($_SESSION['user']->id, $node, 'node') ? true : false;
@@ -16,7 +15,7 @@ foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new \Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/blog/add" class="button">Nueva entrada</a>
 &nbsp;&nbsp;&nbsp;
@@ -80,7 +79,7 @@ $pagedResults = new \Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET[
         <tbody>
             <?php while ($post = $pagedResults->fetchPagedRow()) : ?>
             <tr>
-                <td><?php if ($post->publish) echo '<strong style="color:#20b2b3;font-size:10px;">Publicada</sttrong>'; ?></td>
+                <td><?php if ($post->publish) echo '<strong style="color:#20b2b3;font-size:10px;">Publicada</strong>'; ?></td>
                 <td colspan="6"><?php
                         $style = '';
                         if (isset($this['homes'][$post->id]))
@@ -89,7 +88,7 @@ $pagedResults = new \Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET[
                             if (isset($this['footers'][$post->id]))
                                 $style .= ' font-style:italic;';
                         }
-                            
+
                       echo "<span style=\"{$style}\">{$post->title}</span>";
                 ?></td>
                 <td><?php echo $post->fecha; ?></td>

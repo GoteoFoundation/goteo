@@ -3,9 +3,9 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\View,
-        Goteo\Model\Project,
+        Goteo\Model,
         Goteo\Core\Redirection,
-		Goteo\Library\WallFriends,
+        Goteo\Library\WallFriends,
         Goteo\Core\Error;
 
     class Widget extends \Goteo\Core\Controller {
@@ -17,19 +17,19 @@ namespace Goteo\Controller {
 
         public function project ($id) {
 
-            $project  = Project::getMedium($id, LANG);
+            $project  = Model\Project::getMedium($id, LANG);
 
-            if (! $project instanceof  Project) {
+            if (! $project instanceof  Model\Project) {
                 throw new Redirection('/', Redirection::TEMPORARY);
             }
 
-            return new View('view/widget/project.html.php', array('project' => $project, 'global' => true));
+            return new View('widget/project.html.php', array('project' => $project, 'global' => true));
 
             throw new Redirection('/fail', Redirection::TEMPORARY);
         }
 
         public function wof ($id, $width = 608, $all_avatars = 1) {
-			if($wof = new WallFriends($id,$all_avatars)) {
+			if($wof = new WallFriends(Model\Project::get($id), $all_avatars)) {
 				echo $wof->html($width, true);
 			}
 			else {

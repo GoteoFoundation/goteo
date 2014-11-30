@@ -1,19 +1,19 @@
 <?php
 
-use Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $bodyClass = 'admin';
 
 // paginacion
-require_once 'library/pagination/pagination.php';
-
 $filter = $this['filter'];
 $groups = $this['groups'];
 $nwords = $this['nwords'];
 $data   = $this['data'];
 
 // valores de filtro
-$pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 
 // metemos la agrupación 'todos'
 \array_unshift($groups, 'Todas las agrupaciones');
@@ -29,17 +29,17 @@ $pagedResults = new \Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] :
             <?php endforeach; ?>
             </select>
         </div>
-        
+
         <div style="float:left;margin:5px;">
             <label for="filter-text">Texto:</label><br />
             <input id="filter-text" name="text" value="<?php echo (string) $this['filters']['text']; ?>" />
         </div>
-        
+
         <div style="float:left;margin:5px;">
             <label for="filter-pending">Solo pendientes:</label><br />
             <input id="filter-pending" type="checkbox" name="pending" value="1" <?php if ($this['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
         </div>
-           
+
         <br clear="both" />
         <input type="submit" name="filter" value="Buscar">
     </form>

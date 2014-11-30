@@ -1,6 +1,7 @@
 <?php
 
 use Goteo\Library\Text,
+    Goteo\Core\Redirection,
     Goteo\Model;
 
 $campaign = $this['campaign'];
@@ -8,6 +9,7 @@ $calls = $this['calls'];
 $status = $this['status'];
 
 // solo para nodos
+// TODO: esto aqui no!
 if (!isset($_SESSION['admin_node'])) {
     throw new Redirection('/admin');
 }

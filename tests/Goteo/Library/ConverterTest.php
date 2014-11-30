@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Goteo\Tests;
+namespace Goteo\Library\Tests;
 
 use Goteo\Library\Converter;
 
@@ -116,7 +116,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase {
         //invalidar cache
         $converter->cleanCache();
 
-        
+
         return $converter;
     }
 

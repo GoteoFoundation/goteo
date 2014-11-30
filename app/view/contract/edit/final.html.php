@@ -53,12 +53,12 @@ $elements      = array(
     ),
 
     'final' => array(
-        'type'      => 'html',
+        'type'      => 'HTML',
         'class'     => 'fullwidth',
         'html'      =>   '<div class="contract-final" style="position: relative"><div>'
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
-                       . new View('view/contract/widget/review.html.php', array('contract' => $contract))
+                       . View::get('contract/widget/review.html.php', array('contract' => $contract))
                        . '</div>'
                        . '</div></div>'
     )
@@ -67,17 +67,17 @@ $elements      = array(
 if (!$contract->status->owner) {
     // Footer
     $elements['footer'] = array(
-        'type'      => 'group',
+        'type'      => 'Group',
         'children'  => array(
             'errors' => array(
                 'title' => Text::get('form-footer-errors_title'),
-                'view'  => new View('view/contract/edit/errors.html.php', array(
+                'view'  => new View('contract/edit/errors.html.php', array(
                     'contract'   => $contract,
                     'step'      => $this['step']
-                ))                    
+                ))
             ),
             'buttons'  => array(
-                'type'  => 'group',
+                'type'  => 'Group',
                 'children' => $buttons
             )
         )
@@ -86,7 +86,7 @@ if (!$contract->status->owner) {
 }
 
 // lanzamos el superform
-echo new SuperForm(array(
+echo SuperForm::get(array(
     'action'        => '',
     'level'         => $this['level'],
     'method'        => 'post',

@@ -22,7 +22,7 @@ namespace Goteo\Controller\Admin {
             switch ($action) {
                 case 'add':
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
@@ -67,7 +67,7 @@ namespace Goteo\Controller\Admin {
                                         'label' => 'Medio',
                                         'name' => 'media_name',
                                         'type' => 'text'
-                                    ), 
+                                    ),
                                     'order' => array(
                                         'label' => '',
                                         'name' => 'order',
@@ -84,11 +84,11 @@ namespace Goteo\Controller\Admin {
 
                     // gestionar post
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        
+
                         //compruebo si está en press_banner
                         $press_banner=$model::in_press_banner($_POST['id']);
 
-                        // instancia  
+                        // instancia
                         $item = new $model(array(
                             'id'          => $_POST['id'],
                             'title'       => $_POST['title'],
@@ -143,7 +143,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
@@ -235,11 +235,11 @@ namespace Goteo\Controller\Admin {
                       if (Model\News::remove_press_banner($id)) {
                         throw new Redirection('/admin/news');
                     }
-                    break; 
+                    break;
             }
 
             /*return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'news',
                     'file' => 'list',
@@ -261,14 +261,14 @@ namespace Goteo\Controller\Admin {
             );*/
 
              return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'news',
                     'file' => 'list',
                     'news' => $model::getList()
                 )
             );
-            
+
         }
 
     }

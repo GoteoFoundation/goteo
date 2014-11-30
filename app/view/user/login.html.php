@@ -7,8 +7,8 @@ $bodyClass = 'user-login';
 // para que el prologue ponga el código js para botón facebook en el bannerside
 $fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
 $jscrypt = true;
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $errors = $this['errors'];
 extract($_POST);
@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
 	</div>
 </div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 
     <div id="main">
@@ -198,4 +198,4 @@ jQuery(document).ready(function($) {
 
     </div>
 
-<?php include 'view/footer.html.php' ?>
+<?php include __DIR__ . '/../footer.html.php' ?>

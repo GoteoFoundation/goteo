@@ -1,11 +1,11 @@
-<?php 
+<?php
 use Goteo\Library\Text,
     Goteo\Core\View;
 
 $posts = $this['posts'];
 
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $bodyClass = 'about';
 
@@ -15,11 +15,11 @@ $go_up = Text::get('regular-go_up');
 	<div id="sub-header-secondary">
 		<div class="clearfix">
 			<h2><a href="/about">GOTEO<span class="red">INFO</span></a></h2>
-            <?php echo new View('view/header/share.html.php') ?>
+            <?php echo View::get('header/share.html.php') ?>
 		</div>
 	</div>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 	<div id="main" class="threecols">
 		<div id="about-content">
@@ -97,7 +97,7 @@ $go_up = Text::get('regular-go_up');
 		</div>
 
 	</div>
-    
+
 <?php
-include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/../footer.html.php';
+include __DIR__ . '/../epilogue.html.php';

@@ -6,8 +6,8 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Model,
-	    Goteo\Library\Feed,
-	    Goteo\Library\Message,
+	    Goteo\Library,
+        Goteo\Library\Feed,
 	    Goteo\Library\Text,
 	    Goteo\Library\Page,
 	    Goteo\Library\Content,
@@ -34,7 +34,7 @@ namespace Goteo\Controller {
                 $_SESSION['user']->translangs = Model\User\Translate::getLangs($_SESSION['user']->id);
                 if (empty($_SESSION['user']->translangs) ) {
 
-                    Message::Error('No tienes ningún idioma, contacta con el administrador');
+                    Model\Message::Error('No tienes ningún idioma, contacta con el administrador');
                     throw new Redirection('/dashboard');
                 }
 
@@ -49,7 +49,7 @@ namespace Goteo\Controller {
             }
 
             if (empty($table)) {
-                return new View('view/translate/index.html.php', array('menu'=>self::menu()));
+                return new View('translate/index.html.php', array('menu'=>self::menu()));
             }
 
             // para el breadcrumbs segun el contenido
@@ -65,7 +65,7 @@ namespace Goteo\Controller {
                 // verificar si este usuario puede traducir este nodo
                 // (ojo, al ser  table 'node' el id del nodo está en el parametro $action
                 if ( !Model\User\Translate::is_legal($_SESSION['user']->id, $action, 'node') ) {
-                    Message::Info(Text::get('user-login-required-access'));
+                    Model\Message::Info(Text::get('user-login-required-access'));
                     throw new Redirection('/dashboard/translates');
                 }
 
@@ -112,7 +112,7 @@ namespace Goteo\Controller {
             }
 
             // si no pasa nada de esto, a la portada
-            return new View('view/translate/index.html.php', array('menu'=>self::menu()));
+            return new View('translate/index.html.php', array('menu'=>self::menu()));
         }
 
         public function select ($section = '', $action = '', $id = null, $extraAction = null, $extraId = null) {
@@ -129,7 +129,7 @@ namespace Goteo\Controller {
 
                 throw new Redirection("/translate/$section/$action/$id/$filter&page=".$_GET['page']);
             } else {
-                return new View('view/translate/index.html.php', array('menu'=>self::menu()));
+                return new View('translate/index.html.php', array('menu'=>self::menu()));
             }
         }
 

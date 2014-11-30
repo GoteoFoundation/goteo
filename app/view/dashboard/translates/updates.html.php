@@ -30,7 +30,16 @@ $errors = $this['errors'];
 <?php  else : // sueprform!
 
         $post  = $this['post']; // si edit
-        $original = \Goteo\Model\Blog\Post::get($post->id);
+        //TODO: una llamada aqui al modelo no mola nada
+        try {
+            $original = \Goteo\Model\Blog\Post::get($post->id);
+        }
+        catch(\Exception $e) {
+            //lo dicho, esto tendria que ser diferente
+            $original = new \Goteo\Model\Blog\Post();
+            $original->gallery = 'empty';
+            $original->image = 'empty';
+        }
 
 
         if (!empty($post->media->url)) {
@@ -55,7 +64,7 @@ $errors = $this['errors'];
 
     <form method="post" action="/dashboard/translates/updates/save/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
 
-    <?php echo new SuperForm(array(
+    <?php echo SuperForm::get(array(
         //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
         'autoupdate'    => false,
 

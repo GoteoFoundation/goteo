@@ -2,7 +2,9 @@
 use Goteo\Library\Text,
     Goteo\Model\Blog\Post,
     Goteo\Core\View,
-    Goteo\Model\Image;
+    Goteo\Model\Image,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $bodyClass = 'news';
 
@@ -22,17 +24,15 @@ foreach ($items as $item) {
 }
 
 // paginacion
-require_once 'library/pagination/pagination.php';
+$pagedResults = new Paginated($news, 7, isset($_GET['page']) ? $_GET['page'] : 1);
 
-$pagedResults = new \Paginated($news, 7, isset($_GET['page']) ? $_GET['page'] : 1);
-
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/prologue.html.php';
+include __DIR__ . '/header.html.php';
 ?>
 <div id="sub-header-secondary">
     <div class="clearfix">
         <h2>GOTEO<span class="red">NEWS</span></h2>
-        <?php echo new View('view/header/share.html.php') ?>
+        <?php echo View::get('header/share.html.php') ?>
     </div>
 </div>
 <div id="main" class="threecols">
@@ -65,6 +65,6 @@ include 'view/header.html.php';
     </div>
 </div>
 <?php
-include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/footer.html.php';
+include __DIR__ . '/epilogue.html.php';
 ?>

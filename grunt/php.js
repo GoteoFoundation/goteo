@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 
     grunt.config('php', {
         options: {
-            ini: '../var/php/php.ini',
+            ini: '<%= goteo.phpINI %>',
             hostname: '<%= goteo.localURL %>',
             port: '<%= goteo.localPort %>',
             livereload: 35729,

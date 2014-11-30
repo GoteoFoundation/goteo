@@ -9,5 +9,5 @@ $status = $this['statuses'];
 <br /><br />
 <div class="widget board">
     <h3><?php echo $project->name; ?> (<?php echo $status[$project->status]; ?>)</h3>
-    <?php echo new View('view/project/edit/rewards/edit_commons.html.php', $this); ?>
+    <?php echo View::get('project/edit/rewards/edit_commons.html.php', $this); ?>
 </div>

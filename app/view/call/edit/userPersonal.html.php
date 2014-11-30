@@ -12,7 +12,7 @@ $okeys  = $call->okeys[$this['step']] ?: array();
 $secondary_address = empty($call->post_address) ? false : true;
 
 
-echo new SuperForm(array(
+echo SuperForm::get(array(
 
     'level'         => $this['level'],
     'method'        => 'post',
@@ -23,7 +23,7 @@ echo new SuperForm(array(
             'type' => 'hidden',
             'value' => 'userPersonal'
         ),
-        
+
         /* Radio Tipo de persona */
         'contract_entity-radioset' => array(
             'type'      => 'group',
@@ -68,7 +68,7 @@ echo new SuperForm(array(
                             'ok'        => !empty($okeys['entity_name']) ? array($okeys['entity_name']) : array(),
                             'value'     => $call->entity_name
                         ),
-                        
+
                         'entity_cif' => array(
                             'type'      => 'textbox',
                             'class'     => 'inline',
@@ -80,7 +80,7 @@ echo new SuperForm(array(
                             'ok'        => !empty($okeys['entity_cif']) ? array($okeys['entity_cif']) : array(),
                             'value'     => $call->entity_cif
                         ),
-                        
+
                         'entity_office' => array(
                             'type'      => 'textbox',
                             'class'     => 'inline',
@@ -309,10 +309,10 @@ echo new SuperForm(array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $call,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -326,9 +326,9 @@ echo new SuperForm(array(
                     )
                 )
             )
-        
+
         )
-        
+
     )
 
 ));

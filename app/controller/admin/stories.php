@@ -84,7 +84,7 @@ namespace Goteo\Controller\Admin {
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'stories',
                                     'file' => 'edit',
@@ -98,7 +98,7 @@ namespace Goteo\Controller\Admin {
                             break;
                         case 'edit':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'stories',
                                     'file' => 'edit',
@@ -142,7 +142,7 @@ namespace Goteo\Controller\Admin {
                     $items = Model\Post::getAutocomplete();
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'stories',
                             'file' => 'edit',
@@ -161,7 +161,7 @@ namespace Goteo\Controller\Admin {
                     $items = Model\Post::getAutocomplete();
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'stories',
                             'file' => 'edit',
@@ -177,20 +177,20 @@ namespace Goteo\Controller\Admin {
                             $story = Model\Stories::get($id);
 
                             return new View(
-                                'view/admin/stories/preview.html.php',
+                                'admin/stories/preview.html.php',
                                 array(
                                     'story' =>$story,
                                     'action' => 'preview'
-                                    
+
                                 )
                             );
-                            break;    
+                            break;
             }
 
             $storyed = Model\Stories::getList($node);
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'stories',
                     'file' => 'list',

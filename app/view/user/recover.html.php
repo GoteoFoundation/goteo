@@ -6,8 +6,8 @@ use Goteo\Core\View,
 $bodyClass = 'user-login';
 // para que el prologue ponga el código js para botón facebook en el bannerside
 $fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $error = $this['error'];
 $message = $this['message'];
@@ -51,4 +51,4 @@ extract($_POST);
 
     </div>
 
-<?php include 'view/footer.html.php' ?>
+<?php include __DIR__ . '/../footer.html.php' ?>

@@ -75,7 +75,7 @@ namespace Goteo\Controller\Admin {
                             )));
                             $log->doAdmin('admin');
                             unset($log);
-                            
+
                             throw new Redirection('/admin/transcalls/edit/'.$call->id);
                         } else {
                             Message::Error(implode('<br />', $errors));
@@ -159,7 +159,7 @@ namespace Goteo\Controller\Admin {
 
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'transcalls',
                             'file'   => 'edit',
@@ -204,7 +204,7 @@ namespace Goteo\Controller\Admin {
             $translators = Model\User::getAll(array('role'=>'translator'));
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'transcalls',
                     'file' => 'list',
@@ -215,7 +215,7 @@ namespace Goteo\Controller\Admin {
                     'translators' => $translators
                 )
             );
-            
+
         }
 
     }

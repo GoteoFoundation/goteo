@@ -23,7 +23,7 @@ namespace Goteo\Controller\Admin {
                         $item = (object) array();
                     }
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
@@ -82,7 +82,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'base',
                             'file' => 'edit',
@@ -131,9 +131,9 @@ namespace Goteo\Controller\Admin {
                     }
                     break;
                 case 'keywords':
-                    
+
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'keywords',
                             'file' => 'list',
@@ -141,12 +141,12 @@ namespace Goteo\Controller\Admin {
                             'words' => $model::getKeyWords()
                         )
                     );
-                    
+
                     break;
             }
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'base',
                     'file' => 'list',
@@ -169,7 +169,7 @@ namespace Goteo\Controller\Admin {
                     'url' => "$url"
                 )
             );
-            
+
         }
 
     }

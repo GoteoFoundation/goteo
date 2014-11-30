@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $contract = $this['contract'];
-$errors = $contract->errors[$this['step']] ?: array();         
+$errors = $contract->errors[$this['step']] ?: array();
 $okeys  = $contract->okeys[$this['step']] ?: array();
 
 $hint = ($contract->type == 0) ? Text::get('guide-contract-no_entity') : Text::get('guide-contract-entity');
@@ -28,7 +28,7 @@ switch ($contract->type) {
                 'type' => 'hidden',
                 'value' => ''
             ),
-            
+
             'reg_number' => array(
                 'type'      => 'textbox',
                 'title'     => Text::get('contract-field-reg_number_1'),
@@ -54,7 +54,7 @@ switch ($contract->type) {
             )
         );
         break;
-    
+
     case 2:
         // como representante de de entidad mercantil
         $regfields = array(
@@ -84,7 +84,7 @@ switch ($contract->type) {
                     'errors'    => !empty($errors['reg_idname']) ? array($errors['reg_idname']) : array(),
                     'ok'        => !empty($okeys['reg_idname']) ? array($okeys['reg_idname']) : array()
                 ),
-                
+
             'reg_id' => array(
                     'type'      => 'textbox',
                     'title'     => Text::get('contract-field-reg_id_2'),
@@ -102,7 +102,7 @@ switch ($contract->type) {
                 'errors'    => !empty($errors['reg_idloc']) ? array($errors['reg_idloc']) : array(),
                 'ok'        => !empty($okeys['reg_idloc']) ? array($okeys['reg_idloc']) : array()
                 ),
-            
+
             'reg_date'  => array(
                 'type'      => 'datebox',
                 'required'  => true,
@@ -156,10 +156,10 @@ if ($contract->type == 0) {
                 'children'  => array(
                     'errors' => array(
                         'title' => Text::get('form-footer-errors_title'),
-                        'view'  => new View('view/contract/edit/errors.html.php', array(
+                        'view'  => new View('contract/edit/errors.html.php', array(
                             'contract'   => $contract,
                             'step'      => $this['step']
-                        ))                    
+                        ))
                     ),
                     'buttons'  => array(
                         'type'  => 'group',
@@ -185,7 +185,7 @@ if ($contract->type == 0) {
             'type' => 'hidden',
             'value' => 'entity'
         ),
-        
+
         'entity_name' => array(
             'type'      => 'textbox',
             'required'  => true,
@@ -290,10 +290,10 @@ if ($contract->type == 0) {
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/contract/edit/errors.html.php', array(
+                    'view'  => new View('contract/edit/errors.html.php', array(
                         'contract'   => $contract,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
@@ -307,19 +307,19 @@ if ($contract->type == 0) {
                     )
                 )
             )
-        
+
         )
-        
+
     );
 }
 
-    
-echo new SuperForm(array(
+
+echo SuperForm::get(array(
 
     'level'         => $this['level'],
     'method'        => 'post',
     'title'         => Text::get('contract-step-entity'),
-    'hint'          => $hint,    
+    'hint'          => $hint,
     'elements'      => $elements
     )
 );

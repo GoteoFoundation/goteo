@@ -96,7 +96,7 @@ foreach ($call->banners as $banner) {
 
         $banners["banner-{$banner->id}"] = array(
             'class'     => 'banner',
-            'view'      => 'view/call/edit/banners/banner.html.php',
+            'view'      => 'call/edit/banners/banner.html.php',
             'data'      => array('banner' => $banner),
         );
 
@@ -188,7 +188,7 @@ foreach ($call->sponsors as $sponsor) {
 
         $sponsors["sponsor-{$sponsor->id}"] = array(
             'class'     => 'sponsor',
-            'view'      => 'view/call/edit/sponsors/sponsor.html.php',
+            'view'      => 'call/edit/sponsors/sponsor.html.php',
             'data'      => array('sponsor' => $sponsor),
         );
 
@@ -197,7 +197,7 @@ foreach ($call->sponsors as $sponsor) {
 
 $sfid = 'sf-call-supports';
 
-echo new SuperForm(array(
+echo SuperForm::get(array(
 
     'id'            => $sfid,
     'action'        => '',
@@ -259,7 +259,7 @@ echo new SuperForm(array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'call'   => $call,
                         'step'      => $this['step']
                     ))
