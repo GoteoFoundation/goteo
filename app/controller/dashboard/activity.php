@@ -50,46 +50,62 @@ namespace Goteo\Controller\Dashboard {
         public static function donor ($user, $action = 'view') {
             $errors = array();
 
-            $year = date('Y');
-            $month = date('m');
-            $day = date('d');
-            // hasta junio es el año anterior
-            if ($month <= 6) {
-                $year--;
+            $unconfirmable = false;
+            $year = Model\User\Donor::currYear($unconfirmable);
+
+            // ver si es donante ;  echo \trace($user);
+
+            // el método get si solo hay un aporte a un proyecto no financiado devolverá vacio
+            $donation = Model\User\Donor::get($user->id, $year);
+
+            if (!isset($donation) || !$donation instanceof \Goteo\Model\User\Donor) {
+                // hacemos que no pueda confirmar pero que pueda poner los datos,
+                //  así verá en el listado de fechas que hay aportes a proyectos pendientes
+                $donation = new \Goteo\Model\User\Donor();
+                $donation->user = $user->id;
+                $donation->year = $year; //para obtener las fechas de aportes (si los hay)
+                $donation->confirmable = false; // si permitimos editar/confirmar se crea registro en user_donor emitiendo un certificado falso
+                $donation->confirmed = false; // para que no pueda descargar de ningún modo
             }
 
-            // ver si es donante, cargando sus datos
-            $donation = Model\User\Donor::get($user->id, $year);
-            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year);
-            $donation->userData = Model\User::getMini($donation->user);
+            // getDates da todos los aportes, incluso a proyectos aun no financiados
+            $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year, false);
 
-            if (!$donation || !$donation instanceof Model\User\Donor) {
-                Message::Error(Text::get('dashboard-donor-no_donor', $year));
+            // claro que si no tiene ningún aporte si que lo sacamos de esta página
+            if (empty($donation->dates)) {
+                // tendrá el message de  'dashboard-donor-no_donor' anterior
                 throw new Redirection('/dashboard/activity');
             }
 
+            $donation->amount = 0; // para certificado
+            foreach ($donation->dates as $inv) {
+
+                // si un solo aporte pendiente no podrán confirmar
+                if (!$inv->funded || $inv->issue || $inv->preapproval)
+                    $donation->confirmable = false;
+                else
+                    $donation->amount += $inv->amount;
+            }
+
             // no permitir confirmar a partir del 10 de enero
-            if ($year != date('Y')
-                && ( ($month == 1 && $day > 15) || $month > 1 )
-            ) {
+            if ($donation->confirmable === false || $unconfirmable) {
+
+                // aviso que el certificado aun no está disponible
+                Message::Error(Text::get('dashboard-donor-no_donor', $year));
+
                 $donation->confirmable = false;
                 if ($action == 'confirm') {
                     Message::Error(Text::get('dashboard-donor-confirm_closed', $year));
-                    throw new Redirection('/dashboard/activity');
+                    // aquí si que lo sacamos, no permitimos confirmar
+                    throw new Redirection('/dashboard/activity/donor');
                 }
-            } else {
-                $donation->confirmable = true;
+            } elseif (isset($donation) && $donation instanceof Model\User\Donor && $donation->edited && !$donation->confirmed) {
+                // si ha editado pero no ha confirmado
+                Message::Info(Text::get('dashboard-donor-remember'));
             }
-
-            $donation->amount = 0;
-            foreach ($donation->dates as $inv) {
-                $donation->amount += $inv->amount;
-            }
-
-
 
             if ($action == 'edit' && $donation->confirmed) {
-                Message::Error(Text::get('dashboard-donor-confirmed'));
+                Message::Error(Text::get('dashboard-donor-confirmed', $donation->year));
                 throw new Redirection('/dashboard/activity/donor');
             }
 
@@ -102,9 +118,11 @@ namespace Goteo\Controller\Dashboard {
                 $donation->surname = $_POST['surname'];
                 $donation->nif = $_POST['nif'];
                 $donation->address = $_POST['address'];
-                $donation->zipcode = $_POST['zipcode'];
                 $donation->location = $_POST['location'];
+                $donation->zipcode = $_POST['zipcode'];
+                $donation->region = $_POST['region'];
                 $donation->country = $_POST['country'];
+                $donation->countryname = ($donation->country == 'other') ? $_POST['countryname'] : '';
                 $donation->year = $year;
 
                 if ($donation->save($errors)) {
@@ -117,20 +135,25 @@ namespace Goteo\Controller\Dashboard {
                 }
             }
 
-            if ($action == 'confirm') {
+            if ($donation->edited || $action == 'confirm') {
 
-                $ok = true;
+                // ver si es un cif
+                $type = 'nif';
+                $donation->valid_nif = Check::nif($donation->nif, $type);
+                $juridica = ($type == 'cif');
 
                 // verificar que han rellenado todos los campos
                 if (empty($donation->name)
-                    || empty($donation->surname)
+                    || ( !$juridica && empty($donation->surname) )
                     || empty($donation->nif)
                     || empty($donation->address)
                     || empty($donation->zipcode)
-                    || empty($donation->location)
+                    || empty($donation->location) // ciudad
+                    || empty($donation->region)  // provincia
                     || empty($donation->country)
                 ) {
-                    $ok = false;
+                    $donation->edited = false;
+                    $donation->confirmable = false;
                     Message::Error(Text::get('validate-donor-mandatory'));
                 }
                 // nombre
@@ -138,23 +161,25 @@ namespace Goteo\Controller\Dashboard {
                 // nif
                 // address
                 // zipcode
-                // location
+                // location = ciudad
+                // region = provincia
                 // country
 
                 // verificar que el nif es correcto
-                if (!Check::nif($donation->nif)) {
+                if ($donation->valid_nif === false) {
                     Message::Error(Text::get('validate-project-value-contract_nif'));
-                    $ok = false;
+                    $donation->edited = false;
+                    $donation->confirmable = false;
                 }
 
-                if ($ok) {
+                if ($donation->confirmable !== false && $action == 'confirm') {
                     // marcamos que los datos estan confirmados
                     if (Model\User\Donor::setConfirmed($user->id, $year)) {
-                        Message::Info(Text::get('dashboard-donor-confirmed'));
+                        Message::Info(Text::get('dashboard-donor-confirmed', $year));
                     }
+                    throw new Redirection('/dashboard/activity/donor');
                 }
 
-                throw new Redirection('/dashboard/activity/donor');
             }
 
             if ($action == 'download') {
@@ -176,26 +201,12 @@ namespace Goteo\Controller\Dashboard {
                     || empty($donation->address)
                     || empty($donation->zipcode)
                     || empty($donation->location)
+                    || empty($donation->region)
                     || empty($donation->country)
                 ) {
                     Message::Error(Text::get('validate-donor-mandatory'));
                     throw new Redirection('/dashboard/activity/donor');
                 }
-
-                /*
-                 * Ya no guardamos el pdf, lo generamos cada vez
-                 *
-                $fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
-
-                // borramos el pdf anterior y generamos de nuevo
-                if (!empty($donation->pdf)) {
-                    $fp->setPath('certs/');
-
-                    if ($fp->exists($donation->pdf)) {
-                        $fp->delete($donation->pdf);
-                    }
-                }
-                */
 
                 // para generar:
                 // preparamos los datos para el pdf
@@ -213,6 +224,10 @@ namespace Goteo\Controller\Dashboard {
 
                 $debug = false;
 
+                // más datos para certificado
+                $donation->userData = Model\User::getMini($donation->user);
+                $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year); // solo financiados
+
                 require_once 'library/pdf.php';  // Libreria pdf
                 $pdf = donativeCert($donation);
 
@@ -227,33 +242,8 @@ namespace Goteo\Controller\Dashboard {
 
                 die;
 
-                /*
-                 * Código OBSOLETO
-                 * Ya no grabamos el archivo pdf
-                 *
-                else {
-                        $fp->setPath('pdfs/donativos/');
-
-                    //guardar pdf en temporal y luego subir a remoto (s3 o data/ si es local)
-                        $tmp = tempnam(sys_get_temp_dir(), 'goteo-img');
-                        $pdf->Output($tmp, 'F');
-                        //guardamos a remoto (acceso privado)
-                        if($fp->upload($tmp, $filename, 'bucket-owner-full-control')) {
-                            // si se graba lo ponemos en el registro para que a la próxima se cargue
-                            $donation->setPdf($filename);
-                        }
-                        unlink($tmp);
-
-                }
-                header('Content-type: application/pdf');
-                header("Content-disposition: attachment; filename={$donation->pdf}");
-                header("Content-Transfer-Encoding: binary");
-                echo $fp->get_contents($filename);
-                */
-
             }
             // fin action download
-
 
             return $donation;
 

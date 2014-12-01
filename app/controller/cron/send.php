@@ -229,11 +229,6 @@ namespace Goteo\Controller\Cron {
                         $monitors[] = $user->email;
                     }
 
-                    $monitors[] = 'enric@goteo.org';
-                    $monitors[] = 'olivier@goteo.org';
-                    $monitors[] = 'dev@goteo.org';
-                    $monitors[] = 'pablo@anche.no';
-
                     $mailHandler->bcc = $monitors;
                 }
 

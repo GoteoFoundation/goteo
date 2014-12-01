@@ -10,24 +10,27 @@ namespace Goteo\Model\User {
     class Donor extends \Goteo\Core\Model {
 
         public
-        $user,
-        $amount,
-        $name,
-        $surname,
-        $nif,
-        $address,
-        $zipcode,
-        $location,
-        $country,
-        $year,
-        $edited = 0,
-        $confirmed = 0,
-        $pdf = null,
-        $dates = array();
+            $user,
+            $amount,
+            $name,
+            $surname,
+            $nif,
+            $address,
+            $region,
+            $zipcode,
+            $location,
+            $country,
+            $year,
+            $edited = 0,
+            $confirmed = 0,
+            $pdf = null,
+            $dates = array();
 
         /**
          * Get invest data if a user is a donor
          * @param varcahr(50) $id  user identifier
+         *
+         * si solo hay un aporte a un proyecto no financiado devolverá vacio
          */
         public static function get($id, $year = null) {
 
@@ -37,7 +40,8 @@ namespace Goteo\Model\User {
 
                 // si ya ha introducido los datos, sacamos de user_donation
                 $sql = "SELECT * FROM user_donation WHERE user = :id AND year = :year";
-                $query = static::query($sql, array(':id' => $id, ':year' => $year));
+                $values = array(':id' => $id, ':year' => $year);
+                $query = static::query($sql, $values);
                 if ($donation = $query->fetchObject(__CLASS__)) {
                     return $donation;
                 } else {
@@ -48,7 +52,7 @@ namespace Goteo\Model\User {
                                 FROM  invest
                                 INNER JOIN project
                                     ON project.id = invest.project
-                                    AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
+                                    AND project.passed IS NOT NULL
                                 INNER JOIN user ON user.id = invest.user
                                 LEFT JOIN invest_address ON invest_address.invest = invest.id
                                 WHERE   invest.user = :id
@@ -128,10 +132,11 @@ namespace Goteo\Model\User {
                         user.id as id,
                         user.email,
                         user_donation.name as name,
+                        user_donation.surname as surname,
                         user_donation.nif as nif,
                         user_donation.address as address,
+                        user_donation.region as region,
                         user_donation.zipcode as zipcode,
-                        user_donation.location as location,
                         user_donation.country as country,
                         user_donation.amount as amount,
                         user_donation.numproj as numproj,
@@ -154,6 +159,9 @@ namespace Goteo\Model\User {
                 $per = $pt[$type];
                 $nat = $nt[$type];
 
+                $cp = (string) $item->zipcode;
+                $item->location = ($item->country == 'spain') ? substr($cp, 0, 2) : '99';
+
 // NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
                 $list[] = array($item->nif, '', 
                     $item->surname.', '.$item->name,
@@ -163,8 +171,6 @@ namespace Goteo\Model\User {
         }
 
         public function validate(&$errors = array()) {
-
-            $this->location = ($this->country == 'spain') ? substr($this->zipcode, 0, 2) : '99';
 
             // limpio nombre y apellidos
             $this->name = self::idealiza($this->name);
@@ -195,9 +201,11 @@ namespace Goteo\Model\User {
                 'surname',
                 'nif',
                 'address',
-                'zipcode',
                 'location',
+                'zipcode',
+                'region',
                 'country',
+                'countryname',
                 'year',
                 'edited'
             );
@@ -209,11 +217,12 @@ namespace Goteo\Model\User {
                 if ($set != '')
                     $set .= ', ';
                 $set .= "$field = :$field";
-                $values[":$field"] = $this->$field;
+                $values[":{$field}"] = $this->$field;
             }
 
             try {
                 $sql = "REPLACE INTO user_donation (" . implode(', ', $fields) . ") VALUES (" . implode(', ', array_keys($values)) . ")";
+//                die(sqldbg($sql, $values));
                 self::query($sql, $values);
                 return true;
             } catch (\PDOException $e) {
@@ -299,26 +308,61 @@ namespace Goteo\Model\User {
         }
 
 
-        static public function getDates ($user, $year) {
+        /**
+         * fechas de aportes realizados por el usuario $user durante el año $year
+         *
+         * @param $user
+         * @param $year
+         * @param ( boolean) $fundedonly : para filtrar a portes que se muestran en dashboard pero no se muestran en el pdf
+         *    - aportes a proyectos pendientes de financiar
+         *    - aportes preaprobados
+         *    - aportes con incidencias
+         *
+         * @return array de fechas y proyectos que ha aportado
+         *
+         * getDates da todos los aportes, incluso a proyectos aun no financiados
+         *  y filtra estados de proyecto, no muestra aportes aproyectos archivados
+         *
+         */
+        static public function getDates ($user, $year, $fundedonly = true) {
 
             $fechas = array();
 
-            // Fechas de donativos
-            $sql = "SELECT 
+            // solo aportes cobrados y a proyectos financiados
+            if ($fundedonly) {
+                $sqlFilter = " AND project.passed IS NOT NULL
+                    AND invest.status IN ('1', '3')
+                    AND (invest.issue IS NULL OR invest.issue = 0)
+                ";
+            } else {
+                // aportes preaprobados, con incidencia y a proyectos pendientes de financiar
+                $sqlFilter = " AND invest.status IN ('0', '1', '3')
+                ";
+
+            }
+
+            $sql = "SELECT
                         DATE_FORMAT(invest.invested, '%d-%m-%Y') as date,
                         invest.amount as amount,
-                        project.name as project
+                        project.name as project,
+                        IF(project.passed IS NULL, 0, 1) as funded,
+                        IF(invest.status = 0, 1, 0) as preapproval,
+                        invest.issue as issue
                     FROM invest
                     INNER JOIN project
                         ON project.id = invest.project
-                        AND (project.passed IS NOT NULL AND project.passed != '0000-00-00')
-                    WHERE   invest.status IN ('1', '3')
-                    AND invest.user = :id
+                        AND project.status IN (3, 4, 5)
+                    WHERE invest.user = :id
                     AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
+                    {$sqlFilter}
                     ORDER BY invest.invested ASC
                     ";
-//                    echo($sql . '<br />' . $user);
-            $query = static::query($sql, array(':id' => $user));
+
+            $values = array(':id' => $user);
+
+            // echo '<br /><br />user: ' . $user . ' year: ' . $year . ' fundedonly: ' . $fundedonly.'<br />';
+            // echo sqldbg($sql, $values);
+            $query = static::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
                 $fechas[] = $row;
             }
@@ -329,14 +373,20 @@ namespace Goteo\Model\User {
         /*
          * Año fiscal actual
          */
-        static public function currYear() {
+        static public function currYear(&$unconfirmable = false) {
 
             $year = date('Y');
             $month = date('m');
+            $day = date('d');
             // hasta junio es el año anterior
             if ($month <= 6) {
                 $year--;
             }
+
+            // si ha pasado el día limite después de año nuevo ya no se permite confirmar
+            if ($year != date('Y') && ( ($month == 1 && $day > 15) || $month > 1 ) )
+                $unconfirmable = true;
+
 
             return $year;
         }
