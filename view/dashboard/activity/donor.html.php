@@ -92,10 +92,12 @@ switch ($this['action']) :
             'title'     => Text::get('donor-address-country-field').' *',
             'type'      => 'html',
             'html'     => '<select name="country" id="donor_country">
-            <option value="spain"'.$sel_spain.'>SPAIN</option>
-            <option value="other"'.$sel_other.'>OTHER</option>
-            </select>
+            <option value="spain"'.$sel_spain.'>ESPAÑA</option>
+            <option value="other"'.$sel_other.'>OTRO</option>
+            </select><br /><br />
+            <label>Si NO España:<br />
             <input type="text" name="countryname" value="'.$donation->countryname.'" />
+            </label>
             '
         )
 
@@ -126,6 +128,7 @@ switch ($this['action']) :
                     if (!$invest->funded) $extra .= ' (Pendiente de financiar)';
                     if ($invest->preapproval) $extra .= ' (Preaprovado)';
                     if ($invest->issue) $extra .= ' (incidencia)';
+                    if ($extra != '') $extra = '<span style="color:red;">'.$extra.'</span>';
                     echo "En fecha <strong>{$invest->date}</strong> un aporte de <strong>{$invest->amount} euros</strong> al proyecto <strong>{$invest->project}</strong> {$extra}<br />";
                 } ?>
         </dd>
@@ -135,22 +138,25 @@ switch ($this['action']) :
         <dd><?php echo $donation->amount ?> &euro;</dd>
     </dl>
     <dl>
-        <dt><?php echo Text::get('invest-address-name-field') ?></dt>
-        <dd><?php if (!empty($donation->name)) echo $donation->name.'   '.$donation->surname ?></dd>
+        <dt<?php if (empty($donation->name) || empty($donation->surname)) echo ' style="color: red;"';
+        ?>><?php echo Text::get('invest-address-name-field') ?> *</dt>
+        <dd><?php echo $donation->name.'   '.$donation->surname ?></dd>
     </dl>
     <dl>
-        <dt><?php echo Text::get('invest-address-nif-field') ?></dt>
+        <dt<?php if (empty($donation->nif) || $donation->valid_nif === false ) echo ' style="color: red;"';
+        ?>><?php echo Text::get('invest-address-nif-field') ?> *</dt>
         <dd><?php echo $donation->nif ?></dd>
     </dl>
     <dl>
-        <dt><?php echo Text::get('invest-address-address-field') ?></dt>
+        <dt<?php if (empty($donation->address) || empty($donation->zipcode) || empty($donation->location) || empty($donation->region) || ( $donation->country != 'spain' && empty($donation->countryname) ) ) echo ' style="color: red;"';
+        ?>><?php echo Text::get('invest-address-address-field') ?> *</dt>
         <dd><?php echo "{$donation->address}  -  {$donation->zipcode}  -  {$donation->location}  -  {$donation->region}  -  {$donation->countryname}"; ?></dd>
     </dl>
 
     <p>
-      <?php if (!$donation->confirmed && $donation->confirmable) : ?><a class="button" href="/dashboard/activity/donor/edit"><?php echo Text::get('dashboard-donor-edit_data'); ?></a><?php endif; ?>
-      <?php if ( $donation->edited && !$donation->confirmed && $donation->confirmable) : ?><a class="button" href="/dashboard/activity/donor/confirm" <?php if (!$donation->confirmed) : ?>onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"<?php endif; ?> ><?php echo Text::get('dashboard-donor-confirm_button'); ?></a><?php endif; ?>
-      <?php if ( $donation->confirmed) : ?><a class="button" href="/dashboard/activity/donor/download" target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
+      <?php if ( !$donation->edited || (!$donation->confirmed && $donation->confirmable !== false) ) : ?><a class="button" href="/dashboard/activity/donor/edit"><?php echo Text::get('dashboard-donor-edit_data'); ?></a><?php endif; ?>
+      <?php if ( $donation->edited && !$donation->confirmed && $donation->confirmable !== false) : ?><a class="button" href="/dashboard/activity/donor/confirm" <?php if (!$donation->confirmed) : ?>onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"<?php endif; ?> ><?php echo Text::get('dashboard-donor-confirm_button'); ?></a><?php endif; ?>
+      <?php if ( $donation->confirmed && $donation->confirmable !== false) : ?><a class="button" href="/dashboard/activity/donor/download" target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
     </p>
 </div>
 <?php
