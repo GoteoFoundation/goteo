@@ -138,7 +138,7 @@ switch ($this['action']) :
         <dd><?php echo $donation->amount ?> &euro;</dd>
     </dl>
     <dl>
-        <dt<?php if (empty($donation->name) || empty($donation->surname)) echo ' style="color: red;"';
+        <dt<?php if (empty($donation->name) || ( $donation->juridica === false && empty($donation->surname)) ) echo ' style="color: red;"';
         ?>><?php echo Text::get('invest-address-name-field') ?> *</dt>
         <dd><?php echo $donation->name.'   '.$donation->surname ?></dd>
     </dl>
@@ -150,7 +150,7 @@ switch ($this['action']) :
     <dl>
         <dt<?php if (empty($donation->address) || empty($donation->zipcode) || empty($donation->location) || empty($donation->region) || ( $donation->country != 'spain' && empty($donation->countryname) ) ) echo ' style="color: red;"';
         ?>><?php echo Text::get('invest-address-address-field') ?> *</dt>
-        <dd><?php echo "{$donation->address}  -  {$donation->zipcode}  -  {$donation->location}  -  {$donation->region}  -  {$donation->countryname}"; ?></dd>
+        <dd><?php echo "{$donation->address}<br />{$donation->zipcode}<br />{$donation->location}<br />{$donation->region}<br />{$donation->countryname}"; ?></dd>
     </dl>
 
     <p>
