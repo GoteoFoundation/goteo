@@ -237,7 +237,8 @@ namespace Goteo\Controller\Dashboard {
                 'mailing',
                 'email',
                 'tips' ,
-                'comlang'
+                'comlang',
+                'currency'
             );
 
             $preferences = array();
@@ -250,6 +251,7 @@ namespace Goteo\Controller\Dashboard {
             if (Model\User::setPreferences($id, $preferences, $errors)) {
                 Message::Info(Text::get('user-prefer-saved'));
                 $log_action = 'Modificado las preferencias de notificación'; //feed admin
+                $_SESSION['currency']=$_POST['currency'];
                 return true;
             } else {
                 Message::Error(Text::get('user-save-fail'));

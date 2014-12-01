@@ -6,7 +6,8 @@ use Goteo\Core\View,
     Goteo\Model\Invest,
     Goteo\Model\Call,
     Goteo\Library\Text,
-    Goteo\Model\License;
+    Goteo\Model\License,
+    Goteo\Library\Currency;
 
 $project = $this['project'];
 
@@ -53,15 +54,17 @@ foreach (License::getAll() as $l) {
 }
 
 $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
+
+$select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 ?>
 <div class="widget project-invest project-invest-amount">
     <h<?php echo $level ?> class="title"><?php echo Text::get('invest-amount') ?></h<?php echo $level ?>>
 
     <form method="post" action="<?php echo SEC_URL.$action; ?>">
     <div style="position:relative;">
-        <!-- incluir la moneda en sesion más tarde -->
+        
         <label><input type="text" id="amount"  name="amount" class="amount" value="<?php echo $amount ?>" /><?php echo Text::get('invest-amount-tooltip') ?></label>
-        <span class="symbol">€</span>
+        <span class="symbol"><?php echo $select_currency; ?></span>
     </div>
 </div>
 
@@ -95,9 +98,9 @@ $action = ($step == 'start') ? '/user/login' : '/invest/' . $project->id;
             
             <label class="amount" for="reward_<?php echo $individual->id; ?>">
                 <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo $individual->amount; ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
-                <span class="amount"><?php echo $individual->amount; ?> &euro;</span>
+                <span class="amount"><?php echo \amount_format($individual->amount); ?></span>
             <!-- <span class="chkbox"></span> -->
-        	<h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
+            <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
             <p><?php echo htmlspecialchars($individual->description)?></p>
                 <?php if ($individual->none) : // no quedan ?>
                 <span class="left"><?php echo Text::get('invest-reward-none') ?></span>
