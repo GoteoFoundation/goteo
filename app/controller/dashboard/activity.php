@@ -138,13 +138,13 @@ namespace Goteo\Controller\Dashboard {
             if ($donation->edited || $action == 'confirm') {
 
                 // ver si es un cif
-                $type = 'nif';
+                $type = '';
                 $donation->valid_nif = Check::nif($donation->nif, $type);
-                $juridica = ($type == 'cif');
+                $donation->juridica = ($type == 'cif');
 
                 // verificar que han rellenado todos los campos
                 if (empty($donation->name)
-                    || ( !$juridica && empty($donation->surname) )
+                    || ( !$donation->juridica && empty($donation->surname) )
                     || empty($donation->nif)
                     || empty($donation->address)
                     || empty($donation->zipcode)
