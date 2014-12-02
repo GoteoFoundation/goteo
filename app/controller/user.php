@@ -54,7 +54,7 @@ namespace Goteo\Controller {
                 $_SESSION['invest-amount'] = $_POST['amount'];
                 $msg = Text::get('user-login-required-login');
                 $msg .= (!empty($_POST['amount'])) ? '. ' . Text::get('invest-alert-investing') . ' ' . $_POST['amount'] . '&euro;' : '';
-                Model\Message::Info($msg);
+                Library\Message::Info($msg);
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['login'])) {

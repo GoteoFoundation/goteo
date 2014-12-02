@@ -91,6 +91,8 @@ $minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
 
 $currencies = Currency::$currencies;
 
+$num_currencies=count($currencies);
+
 $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 
 ?>        
@@ -108,14 +110,14 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                 <div class="done" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_done) ?>%"><strong><?php echo number_format($minimum_done_per) ?>%</strong></div>
             </div>
         </div>
-        <?php if (!$horizontal) { ?>
+        <?php if (!$horizontal&&($num_currencies>1)) { ?>
         <div style="position:relative;">
         <?php } ?>
         <dl>
             <dt class="optimum"><?php echo Text::get('project-view-metter-optimum'); ?></dt>
             <dd class="optimum"><strong><?php echo \amount_format($optimum) ?></strong> </dd>
 
-            <dt class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>%"><span><?php echo Text::get('project-view-metter-minimum'); ?></span></dt>
+            <dt class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>% <?php if($num_currencies<2) {?>;margin-bottom:0px; <?php }?>"><span><?php echo Text::get('project-view-metter-minimum'); ?></span></dt>
             <dd class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>%"><strong><?php echo \amount_format($minimum) ?></strong> </dd>
 
             <dt class="reached"><span><?php echo Text::get('project-view-metter-got'); ?></span></dt>
@@ -177,7 +179,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
             <dd class="supporters"><strong><?php echo $num_investors ?></strong></dd>
 
         </dl>
-        <?php if (!$horizontal) { ?>
+        <?php if (!$horizontal&&($num_currencies>1)) { ?>
         <div class="currency">
             <span class="symbol"><?php echo $select_currency." ".$_SESSION['currency']; ?></span>
             <span class="change">

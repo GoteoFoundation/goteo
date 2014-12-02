@@ -69,7 +69,13 @@ class Currency {
             setcookie("currency", $newCur, time() + 3600 * 24 * 365);
 
         } elseif (empty($_SESSION['currency'])) {
-            //primero miramos si tiene cookie
+
+            // aquí debería ser la divisa preferida por el usuario
+            // pero a la primera carga ya habrá metido la default en sessión
+            // ponemos la divisa preferida por el usuario cuando este hace login
+            // ver model/user::login()
+
+            // luego miramos si tiene cookie
             $newCur = (isset($_COOKIE['currency'])) ? $_COOKIE['currency'] : $default_currency;
         } else {
             $newCur = $_SESSION['currency'];
@@ -90,16 +96,6 @@ class Currency {
 
         // check odd behaviour
         if (!is_float($amount) && !is_numeric($amount)) {
-            // mail de aviso
-            $mailHandler = new Mail();
-            $mailHandler->to = \GOTEO_FAIL_MAIL;
-            $mailHandler->subject = 'Conversión de un no-numerico';
-            $mailHandler->content = 'Library\Converter->convert recibe un valor no-numerico y no se puede convertir. <hr />'.$_SERVER['REQUEST_URI'];
-            $mailHandler->html = true;
-            $mailHandler->template = null;
-            $mailHandler->send();
-            unset($mailHandler);
-
             return '';
         }
 
@@ -126,6 +122,26 @@ class Currency {
             return "{$ccy['html']} ".number_format($amount, $decs, $ccy['dec'], $ccy['thou']);
         }
 
+    }
+
+
+    /**
+     * @return int conversion rate for currency in session
+     */
+    public static function rate($cur = null) {
+
+        if (empty($cur)) {
+            $cur = $_SESSION['currency'];
+        }
+
+        $converter = new Converter(); // @FIXME : this instance should be persistent for all the requests of amount_format
+
+        if (!$converter instanceof \Goteo\Library\Converter) {
+            return 1;
+        }
+
+        $rates = $converter->getRates(self::DEFAULT_CURRENCY);
+        return $rates[strtoupper($cur)];
     }
 
 }

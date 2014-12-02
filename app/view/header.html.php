@@ -24,7 +24,9 @@ if (NODE_ID != GOTEO_NODE) {
                     <li><a href="/about"><?php echo Text::get('regular-header-about'); ?></a></li>
                     <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li>
                     <li><a href="/faq"><?php echo Text::get('regular-header-faq'); ?></a></li>
+                    <?php if($num_currencies>1) { ?>
                     <li id="currency"><a href="#" ><?php echo $select_currency." ".$_SESSION['currency']; ?></a></li>
+                    <?php } ?>
                     <li id="lang"><a href="#" ><?php echo Lang::get(LANG)->short ?></a></li>
                 </ul>
             </div>

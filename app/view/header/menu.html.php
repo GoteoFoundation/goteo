@@ -45,9 +45,9 @@ $nodes = Nodesys::activeNodes();
             <li class="dashboard"><a href="/dashboard"><span><?php echo Text::get('dashboard-menu-main'); ?></span><img src="<?php echo $_SESSION['user']->avatar->getLink(28, 28, true); ?>" /></a>
                 <div>
                     <ul>
-                        <li><a href="/dashboard/activity"><span><?php echo Text::get('dashboard-menu-activity'); ?></span></a></li>
                         <li><a href="/dashboard/profile"><span><?php echo Text::get('dashboard-menu-profile'); ?></span></a></li>
                         <li><a href="/dashboard/projects"><span><?php echo Text::get('dashboard-menu-projects'); ?></span></a></li>
+                        <li><a href="/dashboard/profile/preferences"><span><?php echo Text::get('dashboard-menu-profile-preferences'); ?></span></a></li>
 
                         <?php if ( isset($_SESSION['user']->roles['caller']) ) : ?>
                             <li><a href="/dashboard/calls"><span><?php echo Text::get('dashboard-menu-calls'); ?></span></a></li>
