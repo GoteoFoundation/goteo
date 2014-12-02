@@ -90,16 +90,6 @@ class Currency {
 
         // check odd behaviour
         if (!is_float($amount) && !is_numeric($amount)) {
-            // mail de aviso
-            $mailHandler = new Mail();
-            $mailHandler->to = \GOTEO_FAIL_MAIL;
-            $mailHandler->subject = 'Conversión de un no-numerico';
-            $mailHandler->content = 'Library\Converter->convert recibe un valor no-numerico y no se puede convertir. <hr />'.$_SERVER['REQUEST_URI'];
-            $mailHandler->html = true;
-            $mailHandler->template = null;
-            $mailHandler->send();
-            unset($mailHandler);
-
             return '';
         }
 
