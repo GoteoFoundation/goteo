@@ -232,10 +232,10 @@ namespace Goteo\Model\User {
 
         }
 
-        public static function setConfirmed($user, $year) {
+        public static function setConfirmed($user, $year, $confirmed = 1) {
             try {
-                $sql = "UPDATE user_donation SET confirmed = 1 WHERE user = :user AND year = :year";
-                if (self::query($sql, array(':user' => $user, 'year' => $year))) {
+                $sql = "UPDATE user_donation SET confirmed = :confirmed WHERE user = :user AND year = :year";
+                if (self::query($sql, array(':user' => $user, ':year' => $year, ':confirmed'=>$confirmed))) {
                     return true;
                 } else {
                     return false;
