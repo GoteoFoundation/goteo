@@ -124,4 +124,24 @@ class Currency {
 
     }
 
+
+    /**
+     * @return int conversion rate for currency in session
+     */
+    public static function rate($cur = null) {
+
+        if (empty($cur)) {
+            $cur = $_SESSION['currency'];
+        }
+
+        $converter = new Converter(); // @FIXME : this instance should be persistent for all the requests of amount_format
+
+        if (!$converter instanceof \Goteo\Library\Converter) {
+            return 1;
+        }
+
+        $rates = $converter->getRates(self::DEFAULT_CURRENCY);
+        return $rates[strtoupper($cur)];
+    }
+
 }
