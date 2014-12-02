@@ -14,7 +14,7 @@ $promotes = $this['promotes'];
         <?php foreach ($promotes as $promo) {
             $project = $promo->projectData;
             $project->per_amount = round(($project->amount / $project->mincost) * 100);
-            echo new View('view/project/widget/tiny_project.html.php', array('project'=>$project));
+            echo View::get('project/widget/tiny_project.html.php', array('project'=>$project));
         }?>
     </ul>
 

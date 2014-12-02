@@ -64,7 +64,7 @@ namespace Goteo\Controller\Admin {
                         break;
                     }
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'home',
                             'file' => 'add',
@@ -84,7 +84,7 @@ namespace Goteo\Controller\Admin {
                         break;
                     }
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'home',
                             'file' => 'add',
@@ -94,7 +94,7 @@ namespace Goteo\Controller\Admin {
                         )
                     );
                     break;
-                 * 
+                 *
                  */
             }
 
@@ -114,8 +114,8 @@ namespace Goteo\Controller\Admin {
             $viewData['side_availables'] = Model\Home::availableSide($node);
             $viewData['side_new'] = (object) array('node'=>$node, 'order'=>Model\Home::next($node, 'side'), 'type'=>'side');
 
-            return new View('view/admin/index.html.php', $viewData);
-            
+            return new View('admin/index.html.php', $viewData);
+
         }
 
     }

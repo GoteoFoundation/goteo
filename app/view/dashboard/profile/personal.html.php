@@ -11,7 +11,7 @@ $this['level'] = 3;
 <form method="post" action="/dashboard/profile/personal" class="project" enctype="multipart/form-data">
 
 <?php
-echo new SuperForm(array(
+echo SuperForm::get(array(
     //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
     // 'autoupdate'    => false,
 

@@ -104,7 +104,7 @@ $superform = array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
                         'step'      => $this['step']
                     ))
@@ -137,4 +137,4 @@ foreach ($superform['elements'] as $id => &$element) {
 
 }
 
-echo new SuperForm($superform);
+echo SuperForm::get($superform);

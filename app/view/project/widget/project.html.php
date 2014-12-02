@@ -88,7 +88,7 @@ if ($project->status == 3 && $project->noinvest) {
 
     <div class="description"><?php echo Text::recorta($project->description, 100); ?></div>
 
-    <?php echo new View('view/project/meter_hor.html.php', array('project' => $project)) ?>
+    <?php echo View::get('project/meter_hor.html.php', array('project' => $project)) ?>
 
     <div class="rewards">
         <h<?php echo $level + 1 ?>><?php echo Text::get('project-rewards-header'); ?></h<?php echo $level + 1?>>
@@ -116,13 +116,13 @@ if ($project->status == 3 && $project->noinvest) {
         <?php endif; ?>
     </div>
     <?php endif;
-     
+
     */
     ?>
 
 
     <?php
-    
+
     if ($_SESSION['user']->id == 'root') {
         echo "<!-- ".print_r($project, 1)." -->";
     }

@@ -91,7 +91,7 @@ namespace Goteo\Controller\Translate {
                 }
 
                 return new View(
-                    'view/translate/index.html.php',
+                    'translate/index.html.php',
                     array(
                         'section' => 'node',
                         'action' => 'edit_' . $contentTable,
@@ -103,7 +103,7 @@ namespace Goteo\Controller\Translate {
 
             } elseif ($action == 'edit') {
                 return new View(
-                    'view/translate/index.html.php',
+                    'translate/index.html.php',
                     array(
                         'section' => 'node',
                         'action' => 'edit_' . $contentTable,
@@ -114,7 +114,7 @@ namespace Goteo\Controller\Translate {
                 );
             } elseif ($contentTable == 'data') {
                 return new View(
-                    'view/translate/index.html.php',
+                    'translate/index.html.php',
                     array(
                         'section' => 'node',
                         'action' => 'edit_' . $contentTable,
@@ -126,7 +126,7 @@ namespace Goteo\Controller\Translate {
             } else {
                 // sino, mostramos la lista
                 return new View(
-                    'view/translate/index.html.php',
+                    'translate/index.html.php',
                     array(
                         'section' => 'node',
                         'action' => 'list_' . $contentTable,

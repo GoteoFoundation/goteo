@@ -28,7 +28,7 @@ if (count($patrons) > 4) :  ?>
         <div class="slder_patrons">
             <div class="row">
             <?php $c=1; foreach ($patrons as $patron) {
-                echo new View('view/user/widget/patron.html.php', array('user' => $patron));
+                echo View::get('user/widget/patron.html.php', array('user' => $patron));
                 if ( ($c % 4) == 0 && $c != count($patrons)) { echo '</div><div class="row">'; }
             $c++; } ?>
             </div>

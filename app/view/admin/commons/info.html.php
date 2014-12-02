@@ -10,6 +10,6 @@ $status  = $this['status'];
 <div class="widget board">
     <h3><?php echo $project->name; ?> (<?php echo $status[$project->status]; ?>)</h3>
 
-    <?php include 'view/admin/commons/contact.html.php' ?>
+    <?php include __DIR__ . '/contact.html.php' ?>
 
 </div>

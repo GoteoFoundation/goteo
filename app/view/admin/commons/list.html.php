@@ -1,8 +1,7 @@
 <?php
-use Goteo\Library\Text;
-
-// paginacion
-require_once 'library/pagination/pagination.php';
+use Goteo\Library\Text,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
 $filters = $this['filters'];
 $status = $this['statuses'];
@@ -12,7 +11,7 @@ foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new \Paginated($this['projects'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($this['projects'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
 
 //para autocomplete
 $items = array();

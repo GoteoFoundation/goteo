@@ -49,7 +49,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de crear usuario
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'tasks',
                             'file'  => 'edit',
@@ -86,7 +86,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de editar usuario
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'tasks',
                             'file' => 'edit',
@@ -121,7 +121,7 @@ namespace Goteo\Controller\Admin {
                     $admins = Model\User::getAdmins();
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'tasks',
                             'file' => 'list',
@@ -134,7 +134,7 @@ namespace Goteo\Controller\Admin {
                     );
                 break;
             }
-            
+
         }
 
     }

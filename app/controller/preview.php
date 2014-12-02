@@ -6,11 +6,11 @@ namespace Goteo\Controller {
         Goteo\Model;
 
     class Preview extends \Goteo\Core\Controller {
-        
+
         public function index ($model = null, $id = null, $view = null, $viewData = array() ) {
 
             return new View(
-                'view/about/sample.html.php',
+                'about/sample.html.php',
                 array(
                     'name' => 'preview',
                     'title' => 'Preview',
@@ -19,7 +19,7 @@ namespace Goteo\Controller {
              );
 
         }
-        
+
     }
-    
+
 }

@@ -38,7 +38,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'pages',
                             'file' => 'add'
@@ -95,7 +95,7 @@ namespace Goteo\Controller\Admin {
 
                     // sino, mostramos para editar
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'pages',
                             'file' => 'edit',
@@ -109,7 +109,7 @@ namespace Goteo\Controller\Admin {
                     $pages = Page::getList($node);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'pages',
                             'file' => 'list',

@@ -95,27 +95,27 @@ $(document).ready(function(){
         ),
         'elements'      => array(
             'id' => array (
-                'type' => 'hidden',
+                'type' => 'Hidden',
                 'value' => $post->id
             ),
             'author' => array (
-                'type' => 'hidden',
+                'type' => 'Hidden',
                 'value' => $post->author
             ),
             'home' => array (
-                'type' => 'hidden',
+                'type' => 'Hidden',
                 'value' => $post->home
             ),
             'footer' => array (
-                'type' => 'hidden',
+                'type' => 'Hidden',
                 'value' => $post->footer
             ),
             'blog' => array (
-                'type' => 'hidden',
+                'type' => 'Hidden',
                 'value' => $post->blog
             ),
             'title' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'required'  => true,
                 'size'      => 20,
                 'title'     => 'Título',
@@ -124,7 +124,7 @@ $(document).ready(function(){
                 'value'     => $post->title,
             ),
             'text' => array(
-                'type'      => 'textarea',
+                'type'      => 'TextArea',
                 'required'  => true,
                 'cols'      => 40,
                 'rows'      => 4,
@@ -133,7 +133,7 @@ $(document).ready(function(){
             ),
             'image' => array(
                 'title'     => 'Imagen',
-                'type'      => 'group',
+                'type'      => 'Group',
                 'class'     => 'image',
                 'children'  => array(
                     'image_upload'    => array(
@@ -145,14 +145,14 @@ $(document).ready(function(){
             ),
 
             'gallery' => array(
-                'type'  => 'group',
+                'type'  => 'Group',
                 'title' => Text::get('overview-field-image_gallery'),
                 'class' => 'inline',
                 'children'  => $images
             ),
 
             'media' => array(
-                'type'      => 'textbox',
+                'type'      => 'TextBox',
                 'title'     => 'Vídeo',
                 'class'     => 'media',
                 'value'     => (string) $post->media,
@@ -166,40 +166,40 @@ $(document).ready(function(){
                 )
             ),
             'legend' => array(
-                'type'      => 'textarea',
+                'type'      => 'TextArea',
                 'title'     => Text::get('regular-media_legend'),
                 'value'     => $post->legend,
             ),
 
             'tags' => array(
-                'type'      => 'checkboxes',
+                'type'      => 'Checkboxes',
                 'name'      => 'tags[]',
                 'title'     => 'Tags',
                 'options'   => $tags
             ),
 
             'new-tag' => array(
-                'type'  => 'html',
+                'type'  => 'HTML',
                 'class' => 'inline',
                 'html'  => '<input type="text" name="new-tag" value="" /> <input type="submit" name="new-tag_save" value="Añadir" />'
             ),
 
             'date' => array(
-                'type'      => 'datebox',
+                'type'      => 'DateBox',
                 'title'     => 'Fecha de publicación',
                 'size'      => 8,
                 'value'     => $post->date
             ),
             'allow' => array(
                 'title'     => 'Permite comentarios',
-                'type'      => 'slider',
+                'type'      => 'Slider',
                 'options'   => $allow,
                 'class'     => 'currently cols_' . count($allow),
                 'value'     => (int) $post->allow
             ),
             'publish' => array(
                 'title'     => 'Publicado',
-                'type'      => 'slider',
+                'type'      => 'Slider',
                 'options'   => $allow,
                 'class'     => 'currently cols_' . count($allow),
                 'value'     => (int) $post->publish

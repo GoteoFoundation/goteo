@@ -1,7 +1,11 @@
 <?php
 
 //Composer packages
-include_once (__DIR__  . '/../vendor/autoload.php' );
+$loader = require (__DIR__  . '/../vendor/autoload.php' );
+// TODO:
+// una entrada por plugin...
+// ...
+$loader->add('', __DIR__ . '/../extend/goteo/src');
 
 // Legacy Autoloader
 spl_autoload_register(

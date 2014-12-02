@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Tests;
+namespace Goteo\Core\Tests;
 
 
 class TestException extends \Goteo\Core\Exception {

@@ -16,8 +16,8 @@ foreach ($sections as $sectionId=>$sectionName) {
 }
 
 
-include 'view/prologue.html.php';
-include 'view/header.html.php'; ?>
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php'; ?>
 
         <div id="sub-header">
             <div>
@@ -54,5 +54,5 @@ include 'view/header.html.php'; ?>
             <?php endforeach; ?>
         </div>
 <?php
-include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/../footer.html.php';
+include __DIR__ . '/../epilogue.html.php';

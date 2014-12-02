@@ -1,4 +1,6 @@
 <?php
+use Goteo\Library\Text;
+
 $share = $this['share'];
 ?>
 <section class="redes">

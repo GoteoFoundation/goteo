@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Tests;
+namespace Goteo\Core\Tests;
 
 use Goteo\Core\Model,
     Goteo\Core\DB,

@@ -60,7 +60,7 @@ namespace Goteo\Controller\Admin {
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'campaigns',
                                     'file' => 'edit',
@@ -73,7 +73,7 @@ namespace Goteo\Controller\Admin {
                             break;
                         case 'edit':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'campaigns',
                                     'file' => 'edit',
@@ -122,7 +122,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'campaigns',
                             'file' => 'edit',
@@ -139,7 +139,7 @@ namespace Goteo\Controller\Admin {
                     $calls = Model\Campaign::available($campaign->call, $node);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'campaigns',
                             'file' => 'edit',
@@ -156,14 +156,14 @@ namespace Goteo\Controller\Admin {
             $setted = Model\Campaign::getAll(false, $node);
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'campaigns',
                     'file' => 'list',
                     'setted' => $setted
                 )
             );
-            
+
         }
 
     }

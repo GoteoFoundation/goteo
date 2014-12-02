@@ -18,7 +18,7 @@ namespace Goteo\Controller\Admin {
                         Model\User\Donor::resetPdf($id);
                     }
                     throw new Redirection('/admin/reports/donors');
-                    
+
                     break;
 
                 case 'donors':
@@ -28,7 +28,7 @@ namespace Goteo\Controller\Admin {
                     $data = Model\User\Donor::getList($filters);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'donors',
@@ -44,7 +44,7 @@ namespace Goteo\Controller\Admin {
                     $data = self::top($filters);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'top',
@@ -60,7 +60,7 @@ namespace Goteo\Controller\Admin {
                     $data = self::projects($filters, $id);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'projects',
@@ -70,13 +70,13 @@ namespace Goteo\Controller\Admin {
                     );
 
                     break;
-                
+
                 case 'calls':
 
                     $data = self::calls($filters, $id);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'calls',
@@ -93,7 +93,7 @@ namespace Goteo\Controller\Admin {
                     $data = self::paypal();
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'paypal',
@@ -108,7 +108,7 @@ namespace Goteo\Controller\Admin {
                     $data = self::geoloc();
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'reports',
                             'file'   => 'geoloc',
@@ -129,7 +129,7 @@ namespace Goteo\Controller\Admin {
 
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder'  => 'reports',
                     'file'    => 'list',

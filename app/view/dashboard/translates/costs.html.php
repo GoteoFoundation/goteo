@@ -75,7 +75,7 @@ if (!empty($project->costs)) {
         } else {
             $costs["cost-{$cost->id}"] = array(
                 'class'     => 'cost ' . $req_class,
-                'view'      => 'view/dashboard/translates/costs/cost.html.php',
+                'view'      => 'dashboard/translates/costs/cost.html.php',
                 'data'      => array('cost' => $cost),
             );
 
@@ -90,7 +90,7 @@ $sfid = 'sf-project-costs';
 
 <form method="post" action="/dashboard/translates/costs/save" class="project" enctype="multipart/form-data">
 
-<?php echo new SuperForm(array(
+<?php echo SuperForm::get(array(
 
     'id'            => $sfid,
 
@@ -112,12 +112,12 @@ $sfid = 'sf-project-costs';
     */
     'elements'      => array(
         'process_costs' => array (
-            'type' => 'hidden',
+            'type' => 'Hidden',
             'value' => 'costs'
         ),
 
         'costs' => array(
-            'type'      => 'group',
+            'type'      => 'Group',
             'title'     => Text::get('costs-fields-main-title'),
             'hint'      => Text::get('tooltip-project-costs'),
             'errors'    => array(),

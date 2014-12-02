@@ -77,7 +77,7 @@ namespace Goteo\Controller {
 
             }
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -207,7 +207,7 @@ namespace Goteo\Controller {
                     break;
             }
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -513,7 +513,7 @@ namespace Goteo\Controller {
 
             $viewData['project'] = $project;
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
         // Fin de la sección Mis proyectos
 
@@ -983,7 +983,7 @@ namespace Goteo\Controller {
                 Message::Error('HA HABIDO ERRORES: <br />' . implode('<br />', $errors));
             }
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
 
         /*
@@ -1060,7 +1060,7 @@ namespace Goteo\Controller {
             $viewData['errors'] = $errors;
             $viewData['call'] = $call;
 
-            return new View('view/dashboard/index.html.php', $viewData);
+            return new View('dashboard/index.html.php', $viewData);
         }
 
         private static function menu() {

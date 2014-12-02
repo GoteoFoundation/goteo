@@ -16,7 +16,7 @@ namespace Goteo\Controller\Admin {
         public static function process ($action = 'list', $id = null, $filters = array()) {
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-            
+
             $errors  = array();
 
             switch ($action) {
@@ -201,7 +201,7 @@ namespace Goteo\Controller\Admin {
 
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'translates',
                             'file'   => 'edit',
@@ -245,7 +245,7 @@ namespace Goteo\Controller\Admin {
             $translators = Model\User::getAll(array('role'=>'translator'));
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'translates',
                     'file' => 'list',
@@ -256,7 +256,7 @@ namespace Goteo\Controller\Admin {
                     'translators' => $translators
                 )
             );
-            
+
         }
 
         /**

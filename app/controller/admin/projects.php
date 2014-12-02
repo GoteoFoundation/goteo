@@ -16,7 +16,7 @@ namespace Goteo\Controller\Admin {
     class Projects {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
-            
+
             $log_text = null;
             $errors = array();
 
@@ -113,11 +113,11 @@ namespace Goteo\Controller\Admin {
                         } catch(\PDOException $e) {
                             Message::Error("Ha fallado! " . $e->getMessage());
                         }
-                        
+
                     }
 
                 } elseif ($action == 'images') {
-                    
+
                     $todook = true;
 
                     /*
@@ -127,10 +127,10 @@ namespace Goteo\Controller\Admin {
                         Model\Project\Image::$direction($id, $_POST['move'], $_POST['section']);
                     }
                     */
-                    
+
                     foreach ($_POST as $key=>$value) {
                         $parts = explode('_', $key);
-                        
+
                         if ($parts[1] == 'image' && in_array($parts[0], array('section', 'url', 'order'))) {
                             if (Model\Project\Image::update($id, $parts[2], $parts[0], $value)) {
                                 // OK
@@ -140,7 +140,7 @@ namespace Goteo\Controller\Admin {
                             }
                         }
                     }
-                    
+
                     if ($todook) {
                         Message::Info('Se han actualizado los datos');
                         // recalculamos las galerias e imagen
@@ -149,16 +149,16 @@ namespace Goteo\Controller\Admin {
                         $galleries = Model\Project\Image::setGallery($id);
                         Model\Project\Image::setImage($id, $galleries['']);
                     }
-                    
+
                     throw new Redirection('/admin/projects/images/'.$id);
-                    
+
                 } elseif ($action == 'rebase') {
-                    
+
                     $todook = true;
-                    
+
                     if ($_POST['proceed'] == 'rebase' && !empty($_POST['newid'])) {
 
-                        // verificamos que el nuevo id sea 
+                        // verificamos que el nuevo id sea
                         $newid = Model\Project::idealiza($_POST['newid']);
 
                         // pimero miramos que no hay otro proyecto con esa id
@@ -181,9 +181,9 @@ namespace Goteo\Controller\Admin {
                             throw new Redirection('/admin/projects/rebase/'.$id);
                         }
 
-                        
+
                     }
-                    
+
                 } elseif (isset($_POST['assign-to-call'])) {
 
                     $values = array(':project' => $projData->id, ':call' => $_POST['call']);
@@ -294,7 +294,7 @@ namespace Goteo\Controller\Admin {
                 $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'report',
@@ -307,7 +307,7 @@ namespace Goteo\Controller\Admin {
             if ($action == 'dates') {
                 // cambiar fechas
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'dates',
@@ -322,7 +322,7 @@ namespace Goteo\Controller\Admin {
 
                 // cambiar fechas
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'accounts',
@@ -338,7 +338,7 @@ namespace Goteo\Controller\Admin {
 
                 // cambiar fechas
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'conf',
@@ -349,10 +349,10 @@ namespace Goteo\Controller\Admin {
             }
 
             if ($action == 'images') {
-                
+
                 // imagenes
                 $images = array();
-                
+
                 // secciones
                 $sections = Model\Project\Image::sections();
                 foreach ($sections as $sec=>$secName) {
@@ -363,7 +363,7 @@ namespace Goteo\Controller\Admin {
                 }
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'images',
@@ -377,7 +377,7 @@ namespace Goteo\Controller\Admin {
             if ($action == 'move') {
                 // cambiar el nodo
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'move',
@@ -403,7 +403,7 @@ namespace Goteo\Controller\Admin {
                 // disponibles
                 $open_all_tags = Model\Project\Open_tag::getAll();
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'open_tags',
@@ -417,7 +417,7 @@ namespace Goteo\Controller\Admin {
             if ($action == 'rebase') {
                 // cambiar la id
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'rebase',
@@ -438,7 +438,7 @@ namespace Goteo\Controller\Admin {
                 }
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'consultants',
@@ -460,7 +460,7 @@ namespace Goteo\Controller\Admin {
                 $available = Model\Call::getAvailable();
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'assign',
@@ -628,7 +628,7 @@ namespace Goteo\Controller\Admin {
             );
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'projects',
                     'file' => 'list',
@@ -646,7 +646,7 @@ namespace Goteo\Controller\Admin {
                     'currentPage' => $page
                 )
             );
-            
+
         }
 
     }

@@ -68,7 +68,7 @@ namespace Goteo\Controller {
 
             // segun eso montamos la vista
             return new View(
-                'view/blog/index.html.php',
+                'blog/index.html.php',
                 array(
                     'blog' => $blog,
                     'show' => $show,

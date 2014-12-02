@@ -38,10 +38,10 @@ namespace Goteo\Controller\Manage {
                 $data = array();
             }
 
-,           'data'   => $data            
+,           'data'   => $data
 */
             return new View(
-                'view/manage/index.html.php',
+                'manage/index.html.php',
                 array(
                     'folder' => 'donors',
                     'file'   => 'list',

@@ -1,17 +1,17 @@
 <?php
 
 use Goteo\Core\View,
-    Goteo\Library\Text;
+    Goteo\Library\Text,
+    Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout;
 
-require_once 'library/pagination/pagination.php';
-
-$pagedResults = new \Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
 
 $bodyClass = 'discover';
 
-include 'view/prologue.html.php';
+include __DIR__ . '/../prologue.html.php';
 
-include 'view/header.html.php' ?>
+include __DIR__ . '/../header.html.php' ?>
 
 
         <div id="sub-header">
@@ -25,7 +25,7 @@ include 'view/header.html.php' ?>
 
             <div class="widget projects">
                 <?php while ($project = $pagedResults->fetchPagedRow()) :
-                        echo new View('view/project/widget/project.html.php', array(
+                        echo View::get('project/widget/project.html.php', array(
                             'project' => $project
                             ));
                 endwhile; ?>
@@ -36,8 +36,8 @@ include 'view/header.html.php' ?>
                         echo $pagedResults->fetchPagedNavigation(); ?>
             </ul>
 
-        </div>        
+        </div>
 
-        <?php include 'view/footer.html.php' ?>
-    
-<?php include 'view/epilogue.html.php' ?>
+        <?php include __DIR__ . '/../footer.html.php' ?>
+
+<?php include __DIR__ . '/../epilogue.html.php' ?>

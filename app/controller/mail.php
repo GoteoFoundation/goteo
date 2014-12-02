@@ -46,14 +46,14 @@ namespace Goteo\Controller {
 
 
                         if ($template == 33) {
-                            return new View ('view/email/newsletter.html.php', array('content'=>$content, 'baja' => ''));
+                            return new View ('email/newsletter.html.php', array('content'=>$content, 'baja' => ''));
                         } else {
                             $baja = SEC_URL . '/user/leave/?email=' . $parts[1];
 
                             if (NODE_ID != \GOTEO_NODE && \file_exists('nodesys/'.NODE_ID.'/view/email/default.html.php')) {
-                                return new View ('nodesys/'.NODE_ID.'/view/email/default.html.php', array('content'=>$content, 'baja' => $baja));
+                                return new View (NODE_ID.'/view/email/default.html.php', array('content'=>$content, 'baja' => $baja));
                             } else {
-                                return new View ('view/email/goteo.html.php', array('content'=>$content, 'baja' => $baja));
+                                return new View ('email/goteo.html.php', array('content'=>$content, 'baja' => $baja));
                             }
                         }
                     }

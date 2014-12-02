@@ -20,16 +20,16 @@ namespace Goteo\Controller\Admin {
                 Message::Info('Por ahora solo ROOT, gracias');
                 throw new Redirection('\admin');
             }
-            
+
             $errors = array();
 
             switch ($action)  {
-                
+
                 // proceso automático para actualizar localidades de registros, auto-crear localizaciones y asignar
                 case 'autocheck':
-                    
+
                     // por ahora se recibe post mientras desarrollo, luego será realmente automático (y estará en otra parte...)
-                    
+
                     // si llega post, grabo eso que llega y sigo ccheckeando
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['apply'])) {
 //                        echo \trace($_POST);
@@ -39,12 +39,12 @@ namespace Goteo\Controller\Admin {
                         $create = (isset($_POST['create'])) ? true : false;
                         $assign = (isset($_POST['assign'])) ? true : false;
                         $unlocable = (isset($_POST['unlocable'])) ? true : false;
-                        
+
                         if (empty($location)) {
                             echo 'No hay localidad de registros de usuarios. FIN<br />';
                             die;
                         }
-                        
+
                         if ($unlocable) {
                             // marcamos a los usuarios como ilocalizables y listo
                             $sql = "INSERT INTO unlocable (`user`) SELECT id FROM user WHERE location LIKE :location";
@@ -103,16 +103,16 @@ namespace Goteo\Controller\Admin {
                                     }
                                 }
                             }
-                        
+
                         }
                     }
-                    
+
                     // Otra operación: Cmbiar la localidad
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['change'])) {
 //                        echo \trace($_POST);
                         $location = $_POST['location'];
                         $newlocation = $_POST['newlocation'];
-                        
+
                         $sql = "UPDATE user SET location = :new WHERE location LIKE :location";
                         if (Model\Location::query($sql, array(':new'=>$newlocation , ':location'=>$location))) {
                                 // ok
@@ -121,20 +121,20 @@ namespace Goteo\Controller\Admin {
                                 die;
                             }
                     }
-                    
+
                     /*
                      * PROCESO
                      **********
-                     * 
+                     *
                      * Primero, busco la localización más compartida por usurios (más de un usuario)
                      * Cuando no quedan, busco localización específica de usuario no dado por ilocalizable
-                     * 
+                     *
                      * *
                      */
                     // Busco la localización que comparten más usuarios
                     // esta consulta no será así en el proceso automático, será con INNER por lo menos...
-                    $sql = "SELECT 
-                                location, count(id) as cuantos 
+                    $sql = "SELECT
+                                location, count(id) as cuantos
                             FROM user
                             WHERE user.id not IN (SELECT item FROM location_item WHERE type = 'user')
                             AND user.id not IN (SELECT user FROM unlocable)
@@ -146,19 +146,19 @@ namespace Goteo\Controller\Admin {
                             ";
                     $query = Model\Location::query($sql);
                     $row = $query->fetchObject();
-                    
+
                     // si no hay resultados no hay nada que hacer
                     if (empty($row)) {
                         Message::Info('No quedan usuarios que se puedan localizar');
                         throw new Redirection('/admin/locations');
                     }
-                    
+
                     $cuantos = $row->cuantos;
                     $location = $row->location;
-                    
+
                     // si solo es uno, podemos asignar directamente por id, en vez de asignar los de esta localidad44
                     if ($cuantos == 1) {
-                        $sql = "SELECT 
+                        $sql = "SELECT
                                    id
                                 FROM user
                                 WHERE user.id not IN (SELECT item FROM location_item WHERE type = 'user')
@@ -175,13 +175,13 @@ namespace Goteo\Controller\Admin {
                     } else {
                         $user = null;
                     }
-                    
+
                     /*
                      * PRETRATAMIENTO
                      * * Una sola palabra (seguramente pais), miro si esta en el array de paises, geolocalizo el pais
                      * * Coordenadas
                      * * coordenadas geográficas (º'")
-                     * * 
+                     * *
                      */
                     if (strlen($location) == 2 && isset(Geoloc::$countries[$location])) {
                         $geodata = Geoloc::searchLoc(array('address'=>Geoloc::$countries[$location]));
@@ -190,10 +190,10 @@ namespace Goteo\Controller\Admin {
                     } else {
                         $geodata = Geoloc::searchLoc(array('address'=>$location));
                     }
-                    
+
                     // vista de autocheck
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder'    => 'locations',
                             'file'      => 'autocheck',
@@ -237,7 +237,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de crear
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'locations',
                             'file'  => 'edit',
@@ -275,7 +275,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de editar
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'locations',
                             'file' => 'edit',
@@ -301,14 +301,14 @@ namespace Goteo\Controller\Admin {
                             );
 
                     $type = in_array($_GET['type'], $types) ? $_GET['type'] : 'user';
-                    
+
                     // cargar la lista de registros a checkear  (segun tipo de registro)
                     // son los no asignados a una localizacion
                     $list = Model\Location::getCheck($type, 10);
 
                     // vista de editar
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'locations',
                             'file' => 'check',
@@ -352,7 +352,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     // regiones (si hay filtro de pais, filtramos estas por pais)
-                    $regions = Model\Location::getList('region', $regionFilter); 
+                    $regions = Model\Location::getList('region', $regionFilter);
 
                     // filtro region sobre localizacion
                     if (empty($filters['location']) && !empty($filters['region'])) {
@@ -373,7 +373,7 @@ namespace Goteo\Controller\Admin {
 
                     // vista de editar
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'locations',
                             'file' => 'check',
@@ -413,7 +413,7 @@ namespace Goteo\Controller\Admin {
                     if (isset($filters['region']) && !isset($regions[$filters['region']])) {
                         unset($filters['region']);
                     }
-                    
+
                     // filtro region sobre localizacion
                     $locationFilter = null;
                     if (!empty($filters['region'])) {
@@ -427,15 +427,15 @@ namespace Goteo\Controller\Admin {
                             'type' => 'country',
                             'value' => $filters['country']
                         );
-                    }                    
-                    
+                    }
+
 
                     $locations = Model\Location::getList('location', $locationFilter); // distintas localizaciones ya existentes (si hay filtro de region, filtramos estas por region; si no hay filtro de region pero hay filtro de pais, filtramos  estas por pais)
 
                     if (isset($filters['location']) && !isset($locations[$filters['location']])) {
                         unset($filters['location']);
                     }
-                    
+
                     $list = Model\Location::getAll($filters);
 
                     $valid = array(
@@ -450,7 +450,7 @@ namespace Goteo\Controller\Admin {
                             );
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'locations',
                             'file' => 'list',
@@ -465,7 +465,7 @@ namespace Goteo\Controller\Admin {
                     );
                 break;
             }
-            
+
         }
 
     }

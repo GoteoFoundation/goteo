@@ -15,6 +15,6 @@ $status = $this['statuses'];
 <br /><br />
 <div class="widget board">
     <h3><?php echo $project->name; ?> (<?php echo $status[$project->status]; ?>)</h3>
-    <?php echo new View('view/project/edit/rewards/view_commons.html.php', $this); ?>
+    <?php echo View::get('project/edit/rewards/view_commons.html.php', $this); ?>
 </div>
-<?php echo new View('view/project/edit/rewards/commons.js.php'); ?>
+<?php echo View::get('project/edit/rewards/commons.js.php'); ?>

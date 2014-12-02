@@ -14,21 +14,21 @@ $superform = array(
     'method'        => 'post',
     'title'         => Text::get('contract-step-accounts'),
     'hint'          => Text::get('guide-contract-accounts'),
-    'class'         => 'aqua',        
+    'class'         => 'aqua',
     'elements'      => array(
         'process_accounts' => array (
-            'type' => 'hidden',
+            'type' => 'Hidden',
             'value' => 'accounts'
         ),
-        
+
         'paypal' => array (
-            'type' => 'html',
+            'type' => 'HTML',
             'title' => 'Cuenta PayPal del proyecto:',
             'html' => $contract->paypal
         ),
-        
+
         'paypal_owner' => array(
-            'type'      => 'textbox',
+            'type'      => 'TextBox',
             'title'     => Text::get('contract-paypal_owner'),
             'class'     => 'inline',
             'required'  => (!empty($contract->paypal)),
@@ -37,9 +37,9 @@ $superform = array(
             'errors'    => !empty($errors['paypal_owner']) ? array($errors['paypal_owner']) : array(),
             'ok'        => !empty($okeys['paypal_owner']) ? array($okeys['paypal_owner']) : array()
         ),
-        
+
         'bank_owner' => array(
-            'type'      => 'textbox',
+            'type'      => 'TextBox',
             'title'     => Text::get('contract-bank_owner'),
             'required'  => true,
             'hint'      => Text::get('tooltip-contract-bank_owner'),
@@ -47,9 +47,9 @@ $superform = array(
             'errors'    => !empty($errors['bank_owner']) ? array($errors['bank_owner']) : array(),
             'ok'        => !empty($okeys['bank_owner']) ? array($okeys['bank_owner']) : array()
         ),
-        
+
         'bank' => array(
-            'type'      => 'textbox',
+            'type'      => 'TextBox',
             'title'     => Text::get('contract-bank_account'),
             'class'     => 'inline',
             'required'  => true,
@@ -58,19 +58,19 @@ $superform = array(
             'errors'    => !empty($errors['bank']) ? array($errors['bank']) : array(),
             'ok'        => !empty($okeys['bank']) ? array($okeys['bank']) : array()
         ),
-        
+
         'footer' => array(
-            'type'      => 'group',
+            'type'      => 'Group',
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/contract/edit/errors.html.php', array(
+                    'view'  => new View('contract/edit/errors.html.php', array(
                         'contract'   => $contract,
                         'step'      => $this['step']
-                    ))                    
+                    ))
                 ),
                 'buttons'  => array(
-                    'type'  => 'group',
+                    'type'  => 'Group',
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
@@ -81,7 +81,7 @@ $superform = array(
                     )
                 )
             )
-        
+
         )
 
     )
@@ -90,11 +90,11 @@ $superform = array(
 
 
 foreach ($superform['elements'] as $id => &$element) {
-    
+
     if (!empty($this['errors'][$this['step']][$id])) {
         $element['errors'] = arrray();
     }
-    
+
 }
 
-echo new SuperForm($superform);
+echo SuperForm::get($superform);

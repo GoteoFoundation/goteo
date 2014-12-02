@@ -54,7 +54,7 @@ namespace Goteo\Controller\Admin {
                     Message::Error(implode('<br />', $errors));
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'faq',
                             'file' => 'edit',
@@ -81,7 +81,7 @@ namespace Goteo\Controller\Admin {
                     $next = Model\Faq::next($filters['section']);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'faq',
                             'file' => 'edit',
@@ -98,7 +98,7 @@ namespace Goteo\Controller\Admin {
                     $faq->cuantos = ($cuantos -1);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'faq',
                             'file' => 'edit',
@@ -116,7 +116,7 @@ namespace Goteo\Controller\Admin {
             $faqs = Model\Faq::getAll($filters['section']);
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'faq',
                     'file' => 'list',
@@ -125,7 +125,7 @@ namespace Goteo\Controller\Admin {
                     'filters' => $filters
                 )
             );
-            
+
         }
 
     }

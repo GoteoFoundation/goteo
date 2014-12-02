@@ -71,11 +71,11 @@ namespace Goteo\Controller\Admin {
 				}
 				else {
                     Message::Error(implode('<br />', $errors));
-                    
+
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'banners',
                                     'file' => 'edit',
@@ -87,7 +87,7 @@ namespace Goteo\Controller\Admin {
                             break;
                         case 'edit':
                             return new View(
-                                'view/admin/index.html.php',
+                                'admin/index.html.php',
                                 array(
                                     'folder' => 'banners',
                                     'file' => 'edit',
@@ -128,7 +128,7 @@ namespace Goteo\Controller\Admin {
                     $next = Model\Banner::next($node);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'banners',
                             'file' => 'edit',
@@ -142,7 +142,7 @@ namespace Goteo\Controller\Admin {
                     $banner = Model\Banner::get($id);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'banners',
                             'file' => 'edit',
@@ -158,7 +158,7 @@ namespace Goteo\Controller\Admin {
             $bannered = Model\Banner::getAll(false, $node);
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'banners',
                     'file' => 'list',
@@ -166,7 +166,7 @@ namespace Goteo\Controller\Admin {
                     'node' => $node
                 )
             );
-            
+
         }
 
     }

@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Model\Criteria;
 
-echo new View ('view/review/reviews/selector.html.php', $this);
+echo View::get('review/reviews/selector.html.php', $this);
 
 $review   = $this['review'];
 $evaluation = $this['evaluation'];
@@ -27,7 +27,7 @@ $disabled = $review->ready == 1 ? 'disabled' : '';
                    id="<?php echo $sectionId.'-criteria-'.$crit->id; ?>"
                    name="criteria-<?php echo $crit->id; ?>"
                    value="1"<?php if ($evaluation['criteria'][$crit->id] > 0) echo ' checked="checked"'; ?>/>
-            
+
             <label for="<?php echo $sectionId.'-criteria-'.$crit->id; ?>"
                    title="<?php echo $crit->description; ?>"><?php echo $crit->title; ?></label>
         </li>

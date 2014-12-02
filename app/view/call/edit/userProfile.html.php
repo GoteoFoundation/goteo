@@ -44,12 +44,12 @@ foreach ($user->webs as $web) {
             'class'     => 'web editweb',
             'children'  => array(
                     "web-{$web->id}-edit" => array(
-                        'type'  => 'hidden',
+                        'type'  => 'Hidden',
                         'class' => 'inline',
                         'value' => '1'
                     ),
                     'web-' . $web->id . '-url' => array(
-                        'type'      => 'textbox',
+                        'type'      => 'TextBox',
                         'required'  => true,
                         'title'     => Text::get('profile-field-url'),
                         'value'     => $web->url,
@@ -81,7 +81,7 @@ foreach ($user->webs as $web) {
 
         $user_webs["web-{$web->id}"] = array(
             'class'     => 'web',
-            'view'      => 'view/project/edit/webs/web.html.php',
+            'view'      => 'project/edit/webs/web.html.php',
             'data'      => array('web' => $web),
         );
 
@@ -91,7 +91,7 @@ foreach ($user->webs as $web) {
 
 $sfid = 'sf-project-profile';
 
-echo new SuperForm(array(
+echo SuperForm::get(array(
     'id'            => $sfid,
     'action'        => '',
     'level'         => $this['level'],
@@ -100,11 +100,11 @@ echo new SuperForm(array(
     'hint'          => Text::get('guide-call-user-information'),
     'elements'      => array(
         'process_userProfile' => array (
-            'type' => 'hidden',
+            'type' => 'Hidden',
             'value' => 'userProfile'
         ),
         'user_name' => array(
-            'type'      => 'textbox',
+            'type'      => 'TextBox',
             'required'  => true,
             'size'      => 20,
             'title'     => Text::get('profile-field-name'),
@@ -114,7 +114,7 @@ echo new SuperForm(array(
             'value'     => $user->name
         ),
         'user_location' => array(
-            'type'      => 'textbox',
+            'type'      => 'TextBox',
             'required'  => true,
             'size'      => 20,
             'title'     => Text::get('profile-field-location'),
@@ -139,11 +139,11 @@ echo new SuperForm(array(
                     'hint'  => Text::get('tooltip-user-image'),
                 ),
                 'avatar-current' => array(
-                    'type' => 'hidden',
+                    'type' => 'Hidden',
                     'value' => $user->avatar->id == 1 ? '' : $user->avatar->id,
                 ),
                 'avatar-image' => array(
-                    'type'  => 'html',
+                    'type'  => 'HTML',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) &&  $user->avatar->id != 1 ?
                                $user->avatar . '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->id.'-remove" title="Quitar imagen" value="remove">X</button>' :
@@ -154,7 +154,7 @@ echo new SuperForm(array(
         ),
 
         'user_about' => array(
-            'type'      => 'textarea',
+            'type'      => 'TextArea',
             'required'  => true,
             'cols'      => 40,
             'rows'      => 4,
@@ -176,7 +176,7 @@ echo new SuperForm(array(
             'options'   => $interests
         ),
         'user_keywords' => array(
-            'type'      => 'textbox',
+            'type'      => 'TextBox',
             'required'  => true,
             'size'      => 20,
             'title'     => Text::get('profile-field-keywords'),
@@ -186,7 +186,7 @@ echo new SuperForm(array(
             'value'     => $user->keywords
         ),
         'user_contribution' => array(
-            'type'      => 'textarea',
+            'type'      => 'TextArea',
             'required'  => true,
             'cols'      => 40,
             'rows'      => 4,
@@ -217,7 +217,7 @@ echo new SuperForm(array(
             'title'     => Text::get('profile-fields-social-title'),
             'children'  => array(
                 'user_facebook' => array(
-                    'type'      => 'textbox',
+                    'type'      => 'TextBox',
                     'class'     => 'facebook',
                     'size'      => 40,
                     'title'     => Text::get('regular-facebook'),
@@ -227,7 +227,7 @@ echo new SuperForm(array(
                     'value'     => empty($user->facebook) ? Text::get('regular-facebook-url') : $user->facebook
                 ),
                 'user_google' => array(
-                    'type'      => 'textbox',
+                    'type'      => 'TextBox',
                     'class'     => 'google',
                     'size'      => 40,
                     'title'     => Text::get('regular-google'),
@@ -237,7 +237,7 @@ echo new SuperForm(array(
                     'value'     => empty($user->google) ? Text::get('regular-google-url') : $user->google
                 ),
                 'user_twitter' => array(
-                    'type'      => 'textbox',
+                    'type'      => 'TextBox',
                     'class'     => 'twitter',
                     'size'      => 40,
                     'title'     => Text::get('regular-twitter'),
@@ -247,7 +247,7 @@ echo new SuperForm(array(
                     'value'     => empty($user->twitter) ? Text::get('regular-twitter-url') : $user->twitter
                 ),
                 'user_identica' => array(
-                    'type'      => 'textbox',
+                    'type'      => 'TextBox',
                     'class'     => 'identica',
                     'size'      => 40,
                     'title'     => Text::get('regular-identica'),
@@ -257,7 +257,7 @@ echo new SuperForm(array(
                     'value'     => empty($user->identica) ? Text::get('regular-identica-url') : $user->identica
                 ),
                 'user_linkedin' => array(
-                    'type'      => 'textbox',
+                    'type'      => 'TextBox',
                     'class'     => 'linkedin',
                     'size'      => 40,
                     'title'     => Text::get('regular-linkedin'),
@@ -273,7 +273,7 @@ echo new SuperForm(array(
             'children'  => array(
                 'errors' => array(
                     'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('view/project/edit/errors.html.php', array(
+                    'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $call,
                         'step'      => $this['step']
                     ))

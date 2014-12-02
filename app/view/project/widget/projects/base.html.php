@@ -9,7 +9,7 @@ if (!empty($this['projects'])):
                 <blockquote><?php echo $promo->description ?></blockquote>
             </div>
                 -->
-            <?php echo new View('view/project/widget/project.html.php', array(
+            <?php echo View::get('project/widget/project.html.php', array(
                 'project' => $promo->projectData,
                 'balloon' => '<h4>' . htmlspecialchars($promo->title) . '</h4>' .
                              '<blockquote>' . $promo->description . '</blockquote>'

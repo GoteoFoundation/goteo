@@ -11,7 +11,7 @@ namespace Goteo\Controller\Manage {
     class Projects {
 
         public static function process ($action = 'list', $id = null, $subaction = null, $filters = array()) {
-            
+
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['id'])) {
@@ -77,7 +77,7 @@ namespace Goteo\Controller\Manage {
 
                 throw new Redirection('/manage/projects/#'.$id);
             }
-            
+
             if ($action == 'unsetflag') {
                 Model\Contract::setStatus($id, array($subaction => 0));
 
@@ -94,10 +94,10 @@ namespace Goteo\Controller\Manage {
                     }
                 }
                 */
-                
+
                 throw new Redirection('/manage/projects/#'.$id);
             }
-            
+
             if ($action == 'create') {
 
                 $contract = Model\Contract::get($id);
@@ -110,7 +110,7 @@ namespace Goteo\Controller\Manage {
                 $contract = Model\Contract::get($id);
 
                 return new View(
-                    'view/manage/index.html.php',
+                    'manage/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'preview',
@@ -125,7 +125,7 @@ namespace Goteo\Controller\Manage {
                 $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
 
                 return new View(
-                    'view/manage/index.html.php',
+                    'manage/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'report',
@@ -141,7 +141,7 @@ namespace Goteo\Controller\Manage {
 
                 // cambiar fechas
                 return new View(
-                    'view/manage/index.html.php',
+                    'manage/index.html.php',
                     array(
                         'folder' => 'projects',
                         'file' => 'accounts',
@@ -151,7 +151,7 @@ namespace Goteo\Controller\Manage {
                 );
             }
 
-            
+
             if (!empty($filters['filtered'])) {
                 $projects = static::getList($filters);
             } else {
@@ -170,7 +170,7 @@ namespace Goteo\Controller\Manage {
             );
 
             return new View(
-                'view/manage/index.html.php',
+                'manage/index.html.php',
                 array(
                     'folder' => 'projects',
                     'file' => 'list',
@@ -183,10 +183,10 @@ namespace Goteo\Controller\Manage {
                     'orders' => $orders
                 )
             );
-            
+
         }
-        
-        
+
+
         /**
          * Saca una lista completa de proyectos
          *
@@ -227,19 +227,19 @@ namespace Goteo\Controller\Manage {
             if (!empty($filters['projectStatus'])) {
                 if ($filters['projectStatus'] == 'all') // En campaña o financiados
                   $sqlFilter .= " AND project.status IN (3, 4)";
-                
+
                 if ($filters['projectStatus'] == 'first') // En primera ronda
                   $sqlFilter .= " AND project.status = 3 AND project.passed IS NULL";
-                    
+
                 if ($filters['projectStatus'] == 'second')// En segunda ronda
                   $sqlFilter .= " AND project.status = 3 AND project.passed IS NOT NULL";
-                    
+
                 if ($filters['projectStatus'] == 'completed') // Campaña completada
                   $sqlFilter .= " AND project.status = 4";
             }
 
-                
-            // filtro estado de contrato 
+
+            // filtro estado de contrato
             if (!empty($filters['contractStatus'])) {
                 switch ($filters['contractStatus']) {
                     case 'all': // Tengan o no contrato generado
@@ -278,7 +278,7 @@ namespace Goteo\Controller\Manage {
                         break;
                 }
             }
-            
+
             /*
             if ($filters['prepay'] == 1) {
                 $sqlFilter .= " AND contract_status.prepay = 1";
@@ -286,7 +286,7 @@ namespace Goteo\Controller\Manage {
                 $filters['prepay'] = 0;
             }
              */
-            
+
             //el Order
             $sqlOrder = '';
             switch ($filters['order']) {
@@ -298,7 +298,7 @@ namespace Goteo\Controller\Manage {
                 break;
                 case 'number': // por numero, más nuevos primero
                     if ($filters['contractStatus'] == 'noreg') {
-                        // ya hay un filtro para "Sin registro de contrato" 
+                        // ya hay un filtro para "Sin registro de contrato"
                         $sqlOrder .= " ORDER BY project.published DESC";
                         $filters['order'] = 'date';
                     } elseif (!$joined) {
@@ -311,7 +311,7 @@ namespace Goteo\Controller\Manage {
                 break;
                 case 'anumber': // por numero, más antiguos primero
                     if ($filters['contractStatus'] == 'noreg') {
-                        // ya hay un filtro para "Sin registro de contrato" 
+                        // ya hay un filtro para "Sin registro de contrato"
                         $sqlOrder .= " ORDER BY project.published DESC";
                         $filters['order'] = 'date';
                     } elseif (!$joined) {
@@ -331,11 +331,11 @@ namespace Goteo\Controller\Manage {
             // la select
             // @Javier , esto habría que optimizarlo igual que el Project::GetList
             // no se usa exactamente porque aqui necesita join con datos de contrato
-            $sql = "SELECT 
+            $sql = "SELECT
                         project.id
                     FROM project
                     $sqlJoin
-                    LEFT JOIN contract_status 
+                    LEFT JOIN contract_status
                         ON contract_status.contract = project.id
                     WHERE project.id != ''
                         $sqlFilter
@@ -353,7 +353,7 @@ namespace Goteo\Controller\Manage {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
                 $the_proj = Model\Project::getMedium($proj->id);
                 $the_proj->contract = Model\Contract::get($proj->id);
-                
+
                 // si aun no tiene fechas hay que calcularlas
                 $the_date = strtotime($the_proj->published);
                 if (empty($the_proj->passed)) {
@@ -362,7 +362,7 @@ namespace Goteo\Controller\Manage {
                 if (empty($the_proj->success)) {
                     $the_proj->success = date('Y-m-d', mktime(0, 0, 0, date('m', $the_date), date('d',$the_date)+$the_proj->days_total, date('Y', $the_date)));
                 }
-                
+
                 // preparamos los flags
                 if (empty($the_proj->contract)) {
                     $flags = array('noreg' => 1); // no tiene registro
@@ -376,11 +376,11 @@ namespace Goteo\Controller\Manage {
                     }
                 }
                 $the_proj->flags = $flags;
-                
+
                 // y el número
                 list($cNum, $cDate) = Model\Contract::getNum($the_proj->id, $the_proj->published);
                 $the_proj->cName = "P-{$cNum}-{$cDate}";
-                
+
                 // incidencias, importe total
                 $issues = Model\Invest::getList(array(
                     'projects' => $the_proj->id,
@@ -395,12 +395,12 @@ namespace Goteo\Controller\Manage {
                 $the_proj->issues = $sum;
 
                 // y si estas incidencias hacen peligrar el mínimo
-                
+
                 $projects[] = $the_proj;
             }
             return $projects;
         }
-        
+
 
     }
 

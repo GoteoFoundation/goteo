@@ -22,20 +22,20 @@ $content = explode('<hr />', $this['page']->content);
 ?>
 <form action="/dashboard/profile/location" method="post" enctype="multipart/form-data">
     <div class="widget">
-        
-    <?php 
-    if ($user->unlocable) : 
+
+    <?php
+    if ($user->unlocable) :
         echo $content[0];
-    
-    elseif ($geolocation instanceof Model\Location) : 
-        echo str_replace('<!-- MAPA -->', 
-                new View('view/widget/map.html.php', array('lat'=>$geolocation->lat,'lon'=>$geolocation->lon, 'name'=>$geolocation->name)),
+
+    elseif ($geolocation instanceof Model\Location) :
+        echo str_replace('<!-- MAPA -->',
+                View::get('widget/map.html.php', array('lat'=>$geolocation->lat,'lon'=>$geolocation->lon, 'name'=>$geolocation->name)),
                 $content[1]);
-    
-    else : 
+
+    else :
         echo $content[2];
-    
-    endif; 
+
+    endif;
     ?>
 
     </div>

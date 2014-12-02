@@ -151,9 +151,9 @@ foreach ($this['invests'] as $invest) {
 
 <!-- resumen financiero proyecto -->
     <a name="detail">&nbsp;</a>
-    <?php echo new View('view/project/report.html.php', array('project'=>$project, 'Data'=>$Data, 'admin'=>true)); ?>
+    <?php echo View::get('project/report.html.php', array('project'=>$project, 'Data'=>$Data, 'admin'=>true)); ?>
     <hr>
-    
+
 <div class="widget">
 <!-- información detallada apra tratar transferencias a proyectos -->
     <h3 class="title">Desglose de financiación por rondas</h3>

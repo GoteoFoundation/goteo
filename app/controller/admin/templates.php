@@ -45,7 +45,7 @@ namespace Goteo\Controller\Admin {
 
                     // sino, mostramos para editar
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'templates',
                             'file' => 'edit',
@@ -58,7 +58,7 @@ namespace Goteo\Controller\Admin {
                     $templates = Template::getAll($filters);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'templates',
                             'file' => 'list',

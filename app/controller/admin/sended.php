@@ -24,7 +24,7 @@ namespace Goteo\Controller\Admin {
             }
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder' => 'sended',
                     'file' => 'list',
@@ -34,7 +34,7 @@ namespace Goteo\Controller\Admin {
                     'sended' => $sended
                 )
             );
-            
+
         }
 
     }

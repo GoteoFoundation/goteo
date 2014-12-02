@@ -6,13 +6,12 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
+        Goteo\Library,
         Goteo\Library\Text,
-        Goteo\Library\Message,
-        Goteo\Library\Mail,
         Goteo\Library\Template;
 
     class Contact extends \Goteo\Core\Controller {
-        
+
         public function index () {
 
             $tags = array();
@@ -27,6 +26,7 @@ namespace Goteo\Controller {
             }
 
             $showCaptcha = (GOTEO_ENV == 'real');
+
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
@@ -38,7 +38,7 @@ namespace Goteo\Controller {
                 //@FIXME: Esto no va a funcionar porque SRC_URL va con // sin protocolo
                 // $referer = SRC_URL.'/contact';
                 //  || $_SERVER['HTTP_REFERER']!=$referer
-                
+
                 // verificamos token
                 if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token']) {
                     header("HTTP/1.1 400 Bad request");
@@ -70,13 +70,13 @@ namespace Goteo\Controller {
 
                 if ($showCaptcha) {
                     // verificamos el captcha
-                    require 'library/recaptchalib.php';
+                    require_once __DIR__ . '/../../src/Goteo/Library/recaptchalib/recaptchalib.php';
                     $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response"]);
                     if (!$resp->is_valid) {
                         $errors['recaptcha'] = Text::get('error-contact-captcha');
                     }
                 }
-                
+
                 $data = array(
                         'tag' => $_POST['tag'],
                         'subject' => $_POST['subject'],
@@ -84,7 +84,7 @@ namespace Goteo\Controller {
                         'email'   => $_POST['email'],
                         'message' => $_POST['message']
                 );
-                
+
                 if (empty($errors)) {
 
                     // Obtenemos la plantilla para asunto y contenido
@@ -109,7 +109,7 @@ namespace Goteo\Controller {
                     $content = \str_replace($search, $replace, $template->text);
 
 
-                    $mailHandler = new Mail();
+                    $mailHandler = new Library\Mail();
 
                     $mailHandler->to = $to;
                     $mailHandler->toName = $toName;
@@ -119,10 +119,10 @@ namespace Goteo\Controller {
                     $mailHandler->html = true;
                     $mailHandler->template = $template->id;
                     if ($mailHandler->send($errors)) {
-                        Message::Info('Mensaje de contacto enviado correctamente.');
+                        Library\Message::Info('Mensaje de contacto enviado correctamente.');
                         $data = array();
                     } else {
-                        Message::Error('Ha fallado al enviar el mensaje.');
+                        Library\Message::Error('Ha fallado al enviar el mensaje.');
                     }
 
                     unset($mailHandler);
@@ -130,7 +130,7 @@ namespace Goteo\Controller {
             }
 
             return new View(
-                'view/about/contact.html.php',
+                'about/contact.html.php',
                 array(
                     'data'    => $data,
                     'tags'    => $tags,
@@ -140,7 +140,7 @@ namespace Goteo\Controller {
             );
 
         }
-        
+
     }
-    
+
 }

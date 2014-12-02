@@ -3,10 +3,10 @@
 
 use Goteo\Core\View;
 
-$bodyClass = 'project-embed'; include 'view/prologue.html.php' ?>
+$bodyClass = 'project-embed'; include __DIR__ . '/../prologue.html.php' ?>
 
 <div class="alone-wof">
-    <?php echo new View('view/project/widget/wof.html.php', $this); ?>
+    <?php echo View::get('project/widget/wof.html.php', $this); ?>
 </div>
 
-<?php include 'view/epilogue.html.php' ?>
+<?php include __DIR__ . '/../epilogue.html.php' ?>

@@ -20,19 +20,23 @@ require_once __DIR__ . '/../src/Goteo/Core/Helpers.php';
 require_once __DIR__ . '/autoload.php';
 
 
-/******************************************************
-OAUTH APP's Secrets
-*******************************************************/
-if (!defined('OAUTH_LIBS')) {
-    define ('OAUTH_LIBS', GOTEO_PATH . 'library' . DIRECTORY_SEPARATOR . 'oauth' . DIRECTORY_SEPARATOR . 'SocialAuth.php');
-}
-
 //Uploads
 define('GOTEO_DATA_PATH', __DIR__ . '/../var/data/');
 //cache
 define('GOTEO_CACHE_PATH', __DIR__ . '/../var/cache/');
 
+//Cache dir in libs
 \Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
+//Default views
+//General views
+\Goteo\Core\View::addViewPath(__DIR__ . '/view');
+//NormalForm views
+\Goteo\Core\View::addViewPath(__DIR__ . '/../src/Goteo/Library/NormalForm/view');
+//SuperForm views
+\Goteo\Core\View::addViewPath(__DIR__ . '/../src/Goteo/Library/SuperForm/view');
+//TODO: PROVISIONAL
+//add view
+\Goteo\Core\View::addViewPath(__DIR__ . '/nodesys');
 
 /**
  * Carga de configuración local si existe

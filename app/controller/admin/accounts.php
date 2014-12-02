@@ -112,7 +112,7 @@ namespace Goteo\Controller\Admin {
                 );
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     $viewData
                 );
 
@@ -157,7 +157,7 @@ namespace Goteo\Controller\Admin {
                     throw new Redirection('/admin/accounts/details/'.$id);
                 }
 
-                return new View('view/admin/index.html.php', array(
+                return new View('admin/index.html.php', array(
                     'folder' => 'accounts',
                     'file' => 'update',
                     'invest' => $invest,
@@ -347,7 +347,7 @@ namespace Goteo\Controller\Admin {
                     );
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     $viewData
                 );
 
@@ -372,7 +372,7 @@ namespace Goteo\Controller\Admin {
                 $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'accounts',
                         'file' => 'report',
@@ -571,7 +571,7 @@ namespace Goteo\Controller\Admin {
                 }
 
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'accounts',
                         'file' => 'viewer',
@@ -637,7 +637,7 @@ namespace Goteo\Controller\Admin {
                 $project = Model\Project::get($invest->project);
                 $userData = Model\User::get($invest->user);
                 return new View(
-                    'view/admin/index.html.php',
+                    'admin/index.html.php',
                     array(
                         'folder' => 'accounts',
                         'file' => 'details',
@@ -676,7 +676,7 @@ namespace Goteo\Controller\Admin {
                 );
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 $viewData
             );
 

@@ -11,8 +11,8 @@ $dbg = false;
 if ($dbg) $ti = microtime(true);
 
 $bodyClass = 'user-profile';
-include 'view/prologue.html.php';
-include 'view/header.html.php';
+include __DIR__ . '/../prologue.html.php';
+include __DIR__ . '/../header.html.php';
 
 $user = $this['user'];
 $worthcracy = Worth::getAll();
@@ -53,19 +53,19 @@ $worthcracy = Worth::getAll();
     });
 </script>
 
-<?php echo new View('view/user/widget/header.html.php', array('user'=>$user)) ?>
+<?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
-<?php if(isset($_SESSION['messages'])) { include 'view/header/message.html.php'; } ?>
+<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
     <div class="center">
 
-        <?php echo new View('view/user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth)) ?>
+        <?php echo View::get('user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth)) ?>
 
-        <?php echo new View('view/user/widget/about.html.php', array('user' => $user, 'projects' => $this['projects'])) ?>
+        <?php echo View::get('user/widget/about.html.php', array('user' => $user, 'projects' => $this['projects'])) ?>
 
-        <?php echo new View('view/user/widget/social.html.php', array('user' => $user)) ?>
+        <?php echo View::get('user/widget/social.html.php', array('user' => $user)) ?>
 
 
         <?php foreach ($this['lists'] as $type=>$list) :
@@ -83,9 +83,9 @@ $worthcracy = Worth::getAll();
 
                         <?php foreach ($projects['items'] as $project) :
                             if ($type == 'my_projects')  {
-                                echo new View('view/project/widget/project.html.php', array('project' => $project));
+                                echo View::get('project/widget/project.html.php', array('project' => $project));
                             } else {
-                                echo new View('view/project/widget/project.html.php', array('project' => $project, 'investor' => $user));
+                                echo View::get('project/widget/project.html.php', array('project' => $project, 'investor' => $user));
                             }
                         endforeach; ?>
 
@@ -112,15 +112,15 @@ $worthcracy = Worth::getAll();
 
     </div>
     <div class="side">
-        <?php if (!empty($_SESSION['user'])) echo new View('view/user/widget/investors.html.php', $this) ?>
-        <?php echo new View('view/user/widget/sharemates.html.php', $this) ?>
+        <?php if (!empty($_SESSION['user'])) echo View::get('user/widget/investors.html.php', $this) ?>
+        <?php echo View::get('user/widget/sharemates.html.php', $this) ?>
     </div>
 
 </div>
 
 <?php
-include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+include __DIR__ . '/../footer.html.php';
+include __DIR__ . '/../epilogue.html.php';
 
 if ($dbg) {
     $tf = microtime(true);
@@ -128,4 +128,3 @@ if ($dbg) {
     echo 'Tiempo de pintado = '.$tp.' segundos<br />';
 }
 
-?>

@@ -172,7 +172,7 @@ namespace Goteo\Controller\Admin {
 
                     // si hay, mostramos el formulario de envio
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder'    => 'mailing',
                             'file'      => 'edit',
@@ -190,7 +190,7 @@ namespace Goteo\Controller\Admin {
                     $URL = \SITE_URL;
 
                     $comlang = (isset($_POST['lang'])) ? $_POST['lang'] : \LANG;
-                    
+
                     // Enviando contenido recibido a destinatarios recibidos
                     $receivers = array();
 
@@ -253,7 +253,7 @@ namespace Goteo\Controller\Admin {
 
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder'    => 'mailing',
                             'file'      => 'send',
@@ -272,7 +272,7 @@ namespace Goteo\Controller\Admin {
             }
 
             return new View(
-                'view/admin/index.html.php',
+                'admin/index.html.php',
                 array(
                     'folder'    => 'mailing',
                     'file'      => 'list',
@@ -284,7 +284,7 @@ namespace Goteo\Controller\Admin {
                     'filters'   => $filters
                 )
             );
-            
+
         }
 
     }

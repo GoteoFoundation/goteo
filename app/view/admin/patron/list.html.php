@@ -2,10 +2,11 @@
 
 $patrons = $this['patrons'];
 
-function the_order($val, $user)
-{
-    return '<input type="text" name="order_' . $user . '"  value="' . $val . '" style="width: 20px;"/>';
-}
+// TODO: esto para que es??!!
+// function the_order($val, $user)
+// {
+//     return '<input type="text" name="order_' . $user . '"  value="' . $val . '" style="width: 20px;"/>';
+// }
 
 ?>
 <a href="/admin/patron/add" class="button">Nuevo apadrinamiento</a>

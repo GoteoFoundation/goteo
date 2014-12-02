@@ -35,7 +35,7 @@ if (!$project instanceof  Goteo\Model\Project) {
 
 <div id="meter-big" class="widget collapsable">
 
-    <?php echo new View('view/project/meter_hor_big.html.php', $this) ?>
+    <?php echo View::get('project/meter_hor_big.html.php', $this) ?>
 
 </div>
 
@@ -103,5 +103,5 @@ jQuery(document).ready(function(){
 <?php endif; ?>
 <div class="widget projects">
     <h2 class="widget-title title"><?php echo Text::get('project-spread-widget_title'); ?></h2>
-    <?php echo new View('view/project/widget/embed.html.php', array('project'=>$project)) ?>
+    <?php echo View::get('project/widget/embed.html.php', array('project'=>$project)) ?>
 </div>

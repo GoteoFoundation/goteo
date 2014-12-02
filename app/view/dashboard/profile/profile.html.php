@@ -79,7 +79,7 @@ foreach ($user->webs as $web) {
 
         $user_webs["web-{$web->id}"] = array(
             'class'     => 'web',
-            'view'      => 'view/project/edit/webs/web.html.php',
+            'view'      => 'project/edit/webs/web.html.php',
             'data'      => array('web' => $web),
         );
 
@@ -318,7 +318,7 @@ $superarray['elements']['user_social'] = array(
             )
         );
 
-echo new SuperForm($superarray);
+echo SuperForm::get($superarray);
 ?>
 </form>
 <script type="text/javascript">

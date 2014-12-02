@@ -88,27 +88,28 @@ namespace Goteo\Model\Blog {
 
                 $query = static::query($sql, $values);
 
-                $post = $query->fetchObject('\Goteo\Model\Blog\Post');
-
+                $post = $query->fetchObject('\Goteo\Model\Post');
 
                 $post->user   = new User;
                 $post->user->name = $post->user_name;
 
-                // campo calculado gallery
-                if (!empty($post->gallery) && $post->gallery !== 'empty') {
-                    $post->gallery = Image::getGallery($post->gallery);
-                } elseif ($post->gallery !== 'empty') {
-                    $post->setGallery();
-                } else {
-                    $post->gallery = array();
-                }
+                if($post instanceOf \Goteo\Model\Post) {
+                    // campo calculado gallery
+                    if (!empty($post->gallery) && $post->gallery !== 'empty') {
+                        $post->gallery = Image::getGallery($post->gallery);
+                    } elseif ($post->gallery !== 'empty') {
+                        $post->setGallery();
+                    } else {
+                        $post->gallery = array();
+                    }
 
-                if (!empty($post->image) && $post->image !== 'empty') {
-                    $post->image = Image::get($post->image);
-                } elseif ($post->image !== 'empty') {
-                    $post->setImage();
-                } else {
-                    $post->image = null;
+                    if (!empty($post->image) && $post->image !== 'empty') {
+                        $post->image = Image::get($post->image);
+                    } elseif ($post->image !== 'empty') {
+                        $post->setImage();
+                    } else {
+                        $post->image = null;
+                    }
                 }
 
                 // video
@@ -295,7 +296,7 @@ namespace Goteo\Model\Blog {
                 if (!isset($post->num_comments)) {
                       $post->num_comments = Post\Comment::getCount($post->id);
                 }
-               
+
                 $post->tags = Post\Tag::getAll($post->id);
 
                 // agregamos html si es texto plano

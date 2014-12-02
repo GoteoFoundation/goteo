@@ -5,7 +5,7 @@ use Goteo\Library\Text;
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Goteo Nodo Test.goteo.org Mailer </title>
+<title>Goteo Nodo Test.goteo.org Mailer</title>
 <style type="text/css">
 <!--
 body {
@@ -15,7 +15,7 @@ body {
 	color:#58595B;
 }
 
-.header-bar { 
+.header-bar {
 	width: 100%;
 	height: 22px;
 	line-height:22px;
@@ -24,12 +24,12 @@ body {
 	background-color:#58595B;
 }
 
-.header-bar a { 
+.header-bar a {
 	color:#ffffff;
 }
 
 
-.header { 
+.header {
 	width: 100%;
 	background-color:#CDE4E5;
 	padding-top:7px;
@@ -50,7 +50,7 @@ body {
 	padding-bottom:20px;
 	padding-top:20px;
 	}
-	
+
 .message-highlight-red {
 	color:#E32526;
 	}
@@ -58,7 +58,7 @@ body {
 .message-highlight-blue {
 	color:#20B3B2;
 	}
-	
+
 .message-highlight-blue a {
 	color:#20B3B2;
 	text-decoration:none;
@@ -72,14 +72,14 @@ body {
 	border-bottom: 1px solid #20B3B2;
 	border-top: 1px solid #20B3B2;
 	}
-	
+
 .goteo-url {
 	font-size:12px;
 	color:#20B3B2;
 	padding-top:10px;
 	padding-bottom:10px;
 	}
-	
+
 .goteo-url a {
 	color:#20B3B2;
 	text-decoration:none;
@@ -91,12 +91,12 @@ body {
 	padding-top:5px;
     text-transform: uppercase;
 	}
-	
+
 .descubre a {
 	color:#E32526;
 	text-decoration:none;
 	}
-	
+
 .crea {
 	color:#20B3B2;
 	font-size:14px;
@@ -104,7 +104,7 @@ body {
 	padding-bottom:10px;
     text-transform: uppercase;
 	}
-	
+
 .crea a {
 	color:#20B3B2;
 	text-decoration:none;
@@ -124,12 +124,12 @@ body {
 	color:#00AEEF;
 	text-decoration:none;
 	}
-	
+
 .rss a {
 	color:#F15A29;
 	text-decoration:none;
 	}
-	
+
 .unsuscribe {
 	font-size:11px;
 	text-align:right;
@@ -137,13 +137,13 @@ body {
 	padding-top:10px;
 	border-top: 1px solid #20B3B2;
 	}
-	
+
 .unsuscribe a {
 color:#20B3B2;
 	text-decoration:none;
 	}
 
-.footer-bar { 
+.footer-bar {
 	width: 100%;
 	height: 22px;
 	line-height:22px;
@@ -153,7 +153,7 @@ color:#20B3B2;
 	text-align:right
 }
 
-.footer-bar a { 
+.footer-bar a {
 	color:#ffffff;
 	text-decoration:none
 }
@@ -176,8 +176,8 @@ color:#20B3B2;
 
 <div class="message">
   <?php echo $this['content'] ?>
-</div>  
-  
+</div>
+
 <div class="disclaimer"><?php echo Text::get('mailer-disclaimer') ?></div>
 
 <div class="goteo-url"><a href="<?php echo SITE_URL ?>">www.goteo.org</a></div>

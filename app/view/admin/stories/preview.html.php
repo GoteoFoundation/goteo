@@ -24,8 +24,8 @@ $bodyClass = 'admin';
 $jsreq_autocomplete = $this['autocomplete'];
 
 
-include 'view/prologue.html.php';
-include 'view/header.html.php'; 
+include __DIR__ . '/../../prologue.html.php';
+include __DIR__ . '/../../header.html.php';
 
 $story = $this['story'];
 ?>
@@ -39,10 +39,10 @@ $story = $this['story'];
     <div class="admin-center">
 
          <div class="widget stories-home" style="padding:0;">
-            
+
             <div class="stories-banners-container rounded-corners-bottom" style="position:relative;">
 
-                <?php echo new View('view/stories/story.html.php', array('story'=>$story)); ?>
+                <?php echo View::get('stories/story.html.php', array('story'=>$story)); ?>
 
            </div>
 
@@ -53,5 +53,5 @@ $story = $this['story'];
 </div> <!-- fin main -->
 
 <?php
-    include 'view/footer.html.php';
-include 'view/epilogue.html.php';
+    include __DIR__ . '/../../footer.html.php';
+include __DIR__ . '/../../epilogue.html.php';

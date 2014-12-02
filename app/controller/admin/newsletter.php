@@ -129,7 +129,7 @@ namespace Goteo\Controller\Admin {
                     $list = Sender::getDetail($id, $filters['show']);
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'newsletter',
                             'file' => 'detail',
@@ -143,7 +143,7 @@ namespace Goteo\Controller\Admin {
                     $list = Sender::getMailings();
 
                     return new View(
-                        'view/admin/index.html.php',
+                        'admin/index.html.php',
                         array(
                             'folder' => 'newsletter',
                             'file' => 'list',

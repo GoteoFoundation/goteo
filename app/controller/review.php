@@ -7,10 +7,9 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
-        Goteo\Library\Message,
+        Goteo\Library,
         Goteo\Library\Feed,
         Goteo\Library\Page,
-        Goteo\Library\Mail,
         Goteo\Library\Text;
 
     class Review extends \Goteo\Core\Controller {
@@ -33,7 +32,7 @@ namespace Goteo\Controller {
             }
 
             return new View (
-                'view/review/index.html.php',
+                'review/index.html.php',
                 array(
                     'message' => $message,
                     'menu'    => self::menu(),
@@ -63,7 +62,7 @@ namespace Goteo\Controller {
 
             // resumen de los proyectos que tengo actualmente asignados
             return new View (
-                'view/review/index.html.php',
+                'review/index.html.php',
                 array(
                     'menu'    => self::menu(),
                     'message' => $message,
@@ -144,9 +143,9 @@ namespace Goteo\Controller {
             if ($option == 'evaluate') {
                 //Text::get
                 if ($review->ready == 1) {
-                    Message::Info(Text::get('review-closed-alert'));
+                    Model\Message::Info(Text::get('review-closed-alert'));
                 } else {
-                    Message::Info(Text::get('review-ajax-alert'));
+                    Model\Message::Info(Text::get('review-ajax-alert'));
                 }
             }
 
@@ -167,7 +166,7 @@ namespace Goteo\Controller {
                 $viewData['evaluation'] = Model\Review::getEvaluation($review->id, $user->id);
             }
 
-            return new View ('view/review/index.html.php', $viewData);
+            return new View ('review/index.html.php', $viewData);
         }
 
         /*
@@ -211,7 +210,7 @@ namespace Goteo\Controller {
             }
 
             return new View (
-                'view/review/index.html.php',
+                'review/index.html.php',
                 $viewData
             );
         }

@@ -15,7 +15,7 @@ foreach ($this['categories'] as $cat => $catData) : ?>
     <ul>
         <?php foreach ($catData['projects'] as $project) {
             $project->per_amount = round(($project->amount / $project->mincost) * 100);
-            echo new View('view/project/widget/tiny_project.html.php', array('project'=>$project));
+            echo View('project/widget/tiny_project.html.php', array('project'=>$project));
         } ?>
     </ul>
 
