@@ -3,6 +3,8 @@ use Goteo\Library\Currency;
 
 $currencies = Currency::$currencies;
 
+$num_currencies=count($currencies);
+
 $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 
 ?>
