@@ -69,7 +69,13 @@ class Currency {
             setcookie("currency", $newCur, time() + 3600 * 24 * 365);
 
         } elseif (empty($_SESSION['currency'])) {
-            //primero miramos si tiene cookie
+
+            // aquí debería ser la divisa preferida por el usuario
+            // pero a la primera carga ya habrá metido la default en sessión
+            // ponemos la divisa preferida por el usuario cuando este hace login
+            // ver model/user::login()
+
+            // luego miramos si tiene cookie
             $newCur = (isset($_COOKIE['currency'])) ? $_COOKIE['currency'] : $default_currency;
         } else {
             $newCur = $_SESSION['currency'];
