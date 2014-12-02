@@ -135,7 +135,7 @@ namespace Goteo\Controller\Dashboard {
                 }
             }
 
-            if ($donation->edited || $action == 'confirm') {
+            if ($donation->edited || $action == 'confirm' || $action == 'download') {
 
                 // ver si es un cif
                 $type = '';
@@ -152,9 +152,11 @@ namespace Goteo\Controller\Dashboard {
                     || empty($donation->region)  // provincia
                     || empty($donation->country)
                 ) {
-                    $donation->edited = false;
-                    $donation->confirmable = false;
                     Message::Error(Text::get('validate-donor-mandatory'));
+                    Model\User\Donor::setConfirmed($user->id, $year, 0);
+                    $donation->edited = false;
+                    $donation->confirmed = false;
+                    $donation->confirmable = false;
                 }
                 // nombre
                 // apellidos
@@ -168,7 +170,9 @@ namespace Goteo\Controller\Dashboard {
                 // verificar que el nif es correcto
                 if ($donation->valid_nif === false) {
                     Message::Error(Text::get('validate-project-value-contract_nif'));
+                    Model\User\Donor::setConfirmed($user->id, $year, 0);
                     $donation->edited = false;
+                    $donation->confirmed = false;
                     $donation->confirmable = false;
                 }
 
@@ -178,72 +182,48 @@ namespace Goteo\Controller\Dashboard {
                         Message::Info(Text::get('dashboard-donor-confirmed', $year));
                     }
                     throw new Redirection('/dashboard/activity/donor');
-                }
 
-            }
-
-            if ($action == 'download') {
-
-                if (!$donation->confirmed) {
+                } elseif ($action == 'download' && !$donation->confirmed) {
                     Message::Error(Text::get('dashboard-donor-pdf_closed', $year));
-                    throw new Redirection('/dashboard/activity/donor');
+
+                } elseif ($action == 'download' && $donation->confirmed) {
+                    // para generar:
+                    // preparamos los datos para el pdf
+                    // generamos el pdf y lo mosteramos con la vista específica
+                    // estos pdf se guardan en el bucket de documentos /certs
+                    // el formato del archivo es: Ymd_nif_userid
+
+                    $objeto = new \Goteo\Library\Num2char($donation->amount, null);
+                    $donation->amount_char = $objeto->getLetra();
+
+
+                    $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
+                    // actualizamos el nombre de archivo descargado
+                    $donation->setPdf($filename);
+
+                    $debug = false;
+
+                    // más datos para certificado
+                    $donation->userData = Model\User::getMini($donation->user);
+                    $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year); // solo financiados
+
+                    require_once 'library/pdf.php';  // Libreria pdf
+                    $pdf = donativeCert($donation);
+
+                    if ($debug) {
+                        header('Content-type: text/html');
+                        echo 'FIN';
+                        echo '<hr><pre>' . print_r($pdf, true) . '</pre>';
+                    }
+
+                    // y se lo damos para descargar
+                    echo $pdf->Output($filename, 'D');
+
+                    die;
+
                 }
-
-                // verificar que el nif es correcto
-                if (!Check::nif($donation->nif)) {
-                    Message::Error(Text::get('validate-project-value-contract_nif'));
-                    throw new Redirection('/dashboard/activity/donor');
-                }
-
-                if (empty($donation->name)
-                    || empty($donation->surname)
-                    || empty($donation->nif)
-                    || empty($donation->address)
-                    || empty($donation->zipcode)
-                    || empty($donation->location)
-                    || empty($donation->region)
-                    || empty($donation->country)
-                ) {
-                    Message::Error(Text::get('validate-donor-mandatory'));
-                    throw new Redirection('/dashboard/activity/donor');
-                }
-
-                // para generar:
-                // preparamos los datos para el pdf
-                // generamos el pdf y lo mosteramos con la vista específica
-                // estos pdf se guardan en el bucket de documentos /certs
-                // el formato del archivo es: Ymd_nif_userid
-
-                $objeto = new \Goteo\Library\Num2char($donation->amount, null);
-                $donation->amount_char = $objeto->getLetra();
-
-
-                $filename = "cer{$donation->year}_" . date('Ymd') . "_{$donation->nif}_{$donation->user}.pdf";
-                // actualizamos el nombre de archivo descargado
-                $donation->setPdf($filename);
-
-                $debug = false;
-
-                // más datos para certificado
-                $donation->userData = Model\User::getMini($donation->user);
-                $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year); // solo financiados
-
-                require_once 'library/pdf.php';  // Libreria pdf
-                $pdf = donativeCert($donation);
-
-                if ($debug) {
-                    header('Content-type: text/html');
-                    echo 'FIN';
-                    echo '<hr><pre>' . print_r($pdf, true) . '</pre>';
-                }
-
-                // y se lo damos para descargar
-                echo $pdf->Output($filename, 'D');
-
-                die;
 
             }
-            // fin action download
 
             return $donation;
 
