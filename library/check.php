@@ -45,7 +45,7 @@ namespace Goteo\Library {
 			//comprobacion de NIFs especiales (se calculan como CIFs o como NIFs)
 			if (preg_match('/^[KLM]{1}/', $value)) {
 				if ($num[8] == chr(64 + $n) || $num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr($value, 1, 8) % 23, 1)) {
-					$type = 'esp';
+					$type = 'cif';
 					return true;
 				} else {
 					return false;
@@ -76,7 +76,7 @@ namespace Goteo\Library {
 			//XYZ
 			if (preg_match('/^[XYZ]{1}/', $value)) {
 				if ($num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr(str_replace(array('X', 'Y', 'Z'), array('0', '1', '2'), $value), 0, 8) % 23, 1)) {
-					$type = 'xyz';
+					$type = 'nie';
 					return true;
 				} else {
 					return false;

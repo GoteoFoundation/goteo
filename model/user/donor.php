@@ -84,12 +84,14 @@ namespace Goteo\Model\User {
 
             // naturaleza según tipo de persona (F, J)
             $nt = array(
+                       '' => 'F',
                     'nif' => 'F',
                     'nie' => 'F',
                     'cif' => 'J'
                 );
             // porcentaje segun tipo de persona (25, 35)
             $pt = array(
+                       '' => '25',
                     'nif' => '25',
                     'nie' => '25',
                     'cif' => '35'
@@ -153,6 +155,9 @@ namespace Goteo\Model\User {
             $query = self::query($sql, $values);
             $items = $query->fetchAll(\PDO::FETCH_OBJ);
             foreach ($items as $item) {
+
+                $name = (!empty($item->surname)) ? $item->surname.' '.$item->name : $item->name;
+
                 // tipo de persona segun nif/nie/cif
                 $type = '';
                 Check::nif($item->nif, $type);
@@ -163,9 +168,7 @@ namespace Goteo\Model\User {
                 $item->location = ($item->country == 'spain') ? substr($cp, 0, 2) : '99';
 
 // NIF;NIF_REPRLEGAL;Nombre;Provincia;CLAVE;PORCENTAJE;VALOR;EN_ESPECIE;COMUNIDAD;PORCENTAJE_CA;NATURALEZA;REVOCACION;EJERCICIO;TIPOBIEN;BIEN
-                $list[] = array($item->nif, '', 
-                    $item->surname.', '.$item->name,
-                    $item->location, 'A', $per, $item->amount, '', '', '', $nat, '', $year, '', '', '');
+                $list[] = array($item->nif, '', $name, $item->location, 'A', $per, $item->amount, '', '', '', $nat, '', $year, '', '', '');
             }
             return $list;
         }
