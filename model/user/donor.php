@@ -85,6 +85,7 @@ namespace Goteo\Model\User {
             // naturaleza según tipo de persona (F, J)
             $nt = array(
                        '' => 'F',
+                    'vat' => 'F',
                     'nif' => 'F',
                     'nie' => 'F',
                     'cif' => 'J'
@@ -92,6 +93,7 @@ namespace Goteo\Model\User {
             // porcentaje segun tipo de persona (25, 35)
             $pt = array(
                        '' => '25',
+                    'vat' => '25',
                     'nif' => '25',
                     'nie' => '25',
                     'cif' => '35'

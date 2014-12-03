@@ -95,19 +95,12 @@ namespace Goteo\Library {
                     return true;
             }
 
-			//si todavia no se ha verificado devuelve error
-			return false;
-		}
 
-		/*
-		 * Validación del numero VAT para los 27 paises de la UE
-		 */
-		public static function vat ($value) {
+            // Validación del numero VAT para los 27 paises de la UE
+            // quitamos puntos y guiones
+            $value = str_replace(array('_', '.', ' ', '-', ',', '\\', '+', '*', '/'), '', $value);
 
-			// quitamos puntos y guiones
-			$value = str_replace(array('_', '.', ' ', '-', ',', '\\', '+', '*', '/'), '', $value);
-
-			$value = strtoupper($value);
+            $value = strtoupper($value);
 
             $vats = array();
             $vats[] = '(AT)?U[0-9]{8}';
@@ -131,13 +124,16 @@ namespace Goteo\Library {
 
             $expr = '/^('.implode($vats, '|').')$/';
 
-			if (preg_match($expr, $value)) {
-				return true;
-			}
+            if (preg_match($expr, $value)) {
+                $type = 'vat';
+                return true;
+            }
 
-            return false;
-        }
 
+
+            //si todavia no se ha verificado devuelve error
+			return false;
+		}
 
 		/**
 		 * Valida una dirección de correo.

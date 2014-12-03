@@ -1557,7 +1557,7 @@ namespace Goteo\Model {
 
             if (empty($this->contract_nif)) {
                 $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract_nif');
-            } elseif (!Check::nif($this->contract_nif) && !Check::vat($this->contract_nif)) {
+            } elseif ( !Check::nif($this->contract_nif) ) {
                 $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract_nif');
             } else {
                  $okeys['userPersonal']['contract_nif'] = 'ok';
