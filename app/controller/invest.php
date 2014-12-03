@@ -95,9 +95,13 @@ namespace Goteo\Controller {
                 // insertamos los datos personales del usuario si no tiene registro aun
                 Model\User::setPersonal($_SESSION['user']->id, $address, false);
 
+                // conversión a euros
+                $amount = \amount_format($_POST['amount'], 0, true, true);
+                $amount = str_replace(array(',', '.'), '', $amount);
+
                 $invest = new Model\Invest(
                     array(
-                        'amount' => $_POST['amount'],
+                        'amount' => $amount,
                         'user' => $_SESSION['user']->id,
                         'project' => $project,
                         'method' => $method,
@@ -107,6 +111,7 @@ namespace Goteo\Controller {
                         'resign' => $resign
                     )
                 );
+
                 if ($reward) {
                     $invest->rewards = array($chosen);
                 }

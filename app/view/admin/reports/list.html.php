@@ -16,6 +16,8 @@ $data    = $this['data'];
 <a href="/admin/reports/paypal" class="button">Estado actual PayPal</a>
 &nbsp;&nbsp;&nbsp;
 <a href="/admin/reports/geoloc" class="button">Geolocalizados</a>
+&nbsp;&nbsp;&nbsp;
+<a href="/admin/reports/currencies" class="button">Divisas</a>
 
 <div class="widget board">
     <form id="filter-form" action="/admin/reports" method="get">

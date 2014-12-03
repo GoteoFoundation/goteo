@@ -3,8 +3,10 @@
 namespace Goteo\Model {
 
     use Goteo\Core\ACL,
+        Goteo\Library,
         Goteo\Library\Check,
         Goteo\Library\Text,
+        Goteo\Library\Currency,
         Goteo\Model\User,
         Goteo\Model\Image,
         Goteo\Model\Message,
@@ -64,6 +66,8 @@ namespace Goteo\Model {
             $name,
             $subtitle,
             $lang = 'es',
+            $currency = 'EUR',
+            $currency_rate = 1,
             $image,
             $gallery = array(), // array de instancias image de project_image
             $secGallery = array(), // array de instancias image de project_image (secundarias)
@@ -207,6 +211,8 @@ namespace Goteo\Model {
                 ':id'   => md5($user.'-'.$num),
                 ':name' => "El nuevo proyecto de {$userProfile->name}",
                 ':lang' => 'es',
+                ':currency' => 'EUR',
+                ':currency_rate' => 1,
                 ':status'   => 1,
                 ':progress' => 0,
                 ':owner' => $user,
@@ -943,6 +949,28 @@ namespace Goteo\Model {
         }
 
         /*
+         *  Para obtener el ratio de conversión original
+         *  Este método se llama en save()
+         *
+         *  Solo tiene sentido si han seleccionado una divisa diferente a la de por defecto
+         *
+         */
+        public function setCurrency() {
+
+            if ($this->currency == Currency::DEFAULT_CURRENCY) {
+
+                $this->currency_rate = 1;
+
+            } elseif (empty($this->currency_rate) || $this->currency_rate == 1) {
+
+                // solo grabamos ratio la primera vez
+                $this->currency_rate = Currency::rate($this->currency);
+
+            }
+
+        }
+
+        /*
          *  Para calcular la ronda de un proyecto y los dias restantes de campaña
          *  Este método se llama al instanciar un proyecto con get() o getMedium(), modificando sus atributos $round y $days
          */
@@ -1103,6 +1131,9 @@ namespace Goteo\Model {
             if (empty($this->lang))
                 $this->lang = 'es';
 
+            if (empty($this->currency))
+                $this->lang = 'EUR';
+
             if (empty($this->status))
                 $this->status = 1;
 
@@ -1169,6 +1200,10 @@ namespace Goteo\Model {
                     }
                 }
 
+                // lang, currency, currency_rate
+                $this->setCurrency();
+
+
                 $fields = array(
                     'contract_name',
                     'contract_nif',
@@ -1190,6 +1225,9 @@ namespace Goteo\Model {
                     'post_country',
                     'name',
                     'subtitle',
+                    'lang',
+                    'currency',
+                    'currency_rate',
                     'description',
                     'motivation',
                     'video',

@@ -159,3 +159,8 @@ UPDATE `project` SET num_messengers = null WHERE num_messengers = 0;
 UPDATE `project` SET num_posts = null WHERE num_posts = 0;
 UPDATE `project` SET amount_users = null WHERE amount_users = 0;
 UPDATE `project` SET amount_call = null WHERE amount_call = 0;
+
+-- divisa del proyecto y ratio original
+ALTER TABLE `project` ADD `currency` VARCHAR(4) NOT NULL DEFAULT 'EUR' COMMENT 'Divisa del proyecto' AFTER `lang`;
+ALTER TABLE `project` ADD `currency_rate` DECIMAL(9, 5) NOT NULL DEFAULT 1 COMMENT 'Ratio al crear el proyecto' AFTER `currency`;
+
