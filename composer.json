@@ -13,7 +13,28 @@
     "intervention/image": "~2.0",
 
 
-    "mibe/feedwriter": "~1.0"
+    "mibe/feedwriter": "~1.0",
+
+    
+    "opauth/opauth": "~0.4",
+
+    
+    "opauth/facebook": "~0.2",
+
+    
+    "opauth/google": "~0.2",
+
+    
+    "opauth/twitter": "~0.3",
+
+    
+    "opauth/github": "~0.1",
+
+    
+    "opauth/linkedin": "~0.2",
+
+    
+    "opauth/openid": "~0.1"
 
     },
 
