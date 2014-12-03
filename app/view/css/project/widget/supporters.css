@@ -479,6 +479,10 @@ div.widget.project-investors .investors ul li dl dd.worthcracy ul {
     list-style: none;
 }
 
+div.widget.project-investors .investors ul li dl dd.worthcracy span.symbol {
+    display: none;
+}
+
 div.widget.project-investors .investors ul li dl dd.worthcracy ul li {
     display: inline-block;
     width: 18px;
