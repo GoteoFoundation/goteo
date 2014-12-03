@@ -145,7 +145,7 @@ switch ($this['action']) :
     <dl>
         <dt<?php if (empty($donation->nif) || $donation->valid_nif === false ) echo ' style="color: red;"';
         ?>><?php echo Text::get('invest-address-nif-field') ?> *</dt>
-        <dd><?php echo $donation->nif ?></dd>
+        <dd><?php echo $donation->nif . ' ('.$donation->nif_type.')';?></dd>
     </dl>
     <dl>
         <dt<?php if (empty($donation->address) || empty($donation->zipcode) || empty($donation->location) || empty($donation->region) || ( $donation->country != 'spain' && empty($donation->countryname) ) ) echo ' style="color: red;"';
