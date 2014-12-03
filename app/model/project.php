@@ -21,6 +21,7 @@ namespace Goteo\Model {
 
         public
             $id = null,
+            $draft, // indica si el id es un md5 [0-9a-f]{32}
             $dontsave = false,
             $owner, // User who created it
             $node, // Node this project belongs to
@@ -270,6 +271,7 @@ namespace Goteo\Model {
             try {
 				// metemos los datos del proyecto en la instancia
                 $sql = "SELECT project.*,
+                                project.id REGEXP '[0-9a-f]{32}' as draft,
                                 node.name as node_name,
                                 node.url as node_url,
                                 project_conf.*,
