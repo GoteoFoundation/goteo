@@ -97,7 +97,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
         <li class="<?php echo $individual->icon ?><?php if ($individual->none) echo ' disabled' ?>">
 
             <label class="amount" for="reward_<?php echo $individual->id; ?>">
-                <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo $individual->amount; ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
+                <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo \amount_format($individual->amount,0,0); ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
                 <span class="amount"><?php echo \amount_format($individual->amount); ?></span>
             <!-- <span class="chkbox"></span> -->
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
@@ -128,7 +128,7 @@ if ($step == 'start') : ?>
         <button type="submit" class="button red" name="go-login" value=""><?php echo Text::get('imperative-register'); ?></button>
     </div>
 
-    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo \amount_format($amount); ?></span></div>
+    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount; ?></span></div>
     <div class="reminder"><?php echo Text::html('faq-payment-method'); ?></div>
 
 </div>
@@ -186,9 +186,11 @@ if ($step == 'start') : ?>
     </div>
 <br />
 
-    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
+    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span></div>
 
     <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
+
+    <div class="reminder"><?php echo \vsprintf(Text::html('currency-alert'), array($_SESSION['currency'])); ?></div>
 
 </div>
 <?php endif; ?>
