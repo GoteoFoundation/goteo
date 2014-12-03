@@ -102,18 +102,6 @@ namespace Goteo\Controller {
 
             $currency_data = Library\Currency::$currencies[$project->currency];
 
-            // si no tenemos SESSION stepped es porque no venimos del create
-            if (!isset($_SESSION['stepped']))
-                $_SESSION['stepped'] = array(
-                     'userProfile'  => 'userProfile',
-                     'userPersonal' => 'userPersonal',
-                     'overview'     => 'overview',
-                     'images'       => 'images',
-                     'costs'        => 'costs',
-                     'rewards'      => 'rewards',
-                     'supports'     => 'supports'
-                );
-
             // al impulsor se le prohibe ver ningun paso cuando ya no está en edición
             if ($project->status != 1 && $project->owner == $_SESSION['user']->id ) {
                 // solo puede estar en preview
@@ -193,10 +181,7 @@ namespace Goteo\Controller {
                 foreach ($steps as $id => &$data) {
 
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
-                        // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
-                        if (!in_array($id, $_SESSION['stepped'])) {
-                            $_SESSION['stepped'][$id] = $id;
-                        }
+                        // Ok...
                     }
 
                 }
@@ -487,7 +472,6 @@ namespace Goteo\Controller {
 
             $project = new Model\Project;
             if ($project->create(NODE_ID)) {
-                $_SESSION['stepped'] = array();
 
                 // Evento Feed
                 $log = new Feed();

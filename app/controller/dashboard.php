@@ -26,11 +26,6 @@ namespace Goteo\Controller {
          */
         public function activity($option = 'summary', $action = 'view') {
 
-            // quitamos el stepped para que no nos lo coja para el siguiente proyecto que editemos
-            if (isset($_SESSION['stepped'])) {
-                unset($_SESSION['stepped']);
-            }
-
             $user = $_SESSION['user'];
 
             $viewData = array(
