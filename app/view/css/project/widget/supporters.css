@@ -259,6 +259,12 @@ div.widget.project-supporters .supporters ul li dl dd.worthcracy ul {
     list-style: none;
 }
 
+
+/*para no mostrar el símbolo de euro en cofinanciadores*/
+div.widget.project-supporters .supporters ul li dl dd.worthcracy span.symbol {
+    display: none;
+}
+
 div.widget.project-supporters .supporters ul li dl dd.worthcracy ul li {
     display: inline-block;
     width: 23px;
