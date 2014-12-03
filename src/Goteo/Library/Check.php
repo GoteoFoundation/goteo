@@ -45,7 +45,7 @@ namespace Goteo\Library {
 			//comprobacion de NIFs especiales (se calculan como CIFs o como NIFs)
 			if (preg_match('/^[KLM]{1}/', $value)) {
 				if ($num[8] == chr(64 + $n) || $num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr($value, 1, 8) % 23, 1)) {
-					$type = 'esp';
+					$type = 'cif';
 					return true;
 				} else {
 					return false;
@@ -76,7 +76,7 @@ namespace Goteo\Library {
 			//XYZ
 			if (preg_match('/^[XYZ]{1}/', $value)) {
 				if ($num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr(str_replace(array('X', 'Y', 'Z'), array('0', '1', '2'), $value), 0, 8) % 23, 1)) {
-					$type = 'xyz';
+					$type = 'nie';
 					return true;
 				} else {
 					return false;
@@ -95,19 +95,12 @@ namespace Goteo\Library {
                     return true;
             }
 
-			//si todavia no se ha verificado devuelve error
-			return false;
-		}
 
-		/*
-		 * Validación del numero VAT para los 27 paises de la UE
-		 */
-		public static function vat ($value) {
+            // Validación del numero VAT para los 27 paises de la UE
+            // quitamos puntos y guiones
+            $value = str_replace(array('_', '.', ' ', '-', ',', '\\', '+', '*', '/'), '', $value);
 
-			// quitamos puntos y guiones
-			$value = str_replace(array('_', '.', ' ', '-', ',', '\\', '+', '*', '/'), '', $value);
-
-			$value = strtoupper($value);
+            $value = strtoupper($value);
 
             $vats = array();
             $vats[] = '(AT)?U[0-9]{8}';
@@ -131,13 +124,16 @@ namespace Goteo\Library {
 
             $expr = '/^('.implode($vats, '|').')$/';
 
-			if (preg_match($expr, $value)) {
-				return true;
-			}
+            if (preg_match($expr, $value)) {
+                $type = 'vat';
+                return true;
+            }
 
-            return false;
-        }
 
+
+            //si todavia no se ha verificado devuelve error
+			return false;
+		}
 
 		/**
 		 * Valida una dirección de correo.
