@@ -6,14 +6,12 @@ error_reporting(E_ALL);
 //*/
 
 //Includes all necessary files for oAuth
-$dir = dirname(__FILE__);
+include_once(GOTEO_PATH. 'vendor/lusitanian/oauth/src/OAuth/bootstrap.php');
 
-include_once("$dir/epioauth/EpiCurl.php");
-include_once("$dir/epioauth/EpiOAuth.php");
-include_once("$dir/epioauth/EpiTwitter.php");
-include_once("$dir/linkedinoauth.php");
-include_once("$dir/facebook.class.php");
-include_once("$dir/openid.php");
+use \OAuth\OAuth2\Service\Facebook;
+use \OAuth\Common\Storage\Memory as Storage;
+use \OAuth\Common\Consumer\Credentials;
+use \OAuth\ServiceFactory;
 
 /**
  * Suportat:
@@ -40,13 +38,12 @@ class SocialAuth {
 	public $import_user_data = array('name', 'about', 'location', 'twitter', 'facebook', 'google', 'identica', 'linkedin');
 	public $tokens = array('twitter'=>array('token'=>'','secret'=>''), 'facebook'=>array('token'=>'','secret'=>''), 'linkedin'=>array('token'=>'','secret'=>''), 'openid'=>array('token'=>'','secret'=>'')); //secretos generados en el oauth
 
-	protected $twitter_id;
-	protected $twitter_secret;
-	protected $facebook_id;
-	protected $facebook_secret;
-	protected $linkedin_id;
-	protected $linkedin_secret;
-	protected $openid_secret;
+	private $credentials = array(
+		'twitter' => array('key' => OAUTH_TWITTER_ID, 'secret' => OAUTH_TWITTER_SECRET),
+		'facebook' => array('key' => OAUTH_FACEBOOK_ID, 'secret' => OAUTH_FACEBOOK_SECRET),
+		'linkedin' => array('key' => OAUTH_LINKEDIN_ID, 'secret' => OAUTH_LINKEDIN_SECRET),
+		'openid' => array('key' => OAUTH_OPENID_SECRET)
+	);
 
 	protected $openid_server;
 	public $openid_public_servers = array(
@@ -62,29 +59,11 @@ class SocialAuth {
 	 * @param $provider : 'twitter', 'facebook', 'linkedin', 'any_openid_server'
 	 * */
 	function __construct($provider='') {
+		$this->provider = $provider;
+		$this->original_provider = $provider;
         $URL = \SITE_URL;
-		$this->host = $URL;
-		$this->callback_url = $URL . '/user/oauth?return=' . $provider;
-
-		$this->twitter_id = OAUTH_TWITTER_ID;
-		$this->twitter_secret = OAUTH_TWITTER_SECRET;
-		$this->facebook_id = OAUTH_FACEBOOK_ID;
-		$this->facebook_secret = OAUTH_FACEBOOK_SECRET;
-		$this->linkedin_id = OAUTH_LINKEDIN_ID;
-		$this->linkedin_secret = OAUTH_LINKEDIN_SECRET;
-		$this->openid_secret = OAUTH_OPENID_SECRET;
-
-		if(in_array($provider,array('twitter', 'facebook', 'linkedin'))) {
-			$this->provider = $provider;
-			$this->original_provider = $provider;
-		}
-		else {
-			//OpenId providers
-			$this->openid_server = $this->openid_public_servers[$provider];
-			if(empty($this->openid_server))	$this->openid_server = $provider;
-			$this->original_provider = $provider;
-			$this->provider = 'openid';
-		}
+        if(substr($URL,0, 2) === '//') $URL = HTTPS_ON ? "https:$URL" : "http:$URL";
+        $this->host = $URL;
 	}
 
 	/**
@@ -162,16 +141,76 @@ class SocialAuth {
 	 * */
 	public function authenticateFacebook() {
 		try {
-			$obj = new \Facebook($this->facebook_id, $this->facebook_secret,$this->callback_url);
-			$url = $obj->start(true,"email"); //Permisos que se solicitan, por ejemplo: user_about_me,email,offline_access
-			header("Location: $url");
-			exit;
+			// Session storage
+			$storage = new Storage();
+			// Setup the credentials for the requests
+			$credentials = new Credentials(
+				$this->credentials['facebook']['key'],
+				$this->credentials['facebook']['secret'],
+				$this->host . '/user/oauth/?provider=facebook'
+			);
+			// Instantiate the Facebook service using the credentials, http client and storage mechanism for the token
+			/** @var $facebookService Facebook */
+			$serviceFactory = new ServiceFactory();
+			$facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array('email'));
+
+			if(!empty($_GET['code'])) {
+				try {
+					// This was a callback request from facebook, get the token
+					$token = $facebookService->requestAccessToken($_GET['code']);
+
+					// $token = $t->getAccessToken();
+					// print_r($t);print_r($token);die;
+					if(!$token) {
+						$this->last_error = "oauth-facebook-access-denied";
+						return false;
+					}
+
+					// print_R($token);
+
+					//guardar los tokens en la base datos si se quieren usar mas adelante!
+					//con los tokens podems acceder a la info del user, hay que recrear el objecto con los tokens privados
+					// Send a request with it
+					$res = json_decode($facebookService->request('/me'));
+					if($res->error) {
+						$this->last_error = $res->error->message;
+						return false;
+					}
+
+					// $this->tokens['facebook']['token'] = $token->getAccessToken(;
+					$this->tokens['facebook']['token'] = $res->id ? $res->id : $res->email;
+					//ver todos los datos disponibles:
+					//print_r($res);die;
+
+					$this->user_data['name'] = $res->name;
+					if($res->username) $this->user_data['username'] = $res->username;
+					if($res->email) $this->user_data['email'] = $res->email;
+					if($res->website) $this->user_data['website'] = $res->website; //ojo, pueden ser varias lineas con varias webs
+					if($res->about) $this->user_data['about'] = $res->about;
+					if($res->location->name) $this->user_data['location'] = $res->location->name;
+					if($res->id) $this->user_data['profile_image_url'] = "http://graph.facebook.com/".$res->id."/picture?type=large";
+					//facebook link
+					if($res->link) $this->user_data['facebook'] = $res->link;
+
+					// print_r($res); print_r($this->user_data);die;
+				}
+				catch(Exception $e){
+					$this->last_error =  $e->getMessage()." 1/ ".get_class($e);
+					return false;
+				}
+			}
+			else {
+				$url = $facebookService->getAuthorizationUri();
+				// die($url);
+				header('Location: ' . $url);
+				exit;
+			}
+			return true;
 		}
 		catch(Exception $e){
 			$this->last_error = $e->getMessage()." 1/ ".get_class($e);
 			return false;
 		}
-		return true;
 	}
 
 	/**
@@ -241,8 +280,8 @@ class SocialAuth {
 	 * */
 	public function loginFacebook() {
 		try {
-			$obj = new \Facebook($this->facebook_id, $this->facebook_secret,$this->callback_url);
-			$token = $obj->callback();
+			 // This was a callback request from facebook, get the token
+			$token = $facebookService->requestAccessToken($_GET['code']);
 
 			if(!$token) {
 				$this->last_error = "oauth-facebook-access-denied";
@@ -250,12 +289,13 @@ class SocialAuth {
 			}
 			$this->tokens['facebook']['token'] = $token;
 
-			//print_R($token);
-			//echo 'facebook_access_token: ' . $token;
+			print_R($token);
+			echo 'facebook_access_token: ' . $token;
 
 			//guardar los tokens en la base datos si se quieren usar mas adelante!
 			//con los tokens podems acceder a la info del user, hay que recrear el objecto con los tokens privados
-			$res = json_decode($obj->makeRequest($token,"https://graph.facebook.com/me","GET"));
+			// Send a request with it
+			$res = json_decode($facebookService->request('/me'));
 			if($res->error) {
 				$this->last_error = $res->error->message;
 				return false;
@@ -273,6 +313,8 @@ class SocialAuth {
 			if($res->id) $this->user_data['profile_image_url'] = "http://graph.facebook.com/".$res->id."/picture?type=large";
 			//facebook link
 			if($res->link) $this->user_data['facebook'] = $res->link;
+
+			print_r($res); print_r($this->user_data);die;
 
 			return true;
 		}
@@ -456,10 +498,13 @@ class SocialAuth {
 
 		$username = "";
 		//comprovar si existen tokens
-		$query = Goteo\Core\Model::query('SELECT id FROM user WHERE id = (SELECT user FROM user_login WHERE provider = :provider AND oauth_token = :token AND oauth_token_secret = :secret)', array(':provider' => $this->provider, ':token' => $this->tokens[$this->provider]['token'], ':secret' => $this->tokens[$this->provider]['secret']));
+		$query = Goteo\Core\Model::query('SELECT id FROM user WHERE id = (SELECT user FROM user_login WHERE provider = :provider AND oauth_token = :token AND oauth_token_secret = :secret)',
+										array(':provider' => $this->provider,
+											  ':token' => $this->tokens[$this->provider]['token'],
+											  ':secret' => $this->tokens[$this->provider]['secret']));
 
 		$username = $query->fetchColumn();
-
+		// print_r($this->tokens);die;
 		if(empty($username)) {
 			//no existen tokens, comprovamos si existe el email
 			/**
@@ -565,23 +610,24 @@ class SocialAuth {
 			}
 		}
 
-			//CAMBIADO A: siempre login, aunque no esté activo el usuario
-			//Iniciar sessión i redirigir
-			$_SESSION['user'] = $user;
+		//siempre login, aunque no esté activo el usuario
+		//Iniciar sessión i redirigir
+		$_SESSION['user'] = $user;
 
-			//Guardar en una cookie la preferencia de "login with"
-			//no servira para mostrar al usuario primeramente su opcion preferida
-			setcookie("goteo_oauth_provider",$this->original_provider,time() + 3600*24*365);
+		//Guardar en una cookie la preferencia de "login with"
+		//no servira para mostrar al usuario primeramente su opcion preferida
+		setcookie("goteo_oauth_provider", $this->original_provider, time() + 3600*24*365);
 
-			if (!empty($_POST['return'])) {
-				throw new Goteo\Core\Redirection($_POST['return']);
-			} elseif (!empty($_SESSION['jumpto'])) {
-				$jumpto = $_SESSION['jumpto'];
-				unset($_SESSION['jumpto']);
-				throw new Goteo\Core\Redirection($jumpto);
-			} else {
-				throw new Goteo\Core\Redirection('/dashboard');
-			}
+		if (!empty($_POST['return'])) {
+			throw new \Goteo\Core\Redirection($_POST['return']);
+		} elseif (!empty($_SESSION['jumpto'])) {
+			$jumpto = $_SESSION['jumpto'];
+			unset($_SESSION['jumpto']);
+			throw new \Goteo\Core\Redirection($jumpto);
+		} else {
+			// print_r($user);die;
+			throw new \Goteo\Core\Redirection('/dashboard/activity');
+		}
 	}
 
 	/**

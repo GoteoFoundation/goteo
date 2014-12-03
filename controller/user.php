@@ -189,7 +189,9 @@ namespace Goteo\Controller {
                     $oauth->tokens[$oauth->provider]['token'] = $_POST['tokens'][$oauth->provider]['token'];
                 if ($_POST['tokens'][$oauth->provider]['secret'])
                     $oauth->tokens[$oauth->provider]['secret'] = $_POST['tokens'][$oauth->provider]['secret'];
-                //print_r($_POST['tokens']);print_r($oauth->tokens[$oauth->provider]);die;
+
+                // print_r($_POST['tokens']);print_r($oauth->tokens[$oauth->provider]);die;
+
                 $user = new Model\User();
                 $user->userid = $_POST['userid'];
                 $user->email = $_POST['email'];
@@ -225,6 +227,7 @@ namespace Goteo\Controller {
                         if (!$oauth->goteoLogin(true)) {
                             //si no: registrar errores
                             Message::Error(Text::get($oauth->last_error));
+                            throw new Redirection(SEC_URL."/user/login");
                         }
                     } else {
                         Message::Error(Text::get('login-fail'));
@@ -268,25 +271,9 @@ namespace Goteo\Controller {
 
             $errors = array();
             if (isset($_GET["provider"]) && $_GET["provider"]) {
-
                 $oauth = new \SocialAuth($_GET["provider"]);
-                if (!$oauth->authenticate()) {
-                    //si falla: error, si no siempre se redirige al proveedor
-                    Message::Error(Text::get($oauth->last_error));
-                }
-            }
 
-            //return from provider authentication
-            if (isset($_GET["return"]) && $_GET["return"]) {
-
-                //check twitter activation
-                $oauth = new \SocialAuth($_GET["return"]);
-
-                if ($oauth->login()) {
-                    //si ok: redireccion de login!
-                    //Message::Info("USER INFO:\n".print_r($oauth->user_data,true));
-                    //si es posible, login en goteo (redirecciona a user/dashboard o a user/confirm)
-                    //y fuerza que pueda logear en caso de que no esté activo
+                if ($oauth->authenticate()) {
                     if (!$oauth->goteoLogin()) {
                         //si falla: error o formulario de confirmación
                         if ($oauth->last_error == 'oauth-goteo-user-not-exists') {
@@ -296,7 +283,9 @@ namespace Goteo\Controller {
                                                 'oauth' => $oauth
                                             )
                             );
-                        } elseif ($oauth->last_error == 'oauth-goteo-user-password-exists') {
+                        }
+                        // existe usuario, formulario de vinculacion
+                        elseif ($oauth->last_error == 'oauth-goteo-user-password-exists') {
                             Message::Error(Text::get($oauth->last_error));
                             return new View(
                                             'view/user/confirm_account.html.php',
@@ -311,7 +300,7 @@ namespace Goteo\Controller {
                     }
                 }
                 else {
-                    //si falla: error
+                    //si falla: error, si no siempre se redirige al proveedor
                     Message::Error(Text::get($oauth->last_error));
                 }
             }
