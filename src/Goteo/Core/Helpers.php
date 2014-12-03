@@ -100,14 +100,14 @@ namespace {
     /**
      * Numberformat para convertir importes
      */
-    function amount_format($amount, $decs = 0, $symbol = 1) {
+    function amount_format($amount, $decs = 0, $nosymbol = false, $revert = false) {
 
 
-        return \Goteo\Library\Currency::amount_format($amount, $decs, $symbol);
+        return \Goteo\Library\Currency::amount_format($amount, $decs, $nosymbol, $revert);
     }
 
     /**
-     * Numberformat para convertir importes
+     * Numberformat para convertir importes solo euro
      */
     function euro_format($amount, $decs = 0) {
 
