@@ -116,7 +116,7 @@ class Currency {
      * @ToDo ( need some way to make this instance persistent, so it shouldn't be created on each request )
      *
      */
-    public static function amount_format($amount, $decs = 0) {
+    public static function amount_format($amount, $decs = 0, $symbol = 1) {
 
         // check odd behaviour
         if (!is_float($amount) && !is_numeric($amount)) {
@@ -139,11 +139,13 @@ class Currency {
             $rates = $converter->getRates($default);
             $amount = $amount * $rates[$currency];
         }
+ 
+        $symbol= $symbol ? $ccy['html']." " : "";
 
         if ($amount === false) {
             return '';
         } else {
-            return "{$ccy['html']} ".number_format($amount, $decs, $ccy['dec'], $ccy['thou']);
+            return $symbol.number_format($amount, $decs, $ccy['dec'], $ccy['thou']);
         }
 
     }

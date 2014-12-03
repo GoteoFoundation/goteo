@@ -128,7 +128,7 @@ if ($step == 'start') : ?>
         <button type="submit" class="button red" name="go-login" value=""><?php echo Text::get('imperative-register'); ?></button>
     </div>
 
-    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo \amount_format($amount); ?></span></div>
+    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount; ?></span></div>
     <div class="reminder"><?php echo Text::html('faq-payment-method'); ?></div>
 
 </div>
@@ -186,7 +186,7 @@ if ($step == 'start') : ?>
     </div>
 <br />
 
-    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount ?></span></div>
+    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span></div>
 
     <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
 

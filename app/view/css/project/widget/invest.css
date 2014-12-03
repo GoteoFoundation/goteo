@@ -156,7 +156,7 @@ div.widget.project-invest div.reminder {
     margin-bottom: 1em;
 }
 
-div.widget.project-invest div.reminder #amount-reminder {
+div.widget.project-invest div.reminder #amount-reminder, div.widget.project-invest div.reminder .amount-reminder {
     color: #96238F;
     font-size: 20px;
     font-weight: bold;
