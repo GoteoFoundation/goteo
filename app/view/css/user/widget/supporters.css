@@ -155,6 +155,10 @@ div.widget.user-supporters .supporters ul li dl dd.worthcracy ul {
     list-style: none;
 }
 
+div.widget.user-supporters .supporters ul li dl dd.worthcracy span.symbol {
+    display: none;
+}
+
 div.widget.user-supporters .supporters ul li dl dd.worthcracy ul li {
     display: inline-block;
     width: 18px;

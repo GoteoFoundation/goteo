@@ -97,8 +97,13 @@ div.side-worthcracy ul {
     list-style: none;
     position: relative;
     display: inline-block;
-/*    background: url('/view/css/euro/s.png') no-repeat right 24px;*/
-	padding: 2em 20px 1em 0;
+	padding: 2em 5px 1em 0;
+}
+
+div.side-worthcracy span.symbol {
+    font-size: 15px;
+    font-weight: bold;
+    vertical-align: middle;
 }
 
 div.side-worthcracy ul li {
