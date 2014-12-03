@@ -34,6 +34,8 @@ foreach ($languages as $value => $objet) {
 //obtenemos todas las divisas
 $currencies = Currency::$currencies;
 
+$num_currencies=count($currencies);
+
 foreach ($currencies as $ccyId => $ccy) {
     $curren[] =  array(
         'value'     => $ccyId,
@@ -47,6 +49,9 @@ foreach ($currencies as $ccyId => $ccy) {
 <form method="post" action="/dashboard/profile/preferences" class="project" >
 
 <?php
+
+if($num_currencies>1)
+{
 echo new NormalForm(array(
 
     'level'         => 3,
@@ -122,5 +127,76 @@ echo new NormalForm(array(
 
 ));
 
+} else
+{
+echo new NormalForm(array(
+
+    'level'         => 3,
+    'method'        => 'post',
+    'hint'          => Text::get('guide-dashboard-user-preferences'),
+    'footer'        => array(
+        'view-step-overview' => array(
+            'type'  => 'submit',
+            'label' => Text::get('form-apply-button'),
+            'class' => 'next',
+            'name'  => 'save-userPreferences'
+        )
+    ),
+    'elements'      => array(
+
+         'comlang' => array(
+            'title'     => Text::get('user-preferences-comlang'),
+            'type'      => 'select',
+            'options'   => $langs,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => $preferences->comlang
+        ),
+        'updates' => array(
+            'title'     => Text::get('user-preferences-updates'),
+            'type'      => 'slider',
+            'options'   => $allow,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => (int) $preferences->updates
+        ),
+        'threads' => array(
+            'title'     => Text::get('user-preferences-threads'),
+            'type'      => 'slider',
+            'options'   => $allow,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => (int) $preferences->threads
+        ),
+        'rounds' => array(
+            'title'     => Text::get('user-preferences-rounds'),
+            'type'      => 'slider',
+            'options'   => $allow,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => (int) $preferences->rounds
+        ),
+        'mailing' => array(
+            'title'     => Text::get('user-preferences-mailing'),
+            'type'      => 'slider',
+            'options'   => $allow,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => (int) $preferences->mailing
+        ),
+        'email' => array(
+            'title'     => Text::get('user-preferences-email'),
+            'type'      => 'slider',
+            'options'   => $allow,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => (int) $preferences->email
+        ),
+        'tips' => array(
+            'title'     => Text::get('user-preferences-tips'),
+            'type'      => 'slider',
+            'options'   => $allow,
+            'class'     => 'currently cols_' . count($allow),
+            'value'     => (int) $preferences->tips
+        )
+    )
+
+));
+
+}
 ?>
 </form>

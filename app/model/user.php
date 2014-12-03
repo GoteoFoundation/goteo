@@ -1017,7 +1017,11 @@ namespace Goteo\Model {
 			if($row = $query->fetch()) {
 			    $user = static::get($row['id']);
 			    if($user->active) {
-			        return $user;
+                    // ponemos su divisa preferida en sesión
+                    $prefs = self::getPreferences($row['id']);
+                    if (!empty($prefs->currency)) $_SESSION['currency'] = $prefs->currency;
+
+                    return $user;
 			    } else {
 			        Message::Error(Text::get('user-account-inactive'));
 			    }
