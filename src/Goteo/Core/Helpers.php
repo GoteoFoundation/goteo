@@ -100,10 +100,10 @@ namespace {
     /**
      * Numberformat para convertir importes
      */
-    function amount_format($amount, $decs = 0) {
+    function amount_format($amount, $decs = 0, $symbol = 1) {
 
 
-        return \Goteo\Library\Currency::amount_format($amount, $decs);
+        return \Goteo\Library\Currency::amount_format($amount, $decs, $symbol);
     }
 
     /**
