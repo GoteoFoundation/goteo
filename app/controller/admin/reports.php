@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
         Goteo\Library\Reporting,
+        Goteo\Library\Currency,
         Goteo\Model;
 
     class Reports {
@@ -112,6 +113,21 @@ namespace Goteo\Controller\Admin {
                         array(
                             'folder' => 'reports',
                             'file'   => 'geoloc',
+                            'data'   => $data
+                        )
+                    );
+
+                    break;
+
+                case 'currencies':
+
+                    $data = Currency::getAll();
+
+                    return new View(
+                        'admin/index.html.php',
+                        array(
+                            'folder' => 'reports',
+                            'file'   => 'currencies',
                             'data'   => $data
                         )
                     );
