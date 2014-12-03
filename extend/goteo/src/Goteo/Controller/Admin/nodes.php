@@ -9,6 +9,9 @@ namespace Goteo\Controller\Admin {
         Goteo\Library\Message,
         Goteo\Model;
 
+        /**
+         * Gestion nodos por administradores
+         */
     class Nodes {
 
         public static function process($action = 'list', $id = null, $filters = array()) {

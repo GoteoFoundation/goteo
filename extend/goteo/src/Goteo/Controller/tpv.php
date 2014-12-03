@@ -306,7 +306,7 @@ namespace Goteo\Controller {
             // LOGGER
 //            Feed::logger('tpv', 'invest', '999', 'Simulacrum', SITE_URL.$_SERVER['REQUEST_URI']);
 
-$errors = array();
+            $errors = array();
 
             // monitorizando todo lo que llega aqui
             // mail de aviso
