@@ -2894,9 +2894,9 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
             } elseif ($filters['status'] == -2) {
-                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{5,40}')";
+                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{32}')";
             } else {
-                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
             }
             if (!empty($filters['owner'])) {
                 $sqlFilter .= " AND project.owner = :owner";
@@ -3009,7 +3009,7 @@ namespace Goteo\Model {
             // como los consultores
             $sql = "SELECT
                         project.id,
-                        project.id REGEXP '[0-9a-f]{5,40}' as draft,
+                        project.id REGEXP '[0-9a-f]{32}' as draft,
                         project.name as name,
                         project.status as status,
                         project.published as published,
@@ -3145,9 +3145,9 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
             } elseif ($filters['status'] == -2) {
-                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{5,40}')";
+                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{32}')";
             } else {
-                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
             }
             if (!empty($filters['proj_name'])) {
                 $sqlFilter .= " AND project.name LIKE :name";

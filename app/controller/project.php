@@ -116,6 +116,9 @@ namespace Goteo\Controller {
                 );
 
 
+            } elseif ($project->draft) {
+                // primer borrador, menos pasos
+
             } else {
                 // todos los pasos
                 // entrando, por defecto, en el paso especificado en url
