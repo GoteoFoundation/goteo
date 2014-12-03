@@ -222,7 +222,7 @@ namespace Goteo\Library {
 			$info .= '<div class="a i"><h3><a href="'.$URL.'/project/'.$this->project->id.'/supporters"'.$target.'>' . $this->project->num_investors . '</a></h3><p><a href="'.$URL.'/project/'.$this->project->id.'/supporters"'.$target.'>'.Text::get('project-view-metter-investors').'</a></p></div>';
 
 			//financiacio, data
-			$info .= '<div class="b i"><h3><a href="'.$URL.'/project/'.$this->project->id.'/needs"'.$target.'>' . \amount_format($this->project->invested,0,'',','). '</a></h3>';
+			$info .= '<div class="b i"><h3><a href="'.$URL.'/project/'.$this->project->id.'/needs"'.$target.'>' . \amount_format($this->project->invested,0). '</a></h3>';
 			$info .= '<p><a href="'.$URL.'/project/'.$this->project->id.'/needs">' . Text::get('project-view-metter-days') . " {$this->project->days} " . Text::get('regular-days') .'</a></p></div>';
 
 			//impulsores, nom, desc
