@@ -118,6 +118,38 @@ namespace Goteo\Controller {
 
             } elseif ($project->draft) {
                 // primer borrador, menos pasos
+                $steps = array(
+                    'userProfile' => array(
+                        'name' => Text::get('step-1'),
+                        'title' => Text::get('step-userProfile'),
+                        'offtopic' => true
+                    ),
+                    'overview' => array(
+                        'name' => Text::get('step-3'),
+                        'title' => Text::get('step-overview')
+                    ),
+                    'images' => array(
+                        'name' => Text::get('step-3b'),
+                        'title' => Text::get('step-images')
+                    ),
+                    'costs'=> array(
+                        'name' => Text::get('step-4'),
+                        'title' => Text::get('step-costs')
+                    ),
+                    'rewards' => array(
+                        'name' => Text::get('step-5'),
+                        'title' => Text::get('step-rewards')
+                    ),
+                    'supports' => array(
+                        'name' => Text::get('step-6'),
+                        'title' => Text::get('step-supports')
+                    ),
+                    'preview' => array(
+                        'name' => Text::get('step-7'),
+                        'title' => Text::get('step-preview'),
+                        'offtopic' => true
+                    )
+                );
 
             } else {
                 // todos los pasos
@@ -366,7 +398,7 @@ namespace Goteo\Controller {
             }
 
             // checkear errores
-            $project->check();
+            $project->check($steps);
 
             // variables para la vista
             $viewData = array(
