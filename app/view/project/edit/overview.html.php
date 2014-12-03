@@ -18,26 +18,44 @@ foreach ($this['categories'] as $value => $label) {
         );
 }
 
-/*
- * Aligerando superform
-$currently = array();
-
-foreach ($this['currently'] as $value => $label) {
-    $currently[] =  array(
+// preparamos selector idioma
+foreach ($this['languages'] as $value => $object) {
+    $langs[] =  array(
         'value'     => $value,
-        'label'     => $label
-        );
+        'label'     => $object->name,
+    );
 }
 
-$scope = array();
+// preparamos campo de divisa
+$currencies = $this['currencies'];
 
-foreach ($this['scope'] as $value => $label) {
-    $scope[] =  array(
-        'value'     => $value,
-        'label'     => $label
+if(count($currencies) > 1) {
+
+    foreach ($currencies as $ccyId => $ccy) {
+        $currnss[] =  array(
+            'value'     => $ccyId,
+            'label'     => $ccy['name'],
         );
+    }
+    $currency_field = array (
+        'title'     => Text::get('overview-field-currency'),
+        'type'      => 'select',
+        'options'   => $currnss,
+        'hint'      => Text::get('tooltip-project-currency'),
+        'class'     => 'currently cols_2',
+        'value'     => $project->currency
+    );
+
+} else {
+
+    $currency_field = array (
+        'type' => 'hidden',
+        'value' => $this['default_currency']
+    );
+
 }
- */
+
+
 
 
 // media del proyecto
@@ -133,10 +151,18 @@ $superform = array(
             'ok'        => !empty($okeys['subtitle']) ? array($okeys['subtitle']) : array()
         ),
 
-        'anchor-images' => array(
-            'type' => 'html',
-            'html' => '<a name="images"></a>'
+        // idioma en el que se escribe el proyecto
+        'lang' => array(
+            'title'     => Text::get('overview-field-lang'),
+            'type'      => 'select',
+            'options'   => $langs,
+            'hint'      => Text::get('tooltip-project-lang'),
+            'class'     => 'currently cols_2',
+            'value'     => $project->lang
         ),
+
+        // divisa (por defecto) de visualización del proyecto
+        'currency' => $currency_field,
 
         'description' => array(
             'type'      => 'textarea',

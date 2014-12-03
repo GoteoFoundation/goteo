@@ -100,6 +100,8 @@ namespace Goteo\Controller {
                 throw new Redirection($goto);
             }
 
+            $currency_data = Library\Currency::$currencies[$project->currency];
+
             // si no tenemos SESSION stepped es porque no venimos del create
             if (!isset($_SESSION['stepped']))
                 $_SESSION['stepped'] = array(
@@ -399,6 +401,10 @@ namespace Goteo\Controller {
 
                 case 'overview':
                     $viewData['categories'] = Model\Project\Category::getAll();
+                    $viewData['languages']  = Library\Lang::getall(true); // idiomas activos
+                    $viewData['currencies'] = Library\Currency::$currencies; // divisas
+                    $viewData['default_currency'] = Library\Currency::DEFAULT_CURRENCY; // divisa por defecto
+
                     break;
 
                 case 'images':
@@ -407,6 +413,21 @@ namespace Goteo\Controller {
 
                 case 'costs':
                     $viewData['types'] = Model\Project\Cost::types();
+
+                    // convert costs to project currency
+                    foreach ($project->costs as &$cost) {
+                        // var_dump($cost);
+                        $cost->currency = $project->currency;
+                        $cost->currency_rate = $project->currency_rate;
+                        $cost->amount_original = round($cost->amount * $project->currency_rate);
+                        $cost->amount_format = $cost->amount_original.' '.$currency_data['html'];
+
+                    }
+
+                    // para el termómetro horizontal de paso costes
+                    $project->mincost = round($project->mincost * $project->currency_rate).' '.$currency_data['html'];
+                    $project->maxcost = round($project->maxcost * $project->currency_rate).' '.$currency_data['html'];
+
                     break;
 
                 case 'rewards':
@@ -431,6 +452,7 @@ namespace Goteo\Controller {
                     }
                     $viewData['success'] = $success;
                     $viewData['types'] = Model\Project\Cost::types();
+
                     break;
             }
 
@@ -915,6 +937,8 @@ namespace Goteo\Controller {
             $fields = array(
                 'name',
                 'subtitle',
+                'lang',
+                'currency',
                 'description',
                 'motivation',
                 'video',
@@ -926,9 +950,7 @@ namespace Goteo\Controller {
                 'keywords',
                 'media',
                 'media_usubs',
-//                'currently',
-                'project_location',
-//                'scope'
+                'project_location'
             );
 
             foreach ($fields as $field) {
@@ -967,6 +989,7 @@ namespace Goteo\Controller {
             }
 
             $quedan = $project->categories; // truki para xdebug
+
 
             return true;
         }
@@ -1026,14 +1049,26 @@ namespace Goteo\Controller {
                 }
 
                 if (isset($_POST['cost-' . $cost->id . '-cost'])) {
+
                     $cost->cost = $_POST['cost-' . $cost->id . '-cost'];
                     $cost->description = $_POST['cost-' . $cost->id .'-description'];
-                    $cost->amount = $_POST['cost-' . $cost->id . '-amount'];
+
+                    $new_amount = $_POST['cost-' . $cost->id . '-amount'];
+                    // ajuste divisa proyecto
+                    if ($project->currency != Library\Currency::DEFAULT_CURRENCY) {
+                        // convertir solo al modificar
+                        if ($new_amount != $cost->amount_original) {
+                            $new_amount = $new_amount / $project->currency_rate;
+                        }
+                    }
+
+                    $cost->amount = $new_amount;
                     $cost->type = $_POST['cost-' . $cost->id . '-type'];
                     $cost->required = $_POST['cost-' . $cost->id . '-required'];
                     $cost->from = $_POST['cost-' . $cost->id . '-from'];
                     $cost->until = $_POST['cost-' . $cost->id . '-until'];
                 }
+
             }
 
             //añadir nuevo coste

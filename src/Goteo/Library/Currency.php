@@ -44,6 +44,30 @@ class Currency {
 
     );
 
+
+    static public function getAll() {
+
+        $currencies = array();
+
+        $converter = new Converter(); // @FIXME : this instance should be persistent for all the requests of amount_format
+
+        if (!$converter instanceof \Goteo\Library\Converter) {
+            return null;
+        }
+
+        $rates = $converter->getRates(self::DEFAULT_CURRENCY);
+
+        foreach (self::$currencies as $ccy=>$cur) {
+
+            $cur['rate'] = ($ccy == self::DEFAULT_CURRENCY) ? 1 : $rates[$ccy];
+
+            $currencies[$ccy] = $cur;
+        }
+
+        return $currencies;
+
+    }
+
     /*
      * Establece la divisa de visualización de la web
      *
@@ -113,7 +137,7 @@ class Currency {
 
         if ($currency != $default) {
             $rates = $converter->getRates($default);
-            $amount = $rates[$currency] * $amount;
+            $amount = $amount * $rates[$currency];
         }
 
         if ($amount === false) {

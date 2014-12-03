@@ -83,4 +83,12 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
         return true;
     }
 
+    public function testRate() {
+        $_SESSION['currency'] = 'usd';
+        $rate = Currency::rate();
+
+        $this->assertNotNull($rate);
+
+    }
+
 }

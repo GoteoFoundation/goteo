@@ -86,7 +86,7 @@ if (!empty($project->costs)) {
                         'hint'      => Text::get('tooltip-project-cost-amount'),
                         'errors'    => !empty($errors["cost-{$cost->id}-amount"]) ? array($errors["cost-{$cost->id}-amount"]) : array(),
                         'ok'        => !empty($okeys["cost-{$cost->id}-amount"]) ? array($okeys["cost-{$cost->id}-amount"]) : array(),
-                        'value'     => $cost->amount
+                        'value'     => $cost->amount_original
                     ),
                     "cost-{$cost->id}-required"  => array(
                         'required'  => true,
