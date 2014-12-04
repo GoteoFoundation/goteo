@@ -13,6 +13,7 @@ namespace Goteo\Controller {
         Goteo\Library\Message,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;
+    use Goteo\Library\Currency;
 
     class Invest extends \Goteo\Core\Controller {
 
@@ -96,12 +97,22 @@ namespace Goteo\Controller {
                 Model\User::setPersonal($_SESSION['user']->id, $address, false);
 
                 // conversión a euros
-                $amount = \amount_format($_POST['amount'], 0, true, true);
-                $amount = str_replace(array(',', '.'), '', $amount);
+                if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY) {
+                    $rates = Currency::rate();
+                    $rate = $rates[$_SESSION['currency']];
+                } else {
+                    $rate = 1;
+                }
+                $amount_original = $_POST['amount'];
+                $amount =  $amount_original / $rate;
+                $amount = \number_format($amount, 0, '');
 
                 $invest = new Model\Invest(
                     array(
                         'amount' => $amount,
+                        'amount_original' => $amount_original,
+                        'currency' => $_SESSION['currency'],
+                        'currency_rate' => $rate,
                         'user' => $_SESSION['user']->id,
                         'project' => $project,
                         'method' => $method,
