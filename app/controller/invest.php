@@ -28,7 +28,7 @@ namespace Goteo\Controller {
          */
         public function index ($project = null) {
 
-            $debug = false;
+            $debug = ($_SESSION['user']->id == 'root');
 
             if (empty($project))
                 throw new Redirection('/discover', Redirection::TEMPORARY);
@@ -38,7 +38,7 @@ namespace Goteo\Controller {
             $projectData = Model\Project::get($project);
             $methods = self::$methods;
 
-            if (\GOTEO_ENV  != 'real') {
+            if (\GOTEO_ENV  != 'real' || $_SESSION['user']->id == 'root') {
                 $methods['cash'] = 'cash';
             }
 
