@@ -226,7 +226,7 @@ namespace Goteo\Controller {
                         //y fuerza que pueda logear en caso de que no esté activo
                         if (!$oauth->goteoLogin(true)) {
                             //si no: registrar errores
-                            Message::Error(Text::get($oauth->last_error));
+                            Message::Error($oauth->last_error);
                             throw new Redirection(SEC_URL."/user/login");
                         }
                     } else {
@@ -244,7 +244,7 @@ namespace Goteo\Controller {
                     //y fuerza que pueda logear en caso de que no esté activo
                     if (!$oauth->goteoLogin(true)) {
                         //si no: registrar errores
-                        Message::Error(Text::get($oauth->last_error));
+                        Message::Error($oauth->last_error);
                     }
                 } elseif ($errors) {
                     foreach ($errors as $err => $val) {
@@ -276,7 +276,7 @@ namespace Goteo\Controller {
                 if ($oauth->authenticate()) {
                     if (!$oauth->goteoLogin()) {
                         //si falla: error o formulario de confirmación
-                        if ($oauth->last_error == 'oauth-goteo-user-not-exists') {
+                        if ($oauth->error_type == 'user-not-exists') {
                             return new View(
                                             'view/user/confirm.html.php',
                                             array(
@@ -285,8 +285,8 @@ namespace Goteo\Controller {
                             );
                         }
                         // existe usuario, formulario de vinculacion
-                        elseif ($oauth->last_error == 'oauth-goteo-user-password-exists') {
-                            Message::Error(Text::get($oauth->last_error));
+                        elseif ($oauth->error_type == 'user-password-exists') {
+                            Message::Error($oauth->last_error);
                             return new View(
                                             'view/user/confirm_account.html.php',
                                             array(
@@ -295,13 +295,14 @@ namespace Goteo\Controller {
                                             )
                             );
                         }
-                        else
-                            Message::Error(Text::get($oauth->last_error));
+                        else {
+                            Message::Error($oauth->last_error);
+                        }
                     }
                 }
                 else {
                     //si falla: error, si no siempre se redirige al proveedor
-                    Message::Error(Text::get($oauth->last_error));
+                    Message::Error($oauth->last_error);
                 }
             }
 
