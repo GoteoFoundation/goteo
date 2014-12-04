@@ -17,8 +17,7 @@ namespace Goteo\Model {
             $error,
             $size,
             $dir_originals = 'images/', //directorio archivos originales (relativo a data/ o al bucket s3)
-            $dir_cache = 'cache/', //directorio archivos cache (relativo a data/ o al bucket s3 en cuanto se implemente)
-            $newstyle = false; // new style es no usar tabla image
+            $dir_cache = 'cache/'; //directorio archivos cache (relativo a data/ o al bucket s3 en cuanto se implemente)
 
         private $fp;
 
@@ -48,7 +47,7 @@ namespace Goteo\Model {
          *
          * @param type array	$file	Array $_FILES.
          */
-        public function __construct ($file = null) {
+        public function __construct ($file = null, $name = null) {
 
             if(is_array($file)) {
                 $this->name = $file['name'];
@@ -61,6 +60,7 @@ namespace Goteo\Model {
 				$this->name = basename($file);
 				$this->tmp = $file;
 			}
+            if($name) $this->name = $name;
 
             $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_STATIC));
             $this->fp->setPath($this->dir_originals);
@@ -85,8 +85,8 @@ namespace Goteo\Model {
          *
          * FALTA!!!
          */
-        public function save(&$errors = array()) {
-            if($this->validate($errors)) {
+        public function save(&$errors = array(), $validate = true) {
+            if(!$validate || $this->validate($errors)) {
                 $this->original_name = $this->name;
                 //nombre seguro
                 $this->name = $this->fp->get_save_name($this->name);
@@ -119,33 +119,8 @@ namespace Goteo\Model {
                         return false;
                     }
 
-                    if ($this->newstyle) {
-
-                        // no guardamos en tabla, id es el nombre del archivo
-                        $this->id = $this->name;
-                        //generamos hash
-                        $this->hash = md5($this->id);
-
-                    } else {
-
-                        // @FIXME esto se podrá quitar cuando todas las entidades image estén modificadas
-
-
-                        // Construye SQL.
-                        $query = "REPLACE INTO image (";
-                        foreach($data AS $key => $row) {
-                            $query .= substr($key, 1) . ", ";
-                        }
-                        $query = substr($query, 0, -2) . ") VALUES (";
-                        foreach($data AS $key => $row) {
-                            $query .= $key . ", ";
-                        }
-                        $query = substr($query, 0, -2) . ")";
-                        // Ejecuta SQL.
-                        $result = self::query($query, $data);
-                        if(empty($this->id)) $this->id = self::insertId();
-
-                    }
+                    $this->id = $this->name;
+                    $this->hash = md5($this->id);
 
                     return true;
 
@@ -186,7 +161,7 @@ namespace Goteo\Model {
             }
 
             // checkeo de errores de $_FILES
-            if($this->error !== UPLOAD_ERR_OK) {
+            if($this->error && $this->error !== UPLOAD_ERR_OK) {
                 switch($this->error) {
                     case UPLOAD_ERR_INI_SIZE:
                         $errors['image'][] = Text::get('error-image-size-too-large');
@@ -210,6 +185,8 @@ namespace Goteo\Model {
                     case UPLOAD_ERR_EXTENSION:
                         $errors['image'][] = 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions';
                         break;
+                    default:
+                        $errors['image'][] = 'Unknown error: ' . $this->error;
                 }
                 return false;
             }
@@ -264,23 +241,6 @@ namespace Goteo\Model {
                         $id = 'la_gota-wof.png'; // imagen por defecto en el wall of friends
                         break;
                 }
-
-                /*
-                 *  No existe mas la tabla imágenes
-                 *
-                    $query = static::query("
-                    SELECT
-                        id,
-                        name,
-                        type,
-                        size
-                    FROM image
-                    WHERE id = :id
-                    ", array(':id' => $id));
-                    $image = $query->fetchObject(__CLASS__);
-
-                    if ($debug) echo "Numeric, from table: ".\trace($image);
-                */
 
                 $image = new Image;
                 $image->name = $id;

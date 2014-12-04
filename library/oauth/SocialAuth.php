@@ -1,18 +1,13 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('log_errors', 1);
-error_reporting(E_ALL);
-//*/
 
 //Includes all necessary files for oAuth
 include_once(GOTEO_PATH. 'vendor/lusitanian/oauth/src/OAuth/bootstrap.php');
 
-use \OAuth\OAuth2\Service\Facebook;
-use \OAuth\Common\Storage\Memory as Storage;
-use \OAuth\Common\Consumer\Credentials;
-use Goteo\Library\Text;
-use \OAuth\ServiceFactory;
+use OAuth\OAuth2\Service\Facebook,
+	OAuth\Common\Storage\Memory as Storage,
+	OAuth\Common\Consumer\Credentials,
+	OAuth\ServiceFactory,
+	Goteo\Library\Text;
 
 /**
  * Suportat:
@@ -35,9 +30,9 @@ class SocialAuth {
 	public $last_error = '';
 	public $error_type = '';
 	//datos que se recopilan
-	public $user_data = array('username' => null, 'name' => null, 'email' => null, 'profile_image_url' => null, 'website' => null, 'about' => null, 'location'=>null,'twitter'=>null,'facebook'=>null,'google'=>null,'identica'=>null,'linkedin'=>null);
+	public $user_data = array('username' => null, 'name' => null, 'email' => null, 'avatar' => null, 'website' => null, 'about' => null, 'location'=>null,'twitter'=>null,'facebook'=>null,'google'=>null,'identica'=>null,'linkedin'=>null);
 	//datos que se importaran (si se puede) a la tabla 'user'
-	public $import_user_data = array('name', 'about', 'location', 'twitter', 'facebook', 'google', 'identica', 'linkedin');
+	public $import_user_data = array('name', 'about', 'location', 'avatar', 'twitter', 'facebook', 'google', 'identica', 'linkedin');
 	public $tokens = array('twitter'=>array('token'=>'','secret'=>''), 'facebook'=>array('token'=>'','secret'=>''), 'linkedin'=>array('token'=>'','secret'=>''), 'openid'=>array('token'=>'','secret'=>'')); //secretos generados en el oauth
 
 	private $credentials = array(
@@ -187,7 +182,7 @@ class SocialAuth {
 					// $this->tokens['facebook']['token'] = $token->getAccessToken(;
 					$this->tokens['facebook']['token'] = $res->id ? $res->id : $res->email;
 					//ver todos los datos disponibles:
-					//print_r($res);die;
+					// print_r($res);die;
 
 					$this->user_data['name'] = $res->name;
 					if($res->username) $this->user_data['username'] = $res->username;
@@ -195,7 +190,15 @@ class SocialAuth {
 					if($res->website) $this->user_data['website'] = $res->website; //ojo, pueden ser varias lineas con varias webs
 					if($res->about) $this->user_data['about'] = $res->about;
 					if($res->location->name) $this->user_data['location'] = $res->location->name;
-					if($res->id) $this->user_data['profile_image_url'] = 'http://graph.facebook.com/' . $res->id . '/picture?type=large';
+					if($res->id) {
+						if($json = @json_decode(@file_get_contents('http://graph.facebook.com/' . $res->id . '/picture?type=large&redirect=false'))) {
+							if($json->data && $json->data->url) {
+								$this->user_data['avatar'] = $json->data->url;
+								$this->user_data['avatar_name'] = basename(parse_url($json->data->url, PHP_URL_PATH));
+								// print_r($json);print_r($this->user_data);die;
+							}
+						}
+					}
 					//facebook link
 					if($res->link) $this->user_data['facebook'] = $res->link;
 
@@ -314,7 +317,7 @@ class SocialAuth {
 			}
 			if($profile_data->headline) $this->user_data['about'] = current($profile_data->headline);
 			if($profile_data->location->name) $this->user_data['location'] = current($profile_data->location->name);
-			if($profile_data->{"picture-url"}) $this->user_data['profile_image_url'] = current($profile_data->{"picture-url"});
+			if($profile_data->{"picture-url"}) $this->user_data['avatar'] = current($profile_data->{"picture-url"});
 			//si el usuario tiene especificada su cuenta twitter
 			if($profile_data->{"twitter-accounts"}->{"twitter-account"}) $this->user_data['twitter'] = 'http://twitter.com/' . current($profile_data->{"twitter-accounts"}->{"twitter-account"}->{"provider-account-name"});
 
@@ -362,7 +365,7 @@ class SocialAuth {
 			//Twitter NO RETORNA el email!!!
 			$this->user_data['username'] = $userInfo->screen_name;
 			$this->user_data['name'] = $userInfo->name;
-			$this->user_data['profile_image_url'] = str_replace('_normal','',$userInfo->profile_image_url);
+			$this->user_data['avatar'] = str_replace('_normal','',$userInfo->avatar);
 			//twitter link
 			$this->user_data['twitter'] = 'http://twitter.com/'.$userInfo->screen_name;
 			if($userInfo->url) $this->user_data['website'] = $userInfo->url;
@@ -433,6 +436,7 @@ class SocialAuth {
 	/**
 	 * Hace el login en goteo si es posible (existen tokens o el email es el mismo)
 	 * Guarda los tokens si se encuentra el usuario
+	 * Actualiza datos de usuario si desde la red social
 	 *
 	 * @param $force_login	logea en goteo sin comprovar que la contraseña esté vacía o que el usuario este activo
 	 * */
@@ -515,36 +519,48 @@ class SocialAuth {
 		//si el usuario existe, actualizar o crear los tokens
 		$this->saveTokensToUser($username);
 
-		//actualizar la imagen de avatar si no tiene!
-		if($this->user_data['profile_image_url']) {
-			$query = Goteo\Core\Model::query('SELECT avatar FROM user WHERE id = ?', array($username));
-			if(!($query->fetchColumn())) {
-
-				$img = new Goteo\Model\Image($this->user_data['profile_image_url']);
-				$img->save();
-
-				if($img->id) {
-					Goteo\Core\Model::query('UPDATE user SET avatar = :avatar WHERE id = :user', array(':user'=>$username,':avatar'=>$img->id));
-				}
-			}
-		}
-
 		//el usuario existe, creamos el objeto
-		$user = Goteo\Model\User::get($username);
-
+		$query = Goteo\Core\Model::query('SELECT * FROM user WHERE id = ?', $username);
+		$user = $query->fetchObject();
 		//actualizar datos de usuario si no existen:
 		$update = array();
 		$data = array(':user' => $username);
 		foreach($this->import_user_data as $key) {
-			if(empty($user->$key) && $this->user_data[$key]) {
-				$update[] = "$key = :$key";
-				$data[":$key"] = $this->user_data[$key];
+			$value = $this->user_data[$key];
+			if(empty($user->$key)) {
+				//actualizar la imagen de avatar si no tiene!
+				if($key == 'avatar') {
+					$value = '';
+					$img = new Goteo\Model\Image($this->user_data['avatar'], $this->user_data['avatar_name']);
+					$img->save($errors, false);
+					if($img->id) {
+						$value = $img->id;
+					}
+					//mirar en gravatar si no tiene ninguna de social
+					else {
+						$url = 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($user->email))) . '.jpg?s=400&d=404';
+						$img = new Goteo\Model\Image( $url , "$username.jpg");
+						$img->save($errors, false);
+						if($img->id) {
+							$value = $img->id;
+						}
+					}
+					// print_r($img);
+				}
+				if($value) {
+					$update[] = "$key = :$key";
+					$data[":$key"] = $value;
+				}
 			}
 		}
+
 		if($update) {
+			// print_r($user);
+			// print_r($this->user_data);
+			// print_r($update);
+			// print_r($data);
+			// die;
 			Goteo\Core\Model::query("UPDATE user SET ".implode(", ",$update)." WHERE id = :user", $data);
-			//rebuild user object
-			$user = Goteo\Model\User::get($username);
 		}
 
 		//actualizar las webs
@@ -557,54 +573,24 @@ class SocialAuth {
 			$webs = array();
 			preg_match_all("/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/", $this->user_data['website'], $webs);
 			if($webs[0] && is_array($webs[0])) {
-				$updated = false;
 				foreach($webs[0] as $web) {
 					$web = strtolower($web);
 					if(!in_array($web,$current_webs)) {
-						Goteo\Core\Model::query("INSERT user_web (user, url) VALUES (:user, :url)", array(':user' => $username, ':url' => $web));
-						$updated = true;
+						Goteo\Core\Model::query('INSERT user_web (user, url) VALUES (:user, :url)', array(':user' => $username, ':url' => $web));
 					}
 				}
-				//rebuild user object
-				if($updated) $user = Goteo\Model\User::get($username);
 			}
 		}
 
-		//Si no tiene imagen, importar de gravatar.com?
-		if(!$user->avatar || $user->avatar->id == 1) {
-			$query = Goteo\Core\Model::query('SELECT avatar FROM user WHERE id = ?', array($username));
-			if(!($query->fetchColumn())) {
-				$url = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($user->email)));
-				$url .= "?d=404";
+		//rebuild user object
+		$user = Goteo\Model\User::get($username);
 
-				$img = new Goteo\Model\Image( $url );
-				$img->save();
+	    //Guardar en una cookie la preferencia de "login with"
+        //servira para mostrar al usuario primeramente su opcion preferida
+        setcookie('goteo_oauth_provider', $this->original_provider, time() + 3600*24*365);
 
-				if($img->id) {
-					Goteo\Core\Model::query("UPDATE user SET avatar = :avatar WHERE id = :user", array(':user'=>$username,':avatar'=>$img->id));
-					$user = Goteo\Model\User::get($username);
-				}
-			}
-		}
-
-		//siempre login, aunque no esté activo el usuario
-		//Iniciar sessión i redirigir
-		$_SESSION['user'] = $user;
-
-		//Guardar en una cookie la preferencia de "login with"
-		//no servira para mostrar al usuario primeramente su opcion preferida
-		setcookie("goteo_oauth_provider", $this->original_provider, time() + 3600*24*365);
-
-		if (!empty($_POST['return'])) {
-			throw new \Goteo\Core\Redirection($_POST['return']);
-		} elseif (!empty($_SESSION['jumpto'])) {
-			$jumpto = $_SESSION['jumpto'];
-			unset($_SESSION['jumpto']);
-			throw new \Goteo\Core\Redirection($jumpto);
-		} else {
-			// print_r($user);die;
-			throw new \Goteo\Core\Redirection('/dashboard/activity');
-		}
+		//return user
+		return $user;
 	}
 
 	/**
@@ -615,7 +601,7 @@ class SocialAuth {
 		if($id = $query->fetchColumn()) {
 			foreach($this->tokens as $provider => $token) {
 				if($token['token']) {
-					$query = Goteo\Core\Model::query("REPLACE user_login (user,provider,oauth_token,oauth_token_secret) VALUES (:user,:provider,:token,:secret)",array(':user'=>$goteouser,':provider'=>$provider,':token'=>$token['token'],':secret'=>$token['secret']));
+					$query = Goteo\Core\Model::query('REPLACE user_login (user,provider,oauth_token,oauth_token_secret) VALUES (:user,:provider,:token,:secret)',array(':user'=>$goteouser,':provider'=>$provider,':token'=>$token['token'],':secret'=>$token['secret']));
 				}
 			}
 		}
@@ -626,5 +612,3 @@ class SocialAuth {
 		}
 	}
 }
-
-?>

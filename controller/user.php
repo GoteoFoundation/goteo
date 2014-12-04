@@ -60,34 +60,7 @@ namespace Goteo\Controller {
                 $username = \strtolower($_POST['username']);
                 $password = $_POST['password'];
                 if (false !== ($user = (Model\User::login($username, $password)))) {
-                    $_SESSION['user'] = $user;
-
-                    // creamos una cookie
-                    setcookie("goteo_user", $user->id, time() + 3600 * 24 * 365);
-
-                    if (!empty($user->lang)) {
-                        $_SESSION['lang'] = $user->lang;
-                    }
-                    unset($_SESSION['admin_menu']);
-                    if (isset($user->roles['admin'])) {
-                        // posible admin de nodo
-                        if ($node = Model\Node::getAdminNode($user->id)) {
-                            $_SESSION['admin_node'] = $node;
-                        }
-                    } else {
-                        unset($_SESSION['admin_node']);
-                    }
-                    if (!empty($_REQUEST['return'])) {
-                        throw new Redirection($_REQUEST['return']);
-                    } elseif (!empty($_SESSION['jumpto'])) {
-                        $jumpto = $_SESSION['jumpto'];
-                        unset($_SESSION['jumpto']);
-                        throw new Redirection($jumpto);
-                    } elseif (isset($user->roles['admin']) || isset($user->roles['superadmin'])) {
-                        throw new Redirection('/admin');
-                    } else {
-                        throw new Redirection('/dashboard');
-                    }
+                    self::loginUser($user);
                 } else {
                     Message::Error(Text::get('login-fail'));
                 }
@@ -97,6 +70,47 @@ namespace Goteo\Controller {
             }
 
             return new View('view/user/login.html.php');
+        }
+
+        /**
+         * Logea un usuario
+         */
+
+        static public function loginUser(Model\User $user, $redirect = true) {
+            $_SESSION['user'] = $user;
+
+            // creamos una cookie
+            setcookie('goteo_user', $user->id, time() + 3600 * 24 * 365);
+
+            if (!empty($user->lang)) {
+                $_SESSION['lang'] = $user->lang;
+            }
+            unset($_SESSION['admin_menu']);
+
+            if (isset($user->roles['admin'])) {
+                // posible admin de nodo
+                if ($node = Model\Node::getAdminNode($user->id)) {
+                    $_SESSION['admin_node'] = $node;
+                }
+            } else {
+                unset($_SESSION['admin_node']);
+            }
+
+            if($redirect) {
+                if (!empty($_REQUEST['return'])) {
+                    throw new Redirection($_REQUEST['return']);
+                } elseif (!empty($_SESSION['jumpto'])) {
+                    $jumpto = $_SESSION['jumpto'];
+                    unset($_SESSION['jumpto']);
+                    throw new Redirection($jumpto);
+                } elseif (isset($user->roles['admin']) || isset($user->roles['superadmin'])) {
+                    throw new Redirection('/admin');
+                } else {
+                    throw new Redirection('/dashboard');
+                }
+            }
+
+            return $user;
         }
 
         /**
@@ -145,18 +159,8 @@ namespace Goteo\Controller {
                 if (empty($errors)) {
                     Message::Info(Text::get('user-register-success'));
 
-                    $_SESSION['user'] = Model\User::get($user->id);
+                    self::loginUser(Model\User::get($user->id));
 
-                    // creamos una cookie
-                    setcookie("goteo_user", $user->id, time() + 3600 * 24 * 365);
-
-                    if (!empty($_SESSION['jumpto'])) {
-                        $jumpto = $_SESSION['jumpto'];
-                        unset($_SESSION['jumpto']);
-                        throw new Redirection($jumpto);
-                    } else {
-                        throw new Redirection('/dashboard');
-                    }
                 } else {
                     foreach ($errors as $field => $text) {
                         Message::Error($text);
@@ -224,10 +228,14 @@ namespace Goteo\Controller {
                     if ($u->password == sha1($_POST['password'])) {
                         //ok, login en goteo e importar datos
                         //y fuerza que pueda logear en caso de que no esté activo
-                        if (!$oauth->goteoLogin(true)) {
+                        if ($user = $oauth->goteoLogin(true)) {
+                            //login!
+                            self::loginUser($user);
+                        }
+                        else {
                             //si no: registrar errores
                             Message::Error($oauth->last_error);
-                            throw new Redirection(SEC_URL."/user/login");
+                            throw new Redirection(SEC_URL . '/user/login');
                         }
                     } else {
                         Message::Error(Text::get('login-fail'));
@@ -242,7 +250,11 @@ namespace Goteo\Controller {
                 } elseif ($user->save($errors, $skip_validations)) {
                     //si el usuario se ha creado correctamente, login en goteo e importacion de datos
                     //y fuerza que pueda logear en caso de que no esté activo
-                    if (!$oauth->goteoLogin(true)) {
+                    if ($user = $oauth->goteoLogin(true)) {
+                        //login!
+                        self::loginUser($user);
+                    }
+                    else {
                         //si no: registrar errores
                         Message::Error($oauth->last_error);
                     }
@@ -274,7 +286,11 @@ namespace Goteo\Controller {
                 $oauth = new \SocialAuth($_GET["provider"]);
 
                 if ($oauth->authenticate()) {
-                    if (!$oauth->goteoLogin()) {
+                    if ($user = $oauth->goteoLogin()) {
+                        //login!
+                        self::loginUser($user);
+                    }
+                    else {
                         //si falla: error o formulario de confirmación
                         if ($oauth->error_type == 'user-not-exists') {
                             return new View(
@@ -357,9 +373,7 @@ namespace Goteo\Controller {
             $user->node = \NODE_ID;
 
             if ($user->save($errors)) {
-                $_SESSION['user'] = Model\User::get($user->id);
-                // creamos una cookie
-                setcookie("goteo_user", $user->id, time() + 3600 * 24 * 365);
+                self::loginUser(Model\User::get($user->id), false);
                 Message::Info(Text::get('user-register-success'));
                 return $user->id;
             }
@@ -752,7 +766,7 @@ namespace Goteo\Controller {
                     $user->active = true;
                     if ($user->save($errors)) {
                         Message::Info(Text::get('user-activate-success'));
-                        $_SESSION['user'] = $user;
+                        self::loginUser($user, false);
 
                         // Evento Feed
                         $log = new Feed();
@@ -832,7 +846,7 @@ namespace Goteo\Controller {
                             // el token coincide con el email y he obtenido una id
                             Model\User::query('UPDATE user SET active = 1 WHERE id = ?', array($id));
                             $user = Model\User::get($id);
-                            $_SESSION['user'] = $user;
+                            self::loginUser($user);
                             $_SESSION['recovering'] = $user->id;
                             throw new Redirection(SEC_URL.'/dashboard/profile/access/recover#password');
                         }
