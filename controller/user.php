@@ -323,12 +323,14 @@ namespace Goteo\Controller {
                         }
                         else {
                             Message::Error($oauth->last_error);
+                            throw new Redirection(SEC_URL . '/user/login');
                         }
                     }
                 }
                 else {
                     //si falla: error, si no siempre se redirige al proveedor
                     Message::Error($oauth->last_error);
+                    throw new Redirection(SEC_URL . '/user/login');
                 }
             }
 
