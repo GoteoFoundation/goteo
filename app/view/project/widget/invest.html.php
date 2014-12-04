@@ -412,7 +412,7 @@ if ($step == 'start') : ?>
                 }
             }
 
-            return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+converted+' EUR');
+            return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR');
         });
 
 /* Seteo inicial por url */
