@@ -210,8 +210,9 @@ namespace Goteo\Controller {
                     }
                 }
                 //si no existe nombre, nos lo inventamos a partir del userid
-                if (trim($user->name) == '')
+                if (trim($user->name) == '') {
                     $user->name = ucfirst($user->userid);
+                }
 
                 //print_R($user);print_r($oauth);die;
                 //no hará falta comprovar la contraseña ni el estado del usuario
@@ -238,14 +239,23 @@ namespace Goteo\Controller {
                             throw new Redirection(SEC_URL . '/user/login');
                         }
                     } else {
-                        Message::Error(Text::get('login-fail'));
-                        return new View(
-                                        'view/user/confirm_account.html.php',
-                                        array(
-                                            'oauth' => $oauth,
-                                            'user' => Model\User::get($u->id)
-                                        )
-                        );
+                        // si tiene contraseña permitir vincular la cuenta,
+                        // si no mensaje de error
+                        if($u->password) {
+                            if($_POST) {
+                                Message::Error(Text::get('login-fail'));
+                            }
+                            return new View(
+                                            'view/user/confirm_account.html.php',
+                                            array(
+                                                'oauth' => $oauth,
+                                                'user' => Model\User::get($u->id)
+                                            )
+                            );
+                        }
+                        else {
+                            Message::Error(Text::get('oauth-goteo-user-password-error'));
+                        }
                     }
                 } elseif ($user->save($errors, $skip_validations)) {
                     //si el usuario se ha creado correctamente, login en goteo e importacion de datos

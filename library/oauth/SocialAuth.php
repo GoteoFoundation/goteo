@@ -4,7 +4,7 @@
 include_once(GOTEO_PATH. 'vendor/lusitanian/oauth/src/OAuth/bootstrap.php');
 
 use OAuth\OAuth2\Service\Facebook,
-	OAuth\Common\Storage\Memory as Storage,
+	OAuth\Common\Storage\Session as Storage,
 	OAuth\Common\Consumer\Credentials,
 	OAuth\ServiceFactory,
 	Goteo\Library\Text;
@@ -41,6 +41,8 @@ class SocialAuth {
 		'linkedin' => array('key' => OAUTH_LINKEDIN_ID, 'secret' => OAUTH_LINKEDIN_SECRET),
 		'openid' => array('key' => OAUTH_OPENID_SECRET)
 	);
+	private $storage;
+	private $serviceFactory;
 
 	protected $openid_server;
 	public $openid_public_servers = array(
@@ -67,6 +69,10 @@ class SocialAuth {
 	 * conecta con el servicio de oauth, redirecciona a la pagina para la autentificacion
 	 * */
 	public function authenticate() {
+		// Storage for the class
+		$this->storage = new Storage();
+		$this->serviceFactory = new ServiceFactory();
+
 		switch ($this->provider) {
 			case 'twitter':
 				return $this->authenticateTwitter();
@@ -123,10 +129,66 @@ class SocialAuth {
 	 * */
 	public function authenticateTwitter() {
 		try {
-			$twitterObj = new \EpiTwitter($this->twitter_id, $this->twitter_secret);
-			$url = $twitterObj->getAuthenticateUrl(null,array('oauth_callback' => $this->callback_url));
-			header("Location: $url");
-			exit;
+			// Setup the credentials for the requests
+			$credentials = new Credentials(
+				$this->credentials['twitter']['key'],
+				$this->credentials['twitter']['secret'],
+				$this->host . '/user/oauth/?provider=twitter'
+			);
+			// Instantiate the twitter service using the credentials, http client and storage mechanism for the token
+			/** @var $twitterService Twitter */
+			$twitterService = $this->serviceFactory->createService('twitter', $credentials, $this->storage);
+
+			if (!empty($_GET['oauth_token'])) {
+				$token = $this->storage->retrieveAccessToken('Twitter');
+				// This was a callback request from twitter, get the token
+				$twitterService->requestAccessToken(
+					$_GET['oauth_token'],
+					$_GET['oauth_verifier'],
+					$token->getRequestTokenSecret()
+				);
+				// Send a request now that we have access token
+				$res = json_decode($twitterService->request('account/verify_credentials.json'));
+
+				$this->tokens['twitter']['token'] = $res->id ? $res->id : $res->screen_name;
+
+				if($res->name) $this->user_data['name'] = $res->name;
+				if($res->screen_name) $this->user_data['username'] = $res->screen_name;
+				//this is never provided by twitter...
+				if($res->email) $this->user_data['email'] = $res->email;
+
+				//ojo, pueden ser varias lineas con varias webs
+				if($res->entities) {
+					foreach($res->entities as $k => $entity) {
+						if($entity->urls && is_array($entity->urls)) {
+							foreach($entity->urls as $url) {
+								if($url->expanded_url) $this->user_data['website'] .= $url->expanded_url . "\n";
+							}
+						}
+					}
+				}
+				if($res->description) $this->user_data['about'] = $res->description;
+				if($res->location) $this->user_data['location'] = $res->location;
+				if($res->profile_image_url) {
+					$this->user_data['avatar'] = str_replace('_normal','',$res->profile_image_url);
+					$this->user_data['avatar_name'] = basename(parse_url($this->user_data['avatar'], PHP_URL_PATH));
+				}
+
+				//twitter link
+				$this->user_data['twitter'] = 'http://twitter.com/'.$userInfo->screen_name;
+
+				// echo 'result: <pre>' . print_r($this->user_data, 1) . print_r($res, true) . '</pre>';die;
+
+			}
+			else {
+				 // extra request needed for oauth1 to request a request token :-)
+				$token = $twitterService->requestRequestToken();
+
+				$url = $twitterService->getAuthorizationUri(array('oauth_token' => $token->getRequestToken()));
+				header('Location: ' . $url);
+				exit;
+			}
+
 		}
 		catch(Exception $e){
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
@@ -141,8 +203,6 @@ class SocialAuth {
 	 * */
 	public function authenticateFacebook() {
 		try {
-			// Session storage
-			$storage = new Storage();
 			// Setup the credentials for the requests
 			$credentials = new Credentials(
 				$this->credentials['facebook']['key'],
@@ -151,8 +211,7 @@ class SocialAuth {
 			);
 			// Instantiate the Facebook service using the credentials, http client and storage mechanism for the token
 			/** @var $facebookService Facebook */
-			$serviceFactory = new ServiceFactory();
-			$facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array('email'));
+			$facebookService = $this->serviceFactory->createService('facebook', $credentials, $this->storage, array('email'));
 
 			if(!empty($_GET['code'])) {
 				try {
@@ -179,12 +238,11 @@ class SocialAuth {
 						return false;
 					}
 
-					// $this->tokens['facebook']['token'] = $token->getAccessToken(;
-					$this->tokens['facebook']['token'] = $res->id ? $res->id : $res->email;
 					//ver todos los datos disponibles:
 					// print_r($res);die;
+					$this->tokens['facebook']['token'] = $res->id ? $res->id : $res->email;
 
-					$this->user_data['name'] = $res->name;
+					if($res->name) $this->user_data['name'] = $res->name;
 					if($res->username) $this->user_data['username'] = $res->username;
 					if($res->email) $this->user_data['email'] = $res->email;
 					if($res->website) $this->user_data['website'] = $res->website; //ojo, pueden ser varias lineas con varias webs
@@ -230,36 +288,62 @@ class SocialAuth {
 	 * */
 	public function authenticateLinkedin() {
 		try {
-			//do the authentication:
-			//get public tokens
-			$to = new \LinkedInOAuth($this->linkedin_id, $this->linkedin_secret);
-			// This call can be unreliable for some providers if their servers are under a heavy load, so
-			// retry it with an increasing amount of back-off if there's a problem.
-			$maxretrycount = 1;
-			$retrycount = 0;
-			while ($retrycount<$maxretrycount) {
-				$tok = $to->getRequestToken($this->callback_url);
-				if (isset($tok['oauth_token']) && isset($tok['oauth_token_secret']))
-					break;
-				$retrycount += 1;
-				sleep($retrycount*5);
+			// Setup the credentials for the requests
+			$credentials = new Credentials(
+				$this->credentials['linkedin']['key'],
+				$this->credentials['linkedin']['secret'],
+				$this->host . '/user/oauth/?provider=linkedin'
+			);
+			// Instantiate the Linkedin service using the credentials, http client and storage mechanism for the token
+			/** @var $linkedinService Linkedin */
+			$linkedinService = $this->serviceFactory->createService('linkedin', $credentials, $this->storage, array('r_basicprofile', 'r_emailaddress'));
+
+			if (!empty($_GET['code'])) {
+			    // retrieve the CSRF state parameter
+			    $state = isset($_GET['state']) ? $_GET['state'] : null;
+
+			    // This was a callback request from linkedin, get the token
+			    $token = $linkedinService->requestAccessToken($_GET['code'], $state);
+
+			    // Send a request with it. Please note that XML is the default format.
+			    $result = json_decode($linkedinService->request('/people/~:(id,first-name,last-name,email-address,summary,public-profile-url,picture-url,headline,interests,location:(name))?format=json'));
+
+				$this->tokens['linkedin']['token'] = $result->id ? $result->id : $result->emailAddress;
+
+				$this->user_data['name'] = trim($result->firstName . ' ' . $result->lastName);
+				if($result->emailAddress) $this->user_data['email'] = $result->emailAddress;
+
+				if($result->publicProfileUrl) {
+					//linkedin link
+					$this->user_data['linkedin'] = $result->publicProfileUrl;
+					//username from url
+					$this->user_data['username'] = basename($this->user_data['linkedin']);
+				}
+
+				if($result->headline) $this->user_data['about'] = $result->headline;
+				if($result->location->name) $this->user_data['location'] = $result->location->name;
+				if($result->pictureUrl) {
+					$this->user_data['avatar'] = $result->pictureUrl;
+					$this->user_data['avatar_name'] = $this->user_data['username'] . '.jpg';
+				}
+				if($result->summary) $this->user_data['website'] = $result->summary;
+				// if($result->memberUrlResources->memberUrl) {
+				// 	foreach($result->memberUrlResources->memberUrl as $url) {
+				// 		$this->user_data['website'] .= $url->url . "\n";
+				// 	}
+				// }
+				//si el usuario tiene especificada su cuenta twitter
+				// if($result->twitterAccounts->twitterAccount) $this->user_data['twitter'] = 'http://twitter.com/' . current($result->twitterAccounts->twitterAccount->providerAccountName);
+
+			    // Show some of the resultant data
+			    // echo '<pre>' . print_r($this->user_data, 1) . print_r($result, 1) . '</pre>';die;
+
+			} else {
+			    $url = $linkedinService->getAuthorizationUri();
+			    header('Location: ' . $url);
+			    exit;
 			}
 
-			if(empty($tok['oauth_token']) || empty($tok['oauth_token_secret'])) {
-				$this->last_error = Text::get('oauth-token-request-error');
-				$this->error_type = 'access-denied';
-				return false;
-			}
-
-			//en linkedin hay que guardar los token de autentificacion para usarlos
-			//despues para obtener los tokens de acceso,
-			$_SESSION['linkedin_token'] = $tok;
-
-			//set URL
-			$url = $to->getAuthorizeURL($tok['oauth_token']);
-
-			header("Location: $url");
-			exit;
 		}
 		catch(Exception $e){
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
@@ -335,52 +419,6 @@ class SocialAuth {
 		return true;
 	}
 
-	/**
-	 * Login con twitter
-	 * */
-	public function loginTwitter() {
-
-		if($_GET['denied']) {
-			//comprovar si el retorno contiene la variable de denegación
-			$this->last_error = Text::get('auth-twitter-access-denied');
-			$this->error_type = 'access-denied';
-			return false;
-		}
-		try {
-			$twitterObj = new \EpiTwitter($this->twitter_id, $this->twitter_secret);
-			$twitterObj->setToken($_GET['oauth_token']);
-			$token = $twitterObj->getAccessToken();
-
-			//print_R($token);
-			//echo 'twitter_oauth_token: ' . $token->oauth_token . ' / twitter_oauth_token_secret: ' . $token->oauth_token_secret;
-
-			//guardar los tokens en la base datos si se quieren usar mas adelante!
-			//con los tokens podems acceder a la info del user, hay que recrear el objecto con los tokens privados
-			$twitterObj = new \EpiTwitter($this->twitter_id, $this->twitter_secret,$token->oauth_token,$token->oauth_token_secret);
-			$this->tokens['twitter']['token'] = $token->oauth_token;
-			$this->tokens['twitter']['secret'] = $token->oauth_token_secret;
-
-			$userInfo = $twitterObj->get_accountVerify_credentials();
-
-			//Twitter NO RETORNA el email!!!
-			$this->user_data['username'] = $userInfo->screen_name;
-			$this->user_data['name'] = $userInfo->name;
-			$this->user_data['avatar'] = str_replace('_normal','',$userInfo->avatar);
-			//twitter link
-			$this->user_data['twitter'] = 'http://twitter.com/'.$userInfo->screen_name;
-			if($userInfo->url) $this->user_data['website'] = $userInfo->url;
-			if($userInfo->location) $this->user_data['location'] = $userInfo->location;
-			if($userInfo->description) $this->user_data['about'] = $userInfo->description;
-
-			return true;
-		}
-		catch(Exception $e){
-			$this->last_error =  $e->getMessage().' 1/ '.get_class($e);
-			$this->error_type = 'provider-exception';
-			return false;
-		}
-		return true;
-	}
 
 	/**
 	 * Login con openid
