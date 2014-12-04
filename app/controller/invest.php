@@ -12,8 +12,8 @@ namespace Goteo\Controller {
         Goteo\Library\Template,
         Goteo\Library\Message,
         Goteo\Library\Paypal,
-        Goteo\Library\Tpv;
-    use Goteo\Library\Currency;
+        Goteo\Library\Tpv,
+        Goteo\Library\Currency;
 
     class Invest extends \Goteo\Core\Controller {
 
@@ -27,6 +27,9 @@ namespace Goteo\Controller {
          *  Este controlador no sirve ninguna página
          */
         public function index ($project = null) {
+
+            $debug = false;
+
             if (empty($project))
                 throw new Redirection('/discover', Redirection::TEMPORARY);
 
@@ -96,16 +99,17 @@ namespace Goteo\Controller {
                 // insertamos los datos personales del usuario si no tiene registro aun
                 Model\User::setPersonal($_SESSION['user']->id, $address, false);
 
+                if ($debug) echo \trace($_POST);
                 // conversión a euros
                 if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY) {
-                    $rates = Currency::rate();
-                    $rate = $rates[$_SESSION['currency']];
+                    $rate = Currency::rate();
                 } else {
                     $rate = 1;
                 }
                 $amount_original = $_POST['amount'];
-                $amount =  $amount_original / $rate;
-                $amount = \number_format($amount, 0, '');
+                $amount =  round($amount_original / $rate);
+                if ($debug) var_dump("$amount_original / $rate = $amount  from aprox ".($amount_original / $rate) );
+                $amount = \number_format($amount, 0, '', '');
 
                 $invest = new Model\Invest(
                     array(
@@ -122,6 +126,8 @@ namespace Goteo\Controller {
                         'resign' => $resign
                     )
                 );
+
+                if ($debug) die(\trace($invest));
 
                 if ($reward) {
                     $invest->rewards = array($chosen);
@@ -177,7 +183,7 @@ namespace Goteo\Controller {
                             break;
                     }
                 } else {
-                    Message::Error(Text::get('invest-create-error'));
+                    Message::Error(Text::get('invest-create-error').'<br />'.implode('<br />, $errors)'));
                 }
 			} else {
                 Message::Error(Text::get('invest-data-error'));
