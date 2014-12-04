@@ -53,7 +53,7 @@ namespace Goteo\Controller {
             if (isset($_POST['amount'])) {
                 $_SESSION['invest-amount'] = $_POST['amount'];
                 $msg = Text::get('user-login-required-login');
-                $msg .= (!empty($_POST['amount'])) ? '. ' . Text::get('invest-alert-investing') . ' ' . $_POST['amount'] . '&euro;' : '';
+                $msg .= (!empty($_POST['amount'])) ? '. ' . Text::get('invest-alert-investing') . ' ' . $_POST['amount'] . $_SESSION['currency'] : '';
                 Library\Message::Info($msg);
             }
 
