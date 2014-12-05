@@ -11,7 +11,8 @@ include __DIR__ . '/../header.html.php';
 
 $error = $this['error'];
 $message = $this['message'];
-extract($_POST);
+$email = $this['email'];
+
 ?>
 <div id="sub-header">
 	<div class="clearfix">
@@ -39,7 +40,7 @@ extract($_POST);
                 <form action="/user/recover" method="post">
                     <div class="email">
                         <label><?php echo Text::get('login-recover-email-field'); ?>
-                        <input type="text" name="email" value="<?php echo $email?>" /></label>
+                        <input type="text" name="email" value="<?php echo $email; ?>" /></label>
                     </div>
 
                     <input type="submit" name="recover" value="<?php echo Text::get('login-recover-button'); ?>" />

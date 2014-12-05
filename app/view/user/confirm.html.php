@@ -91,10 +91,10 @@ jQuery(document).ready(function($) {
 			<p><?php echo Text::get('oauth-login-imported-data'); ?></p>
 			<?php
 			//print_r($_POST);
-			if($profile_image_url) echo '<img style="float:left;width:200px;max-height:200px;" src="'.$profile_image_url.'" alt="Imported profile image" />';
+			if($avatar) echo '<img style="float:left;width:200px;max-height:200px;" src="'.$avatar.'" alt="Imported profile image" />';
 			echo "<div>";
-			foreach(array_merge($oauth->import_user_data,array('website')) as $k) {
-				if($$k) echo '<strong>'.Text::get('oauth-import-'.$k).':</strong><br />'.nl2br($$k)."<br /><br />\n";
+			foreach(array_merge($oauth->import_user_data, array('website')) as $k) {
+				if($$k && $k != 'avatar') echo '<strong>'.Text::get('oauth-import-'.$k).':</strong><br />'.nl2br($$k)."<br /><br />\n";
 			}
 
 			echo "</div>\n";
