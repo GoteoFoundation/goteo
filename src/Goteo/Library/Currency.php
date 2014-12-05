@@ -83,11 +83,11 @@ class Currency {
         // si lo estamos forzando
         if (isset($force)) {
             $newCur = strtoupper($force);
+            if (!isset(self::$currencies[$newCur])) $newCur = $default_currency;
 
         } elseif (isset($_GET['currency']) && !empty($_GET['currency'])) {
 
             $newCur = strtoupper($_GET['currency']);
-
             if (!isset(self::$currencies[$newCur])) $newCur = $default_currency;
 
             setcookie("currency", $newCur, time() + 3600 * 24 * 365);
