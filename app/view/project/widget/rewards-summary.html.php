@@ -47,7 +47,7 @@ uasort($project->individual_rewards,
                     echo Text::get('project-rewards-individual_reward-units_left', $units); ?><br />
                 <?php endif; ?>
                 <div class="investors"><span class="taken"><?php echo $individual->taken; ?></span><?php echo Text::get('project-view-metter-investors'); ?></div>
-                <?php if ($project->status ==3 && !$individual->none) : ?><a href="<?php echo SEC_URL."/project/{$project->id}/invest?amount=".\amount_format($individual->amount, 0, false); ?>" class="button violet"><?php echo Text::get('regular-getit'); ?></a><?php endif; ?>
+                <?php if ($project->status ==3 && !$individual->none) : ?><a href="<?php echo SEC_URL."/project/{$project->id}/invest?amount=".\amount_format($individual->amount, 0, true); ?>" class="button violet"><?php echo Text::get('regular-getit'); ?></a><?php endif; ?>
         </li>
         <?php endforeach ?>
         </ul>

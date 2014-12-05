@@ -210,7 +210,7 @@ namespace Goteo\Model {
             $values = array(
                 ':id'   => md5($user.'-'.$num),
                 ':name' => "El nuevo proyecto de {$userProfile->name}",
-                ':lang' => 'es',
+                ':lang' => !empty($_SESSION['lang']) ? $_SESSION['lang'] : 'es',
                 ':currency' => 'EUR',
                 ':currency_rate' => 1,
                 ':status'   => 1,
