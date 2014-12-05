@@ -157,9 +157,6 @@ define('OAUTH_TWITTER_SECRET', '-----------------------------------'); //
 define('OAUTH_LINKEDIN_ID', '-----------------------------------'); //
 define('OAUTH_LINKEDIN_SECRET', '-----------------------------------'); //
 
-//Un secreto inventado cualquiera para encriptar los emails que sirven de secreto en openid
-define('OAUTH_OPENID_SECRET','-----------------------------------');
-
 // recaptcha
 define('RECAPTCHA_PUBLIC_KEY','-----------------------------------');
 define('RECAPTCHA_PRIVATE_KEY','-----------------------------------');
