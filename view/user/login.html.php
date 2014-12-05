@@ -96,7 +96,7 @@ jQuery(document).ready(function($) {
 
                 </form>
 
-                <p><a href="<?php echo SEC_URL; ?>/user/recover"><?php echo Text::get('login-recover-link'); ?></a></p>
+                <p><a href="<?php echo SEC_URL; ?>/user/recover?email=<?php echo $username; ?>"><?php echo Text::get('login-recover-link'); ?></a></p>
                 <br />
                 <p><a class="baja" href="<?php echo SEC_URL; ?>/user/leave"><?php echo Text::get('login-leave-button'); ?></a></p>
 
