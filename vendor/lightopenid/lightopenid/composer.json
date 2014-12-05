@@ -1,0 +1,13 @@
+{
+    "name": "lightopenid/lightopenid",
+    "type": "library",
+    "keywords": ["openid"],
+    "homepage": "http://code.google.com/p/lightopenid/",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.2.3"
+    },
+    "autoload": {
+        "classmap": ["./"]
+    }
+}
