@@ -857,7 +857,8 @@ namespace Goteo\Controller {
                     if ($id = $query->fetchColumn()) {
                         if (!empty($id)) {
                             // el token coincide con el email y he obtenido una id
-                            Model\User::query('UPDATE user SET active = 1 WHERE id = ?', array($id));
+                            // Activamos y dejamos de esconder el usuario
+                            Model\User::query('UPDATE user SET active = 1, hide = 0, confirmed = 1 WHERE id = ?', array($id));
                             $user = Model\User::get($id);
                             self::loginUser($user, false);
                             $_SESSION['recovering'] = $user->id;
