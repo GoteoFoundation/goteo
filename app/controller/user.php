@@ -246,7 +246,7 @@ namespace Goteo\Controller {
                                 Library\Message::Error(Text::get('login-fail'));
                             }
                             return new View(
-                                            'view/user/confirm_account.html.php',
+                                            'user/confirm_account.html.php',
                                             array(
                                                 'oauth' => $oauth,
                                                 'user' => Model\User::get($u->id)

@@ -83,7 +83,7 @@ namespace Goteo\Model {
          * @return type mixed
          */
         public function __get ($name) {
-            if($name == "content") {
+            if($name == 'content') {
 	            return $this->getContent();
 	        }
             return $this->$name;
@@ -135,7 +135,7 @@ namespace Goteo\Model {
                     return true;
 
             	} catch(\PDOException $e) {
-                    $errors[] = "No se ha podido guardar la imagen: " . $e->getMessage();
+                    $errors[] = 'No se ha podido guardar la imagen: ' . $e->getMessage();
                     return false;
     			}
             }
@@ -216,7 +216,7 @@ namespace Goteo\Model {
                 $errors['image'][] = Text::get('error-image-type');
             }
 
-            if(empty($this->tmp) || $this->tmp == "none") {
+            if(empty($this->tmp) || $this->tmp == 'none') {
                 $errors['image'][] = Text::get('error-image-tmp');
             }
 
@@ -257,7 +257,7 @@ namespace Goteo\Model {
                 $image->id = $id;
                 $image->hash = md5($id);
 
-                if ($debug) echo "Not numeric, from name: <br />";
+                if ($debug) echo 'Not numeric, from name: <br />';
                 if ($debug) echo \trace($image);
                 if ($debug) echo $image->getLink(150, 85);
                 if ($debug) die;
@@ -285,7 +285,7 @@ namespace Goteo\Model {
 
             try {
                 $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
-                $sql .= ($which == 'project') ? " ORDER BY section ASC, `order` ASC, image DESC" : " ORDER BY image ASC";
+                $sql .= ($which == 'project') ? ' ORDER BY section ASC, `order` ASC, image DESC' : ' ORDER BY image ASC';
                 $query = self::query($sql, array($id));
                 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
                     $gallery[] = self::get($image['image']);
@@ -319,7 +319,7 @@ namespace Goteo\Model {
 
             try {
                 $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
-                if ($which == 'project') $sql .= " ORDER BY section ASC, `order` ASC";
+                if ($which == 'project') $sql .= ' ORDER BY section ASC, `order` ASC';
                 $query = self::query($sql, array($id));
                 foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
                     $gallery[] = $image['image'];

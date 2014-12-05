@@ -2,6 +2,7 @@
 
 namespace Goteo\Library\OAuth;
 use Goteo\Model\User,
+    Goteo\Model\Image,
     Goteo\Core\Model,
     OAuth\OAuth2\Service\Facebook,
 	OAuth\Common\Storage\Session as Storage,
@@ -428,7 +429,7 @@ class SocialAuth {
 
 		$username = '';
 		//comprovar si existen tokens
-		$query = Goteo\Core\Model::query('SELECT user.id FROM user
+		$query = Model::query('SELECT user.id FROM user
 										  INNER JOIN user_login ON user.id = user_login.user
 										  AND user_login.provider = :provider
 										  AND user_login.oauth_token = :token
@@ -448,7 +449,7 @@ class SocialAuth {
 			 * por tanto, en caso de que no existan tokens, se deberá preguntar la contraseña al usuario
 			 * si el usuario no tiene contraseña, podemos permitir el acceso directo o denegarlo (mas seguro)
 			 * */
-			$query = Goteo\Core\Model::query('SELECT user.id,user.password,user.active,user_login.provider,user_login.oauth_token,user_login.oauth_token_secret FROM user
+			$query = Model::query('SELECT user.id,user.password,user.active,user_login.provider,user_login.oauth_token,user_login.oauth_token_secret FROM user
 											  LEFT JOIN user_login ON user_login.user = user.id
 											  WHERE user.email = :user
 											  ORDER BY user_login.datetime ASC',
@@ -534,7 +535,7 @@ class SocialAuth {
 				//actualizar la imagen de avatar si no tiene!
 				if($key == 'avatar') {
 					$value = '';
-					$img = new Goteo\Model\Image($this->user_data['avatar'], $this->user_data['avatar_name']);
+					$img = new Image($this->user_data['avatar'], $this->user_data['avatar_name']);
 					$img->save($errors, false);
 					if($img->id) {
 						$value = $img->id;
@@ -542,7 +543,7 @@ class SocialAuth {
 					//mirar en gravatar si no tiene ninguna de social
 					else {
 						$url = 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($user->email))) . '.jpg?s=400&d=404';
-						$img = new Goteo\Model\Image( $url , "$username.jpg");
+						$img = new Image( $url , "$username.jpg");
 						$img->save($errors, false);
 						if($img->id) {
 							$value = $img->id;
@@ -579,7 +580,7 @@ class SocialAuth {
 				foreach($webs[0] as $web) {
 					$web = strtolower($web);
 					if(!in_array($web,$current_webs)) {
-						Goteo\Core\Model::query('INSERT user_web (user, url) VALUES (:user, :url)', array(':user' => $username, ':url' => $web));
+						Model::query('INSERT user_web (user, url) VALUES (:user, :url)', array(':user' => $username, ':url' => $web));
 					}
 				}
 			}
