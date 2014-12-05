@@ -416,7 +416,7 @@ class SocialAuth {
 	 * Guarda los tokens si se encuentra el usuario
 	 * Actualiza datos de usuario si desde la red social
 	 *
-	 * @param $force_login	logea en goteo sin comprovar que la contraseña esté vacía o que el usuario este activo
+	 * @param $force_login	logea en goteo sin comprovar que la contraseña esté vacía o que el usuario este confirmado
 	 * */
 	public function goteoLogin($force_login = false) {
 		/*****
@@ -433,7 +433,8 @@ class SocialAuth {
 										  INNER JOIN user_login ON user.id = user_login.user
 										  AND user_login.provider = :provider
 										  AND user_login.oauth_token = :token
-										  AND user_login.oauth_token_secret = :secret',
+										  AND user_login.oauth_token_secret = :secret
+										  ',
 									array(':provider' => $this->provider,
 										  ':token' => $this->tokens[$this->provider]['token'],
 										  ':secret' => $this->tokens[$this->provider]['secret']));
@@ -448,7 +449,7 @@ class SocialAuth {
 			 * por tanto, en caso de que no existan tokens, se deberá preguntar la contraseña al usuario
 			 * si el usuario no tiene contraseña, podemos permitir el acceso directo o denegarlo (mas seguro)
 			 * */
-			$query = Goteo\Core\Model::query('SELECT user.id,user.password,user_login.provider,user_login.oauth_token,user_login.oauth_token_secret FROM user
+			$query = Goteo\Core\Model::query('SELECT user.id,user.password,user.active,user_login.provider,user_login.oauth_token,user_login.oauth_token_secret FROM user
 											  LEFT JOIN user_login ON user_login.user = user.id
 											  WHERE user.email = :user
 											  ORDER BY user_login.datetime ASC',
@@ -469,7 +470,15 @@ class SocialAuth {
                 	break;
                 }
             }
+
 			if($user) {
+
+			    if(!$user->active) {
+			        $this->last_error = Text::get('user-account-inactive') . $user->id;
+			        $this->error_type = 'user-inactive';
+			        return false;
+			    }
+
 				// print_r($user);die;
 				$username = $user->id;
 				// si no existe contraseña permitimos acceso siempre y cuando
@@ -511,6 +520,12 @@ class SocialAuth {
 		//el usuario existe, creamos el objeto
 		$query = Goteo\Core\Model::query('SELECT * FROM user WHERE id = ?', $username);
 		$user = $query->fetchObject();
+	    if(!$user->active) {
+	        $this->last_error = Text::get('user-account-inactive');
+	        $this->error_type = 'user-inactive';
+	        return false;
+	    }
+	    // print_r($user);die;
 		//actualizar datos de usuario si no existen:
 		$update = array();
 		$data = array(':user' => $username);

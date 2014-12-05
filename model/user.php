@@ -338,7 +338,7 @@ namespace Goteo\Model {
 			try {
 				$sql = "REPLACE INTO user_lang SET " . $set;
 				self::query($sql, $values);
-            	
+
 				return true;
 			} catch(\PDOException $e) {
                 $errors[] = "El usuario {$this->id} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -728,7 +728,7 @@ namespace Goteo\Model {
                             SELECT DISTINCT(user)
                             FROM message
                             WHERE thread IN (
-                                SELECT id 
+                                SELECT id
                                 FROM message
                                 WHERE thread IS NULL
                                 AND blocked = 1
@@ -926,7 +926,7 @@ namespace Goteo\Model {
                     ON  user_role.user_id = user.id
                     AND user_role.role_id = 'admin'
                 ";
-            
+
             if ($availableonly) {
                 $sql .= " WHERE id NOT IN (SELECT distinct(user) FROM user_node)";
             }
@@ -999,13 +999,15 @@ namespace Goteo\Model {
 		 * @param string $password Contraseña
 		 * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
 		 */
-		public static function login ($username, $password) {
-            
+		public static function login ($username, $password, $allow_login_by_mail = true) {
+
+            $field = 'id';
+            if($allow_login_by_mail && strpos($username, '@') !== false) $field = 'email';
             $query = self::query("
                     SELECT
                         id
                     FROM user
-                    WHERE BINARY id = :username
+                    WHERE BINARY $field = :username
                     AND BINARY password = :password",
 				array(
 					':username' => trim($username),
@@ -1075,24 +1077,38 @@ namespace Goteo\Model {
 		 * @param string $email    Email de la cuenta
 		 * @return boolean true|false  Correctos y mail enviado
 		 */
-		public static function recover ($email = null) {
+		public static function recover ($email = null, $allow_recover_by_id = true) {
             $URL = \SITE_URL;
+            $field = 'email';
+            if($allow_recover_by_id && strpos($email, '@') === false) $field = 'id';
             $query = self::query("
                     SELECT
                         id,
                         name,
-                        email
+                        email,
+                        token
                     FROM user
-                    WHERE BINARY email = :email
+                    WHERE BINARY $field = :email
                     ",
 				array(
 					':email'    => trim($email)
 				)
 			);
-			if($row = $query->fetchObject()) {
+
+            if($row = $query->fetchObject()) {
                 // tenemos id, nombre, email
                 // genero el token
                 $token = md5(uniqid()).'¬'.$row->email.'¬'.date('Y-m-d');
+                // Obtener el token antiguo si existe
+                if($row->token && strpos($row->token, '¬') !== false) {
+                    $t = explode('¬', $row->token);
+
+                    //si el token actual no es muy antiguo (4 dias) lo reeusamos
+                    if($t[2] && strtotime($t[2]) + (3600*24*4) > time()) {
+                        $token = $row->token;
+                    }
+                }
+                // die("[$token] [" . \mybase64_encode($token). "]");
                 self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
 
                 // Obtenemos la plantilla para asunto y contenido
@@ -1245,14 +1261,14 @@ namespace Goteo\Model {
     	 * @return type int (id geolocation)
     	 */
     	private function setGeoloc ($loc) {
-            
+
             $errors = array();
-            
+
             $geoloc = new User\Location(array(
                 'user' => $this->id,
                 'location' => $loc
             ));
-            
+
             if ($geoloc->save($errors)) {
                 return $loc;
             } else {
@@ -1474,7 +1490,7 @@ namespace Goteo\Model {
 		private function getRoles () {
 
             $roles = array();
-            
+
 		    $query = self::query('
 		    	SELECT
 		    		role.id as id,
@@ -1488,7 +1504,7 @@ namespace Goteo\Model {
             }
             // añadimos el de usuario normal
             $roles['user'] = (object) array('id'=>'user', 'name'=>'Usuario registrado');
-            
+
             return $roles;
 
 		}

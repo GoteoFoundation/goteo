@@ -73,9 +73,11 @@ namespace Goteo\Controller {
         }
 
         /**
-         * Logea un usuario
+         * Logea un usuario en session
+         * @param  Model\User $user     El objecto User a logoear
+         * @param  boolean   $redirect Si ha que procesar las directivas de redireccion o no
+         * @return Model\User           El usuario si no hay redirección
          */
-
         static public function loginUser(Model\User $user, $redirect = true) {
             $_SESSION['user'] = $user;
 
@@ -218,17 +220,16 @@ namespace Goteo\Controller {
                 //no hará falta comprovar la contraseña ni el estado del usuario
                 $skip_validations = array('password', 'active');
 
-                //si el email proviene del proveedor de oauth, podemos confiar en el y lo activamos por defecto
+                //si el email proviene del proveedor de oauth, podemos confiar en el y lo confirmamos por defecto
                 if ($_POST['provider_email'] == $user->email) {
                     $user->confirmed = 1;
                 }
-                //comprovamos si ya existe el usuario
-                //en caso de que si, se comprovará que el password sea correcto
-                $query = Model\User::query('SELECT id,password,active FROM user WHERE email = ?', array($user->email));
+
+                $query = Model\User::query('SELECT id,password FROM user WHERE email = ?', array($user->email));
                 if ($u = $query->fetchObject()) {
                     if ($u->password == sha1($_POST['password'])) {
                         //ok, login en goteo e importar datos
-                        //y fuerza que pueda logear en caso de que no esté activo
+                        //y fuerza que pueda logear en caso de que no tenga contraseña o email sin confirmar
                         if ($user = $oauth->goteoLogin(true)) {
                             //login!
                             self::loginUser($user);
@@ -259,7 +260,7 @@ namespace Goteo\Controller {
                     }
                 } elseif ($user->save($errors, $skip_validations)) {
                     //si el usuario se ha creado correctamente, login en goteo e importacion de datos
-                    //y fuerza que pueda logear en caso de que no esté activo
+                    //y fuerza que pueda logear en caso de que no tenga contraseña o email sin confirmar
                     if ($user = $oauth->goteoLogin(true)) {
                         //login!
                         self::loginUser($user);
@@ -858,7 +859,7 @@ namespace Goteo\Controller {
                             // el token coincide con el email y he obtenido una id
                             Model\User::query('UPDATE user SET active = 1 WHERE id = ?', array($id));
                             $user = Model\User::get($id);
-                            self::loginUser($user);
+                            self::loginUser($user, false);
                             $_SESSION['recovering'] = $user->id;
                             throw new Redirection(SEC_URL.'/dashboard/profile/access/recover#password');
                         }
@@ -873,6 +874,7 @@ namespace Goteo\Controller {
                 if (!empty($email) && Model\User::recover($email)) {
                     $message = Text::get('recover-email-sended');
                     unset($_POST['email']);
+                    unset($_REQUEST['email']);
                 } else {
                     $error = Text::get('recover-request-fail');
                 }
@@ -882,6 +884,7 @@ namespace Goteo\Controller {
                             'view/user/recover.html.php',
                             array(
                                 'error' => $error,
+                                'email' => $_REQUEST['email'],
                                 'message' => $message
                             )
             );
