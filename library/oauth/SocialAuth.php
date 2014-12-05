@@ -591,6 +591,8 @@ class SocialAuth {
 
 	    //Guardar en una cookie la preferencia de "login with"
         //servira para mostrar al usuario primeramente su opcion preferida
+        //borrar cookie antigua si existe
+        setcookie('goteo_oauth_provider', '', time() -3600);
         setcookie('goteo_oauth_provider', $this->original_provider, time() + 3600*24*365, '/');
 
 		//return user
