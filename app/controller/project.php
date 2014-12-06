@@ -102,18 +102,6 @@ namespace Goteo\Controller {
 
             $currency_data = Library\Currency::$currencies[$project->currency];
 
-            // si no tenemos SESSION stepped es porque no venimos del create
-            if (!isset($_SESSION['stepped']))
-                $_SESSION['stepped'] = array(
-                     'userProfile'  => 'userProfile',
-                     'userPersonal' => 'userPersonal',
-                     'overview'     => 'overview',
-                     'images'       => 'images',
-                     'costs'        => 'costs',
-                     'rewards'      => 'rewards',
-                     'supports'     => 'supports'
-                );
-
             // al impulsor se le prohibe ver ningun paso cuando ya no está en edición
             if ($project->status != 1 && $project->owner == $_SESSION['user']->id ) {
                 // solo puede estar en preview
@@ -127,6 +115,41 @@ namespace Goteo\Controller {
                     )
                 );
 
+
+            } elseif ($project->draft) {
+                // primer borrador, menos pasos
+                $steps = array(
+                    'userProfile' => array(
+                        'name' => Text::get('step-1'),
+                        'title' => Text::get('step-userProfile'),
+                        'offtopic' => true
+                    ),
+                    'overview' => array(
+                        'name' => Text::get('step-3'),
+                        'title' => Text::get('step-overview')
+                    ),
+                    'images' => array(
+                        'name' => Text::get('step-3b'),
+                        'title' => Text::get('step-images')
+                    ),
+                    'costs'=> array(
+                        'name' => Text::get('step-4'),
+                        'title' => Text::get('step-costs')
+                    ),
+                    'rewards' => array(
+                        'name' => Text::get('step-5'),
+                        'title' => Text::get('step-rewards')
+                    ),
+                    'supports' => array(
+                        'name' => Text::get('step-6'),
+                        'title' => Text::get('step-supports')
+                    ),
+                    'preview' => array(
+                        'name' => Text::get('step-7'),
+                        'title' => Text::get('step-preview'),
+                        'offtopic' => true
+                    )
+                );
 
             } else {
                 // todos los pasos
@@ -193,10 +216,7 @@ namespace Goteo\Controller {
                 foreach ($steps as $id => &$data) {
 
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
-                        // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
-                        if (!in_array($id, $_SESSION['stepped'])) {
-                            $_SESSION['stepped'][$id] = $id;
-                        }
+                        // Ok...
                     }
 
                 }
@@ -378,7 +398,7 @@ namespace Goteo\Controller {
             }
 
             // checkear errores
-            $project->check();
+            $project->check($steps);
 
             // variables para la vista
             $viewData = array(
@@ -487,7 +507,6 @@ namespace Goteo\Controller {
 
             $project = new Model\Project;
             if ($project->create(NODE_ID)) {
-                $_SESSION['stepped'] = array();
 
                 // Evento Feed
                 $log = new Feed();

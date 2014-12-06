@@ -2,14 +2,29 @@
 
 use Goteo\Library\Text;
 
+$errors = $this['errors'];
+$steps = $this['steps'];
 
-/*
- * No hay más paso dos
-                    <span class="step off-off off<?php if ($this['step'] === 'userPersonal') echo ' active'; else echo ' activable'; ?>">
-                        <button type="submit" name="view-step-userPersonal" value="<?php echo Text::get('step-2'); ?>"><?php echo Text::get('step-2'); ?>
-                        <strong class="number">2</strong></button>
-                    </span>
+/**
+ *  Estilos
+ * ---------
+ *
+ * first: no tiene linea antes del círculo
+ * off: linea/circulo gris
+ * on: linea/circulo aqua
+ * last: no tiene linea después del circulo
+ *
  */
+$line = array(
+    'userProfile' => ' first-off off',
+    'overview' => ' on-on',
+    'supports' => ' on-on',
+    'preview' => ' off-last off'
+);
+
+// URL
+$url = "/call/edit/{$this['id_call']}/";
+
 ?>
 <div id="project-steps">
             
@@ -18,7 +33,22 @@ use Goteo\Library\Text;
                 <legend><h3><?php echo Text::get('form-navigation_bar-header'); ?></h3></legend>
 
                 <div class="steps">
-                    
+
+                    <?php foreach ($steps as $stepId => $stepData) {
+
+                        // circulito
+                        $active = ($this['step'] == $stepId) ? ' active' : ' activable';
+
+                        echo '<a href="' . $url . $stepId . '" title="' . $stepData['title'] . '">
+                            <span class="step' . $line[$stepId] . $active . '">
+                                <button type="button" name="view-step-' . $stepId . '" value="' . $stepId . '">' . $stepData['name'] . '</button>
+                            </span>
+                        </a>
+                        ';
+
+                    } ?>
+
+                    <?php /**************************************************************************
                     <a href="/call/edit/<?php echo $this['id_call']; ?>/userProfile">
                     <span class="step first-off off<?php if ($this['step'] === 'userProfile') echo ' active'; else echo ' activable'; ?>">
                         <button type="button" name="view-step-userProfile" value="userProfile"><?php echo Text::get('step-1'); ?>
@@ -46,6 +76,8 @@ use Goteo\Library\Text;
                         <strong class="number"></strong></button>
                     </span>
                     </a>
+
+                    **********************/ ?>
 
                 </div>
 

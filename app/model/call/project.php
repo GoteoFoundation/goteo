@@ -41,7 +41,7 @@ namespace Goteo\Model\Call {
 
                 $and = "WHERE";
                 if (!isset($filters['all'])) {
-                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
                     $and = "AND";
                 }
                 if (isset($filters['published'])) {
@@ -76,7 +76,7 @@ namespace Goteo\Model\Call {
                             project.called as called,
                             project.amount_users as amount_users,
                             project.amount_call as amount_call,
-                            project.id REGEXP '[0-9a-f]{5,40}' as draft,
+                            project.id REGEXP '[0-9a-f]{32}' as draft,
                             IF(project.passed IS NULL, 1, 2) as round,
                             user.id as user_id,
                             user.name as user_name,
@@ -141,9 +141,9 @@ namespace Goteo\Model\Call {
 
                 $and = "WHERE";
                 if (!isset($filters['all'])) {
-                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
                     $and = "AND";
-                    $sql_draft ="project.id REGEXP '[0-9a-f]{5,40}' as draft,";
+                    $sql_draft ="project.id REGEXP '[0-9a-f]{32}' as draft,";
                 }
                 if (isset($filters['published'])) {
                     $sqlFilter .= " $and project.status >= 3";
@@ -204,7 +204,7 @@ namespace Goteo\Model\Call {
                         project.status as status,
                         project.project_location as location
                     FROM project
-                    WHERE (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{5,40}') )
+                    WHERE (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{32}') )
                     AND project.status < 4
                     AND project.id IN (
                                         SELECT distinct(project)
@@ -769,7 +769,7 @@ namespace Goteo\Model\Call {
                             ON project.id = call_project.project
                             AND (
                                   project.status > 1
-                                  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}')
+                                  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}')
                               )
                         WHERE call.id = :call
                         ";
