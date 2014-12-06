@@ -114,15 +114,6 @@ namespace Goteo\Controller {
                 unset($log);
             }
 
-            // si no tenemos SESSION stepped es porque no venimos del create
-            if (!isset($_SESSION['stepped']))
-                $_SESSION['stepped'] = array(
-                     'userProfile'  => 'userProfile',
-                     'userPersonal' => 'userPersonal',
-                     'overview'     => 'overview',
-                     'supports'     => 'supports'
-                );
-
             // aqui uno que pueda entrar a editar siempre puede ir a todos los pasos
             // excepto el autor si ya no está en edición
             if ($call->status != 1 && $call->owner == $_SESSION['user']->id) {
@@ -180,10 +171,7 @@ namespace Goteo\Controller {
                 foreach ($steps as $id => &$data) {
 
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$call, &$errors))) {
-                        // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
-                        if (!in_array($id, $_SESSION['stepped'])) {
-                            $_SESSION['stepped'][$id] = $id;
-                        }
+                        // ok... nada más
                     }
 
                 }
@@ -369,7 +357,6 @@ namespace Goteo\Controller {
                 // deberiamos poder crearla
                 $call = new Model\Call;
                 if ($call->create($name, $caller, $errors)) {
-                    $_SESSION['stepped'] = array();
 
                     // Evento Feed
                     $log = new Feed();

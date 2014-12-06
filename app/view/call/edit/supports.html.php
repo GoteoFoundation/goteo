@@ -269,7 +269,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-preview',
+                            'name'  => 'view-step-'.$this['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

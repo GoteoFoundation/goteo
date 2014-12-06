@@ -434,7 +434,7 @@ namespace Goteo\Model {
                             ON project.id = call_project.project
                             AND (
                                   project.status > 1
-                                  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}')
+                                  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}')
                               )
                         WHERE call.id = :call
                         ";
