@@ -211,7 +211,7 @@ namespace Goteo\Model {
             $values = array(
                 ':id'   => md5($user.'-'.$num),
                 ':name' => "El nuevo proyecto de {$userProfile->name}",
-                ':lang' => 'es',
+                ':lang' => !empty($_SESSION['lang']) ? $_SESSION['lang'] : 'es',
                 ':currency' => 'EUR',
                 ':currency_rate' => 1,
                 ':status'   => 1,
@@ -1593,11 +1593,11 @@ namespace Goteo\Model {
 
                 if (empty($this->contract_nif)) {
                     $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract_nif');
-                } elseif (!Check::nif($this->contract_nif) && !Check::vat($this->contract_nif)) {
+                } elseif ( !Check::nif($this->contract_nif) ) {
                     $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract_nif');
                 } else {
-                     $okeys['userPersonal']['contract_nif'] = 'ok';
-                     ++$score;
+                    $okeys['userPersonal']['contract_nif'] = 'ok';
+                    ++$score;
                 }
 
                 if (empty($this->contract_email)) {

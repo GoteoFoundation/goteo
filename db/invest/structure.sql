@@ -48,3 +48,9 @@ ALTER TABLE `invest` ADD `issue` INT( 1 ) NULL DEFAULT NULL COMMENT 'Problemas c
 -- indice para aportes que generan riego
 ALTER TABLE `invest` ADD INDEX `convocatoria` ( `call` ) ;
 
+-- memo conversión
+ALTER TABLE `invest` ADD `amount_original` INT( 6 ) NULL DEFAULT NULL COMMENT 'Importe introducido por el usuario' AFTER `amount`;
+ALTER TABLE `invest` ADD `currency` VARCHAR(4) NOT NULL DEFAULT 'EUR' COMMENT 'Divisa al aportar' AFTER `amount_original`;
+ALTER TABLE `invest` ADD `currency_rate` DECIMAL(9, 5) NOT NULL DEFAULT 1 COMMENT 'Ratio de conversión a eurio al aportar' AFTER `currency`;
+
+

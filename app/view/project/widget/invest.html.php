@@ -97,7 +97,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
         <li class="<?php echo $individual->icon ?><?php if ($individual->none) echo ' disabled' ?>">
 
             <label class="amount" for="reward_<?php echo $individual->id; ?>">
-                <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo \amount_format($individual->amount,0,0); ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
+                <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo \amount_format($individual->amount,0,true); ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
                 <span class="amount"><?php echo \amount_format($individual->amount); ?></span>
             <!-- <span class="chkbox"></span> -->
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
@@ -128,8 +128,12 @@ if ($step == 'start') : ?>
         <button type="submit" class="button red" name="go-login" value=""><?php echo Text::get('imperative-register'); ?></button>
     </div>
 
-    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span id="amount-reminder"><?php echo $amount; ?></span></div>
+    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount; ?></span></div>
     <div class="reminder"><?php echo Text::html('faq-payment-method'); ?></div>
+
+    <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
+        <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 0, true, true) ); ?></div>
+    <?php endif; ?>
 
 </div>
 <?php else : ?>
@@ -190,7 +194,9 @@ if ($step == 'start') : ?>
 
     <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
 
-    <div class="reminder"><?php echo \vsprintf(Text::html('currency-alert'), array($_SESSION['currency'])); ?></div>
+    <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
+    <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 0, true, true) ); ?></div>
+    <?php endif; ?>
 
 </div>
 <?php endif; ?>
@@ -288,14 +294,21 @@ if ($step == 'start') : ?>
         };
 
         // funcion resetear copy de cantidad
-        var reset_reminder = function (amount) {
-            var euros = parseFloat(amount);
-            if (isNaN(euros)) {
-                euros = 0;
+        var reset_reminder = function (rawamount) {
+            var amount = parseInt(rawamount);
+            var rate = parseFloat('<?php echo Currency::rate();?>');
+            if (isNaN(amount)) {
+                amount = 0;
             }
+            if (isNaN(rate)) {
+                rate = 1;
+            }
+            var converted = amount / rate;
+            converted = parseInt(converted);
 
-            $('#amount').val(euros);
-            $('#amount-reminder').html(euros);
+            $('#amount').val(amount);
+            $('#amount-reminder').html(amount);
+            $('#reminder_conversion').html(converted);
         };
 
 /* Actualizar el copy */
@@ -335,6 +348,13 @@ if ($step == 'start') : ?>
 
             var amount = $('#amount').val();
             var rest = $('#rest').val();
+            var rate = parseFloat('<?php echo Currency::rate();?>');
+            if (isNaN(rate)) {
+                rate = 1;
+            }
+            var converted = amount / rate;
+            converted = parseInt(converted);
+
 
             if (parseFloat(amount) == 0 || isNaN(amount)) {
                 alert('<?php echo Text::slash('invest-amount-error') ?>');
@@ -387,12 +407,12 @@ if ($step == 'start') : ?>
             }
 
             if (rest > 0 && greater(amount, rest)) {
-                if (!confirm('<?php echo Text::slash('invest-alert-lackdrop') ?> '+rest+' EUR, ok?')) {
+                if (!confirm('<?php echo Text::slash('invest-alert-lackdrop') ?> '+rest+' <?php $select_currency; ?>, ok?')) {
                     return false;
                 }
             }
 
-            return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' EUR');
+            return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR');
         });
 
 /* Seteo inicial por url */

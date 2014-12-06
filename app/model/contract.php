@@ -440,7 +440,7 @@ namespace Goteo\Model {
 
             if (empty($this->nif)) {
                 $errors['promoter']['nif'] = Text::get('mandatory-project-field-contract_nif');
-            } elseif (!Check::nif($this->nif) && !Check::vat($this->nif)) {
+            } elseif ( !Check::nif($this->nif) ) {
                 $errors['promoter']['nif'] = Text::get('validate-project-value-contract_nif');
             } else {
                  $okeys['promoter']['nif'] = 'ok';

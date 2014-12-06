@@ -83,11 +83,11 @@ class Currency {
         // si lo estamos forzando
         if (isset($force)) {
             $newCur = strtoupper($force);
+            if (!isset(self::$currencies[$newCur])) $newCur = $default_currency;
 
         } elseif (isset($_GET['currency']) && !empty($_GET['currency'])) {
 
             $newCur = strtoupper($_GET['currency']);
-
             if (!isset(self::$currencies[$newCur])) $newCur = $default_currency;
 
             setcookie("currency", $newCur, time() + 3600 * 24 * 365);
@@ -116,7 +116,7 @@ class Currency {
      * @ToDo ( need some way to make this instance persistent, so it shouldn't be created on each request )
      *
      */
-    public static function amount_format($amount, $decs = 0, $symbol = 1) {
+    public static function amount_format($amount, $decs = 0, $nosymbol = false, $revert = false) {
 
         // check odd behaviour
         if (!is_float($amount) && !is_numeric($amount)) {
@@ -137,10 +137,10 @@ class Currency {
 
         if ($currency != $default) {
             $rates = $converter->getRates($default);
-            $amount = $amount * $rates[$currency];
+            $amount = ($revert) ? $amount / $rates[$currency] : $amount * $rates[$currency];
         }
  
-        $symbol= $symbol ? $ccy['html']." " : "";
+        $symbol= $nosymbol ? "" :$ccy['html']." ";
 
         if ($amount === false) {
             return '';

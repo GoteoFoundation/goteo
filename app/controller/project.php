@@ -951,6 +951,16 @@ namespace Goteo\Controller {
                 return false;
             }
 
+            // preveer cambio de divisa
+            if ( $_POST['currency'] != $project->currency || $_POST['currency'] != $_SESSION['currency'] ) {
+                $_SESSION['currency'] = Library\Currency::set($_POST['currency']); // divisa en la que ve la web
+
+                // si el que edita es el impulsor, cambia su preferencia
+                if ($_SESSION['user']->id == $project->owner) {
+                    Model\User::setPreferences($project->owner, array('currency'=>$_SESSION['currency']));
+                }
+            }
+
             // campos que guarda este paso
             // image, media y category  van aparte
             $fields = array(
@@ -973,9 +983,7 @@ namespace Goteo\Controller {
             );
 
             foreach ($fields as $field) {
-//                if (isset($_POST[$field])) {
-                    $project->$field = $_POST[$field];
-//                }
+                $project->$field = $_POST[$field];
             }
 
             // Media
