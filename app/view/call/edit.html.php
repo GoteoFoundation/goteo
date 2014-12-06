@@ -16,6 +16,16 @@ if (!empty($this['success'])) {
 
 $steps  = View::get('call/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'id_call' => $call->id));
 
+// next step
+$debug = (isset($_GET['debug']));
+if ($debug) var_dump($this['step']);
+$keys = array_keys($this['steps']);
+if ($debug) var_dump($keys);
+$next_step = $keys[ array_search($this['step'], $keys) + 1];
+if ($debug) var_dump($next_step);
+if ($debug) die;
+
+
 $superform = true;
 include __DIR__ . '/../prologue.html.php';
 
@@ -40,7 +50,7 @@ include __DIR__ . '/../prologue.html.php';
 
             <?php echo $steps ?>
 
-            <?php if($this['step']) echo View::get("call/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)) ?>
+            <?php if($this['step']) echo View::get("call/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3, 'next'=>$next_step)) ?>
 
             <?php echo $steps ?>
 
