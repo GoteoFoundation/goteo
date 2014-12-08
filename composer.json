@@ -19,7 +19,9 @@
     "lightopenid/lightopenid": "~0.7",
 
     
-    "lusitanian/oauth": "~0.3"
+    "lusitanian/oauth": "~0.3",
+	
+	"paypal/adaptivepayments-sdk-php": "dev-namespace-php5.3"
 
     },
 
