@@ -7,7 +7,18 @@ namespace Goteo\Library {
         Goteo\Library\Feed,
         Goteo\Core\Redirection;
 
-    require_once __DIR__ . '/paypal/adaptivepayments.php';  // SDK paypal para operaciones API (minimizado)
+    // updated: 08/12/2014
+    // OBSOLETO :: require_once __DIR__ . '/paypal/adaptivepayments.php';  // SDK paypal para operaciones API (minimizado)
+    // Ahora usamos /vendor/paypal/* desde composer
+    // Este archivo es el inyector de dependencias:
+    //      - Instantiate 'service wrapper object' and 'request object'
+    //      - Invoke appropiate method on the service object
+
+    // configuración paypal : ruta al sdk_config.ini definido en seetings como \PP_CONFIG_PATH
+
+    use \Paypal\Service as PPService; // namespace de \vendor\paypal\adaptivepayments-sdk-php\lib\PayPal\Service\AdaptivePaymentsService.php
+
+
 
 	/*
 	 * Clase para usar los adaptive payments de paypal
@@ -25,6 +36,17 @@ namespace Goteo\Library {
         public static function preapproval($invest, &$errors = array()) {
 
 			try {
+
+
+
+
+
+                $service  = new \Paypal\Service\AdaptivePaymentsService;
+                var_dump($service);
+                die;
+
+
+
                 $project = Project::getMini($invest->project);
 
                     $returnURL = $invest->urlOK;
@@ -39,17 +61,26 @@ namespace Goteo\Library {
                     $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate)+5,date('d',$endDate),date('Y',$endDate)));
                     // sí, pongo la fecha de caducidad de los preapprovals a 5 meses para tratar incidencias
 
+
+                    // más valores para el preapproval request
+                    $memo = "Aporte de {$invest->amount} EUR al proyecto: {$project->name}";
+                    $customerId = $invest->user->id;
+                    $totalAmount = $invest->amount;
+
 		           /* Make the call to PayPal to get the preapproval token
 		            If the API call succeded, then redirect the buyer to PayPal
 		            to begin to authorize payment.  If an error occured, show the
 		            resulting errors
 		            */
-		           $preapprovalRequest = new \PreapprovalRequest();
-                   $preapprovalRequest->memo = "Aporte de {$invest->amount} EUR al proyecto: {$project->name}";
+
+                /// @TODO : pasar a src/Goteo/Library/paypal.php como wraper para vendor/paypal
+
+		           $preapprovalRequest = new PPService\PreapprovalRequest();
+                   $preapprovalRequest->memo = $memo;
 		           $preapprovalRequest->cancelUrl = $cancelURL;
 		           $preapprovalRequest->returnUrl = $returnURL;
 		           $preapprovalRequest->clientDetails = new \ClientDetailsType();
-		           $preapprovalRequest->clientDetails->customerId = $invest->user->id;
+		           $preapprovalRequest->clientDetails->customerId = $customerId;
 		           $preapprovalRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
 		           $preapprovalRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
 		           $preapprovalRequest->clientDetails->ipAddress = $_SERVER['REMOTE_ADDR'];
@@ -59,48 +90,67 @@ namespace Goteo\Library {
 		           $preapprovalRequest->maxNumberOfPayments = 1;
 		           $preapprovalRequest->displayMaxTotalAmount = true;
 		           $preapprovalRequest->feesPayer = 'EACHRECEIVER';
-		           $preapprovalRequest->maxTotalAmountOfAllPayments = $invest->amount;
+		           $preapprovalRequest->maxTotalAmountOfAllPayments = $totalAmount;
 		           $preapprovalRequest->requestEnvelope = new \RequestEnvelope();
 		           $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";
 
-		           $ap = new \AdaptivePayments();
+		           $ap = new PPService\AdaptivePayments();
 		           $response=$ap->Preapproval($preapprovalRequest);
 
-		           if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                // @todo : cambiar a catch Exception o return;
+                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+
                         Invest::setDetail($invest->id, 'paypal-conection-fail', 'Ha fallado la comunicacion con paypal al iniciar el preapproval. Proceso libary/paypal::preapproval');
                        $errors[] = 'No se ha podido iniciar la comunicación con paypal para procesar la preaprovación del cargo. ' . $ap->getLastError();
                         @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' ap->success = FAILURE.<br /><pre>' . print_r($ap, true) . '</pre><pre>' . print_r($response, true) . '</pre>' . $ap->getLastError());
                         return false;
+
+
 					}
 
                     // Guardar el codigo de preaproval en el registro de aporte y mandarlo a paypal
                     $token = $response->preapprovalKey;
+
+                // @todo : cambiar a catch Exception o return;
                     if (!empty($token)) {
+
+
                         Invest::setDetail($invest->id, 'paypal-init', 'Se ha iniciado el preaproval y se redirije al usuario a paypal para aceptarlo. Proceso libary/paypal::preapproval');
                         $invest->setPreapproval($token);
                         $payPalURL = PAYPAL_REDIRECT_URL.'_ap-preapproval&preapprovalkey='.$token;
                         throw new \Goteo\Core\Redirection($payPalURL, Redirection::TEMPORARY);
                         return true;
+
+
+
                     } else {
+
+
                         Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
                         $errors[] = 'No preapproval key obtained. <pre>' . print_r($response, true) . '</pre>';
                         @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API', 'ERROR en ' . __FUNCTION__ . ' No preapproval key obtained.<br /><pre>' . print_r($response, true) . '</pre>');
                         return false;
+
+
                     }
 
 			}
 			catch(Exception $ex) {
 
+                // @TODO : estas clases ya no están en \
 				$fault = new \FaultMessage();
 				$errorData = new \ErrorData();
 				$errorData->errorId = $ex->getFile() ;
   				$errorData->message = $ex->getMessage();
 		  		$fault->error = $errorData;
 
+                // error grave (no se ha dado nunca anteriormente)
                 Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
                 @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion Paypal API en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($fault, true) . '</pre>');
                 return false;
+
+
 			}
 
         }
@@ -128,6 +178,8 @@ namespace Goteo\Library {
                 // al productor le pasamos el importe del cargo menos el 8% que se queda goteo
                 $amountPay = $invest->amount - ($invest->amount * 0.08);
 
+
+                /// @TODO : pasar a src/Goteo/Library/paypal.php como wraper para vendor/paypal
 
                 // Create request object
                 $payRequest = new \PayRequest();
@@ -171,6 +223,8 @@ namespace Goteo\Library {
                 $response = $ap->Pay($payRequest);
 
                 // Check response
+                // @todo : cambiar a catch Exception o return;
+
                 if(strtoupper($ap->isSuccess) == 'FAILURE') {
                     $error_txt = '';
                     $soapFault = $ap->getLastError();
@@ -378,8 +432,11 @@ namespace Goteo\Library {
                 }
 
                 $token = $response->payKey;
+
+                // @todo : cambiar a catch Exception o return;
                 if (!empty($token)) {
                     if ($invest->setPayment($token)) {
+
                         if ($response->paymentExecStatus != 'INCOMPLETE') {
                             Invest::setIssue($invest->id);
                             $errors[] = "Error de Fuente de crédito.";
@@ -387,21 +444,28 @@ namespace Goteo\Library {
                         }
                         $invest->setStatus(1);
                         return true;
+
                     } else {
+
                         Invest::setIssue($invest->id);
                         $errors[] = "Obtenido payKey: $token pero no se ha grabado correctamente (paypal::setPayment) en el registro id: {$invest->id}.";
                         @mail(\GOTEO_FAIL_MAIL, 'Error al actualizar registro aporte (setPayment)', 'ERROR en ' . __FUNCTION__ . ' Metodo paypal::setPayment ha fallado.<br /><pre>' . print_r($response, true) . '</pre>');
                         return false;
+
                     }
                 } else {
+
                     Invest::setIssue($invest->id);
                     $errors[] = 'No ha obtenido Payment Key.';
                     @mail(\GOTEO_FAIL_MAIL, 'Error en implementacion Paypal API (no payKey)', 'ERROR en ' . __FUNCTION__ . ' No payment key obtained.<br /><pre>' . print_r($response, true) . '</pre>');
                     return false;
+
                 }
 
             }
             catch (Exception $e) {
+
+                // @FIXME estas clases ya no están en \
                 $fault = new \FaultMessage();
                 $errorData = new \ErrorData();
                 $errorData->errorId = $ex->getFile() ;
@@ -429,8 +493,13 @@ namespace Goteo\Library {
 
                 // Create request object
                 $payRequest = new \ExecutePaymentRequest();
-           		$payRequest->payKey = $invest->payment;
-           		$payRequest->requestEnvelope = 'SOAP';
+                $payRequest->payKey = $invest->payment;
+                $payRequest->requestEnvelope = 'SOAP';
+
+                // @NEW request object throght dependency injection
+                $payRequest = self::pp_request('execute-payment', $invest->payment);
+
+
 
                 // Create service wrapper object
                 $ap = new \AdaptivePayments();
@@ -637,6 +706,30 @@ namespace Goteo\Library {
                 return false;
             }
         }
+
+
+        /**
+         *  Generic service wrapper object
+         */
+        private function pp_service () {
+
+        }
+
+
+        /**
+         *  Generic request object
+         */
+        private function pp_request ($type, $key = '') {
+
+            // request types :
+
+            // execute-payment
+            $payRequest = new PPService\ExecutePaymentRequest();
+            $payRequest->payKey = $key;
+            $payRequest->requestEnvelope = 'SOAP';
+
+        }
+
 
 	}
 

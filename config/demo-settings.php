@@ -126,14 +126,11 @@ define('CRON_VALUE', '--------------');
 
 
 /****************************************************
-Paypal constants (sandbox)
-****************************************************/
-define('PAYPAL_REDIRECT_URL', '---Sandbox/Production-url-----https://www.sandbox.paypal.com/webscr&cmd=');
-define('PAYPAL_DEVELOPER_PORTAL', '--developper-domain--');
-define('PAYPAL_DEVICE_ID', '--domain--');
-define('PAYPAL_APPLICATION_ID', '--PayPal-app-Id---');
-define('PAYPAL_BUSINESS_ACCOUNT', '--mail-like-paypal-account--');
-define('PAYPAL_IP_ADDRESS', '127.0.0.1');
+ * Paypal config location path
+ * /config/sdk_config.ini
+ * see paypal.php for an example contents of it
+***************************************************/
+define('PP_CONFIG_PATH', 'config/');
 
 /****************************************************
 TPV [Bank Name]
