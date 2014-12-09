@@ -3,9 +3,9 @@
 
 namespace Goteo\Library\Tests;
 
-use \Paypal\Service as PPService;
+use \PayPal\Service as PPService;
 
-class PaypalTest extends \PHPUnit_Framework_TestCase {
+class PayPalTest extends \PHPUnit_Framework_TestCase {
 
     // Aunque no es obligatorio que exista este archivo de configuración para compilar grunt
     /*
