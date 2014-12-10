@@ -111,7 +111,7 @@ namespace Goteo\Core {
          * @param string $value
          * @return string $id
          */
-        public static function idealiza ($value, $filename = false) {
+        public static function idealiza ($value, $punto = false, $enye = false) {
             $id = trim($value);
             // Acentos
             $table = array(
@@ -127,8 +127,13 @@ namespace Goteo\Core {
                 '%'=>'', '$'=>'', '*'=>'', '+'=>'', '.'=>'-', '`'=>'', '´'=>'', '’'=>'', '”'=>'-', '“'=>'-'
             );
 
-            if ($filename) {
-                $table['.'] = '.';
+            if ($punto) {
+                unset($table['.']);
+            }
+
+            if ($enye) {
+                unset($table['Ñ']);
+                unset($table['ñ']);
             }
 
             $id = strtr($id, $table);
