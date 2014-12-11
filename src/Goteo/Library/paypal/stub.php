@@ -1,6 +1,6 @@
 <?php
 
-if (!class_exists("BaseAddress")) {
+if (!class_exists("BaseAddress", false)) {
 /**
  * BaseAddress
  */
@@ -42,7 +42,7 @@ class BaseAddress {
 	public $type;
 }}
 
-if (!class_exists("ClientDetailsType")) {
+if (!class_exists("ClientDetailsType", false)) {
 /**
  * ClientDetailsType
  */
@@ -89,7 +89,7 @@ class ClientDetailsType {
 	public $customerId;
 }}
 
-if (!class_exists("currencyType")) {
+if (!class_exists("currencyType", false)) {
 /**
  * CurrencyType
  */
@@ -106,7 +106,7 @@ class currencyType {
 	public $amount;
 }}
 
-if (!class_exists("ErrorData")) {
+if (!class_exists("ErrorData", false)) {
 /**
  * ErrorData
  */
@@ -153,14 +153,14 @@ class ErrorData {
 	public $parameter;
 }}
 
-if (!class_exists("ErrorParameter")) {
+if (!class_exists("ErrorParameter", false)) {
 /**
  * ErrorParameter
  */
 class ErrorParameter {
 }}
 
-if (!class_exists("FaultMessage")) {
+if (!class_exists("FaultMessage", false)) {
 /**
  * FaultMessage
  */
@@ -177,7 +177,7 @@ class FaultMessage {
 	public $error;
 }}
 
-if (!class_exists("PhoneNumberType")) {
+if (!class_exists("PhoneNumberType", false)) {
 /**
  * PhoneNumberType
  */
@@ -199,7 +199,7 @@ class PhoneNumberType {
 	public $extension;
 }}
 
-if (!class_exists("RequestEnvelope")) {
+if (!class_exists("RequestEnvelope", false)) {
 /**
  * RequestEnvelope
  */
@@ -216,7 +216,7 @@ class RequestEnvelope {
 	public $errorLanguage;
 }}
 
-if (!class_exists("ResponseEnvelope")) {
+if (!class_exists("ResponseEnvelope", false)) {
 /**
  * ResponseEnvelope
  */
@@ -243,7 +243,7 @@ class ResponseEnvelope {
 	public $build;
 }}
 
-if (!class_exists("Address")) {
+if (!class_exists("Address", false)) {
 /**
  * Address
  */
@@ -260,7 +260,7 @@ class Address {
 	public $baseAddress;
 }}
 
-if (!class_exists("AddressList")) {
+if (!class_exists("AddressList", false)) {
 /**
  * AddressList
  */
@@ -272,7 +272,7 @@ class AddressList {
 	public $address;
 }}
 
-if (!class_exists("CurrencyCodeList")) {
+if (!class_exists("CurrencyCodeList", false)) {
 /**
  * CurrencyCodeList
  */
@@ -284,7 +284,7 @@ class CurrencyCodeList {
 	public $currencyCode;
 }}
 
-if (!class_exists("CurrencyConversionList")) {
+if (!class_exists("CurrencyConversionList", false)) {
 /**
  * CurrencyConversionList
  */
@@ -301,7 +301,7 @@ class CurrencyConversionList {
 	public $currencyList;
 }}
 
-if (!class_exists("CurrencyConversionTable")) {
+if (!class_exists("CurrencyConversionTable", false)) {
 /**
  * CurrencyConversionTable
  */
@@ -313,7 +313,7 @@ class CurrencyConversionTable {
 	public $currencyConversionList;
 }}
 
-if (!class_exists("CurrencyList")) {
+if (!class_exists("CurrencyList", false)) {
 /**
  * CurrencyList
  */
@@ -325,7 +325,7 @@ class CurrencyList {
 	public $currency;
 }}
 
-if (!class_exists("DisplayOptions")) {
+if (!class_exists("DisplayOptions", false)) {
 /**
  * DisplayOptions
  */
@@ -342,7 +342,7 @@ class DisplayOptions {
 	public $emailMarketingImageUrl;
 }}
 
-if (!class_exists("ErrorList")) {
+if (!class_exists("ErrorList", false)) {
 /**
  * ErrorList
  */
@@ -354,7 +354,7 @@ class ErrorList {
 	public $error;
 }}
 
-if (!class_exists("FundingConstraint")) {
+if (!class_exists("FundingConstraint", false)) {
 /**
  * FundingConstraint
  */
@@ -366,7 +366,7 @@ class FundingConstraint {
 	public $allowedFundingType;
 }}
 
-if (!class_exists("fundingTypeInfo")) {
+if (!class_exists("fundingTypeInfo", false)) {
 /**
  * FundingTypeInfo
  */
@@ -378,7 +378,7 @@ class fundingTypeInfo {
 	public $fundingType;
 }}
 
-if (!class_exists("FundingTypeList")) {
+if (!class_exists("FundingTypeList", false)) {
 /**
  * FundingTypeList
  */
@@ -390,7 +390,7 @@ class FundingTypeList {
 	public $fundingTypeInfo;
 }}
 
-if (!class_exists("InitiatingEntity")) {
+if (!class_exists("InitiatingEntity", false)) {
 /**
  * InitiatingEntity
  */
@@ -402,7 +402,7 @@ class InitiatingEntity {
 	public $institutionCustomer;
 }}
 
-if (!class_exists("InstitutionCustomer")) {
+if (!class_exists("InstitutionCustomer", false)) {
 /**
  * InstitutionCustomer
  */
@@ -444,7 +444,7 @@ class InstitutionCustomer {
 	public $email;
 }}
 
-if (!class_exists("PayError")) {
+if (!class_exists("PayError", false)) {
 /**
  * PayError
  */
@@ -461,7 +461,7 @@ class PayError {
 	public $error;
 }}
 
-if (!class_exists("PayErrorList")) {
+if (!class_exists("PayErrorList", false)) {
 /**
  * PayErrorList
  */
@@ -473,7 +473,7 @@ class PayErrorList {
 	public $payError;
 }}
 
-if (!class_exists("PaymentInfo")) {
+if (!class_exists("PaymentInfo", false)) {
 /**
  * PaymentInfo
  */
@@ -515,7 +515,7 @@ class PaymentInfo {
 	public $senderTransactionStatus;
 }}
 
-if (!class_exists("PaymentInfoList")) {
+if (!class_exists("PaymentInfoList", false)) {
 /**
  * PaymentInfoList
  */
@@ -527,7 +527,7 @@ class PaymentInfoList {
 	public $paymentInfo;
 }}
 
-if (!class_exists("receiver")) {
+if (!class_exists("receiver", false)) {
 /**
  * Receiver
  */
@@ -564,7 +564,7 @@ class receiver {
 	public $paymentType;
 }}
 
-if (!class_exists("ReceiverList")) {
+if (!class_exists("ReceiverList", false)) {
 /**
  * ReceiverList
  */
@@ -576,7 +576,7 @@ class ReceiverList {
 	public $receiver;
 }}
 
-if (!class_exists("RefundInfo")) {
+if (!class_exists("RefundInfo", false)) {
 /**
  * RefundInfo
  */
@@ -633,7 +633,7 @@ class RefundInfo {
 	public $errorList;
 }}
 
-if (!class_exists("RefundInfoList")) {
+if (!class_exists("RefundInfoList", false)) {
 /**
  * RefundInfoList
  */
@@ -645,7 +645,7 @@ class RefundInfoList {
 	public $refundInfo;
 }}
 
-if (!class_exists("CancelPreapprovalRequest")) {
+if (!class_exists("CancelPreapprovalRequest", false)) {
 /**
  * CancelPreapprovalRequest
  */
@@ -662,7 +662,7 @@ class CancelPreapprovalRequest {
 	public $preapprovalKey;
 }}
 
-if (!class_exists("CancelPreapprovalResponse")) {
+if (!class_exists("CancelPreapprovalResponse", false)) {
 /**
  * CancelPreapprovalResponse
  */
@@ -674,7 +674,7 @@ class CancelPreapprovalResponse {
 	public $responseEnvelope;
 }}
 
-if (!class_exists("ConvertCurrencyRequest")) {
+if (!class_exists("ConvertCurrencyRequest", false)) {
 /**
  * ConvertCurrencyRequest
  */
@@ -696,7 +696,7 @@ class ConvertCurrencyRequest {
 	public $convertToCurrencyList;
 }}
 
-if (!class_exists("ConvertCurrencyResponse")) {
+if (!class_exists("ConvertCurrencyResponse", false)) {
 /**
  * ConvertCurrencyResponse
  */
@@ -713,7 +713,7 @@ class ConvertCurrencyResponse {
 	public $estimatedAmountTable;
 }}
 
-if (!class_exists("ExecutePaymentRequest")) {
+if (!class_exists("ExecutePaymentRequest", false)) {
 /**
  * ExecutePaymentRequest
  */
@@ -730,7 +730,7 @@ class ExecutePaymentRequest {
 	public $payKey;
 }}
 
-if (!class_exists("ExecutePaymentResponse")) {
+if (!class_exists("ExecutePaymentResponse", false)) {
 /**
  * ExecutePaymentResponse
  */
@@ -752,7 +752,7 @@ class ExecutePaymentResponse {
 	public $payErrorList;
 }}
 
-if (!class_exists("GetPaymentOptionsRequest")) {
+if (!class_exists("GetPaymentOptionsRequest", false)) {
 /**
  * GetPaymentOptionsRequest
  */
@@ -769,7 +769,7 @@ class GetPaymentOptionsRequest {
 	public $payKey;
 }}
 
-if (!class_exists("GetPaymentOptionsResponse")) {
+if (!class_exists("GetPaymentOptionsResponse", false)) {
 /**
  * GetPaymentOptionsResponse
  */
@@ -791,7 +791,7 @@ class GetPaymentOptionsResponse {
 	public $displayOptions;
 }}
 
-if (!class_exists("PaymentDetailsRequest")) {
+if (!class_exists("PaymentDetailsRequest", false)) {
 /**
  * PaymentDetailsRequest
  */
@@ -818,7 +818,7 @@ class PaymentDetailsRequest {
 	public $trackingId;
 }}
 
-if (!class_exists("PaymentDetailsResponse")) {
+if (!class_exists("PaymentDetailsResponse", false)) {
 /**
  * PaymentDetailsResponse
  */
@@ -905,7 +905,7 @@ class PaymentDetailsResponse {
 	public $fundingConstraint;
 }}
 
-if (!class_exists("PayRequest")) {
+if (!class_exists("PayRequest", false)) {
 /**
  * PayRequest
  */
@@ -992,7 +992,7 @@ class PayRequest {
 	public $fundingConstraint;
 }}
 
-if (!class_exists("PayResponse")) {
+if (!class_exists("PayResponse", false)) {
 /**
  * PayResponse
  */
@@ -1019,7 +1019,7 @@ class PayResponse {
 	public $payErrorList;
 }}
 
-if (!class_exists("PreapprovalDetailsRequest")) {
+if (!class_exists("PreapprovalDetailsRequest", false)) {
 /**
  * PreapprovalDetailsRequest
  */
@@ -1041,7 +1041,7 @@ class PreapprovalDetailsRequest {
 	public $getBillingAddress;
 }}
 
-if (!class_exists("PreapprovalDetailsResponse")) {
+if (!class_exists("PreapprovalDetailsResponse", false)) {
 /**
  * PreapprovalDetailsResponse
  */
@@ -1168,7 +1168,7 @@ class PreapprovalDetailsResponse {
 	public $addressList;
 }}
 
-if (!class_exists("PreapprovalRequest")) {
+if (!class_exists("PreapprovalRequest", false)) {
 /**
  * PreapprovalRequest
  */
@@ -1265,7 +1265,7 @@ class PreapprovalRequest {
 	public $pinType;
 }}
 
-if (!class_exists("PreapprovalResponse")) {
+if (!class_exists("PreapprovalResponse", false)) {
 /**
  * PreapprovalResponse
  */
@@ -1282,7 +1282,7 @@ class PreapprovalResponse {
 	public $preapprovalKey;
 }}
 
-if (!class_exists("RefundRequest")) {
+if (!class_exists("RefundRequest", false)) {
 /**
  * RefundRequest
  */
@@ -1319,7 +1319,7 @@ class RefundRequest {
 	public $receiverList;
 }}
 
-if (!class_exists("RefundResponse")) {
+if (!class_exists("RefundResponse", false)) {
 /**
  * RefundResponse
  */
@@ -1341,7 +1341,7 @@ class RefundResponse {
 	public $refundInfoList;
 }}
 
-if (!class_exists("SetPaymentOptionsRequest")) {
+if (!class_exists("SetPaymentOptionsRequest", false)) {
 /**
  * SetPaymentOptionsRequest
  */
@@ -1368,7 +1368,7 @@ class SetPaymentOptionsRequest {
 	public $displayOptions;
 }}
 
-if (!class_exists("SetPaymentOptionsResponse")) {
+if (!class_exists("SetPaymentOptionsResponse", false)) {
 /**
  * SetPaymentOptionsResponse
  */
