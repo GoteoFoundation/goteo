@@ -44,9 +44,8 @@ namespace Goteo\Controller {
                 if ($item->project->status != 3)
                     throw new Redirection('/bazaar');
 
-                $item->imgsrc = (!empty($item->img)) ? SRC_URL.'
-                /images/'.$item->img->name : SRC.'/images/bazaritem.svg';
-                $ogimages[] = $URL.$item->imgsrc;
+                $item->imgsrc = (!empty($item->image)) ? SRC_URL.'/images/'.$item->image->name : SRC_URL.'/images/bazaritem.svg';
+                $ogimages[] = $item->imgsrc;
                 $vdata["item"] = $item;
 
                 // página interna
