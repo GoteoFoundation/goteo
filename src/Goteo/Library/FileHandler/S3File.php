@@ -104,6 +104,16 @@ namespace Goteo\Library\FileHandler {
                 $local = $tmp;
             }
 
+            $requestHeaders = array();
+
+            //Tratar de descubrir el tipo mime
+            if (extension_loaded('fileinfo')) {
+                $finfo = finfo_open(FILEINFO_MIME);
+                if(($type = finfo_file($finfo, $local)) !== false) {
+                    $requestHeaders = array('Content-Type' => $type);
+                }
+            }
+            // die("[$local $remote]");
             if(is_file($local)) {
 
                 if (!isset($extra['perms'])) {
@@ -113,7 +123,7 @@ namespace Goteo\Library\FileHandler {
                 }
 
                 //if ($this->link->putObject(S3::inputFile($local), $this->bucket, $remote, ACL_PUBLIC_READ)) {
-                if ($this->link->putObject(S3::inputFile($local), $this->bucket, $remote, $perms)) {
+                if ($this->link->putObject(S3::inputFile($local), $this->bucket, $remote, $perms, array(), $requestHeaders)) {
                     $ok = true;
                 }
             }
