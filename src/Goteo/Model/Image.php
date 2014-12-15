@@ -410,6 +410,13 @@ namespace Goteo\Model {
             $height = (int) $height;
             if($this->cache) {
                 if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
+                    //correccion de extension para el cache
+                    //si no la funcion save() no funciona bien
+                    $info = pathinfo($cache_file, PATHINFO_EXTENSION);
+                    if(!in_array($info, array('jpg', 'jpeg', 'png', 'gif'))) {
+                        $cache_file = pathinfo($cache_file, PATHINFO_FILENAME) . '.jpg';
+                    }
+
                     header('Cache-Control: max-age=2592000');
                     //tries to flush the file and exit
                     if(Cacher::flushFile($cache_file))
@@ -459,6 +466,8 @@ namespace Goteo\Model {
                 echo $img->response();
 
             }catch(\Exception $e) {
+                echo $img->mime();
+                die($e->getMessage());
                 //Shows a fallback image with the error message
                 try {
                     $msg = $e->getMessage();
@@ -468,7 +477,6 @@ namespace Goteo\Model {
                     //flush data
                     echo $img =  ImageManager::canvas($w, $h, '#DCDCDC')
                                  ->insert($this->fallback_image, 'center')
-                    // echo $img =  ImageManager::make($this->fallback_image)
                                  ->text($msg, round($w/2), round($h/2), function($font){
                                     $font->align('center');
                                     $font->valign('middle');
