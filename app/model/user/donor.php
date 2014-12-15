@@ -57,7 +57,9 @@ namespace Goteo\Model\User {
                                 LEFT JOIN invest_address ON invest_address.invest = invest.id
                                 WHERE   invest.user = :id
                                 AND invest.status IN ('1', '3')
-                                AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
+                                AND ( (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
+                                  OR ( invest.invested < '{$year}-01-01' AND project.passed >= '{$year}-01-01' )
+                                  )
                                 GROUP BY invest.user
                             ";
                     $query = static::query($sql, array(':id' => $id));
@@ -85,18 +87,18 @@ namespace Goteo\Model\User {
             // naturaleza según tipo de persona (F, J)
             $nt = array(
                        '' => 'F',
-                    'vat' => 'F',
                     'nif' => 'F',
                     'nie' => 'F',
-                    'cif' => 'J'
+                    'cif' => 'J',
+                    'vat' => 'J'
                 );
             // porcentaje segun tipo de persona (25, 35)
             $pt = array(
                        '' => '25',
-                    'vat' => '25',
                     'nif' => '25',
                     'nie' => '25',
-                    'cif' => '35'
+                    'cif' => '35',
+                    'vat' => '35'
                 );
 
             $year = empty($filter['year']) ? date('Y') : $filter['year'];
@@ -178,11 +180,11 @@ namespace Goteo\Model\User {
         public function validate(&$errors = array()) {
 
             // limpio nombre y apellidos
-            $this->name = self::idealiza($this->name);
+            $this->name = self::idealiza($this->name, false, true);
             $this->name = str_replace('-', ' ', $this->name);
             $this->name = strtoupper(trim($this->name));
 
-            $this->surname = self::idealiza($this->surname);
+            $this->surname = self::idealiza($this->surname, false, true);
             $this->surname = str_replace('-', ' ', $this->surname);
             $this->surname = strtoupper(trim($this->surname));
 
@@ -358,7 +360,9 @@ namespace Goteo\Model\User {
                         ON project.id = invest.project
                         AND project.status IN (3, 4, 5)
                     WHERE invest.user = :id
-                    AND (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
+                    AND ( (invest.invested >= '{$year}-01-01' AND invest.invested <= '{$year}-12-31')
+                      OR ( invest.invested < '{$year}-01-01' AND project.passed >= '{$year}-01-01' )
+                      )
                     {$sqlFilter}
                     ORDER BY invest.invested ASC
                     ";
