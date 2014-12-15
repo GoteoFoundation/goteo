@@ -5,7 +5,7 @@ use Goteo\Library\Text,
 
 $page  = $this['page'];
 
-echo View::get('bazar/prologue.html.php', array('ogmeta'=>$this['ogmeta'], 'title'=>$page->title, 'description'=>$page->description));
+echo View::get('bazar/prologue.html.php', array('ogmeta'=>$this['ogmeta'], 'metas_seo' => $this['metas_seo'], 'title'=>$page->title, 'description'=>$page->description));
 echo View::get('bazar/header.html.php', array('page'=>$this['page']));
 
 if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; }
