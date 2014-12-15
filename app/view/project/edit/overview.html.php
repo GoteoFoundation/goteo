@@ -89,12 +89,14 @@ if (!empty($project->video->url)) {
         'class' => 'inline'
     );
 }
-// nueva sección de contenido recompensas
-if ( isset($_SESSION['user']->roles['admin'])
-  || isset($_SESSION['user']->roles['superadmin'])
-  || isset($_SESSION['user']->roles['translator'])
-  || isset($_SESSION['user']->roles['checker']) ) {
-    // es admin o similar
+// nueva sección de contenido recompensas (oculta para el impulsor)
+if ( $_SESSION['user']->id == $project->owner ) {
+    $reward = array (
+        'type' => 'hidden',
+        'name' => 'reward',
+        'value' => $project->reward
+    );
+} else {
     $reward = array(
         'type'      => 'textarea',
         'title'     => Text::get('overview-field-reward'),
@@ -102,13 +104,6 @@ if ( isset($_SESSION['user']->roles['admin'])
         'errors'    => !empty($errors['reward']) ? array($errors['reward']) : array(),
         'ok'        => !empty($okeys['reward']) ? array($okeys['reward']) : array(),
         'value'     => $project->reward
-    );
-} else {
-    // es user
-    $reward = array (
-        'type' => 'hidden',
-        'name' => 'reward',
-        'value' => $project->reward
     );
 }
 
