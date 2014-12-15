@@ -104,6 +104,11 @@ namespace Goteo\Controller {
 
             $vdata['page'] = $page;
 
+            $vdata['metas_seo']= array(
+                'title' => Text::get('bazar-title-seo'),
+                'description' => Text::get('bazar-description-seo')
+                );
+
             $vdata['ogmeta'] = array(
                 'title' => htmlspecialchars($item_title, ENT_QUOTES),
                 'description' => htmlspecialchars($item_description, ENT_QUOTES),
