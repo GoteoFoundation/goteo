@@ -172,7 +172,7 @@ $(document).ready(function(){
             ),
 
             'tags' => array(
-                'type'      => 'Checkboxes',
+                'type'      => 'CheckBoxes',
                 'name'      => 'tags[]',
                 'title'     => 'Tags',
                 'options'   => $tags
