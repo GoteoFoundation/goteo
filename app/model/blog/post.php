@@ -97,7 +97,7 @@ namespace Goteo\Model\Blog {
 
             if(!$post instanceof \Goteo\Model\Blog\Post) {
 
-                if ($debug) die(' no es \Goteo\Model\Post  ???');
+                if ($debug) die(' no es \Goteo\Model\Blog\Post  ???');
                 return null;
 
             } else {
