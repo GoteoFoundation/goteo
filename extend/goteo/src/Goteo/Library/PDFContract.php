@@ -7,8 +7,8 @@ require_once(__DIR__ . '/fpdf/html2pdf.php');
 class PDFContract extends \PDF_HTML {
 
     const DYNAMIC_TEXT_SOURCE = "/Contract/contenido_dinamico.xml";
-    const STATIC_TEXT_SOURCE = "Contract/contenido_estatico.xml";
-    const DRAFT_IMAGE = "Contract/borrador.png";
+    const STATIC_TEXT_SOURCE = "/Contract/contenido_estatico.xml";
+    const DRAFT_IMAGE = "/Contract/borrador.png";
 
     /* Document margins */
     const MARGIN_LEFT = 20;
