@@ -37,79 +37,90 @@ namespace Goteo\Model\Blog {
          */
         public static function get ($id, $lang = null) {
 
-                //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'post_lang', $lang);
+            $debug = false;
 
-                $sql = "
-                    SELECT
-                        post.id as id,
-                        post.blog as blog,
-                        IFNULL(post_lang.title, post.title) as title,
-                        IFNULL(post_lang.text, post.text) as text,
-                        IFNULL(post_lang.legend, post.legend) as legend,
-                        post.image as `image`,
-                        post.gallery as gallery,
-                        IFNULL(post_lang.media, post.media) as `media`,
-                        post.date as `date`,
-                        DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
-                        post.allow as allow,
-                        post.publish as publish,
-                        post.home as home,
-                        post.footer as footer,
-                        CONCAT(blog.type, '-', blog.owner) as owner,
-                        post.num_comments as num_comments,
-                        blog.type as owner_type,
-                        blog.owner as owner_id,
-                        IFNULL ( project.owner, post.author ) as author,
-                        IFNULL( impulsor.name, user.name ) as user_name,
-                        IFNULL (project.name, node.name )  as owner_name
-                    FROM    post
-                    INNER JOIN blog
-                        ON  blog.id = post.blog
-                    LEFT JOIN post_lang
-                        ON  post_lang.id = post.id
-                        AND post_lang.lang = :lang
-                        AND post_lang.blog = post.blog
-                    LEFT JOIN user
-                        ON user.id=post.author
-                    LEFT JOIN project
-                            ON project.id = blog.owner
-                            AND blog.type = 'project'
-                    LEFT JOIN user as impulsor
-                          ON impulsor.id = project.owner
-                          AND blog.type = 'project'
-                    LEFT JOIN node
-                            ON node.id = blog.owner
-                            AND blog.type = 'node'
-                    WHERE post.id = :id
-                    ";
+            //Obtenemos el idioma de soporte
+            $lang=self::default_lang_by_id($id, 'post_lang', $lang);
 
-                $values = array(':id' => $id, ':lang'=>$lang);
+            $sql = "
+                SELECT
+                    post.id as id,
+                    post.blog as blog,
+                    IFNULL(post_lang.title, post.title) as title,
+                    IFNULL(post_lang.text, post.text) as text,
+                    IFNULL(post_lang.legend, post.legend) as legend,
+                    post.image as `image`,
+                    post.gallery as gallery,
+                    IFNULL(post_lang.media, post.media) as `media`,
+                    post.date as `date`,
+                    DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
+                    post.allow as allow,
+                    post.publish as publish,
+                    post.home as home,
+                    post.footer as footer,
+                    CONCAT(blog.type, '-', blog.owner) as owner,
+                    post.num_comments as num_comments,
+                    blog.type as owner_type,
+                    blog.owner as owner_id,
+                    IFNULL ( project.owner, post.author ) as author,
+                    IFNULL( impulsor.name, user.name ) as user_name,
+                    IFNULL (project.name, node.name )  as owner_name
+                FROM    post
+                INNER JOIN blog
+                    ON  blog.id = post.blog
+                LEFT JOIN post_lang
+                    ON  post_lang.id = post.id
+                    AND post_lang.lang = :lang
+                    AND post_lang.blog = post.blog
+                LEFT JOIN user
+                    ON user.id=post.author
+                LEFT JOIN project
+                        ON project.id = blog.owner
+                        AND blog.type = 'project'
+                LEFT JOIN user as impulsor
+                      ON impulsor.id = project.owner
+                      AND blog.type = 'project'
+                LEFT JOIN node
+                        ON node.id = blog.owner
+                        AND blog.type = 'node'
+                WHERE post.id = :id
+                ";
 
-                $query = static::query($sql, $values);
+            $values = array(':id' => $id, ':lang'=>$lang);
 
-                $post = $query->fetchObject('\Goteo\Model\Post');
+            if ($debug) echo \sqldbg($sql, $values);
 
+            $query = static::query($sql, $values);
+            $post = $query->fetchObject('\Goteo\Model\Blog\Post');
+
+            if ($debug) var_dump($post);
+
+            if(!$post instanceof \Goteo\Model\Blog\Post) {
+
+                if ($debug) die(' no es \Goteo\Model\Post  ???');
+                return null;
+
+            } else {
+
+                // autor
                 $post->user   = new User;
                 $post->user->name = $post->user_name;
 
-                if($post instanceOf \Goteo\Model\Post) {
-                    // campo calculado gallery
-                    if (!empty($post->gallery) && $post->gallery !== 'empty') {
-                        $post->gallery = Image::getGallery($post->gallery);
-                    } elseif ($post->gallery !== 'empty') {
-                        $post->setGallery();
-                    } else {
-                        $post->gallery = array();
-                    }
+                // campo calculado gallery
+                if (!empty($post->gallery) && $post->gallery !== 'empty') {
+                    $post->gallery = Image::getGallery($post->gallery);
+                } elseif ($post->gallery !== 'empty') {
+                    $post->setGallery();
+                } else {
+                    $post->gallery = array();
+                }
 
-                    if (!empty($post->image) && $post->image !== 'empty') {
-                        $post->image = Image::get($post->image);
-                    } elseif ($post->image !== 'empty') {
-                        $post->setImage();
-                    } else {
-                        $post->image = null;
-                    }
+                if (!empty($post->image) && $post->image !== 'empty') {
+                    $post->image = Image::get($post->image);
+                } elseif ($post->image !== 'empty') {
+                    $post->setImage();
+                } else {
+                    $post->image = null;
                 }
 
                 // video
@@ -120,7 +131,7 @@ namespace Goteo\Model\Blog {
                 $post->comments = Post\Comment::getAll($id);
 
                 if (!isset($post->num_comments)) {
-                       $post->num_comments = Post\Comment::getCount($post->id);
+                    $post->num_comments = Post\Comment::getCount($post->id);
                 }
 
                 //tags
@@ -130,7 +141,11 @@ namespace Goteo\Model\Blog {
                 if(strip_tags($post->text) == $post->text)
                     $post->text = nl2br(Text::urlink($post->text));
 
-                return $post;
+            }
+
+            if($debug) die('ok');
+
+            return $post;
         }
 
         /*
