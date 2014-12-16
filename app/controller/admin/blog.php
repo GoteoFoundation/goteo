@@ -251,7 +251,7 @@ namespace Goteo\Controller\Admin {
                     } else {
                         $post = Model\Blog\Post::get($id);
 
-                        if (!$post instanceof \Goteo\Model\Blog\Post) {
+                        if (!$post instanceof Model\Blog\Post) {
                             Message::Error('La entrada esta corrupta, contacte con nosotros.');
                             throw new Redirection('/admin/blog/list');
                         } elseif ($node != \GOTEO_NODE && $post->owner_type == 'node' && $post->owner_id != $node) {
