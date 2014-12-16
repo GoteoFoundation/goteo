@@ -128,10 +128,6 @@ namespace Goteo\Controller {
                         'name' => Text::get('step-3'),
                         'title' => Text::get('step-overview')
                     ),
-                    'images' => array(
-                        'name' => Text::get('step-3b'),
-                        'title' => Text::get('step-images')
-                    ),
                     'costs'=> array(
                         'name' => Text::get('step-4'),
                         'title' => Text::get('step-costs')
@@ -139,10 +135,6 @@ namespace Goteo\Controller {
                     'rewards' => array(
                         'name' => Text::get('step-5'),
                         'title' => Text::get('step-rewards')
-                    ),
-                    'supports' => array(
-                        'name' => Text::get('step-6'),
-                        'title' => Text::get('step-supports')
                     ),
                     'preview' => array(
                         'name' => Text::get('step-7'),
