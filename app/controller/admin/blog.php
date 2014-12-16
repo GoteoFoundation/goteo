@@ -251,10 +251,9 @@ namespace Goteo\Controller\Admin {
                     } else {
                         $post = Model\Blog\Post::get($id);
 
-                        if (!$post instanceof Model\Blog\Post) {
+                        if (!$post instanceof \Goteo\Model\Blog\Post) {
                             Message::Error('La entrada esta corrupta, contacte con nosotros.');
-                            $action = 'list';
-                            break;
+                            throw new Redirection('/admin/blog/list');
                         } elseif ($node != \GOTEO_NODE && $post->owner_type == 'node' && $post->owner_id != $node) {
                             Message::Error('No puedes editar esta entrada.');
                             throw new Redirection('/admin/blog/list');
