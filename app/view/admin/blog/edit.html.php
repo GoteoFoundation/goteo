@@ -88,7 +88,7 @@ $(document).ready(function(){
                 'class' => 'next'
             ),
             'pending' => array(
-                'type'  => 'checkbox',
+                'type'  => 'CheckBox',
                 'name'  => 'pending',
                 'label' => Text::get('mark-pending'),
             )
