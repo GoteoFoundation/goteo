@@ -534,6 +534,17 @@ namespace Goteo\Controller\Dashboard {
             // $post->tags = $_POST['tags'];
             /// este es el único save que se lanza desde un metodo process_
             if ($post->save($errors)) {
+
+                // si el idioma del proyecto no es español, actualizar registro de post_lang para idioma del proyecto
+                if ($project->lang != 'es') {
+                    $post->title_lang = $_POST['title'];
+                    $post->text_lang = $_POST['text'];
+                    $post->media_lang = $_POST['media'];
+                    $post->legend_lang = $_POST['legend'];
+                    $post->lang = $project->lang;
+                    $post->saveLang($errors);
+                }
+
                 $id = $post->id;
                 if ($action == 'edit') {
                     Message::Info(Text::get('dashboard-project-updates-saved'));
