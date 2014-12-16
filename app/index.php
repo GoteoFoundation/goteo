@@ -155,29 +155,32 @@ try {
             define('CRON_EXEC', true);
         } else {
             Message::Info(Text::get('user-login-required-access'));
-            throw new Redirection(SEC_URL."/user/login/?return=".rawurlencode($uri));
+            throw new Redirection(SEC_URL.'/user/login/?return='.rawurlencode($uri));
         }
     }
 
     // Get controller name
-    if (!empty($segments) && class_exists("Goteo\\Controller\\{$segments[0]}")) {
+    $controller = 'Index';
+    if (!empty($segments) && is_array($segments)) {
         // Take first segment as controller
-        $controller = ucfirst(array_shift($segments));
-    } else {
-        $controller = 'Index';
+        $c = ucfirst(array_shift($segments));
+
+        if(class_exists("Goteo\\Controller\\$c")) {
+            $controller = $c;
+        }
     }
 
     // Continue
     try {
 
         $class = new ReflectionClass("Goteo\\Controller\\{$controller}");
-
         if (!empty($segments) && $class->hasMethod($segments[0])) {
             $method = array_shift($segments);
         } else {
             // Try default method
             $method = 'index';
         }
+        // print_r($segments);print_r($method);print_r($class);die;
 
         // ReflectionMethod
         $method = $class->getMethod($method);
