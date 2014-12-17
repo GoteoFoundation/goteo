@@ -208,7 +208,7 @@ namespace Goteo\Controller {
                     'edit' => array('label' => 'Escribiendo contenido', 'item' => false),
                     'send' => array('label' => 'Comunicación enviada', 'item' => false)
                 ),
-                'filters' => array('project' => '', 'type' => '', 'status' => '-1', 'method' => '', 'interest' => '', 'role' => '', 'name' => '', 'donant' => '',
+                'filters' => array('project' => '', 'type' => '', 'status' => '-1', 'method' => '', 'interest' => '', 'role' => '', 'name' => '', 'donant' => '', 'comlang' => ''
                 )
             ),
             'news' => array(
