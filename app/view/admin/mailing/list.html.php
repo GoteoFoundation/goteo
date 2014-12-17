@@ -64,6 +64,15 @@ $filters = $this['filters'];
                     <?php endforeach; ?>
                     </select>
                 </td>
+                <td>
+                    <label for="comlang-filter">Con idioma preferencia</label><br />
+                    <select id="comlang-filter" name="comlang">
+                        <option value=""></option>
+                        <?php foreach ($this['langs'] as $lang) : ?>
+                            <option value="<?php echo $lang->id; ?>"<?php if ($filters['comlang'] == $lang->id) echo ' selected="selected"';?>><?php echo $lang->short; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td colspan="3"><input type="submit" name="select" value="Buscar destinatarios"></td>

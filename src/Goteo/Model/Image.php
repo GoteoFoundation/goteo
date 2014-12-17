@@ -466,8 +466,6 @@ namespace Goteo\Model {
                 echo $img->response();
 
             }catch(\Exception $e) {
-                echo $img->mime();
-                die($e->getMessage());
                 //Shows a fallback image with the error message
                 try {
                     $msg = $e->getMessage();
