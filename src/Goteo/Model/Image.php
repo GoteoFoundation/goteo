@@ -412,9 +412,10 @@ namespace Goteo\Model {
                 if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
                     //correccion de extension para el cache
                     //si no la funcion save() no funciona bien
+
                     $info = pathinfo($cache_file, PATHINFO_EXTENSION);
                     if(!in_array($info, array('jpg', 'jpeg', 'png', 'gif'))) {
-                        $cache_file = pathinfo($cache_file, PATHINFO_FILENAME) . '.jpg';
+                        $cache_file = $cache_file . '.jpg';
                     }
 
                     header('Cache-Control: max-age=2592000');
