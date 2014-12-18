@@ -6,15 +6,11 @@
 ?>
 <script type="text/javascript">
 
-    // Versión mejorada de:
-    // https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
+    // validación de url mediante expresión regular
+    // más simple pero menos estricta que la anterior
     function ValidURL(str) {
-        var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
-            '((([a-z0-9\d]([a-z0-9\d-]*[a-z0-9\d])*)\.)+[a-z]{2,}|'+ // domain name
-            '((\d{1,3}\.){3}\d{1,3}))'+ // OR ip (v4) address
-            '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
-            '(\\?[;&a-z\d%_.~+=-]*)?'+ // query string
-            '(\#[-a-z\d_]*)?$','i'); // fragment locater
+        var pattern = new RegExp('^(http|ftp|https)://[\w-]+(\.[\w-]*)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?$','i');
+
         if(!pattern.test(str)) {
             return false;
         } else {
