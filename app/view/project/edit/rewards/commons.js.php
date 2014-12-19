@@ -8,12 +8,14 @@
 
     // Versión mejorada de:
     // https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
+    // Test with  http://subdomain.example.com:8080/asdf-1234?par=var&par2=var2#asdf342
+    // Literal hyphens in character class must be escaped
     function ValidURL(str) {
         var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
             '((\\w([\\w-]*[\\w])*)\.)+[a-z]{2,}'+ // domain name
-            '(:\\d+)?(\/[\\w-%_.~+]*)*'+ // port and path
-            '(\\?[;&\\w%_.~+=-]*)?'+ // query string
-            '(#[\\w-_]*)?$','i'); // fragment locater
+            '(:\\d+)?(\/[\\w\\-%_.~+]*)*'+ // port and path
+            '(\\?[;&\\w%_.~+=\\-]*)?'+ // query string
+            '(#[\\w\\-_]*)?$','i'); // fragment locater
 
         return pattern.test(str);
     }
