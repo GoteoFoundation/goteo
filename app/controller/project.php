@@ -702,8 +702,9 @@ namespace Goteo\Controller {
                         $step = $_GET['confirm'];
                     } else {
                         // si no, a ver en que paso estamos
+                        // guardamos cantidad sin puntos
                         if (isset($_GET['amount']))
-                            $_SESSION['invest-amount'] = $_GET['amount'];
+                            $_SESSION['invest-amount'] = str_replace(array(',', '.'), '', $_GET['amount']);
 
                         // si el usuario está validado, recuperamos posible amount y mostramos
                         if ($_SESSION['user'] instanceof Model\User) {
