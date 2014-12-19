@@ -403,6 +403,7 @@ namespace Goteo\Controller {
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
                 case 'userProfile':
+                    $project->user->interests=Model\User\Interest::get($project->user->id);
                     $viewData['user'] = $project->user;
                     $viewData['interests'] = Model\User\Interest::getAll();
                     break;
@@ -880,7 +881,7 @@ namespace Goteo\Controller {
 //                'contract_entity',
                 'contract_birthdate',
 //                'entity_office',
-//                'entity_name',
+                'entity_name',
 //                'entity_cif',
                 'address',
                 'zipcode',
