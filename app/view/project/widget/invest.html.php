@@ -16,7 +16,7 @@ if (isset($_SESSION['invest-amount'])) {
     $amount = $_SESSION['invest-amount'];
     unset($_SESSION['invest-amount']);
 } elseif (!empty($_GET['amount'])) {
-    $amount = $_GET['amount'];
+    $amount = str_replace(array(',', '.'), '', $_GET['amount']);
 } else {
     $amount = 0;
 }
@@ -97,7 +97,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
         <li class="<?php echo $individual->icon ?><?php if ($individual->none) echo ' disabled' ?>">
 
             <label class="amount" for="reward_<?php echo $individual->id; ?>">
-                <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo \amount_format($individual->amount,0,true); ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
+                <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo str_replace(array(',', '.'), '', \amount_format($individual->amount,0,true)); ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
                 <span class="amount"><?php echo \amount_format($individual->amount); ?></span>
             <!-- <span class="chkbox"></span> -->
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
@@ -295,7 +295,7 @@ if ($step == 'start') : ?>
 
         // funcion resetear copy de cantidad
         var reset_reminder = function (rawamount) {
-            var amount = parseInt(rawamount);
+            var amount = parseFloat(rawamount);
             var rate = parseFloat('<?php echo Currency::rate();?>');
             if (isNaN(amount)) {
                 amount = 0;
@@ -304,7 +304,7 @@ if ($step == 'start') : ?>
                 rate = 1;
             }
             var converted = amount / rate;
-            converted = parseInt(converted);
+            converted = parseFloat(converted);
 
             $('#amount').val(amount);
             $('#amount-reminder').html(amount);
@@ -353,7 +353,7 @@ if ($step == 'start') : ?>
                 rate = 1;
             }
             var converted = amount / rate;
-            converted = parseInt(converted);
+            converted = parseFloat(converted);
 
 
             if (parseFloat(amount) == 0 || isNaN(amount)) {
