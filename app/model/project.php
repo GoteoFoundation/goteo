@@ -1600,14 +1600,6 @@ namespace Goteo\Model {
                     ++$score;
                 }
 
-                if (empty($this->contract_email)) {
-                    $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract_email');
-                } elseif (!Check::mail($this->contract_email)) {
-                    $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract_email');
-                } else {
-                     $okeys['userPersonal']['contract_email'] = 'ok';
-                }
-
                 if (empty($this->contract_birthdate)) {
                     $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
                 } else {
@@ -1623,32 +1615,6 @@ namespace Goteo\Model {
                      ++$score;
                 }
 
-                if (empty($this->address)) {
-                    $errors['userPersonal']['address'] = Text::get('mandatory-project-field-address');
-                } else {
-                     $okeys['userPersonal']['address'] = 'ok';
-                     ++$score;
-                }
-
-                if (empty($this->zipcode)) {
-                    $errors['userPersonal']['zipcode'] = Text::get('mandatory-project-field-zipcode');
-                } else {
-                     $okeys['userPersonal']['zipcode'] = 'ok';
-                     ++$score;
-                }
-
-                if (empty($this->location)) {
-                    $errors['userPersonal']['location'] = Text::get('mandatory-project-field-residence');
-                } else {
-                     $okeys['userPersonal']['location'] = 'ok';
-                }
-
-                if (empty($this->country)) {
-                    $errors['userPersonal']['country'] = Text::get('mandatory-project-field-country');
-                } else {
-                     $okeys['userPersonal']['country'] = 'ok';
-                     ++$score;
-                }
 
                 $this->setScore($score, 6);
                 /***************** FIN Revisión del paso 2, DATOS PERSONALES *****************/
@@ -1675,25 +1641,6 @@ namespace Goteo\Model {
                      $errors['overview']['description'] = Text::get('validate-project-field-description');
                 } else {
                      $okeys['overview']['description'] = 'ok';
-                     ++$score;
-                }
-
-                if (empty($this->about)) {
-                    $errors['overview']['about'] = Text::get('mandatory-project-field-about');
-                 } else {
-                     $okeys['overview']['about'] = 'ok';
-                     ++$score;
-                }
-
-                if (empty($this->motivation)) {
-                    $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
-                } else {
-                     $okeys['overview']['motivation'] = 'ok';
-                     ++$score;
-                }
-
-                if (!empty($this->goal))  {
-                     $okeys['overview']['goal'] = 'ok';
                      ++$score;
                 }
 
@@ -1726,15 +1673,37 @@ namespace Goteo\Model {
                      ++$score;
                 }
 
-                // paso 3b: imágenes
-                if (empty($this->gallery) && empty($errors['images']['image'])) {
-                    $errors['images']['image'] .= Text::get('mandatory-project-field-image');
-                } else {
-                    $okeys['images']['image'] = (empty($errors['images']['image'])) ? 'ok' : null;
-                    ++$score;
-                    if (count($this->gallery) >= 2) ++$score;
-                }
+                if (!$this->draft)
+                {
+                    if (empty($this->about)) {
+                        $errors['overview']['about'] = Text::get('mandatory-project-field-about');
+                     } else {
+                        $okeys['overview']['about'] = 'ok';
+                        ++$score;
+                    }
 
+                     if (empty($this->motivation)) {
+                    $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
+                    } else {
+                        $okeys['overview']['motivation'] = 'ok';
+                        ++$score;
+                    }
+
+                    // paso 3b: imágenes
+                    if (empty($this->gallery) && empty($errors['images']['image'])) {
+                        $errors['images']['image'] .= Text::get('mandatory-project-field-image');
+                    } else {
+                        $okeys['images']['image'] = (empty($errors['images']['image'])) ? 'ok' : null;
+                        ++$score;
+                        if (count($this->gallery) >= 2) ++$score;
+                    }
+
+                    if (!empty($this->goal))  {
+                        $okeys['overview']['goal'] = 'ok';
+                        ++$score;
+                    }
+
+                }
 
                 $this->setScore($score, 13);
                 /***************** FIN Revisión del paso 3, DESCRIPCION *****************/

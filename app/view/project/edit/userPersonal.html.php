@@ -21,8 +21,6 @@ if (!isset($project->called)) {
         'ok'        => !empty($okeys['paypal']) ? array($okeys['paypal']) : array(),
         'value'     => $account->paypal
     );
-}
-    else {
 
     $campos_cuentas['paypal_advice'] = array(
         'type'      => 'html',
@@ -113,8 +111,7 @@ echo SuperForm::get(array(
 
                 'contract_email' => array(
                     'type'      => 'hidden',
-                    'class'     => 'inline',
-                    'required'  => 'false'
+                    'class'     => 'inline'
 
                 ),
 
