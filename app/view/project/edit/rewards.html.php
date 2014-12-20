@@ -326,23 +326,6 @@ echo SuperForm::get(array(
             'html' => '<a name="rewards"></a>'
         ),
 
-        'social_rewards' => array(
-            'type'      => 'group',
-            'required'  => true,
-            'title'     => Text::get('rewards-fields-social_reward-title'),
-            'hint'      => Text::get('tooltip-project-social_rewards'),
-            'class'     => 'rewards',
-            'errors'    => !empty($errors["social_rewards"]) ? array($errors["social_rewards"]) : array(),
-            'ok'        => !empty($okeys["social_rewards"]) ? array($okeys["social_rewards"]) : array(),
-            'children'  => $social_rewards + array(
-                'social_reward-add' => array(
-                    'type'  => 'submit',
-                    'label' => Text::get('form-add-button'),
-                    'class' => 'add reward-add red',
-                )
-            )
-        ),
-
         'individual_rewards' => array(
             'type'      => 'group',
             'required'  => true,
@@ -353,6 +336,23 @@ echo SuperForm::get(array(
             'ok'        => !empty($okeys["individual_rewards"]) ? array($okeys["individual_rewards"]) : array(),
             'children'  => $individual_rewards + array(
                 'individual_reward-add' => array(
+                    'type'  => 'submit',
+                    'label' => Text::get('form-add-button'),
+                    'class' => 'add reward-add red',
+                )
+            )
+        ),
+
+        'social_rewards' => array(
+            'type'      => 'group',
+            'required'  => true,
+            'title'     => Text::get('rewards-fields-social_reward-title'),
+            'hint'      => Text::get('tooltip-project-social_rewards'),
+            'class'     => 'rewards',
+            'errors'    => !empty($errors["social_rewards"]) ? array($errors["social_rewards"]) : array(),
+            'ok'        => !empty($okeys["social_rewards"]) ? array($okeys["social_rewards"]) : array(),
+            'children'  => $social_rewards + array(
+                'social_reward-add' => array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
                     'class' => 'add reward-add red',
