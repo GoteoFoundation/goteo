@@ -115,8 +115,22 @@ namespace Goteo\Controller\Cron {
                     // tener en cuenta si están enviando el draft o la negociación
                     $tpl = ($project->draft) ? 8 : 62;
 
-                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%');
-                    $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id);
+                    // necesitamos saber los consultores (lo hemos quitado del Project::get  )
+                    $project->consultants = Model\Project::getConsultants($project->id);
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
+                    if(empty($project->consultants)) {
+                        $consultants = 'Mercè Moreno Tarrés';
+                    } else {
+                        $consultants_copy = $project->consultants;
+                        $consultants = array_shift($consultants_copy);
+                        foreach ($consultants_copy as $userId=>$userName) {
+                            $consultants .= ', ' . $userName;
+                        }
+                    }
+
+                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%NOMBREASESOR%');
+                    $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $consultants);
                     break;
 
                 case 'tip_0':
@@ -127,7 +141,7 @@ namespace Goteo\Controller\Cron {
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
                     if(empty($project->consultants)) {
-                        $consultants = 'Enric Senabre';
+                        $consultants = 'Mercè Moreno Tarrés';
                     } else {
                         $consultants_copy = $project->consultants;
                         $consultants = array_shift($consultants_copy);
@@ -297,14 +311,18 @@ namespace Goteo\Controller\Cron {
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
                     if (empty($project->consultants)) {
-                        $consultants = array('esenabre' => 'Enric Senabre');
-                    } else {
-                        $consultants_copy = $project->consultants;
-                        $consultants = array_shift($consultants_copy);
-                        foreach ($consultants_copy as $userId=>$userName) {
-                            $consultants .= ', ' . $userName;
-                        }
+                        $project->consultants = array(
+                            'olivier' => 'Olivier Schulbaum',
+                            'merxxx' => 'Mercè Moreno Tarrés'
+                        );
                     }
+
+                    $consultants_copy = $project->consultants;
+                    $consultants = array_shift($consultants_copy);
+                    foreach ($consultants_copy as $userId=>$userName) {
+                        $consultants .= ', ' . $userName;
+                    }
+
 
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
@@ -324,6 +342,13 @@ namespace Goteo\Controller\Cron {
                 case 'project_to_review_consultant': // template 59, "Aviso a asesores cuando un impulsor envia el proyecto a revisión"
                     $tpl = 59;
 
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
+                    if (empty($project->consultants)) {
+                        $project->consultants = array(
+                            'olivier' => 'Olivier Schulbaum',
+                            'merxxx' => 'Mercè Moreno Tarrés'
+                        );
+                    }
                     $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%');
                     $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id);
                     break;
