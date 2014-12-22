@@ -12,7 +12,7 @@ namespace Goteo\Controller\Cron {
         public static function process ($debug = false) {
 
             // esto graba en un único archivo de log, solo las creaciones
-            $log_file = GOTEO_LOG_PATH.'logs/cron/created_locations.log';
+            $log_file = GOTEO_LOG_PATH.'cron/created_locations.log';
             \chmod($log_file, 0777);
 
             // geolocalizaciones existentes
