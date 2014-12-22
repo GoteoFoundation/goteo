@@ -3,8 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check;
-    
-    class Open_tag extends \Goteo\Core\Model {
+
+    class OpenTag extends \Goteo\Core\Model {
 
         public
             $id,
@@ -43,7 +43,7 @@ namespace Goteo\Model {
          * @TODO añadir el numero de usos
          */
         public static function getAll () {
-            
+
             $list = array();
 
             if(self::default_lang(\LANG)=='es') {
@@ -62,7 +62,7 @@ namespace Goteo\Model {
                          open_tag.id as id,
                                 $different_select,
                                 open_tag.post as post,
-                                (   SELECT 
+                                (   SELECT
                                         COUNT(project_open_tag.project)
                                     FROM project_open_tag
                                     WHERE project_open_tag.open_tag = open_tag.id
@@ -72,7 +72,7 @@ namespace Goteo\Model {
                             LEFT JOIN open_tag_lang
                                 ON  open_tag_lang.id = open_tag.id
                                 AND open_tag_lang.lang = :lang
-                            ORDER BY `order` ASC";       
+                            ORDER BY `order` ASC";
 
             $query = static::query($sql, array(':lang'=>\LANG));
 
@@ -105,7 +105,7 @@ namespace Goteo\Model {
                                     AND eng.lang = 'en'";
                 }
 
-                $sql="SELECT 
+                $sql="SELECT
                             open_tag.id,
                             $different_select
                         FROM open_tag
@@ -129,8 +129,8 @@ namespace Goteo\Model {
             }
 		}
 
-        
-        public function validate (&$errors = array()) { 
+
+        public function validate (&$errors = array()) {
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
                 //Text::get('mandatory-open_tag-name');
@@ -176,7 +176,7 @@ namespace Goteo\Model {
          * Para quitar una catgoria de la tabla
          */
         public static function delete ($id) {
-            
+
             $sql = "DELETE FROM open_tag WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
@@ -209,7 +209,7 @@ namespace Goteo\Model {
             return ++$order;
 
         }
-         
+
     }
-    
+
 }

@@ -401,7 +401,7 @@ namespace Goteo\Controller\Admin {
 
                 $project->open_tags = Model\Project::getOpen_tags($project->id);
                 // disponibles
-                $open_all_tags = Model\Project\Open_tag::getAll();
+                $open_all_tags = Model\Project\OpenTag::getAll();
                 return new View(
                     'admin/index.html.php',
                     array(
@@ -620,7 +620,7 @@ namespace Goteo\Controller\Admin {
             $categories = Model\Project\Category::getAll();
             $contracts = Model\Contract::getProjects();
             $calls = Model\Call::getAvailable(true);
-            $open_tags = Model\Project\Open_tag::getAll();
+            $open_tags = Model\Project\OpenTag::getAll();
             // la lista de nodos la hemos cargado arriba
             $orders = array(
                 'name' => 'Nombre',

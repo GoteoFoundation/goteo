@@ -8,11 +8,11 @@ namespace Goteo\Controller\Admin {
         Goteo\Library\Message,
         Goteo\Model;
 
-    class Open_tags {
+    class OpenTags {
 
         public static function process ($action = 'list', $id = null) {
 
-            $model = 'Goteo\Model\Open_tag';
+            $model = 'Goteo\Model\OpenTag';
             $url = '/admin/open_tags';
 
             $errors = array();
@@ -28,7 +28,7 @@ namespace Goteo\Controller\Admin {
                     }
 
                     // objeto
-                    $open_tag = new Model\Open_tag(array(
+                    $open_tag = new Model\OpenTag(array(
                         'id' => $_POST['id'],
                         'name' => $_POST['name'],
                         'description' => $_POST['description'],
@@ -41,7 +41,7 @@ namespace Goteo\Controller\Admin {
 
                         // tratar si han marcado pendiente de traducir
                         if (isset($_POST['pending']) && $_POST['pending'] == 1
-                            && !Model\Open_tag::setPending($open_tag->id, 'post')) {
+                            && !Model\OpenTag::setPending($open_tag->id, 'post')) {
                             Message::Error('NO se ha marcado como pendiente de traducir!');
                         }
 
@@ -92,7 +92,7 @@ namespace Goteo\Controller\Admin {
 
                 case 'edit':
 
-                    $open_tag = Model\Open_tag::get($id);
+                    $open_tag = Model\OpenTag::get($id);
                         // elementos disponibles
                         $items = Model\Post::getAutocomplete();
 
@@ -112,7 +112,7 @@ namespace Goteo\Controller\Admin {
 
                 case 'add':
                     // siguiente orden
-                    $next = Model\Open_tag::next();
+                    $next = Model\OpenTag::next();
                     // elementos disponibles
                     $items = Model\Post::getAutocomplete();
 

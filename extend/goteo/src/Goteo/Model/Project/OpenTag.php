@@ -2,7 +2,7 @@
 
 namespace Goteo\Model\Project {
 
-    class Open_tag extends \Goteo\Core\Model {
+    class OpenTag extends \Goteo\Core\Model {
 
         public
             $id,
@@ -39,7 +39,7 @@ namespace Goteo\Model\Project {
 
             $array = array ();
             try {
-               
+
                 if(self::default_lang(\LANG)=='es') {
                 $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
                 }
@@ -79,9 +79,9 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getNames ($project = null, $limit = null) {
-            
+
             $array = array ();
-            
+
             try {
                 $sqlFilter = "";
                 if (!empty($project)) {
@@ -98,7 +98,7 @@ namespace Goteo\Model\Project {
                                     AND eng.lang = 'en'";
                 }
 
-                $sql="SELECT 
+                $sql="SELECT
                             open_tag.id,
                             $different_select,
                             open_tag.post as post
@@ -109,7 +109,7 @@ namespace Goteo\Model\Project {
                         $eng_join
                         $sqlFilter
                         ORDER BY `order` ASC ";
-               
+
                 if (!empty($limit)) {
                     $sql .= "LIMIT $limit";
                 }
@@ -163,7 +163,7 @@ namespace Goteo\Model\Project {
 		 *
 		 * @param varchar(50) $project id de un proyecto
 		 * @param INT(12) $id  identificador de la tabla keyword
-		 * @param array $errors 
+		 * @param array $errors
 		 * @return boolean
 		 */
 		public function remove (&$errors = array()) {
@@ -183,5 +183,5 @@ namespace Goteo\Model\Project {
 		}
 
 	}
-    
+
 }
