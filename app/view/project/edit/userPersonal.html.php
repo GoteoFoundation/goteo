@@ -109,12 +109,6 @@ echo SuperForm::get(array(
                     'value'     => $project->phone
                 ),
 
-                'contract_email' => array(
-                    'type'      => 'hidden',
-                    'class'     => 'inline'
-
-                ),
-
                 'contract_birthdate'  => array(
                     'type'      => 'datebox',
                     'required'  => true,
@@ -145,34 +139,6 @@ echo SuperForm::get(array(
             'type'      => 'group',
             'title'     => Text::get('personal-field-accounts'),
             'children'  => $campos_cuentas
-        ),
-
-        /* Domicilio */
-        'main_address' => array(
-            'type'      => 'hidden',
-            'title'     => Text::get('personal-field-main_address'),
-            'hint'      => Text::get('tooltip-project-main_address'),
-            'children'  => array(
-                'address' => array(
-                    'type'      => 'textbox',
-                    'class'     => 'hidden'
-                ),
-
-                'zipcode' => array(
-                    'type'      => 'textbox',
-                    'class'     => 'hidden'
-                ),
-
-                'location' => array(
-                    'type'      => 'textbox',
-                    'class'     => 'hidden'
-                ),
-
-                'country' => array(
-                    'type'      => 'textbox',
-                    'class'     => 'hidden'
-                )
-            )
         ),
 
         /* Radio de domicilio postal igual o diferente

@@ -182,17 +182,20 @@ if (!$project->draft) {
 
     $about = array(
         'type'  => 'hidden',
-        'class' => 'inline'
+        'class' => 'inline',
+        'value'     => $project->about
     );
 
     $motivation = array(
         'type'  => 'hidden',
-        'class' => 'inline'
+        'class' => 'inline',
+        'value'     => $project->motivation
     );
 
     $goal = array(
         'type'  => 'hidden',
-        'class' => 'inline'
+        'class' => 'inline',
+        'value'     => $project->goal
     );
 
     $anchor_video = array(
@@ -201,7 +204,8 @@ if (!$project->draft) {
     );
     $video_field=array(
         'type'  => 'hidden',
-        'class' => 'inline'
+        'class' => 'inline',
+        'value'     => (string) $project->video
     );
 
     $video_upload=array(
