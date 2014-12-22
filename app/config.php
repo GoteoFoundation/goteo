@@ -1,21 +1,6 @@
 <?php
 define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
-// ¿ESTO ESTA OBSOLETO?
-// if (function_exists('ini_set')) {
-//     ini_set('include_path', GOTEO_PATH . PATH_SEPARATOR . '.');
-// } else {
-//     throw new Exception("No puedo añadir la API GOTEO al include_path.");
-// }
-
-
-// define('PEAR', GOTEO_PATH . 'library' . '/' . 'pear' . '/');
-// if (function_exists('ini_set')) {
-//     ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . PEAR);
-// } else {
-//     throw new Exception("No puedo añadir las librerías PEAR al include_path.");
-// }
-
 require_once __DIR__ . '/../src/Goteo/Core/Helpers.php';
 require_once __DIR__ . '/autoload.php';
 
