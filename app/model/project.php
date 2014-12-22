@@ -1706,6 +1706,9 @@ namespace Goteo\Model {
                         ++$score;
                     }
 
+                } else {
+                    // este paso, para los draft, tiene menos puntuación máxima
+                    $maxScore = 8;
                 }
 
                 $this->setScore($score, $maxScore);
