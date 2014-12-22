@@ -564,7 +564,7 @@ namespace Goteo\Controller\Admin {
                     $recent = Feed::getLog($date);
                     $content = '<pre>'.print_r($recent, 1).'</pre>';
                 } elseif ( !empty($type) ) {
-                    $content = @file_get_contents(GOTEO_LOG_PATH.'logs/cron/'.str_replace('-', '', $date).'_'.$type.'.log');
+                    $content = @file_get_contents(GOTEO_LOG_PATH . 'cron/'.str_replace('-', '', $date).'_'.$type.'.log');
                     $content = nl2br($content);
                 } else {
                     throw new Redirection('/admin/accounts/viewer/');
