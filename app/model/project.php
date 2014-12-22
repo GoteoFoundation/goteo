@@ -1496,6 +1496,7 @@ namespace Goteo\Model {
 
             if (isset($steps) && isset($steps['userProfile'])) {
                 /***************** Revisión de campos del paso 1, PERFIL *****************/
+                $maxScore = 12;
                 $score = 0;
                 // obligatorios: nombre, email, ciudad
                 if (empty($this->user->name)) {
@@ -1576,12 +1577,13 @@ namespace Goteo\Model {
                 }
 
                 //puntos
-                $this->setScore($score, 12);
+                $this->setScore($score, $maxScore);
                 /***************** FIN Revisión del paso 1, PERFIL *****************/
             }
 
             if (isset($steps) && isset($steps['userPersonal'])) {
                 /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
+                $maxScore = 6;
                 $score = 0;
                 // obligatorios: todos
                 if (empty($this->contract_name)) {
@@ -1600,14 +1602,6 @@ namespace Goteo\Model {
                     ++$score;
                 }
 
-                if (empty($this->contract_email)) {
-                    $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract_email');
-                } elseif (!Check::mail($this->contract_email)) {
-                    $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract_email');
-                } else {
-                     $okeys['userPersonal']['contract_email'] = 'ok';
-                }
-
                 if (empty($this->contract_birthdate)) {
                     $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
                 } else {
@@ -1623,39 +1617,14 @@ namespace Goteo\Model {
                      ++$score;
                 }
 
-                if (empty($this->address)) {
-                    $errors['userPersonal']['address'] = Text::get('mandatory-project-field-address');
-                } else {
-                     $okeys['userPersonal']['address'] = 'ok';
-                     ++$score;
-                }
 
-                if (empty($this->zipcode)) {
-                    $errors['userPersonal']['zipcode'] = Text::get('mandatory-project-field-zipcode');
-                } else {
-                     $okeys['userPersonal']['zipcode'] = 'ok';
-                     ++$score;
-                }
-
-                if (empty($this->location)) {
-                    $errors['userPersonal']['location'] = Text::get('mandatory-project-field-residence');
-                } else {
-                     $okeys['userPersonal']['location'] = 'ok';
-                }
-
-                if (empty($this->country)) {
-                    $errors['userPersonal']['country'] = Text::get('mandatory-project-field-country');
-                } else {
-                     $okeys['userPersonal']['country'] = 'ok';
-                     ++$score;
-                }
-
-                $this->setScore($score, 6);
+                $this->setScore($score, $maxScore);
                 /***************** FIN Revisión del paso 2, DATOS PERSONALES *****************/
             }
 
             if (isset($steps) && isset($steps['overview'])) {
                 /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
+                $maxScore = 13;
                 $score = 0;
                 // obligatorios: nombre, subtitulo, imagen, descripcion, about, motivation, categorias, video, localización
                 if (empty($this->name)) {
@@ -1675,25 +1644,6 @@ namespace Goteo\Model {
                      $errors['overview']['description'] = Text::get('validate-project-field-description');
                 } else {
                      $okeys['overview']['description'] = 'ok';
-                     ++$score;
-                }
-
-                if (empty($this->about)) {
-                    $errors['overview']['about'] = Text::get('mandatory-project-field-about');
-                 } else {
-                     $okeys['overview']['about'] = 'ok';
-                     ++$score;
-                }
-
-                if (empty($this->motivation)) {
-                    $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
-                } else {
-                     $okeys['overview']['motivation'] = 'ok';
-                     ++$score;
-                }
-
-                if (!empty($this->goal))  {
-                     $okeys['overview']['goal'] = 'ok';
                      ++$score;
                 }
 
@@ -1726,22 +1676,48 @@ namespace Goteo\Model {
                      ++$score;
                 }
 
-                // paso 3b: imágenes
-                if (empty($this->gallery) && empty($errors['images']['image'])) {
-                    $errors['images']['image'] .= Text::get('mandatory-project-field-image');
+                if (!$this->draft)
+                {
+                    if (empty($this->about)) {
+                        $errors['overview']['about'] = Text::get('mandatory-project-field-about');
+                     } else {
+                        $okeys['overview']['about'] = 'ok';
+                        ++$score;
+                    }
+
+                     if (empty($this->motivation)) {
+                    $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
+                    } else {
+                        $okeys['overview']['motivation'] = 'ok';
+                        ++$score;
+                    }
+
+                    // paso 3b: imágenes
+                    if (empty($this->gallery) && empty($errors['images']['image'])) {
+                        $errors['images']['image'] .= Text::get('mandatory-project-field-image');
+                    } else {
+                        $okeys['images']['image'] = (empty($errors['images']['image'])) ? 'ok' : null;
+                        ++$score;
+                        if (count($this->gallery) >= 2) ++$score;
+                    }
+
+                    if (!empty($this->goal))  {
+                        $okeys['overview']['goal'] = 'ok';
+                        ++$score;
+                    }
+
                 } else {
-                    $okeys['images']['image'] = (empty($errors['images']['image'])) ? 'ok' : null;
-                    ++$score;
-                    if (count($this->gallery) >= 2) ++$score;
+                    // este paso, para los draft, tiene menos puntuación máxima
+                    $maxScore = 8;
                 }
 
-
-                $this->setScore($score, 13);
+                $this->setScore($score, $maxScore);
                 /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
             }
 
             if (isset($steps) && isset($steps['costs'])) {
                 /***************** Revisión de campos del paso 4, COSTES *****************/
+                $maxScore = 6;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreDate = 0;
                 if (count($this->costs) < 2) {
                     $errors['costs']['costs'] = Text::get('mandatory-project-costs');
@@ -1813,12 +1789,13 @@ namespace Goteo\Model {
                     ++$score;
                 }
 
-                $this->setScore($score, 6);
+                $this->setScore($score, $maxScore);
                 /***************** FIN Revisión del paso 4, COSTES *****************/
             }
 
             if (isset($steps) && isset($steps['rewards'])) {
                 /***************** Revisión de campos del paso 5, RETORNOS *****************/
+                $maxScore = 8;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
                 if (empty($this->social_rewards)) {
                     $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
@@ -1920,13 +1897,14 @@ namespace Goteo\Model {
                 }
 
                 $score = $score + $scoreName + $scoreDesc + $scoreAmount;
-                $this->setScore($score, 8);
+                $this->setScore($score, $maxScore);
                 /***************** FIN Revisión del paso 5, RETORNOS *****************/
             }
 
             if (isset($steps) && isset($steps['suports'])) {
                 /***************** Revisión de campos del paso 6, COLABORACIONES *****************/
-                $scorename = $scoreDesc = 0;
+                $maxScore = 2;
+                $scoreName = $scoreDesc = 0;
                 foreach ($this->supports as $support) {
                     if (!empty($support->support)) {
                          $okeys['supports']['support-'.$support->id.'-support'] = 'ok';
@@ -1939,7 +1917,7 @@ namespace Goteo\Model {
                     }
                 }
                 $score = $scoreName + $scoreDesc;
-                $this->setScore($score, 2);
+                $this->setScore($score, $maxScore);
                 /***************** FIN Revisión del paso 6, COLABORACIONES *****************/
             }
 
