@@ -1,6 +1,8 @@
 <?php
 define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
+define('GOTEO_LOG_PATH', __DIR__ . '/var/logs/');
+
 require_once __DIR__ . '/../src/Goteo/Core/Helpers.php';
 require_once __DIR__ . '/autoload.php';
 
