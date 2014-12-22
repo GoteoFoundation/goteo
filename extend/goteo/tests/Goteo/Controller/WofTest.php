@@ -15,13 +15,4 @@ class WofTest extends \PHPUnit_Framework_TestCase {
 
         return $controller;
     }
-
-    /**
-     * @depends testInstance
-     */
-    public function testIndex($controller) {
-        //TODO: ob_start...
-        // $page = $controller->index('wikicontrol');
-
-    }
 }

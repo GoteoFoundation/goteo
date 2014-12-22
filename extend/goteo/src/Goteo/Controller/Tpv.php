@@ -10,8 +10,8 @@ namespace Goteo\Controller {
 		Goteo\Library\Text,
         Goteo\Core\Redirection;
 
-    require_once __DIR__ . '/../../src/Goteo/Library/paypal/stub.php'; // sí, uso el stub de paypal
-    require_once __DIR__ . '/../../src/Goteo/Library/paypal/log.php'; // sí, uso el log de paypal
+    require_once __DIR__ . '/../../../../../src/Goteo/Library/paypal/stub.php'; // sí, uso el stub de paypal
+    require_once __DIR__ . '/../../../../../src/Goteo/Library/paypal/log.php'; // sí, uso el log de paypal
 
     class Tpv extends \Goteo\Core\Controller {
 
