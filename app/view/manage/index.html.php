@@ -27,9 +27,9 @@ include __DIR__ . '/../header.html.php';
 
 <?php if (!empty($this['folder']) && !empty($this['file'])) :
         if ($this['folder'] == 'base') {
-            $path = __DIR__ . '/../manage/'.$this['file'].'.html.php';
+            $path = 'manage/'.$this['file'].'.html.php';
         } else {
-            $path = __DIR__ . '/../manage/'.$this['folder'].'/'.$this['file'].'.html.php';
+            $path = 'manage/'.$this['folder'].'/'.$this['file'].'.html.php';
         }
 
             echo View::get($path, $this);

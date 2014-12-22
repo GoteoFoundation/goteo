@@ -139,9 +139,9 @@ namespace Goteo\Controller\Dashboard {
             if ($donation->edited || $action == 'confirm') {
 
                 // ver si es un cif
-                $type = '';
-                $donation->valid_nif = Check::nif($donation->nif, $type);
-                $donation->juridica = ($type == 'cif');
+                $donation->nif_type = '';
+                $donation->valid_nif = Check::nif($donation->nif, $donation->nif_type);
+                $donation->juridica = ($donation->nif_type == 'cif' || $donation->nif_type == 'vat');
 
                 // verificar que han rellenado todos los campos
                 if (empty($donation->name)

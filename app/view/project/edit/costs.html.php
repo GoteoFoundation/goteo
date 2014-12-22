@@ -86,7 +86,7 @@ if (!empty($project->costs)) {
                         'hint'      => Text::get('tooltip-project-cost-amount'),
                         'errors'    => !empty($errors["cost-{$cost->id}-amount"]) ? array($errors["cost-{$cost->id}-amount"]) : array(),
                         'ok'        => !empty($okeys["cost-{$cost->id}-amount"]) ? array($okeys["cost-{$cost->id}-amount"]) : array(),
-                        'value'     => $cost->amount
+                        'value'     => $cost->amount_original
                     ),
                     "cost-{$cost->id}-required"  => array(
                         'required'  => true,
@@ -191,6 +191,19 @@ echo SuperForm::get(array(
             'html' => '<a name="costs"></a>'
         ),
 
+        'rounds' => array(
+            'type'      => 'checkbox',
+            'class'     => 'cols_1',
+            'required'  => false,
+            'name'      => 'one_round',
+            'label'     => Text::get('project-rounds'),
+            'hint'      => Text::get('tooltip-project-rounds'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'checked'   => (bool) $project->one_round,
+            'value'     => 1
+        ),
+
         'costs' => array(
             'type'      => 'group',
             'required'  => true,
@@ -239,19 +252,6 @@ echo SuperForm::get(array(
             'html'      => View::get('project/widget/schedule.html.php', array('project' => $project))
         ),
 
-        'rounds' => array(
-            'type'      => 'checkbox',
-            'class'     => 'cols_1',
-            'required'  => false,
-            'name'      => 'one_round',
-            'label'     => Text::get('project-rounds'),
-            'hint'      => Text::get('tooltip-project-rounds'),
-            'errors'    => array(),
-            'ok'        => array(),
-            'checked'   => (bool) $project->one_round,
-            'value'     => 1
-        ),
-
         'footer' => array(
             'type'      => 'group',
             'children'  => array(
@@ -267,7 +267,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-rewards',
+                            'name'  => 'view-step-'.$this['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

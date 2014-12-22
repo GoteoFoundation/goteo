@@ -2,7 +2,8 @@
 
 use Goteo\Library\Text;
 
-$cost = $this['data']['cost'] ?>
+$cost = $this['data']['cost'];
+?>
 
 <div class="cost <?php echo $cost->type ?>">
     
@@ -13,7 +14,7 @@ $cost = $this['data']['cost'] ?>
     
     <div class="description">
         <?php echo htmlspecialchars($cost->description) ?>
-        <p><?php echo (int) $cost->amount ?> &euro;
+        <p><?php echo $cost->amount_format ?>
             <strong><?php echo $cost->required ? Text::get('costs-field-required_cost-yes') : Text::get('costs-field-required_cost-no') ?></strong>
         </p>
 

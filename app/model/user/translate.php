@@ -146,7 +146,7 @@ namespace Goteo\Model\User {
                 if ($type == 'node') {
                     $sql = "SELECT id, name FROM `{$type}`";
                 } else {
-                    $sql = "SELECT id, name FROM `{$type}` WHERE translate = 0 AND (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{5,40}'))";
+                    $sql = "SELECT id, name FROM `{$type}` WHERE translate = 0 AND (status > 1  OR (status = 1 AND id NOT REGEXP '[0-9a-f]{32}'))";
                     if ($type != 'call' && !empty($node)) {
                         $sql .= " AND node = :node";
                         $values[':node'] = $node;

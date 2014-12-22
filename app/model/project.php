@@ -3,8 +3,10 @@
 namespace Goteo\Model {
 
     use Goteo\Core\ACL,
+        Goteo\Library,
         Goteo\Library\Check,
         Goteo\Library\Text,
+        Goteo\Library\Currency,
         Goteo\Model\User,
         Goteo\Model\Image,
         Goteo\Model\Message,
@@ -19,6 +21,7 @@ namespace Goteo\Model {
 
         public
             $id = null,
+            $draft, // indica si el id es un md5 [0-9a-f]{32}
             $dontsave = false,
             $owner, // User who created it
             $node, // Node this project belongs to
@@ -64,6 +67,8 @@ namespace Goteo\Model {
             $name,
             $subtitle,
             $lang = 'es',
+            $currency = 'EUR',
+            $currency_rate = 1,
             $image,
             $gallery = array(), // array de instancias image de project_image
             $secGallery = array(), // array de instancias image de project_image (secundarias)
@@ -206,7 +211,9 @@ namespace Goteo\Model {
             $values = array(
                 ':id'   => md5($user.'-'.$num),
                 ':name' => "El nuevo proyecto de {$userProfile->name}",
-                ':lang' => 'es',
+                ':lang' => !empty($_SESSION['lang']) ? $_SESSION['lang'] : 'es',
+                ':currency' => 'EUR',
+                ':currency_rate' => 1,
                 ':status'   => 1,
                 ':progress' => 0,
                 ':owner' => $user,
@@ -264,6 +271,7 @@ namespace Goteo\Model {
             try {
 				// metemos los datos del proyecto en la instancia
                 $sql = "SELECT project.*,
+                                project.id REGEXP '[0-9a-f]{32}' as draft,
                                 node.name as node_name,
                                 node.url as node_url,
                                 project_conf.*,
@@ -943,6 +951,28 @@ namespace Goteo\Model {
         }
 
         /*
+         *  Para obtener el ratio de conversión original
+         *  Este método se llama en save()
+         *
+         *  Solo tiene sentido si han seleccionado una divisa diferente a la de por defecto
+         *
+         */
+        public function setCurrency() {
+
+            if ($this->currency == Currency::DEFAULT_CURRENCY) {
+
+                $this->currency_rate = 1;
+
+            } elseif (empty($this->currency_rate) || $this->currency_rate == 1) {
+
+                // solo grabamos ratio la primera vez
+                $this->currency_rate = Currency::rate($this->currency);
+
+            }
+
+        }
+
+        /*
          *  Para calcular la ronda de un proyecto y los dias restantes de campaña
          *  Este método se llama al instanciar un proyecto con get() o getMedium(), modificando sus atributos $round y $days
          */
@@ -1103,6 +1133,9 @@ namespace Goteo\Model {
             if (empty($this->lang))
                 $this->lang = 'es';
 
+            if (empty($this->currency))
+                $this->lang = 'EUR';
+
             if (empty($this->status))
                 $this->status = 1;
 
@@ -1169,6 +1202,10 @@ namespace Goteo\Model {
                     }
                 }
 
+                // lang, currency, currency_rate
+                $this->setCurrency();
+
+
                 $fields = array(
                     'contract_name',
                     'contract_nif',
@@ -1190,6 +1227,9 @@ namespace Goteo\Model {
                     'post_country',
                     'name',
                     'subtitle',
+                    'lang',
+                    'currency',
+                    'currency_rate',
                     'description',
                     'motivation',
                     'video',
@@ -1441,8 +1481,11 @@ namespace Goteo\Model {
 
         /*
          * comprueba errores de datos y actualiza la puntuación
+         *
+         * @param steps array : pasos del formulario
+         *
          */
-        public function check() {
+        public function check($steps = null) {
 
             $errors = &$this->errors;
             $okeys  = &$this->okeys ;
@@ -1450,454 +1493,433 @@ namespace Goteo\Model {
             // reseteamos la puntuación
             $this->setScore(0, 0, true);
 
-            /***************** Revisión de campos del paso 1, PERFIL *****************/
-            $score = 0;
-            // obligatorios: nombre, email, ciudad
-            if (empty($this->user->name)) {
-                $errors['userProfile']['name'] = Text::get('validate-user-field-name');
-            } else {
-                $okeys['userProfile']['name'] = 'ok';
-                ++$score;
-            }
 
-            // se supone que tiene email porque sino no puede tener usuario, no?
-            if (!empty($this->user->email)) {
-                ++$score;
-            }
-
-            if (empty($this->user->location)) {
-                $errors['userProfile']['location'] = Text::get('validate-user-field-location');
-            } else {
-                $okeys['userProfile']['location'] = 'ok';
-                ++$score;
-            }
-
-            if(!empty($this->user->avatar) && $this->user->avatar->id != 1) {
-                $okeys['userProfile']['avatar'] = empty($errors['userProfile']['avatar']) ? 'ok' : null;
-                $score+=2;
-            }
-
-            if (!empty($this->user->about)) {
-                $okeys['userProfile']['about'] = 'ok';
-                ++$score;
-                // otro +1 si tiene más de 1000 caracteres (pero menos de 2000)
-                if (\strlen($this->user->about) > 1000 && \strlen($this->user->about) < 2000) {
+            if (isset($steps) && isset($steps['userProfile'])) {
+                /***************** Revisión de campos del paso 1, PERFIL *****************/
+                $maxScore = 12;
+                $score = 0;
+                // obligatorios: nombre, email, ciudad
+                if (empty($this->user->name)) {
+                    $errors['userProfile']['name'] = Text::get('validate-user-field-name');
+                } else {
+                    $okeys['userProfile']['name'] = 'ok';
                     ++$score;
                 }
-            } else {
-                $errors['userProfile']['about'] = Text::get('validate-user-field-about');
+
+                // se supone que tiene email porque sino no puede tener usuario, no?
+                if (!empty($this->user->email)) {
+                    ++$score;
+                }
+
+                if (empty($this->user->location)) {
+                    $errors['userProfile']['location'] = Text::get('validate-user-field-location');
+                } else {
+                    $okeys['userProfile']['location'] = 'ok';
+                    ++$score;
+                }
+
+                if(!empty($this->user->avatar) && $this->user->avatar->id != 1) {
+                    $okeys['userProfile']['avatar'] = empty($errors['userProfile']['avatar']) ? 'ok' : null;
+                    $score+=2;
+                }
+
+                if (!empty($this->user->about)) {
+                    $okeys['userProfile']['about'] = 'ok';
+                    ++$score;
+                    // otro +1 si tiene más de 1000 caracteres (pero menos de 2000)
+                    if (\strlen($this->user->about) > 1000 && \strlen($this->user->about) < 2000) {
+                        ++$score;
+                    }
+                } else {
+                    $errors['userProfile']['about'] = Text::get('validate-user-field-about');
+                }
+
+                if (!empty($this->user->interests)) {
+                    $okeys['userProfile']['interests'] = 'ok';
+                    ++$score;
+                }
+
+                if (empty($this->user->webs)) {
+                    $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-web');
+                } else {
+                    $okeys['userProfile']['webs'] = 'ok';
+                    ++$score;
+                    if (count($this->user->webs) > 2) ++$score;
+
+                    $anyerror = false;
+                    foreach ($this->user->webs as $web) {
+                        if (trim(str_replace('http://','',$web->url)) == '') {
+                            $anyerror = !$anyerror ?: true;
+                            $errors['userProfile']['web-'.$web->id.'-url'] = Text::get('validate-user-field-web');
+                        } else {
+                            $okeys['userProfile']['web-'.$web->id.'-url'] = 'ok';
+                        }
+                    }
+
+                    if ($anyerror) {
+                        unset($okeys['userProfile']['webs']);
+                        $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-any_error');
+                    }
+                }
+
+                if (!empty($this->user->facebook)) {
+                    $okeys['userProfile']['facebook'] = 'ok';
+                    ++$score;
+                }
+
+                if (!empty($this->user->twitter)) {
+                    $okeys['userProfile']['twitter'] = 'ok';
+                    ++$score;
+                }
+
+                if (!empty($this->user->linkedin)) {
+                    $okeys['userProfile']['linkedin'] = 'ok';
+                }
+
+                //puntos
+                $this->setScore($score, $maxScore);
+                /***************** FIN Revisión del paso 1, PERFIL *****************/
             }
 
-            if (!empty($this->user->interests)) {
-                $okeys['userProfile']['interests'] = 'ok';
-                ++$score;
+            if (isset($steps) && isset($steps['userPersonal'])) {
+                /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
+                $maxScore = 6;
+                $score = 0;
+                // obligatorios: todos
+                if (empty($this->contract_name)) {
+                    $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract_name');
+                } else {
+                     $okeys['userPersonal']['contract_name'] = 'ok';
+                     ++$score;
+                }
+
+                if (empty($this->contract_nif)) {
+                    $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract_nif');
+                } elseif ( !Check::nif($this->contract_nif) ) {
+                    $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract_nif');
+                } else {
+                    $okeys['userPersonal']['contract_nif'] = 'ok';
+                    ++$score;
+                }
+
+                if (empty($this->contract_birthdate)) {
+                    $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
+                } else {
+                     $okeys['userPersonal']['contract_birthdate'] = 'ok';
+                }
+
+                if (empty($this->phone)) {
+                    $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
+                } elseif (!Check::phone($this->phone)) {
+                    $errors['userPersonal']['phone'] = Text::get('validate-project-value-phone');
+                } else {
+                     $okeys['userPersonal']['phone'] = 'ok';
+                     ++$score;
+                }
+
+
+                $this->setScore($score, $maxScore);
+                /***************** FIN Revisión del paso 2, DATOS PERSONALES *****************/
             }
 
-            /* Aligerando superform
-            if (!empty($this->user->keywords)) {
-                $okeys['userProfile']['keywords'] = 'ok';
-                ++$score;
+            if (isset($steps) && isset($steps['overview'])) {
+                /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
+                $maxScore = 13;
+                $score = 0;
+                // obligatorios: nombre, subtitulo, imagen, descripcion, about, motivation, categorias, video, localización
+                if (empty($this->name)) {
+                    $errors['overview']['name'] = Text::get('mandatory-project-field-name');
+                } else {
+                     $okeys['overview']['name'] = 'ok';
+                     ++$score;
+                }
+
+                if (!empty($this->subtitle)) {
+                     $okeys['overview']['subtitle'] = 'ok';
+                }
+
+                if (empty($this->description)) {
+                    $errors['overview']['description'] = Text::get('mandatory-project-field-description');
+                } elseif (!Check::words($this->description, 80)) {
+                     $errors['overview']['description'] = Text::get('validate-project-field-description');
+                } else {
+                     $okeys['overview']['description'] = 'ok';
+                     ++$score;
+                }
+
+                if (!empty($this->related)) {
+                     $okeys['overview']['related'] = 'ok';
+                     ++$score;
+                }
+
+                if (empty($this->categories)) {
+                    $errors['overview']['categories'] = Text::get('mandatory-project-field-category');
+                } else {
+                     $okeys['overview']['categories'] = 'ok';
+                     ++$score;
+                }
+
+                if (empty($this->media)) {
+                    // solo error si no está aplicando a una convocatoria
+                    if (!isset($this->called)) {
+                        $errors['overview']['media'] = Text::get('mandatory-project-field-media');
+                    }
+                } else {
+                     $okeys['overview']['media'] = 'ok';
+                     $score+=3;
+                }
+
+                if (empty($this->project_location)) {
+                    $errors['overview']['project_location'] = Text::get('mandatory-project-field-location');
+                } else {
+                     $okeys['overview']['project_location'] = 'ok';
+                     ++$score;
+                }
+
+                if (!$this->draft)
+                {
+                    if (empty($this->about)) {
+                        $errors['overview']['about'] = Text::get('mandatory-project-field-about');
+                     } else {
+                        $okeys['overview']['about'] = 'ok';
+                        ++$score;
+                    }
+
+                     if (empty($this->motivation)) {
+                    $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
+                    } else {
+                        $okeys['overview']['motivation'] = 'ok';
+                        ++$score;
+                    }
+
+                    // paso 3b: imágenes
+                    if (empty($this->gallery) && empty($errors['images']['image'])) {
+                        $errors['images']['image'] .= Text::get('mandatory-project-field-image');
+                    } else {
+                        $okeys['images']['image'] = (empty($errors['images']['image'])) ? 'ok' : null;
+                        ++$score;
+                        if (count($this->gallery) >= 2) ++$score;
+                    }
+
+                    if (!empty($this->goal))  {
+                        $okeys['overview']['goal'] = 'ok';
+                        ++$score;
+                    }
+
+                } else {
+                    // este paso, para los draft, tiene menos puntuación máxima
+                    $maxScore = 8;
+                }
+
+                $this->setScore($score, $maxScore);
+                /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
             }
 
-            if (!empty($this->user->contribution)) {
-                $okeys['userProfile']['contribution'] = 'ok';
-                ++$score;
-            }
-             */
-
-            if (empty($this->user->webs)) {
-                $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-web');
-            } else {
-                $okeys['userProfile']['webs'] = 'ok';
-                ++$score;
-                if (count($this->user->webs) > 2) ++$score;
+            if (isset($steps) && isset($steps['costs'])) {
+                /***************** Revisión de campos del paso 4, COSTES *****************/
+                $maxScore = 6;
+                $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreDate = 0;
+                if (count($this->costs) < 2) {
+                    $errors['costs']['costs'] = Text::get('mandatory-project-costs');
+                } else {
+                     $okeys['costs']['costs'] = 'ok';
+                    ++$score;
+                }
 
                 $anyerror = false;
-                foreach ($this->user->webs as $web) {
-                    if (trim(str_replace('http://','',$web->url)) == '') {
+                foreach($this->costs as $cost) {
+                    if (empty($cost->cost)) {
+                        $errors['costs']['cost-'.$cost->id.'-cost'] = Text::get('mandatory-cost-field-name');
                         $anyerror = !$anyerror ?: true;
-                        $errors['userProfile']['web-'.$web->id.'-url'] = Text::get('validate-user-field-web');
                     } else {
-                        $okeys['userProfile']['web-'.$web->id.'-url'] = 'ok';
+                         $okeys['costs']['cost-'.$cost->id.'-cost'] = 'ok';
+                         $scoreName = 1;
+                    }
+
+                    if (empty($cost->type)) {
+                        $errors['costs']['cost-'.$cost->id.'-type'] = Text::get('mandatory-cost-field-type');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['costs']['cost-'.$cost->id.'-type'] = 'ok';
+                    }
+
+                    if (empty($cost->description)) {
+                        $errors['costs']['cost-'.$cost->id.'-description'] = Text::get('mandatory-cost-field-description');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['costs']['cost-'.$cost->id.'-description'] = 'ok';
+                         $scoreDesc = 1;
+                    }
+
+                    if (empty($cost->amount)) {
+                        $errors['costs']['cost-'.$cost->id.'-amount'] = Text::get('mandatory-cost-field-amount');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['costs']['cost-'.$cost->id.'-amount'] = 'ok';
+                         $scoreAmount = 1;
+                    }
+
+                    if ($cost->type == 'task' && (empty($cost->from) || empty($cost->until))) {
+                        $errors['costs']['cost-'.$cost->id.'-dates'] = Text::get('mandatory-cost-field-task_dates');
+                        $anyerror = !$anyerror ?: true;
+                    } elseif ($cost->type == 'task') {
+                        $okeys['costs']['cost-'.$cost->id.'-dates'] = 'ok';
+                        $scoreDate = 1;
                     }
                 }
 
                 if ($anyerror) {
-                    unset($okeys['userProfile']['webs']);
-                    $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-any_error');
+                    unset($okeys['costs']['costs']);
+                    $errors['costs']['costs'] = Text::get('validate-project-costs-any_error');
                 }
-            }
 
-            if (!empty($this->user->facebook)) {
-                $okeys['userProfile']['facebook'] = 'ok';
-                ++$score;
-            }
+                $score = $score + $scoreName + $scoreDesc + $scoreAmount + $scoreDate;
 
-            if (!empty($this->user->twitter)) {
-                $okeys['userProfile']['twitter'] = 'ok';
-                ++$score;
-            }
-
-            if (!empty($this->user->linkedin)) {
-                $okeys['userProfile']['linkedin'] = 'ok';
-            }
-
-            //puntos
-            $this->setScore($score, 12);
-            /***************** FIN Revisión del paso 1, PERFIL *****************/
-
-            /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
-            $score = 0;
-            // obligatorios: todos
-            if (empty($this->contract_name)) {
-                $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract_name');
-            } else {
-                 $okeys['userPersonal']['contract_name'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->contract_nif)) {
-                $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract_nif');
-            } elseif (!Check::nif($this->contract_nif) && !Check::vat($this->contract_nif)) {
-                $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract_nif');
-            } else {
-                 $okeys['userPersonal']['contract_nif'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->contract_email)) {
-                $errors['userPersonal']['contract_email'] = Text::get('mandatory-project-field-contract_email');
-            } elseif (!Check::mail($this->contract_email)) {
-                $errors['userPersonal']['contract_email'] = Text::get('validate-project-value-contract_email');
-            } else {
-                 $okeys['userPersonal']['contract_email'] = 'ok';
-            }
-
-            if (empty($this->contract_birthdate)) {
-                $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
-            } else {
-                 $okeys['userPersonal']['contract_birthdate'] = 'ok';
-            }
-
-            if (empty($this->phone)) {
-                $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
-            } elseif (!Check::phone($this->phone)) {
-                $errors['userPersonal']['phone'] = Text::get('validate-project-value-phone');
-            } else {
-                 $okeys['userPersonal']['phone'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->address)) {
-                $errors['userPersonal']['address'] = Text::get('mandatory-project-field-address');
-            } else {
-                 $okeys['userPersonal']['address'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->zipcode)) {
-                $errors['userPersonal']['zipcode'] = Text::get('mandatory-project-field-zipcode');
-            } else {
-                 $okeys['userPersonal']['zipcode'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->location)) {
-                $errors['userPersonal']['location'] = Text::get('mandatory-project-field-residence');
-            } else {
-                 $okeys['userPersonal']['location'] = 'ok';
-            }
-
-            if (empty($this->country)) {
-                $errors['userPersonal']['country'] = Text::get('mandatory-project-field-country');
-            } else {
-                 $okeys['userPersonal']['country'] = 'ok';
-                 ++$score;
-            }
-
-            $this->setScore($score, 6);
-            /***************** FIN Revisión del paso 2, DATOS PERSONALES *****************/
-
-            /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
-            $score = 0;
-            // obligatorios: nombre, subtitulo, imagen, descripcion, about, motivation, categorias, video, localización
-            if (empty($this->name)) {
-                $errors['overview']['name'] = Text::get('mandatory-project-field-name');
-            } else {
-                 $okeys['overview']['name'] = 'ok';
-                 ++$score;
-            }
-
-            if (!empty($this->subtitle)) {
-                 $okeys['overview']['subtitle'] = 'ok';
-            }
-
-            if (empty($this->description)) {
-                $errors['overview']['description'] = Text::get('mandatory-project-field-description');
-            } elseif (!Check::words($this->description, 80)) {
-                 $errors['overview']['description'] = Text::get('validate-project-field-description');
-            } else {
-                 $okeys['overview']['description'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->about)) {
-                $errors['overview']['about'] = Text::get('mandatory-project-field-about');
-             } else {
-                 $okeys['overview']['about'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->motivation)) {
-                $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
-            } else {
-                 $okeys['overview']['motivation'] = 'ok';
-                 ++$score;
-            }
-
-            if (!empty($this->goal))  {
-                 $okeys['overview']['goal'] = 'ok';
-                 ++$score;
-            }
-
-            if (!empty($this->related)) {
-                 $okeys['overview']['related'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->categories)) {
-                $errors['overview']['categories'] = Text::get('mandatory-project-field-category');
-            } else {
-                 $okeys['overview']['categories'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->media)) {
-                // solo error si no está aplicando a una convocatoria
-                if (!isset($this->called)) {
-                    $errors['overview']['media'] = Text::get('mandatory-project-field-media');
-                }
-            } else {
-                 $okeys['overview']['media'] = 'ok';
-                 $score+=3;
-            }
-
-            if (empty($this->project_location)) {
-                $errors['overview']['project_location'] = Text::get('mandatory-project-field-location');
-            } else {
-                 $okeys['overview']['project_location'] = 'ok';
-                 ++$score;
-            }
-
-            // paso 3b: imágenes
-            if (empty($this->gallery) && empty($errors['images']['image'])) {
-                $errors['images']['image'] .= Text::get('mandatory-project-field-image');
-            } else {
-                $okeys['images']['image'] = (empty($errors['images']['image'])) ? 'ok' : null;
-                ++$score;
-                if (count($this->gallery) >= 2) ++$score;
-            }
-
-
-            $this->setScore($score, 13);
-            /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
-
-            /***************** Revisión de campos del paso 4, COSTES *****************/
-            $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreDate = 0;
-            if (count($this->costs) < 2) {
-                $errors['costs']['costs'] = Text::get('mandatory-project-costs');
-            } else {
-                 $okeys['costs']['costs'] = 'ok';
-                ++$score;
-            }
-
-            $anyerror = false;
-            foreach($this->costs as $cost) {
-                if (empty($cost->cost)) {
-                    $errors['costs']['cost-'.$cost->id.'-cost'] = Text::get('mandatory-cost-field-name');
-                    $anyerror = !$anyerror ?: true;
+                $costdif = $this->maxcost - $this->mincost;
+                $maxdif = $this->mincost * 0.50;
+                $scoredif = $this->mincost * 0.35;
+                if ($this->mincost == 0) {
+                    $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
+                } elseif ($costdif > $maxdif ) {
+                    $errors['costs']['total-costs'] = Text::get('validate-project-total-costs');
                 } else {
-                     $okeys['costs']['cost-'.$cost->id.'-cost'] = 'ok';
-                     $scoreName = 1;
+                    $okeys['costs']['total-costs'] = 'ok';
                 }
-
-                if (empty($cost->type)) {
-                    $errors['costs']['cost-'.$cost->id.'-type'] = Text::get('mandatory-cost-field-type');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['costs']['cost-'.$cost->id.'-type'] = 'ok';
-                }
-
-                if (empty($cost->description)) {
-                    $errors['costs']['cost-'.$cost->id.'-description'] = Text::get('mandatory-cost-field-description');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['costs']['cost-'.$cost->id.'-description'] = 'ok';
-                     $scoreDesc = 1;
-                }
-
-                if (empty($cost->amount)) {
-                    $errors['costs']['cost-'.$cost->id.'-amount'] = Text::get('mandatory-cost-field-amount');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['costs']['cost-'.$cost->id.'-amount'] = 'ok';
-                     $scoreAmount = 1;
-                }
-
-                if ($cost->type == 'task' && (empty($cost->from) || empty($cost->until))) {
-                    $errors['costs']['cost-'.$cost->id.'-dates'] = Text::get('mandatory-cost-field-task_dates');
-                    $anyerror = !$anyerror ?: true;
-                } elseif ($cost->type == 'task') {
-                    $okeys['costs']['cost-'.$cost->id.'-dates'] = 'ok';
-                    $scoreDate = 1;
-                }
-            }
-
-            if ($anyerror) {
-                unset($okeys['costs']['costs']);
-                $errors['costs']['costs'] = Text::get('validate-project-costs-any_error');
-            }
-
-            $score = $score + $scoreName + $scoreDesc + $scoreAmount + $scoreDate;
-
-            $costdif = $this->maxcost - $this->mincost;
-            $maxdif = $this->mincost * 0.50;
-            $scoredif = $this->mincost * 0.35;
-            if ($this->mincost == 0) {
-                $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
-            } elseif ($costdif > $maxdif ) {
-                $errors['costs']['total-costs'] = Text::get('validate-project-total-costs');
-            } else {
-                $okeys['costs']['total-costs'] = 'ok';
-            }
-            if ($costdif <= $scoredif ) {
-                ++$score;
-            }
-
-            $this->setScore($score, 6);
-            /***************** FIN Revisión del paso 4, COSTES *****************/
-
-            /***************** Revisión de campos del paso 5, RETORNOS *****************/
-            $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
-            if (empty($this->social_rewards)) {
-                $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
-            } else {
-                 $okeys['rewards']['social_rewards'] = 'ok';
-                 if (count($this->social_rewards) >= 2) {
-                     ++$score;
-                 }
-            }
-
-            if (empty($this->individual_rewards)) {
-                $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
-            } else {
-                $okeys['rewards']['individual_rewards'] = 'ok';
-                if (count($this->individual_rewards) >= 3) {
+                if ($costdif <= $scoredif ) {
                     ++$score;
                 }
-                else {
+
+                $this->setScore($score, $maxScore);
+                /***************** FIN Revisión del paso 4, COSTES *****************/
+            }
+
+            if (isset($steps) && isset($steps['rewards'])) {
+                /***************** Revisión de campos del paso 5, RETORNOS *****************/
+                $maxScore = 8;
+                $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
+                if (empty($this->social_rewards)) {
+                    $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
+                } else {
+                     $okeys['rewards']['social_rewards'] = 'ok';
+                     if (count($this->social_rewards) >= 2) {
+                         ++$score;
+                     }
+                }
+
+                if (empty($this->individual_rewards)) {
                     $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
+                } else {
+                    $okeys['rewards']['individual_rewards'] = 'ok';
+                    if (count($this->individual_rewards) >= 3) {
+                        ++$score;
+                    }
+                    else {
+                        $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
 
+                    }
                 }
+
+                $anyerror = false;
+                foreach ($this->social_rewards as $social) {
+                    if (empty($social->reward)) {
+                        $errors['rewards']['social_reward-'.$social->id.'reward'] = Text::get('mandatory-social_reward-field-name');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['rewards']['social_reward-'.$social->id.'reward'] = 'ok';
+                         $scoreName = 1;
+                    }
+
+                    if (empty($social->description)) {
+                        $errors['rewards']['social_reward-'.$social->id.'-description'] = Text::get('mandatory-social_reward-field-description');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['rewards']['social_reward-'.$social->id.'-description'] = 'ok';
+                         $scoreDesc = 1;
+                    }
+
+                    if (empty($social->icon)) {
+                        $errors['rewards']['social_reward-'.$social->id.'-icon'] = Text::get('mandatory-social_reward-field-icon');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['rewards']['social_reward-'.$social->id.'-icon'] = 'ok';
+                    }
+
+                    if (!empty($social->license)) {
+                        $scoreLicense = 1;
+                    }
+                }
+
+                if ($anyerror) {
+                    unset($okeys['rewards']['social_rewards']);
+                    $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards-any_error');
+                }
+
+                $score = $score + $scoreName + $scoreDesc + $scoreLicense;
+                $scoreName = $scoreDesc = $scoreAmount = 0;
+
+                $anyerror = false;
+                foreach ($this->individual_rewards as $individual) {
+                    if (empty($individual->reward)) {
+                        $errors['rewards']['individual_reward-'.$individual->id.'-reward'] = Text::get('mandatory-individual_reward-field-name');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['rewards']['individual_reward-'.$individual->id.'-reward'] = 'ok';
+                         $scoreName = 1;
+                    }
+
+                    if (empty($individual->description)) {
+                        $errors['rewards']['individual_reward-'.$individual->id.'-description'] = Text::get('mandatory-individual_reward-field-description');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['rewards']['individual_reward-'.$individual->id.'-description'] = 'ok';
+                         $scoreDesc = 1;
+                    }
+
+                    if (empty($individual->amount)) {
+                        $errors['rewards']['individual_reward-'.$individual->id.'-amount'] = Text::get('mandatory-individual_reward-field-amount');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['rewards']['individual_reward-'.$individual->id.'-amount'] = 'ok';
+                         $scoreAmount = 1;
+                    }
+
+                    if (empty($individual->icon)) {
+                        $errors['rewards']['individual_reward-'.$individual->id.'-icon'] = Text::get('mandatory-individual_reward-field-icon');
+                        $anyerror = !$anyerror ?: true;
+                    } else {
+                         $okeys['rewards']['individual_reward-'.$individual->id.'-icon'] = 'ok';
+                    }
+                }
+
+                if ($anyerror) {
+                    unset($okeys['rewards']['individual_rewards']);
+                    $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards-any_error');
+                }
+
+                $score = $score + $scoreName + $scoreDesc + $scoreAmount;
+                $this->setScore($score, $maxScore);
+                /***************** FIN Revisión del paso 5, RETORNOS *****************/
             }
 
-            $anyerror = false;
-            foreach ($this->social_rewards as $social) {
-                if (empty($social->reward)) {
-                    $errors['rewards']['social_reward-'.$social->id.'reward'] = Text::get('mandatory-social_reward-field-name');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['social_reward-'.$social->id.'reward'] = 'ok';
-                     $scoreName = 1;
-                }
+            if (isset($steps) && isset($steps['suports'])) {
+                /***************** Revisión de campos del paso 6, COLABORACIONES *****************/
+                $maxScore = 2;
+                $scoreName = $scoreDesc = 0;
+                foreach ($this->supports as $support) {
+                    if (!empty($support->support)) {
+                         $okeys['supports']['support-'.$support->id.'-support'] = 'ok';
+                         $scoreName = 1;
+                    }
 
-                if (empty($social->description)) {
-                    $errors['rewards']['social_reward-'.$social->id.'-description'] = Text::get('mandatory-social_reward-field-description');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['social_reward-'.$social->id.'-description'] = 'ok';
-                     $scoreDesc = 1;
+                    if (!empty($support->description)) {
+                         $okeys['supports']['support-'.$support->id.'-description'] = 'ok';
+                         $scoreDesc = 1;
+                    }
                 }
-
-                if (empty($social->icon)) {
-                    $errors['rewards']['social_reward-'.$social->id.'-icon'] = Text::get('mandatory-social_reward-field-icon');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['social_reward-'.$social->id.'-icon'] = 'ok';
-                }
-
-                if (!empty($social->license)) {
-                    $scoreLicense = 1;
-                }
+                $score = $scoreName + $scoreDesc;
+                $this->setScore($score, $maxScore);
+                /***************** FIN Revisión del paso 6, COLABORACIONES *****************/
             }
-
-            if ($anyerror) {
-                unset($okeys['rewards']['social_rewards']);
-                $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards-any_error');
-            }
-
-            $score = $score + $scoreName + $scoreDesc + $scoreLicense;
-            $scoreName = $scoreDesc = $scoreAmount = 0;
-
-            $anyerror = false;
-            foreach ($this->individual_rewards as $individual) {
-                if (empty($individual->reward)) {
-                    $errors['rewards']['individual_reward-'.$individual->id.'-reward'] = Text::get('mandatory-individual_reward-field-name');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['individual_reward-'.$individual->id.'-reward'] = 'ok';
-                     $scoreName = 1;
-                }
-
-                if (empty($individual->description)) {
-                    $errors['rewards']['individual_reward-'.$individual->id.'-description'] = Text::get('mandatory-individual_reward-field-description');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['individual_reward-'.$individual->id.'-description'] = 'ok';
-                     $scoreDesc = 1;
-                }
-
-                if (empty($individual->amount)) {
-                    $errors['rewards']['individual_reward-'.$individual->id.'-amount'] = Text::get('mandatory-individual_reward-field-amount');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['individual_reward-'.$individual->id.'-amount'] = 'ok';
-                     $scoreAmount = 1;
-                }
-
-                if (empty($individual->icon)) {
-                    $errors['rewards']['individual_reward-'.$individual->id.'-icon'] = Text::get('mandatory-individual_reward-field-icon');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['individual_reward-'.$individual->id.'-icon'] = 'ok';
-                }
-            }
-
-            if ($anyerror) {
-                unset($okeys['rewards']['individual_rewards']);
-                $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards-any_error');
-            }
-
-            $score = $score + $scoreName + $scoreDesc + $scoreAmount;
-            $this->setScore($score, 8);
-            /***************** FIN Revisión del paso 5, RETORNOS *****************/
-
-            /***************** Revisión de campos del paso 6, COLABORACIONES *****************/
-            $scorename = $scoreDesc = 0;
-            foreach ($this->supports as $support) {
-                if (!empty($support->support)) {
-                     $okeys['supports']['support-'.$support->id.'-support'] = 'ok';
-                     $scoreName = 1;
-                }
-
-                if (!empty($support->description)) {
-                     $okeys['supports']['support-'.$support->id.'-description'] = 'ok';
-                     $scoreDesc = 1;
-                }
-            }
-            $score = $scoreName + $scoreDesc;
-            $this->setScore($score, 2);
-            /***************** FIN Revisión del paso 6, COLABORACIONES *****************/
 
             //-------------- Calculo progreso ---------------------//
             $this->setProgress();
@@ -2856,9 +2878,9 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
             } elseif ($filters['status'] == -2) {
-                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{5,40}')";
+                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{32}')";
             } else {
-                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
             }
             if (!empty($filters['owner'])) {
                 $sqlFilter .= " AND project.owner = :owner";
@@ -2971,7 +2993,7 @@ namespace Goteo\Model {
             // como los consultores
             $sql = "SELECT
                         project.id,
-                        project.id REGEXP '[0-9a-f]{5,40}' as draft,
+                        project.id REGEXP '[0-9a-f]{32}' as draft,
                         project.name as name,
                         project.status as status,
                         project.published as published,
@@ -3107,9 +3129,9 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
             } elseif ($filters['status'] == -2) {
-                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{5,40}')";
+                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{32}')";
             } else {
-                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{5,40}') )";
+                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
             }
             if (!empty($filters['proj_name'])) {
                 $sqlFilter .= " AND project.name LIKE :name";

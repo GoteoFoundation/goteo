@@ -17,6 +17,9 @@ namespace Goteo\Model {
             $project,
             $account, // cuenta paypal o email del usuario
             $amount, //cantidad monetaria del aporte
+            $amount_original, // numero que el usuario ha puesto al aportar
+            $currency, // divisa en que se estaba visualizando la web en el momento de hacer el aporte
+            $currency_rate, // ratio de conversión a euros en el momento de hacer el aporte
             $preapproval, //clave del preapproval
             $payment, //clave del cargo
             $transaction, // id de la transacción
@@ -341,6 +344,9 @@ namespace Goteo\Model {
                 'user',
                 'project',
                 'amount',
+                'amount_original',
+                'currency',
+                'currency_rate',
                 'preapproval',
                 'payment',
                 'transaction',

@@ -118,7 +118,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
             <dd class="optimum"><strong><?php echo \amount_format($optimum) ?></strong> </dd>
 
             <dt class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>% <?php if($num_currencies<2) {?>;margin-bottom:0px; <?php }?>"><span><?php echo Text::get('project-view-metter-minimum'); ?></span></dt>
-            <dd class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>%"><strong><?php echo \amount_format($minimum) ?></strong> </dd>
+            <dd class="minimum" style="<?php echo $horizontal ? 'width' : 'height' ?>: <?php echo number_format($minimum_ratio) ?>%"><strong><?php echo \amount_format($minimum); ?></strong> </dd>
 
             <dt class="reached"><span><?php echo Text::get('project-view-metter-got'); ?></span></dt>
             <dd class="reached"><strong><?php echo \amount_format($reached) ?> </strong></dd>
@@ -184,7 +184,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
             <span class="symbol"><?php echo $select_currency." ".$_SESSION['currency']; ?></span>
             <span class="change">
                 <hr>
-                CAMBIAR
+                <?php echo Text::get('currency-switch'); ?>
             </span>
             <div>
                 <ul>

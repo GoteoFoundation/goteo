@@ -6,9 +6,9 @@ require_once(__DIR__ . '/fpdf/html2pdf.php');
 
 class PDFContract extends \PDF_HTML {
 
-    const DYNAMIC_TEXT_SOURCE = "Contract/contenido_dinamico.xml";
-    const STATIC_TEXT_SOURCE = "Contract/contenido_estatico.xml";
-    const DRAFT_IMAGE = "Contract/borrador.png";
+    const DYNAMIC_TEXT_SOURCE = "/Contract/contenido_dinamico.xml";
+    const STATIC_TEXT_SOURCE = "/Contract/contenido_estatico.xml";
+    const DRAFT_IMAGE = "/Contract/borrador.png";
 
     /* Document margins */
     const MARGIN_LEFT = 20;
@@ -224,10 +224,10 @@ class PDFContract extends \PDF_HTML {
     }
 
     private function parseText($text) {
-        $reader = new XMLReader;
+        $reader = new \XMLReader;
         $reader->xml($text);
         while ($reader->read() !== FALSE) {
-            if ($reader->nodeType === XMLReader::ELEMENT) {
+            if ($reader->nodeType === \XMLReader::ELEMENT) {
                 $txt = self::txt($reader->readString());
                 switch ($reader->name) {
                     case 'head':
@@ -311,7 +311,7 @@ class PDFContract extends \PDF_HTML {
      * Gets and fills the dynamic part of the contract.
      */
     private function getDynamicText() {
-        $text = file_get_contents(self::DYNAMIC_TEXT_SOURCE);
+        $text = file_get_contents(__DIR__.self::DYNAMIC_TEXT_SOURCE);
         $text = preg_replace('/%([a-z_]+)%/e', '$this->data->$1', $text);
         $this->parseText($text);
     }
@@ -320,7 +320,7 @@ class PDFContract extends \PDF_HTML {
      * Gets and fills the static part of the contract.
      */
     private function getStaticText() {
-        $text = file_get_contents(self::STATIC_TEXT_SOURCE);
+        $text = file_get_contents(__DIR__.self::STATIC_TEXT_SOURCE);
         $this->parseText($text);
     }
 
@@ -342,7 +342,7 @@ class PDFContract extends \PDF_HTML {
         $this->WriteHTML(self::txt(self::TEXT_HEADER_NUM) . $this->data->fullnum);
         $this->Cell(0, 5, "", 0, 1);
         if ($this->data->draft)
-            $this->centerImage(self::DRAFT_IMAGE);
+            $this->centerImage(__DIR__.self::DRAFT_IMAGE);
     }
 
     /**

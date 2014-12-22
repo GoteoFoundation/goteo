@@ -100,17 +100,7 @@ namespace Goteo\Controller {
                 throw new Redirection($goto);
             }
 
-            // si no tenemos SESSION stepped es porque no venimos del create
-            if (!isset($_SESSION['stepped']))
-                $_SESSION['stepped'] = array(
-                     'userProfile'  => 'userProfile',
-                     'userPersonal' => 'userPersonal',
-                     'overview'     => 'overview',
-                     'images'       => 'images',
-                     'costs'        => 'costs',
-                     'rewards'      => 'rewards',
-                     'supports'     => 'supports'
-                );
+            $currency_data = Library\Currency::$currencies[$project->currency];
 
             // al impulsor se le prohibe ver ningun paso cuando ya no está en edición
             if ($project->status != 1 && $project->owner == $_SESSION['user']->id ) {
@@ -125,6 +115,33 @@ namespace Goteo\Controller {
                     )
                 );
 
+
+            } elseif ($project->draft) {
+                // primer borrador, menos pasos
+                $steps = array(
+                    'userProfile' => array(
+                        'name' => Text::get('step-1'),
+                        'title' => Text::get('step-userProfile'),
+                        'offtopic' => true
+                    ),
+                    'overview' => array(
+                        'name' => Text::get('step-3'),
+                        'title' => Text::get('step-overview')
+                    ),
+                    'costs'=> array(
+                        'name' => Text::get('step-4'),
+                        'title' => Text::get('step-costs')
+                    ),
+                    'rewards' => array(
+                        'name' => Text::get('step-5'),
+                        'title' => Text::get('step-rewards')
+                    ),
+                    'preview' => array(
+                        'name' => Text::get('step-7'),
+                        'title' => Text::get('step-preview'),
+                        'offtopic' => true
+                    )
+                );
 
             } else {
                 // todos los pasos
@@ -191,10 +208,7 @@ namespace Goteo\Controller {
                 foreach ($steps as $id => &$data) {
 
                     if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
-                        // si un process devuelve true es que han enviado datos de este paso, lo añadimos a los pasados
-                        if (!in_array($id, $_SESSION['stepped'])) {
-                            $_SESSION['stepped'][$id] = $id;
-                        }
+                        // Ok...
                     }
 
                 }
@@ -376,7 +390,7 @@ namespace Goteo\Controller {
             }
 
             // checkear errores
-            $project->check();
+            $project->check($steps);
 
             // variables para la vista
             $viewData = array(
@@ -389,6 +403,7 @@ namespace Goteo\Controller {
             // segun el paso añadimos los datos auxiliares para pintar
             switch ($step) {
                 case 'userProfile':
+                    $project->user->interests=Model\User\Interest::get($project->user->id);
                     $viewData['user'] = $project->user;
                     $viewData['interests'] = Model\User\Interest::getAll();
                     break;
@@ -399,6 +414,10 @@ namespace Goteo\Controller {
 
                 case 'overview':
                     $viewData['categories'] = Model\Project\Category::getAll();
+                    $viewData['languages']  = Library\Lang::getall(true); // idiomas activos
+                    $viewData['currencies'] = Library\Currency::$currencies; // divisas
+                    $viewData['default_currency'] = Library\Currency::DEFAULT_CURRENCY; // divisa por defecto
+
                     break;
 
                 case 'images':
@@ -407,6 +426,21 @@ namespace Goteo\Controller {
 
                 case 'costs':
                     $viewData['types'] = Model\Project\Cost::types();
+
+                    // convert costs to project currency
+                    foreach ($project->costs as &$cost) {
+                        // var_dump($cost);
+                        $cost->currency = $project->currency;
+                        $cost->currency_rate = $project->currency_rate;
+                        $cost->amount_original = round($cost->amount * $project->currency_rate);
+                        $cost->amount_format = $cost->amount_original.' '.$currency_data['html'];
+
+                    }
+
+                    // para el termómetro horizontal de paso costes
+                    $project->mincost = round($project->mincost * $project->currency_rate).' '.$currency_data['html'];
+                    $project->maxcost = round($project->maxcost * $project->currency_rate).' '.$currency_data['html'];
+
                     break;
 
                 case 'rewards':
@@ -431,6 +465,7 @@ namespace Goteo\Controller {
                     }
                     $viewData['success'] = $success;
                     $viewData['types'] = Model\Project\Cost::types();
+
                     break;
             }
 
@@ -465,7 +500,6 @@ namespace Goteo\Controller {
 
             $project = new Model\Project;
             if ($project->create(NODE_ID)) {
-                $_SESSION['stepped'] = array();
 
                 // Evento Feed
                 $log = new Feed();
@@ -661,8 +695,9 @@ namespace Goteo\Controller {
                         $step = $_GET['confirm'];
                     } else {
                         // si no, a ver en que paso estamos
+                        // guardamos cantidad sin puntos
                         if (isset($_GET['amount']))
-                            $_SESSION['invest-amount'] = $_GET['amount'];
+                            $_SESSION['invest-amount'] = str_replace(array(',', '.'), '', $_GET['amount']);
 
                         // si el usuario está validado, recuperamos posible amount y mostramos
                         if ($_SESSION['user'] instanceof Model\User) {
@@ -847,7 +882,7 @@ namespace Goteo\Controller {
 //                'contract_entity',
                 'contract_birthdate',
 //                'entity_office',
-//                'entity_name',
+                'entity_name',
 //                'entity_cif',
                 'address',
                 'zipcode',
@@ -910,11 +945,23 @@ namespace Goteo\Controller {
                 return false;
             }
 
+            // preveer cambio de divisa
+            if ( $_POST['currency'] != $project->currency || $_POST['currency'] != $_SESSION['currency'] ) {
+                $_SESSION['currency'] = Library\Currency::set($_POST['currency']); // divisa en la que ve la web
+
+                // si el que edita es el impulsor, cambia su preferencia
+                if ($_SESSION['user']->id == $project->owner) {
+                    Model\User::setPreferences($project->owner, array('currency'=>$_SESSION['currency']));
+                }
+            }
+
             // campos que guarda este paso
             // image, media y category  van aparte
             $fields = array(
                 'name',
                 'subtitle',
+                'lang',
+                'currency',
                 'description',
                 'motivation',
                 'video',
@@ -926,15 +973,11 @@ namespace Goteo\Controller {
                 'keywords',
                 'media',
                 'media_usubs',
-//                'currently',
-                'project_location',
-//                'scope'
+                'project_location'
             );
 
             foreach ($fields as $field) {
-//                if (isset($_POST[$field])) {
-                    $project->$field = $_POST[$field];
-//                }
+                $project->$field = $_POST[$field];
             }
 
             // Media
@@ -967,6 +1010,7 @@ namespace Goteo\Controller {
             }
 
             $quedan = $project->categories; // truki para xdebug
+
 
             return true;
         }
@@ -1026,14 +1070,26 @@ namespace Goteo\Controller {
                 }
 
                 if (isset($_POST['cost-' . $cost->id . '-cost'])) {
+
                     $cost->cost = $_POST['cost-' . $cost->id . '-cost'];
                     $cost->description = $_POST['cost-' . $cost->id .'-description'];
-                    $cost->amount = $_POST['cost-' . $cost->id . '-amount'];
+
+                    $new_amount = $_POST['cost-' . $cost->id . '-amount'];
+                    // ajuste divisa proyecto
+                    if ($project->currency != Library\Currency::DEFAULT_CURRENCY) {
+                        // convertir solo al modificar
+                        if ($new_amount != $cost->amount_original) {
+                            $new_amount = $new_amount / $project->currency_rate;
+                        }
+                    }
+
+                    $cost->amount = $new_amount;
                     $cost->type = $_POST['cost-' . $cost->id . '-type'];
                     $cost->required = $_POST['cost-' . $cost->id . '-required'];
                     $cost->from = $_POST['cost-' . $cost->id . '-from'];
                     $cost->until = $_POST['cost-' . $cost->id . '-until'];
                 }
+
             }
 
             //añadir nuevo coste

@@ -10,6 +10,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Newsletter,
+        Goteo\Library\Lang,
         Goteo\Model;
 
     class Mailing {
@@ -34,6 +35,7 @@ namespace Goteo\Controller\Admin {
                 'checker' => 'Revisor',
                 'translator' => 'Traductor'
             );
+            $langs = Lang::getAll();
 
             // una variable de sesion para mantener los datos de todo esto
             if (!isset($_SESSION['mailing'])) {
@@ -139,6 +141,15 @@ namespace Goteo\Controller\Admin {
                         }
                     }
 
+                    if (!empty($filters['comlang'])) {
+                        $sqlInner .= "INNER JOIN user_prefer
+                                ON user_prefer.user = user.id
+                                AND user_prefer.comlang = :comlang
+                                ";
+                        $values[':comlang'] = $filters['comlang'];
+                        $_SESSION['mailing']['filters_txt'] .= 'con idioma preferencia <strong>' . $langs[$filters['comlang']]->short . '</strong> ';
+                    }
+
                     $sql = "SELECT
                                 user.id as id,
                                 user.id as user,
@@ -153,7 +164,7 @@ namespace Goteo\Controller\Admin {
                             ORDER BY user.name ASC
                             ";
 
-//                        die('<pre>'.$sql . '<br />'.print_r($values, true).'</pre>');
+                    // die( \sqldbg($sql, $values) );
 
                     if ($query = Model\User::query($sql, $values)) {
                         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
@@ -180,7 +191,8 @@ namespace Goteo\Controller\Admin {
                             'interests' => $interests,
                             'status'    => $status,
                             'types'     => $types,
-                            'roles'     => $roles
+                            'roles'     => $roles,
+                            'langs'     => $langs
                         )
                     );
 
@@ -263,6 +275,7 @@ namespace Goteo\Controller\Admin {
                             'methods'   => $methods,
                             'types'     => $types,
                             'roles'     => $roles,
+                            'langs'     => $langs,
                             'users'     => $receivers,
                             'ok'        => $ok
                         )
@@ -281,6 +294,7 @@ namespace Goteo\Controller\Admin {
                     'methods'   => $methods,
                     'types'     => $types,
                     'roles'     => $roles,
+                    'langs'     => $langs,
                     'filters'   => $filters
                 )
             );
