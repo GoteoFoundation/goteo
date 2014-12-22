@@ -596,7 +596,7 @@ namespace Goteo\Controller\Admin {
 
             // para este informe guardamos datos diarios para no saturar la bd a consultas
             // algo así como un bloqueo
-            $data_file = GOTEO_PATH.'logs/report-geoloc.data';
+            $data_file = GOTEO_LOG_PATH.'logs/report-geoloc.data';
             if (file_exists($data_file)) {
                 // leemos el archivo de datos
                 $data_content = \file_get_contents($data_file);

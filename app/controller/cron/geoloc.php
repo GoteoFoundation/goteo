@@ -12,18 +12,18 @@ namespace Goteo\Controller\Cron {
         public static function process ($debug = false) {
 
             // esto graba en un único archivo de log, solo las creaciones
-            $log_file = GOTEO_PATH.'logs/cron/created_locations.log';
+            $log_file = GOTEO_LOG_PATH.'logs/cron/created_locations.log';
             \chmod($log_file, 0777);
-            
+
             // geolocalizaciones existentes
-            
+
             // eliminamos los registros que no nos sirven
             $sql = "DELETE FROM `geologin` WHERE msg LIKE '%unavailable%' OR msg LIKE '%not supported%'";
             if ($debug) echo $sql . '<br />';
             $query = Model\Location::query($sql);
             $count = $query->rowCount();
             if ($debug) echo "Eliminados $count registros de geologin que no nos sirven.<br />";
-            
+
             // marca como ilocalizables los geologin no permitidos por el usuario
             $sql2 = "REPLACE INTO unlocable SELECT user FROM `geologin` WHERE msg LIKE '%denied%'";
             if ($debug) echo $sql2 . '<br />';
@@ -33,7 +33,7 @@ namespace Goteo\Controller\Cron {
                 $count2 = $query21->rowCount();
                 if ($debug) echo "Eliminados $count2 registros de geologin añadidos a los usuarios ilocalizables.<br />";
             }
-            
+
             if ($debug) echo "<hr /> Iniciamos tratamiento de geologins correctos<br/>";
             //Library\Geoloc
             $sql5 = "SELECT * FROM `geologin` WHERE msg LIKE 'OK' LIMIT 1000";
@@ -45,7 +45,7 @@ namespace Goteo\Controller\Cron {
                     break;
                 }
                 if ($debug) echo "latlng: {$row->lat},{$row->lon}<br />";
-                // para cada uno: 
+                // para cada uno:
                 $geoloc = null;
                 $newloc = null;
                 $issue = false;
@@ -53,7 +53,7 @@ namespace Goteo\Controller\Cron {
                 $geodata = Library\Geoloc::searchLoc(array('latlng'=>"{$row->lat},{$row->lon}"));
                 if ($debug) echo 'Obtenido por consulta API:<br />';
                 if ($debug) echo \trace($geodata);
-                
+
                 // si no recupera nada
                 if (!empty($geodata)) {
                     // proceso creación/recuperacion location
@@ -64,7 +64,7 @@ namespace Goteo\Controller\Cron {
                         'region'=> !empty($geodata['region']) ? md5($geodata['region']) : '',
                         'country'=> !empty($geodata['country']) ? md5($geodata['country']) : ''
                     ));
-                    
+
                     if (count($locations) > 0) {
                         if ($debug) echo 'existe:<br />';
                         if ($debug) echo \trace($locations[0]) . '<br />';
@@ -111,7 +111,7 @@ namespace Goteo\Controller\Cron {
                     } else {
                         $sql_insloc = null;
                     }
-                    
+
                     if ($sql_insloc) {
                         if (Model\Location::query($sql_insloc, $values)) {
                             if ($debug) echo 'Se ha asignado:<br />'.\trace($values).'<hr />';
@@ -122,13 +122,13 @@ namespace Goteo\Controller\Cron {
                         // increible
                         $issue = true;
                     }
-                    
+
                 } else {
                     if ($debug) echo 'No se ha recuperado ninguna localización<br />';
                     // increible
                     $issue = true;
                 }
-                    
+
                 // borrar entrada geologin (o marcar como increible)
                 if ($issue) {
                     $sql7 = "UPDATE `geologin` SET msg = 'NOK' WHERE user = '{$row->user}'";
@@ -141,8 +141,8 @@ namespace Goteo\Controller\Cron {
                     if ($debug) echo $sql70 . '<br />';
                     if ($debug) echo \trace($values);
                     Model\Location::query($sql70, $values);
-                    
-                    
+
+
                     // borramos el geologin
                     $sql7 = "DELETE FROM `geologin` WHERE user = :usr";
                     if ($debug) echo $sql7 . '<br />';
@@ -151,7 +151,7 @@ namespace Goteo\Controller\Cron {
 
                 if ($debug) echo "<hr />";
             }
-            
+
             echo "Geoloc Listo!";
 
             return;

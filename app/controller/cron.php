@@ -36,7 +36,7 @@ namespace Goteo\Controller {
             }
 
             // a ver si existe el bloqueo (PARA HOY)
-            $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'_'.date('Ymd').'.block';
+            $block_file = GOTEO_LOG_PATH . 'logs/cron-'.__FUNCTION__.'_'.date('Ymd').'.block';
 
             if ( $this->cron_lock($block_file, 'execute') ) {
 
@@ -58,7 +58,7 @@ namespace Goteo\Controller {
             }
 
             // recogemos el buffer para grabar el log
-            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            $log_file = GOTEO_LOG_PATH . 'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
         }
@@ -88,7 +88,7 @@ namespace Goteo\Controller {
 
             // recogemos el buffer para grabar el log
             /*
-            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            $log_file = GOTEO_LOG_PATH . 'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
             */
@@ -133,7 +133,7 @@ namespace Goteo\Controller {
 
             // Por el momento no grabamos log de esto, lo lanzamos manual
             /*
-            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            $log_file = GOTEO_LOG_PATH . 'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
              */
@@ -158,13 +158,13 @@ namespace Goteo\Controller {
                 'Se ha lanzado manualmente el cron '. __FUNCTION__ .' para el proyecto '.$project.' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
 
             // a ver si existe el bloqueo
-            $block_file = GOTEO_PATH.'logs/cron-'.__FUNCTION__.'.block';
+            $block_file = GOTEO_LOG_PATH . 'logs/cron-'.__FUNCTION__.'.block';
             if (file_exists($block_file)) {
                 echo 'Ya existe un archivo de log '.date('Ymd').'_'.__FUNCTION__.'.log<br />';
                 $block_content = \file_get_contents($block_file);
                 echo 'El contenido del bloqueo es: '.$block_content;
                 // lo escribimos en el log
-                $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+                $log_file = GOTEO_LOG_PATH . 'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
                 /*
@@ -264,7 +264,7 @@ namespace Goteo\Controller {
             }
 
             // recogemos el buffer para grabar el log
-            $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+            $log_file = GOTEO_LOG_PATH . 'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
         }
@@ -302,7 +302,7 @@ namespace Goteo\Controller {
 
             if ($debug) {
                 // recogemos el buffer para grabar el log
-                $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
+                $log_file = GOTEO_LOG_PATH . 'logs/cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
             }
@@ -335,7 +335,7 @@ namespace Goteo\Controller {
                 echo 'El contenido del bloqueo es: '.$block_content;
 
                 // lo escribimos en el log
-                $log_file = GOTEO_PATH.'logs/cron/'.date('Ymd').'_'.$cron_name.'.log';
+                $log_file = GOTEO_LOG_PATH . 'logs/cron/'.date('Ymd').'_'.$cron_name.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
 

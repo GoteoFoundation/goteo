@@ -1,6 +1,8 @@
 <?php
 define('GOTEO_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
+define('GOTEO_LOG_PATH', __DIR__ . '/var/logs/');
+
 // ¿ESTO ESTA OBSOLETO?
 // if (function_exists('ini_set')) {
 //     ini_set('include_path', GOTEO_PATH . PATH_SEPARATOR . '.');
