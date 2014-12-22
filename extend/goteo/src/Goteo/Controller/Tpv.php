@@ -3,7 +3,6 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
-        Goteo\Model\User,
         Goteo\Core\Error,
 		Goteo\Library,
         Goteo\Library\Feed,
@@ -160,7 +159,7 @@ namespace Goteo\Controller {
 
                 $invest = Model\Invest::get($id);
 
-                $userData = User::getMini($invest->user);
+                $userData = Model\User::getMini($invest->user);
                 $projectData = Model\Project::getMini($invest->project);
 
                 $response = '';

@@ -5,7 +5,7 @@ namespace Goteo\Model {
     use \Goteo\Model\Project\Media,
         \Goteo\Model\Image,
         \Goteo\Library\Text,
-        \Goteo\Library\Message,
+        \Goteo\Library,
         \Goteo\Library\Check;
 
     class Info extends \Goteo\Core\Model {
@@ -111,7 +111,7 @@ namespace Goteo\Model {
                         AND info_lang.lang = :lang
                     $eng_join
                     WHERE info.node = :node
-                    ";          
+                    ";
 
             if ($published == true) {
                 $sql .= " AND info.publish = 1";
@@ -119,9 +119,9 @@ namespace Goteo\Model {
 
             $sql .= " ORDER BY `order` ASC
                 ";
-            
+
             $query = static::query($sql, array(':node'=>$node, ':lang'=>\LANG));
-                
+
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $info) {
 
                 // video
@@ -153,7 +153,7 @@ namespace Goteo\Model {
             return $list;
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->title))
                 $errors['title'] = 'Falta título';
 
@@ -217,7 +217,7 @@ namespace Goteo\Model {
                         $this->setImage();
 
                     } else {
-                        Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                        Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -232,7 +232,7 @@ namespace Goteo\Model {
          * Para quitar una entrada
          */
         public static function delete ($id) {
-            
+
             $sql = "DELETE FROM info WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
 
@@ -295,5 +295,5 @@ namespace Goteo\Model {
         }
 
     }
-    
+
 }

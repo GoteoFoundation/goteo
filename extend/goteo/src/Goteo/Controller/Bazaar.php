@@ -8,7 +8,7 @@ namespace Goteo\Controller {
         Goteo\Model,
         Goteo\Library\Check,
         Goteo\Library\Text,
-        Goteo\Library\Message,
+        Goteo\Library,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv;
 
@@ -142,7 +142,7 @@ namespace Goteo\Controller {
 
             // si no está en campaña no pueden esta qui ni de coña, que elijan otro
             if ($projectData->status != 3) {
-                Message::Info(Text::get('project-not_published'));
+                Library\Message::Info(Text::get('project-not_published'));
                 throw new Redirection('/bazaar');
             }
 
@@ -179,13 +179,13 @@ namespace Goteo\Controller {
 
                     $nUser = \Goteo\Controller\User::instantReg($formData['email'], $formData['name']);
                     if (!$nUser) {
-                        Message::Error(Text::get('regular-login'));
+                        Library\Message::Error(Text::get('regular-login'));
                         throw new Redirection(SEC_URL."/user/login?return=".urlencode('/bazaar/'.$item->id));
                     }
                     $formData['user'] = $nUser;
 
                 } else {
-                    Message::Error(Text::get('register-confirm_mail-fail', \GOTEO_MAIL));
+                    Library\Message::Error(Text::get('register-confirm_mail-fail', \GOTEO_MAIL));
                     throw new Redirection("/bazaar/{$reward}/fail");
                 }
 
@@ -195,7 +195,7 @@ namespace Goteo\Controller {
 
                 // si nos están usando un método no habilitado
                 if (!isset($methods[$method])) {
-                    Message::Error(Text::get('invest-method-error'));
+                    Library\Message::Error(Text::get('invest-method-error'));
                     throw new Redirection("/bazaar/{$reward}/fail");
                 }
 
@@ -205,7 +205,7 @@ namespace Goteo\Controller {
 
                 // verificación de impulsor
                 if ($projectData->owner == $formData['user']) {
-                    Message::Error(Text::get('invest-owner-error'));
+                    Library\Message::Error(Text::get('invest-owner-error'));
                     throw new Redirection("/bazaar/{$item->id}/fail");
                 }
 
@@ -255,7 +255,7 @@ namespace Goteo\Controller {
                             if (Tpv::preapproval($invest, $errors)) {
                                 die;
                             } else {
-                                Message::Error(Text::get('invest-tpv-error_fatal'));
+                                Library\Message::Error(Text::get('invest-tpv-error_fatal'));
                             }
                             break;
                         case 'paypal':
@@ -263,7 +263,7 @@ namespace Goteo\Controller {
                             if (Paypal::preapproval($invest, $errors)) {
                                 die;
                             } else {
-                                Message::Error(Text::get('invest-paypal-error_fatal'));
+                                Library\Message::Error(Text::get('invest-paypal-error_fatal'));
                             }
                             break;
                         case 'cash':
@@ -277,11 +277,11 @@ namespace Goteo\Controller {
                             break;
                     }
                 } else {
-                    Message::Error(Text::get('invest-create-error'));
+                    Library\Message::Error(Text::get('invest-create-error'));
                 }
 
             } else {
-                Message::Error(Text::get('invest-data-error'));
+                Library\Message::Error(Text::get('invest-data-error'));
             }
 
             throw new Redirection("/bazaar/{$reward}/fail");
