@@ -7,9 +7,8 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
-        Goteo\Library\Mail,
+        Goteo\Library,
         Goteo\Library\Template,
-        Goteo\Library\Message,
         Goteo\Library\Feed,
         Goteo\Library\PDFContract,
         Goteo\Model;
@@ -124,7 +123,7 @@ namespace Goteo\Controller {
                     $contract = Model\Contract::get($id);
                     die (\trace($contract));
                 } else {
-                    Message::Error('fallo al crear el registro de contrato');
+                    Library\Message::Error('fallo al crear el registro de contrato');
                     throw new Redirection('/manage/projects');
                 }
             }
@@ -213,7 +212,7 @@ namespace Goteo\Controller {
             }
 
             if (!empty($errors)) {
-                Message::Error(implode('<br />', $errors));
+                Library\Message::Error(implode('<br />', $errors));
             }
 
             // variables para la vista
@@ -379,7 +378,7 @@ namespace Goteo\Controller {
             if (isset($_POST['finish'])) {
                 // marcar en el registro de gestión, "datos de contrato" cerrados
                 if (Model\Contract::setStatus($contract->project, array('owner'=>true))) {
-                    Message::Info('El formulario de contrato ha sido cerrado para revisión');
+                    Library\Message::Info('El formulario de contrato ha sido cerrado para revisión');
 
                     // Evento Feed
                     $log = new Feed();
@@ -394,7 +393,7 @@ namespace Goteo\Controller {
                     $contract->status = Model\Contract::getStatus($contract->project);
 
                     // mail de aviso
-                    $mailHandler = new Mail();
+                    $mailHandler = new Library\Mail();
                     $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
                     $mailHandler->toName = 'Goteo.org';
                     $mailHandler->subject = 'Han cerrado los datos del contrato de ' . $contract->project_name;
@@ -409,7 +408,7 @@ namespace Goteo\Controller {
                     return true;
 
                 } else {
-                    Message::Error('Ha habido algún error al cerrar los datos de contrato');
+                    Library\Message::Error('Ha habido algún error al cerrar los datos de contrato');
                     return false;
                 }
             }
