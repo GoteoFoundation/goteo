@@ -111,10 +111,12 @@ namespace Goteo\Controller\Cron {
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->num_investors);
                     break;
 
-                case 'project_to_review': // template 8, "Confirmacion de proyecto enviado"
-                    $tpl = 8;
-                    $search  = array('%USERNAME%', '%PROJECTNAME%');
-                    $replace = array($project->user->name, $project->name);
+                case 'project_to_review': // template 8, "Confirmacion de proyecto enviado".  template 62, "Al enviar tras la negociación"
+                    // tener en cuenta si están enviando el draft o la negociación
+                    $tpl = ($project->draft) ? 8 : 62;
+
+                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%');
+                    $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id);
                     break;
 
                 case 'tip_0':
@@ -319,11 +321,11 @@ namespace Goteo\Controller\Cron {
                     $replace = array($project->name, $project->whodidit, $project->whorole, $reward->reward, $_POST['value'], $commons_url);
                     break;
 
-                case 'project_to_review_consultant': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
+                case 'project_to_review_consultant': // template 59, "Aviso a asesores cuando un impulsor envia el proyecto a revisión"
                     $tpl = 59;
 
-                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%');
-                    $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id);
+                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%');
+                    $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id);
                     break;
             }
 
