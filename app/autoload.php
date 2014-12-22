@@ -7,31 +7,6 @@ $loader = require (__DIR__  . '/../vendor/autoload.php' );
 // ...
 $loader->add('', __DIR__ . '/../extend/goteo/src');
 
-// Legacy Autoloader
-spl_autoload_register(
-
-    function ($cls) {
-
-        $file = __DIR__ . '/' . implode('/', explode('\\', strtolower(substr($cls, 6)))) . '.php';
-        $file = realpath($file);
-
-        if ($file === false) {
-
-            // Try in library
-//            $file = __DIR__ . '/library/' . implode('/', explode('\\', strtolower(substr($cls, 6)))) . '.php';
-            $file = __DIR__ . '/library/' . strtolower($cls) . '.php';
-//            die($cls . ' - ' . $file); //Si uso Text::get(id) no lo pilla
-        }
-
-        if ($file !== false) {
-            include $file;
-        }
-
-    }
-
-);
-
-
 // Error handler
 set_error_handler (
 

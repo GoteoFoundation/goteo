@@ -255,9 +255,9 @@ try {
     header("Location: {$url}");
 
 } catch (Error $error) {
-    include 'error.html.php';
+    include 'view/error.html.php';
 
 } catch (Exception $exception) {
     // Default error (500)
-    include 'error.html.php';
+    include 'view/error.html.php';
 }

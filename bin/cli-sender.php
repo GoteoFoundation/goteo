@@ -14,7 +14,7 @@ ini_set("display_errors",1);
 define("MAIL_MAX_RATE", 14); // envios por segundo máximos
 define("MAIL_MAX_CONCURRENCY", 50); //numero máximo de procesos simultaneos para enviar mail (pero no se llegará a esta cifra si el ratio de envios es mayor que MAIL_MAX_RATE)
 define("PHP_CLI", "/usr/bin/php"); //ruta al ejecutable PHP
-define("LOGS_DIR", __DIR__ . '/../var/logs/mailing/'); //ruta a logs
+define("LOGS_DIR", GOTEO_LOG_PATH . 'mailing/'); //ruta a logs
 //Archivo de bloqueo en la carpeta var
 define("LOCK_FILE",  __DIR__ . '/../var/' . basename(__FILE__) . '.lock');
 // set Lang
