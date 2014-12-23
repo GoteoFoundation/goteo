@@ -95,20 +95,7 @@ if (!empty($project->video->url)) {
 // en función de si es pre-form o form
 
 if (!$project->draft) {
-    // universal subtitles video principal
-    $media_usubs = array(
-        'type'      => 'checkbox',
-        'class'     => 'inline cols_1',
-        'required'  => false,
-        'label'     => Text::get('overview-field-usubs'),
-        'name'      => 'media_usubs',
-        'hint'      => Text::get('tooltip-project-usubs'),
-        'errors'    => array(),
-        'ok'        => array(),
-        'checked'   => (bool) $project->media_usubs,
-        'value'     => 1
-    );
-
+   
     $about = array(
             'type'      => 'textarea',
             'title'     => Text::get('overview-field-about'),
@@ -161,25 +148,8 @@ if (!$project->draft) {
             'onclick' => "document.getElementById('proj-superform').action += '#video';"
     );
 
-    $video_usubs= array(
-            'type'      => 'checkbox',
-            'class'     => 'inline cols_1',
-            'required'  => false,
-            'name'      => 'video_usubs',
-            'label'     => Text::get('overview-field-usubs'),
-            'hint'      => Text::get('tooltip-project-usubs'),
-            'errors'    => array(),
-            'ok'        => array(),
-            'value'     => 1,
-            'checked'   => (bool) $project->video_usubs
-    );
-
 } else {
-    $media_usubs = array(
-        'type'  => 'hidden',
-        'class' => 'inline'
-    );
-
+   
     $about = array(
         'type'  => 'hidden',
         'class' => 'inline',
@@ -213,10 +183,6 @@ if (!$project->draft) {
         'class' => 'inline'
     );
 
-    $video_usubs=array(
-        'type'  => 'hidden',
-        'class' => 'inline'
-    );
 }
 // nueva sección de contenido recompensas
 if ( isset($_SESSION['user']->roles['admin'])
@@ -352,24 +318,22 @@ $superform = array(
 
         'media-preview' => $media,
 
-        // universal subtitles video principal
-
-        'media_usubs' => $media_usubs,
-
-        // fin media
-
-        'description_group' => array(
-            'type' => 'group',
-            'children'  => array(
-                'related' => array(
+        'related' => array(
                     'type'      => 'textarea',
                     'title'     => Text::get('overview-field-related'),
                     'hint'      => Text::get('tooltip-project-related'),
                     'errors'    => !empty($errors['related']) ? array($errors['related']) : array(),
                     'ok'        => !empty($okeys['related']) ? array($okeys['related']) : array(),
                     'value'     => $project->related
-                ),
+        ),
 
+        // fin media
+
+        'description_group' => array(
+            'type' => 'group',
+            'title' => Text::get('overview-extra-fields'),
+            'children'  => array(
+               
                 'about' => $about,
 
                 'motivation' => $motivation,
@@ -390,8 +354,6 @@ $superform = array(
 
         'video-preview' => $video,
 
-        // universal subtitles video motivacion
-        'video_usubs' => $video_usubs,
         // fin video motivacion
 
         /*

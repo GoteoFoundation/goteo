@@ -10,7 +10,6 @@ $okeys  = $project->okeys[$this['step']] ?: array();
 
 $costs = array();
 
-
 if (!empty($project->costs)) {
 
     foreach ($project->costs as $cost) {
@@ -191,17 +190,28 @@ echo SuperForm::get(array(
             'html' => '<a name="costs"></a>'
         ),
 
-        'rounds' => array(
-            'type'      => 'checkbox',
-            'class'     => 'cols_1',
-            'required'  => false,
-            'name'      => 'one_round',
-            'label'     => Text::get('project-rounds'),
-            'hint'      => Text::get('tooltip-project-rounds'),
-            'errors'    => array(),
-            'ok'        => array(),
-            'checked'   => (bool) $project->one_round,
-            'value'     => 1
+        "one_round"  => array(
+                        'required'  => true,
+                        'title'     => Text::get('costs-field-select-rounds'),
+                        'class'     => 'inline cost-required cols_2',
+                        'type'      => 'radios',
+                        'options'   => array (
+                            array(
+                                    'value'     => '1',
+                                    'class'     => 'required_cost-yes',
+                                    'label'     => Text::get('project-one-round')
+                                ),
+                            array(
+                                    'value'     => '0',
+                                    'class'     => 'required_cost-no',
+                                    'label'     => 'Dos rondas',
+                                    'label'     => Text::get('project-two-rounds')
+                                )
+                        ),
+                        'value'     => $project->one_round,
+                        'errors'    => array(),
+                        'ok'        => array(),
+                        'hint'      => Text::get('tooltip-project-rounds')
         ),
 
         'costs' => array(
@@ -245,12 +255,12 @@ echo SuperForm::get(array(
         // ),
 
 
-        'schedule' => array(
+        /*'schedule' => array(
             'type'      => 'html',
             'class'     => 'schedule',
             'hint'      => Text::get('tooltip-project-schedule'),
             'html'      => View::get('project/widget/schedule.html.php', array('project' => $project))
-        ),
+        ),*/
 
         'footer' => array(
             'type'      => 'group',
