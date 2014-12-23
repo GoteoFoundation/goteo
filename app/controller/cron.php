@@ -58,6 +58,7 @@ namespace Goteo\Controller {
             }
 
             // recogemos el buffer para grabar el log
+            @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
             $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
@@ -88,6 +89,7 @@ namespace Goteo\Controller {
 
             // recogemos el buffer para grabar el log
             /*
+            @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
             $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
@@ -133,6 +135,7 @@ namespace Goteo\Controller {
 
             // Por el momento no grabamos log de esto, lo lanzamos manual
             /*
+            @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
             $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
@@ -164,6 +167,7 @@ namespace Goteo\Controller {
                 $block_content = \file_get_contents($block_file);
                 echo 'El contenido del bloqueo es: '.$block_content;
                 // lo escribimos en el log
+                @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
                 $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
@@ -264,6 +268,7 @@ namespace Goteo\Controller {
             }
 
             // recogemos el buffer para grabar el log
+            @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
             $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0777);
@@ -302,6 +307,7 @@ namespace Goteo\Controller {
 
             if ($debug) {
                 // recogemos el buffer para grabar el log
+                @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
                 $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
@@ -335,6 +341,7 @@ namespace Goteo\Controller {
                 echo 'El contenido del bloqueo es: '.$block_content;
 
                 // lo escribimos en el log
+                @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
                 $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.$cron_name.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
                 \chmod($log_file, 0777);
