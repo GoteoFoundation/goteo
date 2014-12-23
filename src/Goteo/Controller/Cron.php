@@ -61,7 +61,7 @@ namespace Goteo\Controller {
             @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
             $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
-            \chmod($log_file, 0777);
+            \chmod($log_file, 0666);
         }
 
 
@@ -92,7 +92,7 @@ namespace Goteo\Controller {
             @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
             $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
-            \chmod($log_file, 0777);
+            \chmod($log_file, 0666);
             */
             die();
         }
@@ -138,7 +138,7 @@ namespace Goteo\Controller {
             @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
             $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
-            \chmod($log_file, 0777);
+            \chmod($log_file, 0666);
              */
 
             die();
@@ -170,7 +170,7 @@ namespace Goteo\Controller {
                 @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
                 $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
-                \chmod($log_file, 0777);
+                \chmod($log_file, 0666);
                 /*
                 @mail(\GOTEO_FAIL_MAIL, 'Cron '. __FUNCTION__ .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. __FUNCTION__ .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
@@ -271,7 +271,7 @@ namespace Goteo\Controller {
             @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
             $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
-            \chmod($log_file, 0777);
+            \chmod($log_file, 0666);
         }
 
 
@@ -310,7 +310,7 @@ namespace Goteo\Controller {
                 @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
                 $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
-                \chmod($log_file, 0777);
+                \chmod($log_file, 0666);
             }
         }
 
@@ -344,7 +344,7 @@ namespace Goteo\Controller {
                 @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
                 $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.$cron_name.'.log';
                 \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
-                \chmod($log_file, 0777);
+                \chmod($log_file, 0666);
 
                 @mail(\GOTEO_FAIL_MAIL, 'Cron '. $cron_name .' bloqueado en ' . SITE_URL,
                     'Se ha encontrado con que el cron '. $cron_name .' está bloqueado el '.date('d-m-Y').' a las ' . date ('H:i:s') . '
