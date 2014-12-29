@@ -26,6 +26,17 @@ include __DIR__ . '/../prologue.html.php';
 
     include __DIR__ . '/../header.html.php'; ?>
 
+<script type="text/javascript">
+    $(function(){
+        var hash = document.location.hash;
+        if (hash != '') {
+            $(hash).focus();
+        }
+    });
+
+
+</script>
+
     <div id="sub-header">
         <div class="project-header">
             <a href="/user/<?php echo $project->owner; ?>" target="_blank"><img src="<?php echo $project->user->avatar->getLink(50, 50, true); ?>" /></a>

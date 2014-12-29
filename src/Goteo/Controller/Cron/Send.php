@@ -15,6 +15,13 @@ namespace Goteo\Controller\Cron {
 
     class Send {
 
+        // asesores por defecto si no un proyecto no tiene asesores
+        public static $consultants = array(
+            'esenabre' => 'Enric Senabre',
+            'olivier' => 'Olivier Schulbaum',
+            'merxxx' => 'Mercè Moreno Tarrés'
+        );
+
         /**
          * Al autor del proyecto, se encarga de substituir variables en plantilla
          *
@@ -300,9 +307,9 @@ namespace Goteo\Controller\Cron {
                     $search  = array('%PROJECTNAME%', '%URL%', '%INFO%');
                     $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id, $info_html);
 
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a Olivier
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a los asesores por defecto
                     if (empty($project->consultants)) {
-                        $project->consultants = array('olivier' => 'Olivier');
+                        $project->consultants = self::$consultants;
                     }
                     break;
 
@@ -311,10 +318,7 @@ namespace Goteo\Controller\Cron {
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
                     if (empty($project->consultants)) {
-                        $project->consultants = array(
-                            'olivier' => 'Olivier Schulbaum',
-                            'merxxx' => 'Mercè Moreno Tarrés'
-                        );
+                        $project->consultants = self::$consultants;
                     }
 
                     $consultants_copy = $project->consultants;
@@ -344,10 +348,7 @@ namespace Goteo\Controller\Cron {
 
                     // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
                     if (empty($project->consultants)) {
-                        $project->consultants = array(
-                            'olivier' => 'Olivier Schulbaum',
-                            'merxxx' => 'Mercè Moreno Tarrés'
-                        );
+                        $project->consultants = self::$consultants;
                     }
                     $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%');
                     $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id);
