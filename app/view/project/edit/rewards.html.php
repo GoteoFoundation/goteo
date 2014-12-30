@@ -45,6 +45,9 @@ foreach ($project->social_rewards as $social_reward) {
                         'checked' => $license->id == $social_reward->license ? true : false
                     );
 
+                    //rotamos el array para que el último elemento sea Free Art License
+                    array_push($licenses,array_shift($licenses));
+
                 }
             }
 
