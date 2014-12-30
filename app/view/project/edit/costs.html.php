@@ -109,7 +109,7 @@ if (!empty($project->costs)) {
                         'ok'        => !empty($okeys["cost-{$cost->id}-required"]) ? array($okeys["cost-{$cost->id}-required"]) : array(),
                         'hint'      => Text::get('tooltip-project-cost-required'),
                     ),
-                    "cost-{$cost->id}-dates" => array(
+                    /*"cost-{$cost->id}-dates" => array(
                         'type'      => 'group',
                         'required'  => $cost->type == 'task' ? true : false,
                         'title'     => Text::get('costs-field-dates'),
@@ -133,7 +133,7 @@ if (!empty($project->costs)) {
                                 'value'     => $cost->until
                             )
                         )
-                    ),
+                    ),*/
                     "cost-{$cost->id}-buttons" => array(
                         'type' => 'group',
                         'class' => 'buttons',
