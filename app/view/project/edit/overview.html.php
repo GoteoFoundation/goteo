@@ -148,6 +148,8 @@ if (!$project->draft) {
             'onclick' => "document.getElementById('proj-superform').action += '#video';"
     );
 
+    $title_description_group=Text::get('overview-extra-fields');
+
 } else {
    
     $about = array(
@@ -326,7 +328,7 @@ $superform = array(
 
         'description_group' => array(
             'type' => 'group',
-            'title' => Text::get('overview-extra-fields'),
+            'title' => $title_description_group,
             'children'  => array(
                
                 'about' => $about,
