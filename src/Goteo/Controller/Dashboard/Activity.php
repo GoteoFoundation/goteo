@@ -190,14 +190,19 @@ namespace Goteo\Controller\Dashboard {
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
+                // ver si es una persona juridica
+                $donation->nif_type = '';
+                $donation->valid_nif = Check::nif($donation->nif, $donation->nif_type);
+                $donation->juridica = ($donation->nif_type == 'cif' || $donation->nif_type == 'vat');
+
                 // verificar que el nif es correcto
-                if (!Check::nif($donation->nif)) {
+                if ($donation->valid_nif === false) {
                     Message::Error(Text::get('validate-project-value-contract_nif'));
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
                 if (empty($donation->name)
-                    || empty($donation->surname)
+                    || ( !$donation->juridica && empty($donation->surname) )
                     || empty($donation->nif)
                     || empty($donation->address)
                     || empty($donation->zipcode)
