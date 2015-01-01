@@ -34,18 +34,38 @@ foreach ($project->social_rewards as $social_reward) {
                         $url = '';
                     }
 
-                    $licenses["social_reward-{$social_reward->id}-license-{$license->id}"] = array(
-                        'name'  => "social_reward-{$social_reward->id}-{$type->id}-license",
-                        'label' => $license->name,
-                        'value' => $license->id,
-                        'type'  => 'radio',
-                        'class' => 'license license_' . $license->id,
-                        'hint'  => $license->description .  $url,
-                        'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
-                        'checked' => $license->id == $social_reward->license ? true : false
-                    );
+                        if($license->id!="fal") {
 
+                            $licenses["social_reward-{$social_reward->id}-license-{$license->id}"] = array(
+                                'name'  => "social_reward-{$social_reward->id}-{$type->id}-license",
+                                'label' => $license->name,
+                                'value' => $license->id,
+                                'type'  => 'radio',
+                                'class' => 'license license_' . $license->id,
+                                'hint'  => $license->description .  $url,
+                                'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
+                                'checked' => $license->id == $social_reward->license ? true : false
+                            );
+
+                        }
+
+                        else
+                        {
+                            $fal_license=array(
+                                'name'  => "social_reward-{$social_reward->id}-{$type->id}-license",
+                                'label' => $license->name,
+                                'value' => $license->id,
+                                'type'  => 'radio',
+                                'class' => 'license license_' . $license->id,
+                                'hint'  => $license->description .  $url,
+                                'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
+                                'checked' => $license->id == $social_reward->license ? true : false
+                            );
+                        }
                 }
+
+                $licenses["social_reward-{$social_reward->id}-license-fal"]=$fal_license;
+
             }
 
             if ($type->id == 'other') {
