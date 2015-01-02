@@ -8,7 +8,7 @@ $types = $this['data']['types'];
 
 <div class="reward <?php echo $reward->icon ?>">
     
-    <div class="title"><strong><?php echo $types[$reward->icon]->name . ': ' . htmlspecialchars($reward->reward) ?></strong></div>
+    <div class="title"><strong><?php echo "{$reward->amount} &euro;<br />".$types[$reward->icon]->name . ': ' . htmlspecialchars($reward->reward) ?></strong></div>
     
     <div class="description">
         <p><?php echo htmlspecialchars($reward->description) ?></p>
