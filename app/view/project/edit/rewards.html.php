@@ -43,9 +43,9 @@ foreach ($project->social_rewards as $social_reward) {
                         'hint'  => $license->description .  $url,
                         'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
                         'checked' => $license->id == $social_reward->license ? true : false
-                    );
-
+                    );                        
                 }
+
             }
 
             if ($type->id == 'other') {

@@ -1775,6 +1775,9 @@ namespace Goteo\Model {
 
                 $score = $score + $scoreName + $scoreDesc + $scoreAmount + $scoreDate;
 
+                /*
+                 * Quitamos el error del 150% máximo para optimo
+                 *
                 $costdif = $this->maxcost - $this->mincost;
                 $maxdif = $this->mincost * 0.50;
                 $scoredif = $this->mincost * 0.35;
@@ -1787,6 +1790,15 @@ namespace Goteo\Model {
                 }
                 if ($costdif <= $scoredif ) {
                     ++$score;
+                }
+                */
+                // El maxscore baja un punto
+                $maxScore--;
+                // Mantenemos error si no hay costes
+                if ($this->mincost == 0) {
+                    $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
+                } else {
+                    $okeys['costs']['total-costs'] = 'ok';
                 }
 
                 $this->setScore($score, $maxScore);
