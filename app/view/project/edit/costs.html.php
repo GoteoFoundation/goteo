@@ -190,30 +190,6 @@ echo SuperForm::get(array(
             'html' => '<a name="costs"></a>'
         ),
 
-        "one_round"  => array(
-                        'required'  => true,
-                        'title'     => Text::get('costs-field-select-rounds'),
-                        'class'     => 'inline cost-required cols_2',
-                        'type'      => 'radios',
-                        'options'   => array (
-                            array(
-                                    'value'     => '1',
-                                    'class'     => 'required_cost-yes',
-                                    'label'     => Text::get('project-one-round')
-                                ),
-                            array(
-                                    'value'     => '0',
-                                    'class'     => 'required_cost-no',
-                                    'label'     => 'Dos rondas',
-                                    'label'     => Text::get('project-two-rounds')
-                                )
-                        ),
-                        'value'     => $project->one_round,
-                        'errors'    => array(),
-                        'ok'        => array(),
-                        'hint'      => Text::get('tooltip-project-rounds')
-        ),
-
         'costs' => array(
             'type'      => 'group',
             'required'  => true,
@@ -240,6 +216,30 @@ echo SuperForm::get(array(
                 'project'   => $project
             )),
             'hint'      => Text::get('tooltip-project-totals')
+        ),
+
+         "one_round"  => array(
+                        'required'  => true,
+                        'title'     => Text::get('costs-field-select-rounds'),
+                        'class'     => 'inline cost-required cols_2',
+                        'type'      => 'radios',
+                        'options'   => array (
+                            array(
+                                    'value'     => '1',
+                                    'class'     => 'required_cost-yes',
+                                    'label'     => Text::get('project-one-round')
+                                ),
+                            array(
+                                    'value'     => '0',
+                                    'class'     => 'required_cost-no',
+                                    'label'     => 'Dos rondas',
+                                    'label'     => Text::get('project-two-rounds')
+                                )
+                        ),
+                        'value'     => $project->one_round,
+                        'errors'    => array(),
+                        'ok'        => array(),
+                        'hint'      => Text::get('tooltip-project-rounds')
         ),
 
         //  aligerando
