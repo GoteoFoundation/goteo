@@ -265,7 +265,7 @@ foreach ($project->individual_rewards as $individual_reward) {
                         'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-amount"]) ? array($errors["individual_reward-{$individual_reward->id}-amount"]) : array(),
                         'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-amount"]) ? array($okeys["individual_reward-{$individual_reward->id}-amount"]) : array(),
                         'hint'      => Text::get('tooltip-project-individual_reward-amount'),
-                        'sufix'     => $individual_reward->currency_html
+                        'symbol'     => $individual_reward->currency_html
                     ),
                     "individual_reward-{$individual_reward->id}-units" => array(
                         'title'     => Text::get('rewards-field-individual_reward-units'),
