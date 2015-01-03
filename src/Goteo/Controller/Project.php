@@ -432,9 +432,10 @@ namespace Goteo\Controller {
                         // var_dump($cost);
                         $cost->currency = $project->currency;
                         $cost->currency_rate = $project->currency_rate;
+                        $cost->currency_html = $currency_data['html'];
                         $cost->amount_original = round($cost->amount * $project->currency_rate);
                         $cost->amount_format = $cost->amount_original.' '.$currency_data['html'];
-
+                        // aquí pueden darse desajustes por redondeo
                     }
 
                     // para el termómetro horizontal de paso costes
@@ -444,6 +445,20 @@ namespace Goteo\Controller {
                     break;
 
                 case 'rewards':
+
+
+                    // convert costs to project currency
+                    foreach ($project->individual_rewards as &$individual_reward) {
+                        // var_dump($cost);
+                        $individual_reward->currency = $project->currency;
+                        $individual_reward->currency_rate = $project->currency_rate;
+                        $individual_reward->currency_html = $currency_data['html'];
+                        $individual_reward->amount_original = round($individual_reward->amount * $project->currency_rate);
+                        $individual_reward->amount_format = $individual_reward->amount_original.' '.$currency_data['html'];
+                        // aquí pueden darse desajustes por redondeo
+                    }
+
+
                     $viewData['stypes'] = Model\Project\Reward::icons('social');
                     $viewData['itypes'] = Model\Project\Reward::icons('individual');
                     $viewData['licenses'] = Model\Project\Reward::licenses();
@@ -1159,7 +1174,17 @@ namespace Goteo\Controller {
                     if ($reward->icon == 'other') {
                         $reward->other = $_POST['individual_reward-' . $reward->id . '-other'];
                     }
-                    $reward->amount = $_POST['individual_reward-' . $reward->id . '-amount'];
+
+                    $new_amount = $_POST['individual_reward-' . $reward->id . '-amount'];
+                    // ajuste divisa proyecto
+                    if ($project->currency != Library\Currency::DEFAULT_CURRENCY) {
+                        // convertir solo al modificar
+                        if ($new_amount != $reward->amount_original) {
+                            $new_amount = $new_amount / $project->currency_rate;
+                        }
+                    }
+                    $reward->amount = $new_amount;
+
                     $reward->units = $_POST['individual_reward-' . $reward->id . '-units'];
                     $reward->icon_name = $types[$reward->icon]->name;
                 }
