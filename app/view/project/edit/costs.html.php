@@ -86,7 +86,7 @@ if (!empty($project->costs)) {
                         'errors'    => !empty($errors["cost-{$cost->id}-amount"]) ? array($errors["cost-{$cost->id}-amount"]) : array(),
                         'ok'        => !empty($okeys["cost-{$cost->id}-amount"]) ? array($okeys["cost-{$cost->id}-amount"]) : array(),
                         'value'     => $cost->amount_original,
-                        'sufix'     => $cost->currency_html
+                        'symbol'     => $cost->currency_html
                     ),
                     "cost-{$cost->id}-required"  => array(
                         'required'  => true,
