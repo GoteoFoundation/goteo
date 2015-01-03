@@ -7,7 +7,8 @@ namespace Goteo\Library\SuperForm\Element {
         public
             $value,
             $size,
-            $maxlength;
+            $maxlength,
+            $symbol; // to have currency symbol inside the textbox
         
     }
     

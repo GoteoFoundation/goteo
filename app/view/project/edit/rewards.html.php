@@ -43,9 +43,9 @@ foreach ($project->social_rewards as $social_reward) {
                         'hint'  => $license->description .  $url,
                         'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
                         'checked' => $license->id == $social_reward->license ? true : false
-                    );
-
+                    );                        
                 }
+
             }
 
             if ($type->id == 'other') {
@@ -261,10 +261,11 @@ foreach ($project->individual_rewards as $individual_reward) {
                         'type'      => 'textbox',
                         'size'      => 5,
                         'class'     => 'inline reward-amount',
-                        'value'     => $individual_reward->amount,
+                        'value'     => $individual_reward->amount_original,
                         'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-amount"]) ? array($errors["individual_reward-{$individual_reward->id}-amount"]) : array(),
                         'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-amount"]) ? array($okeys["individual_reward-{$individual_reward->id}-amount"]) : array(),
-                        'hint'      => Text::get('tooltip-project-individual_reward-amount')
+                        'hint'      => Text::get('tooltip-project-individual_reward-amount'),
+                        'symbol'     => $individual_reward->currency_html
                     ),
                     "individual_reward-{$individual_reward->id}-units" => array(
                         'title'     => Text::get('rewards-field-individual_reward-units'),
