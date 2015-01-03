@@ -7,7 +7,8 @@ namespace Goteo\Library\SuperForm\Element {
         public
             $value,
             $size,
-            $maxlength;
+            $maxlength,
+            $sufix;
         
     }
     
