@@ -6,6 +6,7 @@ namespace Goteo\Core {
         Goteo\Library\Cacher;
 
     abstract class Model {
+        protected static $Table = null;
 
         /**
          * Constructor.
@@ -17,6 +18,13 @@ namespace Goteo\Core {
                     foreach ($data as $k => $v) {
                         $this->$k = $v;
                     }
+                }
+            }
+            if(empty(self::$Table)) {
+                //Table by default
+                self::$Table = strtolower(get_called_class());
+                if(strrpos(self::$Table, '\\') !== false) {
+                    self::$Table = substr(self::$Table, strrpos(self::$Table, '\\') + 1);
                 }
             }
         }
@@ -41,6 +49,37 @@ namespace Goteo\Core {
          * @return  type bool   true|false
          */
         abstract public function validate (&$errors = array());
+
+        /**
+         * Borrar.
+         * @param   type array  $id     Identificador o array asociatovivo de identificadores para borrar una entrada
+         * @return  type bool   true|false
+         */
+        public function delete ($id = null) {
+            if(empty($id) && $this->id) {
+                $id = $this->id;
+            }
+            if(empty($id)) {
+                throw new Exception("Delete error: ID not defined!");
+            }
+            if(!is_array($id)) {
+                $id = array('id' => $id);
+            }
+            $where = array();
+            $values = array();
+            foreach($id as $key => $val) {
+                $where[] = self::$Table . ".$key = :$key";
+                $values[":$key"] = $val;
+            }
+
+            $sql = 'DELETE FROM ' . self::$Table . ' WHERE ' . implode(' AND ', $where);
+            try {
+                self::query($sql, $values);
+            } catch (\PDOException $e) {
+                throw new Exception("Delete error in $sql");
+            }
+            return true;
+        }
 
         /**
          * Consulta.

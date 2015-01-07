@@ -4,18 +4,19 @@ namespace Goteo\Model\User {
 
     class Location extends \Goteo\Core\Model {
 
+        protected static $Table = 'location_item';
         public
             $location,
             $user;
 
 
         /**
-         * Recupera la geolocalización de este 
+         * Recupera la geolocalización de este
          * @param varcahr(50) $id  user identifier
          * @return int (id geolocation)
          */
 	 	public static function get ($id) {
-            
+
             try {
                 $query = static::query("SELECT location FROM location_item WHERE type = 'user' AND item = ?", array($id));
                 $loc = $query->fetchColumn();
@@ -28,12 +29,15 @@ namespace Goteo\Model\User {
 		public function validate(&$errors = array()) {
             if (empty($this->location)) return false;
             if (empty($this->user)) return false;
+            return true;
         }
 
 		/*
 		 *  Guarda la asignación del usuario a la localización
 		 */
 		public function save (&$errors = array()) {
+            if (!$this->validate())
+                return false;
 
             $values = array(':item'=>$this->user, ':location'=>$this->location, ':type'=>'user');
 
@@ -52,6 +56,22 @@ namespace Goteo\Model\User {
 			}
 
 		}
+
+        /**
+         * Borra una entrada
+         * @param  [type] $id [description]
+         * @return [type]     [description]
+         */
+        public function delete($id = null) {
+            if(empty($id) && $this->user) $id = $this->user;
+
+            try {
+                static::query("DELETE FROM location_item WHERE type = 'user' AND item = ?", array($id));
+            } catch(\PDOException $e) {
+                throw new \Goteo\Core\Exception($e->getMessage());
+            }
+            return true;
+        }
 
 		/**
 		 * Desasignar el usuario de su localización
@@ -100,13 +120,23 @@ namespace Goteo\Model\User {
 			}
 		}
 
+        public static function addUserEntry($data, &$errors = array()) {
+            try {
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "Fallo SQL ".$e->getMessage();
+                return false;
+            }
+        }
+
         /**
          * Recupera geologin
          * @param varcahr(50) $id  user identifier
          * @return mixed (geologin row)
          */
 	 	public static function getLogin ($user) {
-            
+
             try {
                 $query = static::query("SELECT * FROM geologin WHERE user = ?", array($user));
                 return $query->fetchObject();
@@ -114,14 +144,14 @@ namespace Goteo\Model\User {
                 return null;
             }
 		}
-        
+
         /**
          * Si tiene ya un registro de geologin
          * @param varcahr(50) $id  user identifier
          * @return int (have a geologin register)
          */
 	 	public static function is_geologed ($user) {
-            
+
             try {
                 $query = static::query("SELECT user FROM geologin WHERE user = ?", array($user));
                 $gl = $query->fetchColumn();
@@ -164,15 +194,15 @@ namespace Goteo\Model\User {
                 return false;
 			}
 		}
-        
-        
+
+
         /**
          * Si está como ilocalizable
          * @param varcahr(50) $id  user identifier
          * @return int (have an unlocable register)
          */
 	 	public static function is_unlocable ($user) {
-            
+
             try {
                 $query = static::query("SELECT user FROM unlocable WHERE user = ?", array($user));
                 $gl = $query->fetchColumn();
