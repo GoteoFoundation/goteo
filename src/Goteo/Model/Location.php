@@ -2,25 +2,26 @@
 
 /*
  * Este modelo es para la geo localizacion
- * 
+ *
  * Usamos la libreria geoloc para todas las funcionalidades de webservices
- * 
+ *
  */
 
 namespace Goteo\Model {
-    
+
     use Goteo\Library\Geoloc;
-    
+
     class Location extends \Goteo\Core\Model {
-    
+
         public
             $id,
             $name,
             $location,
-            $region, 
+            $region,
             $country = 'ES',  // codigo pais  ISO 3166-1 alpha-2
             $lon,
             $lat,
+            $method = 'browser', //metodo de obtencion de lat,lng (browser o ip)
             $valid = 1;
 
         public static $items = array(
@@ -54,7 +55,8 @@ namespace Goteo\Model {
                 $item = $query->fetchObject(__CLASS__);
                 $item->name = "{$item->location}, {$item->region}, {$item->country}";
 
-                return $item;
+                return empty($item->id) ? null : $item;
+
             } catch(\PDOException $e) {
                 throw new \Goteo\Core\Exception($e->getMessage());
             }
@@ -116,7 +118,7 @@ namespace Goteo\Model {
             }
              */
 
-            $sql = "SELECT * 
+            $sql = "SELECT *
                     FROM location
                     $sqlFilter
                     ORDER BY country, region, location
@@ -131,9 +133,9 @@ namespace Goteo\Model {
         }
 
         /**
-         * Lista simple de Geolocalizaciones, solo nombre y silo validas
+         * Lista simple de Geolocalizaciones, solo nombre y silo validateas
          * y ordenada
-         * 
+         *
          * @param  mixed $filters array de filtros
          * @return mixed            Array de objetos de tareas
          */
@@ -150,7 +152,7 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 $list[$item->id] = "{$item->location}, {$item->region}, {$item->country}";
             }
-            
+
             asort($list);
 
             return $list;
@@ -162,7 +164,7 @@ namespace Goteo\Model {
          * @return  type bool   true|false
          */
          public function save (&$errors = array()) {
-             if (!$this->validate())
+            if (!$this->validate())
                 return false;
 
             $fields = array(
@@ -172,6 +174,7 @@ namespace Goteo\Model {
                 'country',
                 'lon',
                 'lat',
+                'method',
                 'valid'
                 );
 
@@ -191,7 +194,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = "LOCATION SAVING FAILED!!! " . $e->getMessage();
                 return false;
             }
         }
@@ -203,18 +206,18 @@ namespace Goteo\Model {
          */
         public function validate (&$errors = array()) {
             if (empty($this->country))
-                $errors[] = 'Falta pais';
+                $errors[] = 'Country missing';
 
             if (empty($this->lon))
-                $errors[] = 'Falta longitud';
+                $errors[] = 'Longitude missing';
 
             if (empty($this->lat))
-                $errors[] = 'Falta latitud';
+                $errors[] = 'Latitude missing';
 
             // por otra parte, no se puede crear si esta localidad-region-pais ya existe en la tabla
             // o si, estas coordenadas latitud-longitud ya existen en la tabla
-            
-            
+
+
             if (empty($errors))
                 return true;
             else
@@ -260,9 +263,9 @@ namespace Goteo\Model {
         /**
          * Metodo para sacar las que hay en proyectos
          * @return array strings
-         * 
+         *
          * Cerca de la obsolitud
-         * 
+         *
          */
 		public static function getProjLocs () {
 
@@ -357,7 +360,7 @@ namespace Goteo\Model {
                 $and = " AND";
             }
 
-            $sql = "SELECT 
+            $sql = "SELECT
                         *,
                         CONCAT(location, region, country) as name
                     FROM location
@@ -373,7 +376,7 @@ namespace Goteo\Model {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $SubM = 'Goteo\Model' . \chr(92) . \ucfirst($type);
                 $item->$type = $SubM::get($item->item);
-                
+
                 $list[] = $item;
             }
 
@@ -417,7 +420,7 @@ namespace Goteo\Model {
                     $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location = '{$keyword}'";
                     break;
             }
-            
+
             if (!empty($sql)) {
                 $query = self::query($sql);
                 $num = $query->fetchColumn();
