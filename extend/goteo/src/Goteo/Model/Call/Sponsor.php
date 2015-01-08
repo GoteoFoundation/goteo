@@ -8,6 +8,9 @@ namespace Goteo\Model\Call {
 
     class Sponsor extends \Goteo\Core\Model {
 
+        //table for this model is not sponsor but call_sponsor
+        protected $Table = 'call_sponsor';
+
         public
             $id,
             $call,
@@ -164,17 +167,16 @@ namespace Goteo\Model\Call {
             }
         }
 
-        /*
-         * Para quitar una pregunta
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
          */
-        public static function delete ($id) {
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
 
-            $sql = "DELETE FROM call_sponsor WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
+            if(!($ob = Sponsor::get($id))) return false;
+            return $ob->delete();
 
         }
 

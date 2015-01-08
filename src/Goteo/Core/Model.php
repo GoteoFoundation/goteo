@@ -6,7 +6,7 @@ namespace Goteo\Core {
         Goteo\Library\Cacher;
 
     abstract class Model {
-        protected static $Table = null;
+        protected $Table = null;
 
         /**
          * Constructor.
@@ -20,19 +20,29 @@ namespace Goteo\Core {
                     }
                 }
             }
-            if(empty(self::$Table)) {
+            $table = $this->getTable();
+            if(empty($table)) {
                 //Table by default
-                self::$Table = strtolower(get_called_class());
-                if(strrpos(self::$Table, '\\') !== false) {
-                    self::$Table = substr(self::$Table, strrpos(self::$Table, '\\') + 1);
+                $table = strtolower(get_called_class());
+                if(strrpos($table, '\\') !== false) {
+                    $table = substr($table, strrpos($table, '\\') + 1);
                 }
+                $this->setTable($table);
             }
+        }
+
+        public function getTable() {
+            return $this->Table;
+        }
+        public function setTable($table = null) {
+            if($table) $this->Table = $table;
+            return $this;
         }
 
         /**
          * Obtener.
          * @param   type mixed  $id     Identificador
-         * @return  type object         Objeto
+         * @return  type object         Objeto or false if not found
          */
         abstract static public function get ($id);
 
@@ -52,31 +62,23 @@ namespace Goteo\Core {
 
         /**
          * Borrar.
-         * @param   type array  $id     Identificador o array asociatovivo de identificadores para borrar una entrada
          * @return  type bool   true|false
          */
-        public function delete ($id = null) {
-            if(empty($id) && $this->id) {
-                $id = $this->id;
-            }
+        public function delete () {
+            $id = $this->id;
             if(empty($id)) {
-                throw new Exception("Delete error: ID not defined!");
-            }
-            if(!is_array($id)) {
-                $id = array('id' => $id);
-            }
-            $where = array();
-            $values = array();
-            foreach($id as $key => $val) {
-                $where[] = self::$Table . ".$key = :$key";
-                $values[":$key"] = $val;
+                // throw new Exception("Delete error: ID not defined!");
+                return false;
             }
 
-            $sql = 'DELETE FROM ' . self::$Table . ' WHERE ' . implode(' AND ', $where);
+            $sql = 'DELETE FROM ' . $this->Table . ' WHERE id = ?';
+            // var_dump($this);
+            // echo get_called_class()." $sql\n";
             try {
-                self::query($sql, $values);
+                self::query($sql, array($id));
             } catch (\PDOException $e) {
-                throw new Exception("Delete error in $sql");
+                // throw new Exception("Delete error in $sql");
+                return false;
             }
             return true;
         }

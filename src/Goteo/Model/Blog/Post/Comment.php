@@ -32,10 +32,10 @@ namespace Goteo\Model\Blog\Post {
                     WHERE id = :id
                     ", array(':id' => $id));
 
-                $comment = $query->fetchObject(__CLASS__);
-
-                // reconocimiento de enlaces y saltos de linea
-                $comment->text = nl2br(Text::urlink($comment->text));
+                if($comment = $query->fetchObject(__CLASS__)) {
+                    // reconocimiento de enlaces y saltos de linea
+                    $comment->text = nl2br(Text::urlink($comment->text));
+                }
 
                 return $comment;
         }
@@ -66,11 +66,11 @@ namespace Goteo\Model\Blog\Post {
                 WHERE comment.post = ?
                 ORDER BY comment.date ASC, comment.id ASC
                 ";
-            
+
             $query = static::query($sql, array($post));
-                
+
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
-                
+
                  // owner
                     $user = new User;
                     $user->id = $comment->user_id;
@@ -157,11 +157,11 @@ namespace Goteo\Model\Blog\Post {
 
                 $values=array(':post' => $post);
 
-                $query = static::query($sql, $values);
+                $query = self::query($sql, $values);
                 if($got = $query->fetchObject()) {
                     // si ha cambiado, actualiza el numero de comentarios en un post
                     if ($got->comments != $got->num) {
-                        static::query("UPDATE post SET num_comments = :num WHERE id = :post", array(':num' => (int) $got->comments, ':post' => $post));
+                        self::query("UPDATE post SET num_comments = :num WHERE id = :post", array(':num' => (int) $got->comments, ':post' => $post));
                     }
                 }
 
@@ -169,7 +169,7 @@ namespace Goteo\Model\Blog\Post {
 
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->text))
                 $errors[] = 'Falta texto';
                 //Text::get('mandatory-comment-text');
@@ -221,21 +221,34 @@ namespace Goteo\Model\Blog\Post {
         /*
          * Para quitar un comentario
          */
-        public static function delete ($id) {
-            
-            $sql = "DELETE FROM comment WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
+        public function delete ($id = null) {
+            if(empty($id) && $this->id) {
+                $id = $this->id;
+                $post = $this->post;
+            }
+            else {
+                $query = self::query('SELECT post FROM comment WHERE id = ?', array($id));
+                $post = $query->fetchColumn();
+            }
+            if(empty($id)) {
+                // throw new Exception("Delete error: ID not defined!");
+                return false;
+            }
+            try {
+                self::query('DELETE FROM comment WHERE id = ?', array($id));
 
                 // actualizar campo calculado
-                self::getCount($this->post);
+                if($post) self::getCount($post);
 
-            } else {
+
+            } catch (\PDOException $e) {
+                // throw new Exception("Delete error in $sql");
                 return false;
             }
 
+            return true;
         }
 
     }
-    
+
 }

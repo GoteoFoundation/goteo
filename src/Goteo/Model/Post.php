@@ -20,6 +20,7 @@ namespace Goteo\Model {
             $media,
             $author,
             $order,
+            $publish,
             $node;  // las entradas en portada para nodos se guardan en la tabla post_node con unos metodos alternativos
 
         /*
@@ -42,6 +43,7 @@ namespace Goteo\Model {
                         DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                         post.author as author,
                         post.order as `order`,
+                        post.publish as `publish`,
                         user.id as user_id,
                         user.name as user_name,
                         user.email as user_email,
@@ -537,6 +539,18 @@ namespace Goteo\Model {
 
         }
 
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
+         */
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
+
+            if(!($ob = Post::get($id))) return false;
+            return $ob->delete();
+
+        }
         /*
          * Para que salga antes  (disminuir el order)
          */

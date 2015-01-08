@@ -18,7 +18,7 @@ namespace Goteo\Model {
 			$image,
             $order,
             $active;
-			
+
 
         /*
          *  Devuelve datos de un elemento
@@ -26,10 +26,10 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'bazar_lang', \LANG);  
+                $lang=self::default_lang_by_id($id, 'bazar_lang', \LANG);
 
                 $query = static::query("
-                    SELECT  
+                    SELECT
                         bazar.id as id,
                         bazar.reward as reward,
                         bazar.project as project,
@@ -46,13 +46,14 @@ namespace Goteo\Model {
                         AND bazar_lang.lang = :lang
                     WHERE bazar.id = :id
                     ", array(':id'=>$id, ':lang'=>$lang));
-                $promo = $query->fetchObject(__CLASS__);
 
-                if (!empty($promo->image))
-                    $promo->image = Image::get($promo->image);
+                if($promo = $query->fetchObject(__CLASS__)) {
 
-                $promo->project = Project::getMini($promo->project);
+                    if (!empty($promo->image))
+                        $promo->image = Image::get($promo->image);
 
+                    $promo->project = Project::getMini($promo->project);
+                }
                 return $promo;
         }
 
@@ -98,9 +99,9 @@ namespace Goteo\Model {
                     ORDER BY `order` ASC, title ASC";
 
             $query = static::query($sql, array(':lang'=>\LANG));
-            
+
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
-                
+
                 if (!empty($promo->image))
                     $promo->img = Image::get($promo->image);
 
@@ -139,10 +140,10 @@ namespace Goteo\Model {
                     ON project.id = bazar.project
                 ORDER BY `order` ASC, title ASC
                 ");
-            
+
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->status = $status[$promo->status];
-                
+
                 if (!empty($promo->image))
                     $promo->image = Image::get($promo->image);
 
@@ -195,7 +196,7 @@ namespace Goteo\Model {
         }
 
         // ya no validamos esto
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if ($this->active && (empty($this->reward) || empty($this->project) || empty($this->amount) ))
                 $errors[] = 'Se quiere publicar y no tiene recompensa/proyecto/importe. Seleccionar item o no publicar';
 
@@ -258,20 +259,6 @@ namespace Goteo\Model {
             }
         }
 
-        /*
-         * Para quitar un elemento del bazar
-         */
-        public static function delete ($id) {
-            
-            $sql = "DELETE FROM bazar WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
         /* Para activar/desactivar un elemento
          */
         public static function setActive ($id, $active = false) {
@@ -285,11 +272,24 @@ namespace Goteo\Model {
 
         }
 
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
+         */
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
+
+            if(!($ob = Bazar::get($id))) return false;
+            return $ob->delete();
+
+        }
+
         /*
          * Para que salga antes  (disminuir el order)
          */
         public static function up ($id) {
-            
+
             return Check::reorder($id, 'up', 'bazar', 'id', 'order');
         }
 
@@ -297,7 +297,7 @@ namespace Goteo\Model {
          * Para que salga despues  (aumentar el order)
          */
         public static function down ($id) {
-            
+
             return Check::reorder($id, 'down', 'bazar', 'id', 'order');
         }
 
@@ -313,5 +313,5 @@ namespace Goteo\Model {
 
 
     }
-    
+
 }

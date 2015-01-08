@@ -43,11 +43,9 @@ namespace Goteo\Model {
                         ON project.id = banner.project
                     WHERE banner.id = :id
                     ", array(':id'=>$id, ':lang' => $lang));
-                $banner = $query->fetchObject('\Goteo\Model\Banner');
-
-                $banner->image = Image::get($banner->image);
-
-
+                if($banner = $query->fetchObject('\Goteo\Model\Banner')) {
+                    $banner->image = Image::get($banner->image);
+                }
 
                 return $banner;
         }
@@ -228,6 +226,19 @@ namespace Goteo\Model {
                 return false;
         }
 
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
+         */
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
+
+            if(!($ob = Banner::get($id))) return false;
+            return $ob->delete();
+
+        }
+
         public function save (&$errors = array()) {
 //            if (!$this->validate($errors)) return false;
 
@@ -279,20 +290,6 @@ namespace Goteo\Model {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
-        }
-
-        /*
-         * Para quitar un proyecto banner
-         */
-        public static function delete ($id) {
-
-            $sql = "DELETE FROM banner WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
         }
 
         /* Para activar/desactivar un banner

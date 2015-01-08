@@ -42,30 +42,30 @@ namespace Goteo\Model {
                     WHERE glossary.id = :id
                     ", array(':id' => $id, ':lang'=>$lang));
 
-                $glossary = $query->fetchObject(__CLASS__);
+                if($glossary = $query->fetchObject(__CLASS__)) {
 
-                // video
-                if (isset($glossary->media)) {
-                    $glossary->media = new Media($glossary->media);
+                    // video
+                    if (isset($glossary->media)) {
+                        $glossary->media = new Media($glossary->media);
+                    }
+
+                    // campo calculado gallery
+                    if (!empty($glossary->gallery) && $glossary->gallery !== 'empty') {
+                        $glossary->gallery = Image::getGallery($glossary->gallery);
+                    } elseif ($glossary->gallery !== 'empty') {
+                        $glossary->setGallery();
+                    } else {
+                        $glossary->gallery = array();
+                    }
+
+                    if (!empty($glossary->image) && $glossary->image !== 'empty') {
+                        $glossary->image = Image::get($glossary->image);
+                    } elseif ($glossary->image !== 'empty') {
+                        $glossary->setImage();
+                    } else {
+                        $glossary->image = null;
+                    }
                 }
-
-                // campo calculado gallery
-                if (!empty($glossary->gallery) && $glossary->gallery !== 'empty') {
-                    $glossary->gallery = Image::getGallery($glossary->gallery);
-                } elseif ($glossary->gallery !== 'empty') {
-                    $glossary->setGallery();
-                } else {
-                    $glossary->gallery = array();
-                }
-
-                if (!empty($glossary->image) && $glossary->image !== 'empty') {
-                    $glossary->image = Image::get($glossary->image);
-                } elseif ($glossary->image !== 'empty') {
-                    $glossary->setImage();
-                } else {
-                    $glossary->image = null;
-                }
-
                 return $glossary;
         }
 
@@ -101,14 +101,14 @@ namespace Goteo\Model {
                 LEFT JOIN glossary_lang
                     ON  glossary_lang.id = glossary.id
                     AND glossary_lang.lang = :lang
-                $eng_join    
-                        ";                 
+                $eng_join
+                        ";
 
             $sql .= " ORDER BY title ASC
                 ";
-            
+
             $query = static::query($sql, array(':lang'=>\LANG));
-                
+
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $glossary) {
 
                 // video
@@ -139,7 +139,7 @@ namespace Goteo\Model {
             return $list;
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->title))
                 $errors['title'] = 'Falta título';
 
@@ -210,8 +210,15 @@ namespace Goteo\Model {
         /*
          * Para quitar una entrada
          */
-        public static function delete ($id) {
-            
+        public function delete ($id = null) {
+            if(empty($id) && $this->id) {
+                $id = $this->id;
+            }
+            if(empty($id)) {
+                // throw new Exception("Delete error: ID not defined!");
+                return false;
+            }
+
             $sql = "DELETE FROM glossary WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
 
@@ -220,10 +227,8 @@ namespace Goteo\Model {
                 self::query($sql, array(':id'=>$id));
 
                 return true;
-            } else {
-                return false;
             }
-
+            return false;
         }
 
         /*
@@ -243,5 +248,5 @@ namespace Goteo\Model {
         }
 
     }
-    
+
 }

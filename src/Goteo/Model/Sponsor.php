@@ -160,17 +160,16 @@ namespace Goteo\Model {
             }
         }
 
-        /*
-         * Para quitar una pregunta
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
          */
-        public static function delete ($id) {
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
 
-            $sql = "DELETE FROM sponsor WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
+            if(!($ob = Sponsor::get($id))) return false;
+            return $ob->delete();
 
         }
 

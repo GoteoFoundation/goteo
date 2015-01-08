@@ -28,12 +28,29 @@ function setMsg(error) {
       msg = "An unknown error occurred.";
       break;
     }
+    //try the maxmind database
     send_gl_form(null, null, msg);
 }
 
+function googleLocator() {
+ if (google.loader.ClientLocation) {
+    var loc = google.loader.ClientLocation;
+        if (loc.address) {
+            alert(loc.address.city);
+        }
+        if (loc.latitude) {
+            alert(loc.latitude+'/'+loc.longitude);
+        }
+    }
+    return false;
+}
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(setPosition, setMsg);
+        navigator.geolocation.getCurrentPosition(setPosition, function(error) {
+            //try google locator
+            if(!googleLocator)
+                setMsg(error);
+        });
     } else{
         send_gl_form(null, null, "Geolocation is not supported by the browser.");
     }

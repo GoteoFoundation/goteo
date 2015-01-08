@@ -3,7 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check;
-    
+
     class Category extends \Goteo\Core\Model {
 
         public
@@ -59,7 +59,7 @@ namespace Goteo\Model {
             $sql="SELECT
                     category.id as id,
                     $different_select,
-                    (   SELECT 
+                    (   SELECT
                             COUNT(project_category.project)
                         FROM project_category
                         WHERE project_category.category = category.id
@@ -106,7 +106,7 @@ namespace Goteo\Model {
                                     AND eng.lang = 'en'";
                 }
 
-                $sql="SELECT 
+                $sql="SELECT
                             category.id as id,
                             $different_select
                         FROM category
@@ -131,8 +131,20 @@ namespace Goteo\Model {
             }
 		}
 
-        
-        public function validate (&$errors = array()) { 
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
+         */
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
+
+            if(!($ob = Category::get($id))) return false;
+            return $ob->delete();
+
+        }
+
+        public function validate (&$errors = array()) {
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
                 //Text::get('mandatory-category-name');
@@ -174,20 +186,6 @@ namespace Goteo\Model {
         }
 
         /*
-         * Para quitar una catgoria de la tabla
-         */
-        public static function delete ($id) {
-            
-            $sql = "DELETE FROM category WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
-        /*
          * Para que salga antes  (disminuir el order)
          */
         public static function up ($id) {
@@ -210,18 +208,18 @@ namespace Goteo\Model {
             return ++$order;
 
         }
-        
+
         /**
          * Get a list of used keywords
          *
          * can be of users, projects or  all
-         * 
+         *
          */
 		public static function getKeyWords () {
             $array = array ();
             try {
-                
-                $sql = "SELECT 
+
+                $sql = "SELECT
                             keywords
                         FROM project
                         WHERE status > 1
@@ -230,12 +228,12 @@ namespace Goteo\Model {
                         ";
 /*
                      UNION
-                        SELECT 
+                        SELECT
                             keywords
                         FROM user
                         WHERE keywords IS NOT NULL
                         AND keywords != ''
-* 
+*
  */
                 $query = static::query($sql);
                 $keywords = $query->fetchAll(\PDO::FETCH_ASSOC);
@@ -245,20 +243,20 @@ namespace Goteo\Model {
 //                    $kw = str_replace(array(' ','|'), ',', $keyw['keywords']);
 //                    $kw = str_replace(array('-','.'), '', $kw);
                     $kwrds = explode(',', $kw);
-                    
+
                     foreach ($kwrds as $word) {
                         $array[] = strtolower(trim($word));
                     }
                 }
 
                 asort($array);
-                
+
                 return $array;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
             }
 		}
-        
+
     }
-    
+
 }

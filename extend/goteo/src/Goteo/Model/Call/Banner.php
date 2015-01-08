@@ -7,6 +7,8 @@ namespace Goteo\Model\Call {
 
 
     class Banner extends \Goteo\Core\Model {
+        //table for this model is not banner but call_banner
+        protected $Table = 'call_banner';
 
         public
             $id,
@@ -55,7 +57,7 @@ namespace Goteo\Model\Call {
                     $eng_join=" LEFT JOIN call_banner_lang as eng
                                     ON  eng.id = call_banner.id
                                     AND eng.lang = 'en'";
-                }            
+                }
 
             $sql = static::query("
                 SELECT
@@ -219,17 +221,16 @@ namespace Goteo\Model\Call {
                 }
         }
 
-        /*
-         * Para quitar un banner
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
          */
-        public static function delete ($id) {
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
 
-            $sql = "DELETE FROM call_banner WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
+            if(!($ob = Banner::get($id))) return false;
+            return $ob->delete();
 
         }
 

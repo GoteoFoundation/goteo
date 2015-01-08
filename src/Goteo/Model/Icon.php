@@ -10,6 +10,7 @@ namespace Goteo\Model {
             $id,
             $name,
             $description,
+            $order,
             $group,  // agrupación de iconos 'social' = Retornos colectivos    'individual' = Recompensas individuales
             $licenses; // licencias relacionadas con este tipo de retorno (solo para retornos colectivos)
 
@@ -19,7 +20,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'icon_lang', \LANG);        
+                $lang=self::default_lang_by_id($id, 'icon_lang', \LANG);
 
                 $query = static::query("
                     SELECT
@@ -27,7 +28,7 @@ namespace Goteo\Model {
                         IFNULL(icon_lang.name, icon.name) as name,
                         IFNULL(icon_lang.description, icon.description) as description,
                         icon.group as `group`,
-                        icon.group as `order`
+                        icon.order as `order`
                     FROM    icon
                     LEFT JOIN  icon_lang
                         ON  icon_lang.id = icon.id
@@ -91,10 +92,10 @@ namespace Goteo\Model {
         }
 
         /*
-         * Lista de iconos que se usen en proyectos 
+         * Lista de iconos que se usen en proyectos
          */
         public static function getList ($group = '') {
-            
+
             $values = array(':lang'=>\LANG);
 
             $icons = array();
@@ -140,7 +141,7 @@ namespace Goteo\Model {
             return $icons;
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
                 //Text::get('mandatory-icon-name');
@@ -187,20 +188,6 @@ namespace Goteo\Model {
             }
         }
 
-        /*
-         * Para quitar un icono
-         */
-        public static function delete ($id) {
-            
-            $sql = "DELETE FROM icon WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
         public static function groups () {
             return array(
                 'social' => 'Retorno colectivo',
@@ -210,5 +197,5 @@ namespace Goteo\Model {
 
 
     }
-    
+
 }

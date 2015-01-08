@@ -254,10 +254,11 @@ namespace Goteo\Model {
                 }
 
                 return $this->id;
+
             } catch (\PDOException $e) {
                 $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, true) . "</pre>";
                 \trace($this);
-                die($errors[0]);
+                // die($errors[0]);
                 return false;
             }
         }
@@ -1428,7 +1429,6 @@ namespace Goteo\Model {
                 //Text::get('save-project-fail');
                 return false;
 			}
-
         }
 
         /*

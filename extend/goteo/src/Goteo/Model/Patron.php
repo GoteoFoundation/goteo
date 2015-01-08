@@ -55,16 +55,18 @@ namespace Goteo\Model {
                     WHERE patron.id = :id
                     AND patron.node = :node
                     ", array(':id'=>$id, ':node'=>$node, ':lang'=>$lang));
-                $patron = $query->fetchObject(__CLASS__);
 
-                // datos del usuario. Eliminación de user::getMini
-                $user = new User;
-                $user->id = $patron->user_id;
-                $user->name = $patron->user_name;
-                $user->email = $patron->user_email;
-                $user->avatar = Image::get($patron->user_avatar);
+                if($patron = $query->fetchObject(__CLASS__)) {
 
-                $patron->user = $user;
+                    // datos del usuario. Eliminación de user::getMini
+                    $user = new User;
+                    $user->id = $patron->user_id;
+                    $user->name = $patron->user_name;
+                    $user->email = $patron->user_email;
+                    $user->avatar = Image::get($patron->user_avatar);
+
+                    $patron->user = $user;
+                }
 
                 return $patron;
         }
@@ -129,9 +131,9 @@ namespace Goteo\Model {
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100, false);
-               
+
                 // datos del usuario. Eliminación User::getMini
- 
+
                 $user = new User;
                 $user->id = $promo->user_id;
                 $user->name = $promo->user_name;
@@ -411,7 +413,7 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $reco) {
                 // datos del usuario. Eliminación User::getMini
-        
+
                 $user = new User;
                 $user->id = $reco['user_id'];
                 $user->name = $reco['user_name'];
@@ -562,8 +564,14 @@ namespace Goteo\Model {
         /*
          * Para quitar un apadrinamiento
          */
-        public static function delete ($id) {
-
+        public function delete ($id = null) {
+            if(empty($id) && $this->id) {
+                $id = $this->id;
+            }
+            if(empty($id)) {
+                // throw new Exception("Delete error: ID not defined!");
+                return false;
+            }
             $query = self::query("SELECT user FROM patron WHERE id = :id", array(':id' => $id));
             if($u = $query->fetchObject()) {
                 $sql = "DELETE FROM patron WHERE id = :id";

@@ -61,7 +61,7 @@ namespace Goteo\Model {
                 FROM news
                 ORDER BY `order` ASC, title ASC
                 ", array(':lang'=>\LANG));
-            
+
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 $list[] = $item;
             }
@@ -126,6 +126,9 @@ namespace Goteo\Model {
                 $errors[] = 'Falta url';
                 //Text::get('mandatory-news-url');
 
+            if (empty($this->order))
+                $errors[] = 'Falta orden';
+
             if (empty($errors))
                 return true;
             else
@@ -173,7 +176,7 @@ namespace Goteo\Model {
                 $sql = "REPLACE INTO news SET " . $set;
                 self::query($sql, $values);
                 if (empty($this->id)) $this->id = self::insertId();
-                
+
                 return true;
             } catch(\PDOException $e) {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
@@ -182,26 +185,12 @@ namespace Goteo\Model {
         }
 
         /*
-         * Para quitar una pregunta
-         */
-        public static function delete ($id) {
-            
-            $sql = "DELETE FROM news WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
-        /*
          * Para poner una micronoticia en banner prensa
          */
         public static function add_press_banner ($id) {
-            
+
             if(!self::in_press_banner($id))
-            
+
             {
                 $order=self::next();
 
@@ -223,7 +212,7 @@ namespace Goteo\Model {
          */
 
         public static function remove_press_banner ($id) {
-            
+
             $sql = "UPDATE news SET `press_banner`=0 WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
                 return true;
@@ -238,13 +227,25 @@ namespace Goteo\Model {
 
          $query = self::query('SELECT `press_banner` FROM news WHERE id = :id'
                     , array(':id'=>$id));
-        
-        if($order=$query->fetchColumn(0)) 
+
+        if($order=$query->fetchColumn(0))
             return $order;
-        
-        else return 0;    
+
+        else return 0;
         }
 
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
+         */
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
+
+            if(!($ob = News::get($id))) return false;
+            return $ob->delete();
+
+        }
         /*
          * Para que una pregunta salga antes  (disminuir el order)
          */
@@ -270,5 +271,5 @@ namespace Goteo\Model {
         }
 
     }
-    
+
 }

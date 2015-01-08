@@ -48,30 +48,30 @@ namespace Goteo\Model {
                     WHERE info.id = :id
                     ", array(':id' => $id, ':lang'=>$lang));
 
-                $info = $query->fetchObject(__CLASS__);
+                if($info = $query->fetchObject(__CLASS__)) {
 
-                // video
-                if (isset($info->media)) {
-                    $info->media = new Media($info->media);
+                    // video
+                    if (isset($info->media)) {
+                        $info->media = new Media($info->media);
+                    }
+
+                    // campo calculado gallery
+                    if (!empty($info->gallery) && $info->gallery !== 'empty') {
+                        $info->gallery = Image::getGallery($info->gallery);
+                    } elseif ($info->gallery !== 'empty') {
+                        $info->setGallery();
+                    } else {
+                        $info->gallery = array();
+                    }
+
+                    if (!empty($info->image) && $info->image !== 'empty') {
+                        $info->image = Image::get($info->image);
+                    } elseif ($info->image !== 'empty') {
+                        $info->setImage();
+                    } else {
+                        $info->image = null;
+                    }
                 }
-
-                // campo calculado gallery
-                if (!empty($info->gallery) && $info->gallery !== 'empty') {
-                    $info->gallery = Image::getGallery($info->gallery);
-                } elseif ($info->gallery !== 'empty') {
-                    $info->setGallery();
-                } else {
-                    $info->gallery = array();
-                }
-
-                if (!empty($info->image) && $info->image !== 'empty') {
-                    $info->image = Image::get($info->image);
-                } elseif ($info->image !== 'empty') {
-                    $info->setImage();
-                } else {
-                    $info->image = null;
-                }
-
                 return $info;
         }
 
@@ -231,20 +231,27 @@ namespace Goteo\Model {
         /*
          * Para quitar una entrada
          */
-        public static function delete ($id) {
-
-            $sql = "DELETE FROM info WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-
-                // que elimine tambien sus imágenes
-                $sql = "DELETE FROM info_image WHERE info = :id";
-                self::query($sql, array(':id'=>$id));
-
-                return true;
-            } else {
+        public function delete ($id = null) {
+            if(empty($id) && $this->id) {
+                $id = $this->id;
+            }
+            if(empty($id)) {
+                // throw new Exception("Delete error: ID not defined!");
                 return false;
             }
 
+            try {
+                $sql = "DELETE FROM info WHERE id = :id";
+                if (self::query($sql, array(':id'=>$id))) {
+                    // que elimine tambien sus imágenes
+                    $sql = "DELETE FROM info_image WHERE info = :id";
+                    self::query($sql, array(':id'=>$id));
+                }
+            } catch (\PDOException $e) {
+                // throw new Exception("Delete error in $sql");
+                return false;
+            }
+            return true;
         }
 
         /*

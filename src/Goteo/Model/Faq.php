@@ -73,14 +73,14 @@ namespace Goteo\Model {
                             AND faq_lang.lang = :lang
                         $eng_join
                         WHERE faq.section = :section
-                        ORDER BY `order` ASC";      
-            
+                        ORDER BY `order` ASC";
+
             $query = static::query($sql, $values);
-            
+
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->node))
                 $errors[] = 'Falta nodo';
                 //Text::get('mandatory-faq-node');
@@ -141,15 +141,19 @@ namespace Goteo\Model {
         /*
          * Para quitar una pregunta
          */
-        public static function delete ($id, $node = \GOTEO_NODE) {
-            
-            $sql = "DELETE FROM faq WHERE id = :id AND node = :node";
-            if (self::query($sql, array(':id'=>$id, ':node'=>$node))) {
-                return true;
-            } else {
+        public function delete ($id = null, $node = null) {
+            if(empty($id) && $this->id) $id = $this->id;
+            if(empty($node) && $this->node) $node = $this->node;
+            if(empty($node)) $node = \GOTEO_NODE;
+            if(empty($id)) return false;
+            try {
+                $sql = "DELETE FROM faq WHERE id = :id AND node = :node";
+                self::query($sql, array(':id'=>$id, ':node'=>$node));
+            } catch (\PDOException $e) {
+                // throw new Exception("Delete error in $sql");
                 return false;
             }
-
+            return true;
         }
 
         /*
@@ -211,5 +215,5 @@ namespace Goteo\Model {
 
 
     }
-    
+
 }
