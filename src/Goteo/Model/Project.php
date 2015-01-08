@@ -281,7 +281,8 @@ namespace Goteo\Model {
                                 IFNULL(user_lang.about, user.about) as user_about,
                                 user.location as user_location,
                                 user.id as user_id,
-                                user.twitter as user_twitter
+                                user.twitter as user_twitter,
+                                user.facebook as user_facebook
                 FROM project
 				LEFT JOIN project_conf
 				    ON project_conf.project = project.id
@@ -366,6 +367,8 @@ namespace Goteo\Model {
                 $project->user->webs = User\Web::get($project->user_id);
 
                 $project->user->twitter = $project->user_twitter;
+
+                $project->user->facebook = $project->user_facebook;
 
                 // campo calculado gallery
                 // en el caso de la entidad proyecto, el campo gallery en la tabla viene serializado por las secciones
