@@ -38,7 +38,7 @@ $user->about = nl2br(Text::urlink($user->about));
         <dd class="links">
             <ul>
                 <?php foreach ($user->webs as $link): ?>
-                <li><a href="<?php echo htmlspecialchars($link->url) ?>"><?php echo htmlspecialchars($link->url) ?></a></li>
+                <li><a href="<?php echo htmlspecialchars($link->url) ?>"><?php echo substr(htmlspecialchars($link->url),0,42); ?></a></li>
                 <?php endforeach ?>
             </ul>
         </dd>
