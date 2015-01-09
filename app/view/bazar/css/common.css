@@ -1,0 +1,167 @@
+/* Estilos comunes a todas las páginas */
+*{font-family:"Liberation Sans",Helvetica,"Helvetica Neue",Arial,Geneva,sans-serif;}
+html{height:100%;margin:0;overflow:auto;}
+html,body{background-color:#E7E7E7;padding:0;}          
+header{display:block;}
+header img{padding:10px 0 0 20px;width:100%;display:inline-block;}
+header a.logo,header nav{float:left;}
+header a.logo{min-width:40px;max-width:250px;width:20%;}
+header a.logo.page{width:10% !important;}
+header img.logo-goteo{width:100px;position:absolute;top:0;right:0;padding:15px 10px 0 0;}
+header nav{width:100%;border-bottom:1px solid #949293;margin-bottom:10px;}
+h2,h2 a{text-transform:uppercase;color:#96238F;text-align:center;margin-bottom:0;text-decoration:none;}
+h2 a:hover{color:#20B2B3;}
+h1,h1 a{text-transform:uppercase;text-decoration:underline;color:#20B2B3;text-align:center;}
+h1 a:hover{color:#96238F;}
+h3,h3 a{text-transform:uppercase;text-decoration:none;color:#58595B;margin:0;}
+h3 a:hover{color:#20B2B3;}
+#encabezado,#pie{width:90%;margin:10px auto;display:block;color:#58595B;}
+section{margin:0 20px;}
+/* para item.html.php */
+article.activable{padding:5px;margin-right:40px;margin-bottom:20px;display:inline-block;position:relative;}
+article.activable img.item{max-width:255px;width:70%;}
+article.activable p{margin:0;padding:0;color:#313B96;}
+article.active img.item{-webkit-filter:drop-shadow(2px 2px 20px black);filter:drop-shadow(2px 2px 20px black);}
+article.active p{color:#20B2B3 !important;}
+article.activable nav a{position:relative;z-index:999;}
+article.activable nav img.twit,article.activable nav img.face{width:30px;margin:0;padding:0;}
+/* El link sobre el elemento */
+a.expand{bottom:0;left:0;padding:0;position:absolute;right:0;top:0;width:100%;z-index:99;}
+/* en página de producto  */
+article.header{display:inline-block;margin-right:20px;}
+article.header.top{margin:20px 10px 0 10px;}
+article.header nav a{float:left;}
+article.header nav img.twit,article.header nav img.face{width:60px;margin:0 20px 0 0;padding:0; }
+article.header #proj-name{display:block;color:#20B2B3;}
+#proj-name a,#proj-name span{font-size:0.7em;color:#20B2B3;text-decoration:none;}
+#proj-name a:hover{text-decoration:underline;}
+/* Caj con el precio*/
+div.caja{
+  background:url('/view/bazar/img/caja.png') no-repeat top center;
+  background-size:100% 100%;
+  display:inline-block;
+  height:70px;
+  min-width:80px;
+  position:relative;
+  margin-right:-30px;
+  top:-25px;
+}
+div.caja p.precio{
+  display:inline;
+  font-size:1.6em;
+  line-height:60px;
+  padding:0 18px;
+  font-weight:bold;
+  color:#96238F !important;
+  text-align:left;
+}
+hr{
+    display:block;
+    height:1px;
+    border:0;
+    border-top:1px solid #949293;
+    margin:1em 0;
+    padding:0;
+}
+article.spread p{
+    padding-top:10px;
+}
+article.spread{
+    display:block;
+    width:80%;
+    margin:10px auto 0;
+}
+/* Botones compartir en vista thanks */
+ul.share{
+  display:block;
+  list-style:none outside none;
+  padding:20px 0 0 0;
+  margin:0;
+  text-align:center;
+}
+ul.share li{
+    display:inline-block;
+    text-align:center;
+    width:280px;
+    min-height:50px;
+}
+ul.share li a{
+    color:#FFFFFF;
+    font-size:14px;
+    height:33px;
+    text-decoration:none;
+}
+ul.share li.twitter a{
+    background:url("/view/css/project/widget/btn_spread.png") no-repeat scroll 0 0 rgba(0,0,0,0);
+    padding:9px 21px 8px 60px;
+}        
+ul.share li.facebook{
+    margin-left:20px;
+}
+ul.share li.facebook a{
+    background:url("/view/css/project/widget/btn_spread.png") no-repeat scroll 0 -33px rgba(0,0,0,0);
+    padding:9px 14px 8px 45px;
+}
+/* Formulario */
+article#formulario{clear:both;padding-top:20px;}
+div.formfields{width:360px;margin-right:10px;}
+div.formfields.alone{width:100%;margin:20px 10px;}
+div.field{display:block;}
+form input[type="text"]{margin-bottom:10px;width:80%;font-size:16px;height:18px;}
+form input[type="checkbox"]{margin-right:10px;}
+span.error{color:red;margin-left:3px;font-size:10px;}
+div.friend{display:none;}
+
+div#sendto{font-size:1.1em;color:#313B96;}
+
+form input[type="text"],form textarea{
+    background-color:#D7D9DA;
+    border:1px solid #58595B;
+    padding:0.3em;
+}
+form input[type="text"]:focus,form textarea:focus{
+    background-color:#FFF !important;
+}
+form textarea,
+div#anonm{
+    width:80%;
+}
+div.buttons{
+    clear:both;
+}
+div.buttons button{
+    display:inline-block;
+    margin:10px;
+    border-radius:40px;
+    overflow: hidden;
+}
+div.buttons button:hover{
+    border:1px solid #20B2B3;
+}
+div.buttons button.pay-tpv{
+  background:url("/view/css/button/logos_tarjetas.png") no-repeat scroll 0 0 rgba(0,0,0,0);
+  height:38px;
+  padding:3px;
+  text-indent:2000px;
+  width:253px;
+}
+div.buttons button.pay-paypal{
+  background:url("/view/css/button/paypal.gif") no-repeat scroll 0 0 rgba(0,0,0,0);
+  height:32px;
+  padding:3px;
+  text-indent:2000px;
+  width:145px;
+}
+div#reminder{font-size: 0.7rem;}
+/* footer */
+footer{margin-top:20px;width:520px;margin:0 auto;}
+footer section{float:left;}
+footer section.logo2{display:none;}
+footer section.logo img{width:120px;}
+footer nav img.twit,footer nav img.face{width:60px;}
+/* blueadd */
+div#message{color:#19B4B2;padding:20px 0;font-size:14px;width:100%;border-bottom: 3px solid #20B2B3;}
+div#message div#message-content{width:60%;margin:0 auto;position:relative;padding-right:60px;}
+div#message div#message-content input.message-close{ background:url('/view/css/message-close.png') no-repeat;width:34px;height:34px;border:none;position:absolute;bottom:0px;right:10px;z-index:100;cursor:pointer;}
+div#message div#message-content ul{list-style:none;margin:0;padding:0;}
+

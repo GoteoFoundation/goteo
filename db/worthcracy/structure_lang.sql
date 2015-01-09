@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS worthcracy_lang (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- pendiente de traducir
-ALTER TABLE `worthcracy_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+ALTER TABLE `worthcracy_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducciÃ³n';

@@ -32,3 +32,10 @@ ALTER TABLE `post` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMME
 ALTER TABLE `post` ADD INDEX `portada` ( `home` );
 ALTER TABLE `post` ADD INDEX `pie` ( `footer` );
 ALTER TABLE `post` ADD INDEX `publicadas` ( `publish` );
+
+-- Campo calculado para imágenes de la galería
+ALTER TABLE `post` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'Galería de imagenes';
+
+-- Añadido numero de comentarios del post
+ALTER TABLE `post` ADD COLUMN `num_comments` INT UNSIGNED NULL COMMENT 'Número de comentarios que recibe el post';
+

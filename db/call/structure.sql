@@ -104,3 +104,19 @@ ALTER TABLE `call` ADD COLUMN `running_projects` INT UNSIGNED DEFAULT 0 NOT NULL
 -- Añadido numero de proyectos exitosos
 ALTER TABLE `call` ADD COLUMN `success_projects` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de proyectos exitosos';
 
+-- Permitir null para que no repita siempre consultas
+ALTER TABLE `call` CHANGE `num_projects` `num_projects` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Número de proyectos publicados',
+CHANGE `rest` `rest` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Importe riego disponible',
+CHANGE `used` `used` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Importe riego comprometido',
+CHANGE `applied` `applied` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Número de proyectos aplicados',
+CHANGE `running_projects` `running_projects` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Número de proyectos en campaña',
+CHANGE `success_projects` `success_projects` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Número de proyectos exitosos';
+
+-- ajuste
+UPDATE `call` SET num_projects = null WHERE num_projects = 0;
+UPDATE `call` SET rest = null WHERE rest = 0;
+UPDATE `call` SET used = null WHERE used = 0;
+UPDATE `call` SET applied = null WHERE applied = 0;
+UPDATE `call` SET running_projects = null WHERE running_projects = 0;
+UPDATE `call` SET success_projects = null WHERE success_projects = 0;
+

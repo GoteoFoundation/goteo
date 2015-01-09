@@ -8,13 +8,13 @@ CREATE TABLE IF NOT EXISTS `invest_address` (
   `name` varchar(255) DEFAULT NULL,
   `nif` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`invest`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Dirección de entrega de recompensa';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='DirecciÃ³n de entrega de recompensa';
 
 
---- alters
+-- alters
 ALTER TABLE `invest_address` ADD `name` VARCHAR( 255 ) NULL ,
 ADD `nif` VARCHAR( 10 ) NULL ;
 
---- alters
+-- alters
 ALTER TABLE `invest_address` ADD `namedest` TINYTEXT NULL, ADD `emaildest` TINYTEXT NULL, ADD `regalo` INT(1)  NULL DEFAULT '0';
 ALTER TABLE `invest_address` ADD `message` TEXT NULL;

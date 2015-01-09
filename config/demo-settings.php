@@ -9,6 +9,9 @@ ini_set("display_errors",1);
 //Estoy en mantenimiento
 define('GOTEO_MAINTENANCE', null);
 
+//Tiempo máximo de sesion en segundos
+define('GOTEO_SESSION_TIME', 3600);
+
 //secreto interno para generación de ID's CAMBIAR!!!!
 define('GOTEO_MISC_SECRET', 'gl,+PQ7`}i8fv}CX0B7qhbqnV[3RHpq0\KPQg|1I|dTz=m=u6BJ;k27mzLuo');
 
@@ -34,9 +37,6 @@ define('AWS_KEY', '--------------');
 define('AWS_SECRET', '----------------------------------');
 define('AWS_REGION', 'eu-west-1');
 
-//Mail management: ses, phpmailer
-define('MAIL_HANDLER', 'phpmailer');
-
 // Database
 define('GOTEO_DB_DRIVER', 'mysql');
 define('GOTEO_DB_HOST', 'localhost');
@@ -55,9 +55,10 @@ define('GOTEO_DB_PASSWORD', 'db-password');
 
 
 //SELECT queries caching
-//setup it as 'files', 'memcache'
-define('SQL_CACHE_DRIVER', 'memcache'); //dejar vacia para no activar cache
+//setup it as 'files' to enable sql cache
+define('SQL_CACHE_DRIVER', ''); //dejar vacia para no activar cache
 define('SQL_CACHE_TIME', 20); //Segundos de cache para las queries SELECT (puede ser sobreescrito por las query->cacheTime())
+define('SQL_CACHE_LONG_TIME', 3600); //Cache larga para textos
 define('SQL_CACHE_SERVER', 'localhost'); //Si es memcache, si no será ignorado
 define('SQL_CACHE_PORT', '11211'); //Si es memcache, si no será ignorado
 
@@ -94,15 +95,16 @@ define('GOTEO_DEFAULT_LANG', 'es');
 
 // url
 define('GOTEO_URL', 'http://example.com');
-//url de recursos estaticos (imagenes CSS)
-define('SRC_URL', 'https://static.example.com');
+//url de recursos estaticos (imagenes, CSS)
+define('SRC_URL', '//static.example.com');
+//Opcional: si se define la constante GOTEO_DATA_URL se usara en lugar de SRC_URL para el contenido de data
+//Sirve para utilzar con CDN que hagan mirror de SITE_URL
+//IMPORTANTE: definir la ruta sin / al final (con el prefijo "/data" si aplica)
+//define('GOTEO_DATA_URL', '//cdn-example.com/data');
+//define('GOTEO_DATA_URL', '//data.cdn-example.com');
 
 // ssl
 define('GOTEO_SSL', false);
-
-//Sessions
-//session handler: php, dynamodb
-define('SESSION_HANDLER', 'php');
 
 //Files management: s3, file
 define('FILE_HANDLER', 'file');
@@ -154,9 +156,6 @@ define('OAUTH_TWITTER_SECRET', '-----------------------------------'); //
 // Credenciales app Linkedin
 define('OAUTH_LINKEDIN_ID', '-----------------------------------'); //
 define('OAUTH_LINKEDIN_SECRET', '-----------------------------------'); //
-
-//Un secreto inventado cualquiera para encriptar los emails que sirven de secreto en openid
-define('OAUTH_OPENID_SECRET','-----------------------------------');
 
 // recaptcha
 define('RECAPTCHA_PUBLIC_KEY','-----------------------------------');

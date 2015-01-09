@@ -19,3 +19,11 @@ ADD INDEX ( `target_type` );
 
 -- campo imagen a nombre archivo
 ALTER TABLE `feed` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
+
+-- entrada de blog asociada para sacar datos en misma consulta
+ALTER TABLE `feed` ADD `post` INT( 20 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Entrada de blog';
+
+
+--- Update para rellenar ese campo
+-- SELECT id, url, type, scope, SUBSTRING(url, 7) FROM `feed` WHERE url like '/blog/%';
+UPDATE `feed` SET post = SUBSTRING(url, 7) WHERE  url like '/blog/%';

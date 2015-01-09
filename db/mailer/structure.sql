@@ -1,4 +1,4 @@
--- registro de contenido a enviar, fecha que se inició el envío
+-- registro de contenido a enviar, fecha que se iniciÃ³ el envÃ­o
 CREATE TABLE `mailer_content` (
 `id` int(1) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 `active` int(1) NOT NULL DEFAULT 1 ,
@@ -37,10 +37,10 @@ ADD `reply_name` TEXT NULL DEFAULT NULL COMMENT 'Nombre remitente';
 
 -- tabla para control de envios
 CREATE TABLE IF NOT EXISTS `mailer_limit` (
-  `date` date NOT NULL COMMENT 'Día ',
+  `date` date NOT NULL COMMENT 'DÃ­a ',
   `num` int(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Cuantos',
   PRIMARY KEY (`date`)
-) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT='Para limitar el número de envios diarios';
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT='Para limitar el nÃºmero de envios diarios';
 
 -- cambio para funcionamiento en 24 horas
 ALTER TABLE `mailer_limit` CHANGE `date` `hora` TIME NOT NULL COMMENT 'Hora envio', ADD COLUMN `modified` TIMESTAMP NOT NULL AFTER `num`;

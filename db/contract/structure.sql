@@ -2,11 +2,11 @@ CREATE TABLE IF NOT EXISTS `contract` (
   `id` SERIAL NOT NULL AUTO_INCREMENT ,
   `project` varchar(50) NOT NULL,
   `number` varchar(20) NOT NULL,
-  `type` varchar(1) NOT NULL DEFAULT '0' COMMENT '0 = persona f韘ica; 1 = representante asociacion; 2 = apoderado entidad mercantil',
+  `type` varchar(1) NOT NULL DEFAULT '0' COMMENT '0 = persona f铆sica; 1 = representante asociacion; 2 = apoderado entidad mercantil',
   `name` tinytext DEFAULT NULL,
   `surname` tinytext DEFAULT NULL,
   `nif` varchar(10) DEFAULT NULL,
-  `office` tinytext DEFAULT NULL COMMENT 'Cargo en la asociaci髇 o empresa',
+  `office` tinytext DEFAULT NULL COMMENT 'Cargo en la asociaci贸n o empresa',
   `address` tinytext DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `region` varchar(255) DEFAULT NULL,
@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS `contract` (
   `entity_country` varchar(50) DEFAULT NULL,
 
   `reg_name` tinytext DEFAULT NULL COMMENT 'Nombre del registro en el que esta inscrita la entidad',
-  `reg_number` tinytext DEFAULT NULL COMMENT 'N鷐ero de registro',
-  `reg_id` tinytext DEFAULT NULL COMMENT 'N鷐ero de protocolo del notario',
+  `reg_number` tinytext DEFAULT NULL COMMENT 'N煤mero de registro',
+  `reg_id` tinytext DEFAULT NULL COMMENT 'N煤mero de protocolo del notario',
 
   `project_name` tinytext DEFAULT NULL COMMENT 'Nombre del proyecto',
   `project_url` varchar(255) DEFAULT NULL COMMENT 'URL del proyecto',
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `contract` (
   `project_user` tinytext DEFAULT NULL COMMENT 'Nombre del usuario autor del proyecto',
   `project_profile` varchar(255) DEFAULT NULL COMMENT 'URL del perfil del autor del proyecto',
 
-  `project_description` TEXT DEFAULT NULL COMMENT 'Breve descripci髇 del proyecto',
+  `project_description` TEXT DEFAULT NULL COMMENT 'Breve descripci贸n del proyecto',
 
   PRIMARY KEY (`id`),
   KEY `project` (`project`)
@@ -74,14 +74,14 @@ ALTER TABLE `contract` ADD `pdf` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_
 -- campo fecha de contrato necesitamos que sea Date
 ALTER TABLE `contract` CHANGE `date` `date` DATE NOT NULL COMMENT 'dia anterior a la publicacion';
 -- y otro campo para fecha final de contrato
-ALTER TABLE `contract` ADD `enddate` DATE NOT NULL COMMENT 'finalizaci髇, un a駉 despues de la fecha de contrato' AFTER `date` ;
+ALTER TABLE `contract` ADD `enddate` DATE NOT NULL COMMENT 'finalizaci贸n, un a帽o despues de la fecha de contrato' AFTER `date` ;
 
 -- campo separado para la ciudad de registro mercantil
 -- ALTER TABLE `contract` ADD `reg_loc` tinytext DEFAULT NULL COMMENT 'Ciudad de registro mercantil' AFTER `reg_number` ;
 -- pero lovamos a quitar
 
--- campo para la ciudad de actuaci髇 del notario
-ALTER TABLE `contract` ADD `reg_idloc` tinytext DEFAULT NULL COMMENT 'Ciudad de actuaci髇 del notario' AFTER `reg_id` ;
+-- campo para la ciudad de actuaci贸n del notario
+ALTER TABLE `contract` ADD `reg_idloc` tinytext DEFAULT NULL COMMENT 'Ciudad de actuaci贸n del notario' AFTER `reg_id` ;
 
 -- campo para el nombre del notario
 ALTER TABLE `contract` ADD `reg_idname` tinytext DEFAULT NULL COMMENT 'Nombre del notario' AFTER `reg_id` ;

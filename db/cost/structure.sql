@@ -19,7 +19,7 @@ ALTER TABLE `cost` CHANGE `cost` `cost` VARCHAR( 256 ) CHARACTER SET utf8 COLLAT
 ALTER TABLE `cost` CHANGE `required` `required` TINYINT( 1 ) NULL DEFAULT '0';
 ALTER TABLE `cost` CHANGE `amount` `amount` INT( 5 ) NULL DEFAULT '0';
 
--- Cambiando ids numéricos por SERIAL
+-- Cambiando ids numÃ©ricos por SERIAL
 ALTER TABLE `cost` CHANGE `id` `id` SERIAL NOT NULL AUTO_INCREMENT;
 
 -- Costes sin tipo

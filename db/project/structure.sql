@@ -109,25 +109,58 @@ ALTER TABLE `project` ADD `reward` TEXT NULL AFTER `related` ;
 ALTER TABLE `project` ADD COLUMN `mincost` INT(5) DEFAULT 0 NULL COMMENT 'minimo coste' AFTER `amount`, ADD COLUMN `maxcost` INT(5) DEFAULT 0 NULL COMMENT 'optimo' AFTER `mincost`;
 
 -- Añadido numero de inversores
-ALTER TABLE `project` ADD COLUMN `num_investors` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Numero inversores' AFTER `days`;
+ALTER TABLE `project` ADD COLUMN `num_investors` INT UNSIGNED NULL DEFAULT NULL COMMENT 'Numero inversores' AFTER `days`;
 
 -- Grado de popularidad (suma num_investors y num_messegers)
-ALTER TABLE `project` ADD COLUMN `popularity` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Popularidad del proyecto' AFTER `num_investors`;
+ALTER TABLE `project` ADD COLUMN `popularity` INT UNSIGNED NULL DEFAULT NULL COMMENT 'Popularidad del proyecto' AFTER `num_investors`;
 
 -- Añadido numero de usuarios que escriben mensajes
-ALTER TABLE `project` ADD COLUMN `num_messengers` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de personas que envían mensajes' AFTER `popularity`;
+ALTER TABLE `project` ADD COLUMN `num_messengers` INT UNSIGNED NULL DEFAULT NULL COMMENT 'Número de personas que envían mensajes' AFTER `popularity`;
 
 -- Añadido numero de posts
-ALTER TABLE `project` ADD COLUMN `num_posts` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Número de post' AFTER `num_messengers`;
+ALTER TABLE `project` ADD COLUMN `num_posts` INT UNSIGNED NULL DEFAULT NULL COMMENT 'Número de post' AFTER `num_messengers`;
 
 -- Recaudación que proviene de los usuarios
-ALTER TABLE `project` ADD COLUMN `amount_users` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudación proveniente de los usuarios';
+ALTER TABLE `project` ADD COLUMN `amount_users` INT UNSIGNED NULL DEFAULT NULL COMMENT 'Recaudación proveniente de los usuarios';
 
 -- Recaudación proveniente de la convocatoria
-ALTER TABLE `project` ADD COLUMN `amount_call` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT 'Recaudación proveniente de la convocatoria';
+ALTER TABLE `project` ADD COLUMN `amount_call` INT UNSIGNED NULL DEFAULT NULL COMMENT 'Recaudación proveniente de la convocatoria';
 
 -- Convocatoria en la que está
 ALTER TABLE `project` ADD COLUMN `called` VARCHAR(50) COMMENT 'Convocatoria en la que está';
 
 -- Máximo dinero que puede conseguir un proyecto de la convocatoria
 ALTER TABLE `project` ADD COLUMN `maxproj` INT(5) COMMENT 'Dinero que puede conseguir un proyecto de la convocatoria';
+
+
+-- Proyecto
+
+-- Campo calculado para imágenes de la galería  (mayor porque tiene secciones)
+ALTER TABLE `project` ADD `gallery` VARCHAR( 10000 ) NULL COMMENT 'Galería de imagenes';
+
+-- Campos calculado para permitir null
+ALTER TABLE `project` CHANGE `amount_users` `amount_users` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Recaudación proveniente de los usuarios',
+CHANGE `amount_call` `amount_call` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Recaudación proveniente de la convocatoria';
+
+
+ALTER TABLE `project` CHANGE `num_investors` `num_investors` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Numero inversores',
+CHANGE `popularity` `popularity` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Popularidad del proyecto',
+CHANGE `num_messengers` `num_messengers` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Número de personas que envían mensajes',
+CHANGE `num_posts` `num_posts` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Número de post';
+
+ALTER TABLE `project` CHANGE `mincost` `mincost` INT( 5 ) NULL DEFAULT NULL COMMENT 'minimo coste',
+CHANGE `maxcost` `maxcost` INT( 5 ) NULL DEFAULT NULL COMMENT 'optimo';
+
+-- ajuste
+UPDATE `project` SET mincost = null, maxcost = null WHERE mincost = 0;
+UPDATE `project` SET num_investors = null WHERE num_investors = 0;
+UPDATE `project` SET popularity = null WHERE popularity = 0;
+UPDATE `project` SET num_messengers = null WHERE num_messengers = 0;
+UPDATE `project` SET num_posts = null WHERE num_posts = 0;
+UPDATE `project` SET amount_users = null WHERE amount_users = 0;
+UPDATE `project` SET amount_call = null WHERE amount_call = 0;
+
+-- divisa del proyecto y ratio original
+ALTER TABLE `project` ADD `currency` VARCHAR(4) NOT NULL DEFAULT 'EUR' COMMENT 'Divisa del proyecto' AFTER `lang`;
+ALTER TABLE `project` ADD `currency_rate` DECIMAL(9, 5) NOT NULL DEFAULT 1 COMMENT 'Ratio al crear el proyecto' AFTER `currency`;
+

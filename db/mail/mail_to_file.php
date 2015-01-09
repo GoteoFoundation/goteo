@@ -85,16 +85,16 @@ while(sizeof($mails) != 0) {
             define('LANG', $mail->lang);
             //echo "lang: {$mail->lang}\n";
         }
-        
+
         if ($mail->email == "any") {
-            $content = new View ('view/email/newsletter.html.php', array('content'=>$mail->html, 'baja' => ''));
+            $content = View::get('email/newsletter.html.php', array('content'=>$mail->html, 'baja' => ''));
         } else {
             $baja = SEC_URL . '/user/leave/?email=' . $mail->email;
 
             if ($mail->node != null && $mail->node != \GOTEO_NODE && \file_exists('nodesys/'. $mail->node .'/view/email/default.html.php')) {
-                $content = new View ('nodesys/'. $mail->node .'/view/email/default.html.php', array('content'=>$mail->html, 'baja' => $baja));
+                $content = View::get('nodesys/'. $mail->node .'/view/email/default.html.php', array('content'=>$mail->html, 'baja' => $baja));
             } else {
-                $content = new View ('view/email/goteo.html.php', array('content'=>$mail->html, 'baja' => $baja));
+                $content = View::get('email/goteo.html.php', array('content'=>$mail->html, 'baja' => $baja));
             }
 
         }
@@ -104,7 +104,7 @@ while(sizeof($mails) != 0) {
         } else {
             $logo_url = "https://goteoassets.s3-eu-west-1.amazonaws.com/nodesys/" . $mail->node . "/view/css/logo.png";
         }
-        
+
         //echo "logo: {$logo_url}\n";
 
         $content = str_replace("cid:logo", $logo_url, $content);
@@ -114,7 +114,7 @@ while(sizeof($mails) != 0) {
             fwrite($fp, $content);
             fclose($fp);
         } else {
-            echo "error grabando archivo {$filepath}\n"; 
+            echo "error grabando archivo {$filepath}\n";
             die;
         }
 

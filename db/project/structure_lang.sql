@@ -19,4 +19,4 @@ ALTER TABLE `project_lang` ADD `video` VARCHAR( 256 ) CHARACTER SET utf8 COLLATE
 ALTER TABLE `project_lang` ADD `reward` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `related` ;
 
 -- pendiente de traducir
-ALTER TABLE `project_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+ALTER TABLE `project_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducciÃ³n';
