@@ -19,7 +19,7 @@ else
 $open_tags='<a href="/blog/'.$story->open_tags_post.'">'.$story->open_tags_name.'</a>';
 
 ?>
-<div class="stories-banner<?php if (!empty($story->project)) echo ' activable'; ?>"<?php if ($story->image instanceof \Goteo\Model\Image) : ?> style="background: url('<?php echo $story->image->getLink(940, 385, true); ?>');"<?php endif; ?>>
+<div class="stories-banner<?php if (!empty($story->project)) echo ' activable'; ?>"<?php if ($story->image instanceof \Goteo\Model\Image) : ?> style="background: url('<?php echo $story->image->getLink(940, 385, true); ?>'); background-repeat: no-repeat; background-size:940px 383px;"<?php endif; ?>>
     <a href="<?php echo $link_background;?>" class="expand" target="_blank"></a>
     <div class="title_story"><strong><?php echo Text::get('home-stories-header').': '?></strong><?php echo $open_tags; ?></div>
         <div class="info">
