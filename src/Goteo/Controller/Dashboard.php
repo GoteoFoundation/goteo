@@ -734,6 +734,9 @@ namespace Goteo\Controller {
                                 $action = 'edit';
                                 break;
                         }
+
+                        // redirect para que cargue el registro traducido
+                        throw new Redirection('/dashboard/translates/'.$option);
                     }
 
                     switch ($option) {
