@@ -6,6 +6,7 @@ namespace Goteo\Model {
         Goteo\Model\Image,
         Goteo\Model\Node,
         Goteo\Model\Project,
+        Goteo\Model\User\UserLocation,
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Check,
@@ -85,13 +86,10 @@ namespace Goteo\Model {
                 return self::updateAmount($this->id);
 	        }
 	        if($name == "geoloc") {
-	            return User\Location::get($this->id);
-	        }
-	        if($name == "geologed") {
-	            return User\Location::is_geologed($this->id);
+	            return UserLocation::get($this->id);
 	        }
 	        if($name == "unlocable") {
-	            return User\Location::is_unlocable($this->id);
+	            return UserLocation::is_unlocable($this->id);
 	        }
 	        if($name == "admin_node") {
 	            return \Goteo\Model\Node::getAdminNode($this->id);
@@ -1268,7 +1266,7 @@ namespace Goteo\Model {
 
             $errors = array();
 
-            $geoloc = new User\Location(array(
+            $geoloc = new UserLocation(array(
                 'user' => $this->id,
                 'location' => $loc
             ));

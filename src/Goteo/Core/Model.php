@@ -6,6 +6,8 @@ namespace Goteo\Core {
         Goteo\Library\Cacher;
 
     abstract class Model {
+
+        //Override in the model the table if different from the class name
         protected $Table = null;
 
         /**
@@ -20,6 +22,8 @@ namespace Goteo\Core {
                     }
                 }
             }
+
+            //Default table is the name of the class
             $table = $this->getTable();
             if(empty($table)) {
                 //Table by default
@@ -30,10 +34,17 @@ namespace Goteo\Core {
                 $this->setTable($table);
             }
         }
-
+        /**
+         * Get the table name
+         * @return string Table name
+         */
         public function getTable() {
             return $this->Table;
         }
+        /**
+         * Sets the table name
+         * @param string $table Table name
+         */
         public function setTable($table = null) {
             if($table) $this->Table = $table;
             return $this;
@@ -73,7 +84,7 @@ namespace Goteo\Core {
 
             $sql = 'DELETE FROM ' . $this->Table . ' WHERE id = ?';
             // var_dump($this);
-            // echo get_called_class()." $sql\n";
+            // echo get_called_class()." $sql $id\n";
             try {
                 self::query($sql, array($id));
             } catch (\PDOException $e) {

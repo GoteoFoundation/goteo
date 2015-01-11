@@ -2,13 +2,14 @@
 
 namespace Goteo\Model\User {
 
-    class Location extends \Goteo\Core\Model {
+    use Goteo\Model\Location;
 
-        protected static $Table = 'location_item';
+    class UserLocation extends \Goteo\Core\Model {
+        protected $Table = 'location_item';
         public
             $location,
+            $locations = array(),
             $user;
-
 
         /**
          * Recupera la geolocalización de este
@@ -17,18 +18,30 @@ namespace Goteo\Model\User {
          */
 	 	public static function get ($id) {
 
-            try {
-                $query = static::query("SELECT location FROM location_item WHERE type = 'user' AND item = ?", array($id));
-                $loc = $query->fetchColumn();
-                return (!empty($loc)) ? $loc : null;
-            } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+            $query = static::query("SELECT location FROM location_item WHERE type = 'user' AND item = ?", array($id));
+            if($loc = $query->fetchColumn()) {
+                if($loc = Location::get($loc)) {
+                    $loc = new UserLocation(array(
+                        'location' => $loc->id,
+                        'locations' => array($loc),
+                        'user' => $id
+                    ));
+                    // $this->user = //create user
+                    // $this->user = //create location
+                }
             }
+            return $loc ? $loc : false;
 		}
 
 		public function validate(&$errors = array()) {
-            if (empty($this->location)) return false;
-            if (empty($this->user)) return false;
+            if (empty($this->location)) {
+                $errors[] = 'Location ID missing!';
+                return false;
+            }
+            if (empty($this->user)) {
+                $errors[] = 'User ID missing!';
+                return false;
+            }
             return true;
         }
 
@@ -57,22 +70,6 @@ namespace Goteo\Model\User {
 
 		}
 
-        /**
-         * Borra una entrada
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id) && $this->user) $id = $this->user;
-
-            try {
-                static::query("DELETE FROM location_item WHERE type = 'user' AND item = ?", array($id));
-            } catch(\PDOException $e) {
-                throw new \Goteo\Core\Exception($e->getMessage());
-            }
-            return true;
-        }
-
 		/**
 		 * Desasignar el usuario de su localización
 		 *
@@ -80,86 +77,43 @@ namespace Goteo\Model\User {
 		 * @param array $errors
 		 * @return boolean
 		 */
-		public static function remove ($user, &$errors = array()) {
+		public function delete (&$errors = array()) {
+            $user = $this->user;
             $values = array(':item'=>$user, ':type'=>'user');
 
             try {
                 self::query("DELETE FROM location_item WHERE type = :type AND item = :item", $values);
-				return true;
-			} catch(\PDOException $e) {
+            } catch(\PDOException $e) {
                 $errors[] = 'No se ha podido quitar la geolocalización del usuario ' . $user . '.<br />' . $e->getMessage();
                 return false;
-			}
+            }
+			return true;
 		}
 
-		/*
-		 *  Guarda datos de geologin
-		 */
-		public static function loginRec ($data, &$errors = array()) {
-			try {
-	            $sql = "REPLACE INTO geologin (user, ip, lon, lat, msg) VALUES(:user, :ip, :lon, :lat, :msg)";
-				self::query($sql, $data);
-				return true;
-			} catch(\PDOException $e) {
-                $errors[] = "Fallo SQL ".$e->getMessage();
-				return false;
-			}
-
-		}
-
-		/*
-		 *  Elimina geologin
-		 */
-		public static function loginDel ($user, &$errors = array()) {
+        /**
+         * Adds a location to the corresponding location/location_item tables according to the user
+         * @param [type] $data    [description]
+         * @param array  &$errors [description]
+         * @return instance of Model\Location if successfull, false otherwise
+         */
+        public static function addUserLocation($data, &$errors = array()) {
             try {
-                self::query("DELETE FROM geologin WHERE user = ?", array($user));
-				return true;
-			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido borrar geologin usuario ' . $user . '.<br />' . $e->getMessage();
-                return false;
-			}
-		}
-
-        public static function addUserEntry($data, &$errors = array()) {
-            try {
-
-                return true;
+                $location = new Location($data);
+                if($location->save($errors)) {
+                    $user_loc = new UserLocation(array(
+                        'location' => $location->id,
+                        'user' => $data['user']
+                    ));
+                    if($user_loc->save($errors)) {
+                        return $location;
+                    }
+                }
             } catch(\PDOException $e) {
                 $errors[] = "Fallo SQL ".$e->getMessage();
                 return false;
             }
+            return false;
         }
-
-        /**
-         * Recupera geologin
-         * @param varcahr(50) $id  user identifier
-         * @return mixed (geologin row)
-         */
-	 	public static function getLogin ($user) {
-
-            try {
-                $query = static::query("SELECT * FROM geologin WHERE user = ?", array($user));
-                return $query->fetchObject();
-            } catch(\PDOException $e) {
-                return null;
-            }
-		}
-
-        /**
-         * Si tiene ya un registro de geologin
-         * @param varcahr(50) $id  user identifier
-         * @return int (have a geologin register)
-         */
-	 	public static function is_geologed ($user) {
-
-            try {
-                $query = static::query("SELECT user FROM geologin WHERE user = ?", array($user));
-                $gl = $query->fetchColumn();
-                return ($gl == $user) ? true : false;
-            } catch(\PDOException $e) {
-                return false;
-            }
-		}
 
 		/**
 		 * Borrar de unlocable

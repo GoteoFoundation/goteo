@@ -51,14 +51,15 @@ namespace Goteo\Model {
          */
         static public function get ($id) {
             try {
-                $query = static::query("SELECT * FROM location WHERE id = ?", array($id));
+                $query = self::query("SELECT * FROM location WHERE id = ?", array($id));
                 $item = $query->fetchObject(__CLASS__);
                 $item->name = "{$item->location}, {$item->region}, {$item->country}";
 
-                return empty($item->id) ? null : $item;
+                return empty($item->id) ? false : $item;
 
             } catch(\PDOException $e) {
-                throw new \Goteo\Core\Exception($e->getMessage());
+                // throw new \Goteo\Core\Exception($e->getMessage());
+                return false;
             }
         }
 
@@ -159,7 +160,7 @@ namespace Goteo\Model {
         }
 
         /**
-         * Guardar.
+         * Saves the location. Does not changes the id if the place if the same
          * @param   type array  $errors     Errores devueltos pasados por referencia.
          * @return  type bool   true|false
          */
@@ -178,18 +179,22 @@ namespace Goteo\Model {
                 'valid'
                 );
 
-            $set = '';
             $values = array();
+            $insert = array();
+            $update = array();
 
             foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = addslashes($this->$field);
+                if($field != 'id') $update[] = "location.$field = :$field ";
+                $insert["location.$field"] = ":$field";
+                $values[":$field"] = $this->$field;
             }
 
             try {
-                $sql = "REPLACE INTO location SET " . $set;
+                $sql = "INSERT INTO location (" . implode(',', array_keys($insert)) . ') VALUES (' . implode(',', array_values($insert)) . ')
+                        ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id),' . implode(',', $update);
+                // echo "$sql\n";die;
                 self::query($sql, $values);
+                // echo "[:".self::insertId()."\n";
                 if (empty($this->id)) $this->id = self::insertId();
 
                 return true;
@@ -223,7 +228,6 @@ namespace Goteo\Model {
             else
                 return false;
         }
-
 
         /*
          * Lista simple de una columna filtrada por otra

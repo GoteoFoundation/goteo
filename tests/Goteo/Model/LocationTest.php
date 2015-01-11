@@ -8,6 +8,7 @@ use Goteo\Model\Location;
 class LocationTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
+        \Goteo\Core\DB::cache(false);
 
         $location = new Location();
 
@@ -54,6 +55,6 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
     public function testRemoveAddLocationEntry($location) {
         $this->assertTrue($location->delete());
         $location2 = Location::get($location->id);
-        $this->assertNull($location2);
+        $this->assertFalse($location2);
     }
 }
