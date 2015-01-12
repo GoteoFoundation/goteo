@@ -101,7 +101,7 @@ namespace Goteo\Model\User {
                     'vat' => '35'
                 );
 
-            $year = empty($filter['year']) ? date('Y') : $filter['year'];
+            $year = empty($filters['year']) ? date('Y') : $filters['year'];
 
             $values = array();
 
