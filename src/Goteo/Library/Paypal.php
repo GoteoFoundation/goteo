@@ -172,7 +172,6 @@ namespace Goteo\Library {
 
                 // Check response
                 if(strtoupper($ap->isSuccess) == 'FAILURE') {
-                    $error_txt = '';
                     $soapFault = $ap->getLastError();
                     if(is_array($soapFault->error)) {
                         $errorId = $soapFault->error[0]->errorId;
@@ -205,7 +204,6 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
                                 unset($log);
 
                             }
@@ -223,7 +221,6 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -241,7 +238,6 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -258,7 +254,6 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -275,7 +270,6 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -292,7 +286,6 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -309,7 +302,22 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
+                                unset($log);
+
+                            break;
+                        case '589009': // No hay fuente de crédito
+                                // Evento Feed
+                                $log = new Feed();
+                                $log->setTarget($project->id);
+                                $log->populate('Error de Fuente de crédito', '/admin/accounts',
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque <span class="red">no hay fuente de crédito</span> en la cuenta paypal del usuario', array(
+                                        Feed::item('user', $userData->name, $userData->id),
+                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('system', $invest->id),
+                                        Feed::item('project', $project->name, $project->id),
+                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                )));
+                                $log->doAdmin('system');
                                 unset($log);
 
                             break;
@@ -326,7 +334,6 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
                                 unset($log);
 
                             break;
@@ -344,12 +351,11 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
                                 unset($log);
                             } else {
                                 $log = new Feed();
                                 $log->setTarget($project->id);
-                                $log->populate('Error interno de PayPal', '/admin/accounts',
+                                $log->populate("Error de PayPal [$errorId]", '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s <span class="red">'.$action.' '.$errorMsg.' ['.$errorId.']</span>', array(
                                         Feed::item('user', $userData->name, $userData->id),
                                         Feed::item('money', $invest->amount.' &euro;'),
@@ -358,7 +364,6 @@ namespace Goteo\Library {
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
                                 $log->doAdmin('system');
-                                $error_txt = $log->title;
                                 unset($log);
                             }
                             break;
@@ -367,10 +372,8 @@ namespace Goteo\Library {
 
                     if (empty($errorId)) {
                         $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, true) . '</pre>';
-                    } elseif (!empty($error_txt)) {
-                        $errors[$errorId] = $error_txt;
                     } else {
-                        $errors[$errorId] = "$action $errorMsg [$errorId]";
+                        $errors[$errorId] = "[$errorId] $errorMsg";
                     }
 
                     Invest::setIssue($invest->id);
