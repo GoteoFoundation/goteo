@@ -1125,6 +1125,9 @@ namespace Goteo\Controller {
             // ronda unica
             $project->one_round = !empty($_POST['one_round']) ? 1 : 0;
 
+            // solicita ayuda en costes
+            $project->help_cost = !empty($_POST['help_cost']) ? 1 : 0;
+
             return true;
         }
 
@@ -1213,6 +1216,13 @@ namespace Goteo\Controller {
                     'units'     => ''
                 ));
             }
+
+             // solicita ayuda con licencias
+            $project->help_license = !empty($_POST['help_license']) ? 1 : 0;
+
+            // solicita ayuda con recompensas
+            $project->help_reward = !empty($_POST['help_reward']) ? 1 : 0;
+
 
             return true;
 

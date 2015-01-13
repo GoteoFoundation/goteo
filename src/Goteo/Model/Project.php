@@ -138,7 +138,9 @@ namespace Goteo\Model {
             $days_round1 = 40,
             $days_round2 = 40,
             $one_round = 0,
-
+            $help_cost = 0,
+            $help_license= 0,
+            $help_reward= 0,
             $called = null // si está en una convocatoria
 
 
@@ -1278,6 +1280,11 @@ namespace Goteo\Model {
                 // if ($this->one_round) {
                     $conf = Project\Conf::get($this->id);
                     $conf->one_round = $this->one_round;
+
+                    //almacenamos si ha pedido ayuda marcando los checkbox help
+                    $conf->help_cost = $this->help_cost;
+                    $conf->help_license = $this->help_license;
+                    $conf->help_reward = $this->help_reward;
                     $conf->save();
                 // }
 
