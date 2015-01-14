@@ -1722,19 +1722,17 @@ namespace Goteo\Model {
                 /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
             }
 
-            if (isset($steps) && isset($steps['costs'])) {
+            if (isset($steps) && isset($steps['costs']) && (!$this->help_cost)) {
                 /***************** Revisión de campos del paso 4, COSTES *****************/
                 $maxScore = 6;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreDate = 0;
                 
-                //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
-                if(!$this->help_cost)
-                    if (count($this->costs) < 2) {
-                        $errors['costs']['costs'] = Text::get('mandatory-project-costs');
-                    } else {
-                         $okeys['costs']['costs'] = 'ok';
-                        ++$score;
-                    }
+                if (count($this->costs) < 2) {
+                    $errors['costs']['costs'] = Text::get('mandatory-project-costs');
+                } else {
+                     $okeys['costs']['costs'] = 'ok';
+                    ++$score;
+                }
 
                 $anyerror = false;
                 foreach($this->costs as $cost) {
@@ -1804,57 +1802,45 @@ namespace Goteo\Model {
                 */
                 // El maxscore baja un punto
                 $maxScore--;
-                //Si ha marcado que necesita ayuda no contabilizamos el error
-                if(!$this->help_cost)
-                    // Mantenemos error si no hay costes
-                    if ($this->mincost == 0) {
-                        $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
-                    } else {
-                        $okeys['costs']['total-costs'] = 'ok';
-                    }
-                else
-                    $maxScore=0;
+                // Mantenemos error si no hay costes
+                if ($this->mincost == 0) {
+                    $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
+                } else {
+                    $okeys['costs']['total-costs'] = 'ok';
+                }
 
                 $this->setScore($score, $maxScore);
                 /***************** FIN Revisión del paso 4, COSTES *****************/
             }
 
-            if (isset($steps) && isset($steps['rewards'])) {
+            if (isset($steps) && isset($steps['rewards']) && (!$this->help_reward)) {
                 /***************** Revisión de campos del paso 5, RETORNOS *****************/
                 $maxScore = 8;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
                 //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
-                if(!$this->help_reward)
-                {
-                    if(!$this->help_license)
-                        if (empty($this->social_rewards)) {
-                            $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
-                        } else {
-                             $okeys['rewards']['social_rewards'] = 'ok';
-                             if (count($this->social_rewards) >= 2) {
-                                 ++$score;
-                             }
-                        }
-                    else
-                        //bajamos la puntuación máxima disponible
-                        $maxScore=6;
+                
+                if (empty($this->social_rewards)) {
+                    $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
+                } else {
+                     $okeys['rewards']['social_rewards'] = 'ok';
+                     if (count($this->social_rewards) >= 2) {
+                         ++$score;
+                     }
+                }
 
-                    if (empty($this->individual_rewards)) {
+                if (empty($this->individual_rewards)) {
+                    $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
+                } else {
+                    $okeys['rewards']['individual_rewards'] = 'ok';
+                    if (count($this->individual_rewards) >= 3) {
+                        ++$score;
+                    }
+                    else {
                         $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
-                    } else {
-                        $okeys['rewards']['individual_rewards'] = 'ok';
-                        if (count($this->individual_rewards) >= 3) {
-                            ++$score;
-                        }
-                        else {
-                            $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
-    
-                        }
+
                     }
                 }
-                else
-                    $maxScore=0;
-
+                
                 $anyerror = false;
                 foreach ($this->social_rewards as $social) {
                     if (empty($social->reward)) {
