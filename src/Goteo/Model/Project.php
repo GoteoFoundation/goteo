@@ -1804,12 +1804,16 @@ namespace Goteo\Model {
                 */
                 // El maxscore baja un punto
                 $maxScore--;
-                // Mantenemos error si no hay costes
-                if ($this->mincost == 0) {
-                    $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
-                } else {
-                    $okeys['costs']['total-costs'] = 'ok';
-                }
+                //Si ha marcado que necesita ayuda no contabilizamos el error
+                if(!$this->help_cost)
+                    // Mantenemos error si no hay costes
+                    if ($this->mincost == 0) {
+                        $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
+                    } else {
+                        $okeys['costs']['total-costs'] = 'ok';
+                    }
+                else
+                    $maxScore=0;
 
                 $this->setScore($score, $maxScore);
                 /***************** FIN Revisión del paso 4, COSTES *****************/
@@ -1831,6 +1835,9 @@ namespace Goteo\Model {
                                  ++$score;
                              }
                         }
+                    else
+                        //bajamos la puntuación máxima disponible
+                        $maxScore=6;
 
                     if (empty($this->individual_rewards)) {
                         $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
@@ -1845,6 +1852,8 @@ namespace Goteo\Model {
                         }
                     }
                 }
+                else
+                    $maxScore=0;
 
                 $anyerror = false;
                 foreach ($this->social_rewards as $social) {

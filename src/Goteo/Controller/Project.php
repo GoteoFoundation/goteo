@@ -330,7 +330,10 @@ namespace Goteo\Controller {
                         Library\Message::Info(Text::get('project-review-request_mail-success'));
 
                         // email a los de goteo
-                        $sent1 = Send::toConsultants('project_to_review_consultant', $project);
+                        if($project->draft)
+                            $sent1 = Send::toConsultants('project_preform_to_review_consultant', $project);  
+                        else
+                            $sent1 = Send::toConsultants('project_to_review_consultant', $project);
 
                         // email al autor
                         $sent2 = Send::toOwner('project_to_review', $project);
