@@ -307,6 +307,51 @@ foreach ($project->individual_rewards as $individual_reward) {
 
 $sfid = 'sf-project-rewards';
 
+// en función de si es pre-form o form
+
+if ($project->draft) {
+    $help_license=array(
+                    'type'      => 'checkbox',
+                    'class'     => 'cols_1',
+                    'required'  => false,
+                    'name'      => 'help_license',
+                    'label'     => Text::get('project-help-license'),
+                    'hint'      => Text::get('tooltip-project-help-license'),
+                    'errors'    => array(),
+                    'ok'        => array(),
+                    'checked'   => (bool) $project->help_license,
+                    'value'     => 1
+                );
+
+    $help_reward=array(
+            'type'      => 'checkbox',
+            'class'     => 'cols_1',
+            'required'  => false,
+            'name'      => 'help_reward',
+            'label'     => Text::get('project-help-reward'),
+            'hint'      => Text::get('tooltip-project-help-reward'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'checked'   => (bool) $project->help_reward,
+            'value'     => 1
+        );
+}
+else
+{
+    $help_license= array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->help_license
+    );
+
+    $help_reward= array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->help_reward
+    );
+
+}
+
 echo SuperForm::get(array(
 
     'id'            => $sfid,
@@ -357,9 +402,12 @@ echo SuperForm::get(array(
                     'type'  => 'submit',
                     'label' => Text::get('form-add-button'),
                     'class' => 'add reward-add red',
-                )
+                ),
+                'help_license' => $help_license
             )
         ),
+
+        'help_reward' => $help_reward,
 
         'footer' => array(
             'type'      => 'group',

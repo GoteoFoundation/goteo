@@ -330,7 +330,10 @@ namespace Goteo\Controller {
                         Library\Message::Info(Text::get('project-review-request_mail-success'));
 
                         // email a los de goteo
-                        $sent1 = Send::toConsultants('project_to_review_consultant', $project);
+                        if($project->draft)
+                            $sent1 = Send::toConsultants('project_preform_to_review_consultant', $project);  
+                        else
+                            $sent1 = Send::toConsultants('project_to_review_consultant', $project);
 
                         // email al autor
                         $sent2 = Send::toOwner('project_to_review', $project);
@@ -1125,6 +1128,9 @@ namespace Goteo\Controller {
             // ronda unica
             $project->one_round = !empty($_POST['one_round']) ? 1 : 0;
 
+            // solicita ayuda en costes
+            $project->help_cost = !empty($_POST['help_cost']) ? 1 : 0;
+
             return true;
         }
 
@@ -1213,6 +1219,13 @@ namespace Goteo\Controller {
                     'units'     => ''
                 ));
             }
+
+             // solicita ayuda con licencias
+            $project->help_license = !empty($_POST['help_license']) ? 1 : 0;
+
+            // solicita ayuda con recompensas
+            $project->help_reward = !empty($_POST['help_reward']) ? 1 : 0;
+
 
             return true;
 

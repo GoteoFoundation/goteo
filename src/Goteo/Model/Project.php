@@ -138,7 +138,9 @@ namespace Goteo\Model {
             $days_round1 = 40,
             $days_round2 = 40,
             $one_round = 0,
-
+            $help_cost = 0,
+            $help_license= 0,
+            $help_reward= 0,
             $called = null // si está en una convocatoria
 
 
@@ -1281,6 +1283,11 @@ namespace Goteo\Model {
                 // if ($this->one_round) {
                     $conf = Project\Conf::get($this->id);
                     $conf->one_round = $this->one_round;
+
+                    //almacenamos si ha pedido ayuda marcando los checkbox help
+                    $conf->help_cost = $this->help_cost;
+                    $conf->help_license = $this->help_license;
+                    $conf->help_reward = $this->help_reward;
                     $conf->save();
                 // }
 
@@ -1718,10 +1725,11 @@ namespace Goteo\Model {
                 /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
             }
 
-            if (isset($steps) && isset($steps['costs'])) {
+            if (isset($steps) && isset($steps['costs']) && (!$this->help_cost)) {
                 /***************** Revisión de campos del paso 4, COSTES *****************/
                 $maxScore = 6;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreDate = 0;
+                
                 if (count($this->costs) < 2) {
                     $errors['costs']['costs'] = Text::get('mandatory-project-costs');
                 } else {
@@ -1808,10 +1816,12 @@ namespace Goteo\Model {
                 /***************** FIN Revisión del paso 4, COSTES *****************/
             }
 
-            if (isset($steps) && isset($steps['rewards'])) {
+            if (isset($steps) && isset($steps['rewards']) && (!$this->help_reward)) {
                 /***************** Revisión de campos del paso 5, RETORNOS *****************/
                 $maxScore = 8;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
+                //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
+                
                 if (empty($this->social_rewards)) {
                     $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
                 } else {
@@ -1833,7 +1843,7 @@ namespace Goteo\Model {
 
                     }
                 }
-
+                
                 $anyerror = false;
                 foreach ($this->social_rewards as $social) {
                     if (empty($social->reward)) {

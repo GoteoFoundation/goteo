@@ -169,6 +169,29 @@ if (!empty($project->costs)) {
 
 $sfid = 'sf-project-costs';
 
+// en función de si es pre-form o form
+
+if ($project->draft) {
+    $help_cost=array(
+            'type'      => 'checkbox',
+            'class'     => 'cols_1',
+            'required'  => false,
+            'name'      => 'help_cost',
+            'label'     => Text::get('project-help-cost'),
+            'hint'      => Text::get('tooltip-project-help-cost'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'checked'   => (bool) $project->help_cost,
+            'value'     => 1
+        );
+}
+else
+    $help_cost= array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->help_cost
+    );
+
 echo SuperForm::get(array(
 
     'id'            => $sfid,
@@ -207,6 +230,8 @@ echo SuperForm::get(array(
             )
         ),
 
+        'help_cost' => $help_cost,
+
         'cost-meter' => array(
             'title'     => Text::get('costs-fields-metter-title'),
             'required'  => true,
@@ -242,6 +267,7 @@ echo SuperForm::get(array(
                         'ok'        => array(),
                         'hint'      => Text::get('tooltip-project-rounds')
         ),
+
 
         //  aligerando
         // 'resource' => array(

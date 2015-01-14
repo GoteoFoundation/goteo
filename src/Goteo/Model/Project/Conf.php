@@ -18,7 +18,10 @@ namespace Goteo\Model\Project {
             $watch,
             $days_round1,
             $days_round2,
-            $one_round;
+            $one_round,
+            $help_cost,
+            $help_license,
+            $help_reward;
 
         /**
          * Get the conf for a project
@@ -40,6 +43,9 @@ namespace Goteo\Model\Project {
                     $project_conf->days_round1 = 40;
                     $project_conf->days_round2 = 40;
                     $project_conf->one_round = 0;
+                    $project_conf->help_cost = 0;
+                    $project_conf->help_license = 0;
+                    $project_conf->help_reward = 0;
                 }
 
                 return $project_conf;
@@ -62,9 +68,9 @@ namespace Goteo\Model\Project {
             if (!$this->validate($errors)) return false;
 
             try {
-                $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round) VALUES(:project, :noinvest, :watch, :round1, :round2, :one)";
+                $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round, help_cost, help_license, help_reward) VALUES(:project, :noinvest, :watch, :round1, :round2, :one, :helpcost, :helplicense, :helpreward)";
                 $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch,
-                                ':round1'=>$this->days_round1, ':round2'=>$this->days_round2, ':one'=>$this->one_round);
+                                ':round1'=>$this->days_round1, ':round2'=>$this->days_round2, ':one'=>$this->one_round, ':helpcost'=>$this->help_cost, ':helplicense'=>$this->help_license, ':helpreward'=>$this->help_reward);
                 return self::query($sql, $values);
             } catch(\PDOException $e) {
                 $errors[] = "La configuración del proyecto no se ha guardado correctamente. Por favor, revise los datos." . $e->getMessage();
