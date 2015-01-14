@@ -1726,12 +1726,15 @@ namespace Goteo\Model {
                 /***************** Revisión de campos del paso 4, COSTES *****************/
                 $maxScore = 6;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreDate = 0;
-                if (count($this->costs) < 2) {
-                    $errors['costs']['costs'] = Text::get('mandatory-project-costs');
-                } else {
-                     $okeys['costs']['costs'] = 'ok';
-                    ++$score;
-                }
+                
+                //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
+                if(!$this->help_cost)
+                    if (count($this->costs) < 2) {
+                        $errors['costs']['costs'] = Text::get('mandatory-project-costs');
+                    } else {
+                         $okeys['costs']['costs'] = 'ok';
+                        ++$score;
+                    }
 
                 $anyerror = false;
                 foreach($this->costs as $cost) {
@@ -1816,25 +1819,30 @@ namespace Goteo\Model {
                 /***************** Revisión de campos del paso 5, RETORNOS *****************/
                 $maxScore = 8;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
-                if (empty($this->social_rewards)) {
-                    $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
-                } else {
-                     $okeys['rewards']['social_rewards'] = 'ok';
-                     if (count($this->social_rewards) >= 2) {
-                         ++$score;
-                     }
-                }
+                //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
+                if(!$this->help_reward)
+                {
+                    if(!$this->help_license)
+                        if (empty($this->social_rewards)) {
+                            $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
+                        } else {
+                             $okeys['rewards']['social_rewards'] = 'ok';
+                             if (count($this->social_rewards) >= 2) {
+                                 ++$score;
+                             }
+                        }
 
-                if (empty($this->individual_rewards)) {
-                    $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
-                } else {
-                    $okeys['rewards']['individual_rewards'] = 'ok';
-                    if (count($this->individual_rewards) >= 3) {
-                        ++$score;
-                    }
-                    else {
+                    if (empty($this->individual_rewards)) {
                         $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
-
+                    } else {
+                        $okeys['rewards']['individual_rewards'] = 'ok';
+                        if (count($this->individual_rewards) >= 3) {
+                            ++$score;
+                        }
+                        else {
+                            $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
+    
+                        }
                     }
                 }
 
