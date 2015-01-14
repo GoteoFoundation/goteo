@@ -12,7 +12,7 @@ body.project-edit div#main.rewards div.superform li.element.reward-new > .title 
 body.project-edit div#main.rewards div.superform li.element.reward div.title {
     font-size: 14px;
     text-transform: uppercase;
-    width: 70%;
+    width: 68%;
     float: left;
 }
 
@@ -71,7 +71,7 @@ body.project-edit div#main.rewards div.superform li.element.reward div.other {
 
 body.project-edit div#main.rewards div.superform li.element.reward div.description {
     float: left;
-    width: 70%;
+    width: 68%;
     margin: .5em 0;
 }
 
