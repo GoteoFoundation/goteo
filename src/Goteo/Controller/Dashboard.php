@@ -618,7 +618,7 @@ namespace Goteo\Controller {
                     if ($option == 'updates') {
                         // sus novedades
                         $blog = Model\Blog::get($project->id);
-                        if ($action != 'edit') {
+                        if ($action != 'edit' || $id = 'lang') {
                             $action = 'list';
                         }
                     }
@@ -652,6 +652,9 @@ namespace Goteo\Controller {
                                     $project->subtitle_lang = $_POST['subtitle'];
                                     $project->lang_lang = $_SESSION['translate_lang'];
                                     $project->saveLang($errors);
+                                    
+                                    // redirect para que cargue el registro traducido
+                                    throw new Redirection('/dashboard/translates/'.$option);
                                 }
                                 break;
 
@@ -735,8 +738,6 @@ namespace Goteo\Controller {
                                 break;
                         }
 
-                        // redirect para que cargue el registro traducido
-                        throw new Redirection('/dashboard/translates/'.$option);
                     }
 
                     switch ($option) {
