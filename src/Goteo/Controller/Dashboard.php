@@ -665,6 +665,9 @@ namespace Goteo\Controller {
                                     $project->subtitle_lang = $_POST['subtitle'];
                                     $project->lang_lang = $_SESSION['translate_lang'];
                                     $project->saveLang($errors);
+                                    
+                                    // redirect para que cargue el registro traducido
+                                    throw new Redirection('/dashboard/translates/'.$option);
                                 }
                                 break;
 
@@ -748,8 +751,6 @@ namespace Goteo\Controller {
                                 break;
                         }
 
-                        // redirect para que cargue el registro traducido
-                        throw new Redirection('/dashboard/translates/'.$option);
                     }
 
                     switch ($option) {
