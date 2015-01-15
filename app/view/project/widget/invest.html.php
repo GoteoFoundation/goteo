@@ -101,7 +101,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                 <span class="amount"><?php echo \amount_format($individual->amount); ?></span>
             <!-- <span class="chkbox"></span> -->
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
-            <p><?php echo htmlspecialchars($individual->description)?></p>
+            <p id="reward_<?php echo $individual->id; ?>"><?php echo htmlspecialchars($individual->description)?></p>
                 <?php if ($individual->none) : // no quedan ?>
                 <span class="left"><?php echo Text::get('invest-reward-none') ?></span>
                 <?php elseif (!empty($individual->units)) : // unidades limitadas ?>
@@ -203,7 +203,7 @@ if ($step == 'start') : ?>
 
 </form>
 
-<?php echo View::get('project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
+<?php //echo View::get('project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
 
 <a name="commons"></a>
 <div class="widget project-invest">
@@ -245,7 +245,9 @@ if ($step == 'start') : ?>
 
             $('div.widget.project-invest-individual_rewards input.individual_reward').each(function (i, cb) {
                var $cb = $(cb);
+               var $selector='p#'+$cb.attr('id');
                $cb.closest('li').removeClass('chosed');
+               $($selector).hide();
                // importe de esta recompensa
                var rval = parseFloat($cb.attr('amount'));
                if (rval > 0 && rval <= val) {
@@ -259,9 +261,11 @@ if ($step == 'start') : ?>
                if ($reward != null) {
                  $reward.click();
                  $reward.closest('li').addClass('chosed');
+                  $($selector).show();
                } else {
                  $('#resign_reward').click();
                  $('#resign_reward').closest('li').addClass('chosed');
+                 $('#resign_reward').show();
                }
             });
         };
@@ -270,10 +274,13 @@ if ($step == 'start') : ?>
 
             $('div.widget.project-invest-individual_rewards input.individual_reward').each(function (i, cb) {
                var $cb = $(cb);
+               var $selector='p#'+$cb.attr('id');
                $cb.closest('li').removeClass('chosed');
+               $($selector).hide();
 
                if ($cb.attr('id') == chosen) {
                  $cb.closest('li').addClass('chosed');
+                 $($selector).show();
                }
             });
         };
