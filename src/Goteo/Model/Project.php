@@ -281,7 +281,8 @@ namespace Goteo\Model {
                                 IFNULL(user_lang.about, user.about) as user_about,
                                 user.location as user_location,
                                 user.id as user_id,
-                                user.twitter as user_twitter
+                                user.twitter as user_twitter,
+                                user.facebook as user_facebook
                 FROM project
 				LEFT JOIN project_conf
 				    ON project_conf.project = project.id
@@ -366,6 +367,8 @@ namespace Goteo\Model {
                 $project->user->webs = User\Web::get($project->user_id);
 
                 $project->user->twitter = $project->user_twitter;
+
+                $project->user->facebook = $project->user_facebook;
 
                 // campo calculado gallery
                 // en el caso de la entidad proyecto, el campo gallery en la tabla viene serializado por las secciones
@@ -1717,8 +1720,8 @@ namespace Goteo\Model {
 
             if (isset($steps) && isset($steps['costs'])) {
                 /***************** Revisión de campos del paso 4, COSTES *****************/
-                $maxScore = 6;
-                $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreDate = 0;
+                $maxScore = 4;
+                $score = 0; $scoreName = $scoreDesc = $scoreAmount = 0;
                 if (count($this->costs) < 2) {
                     $errors['costs']['costs'] = Text::get('mandatory-project-costs');
                 } else {
@@ -1764,7 +1767,6 @@ namespace Goteo\Model {
                         $anyerror = !$anyerror ?: true;
                     } elseif ($cost->type == 'task') {
                         $okeys['costs']['cost-'.$cost->id.'-dates'] = 'ok';
-                        $scoreDate = 1;
                     }
                 }
 
@@ -1773,27 +1775,8 @@ namespace Goteo\Model {
                     $errors['costs']['costs'] = Text::get('validate-project-costs-any_error');
                 }
 
-                $score = $score + $scoreName + $scoreDesc + $scoreAmount + $scoreDate;
+                $score = $score + $scoreName + $scoreDesc + $scoreAmount;
 
-                /*
-                 * Quitamos el error del 150% máximo para optimo
-                 *
-                $costdif = $this->maxcost - $this->mincost;
-                $maxdif = $this->mincost * 0.50;
-                $scoredif = $this->mincost * 0.35;
-                if ($this->mincost == 0) {
-                    $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
-                } elseif ($costdif > $maxdif ) {
-                    $errors['costs']['total-costs'] = Text::get('validate-project-total-costs');
-                } else {
-                    $okeys['costs']['total-costs'] = 'ok';
-                }
-                if ($costdif <= $scoredif ) {
-                    ++$score;
-                }
-                */
-                // El maxscore baja un punto
-                $maxScore--;
                 // Mantenemos error si no hay costes
                 if ($this->mincost == 0) {
                     $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
