@@ -47,7 +47,39 @@ div.widget.user dl dd.links ul {
 div.widget.user dl dd.links ul a {
     font-weight: bold;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
+}
+
+div.widget.user dl dd.user-social ul{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    line-height: 2em;
+    display: table;
+    width:100%;
+}
+
+div.widget.user dl dd.user-social ul li {
+    display: block;
+    padding-left: 30px;
+    float: left;    
+    min-height: 2em;
+    line-height: 2em;
+    background: no-repeat left center;
+    min-width: 20%;
+}
+
+div.widget.user dl dd.user-social ul li a {
+    text-decoration: none;
+}
+
+div.widget.user dl dd.user-social ul li.facebook {
+    background-image: url('/view/css/social/facebook.png');
+}
+
+
+div.widget.user dl dd.user-social ul li.twitter {
+    background-image: url('/view/css/social/twitter.png');    
 }
 
 div.widget.user dl dd.message {
