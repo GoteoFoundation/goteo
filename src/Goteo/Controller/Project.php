@@ -28,7 +28,15 @@ namespace Goteo\Controller {
 
         public function raw ($id) {
             $project = Model\Project::get($id, LANG);
-            $project->check();
+            // pasos para el check
+            if ($project->draft) {
+                // primer borrador, menos pasos
+                $steps = array('userProfile', 'overview', 'costs', 'rewards');
+            } else {
+                // todos los pasos
+                $steps = array('userProfile', 'userPersonal', 'overview', 'images', 'costs', 'rewards', 'supports');
+            }
+            $project->check($steps);
             \trace($project->called);
             \trace($project);
             die;
