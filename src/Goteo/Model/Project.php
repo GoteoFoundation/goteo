@@ -1720,8 +1720,8 @@ namespace Goteo\Model {
 
             if (isset($steps) && isset($steps['costs'])) {
                 /***************** Revisión de campos del paso 4, COSTES *****************/
-                $maxScore = 6;
-                $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreDate = 0;
+                $maxScore = 4;
+                $score = 0; $scoreName = $scoreDesc = $scoreAmount = 0;
                 if (count($this->costs) < 2) {
                     $errors['costs']['costs'] = Text::get('mandatory-project-costs');
                 } else {
@@ -1767,7 +1767,6 @@ namespace Goteo\Model {
                         $anyerror = !$anyerror ?: true;
                     } elseif ($cost->type == 'task') {
                         $okeys['costs']['cost-'.$cost->id.'-dates'] = 'ok';
-                        $scoreDate = 1;
                     }
                 }
 
@@ -1776,27 +1775,8 @@ namespace Goteo\Model {
                     $errors['costs']['costs'] = Text::get('validate-project-costs-any_error');
                 }
 
-                $score = $score + $scoreName + $scoreDesc + $scoreAmount + $scoreDate;
+                $score = $score + $scoreName + $scoreDesc + $scoreAmount;
 
-                /*
-                 * Quitamos el error del 150% máximo para optimo
-                 *
-                $costdif = $this->maxcost - $this->mincost;
-                $maxdif = $this->mincost * 0.50;
-                $scoredif = $this->mincost * 0.35;
-                if ($this->mincost == 0) {
-                    $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
-                } elseif ($costdif > $maxdif ) {
-                    $errors['costs']['total-costs'] = Text::get('validate-project-total-costs');
-                } else {
-                    $okeys['costs']['total-costs'] = 'ok';
-                }
-                if ($costdif <= $scoredif ) {
-                    ++$score;
-                }
-                */
-                // El maxscore baja un punto
-                $maxScore--;
                 // Mantenemos error si no hay costes
                 if ($this->mincost == 0) {
                     $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
