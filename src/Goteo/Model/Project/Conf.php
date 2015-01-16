@@ -57,6 +57,8 @@ namespace Goteo\Model\Project {
             // TODO
             //if (!in_array($this->watch, array('0','1'))) return false;
             if (!isset($this->one_round)) $this->one_round = 0;
+            if (!isset($this->help_cost)) $this->help_cost = 0;
+            if (!isset($this->help_license)) $this->help_license = 0;
             //if (!in_array($this->noinvest, array('0','1'))) return false;
 
             return true;
