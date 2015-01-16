@@ -141,17 +141,17 @@ include __DIR__ . '/../prologue.html.php' ?>
                 echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>'social'));
             }
 
-            if ((!empty($project->supports))&&(!in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail')))) {
+            if (!empty($project->supports)) {
                 echo View::get('project/widget/collaborations.html.php', array('project' => $project));
             }
 
             if ($show != 'rewards' && $show != 'messages') {
                 $only_rew = ($project->status == 5) ? 'individual' : null;
+                $only_rew = (in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) ? 'social' : $only_rew;
                 echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>$only_rew));
             }
 
-            if(!in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail')))
-                echo View::get('user/widget/user.html.php', array('user' => $project->user));
+            echo View::get('user/widget/user.html.php', array('user' => $project->user));
 
             ?>
             </div>
