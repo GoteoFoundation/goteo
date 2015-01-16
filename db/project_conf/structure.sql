@@ -11,7 +11,6 @@ ALTER TABLE `project_conf` ADD `one_round` BOOLEAN NOT NULL DEFAULT FALSE COMMEN
 
 --Indica si ha solicitado ayuda a través del botón ni idea en el formulario
 ALTER TABLE `project_conf` ADD `help_license` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Si necesita ayuda en licencias';
-ALTER TABLE `project_conf` ADD `help_reward` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Si necesita ayuda en recompensas';
 ALTER TABLE `project_conf` ADD `help_cost` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Si necesita ayuda en costes';
 
 -- Charset

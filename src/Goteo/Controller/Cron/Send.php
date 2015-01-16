@@ -364,9 +364,8 @@ namespace Goteo\Controller\Cron {
 
                     //Creamos el mensaje que avisa si ha solicitado ayuda a través de los checkbox
                     $help="";
-                    if($project->help_cost) $help.='Necesita ayuda en costes<br/>';
-                    if($project->help_license) $help.='Necesita ayuda con licencias<br/>';
-                    if($project->help_reward) $help.='Necesita ayuda con recompensas';
+                    if($project->help_cost) $help.=Text::get('help-cost-to-consultant').'<br\>';
+                    if($project->help_license) $help.=Text::get('help-license-to-consultant');
                     $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%HELP%');
                     $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $help);
                     break;
