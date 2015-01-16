@@ -130,12 +130,12 @@ include __DIR__ . '/../prologue.html.php' ?>
                 echo View::get('project/widget/called.html.php', array('project' => $project));
             }
 
-            if ((!empty($project->investors) &&
+            /*if ((!empty($project->investors) &&
                 !empty($step) &&
                 in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail')) )
                 || $show == 'messages' ) {
                 echo View::get('project/widget/investors.html.php', array('project' => $project));
-            }
+            }*/
 
             if ($project->status == 5 && $show != 'rewards' && $show != 'messages') {
                 echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>'social'));
@@ -147,6 +147,7 @@ include __DIR__ . '/../prologue.html.php' ?>
 
             if ($show != 'rewards' && $show != 'messages') {
                 $only_rew = ($project->status == 5) ? 'individual' : null;
+                $only_rew = (in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) ? 'social' : $only_rew;
                 echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>$only_rew));
             }
 
