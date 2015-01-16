@@ -1231,10 +1231,6 @@ namespace Goteo\Controller {
              // solicita ayuda con licencias
             $project->help_license = !empty($_POST['help_license']) ? 1 : 0;
 
-            // solicita ayuda con recompensas
-            $project->help_reward = !empty($_POST['help_reward']) ? 1 : 0;
-
-
             return true;
 
         }
