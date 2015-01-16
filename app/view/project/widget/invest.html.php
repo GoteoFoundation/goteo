@@ -415,7 +415,7 @@ if ($step == 'start') : ?>
                     return false;
                 }
             }
-            if (reward == '')
+            if ($('#resign_reward').attr('checked') == 'checked')
                 return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR');
             else
                 return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR \n'+'<?php echo Text::slash('invest-alert-rewards') ?> '+reward+' ok?');
