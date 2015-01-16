@@ -2258,6 +2258,7 @@ namespace Goteo\Model {
                             self::query("UPDATE user_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_conf SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             // borro los permisos, el dashboard los creará de nuevo
