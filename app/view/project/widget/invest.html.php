@@ -101,14 +101,16 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                 <span class="amount"><?php echo \amount_format($individual->amount); ?></span>
             <!-- <span class="chkbox"></span> -->
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
-            <p id="reward_<?php echo $individual->id; ?>"><?php echo htmlspecialchars($individual->description)?></p>
-                <?php if ($individual->none) : // no quedan ?>
-                <span class="left"><?php echo Text::get('invest-reward-none') ?></span>
-                <?php elseif (!empty($individual->units)) : // unidades limitadas ?>
-                <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong><br />
-                <?php $units = ($individual->units - $individual->taken); // resto
-                echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
-            <?php endif; ?>
+            <div id="reward_<?php echo $individual->id; ?>">
+                <p><?php echo htmlspecialchars($individual->description)?></p>
+                    <?php if ($individual->none) : // no quedan ?>
+                    <span class="left"><?php echo Text::get('invest-reward-none') ?></span>
+                    <?php elseif (!empty($individual->units)) : // unidades limitadas ?>
+                    <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong><br />
+                    <?php $units = ($individual->units - $individual->taken); // resto
+                    echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
+                <?php endif; ?>
+            </div>
             </label>
 
         </li>
@@ -205,6 +207,7 @@ if ($step == 'start') : ?>
 
 <?php //echo View::get('project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
 
+<!--
 <a name="commons"></a>
 <div class="widget project-invest">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-social-header') ?></h<?php echo $level ?>>
@@ -233,6 +236,7 @@ if ($step == 'start') : ?>
         </ul>
     </div>
 </div>
+-->
 
 <script type="text/javascript">
 
@@ -245,7 +249,7 @@ if ($step == 'start') : ?>
 
             $('div.widget.project-invest-individual_rewards input.individual_reward').each(function (i, cb) {
                var $cb = $(cb);
-               var $selector='p#'+$cb.attr('id');
+               var $selector='div#'+$cb.attr('id');
                $cb.closest('li').removeClass('chosed');
                $($selector).hide();
                // importe de esta recompensa
@@ -261,11 +265,9 @@ if ($step == 'start') : ?>
                if ($reward != null) {
                  $reward.click();
                  $reward.closest('li').addClass('chosed');
-                  $($selector).show();
                } else {
                  $('#resign_reward').click();
                  $('#resign_reward').closest('li').addClass('chosed');
-                 $('#resign_reward').show();
                }
             });
         };
@@ -274,7 +276,7 @@ if ($step == 'start') : ?>
 
             $('div.widget.project-invest-individual_rewards input.individual_reward').each(function (i, cb) {
                var $cb = $(cb);
-               var $selector='p#'+$cb.attr('id');
+               var $selector='div#'+$cb.attr('id');
                $cb.closest('li').removeClass('chosed');
                $($selector).hide();
 
@@ -392,7 +394,7 @@ if ($step == 'start') : ?>
                    return false;
                }
 
-                if (reward == '') {
+               if (reward == '') { 
                     if (confirm('<?php echo Text::slash('invest-alert-noreward') ?>')) {
                         if (confirm('<?php echo Text::slash('invest-alert-noreward_renounce') ?>')) {
                             $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
@@ -405,12 +407,7 @@ if ($step == 'start') : ?>
                         $('#nif').focus();
                         return false;
                     }
-                } else {
-                    /* Has elegido las siguientes recompensas */
-                    if (!confirm('<?php echo Text::slash('invest-alert-rewards') ?> '+reward+' ok?')) {
-                        return false;
-                    }
-                }
+                } 
             }
 
             if (rest > 0 && greater(amount, rest)) {
@@ -418,8 +415,10 @@ if ($step == 'start') : ?>
                     return false;
                 }
             }
-
-            return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR');
+            if (reward == '')
+                return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR');
+            else
+                return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR \n'+'<?php echo Text::slash('invest-alert-rewards') ?> '+reward+' ok?');
         });
 
 /* Seteo inicial por url */
