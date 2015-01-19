@@ -8,7 +8,13 @@ namespace Goteo\Model\User {
         protected $Table = 'location_item';
         public
             $location,
-            $locations = array(),
+            $locations = array(), //array of addresses
+            $method, // lat,lng obtaining method
+                     // ip      = auto detection from ip,
+                     // browser = user automatic provided,
+                     // manual    = user manually provided
+            $locable = true, //if is or not locable
+            $info, //Some stored info
             $user;
 
         /**
@@ -18,16 +24,17 @@ namespace Goteo\Model\User {
          */
 	 	public static function get ($id) {
 
-            $query = static::query("SELECT location FROM location_item WHERE type = 'user' AND item = ?", array($id));
-            if($loc = $query->fetchColumn()) {
-                if($loc = Location::get($loc)) {
+            $query = static::query("SELECT * FROM location_item WHERE type = 'user' AND item = ?", array($id));
+            if($ob = $query->fetchObject()) {
+                if($loc = Location::get($ob->location)) {
                     $loc = new UserLocation(array(
-                        'location' => $loc->id,
+                        'location' => $ob->location,
                         'locations' => array($loc),
-                        'user' => $id
+                        'user' => $id,
+                        'method' => $ob->method,
+                        'info' => $ob->info,
+                        'locable' => (bool) $ob->locable
                     ));
-                    // $this->user = //create user
-                    // $this->user = //create location
                 }
             }
             return $loc ? $loc : false;
@@ -42,6 +49,10 @@ namespace Goteo\Model\User {
                 $errors[] = 'User ID missing!';
                 return false;
             }
+            if (!in_array($this->method, array('ip', 'browser', 'manual'))) {
+                $errors[] = 'Method (' . $this->method . ') error! must be one of: ip, browser or manual';
+                return false;
+            }
             return true;
         }
 
@@ -52,22 +63,27 @@ namespace Goteo\Model\User {
             if (!$this->validate())
                 return false;
 
-            $values = array(':item'=>$this->user, ':location'=>$this->location, ':type'=>'user');
+            // remove from unlocable if method is not IP
+            if($this->method !== 'ip') $this->locable = true;
 
-			try {
-	            $sql = "REPLACE INTO location_item (location, item, type) VALUES(:location, :item, :type)";
-				if (self::query($sql, $values)) {
-                    // lo quitamos de unlocable
-                    self::locable($this->user, $errors);
-                    return true;
-                } else {
+            $values = array(':item'     => $this->user,
+                            ':location' => $this->location,
+                            ':method'   => $this->method,
+                            ':locable'  => $this->locable,
+                            ':info'     => $this->info,
+                            ':type'     => 'user'
+                            );
+
+            try {
+                $sql = "REPLACE INTO location_item (location, item, type, method, locable, info) VALUES (:location, :item, :type, :method, :locable, :info)";
+                if (!self::query($sql, $values)) {
                     return false;
                 }
 			} catch(\PDOException $e) {
 				$errors[] = "No se ha podido asignar. Por favor, revise los datos." . $e->getMessage();
 				return false;
 			}
-
+            return true;
 		}
 
 		/**
@@ -94,7 +110,7 @@ namespace Goteo\Model\User {
          * Adds a location to the corresponding location/location_item tables according to the user
          * @param [type] $data    [description]
          * @param array  &$errors [description]
-         * @return instance of Model\Location if successfull, false otherwise
+         * @return instance of Model\User\UserLocation if successfull, false otherwise
          */
         public static function addUserLocation($data, &$errors = array()) {
             try {
@@ -102,10 +118,12 @@ namespace Goteo\Model\User {
                 if($location->save($errors)) {
                     $user_loc = new UserLocation(array(
                         'location' => $location->id,
-                        'user' => $data['user']
+                        'user' => $data['user'],
+                        'method' => $data['method']
                     ));
                     if($user_loc->save($errors)) {
-                        return $location;
+                        $user_loc->locations[] = $location;
+                        return $user_loc;
                     }
                 }
             } catch(\PDOException $e) {
@@ -115,38 +133,46 @@ namespace Goteo\Model\User {
             return false;
         }
 
-		/**
-		 * Borrar de unlocable
-		 *
-		 * @param varchar(50) $user id de un usuario
-		 * @param array $errors
-		 * @return boolean
-		 */
-		public static function locable ($user, &$errors = array()) {
+        /**
+         * Sets a property
+         * @param [type] $user    [description]
+         * @param [type] $prop    [description]
+         * @param [type] $value   [description]
+         * @param [type] &$errors [description]
+         */
+        public static function setProperty($user, $prop, $value, &$errors) {
             try {
-                self::query("DELETE FROM unlocable WHERE user = :user", array(':user'=>$user));
-				return true;
-			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido quitar al usuario ' . $user . ' de los ilocalizables.<br />' . $e->getMessage();
-                return false;
-			}
-		}
+                if(self::query("INSERT INTO location_item ($prop, type, item) VALUES (:value, 'user', :user)
+                                ON DUPLICATE KEY UPDATE $prop = :value", array(':value' => $value, ':user' => $user)));
+                    return true;
+            } catch(\PDOException $e) {
+                $errors[] = 'Error modifying [' . $prop . '] with val [' . $value . '] ' . $e->getMessage();
+            }
+            return false;
 
-		/**
-		 * Añadir a unlocable
-		 *
-		 * @param varchar(50) $user id de un usuario
-		 * @param array $errors
-		 * @return boolean
-		 */
-		public static function unlocable ($user, &$errors = array()) {
-            try {
-                self::query("REPLACE INTO unlocable (user) VALUES (:user)", array(':user'=>$user));
-				return true;
-			} catch(\PDOException $e) {
-                $errors[] = 'No se ha podido añadir al usuario ' . $user . ' a los ilocalizables.<br />' . $e->getMessage();
-                return false;
-			}
+        }
+
+
+        /**
+         * Borrar de unlocable
+         *
+         * @param varchar(50) $user id de un usuario
+         * @param array $errors
+         * @return boolean
+         */
+        public static function locable ($user, &$errors = array()) {
+            return self::setProperty($user, 'locable', 1, $errors);
+        }
+
+        /**
+         * Añadir a unlocable
+         *
+         * @param varchar(50) $user id de un usuario
+         * @param array $errors
+         * @return boolean
+         */
+        public static function unlocable ($user, &$errors = array()) {
+            return self::setProperty($user, 'locable', 0, $errors);
 		}
 
 
@@ -158,11 +184,10 @@ namespace Goteo\Model\User {
 	 	public static function is_unlocable ($user) {
 
             try {
-                $query = static::query("SELECT user FROM unlocable WHERE user = ?", array($user));
-                $gl = $query->fetchColumn();
-                return ($gl == $user) ? true : false;
+                $query = self::query("SELECT locable FROM location_item WHERE type = 'user' AND item = ?", array($user));
+                return !(bool) $query->fetchColumn();
             } catch(\PDOException $e) {
-                return false;
+                return true;
             }
 		}
 

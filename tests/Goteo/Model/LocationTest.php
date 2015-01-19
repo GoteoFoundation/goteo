@@ -28,20 +28,20 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
 
     public function testAddLocationEntry($location) {
         $data = array(
-            'location' => 'Simulated City',
+            'city' => 'Simulated City',
             'region' => 'Simulated Region',
             'country' => 'Neverland',
+            'country_code' => 'XX',
             'lat' => '0.1234567890',
-            'lon' => '-0.1234567890',
-            'valid' => 1,
-            'method' => 'simulated'
+            'lng' => '-0.1234567890',
+            'valid' => 1
         );
         $location = new Location($data);
         $this->assertTrue($location->validate());
         $this->assertTrue($location->save());
         $location2 = Location::get($location->id);
         $this->assertEquals($location->lat, $location2->lat);
-        $this->assertEquals($location->lon, $location2->lon);
+        $this->assertEquals($location->lng, $location2->lng);
         $this->assertEquals($location->location, $location2->location);
         $this->assertEquals($location->method, $location2->method);
         $this->assertEquals($location->region, $location2->region);

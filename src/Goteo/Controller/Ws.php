@@ -2,7 +2,9 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Model;
+    use Goteo\Model,
+        Goteo\Model\User,
+        Goteo\Model\User\UserLocation;
 
     class Ws extends \Goteo\Core\Controller {
 
@@ -128,41 +130,74 @@ EOD;
         }
 
         /**
-         * Recibe por post datos de login del usuario
+         * JSON endpoint to retrieve/establish the user's location
+         *
          * @param type $user id usuario
          *
          * //@TODO: grabar la localidad y asignar al usuario
          * //@TODO: verificar que la localidad no existe
          *
          */
-        public function geologin() {
+        public function geolocate($type) {
+            //Return current status
+            header ('HTTP/1.1 200 Ok');
+            header ('Content-Type: application/json');
 
+            $return = array('success' => false, 'msg' => '');
             $errors = array();
             //
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['geologin'] == 'record') {
-
-                if (Model\User\Location::addUserLocation(array(
-                    ':user' => isset($_SESSION['user']) ? $_SESSION['user']->id : '',
-                    ':ip'   => \myip(),
-                    'location' => $_POST['location'],
-                    'region' => $_POST['region'],
-                    'country' => $_POST['region'],
-                    ':lon'  => $_POST['lon'],
-                    ':lat'  => $_POST['lat'],
-                    'method' => $_POST['method'],
-                    'valid' => 1
-                ), $errors)) {
-                    echo 'OK';
-                } else {
-                    echo 'FAIL <br />'.implode(',', $errors);
+            if($type === 'user' && User::isLogged()) {
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    //Handles user localization
+                    if($_POST['lat'] && $_POST['lng']) {
+                        if ($loc = UserLocation::addUserLocation(array(
+                            'user' => isset($_SESSION['user']) ? $_SESSION['user']->id : '',
+                            'ip'   => \myip(),
+                            'city' => $_POST['city'],
+                            'region' => $_POST['region'],
+                            'country' => $_POST['country'],
+                            'country_code' => $_POST['country_code'],
+                            'lng'  => $_POST['lng'],
+                            'lat'  => $_POST['lat'],
+                            'method' => $_POST['method'],
+                            'valid' => 1
+                        ), $errors)) {
+                            $return['msg'] = 'Location successfully added for user';
+                            $return['location'] = $loc;
+                            $return['success'] = true;
+                        } else {
+                            $return['msg'] = implode(',', $errors);
+                        }
+                    }
+                    else {
+                        //Just changes some properties (locable, info)
+                        foreach($_POST as $key => $value) {
+                            if($key === 'locable' || $key === 'info') {
+                                if(UserLocation::setProperty($_SESSION['user']->id, $key, $value, $errors)) {
+                                    $return['msg'] = 'Property succesfully changed for user';
+                                    $return['success'] = true;
+                                }
+                                else {
+                                    $return['msg'] = implode(',', $errors);
+                                }
+                            }
+                        }
+                    }
                 }
-
-                header ('HTTP/1.1 200 Ok');
-                die;
-            } else {
-                header ('HTTP/1.1 403 Forbidden');
-                die;
+                //GET method just returns user info
+                elseif ($loc = UserLocation::get($_SESSION['user']->id)) {
+                    $return['location'] = $loc;
+                    $return['success'] = true;
+                }
+                else {
+                    $return['msg'] = 'User has no location';
+                }
             }
+            else {
+                $return['msg'] = 'Type must be defined (user)';
+            }
+            echo json_encode($return);
+            die;
         }
 
         /*
