@@ -138,7 +138,8 @@ namespace Goteo\Model {
             $days_round1 = 40,
             $days_round2 = 40,
             $one_round = 0,
-
+            $help_cost = 0,
+            $help_license= 0,
             $called = null // si está en una convocatoria
 
 
@@ -1281,6 +1282,10 @@ namespace Goteo\Model {
                 // if ($this->one_round) {
                     $conf = Project\Conf::get($this->id);
                     $conf->one_round = $this->one_round;
+
+                    //almacenamos si ha pedido ayuda marcando los checkbox help
+                    $conf->help_cost = $this->help_cost;
+                    $conf->help_license = $this->help_license;
                     $conf->save();
                 // }
 
@@ -1718,10 +1723,11 @@ namespace Goteo\Model {
                 /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
             }
 
-            if (isset($steps) && isset($steps['costs'])) {
+            if (isset($steps) && isset($steps['costs']) && (!$this->help_cost)) {
                 /***************** Revisión de campos del paso 4, COSTES *****************/
                 $maxScore = 4;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = 0;
+                
                 if (count($this->costs) < 2) {
                     $errors['costs']['costs'] = Text::get('mandatory-project-costs');
                 } else {
@@ -1790,9 +1796,13 @@ namespace Goteo\Model {
 
             if (isset($steps) && isset($steps['rewards'])) {
                 /***************** Revisión de campos del paso 5, RETORNOS *****************/
-                $maxScore = 8;
+
+                //Si ha marcado checkbox de ayuda en licencias maxScore pasa a la mitad
+                $maxScore = ($this->help_license)? 4 : 8;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
-                if (empty($this->social_rewards)) {
+                //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
+                
+                if (empty($this->social_rewards)&&(!$this->help_license)) {
                     $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
                 } else {
                      $okeys['rewards']['social_rewards'] = 'ok';
@@ -1813,44 +1823,50 @@ namespace Goteo\Model {
 
                     }
                 }
+                
+                //Si ha pedido ayuda con licencias nos saltamos la parte de retornos.
+                if(!$this->help_license)
+                {
 
-                $anyerror = false;
-                foreach ($this->social_rewards as $social) {
-                    if (empty($social->reward)) {
-                        $errors['rewards']['social_reward-'.$social->id.'reward'] = Text::get('mandatory-social_reward-field-name');
-                        $anyerror = !$anyerror ?: true;
-                    } else {
-                         $okeys['rewards']['social_reward-'.$social->id.'reward'] = 'ok';
-                         $scoreName = 1;
+                    $anyerror = false;
+                    foreach ($this->social_rewards as $social) {
+                        if (empty($social->reward)) {
+                            $errors['rewards']['social_reward-'.$social->id.'reward'] = Text::get('mandatory-social_reward-field-name');
+                            $anyerror = !$anyerror ?: true;
+                        } else {
+                             $okeys['rewards']['social_reward-'.$social->id.'reward'] = 'ok';
+                             $scoreName = 1;
+                        }
+
+                        if (empty($social->description)) {
+                            $errors['rewards']['social_reward-'.$social->id.'-description'] = Text::get('mandatory-social_reward-field-description');
+                            $anyerror = !$anyerror ?: true;
+                        } else {
+                             $okeys['rewards']['social_reward-'.$social->id.'-description'] = 'ok';
+                             $scoreDesc = 1;
+                        }
+
+                        if (empty($social->icon)) {
+                            $errors['rewards']['social_reward-'.$social->id.'-icon'] = Text::get('mandatory-social_reward-field-icon');
+                            $anyerror = !$anyerror ?: true;
+                        } else {
+                             $okeys['rewards']['social_reward-'.$social->id.'-icon'] = 'ok';
+                        }
+    
+                        if (!empty($social->license)) {
+                            $scoreLicense = 1;
+                        }
                     }
 
-                    if (empty($social->description)) {
-                        $errors['rewards']['social_reward-'.$social->id.'-description'] = Text::get('mandatory-social_reward-field-description');
-                        $anyerror = !$anyerror ?: true;
-                    } else {
-                         $okeys['rewards']['social_reward-'.$social->id.'-description'] = 'ok';
-                         $scoreDesc = 1;
+                    if ($anyerror) {
+                        unset($okeys['rewards']['social_rewards']);
+                        $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards-any_error');
                     }
 
-                    if (empty($social->icon)) {
-                        $errors['rewards']['social_reward-'.$social->id.'-icon'] = Text::get('mandatory-social_reward-field-icon');
-                        $anyerror = !$anyerror ?: true;
-                    } else {
-                         $okeys['rewards']['social_reward-'.$social->id.'-icon'] = 'ok';
-                    }
+                    $score = $score + $scoreName + $scoreDesc + $scoreLicense;
+                    $scoreName = $scoreDesc = $scoreAmount = 0;
 
-                    if (!empty($social->license)) {
-                        $scoreLicense = 1;
-                    }
                 }
-
-                if ($anyerror) {
-                    unset($okeys['rewards']['social_rewards']);
-                    $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards-any_error');
-                }
-
-                $score = $score + $scoreName + $scoreDesc + $scoreLicense;
-                $scoreName = $scoreDesc = $scoreAmount = 0;
 
                 $anyerror = false;
                 foreach ($this->individual_rewards as $individual) {
@@ -2224,6 +2240,7 @@ namespace Goteo\Model {
                             self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE user_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE project_conf SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));

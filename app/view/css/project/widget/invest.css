@@ -210,6 +210,10 @@ div.widget.project-invest div.individual ul li label.amount h8 {
 	font-size: 13px;
 }
 
+div.widget.project-invest div.individual ul li label.amount h5 {
+    margin-bottom: 0;
+}
+
 div.widget.project-invest div.individual ul li input[type="checkbox"] {
 	opacity: 0;
 }

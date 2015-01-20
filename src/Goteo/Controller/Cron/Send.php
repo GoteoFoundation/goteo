@@ -353,6 +353,22 @@ namespace Goteo\Controller\Cron {
                     $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%');
                     $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id);
                     break;
+
+                case 'project_preform_to_review_consultant': // template 63, "Aviso a asesores cuando un impulsor envia el proyecto a revisión desde preform"
+                    $tpl = 63;
+
+                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
+                    if (empty($project->consultants)) {
+                        $project->consultants = self::$consultants;
+                    }
+
+                    //Creamos el mensaje que avisa si ha solicitado ayuda a través de los checkbox
+                    $help="";
+                    if($project->help_cost) $help.=Text::get('help-cost-to-consultant').'<br\>';
+                    if($project->help_license) $help.=Text::get('help-license-to-consultant');
+                    $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%HELP%');
+                    $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $help);
+                    break;
             }
 
             if (!empty($tpl)) {
