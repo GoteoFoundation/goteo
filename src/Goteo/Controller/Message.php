@@ -23,7 +23,7 @@ namespace Goteo\Controller {
                 $projectData = Model\Project::getMini($project);
 
                 if ($projectData->status < 3) {
-                    \Goteo\Library\Message::Error(Text::get('project-messages-closed'));
+                    Library\Message::Error(Text::get('project-messages-closed'));
                     throw new Redirection("/project/{$project}");
                 }
 
@@ -121,7 +121,7 @@ namespace Goteo\Controller {
                             $replace = array($_POST['message'], $thread->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
                             $content = \str_replace($search, $replace, $template->text);
 
-                            $mailHandler = new Model\Mail();
+                            $mailHandler = new Library\Mail();
 
                             $mailHandler->to = $thread->user->email;
                             $mailHandler->toName = $thread->user->name;
@@ -153,7 +153,7 @@ namespace Goteo\Controller {
                         $replace = array($_POST['message'], $projectData->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
                         $content = \str_replace($search, $replace, $template->text);
 
-                        $mailHandler = new Model\Mail();
+                        $mailHandler = new Library\Mail();
 
                         $mailHandler->to = $projectData->user->email;
                         $mailHandler->toName = $projectData->user->name;
@@ -188,7 +188,10 @@ namespace Goteo\Controller {
 
         public function delete ($id, $project) {
 
-            Model\Message::get($id)->delete();
+            $msg = Model\Message::get($id);
+            if ($msg instanceof Model\Message && $msg->project == $project) {
+                $msg->delete();
+            }
 
             throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
         }
@@ -237,7 +240,7 @@ namespace Goteo\Controller {
                 $replace = array($msg_content, $ownerData->name, $_SESSION['user']->name, $project->name, SITE_URL, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
 
-                $mailHandler = new Model\Mail();
+                $mailHandler = new Library\Mail();
 
                 $mailHandler->to = $ownerData->email;
                 $mailHandler->toName = $ownerData->name;
@@ -247,9 +250,9 @@ namespace Goteo\Controller {
                 $mailHandler->template = $template->id;
                 if ($mailHandler->send($errors)) {
                     // ok
-                    \Goteo\Library\Message::Info(Text::get('regular-message_success'));
+                    Library\Message::Info(Text::get('regular-message_success'));
                 } else {
-                    \Goteo\Library\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
+                    Library\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
                 }
 
                 unset($mailHandler);
@@ -264,7 +267,7 @@ namespace Goteo\Controller {
         public function personal ($user = null) {
             // verificacion de que esté autorizasdo a enviar mensaje
             if (!isset($_SESSION['message_autorized']) || $_SESSION['message_autorized'] !== true) {
-                \Goteo\Library\Message::Info('Temporalmente no disponible. Disculpen las molestias');
+                Library\Message::Info('Temporalmente no disponible. Disculpen las molestias');
                 throw new Redirection('/');
             } else {
                 // y quitamos esta autorización
@@ -320,7 +323,7 @@ namespace Goteo\Controller {
                 $replace = array($msg_content, $user->name, $_SESSION['user']->name, $profile_url, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
 
-                $mailHandler = new Model\Mail();
+                $mailHandler = new Library\Mail();
                 $mailHandler->fromName = $remite;
                 $mailHandler->to = $user->email;
                 $mailHandler->toName = $user->name;
@@ -332,9 +335,9 @@ namespace Goteo\Controller {
                 $mailHandler->template = $template->id;
                 if ($mailHandler->send($errors)) {
                     // ok
-                    \Goteo\Library\Message::Info(Text::get('regular-message_success'));
+                    Library\Message::Info(Text::get('regular-message_success'));
                 } else {
-                    \Goteo\Library\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
+                    Library\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
                 }
 
                 unset($mailHandler);
@@ -413,7 +416,7 @@ namespace Goteo\Controller {
 
                         // que no pete si no puede enviar el mail al autor
                         try {
-                            $mailHandler = new Model\Mail();
+                            $mailHandler = new Library\Mail();
 
                             $mailHandler->to = $projectData->user->email;
                             $mailHandler->toName = $projectData->user->name;
