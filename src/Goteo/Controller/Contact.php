@@ -25,22 +25,15 @@ namespace Goteo\Controller {
                 $tags[$keyTag] = trim($pairTag[1]);
             }
 
+            // $showCaptcha equivale a que estamos en entorno real
             $showCaptcha = (GOTEO_ENV == 'real');
 
             $errors = array();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
 
-                // Checkeo de spam
-//                @mail('goteo-contactspam@doukeshi.org', 'Formulario de contacto', 'Este Post: <pre>'.print_r($_POST, true).'</pre> <hr /> esta sesión: <pre>'.print_r($_SESSION, true).'</pre> <hr /> estas variables de servidor: <pre>'.print_r($_SERVER, true).'</pre>');
-
-                // Ya no verificamos referer
-                //@FIXME: Esto no va a funcionar porque SRC_URL va con // sin protocolo
-                // $referer = SRC_URL.'/contact';
-                //  || $_SERVER['HTTP_REFERER']!=$referer
-
                 // verificamos token
-                if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token']) {
+                if ($showCaptcha && ( !isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token']) ) {
                     header("HTTP/1.1 400 Bad request");
                     die('Token incorrect');
                 }
@@ -70,7 +63,8 @@ namespace Goteo\Controller {
 
                 if ($showCaptcha) {
                     // verificamos el captcha
-                    require_once __DIR__ . '/../../src/Goteo/Library/recaptchalib/recaptchalib.php';
+                    // estamos en src/Goteo/Controller
+                    require_once __DIR__ . '/../Library/recaptchalib/recaptchalib.php';
                     $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response"]);
                     if (!$resp->is_valid) {
                         $errors['recaptcha'] = Text::get('error-contact-captcha');
