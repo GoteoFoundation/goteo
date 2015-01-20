@@ -197,7 +197,7 @@ if ($step == 'start') : ?>
     <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
 
     <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
-    <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 0, true, true) ); ?></div>
+    <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 3, true, true) ); ?></div>
     <?php endif; ?>
 
 </div>
@@ -312,8 +312,8 @@ if ($step == 'start') : ?>
             if (isNaN(rate)) {
                 rate = 1;
             }
-            var converted = amount / rate;
-            converted = parseFloat(converted);
+            var converted = parseFloat(amount / rate);
+            converted = converted.toFixed(3);
 
             $('#amount').val(amount);
             $('#amount-reminder').html(amount);
@@ -361,8 +361,8 @@ if ($step == 'start') : ?>
             if (isNaN(rate)) {
                 rate = 1;
             }
-            var converted = amount / rate;
-            converted = parseFloat(converted);
+            var converted = parseFloat(amount / rate);
+            converted = converted.toFixed(3);
 
 
             if (parseFloat(amount) == 0 || isNaN(amount)) {
@@ -415,10 +415,19 @@ if ($step == 'start') : ?>
                     return false;
                 }
             }
-            if ($('#resign_reward').attr('checked') == 'checked')
-                return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR');
-            else
-                return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR \n'+'<?php echo Text::slash('invest-alert-rewards') ?> '+reward+' ok?');
+
+            var currency = '<?php echo $_SESSION['currency']; ?>';
+            var def_currency = '<?php echo Currency::DEFAULT_CURRENCY; ?>';
+            var confirm_msg = '<?php echo Text::slash('invest-alert-investing') ?> '+amount+' '+currency;
+
+            if ( currency != def_currency) {
+                confirm_msg += ' = '+converted+' '+def_currency;
+            }
+
+            if ($('#resign_reward').attr('checked') != 'checked')
+                confirm_msg += ' \n'+'<?php echo Text::slash('invest-alert-rewards') ?> '+reward+' ok?';
+
+            return confirm(confirm_msg);
         });
 
 /* Seteo inicial por url */
