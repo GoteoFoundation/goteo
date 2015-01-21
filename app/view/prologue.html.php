@@ -82,11 +82,6 @@ if (NODE_ID != GOTEO_NODE) {
         <!-- vigilante de sesion -->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
 
-        <!-- geolocation -->
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geolocation.js"></script>
-
-
         <?php if (isset($jscrypt)) : ?>
             <script src="<?php echo SRC_URL ?>/view/js/sha1.min.js"></script>
         <?php endif; ?>

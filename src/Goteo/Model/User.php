@@ -1029,13 +1029,22 @@ namespace Goteo\Model {
 			return false;
 		}
 
+        /**
+         * Comprueba si el usuario está identificado.
+         *
+         * @return boolean
+         */
+        public static function isLogged () {
+            return !empty($_SESSION['user']);
+        }
+
 		/**
-		 * Comprueba si el usuario está identificado.
+		 * Returns user id if logged
 		 *
 		 * @return boolean
 		 */
-		public static function isLogged () {
-			return !empty($_SESSION['user']);
+		public static function userId () {
+			return empty($_SESSION['user']) ? false : $_SESSION['user']->id;
 		}
 
         /**

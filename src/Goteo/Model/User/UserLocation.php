@@ -9,7 +9,7 @@ namespace Goteo\Model\User {
         public
             $location,
             $locations = array(), //array of addresses
-            $method, // lat,lng obtaining method
+            $method, // latitude,longitude obtaining method
                      // ip      = auto detection from ip,
                      // browser = user automatic provided,
                      // manual    = user manually provided
@@ -49,8 +49,9 @@ namespace Goteo\Model\User {
                 $errors[] = 'User ID missing!';
                 return false;
             }
-            if (!in_array($this->method, array('ip', 'browser', 'manual'))) {
-                $errors[] = 'Method (' . $this->method . ') error! must be one of: ip, browser or manual';
+            $methods = array('ip', 'browser', 'manual');
+            if (!in_array($this->method, $methods)) {
+                $errors[] = 'Method (' . $this->method . ') error! must be one of: ' . implode(', ', $methods);
                 return false;
             }
             return true;
@@ -60,8 +61,9 @@ namespace Goteo\Model\User {
 		 *  Guarda la asignación del usuario a la localización
 		 */
 		public function save (&$errors = array()) {
-            if (!$this->validate())
+            if (!$this->validate($errors)) {
                 return false;
+            }
 
             // remove from unlocable if method is not IP
             if($this->method !== 'ip') $this->locable = true;
@@ -76,9 +78,7 @@ namespace Goteo\Model\User {
 
             try {
                 $sql = "REPLACE INTO location_item (location, item, type, method, locable, info) VALUES (:location, :item, :type, :method, :locable, :info)";
-                if (!self::query($sql, $values)) {
-                    return false;
-                }
+                self::query($sql, $values);
 			} catch(\PDOException $e) {
 				$errors[] = "No se ha podido asignar. Por favor, revise los datos." . $e->getMessage();
 				return false;
@@ -125,6 +125,7 @@ namespace Goteo\Model\User {
                         $user_loc->locations[] = $location;
                         return $user_loc;
                     }
+                    if(empty($errors)) $errors[] = 'unknow error';
                 }
             } catch(\PDOException $e) {
                 $errors[] = "Fallo SQL ".$e->getMessage();

@@ -20,8 +20,8 @@ namespace Goteo\Model {
             $region,
             $country,
             $country_code,  // codigo pais  ISO 3166-1 alpha-2
-            $lng,
-            $lat,
+            $longitude,
+            $latitude,
             $valid = 1;
 
         public static $items = array(
@@ -168,8 +168,8 @@ namespace Goteo\Model {
                 'region',
                 'country',
                 'country_code',
-                'lng',
-                'lat',
+                'longitude',
+                'latitude',
                 'valid'
                 );
 
@@ -210,10 +210,10 @@ namespace Goteo\Model {
             if (empty($this->country))
                 $errors[] = 'Country missing';
 
-            if (empty($this->lng))
+            if (empty($this->longitude))
                 $errors[] = 'Longitude missing';
 
-            if (empty($this->lat))
+            if (empty($this->latitude))
                 $errors[] = 'Latitude missing';
 
             // por otra parte, no se puede crear si esta localidad-region-pais ya existe en la tabla

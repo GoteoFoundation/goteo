@@ -1,43 +1,67 @@
+
 /**
  * Send the data to ws/database
  */
 function save_geolocation_data(type, data) {
+    console.log('Saving geolocation data, type:', type, ' data:', data);
     $.post('/ws/geolocate/' + type, data, function(result){
-        console.log(result);
+        console.log('Saved gelocation data result:', result);
     });
 }
 /**
  * Sets the location by asking latitude / longitude to google (ip based location)
  * @param string type location_item (type) field: 'user', ...
+ * requires     <script type="text/javascript" src="https://www.google.com/jsapi"></script> to be loaded
  */
-function set_location_from_google(type, iteration) {
-    if(typeof google !== 'undefined' && google.loader.ClientLocation) {
-        var loc = google.loader.ClientLocation;
-        if (loc.latitude) {
-            console.log('Google ip location:', loc);
-            //save data
+// function set_location_from_google(type, iteration) {
+//     if(typeof google !== 'undefined' && google.loader.ClientLocation) {
+//         var loc = google.loader.ClientLocation;
+//         if (loc.latitude) {
+//             console.log('Google ip location:', loc);
+//             //save data
+//             save_geolocation_data(type, {
+//                 longitude: loc.longitude,
+//                 latitude: loc.latitude,
+//                 city: google.loader.ClientLocation.address.city,
+//                 region: google.loader.ClientLocation.address.region,
+//                 country: google.loader.ClientLocation.address.country,
+//                 country_code: google.loader.ClientLocation.address.country_code,
+//                 method: 'ip'
+//             });
+//         }
+//     }
+//     else {
+//         if(!(iteration)) iteration = 0;
+//         iteration++;
+//         console.log('google client does not exists! [' + type +' '+iteration+ ']');
+//         if(iteration > 10) {
+//             console.log('Cancelled');
+//         }
+//         else {
+//             setTimeout(function(){set_location_from_google(type, iteration);}, 500);
+//         }
+//     }
+// }
+
+function set_location_from_freegeoip(type) {
+    $.get('//freegeoip.net/json', function(data){
+        if(data.latitude && data.longitude) {
+            console.log('geolocated type:', type, ' data:', data);
+           //save data
             save_geolocation_data(type, {
-                lng: loc.longitude,
-                lat: loc.latitude,
-                city: google.loader.ClientLocation.address.city,
-                region: google.loader.ClientLocation.address.region,
-                country: google.loader.ClientLocation.address.country,
-                country_code: google.loader.ClientLocation.address.country_code,
+                longitude: data.longitude,
+                latitude: data.latitude,
+                city: data.city,
+                region: data.region_name,
+                country: data.country_name,
+                country_code: data.country_code,
                 method: 'ip'
             });
         }
-    }
-    else {
-        if(!(iteration)) iteration = 0;
-        iteration++;
-        console.log('google client does not exists! [' + type +' '+iteration+ ']');
-        if(iteration > 10) {
-            console.log('Cancelled');
-        }
         else {
-            setTimeout(function(){set_location_from_google(type, iteration);}, 500);
+            console.log('Freegeoip error');
         }
-    }
+    });
 }
 
 /**
@@ -70,8 +94,9 @@ function get_location_from_browser(callback, iteration) {
         //Try browser IP locator
         navigator.geolocation.getCurrentPosition(
             function(position) {
-                // console.log('browser info:', position.coords.latitude, position.coords.longitude);
+                console.log('browser info:', position.coords.latitude, position.coords.longitude);
                 data = {
+                    method: 'browser',
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 };
@@ -92,14 +117,17 @@ function get_location_from_browser(callback, iteration) {
                                 if(ob.types[0] === 'locality' && ob.types[1] === 'political') {
                                     data.city = ob.long_name;
                                 }
-                                if((ob.types[0] === 'administrative_area_level_1' || ob.types[0] === 'administrative_area_level_2') && !(data.region) && ob.types[1] === 'political') {
+                                if((ob.types[0] === 'administrative_area_level_1' || ob.types[0] === 'administrative_area_level_2') && ob.types[1] === 'political') {
                                     data.region = ob.long_name;
                                 }
                             }
-                            console.log('DATA:', data);
+                            console.log('Geocoder data:', data);
                         } else {
                             console.log('Geocoder failed due to: ' + status);
                         }
+                    }
+                    if(typeof callback === 'function') {
+                        callback(success, data);
                     }
                 });
             },
@@ -124,13 +152,12 @@ function get_location_from_browser(callback, iteration) {
                       data.info = "An unknown error occurred.";
                       break;
                 }
-                console.log(error, data);
-
+                console.log('Geocoder error:', error, ' data:', data);
+                if(typeof callback === 'function') {
+                    callback(success, data);
+                }
             }
         );
-    }
-    if(typeof callback === 'function') {
-        callback(success, data);
     }
 }
 
@@ -144,34 +171,37 @@ function set_location_from_browser(type) {
     });
 }
 
-jQuery(document).ready(function() {
+$(function(){
     //asyncronious loading of maps V3
-    if(typeof google !== 'undefined') {
-        console.log(typeof google);
-        google.load("maps", "3", {other_params:'sensor=false'});
-    }
+    var url = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'; //+ '&callback=initialize';
+    // $.getScript(url);
 
     // get user current location status
     $.get('/ws/geolocate/user', function(data){
-        console.log(data);
-        var use_browser = false;
+        console.log('Current user localization status', data);
 
-        if(data.success) {
-            //Is located, if method is IP, Try to override by browser coordinates
-            if(data.location.method === 'ip' && data.location.locable) {
-                use_browser = true;
+        //only if user is logged
+        if(data.user) {
+            var use_browser = false;
+
+            if(data.success) {
+                //Is located, if method is IP, Try to override by browser coordinates
+                if(data.location.method === 'ip' && data.location.locable) {
+                    use_browser = true;
+                }
+                //if method is browser or manual, no further actions are required
             }
-            //if method is browser or manual, no further actions are required
-        }
-        else {
-            //try google IP locator
-            set_location_from_google('user');
-        }
+            else {
+                //try google IP locator
+                // set_location_from_google('user');
+                set_location_from_freegeoip('user');
+            }
 
-        if(use_browser) {
-            console.log('Trying browser localization');
-            //try the browser for more precision
-            set_location_from_browser('user');
+            if(use_browser) {
+                console.log('Trying browser localization');
+                //try the browser for more precision
+                set_location_from_browser('user');
+            }
         }
     });
 

@@ -3,7 +3,6 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
-        Goteo\Model\User,
         Goteo\Model\User\UserLocation;
 
     class Ws extends \Goteo\Core\Controller {
@@ -146,34 +145,35 @@ EOD;
             $return = array('success' => false, 'msg' => '');
             $errors = array();
             //
-            if($type === 'user' && User::isLogged()) {
+            if($type === 'user' && Model\User::isLogged()) {
+                $userId = Model\User::userId();
+                $return['user'] = $userId;
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     //Handles user localization
-                    if($_POST['lat'] && $_POST['lng']) {
+                    if($_POST['latitude'] && $_POST['longitude']) {
                         if ($loc = UserLocation::addUserLocation(array(
-                            'user' => isset($_SESSION['user']) ? $_SESSION['user']->id : '',
-                            'ip'   => \myip(),
-                            'city' => $_POST['city'],
-                            'region' => $_POST['region'],
-                            'country' => $_POST['country'],
+                            'user'         => $userId,
+                            'city'         => $_POST['city'],
+                            'region'       => $_POST['region'],
+                            'country'      => $_POST['country'],
                             'country_code' => $_POST['country_code'],
-                            'lng'  => $_POST['lng'],
-                            'lat'  => $_POST['lat'],
-                            'method' => $_POST['method'],
-                            'valid' => 1
+                            'longitude'    => $_POST['longitude'],
+                            'latitude'     => $_POST['latitude'],
+                            'method'       => $_POST['method'],
+                            'valid'        => 1
                         ), $errors)) {
                             $return['msg'] = 'Location successfully added for user';
                             $return['location'] = $loc;
                             $return['success'] = true;
                         } else {
-                            $return['msg'] = implode(',', $errors);
+                            $return['msg'] = 'Localization saving errors: '. implode(',', $errors);
                         }
                     }
                     else {
                         //Just changes some properties (locable, info)
                         foreach($_POST as $key => $value) {
                             if($key === 'locable' || $key === 'info') {
-                                if(UserLocation::setProperty($_SESSION['user']->id, $key, $value, $errors)) {
+                                if(UserLocation::setProperty($userId, $key, $value, $errors)) {
                                     $return['msg'] = 'Property succesfully changed for user';
                                     $return['success'] = true;
                                 }
@@ -185,7 +185,7 @@ EOD;
                     }
                 }
                 //GET method just returns user info
-                elseif ($loc = UserLocation::get($_SESSION['user']->id)) {
+                elseif ($loc = UserLocation::get($userId)) {
                     $return['location'] = $loc;
                     $return['success'] = true;
                 }

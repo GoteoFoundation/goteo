@@ -33,8 +33,8 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
             'region' => 'Simulated Region',
             'country' => 'Neverland',
             'country_code' => 'XX',
-            'lat' => '0.1234567890',
-            'lng' => '-0.1234567890',
+            'latitude' => '0.1234567890',
+            'longitude' => '-0.1234567890',
             'valid' => 1,
             'method' => 'ip',
             'user' => '_simulated_user_test_'
@@ -47,8 +47,8 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
 
         $location2 = Location::get($user_location->location);
         $this->assertInstanceOf('\Goteo\Model\Location', $location2);
-        $this->assertEquals($user_location->locations[0]->lat, $location2->lat);
-        $this->assertEquals($user_location->locations[0]->lng, $location2->lng);
+        $this->assertEquals($user_location->locations[0]->latitude, $location2->latitude);
+        $this->assertEquals($user_location->locations[0]->longitude, $location2->longitude);
         $this->assertEquals($user_location->locations[0]->city, $location2->city);
         $this->assertEquals($user_location->locations[0]->region, $location2->region);
         $this->assertEquals($user_location->locations[0]->country, $location2->country);

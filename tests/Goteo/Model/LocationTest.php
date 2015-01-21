@@ -32,16 +32,16 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
             'region' => 'Simulated Region',
             'country' => 'Neverland',
             'country_code' => 'XX',
-            'lat' => '0.1234567890',
-            'lng' => '-0.1234567890',
+            'latitude' => '0.1234567890',
+            'longitude' => '-0.1234567890',
             'valid' => 1
         );
         $location = new Location($data);
         $this->assertTrue($location->validate());
         $this->assertTrue($location->save());
         $location2 = Location::get($location->id);
-        $this->assertEquals($location->lat, $location2->lat);
-        $this->assertEquals($location->lng, $location2->lng);
+        $this->assertEquals($location->latitude, $location2->latitude);
+        $this->assertEquals($location->longitude, $location2->longitude);
         $this->assertEquals($location->location, $location2->location);
         $this->assertEquals($location->method, $location2->method);
         $this->assertEquals($location->region, $location2->region);
