@@ -172,9 +172,6 @@ function set_location_from_browser(type) {
 }
 
 $(function(){
-    //asyncronious loading of maps V3
-    var url = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'; //+ '&callback=initialize';
-    // $.getScript(url);
 
     // get user current location status
     $.getJSON('/json/geolocate/user', function(data){

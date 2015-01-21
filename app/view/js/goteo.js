@@ -16,13 +16,13 @@ goteo.trace = function () {
 /**
  * Keeps the user session open for a while
  */
-goteo.keep_alive = function () {
+goteo.keepAlive = function () {
     //llamar al identificador de sesion
     $.getJSON('/json/keepAlive',function(data){
         if(data.logged) {
             //do nothing...
             // goteo.trace(data.userid);
-            setTimeout(goteo.keep_alive,30000);
+            setTimeout(goteo.keepAlive,30000);
         }
         if(data.info) {
             //session expired
@@ -40,5 +40,5 @@ goteo.keep_alive = function () {
 };
 
 $(function() {
-    goteo.keep_alive();
+    goteo.keepAlive();
 });

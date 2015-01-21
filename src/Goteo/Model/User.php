@@ -54,9 +54,6 @@ namespace Goteo\Model {
 	        if($name == "token") {
 	            $this->$name = $this->setToken($value);
 	        }
-	        if($name == "geoloc") {
-	            $this->$name = $this->setGeoloc($value);
-	        }
             $this->$name = $value;
         }
 
@@ -1263,29 +1260,6 @@ namespace Goteo\Model {
     	private function getToken () {
             $query = self::query('SELECT token FROM user WHERE id = ?', array($this->id));
             return $query->fetchColumn(0);
-    	}
-
-    	/**
-    	 * Asigna el usuario a una Geolocalización
-    	 *
-    	 * @param type int (id geolocation)
-    	 * @return type int (id geolocation)
-    	 */
-    	private function setGeoloc ($loc) {
-
-            $errors = array();
-
-            $geoloc = new UserLocation(array(
-                'user' => $this->id,
-                'location' => $loc
-            ));
-
-            if ($geoloc->save($errors)) {
-                return $loc;
-            } else {
-                @mail(\GOTEO_FAIL_MAIL, 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
-                return false;
-            }
     	}
 
         /**
