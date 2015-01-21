@@ -51,8 +51,8 @@ namespace Goteo\Controller\Dashboard {
         public static function donor ($user, $action = 'view') {
             $errors = array();
 
-            $unconfirmable = false;
-            $year = Model\User\Donor::currYear($unconfirmable);
+            $confirm_closed = false;
+            $year = Model\User\Donor::currYear($confirm_closed);
 
             // ver si es donante ;  echo \trace($user);
 
@@ -65,9 +65,11 @@ namespace Goteo\Controller\Dashboard {
                 $donation = new \Goteo\Model\User\Donor();
                 $donation->user = $user->id;
                 $donation->year = $year; //para obtener las fechas de aportes (si los hay)
-                $donation->confirmable = false; // si permitimos editar/confirmar se crea registro en user_donor emitiendo un certificado falso
+                $donation->confirmable = false; // si permitieramos editar/confirmar se crearia registro en user_donor emitiendo un certificado falso
                 $donation->confirmed = false; // para que no pueda descargar de ningún modo
             }
+
+            if ($confirm_closed) $donation->confirmable = false;
 
             // getDates da todos los aportes, incluso a proyectos aun no financiados
             $donation->dates = Model\User\Donor::getDates($donation->user, $donation->year, false);
@@ -75,6 +77,7 @@ namespace Goteo\Controller\Dashboard {
             // claro que si no tiene ningún aporte si que lo sacamos de esta página
             if (empty($donation->dates)) {
                 // tendrá el message de  'dashboard-donor-no_donor' anterior
+                Message::Error(Text::get('dashboard-donor-no_donor', $year));
                 throw new Redirection('/dashboard/activity');
             }
 
@@ -88,19 +91,21 @@ namespace Goteo\Controller\Dashboard {
                     $donation->amount += $inv->amount;
             }
 
-            // no permitir confirmar a partir del 10 de enero
-            if ($donation->confirmable === false || $unconfirmable) {
+            // no permitir confirmar datos a partir del 10 de enero
+            if (!$donation->confirmed && !$donation->confirmable ) {
 
-                // aviso que el certificado aun no está disponible
-                Message::Error(Text::get('dashboard-donor-no_donor', $year));
-
-                $donation->confirmable = false;
-                if ($action == 'confirm') {
+                if ($confirm_closed) {
+                    // aviso que el certificado aun no está disponible
                     Message::Error(Text::get('dashboard-donor-confirm_closed', $year));
+
+                    $donation->confirmable = false;
+                }
+
+                if ($action == 'confirm') {
                     // aquí si que lo sacamos, no permitimos confirmar
                     throw new Redirection('/dashboard/activity/donor');
                 }
-            } elseif (isset($donation) && $donation instanceof Model\User\Donor && $donation->edited && !$donation->confirmed) {
+            } elseif (isset($donation) && $donation instanceof Model\User\Donor && $donation->edited && !$donation->confirmed && !$confirm_closed) {
                 // si ha editado pero no ha confirmado
                 Message::Info(Text::get('dashboard-donor-remember'));
             }
