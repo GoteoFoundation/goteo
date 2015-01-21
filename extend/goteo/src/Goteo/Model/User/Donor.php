@@ -382,7 +382,7 @@ namespace Goteo\Model\User {
         /*
          * Año fiscal actual
          */
-        static public function currYear(&$unconfirmable = false) {
+        static public function currYear(&$confirm_closed = false) {
 
             $year = date('Y');
             $month = date('m');
@@ -392,9 +392,9 @@ namespace Goteo\Model\User {
                 $year--;
             }
 
-            // si ha pasado el día limite después de año nuevo ya no se permite confirmar
+            // si ha pasado el día limite después de año nuevo ya no se permite confirmar datos
             if ($year != date('Y') && ( ($month == 1 && $day > 15) || $month > 1 ) )
-                $unconfirmable = true;
+                $confirm_closed = true;
 
 
             return $year;
