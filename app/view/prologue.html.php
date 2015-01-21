@@ -79,9 +79,6 @@ if (NODE_ID != GOTEO_NODE) {
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
         <!-- end custom fancybox-->
 
-        <!-- vigilante de sesion -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
-
         <?php if (isset($jscrypt)) : ?>
             <script src="<?php echo SRC_URL ?>/view/js/sha1.min.js"></script>
         <?php endif; ?>

@@ -2,8 +2,7 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Model,
-        Goteo\Model\User\UserLocation;
+    use Goteo\Model;
 
     class Ws extends \Goteo\Core\Controller {
 
@@ -125,78 +124,6 @@ EOD;
 
             header ('HTTP/1.1 200 Ok');
             echo $Template->title . '#$#$#' . $Template->text;
-            die;
-        }
-
-        /**
-         * JSON endpoint to retrieve/establish the user's location
-         *
-         * @param type $user id usuario
-         *
-         * //@TODO: grabar la localidad y asignar al usuario
-         * //@TODO: verificar que la localidad no existe
-         *
-         */
-        public function geolocate($type) {
-            //Return current status
-            header ('HTTP/1.1 200 Ok');
-            header ('Content-Type: application/json');
-
-            $return = array('success' => false, 'msg' => '');
-            $errors = array();
-            //
-            if($type === 'user' && Model\User::isLogged()) {
-                $userId = Model\User::userId();
-                $return['user'] = $userId;
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    //Handles user localization
-                    if($_POST['latitude'] && $_POST['longitude']) {
-                        if ($loc = UserLocation::addUserLocation(array(
-                            'user'         => $userId,
-                            'city'         => $_POST['city'],
-                            'region'       => $_POST['region'],
-                            'country'      => $_POST['country'],
-                            'country_code' => $_POST['country_code'],
-                            'longitude'    => $_POST['longitude'],
-                            'latitude'     => $_POST['latitude'],
-                            'method'       => $_POST['method'],
-                            'valid'        => 1
-                        ), $errors)) {
-                            $return['msg'] = 'Location successfully added for user';
-                            $return['location'] = $loc;
-                            $return['success'] = true;
-                        } else {
-                            $return['msg'] = 'Localization saving errors: '. implode(',', $errors);
-                        }
-                    }
-                    else {
-                        //Just changes some properties (locable, info)
-                        foreach($_POST as $key => $value) {
-                            if($key === 'locable' || $key === 'info') {
-                                if(UserLocation::setProperty($userId, $key, $value, $errors)) {
-                                    $return['msg'] = 'Property succesfully changed for user';
-                                    $return['success'] = true;
-                                }
-                                else {
-                                    $return['msg'] = implode(',', $errors);
-                                }
-                            }
-                        }
-                    }
-                }
-                //GET method just returns user info
-                elseif ($loc = UserLocation::get($userId)) {
-                    $return['location'] = $loc;
-                    $return['success'] = true;
-                }
-                else {
-                    $return['msg'] = 'User has no location';
-                }
-            }
-            else {
-                $return['msg'] = 'Type must be defined (user)';
-            }
-            echo json_encode($return);
             die;
         }
 

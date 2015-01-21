@@ -2,6 +2,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
+        Goteo\Model\User\UserLocation,
         Goteo\Model\User,
         Goteo\Library\Text,
         Goteo\Library\Feed;
@@ -53,46 +54,23 @@ namespace Goteo\Controller {
 			return $this->output();
 		}
 
+        /**
+         * Solo retorna si la sesion esta activa o no
+         * */
+        public function keepAlive() {
 
-		/**
-		 * Localizaciones para autocomplete
-		 * */
-		public function locations() {
-
-            $locations = Model\Location::getAll();
-
-            // ordenar por nombre
-            uasort($locations,
-                function ($a, $b) {
-                    if ($a->name == $b->name) return 0;
-                    return ($a->name > $b->name) ? 1 : -1;
-                    }
-                );
-
-			foreach ($locations as $loc) {
-                $this->result[] = $loc->name;
-            }
-
-			return $this->output();
-		}
-
-		/**
-		 * Solo retorna si la sesion esta activa o no
-		 * */
-		public function keep_alive() {
-
-			$this->result = array(
+            $this->result = array(
                 'logged'  => false,
                 'expires' => 0,
-				'info' => ''
-			);
+                'info' => ''
+            );
 
             $init = (int) $_SESSION['init_time'];
             $session_time = defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600 ;
-            if($_SESSION['user'] instanceof User) {
+            if(User::isLogged()) {
                 $this->result['logged'] = true;
-                $this->result['userid'] = $_SESSION['user']->id;
-				$this->result['expires'] = START_TIME + $session_time - $init;
+                $this->result['userid'] = User::userId();
+                $this->result['expires'] = START_TIME + $session_time - $init;
                 if((START_TIME > $init + $session_time - 600) && empty($_SESSION['init_time_advised'])) {
                     $this->result['info'] = Text::get('session-about-to-expire');
                     $_SESSION['init_time_advised'] = true;
@@ -102,8 +80,97 @@ namespace Goteo\Controller {
                 $this->result['info'] = Text::get('session-expired');
             }
 
-			return $this->output();
-		}
+            return $this->output();
+        }
+
+		/**
+		 * Localizaciones para autocomplete
+         * TODO: potencialmente infinito?
+		 * */
+		// public function locations() {
+
+  //           $locations = Model\Location::getAll();
+
+  //           // ordenar por nombre
+  //           uasort($locations,
+  //               function ($a, $b) {
+  //                   if ($a->name == $b->name) return 0;
+  //                   return ($a->name > $b->name) ? 1 : -1;
+  //                   }
+  //               );
+
+		// 	foreach ($locations as $loc) {
+  //               $this->result[] = $loc->name;
+  //           }
+
+		// 	return $this->output();
+		// }
+
+        /**
+         * JSON endpoint to retrieve/establish the user's location
+         *
+         * @param type 'user' or ...
+         *
+         */
+        public function geolocate($type = '') {
+            $return = array('success' => false, 'msg' => '');
+            $errors = array();
+            //
+            if($type === 'user' && Model\User::isLogged()) {
+                $userId = Model\User::userId();
+                $return['user'] = $userId;
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    //Handles user localization
+                    if($_POST['latitude'] && $_POST['longitude']) {
+                        if ($loc = UserLocation::addUserLocation(array(
+                            'user'         => $userId,
+                            'city'         => $_POST['city'],
+                            'region'       => $_POST['region'],
+                            'country'      => $_POST['country'],
+                            'country_code' => $_POST['country_code'],
+                            'longitude'    => $_POST['longitude'],
+                            'latitude'     => $_POST['latitude'],
+                            'method'       => $_POST['method'],
+                            'valid'        => 1
+                        ), $errors)) {
+                            $return['msg'] = 'Location successfully added for user';
+                            $return['location'] = $loc;
+                            $return['success'] = true;
+                        } else {
+                            $return['msg'] = 'Localization saving errors: '. implode(',', $errors);
+                        }
+                    }
+                    else {
+                        //Just changes some properties (locable, info)
+                        foreach($_POST as $key => $value) {
+                            if($key === 'locable' || $key === 'info') {
+                                if(UserLocation::setProperty($userId, $key, $value, $errors)) {
+                                    $return['msg'] = 'Property succesfully changed for user';
+                                    $return['success'] = true;
+                                }
+                                else {
+                                    $return['msg'] = implode(',', $errors);
+                                }
+                            }
+                        }
+                    }
+                }
+                //GET method just returns user info
+                elseif ($loc = UserLocation::get($userId)) {
+                    $return['location'] = $loc;
+                    $return['success'] = true;
+                }
+                else {
+                    $return['msg'] = 'User has no location';
+                }
+            }
+            else {
+                $return['msg'] = 'Type must be defined (user)';
+            }
+
+            $this->result = $return;
+            return $this->output();
+        }
 
 		/**
 		 * Intenta asignar proyecto a convocatoria

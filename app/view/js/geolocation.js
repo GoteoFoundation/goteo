@@ -3,9 +3,9 @@
  * Send the data to ws/database
  */
 function save_geolocation_data(type, data) {
-    console.log('Saving geolocation data, type:', type, ' data:', data);
-    $.post('/ws/geolocate/' + type, data, function(result){
-        console.log('Saved gelocation data result:', result);
+    goteo.trace('Saving geolocation data, type:', type, ' data:', data);
+    $.post('/json/geolocate/' + type, data, function(result){
+        goteo.trace('Saved gelocation data result:', result);
     });
 }
 /**
@@ -17,7 +17,7 @@ function save_geolocation_data(type, data) {
 //     if(typeof google !== 'undefined' && google.loader.ClientLocation) {
 //         var loc = google.loader.ClientLocation;
 //         if (loc.latitude) {
-//             console.log('Google ip location:', loc);
+//             goteo.trace('Google ip location:', loc);
 //             //save data
 //             save_geolocation_data(type, {
 //                 longitude: loc.longitude,
@@ -33,9 +33,9 @@ function save_geolocation_data(type, data) {
 //     else {
 //         if(!(iteration)) iteration = 0;
 //         iteration++;
-//         console.log('google client does not exists! [' + type +' '+iteration+ ']');
+//         goteo.trace('google client does not exists! [' + type +' '+iteration+ ']');
 //         if(iteration > 10) {
-//             console.log('Cancelled');
+//             goteo.trace('Cancelled');
 //         }
 //         else {
 //             setTimeout(function(){set_location_from_google(type, iteration);}, 500);
@@ -44,9 +44,9 @@ function save_geolocation_data(type, data) {
 // }
 
 function set_location_from_freegeoip(type) {
-    $.get('//freegeoip.net/json', function(data){
+    $.getJSON('//freegeoip.net/json', function(data){
         if(data.latitude && data.longitude) {
-            console.log('geolocated type:', type, ' data:', data);
+            goteo.trace('geolocated type:', type, ' data:', data);
            //save data
             save_geolocation_data(type, {
                 longitude: data.longitude,
@@ -59,7 +59,7 @@ function set_location_from_freegeoip(type) {
             });
         }
         else {
-            console.log('Freegeoip error');
+            goteo.trace('Freegeoip error');
         }
     });
 }
@@ -70,7 +70,7 @@ function set_location_from_freegeoip(type) {
  * use with callback function as:
  *
  * get_location_from_browser(function(success, data) {
- *     console.log('success: ' + success, data.city, data.region, data.country, data.country_code, data.latitude, data.longitude);
+ *     goteo.trace('success: ' + success, data.city, data.region, data.country, data.country_code, data.latitude, data.longitude);
  * })
  *
  */
@@ -81,9 +81,9 @@ function get_location_from_browser(callback, iteration) {
     if(typeof google === 'undefined' && !google.maps) {
         if(!(iteration)) iteration = 0;
         iteration++;
-        console.log('google.map client does not exists! ['+iteration+ ']');
+        goteo.trace('google.map client does not exists! ['+iteration+ ']');
         if(iteration > 10) {
-            console.log('Cancelled');
+            goteo.trace('Cancelled');
         }
         setTimeout(function(){get_location_from_browser(callback, iteration);}, 500);
         return;
@@ -94,7 +94,7 @@ function get_location_from_browser(callback, iteration) {
         //Try browser IP locator
         navigator.geolocation.getCurrentPosition(
             function(position) {
-                console.log('browser info:', position.coords.latitude, position.coords.longitude);
+                goteo.trace('browser info:', position.coords.latitude, position.coords.longitude);
                 data = {
                     method: 'browser',
                     latitude: position.coords.latitude,
@@ -106,10 +106,10 @@ function get_location_from_browser(callback, iteration) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         if (results[0]) {
                             success = true;
-                            // console.log(results[0]);
+                            // goteo.trace(results[0]);
                             for(var i in results[0].address_components) {
                                 var ob = results[0].address_components[i];
-                                // console.log(i, ob, "\n");
+                                // goteo.trace(i, ob, "\n");
                                 if(ob.types[0] === 'country' && ob.types[1] === 'political') {
                                     data.country = ob.long_name;
                                     data.country_code = ob.short_name;
@@ -121,9 +121,9 @@ function get_location_from_browser(callback, iteration) {
                                     data.region = ob.long_name;
                                 }
                             }
-                            console.log('Geocoder data:', data);
+                            goteo.trace('Geocoder data:', data);
                         } else {
-                            console.log('Geocoder failed due to: ' + status);
+                            goteo.trace('Geocoder failed due to: ' + status);
                         }
                     }
                     if(typeof callback === 'function') {
@@ -152,7 +152,7 @@ function get_location_from_browser(callback, iteration) {
                       data.info = "An unknown error occurred.";
                       break;
                 }
-                console.log('Geocoder error:', error, ' data:', data);
+                goteo.trace('Geocoder error:', error, ' data:', data);
                 if(typeof callback === 'function') {
                     callback(success, data);
                 }
@@ -177,8 +177,8 @@ $(function(){
     // $.getScript(url);
 
     // get user current location status
-    $.get('/ws/geolocate/user', function(data){
-        console.log('Current user localization status', data);
+    $.getJSON('/json/geolocate/user', function(data){
+        goteo.trace('Current user localization status: ', data);
 
         //only if user is logged
         if(data.user) {
@@ -195,10 +195,11 @@ $(function(){
                 //try google IP locator
                 // set_location_from_google('user');
                 set_location_from_freegeoip('user');
+                use_browser = true;
             }
 
             if(use_browser) {
-                console.log('Trying browser localization');
+                goteo.trace('Trying browser localization');
                 //try the browser for more precision
                 set_location_from_browser('user');
             }

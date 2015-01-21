@@ -1035,7 +1035,7 @@ namespace Goteo\Model {
          * @return boolean
          */
         public static function isLogged () {
-            return !empty($_SESSION['user']);
+            return !empty($_SESSION['user']) && $_SESSION['user'] instanceof User;
         }
 
 		/**
