@@ -171,9 +171,70 @@ function set_location_from_browser(type) {
     });
 }
 
+/**
+ * Loads a google map on a div
+ * @param {object} obj       DOM div to create a map on
+ * @param {string} desc      description (optional)
+ *
+ */
+function set_google_map_point(obj, iteration) {
+    if(typeof google === 'undefined' && !google.maps) {
+        if(!(iteration)) iteration = 0;
+        iteration++;
+        goteo.trace('google.map client does not exists! ['+iteration+ ']');
+        if(iteration > 10) {
+            goteo.trace('Cancelled');
+        }
+        setTimeout(function(){set_google_map_point(obj, lat, lng, desc, iteration);}, 500);
+        return;
+    }
+
+    var mapOptions = {
+        // draggable: false,
+        // scrollwheel: false,
+        center: new google.maps.LatLng(39.5858, 2.6411),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    //look for data-map-* attributes:
+    if($(obj).is('[data-map-latitude]') && $(obj).is('[data-map-latitude]')) {
+        var id = $(obj).attr('id');
+        var lat = $(obj).data('map-latitude');
+        var lng = $(obj).data('map-longitude');
+
+        goteo.trace('Found printable geomap, id: ', id, ' lat,lng: ', lat, lng, ' content', $(obj).data('map-content'));
+        if(lat && lng) {
+            mapOptions.center = new google.maps.LatLng(lat, lng);
+            mapOptions.zoom = 7;
+        }
+    }
+    //draw map
+    var map = new google.maps.Map(obj, mapOptions);
+    var marker = new google.maps.Marker({
+        position: mapOptions.center
+    });
+    marker.setMap(map);
+
+    //draw info window
+    if($(obj).is('[data-map-content]')) {
+        var desc = $(obj).data('map-content');
+        var coordInfoWindow = new google.maps.InfoWindow();
+        coordInfoWindow.setContent(desc);
+        coordInfoWindow.setPosition(mapOptions.center);
+        coordInfoWindow.open(map);
+
+        google.maps.event.addListener(map, 'zoom_changed', function() {
+            coordInfoWindow.setContent(desc);
+            coordInfoWindow.open(map);
+        });
+    }
+
+}
+
 $(function(){
 
-    // get user current location status
+    // get user current location status, geolocate if needed
     $.getJSON('/json/geolocate/user', function(data){
         goteo.trace('Current user localization status: ', data);
 
@@ -203,5 +264,8 @@ $(function(){
         }
     });
 
-
+    //get all maps and print it
+    $('.geomap').each(function(){
+        set_google_map_point(this);
+    });
 });

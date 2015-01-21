@@ -6,15 +6,8 @@ use Goteo\Library\Text,
 
 $user = $this['user'];
 
-$locations = array();
-foreach ($this['locations'] as $loc) {
-    $locations[] = $loc->name;
-}
-
 // si geolocalizado
-$geoloc = $user->geoloc;
-$geolocation = !empty($geoloc) ? Model\Location::get($geoloc) : null;
-
+$geolocation = $user->geoloc;
 
 // contenido
 $content = explode('<hr />', $this['page']->content);
@@ -23,33 +16,36 @@ $content = explode('<hr />', $this['page']->content);
 <form action="/dashboard/profile/location" method="post" enctype="multipart/form-data">
     <div class="widget">
 
-    <?php
-    if ($user->unlocable) :
+<?php
+
+    if ($user->unlocable) {
         echo $content[0];
-
-    elseif ($geolocation instanceof Model\Location) :
+    }
+    elseif ($geolocation instanceof Model\User\UserLocation) {
         echo str_replace('<!-- MAPA -->',
-                View::get('widget/map.html.php', array('lat'=>$geolocation->lat,'lon'=>$geolocation->lon, 'name'=>$geolocation->name)),
+                View::get('widget/map.html.php',
+                         array(
+                            'latitude' => $geolocation->locations[0]->latitude,
+                            'longitude' => $geolocation->locations[0]->longitude,
+                            'name' => $geolocation->locations[0]->name)
+                        ),
                 $content[1]);
-
-    else :
+    }
+    else {
         echo $content[2];
+    }
 
-    endif;
-    ?>
+?>
 
     </div>
 </form>
-<?php if (empty($geoloc)) : ?>
+<?php if ($geolocation) : ?>
 <script type="text/javascript">
 $(function () {
 
-    var locations = ["<?php echo implode('", "', $locations); ?>"];
-
     /* Autocomplete para localidad */
     $( "#user_location" ).autocomplete({
-      source: locations,
-      minLength: 2
+
     });
 
 });

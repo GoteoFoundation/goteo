@@ -69,7 +69,7 @@ namespace Goteo\Controller {
             $session_time = defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600 ;
             if(User::isLogged()) {
                 $this->result['logged'] = true;
-                $this->result['userid'] = User::userId();
+                $this->result['userid'] = User::getUserId();
                 $this->result['expires'] = START_TIME + $session_time - $init;
                 if((START_TIME > $init + $session_time - 600) && empty($_SESSION['init_time_advised'])) {
                     $this->result['info'] = Text::get('session-about-to-expire');
@@ -117,7 +117,7 @@ namespace Goteo\Controller {
             $errors = array();
             //
             if($type === 'user' && Model\User::isLogged()) {
-                $userId = Model\User::userId();
+                $userId = Model\User::getUserId();
                 $return['user'] = $userId;
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     //Handles user localization

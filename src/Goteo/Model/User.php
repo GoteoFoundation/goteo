@@ -71,22 +71,22 @@ namespace Goteo\Model {
                 return self::numInvested($this->id);
             }
 	        if($name == "support") {
-	            return $this->getSupport();
-	        }
-	        if($name == "get_numOwned") {
+                return $this->getSupport();
+            }
+            if($name == "get_numOwned") {
                 return self::updateOwned($this->id);
-	        }
-	        if($name == "get_worth") {
+            }
+            if($name == "get_worth") {
                 return self::updateWorth($this->id, $this->amount);
-	        }
-	        if($name == "get_amount") {
+            }
+            if($name == "get_amount") {
                 return self::updateAmount($this->id);
-	        }
-	        if($name == "geoloc") {
-	            return UserLocation::get($this->id);
+            }
+            if($name == "geoloc") {
+	            return $this->getLocation();
 	        }
 	        if($name == "unlocable") {
-	            return UserLocation::is_unlocable($this->id);
+	            return UserLocation::isUnlocable($this->id);
 	        }
 	        if($name == "admin_node") {
 	            return \Goteo\Model\Node::getAdminNode($this->id);
@@ -1032,16 +1032,25 @@ namespace Goteo\Model {
          * @return boolean
          */
         public static function isLogged () {
-            return !empty($_SESSION['user']) && $_SESSION['user'] instanceof User;
+            return (!empty($_SESSION['user']) && $_SESSION['user'] instanceof User);
+        }
+
+        /**
+         * Returns user id if logged
+         *
+         * @return boolean
+         */
+        public static function getUserId () {
+            return (self::isLogged()) ? $_SESSION['user']->id : false;
         }
 
 		/**
-		 * Returns user id if logged
+		 * Returns user object if logged
 		 *
 		 * @return boolean
 		 */
-		public static function userId () {
-			return empty($_SESSION['user']) ? false : $_SESSION['user']->id;
+		public static function getUser () {
+			return (self::isLogged()) ? $_SESSION['user'] : false;
 		}
 
         /**
@@ -1261,6 +1270,14 @@ namespace Goteo\Model {
             $query = self::query('SELECT token FROM user WHERE id = ?', array($this->id));
             return $query->fetchColumn(0);
     	}
+
+        /**
+         * Returns the user's location
+         * @return UserLocation if succeded, false otherwise
+         */
+        public function getLocation() {
+            return UserLocation::get($this->id);
+        }
 
         /**
          * Cofinanciación.

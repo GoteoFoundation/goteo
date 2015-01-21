@@ -86,16 +86,16 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSetLocable($user_location) {
 
-        $this->assertTrue($user_location::locable($user_location->user, $error), print_r($errors, 1));
+        $this->assertTrue($user_location::setLocable($user_location->user, $error), print_r($errors, 1));
         $user_location2 = UserLocation::get($user_location->user);
         $this->assertInstanceOf('\Goteo\Model\User\UserLocation', $user_location2);
-        $this->assertFalse($user_location::is_unlocable($user_location->user));
+        $this->assertFalse($user_location::isUnlocable($user_location->user));
         $this->assertTrue($user_location2->locable);
         $this->assertEquals($user_location->locations, $user_location2->locations);
 
-        $user_location::unlocable($user_location->user);
+        $user_location::setUnlocable($user_location->user);
         $user_location2 = UserLocation::get($user_location2->user);
-        $this->assertTrue($user_location::is_unlocable($user_location->user));
+        $this->assertTrue($user_location::isUnlocable($user_location->user));
         $this->assertFalse($user_location2->locable);
 
         return $user_location;

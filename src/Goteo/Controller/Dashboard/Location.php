@@ -11,34 +11,37 @@ namespace Goteo\Controller\Dashboard {
 
         public static function process () {
 
-            $user = $_SESSION['user'];
-            
+            $user = Model\User::getUser();
+            $user_location = $user->getLocation();
+
             $errors = array();
-            
+
             // quiere quitarse de los ilocalizables
             if (isset($_POST['locable'])) {
-                Model\User\Location::locable($user->id, $errors);
+                Model\User\UserLocation::setLocable($user->id, $errors);
             }
-            
+
             // quiere desasignarse de la geolocalización
-            if (isset($_POST['unlocate'])) {
-                Model\User\Location::remove($user->id, $errors);
+            if (isset($_POST['unlocate']) && $user_location) {
+                Model\User\UserLocation::setUnLocable($user->id, $errors);
             }
-            
+
             // si cambian la localización
             if (isset($_POST['relocate'])) {
-                
+
                 $location = $_POST['location'];
+                print_r($location);die;
+
                 // ponemos lo que han escrito
                 Model\Location::query('UPDATE user SET location = :location WHERE id = :id', array(':location'=>$location, ':id'=>$user->id));
-                
+
                 if (!empty($location)) {
                     // veamos si es una existente
-                
+
                     $sql = "SELECT id FROM location WHERE CONCAT(location, ', ', region, ', ', country) LIKE ?";
                     $query = Model\Location::query($sql, array($location));
                     $exist = $query->fetchColumn();
-                    
+
                     // si han escogido una existente se asigna y listos
                     $assign = null;
                     if (!empty($exist)) {
@@ -57,7 +60,7 @@ namespace Goteo\Controller\Dashboard {
                             if (!empty($exists)) {
                                 $assign = $exists;
                             } else {
-                            
+
                                 // con los datos obtenidos de la API gmaps
                                 $newloc = new Model\Location(array(
                                     'location'=>$geodata['location'],
@@ -75,15 +78,15 @@ namespace Goteo\Controller\Dashboard {
                         } else {
                             $errors[] = 'No se ha encontrado esa localización, intentalo de nuevo escribiéndola de manera general en fomato Localidad, Provincia, País';
                         }
-                        
+
                     }
-                    
-                    // geolocaliza al usuario 
+
+                    // geolocaliza al usuario
                     if (!empty($assign)) {
                         $setloc = new Model\User\Location(array('user'=>$user->id, 'location'=>$assign));
                         $setloc->save($errors);
                     }
-                    
+
                 }
             }
 

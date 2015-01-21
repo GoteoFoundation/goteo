@@ -161,7 +161,7 @@ namespace Goteo\Model\User {
          * @param array $errors
          * @return boolean
          */
-        public static function locable ($user, &$errors = array()) {
+        public static function setLocable ($user, &$errors = array()) {
             return self::setProperty($user, 'locable', 1, $errors);
         }
 
@@ -172,7 +172,7 @@ namespace Goteo\Model\User {
          * @param array $errors
          * @return boolean
          */
-        public static function unlocable ($user, &$errors = array()) {
+        public static function setUnlocable ($user, &$errors = array()) {
             return self::setProperty($user, 'locable', 0, $errors);
 		}
 
@@ -182,7 +182,7 @@ namespace Goteo\Model\User {
          * @param varcahr(50) $id  user identifier
          * @return int (have an unlocable register)
          */
-	 	public static function is_unlocable ($user) {
+	 	public static function isUnlocable ($user) {
 
             try {
                 $query = self::query("SELECT locable FROM location_item WHERE type = 'user' AND item = ?", array($user));

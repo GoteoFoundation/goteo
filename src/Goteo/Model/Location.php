@@ -66,6 +66,8 @@ namespace Goteo\Model {
         /**
          * Lista de Geolocalizaciones (tabla maestra `location`)
          *
+         * TODO: esto es inseguro y potencialmente infinito, falta un limite
+         *
          * @param  mixed $filters array de filtros
          * @return mixed            Array de objetos de tareas
          */
