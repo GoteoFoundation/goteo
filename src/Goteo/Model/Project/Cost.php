@@ -94,6 +94,9 @@ namespace Goteo\Model\Project {
             if (empty($this->project))
                 $errors[] = 'No hay proyecto al que asignar el coste';
 
+            /*
+             *  Ya no existe el concepto fechas de costes ni calendario (Julián 21/01/2015 Hotfix)
+             *
             // limite de fechas
 
             // verificamos que tenemos fecha de creación del proyecto
@@ -132,6 +135,7 @@ namespace Goteo\Model\Project {
                     $this->until = $dateMin->format('Y-m-d');
 
             }
+            */
 
             //cualquiera de estos errores hace fallar la validación
             if (!empty($errors))
@@ -154,9 +158,7 @@ namespace Goteo\Model\Project {
 				'description',
 				'type',
 				'amount',
-				'required',
-				'from',
-				'until'
+				'required'
 				);
 
 			$set = '';
