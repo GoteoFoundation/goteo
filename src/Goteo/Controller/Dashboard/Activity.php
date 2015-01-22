@@ -92,19 +92,14 @@ namespace Goteo\Controller\Dashboard {
             }
 
             // no permitir confirmar datos a partir del 10 de enero
-            if (!$donation->confirmed && !$donation->confirmable ) {
+            if ($action == 'confirm' && !$donation->confirmable ) {
 
                 if ($confirm_closed) {
                     // aviso que el certificado aun no está disponible
                     Message::Error(Text::get('dashboard-donor-confirm_closed', $year));
-
-                    $donation->confirmable = false;
-                }
-
-                if ($action == 'confirm') {
-                    // aquí si que lo sacamos, no permitimos confirmar
                     throw new Redirection('/dashboard/activity/donor');
                 }
+
             } elseif (isset($donation) && $donation instanceof Model\User\Donor && $donation->edited && !$donation->confirmed && !$confirm_closed) {
                 // si ha editado pero no ha confirmado
                 Message::Info(Text::get('dashboard-donor-remember'));
@@ -178,12 +173,15 @@ namespace Goteo\Controller\Dashboard {
                     $donation->confirmable = false;
                 }
 
+
                 if ($donation->confirmable !== false && $action == 'confirm') {
                     // marcamos que los datos estan confirmados
                     if (Model\User\Donor::setConfirmed($user->id, $year)) {
-                        Message::Info(Text::get('dashboard-donor-confirmed', $year));
+                        $donation->confirmed = true;
+                        $action = 'download';
+                    } else {
+                        throw new Redirection('/dashboard/activity/donor');
                     }
-                    throw new Redirection('/dashboard/activity/donor');
                 }
 
             }
