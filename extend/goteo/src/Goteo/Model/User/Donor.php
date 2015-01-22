@@ -387,13 +387,13 @@ namespace Goteo\Model\User {
             $year = date('Y');
             $month = date('m');
             $day = date('d');
-            // hasta junio es el año anterior
+            // hasta julio es el año anterior
             if ($month <= 6) {
                 $year--;
             }
 
             // si ha pasado el día limite después de año nuevo ya no se permite confirmar datos
-            if ($year != date('Y') && ( ($month == 1 && $day > 15) || $month > 1 ) )
+            if ($year != date('Y') && ( ($month == 1 && $day > 28) || $month > 1 ) )
                 $confirm_closed = true;
 
 
