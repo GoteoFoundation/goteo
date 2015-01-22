@@ -332,9 +332,13 @@ $(function(){
 
             if(data.success) {
                 //Is located, if method is IP, Try to override by browser coordinates
+                if(!data.location.location) {
+                    use_ip = true;
+                }
                 if(data.location.locable) {
-                    if(!data.location.location)            use_ip = true;
-                    else if(data.location.method === 'ip') use_browser = true;
+                    if(data.location.method === 'ip') {
+                        use_browser = true;
+                    }
                     //if method is browser or manual, no further actions are required
                 }
             }
