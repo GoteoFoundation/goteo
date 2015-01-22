@@ -165,7 +165,8 @@ namespace Goteo\Core {
             if(!is_null($lang))
             {
                 // Si el idioma se habla en España y no está disponible, usar 'es' y sino usar 'en' por defecto
-                $default_lang = (in_array($lang, array('es','ca', 'gl', 'eu', 'en'))) ? 'es' : 'en';
+                // Julian: 22/01/2015 : el texto de referencia para italiano es también español
+                $default_lang = (in_array($lang, array('es','ca', 'gl', 'eu', 'en', 'it'))) ? 'es' : 'en';
 
             return $default_lang;
             } else {
