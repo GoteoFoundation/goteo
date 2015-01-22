@@ -172,6 +172,62 @@ namespace Goteo\Model {
         }
 
         /**
+         * Check if the project is can be seen by the user id
+         * @param  string $user_id ID of the user
+         * @return boolean          true if success, false otherwise
+         */
+        public static function userPublicable($project, $user) {
+
+            // solamente se puede ver publicamente si...
+            $grant = false;
+            if ( $project->status > 2 // está publicado
+                || $project->owner == $user->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
+                || isset($user->roles['superadmin']) // es superadmin
+                || (isset($user->roles['checker']) && Model\User\Review::is_assigned($user->id, $project->id)) // es revisor
+                || (isset($user->roles['caller']) && Model\Call\Project::is_assigned($user->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
+            )
+                $grant = true;
+
+            return $grant;
+        }
+
+        /**
+         * Check if the project is editable by the user id
+         * @param  string $user_id ID of the user
+         * @return boolean          true if success, false otherwise
+         */
+        public static function userEditable($project, $user) {
+            $grant = false;
+            // Substituye ACL, solo lo puede editar si...
+            if ($project->owner == $user->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
+                || isset($user->roles['superadmin']) // es superadmin
+                || (isset($user->roles['checker']) && User\Review::is_assigned($user->id, $project->id)) // es revisor
+            )
+                $grant = true;
+
+            return $grant;
+        }
+
+        /**
+         * Check if the project is removable by the user id
+         * @param  string $user_id ID of the user
+         * @return boolean          true if success, false otherwise
+         */
+        public static function userRemovable($project, $user) {
+            $grant = false;
+            if ($project->owner == $user->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || isset($user->roles['superadmin']) // es superadmin
+            )
+                $grant = true;
+            return $grant;
+        }
+
+        /**
          * Inserta un proyecto con los datos mínimos
          *
          * @param array $data
@@ -179,7 +235,7 @@ namespace Goteo\Model {
          */
         public function create ($node = \GOTEO_NODE, &$errors = array()) {
 
-            $user = $_SESSION['user']->id;
+            $user = User::getUserId();
 
             if (empty($user)) {
                 return false;
@@ -266,6 +322,7 @@ namespace Goteo\Model {
         /*
          *  Cargamos los datos del proyecto
          *  TODO: better exception throwing (namespaced)
+        *   TODO: Project::get deberia retornar false por coherencia con los otros modelos
          */
         public static function get($id, $lang = null) {
 

@@ -7,9 +7,9 @@ var locator = {
 /**
  * Send the data to ws/database
  */
-locator.saveGeolocationData = function (type, data) {
-    this.trace('Saving geolocation data, type:', type, ' data:', data);
-    $.post('/json/geolocate/' + type, data, function(result){
+locator.saveGeolocationData = function (type, item, data) {
+    this.trace('Saving geolocation data, type:', type, ' item:', item, ' data:', data);
+    $.post('/json/geolocate/' + type + (item ? '/' + item : ''), data, function(result){
         locator.trace('Saved gelocation data result:', result);
     });
 };
@@ -19,13 +19,13 @@ locator.saveGeolocationData = function (type, data) {
  * @param string type location_item (type) field: 'user', ...
  * requires     <script type="text/javascript" src="https://www.google.com/jsapi"></script> to be loaded
  */
-// locator.setLocationFromGoogle = function (type, iteration) {
+// locator.setLocationFromGoogle = function (type, item, iteration) {
 //     if(typeof google !== 'undefined' && google.loader.ClientLocation) {
 //         var loc = google.loader.ClientLocation;
 //         if (loc.latitude) {
 //             this.trace('Google ip location:', loc);
 //             //save data
-//             this.saveGeolocationData(type, {
+//             this.saveGeolocationData(type, item, {
 //                 longitude: loc.longitude,
 //                 latitude: loc.latitude,
 //                 city: google.loader.ClientLocation.address.city,
@@ -44,17 +44,17 @@ locator.saveGeolocationData = function (type, data) {
 //             this.trace('Cancelled');
 //         }
 //         else {
-//             setTimeout(function(){this.setLocationFromGoogle(type, iteration);}, 500);
+//             setTimeout(function(){this.setLocationFromGoogle(type, item, iteration);}, 500);
 //         }
 //     }
 // };
 
-locator.setLocationFromFreegeoip = function (type) {
+locator.setLocationFromFreegeoip = function (type, item) {
     $.getJSON('//freegeoip.net/json', function(data){
         if(data.latitude && data.longitude) {
-            locator.trace('geolocated type:', type, ' data:', data);
+            locator.trace('geolocated type:', type, ' item:', item, ' data:', data);
            //save data
-            locator.saveGeolocationData(type, {
+            locator.saveGeolocationData(type, item, {
                 longitude: data.longitude,
                 latitude: data.latitude,
                 city: data.city,
@@ -171,9 +171,9 @@ locator.getLocationFromBrowser = function (callback, iteration) {
  * Sets the location by asking latitude / longitude to the browser
  * @param string type location_item (type) field: 'user', ...
  */
-locator.setLocationFromBrowser = function (type) {
+locator.setLocationFromBrowser = function (type, item) {
     this.getLocationFromBrowser(function(success, data) {
-        locator.saveGeolocationData(type, data);
+        locator.saveGeolocationData(type, item, data);
     });
 };
 
@@ -243,14 +243,14 @@ locator.setGoogleMapPoint = function (obj, iteration) {
  * @param {[type]} type          [description]
  * @param {[type]} autocomplete [description]
  */
-locator.setGoogleAddressFromAutocomplete = function (type) {
+locator.setGoogleAddressFromAutocomplete = function (type, item) {
     if(!this.autocomplete) {
         this.trace('Geocoder error in setGoogleAddressFromAutocomplete, this.autocomplete not present');
         return;
     }
 
     //handle auto geolocator if needed
-    this.trace('Geocoder by autocomplete, type:', type, ' autocomplete object:', this.autocomplete);
+    this.trace('Geocoder by autocomplete, type:', type, ' item:', item, ' autocomplete object:', this.autocomplete);
     var place = this.autocomplete.getPlace();
     if(place && place.geometry && place.address_components) {
         var data = {
@@ -273,7 +273,7 @@ locator.setGoogleAddressFromAutocomplete = function (type) {
             }
         }
         this.trace('place:', place, 'location data:', data);
-        this.saveGeolocationData(type, data);
+        this.saveGeolocationData(type, item, data);
     }
 
 };
@@ -299,14 +299,14 @@ locator.setGoogleAutocomplete = function(id, iteration) {
         // types: ['(cities)']
     };
 
-    this.trace('Setting autocomplete for id: ', id, ' name: ', $(id).attr('name'), ' type: ', $(id)[0]);
+    this.trace('Setting autocomplete for id: ', id, ' name: ', $(id).attr('name'), ' element: ', $(id)[0]);
     this.autocomplete = new google.maps.places.Autocomplete($(id)[0], options);
 
     // When the user selects an address from the dropdown,
     // populate the address fields in the form.
     google.maps.event.addListener(this.autocomplete, 'place_changed', function() {
         if($(id).is('[data-geocoder-type]')) {
-            locator.setGoogleAddressFromAutocomplete($(id).data('geocoder-type'));
+            locator.setGoogleAddressFromAutocomplete($(id).data('geocoder-type'), $(id).is('[data-geocoder-item]') ? $(id).data('geocoder-item') : '');
         }
     });
 };

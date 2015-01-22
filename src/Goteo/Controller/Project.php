@@ -47,16 +47,8 @@ namespace Goteo\Controller {
             }
 
             // no lo puede eliminar si
-            $grant = false;
-            if ($project->owner == $_SESSION['user']->id // es su proyecto
-                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
-                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
-            )
-                $grant = true;
-
-            if (!$grant) {
+            if (!Model\Project::userRemovable($project, Model\User::getUser())) {
                 Library\Message::Info('No tienes permiso para eliminar este proyecto');
-
                 throw new Redirection($goto);
             }
 
@@ -85,17 +77,7 @@ namespace Goteo\Controller {
                 throw new Redirection('/dashboard/projects');
             }
 
-            $grant = false;
-            // Substituye ACL, solo lo puede editar si...
-            if ($project->owner == $_SESSION['user']->id // es su proyecto
-                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
-                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
-                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
-                || (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es revisor
-            )
-                $grant = true;
-
-            if (!$grant) {
+            if (!Model\Project::userEditable($project, Model\User::getUser())) {
                 Library\Message::Info('No tienes permiso para editar este proyecto');
                 throw new Redirection($goto);
             }
@@ -636,22 +618,8 @@ namespace Goteo\Controller {
                 Library\Message::Info(Text::get('project-not_published'));
             }
 
-
-            // solamente se puede ver publicamente si...
-            $grant = false;
-            if ( $project->status > 2 // está publicado
-                || $project->owner == $_SESSION['user']->id // es su proyecto
-                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
-                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
-                || isset($_SESSION['user']->roles['superadmin']) // es superadmin
-                || (isset($_SESSION['user']->roles['checker']) && Model\User\Review::is_assigned($_SESSION['user']->id, $project->id)) // es revisor
-                || (isset($_SESSION['user']->roles['caller']) && Model\Call\Project::is_assigned($_SESSION['user']->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
-            )
-                $grant = true;
-
-
             // si lo puede ver
-            if ($grant) {
+            if (Model\Project::userPublicable($project, Model\User::getUser())) {
 
                 $project->cat_names = Model\Project\Category::getNames($id);
 

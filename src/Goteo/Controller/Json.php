@@ -2,8 +2,10 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
-        Goteo\Model\User\UserLocation,
         Goteo\Model\User,
+        Goteo\Model\Project,
+        Goteo\Model\User\UserLocation,
+        Goteo\Model\Project\ProjectLocation,
         Goteo\Library\Text,
         Goteo\Library\Feed;
 
@@ -89,60 +91,128 @@ namespace Goteo\Controller {
          * @param type 'user' or ...
          *
          */
-        public function geolocate($type = '') {
+        public function geolocate($type = '', $id = '') {
             $return = array('success' => false, 'msg' => '');
             $errors = array();
             //
-            if($type === 'user' && Model\User::isLogged()) {
+            if(Model\User::isLogged()) {
                 $userId = Model\User::getUserId();
-                $return['user'] = $userId;
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    //Handles user localization
-                    if($_POST['latitude'] && $_POST['longitude']) {
-                        if ($loc = UserLocation::addUserLocation(array(
-                            'user'         => $userId,
-                            'city'         => $_POST['city'],
-                            'region'       => $_POST['region'],
-                            'country'      => $_POST['country'],
-                            'country_code' => $_POST['country_code'],
-                            'longitude'    => $_POST['longitude'],
-                            'latitude'     => $_POST['latitude'],
-                            'method'       => $_POST['method'],
-                            'valid'        => 1
-                        ), $errors)) {
-                            $return['msg'] = 'Location successfully added for user';
-                            $return['location'] = $loc;
-                            $return['success'] = true;
-                        } else {
-                            $return['msg'] = 'Localization saving errors: '. implode(',', $errors);
+                if($type === 'user') {
+                    //TODO: let admins edit other users
+                    $return['user'] = $userId;
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        //Handles user localization
+                        if($_POST['latitude'] && $_POST['longitude']) {
+                            if ($loc = UserLocation::addUserLocation(array(
+                                'user'         => $userId,
+                                'city'         => $_POST['city'],
+                                'region'       => $_POST['region'],
+                                'country'      => $_POST['country'],
+                                'country_code' => $_POST['country_code'],
+                                'longitude'    => $_POST['longitude'],
+                                'latitude'     => $_POST['latitude'],
+                                'method'       => $_POST['method'],
+                                'valid'        => 1
+                            ), $errors)) {
+                                $return['msg'] = 'Location successfully added for user';
+                                $return['location'] = $loc;
+                                $return['success'] = true;
+                            } else {
+                                $return['msg'] = 'Localization saving errors: '. implode(',', $errors);
+                            }
                         }
-                    }
-                    else {
-                        //Just changes some properties (locable, info)
-                        foreach($_POST as $key => $value) {
-                            if($key === 'locable' || $key === 'info') {
-                                if(UserLocation::setProperty($userId, $key, $value, $errors)) {
-                                    $return['msg'] = 'Property succesfully changed for user';
-                                    $return['success'] = true;
-                                }
-                                else {
-                                    $return['msg'] = implode(',', $errors);
+                        else {
+                            //Just changes some properties (locable, info)
+                            foreach($_POST as $key => $value) {
+                                if($key === 'locable' || $key === 'info') {
+                                    if(UserLocation::setProperty($userId, $key, $value, $errors)) {
+                                        $return['msg'] = 'Property succesfully changed for user';
+                                        $return['success'] = true;
+                                    }
+                                    else {
+                                        $return['msg'] = implode(',', $errors);
+                                    }
                                 }
                             }
                         }
                     }
+                    //GET method just returns user info
+                    elseif ($loc = UserLocation::get($userId)) {
+                        $return['location'] = $loc;
+                        $return['success'] = true;
+                    }
+                    else {
+                        $return['msg'] = 'User has no location';
+                    }
                 }
-                //GET method just returns user info
-                elseif ($loc = UserLocation::get($userId)) {
-                    $return['location'] = $loc;
-                    $return['success'] = true;
+                elseif($type === 'project') {
+                    //check if user can edit project
+                    try {
+                        $project = Project::get($id);
+                        if(!Project::userEditable($project, User::getUser())) {
+                            $return['msg'] = 'Project id invalid: You don\'t have permissions to edit this project!';
+                            $project = false;
+                        }
+                    } catch(\Exception $e){
+                        $return['msg'] = 'Project id invalid: ' . strip_tags($e->getMessage());
+                        $project = false;
+                    }
+
+                    if($project) {
+                        $projectId = $project->id;
+                        $return['project'] = $projectId;
+                        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                            //Handles project localization
+                            if($_POST['latitude'] && $_POST['longitude']) {
+                                if ($loc = ProjectLocation::addProjectLocation(array(
+                                    'project'         => $projectId,
+                                    'city'         => $_POST['city'],
+                                    'region'       => $_POST['region'],
+                                    'country'      => $_POST['country'],
+                                    'country_code' => $_POST['country_code'],
+                                    'longitude'    => $_POST['longitude'],
+                                    'latitude'     => $_POST['latitude'],
+                                    'method'       => $_POST['method'],
+                                    'valid'        => 1
+                                ), $errors)) {
+                                    $return['msg'] = 'Location successfully added for project';
+                                    $return['location'] = $loc;
+                                    $return['success'] = true;
+                                } else {
+                                    $return['msg'] = 'Localization saving errors: '. implode(',', $errors);
+                                }
+                            }
+                            else {
+                                //Just changes some properties (locable, info)
+                                foreach($_POST as $key => $value) {
+                                    if($key === 'locable' || $key === 'info') {
+                                        if(ProjectLocation::setProperty($projectId, $key, $value, $errors)) {
+                                            $return['msg'] = 'Property succesfully changed for project';
+                                            $return['success'] = true;
+                                        }
+                                        else {
+                                            $return['msg'] = implode(',', $errors);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        //GET method just returns project info
+                        elseif ($loc = ProjectLocation::get($projectId)) {
+                            $return['location'] = $loc;
+                            $return['success'] = true;
+                        }
+                        else {
+                            $return['msg'] = 'Project has no location';
+                        }
+                    }
                 }
                 else {
-                    $return['msg'] = 'User has no location';
+                    $return['msg'] = 'Type must be defined (user, project)';
                 }
             }
             else {
-                $return['msg'] = 'Type must be defined (user)';
+                $return['msg'] = 'User login required!';
             }
 
             $this->result = $return;
@@ -165,7 +235,7 @@ namespace Goteo\Controller {
                 if ($registry->save($errors)) {
     				$this->result['assigned'] = true;
 
-                    $projectData = Model\Project::get($id);
+                    $projectData = Project::get($id);
 
                     // Evento feed
                     $log = new Feed();
