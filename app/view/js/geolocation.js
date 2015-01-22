@@ -265,7 +265,7 @@ $(function(){
     });
 
     //get all maps and print it
-    $('.geomap').each(function(){
+    $('.geo-map').each(function(){
         set_google_map_point(this);
     });
 });
