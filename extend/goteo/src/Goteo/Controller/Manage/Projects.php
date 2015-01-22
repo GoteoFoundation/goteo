@@ -65,9 +65,9 @@ namespace Goteo\Controller\Manage {
                     $mailHandler->html = true;
                     $mailHandler->template = 11;
                     if ($mailHandler->send($errors)) {
-                        // ok
+                        Message::Info('Se le ha enviado a '.$project->user->email.' el contenido de "Contrato listo para imprimir" ');
                     } else {
-                        \mail(\GOTEO_FAIL_MAIL, 'Fallo al enviar mail al marcar contrato Listo para imprimir', 'Contrato Listo para imprimir, proyecto '.$project->name.'. Mandarle a mano. <pre>'.print_r($errors,true).'</pre>');
+                        Message::Error('FALLO al enviar mail de "Contrato listo para imprimir". <br />Mandarselo a mano.<br />Errores: '.implode('<br />', $errors));
                     }
 
                     unset($mailHandler);
