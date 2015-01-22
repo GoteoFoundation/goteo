@@ -26,16 +26,18 @@ namespace Goteo\Model\User {
 
             $query = static::query("SELECT * FROM location_item WHERE type = 'user' AND item = ?", array($id));
             if($ob = $query->fetchObject()) {
-                if($loc = Location::get($ob->location)) {
-                    $loc = new UserLocation(array(
-                        'location' => $ob->location,
-                        'locations' => array($loc),
-                        'user' => $id,
-                        'method' => $ob->method,
-                        'info' => $ob->info,
-                        'locable' => (bool) $ob->locable
-                    ));
+                if(!($loc = Location::get($ob->location))) {
+                    //location non exists
+                    $loc = new Location();
                 }
+                $loc = new UserLocation(array(
+                    'location' => (int) $ob->location,
+                    'locations' => array($loc),
+                    'user' => $id,
+                    'method' => $ob->method,
+                    'info' => $ob->info,
+                    'locable' => (bool) $ob->locable
+                ));
             }
             return $loc ? $loc : false;
 		}

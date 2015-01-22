@@ -26,16 +26,18 @@ namespace Goteo\Model\Project {
 
             $query = static::query("SELECT * FROM location_item WHERE type = 'project' AND item = ?", array($id));
             if($ob = $query->fetchObject()) {
-                if($loc = Location::get($ob->location)) {
-                    $loc = new ProjectLocation(array(
-                        'location' => $ob->location,
-                        'locations' => array($loc),
-                        'project' => $id,
-                        'method' => $ob->method,
-                        'info' => $ob->info,
-                        'locable' => (bool) $ob->locable
-                    ));
+                if(!($loc = Location::get($ob->location))) {
+                    //location non exists
+                    $loc = new Location();
                 }
+                $loc = new ProjectLocation(array(
+                    'location' => (int) $ob->location,
+                    'locations' => array($loc),
+                    'project' => $id,
+                    'method' => $ob->method,
+                    'info' => $ob->info,
+                    'locable' => (bool) $ob->locable
+                ));
             }
             return $loc ? $loc : false;
 		}

@@ -591,6 +591,7 @@ namespace Goteo\Controller\Admin {
         }
 
 
+        //TODO: añadir proyectos
         private static function geoloc() {
 
 

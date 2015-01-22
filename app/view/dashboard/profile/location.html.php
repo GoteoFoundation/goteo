@@ -12,7 +12,7 @@ $geolocation = $this['geolocation'];
 
 <?php
 
-    if ($geolocation instanceof Model\User\UserLocation) :
+    if ($geolocation instanceof Model\User\UserLocation && $geolocation->location) :
         //show button do not locate me
         echo '<h3>' . Text::get('dashboard-user-location-located-title') . '</h3>';
         echo '<p><a href="/dashboard/profile">' . Text::get('dashboard-user-location-change') . '</p></a>';
