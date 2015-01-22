@@ -118,10 +118,12 @@ namespace Goteo\Model\User {
             try {
                 $location = new Location($data);
                 if($location->save($errors)) {
+                    //check if exists location
                     $user_loc = new UserLocation(array(
                         'location' => $location->id,
                         'user' => $data['user'],
-                        'method' => $data['method']
+                        'method' => $data['method'],
+                        'locable' => !self::isUnlocable($data['user'])
                     ));
                     if($user_loc->save($errors)) {
                         $user_loc->locations[] = $location;

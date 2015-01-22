@@ -121,7 +121,8 @@ namespace Goteo\Model\Project {
                     $project_loc = new ProjectLocation(array(
                         'location' => $location->id,
                         'project' => $data['project'],
-                        'method' => $data['method']
+                        'method' => $data['method'],
+                        'locable' => !self::isUnlocable($data['project'])
                     ));
                     if($project_loc->save($errors)) {
                         $project_loc->locations[] = $location;

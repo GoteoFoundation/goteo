@@ -328,12 +328,12 @@ $(function(){
         //only if user is logged
         if(data.user) {
             var use_browser = false;
-            var use_ip = false;
+            var use_ip = true;
 
             if(data.success) {
                 //Is located, if method is IP, Try to override by browser coordinates
-                if(!data.location.location) {
-                    use_ip = true;
+                if(data.location.location) {
+                    use_ip = false;
                 }
                 if(data.location.locable) {
                     if(data.location.method === 'ip') {
@@ -347,7 +347,6 @@ $(function(){
                 //try google IP locator
                 // locator.setLocationFromGoogle('user');
                 locator.setLocationFromFreegeoip('user');
-                use_browser = true;
             }
 
             if(use_browser) {
