@@ -86,7 +86,7 @@ namespace Goteo\Controller {
 
         public function profile($option = 'profile', $action = 'edit') {
             // tratamos el post segun la opcion y la acion
-            $user = $_SESSION['user'];
+            $user = Model\User::getUser();
 
             // salto al perfil público
             if ($option == 'public') throw new Redirection('/user/profile/' . $user->id);
@@ -177,10 +177,10 @@ namespace Goteo\Controller {
                     $viewData['personal'] = Model\User::getPersonal($user->id);
                     break;
                 case 'location':
-                    // datos que se necesiten para la visualización
-                    $viewData['locations'] = Model\Location::getAll();
-                    // contenido de la página
-                    $viewData['page'] = Page::get('geoloc');
+                    // si geolocalizado
+                    $viewData['geolocation'] = $user->geoloc;
+                    if($viewData['geolocation'] && $user->unlocable) $viewData['geolocation'] = false;
+
                     break;
                 case 'access':
                     // si es recover, en contraseña actual tendran que poner el username

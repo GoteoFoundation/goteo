@@ -4,13 +4,7 @@ use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Model;
 
-$user = $this['user'];
-
-// si geolocalizado
-$geolocation = $user->geoloc;
-
-// contenido
-$content = explode('<hr />', $this['page']->content);
+$geolocation = $this['geolocation'];
 
 ?>
 <form action="/dashboard/profile/location" method="post" enctype="multipart/form-data">
@@ -18,36 +12,36 @@ $content = explode('<hr />', $this['page']->content);
 
 <?php
 
-    if ($user->unlocable) {
-        echo $content[0];
-    }
-    elseif ($geolocation instanceof Model\User\UserLocation) {
-        echo str_replace('<!-- MAPA -->',
-                View::get('widget/map.html.php',
-                         array(
-                            'latitude' => $geolocation->locations[0]->latitude,
-                            'longitude' => $geolocation->locations[0]->longitude,
-                            'name' => $geolocation->locations[0]->name)
-                        ),
-                $content[1]);
-    }
-    else {
-        echo $content[2];
-    }
+    if ($geolocation instanceof Model\User\UserLocation) :
+        //show button do not locate me
+        echo '<h3>' . Text::get('dashboard-user-location-located-title') . '</h3>';
+        echo '<p><a href="/dashboard/profile">' . Text::get('dashboard-user-location-change') . '</p></a>';
+
+        //show map located
+        echo View::get( 'widget/map.html.php',
+                   array(
+                    'latitude' => $geolocation->locations[0]->latitude,
+                    'longitude' => $geolocation->locations[0]->longitude,
+                    'name' => $geolocation->locations[0]->name
+                  )
+        );
+?>
+        <p><?php echo Text::get('dashboard-user-location-located-text') ?></p>
+        <p><input name="unlocate" value="<?php echo htmlspecialchars(Text::get('dashboard-user-location-unlocate')); ?>" type="submit"></p>
+<?php
+
+    else :
+        //show button locate me
+?>
+        <h3 style="color:red"><?php echo Text::get('dashboard-user-location-unlocated-title') ?></h3>
+        <p><?php echo Text::get('dashboard-user-location-unlocated-text') ?></p>
+        <p><input name="locable" value="<?php echo htmlspecialchars(Text::get('dashboard-user-location-locate')); ?>" type="submit"></p>
+
+<?php
+    endif;
 
 ?>
 
     </div>
 </form>
-<?php if ($geolocation) : ?>
-<script type="text/javascript">
-$(function () {
 
-    /* Autocomplete para localidad */
-    $( "#user_location" ).autocomplete({
-
-    });
-
-});
-</script>
-<?php endif; ?>

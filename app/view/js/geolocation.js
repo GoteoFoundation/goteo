@@ -152,7 +152,7 @@ function get_location_from_browser(callback, iteration) {
                       data.info = "An unknown error occurred.";
                       break;
                 }
-                goteo.trace('Geocoder error:', error, ' data:', data);
+                goteo.trace('Geocoder error:', error, ' data:', data, ' position:', position);
                 if(typeof callback === 'function') {
                     callback(success, data);
                 }
