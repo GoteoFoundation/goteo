@@ -1,25 +1,31 @@
+var locator = {
+    trace: goteo.trace,
+    map: null,
+    autocomplete: null
+};
 
 /**
  * Send the data to ws/database
  */
-function save_geolocation_data(type, data) {
-    goteo.trace('Saving geolocation data, type:', type, ' data:', data);
+locator.saveGeolocationData = function (type, data) {
+    this.trace('Saving geolocation data, type:', type, ' data:', data);
     $.post('/json/geolocate/' + type, data, function(result){
-        goteo.trace('Saved gelocation data result:', result);
+        locator.trace('Saved gelocation data result:', result);
     });
-}
+};
+
 /**
  * Sets the location by asking latitude / longitude to google (ip based location)
  * @param string type location_item (type) field: 'user', ...
  * requires     <script type="text/javascript" src="https://www.google.com/jsapi"></script> to be loaded
  */
-// function set_location_from_google(type, iteration) {
+// locator.setLocationFromGoogle = function (type, iteration) {
 //     if(typeof google !== 'undefined' && google.loader.ClientLocation) {
 //         var loc = google.loader.ClientLocation;
 //         if (loc.latitude) {
-//             goteo.trace('Google ip location:', loc);
+//             this.trace('Google ip location:', loc);
 //             //save data
-//             save_geolocation_data(type, {
+//             this.saveGeolocationData(type, {
 //                 longitude: loc.longitude,
 //                 latitude: loc.latitude,
 //                 city: google.loader.ClientLocation.address.city,
@@ -33,22 +39,22 @@ function save_geolocation_data(type, data) {
 //     else {
 //         if(!(iteration)) iteration = 0;
 //         iteration++;
-//         goteo.trace('google client does not exists! [' + type +' '+iteration+ ']');
+//         this.trace('google client does not exists! [' + type +' '+iteration+ ']');
 //         if(iteration > 10) {
-//             goteo.trace('Cancelled');
+//             this.trace('Cancelled');
 //         }
 //         else {
-//             setTimeout(function(){set_location_from_google(type, iteration);}, 500);
+//             setTimeout(function(){this.setLocationFromGoogle(type, iteration);}, 500);
 //         }
 //     }
-// }
+// };
 
-function set_location_from_freegeoip(type) {
+locator.setLocationFromFreegeoip = function (type) {
     $.getJSON('//freegeoip.net/json', function(data){
         if(data.latitude && data.longitude) {
-            goteo.trace('geolocated type:', type, ' data:', data);
+            locator.trace('geolocated type:', type, ' data:', data);
            //save data
-            save_geolocation_data(type, {
+            locator.saveGeolocationData(type, {
                 longitude: data.longitude,
                 latitude: data.latitude,
                 city: data.city,
@@ -59,33 +65,33 @@ function set_location_from_freegeoip(type) {
             });
         }
         else {
-            goteo.trace('Freegeoip error');
+            locator.trace('Freegeoip error');
         }
     });
-}
+};
 
 /**
  * Gets location by asking latitude/longitude to the browser
  *
  * use with callback function as:
  *
- * get_location_from_browser(function(success, data) {
- *     goteo.trace('success: ' + success, data.city, data.region, data.country, data.country_code, data.latitude, data.longitude);
+ * locator.getLocationFromBrowser(function(success, data) {
+ *     locator.trace('success: ' + success, data.city, data.region, data.country, data.country_code, data.latitude, data.longitude);
  * })
  *
  */
-function get_location_from_browser(callback, iteration) {
+locator.getLocationFromBrowser = function (callback, iteration) {
     var success = false;
     var data= {};
 
     if(typeof google === 'undefined' && !google.maps) {
         if(!(iteration)) iteration = 0;
         iteration++;
-        goteo.trace('google.map client does not exists! ['+iteration+ ']');
+        this.trace('google.map client does not exists! ['+iteration+ ']');
         if(iteration > 10) {
-            goteo.trace('Cancelled');
+            this.trace('Cancelled');
         }
-        setTimeout(function(){get_location_from_browser(callback, iteration);}, 500);
+        setTimeout(function(){this.getLocationFromBrowser(callback, iteration);}, 500);
         return;
     }
 
@@ -94,7 +100,7 @@ function get_location_from_browser(callback, iteration) {
         //Try browser IP locator
         navigator.geolocation.getCurrentPosition(
             function(position) {
-                goteo.trace('browser info:', position.coords.latitude, position.coords.longitude);
+                locator.trace('browser info:', position.coords.latitude, position.coords.longitude);
                 data = {
                     method: 'browser',
                     latitude: position.coords.latitude,
@@ -106,10 +112,10 @@ function get_location_from_browser(callback, iteration) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         if (results[0]) {
                             success = true;
-                            // goteo.trace(results[0]);
+                            // locator.trace(results[0]);
                             for(var i in results[0].address_components) {
                                 var ob = results[0].address_components[i];
-                                // goteo.trace(i, ob, "\n");
+                                // locator.trace(i, ob, "\n");
                                 if(ob.types[0] === 'country' && ob.types[1] === 'political') {
                                     data.country = ob.long_name;
                                     data.country_code = ob.short_name;
@@ -121,9 +127,9 @@ function get_location_from_browser(callback, iteration) {
                                     data.region = ob.long_name;
                                 }
                             }
-                            goteo.trace('Geocoder data:', data);
+                            locator.trace('Geocoder data:', data);
                         } else {
-                            goteo.trace('Geocoder failed due to: ' + status);
+                            locator.trace('Geocoder failed due to: ' + status);
                         }
                     }
                     if(typeof callback === 'function') {
@@ -152,24 +158,24 @@ function get_location_from_browser(callback, iteration) {
                       data.info = "An unknown error occurred.";
                       break;
                 }
-                goteo.trace('Geocoder error:', error, ' data:', data, ' position:', position);
+                locator.trace('Geocoder error:', error, ' data:', data, ' position:', position);
                 if(typeof callback === 'function') {
                     callback(success, data);
                 }
             }
         );
     }
-}
+};
 
 /**
  * Sets the location by asking latitude / longitude to the browser
  * @param string type location_item (type) field: 'user', ...
  */
-function set_location_from_browser(type) {
-    get_location_from_browser(function(success, data) {
-        save_geolocation_data(type, data);
+locator.setLocationFromBrowser = function (type) {
+    this.getLocationFromBrowser(function(success, data) {
+        locator.saveGeolocationData(type, data);
     });
-}
+};
 
 /**
  * Loads a google map on a div
@@ -177,15 +183,15 @@ function set_location_from_browser(type) {
  * @param {string} desc      description (optional)
  *
  */
-function set_google_map_point(obj, iteration) {
-    if(typeof google === 'undefined' && !google.maps) {
+locator.setGoogleMapPoint = function (obj, iteration) {
+    if(typeof google === 'undefined' || !google.maps) {
         if(!(iteration)) iteration = 0;
         iteration++;
-        goteo.trace('google.map client does not exists! ['+iteration+ ']');
+        this.trace('google.maps client does not exists! ['+iteration+ ']');
         if(iteration > 10) {
-            goteo.trace('Cancelled');
+            this.trace('Cancelled');
         }
-        setTimeout(function(){set_google_map_point(obj, lat, lng, desc, iteration);}, 500);
+        setTimeout(function(){this.setGoogleMapPoint(obj, iteration);}, 500);
         return;
     }
 
@@ -203,18 +209,18 @@ function set_google_map_point(obj, iteration) {
         var lat = $(obj).data('map-latitude');
         var lng = $(obj).data('map-longitude');
 
-        goteo.trace('Found printable geomap, id: ', id, ' lat,lng: ', lat, lng, ' content', $(obj).data('map-content'));
+        this.trace('Found printable geomap, id: ', id, ' lat,lng: ', lat, lng, ' content', $(obj).data('map-content'));
         if(lat && lng) {
             mapOptions.center = new google.maps.LatLng(lat, lng);
             mapOptions.zoom = 7;
         }
     }
     //draw map
-    var map = new google.maps.Map(obj, mapOptions);
+    this.map = new google.maps.Map(obj, mapOptions);
     var marker = new google.maps.Marker({
         position: mapOptions.center
     });
-    marker.setMap(map);
+    marker.setMap(this.map);
 
     //draw info window
     if($(obj).is('[data-map-content]')) {
@@ -222,21 +228,97 @@ function set_google_map_point(obj, iteration) {
         var coordInfoWindow = new google.maps.InfoWindow();
         coordInfoWindow.setContent(desc);
         coordInfoWindow.setPosition(mapOptions.center);
-        coordInfoWindow.open(map);
+        coordInfoWindow.open(this.map);
 
-        google.maps.event.addListener(map, 'zoom_changed', function() {
+        google.maps.event.addListener(this.map, 'zoom_changed', function() {
             coordInfoWindow.setContent(desc);
-            coordInfoWindow.open(map);
+            coordInfoWindow.open(this.map);
         });
     }
 
-}
+};
 
+/**
+ * updates geolocation from
+ * @param {[type]} type          [description]
+ * @param {[type]} autocomplete [description]
+ */
+locator.setGoogleAddressFromAutocomplete = function (type) {
+    if(!this.autocomplete) {
+        this.trace('Geocoder error in setGoogleAddressFromAutocomplete, this.autocomplete not present');
+        return;
+    }
+
+    //handle auto geolocator if needed
+    this.trace('Geocoder by autocomplete, type:', type, ' autocomplete object:', this.autocomplete);
+    var place = this.autocomplete.getPlace();
+    if(place && place.geometry && place.address_components) {
+        var data = {
+            latitude : place.geometry.location.lat(),
+            longitude : place.geometry.location.lng(),
+            'method' : 'manual'
+        };
+        for(var i in place.address_components) {
+            var ob = place.address_components[i];
+            // this.trace(i, ob, "\n");
+            if(ob.types[0] === 'country' && ob.types[1] === 'political') {
+                data.country = ob.long_name;
+                data.country_code = ob.short_name;
+            }
+            if(ob.types[0] === 'locality' && ob.types[1] === 'political') {
+                data.city = ob.long_name;
+            }
+            if((ob.types[0] === 'administrative_area_level_1' || ob.types[0] === 'administrative_area_level_2') && ob.types[1] === 'political') {
+                data.region = ob.long_name;
+            }
+        }
+        this.trace('place:', place, 'location data:', data);
+        this.saveGeolocationData(type, data);
+    }
+
+};
+
+/**
+ * Loads a google map on a div
+ * @param {object} obj       DOM div to create a map on
+ * @param {string} desc      description (optional)
+ *
+ */
+locator.setGoogleAutocomplete = function(id, iteration) {
+    if(typeof google === 'undefined' || !google.maps || !google.maps.places) {
+        if(!(iteration)) iteration = 0;
+        iteration++;
+        this.trace('google.maps.places client does not exists! ['+iteration+ ']');
+        if(iteration > 10) {
+            this.trace('Cancelled');
+        }
+        setTimeout(function(){this.setGoogleAutocomplete(id, iteration);}, 500);
+        return;
+    }
+    var options = {
+        // types: ['(cities)']
+    };
+
+    this.trace('Setting autocomplete for id: ', id, ' name: ', $(id).attr('name'), ' type: ', $(id)[0]);
+    this.autocomplete = new google.maps.places.Autocomplete($(id)[0], options);
+
+    // When the user selects an address from the dropdown,
+    // populate the address fields in the form.
+    google.maps.event.addListener(this.autocomplete, 'place_changed', function() {
+        if($(id).is('[data-geocoder-type]')) {
+            locator.setGoogleAddressFromAutocomplete($(id).data('geocoder-type'));
+        }
+    });
+};
+
+/**
+ * Document ready
+ */
 $(function(){
 
     // get user current location status, geolocate if needed
     $.getJSON('/json/geolocate/user', function(data){
-        goteo.trace('Current user localization status: ', data);
+        locator.trace('Current user localization status: ', data);
 
         //only if user is logged
         if(data.user) {
@@ -251,21 +333,38 @@ $(function(){
             }
             else {
                 //try google IP locator
-                // set_location_from_google('user');
-                set_location_from_freegeoip('user');
+                // locator.setLocationFromGoogle('user');
+                locator.setLocationFromFreegeoip('user');
                 use_browser = true;
             }
 
             if(use_browser) {
-                goteo.trace('Trying browser localization');
+                locator.trace('Trying browser localization');
                 //try the browser for more precision
-                set_location_from_browser('user');
+                locator.setLocationFromBrowser('user');
             }
         }
     });
 
-    //get all maps and print it
+    //handles all maps and print it
     $('.geo-map').each(function(){
-        set_google_map_point(this);
+        locator.setGoogleMapPoint(this);
+    });
+
+    //handles all autocomplete fields
+    $('input.geo-autocomplete').each(function(){
+        if(!$(this).is('[id]')) {
+            locator.trace('Missing ID html element for input:', this);
+        }
+        else {
+            locator.setGoogleAutocomplete('input#' + $(this).attr('id') + '.geo-autocomplete');
+        }
+        //bind superforn dom changes
+        $(this).closest('li.element').bind('superform.dom.done', function (event, html, new_el) {
+            locator.trace('dom update', new_el);
+            $(new_el).find('input.geo-autocomplete').each(function(){
+                locator.setGoogleAutocomplete('input#' + $(this).attr('id') + '.geo-autocomplete');
+            });
+        });
     });
 });

@@ -117,6 +117,8 @@ echo SuperForm::get(array(
             'hint'      => Text::get('tooltip-user-location'),
             'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
             'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
+            'class'     => 'geo-autocomplete',
+            'data'      => array('geocoder-type' => 'user'),
             'value'     => $user->location
         ),
 
