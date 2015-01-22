@@ -117,35 +117,26 @@ namespace Goteo\Model {
         /*
          * Conteo de usuarios por geolocalización
          */
-        public static function countBy ($type = 'registered', $keyword = '') {
+        public static function countBy ($type = 'user', $count = 'registered', $keyword = '') {
 
-            switch ($type) {
-                case 'registered':
-                    $sql = "SELECT COUNT(id) FROM user";
-                    break;
-                case 'node':
-                    $sql = "SELECT COUNT(id) FROM user WHERE node = '{$keyword}'";
-                    break;
-                case 'no-location':
-                    $sql = "SELECT COUNT(id) FROM user WHERE location = ''";
-                    break;
+            switch ($count) {
                 case 'located':
-                    $sql = "SELECT COUNT(location_item.item) FROM location_item RIGHT JOIN location ON location.id = location_item.location AND location_item.type = 'user'";
+                    $sql = "SELECT COUNT(location_item.item) FROM location_item RIGHT JOIN location ON location.id = location_item.location AND location_item.type = '$type'";
                     break;
                 case 'unlocable':
-                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.locable = 0";
+                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.locable = 0 AND location_item.type = '$type'";
                     break;
                 case 'not-country':
-                    $sql = "SELECT COUNT(location_item.item) FROM location_item RIGHT JOIN location ON location.id = location_item.location AND location.country_code NOT LIKE '{$keyword}'";
+                    $sql = "SELECT COUNT(location_item.item) FROM location_item RIGHT JOIN location ON location.id = location_item.location AND location_item.type = '$type' AND location.country_code NOT LIKE '{$keyword}'";
                     break;
                 case 'country':
-                    $sql = "SELECT COUNT(location_item.item) FROM location_item RIGHT JOIN location ON location.id = location_item.location AND location.country_code LIKE '{$keyword}'";
+                    $sql = "SELECT COUNT(location_item.item) FROM location_item RIGHT JOIN location ON location.id = location_item.location AND location_item.type = '$type' AND location.country_code LIKE '{$keyword}'";
                     break;
                 case 'region':
-                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location IN (SELECT location.id FROM location WHERE location.region LIKE '{$keyword}')";
+                    $sql = "SELECT COUNT(location_item.item) FROM location_item RIGHT JOIN location ON location.id = location_item.location AND location_item.type = '$type' AND location.region LIKE '{$keyword}'";
                     break;
                 case 'geolocation':
-                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location = '{$keyword}'";
+                    $sql = "SELECT COUNT(item) FROM location_item WHERE location_item.location = '{$keyword}' AND location_item.type = '$type'";
                     break;
             }
 
