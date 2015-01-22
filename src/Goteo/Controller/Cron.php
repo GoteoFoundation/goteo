@@ -84,8 +84,6 @@ namespace Goteo\Controller {
 
             // lanzamos subcontrolador
             Cron\Verify::process($debug);
-            // también el tratamiento de geologin
-            Cron\Geoloc::process($debug);
 
             // recogemos el buffer para grabar el log
             /*

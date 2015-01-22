@@ -3243,6 +3243,32 @@ namespace Goteo\Model {
         }
 
         /**
+         * Metodo para direcciones de proyectos
+         * @return array strings
+         *
+         * Cerca de la obsolitud
+         *
+         */
+        public static function getProjLocs () {
+
+            $results = array();
+
+            $sql = "SELECT distinct(project_location) as location
+                    FROM project
+                    WHERE status > 2
+                    ORDER BY location ASC";
+
+            try {
+                $query = self::query($sql);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                    $results[md5($item->location)] = $item->location;
+                }
+                return $results;
+            } catch (\PDOException $e) {
+                throw new Exception('Fallo la lista de localizaciones');
+            }
+        }
+        /**
          *  Saca las vias de contacto para un proyecto
          * @return: Model\Project
          */

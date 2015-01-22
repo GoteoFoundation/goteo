@@ -607,30 +607,36 @@ namespace Goteo\Controller\Admin {
                     throw new Redirection('/admin/reports/geoloc');
                 }
             } else {
+                $registered = Model\Location::countBy('registered');
+                $located = Model\Location::countBy('located');
                 $data = array(
                     'date'          => date('Ymd'),
                     'report'        => 'geoloc',
-                    'registered'    => Model\Location::countBy('registered'),
+                    'registered'    => $registered,
                     'no-location'   => Model\Location::countBy('no-location'),
-                    'located'       => Model\Location::countBy('located'),
-                    'unlocated'     => Model\Location::countBy('unlocated'),
+                    'located'       => $located,
+                    'unlocated'     => $registered - $located,
                     'unlocable'     => Model\Location::countBy('unlocable'),
-                    'not-spain'     => Model\Location::countBy('not-country', 'España'),
+                    'not-spain'     => Model\Location::countBy('not-country', 'ES'),
                     'by-region'     => array(),
                     'by-country'    => array(),
                     'by-node'       => array()
                 );
 
-                // por provincias españolas
-                $regions = Model\Location::getList('region', array('type'=>'country', 'value'=>md5('España')));
-                foreach ($regions as $regionId => $regionName) {
-                    $data['by-region'][$regionName] = Model\Location::countBy('region', $regionName);
+                // por regiones españolas
+                $sql = "SELECT DISTINCT(region) as region FROM location WHERE country_code = 'ES' ORDER BY region ASC";
+                if($query = Model\Location::query($sql)) {
+                    foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
+                        $data['by-region'][$ob->region] = Model\Location::countBy('region', $ob->region);
+                    }
                 }
 
-                // por paises
-                $countries = Model\Location::getList('country');
-                foreach ($countries as $countryId => $countryName) {
-                    $data['by-country'][$countryName] = Model\Location::countBy('country', $countryName);
+                // // por paises
+                $sql = "SELECT country_code, country FROM location GROUP BY country_code ORDER BY country_code ASC";
+                if($query = Model\Location::query($sql)) {
+                    foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
+                        $data['by-country'][$ob->country_code . ' (' . $ob->country . ')'] = Model\Location::countBy('country', $ob->country_code);
+                    }
                 }
 
                 // por nodo (no exactamente geoloc....)

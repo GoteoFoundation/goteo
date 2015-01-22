@@ -83,29 +83,6 @@ namespace Goteo\Controller {
             return $this->output();
         }
 
-		/**
-		 * Localizaciones para autocomplete
-         * TODO: potencialmente infinito?
-		 * */
-		// public function locations() {
-
-  //           $locations = Model\Location::getAll();
-
-  //           // ordenar por nombre
-  //           uasort($locations,
-  //               function ($a, $b) {
-  //                   if ($a->name == $b->name) return 0;
-  //                   return ($a->name > $b->name) ? 1 : -1;
-  //                   }
-  //               );
-
-		// 	foreach ($locations as $loc) {
-  //               $this->result[] = $loc->name;
-  //           }
-
-		// 	return $this->output();
-		// }
-
         /**
          * JSON endpoint to retrieve/establish the user's location
          *
