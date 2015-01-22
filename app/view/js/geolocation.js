@@ -299,6 +299,11 @@ locator.setGoogleAutocomplete = function(id, iteration) {
         // types: ['(cities)']
     };
 
+    //https://developers.google.com/places/documentation/autocomplete?hl=es#place_types
+    if($(id).is('[data-geocoder-filter]')) {
+        options.types = [$(id).data('geocoder-filter')];
+    }
+
     this.trace('Setting autocomplete for id: ', id, ' name: ', $(id).attr('name'), ' element: ', $(id)[0]);
     this.autocomplete = new google.maps.places.Autocomplete($(id)[0], options);
 
