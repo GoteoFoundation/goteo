@@ -5,6 +5,8 @@ namespace Goteo\Model {
     use Goteo\Library\Check;
 
     class OpenTag extends \Goteo\Core\Model {
+        //table for this model is not opentag but open_tag
+        protected $Table = 'open_tag';
 
         public
             $id,
@@ -172,18 +174,16 @@ namespace Goteo\Model {
             }
         }
 
-        /*
-         * Para quitar una catgoria de la tabla
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
          */
-        public static function delete ($id) {
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
 
-            $sql = "DELETE FROM open_tag WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
+            if(!($ob = OpenTag::get($id))) return false;
+            return $ob->delete();
         }
 
         /*

@@ -134,7 +134,10 @@ $superarray = array(
 //            'hint'      => Text::get('tooltip-user-location'),
             'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
             'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
-            'value'     => $user->location
+            'value'     => $user->location,
+            'class'     => 'geo-autocomplete',
+            //HTML5 data extra attributes
+            'data'      => array('geocoder-type' => 'user') //this field updates geolocation user's position
         ),
         'user_avatar' => array(
             'type'      => 'group',

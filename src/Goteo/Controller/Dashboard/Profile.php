@@ -10,14 +10,14 @@ namespace Goteo\Controller\Dashboard {
 
         /**
          * Tratamiento de formulario de datos de perfil
-         * 
+         *
          * @param object $user instancia de Model\User  (por referencia)
          * @param object $vip instancia de Model\User\Vip  (por referencia)
          * @param array $errors  (por referencia)
          * @param string $log_action  (por referencia)
          * @return boolean si se guarda bien
          */
-        public static function process_profile (&$user, &$vip, &$errors, &$log_action) {
+        public static function process_profile (Model\User $user, $vip, &$errors, &$log_action) {
 
             $fields = array(
                 'user_name' => 'name',
@@ -43,7 +43,7 @@ namespace Goteo\Controller\Dashboard {
             if (isset($_FILES['avatar_upload']) && $_FILES['avatar_upload']['error'] != UPLOAD_ERR_NO_FILE) {
                 $user->avatar = $_FILES['avatar_upload'];
             }
- 
+
             // tratar si quitan la imagen
             if (!empty($_POST['avatar-' . $user->avatar->hash . '-remove'])) {
                 $user->avatar->remove($errors);
@@ -106,7 +106,6 @@ namespace Goteo\Controller\Dashboard {
 
                     }
                 }
-
                 $user = Model\User::flush();
 
                 return true;
@@ -117,17 +116,17 @@ namespace Goteo\Controller\Dashboard {
             }
         }
 
-        
+
         /**
          * Tratamiendo del formulario de datos personales
-         * 
+         *
          * @param string(59) $id del usuario logueado
          * @param array $errors  (por referencia)
          * @param string $log_action  (por referencia)
          * @return boolean si se guarda bien
          */
         public static function process_personal ($id, &$errors, &$log_action) {
-            
+
             $fields = array(
                 'contract_name',
                 'contract_nif',
@@ -156,10 +155,10 @@ namespace Goteo\Controller\Dashboard {
             }
         }
 
-        
+
         /**
          * Cambio de email / contraseña
-         * 
+         *
          * @param object $user instancia de Model\User  (por referencia)
          * @param array $errors  (por referencia)
          * @param string $log_action  (por referencia)
@@ -219,17 +218,17 @@ namespace Goteo\Controller\Dashboard {
             }
         }
 
-        
+
         /**
          * Tratamiendo del formulario de preferencias de notificación
-         * 
+         *
          * @param string(59) $id del usuario logueado
          * @param array $errors  (por referencia)
          * @param string $log_action  (por referencia)
          * @return boolean si se guarda bien
          */
         public static function process_preferences ($id, &$errors, &$log_action) {
-            
+
             $fields = array(
                 'updates',
                 'threads',

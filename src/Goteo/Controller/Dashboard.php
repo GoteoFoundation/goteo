@@ -5,6 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Core\ACL,
         Goteo\Core\Redirection,
         Goteo\Core\View,
+        Goteo\Application\Session,
         Goteo\Model,
         Goteo\Library\Message,
         Goteo\Library\Feed,
@@ -26,8 +27,7 @@ namespace Goteo\Controller {
          */
         public function activity($option = 'summary', $action = 'view') {
 
-            $user = $_SESSION['user'];
-            $errors = array();
+            $user = Session::getUser();
 
             $viewData = array(
                                 'menu' => self::menu(),
@@ -99,7 +99,7 @@ namespace Goteo\Controller {
 
         public function profile($option = 'profile', $action = 'edit') {
             // tratamos el post segun la opcion y la acion
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             // salto al perfil público
             if ($option == 'public') throw new Redirection('/user/profile/' . $user->id);
@@ -190,10 +190,10 @@ namespace Goteo\Controller {
                     $viewData['personal'] = Model\User::getPersonal($user->id);
                     break;
                 case 'location':
-                    // datos que se necesiten para la visualización
-                    $viewData['locations'] = Model\Location::getAll();
-                    // contenido de la página
-                    $viewData['page'] = Page::get('geoloc');
+                    // si geolocalizado
+                    $viewData['geolocation'] = $user->geoloc;
+                    if($viewData['geolocation'] && $user->unlocable) $viewData['geolocation'] = false;
+
                     break;
                 case 'access':
                     // si es recover, en contraseña actual tendran que poner el username
@@ -214,7 +214,7 @@ namespace Goteo\Controller {
 
                     break;
             }
-
+            // print_r($viewData);die;
             return new View('dashboard/index.html.php', $viewData);
         }
 

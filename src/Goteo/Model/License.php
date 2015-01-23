@@ -3,7 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check;
-    
+
     class License extends \Goteo\Core\Model {
 
         public
@@ -70,7 +70,7 @@ namespace Goteo\Model {
                                     IFNULL(license_lang.url, IFNULL(eng.url, license.url)) as url";
                 $eng_join=" LEFT JOIN license_lang as eng
                                     ON  eng.id = license.id
-                                    AND eng.lang = 'en'";       
+                                    AND eng.lang = 'en'";
                 }
             $sql = "
                 SELECT
@@ -109,9 +109,9 @@ namespace Goteo\Model {
 
             $sql .= "ORDER BY `order` ASC, name ASC
                 ";
-            
+
             $query = static::query($sql, $values);
-            
+
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
 
@@ -134,7 +134,7 @@ namespace Goteo\Model {
                                     IFNULL(license_lang.url, IFNULL(eng.url, license.url)) as url";
                 $eng_join=" LEFT JOIN license_lang as eng
                                     ON  eng.id = license.id
-                                    AND eng.lang = 'en'";       
+                                    AND eng.lang = 'en'";
                 }
 
             $sql = "
@@ -217,16 +217,27 @@ namespace Goteo\Model {
         /*
          * Para quitar una pregunta
          */
-        public static function delete ($id) {
-            
-            $sql = "DELETE FROM license WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                self::query("DELETE FROM icon_license WHERE license = ?", array($id));
-                
-                return true;
-            } else {
+        public function delete ($id = null) {
+            if(empty($id) && $this->id) {
+                $id = $this->id;
+            }
+            if(empty($id)) {
+                // throw new Exception("Delete error: ID not defined!");
                 return false;
             }
+
+            try {
+                $sql = "DELETE FROM license WHERE id = :id";
+                if (self::query($sql, array(':id'=>$id))) {
+                    self::query("DELETE FROM icon_license WHERE license = ?", array($id));
+                }
+
+            } catch (\PDOException $e) {
+                // throw new Exception("Delete error in $sql");
+                return false;
+            }
+            return true;
+
 
         }
 
@@ -263,5 +274,5 @@ namespace Goteo\Model {
 
 
     }
-    
+
 }

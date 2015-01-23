@@ -88,6 +88,14 @@ class Cacher {
         return FileSystemCache::store($key, $data, $ttl);
     }
 
+    public function modify(FileSystemCacheKey $key, Closure $callback, $resetTtl=false) {
+        return FileSystemCache::getAndModify($key, $callback, $resetTtl=false);
+    }
+
+    public function invalidate(FileSystemCacheKey $key) {
+        return FileSystemCache::invalidate($key);
+    }
+
     /**
      * Retrieve data from cache
      * @param FileSystemCacheKey $key The cache key

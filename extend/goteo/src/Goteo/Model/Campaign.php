@@ -1,7 +1,7 @@
 <?php
 
 namespace Goteo\Model {
-    
+
     use \Goteo\Library\Text,
         \Goteo\Library\Check;
 
@@ -152,20 +152,6 @@ namespace Goteo\Model {
             }
         }
 
-        /*
-         * Para quitar un proyecto destacada
-         */
-        public static function delete ($id) {
-
-            $sql = "DELETE FROM campaign WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
         /* Para activar/desactivar un destacada
          */
         public static function setActive ($id, $active = false) {
@@ -178,6 +164,26 @@ namespace Goteo\Model {
             }
 
         }
+
+
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
+         */
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
+
+            $sql = 'DELETE FROM campaign WHERE id = ?';
+            try {
+                self::query($sql, array($id));
+            } catch (\PDOException $e) {
+                // throw new Exception("Delete error in $sql");
+                return false;
+            }
+            return true;
+        }
+
 
         /*
          * Para que salga antes  (disminuir el order)
