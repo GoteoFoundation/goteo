@@ -4,6 +4,7 @@ namespace Goteo\Model {
 
     use Goteo\Library\Text,
         Goteo\Library\Feed,
+        Goteo\Model\User,
         Goteo\Model\Image;
 
     class Message extends \Goteo\Core\Model {
