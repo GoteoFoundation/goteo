@@ -36,8 +36,9 @@ namespace Goteo\Controller {
         }
 
         public function delete ($id) {
+            $user = Session::getUser();
             // redirección según usuario
-            $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
+            $goto = isset($user->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
 
             // preveer posible cambio de id
             try {
@@ -67,8 +68,9 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         public function edit ($id, $step = 'userProfile') {
+            $user = Session::getUser();
             // redirección según usuario
-            $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
+            $goto = isset($user->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
 
             // preveer posible cambio de id
             try {
@@ -86,7 +88,7 @@ namespace Goteo\Controller {
             $currency_data = Library\Currency::$currencies[$project->currency];
 
             // al impulsor se le prohibe ver ningun paso cuando ya no está en edición
-            if ($project->status != 1 && $project->owner == $_SESSION['user']->id ) {
+            if ($project->status != 1 && $project->owner == $user->id ) {
                 // solo puede estar en preview
                 $step = 'preview';
 
@@ -485,8 +487,7 @@ namespace Goteo\Controller {
         }
 
         public function create () {
-
-            if (empty($_SESSION['user'])) {
+            if (! ($user = Session::getUser()) ) {
                 $_SESSION['jumpto'] = '/project/create';
                 Library\Message::Info(Text::get('user-login-required-to_create'));
                 throw new Redirection(SEC_URL.'/user/login');
@@ -501,10 +502,10 @@ namespace Goteo\Controller {
 
                 // Evento Feed
                 $log = new Feed();
-                $log->setTarget($_SESSION['user']->id, 'user');
+                $log->setTarget($user->id, 'user');
                 $log->populate('usuario crea nuevo proyecto', 'admin/projects',
                     \vsprintf('%s ha creado un nuevo proyecto, %s', array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('user', $user->name, $user->id),
                         Feed::item('project', $project->name, $project->id))
                     ));
                 $log->doAdmin('project');
@@ -523,8 +524,8 @@ namespace Goteo\Controller {
                         // email al autor
 
                         //  idioma de preferencia del usuario
-                        $prefer = Model\User::getPreferences($_SESSION['user']->id);
-                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $_SESSION['user']->lang;
+                        $prefer = Model\User::getPreferences($user->id);
+                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
 
                         // Obtenemos la plantilla para asunto y contenido
                         $template = Template::get(39, $comlang);
@@ -534,14 +535,14 @@ namespace Goteo\Controller {
 
                         // En el contenido:
                         $search  = array('%USERNAME%', '%CALLNAME%', '%CALLERNAME%', '%CALLURL%');
-                        $replace = array($_SESSION['user']->name, $callData->name, $callData->user->name, SITE_URL.'/call/'.$call);
+                        $replace = array($user->name, $callData->name, $callData->user->name, SITE_URL.'/call/'.$call);
                         $content = \str_replace($search, $replace, $template->text);
 
 
                         $mailHandler = new Model\Mail();
 
-                        $mailHandler->to = $_SESSION['user']->email;
-                        $mailHandler->toName = $_SESSION['user']->name;
+                        $mailHandler->to = $user->email;
+                        $mailHandler->toName = $user->name;
                         $mailHandler->subject = $subject;
                         $mailHandler->content = $content;
                         $mailHandler->html = true;
@@ -550,7 +551,7 @@ namespace Goteo\Controller {
                             Library\Message::Info(Text::get('assign-call-success', $callData->name));
                         } else {
                             Library\Message::Error(Text::get('project-review-confirm_mail-fail'));
-                            \mail(\GOTEO_FAIL_MAIL, 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $_SESSION['user']->email . ' con esta instancia <pre>'.print_r($mailHandler, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
+                            \mail(\GOTEO_FAIL_MAIL, 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $user->email . ' con esta instancia <pre>'.print_r($mailHandler, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
                         }
 
                         unset($mailHandler);
@@ -581,6 +582,7 @@ namespace Goteo\Controller {
             \Goteo\Core\DB::cache(true);
 
             $project = Model\Project::get($id, LANG);
+            $user = Session::getUser();
 
             // recompensas
             foreach ($project->individual_rewards as &$reward) {
@@ -684,9 +686,9 @@ namespace Goteo\Controller {
                             $_SESSION['invest-amount'] = str_replace(array(',', '.'), '', $_GET['amount']);
 
                         // si el usuario está validado, recuperamos posible amount y mostramos
-                        if ($_SESSION['user'] instanceof Model\User) {
+                        if ($user instanceof Model\User) {
                             $step = 'confirm';
-                        } elseif ($step != 'start' && empty($_SESSION['user'])) {
+                        } elseif ($step != 'start' && empty($user)) {
                             // si no está validado solo puede estar en start
                             Library\Message::Info(Text::get('user-login-required-to_invest'));
                             $step = 'start';
@@ -701,7 +703,7 @@ namespace Goteo\Controller {
                     /*
                     elseif (isset($_SESSION['pre-invest'])) {
                         // aporte incompleto, puede ser que aun no esté logueado
-                        if (empty($_SESSION['user'])) {
+                        if (empty($user)) {
                             $step = 'login';
                         } else {
                             $step = 'confirm';
@@ -722,7 +724,7 @@ namespace Goteo\Controller {
                 if ($show == 'messages') {
                     $project->messages = Model\Message::getAll($project->id);
 
-                    if (empty($_SESSION['user'])) {
+                    if (empty($user)) {
                         Library\Message::Info(Text::html('user-login-required'));
                     }
                 }
@@ -732,7 +734,7 @@ namespace Goteo\Controller {
                     // sus entradas de novedades
                     $blog = Model\Blog::get($project->id);
                     // si está en modo preview, ponemos  todas las entradas, incluso las no publicadas
-                    if (isset($_GET['preview']) && $_GET['preview'] == $_SESSION['user']->id) {
+                    if (isset($_GET['preview']) && $_GET['preview'] == $user->id) {
                         $blog->posts = Model\Blog\Post::getAll($blog->id, null, false);
                     }
 
@@ -741,7 +743,7 @@ namespace Goteo\Controller {
                     $viewData['post'] = $post;
                     $viewData['owner'] = $project->owner;
 
-                    if (empty($_SESSION['user'])) {
+                    if (empty($user)) {
                         Library\Message::Info(Text::html('user-login-required'));
                     }
                 }
@@ -842,7 +844,7 @@ namespace Goteo\Controller {
 
 
             // actualizar perfil propio solo si es el impulsor
-            if ($_SESSION['user']->id == $project->owner) {
+            if (Session::getUserId() == $project->owner) {
                 Model\User::flush();
             }
             $project->user = $user;
@@ -934,7 +936,7 @@ namespace Goteo\Controller {
                 $_SESSION['currency'] = Library\Currency::set($_POST['currency']); // divisa en la que ve la web
 
                 // si el que edita es el impulsor, cambia su preferencia
-                if ($_SESSION['user']->id == $project->owner) {
+                if (Session::getUserId() == $project->owner) {
                     Model\User::setPreferences($project->owner, array('currency'=>$_SESSION['currency']));
                 }
             }
