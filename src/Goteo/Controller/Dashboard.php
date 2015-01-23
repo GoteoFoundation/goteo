@@ -50,6 +50,18 @@ namespace Goteo\Controller {
             }
 
 
+            // gestión de clave api
+            if ($option == 'apikey')  {
+                // contenido de la página
+                $viewData['page'] = Page::get('apikey');
+
+                // clave actual del usuario (objeto)
+                $viewData['apikey'] = Dashboard\Apikey::get($user, $action, $errors);
+
+                $viewData['errors'] = $errors;
+            }
+
+
             // si es un salto a otro panel
             if (in_array($option, array('admin', 'review', 'translate'))) {
 
@@ -1070,7 +1082,8 @@ namespace Goteo\Controller {
                     'label' => Text::get('dashboard-menu-activity'),
                     'options' => array(
                         'summary' => Text::get('dashboard-menu-activity-summary'),
-                        'donor' => Text::get('dashboard-menu-activity-donor')
+                        'donor' => Text::get('dashboard-menu-activity-donor'),
+                        'apikey' => Text::get('dashboard-menu-activity-apikey')
                     )
                 ),
                 'profile' => array(
