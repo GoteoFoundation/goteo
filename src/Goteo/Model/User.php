@@ -3,6 +3,7 @@
 namespace Goteo\Model {
 
 	use Goteo\Library\Text,
+        Goteo\Application\Session,
         Goteo\Model\Image,
         Goteo\Model\Node,
         Goteo\Model\Project,
@@ -1027,33 +1028,6 @@ namespace Goteo\Model {
 		}
 
         /**
-         * Comprueba si el usuario está identificado.
-         *
-         * @return boolean
-         */
-        public static function isLogged () {
-            return (!empty($_SESSION['user']) && $_SESSION['user'] instanceof User);
-        }
-
-        /**
-         * Returns user id if logged
-         *
-         * @return boolean
-         */
-        public static function getUserId () {
-            return (self::isLogged()) ? $_SESSION['user']->id : false;
-        }
-
-		/**
-		 * Returns user object if logged
-		 *
-		 * @return boolean
-		 */
-		public static function getUser () {
-			return (self::isLogged()) ? $_SESSION['user'] : false;
-		}
-
-        /**
          * Comprueba si el usuario es administrador
          * @param   type varchar(50)  $id   Usuario admin
          * @return  type bool true/false
@@ -1082,8 +1056,8 @@ namespace Goteo\Model {
 		 * @return type object	User
 		 */
 		public static function flush () {
-    		if(static::isLogged()) {
-    			return $_SESSION['user'] = self::get($_SESSION['user']->id);
+    		if($id = Session::getUserId()) {
+    			return Session::setUser(self::get($id));
     		}
     	}
 

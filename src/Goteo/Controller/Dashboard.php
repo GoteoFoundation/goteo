@@ -5,6 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Core\ACL,
         Goteo\Core\Redirection,
         Goteo\Core\View,
+        Goteo\Application\Session,
         Goteo\Model,
         Goteo\Library\Message,
         Goteo\Library\Feed,
@@ -86,7 +87,7 @@ namespace Goteo\Controller {
 
         public function profile($option = 'profile', $action = 'edit') {
             // tratamos el post segun la opcion y la acion
-            $user = Model\User::getUser();
+            $user = Session::getUser();
 
             // salto al perfil público
             if ($option == 'public') throw new Redirection('/user/profile/' . $user->id);

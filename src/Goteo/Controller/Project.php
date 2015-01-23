@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
+        Goteo\Application\Session,
         Goteo\Controller\Cron\Send,
         Goteo\Library\Text,
         Goteo\Library\Check,
@@ -47,7 +48,7 @@ namespace Goteo\Controller {
             }
 
             // no lo puede eliminar si
-            if (!Model\Project::userRemovable($project, Model\User::getUser())) {
+            if (!Model\Project::userRemovable($project, Session::getUser())) {
                 Library\Message::Info('No tienes permiso para eliminar este proyecto');
                 throw new Redirection($goto);
             }
@@ -77,7 +78,7 @@ namespace Goteo\Controller {
                 throw new Redirection('/dashboard/projects');
             }
 
-            if (!Model\Project::userEditable($project, Model\User::getUser())) {
+            if (!Model\Project::userEditable($project, Session::getUser())) {
                 Library\Message::Info('No tienes permiso para editar este proyecto');
                 throw new Redirection($goto);
             }
@@ -619,7 +620,7 @@ namespace Goteo\Controller {
             }
 
             // si lo puede ver
-            if (Model\Project::userPublicable($project, Model\User::getUser())) {
+            if (Model\Project::userPublicable($project, Session::getUser())) {
 
                 $project->cat_names = Model\Project\Category::getNames($id);
 

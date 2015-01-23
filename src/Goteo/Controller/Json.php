@@ -2,6 +2,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
+        Goteo\Application\Session,
         Goteo\Model\User,
         Goteo\Model\Project,
         Goteo\Model\User\UserLocation,
@@ -9,7 +10,7 @@ namespace Goteo\Controller {
         Goteo\Library\Text,
         Goteo\Library\Feed;
 
-    class JSON extends \Goteo\Core\Controller {
+    class Json extends \Goteo\Core\Controller {
 
 		private $result = array();
 
@@ -69,9 +70,9 @@ namespace Goteo\Controller {
 
             $init = (int) $_SESSION['init_time'];
             $session_time = defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600 ;
-            if(User::isLogged()) {
+            if(Session::isLogged()) {
                 $this->result['logged'] = true;
-                $this->result['userid'] = User::getUserId();
+                $this->result['userid'] = Session::getUserId();
                 $this->result['expires'] = START_TIME + $session_time - $init;
                 if((START_TIME > $init + $session_time - 600) && empty($_SESSION['init_time_advised'])) {
                     $this->result['info'] = Text::get('session-about-to-expire');
@@ -95,8 +96,8 @@ namespace Goteo\Controller {
             $return = array('success' => false, 'msg' => '');
             $errors = array();
             //
-            if(Model\User::isLogged()) {
-                $userId = Model\User::getUserId();
+            if(Session::isLogged()) {
+                $userId = Session::getUserId();
                 if($type === 'user') {
                     //TODO: let admins edit other users
                     $return['user'] = $userId;
@@ -149,7 +150,7 @@ namespace Goteo\Controller {
                     //check if user can edit project
                     try {
                         $project = Project::get($id);
-                        if(!Project::userEditable($project, User::getUser())) {
+                        if(!Project::userEditable($project, Session::getUser())) {
                             $return['msg'] = 'Project id invalid: You don\'t have permissions to edit this project!';
                             $project = false;
                         }

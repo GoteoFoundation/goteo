@@ -3,6 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Core\ACL,
+        Goteo\Application\Session,
         Goteo\Library,
         Goteo\Library\Check,
         Goteo\Library\Text,
@@ -235,7 +236,7 @@ namespace Goteo\Model {
          */
         public function create ($node = \GOTEO_NODE, &$errors = array()) {
 
-            $user = User::getUserId();
+            $user = Session::getUserId();
 
             if (empty($user)) {
                 return false;

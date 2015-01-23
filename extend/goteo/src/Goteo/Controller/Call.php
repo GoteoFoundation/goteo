@@ -616,6 +616,7 @@ namespace Goteo\Controller {
             }
 
             /// este es el único save que se lanza desde un metodo process_
+            /// TODO: esto es correcto? user es un objecto, call->owner?????
             $user->save($call->errors['userProfile']);
             if ($_SESSION['user'] == $call->owner)
                 Model\User::flush();

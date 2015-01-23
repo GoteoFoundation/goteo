@@ -2,7 +2,8 @@
 
 namespace Goteo\Controller\Dashboard {
 
-    use Goteo\Model,
+    use Goteo\Model\User\UserLocation,
+        Goteo\Application\Session,
         Goteo\Core\Redirection,
         Goteo\Core\Error;
 
@@ -10,18 +11,18 @@ namespace Goteo\Controller\Dashboard {
 
         public static function process () {
 
-            $user = Model\User::getUser();
+            $user = Session::getUser();
 
             $errors = array();
 
             // quiere quitarse de los ilocalizables
             if (isset($_POST['locable'])) {
-                Model\User\UserLocation::setLocable($user->id, $errors);
+                UserLocation::setLocable($user->id, $errors);
             }
 
             // quiere desasignarse de la geolocalización
             if (isset($_POST['unlocate']) && $user->geoloc) {
-                Model\User\UserLocation::setUnLocable($user->id, $errors);
+                UserLocation::setUnLocable($user->id, $errors);
             }
 
             return $errors;
