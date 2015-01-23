@@ -30,16 +30,20 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCreate() {
+
+        //Creates the user first
         if(!($user = User::getByEmail(self::$user_data['email']))) {
             echo "Creating user [test]\n";
             $user = new User(self::$user_data);
             $this->assertTrue($user->save($errors, array('active')), print_r($errors, 1));
             $user = User::getByEmail(self::$user_data['email']);
         }
+
+        $this->assertInstanceOf('\Goteo\Model\User', $user, print_r($errors, 1));
+
         $ob = new Message(self::$data + array('user' => $user->id));
         $this->assertTrue($ob->validate($errors), print_r($errors, 1));
         $this->assertTrue($ob->save($errors), print_r($errors, 1));
-        $this->assertInstanceOf('\Goteo\Model\User', $user, print_r($errors, 1));
 
         $ob = Message::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Message', $ob);
