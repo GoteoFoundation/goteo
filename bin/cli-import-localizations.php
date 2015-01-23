@@ -16,133 +16,127 @@ use Goteo\Core\Resource,
     Goteo\Core\Error,
     Goteo\Core\Model,
     Goteo\Model\Location,
+    Goteo\Library\Cacher,
     Goteo\Model\User\UserLocation,
+    Goteo\Util\Google\GoogleGeocoder,
     Goteo\Model\Project\ProjectLocation;
 
 require_once __DIR__ . '/../app/config.php';
 
-echo "Script para geolocalizar datos de proyectos y usuarios a las tablas location/location_item\n";
+echo "This script geolocates Users & Projects into the tables location/location_item\n";
+
+//Google Api day limit
+$GOOGLE_LIMIT = 2500;
+//Waiting Hours
+$GOOGLE_TIME = 24;
 
 $UPDATE = true;
 if($argv[1] !== '--update') {
-    echo "Usar con el modificador --update para actualizar la base de datos, si no se ejecuta en modo solo lectura\n";
+    echo "Use the --update modified to actually update the database\n";
     $UPDATE = false;
 }
-$LIMIT = 1000;
-$CACHE_FILE = __DIR__ . '/cached-location-errors.json';
+$LIMIT = 1;
+$cache = new Cacher('geocoder-import');
+$CACHE_FILE = $cache->getFile('cached-location-errors.json');
+$api_cache_key = $cache->getKey('num-api-calls');
+$num_api_calls = (int) $cache->retrieve($api_cache_key);
+$key_data = unserialize(file_get_contents($api_cache_key->getFileName()));
+//How long will be valid this period
+$TTL = $GOOGLE_TIME * 3600;
+if(!$num_api_calls) {
+    echo "RESET KEY\n";
+    $cache->store($api_cache_key, $num_api_calls, $TTL);
+    $key_data = unserialize(file_get_contents($api_cache_key->getFileName()));
+}
+// print_r($key_data);
+echo "Key created at [" . date("Y-m-d H:i:s", $key_data->created) . "]\n";
+echo "Key expires at [" . date("Y-m-d H:i:s", $key_data->expires) . "]\n";
+
+if($num_api_calls > $GOOGLE_LIMIT) {
+    echo "GOOGLE API CALLS LIMIT REACHED!\n";
+    echo "Please retry in " . round(($key_data->expires - time())/3600,2) . " hours\n";
+    die("Bye!\n");
+}
+else {
+    echo "Last {$GOOGLE_TIME}h number of Google Api Calls: [$num_api_calls], hours remaining for this period: [" . round(($key_data->expires - time())/3600, 2) . "]\n";
+}
 
 $errors = @json_decode(@file_get_contents($CACHE_FILE));
 if(!is_array($errors)) $errors = array();
-echo "\n\nIMPORTACION USUARIOS\n\n";
+
+echo "\nIMPORTING USERS\n\n";
 if($query = Model::query("SELECT user.id,user.location FROM user WHERE user.location!='' AND !ISNULL(user.location) AND location NOT IN ('" . implode("','", $errors) . "') AND user.id NOT IN (SELECT item FROM location_item WHERE type='user') LIMIT $LIMIT")) {
     foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $user) {
-        echo "Usuario: {$user->id} Localizacion: [{$user->location}]\n";
-        $params = array(
-            'sensor' => 'false',
-            'address' => $user->location
-            );
-        $url = 'http://maps.googleapis.com/maps/api/geocode/json?' . http_build_query($params);
-        // echo "URL: $url\n";
-        $result = json_decode(file_get_contents($url), true);
-        if($result['status'] == 'OK') {
-            // print_r($result['results'][0]);
-            $lat = $result['results'][0]['geometry']['location']['lat'];
-            $lng = $result['results'][0]['geometry']['location']['lng'];
-            $city = '';
-            $country = '';
-            $country_code = '';
-            $region = '';
-            foreach($result['results'][0]['address_components'] as $ob) {
-                if($ob['types'][0] === 'country' && $ob['types'][1] === 'political') {
-                    $country = $ob['long_name'];
-                    $country_code = $ob['short_name'];
-                }
-                if($ob['types'][0] === 'locality' && $ob['types'][1] === 'political') {
-                    $city = $ob['long_name'];
-                }
-                if(($ob['types'][0] === 'administrative_area_level_1' || $ob['types'][0] === 'administrative_area_level_2') && $ob['types'][1] === 'political') {
-                    $region = $ob['long_name'];
-                }
-            }
-            echo "OK, lat,lng: [$lat,$lng] city: [$city] country: [$country_code, $country] region [$region]\n";
+        echo "USER: {$user->id} LOCATION: [{$user->location}]\n";
+        if($data = GoogleGeocoder::getCoordinates(array('address' => $user->location))) {
+
+            echo "GEOLOCATED: lat,lng: [{$data['latitude']},{$data['longitude']}] city: [{$data['city']}] country: [{$data['country_code']}, {$data['country']}] region [{$data['region']}]";
             //add user location
             if($UPDATE) {
-                if(!UserLocation::addUserLocation(array(
-                    'city' => $city,
-                    'region' => $region,
-                    'country' => $country,
-                    'country_code' => $country_code,
-                    'latitude' => $lat,
-                    'longitude' => $lng,
+                echo " UPDATING:";
+                if(UserLocation::addUserLocation($data + array(
                     'user' => $user->id,
                     'method' => 'manual'
                     ), $err)) {
-                    echo "NOT ADDED! Errors: " . print_r($err, 1) . "\n";
+                    echo " OK";
+                }
+                else {
+                    echo " FAILED! Errors: \n" . print_r($err, 1);
                 }
             }
+            else echo " DUMMY";
+            echo "\n";
         }
         else {
             //write to cache
             echo "ZERO RESULTS, caching...\n";
-            $errors[] = str_replace("'", "\\'", $ob->location);
+            $errors[] = str_replace("'", "\\'", $user->location);
         }
+
+        $cache->modify( $api_cache_key,
+                        function () use ($num_api_calls) {
+                            return $num_api_calls + 1;
+                        }
+                    );
+
     }
 }
 
-echo "\n\nIMPORTACION PROYECTOS\n\n";
+echo "\nIMPORTING PROJECTS\n\n";
 if($query = Model::query("SELECT project.id,project.location FROM project WHERE project.location!='' AND !ISNULL(project.location) AND location NOT IN ('" . implode("','", $errors) . "') AND project.id NOT IN (SELECT item FROM location_item WHERE type='project') LIMIT $LIMIT")) {
     foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $project) {
-        echo "Usuario: {$project->id} Localizacion: [{$project->location}]\n";
-        $params = array(
-            'sensor' => 'false',
-            'address' => $project->location
-            );
-        $url = 'http://maps.googleapis.com/maps/api/geocode/json?' . http_build_query($params);
-        echo "URL: $url\n";
-        $result = json_decode(file_get_contents($url), true);
-        if($result['status'] == 'OK') {
-            // print_r($result['results'][0]);
-            $lat = $result['results'][0]['geometry']['location']['lat'];
-            $lng = $result['results'][0]['geometry']['location']['lng'];
-            $city = '';
-            $country = '';
-            $country_code = '';
-            $region = '';
+        echo "PROJECT: {$project->id} LOCATION: [{$project->location}]\n";
+        if($data = GoogleGeocoder::getCoordinates(array('address' => $project->location))) {
 
-            foreach($result['results'][0]['address_components'] as $ob) {
-                if($ob['types'][0] === 'country' && $ob['types'][1] === 'political') {
-                    $country = $ob['long_name'];
-                    $country_code = $ob['short_name'];
-                }
-                if($ob['types'][0] === 'locality' && $ob['types'][1] === 'political') {
-                    $city = $ob['long_name'];
-                }
-                if(($ob['types'][0] === 'administrative_area_level_1' || $ob['types'][0] === 'administrative_area_level_2') && $ob['types'][1] === 'political') {
-                    $region = $ob['long_name'];
-                }
-            }
-            echo "OK, lat,lng: [$lat,$lng] city: [$city] country: [$country_code, $country] region [$region]\n";
+            echo "GEOLOCATED: lat,lng: [{$data['latitude']},{$data['longitude']}] city: [{$data['city']}] country: [{$data['country_code']}, {$data['country']}] region [{$data['region']}]";
             //add project location
             if($UPDATE) {
-                if(!ProjectLocation::addProjectLocation(array(
-                    'city' => $city,
-                    'region' => $region,
-                    'country' => $country,
-                    'country_code' => $country_code,
-                    'latitude' => $lat,
-                    'longitude' => $lng,
+                echo " UPDATING:";
+                if(ProjectLocation::addProjectLocation($data + array(
                     'project' => $project->id,
                     'method' => 'manual'
                     ), $err)) {
-                    echo "NOT ADDED! Errors: " . print_r($err, 1) . "\n";
+                    echo " OK";
+                }
+                else {
+                    echo " FAILED! Errors: \n" . print_r($err, 1);
                 }
             }
+            else echo " DUMMY";
+            echo "\n";
         }
         else {
             //write to cache
             echo "ZERO RESULTS, caching...\n";
-            $errors[] = str_replace("'", "\\'", $ob->location);
+            $errors[] = str_replace("'", "\\'", $project->location);
         }
+
+        $cache->modify( $api_cache_key,
+                        function () use ($num_api_calls) {
+                            return $num_api_calls + 1;
+                        }
+                    );
+
     }
 }
 
