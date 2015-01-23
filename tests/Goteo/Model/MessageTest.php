@@ -3,11 +3,13 @@
 
 namespace Goteo\Model\Tests;
 
-use Goteo\Model\Message;
+use Goteo\Model\Message,
+    Goteo\Model\User;
 
 class MessageTest extends \PHPUnit_Framework_TestCase {
 
-    private static $data = array('user' => 'test', 'message' => 'Test message content', 'project' => 'test');
+    private static $data = array('message' => 'Test message content', 'project' => 'test');
+    private static $user_data = array('userid' => 'test', 'name' => 'Test', 'email' => 'test@goteo.org', 'password' => 'testtest', 'active' => true);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -28,19 +30,26 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCreate() {
-        $ob = new Message(self::$data);
+        if(!($user = User::getByEmail(self::$user_data['email']))) {
+            echo "Creating user [test]\n";
+            $user = new User(self::$user_data);
+            $this->assertTrue($user->save($errors, array('active')), print_r($errors, 1));
+            $user = User::getByEmail(self::$user_data['email']);
+        }
+        $ob = new Message(self::$data + array('user' => $user->id));
         $this->assertTrue($ob->validate($errors), print_r($errors, 1));
-        $this->assertTrue($ob->save());
-        //TODO: create a user first
-        // $ob = Message::get($ob->id);
-        // $this->assertInstanceOf('\Goteo\Model\Message', $ob);
+        $this->assertTrue($ob->save($errors), print_r($errors, 1));
+        $this->assertInstanceOf('\Goteo\Model\User', $user, print_r($errors, 1));
 
-        // foreach(self::$data as $key => $val) {
-        //     if($key === 'user') {
-        //         $this->assertInstanceOf('\Goteo\Model\User', $ob->$key, print_r($ob->$key, 1));
-        //     }
-        //     else $this->assertEquals($ob->$key, $val);
-        // }
+        $ob = Message::get($ob->id);
+        $this->assertInstanceOf('\Goteo\Model\Message', $ob);
+
+        foreach(self::$data as $key => $val) {
+            if($key === 'user') {
+                $this->assertInstanceOf('\Goteo\Model\User', $ob->$key, print_r($ob->$key, 1));
+            }
+            else $this->assertEquals($ob->$key, $val);
+        }
 
         $this->assertTrue($ob->delete());
 

@@ -1793,7 +1793,7 @@ namespace Goteo\Model {
                 /***************** Revisión de campos del paso 4, COSTES *****************/
                 $maxScore = 4;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = 0;
-                
+
                 if (count($this->costs) < 2) {
                     $errors['costs']['costs'] = Text::get('mandatory-project-costs');
                 } else {
@@ -1867,7 +1867,7 @@ namespace Goteo\Model {
                 $maxScore = ($this->help_license)? 4 : 8;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
                 //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
-                
+
                 if (empty($this->social_rewards)&&(!$this->help_license)) {
                     $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
                 } else {
@@ -1889,7 +1889,7 @@ namespace Goteo\Model {
 
                     }
                 }
-                
+
                 //Si ha pedido ayuda con licencias nos saltamos la parte de retornos.
                 if(!$this->help_license)
                 {
@@ -1918,7 +1918,7 @@ namespace Goteo\Model {
                         } else {
                              $okeys['rewards']['social_reward-'.$social->id.'-icon'] = 'ok';
                         }
-    
+
                         if (!empty($social->license)) {
                             $scoreLicense = 1;
                         }
@@ -2263,6 +2263,7 @@ namespace Goteo\Model {
                 self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
                 self::query("DELETE FROM call_project WHERE project = ?", array($this->id)); // convocado
                 self::query("DELETE FROM user_project WHERE project = ?", array($this->id)); // asesores
+                self::query("DELETE FROM location_item WHERE type='project' AND item = ?", array($this->id)); // location item
                 self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
@@ -2309,6 +2310,7 @@ namespace Goteo\Model {
                             self::query("UPDATE project_conf SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE location_item SET item = :newid WHERE item = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             // borro los permisos, el dashboard los creará de nuevo
                             self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
