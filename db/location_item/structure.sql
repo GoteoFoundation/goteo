@@ -8,10 +8,10 @@ CREATE TABLE `location_item` (
 ALTER TABLE `location_item` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 -- indice
-ALTER TABLE `location_item1` ADD INDEX `itemtipo` (`item`, `type`);
+ALTER IGNORE TABLE `location_item` ADD INDEX `itemtipo` (`item`, `type`);
 
 -- Location item modifications
-ALTER TABLE `location_item`
+ALTER IGNORE TABLE `location_item`
     ADD COLUMN `method` char(50)  COLLATE utf8_general_ci NOT NULL DEFAULT 'ip' after `type` ,
     ADD COLUMN `locable` tinyint(1)   NOT NULL DEFAULT 0 after `method` ,
     ADD COLUMN `info` char(255)  COLLATE utf8_general_ci NULL after `locable` ,

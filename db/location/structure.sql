@@ -10,7 +10,7 @@ CREATE TABLE `location` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Geolocalización';
 
 -- Location modifications
-ALTER TABLE `location`
+ALTER IGNORE TABLE `location`
     CHANGE `location` `city` char(255)  COLLATE utf8_general_ci,
     CHANGE `region` `region` char(255)  COLLATE utf8_general_ci,
     CHANGE `country` `country` char(255)  COLLATE utf8_general_ci,
