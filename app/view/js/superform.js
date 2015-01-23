@@ -135,7 +135,7 @@
 
             frm[0].xhr = $.ajax(post).done( function(html) {
                 //ajax finalizado
-                // goteo.trace('Trigger: superform.ajax.done');
+                // goteo.trace('Trigger: superform.ajax.done html:', html);
                 t.trigger('superform.ajax.done', [html, el]);
                 //actualizar el nodo si target es un elemento html
                 //si no hay el el id esperado, no actualizar nada
@@ -239,7 +239,7 @@
             el.append(new_cont);
         }
 
-        // if(new_cont.length) console.log('nuevo contendido:', new_cont.html());
+        if(new_cont.length) goteo.trace('nuevo contendido:', new_cont.html());
 
         //miramos si hay apartado feedback
         var feed = el.children('div.feedback');

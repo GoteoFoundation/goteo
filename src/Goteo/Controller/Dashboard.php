@@ -27,7 +27,7 @@ namespace Goteo\Controller {
          */
         public function activity($option = 'summary', $action = 'view') {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $viewData = array(
                                 'menu' => self::menu(),
@@ -202,7 +202,7 @@ namespace Goteo\Controller {
 
                     break;
             }
-
+            // print_r($viewData);die;
             return new View('dashboard/index.html.php', $viewData);
         }
 

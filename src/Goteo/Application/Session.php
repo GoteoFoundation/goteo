@@ -11,6 +11,7 @@ class Session {
 
     public static function setUser(User $user) {
         $_SESSION['user'] = $user;
+        return $user;
     }
     /**
      * Comprueba si el usuario está identificado.
