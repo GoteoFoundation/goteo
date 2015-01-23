@@ -3,6 +3,8 @@
 namespace Goteo\Model\Project {
 
     class OpenTag extends \Goteo\Core\Model {
+        //table for this model is not opentag but project_open_tag
+        protected $Table = 'project_open_tag';
 
         public
             $id,

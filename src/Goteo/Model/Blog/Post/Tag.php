@@ -60,7 +60,7 @@ namespace Goteo\Model\Blog\Post {
                     AND tag_lang.lang = :lang
                 $eng_join
                 ";
-            
+
             if (!empty($post)) {
                 $sql .= "INNER JOIN post_tag
                     ON tag.id = post_tag.tag
@@ -70,9 +70,9 @@ namespace Goteo\Model\Blog\Post {
             }
 
             $sql .= "ORDER BY tag.name ASC";
-            
+
             $query = static::query($sql, $values);
-                
+
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $tag) {
                 $list[$tag->id] = $tag->name;
             }
@@ -124,7 +124,7 @@ namespace Goteo\Model\Blog\Post {
         }
 
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->name))
                 $errors[] = 'Falta nombre';
                 //Text::get('validate-tag-name');
@@ -194,17 +194,16 @@ namespace Goteo\Model\Blog\Post {
             }
         }
 
-        /*
-         * Para eliminar un tag
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
          */
-        public static function delete ($id) {
-            
-            $sql = "DELETE FROM tag WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
+
+            if(!($ob = Tag::get($id))) return false;
+            return $ob->delete();
 
         }
 
@@ -223,5 +222,5 @@ namespace Goteo\Model\Blog\Post {
         }
 
     }
-    
+
 }

@@ -69,13 +69,13 @@ namespace Goteo\Model {
                         $eng_join
                         WHERE criteria.section = :section
                         ORDER BY `order` ASC, title ASC";
-                               
+
             $query = static::query($sql, array(':section' => $section, ':lang'=>\LANG));
-            
+
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->section))
                 $errors[] = 'Falta seccion';
                 //Text::get('mandatory-criteria-section');
@@ -126,18 +126,16 @@ namespace Goteo\Model {
                 return false;
             }
         }
-
-        /*
-         * Para quitar una pregunta
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
          */
-        public static function delete ($id) {
-            
-            $sql = "DELETE FROM criteria WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
+
+            if(!($ob = Criteria::get($id))) return false;
+            return $ob->delete();
 
         }
 
@@ -186,5 +184,5 @@ namespace Goteo\Model {
 
 
     }
-    
+
 }

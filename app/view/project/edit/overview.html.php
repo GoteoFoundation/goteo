@@ -82,7 +82,7 @@ if (!empty($project->video->url)) {
             'html'  => !empty($project->video) ? $project->video->getEmbedCode($project->video_usubs) : ''
     );
 
-    
+
 
 } else {
     $video = array(
@@ -95,7 +95,7 @@ if (!empty($project->video->url)) {
 // en función de si es pre-form o form
 
 if (!$project->draft) {
-   
+
     $about = array(
             'type'      => 'textarea',
             'title'     => Text::get('overview-field-about'),
@@ -151,7 +151,7 @@ if (!$project->draft) {
     $title_description_group=Text::get('overview-extra-fields');
 
 } else {
-   
+
     $about = array(
         'type'  => 'hidden',
         'class' => 'inline',
@@ -286,7 +286,11 @@ $superform = array(
             'hint'      => Text::get('tooltip-project-project_location'),
             'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
             'ok'        => !empty($okeys['project_location']) ? array($okeys['project_location']) : array(),
-            'value'     => $project->project_location
+            'value'     => $project->project_location,
+            //use google maps autocomplete
+            'class'     => 'geo-autocomplete',
+            //write data to location tables
+            'data'      => array('geocoder-filter' => '(regions)', 'geocoder-type' => 'project', 'geocoder-item' => $project->id)
         ),
 
         // video principal del proyecto
@@ -330,13 +334,13 @@ $superform = array(
             'type' => 'group',
             'title' => $title_description_group,
             'children'  => array(
-               
+
                 'about' => $about,
 
                 'motivation' => $motivation,
 
                 'goal' => $goal,
-                
+
 
                 //'reward' => $reward
 
@@ -379,7 +383,7 @@ $superform = array(
         ),
          */
 
-        
+
 
         /* Aligerando superform
         'scope' => array(

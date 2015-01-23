@@ -37,43 +37,43 @@ namespace Goteo\Model {
                     WHERE   message.id = :id
                     ";
 
-                $query = static::query($sql, array(':id' => $id));
-                $message = $query->fetchObject(__CLASS__);
-                
-                // datos del usuario. Eliminación de user::getMini
-        
-                $user = new User;
-                $user->id = $message->user_id;
-                $user->name = $message->user_name;
-                $user->email = $message->user_email;
-                $user->avatar = Image::get($message->user_avatar);
+                $query = self::query($sql, array(':id' => $id));
+                if($message = $query->fetchObject(__CLASS__)) {
 
-                $message->user = $user;
+                    // datos del usuario. Eliminación de user::getMini
+
+                    $user = new User;
+                    $user->id = $message->user_id;
+                    $user->name = $message->user_name;
+                    $user->email = $message->user_email;
+                    $user->avatar = Image::get($message->user_avatar);
+
+                    $message->user = $user;
 
 
-                // reconocimiento de enlaces y saltos de linea
-                $message->message = nl2br(Text::urlink($message->message));
+                    // reconocimiento de enlaces y saltos de linea
+                    $message->message = nl2br(Text::urlink($message->message));
 
-                //hace tanto
-                $message->timeago = Feed::time_ago($message->date);
+                    //hace tanto
+                    $message->timeago = Feed::time_ago($message->date);
 
-                if (empty($message->thread)) {
-                    $query = static::query("
-                        SELECT  *
-                        FROM  message
-                        WHERE thread = ?
-                        ", array($id));
+                    if (empty($message->thread)) {
+                        $query = self::query("
+                            SELECT  *
+                            FROM  message
+                            WHERE thread = ?
+                            ", array($id));
 
-                    foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $response) {
+                        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $response) {
 
-                        //hace tanto
-                        $response->timeago = Feed::time_ago($response->date);
+                            //hace tanto
+                            $response->timeago = Feed::time_ago($response->date);
 
-                        $message->responses[] = $response;
+                            $message->responses[] = $response;
+                        }
+
                     }
-
                 }
-
                 return $message;
         }
 
@@ -121,9 +121,9 @@ namespace Goteo\Model {
                 ";
             $query = static::query($sql, array(':project'=>$project, ':lang'=>$lang));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
-                
+
                 // datos del usuario. Eliminación User::getMini
-        
+
                 $user = new User;
                 $user->id = $message->user_id;
                 $user->name = $message->user_name;
@@ -131,7 +131,7 @@ namespace Goteo\Model {
                 $user->avatar = Image::get($message->user_avatar);
 
                 $message->user = $user;
-                
+
                 // reconocimiento de enlaces y saltos de linea
                 $message->message = nl2br(Text::urlink($message->message));
 
@@ -148,7 +148,7 @@ namespace Goteo\Model {
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $response) {
                     $message->responses[] = self::get($response->id);
                 }
-                
+
 
 
 
@@ -159,7 +159,7 @@ namespace Goteo\Model {
         }
 
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->user))
                 $errors[] = 'Falta usuario';
                 //Text::get('mandatory-message-user');
@@ -259,25 +259,39 @@ namespace Goteo\Model {
         /*
          * Para que el admin pueda borrar mensajes que no aporten nada
          */
-        public function delete () {
-
-            if ($this->blocked == 1) {
+        public function delete ($id = null) {
+            if(empty($id) && $this->id) {
+                $id = $this->id;
+                $m = $this;
+            }
+            if(empty($id)) {
+                // throw new Exception("Delete error: ID not defined!");
                 return false;
             }
+            if(empty($m)) $m = self::get($id);
 
-            $sql = "DELETE FROM message WHERE id = ?";
-            if (self::query($sql, array($this->id))) {
-                if (empty($this->thread) && is_array($this->responses)) {
-                    foreach ($this->responses as $response) {
+            try {
+
+                if ($m->blocked == 1) {
+                    return false;
+                }
+
+                $sql = "DELETE FROM message WHERE id = ?";
+                self::query($sql, array($id));
+
+                if (empty($m->thread) && is_array($m->responses)) {
+                    foreach ($m->responses as $response) {
                         if ($response instanceof Message) {
                             $response->delete();
                         }
                     }
                 }
-                return true;
-            } else {
+
+            } catch (\PDOException $e) {
+                // throw new Exception("Delete error in $sql");
                 return false;
             }
+            return true;
 
         }
 
@@ -340,7 +354,7 @@ namespace Goteo\Model {
         public static function getMessengers ($id) {
             $list = array();
 
-            $sql = "SELECT 
+            $sql = "SELECT
                         message.user as user,
                         message.message as text,
                         respond.message as thread_text,
@@ -367,7 +381,7 @@ namespace Goteo\Model {
                     $list[$msg->user]->messages[] = $msgData;
                 } else {
                     //Eliminación User::getMini
-                   
+
                     $user = new User;
                     $user->id = $msg->user_id;
                     $user->name = $msg->user_name;
@@ -413,5 +427,5 @@ namespace Goteo\Model {
         }
 
     }
-    
+
 }
