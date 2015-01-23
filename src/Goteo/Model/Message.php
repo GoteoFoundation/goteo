@@ -182,8 +182,13 @@ namespace Goteo\Model {
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
-            if (\is_object($this->user)) {
+            if ($this->user instanceOf User) {
                 $this->user = $this->user->id;
+            }
+            else {
+                //TODO: por coherencia hacer algo asi:
+                // $errors[] = 'User must be defined!';
+                // return false;
             }
 
             $fields = array(

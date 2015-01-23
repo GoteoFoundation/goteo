@@ -104,8 +104,8 @@ namespace Goteo\Model {
          *                                         password, active
          * @return type bool	true|false
          */
-        public function save (&$errors = array(),$skip_validations = array()) {
-            if($this->validate($errors,$skip_validations)) {
+        public function save (&$errors = array(), $skip_validations = array()) {
+            if($this->validate($errors, $skip_validations)) {
                 // Nuevo usuario.
                 if(empty($this->id)) {
                     $insert = true;
@@ -303,7 +303,9 @@ namespace Goteo\Model {
                         $query = substr($query, 0, -2) . " WHERE id = :id";
                     }
                     // Ejecuta SQL.
-                    return self::query($query, $data);
+                    if(self::query($query, $data)) {
+                        return true;
+                    }
             	} catch(\PDOException $e) {
                     $errors[] = "Error al actualizar los datos del usuario: " . $e->getMessage();
                     return false;
@@ -988,6 +990,25 @@ namespace Goteo\Model {
         }
          */
 
+        /**
+         * Get a user by mail
+         *
+         * @param string $username Nombre de usuario
+         * @param string $password Contraseña
+         * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
+         */
+        public static function getByEmail ($email) {
+
+            $query = self::query("SELECT id FROM user WHERE BINARY email = ?", $email);
+
+            if($row = $query->fetch()) {
+                if($user = static::get($row['id'])) {
+                    return $user;
+                }
+            }
+            return false;
+        }
+
 		/**
 		 * Validación de usuario.
 		 *
@@ -1600,6 +1621,16 @@ namespace Goteo\Model {
                 return false;
             }
 
+        }
+
+        /*
+         * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
+         * @return: boolean
+         */
+        public function delete(&$errors = array()) {
+
+            $errors[] = "No implementado";
+            return false;
         }
 
         /**
