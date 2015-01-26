@@ -557,9 +557,15 @@ namespace Goteo\Controller {
 
                 // para debug
                 if ($dbg) {
+                    // un u.logueado impulsor solo puede mandar mensaje a otro impulsor
                     // si el U.logueado es impulsor (autor de proyecto publicado)
                     Model\User::isOwner($uLoged, true, $dbg);
                     echo '<br /><br />';
+
+                    // y el U.destinatario es impulsor (autor de proyecto publicado)
+                    Model\User::isOwner($uProfile, true, $dbg);
+                    echo '<br /><br />';
+
 
                     // si A es cofinanciador en algún proyecto que impulsa B
                     Model\User::isInvestor($uLoged, $uProfile, $dbg);
@@ -581,7 +587,8 @@ namespace Goteo\Controller {
                 // sin debug no da echoes
                 // no hace mucha falta optimizar ya que los metodos-operadores están en cortocircuito
                 // http://php.net/manual/es/language.operators.logical.php
-                if (Model\User::isOwner($uLoged, true)
+                if (
+                    ( Model\User::isOwner($uLoged, true) && Model\User::isOwner($uProfile, true) )
                     || Model\User::isInvestor($uLoged, $uProfile)
                     || Model\User::isInvestor($uProfile, $uLoged)
                     || Model\User::isParticipant($uProfile, $uLoged)
