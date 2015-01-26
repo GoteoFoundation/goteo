@@ -1834,12 +1834,15 @@ namespace Goteo\Model {
                          $scoreAmount = 1;
                     }
 
+                    //  Si no hay fechas no debe haber error por fechas
+                    /*
                     if ($cost->type == 'task' && (empty($cost->from) || empty($cost->until))) {
                         $errors['costs']['cost-'.$cost->id.'-dates'] = Text::get('mandatory-cost-field-task_dates');
                         $anyerror = !$anyerror ?: true;
                     } elseif ($cost->type == 'task') {
                         $okeys['costs']['cost-'.$cost->id.'-dates'] = 'ok';
                     }
+                    */
                 }
 
                 if ($anyerror) {
