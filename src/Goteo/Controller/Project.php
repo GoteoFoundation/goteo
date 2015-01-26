@@ -1096,9 +1096,11 @@ namespace Goteo\Controller {
                     'project' => $project->id,
                     'cost'  => 'Nueva tarea',
                     'type'  => 'task',
-                    'required' => 1,
+                    'required' => 1
+                /*,
                     'from' => date('Y-m-d'),
                     'until' => date('Y-m-d')
+                */
 
                 ));
 
