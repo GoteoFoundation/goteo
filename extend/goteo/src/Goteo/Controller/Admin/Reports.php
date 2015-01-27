@@ -662,6 +662,14 @@ namespace Goteo\Controller\Admin {
         }
 
 
+        /**
+         * Este método devuelve los datos de aportes PayPal
+         *
+         * @FIXME: Queda pendiente una mejora en este informe para que sea util
+         *
+         *
+         * @return \stdClass $data
+         */
         private static function paypal() {
 
 
@@ -683,7 +691,7 @@ namespace Goteo\Controller\Admin {
                     ";
             $query = Model\Invest::query($sql);
             $charged = $query->fetchObject();
-            $charged->fee = $charged->amount * 0.034 + $charged->num * 0.35;
+            $charged->fee = $charged->amount * 0.034 + $charged->num * 0.35; // @FIXME este cálculo de tarifa PayPal no es exacto
             $charged->net = $charged->amount - $charged->fee;
             $charged->goteo = $charged->net;
             $data->charged = $charged;
@@ -699,9 +707,12 @@ namespace Goteo\Controller\Admin {
                     ";
             $query = Model\Invest::query($sql);
             $paid = $query->fetchObject();
-            $paid->fee = $paid->amount * 0.034 + $paid->num * 0.35;
+            $paid->fee = $paid->amount * 0.034 + $paid->num * 0.35; // @FIXME este cálculo de tarifa PayPal no es exacto
             $paid->net = $paid->amount - $paid->fee;
-            $paid->goteo = $paid->net * 0.08;
+            $paid->goteo = $paid->net * \GOTEO_FEE / 100;
+            // Por ahora GOTEO_FEE es el mismo 8%
+            // cuando el porcentaje sea diferente por proyecto habrá que calcular la comisión por separado
+            //
 
             $data->paid = $paid;
 
