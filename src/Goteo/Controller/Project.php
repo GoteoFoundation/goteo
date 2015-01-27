@@ -966,6 +966,7 @@ namespace Goteo\Controller {
                 'about',
                 'goal',
                 'related',
+                'spread',
                 'reward',
                 'keywords',
                 'media',
