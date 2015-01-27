@@ -172,7 +172,7 @@ echo SuperForm::get(array(
 <script type="text/javascript">
 $(function () {
 
-    var supports = $('div#<?php echo $sfid ?> li.element#supports');
+    var supports = $('div#<?php echo $sfid ?> li.element#li-supports');
 
     supports.delegate('li.element.support input.edit', 'click', function (event) {
         event.preventDefault();
@@ -195,7 +195,7 @@ $(function () {
         supports.superform({data:data});
     });
 
-    supports.delegate('#support-add input', 'click', function (event) {
+    supports.delegate('#li-support-add input', 'click', function (event) {
        event.preventDefault();
        var data = {};
        data[this.name] = '1';

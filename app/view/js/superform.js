@@ -245,7 +245,7 @@
         var feed = el.children('div.feedback');
         var new_feed = new_el.children('div.feedback');
         //si existe nuevo feedback los sustituimos
-        // console.log('old',feed.html());
+        goteo.trace('old feedback',feed.html());
         if (new_feed.length) {
             // console.log('new',new_feed.html());
             //existe el antiguo, sustituimos
@@ -373,9 +373,11 @@ $(function() {
     //auto escondido de feedback
     $('div.superform').delegate('li.element', 'click', function (event) {
         $(event.target).parents('li.element').each(function (i, li) {
-
-            var fb = $(li).find('div.feedback#superform-feedback-for-' + li.id).not(':empty').first();
+            var id = li.id.substr(3); //li elements has "li-*" as id
+            var fb = $(li).find('div.feedback#superform-feedback-for-' + id).not(':empty').first();
+            // goteo.trace('search feedback for id: ',id, $(li.id).html());
             if (fb.length) {
+                goteo.trace('Found feedback for id:',id);
                 setTimeout(function () {
                     $('div.superform div.feedback').not(fb).fadeOut(200);
                 });
