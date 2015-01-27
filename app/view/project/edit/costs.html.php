@@ -323,7 +323,7 @@ echo SuperForm::get(array(
 <script type="text/javascript">
 $(function () {
 
-    var costs = $('div#<?php echo $sfid ?> li.element#costs');
+    var costs = $('div#<?php echo $sfid ?> li.element#li-costs');
 
     //abrir editor
     costs.delegate('li.element.cost input.edit', 'click', function (event) {
@@ -354,7 +354,7 @@ $(function () {
         });
     });
 
-    costs.delegate('#cost-add input', 'click', function (event) {
+    costs.delegate('#li-cost-add input', 'click', function (event) {
         // hack para superar un error insondable del superform
         event.preventDefault();
         var data = {};
