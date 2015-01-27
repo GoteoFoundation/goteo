@@ -4,6 +4,16 @@ use Goteo\Library\Text,
     Goteo\Core\View;
 
 $project = $this['project'];
+$account = $this['account']; // cuentas del proyecto, para tener el porcentaje de comisión
+
+$GOTEO_FEE = round($account->fee / 100, 2);
+
+var_dump($account->fee);
+var_dump($account->fee / 100);
+var_dump($GOTEO_FEE);
+die;
+
+
 $Data = $this['Data'];
 
 $desglose = array();
@@ -32,10 +42,10 @@ uasort($this['users'],
 // recorremos los aportes
 foreach ($this['invests'] as $invest) {
 
-// para cada metodo acumulamos desglose, comision * 0.08, pago * 0.092
+// para cada metodo acumulamos desglose, comision, pago
     $desglose[$invest->method] += $invest->amount;
-    $goteo[$invest->method] += ($invest->amount * 0.08);
-    $proyecto[$invest->method] += ($invest->amount * 0.92);
+    $goteo[$invest->method] += ( $invest->amount * $GOTEO_FEE );
+    $proyecto[$invest->method] += ( $invest->amount * (1 - $GOTEO_FEE) );
 // para cada estado
     $estado[$invest->status]['total'] += $invest->amount;
     $estado[$invest->status][$invest->method] += $invest->amount;
@@ -216,9 +226,9 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <?php
-            $Data['tpv']['first']['goteo']  = $Data['tpv']['first']['net']  * 0.08;
-            $Data['tpv']['second']['goteo'] = $Data['tpv']['second']['net'] * 0.08;
-            $Data['tpv']['total']['goteo']  = $Data['tpv']['total']['net']  * 0.08;
+            $Data['tpv']['first']['goteo']  = $Data['tpv']['first']['net']  * $GOTEO_FEE;
+            $Data['tpv']['second']['goteo'] = $Data['tpv']['second']['net'] * $GOTEO_FEE;
+            $Data['tpv']['total']['goteo']  = $Data['tpv']['total']['net']  * $GOTEO_FEE;
             ?>
             <th>Goteo</th>
             <td style="text-align:right;"><?php echo \euro_format($Data['tpv']['first']['goteo'], 2) ?></td>
@@ -286,9 +296,9 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <?php
-            $Data['paypal']['first']['goteo']  = $Data['paypal']['first']['ok'] * 0.08;
-            $Data['paypal']['second']['goteo'] = $Data['paypal']['second']['ok'] * 0.08;
-            $Data['paypal']['total']['goteo']  = $Data['paypal']['total']['ok'] * 0.08;
+            $Data['paypal']['first']['goteo']  = $Data['paypal']['first']['ok'] * $GOTEO_FEE;
+            $Data['paypal']['second']['goteo'] = $Data['paypal']['second']['ok'] * $GOTEO_FEE;
+            $Data['paypal']['total']['goteo']  = $Data['paypal']['total']['ok'] * $GOTEO_FEE;
             ?>
             <th>Goteo</th>
             <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['goteo'], 2) ?></td>
@@ -330,7 +340,7 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['fee_goteo'], 2) ?></td>
             <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['fee_goteo'], 2) ?></td>
             <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['fee_goteo'], 2) ?></td>
-            <td>0,35 por operacion + 3,4&#37; del importe de goteo (8&#37; del correcto)</td>
+            <td>0,35 por operacion + 3,4&#37; del importe de goteo (<?php echo \GOTEO_FEE; ?>&#37; del correcto)</td>
         </tr>
         <tr>
             <?php
@@ -342,7 +352,7 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['first']['fee_project'], 2) ?></td>
             <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['second']['fee_project'], 2) ?></td>
             <td style="text-align:right;"><?php echo \euro_format($Data['paypal']['total']['fee_project'], 2) ?></td>
-            <td>0,35 por operacion + 3,4&#37; del importe del proyecto (92&#37; del correcto)</td>
+            <td>0,35 por operacion + 3,4&#37; del importe del proyecto (<?php echo 100 - \GOTEO_FEE; ?>&#37; del correcto)</td>
         </tr>
         <tr>
             <?php
@@ -417,9 +427,9 @@ foreach ($this['invests'] as $invest) {
         </tr>
         <tr>
             <?php
-            $Data['cash']['first']['goteo']  = $Data['cash']['first']['amount'] * 0.08;
-            $Data['cash']['second']['goteo'] = $Data['cash']['second']['amount'] * 0.08;
-            $Data['cash']['total']['goteo']  = $Data['cash']['total']['amount'] * 0.08;
+            $Data['cash']['first']['goteo']  = $Data['cash']['first']['amount'] * $GOTEO_FEE;
+            $Data['cash']['second']['goteo'] = $Data['cash']['second']['amount'] * $GOTEO_FEE;
+            $Data['cash']['total']['goteo']  = $Data['cash']['total']['amount'] * $GOTEO_FEE;
             ?>
             <th>Goteo</th>
             <td style="text-align:right;"><?php echo \euro_format($Data['cash']['first']['goteo']) ?></td>
@@ -477,7 +487,7 @@ foreach ($this['invests'] as $invest) {
             <td style="text-align:right;"><?php echo \euro_format($Data['drop']['first']['fail']) ?></td>
             <td style="text-align:right;"><?php echo \euro_format($Data['drop']['second']['fail']) ?></td>
             <td style="text-align:right;"><?php echo \euro_format($Data['drop']['total']['fail']) ?></td>
-            <td>Aportes de Capital Riego activos en campaña cerrada (o o algo así)</td>
+            <td>Aportes de Capital Riego activos en campaña cerrada (o algo así)</td>
         </tr>
         <tr>
             <th>Importe</th>
