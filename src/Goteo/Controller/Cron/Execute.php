@@ -417,8 +417,9 @@ namespace Goteo\Controller\Cron {
                         break;
                     }
 
-
+                    // cuenta paypal y comisión goteo
                     $invest->account = $projectAccount->paypal;
+                    $invest->fee = $projectAccount->fee;
                     $err = array();
                     if (Paypal::pay($invest, $err)) {
                         $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
