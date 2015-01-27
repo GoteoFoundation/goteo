@@ -393,7 +393,7 @@ namespace Goteo\Model\User {
             }
 
             // si ha pasado el día limite después de año nuevo ya no se permite confirmar datos
-            if ($year != date('Y') && ( ($month == 1 && $day > 28) || $month > 1 ) )
+            if ($year != date('Y') && ( ($month == 1 && $day > 25) || $month > 1 ) )
                 $confirm_closed = true;
 
 
