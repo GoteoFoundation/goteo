@@ -58,7 +58,7 @@ if ($show == 'updates') {
 if (is_array($project->gallery)) {
     foreach ($project->gallery as $pgimg) {
         if ($pgimg->imageData instanceof Image) {
-            $ogmeta['image'][] = $pgimg->imageData->getLink(580, 580);
+            $ogmeta['image'][] = $pgimg->imageData->getLink(580, 580, false, true);
         }
     }
 }
@@ -67,7 +67,7 @@ foreach ($blog->posts as $bpost) {
     if (is_array($bpost->gallery)) {
         foreach ($bpost->gallery as $bpimg) {
             if ($bpimg instanceof Image) {
-                $ogmeta['image'][] = $bpimg->getLink(500, 285);
+                $ogmeta['image'][] = $bpimg->getLink(500, 285, false, true);
             }
         }
     }
