@@ -57,8 +57,8 @@ if ($show == 'updates') {
 // todas las imagenes del proyecto
 if (is_array($project->gallery)) {
     foreach ($project->gallery as $pgimg) {
-        if ($pgimg instanceof Image) {
-            $ogmeta['image'][] = $pgimg->getLink(580, 580);
+        if ($pgimg->imageData instanceof Image) {
+            $ogmeta['image'][] = $pgimg->imageData->getLink(580, 580);
         }
     }
 }
