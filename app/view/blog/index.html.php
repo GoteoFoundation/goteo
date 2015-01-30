@@ -32,11 +32,11 @@ if ($this['show'] == 'list') {
         if (count($post->gallery) > 1) {
             foreach ($post->gallery as $pbimg) {
                 if ($pbimg instanceof Image) {
-                    $ogmeta['image'][] = $pbimg->getLink(500, 285);
+                    $ogmeta['image'][] = $pbimg->getLink(500, 285, false, true);
                 }
             }
         } elseif ((!empty($post->image))&&($post->image instanceof Image)) {
-            $ogmeta['image'][] = $post->image->getLink(500, 285);
+            $ogmeta['image'][] = $post->image->getLink(500, 285, false, true);
         }
     }
 } elseif ($this['show'] == 'post') {
@@ -49,11 +49,11 @@ if ($this['show'] == 'list') {
     if (count($post->gallery) > 1) {
         foreach ($post->gallery as $pbimg) {
             if ($pbimg instanceof Image) {
-                $ogmeta['image'][] = $pbimg->getLink(500, 285);
+                $ogmeta['image'][] = $pbimg->getLink(500, 285, false, true);
             }
         }
     } elseif ((!empty($post->image))&&($post->image instanceof Image)) {
-        $ogmeta['image'] = $post->image->getLink(500, 285);
+        $ogmeta['image'] = $post->image->getLink(500, 285, false, true);
     }
 }
 
