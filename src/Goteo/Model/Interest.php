@@ -123,18 +123,6 @@ namespace Goteo\Model {
             }
         }
 
-        // Para quitar un interes de la tabla
-        public static function delete ($id) {
-
-            $sql = "DELETE FROM interest WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
         // Para que salga antes  (disminuir el order)
         public static function up ($id) {
             return Check::reorder($id, 'up', 'interest', 'id', 'order');

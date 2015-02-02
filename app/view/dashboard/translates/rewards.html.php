@@ -272,7 +272,7 @@ $sfid = 'sf-project-rewards';
 $(function () {
 
     /* social rewards buttons */
-    var socials = $('div#<?php echo $sfid ?> li.element#social_rewards');
+    var socials = $('div#<?php echo $sfid ?> li.element#li-social_rewards');
 
     socials.delegate('li.element.social_reward input.edit', 'click', function (event) {
         event.preventDefault();
@@ -289,7 +289,7 @@ $(function () {
     });
 
     /* individual_rewards buttons */
-    var individuals = $('div#<?php echo $sfid ?> li.element#individual_rewards');
+    var individuals = $('div#<?php echo $sfid ?> li.element#li-individual_rewards');
 
     individuals.delegate('li.element.individual_reward input.edit', 'click', function (event) {
         event.preventDefault();

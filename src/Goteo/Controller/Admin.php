@@ -189,18 +189,6 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('group' => '', 'icon' => '')
             ),
-            'locations' => array(
-                'label' => 'Geolocalización',
-                'actions' => array(
-                    'list' => array('label' => 'Listando', 'item' => false),
-                    'add' => array('label' => 'Nueva Localización', 'item' => false),
-                    'edit' => array('label' => 'Editando Localización', 'item' => true),
-                    'check' => array('label' => 'Verificando Localizaciones', 'item' => false),
-                    'autocheck' => array('label' => 'Proceso automático', 'item' => false),
-                    'search' => array('label' => 'Buscando registros por localización', 'item' => false)
-                ),
-                'filters' => array('valid' => '0', 'name' => '', 'location' => '', 'region' => '', 'country' => '', 'used' => '1', 'coordinates' => 'hide')
-            ),
             'mailing' => array(
                 'label' => 'Comunicaciones',
                 'actions' => array(
@@ -816,7 +804,6 @@ namespace Goteo\Controller {
                             'label' => 'Servicios',
                             'options' => array(
                                 'reports' => $options['reports'],
-                                'locations' => $options['locations'],
                                 'newsletter' => $options['newsletter'],
                                 'sponsors' => $options['sponsors'],
                                 'calls' => $options['calls'],

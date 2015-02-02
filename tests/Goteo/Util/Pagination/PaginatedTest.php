@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Tests;
+namespace Goteo\Util\Tests;
 
 use Goteo\Util\Pagination\Paginated;
 

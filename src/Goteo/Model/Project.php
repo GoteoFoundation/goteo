@@ -3,6 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Core\ACL,
+        Goteo\Application\Session,
         Goteo\Library,
         Goteo\Library\Check,
         Goteo\Library\Text,
@@ -173,6 +174,62 @@ namespace Goteo\Model {
         }
 
         /**
+         * Check if the project is can be seen by the user id
+         * @param  string $user_id ID of the user
+         * @return boolean          true if success, false otherwise
+         */
+        public static function userPublicable($project, $user) {
+
+            // solamente se puede ver publicamente si...
+            $grant = false;
+            if ( $project->status > 2 // está publicado
+                || $project->owner == $user->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
+                || isset($user->roles['superadmin']) // es superadmin
+                || (isset($user->roles['checker']) && Model\User\Review::is_assigned($user->id, $project->id)) // es revisor
+                || (isset($user->roles['caller']) && Model\Call\Project::is_assigned($user->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
+            )
+                $grant = true;
+
+            return $grant;
+        }
+
+        /**
+         * Check if the project is editable by the user id
+         * @param  string $user_id ID of the user
+         * @return boolean          true if success, false otherwise
+         */
+        public static function userEditable($project, $user) {
+            $grant = false;
+            // Substituye ACL, solo lo puede editar si...
+            if ($project->owner == $user->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
+                || isset($user->roles['superadmin']) // es superadmin
+                || (isset($user->roles['checker']) && User\Review::is_assigned($user->id, $project->id)) // es revisor
+            )
+                $grant = true;
+
+            return $grant;
+        }
+
+        /**
+         * Check if the project is removable by the user id
+         * @param  string $user_id ID of the user
+         * @return boolean          true if success, false otherwise
+         */
+        public static function userRemovable($project, $user) {
+            $grant = false;
+            if ($project->owner == $user->id // es su proyecto
+                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
+                || isset($user->roles['superadmin']) // es superadmin
+            )
+                $grant = true;
+            return $grant;
+        }
+
+        /**
          * Inserta un proyecto con los datos mínimos
          *
          * @param array $data
@@ -180,7 +237,7 @@ namespace Goteo\Model {
          */
         public function create ($node = \GOTEO_NODE, &$errors = array()) {
 
-            $user = $_SESSION['user']->id;
+            $user = Session::getUserId();
 
             if (empty($user)) {
                 return false;
@@ -255,10 +312,11 @@ namespace Goteo\Model {
                 }
 
                 return $this->id;
+
             } catch (\PDOException $e) {
                 $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, true) . "</pre>";
                 \trace($this);
-                die($errors[0]);
+                // die($errors[0]);
                 return false;
             }
         }
@@ -266,6 +324,7 @@ namespace Goteo\Model {
         /*
          *  Cargamos los datos del proyecto
          *  TODO: better exception throwing (namespaced)
+        *   TODO: Project::get deberia retornar false por coherencia con los otros modelos
          */
         public static function get($id, $lang = null) {
 
@@ -283,6 +342,9 @@ namespace Goteo\Model {
                                 user.location as user_location,
                                 user.id as user_id,
                                 user.twitter as user_twitter,
+                                user.linkedin as user_linkedin,
+                                user.identica as user_identica,
+                                user.google as user_google,
                                 user.facebook as user_facebook
                 FROM project
 				LEFT JOIN project_conf
@@ -367,7 +429,12 @@ namespace Goteo\Model {
 
                 $project->user->webs = User\Web::get($project->user_id);
 
+                //
                 $project->user->twitter = $project->user_twitter;
+                $project->user->facebook = $project->user_facebook;
+                $project->user->linkedin = $project->user_linkedin;
+                $project->user->identica = $project->user_identica;
+                $project->user->google = $project->user_google;
 
                 $project->user->facebook = $project->user_facebook;
 
@@ -1436,7 +1503,6 @@ namespace Goteo\Model {
                 //Text::get('save-project-fail');
                 return false;
 			}
-
         }
 
         /*
@@ -1727,7 +1793,7 @@ namespace Goteo\Model {
                 /***************** Revisión de campos del paso 4, COSTES *****************/
                 $maxScore = 4;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = 0;
-                
+
                 if (count($this->costs) < 2) {
                     $errors['costs']['costs'] = Text::get('mandatory-project-costs');
                 } else {
@@ -1804,7 +1870,7 @@ namespace Goteo\Model {
                 $maxScore = ($this->help_license)? 4 : 8;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
                 //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
-                
+
                 if (empty($this->social_rewards)&&(!$this->help_license)) {
                     $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
                 } else {
@@ -1826,7 +1892,7 @@ namespace Goteo\Model {
 
                     }
                 }
-                
+
                 //Si ha pedido ayuda con licencias nos saltamos la parte de retornos.
                 if(!$this->help_license)
                 {
@@ -1855,7 +1921,7 @@ namespace Goteo\Model {
                         } else {
                              $okeys['rewards']['social_reward-'.$social->id.'-icon'] = 'ok';
                         }
-    
+
                         if (!empty($social->license)) {
                             $scoreLicense = 1;
                         }
@@ -2200,6 +2266,7 @@ namespace Goteo\Model {
                 self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
                 self::query("DELETE FROM call_project WHERE project = ?", array($this->id)); // convocado
                 self::query("DELETE FROM user_project WHERE project = ?", array($this->id)); // asesores
+                self::query("DELETE FROM location_item WHERE type='project' AND item = ?", array($this->id)); // location item
                 self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
@@ -2246,6 +2313,7 @@ namespace Goteo\Model {
                             self::query("UPDATE project_conf SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
+                            self::query("UPDATE location_item SET item = :newid WHERE item = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             // borro los permisos, el dashboard los creará de nuevo
                             self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
@@ -3245,6 +3313,32 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /**
+         * Metodo para direcciones de proyectos
+         * @return array strings
+         *
+         * Cerca de la obsolitud
+         *
+         */
+        public static function getProjLocs () {
+
+            $results = array();
+
+            $sql = "SELECT distinct(project_location) as location
+                    FROM project
+                    WHERE status > 2
+                    ORDER BY location ASC";
+
+            try {
+                $query = self::query($sql);
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+                    $results[md5($item->location)] = $item->location;
+                }
+                return $results;
+            } catch (\PDOException $e) {
+                throw new Exception('Fallo la lista de localizaciones');
+            }
+        }
         /**
          *  Saca las vias de contacto para un proyecto
          * @return: Model\Project

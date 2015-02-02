@@ -5,7 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Model;
 
     class Ws extends \Goteo\Core\Controller {
-        
+
         public function get_home_post($id) {
             $Post = Model\Post::get($id);
 
@@ -88,7 +88,7 @@ EOD;
                                 'user'   => $user,
                                 'id' => $review
                 ));
-                
+
                 $parts = explode('-', $_POST['campo']);
                 if (in_array($parts[0], array('project', 'owner', 'reward')) &&
                     in_array($parts[1], array('evaluation', 'recommendation'))) {
@@ -127,40 +127,6 @@ EOD;
             die;
         }
 
-        /**
-         * Recibe por post datos de login del usuario
-         * @param type $user id usuario
-         * 
-         * //@TODO: grabar la localidad y asignar al usuario
-         * //@TODO: verificar que la localidad no existe
-         * 
-         */
-        public function geologin() {
-            
-            $errors = array();
-            //
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['geologin'] == 'record') {
-                
-                if (Model\User\Location::loginRec(array(
-                    ':user' => isset($_SESSION['user']) ? $_SESSION['user']->id : '',
-                    ':ip'   => \myip(),
-                    ':lon'  => $_POST['lon'],
-                    ':lat'  => $_POST['lat'],
-                    ':msg'  => $_POST['msg']
-                ), $errors)) {
-                    echo 'OK';
-                } else {
-                    echo 'FAIL <br />'.implode(',', $errors);
-                }
-                
-                header ('HTTP/1.1 200 Ok');
-                die;
-            } else {
-                header ('HTTP/1.1 403 Forbidden');
-                die;
-            }
-        }
-
         /*
          * Marcar recompensa cumplida
          */
@@ -185,9 +151,9 @@ EOD;
                 header ('HTTP/1.1 403 Forbidden');
                 die;
             }
-            
+
         }
-        
+
     }
-    
+
 }

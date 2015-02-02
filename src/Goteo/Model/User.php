@@ -3,9 +3,11 @@
 namespace Goteo\Model {
 
 	use Goteo\Library\Text,
+        Goteo\Application\Session,
         Goteo\Model\Image,
         Goteo\Model\Node,
         Goteo\Model\Project,
+        Goteo\Model\User\UserLocation,
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Check,
@@ -53,9 +55,6 @@ namespace Goteo\Model {
 	        if($name == "token") {
 	            $this->$name = $this->setToken($value);
 	        }
-	        if($name == "geoloc") {
-	            $this->$name = $this->setGeoloc($value);
-	        }
             $this->$name = $value;
         }
 
@@ -73,25 +72,22 @@ namespace Goteo\Model {
                 return self::numInvested($this->id);
             }
 	        if($name == "support") {
-	            return $this->getSupport();
-	        }
-	        if($name == "get_numOwned") {
+                return $this->getSupport();
+            }
+            if($name == "get_numOwned") {
                 return self::updateOwned($this->id);
-	        }
-	        if($name == "get_worth") {
+            }
+            if($name == "get_worth") {
                 return self::updateWorth($this->id, $this->amount);
-	        }
-	        if($name == "get_amount") {
+            }
+            if($name == "get_amount") {
                 return self::updateAmount($this->id);
-	        }
-	        if($name == "geoloc") {
-	            return User\Location::get($this->id);
-	        }
-	        if($name == "geologed") {
-	            return User\Location::is_geologed($this->id);
+            }
+            if($name == "geoloc") {
+	            return $this->getLocation();
 	        }
 	        if($name == "unlocable") {
-	            return User\Location::is_unlocable($this->id);
+	            return UserLocation::isUnlocable($this->id);
 	        }
 	        if($name == "admin_node") {
 	            return \Goteo\Model\Node::getAdminNode($this->id);
@@ -108,8 +104,8 @@ namespace Goteo\Model {
          *                                         password, active
          * @return type bool	true|false
          */
-        public function save (&$errors = array(),$skip_validations = array()) {
-            if($this->validate($errors,$skip_validations)) {
+        public function save (&$errors = array(), $skip_validations = array()) {
+            if($this->validate($errors, $skip_validations)) {
                 // Nuevo usuario.
                 if(empty($this->id)) {
                     $insert = true;
@@ -307,7 +303,9 @@ namespace Goteo\Model {
                         $query = substr($query, 0, -2) . " WHERE id = :id";
                     }
                     // Ejecuta SQL.
-                    return self::query($query, $data);
+                    if(self::query($query, $data)) {
+                        return true;
+                    }
             	} catch(\PDOException $e) {
                     $errors[] = "Error al actualizar los datos del usuario: " . $e->getMessage();
                     return false;
@@ -992,6 +990,25 @@ namespace Goteo\Model {
         }
          */
 
+        /**
+         * Get a user by mail
+         *
+         * @param string $username Nombre de usuario
+         * @param string $password Contraseña
+         * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
+         */
+        public static function getByEmail ($email) {
+
+            $query = self::query("SELECT id FROM user WHERE BINARY email = ?", $email);
+
+            if($row = $query->fetch()) {
+                if($user = static::get($row['id'])) {
+                    return $user;
+                }
+            }
+            return false;
+        }
+
 		/**
 		 * Validación de usuario.
 		 *
@@ -1031,15 +1048,6 @@ namespace Goteo\Model {
 			return false;
 		}
 
-		/**
-		 * Comprueba si el usuario está identificado.
-		 *
-		 * @return boolean
-		 */
-		public static function isLogged () {
-			return !empty($_SESSION['user']);
-		}
-
         /**
          * Comprueba si el usuario es administrador
          * @param   type varchar(50)  $id   Usuario admin
@@ -1069,8 +1077,8 @@ namespace Goteo\Model {
 		 * @return type object	User
 		 */
 		public static function flush () {
-    		if(static::isLogged()) {
-    			return $_SESSION['user'] = self::get($_SESSION['user']->id);
+    		if($id = Session::getUserId()) {
+    			return Session::setUser(self::get($id));
     		}
     	}
 
@@ -1258,28 +1266,13 @@ namespace Goteo\Model {
             return $query->fetchColumn(0);
     	}
 
-    	/**
-    	 * Asigna el usuario a una Geolocalización
-    	 *
-    	 * @param type int (id geolocation)
-    	 * @return type int (id geolocation)
-    	 */
-    	private function setGeoloc ($loc) {
-
-            $errors = array();
-
-            $geoloc = new User\Location(array(
-                'user' => $this->id,
-                'location' => $loc
-            ));
-
-            if ($geoloc->save($errors)) {
-                return $loc;
-            } else {
-                @mail(\GOTEO_FAIL_MAIL, 'Geoloc fail en ' . SITE_URL, 'Error al asignar location a usuario en ' . __FUNCTION__ . '. '. implode (', ', $errors));
-                return false;
-            }
-    	}
+        /**
+         * Returns the user's location
+         * @return UserLocation if succeded, false otherwise
+         */
+        public function getLocation() {
+            return UserLocation::get($this->id);
+        }
 
         /**
          * Cofinanciación.
@@ -1628,6 +1621,16 @@ namespace Goteo\Model {
                 return false;
             }
 
+        }
+
+        /*
+         * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
+         * @return: boolean
+         */
+        public function delete(&$errors = array()) {
+
+            $errors[] = "No implementado";
+            return false;
         }
 
         /**

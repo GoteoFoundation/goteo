@@ -114,7 +114,7 @@ namespace Goteo\Model {
             return $array;
 		}
 
-        public function validate (&$errors = array()) { 
+        public function validate (&$errors = array()) {
             if (empty($this->item))
                 $errors[] = 'Falta elemento';
 
@@ -169,15 +169,22 @@ namespace Goteo\Model {
         /*
          * Para quitar un elemento
          */
-        public static function delete ($item, $node = \GOTEO_NODE, $type = 'main') {
-            
+        public function delete ($item = null, $node = null, $type = null) {
+            if(empty($item) && $this->item) $item = $this->item;
+            if(empty($node) && $this->node) $node = $this->node;
+            if(empty($type) && $this->type) $type = $this->node;
+            if(empty($node)) $node = \GOTEO_NODE;
+            if(empty($type)) $type = 'main';
+            if(empty($item)) return false;
+
             $sql = "DELETE FROM home WHERE item = :item AND node = :node AND type = :type";
-            if (self::query($sql, array(':item'=>$item, ':node'=>$node, ':type'=>$type))) {
-                return true;
-            } else {
+            try {
+                self::query($sql, array(':item'=>$item, ':node'=>$node, ':type'=>$type));
+            } catch (\PDOException $e) {
+                // throw new Exception("Delete error in $sql");
                 return false;
             }
-
+            return true;
         }
 
         /*
@@ -262,5 +269,5 @@ namespace Goteo\Model {
 		}
 
     }
-    
+
 }
