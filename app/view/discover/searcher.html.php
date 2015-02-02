@@ -2,14 +2,15 @@
 
 use Goteo\Model\Category,
     Goteo\Model\Icon,
-    Goteo\Model\Location,
+    Goteo\Model\Project,
     Goteo\Library\Text;
 
 //activamos la cache
 \Goteo\Core\DB::cache(true);
 
+//TODO: esto no deberia ir aqui
 $categories = Category::getList();  // categorias que se usan en proyectos
-$locations = Location::getProjLocs();  //localizaciones de royectos
+$locations = Project::getProjLocs();  //localizaciones de royectos
 $rewards = Icon::getList(); // iconos que se usan en proyectos
 
 $params = $this['params'];
@@ -55,7 +56,7 @@ $params = $this['params'];
         <div style="float:left">
             <button type="submit" id="searcher" name="searcher"><?php echo Text::get('discover-searcher-button'); ?></button>
         </div>
-        
+
         <br clear="all" />
     </form>
 </div>

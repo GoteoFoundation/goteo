@@ -591,6 +591,7 @@ namespace Goteo\Controller\Admin {
         }
 
 
+        //TODO: añadir proyectos
         private static function geoloc() {
 
 
@@ -607,36 +608,46 @@ namespace Goteo\Controller\Admin {
                     throw new Redirection('/admin/reports/geoloc');
                 }
             } else {
+                $query = Model\Location::query('SELECT COUNT(id) FROM user');
+                $registered = $query->fetchColumn();
+                $query = Model\Location::query("SELECT COUNT(id) FROM user WHERE location = '' OR ISNULL(location)");
+                $nolocation = $query->fetchColumn();
+                $located = Model\Location::countBy('user', 'located');
                 $data = array(
                     'date'          => date('Ymd'),
                     'report'        => 'geoloc',
-                    'registered'    => Model\Location::countBy('registered'),
-                    'no-location'   => Model\Location::countBy('no-location'),
-                    'located'       => Model\Location::countBy('located'),
-                    'unlocated'     => Model\Location::countBy('unlocated'),
-                    'unlocable'     => Model\Location::countBy('unlocable'),
-                    'not-spain'     => Model\Location::countBy('not-country', 'España'),
+                    'registered'    => $registered,
+                    'no-location'   => $nolocation,
+                    'located'       => $located,
+                    'unlocated'     => $registered - $located,
+                    'unlocable'     => Model\Location::countBy('user', 'unlocable'),
+                    'not-spain'     => Model\Location::countBy('user', 'not-country', 'ES'),
                     'by-region'     => array(),
                     'by-country'    => array(),
                     'by-node'       => array()
                 );
 
-                // por provincias españolas
-                $regions = Model\Location::getList('region', array('type'=>'country', 'value'=>md5('España')));
-                foreach ($regions as $regionId => $regionName) {
-                    $data['by-region'][$regionName] = Model\Location::countBy('region', $regionName);
+                // por regiones españolas
+                $sql = "SELECT DISTINCT(region) as region FROM location WHERE country_code = 'ES' ORDER BY region ASC";
+                if($query = Model\Location::query($sql)) {
+                    foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
+                        $data['by-region'][$ob->region] = Model\Location::countBy('user', 'region', $ob->region);
+                    }
                 }
 
-                // por paises
-                $countries = Model\Location::getList('country');
-                foreach ($countries as $countryId => $countryName) {
-                    $data['by-country'][$countryName] = Model\Location::countBy('country', $countryName);
+                // // por paises
+                $sql = "SELECT country_code, country FROM location GROUP BY country_code ORDER BY country_code ASC";
+                if($query = Model\Location::query($sql)) {
+                    foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
+                        $data['by-country'][$ob->country_code . ' (' . $ob->country . ')'] = Model\Location::countBy('user', 'country', $ob->country_code);
+                    }
                 }
 
                 // por nodo (no exactamente geoloc....)
                 $nodes = Model\Node::getList();
                 foreach ($nodes as $nodeId => $nodeName) {
-                    $data['by-node'][$nodeName] = Model\Location::countBy('node', $nodeId);
+                    $query = Model\Location::query("SELECT COUNT(id) FROM user WHERE node = '$nodeId'");
+                    $data['by-node'][$nodeName] = (int) $query->fetchColumn();
                 }
 
                 if (\file_put_contents($data_file, serialize($data), FILE_APPEND)) {

@@ -79,15 +79,6 @@ if (NODE_ID != GOTEO_NODE) {
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />
         <!-- end custom fancybox-->
 
-        <!-- vigilante de sesion -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/watchdog.js"></script>
-
-        <?php if (!isset($_SESSION['impersonating']) && $_SESSION['user'] instanceof \Goteo\Model\User && empty($_SESSION['user']->geoloc) && !$_SESSION['user']->geologed && !$_SESSION['user']->unlocable) : ?>
-        <!-- geologin -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geologin.js"></script>
-        <?php endif; ?>
-
-
         <?php if (isset($jscrypt)) : ?>
             <script src="<?php echo SRC_URL ?>/view/js/sha1.min.js"></script>
         <?php endif; ?>

@@ -64,30 +64,30 @@ namespace Goteo\Model {
                         AND stories_lang.lang = :lang
                     WHERE stories.id = :id
                     ", array(':id'=>$id, ':lang' => $lang));
-                $story = $query->fetchObject(__CLASS__);
+                if($story = $query->fetchObject(__CLASS__)) {
+                    $story->image = !empty($story->image) ? Image::get($story->image) : null;
 
-                $story->image = !empty($story->image) ? Image::get($story->image) : null;
+                    $user = new User;
+                    $user->id = $story->user_id;
+                    $user->name = $story->user_name;
 
-                $user = new User;
-                $user->id = $story->user_id;
-                $user->name = $story->user_name;
+                    $project = new Project;
+                    $project->id = $story->project_id;
+                    $project->name = $story->project_name;
+                    $project->amount = $story->project_amount;
+                    $project->num_investors = $story->project_num_investors;
+                    $project->user = $user;
 
-                $project = new Project;
-                $project->id = $story->project_id;
-                $project->name = $story->project_name;
-                $project->amount = $story->project_amount;
-                $project->num_investors = $story->project_num_investors;
-                $project->user = $user;
+                    if(empty($project->amount)) {
+                        $project->amount = Invest::invested($project->id);
+                    }
+                    if(empty($project->num_investors)) {
+                        $project->num_investors = Invest::numInvestors($project->id);
+                    }
 
-                if(empty($project->amount)) {
-                    $project->amount = Invest::invested($project->id);
+
+                    $story->project = $project;
                 }
-                if(empty($project->num_investors)) {
-                    $project->num_investors = Invest::numInvestors($project->id);
-                }
-
-
-                $story->project = $project;
                 return $story;
         }
 
@@ -311,20 +311,6 @@ namespace Goteo\Model {
             }
         }
 
-        /*
-         * Para quitar una historia exitosa
-         */
-        public static function delete ($id) {
-
-            $sql = "DELETE FROM stories WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
         /* Para activar/desactivar una historia exitosa
          */
         public static function setActive ($id, $active = false) {
@@ -336,6 +322,18 @@ namespace Goteo\Model {
                 return false;
             }
 
+        }
+
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
+         */
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
+
+            if(!($ob = Stories::get($id))) return false;
+            return $ob->delete();
         }
 
         /*

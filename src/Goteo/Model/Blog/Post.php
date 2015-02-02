@@ -98,7 +98,7 @@ namespace Goteo\Model\Blog {
             if(!$post instanceof \Goteo\Model\Blog\Post) {
 
                 if ($debug) die(' no es \Goteo\Model\Blog\Post  ???');
-                return null;
+                return false;
 
             } else {
 
@@ -646,7 +646,8 @@ namespace Goteo\Model\Blog {
         /*
          * Para quitar una entrada
          */
-        public static function delete ($id) {
+        public function delete ($id = null) {
+            if(empty($id) && $this->id) $id = $this->id;
 
             $sql = "DELETE FROM post WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
@@ -656,10 +657,8 @@ namespace Goteo\Model\Blog {
                 self::query($sql, array(':id'=>$id));
 
                 return true;
-            } else {
-                return false;
             }
-
+            return false;
         }
 
         /*

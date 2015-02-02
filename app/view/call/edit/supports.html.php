@@ -286,7 +286,7 @@ echo SuperForm::get(array(
 $(function () {
 
     /* banners buttons */
-    var banners = $('div#<?php echo $sfid ?> li.element#banners');
+    var banners = $('div#<?php echo $sfid ?> li.element#li-banners');
 
     banners.delegate('li.element.banner input.edit', 'click', function (event) {
         event.preventDefault();
@@ -309,7 +309,7 @@ $(function () {
         banners.superform({data:data});
     });
 
-    banners.delegate('#banner-add input', 'click', function (event) {
+    banners.delegate('#li-banner-add input', 'click', function (event) {
        event.preventDefault();
        var data = {};
        data[this.name] = '1';
@@ -317,7 +317,7 @@ $(function () {
     });
 
     /* sponsors buttons */
-    var sponsors = $('div#<?php echo $sfid ?> li.element#sponsors');
+    var sponsors = $('div#<?php echo $sfid ?> li.element#li-sponsors');
 
     sponsors.delegate('li.element.sponsor input.edit', 'click', function (event) {
         event.preventDefault();
@@ -340,7 +340,7 @@ $(function () {
         sponsors.superform({data:data});
     });
 
-    sponsors.delegate('#sponsor-add input', 'click', function (event) {
+    sponsors.delegate('#li-sponsor-add input', 'click', function (event) {
        event.preventDefault();
        var data = {};
        data[this.name] = '1';

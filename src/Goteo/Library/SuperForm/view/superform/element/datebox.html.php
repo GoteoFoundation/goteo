@@ -1,5 +1,20 @@
-<input name="<?php echo htmlspecialchars($this['name']) ?>" type="text"<?php if (isset($this['class'])) echo ' class="datepicker ' . htmlspecialchars($this['class']) . '"'?>  value="<?php if (isset($this['value'])) echo htmlspecialchars($this['value']) ?>"<?php if (isset($this['size'])) echo ' size="' . ((int) $this['size']) . '"' ?> />
+<input name="<?php echo htmlspecialchars($this['name']) ?>" type="text"<?php
+
+if (isset($this['class'])) echo ' class="datepicker ' . htmlspecialchars($this['class']) . '"';
+
+if (isset($this['size'])) echo ' size="' . ((int) $this['size']) . '"';
+
+if($this['data'] && is_array($this['data'])) {
+    foreach($this['data'] as $key => $val) {
+        echo ' data-' . $key . '="' . htmlspecialchars($val) . '"';
+    }
+}
+
+?> value="<?php if (isset($this['value'])) echo htmlspecialchars($this['value']) ?>"<?php
+
+?> />
 <?php
+//TODO: borrar esto y hacerlo mejor via javascript externo!
 // hace falta cargar el javascript si se pide fuera de un superform
 if ($this['js'] == true) : ?>
 <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/datepicker.min.js"></script>

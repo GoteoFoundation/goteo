@@ -2,7 +2,8 @@
 
 namespace Goteo\Core {
 
-    use Goteo\Model\User;
+    use Goteo\Model\User,
+        Goteo\Application\Session;
 
     class ACL {
         protected $resources = array();
@@ -14,7 +15,7 @@ namespace Goteo\Core {
             $url = static::fixURL($url);
 
             if(is_null($user)) {
-                if(!User::isLogged()) {
+                if(!Session::isLogged()) {
                     // @FIXME: Ajuste para permitir un perfil público sin usuario registrado.
                     // (Es provisional hasta que se decida lo contrario)
                     $user = new User();

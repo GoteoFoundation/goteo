@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\View,
         Goteo\Model,
+        Goteo\Application\Session,
         Goteo\Library,
         Goteo\Library\Feed,
         Goteo\Library\Text,
@@ -38,7 +39,7 @@ namespace Goteo\Controller {
         public function login($username = '') {
 
             // si está logueado, redirigir a dashboard
-            if (Model\User::isLogged()) {
+            if (Session::isLogged()) {
                 throw new Redirection('/dashboard/activity');
             }
 
@@ -80,7 +81,7 @@ namespace Goteo\Controller {
          * @return Model\User           El usuario si no hay redirección
          */
         static public function loginUser(Model\User $user, $redirect = true) {
-            $_SESSION['user'] = $user;
+            Session::setUser($user);
 
             // creamos una cookie
             setcookie('goteo_user', $user->id, time() + 3600 * 24 * 365);

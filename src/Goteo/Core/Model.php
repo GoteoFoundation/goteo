@@ -7,6 +7,9 @@ namespace Goteo\Core {
 
     abstract class Model {
 
+        //Override in the model the table if different from the class name
+        protected $Table = null;
+
         /**
          * Constructor.
          */
@@ -19,12 +22,38 @@ namespace Goteo\Core {
                     }
                 }
             }
+
+            //Default table is the name of the class
+            $table = $this->getTable();
+            if(empty($table)) {
+                //Table by default
+                $table = strtolower(get_called_class());
+                if(strrpos($table, '\\') !== false) {
+                    $table = substr($table, strrpos($table, '\\') + 1);
+                }
+                $this->setTable($table);
+            }
+        }
+        /**
+         * Get the table name
+         * @return string Table name
+         */
+        public function getTable() {
+            return $this->Table;
+        }
+        /**
+         * Sets the table name
+         * @param string $table Table name
+         */
+        public function setTable($table = null) {
+            if($table) $this->Table = $table;
+            return $this;
         }
 
         /**
          * Obtener.
          * @param   type mixed  $id     Identificador
-         * @return  type object         Objeto
+         * @return  type object         Objeto or false if not found
          */
         abstract static public function get ($id);
 
@@ -41,6 +70,29 @@ namespace Goteo\Core {
          * @return  type bool   true|false
          */
         abstract public function validate (&$errors = array());
+
+        /**
+         * Borrar.
+         * @return  type bool   true|false
+         */
+        public function delete () {
+            $id = $this->id;
+            if(empty($id)) {
+                // throw new Exception("Delete error: ID not defined!");
+                return false;
+            }
+
+            $sql = 'DELETE FROM ' . $this->Table . ' WHERE id = ?';
+            // var_dump($this);
+            // echo get_called_class()." $sql $id\n";
+            try {
+                self::query($sql, array($id));
+            } catch (\PDOException $e) {
+                // throw new Exception("Delete error in $sql");
+                return false;
+            }
+            return true;
+        }
 
         /**
          * Consulta.
