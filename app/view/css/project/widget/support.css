@@ -48,7 +48,7 @@ div.widget.project-support dl dt.optimum{
 
 div.widget.project-support dl dt.optimum,
 div.widget.project-support dl dt.minimum {
-    width: 76px;
+    width: 48px;
     float: left;
     margin-left: 0;
     line-height: 45px;
@@ -62,11 +62,13 @@ div.widget.project-support dl dt.minimum {
 
 div.widget.project-support dl dt.optimum {
     background-image: url('/view/css/project/widget/support/here-optimum.png');
+    margin-right: 26px;
 }
 
 div.widget.project-support dl dt.minimum {
     background-image: url('/view/css/project/widget/support/here-minimum.png');
     clear: left;
+    margin-right: 26px;
 }
 
 div.widget.project-support dl dd.optimum,
