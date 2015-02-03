@@ -314,11 +314,11 @@ namespace Goteo\Controller {
                 $remite .= (NODE_ID != GOTEO_NODE) ? NODE_NAME : GOTEO_MAIL_NAME;
 
                 $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
-                $profile_url = SITE_URL."/user/profile/{$user->id}/sharemates";
+                $profile_url = SITE_URL."/user/profile/{$user->id}";
                 // En el contenido:  nombre del destinatario -> %TONAME% por $user->name
                 // el mensaje que ha escrito el usuario -> %MESSAGE% por $msg_content
                 // nombre del usuario -> %USERNAME% por $_SESSION['user']->name
-                // url del perfil -> %PROFILEURL% por ".SITE_URL."/user/profile/{$user->id}/sharemates"
+                // url del perfil -> %PROFILEURL% por ".SITE_URL."/user/profile/{$user->id}"
                 $search  = array('%MESSAGE%','%TONAME%',  '%USERNAME%', '%PROFILEURL%', '%RESPONSEURL%');
                 $replace = array($msg_content, $user->name, $_SESSION['user']->name, $profile_url, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
