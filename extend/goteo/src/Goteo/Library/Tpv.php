@@ -3,6 +3,7 @@ namespace Goteo\Library {
 
     use Goteo\Model\Invest,
         Goteo\Model\Project,
+        Goteo\Library\Text,
         Goteo\Core\Redirection;
 
     require_once __DIR__ . '/Tpv/wshandler.php';  // Libreria para comunicaciones con el webservice TPV y log
@@ -94,7 +95,16 @@ namespace Goteo\Library {
 
                 Invest::setDetail($invest->id, 'tpv-conection', 'Ha iniciado la comunicacion con el tpv, operacion numero ' . $token . '. Proceso libary/tpv::pay');
 
-                echo '<html><head><title>Goteo.org</title></head><body><form action="'.$urlTPV.'" method="post" id="form_tpv" enctype="application/x-www-form-urlencoded">'.$data.'</form><script type="text/javascript">document.getElementById("form_tpv").submit();</script></body></html>';
+                echo '<html>
+                <head>
+                    <title>Goteo.org</title>
+                    <noscript>'.Text::get('warning_nojavascript').'<br /><a href="/project/'.$invest->project.'/invest/?amount='.$invest->amount.'">CONTINUE</a></noscript>
+                </head>
+                <body>
+                <form action="'.$urlTPV.'" method="post" id="form_tpv" enctype="application/x-www-form-urlencoded">'.$data.'</form>
+                <script type="text/javascript">document.getElementById("form_tpv").submit();</script>
+                </body>
+                </html>';
                 return true;
 			}
 			catch(Exception $ex) {
