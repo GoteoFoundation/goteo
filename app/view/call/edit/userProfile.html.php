@@ -297,7 +297,7 @@ echo SuperForm::get(array(
 <script type="text/javascript">
 $(function () {
 
-    var webs = $('div#<?php echo $sfid ?> li.element#user_webs');
+    var webs = $('div#<?php echo $sfid ?> li.element#li-user_webs');
 
     webs.delegate('li.element.web input.edit', 'click', function (event) {
         event.preventDefault();
@@ -320,7 +320,7 @@ $(function () {
         webs.superform({data:data});
     });
 
-    webs.delegate('#web-add input', 'click', function (event) {
+    webs.delegate('#li-web-add input', 'click', function (event) {
        event.preventDefault();
        var data = {};
        data[this.name] = '1';

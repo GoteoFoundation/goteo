@@ -130,7 +130,7 @@ $sfid = 'sf-project-supports';
 <script type="text/javascript">
 $(function () {
 
-    var supports = $('div#<?php echo $sfid ?> li.element#supports');
+    var supports = $('div#<?php echo $sfid ?> li.element#li-supports');
 
     supports.delegate('li.element.support input.edit', 'click', function (event) {
         event.preventDefault();

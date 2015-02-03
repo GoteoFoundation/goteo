@@ -110,7 +110,7 @@ $sfid = 'sf-call-banners';
 <script type="text/javascript">
 $(function () {
 
-    var banners = $('div#<?php echo $sfid ?> li.element#banners');
+    var banners = $('div#<?php echo $sfid ?> li.element#li-banners');
 
     banners.delegate('li.element.banner input.edit', 'click', function (event) {
         event.preventDefault();

@@ -199,6 +199,6 @@ var _prum = [['id', '5434f3beabe53dcd6ff6f0cf'],
                 });
             });
         </script>
-        <noscript><!-- Please enable JavaScript --></noscript>
+        <noscript><div id="noscript">Please enable JavaScript</div></noscript>
 
         <div id="wrapper">

@@ -420,7 +420,7 @@ echo SuperForm::get(array(
 $(function () {
 
     /* social rewards buttons */
-    var socials = $('div#<?php echo $sfid ?> li.element#social_rewards');
+    var socials = $('div#<?php echo $sfid ?> li.element#li-social_rewards');
 
     //abrir el selector de licencias
     socials.delegate('li.element.social_reward input.edit', 'click', function (event) {
@@ -446,7 +446,7 @@ $(function () {
         socials.superform({data:data});
     });
     //añadir nueva licencia
-    socials.delegate('#social_reward-add input', 'click', function (event) {
+    socials.delegate('#li-social_reward-add input', 'click', function (event) {
        event.preventDefault();
        var data = {};
        data[this.name] = '1';
@@ -468,7 +468,7 @@ $(function () {
     });
 
     /* individual_rewards buttons */
-    var individuals = $('div#<?php echo $sfid ?> li.element#individual_rewards');
+    var individuals = $('div#<?php echo $sfid ?> li.element#li-individual_rewards');
 
     individuals.delegate('li.element.individual_reward input.edit', 'click', function (event) {
         event.preventDefault();
@@ -491,7 +491,7 @@ $(function () {
         individuals.superform({data:data});
     });
 
-    individuals.delegate('#individual_reward-add input', 'click', function (event) {
+    individuals.delegate('#li-individual_reward-add input', 'click', function (event) {
        event.preventDefault();
        var data = {};
        data[this.name] = '1';
