@@ -374,5 +374,9 @@ a.up:hover{background:url('/view/css/arrow-up.png') no-repeat left;
 ******************************/
 div#noscript {
     font-size: 24px;
-    padding: 20px;
+    border: 1px solid #f00;
+    color: #f00;
+    margin: 1em;
+    padding: 0.5em;
+    text-align: center;
 }
