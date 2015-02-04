@@ -366,7 +366,6 @@ namespace Goteo\Controller\Cron {
                     }
                     break;
                 case 'tpv':
-                    // se abre la operación en otra ventana
                     $err = array();
                     if (Tpv::cancelPreapproval($invest, $err, true)) {
                         $log_text = "Se ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
