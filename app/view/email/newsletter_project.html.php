@@ -60,7 +60,7 @@ if ($q < 5) foreach ($project->individual_rewards as $individual) {
     
     <div style="width: 25px;height: 2px;border-bottom: 1px solid #38b5b1;margin-bottom: 10px; margin-top:10px;"></div>
    
-    <div style="font-size: 14px;vertical-align: top;text-transform: uppercase; padding-bottom:10px;"><?php echo Text::get('project-view-metter-investment'); ?>: <span style="font-size:14px;color:#96238F;font-weight: bold;"><?php echo Text::get('project-view-metter-minimum') . ' ' . \amount_format($project->mincost); ?>&euro;</span>  <span style="color:#FFF;">_</span>  <span style="font-size:14px;color:#ba6fb6;font-weight: bold;"><?php echo Text::get('project-view-metter-optimum') . ' ' . \amount_format($project->maxcost); ?>&euro;</span>
+    <div style="font-size: 14px;vertical-align: top;text-transform: uppercase; padding-bottom:10px;"><?php echo Text::get('project-view-metter-investment'); ?>: <span style="font-size:14px;color:#96238F;font-weight: bold;"><?php echo Text::get('project-view-metter-minimum') . ' ' . \amount_format($project->mincost); ?></span>  <span style="color:#FFF;">_</span>  <span style="font-size:14px;color:#ba6fb6;font-weight: bold;"><?php echo Text::get('project-view-metter-optimum') . ' ' . \amount_format($project->maxcost); ?></span>
     </div>
     <span style="font-size: 14px;line-height: 14px; padding-top:10px; padding-bottom:10px; margin-bottom:10px;text-transform: uppercase;"><?php echo Text::get('project-view-metter-days'); ?>: <strong style="text-transform: none;"><?php echo $project->days.' '.Text::get('regular-days'); ?></strong></span>
 </div>
