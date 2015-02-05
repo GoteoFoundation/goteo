@@ -27,6 +27,7 @@ namespace Goteo\Controller {
         public function activity($option = 'summary', $action = 'view') {
 
             $user = $_SESSION['user'];
+            $errors = array();
 
             $viewData = array(
                                 'menu' => self::menu(),
@@ -46,6 +47,18 @@ namespace Goteo\Controller {
             // gestión de certificado
             if ($option == 'donor')  {
                 $viewData['donation'] = Dashboard\Activity::donor($user, $action);
+            }
+
+
+            // gestión de clave api
+            if ($option == 'apikey')  {
+                // contenido de la página
+                $viewData['page'] = Page::get('apikey');
+
+                // clave actual del usuario (objeto)
+                $viewData['apikey'] = Dashboard\Apikey::get($user, $action, $errors);
+
+                $viewData['errors'] = $errors;
             }
 
 
@@ -1069,7 +1082,8 @@ namespace Goteo\Controller {
                     'label' => Text::get('dashboard-menu-activity'),
                     'options' => array(
                         'summary' => Text::get('dashboard-menu-activity-summary'),
-                        'donor' => Text::get('dashboard-menu-activity-donor')
+                        'donor' => Text::get('dashboard-menu-activity-donor'),
+                        'apikey' => Text::get('dashboard-menu-activity-apikey')
                     )
                 ),
                 'profile' => array(
