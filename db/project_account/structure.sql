@@ -12,3 +12,6 @@ ALTER TABLE `project_account` ADD `paypal_owner` TINYTEXT NULL AFTER `paypal` ;
 
 -- flag para permitir paypal
 ALTER TABLE `project_account` ADD `allowpp` INT(1) ;
+
+-- porcentaje de comisión goteo
+ALTER TABLE `project_account` ADD `fee` INT(1) NOT NULL DEFAULT 8 COMMENT 'porcentaje de comisión goteo';

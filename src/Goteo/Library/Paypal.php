@@ -125,8 +125,8 @@ namespace Goteo\Library {
                 $project = Project::getMini($invest->project);
                 $userData = User::getMini($invest->user);
 
-                // al productor le pasamos el importe del cargo menos el 8% que se queda goteo
-                $amountPay = $invest->amount - ($invest->amount * 0.08);
+                // al productor le pasamos el importe del cargo menos el porcentaje de comisión goteo
+                $amountPay = $invest->amount - ($invest->amount * $invest->fee / 100);
 
 
                 // Create request object

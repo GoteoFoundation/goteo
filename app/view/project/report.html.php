@@ -1,8 +1,19 @@
 <?php
-
 use Goteo\Model\Contract;
 
 $project = $this['project'];
+$account = $this['account']; // cuentas del proyecto, para tener el porcentaje de comisión
+
+// comisión goteo para este proyecto
+$GOTEO_FEE = round($account->fee / 100, 2);
+
+var_dump($account->fee);
+var_dump($account->fee / 100);
+var_dump($GOTEO_FEE);
+die;
+
+
+
 $called = $project->called;
 $Data    = $this['Data'];
 $admin = (isset($this['admin']) && $this['admin'] === true) ? true : false;
@@ -30,11 +41,11 @@ $cName = "P-{$cNum}-{$cDate}";
     $sumData['fail']  = $total_issues;
     $sumData['shown'] = $sumData['total'] + $sumData['fail'] + $sumData['drop'] + $sumData['ghost'];
     $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
-    $sumData['cash_goteo'] = $Data['cash']['total']['amount']  * 0.08;
-    $sumData['tpv_goteo'] = $Data['tpv']['total']['amount']  * 0.08;
-    $sumData['pp_goteo'] = $Data['paypal']['total']['amount'] * 0.08;
-    $sumData['drop_goteo'] = $Data['drop']['total']['amount'] * 0.08;
-    $sumData['ghost_goteo'] = $Data['ghost']['total']['amount'] * 0.08;
+    $sumData['cash_goteo'] = $Data['cash']['total']['amount']  * $GOTEO_FEE;
+    $sumData['tpv_goteo'] = $Data['tpv']['total']['amount']  * $GOTEO_FEE;
+    $sumData['pp_goteo'] = $Data['paypal']['total']['amount'] * $GOTEO_FEE;
+    $sumData['drop_goteo'] = $Data['drop']['total']['amount'] * $GOTEO_FEE;
+    $sumData['ghost_goteo'] = $Data['ghost']['total']['amount'] * $GOTEO_FEE;
     $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
     $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['amount'] * 0.034);
     $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
@@ -100,7 +111,7 @@ $cName = "P-{$cNum}-{$cDate}";
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisiones cobradas a Goteo por cada transferencia de tarjeta (0,8&#37;) y PayPal (3,4&#37; + 0,35 por transacción/usuario/a): <strong>total <?php echo \amount_format($sumData['fee_goteo'], 2); ?></strong></td>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisión del 8&#37; de Goteo.org: <strong><?php echo \amount_format($sumData['goteo'], 2); ?></strong></td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisión del <?php echo $account->fee; ?>&#37; de Goteo.org: <strong><?php echo \amount_format($sumData['goteo'], 2); ?></strong></td>
         </tr>
 <?php if ($admin) : ?>
         <!--
