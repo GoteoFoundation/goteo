@@ -454,7 +454,7 @@ namespace Goteo\Controller {
             } else {
                 $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
                 define('ADMIN_BCPATH', $BC);
-                $SubC = 'Goteo\Controller\Admin' . \chr(92) . \ucfirst($option);
+                $SubC = 'Goteo\Controller\Admin' . \chr(92) . \strtoCamelCase($option);
                 $ret = $SubC::process($action, $id, self::setFilters($option), $subaction);
             }
             return $ret;
