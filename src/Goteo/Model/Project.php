@@ -187,8 +187,8 @@ namespace Goteo\Model {
                 || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
                 || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
                 || isset($user->roles['superadmin']) // es superadmin
-                || (isset($user->roles['checker']) && Model\User\Review::is_assigned($user->id, $project->id)) // es revisor
-                || (isset($user->roles['caller']) && Model\Call\Project::is_assigned($user->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
+                || (isset($user->roles['checker']) && User\Review::is_assigned($user->id, $project->id)) // es revisor
+                || (isset($user->roles['caller']) && Call\Project::is_assigned($user->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
             )
                 $grant = true;
 
