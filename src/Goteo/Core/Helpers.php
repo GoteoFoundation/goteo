@@ -138,4 +138,11 @@ namespace {
         return base64_decode(str_replace(array('_', '-'), array('+', '/'), $s));
     }
 
+
+    /* para convertir código de controlador (con undescore) 'dos_palabras' a nombre de clase (CamelCase) 'DosPalabras'*/
+    // /admin/open_tags sería \Goteo\Controller\Admin\OpenTags (para cumplir con el standard del framework)
+    function strtoCamelCase ($str) {
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $str)));
+    }
+
 }
