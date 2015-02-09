@@ -34,7 +34,7 @@ namespace Goteo\Controller {
             // Es un admin, es el impulsor
             //
             $grant = false;
-            if ($contract->project_owner == $_SESSION['user']->id)  // es el dueño del proyecto
+            if (isset($contract) && $contract->project_owner == $_SESSION['user']->id)  // es el dueño del proyecto
                 $grant = true;
             elseif (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE)  // es un admin de central
                 $grant = true;
