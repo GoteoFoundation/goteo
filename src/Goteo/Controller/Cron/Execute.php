@@ -366,7 +366,6 @@ namespace Goteo\Controller\Cron {
                     }
                     break;
                 case 'tpv':
-                    // se abre la operación en otra ventana
                     $err = array();
                     if (Tpv::cancelPreapproval($invest, $err, true)) {
                         $log_text = "Se ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
@@ -417,8 +416,9 @@ namespace Goteo\Controller\Cron {
                         break;
                     }
 
-
+                    // cuenta paypal y comisión goteo
                     $invest->account = $projectAccount->paypal;
+                    $invest->fee = $projectAccount->fee;
                     $err = array();
                     if (Paypal::pay($invest, $err)) {
                         $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";

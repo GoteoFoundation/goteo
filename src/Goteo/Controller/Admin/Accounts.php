@@ -498,7 +498,9 @@ namespace Goteo\Controller\Admin {
                             break;
                         }
 
+                        // cuenta paypal y comisión goteo
                         $invest->account = $projectAccount->paypal;
+                        $invest->fee = $projectAccount->fee;
                         if (Paypal::pay($invest, $errors)) {
                             $errors[] = 'Cargo paypal correcto';
                             $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";

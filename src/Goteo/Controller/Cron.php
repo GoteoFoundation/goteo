@@ -20,6 +20,9 @@ namespace Goteo\Controller {
          *  Proceso que ejecuta los cargos, cambia estados, lanza eventos de cambio de ronda
          */
         public function execute () {
+            die('Ya no permitimos lanzamiento manual o wget para cron/execute');
+
+            /*
             // debug para supervisar en las fechas clave
             // $debug = ($_GET['debug'] == 'debug') ? true : false;
             $debug = true;
@@ -62,6 +65,7 @@ namespace Goteo\Controller {
             $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_'.__FUNCTION__.'.log';
             \file_put_contents($log_file, \ob_get_contents(), FILE_APPEND);
             \chmod($log_file, 0666);
+            */
         }
 
 
