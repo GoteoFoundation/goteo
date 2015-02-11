@@ -1801,7 +1801,8 @@ namespace Goteo\Model {
          */
         public static function getPending($id) {
 
-            // esta distinción de métodos @TODO capa de pagos
+            // esta distinción de métodos de pago....
+            // @TODO capa de pagos
 
             $query = \Goteo\Core\Model::query("
                 SELECT  *
