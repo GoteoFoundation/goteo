@@ -763,11 +763,11 @@ function process_invests($project, $projectAccount, $process = null)
         $userData = Model\User::getMini($invest->user);
 
         // revisión de código preapproval
-        // OJO! podria ser que este tipo de pasarela no tuviera codigo preaproval ???
-        if ($invest->invested == date('Y-m-d')) {
-            echo "Aporte " . $invest->id . " es de hoy.\n";
-        } elseif ($invest->method != 'cash' && empty($invest->preapproval)) {
+        if ($invest->method == 'paypal' && empty($invest->preapproval)) {
             // @TODO : esto también va en la capa de abstracción de pagos
+            // esta verificación debería pasarse a la instancia invest y que cada pasarela decida si debe tener código o no (quizás segun estado, tipo)
+            // y que la instancia misma se cancele y grabe la line ade detalle
+
             //si no tiene preaproval, cancelar
             echo "Aporte " . $invest->id . " cancelado por no tener preapproval.\n";
             if ($UPDATE) {
@@ -788,7 +788,7 @@ function process_invests($project, $projectAccount, $process = null)
             }
         } elseif ($process == 'execute' && empty($invest->payment)) {
             // si hay que ejecutar
-            echo "Ejecutando aporte " . $invest->id . " [" . $invest->method . "]";
+            echo "Ejecutando aporte " . $invest->id . " [" . $invest->method . "]\n";
             if ($UPDATE) {
                 // @TODO : si invest.credit , no ejecutar (ya pagado)
                 // marcar como credito reubicado
@@ -796,7 +796,7 @@ function process_invests($project, $projectAccount, $process = null)
             }
         }
 
-        echo "Aporte " . $invest->id . " tratado con {cancel}\n";
+        echo "Aporte " . $invest->id . " tratado con {$process}\n";
 
     }
     echo "::Fin tratamiento aportes\n";
