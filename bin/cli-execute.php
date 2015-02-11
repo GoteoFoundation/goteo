@@ -781,19 +781,17 @@ function process_invests($project, $projectAccount, $process = null)
 
         if ($process == 'cancel') {
             echo "Cancelando aporte " . $invest->id . " [" . $invest->method . "]\n";
-            if ($UPDATE) {
-                // @TODO : si invest.credit , no cancelar
-                // crear crédito
-                cancel_payment($invest, $project, $userData);
-            }
+            // @TODO : si invest.credit , no cancelar
+            // crear crédito
+            cancel_payment($invest, $project, $userData);
+
         } elseif ($process == 'execute' && empty($invest->payment)) {
             // si hay que ejecutar
             echo "Ejecutando aporte " . $invest->id . " [" . $invest->method . "]\n";
-            if ($UPDATE) {
-                // @TODO : si invest.credit , no ejecutar (ya pagado)
-                // marcar como credito reubicado
-                execute_payment($invest, $project, $userData, $projectAccount);
-            }
+            // @TODO : si invest.credit , no ejecutar (ya pagado)
+            // marcar como credito reubicado
+            execute_payment($invest, $project, $userData, $projectAccount);
+            
         }
 
         echo "Aporte " . $invest->id . " tratado con {$process}\n";
