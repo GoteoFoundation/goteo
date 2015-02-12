@@ -207,37 +207,39 @@ function project_fail($project, $per_amount)
             echo "ERROR::" . implode(',', $errors);
             $log_text = "El proyecto %s ha fallado al, %s obteniendo %s";
         }
+
+        if ($FEED) {
+            $log = new Feed();
+            $log->setTarget($project->id);
+            $log->populate('proyecto archivado (cron)', '/admin/projects',
+                \vsprintf($log_text, array(
+                    Feed::item('project', $project->name, $project->id),
+                    Feed::item('relevant', 'caducado sin éxito'),
+                    Feed::item('money', $project->amount . " &euro; (" . $per_amount . "&#37;) de aportes sobre minimo")
+                )));
+            $log->doAdmin('project');
+
+            // evento público
+            $log->populate($project->name, null,
+                Text::html('feed-project_fail',
+                    Feed::item('project', $project->name, $project->id),
+                    $project->amount,
+                    $per_amount
+                ), $project->image);
+            $log->doPublic('projects');
+            unset($log);
+
+            //Email de proyecto fallido al autor, inversores y destinatarios de recompensa
+            // @FIXME : verificar si esto se puede hacer en cli mode (no veo porque no)
+            \Goteo\Controller\Cron\Send::toOwner('fail', $project);
+            \Goteo\Controller\Cron\Send::toInvestors('fail', $project);
+            \Goteo\Controller\Cron\Send::toFriends('fail', $project);
+        }
+
     } else {
         echo "Prevented project->fail() to query \n # UPDATE project SET status = 6, closed = '".date('Y-m-d')."' WHERE id = '{$project->id}' \n";
     }
 
-    if ($FEED) {
-        $log = new Feed();
-        $log->setTarget($project->id);
-        $log->populate('proyecto archivado (cron)', '/admin/projects',
-            \vsprintf($log_text, array(
-                Feed::item('project', $project->name, $project->id),
-                Feed::item('relevant', 'caducado sin éxito'),
-                Feed::item('money', $project->amount . " &euro; (" . $per_amount . "&#37;) de aportes sobre minimo")
-            )));
-        $log->doAdmin('project');
-
-        // evento público
-        $log->populate($project->name, null,
-            Text::html('feed-project_fail',
-                Feed::item('project', $project->name, $project->id),
-                $project->amount,
-                $per_amount
-            ), $project->image);
-        $log->doPublic('projects');
-        unset($log);
-
-        //Email de proyecto fallido al autor, inversores y destinatarios de recompensa
-        // @FIXME : verificar si esto se puede hacer en cli mode (no veo porque no)
-        \Goteo\Controller\Cron\Send::toOwner('fail', $project);
-        \Goteo\Controller\Cron\Send::toInvestors('fail', $project);
-        \Goteo\Controller\Cron\Send::toFriends('fail', $project);
-    }
 }
 
 /**
@@ -276,35 +278,37 @@ function project_first_round($project, $per_amount)
             fail_mail('Fallo al marcar fecha de paso a segunda ronda', "Fallo al marcar la fecha de paso a segunda ronda para el proyecto " . $project->name . ": " . implode(',', $errors));
             echo " -> ERROR::" . implode(',', $errors)."\n";
         }
+
+
+        // Evento Feed solo si Update
+        if ($FEED) {
+            $log = new Feed();
+            $log->setTarget($project->id);
+            $log->populate('proyecto supera primera ronda (cron)', '/admin/projects', \vsprintf('El proyecto %s %s en segunda ronda obteniendo %s', array(
+                Feed::item('project', $project->name, $project->id),
+                Feed::item('relevant', 'continua en campaña'),
+                Feed::item('money', $project->amount . " &euro; (" . \number_format($per_amount, 2) . "%) de aportes sobre minimo")
+            )));
+            $log->doAdmin('project');
+
+            // evento público
+            $log->populate($project->name, null,
+                Text::html('feed-project_goon',
+                    Feed::item('project', $project->name, $project->id),
+                    $project->amount,
+                    \round($per_amount)
+                ), $project->image);
+            $log->doPublic('projects');
+            unset($log);
+
+            // Email de proyecto pasa a segunda ronda al autor y a los inversores
+            \Goteo\Controller\Cron\Send::toOwner('r1_pass', $project);
+            \Goteo\Controller\Cron\Send::toInvestors('r1_pass', $project);
+        }
+
     } else {
         echo "Prevented project->passDate() to query \n # UPDATE project SET passed = '".date('Y-m-d')."' WHERE id = '{$project->id}' \n";
         echo "Prevented Model_Contract::create to initiate the contract for {$project->id} \n";
-    }
-
-    // Evento Feed solo si ejecucion automatica
-    if ($FEED) {
-        $log = new Feed();
-        $log->setTarget($project->id);
-        $log->populate('proyecto supera primera ronda (cron)', '/admin/projects', \vsprintf('El proyecto %s %s en segunda ronda obteniendo %s', array(
-            Feed::item('project', $project->name, $project->id),
-            Feed::item('relevant', 'continua en campaña'),
-            Feed::item('money', $project->amount . " &euro; (" . \number_format($per_amount, 2) . "%) de aportes sobre minimo")
-        )));
-        $log->doAdmin('project');
-
-        // evento público
-        $log->populate($project->name, null,
-            Text::html('feed-project_goon',
-                Feed::item('project', $project->name, $project->id),
-                $project->amount,
-                \round($per_amount)
-            ), $project->image);
-        $log->doPublic('projects');
-        unset($log);
-
-        // Email de proyecto pasa a segunda ronda al autor y a los inversores
-        \Goteo\Controller\Cron\Send::toOwner('r1_pass', $project);
-        \Goteo\Controller\Cron\Send::toInvestors('r1_pass', $project);
     }
 
 }
@@ -350,7 +354,7 @@ function project_unique_round($project, $per_amount)
             $log_text = "El proyecto %s ha dado error cuando %s su unica ronda obteniendo %s";
         }
 
-        // Evento Feed solo si ejecucion automatica
+        // Evento Feed solo si Update
         if ($FEED) {
             $log = new Feed();
             $log->setTarget($project->id);
@@ -415,7 +419,7 @@ function project_second_round($project, $per_amount)
             $log_text = "El proyecto %s ha fallado al ser, %s obteniendo %s";
         }
 
-        // Evento Feed y mails solo si ejecucion automatica
+        // Evento Feed y mails solo si Update
         if ($FEED) {
             $log = new Feed();
             $log->setTarget($project->id);
@@ -526,6 +530,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
             // Paramos el proceso completamente y lanzamos excepción,
             // si no tiene cuenta paypal y tenemos aportes con paypal
             if (empty($projectAccount->paypal)) {
+                echo "Warning! No PayPal account!! /n HALT\n";
                 warn_no_paypal_account($project);
                 throw new Exception('warn_no_paypal_account -> '.print_r($projectAccount, 1));
             }
