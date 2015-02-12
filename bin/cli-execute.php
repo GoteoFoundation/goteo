@@ -30,6 +30,7 @@ echo "This script gets active projects and process rounds\n";
 // constantes necesarias
 define('LANG', 'es');
 define('HTTPS_ON', false);
+define('SITE_URL', \GOTEO_URL);
 
 // run options
 $TEST = false; // throw errors intentionally
@@ -107,7 +108,7 @@ echo " END\n";
  */
 function fail_mail($subject, $content)
 {
-    $subject = "[cli-execute] {$subject} " . \GOTEO_URL;
+    $subject = "[cli-execute] {$subject} " . \SITE_URL;
     // mail de aviso
     $mailHandler = new Mail();
     $mailHandler->to = \GOTEO_FAIL_MAIL;
@@ -576,7 +577,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
                         // Sustituimos los datos
                         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                         $search = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');
-                        $replace = array($userData->name, $project->name, GOTEO_URL . "/project/" . $project->id, $invest->amount, '');
+                        $replace = array($userData->name, $project->name, SITE_URL . "/project/" . $project->id, $invest->amount, '');
                         $content = \str_replace($search, $replace, $template->text);
                         // iniciamos mail
                         $mailHandler = new Mail();
