@@ -32,28 +32,42 @@ define('LANG', 'es');
 define('HTTPS_ON', false);
 
 // run options
-$FEED = true;
-$UPDATE = false;
+$TEST = false; // throw errors intentionally
+if (in_array('--test', $argv)) {
+    echo "Testing fail run!\n";
+    $TEST = true;
+}
 
-var_dump($argv);
+// default is dummy run
+$UPDATE = false;
+if (in_array('--update', $argv)) {
+    echo "Real run! Updating the database\n";
+    $UPDATE = true;
+} else {
+    echo "Dummy run! Use the --update modifier to actually update the database \n";
+}
+
+$FEED = true; // anyway, only Feed if Update
 if (in_array('--no-feed', $argv)) {
     echo "No public feed\n";
     $FEED = false;
 } else {
-    die('no public feedback yet please!');
-    echo "Public feedback! Use the --no-feed modifier to avoid\n";
+    echo "Public feedback! Use the --no-feed modifier to avoid it \n";
 }
-
-if (in_array('--update', $argv)) {
-    echo "Real run! Updating the database\n";
-    $UPDATE = true;
-    die('no real run yet please!');
-} else {
-    echo "Dummy run! Use the --update modifier to actually update the database\n";
-}
-
+// // options
 
 try {
+
+    if ($TEST) {
+        echo "throw some errors intentionally to test email sending \n";
+
+        // some tests (yeah, it should be PHPUnit instead....)
+        // try a fail_mail
+        fail_mail('fail_mail test', print_r($_SERVER, 1));
+
+        // try an Exception mail
+        throw new Exception('FORCED EXCEPTION Test');
+    }
 
     // revision de proyectos: dias, conseguido y cambios de estado
     // proyectos en campaña que estén a 5 días de terminar primera ronda a o a 3 de terminar la segunda
@@ -93,7 +107,7 @@ echo " END\n";
  */
 function fail_mail($subject, $content)
 {
-    $subject = "[cli-execute] {$subject} " . \SITE_URL;
+    $subject = "[cli-execute] {$subject} " . \GOTEO_URL;
     // mail de aviso
     $mailHandler = new Mail();
     $mailHandler->to = \GOTEO_FAIL_MAIL;
@@ -115,7 +129,6 @@ function warn_no_paypal_account($project)
 {
     global $FEED;
 
-    // Evento Feed solamente si automático
     if ($FEED) {
         $log = new Feed();
         $log->setTarget($project->id);
@@ -508,6 +521,14 @@ function execute_payment($invest, $project, $userData, $projectAccount)
 
     switch ($invest->method) {
         case 'paypal':
+
+            // Paramos el proceso completamente y lanzamos excepción,
+            // si no tiene cuenta paypal y tenemos aportes con paypal
+            if (empty($projectAccount->paypal)) {
+                warn_no_paypal_account($project);
+                throw new Exception('warn_no_paypal_account -> '.print_r($projectAccount, 1));
+            }
+
             // cuenta paypal y comisión goteo
             $invest->account = $projectAccount->paypal;
             $invest->fee = $projectAccount->fee;
@@ -555,7 +576,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
                         // Sustituimos los datos
                         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                         $search = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%DETAILS%');
-                        $replace = array($userData->name, $project->name, SITE_URL . "/project/" . $project->id, $invest->amount, '');
+                        $replace = array($userData->name, $project->name, GOTEO_URL . "/project/" . $project->id, $invest->amount, '');
                         $content = \str_replace($search, $replace, $template->text);
                         // iniciamos mail
                         $mailHandler = new Mail();
