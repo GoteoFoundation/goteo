@@ -1,6 +1,6 @@
 <?php
 /**
- * Este es el proceso de final de ronda /cron/execute
+ * Este es el proceso de final de ronda /cli-execute
  * version linea de comandos
  **/
 
@@ -88,7 +88,7 @@ try {
     $mailHandler = new Mail();
     $mailHandler->to = \GOTEO_FAIL_MAIL;
     $mailHandler->subject = 'El cron execute ha dado excepción';
-    $mailHandler->content = 'El cron/execute ha dado una excepción. '.$e->getMessage();
+    $mailHandler->content = 'El cli-execute ha dado una excepción. '.$e->getMessage();
     $mailHandler->html = false;
     $mailHandler->template = null;
     $mailHandler->send();
@@ -505,7 +505,7 @@ function cancel_payment($invest, $project, $userData)
 
         echo $log_text."\n";
         $invest->setStatus('4');
-        Model\Invest::setDetail($invest->id, 'project-expired', 'Aporte marcado como caducado porque el proyecto no ha tenido exito. Proceso cron/execute');
+        Model\Invest::setDetail($invest->id, 'project-expired', 'Aporte marcado como caducado porque el proyecto no ha tenido exito. Proceso cli-execute');
     } else {
         echo "Prevented cancelation on {$invest->method} \n";
         echo "Prevented invest->setStatus('4') for invest id '{$invest->id}' \n";
@@ -543,7 +543,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
                 if (Paypal::pay($invest, $err)) {
                     $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                     echo " -> Ok\n";
-                    Model\Invest::setDetail($invest->id, 'executed', 'Se ha ejecutado el preapproval, ha iniciado el pago encadenado. Proceso cron/execute');
+                    Model\Invest::setDetail($invest->id, 'executed', 'Se ha ejecutado el preapproval, ha iniciado el pago encadenado. Proceso cli-execute');
                     // si era incidencia la desmarcamos
                     if ($invest->issue) {
                         Model\Invest::unsetIssue($invest->id);
@@ -563,7 +563,6 @@ function execute_payment($invest, $project, $userData, $projectAccount)
                             Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                         )));
                         $log->doAdmin();
-                        echo $log->html . "\n";
                         unset($log);
                     }
 
@@ -571,7 +570,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
                     $txt_errors = implode('; ', $err);
                     echo "Aporte " . $invest->id . ": Fallo al ejecutar cargo paypal: " . $txt_errors . "\n";
                     echo " -> ERROR!!\n";
-                    Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: ".$txt_errors.". Proceso cron/execute');
+                    Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: ".$txt_errors.". Proceso cli-execute');
 
                     //  que el sistema NO lance el mensaje a los cofinanciadores
                     // cuando el error lanzado por paypal sea el no estar verificada la cuenta del impulsor
@@ -799,7 +798,7 @@ function process_invests($project, $projectAccount, $process = null)
             echo "Aporte " . $invest->id . " cancelado por no tener preapproval.\n";
             if ($UPDATE) {
                 $invest->cancel();
-                Model\Invest::setDetail($invest->id, 'no-preapproval', 'Aporte cancelado porque no tiene preapproval. Proceso cron/execute');
+                Model\Invest::setDetail($invest->id, 'no-preapproval', 'Aporte cancelado porque no tiene preapproval. Proceso cli-execute');
             } else {
                 echo " Prevented invest->cancel() and Model\\Invest::setDetail";
             }
