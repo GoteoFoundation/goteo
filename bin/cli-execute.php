@@ -767,7 +767,7 @@ function process_invests($project, $projectAccount, $process = null)
 
     global $FEED, $UPDATE;
 
-    if (empty($process) || !in_array($process, array('cancell', 'execute'))) {
+    if (empty($process) || !in_array($process, array('cancel', 'execute'))) {
         echo "Nada que tratar. Process = '{$process}' \n";
         return true;
     }
