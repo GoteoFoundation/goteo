@@ -10,7 +10,7 @@ namespace Goteo\Controller\Dashboard {
     class Translates {
 
         public static function process () {
-
+            // @TODO : meter aquí, lo del método translates de controller/dashboard
         }
 
     }
