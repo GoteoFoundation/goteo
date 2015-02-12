@@ -112,6 +112,8 @@ namespace Goteo\Library {
          *
          * Es un pago encadenado, la comision del 8% a Goteo y el resto al proyecto
          *
+         * @FIXME this should return the payment token to go into the invest instance
+         *  and move setPayment on the Invest Model (and so on...)
          */
         public static function pay($invest, &$errors = array()) {
 
