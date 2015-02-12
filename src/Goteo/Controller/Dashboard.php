@@ -632,7 +632,7 @@ namespace Goteo\Controller {
                     if ($option == 'updates') {
                         // sus novedades
                         $blog = Model\Blog::get($project->id);
-                        if ($action != 'edit' || $id = 'lang') {
+                        if ($action != 'edit' || $id == 'lang') {
                             $action = 'list';
                         }
                     }
