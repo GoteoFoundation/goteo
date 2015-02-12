@@ -28,10 +28,10 @@ require_once __DIR__ . "/../app/config.php";
 echo "This script gets active projects and process rounds\n";
 
 // constantes necesarias
-define('LANG', 'es');
-define('HTTPS_ON', false);
-define('SITE_URL', \GOTEO_URL);
-
+define('LANG', 'es'); // tiene que ser 'es'
+define('HTTPS_ON', false); // para las url de project/media
+define('SITE_URL', \GOTEO_URL); // para los mails
+define('SEC_URL', str_replace('http:', 'https://', SITE_URL)); // urls para paypal
 // run options
 $TEST = false; // throw errors intentionally
 if (in_array('--test', $argv)) {
