@@ -16,10 +16,10 @@
     "mibe/feedwriter": "~1.0",
 
     
-    "lightopenid/lightopenid": "~0.7",
+    "lusitanian/oauth": "~0.3",
 
     
-    "lusitanian/oauth": "~0.3"
+    "iignatov/lightopenid": "~1.0"
 
     },
 
