@@ -16,7 +16,7 @@ namespace Goteo\Library {
 
     // configuración paypal : ruta al sdk_config.ini definido en seetings como \PP_CONFIG_PATH
 
-    use \Paypal\Service as PPService; // namespace de \vendor\paypal\adaptivepayments-sdk-php\lib\PayPal\Service\AdaptivePaymentsService.php
+    use \PayPal\Service as PPService; // namespace de \vendor\paypal\adaptivepayments-sdk-php\lib\PayPal\Service\AdaptivePaymentsService.php
 
 
 
@@ -36,17 +36,6 @@ namespace Goteo\Library {
         public static function preapproval($invest, &$errors = array()) {
 
 			try {
-
-
-
-
-
-                $service  = new \Paypal\Service\AdaptivePaymentsService;
-                var_dump($service);
-                die;
-
-
-
                 $project = Project::getMini($invest->project);
 
                     $returnURL = $invest->urlOK;

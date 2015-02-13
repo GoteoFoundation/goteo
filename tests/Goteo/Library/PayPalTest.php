@@ -8,6 +8,7 @@ use \PayPal\Service as PPService;
 class PayPalTest extends \PHPUnit_Framework_TestCase {
 
     // Aunque no es obligatorio que exista este archivo de configuración para compilar grunt
+    // sí será obligatorio para que funcionen la pasarela de pago!
     /*
     public function testConfig() {
 
@@ -24,10 +25,8 @@ class PayPalTest extends \PHPUnit_Framework_TestCase {
     public function testInstance() {
 
         $service  = new PPService\AdaptivePaymentsService;
-        var_dump($service);
-        die;
 
-        $this->assertInstanceOf('\Paypal\Service\AdaptivePaymentsService', $service);
+        $this->assertInstanceOf('\PayPal\Service\AdaptivePaymentsService', $service);
 
         return $service;
     }
