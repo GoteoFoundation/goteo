@@ -145,7 +145,7 @@ switch ($this['action']) :
     <dl>
         <dt<?php if (empty($donation->nif) || $donation->valid_nif === false ) echo ' style="color: red;"';
         ?>><?php echo Text::get('invest-address-nif-field') ?> *</dt>
-        <dd><?php echo $donation->nif ?></dd>
+        <dd><?php echo $donation->nif . ' ('.$donation->nif_type.')';?></dd>
     </dl>
     <dl>
         <dt<?php if (empty($donation->address) || empty($donation->zipcode) || empty($donation->location) || empty($donation->region) || ( $donation->country != 'spain' && empty($donation->countryname) ) ) echo ' style="color: red;"';
@@ -155,8 +155,8 @@ switch ($this['action']) :
 
     <p>
       <?php if ( !$donation->edited || (!$donation->confirmed && $donation->confirmable !== false) ) : ?><a class="button" href="/dashboard/activity/donor/edit"><?php echo Text::get('dashboard-donor-edit_data'); ?></a><?php endif; ?>
-      <?php if ( $donation->edited && !$donation->confirmed && $donation->confirmable !== false) : ?><a class="button" href="/dashboard/activity/donor/confirm" <?php if (!$donation->confirmed) : ?>onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"<?php endif; ?> ><?php echo Text::get('dashboard-donor-confirm_button'); ?></a><?php endif; ?>
-      <?php if ( $donation->confirmed && $donation->confirmable !== false) : ?><a class="button" href="/dashboard/activity/donor/download" target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
+      <?php if ( $donation->edited && !$donation->confirmed && $donation->confirmable !== false) : ?><a class="button" href="/dashboard/activity/donor/confirm" onclick="return confirm('<?php echo Text::get('dashboard-donor-confirm_data'); ?>')"><?php echo Text::get('dashboard-donor-confirm_button'); ?></a><?php endif; ?>
+      <?php if ( $donation->confirmed ) : ?><a class="button" href="/dashboard/activity/donor/download" target="_blank"><?php echo Text::get('dashboard-donor-download_certificate'); ?></a><?php endif; ?>
     </p>
 </div>
 <?php

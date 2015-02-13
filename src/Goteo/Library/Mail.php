@@ -202,9 +202,9 @@ namespace Goteo\Library {
 
                 // incrustar el logo de goteo o del nodo
                 if (!empty($this->node) && $this->node != GOTEO_NODE) {
-                    $mail->addEmbeddedImage(GOTEO_PATH . 'nodesys/'.$this->node.'/view/css/logo.png', 'logo', 'Goteo '.$this->node, 'base64', 'image/png');
+                    $mail->addEmbeddedImage(GOTEO_WEB_PATH . 'nodesys/'.$this->node.'/view/css/logo.png', 'logo', 'Goteo '.$this->node, 'base64', 'image/png');
                 } else {
-                    $mail->addEmbeddedImage(GOTEO_PATH . 'app/goteo_logo.png', 'logo', 'Goteo', 'base64', 'image/png');
+                    $mail->addEmbeddedImage(GOTEO_WEB_PATH . 'app/goteo_logo.png', 'logo', 'Goteo', 'base64', 'image/png');
                 }
             }
             else {

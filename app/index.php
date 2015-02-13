@@ -139,11 +139,9 @@ if (empty($_COOKIE['goteo_cookies'])) {
     setcookie('goteo_cookies', '1', time() + 3600 * 24 * 365);
     Message::Info(Text::get('message-cookies'));
 }
-
 try {
     // Check permissions on requested URI
-    if (!ACL::check($uri)) {
-
+    if (!ACL::check($uri) && substr($uri, 0, 11) !== '/user/login') {
         //si es directorio data/cache se supone que es un archivo cache que no existe y que hay que generar
         if(strpos($uri, 'data/cache/') !== false && $segments && $segments[3]) {
             //simularemos la llamada al controlador img: img/XXXxXXX/imagen.jpg
@@ -155,29 +153,32 @@ try {
             define('CRON_EXEC', true);
         } else {
             Message::Info(Text::get('user-login-required-access'));
-            throw new Redirection(SEC_URL."/user/login/?return=".rawurlencode($uri));
+            throw new Redirection(SEC_URL.'/user/login/?return='.rawurlencode($uri));
         }
     }
 
     // Get controller name
-    if (!empty($segments) && class_exists("Goteo\\Controller\\{$segments[0]}")) {
+    $controller = 'Index';
+    if (!empty($segments) && is_array($segments)) {
         // Take first segment as controller
-        $controller = ucfirst(array_shift($segments));
-    } else {
-        $controller = 'Index';
+        $c = ucfirst(array_shift($segments));
+
+        if(class_exists("Goteo\\Controller\\$c")) {
+            $controller = $c;
+        }
     }
 
     // Continue
     try {
 
         $class = new ReflectionClass("Goteo\\Controller\\{$controller}");
-
         if (!empty($segments) && $class->hasMethod($segments[0])) {
             $method = array_shift($segments);
         } else {
             // Try default method
             $method = 'index';
         }
+        // print_r($segments);print_r($method);print_r($class);die;
 
         // ReflectionMethod
         $method = $class->getMethod($method);
@@ -252,9 +253,9 @@ try {
     header("Location: {$url}");
 
 } catch (Error $error) {
-    include 'error.html.php';
+    include 'view/error.html.php';
 
 } catch (Exception $exception) {
     // Default error (500)
-    include 'error.html.php';
+    include 'view/error.html.php';
 }

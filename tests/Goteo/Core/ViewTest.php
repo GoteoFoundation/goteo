@@ -19,7 +19,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
             'admin/commons/list.html.php',
             );
 
-        $path = realpath(GOTEO_PATH . '/view');
+        $path = realpath(GOTEO_WEB_PATH . 'view');
 
         $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::SELF_FIRST);
         foreach($objects as $file => $object){

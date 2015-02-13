@@ -11,39 +11,11 @@ use Goteo\Core\View;
 
 </label>
 
-<?php if (!empty($this['children'])): ?>
-<div class="<?php if (!$this['checked']) echo 'jshidden ' ?>children" id="<?php echo htmlspecialchars($this['id']) ?>-children">
+<?php
+if (!empty($this['children'])): ?>
+    <div class="<?php if (!$this['checked']) echo 'jshidden ' ?>children" id="<?php echo htmlspecialchars($this['id']) ?>-children">
         <?php echo View::get('superform/elements.html.php', Goteo\Library\SuperForm::getChildren($this['children'], $this['level'])) ?>
-</div>
+    </div>
 <?php
-/* ya no hace falta
-<script type="text/javascript">
 
-$(function () {
-   $("div.superform input#<?php echo $this['id'] ?>").click(function () {
-
-       $(this).closest('li.group').first().find("input[type='radio'][name='<?php echo $this['name'] ?>']").each(function (i, r) {
-          try {
-              if ('<?php echo $this['id'] ?>' == r.id) {
-                  $('div.children#' + r.id + '-children').slideDown(400);
-              } else {
-                  $('div.children#' + r.id + '-children').slideUp(400);
-              }
-          } catch (e) {}
-       });
-   });
-});
-</script>
-<?php
-*/
- endif;
-
-/* ya no hace falta
- ?>
-
-<script type="text/javascript">
-<?php include __DIR__ . '/radio.js.src.php' ?>
-</script>
-
-?>
-*/
+endif;

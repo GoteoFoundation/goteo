@@ -40,6 +40,34 @@ if (!empty($project->video->url)) {
 }
 
 
+// nueva sección de contenido recompensas (oculta para el impulsor)
+if ( $_SESSION['user']->id == $project->owner ) {
+    $reward_orig = array (
+        'type' => 'hidden',
+        'name' => 'reward_orig',
+        'value' => ''
+    );
+    $reward = array (
+        'type' => 'hidden',
+        'name' => 'reward',
+        'value' => $project->reward
+    );
+} else {
+    $reward_orig = array(
+        'type'      => 'html',
+        'title'     => Text::get('overview-field-reward'),
+        'html'     => nl2br($original->reward)
+    );
+    $reward = array(
+        'type'      => 'textarea',
+        'title'     => '',
+        'class'     => 'inline',
+        'hint'      => Text::get('tooltip-project-reward'),
+        'errors'    => array(),
+        'ok'        => array(),
+        'value'     => $project->reward
+    );
+}
 
 ?>
 
@@ -192,20 +220,8 @@ if (!empty($project->video->url)) {
                     'ok'        => array(),
                     'value'     => $project->related
                 ),
-                'reward-orig' => array(
-                    'type'      => 'html',
-                    'title'     => Text::get('overview-field-reward'),
-                    'html'     => nl2br($original->reward)
-                ),
-                'reward' => array(
-                    'type'      => 'textarea',
-                    'title'     => '',
-                    'class'     => 'inline',
-                    'hint'      => Text::get('tooltip-project-reward'),
-                    'errors'    => array(),
-                    'ok'        => array(),
-                    'value'     => $project->reward
-                )
+                'reward-orig' => $reward_orig,
+                'reward' => $reward
             )
         ),
 

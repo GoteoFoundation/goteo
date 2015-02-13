@@ -16,7 +16,7 @@ if (isset($_SESSION['invest-amount'])) {
     $amount = $_SESSION['invest-amount'];
     unset($_SESSION['invest-amount']);
 } elseif (!empty($_GET['amount'])) {
-    $amount = $_GET['amount'];
+    $amount = str_replace(array(',', '.'), '', $_GET['amount']);
 } else {
     $amount = 0;
 }
@@ -97,18 +97,20 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
         <li class="<?php echo $individual->icon ?><?php if ($individual->none) echo ' disabled' ?>">
 
             <label class="amount" for="reward_<?php echo $individual->id; ?>">
-                <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo \amount_format($individual->amount,0,true); ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
+                <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo str_replace(array(',', '.'), '', \amount_format($individual->amount,0,true)); ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>/>
                 <span class="amount"><?php echo \amount_format($individual->amount); ?></span>
             <!-- <span class="chkbox"></span> -->
             <h<?php echo $level + 2 ?> class="name"><?php echo htmlspecialchars($individual->reward) ?></h<?php echo $level + 2 ?>>
-            <p><?php echo htmlspecialchars($individual->description)?></p>
-                <?php if ($individual->none) : // no quedan ?>
-                <span class="left"><?php echo Text::get('invest-reward-none') ?></span>
-                <?php elseif (!empty($individual->units)) : // unidades limitadas ?>
-                <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong><br />
-                <?php $units = ($individual->units - $individual->taken); // resto
-                echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
-            <?php endif; ?>
+            <div id="reward_<?php echo $individual->id; ?>">
+                <p><?php echo htmlspecialchars($individual->description)?></p>
+                    <?php if ($individual->none) : // no quedan ?>
+                    <span class="left"><?php echo Text::get('invest-reward-none') ?></span>
+                    <?php elseif (!empty($individual->units)) : // unidades limitadas ?>
+                    <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong><br />
+                    <?php $units = ($individual->units - $individual->taken); // resto
+                    echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
+                <?php endif; ?>
+            </div>
             </label>
 
         </li>
@@ -195,7 +197,7 @@ if ($step == 'start') : ?>
     <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
 
     <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
-    <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 0, true, true) ); ?></div>
+    <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 3, true, true) ); ?></div>
     <?php endif; ?>
 
 </div>
@@ -203,8 +205,9 @@ if ($step == 'start') : ?>
 
 </form>
 
-<?php echo View::get('project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
+<?php //echo View::get('project/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $_SESSION['user']->worth)) ?>
 
+<!--
 <a name="commons"></a>
 <div class="widget project-invest">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('invest-social-header') ?></h<?php echo $level ?>>
@@ -233,6 +236,7 @@ if ($step == 'start') : ?>
         </ul>
     </div>
 </div>
+-->
 
 <script type="text/javascript">
 
@@ -245,7 +249,9 @@ if ($step == 'start') : ?>
 
             $('div.widget.project-invest-individual_rewards input.individual_reward').each(function (i, cb) {
                var $cb = $(cb);
+               var $selector='div#'+$cb.attr('id');
                $cb.closest('li').removeClass('chosed');
+               $($selector).hide();
                // importe de esta recompensa
                var rval = parseFloat($cb.attr('amount'));
                if (rval > 0 && rval <= val) {
@@ -270,10 +276,13 @@ if ($step == 'start') : ?>
 
             $('div.widget.project-invest-individual_rewards input.individual_reward').each(function (i, cb) {
                var $cb = $(cb);
+               var $selector='div#'+$cb.attr('id');
                $cb.closest('li').removeClass('chosed');
+               $($selector).hide();
 
                if ($cb.attr('id') == chosen) {
                  $cb.closest('li').addClass('chosed');
+                 $($selector).show();
                }
             });
         };
@@ -295,7 +304,7 @@ if ($step == 'start') : ?>
 
         // funcion resetear copy de cantidad
         var reset_reminder = function (rawamount) {
-            var amount = parseInt(rawamount);
+            var amount = parseFloat(rawamount);
             var rate = parseFloat('<?php echo Currency::rate();?>');
             if (isNaN(amount)) {
                 amount = 0;
@@ -303,8 +312,8 @@ if ($step == 'start') : ?>
             if (isNaN(rate)) {
                 rate = 1;
             }
-            var converted = amount / rate;
-            converted = parseInt(converted);
+            var converted = parseFloat(amount / rate);
+            converted = converted.toFixed(3);
 
             $('#amount').val(amount);
             $('#amount-reminder').html(amount);
@@ -352,8 +361,8 @@ if ($step == 'start') : ?>
             if (isNaN(rate)) {
                 rate = 1;
             }
-            var converted = amount / rate;
-            converted = parseInt(converted);
+            var converted = parseFloat(amount / rate);
+            converted = converted.toFixed(3);
 
 
             if (parseFloat(amount) == 0 || isNaN(amount)) {
@@ -385,7 +394,7 @@ if ($step == 'start') : ?>
                    return false;
                }
 
-                if (reward == '') {
+               if (reward == '') { 
                     if (confirm('<?php echo Text::slash('invest-alert-noreward') ?>')) {
                         if (confirm('<?php echo Text::slash('invest-alert-noreward_renounce') ?>')) {
                             $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
@@ -398,12 +407,7 @@ if ($step == 'start') : ?>
                         $('#nif').focus();
                         return false;
                     }
-                } else {
-                    /* Has elegido las siguientes recompensas */
-                    if (!confirm('<?php echo Text::slash('invest-alert-rewards') ?> '+reward+' ok?')) {
-                        return false;
-                    }
-                }
+                } 
             }
 
             if (rest > 0 && greater(amount, rest)) {
@@ -412,7 +416,18 @@ if ($step == 'start') : ?>
                 }
             }
 
-            return confirm('<?php echo Text::slash('invest-alert-investing') ?> '+amount+' <?php echo $_SESSION['currency']; ?> = '+converted+' EUR');
+            var currency = '<?php echo $_SESSION['currency']; ?>';
+            var def_currency = '<?php echo Currency::DEFAULT_CURRENCY; ?>';
+            var confirm_msg = '<?php echo Text::slash('invest-alert-investing') ?> '+amount+' '+currency;
+
+            if ( currency != def_currency) {
+                confirm_msg += ' = '+converted+' '+def_currency;
+            }
+
+            if ($('#resign_reward').attr('checked') != 'checked')
+                confirm_msg += ' \n'+'<?php echo Text::slash('invest-alert-rewards') ?> '+reward+' ok?';
+
+            return confirm(confirm_msg);
         });
 
 /* Seteo inicial por url */

@@ -9,14 +9,28 @@ if (PHP_SAPI !== 'cli') {
 }
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 ini_set("display_errors",1);
+//system timezone
+date_default_timezone_set("Europe/Madrid");
 
+use Goteo\Core\Resource,
+    Goteo\Core\Error,
+    Goteo\Core\Redirection,
+    Goteo\Core\Model,
+    Goteo\Library\Feed,
+    Goteo\Library\Mail,
+    Goteo\Library\Sender;
 
-define("MAIL_MAX_RATE", 14); // envios por segundo máximos
-define("MAIL_MAX_CONCURRENCY", 50); //numero máximo de procesos simultaneos para enviar mail (pero no se llegará a esta cifra si el ratio de envios es mayor que MAIL_MAX_RATE)
-define("PHP_CLI", "/usr/bin/php"); //ruta al ejecutable PHP
-define("LOGS_DIR", __DIR__ . '/../var/logs/mailing/'); //ruta a logs
+require_once __DIR__ . '/../app/config.php';
+
+// montar SITE_URL como el dispatcher para el enlace de darse de baja.
+define('SITE_URL', GOTEO_URL);
+
+define('MAIL_MAX_RATE', 14); // envios por segundo máximos
+define('MAIL_MAX_CONCURRENCY', 50); //numero máximo de procesos simultaneos para enviar mail (pero no se llegará a esta cifra si el ratio de envios es mayor que MAIL_MAX_RATE)
+define('PHP_CLI', '/usr/bin/php'); //ruta al ejecutable PHP
+define('LOGS_DIR', GOTEO_LOG_PATH . 'mailing/'); //ruta a logs
 //Archivo de bloqueo en la carpeta var
-define("LOCK_FILE",  __DIR__ . '/../var/' . basename(__FILE__) . '.lock');
+define('LOCK_FILE',  __DIR__ . '/../var/' . basename(__FILE__) . '.lock');
 // set Lang
 define('LANG', 'es');
 
@@ -73,22 +87,6 @@ fwrite($lock_file, getmypid() . "\n");
 // }
 
 // print_r($commands);
-
-//system timezone
-date_default_timezone_set("Europe/Madrid");
-
-use Goteo\Core\Resource,
-    Goteo\Core\Error,
-    Goteo\Core\Redirection,
-    Goteo\Core\Model,
-    Goteo\Library\Feed,
-    Goteo\Library\Mail,
-    Goteo\Library\Sender;
-
-require_once __DIR__ . '/../app/config.php';
-
-// montar SITE_URL como el dispatcher para el enlace de darse de baja.
-define('SITE_URL', GOTEO_URL);
 
 // Limite para sender, (deja margen para envios individuales)
 $LIMIT = (defined("GOTEO_MAIL_SENDER_QUOTA") ? GOTEO_MAIL_SENDER_QUOTA : 40000);

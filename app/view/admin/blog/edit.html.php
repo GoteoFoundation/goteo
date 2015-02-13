@@ -88,7 +88,7 @@ $(document).ready(function(){
                 'class' => 'next'
             ),
             'pending' => array(
-                'type'  => 'checkbox',
+                'type'  => 'CheckBox',
                 'name'  => 'pending',
                 'label' => Text::get('mark-pending'),
             )
@@ -172,7 +172,7 @@ $(document).ready(function(){
             ),
 
             'tags' => array(
-                'type'      => 'Checkboxes',
+                'type'      => 'CheckBoxes',
                 'name'      => 'tags[]',
                 'title'     => 'Tags',
                 'options'   => $tags

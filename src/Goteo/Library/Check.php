@@ -17,11 +17,11 @@ namespace Goteo\Library {
 		 */
 		public static function nif ($value, &$type = '') {
 
-			// quitamos puntos y guiones
-			$value = str_replace(array('_', '.', ' ', '-', ',', '/'), '', $value);
-
+            // quitamos puntos y guiones
+            $value = str_replace(array('_', '.', ' ', '-', ',', '\\', '+', '*', '/'), '', $value);
 			$value = strtoupper($value);
-			for ($i = 0; $i < 9; $i++) {
+
+			for ($i = 0; $i < strlen($value); $i++) {
 				$num[$i] = substr($value, $i, 1);
 			}
 
@@ -30,8 +30,6 @@ namespace Goteo\Library {
 				if ($num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr($value, 0, 8) % 23, 1)) {
 					$type = 'nif';
 					return true;
-				} else {
-					return false;
 				}
 			}
 
@@ -47,8 +45,6 @@ namespace Goteo\Library {
 				if ($num[8] == chr(64 + $n) || $num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr($value, 1, 8) % 23, 1)) {
 					$type = 'cif';
 					return true;
-				} else {
-					return false;
 				}
 			}
 
@@ -57,8 +53,6 @@ namespace Goteo\Library {
 				if ($num[8] == chr(64 + $n) || $num[8] == substr($n, strlen($n) - 1, 1)) {
 					$type = 'cif';
 					return true;
-				} else {
-					return false;
 				}
 			}
 
@@ -68,8 +62,6 @@ namespace Goteo\Library {
 				if ($num[8] == preg_match('/^[T]{1}[A-Z0-9]{8}$/', $value)) {
 					$type = 'nie';
 					return true;
-				} else {
-					return false;
 				}
 			}
 
@@ -78,8 +70,6 @@ namespace Goteo\Library {
 				if ($num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr(str_replace(array('X', 'Y', 'Z'), array('0', '1', '2'), $value), 0, 8) % 23, 1)) {
 					$type = 'nie';
 					return true;
-				} else {
-					return false;
 				}
 			}
 
@@ -97,11 +87,6 @@ namespace Goteo\Library {
 
 
             // Validación del numero VAT para los 27 paises de la UE
-            // quitamos puntos y guiones
-            $value = str_replace(array('_', '.', ' ', '-', ',', '\\', '+', '*', '/'), '', $value);
-
-            $value = strtoupper($value);
-
             $vats = array();
             $vats[] = '(AT)?U[0-9]{8}';
             $vats[] = '(BE)?[0]?[0-9]{9}';
@@ -110,7 +95,7 @@ namespace Goteo\Library {
             $vats[] = '(CZ)?[0-9]{8,10}';
             $vats[] = '(EE|EL|GR|PT)?[0-9]{9}';
             $vats[] = '(DE)?[0-9]{9,10}';
-            $vats[] = '(FR)?[0-9A-Z]{2}[0-9]{9}';
+            $vats[] = '(FR)?[0-9A-Z]{2}[0-9]{7,9}';
             $vats[] = '(FI|HU|LU|MT|SI|DK)?[0-9]{8}';
             $vats[] = '(IE)?[0-9][0-9A-Z][0-9]{5}[A-Z]';
             $vats[] = '(IT|LV)?[0-9]{11}';
@@ -128,8 +113,6 @@ namespace Goteo\Library {
                 $type = 'vat';
                 return true;
             }
-
-
 
             //si todavia no se ha verificado devuelve error
 			return false;

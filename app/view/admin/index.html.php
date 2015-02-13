@@ -62,7 +62,6 @@ include __DIR__ . '/../header.html.php';
                     <li><a href="/admin/nodes">Nodos</a></li>
                     <li><a href="/admin/reports">Informes</a></li>
                     <li><a href="/admin/newsletter">Boletin</a></li>
-                    <li><a href="/admin/locations">GeoLoc.</a></li>
                 </ul>
             </div>
             <?php endif; ?>

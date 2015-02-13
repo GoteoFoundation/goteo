@@ -43,9 +43,9 @@ foreach ($project->social_rewards as $social_reward) {
                         'hint'  => $license->description .  $url,
                         'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
                         'checked' => $license->id == $social_reward->license ? true : false
-                    );
-
+                    );                        
                 }
+
             }
 
             if ($type->id == 'other') {
@@ -261,10 +261,11 @@ foreach ($project->individual_rewards as $individual_reward) {
                         'type'      => 'textbox',
                         'size'      => 5,
                         'class'     => 'inline reward-amount',
-                        'value'     => $individual_reward->amount,
+                        'value'     => $individual_reward->amount_original,
                         'errors'    => !empty($errors["individual_reward-{$individual_reward->id}-amount"]) ? array($errors["individual_reward-{$individual_reward->id}-amount"]) : array(),
                         'ok'        => !empty($okeys["individual_reward-{$individual_reward->id}-amount"]) ? array($okeys["individual_reward-{$individual_reward->id}-amount"]) : array(),
-                        'hint'      => Text::get('tooltip-project-individual_reward-amount')
+                        'hint'      => Text::get('tooltip-project-individual_reward-amount'),
+                        'symbol'     => $individual_reward->currency_html
                     ),
                     "individual_reward-{$individual_reward->id}-units" => array(
                         'title'     => Text::get('rewards-field-individual_reward-units'),
@@ -306,6 +307,32 @@ foreach ($project->individual_rewards as $individual_reward) {
 
 $sfid = 'sf-project-rewards';
 
+// en función de si es pre-form o form
+
+if ($project->draft) {
+    $help_license=array(
+                    'type'      => 'checkbox',
+                    'class'     => 'cols_1',
+                    'required'  => false,
+                    'name'      => 'help_license',
+                    'label'     => Text::get('project-help-license'),
+                    'hint'      => Text::get('tooltip-project-help-license'),
+                    'errors'    => array(),
+                    'ok'        => array(),
+                    'checked'   => (bool) $project->help_license,
+                    'value'     => 1
+                );
+}
+else
+{
+    $help_license= array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->help_license
+    );
+
+}
+
 echo SuperForm::get(array(
 
     'id'            => $sfid,
@@ -326,23 +353,6 @@ echo SuperForm::get(array(
             'html' => '<a name="rewards"></a>'
         ),
 
-        'social_rewards' => array(
-            'type'      => 'group',
-            'required'  => true,
-            'title'     => Text::get('rewards-fields-social_reward-title'),
-            'hint'      => Text::get('tooltip-project-social_rewards'),
-            'class'     => 'rewards',
-            'errors'    => !empty($errors["social_rewards"]) ? array($errors["social_rewards"]) : array(),
-            'ok'        => !empty($okeys["social_rewards"]) ? array($okeys["social_rewards"]) : array(),
-            'children'  => $social_rewards + array(
-                'social_reward-add' => array(
-                    'type'  => 'submit',
-                    'label' => Text::get('form-add-button'),
-                    'class' => 'add reward-add red',
-                )
-            )
-        ),
-
         'individual_rewards' => array(
             'type'      => 'group',
             'required'  => true,
@@ -357,6 +367,24 @@ echo SuperForm::get(array(
                     'label' => Text::get('form-add-button'),
                     'class' => 'add reward-add red',
                 )
+            )
+        ),
+
+        'social_rewards' => array(
+            'type'      => 'group',
+            'required'  => true,
+            'title'     => Text::get('rewards-fields-social_reward-title'),
+            'hint'      => Text::get('tooltip-project-social_rewards'),
+            'class'     => 'rewards',
+            'errors'    => !empty($errors["social_rewards"]) ? array($errors["social_rewards"]) : array(),
+            'ok'        => !empty($okeys["social_rewards"]) ? array($okeys["social_rewards"]) : array(),
+            'children'  => $social_rewards + array(
+                'social_reward-add' => array(
+                    'type'  => 'submit',
+                    'label' => Text::get('form-add-button'),
+                    'class' => 'add reward-add red',
+                ),
+                'help_license' => $help_license
             )
         ),
 
@@ -392,7 +420,7 @@ echo SuperForm::get(array(
 $(function () {
 
     /* social rewards buttons */
-    var socials = $('div#<?php echo $sfid ?> li.element#social_rewards');
+    var socials = $('div#<?php echo $sfid ?> li.element#li-social_rewards');
 
     //abrir el selector de licencias
     socials.delegate('li.element.social_reward input.edit', 'click', function (event) {
@@ -418,7 +446,7 @@ $(function () {
         socials.superform({data:data});
     });
     //añadir nueva licencia
-    socials.delegate('#social_reward-add input', 'click', function (event) {
+    socials.delegate('#li-social_reward-add input', 'click', function (event) {
        event.preventDefault();
        var data = {};
        data[this.name] = '1';
@@ -440,7 +468,7 @@ $(function () {
     });
 
     /* individual_rewards buttons */
-    var individuals = $('div#<?php echo $sfid ?> li.element#individual_rewards');
+    var individuals = $('div#<?php echo $sfid ?> li.element#li-individual_rewards');
 
     individuals.delegate('li.element.individual_reward input.edit', 'click', function (event) {
         event.preventDefault();
@@ -463,7 +491,7 @@ $(function () {
         individuals.superform({data:data});
     });
 
-    individuals.delegate('#individual_reward-add input', 'click', function (event) {
+    individuals.delegate('#li-individual_reward-add input', 'click', function (event) {
        event.preventDefault();
        var data = {};
        data[this.name] = '1';

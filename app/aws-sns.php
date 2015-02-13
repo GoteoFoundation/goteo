@@ -17,7 +17,7 @@ require_once __DIR__ . '/config.php';
 try {
 
     $contents = file_get_contents('php://input');
-    file_put_contents("logs/aws-sns-input.log", $contents);
+    file_put_contents(GOTEO_LOG_PATH . 'aws-sns-input.log', $contents);
 
     if (!$contents)
         throw new Exception('No se ha recibido información');
@@ -53,5 +53,5 @@ try {
     }
 }
 catch (Exception $e) {
-    file_put_contents("logs/aws-sns-errors.log",$e->getMessage());
+    file_put_contents(GOTEO_LOG_PATH . 'aws-sns-errors.log',$e->getMessage());
 }

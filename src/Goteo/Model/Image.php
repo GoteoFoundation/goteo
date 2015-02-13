@@ -386,9 +386,10 @@ namespace Goteo\Model {
 		 * @param type int $width
 		 * @param type int $height
 		 * @param type int $crop
+		 * @param type int $http (to force schema on the link)
 		 * @return type string
 		 */
-		public function getLink ($width = 0, $height = 0, $crop = false) {
+		public function getLink ($width = 0, $height = 0, $crop = false, $http = false) {
 
             if($crop === true) $crop = 'c';
             //metodos: c (crop)
@@ -396,8 +397,14 @@ namespace Goteo\Model {
             $path = (int)$width . 'x' . (int)$height . $crop . '/' .$this->name;
 
             //Si existe la constante GOTEO_DATA_URL la usaremos en vez de SITE_URL
-            if(defined('GOTEO_DATA_URL')) return GOTEO_DATA_URL . '/' . $path;
-            else                          return SITE_URL . '/img/' . $path;
+            if(defined('GOTEO_DATA_URL')) $link = GOTEO_DATA_URL . '/' . $path;
+            else                          $link = SITE_URL . '/img/' . $path;
+
+            if ($http && substr($link, 0, 2) == '//') {
+                $link = 'http:'.$link;
+            }
+
+            return $link;
         }
 
         /**
@@ -410,6 +417,14 @@ namespace Goteo\Model {
             $height = (int) $height;
             if($this->cache) {
                 if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
+                    //correccion de extension para el cache
+                    //si no la funcion save() no funciona bien
+
+                    $info = pathinfo($cache_file, PATHINFO_EXTENSION);
+                    if(!in_array($info, array('jpg', 'jpeg', 'png', 'gif'))) {
+                        $cache_file = $cache_file . '.jpg';
+                    }
+
                     header('Cache-Control: max-age=2592000');
                     //tries to flush the file and exit
                     if(Cacher::flushFile($cache_file))
@@ -468,7 +483,6 @@ namespace Goteo\Model {
                     //flush data
                     echo $img =  ImageManager::canvas($w, $h, '#DCDCDC')
                                  ->insert($this->fallback_image, 'center')
-                    // echo $img =  ImageManager::make($this->fallback_image)
                                  ->text($msg, round($w/2), round($h/2), function($font){
                                     $font->align('center');
                                     $font->valign('middle');

@@ -9,6 +9,10 @@ ALTER TABLE `project_conf` ADD `days_round1` INT(4) DEFAULT 40 COMMENT 'Días qu
 ALTER TABLE `project_conf` ADD `days_round2` INT(4) DEFAULT 40 COMMENT 'Días que dura la segunda ronda';
 ALTER TABLE `project_conf` ADD `one_round` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Si el proyecto tiene una unica ronda';
 
+--Indica si ha solicitado ayuda a través del botón ni idea en el formulario
+ALTER TABLE `project_conf` ADD `help_license` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Si necesita ayuda en licencias';
+ALTER TABLE `project_conf` ADD `help_cost` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Si necesita ayuda en costes';
+
 -- Charset
 ALTER TABLE `project_conf` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `project_conf` CHANGE `project` `project` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

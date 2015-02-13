@@ -56,8 +56,6 @@ if(count($currencies) > 1) {
 }
 
 
-
-
 // media del proyecto
 if (!empty($project->media->url)) {
     $media = array(
@@ -83,18 +81,119 @@ if (!empty($project->video->url)) {
             'type'  => 'html',
             'html'  => !empty($project->video) ? $project->video->getEmbedCode($project->video_usubs) : ''
     );
+
+
+
 } else {
     $video = array(
         'type'  => 'hidden',
         'class' => 'inline'
     );
+
 }
-// nueva sección de contenido recompensas
-if ( isset($_SESSION['user']->roles['admin'])
-  || isset($_SESSION['user']->roles['superadmin'])
-  || isset($_SESSION['user']->roles['translator'])
-  || isset($_SESSION['user']->roles['checker']) ) {
-    // es admin o similar
+
+// en función de si es pre-form o form
+
+if (!$project->draft) {
+
+    $about = array(
+            'type'      => 'textarea',
+            'title'     => Text::get('overview-field-about'),
+            'required'  => true,
+            'hint'      => Text::get('tooltip-project-about'),
+            'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
+            'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
+            'value'     => $project->about
+    );
+
+    $motivation= array(
+                    'type'      => 'textarea',
+                    'title'     => Text::get('overview-field-motivation'),
+                    'required'  => true,
+                    'hint'      => Text::get('tooltip-project-motivation'),
+                    'errors'    => !empty($errors['motivation']) ? array($errors['motivation']) : array(),
+                    'ok'        => !empty($okeys['motivation']) ? array($okeys['motivation']) : array(),
+                    'value'     => $project->motivation
+    );
+
+    $goal = array(
+                    'type'      => 'textarea',
+                    'title'     => Text::get('overview-field-goal'),
+                    'hint'      => Text::get('tooltip-project-goal'),
+                    'errors'    => !empty($errors['goal']) ? array($errors['goal']) : array(),
+                    'ok'        => !empty($okeys['goal']) ? array($okeys['goal']) : array(),
+                    'value'     => $project->goal
+    );
+
+    $anchor_video = array(
+            'type' => 'html',
+            'html' => '<a name="video"></a>'
+    );
+
+    $video_field= array(
+            'type'      => 'textbox',
+            'required'  => false,
+            'title'     => Text::get('overview-field-video'),
+            'hint'      => Text::get('tooltip-project-video'),
+            'errors'    => !empty($errors['video']) ? array($errors['video']) : array(),
+            'ok'        => !empty($okeys['video']) ? array($okeys['video']) : array(),
+            'value'     => (string) $project->video
+    );
+
+    $video_upload= array(
+            'name' => "upload",
+            'type'  => 'submit',
+            'label' => Text::get('form-upload-button'),
+            'class' => 'inline media-upload',
+            'onclick' => "document.getElementById('proj-superform').action += '#video';"
+    );
+
+    $title_description_group=Text::get('overview-extra-fields');
+
+} else {
+
+    $about = array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->about
+    );
+
+    $motivation = array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->motivation
+    );
+
+    $goal = array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->goal
+    );
+
+    $anchor_video = array(
+        'type'  => 'hidden',
+        'class' => 'inline'
+    );
+    $video_field=array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => (string) $project->video
+    );
+
+    $video_upload=array(
+        'type'  => 'hidden',
+        'class' => 'inline'
+    );
+
+}
+// nueva sección de contenido recompensas (oculta para el impulsor)
+if ( $_SESSION['user']->id == $project->owner ) {
+    $reward = array (
+        'type' => 'hidden',
+        'name' => 'reward',
+        'value' => $project->reward
+    );
+} else {
     $reward = array(
         'type'      => 'textarea',
         'title'     => Text::get('overview-field-reward'),
@@ -102,13 +201,6 @@ if ( isset($_SESSION['user']->roles['admin'])
         'errors'    => !empty($errors['reward']) ? array($errors['reward']) : array(),
         'ok'        => !empty($okeys['reward']) ? array($okeys['reward']) : array(),
         'value'     => $project->reward
-    );
-} else {
-    // es user
-    $reward = array (
-        'type' => 'hidden',
-        'name' => 'reward',
-        'value' => $project->reward
     );
 }
 
@@ -174,6 +266,33 @@ $superform = array(
             'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array()
         ),
 
+        'category' => array(
+            'type'      => 'checkboxes',
+            'name'      => 'categories[]',
+            'title'     => Text::get('overview-field-categories'),
+            'required'  => true,
+            'class'     => 'cols_3',
+            'options'   => $categories,
+            'hint'      => Text::get('tooltip-project-category'),
+            'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
+            'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
+        ),
+
+        'location' => array(
+            'type'      => 'textbox',
+            'name'      => 'project_location',
+            'title'     => Text::get('overview-field-project_location'),
+            'required'  => true,
+            'hint'      => Text::get('tooltip-project-project_location'),
+            'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
+            'ok'        => !empty($okeys['project_location']) ? array($okeys['project_location']) : array(),
+            'value'     => $project->project_location,
+            //use google maps autocomplete
+            'class'     => 'geo-autocomplete',
+            //write data to location tables
+            'data'      => array('geocoder-filter' => '(regions)', 'geocoder-type' => 'project', 'geocoder-item' => $project->id)
+        ),
+
         // video principal del proyecto
         'anchor-media' => array(
             'type' => 'html',
@@ -200,115 +319,42 @@ $superform = array(
 
         'media-preview' => $media,
 
-        // universal subtitles video principal
-        'media_usubs' => array(
-            'type'      => 'checkbox',
-            'class'     => 'inline cols_1',
-            'required'  => false,
-            'label'     => Text::get('overview-field-usubs'),
-            'name'      => 'media_usubs',
-            'hint'      => Text::get('tooltip-project-usubs'),
-            'errors'    => array(),
-            'ok'        => array(),
-            'checked'   => (bool) $project->media_usubs,
-            'value'     => 1
-        ),
-        // fin media
-
-        'description_group' => array(
-            'type' => 'group',
-            'children'  => array(
-                'about' => array(
-                    'type'      => 'textarea',
-                    'title'     => Text::get('overview-field-about'),
-                    'required'  => true,
-                    'hint'      => Text::get('tooltip-project-about'),
-                    'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
-                    'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
-                    'value'     => $project->about
-                ),
-                'motivation' => array(
-                    'type'      => 'textarea',
-                    'title'     => Text::get('overview-field-motivation'),
-                    'required'  => true,
-                    'hint'      => Text::get('tooltip-project-motivation'),
-                    'errors'    => !empty($errors['motivation']) ? array($errors['motivation']) : array(),
-                    'ok'        => !empty($okeys['motivation']) ? array($okeys['motivation']) : array(),
-                    'value'     => $project->motivation
-                ),
-                'goal' => array(
-                    'type'      => 'textarea',
-                    'title'     => Text::get('overview-field-goal'),
-                    'hint'      => Text::get('tooltip-project-goal'),
-                    'errors'    => !empty($errors['goal']) ? array($errors['goal']) : array(),
-                    'ok'        => !empty($okeys['goal']) ? array($okeys['goal']) : array(),
-                    'value'     => $project->goal
-                ),
-                'related' => array(
+        'related' => array(
                     'type'      => 'textarea',
                     'title'     => Text::get('overview-field-related'),
                     'hint'      => Text::get('tooltip-project-related'),
                     'errors'    => !empty($errors['related']) ? array($errors['related']) : array(),
                     'ok'        => !empty($okeys['related']) ? array($okeys['related']) : array(),
                     'value'     => $project->related
-                ),
+        ),
 
-                'reward' => $reward
+        // fin media
+
+        'description_group' => array(
+            'type' => 'group',
+            'title' => $title_description_group,
+            'children'  => array(
+
+                'about' => $about,
+
+                'motivation' => $motivation,
+
+                'goal' => $goal,
+
+
+                //'reward' => $reward
 
             )
         ),
-
-        'category' => array(
-            'type'      => 'checkboxes',
-            'name'      => 'categories[]',
-            'title'     => Text::get('overview-field-categories'),
-            'required'  => true,
-            'class'     => 'cols_3',
-            'options'   => $categories,
-            'hint'      => Text::get('tooltip-project-category'),
-            'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
-            'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
-        ),
-
         // video motivacion
-        'anchor-video' => array(
-            'type' => 'html',
-            'html' => '<a name="video"></a>'
-        ),
+        'anchor-video' => $anchor_video,
 
-        'video' => array(
-            'type'      => 'textbox',
-            'required'  => false,
-            'title'     => Text::get('overview-field-video'),
-            'hint'      => Text::get('tooltip-project-video'),
-            'errors'    => !empty($errors['video']) ? array($errors['video']) : array(),
-            'ok'        => !empty($okeys['video']) ? array($okeys['video']) : array(),
-            'value'     => (string) $project->video
-        ),
+        'video' => $video_field,
 
-        'video-upload' => array(
-            'name' => "upload",
-            'type'  => 'submit',
-            'label' => Text::get('form-upload-button'),
-            'class' => 'inline media-upload',
-            'onclick' => "document.getElementById('proj-superform').action += '#video';"
-        ),
+        'video-upload' => $video_upload,
 
         'video-preview' => $video,
 
-        // universal subtitles video motivacion
-        'video_usubs' => array(
-            'type'      => 'checkbox',
-            'class'     => 'inline cols_1',
-            'required'  => false,
-            'name'      => 'video_usubs',
-            'label'     => Text::get('overview-field-usubs'),
-            'hint'      => Text::get('tooltip-project-usubs'),
-            'errors'    => array(),
-            'ok'        => array(),
-            'value'     => 1,
-            'checked'   => (bool) $project->video_usubs
-        ),
         // fin video motivacion
 
         /*
@@ -337,16 +383,7 @@ $superform = array(
         ),
          */
 
-        'location' => array(
-            'type'      => 'textbox',
-            'name'      => 'project_location',
-            'title'     => Text::get('overview-field-project_location'),
-            'required'  => true,
-            'hint'      => Text::get('tooltip-project-project_location'),
-            'errors'    => !empty($errors['project_location']) ? array($errors['project_location']) : array(),
-            'ok'        => !empty($okeys['project_location']) ? array($okeys['project_location']) : array(),
-            'value'     => $project->project_location
-        ),
+
 
         /* Aligerando superform
         'scope' => array(

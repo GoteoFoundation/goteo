@@ -4,10 +4,15 @@ namespace Goteo\Library {
 	use Goteo\Core\Model,
         Goteo\Core\Exception;
 
-	/*
-	 * Clase para obtener datos para distintos reports
+
+// @FIXME ahora mismo, todos los usos de \GOTEO_FEE son suponiendo que fuera el mismo porcentaje para todos los proyectos
+// Hay pendiente un anális de los cálculos de los informes
+
+
+    /*
+     * Clase para obtener datos para distintos reports
      *
-	 */
+     */
     class Reporting {
 
             static public $reports = array(

@@ -8,12 +8,14 @@ $types = $this['data']['types'];
 
 <div class="reward <?php echo $reward->icon ?>">
     
-    <div class="title"><strong><?php echo $types[$reward->icon]->name . ': ' . htmlspecialchars($reward->reward) ?></strong></div>
+    <div class="title"><strong><?php
+            if (!empty($reward->amount)) echo "{$reward->amount_format}<br />";
+            echo $types[$reward->icon]->name . ': ' . htmlspecialchars($reward->reward) ?></strong></div>
     
     <div class="description">
         <p><?php echo htmlspecialchars($reward->description) ?></p>
         <?php if (!empty($reward->units)) : ?>
-                <?php echo "{$reward->units} u. x {$reward->amount} &euro; = " . ($reward->units * $reward->amount) ." &euro;<br />"; ?>
+                <?php echo "{$reward->units} u. x {$reward->amount_format} = " . ($reward->units * $reward->amount_original) ." {$reward->currency_html}<br />"; ?>
                 <strong><?php echo Text::get('project-rewards-individual_reward-limited'); ?></strong>
                 <?php $units = $reward->units;
                 echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />

@@ -132,7 +132,7 @@ $sfid = 'sf-project-costs';
 <script type="text/javascript">
 $(function () {
 
-    var costs = $('div#<?php echo $sfid ?> li.element#costs');
+    var costs = $('div#<?php echo $sfid ?> li.element#li-costs');
 
     costs.delegate('li.element.cost input.edit', 'click', function (event) {
         event.preventDefault();

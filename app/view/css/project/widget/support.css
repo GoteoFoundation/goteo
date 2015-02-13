@@ -48,7 +48,7 @@ div.widget.project-support dl dt.optimum{
 
 div.widget.project-support dl dt.optimum,
 div.widget.project-support dl dt.minimum {
-    width: 76px;
+    width: 48px;
     float: left;
     margin-left: 0;
     line-height: 45px;
@@ -62,11 +62,13 @@ div.widget.project-support dl dt.minimum {
 
 div.widget.project-support dl dt.optimum {
     background-image: url('/view/css/project/widget/support/here-optimum.png');
+    margin-right: 26px;
 }
 
 div.widget.project-support dl dt.minimum {
     background-image: url('/view/css/project/widget/support/here-minimum.png');
     clear: left;
+    margin-right: 26px;
 }
 
 div.widget.project-support dl dd.optimum,
@@ -266,7 +268,7 @@ div.widget.project-support div.currency {
     float:left; 
     padding-left:2px; 
     padding:5px;
-    width:115px;  
+    width:140px;  
     font-size:11px; 
     font-weight: normal;
     z-index: 200;
@@ -289,7 +291,7 @@ div.widget.project-support div.currency .symbol {
 div.widget.project-support div.currency .change {
     margin-left:5px; 
     float:left; 
-    width:70px;
+    width:85px;
 }
 
 div.widget.project-support div.currency hr {

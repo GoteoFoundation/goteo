@@ -57,8 +57,8 @@ if ($show == 'updates') {
 // todas las imagenes del proyecto
 if (is_array($project->gallery)) {
     foreach ($project->gallery as $pgimg) {
-        if ($pgimg instanceof Image) {
-            $ogmeta['image'][] = $pgimg->getLink(580, 580);
+        if ($pgimg->imageData instanceof Image) {
+            $ogmeta['image'][] = $pgimg->imageData->getLink(580, 580, false, true);
         }
     }
 }
@@ -67,7 +67,7 @@ foreach ($blog->posts as $bpost) {
     if (is_array($bpost->gallery)) {
         foreach ($bpost->gallery as $bpimg) {
             if ($bpimg instanceof Image) {
-                $ogmeta['image'][] = $bpimg->getLink(500, 285);
+                $ogmeta['image'][] = $bpimg->getLink(500, 285, false, true);
             }
         }
     }
@@ -130,12 +130,12 @@ include __DIR__ . '/../prologue.html.php' ?>
                 echo View::get('project/widget/called.html.php', array('project' => $project));
             }
 
-            if ((!empty($project->investors) &&
+            /*if ((!empty($project->investors) &&
                 !empty($step) &&
                 in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail')) )
                 || $show == 'messages' ) {
                 echo View::get('project/widget/investors.html.php', array('project' => $project));
-            }
+            }*/
 
             if ($project->status == 5 && $show != 'rewards' && $show != 'messages') {
                 echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>'social'));
@@ -147,6 +147,7 @@ include __DIR__ . '/../prologue.html.php' ?>
 
             if ($show != 'rewards' && $show != 'messages') {
                 $only_rew = ($project->status == 5) ? 'individual' : null;
+                $only_rew = (in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) ? 'social' : $only_rew;
                 echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>$only_rew));
             }
 

@@ -10,7 +10,6 @@ $okeys  = $project->okeys[$this['step']] ?: array();
 
 $costs = array();
 
-
 if (!empty($project->costs)) {
 
     foreach ($project->costs as $cost) {
@@ -86,7 +85,8 @@ if (!empty($project->costs)) {
                         'hint'      => Text::get('tooltip-project-cost-amount'),
                         'errors'    => !empty($errors["cost-{$cost->id}-amount"]) ? array($errors["cost-{$cost->id}-amount"]) : array(),
                         'ok'        => !empty($okeys["cost-{$cost->id}-amount"]) ? array($okeys["cost-{$cost->id}-amount"]) : array(),
-                        'value'     => $cost->amount_original
+                        'value'     => $cost->amount_original,
+                        'symbol'     => $cost->currency_html
                     ),
                     "cost-{$cost->id}-required"  => array(
                         'required'  => true,
@@ -110,7 +110,7 @@ if (!empty($project->costs)) {
                         'ok'        => !empty($okeys["cost-{$cost->id}-required"]) ? array($okeys["cost-{$cost->id}-required"]) : array(),
                         'hint'      => Text::get('tooltip-project-cost-required'),
                     ),
-                    "cost-{$cost->id}-dates" => array(
+                    /*"cost-{$cost->id}-dates" => array(
                         'type'      => 'group',
                         'required'  => $cost->type == 'task' ? true : false,
                         'title'     => Text::get('costs-field-dates'),
@@ -134,7 +134,7 @@ if (!empty($project->costs)) {
                                 'value'     => $cost->until
                             )
                         )
-                    ),
+                    ),*/
                     "cost-{$cost->id}-buttons" => array(
                         'type' => 'group',
                         'class' => 'buttons',
@@ -168,6 +168,29 @@ if (!empty($project->costs)) {
 }
 
 $sfid = 'sf-project-costs';
+
+// en función de si es pre-form o form
+
+if ($project->draft) {
+    $help_cost=array(
+            'type'      => 'checkbox',
+            'class'     => 'cols_1',
+            'required'  => false,
+            'name'      => 'help_cost',
+            'label'     => Text::get('project-help-cost'),
+            'hint'      => Text::get('tooltip-project-help-cost'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'checked'   => (bool) $project->help_cost,
+            'value'     => 1
+        );
+}
+else
+    $help_cost= array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->help_cost
+    );
 
 echo SuperForm::get(array(
 
@@ -207,6 +230,8 @@ echo SuperForm::get(array(
             )
         ),
 
+        'help_cost' => $help_cost,
+
         'cost-meter' => array(
             'title'     => Text::get('costs-fields-metter-title'),
             'required'  => true,
@@ -218,6 +243,31 @@ echo SuperForm::get(array(
             )),
             'hint'      => Text::get('tooltip-project-totals')
         ),
+
+         "one_round"  => array(
+                        'required'  => true,
+                        'title'     => Text::get('costs-field-select-rounds'),
+                        'class'     => 'inline cost-required cols_2',
+                        'type'      => 'radios',
+                        'options'   => array (
+                            array(
+                                    'value'     => '1',
+                                    'class'     => 'required_cost-yes',
+                                    'label'     => Text::get('project-one-round')
+                                ),
+                            array(
+                                    'value'     => '0',
+                                    'class'     => 'required_cost-no',
+                                    'label'     => 'Dos rondas',
+                                    'label'     => Text::get('project-two-rounds')
+                                )
+                        ),
+                        'value'     => $project->one_round,
+                        'errors'    => array(),
+                        'ok'        => array(),
+                        'hint'      => Text::get('tooltip-project-rounds')
+        ),
+
 
         //  aligerando
         // 'resource' => array(
@@ -232,25 +282,12 @@ echo SuperForm::get(array(
         // ),
 
 
-        'schedule' => array(
+        /*'schedule' => array(
             'type'      => 'html',
             'class'     => 'schedule',
             'hint'      => Text::get('tooltip-project-schedule'),
             'html'      => View::get('project/widget/schedule.html.php', array('project' => $project))
-        ),
-
-        'rounds' => array(
-            'type'      => 'checkbox',
-            'class'     => 'cols_1',
-            'required'  => false,
-            'name'      => 'one_round',
-            'label'     => Text::get('project-rounds'),
-            'hint'      => Text::get('tooltip-project-rounds'),
-            'errors'    => array(),
-            'ok'        => array(),
-            'checked'   => (bool) $project->one_round,
-            'value'     => 1
-        ),
+        ),*/
 
         'footer' => array(
             'type'      => 'group',
@@ -286,7 +323,7 @@ echo SuperForm::get(array(
 <script type="text/javascript">
 $(function () {
 
-    var costs = $('div#<?php echo $sfid ?> li.element#costs');
+    var costs = $('div#<?php echo $sfid ?> li.element#li-costs');
 
     //abrir editor
     costs.delegate('li.element.cost input.edit', 'click', function (event) {
@@ -317,7 +354,7 @@ $(function () {
         });
     });
 
-    costs.delegate('#cost-add input', 'click', function (event) {
+    costs.delegate('#li-cost-add input', 'click', function (event) {
         // hack para superar un error insondable del superform
         event.preventDefault();
         var data = {};

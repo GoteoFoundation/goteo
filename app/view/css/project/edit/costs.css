@@ -112,17 +112,26 @@ body.project-edit div#main.costs div.superform li.element.editcost li.material d
     background-image: url('/view/css/icon/m/material.png');
 }
 
+body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-amount > div.contents {
+    position: relative;
+}
+
 body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-amount > div.contents > input {
     width: 3em;
     max-width: 3em;
     min-width: 3em;
     float: left;
-    /*padding-right: 2em;
-    background-image: url('/view/css/euro/m.png');*/   
-    background-repeat: no-repeat;
-    background-position: 3.7em center;
+    padding-left: 30px;
     font-size: 16px;
     font-weight: bold;
+}
+
+body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-amount > div.contents > span.symbol {
+    font-size: 22px;
+    font-weight: bold;
+    left: 10px;
+    position: absolute;
+    top: 4px;
 }
 
 body.project-edit div#main.costs div.superform li.element.editcost div.children li.element.cost-dates > div.children > div.elements > ol {

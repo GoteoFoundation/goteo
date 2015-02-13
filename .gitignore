@@ -24,6 +24,4 @@ app/data/*
 app/logs/*
 !app/logs/.htaccess
 !app/logs/README
-!app/logs/cron/*
-!app/logs/cron/README
 app/nodesys/_*

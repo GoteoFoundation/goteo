@@ -1,7 +1,7 @@
 /* pc  (min-width:1024px) and (max-width:1400px) */
 header nav{margin-bottom:20px;}
-h1{font-size:4rem;margin-top:30px;}
-h2{font-size:2.5rem;margin-top:5px;}
+h2{font-size:4rem;margin-top:30px;}
+h1{font-size:2.5rem;margin-top:5px;}
 #encabezado,#pie,article.spread p{font-size:1.4rem;margin:25px auto;}
 #prod-description{font-size:1.2rem;}
 #proj-name span,#proj-name a{font-size:0.8em;}

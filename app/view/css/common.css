@@ -369,3 +369,14 @@ a.up{display:inline-block;padding-left:15px;margin-left:18px; background:url('/v
 a.up:hover{background:url('/view/css/arrow-up.png') no-repeat left;
 	color: #20b3b2;
 }
+
+/* = aviso de javascript desactivado
+******************************/
+div#noscript {
+    font-size: 24px;
+    border: 1px solid #f00;
+    color: #f00;
+    margin: 1em;
+    padding: 0.5em;
+    text-align: center;
+}

@@ -2,7 +2,7 @@
 header,header nav{width:100%;}
 header nav{margin-bottom:3px;}
 header img.logo-goteo,header a.logo,footer a.logo{display:none;}
-h2{margin-top:0 !important;}
+h1{margin-top:0 !important;}
 footer section.logo2{display:inline-block;}
 section{margin:0 5px;}
 article.activable{margin:0;width:98%;}

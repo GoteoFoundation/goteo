@@ -6,9 +6,9 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title><?php echo $this['title']; ?></title>
+        <title><?php echo $this['metas_seo']['title']; ?></title>
         <link rel="icon" type="image/png" href="/myicon.png" />
-        <meta name="description" content="<?php echo $this['description']; ?>">
+        <meta name="description" content="<?php echo $this['metas_seo']['description']; ?>">
         <meta name="viewport" content="width=device-width">
 
         <meta property="og:title" content="<?php echo $this['ogmeta']['title'] ?>" />
@@ -67,4 +67,4 @@ var _prum = [['id', '5434f3beabe53dcd6ff6f0cf'],
                 );
             });
         </script>
-        <noscript><!-- Please enable JavaScript --></noscript>
+        <noscript><div id="noscript">Please enable JavaScript</div></noscript>

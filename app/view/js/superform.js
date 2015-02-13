@@ -128,12 +128,14 @@
             //poner en el elemento html que hace la llamada una variable para impedir actualizaciones paralelas
             el.addClass('updating busy');
             //evento de antes de empezar ajax
+            // goteo.trace('Trigger: superform.ajax.started');
             t.trigger('superform.ajax.started', [el]);
 
             // console.log(frm[0].id, post.data);
 
             frm[0].xhr = $.ajax(post).done( function(html) {
                 //ajax finalizado
+                // goteo.trace('Trigger: superform.ajax.done html:', html);
                 t.trigger('superform.ajax.done', [html, el]);
                 //actualizar el nodo si target es un elemento html
                 //si no hay el el id esperado, no actualizar nada
@@ -162,6 +164,7 @@
             //verificar si existe dicho elemento
             if( ! new_el.attr('id')) {
                 // alert('Error, the expected id is not present in html response!');
+                goteo.trace('superform', 'Trigger: superform.dom.error', ' element:', t);
                 t.trigger('superform.dom.error', [html, new_el]);
                 t.trigger('superform.dom.done', [html, new_el]);
                 return false;
@@ -174,6 +177,7 @@
             // console.log(focusedElement);
 
             //evento de antes de actualizar
+            goteo.trace('superform', 'Trigger: superform.dom.started', ' element:', t);
             t.trigger('superform.dom.started', [html, new_el]);
 
             var promises = _superformUpdateElement(el, new_el);
@@ -185,6 +189,7 @@
             $.when.apply( $, promises ).always(function(){
                 // el.removeClass('updating busy');
                 el.attr('class', new_el.attr('class'));
+                goteo.trace('superform', 'Trigger: superform.dom.done', ' element:', t, 'new_el:', new_el);
                 t.trigger('superform.dom.done', [html, new_el]);
             });
 
@@ -234,13 +239,13 @@
             el.append(new_cont);
         }
 
-        // if(new_cont.length) console.log('nuevo contendido:', new_cont.html());
+        if(new_cont.length) goteo.trace('nuevo contendido:', new_cont.html());
 
         //miramos si hay apartado feedback
         var feed = el.children('div.feedback');
         var new_feed = new_el.children('div.feedback');
         //si existe nuevo feedback los sustituimos
-        // console.log('old',feed.html());
+        goteo.trace('old feedback',feed.html());
         if (new_feed.length) {
             // console.log('new',new_feed.html());
             //existe el antiguo, sustituimos
@@ -368,9 +373,11 @@ $(function() {
     //auto escondido de feedback
     $('div.superform').delegate('li.element', 'click', function (event) {
         $(event.target).parents('li.element').each(function (i, li) {
-
-            var fb = $(li).find('div.feedback#superform-feedback-for-' + li.id).not(':empty').first();
+            var id = li.id.substr(3); //li elements has "li-*" as id
+            var fb = $(li).find('div.feedback#superform-feedback-for-' + id).not(':empty').first();
+            // goteo.trace('search feedback for id: ',id, $(li.id).html());
             if (fb.length) {
+                goteo.trace('Found feedback for id:',id);
                 setTimeout(function () {
                     $('div.superform div.feedback').not(fb).fadeOut(200);
                 });

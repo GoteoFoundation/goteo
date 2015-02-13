@@ -88,7 +88,7 @@ class PDF extends \FPDF {
         $pdf->cell(10);
         $pdf->cell($w1,10,"CERTIFICADO DE DONACIÓN");
         $pdf->cell(27);
-        $pdf->Image(GOTEO_PATH . '/view/css/logo-ffa.jpg');
+        $pdf->Image(GOTEO_WEB_PATH . 'view/css/logo-ffa.jpg');
 
         $pdf->Ln(5);
 
@@ -222,7 +222,7 @@ class PDF extends \FPDF {
         $pdf->Ln(3);
 
         // Footer Goteo
-        $pdf->Image(GOTEO_PATH . '/view/css/footer_goteo.png');
+        $pdf->Image(GOTEO_WEB_PATH . 'view/css/footer_goteo.png');
 
         $pdf->Ln(3);
 

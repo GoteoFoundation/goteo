@@ -184,7 +184,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
             <span class="symbol"><?php echo $select_currency." ".$_SESSION['currency']; ?></span>
             <span class="change">
                 <hr>
-                CAMBIAR
+                <?php echo Text::get('currency-switch'); ?>
             </span>
             <div>
                 <ul>

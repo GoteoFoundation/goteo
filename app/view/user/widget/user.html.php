@@ -38,9 +38,22 @@ $user->about = nl2br(Text::urlink($user->about));
         <dd class="links">
             <ul>
                 <?php foreach ($user->webs as $link): ?>
-                <li><a href="<?php echo htmlspecialchars($link->url) ?>"><?php echo htmlspecialchars($link->url) ?></a></li>
+                <li><a href="<?php echo htmlspecialchars($link->url) ?>"><?php echo substr(htmlspecialchars($link->url),0,42); ?></a></li>
                 <?php endforeach ?>
             </ul>
+        </dd>
+        <?php endif ?>
+        <?php if (!empty($user->facebook) || !empty($user->twitter)): ?>
+        <dt class="user-social"><?php echo Text::get('profile-fields-social-title'); ?></dt>
+        <dd class="user-social">
+            <ul>
+                <?php if (!empty($user->twitter)): ?>
+                <li class="twitter"><a href="<?php echo htmlspecialchars($user->twitter) ?>"><?php echo Text::get('regular-twitter'); ?></a></li>
+                <?php endif ?>
+                <?php if (!empty($user->facebook)): ?>
+                <li class="facebook"><a href="<?php echo htmlspecialchars($user->facebook) ?>"><?php echo Text::get('regular-facebook'); ?></a></li>
+                <?php endif ?>
+            </ul>    
         </dd>
         <?php endif ?>
 

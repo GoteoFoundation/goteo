@@ -8,7 +8,7 @@ $text = $this['text'];
 <div class="widget board">
     <fieldset>
         <legend>Texto en español</legend>
-        <blockquote><?php echo htmlentities(utf8_decode($text->purpose)); ?></blockquote>
+        <blockquote><?php echo htmlentities($text->purpose); ?></blockquote>
     </fieldset>
 
     <form action="/translate/texts/edit/<?php echo $text->id ?>/<?php echo $this['filter'] . '&page=' . $_GET['page'] ?>" method="post">

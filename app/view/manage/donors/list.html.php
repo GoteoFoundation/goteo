@@ -12,8 +12,9 @@ $filters = $this['filters'];
             <label for="year-filter">A&ntilde;o aporte:</label><br />
             <select id ="year-filter" name="year">
                 <option value=""<?php if (empty($filters['year'])) echo ' selected="selected"'; ?>>Todos</option>
-                <option value="2013"<?php if ($filters['year']=='2013') echo ' selected="selected"'; ?>>Anterior (2013)</option>
-                <option value="2014"<?php if ($filters['year']=='2014') echo ' selected="selected"'; ?>>Actual (2014)</option>
+                <option value="2013"<?php if ($filters['year']=='2013') echo ' selected="selected"'; ?>>Archivo (2013)</option>
+                <option value="2014"<?php if ($filters['year']=='2014') echo ' selected="selected"'; ?>>Anterior (2014)</option>
+                <option value="2015"<?php if ($filters['year']=='2015') echo ' selected="selected"'; ?>>Actual (2015)</option>
             </select>
         </div>
 
