@@ -662,6 +662,10 @@ function process_project($project)
 
     $log_text = null;
 
+    // mejor recalcular los campos calculados
+    $project->amount = Model\Invest::invested($project->id);
+
+
     // porcentaje alcanzado
     if ($project->mincost > 0) {
         $per_amount = \floor(($project->amount / $project->mincost) * 100);
@@ -669,28 +673,25 @@ function process_project($project)
         $per_amount = 0;
     }
 
-    {
+    // días configurados para primera ronda
+    echo "Configurado primera ronda " . $project->days_round1 . "  días\n";
 
-        // días configurados para primera ronda
-        echo "Configurado primera ronda " . $project->days_round1 . "  días\n";
+    if ($project->one_round)
+        echo "Configurado ronda única \n"; // si configurado ronda unica
+    else
+        echo "Configurado segunda ronda " . $project->days_round2 . "  días\n"; // dias configurado segunda ronda
 
-        if ($project->one_round)
-            echo "Configurado ronda única \n"; // si configurado ronda unica
-        else
-            echo "Configurado segunda ronda " . $project->days_round2 . "  días\n"; // dias configurado segunda ronda
+    // días que lleva en campaña
+    echo "Lleva " . $project->days_active . "  días desde la publicacion\n";
 
-        // días que lleva en campaña
-        echo "Lleva " . $project->days_active . "  días desde la publicacion\n";
+    // días que le quedan para finalizar esta actual ronda
+    echo "Quedan " . $project->days . " días para el final de la " . $project->round . "a ronda\n";
 
-        // días que le quedan para finalizar esta actual ronda
-        echo "Quedan " . $project->days . " días para el final de la " . $project->round . "a ronda\n";
+    // financiación sobre mínimo
+    echo "Mínimo: " . $project->mincost . " eur\n";
+    echo "Obtenido: " . $project->amount . " eur\n";
+    echo "Ha alcanzado el " . $per_amount . " % del minimo\n";
 
-        // financiación sobre mínimo
-        echo "Mínimo: " . $project->mincost . " eur\n";
-        echo "Obtenido: " . $project->amount . " eur\n";
-        echo "Ha alcanzado el " . $per_amount . " % del minimo\n";
-
-    }
 
     // a los 5, 3, 2, y 1 dia para finalizar ronda
     if ($project->round > 0 && in_array((int)$project->days, array(5, 3, 2, 1))) {
