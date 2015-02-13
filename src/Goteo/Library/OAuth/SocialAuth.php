@@ -132,7 +132,7 @@ class SocialAuth {
 				} elseif($openid->validate()) {
 
 					$data = $openid->getAttributes();
-					//print_r($data);print_r($openid);print_r($openid->identity);die;
+					// print_r($data);print_r($openid);print_r($openid->identity);print_r("[[".$openid->claimed_id."]]");print_r($openid->data['openid_identity']);die;
 					/*
 					//por seguridad no aceptaremos conexions de OpenID que no nos devuelvan el email
 					if(!Goteo\Library\Check::mail($data['contact/email'])) {
@@ -150,7 +150,6 @@ class SocialAuth {
 					//no se usan tokens para openid, guardamos el servidor como token
 					$this->tokens['openid']['token'] = $this->original_provider;
 					//como secreto usaremos un hash basado an algo que sea unico para cada usuario (la identidad openid es una URL única)
-					//$this->tokens['openid']['secret'] = sha1($openid_server.$this->openid_secret.$data['contact/email']);
 					$this->tokens['openid']['secret'] = $openid->identity;
 					// print_r($this);die;
 					// print_r($openid);die;
