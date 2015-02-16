@@ -21,7 +21,7 @@ $stories = $this['stories'];
     });
 </script>
 <div id="stories-banners" class="rounded-corners-bottom">
-    <div class="stories-banners-container rounded-corners-bottom">
+    <div class="stories-banners-container rounded-corners-bottom" style="max-height:383px; overflow:hidden;">
 
         <?php foreach ($stories as $story) :
 
