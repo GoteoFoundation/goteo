@@ -105,6 +105,62 @@ if (NODE_ID != GOTEO_NODE) {
         <?php if (isset($jsreq_ckeditor)) : ?>
            <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
         <?php endif; ?>
+        
+        <!--Para calendar -->
+        <?php if (isset($jsreq_calendar)) : ?>
+          <link href="<?php echo SRC_URL ?>/view/css/calendar/fullcalendar.css" rel="stylesheet" />
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/moment.min.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/jquery.min.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/fullcalendar.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/lang/es.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/gcal.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/gcal.js"></script>
+
+          <script>
+
+            $(document).ready(function() {
+  
+            $('#calendar').fullCalendar({
+
+            googleCalendarApiKey: 'AIzaSyBtKe8e-5DfwDeKFUTcrRmOU7BzXMndg1Y',
+    
+            // Goteo calendario publico
+            events: 'l44ukbe8tsjlr50djnk2kl2cik@group.calendar.google.com',
+      
+            eventClick: function(event) {
+              // opens events in a popup window
+              window.open(event.url, 'gcalevent', 'width=350,height=400');
+              return false;
+            },
+      
+            loading: function(bool) {
+              $('#loading').toggle(bool);
+            }
+      
+            });
+    
+            });
+
+          </script>
+
+          <style>
+
+          #loading {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+          }
+
+          #calendar {
+            max-width: 800px;
+            margin: 0 auto;
+          }
+
+          </style>
+
+      <?php endif; ?>
+
         <script type="text/javascript">
                     jQuery(document).ready(function ($) {
                          $("#lang").hover(function(){
