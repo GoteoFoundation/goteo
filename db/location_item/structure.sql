@@ -18,3 +18,5 @@ ALTER IGNORE TABLE `location_item`
     ADD COLUMN `modified` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP  on update CURRENT_TIMESTAMP after `info` ,
     DROP KEY `itemtipo` ,
     ADD PRIMARY KEY(`item`,`type`) ;
+
+ALTER TABLE `location_item` ADD INDEX (`location`);
