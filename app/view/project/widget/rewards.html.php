@@ -108,7 +108,7 @@ uasort($project->individual_rewards,
         </div>
     <?php endif; // end of bonus rewards ?>
 
-    <a class="more" href="/project/<?php echo $project->id; ?>/rewards"><?php echo Text::get('regular-see_more'); ?></a>
+    <a class="more" href="/project/<?php echo $project->id; ?>/rewards#social-rewards"><?php echo Text::get('regular-see_more'); ?></a>
 
     
 </div>
