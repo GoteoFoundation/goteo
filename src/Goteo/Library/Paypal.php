@@ -112,6 +112,8 @@ namespace Goteo\Library {
          *
          * Es un pago encadenado, la comision del 8% a Goteo y el resto al proyecto
          *
+         * @FIXME this should return the payment token to go into the invest instance
+         *  and move setPayment on the Invest Model (and so on...)
          */
         public static function pay($invest, &$errors = array()) {
 
@@ -125,8 +127,8 @@ namespace Goteo\Library {
                 $project = Project::getMini($invest->project);
                 $userData = User::getMini($invest->user);
 
-                // al productor le pasamos el importe del cargo menos el 8% que se queda goteo
-                $amountPay = $invest->amount - ($invest->amount * 0.08);
+                // al productor le pasamos el importe del cargo menos el porcentaje de comisión goteo
+                $amountPay = $invest->amount - ($invest->amount * $invest->fee / 100);
 
 
                 // Create request object

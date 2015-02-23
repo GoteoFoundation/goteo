@@ -1800,6 +1800,10 @@ namespace Goteo\Model {
          * Tratamiento de aportes pendientes en cron/execute
          */
         public static function getPending($id) {
+
+            // @FIXME esta distinción de métodos de pago es MAL!
+            // @TODO capa de pagos
+
             $query = \Goteo\Core\Model::query("
                 SELECT  *
                 FROM  invest

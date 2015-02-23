@@ -24,11 +24,15 @@ namespace Goteo\Model\Project {
                 $query = static::query("SELECT * FROM project_account WHERE project = ?", array($id));
                 $accounts = $query->fetchObject(__CLASS__);
                 if (!empty($accounts)) {
+                    // porcentaje de comisión por defecto
+                    if (!isset($accounts->fee)) $accounts->fee = \GOTEO_FEE;
+
                     return $accounts;
                 } else {
                     $accounts = new Account();
                     $accounts->project = $id;
                     $accounts->allowpp = false;
+                    $accounts->fee = \GOTEO_FEE;
                     return $accounts;
                 }
             } catch(\PDOException $e) {
@@ -43,6 +47,7 @@ namespace Goteo\Model\Project {
                 //Text::get('validate-account-noproject');
                 return false;
             }
+            if (!isset($this->fee)) $this->fee = \GOTEO_FEE;
 
             return true;
         }
@@ -51,8 +56,9 @@ namespace Goteo\Model\Project {
             if (!$this->validate($errors)) return false;
 
 			try {
-	            $sql = "REPLACE INTO project_account (project, bank, bank_owner, paypal, paypal_owner, allowpp) VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner, :allowpp)";
-                $values = array(':project'=>$this->project, ':bank'=>$this->bank, ':bank_owner'=>$this->bank_owner, ':paypal'=>$this->paypal, ':paypal_owner'=>$this->paypal_owner, ':allowpp'=>$this->allowpp);
+	            $sql = "REPLACE INTO project_account (project, bank, bank_owner, paypal, paypal_owner, allowpp, fee)
+	             VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner, :allowpp, :fee)";
+                $values = array(':project'=>$this->project, ':bank'=>$this->bank, ':bank_owner'=>$this->bank_owner, ':paypal'=>$this->paypal, ':paypal_owner'=>$this->paypal_owner, ':allowpp'=>$this->allowpp, ':fee'=>$this->fee);
 				self::query($sql, $values);
 				return true;
 			} catch(\PDOException $e) {
