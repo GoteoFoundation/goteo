@@ -212,9 +212,9 @@ namespace Goteo\Model {
                              user.identica as user_identica,
                              user.linkedin as user_linkedin,
                              user.lang as user_lang
-                      FROM `call` 
+                      FROM `call`
                       LEFT JOIN user
-                      ON user.id=call.owner 
+                      ON user.id=call.owner
                       WHERE call.id = :id";
 
                 if ($debug) {
@@ -258,7 +258,7 @@ namespace Goteo\Model {
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field => $value) {
                         $call->$field = $value;
                     }
-                }        
+                }
 
                 // owner
 
@@ -438,7 +438,7 @@ namespace Goteo\Model {
                               )
                         WHERE call.id = :call
                         ";
-                
+
                 $query = static::query($sql, array(':call'=>$this->id));
                 $applied = $query->fetchObject();
 
@@ -449,8 +449,8 @@ namespace Goteo\Model {
 
                 return (int) $applied->cuantos;
         }
-        
-        
+
+
         /*
          *  Para validar los campos del convocatoria que son NOT NULL en la tabla
          */
@@ -1106,7 +1106,7 @@ namespace Goteo\Model {
             }
             if (!empty($filters['category'])) {
                 $sqlFilter .= " AND id IN (
-                    SELECT call
+                    SELECT `call`
                     FROM call_category
                     WHERE category = :category
                     )";
@@ -1115,7 +1115,7 @@ namespace Goteo\Model {
 
             if (!empty($filters['icon'])) {
                 $sqlFilter .= " AND id IN (
-                    SELECT call
+                    SELECT `call`
                     FROM call_icon
                     WHERE icon = :icon
                     )";
@@ -1125,7 +1125,7 @@ namespace Goteo\Model {
             if (!empty($filters['admin'])) {
                 $sqlFilter .= " AND id IN (SELECT `call` FROM user_call WHERE user = '{$filters['admin']}')";
             }
-            
+
             //el Order
             if (!empty($filters['order'])) {
                 switch ($filters['order']) {
@@ -1142,7 +1142,7 @@ namespace Goteo\Model {
             }
 
             // la select
-            $sql = "SELECT 
+            $sql = "SELECT
                         id
                     FROM `call`
                     WHERE status > 0
@@ -1548,7 +1548,7 @@ namespace Goteo\Model {
                     )
                     HAVING getamount < mincost
                     ";
-            
+
             $query = self::query($sql, array($this->id));
             // si alguno, nada
             // si ninguno, exitosa
@@ -1759,14 +1759,14 @@ namespace Goteo\Model {
             $thecall = $query->fetchColumn();
             return ($thecall == $this->id);
         }
-        
-        
+
+
         /**
          * Para recuperar configuración de convocatoria
          * @return  objeto
          */
         public function getConf ($field = '*') {
-            
+
             $query = static::query("
                 SELECT
                     $field
@@ -1777,8 +1777,8 @@ namespace Goteo\Model {
             $conf = ($field == '*') ? $query->fetchObject() : $query->fetchColumn();
             return (!empty($conf)) ? $conf : null;
         }
-        
-        
+
+
         /**
          * Actualizar los valores de configuración
          *
@@ -1787,7 +1787,7 @@ namespace Goteo\Model {
          */
         public function setConf ($conf = array(), &$errors = array()) {
 
-            // verificación 
+            // verificación
             $limits = array('normal', 'unlimited', 'minimum', 'none');
             $conf['limit1'] = in_array($conf['limit1'], $limits) ? $conf['limit1'] : null ;
             $conf['limit2'] = in_array($conf['limit2'], $limits) ? $conf['limit2'] : null ;
@@ -1856,13 +1856,13 @@ namespace Goteo\Model {
          */
         public function setDropconf ($dropconf = array(), &$errors = array()) {
 
-            // verificación 
+            // verificación
             $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;  // presupuesto de la convocatoria
             $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ; // riego máximo por aporte
             $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ; // riego máximo por proyecto
             $dropconf['modemaxp'] = !empty($dropconf['modemaxp']) ? $dropconf['modemaxp'] : 'imp' ; // modalidad de maximo por proyecto: importe (imp) o porcentaje (per)
 
-            
+
             $fields = array(
                   'amount', // presupuesto
                   'maxdrop', // riego máximo por aporte
@@ -1892,9 +1892,9 @@ namespace Goteo\Model {
                     $errors[] = 'Fallo al publicar la convocatoria. ' . $e->getMessage();
                     return false;
                 }
-            }            
+            }
         }
-        
+
 
         /*
          * Estados de publicación de un convocatoria
