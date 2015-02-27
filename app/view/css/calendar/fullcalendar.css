@@ -508,8 +508,10 @@ be a descendant of the grid when it is being dragged.
 }
 
 .fc-day-grid-event > .fc-content { /* force events to be one-line tall */
-	white-space: nowrap;
+	/*white-space: nowrap;*/
 	overflow: hidden;
+	font-size:11px;
+	padding: 5px;
 }
 
 .fc-day-grid-event .fc-time {
@@ -982,3 +984,53 @@ be a descendant of the grid when it is being dragged.
 .fc-time-grid-event .fc-resizer:after {
 	content: "=";
 }
+
+#faq-content .read-more {
+	width:800px; 
+	margin:0 auto; 
+	display:none
+}
+
+#faq-content .read-more h3{
+	color:#20B2B3; 
+	margin-bottom:5px; 
+	font-weight: bold; 
+	font-size:16px;
+}
+
+#faq-content .read-more h3{
+	color:#20B2B3; 
+	margin-bottom:5px; 
+	font-weight: bold; 
+	font-size:16px;
+}
+
+#faq-content .read-more #event-title{
+	font-weight: bold; 
+	font-size:16px;
+}
+
+#faq-content .read-more #event-title{
+	font-weight: bold; 
+	font-size:16px;
+}
+
+#faq-content .read-more .extra{
+	border-top:1px solid; 
+	border-bottom:1px dashed; 
+	margin-top: 10px; 
+	width:550px; 
+	margin-bottom:10px; 
+	padding-top:10px; 
+	padding-bottom:10px; 
+	display:table;
+}
+
+#faq-content .read-more #event-description{
+	width:550px; 
+	padding-bottom:15px; 
+	border-bottom:1px solid; 
+	margin-bottom:20px;
+}
+
+

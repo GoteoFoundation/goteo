@@ -129,7 +129,20 @@ if (NODE_ID != GOTEO_NODE) {
       
             eventClick: function(event) {
               // opens events in a popup window
-              window.open(event.url, 'gcalevent', 'width=350,height=400');
+             
+              $("#read-more").css( "display", "block" );;
+              $("#event-description").html(event.description);
+              $("#event-title").html(event.title);
+              
+              $("#event-date").html("26 | 02 | 2015");
+              $("#event-location").html(event.location);
+              $("#event-hour").html("16:30 | ");
+
+              
+
+              //$("#event-date").html(d1);
+              //alert(getDay(event.start));
+              /*window.open(event.url, 'gcalevent', 'width=350,height=400');*/
               return false;
             },
       

@@ -4671,13 +4671,12 @@ DayGrid.mixin({
 		}*/
 
 		titleHtml =
-			'<span class="fc-title">' +
-				(htmlEscape(event.title || '') || '&nbsp;') + // we always want one line of height
-			'</span>';
+			
+				(htmlEscape(event.title || '') || '&nbsp;')  // we always want one line of height
 		
 		return '<a class="' + classes.join(' ') + '"' +
 				(event.url ?
-					' href="' + htmlEscape(event.url) + '"' :
+					' href="' + htmlEscape(event.url.substr(0,5)) + '"' :
 					''
 					) +
 				(skinCss ?
@@ -4720,23 +4719,22 @@ DayGrid.mixin({
 			while (col < endCol) {
 				// try to grab a cell from the level above and extend its rowspan. otherwise, create a fresh cell
 				td = (loneCellMatrix[i - 1] || [])[col];
-				if (td) {
-					td.attr(
-						'rowspan',
-						parseInt(td.attr('rowspan') || 1, 10) + 1
-					);
-				}
-				else {
+				
 					td = $('<td/>');
 					tr.append(td);
-				}
+				
 				cellMatrix[i][col] = td;
 				loneCellMatrix[i][col] = td;
 				col++;
 			}
 		}
 
+		levelCnt=1;
+
+		//LevelCnt a 1 para que haya un evento por dia
+
 		for (i = 0; i < levelCnt; i++) { // iterate through all levels
+
 			levelSegs = segLevels[i];
 			col = 0;
 			tr = $('<tr/>');
@@ -9221,7 +9219,7 @@ var BasicView = fcViews.basic = View.extend({
 
 		// is the event limit a constant level number?
 		if (eventLimit && typeof eventLimit === 'number') {
-			this.dayGrid.limitRows(eventLimit); // limit the levels first so the height can redistribute after
+			this.dayGrid.limitRows(1); // limit the levels first so the height can redistribute after
 		}
 
 		scrollerHeight = this.computeScrollerHeight(totalHeight);
@@ -9229,7 +9227,7 @@ var BasicView = fcViews.basic = View.extend({
 
 		// is the event limit dynamically calculated?
 		if (eventLimit && typeof eventLimit !== 'number') {
-			this.dayGrid.limitRows(eventLimit); // limit the levels after the grid's row heights have been set
+			this.dayGrid.limitRows(1); // limit the levels after the grid's row heights have been set
 		}
 
 		if (!isAuto && setPotentialScroller(this.scrollerEl, scrollerHeight)) { // using scrollbars?

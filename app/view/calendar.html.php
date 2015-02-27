@@ -46,6 +46,15 @@ include __DIR__ . '/header.html.php';
 <?php endif; ?>
         <div id="main">
 			<div id="faq-content">
+                <div id="read-more" class="read-more">
+                    <h3 id="event-date"></h3>
+                    <div id="event-title"></div>
+                    <div class="extra">
+                        <div><span id="event-hour"></span><span id="event-location"></span></div>
+                    </div>
+                    <p id="event-description">
+                    </p>
+                </div>
 			    <div id='loading'>loading...</div>
 
                 <div id='calendar'></div>
