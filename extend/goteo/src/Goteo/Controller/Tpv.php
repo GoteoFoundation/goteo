@@ -192,6 +192,7 @@ namespace Goteo\Controller {
                                 WHERE id = :id";
                         if (Model\Invest::query($sql, $values)) {
                             Model\Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se ha completado correctamente. Proceso controller/tpv');
+                            Model\Invest::invested($invest->project); //actualizar campo precalculado
                         } else {
 
                             // notificación del error a dev@goteo.org
