@@ -146,13 +146,13 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
 
 					events.push({
 						id: entry.id,
-						title: entry.summary,
+						title: entry.summary.substr(0,entry.summary.length-4),
+						category: entry.summary.substr(entry.summary.length-2),
 						start: entry.start.dateTime || entry.start.date, // try timed. will fall back to all-day
 						end: entry.end.dateTime || entry.end.date, // same
 						url: url,
 						location: entry.location,
-						description: entry.description,
-						color: entry.etag
+						description: entry.description
 					});
 				});
 

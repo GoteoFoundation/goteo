@@ -134,9 +134,13 @@ if (NODE_ID != GOTEO_NODE) {
               $("#event-description").html(event.description);
               $("#event-title").html(event.title);
               
-              $("#event-date").html("26 | 02 | 2015");
+              var event_date=moment(new Date(event.start)).format("DD | MM | YYYY");
+              var event_start=moment(new Date(event.start)).format("HH:mm");
+              var event_end=moment(new Date(event.end)).format("HH:mm");
+    
+              $("#event-date").html(event_date);
               $("#event-location").html(event.location);
-              $("#event-hour").html("16:30 | ");
+              $("#event-hour").html(event_start+" - "+event_end+ " | ");
 
               
 

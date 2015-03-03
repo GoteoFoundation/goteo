@@ -4671,8 +4671,8 @@ DayGrid.mixin({
 		}*/
 
 		titleHtml =
-			
-				(htmlEscape(event.title || '') || '&nbsp;')  // we always want one line of height
+				//Nos quedamos con los primeros 35 caracteres para encajar con el diseño
+				(htmlEscape(event.title.substr(0,35) || '') || '&nbsp;')  // we always want one line of height
 		
 		return '<a class="' + classes.join(' ') + '"' +
 				(event.url ?
@@ -4690,6 +4690,7 @@ DayGrid.mixin({
 						timeHtml + ' ' + titleHtml   //
 						) +
 				'</div>' +
+				'<div style="margin-top: 5px; background-color: #E11F19; color: #FFF; width: 9px; padding-left: 5px; padding-right: 4px; padding-top: 1px;">'+htmlEscape(event.category.substr(0,1))+'</div>'+
 				(isResizable ?
 					'<div class="fc-resizer"/>' :
 					''
