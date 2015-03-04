@@ -383,7 +383,7 @@ div#sub-footer div.platoniq a.growby {
     display: inline-block;
     width: 60px;
     height: 30px;
-    background: url('/view/css/platoniq.png') no-repeat 23px 8px transparent;
+    background: url('/view/css/platoniq.png') no-repeat 0px 8px transparent;
     text-indent: 2000px;
     line-height: 2000px;
     overflow: hidden;
