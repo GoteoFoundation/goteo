@@ -1012,18 +1012,25 @@ be a descendant of the grid when it is being dragged.
 
 #faq-content .read-more #event-title{
 	font-weight: bold; 
-	font-size:16px;
+	font-size:14px;
+	width: 550px;
+}
+
+#faq-content .read-more #event-category{
+	font-size:14px;
+	padding: 2px 4px;
 }
 
 #faq-content .read-more .extra{
 	border-top:1px solid; 
 	border-bottom:1px dashed; 
-	margin-top: 10px; 
+	margin-top: 15px; 
 	width:550px; 
 	margin-bottom:10px; 
 	padding-top:10px; 
 	padding-bottom:10px; 
 	display:table;
+	font-size:13px;
 }
 
 #faq-content .read-more #event-description{
@@ -1031,6 +1038,97 @@ be a descendant of the grid when it is being dragged.
 	padding-bottom:15px; 
 	border-bottom:1px solid; 
 	margin-bottom:20px;
+	white-space: pre-line;
 }
+
+.category{
+	margin-top: 5px; 
+	color: #FFF; 
+	width: 9px; 
+	padding-left: 5px; 
+	padding-right: 4px; 
+	padding-top: 1px;
+}
+
+.t{
+	background-color: #58595B;
+}
+
+.e{
+	background-color: #E11F19;
+}
+
+.p{
+	background-color: #20B2B3;
+}
+.c{
+	background-color: #7e3f98;
+}
+ .category-background{
+ 	background-color: #D7EAEB;
+ }
+
+ul.event-category{
+	list-style: outside none none;
+	width: 100%;
+	padding: 0px;
+	width: 800px;
+	margin: 30px auto;
+	display: table;
+	border-top: 1px solid;
+	padding-top: 20px;
+}
+
+ul.event-category li{
+	float: left;
+	margin-right: 30px;
+}
+
+.category-legend{
+	padding:2px 5px; 
+	margin-right:5px; 
+	color:#FFF;
+	padding-top: 3px;
+}
+
+.category-info{
+	margin-top: 5px; 
+}
+
+.nodisplay{
+	display: none;
+}
+
+.event-hour{
+	float:left;	
+}
+.event-hour:before {
+
+	content: "";
+    display: block;
+    width: 13px;
+    height: 13px;
+    float: left;
+    margin: 0 6px 0 0;
+    background: url("/view/css/calendar/clock.png") no-repeat;
+    background-size: 13px 13px;
+}
+
+.event-location:before {
+
+	content: "";
+    display: block;
+    width: 13px;
+    height: 13px;
+    float: left;
+    margin: 0 6px 0 6px;
+    background: url("/view/css/calendar/location.png") no-repeat;
+    background-size: 13px 13px;
+}
+
+.event-hour{
+
+}
+
 
 
