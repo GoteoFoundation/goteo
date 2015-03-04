@@ -324,7 +324,7 @@ namespace Goteo\Controller {
 
                         // email a los de goteo
                         if($project->draft)
-                            $sent1 = Send::toConsultants('project_preform_to_review_consultant', $project);  
+                            $sent1 = Send::toConsultants('project_preform_to_review_consultant', $project);
                         else
                             $sent1 = Send::toConsultants('project_to_review_consultant', $project);
 
@@ -368,7 +368,7 @@ namespace Goteo\Controller {
                 // throw new Error(Error::INTERNAL, 'EROR: '.print_r($_FILES,1));
                 // die;
                 // mail de aviso
-                $mailHandler = new Model\Mail();
+                $mailHandler = new Library\Mail();
                 $mailHandler->to = \GOTEO_FAIL_MAIL;
                 $mailHandler->toName = 'Goteo Fail Mail';
                 $mailHandler->subject = 'FORM CAPACITY OVERFLOW en '.\SITE_URL;
@@ -550,7 +550,7 @@ namespace Goteo\Controller {
                         $content = \str_replace($search, $replace, $template->text);
 
 
-                        $mailHandler = new Model\Mail();
+                        $mailHandler = new Library\Mail();
 
                         $mailHandler->to = $user->email;
                         $mailHandler->toName = $user->name;
