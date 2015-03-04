@@ -54,7 +54,13 @@ include __DIR__ . '/header.html.php';
                         <span id="event-category"></span>
                     </div>
                     <div class="extra">
-                        <div><span id="event-hour" class="event-hour"></span><span id="event-location"></span></div>
+                        <span id="event-hour" class="event-hour"></span><span id="event-location" class="event-location"></span>
+                        <a id="event-twitter" href=""><img style="float:right;" width="14" src="/view/css/calendar/twitter.png"/></a>
+                        <a id="event-facebook" href=""><img style="float:right; margin-right:5px;" width="14" src="/view/css/calendar/facebook.png"/></a>
+                        <span style="float:right; margin-right:5px;">Compartir:</span>
+
+                        
+
                     </div>
                     <div id="event-description">
                     </div>

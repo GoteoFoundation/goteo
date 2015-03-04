@@ -1030,7 +1030,7 @@ be a descendant of the grid when it is being dragged.
 	padding-top:10px; 
 	padding-bottom:10px; 
 	display:table;
-	font-size:11px;
+	font-size:13px;
 }
 
 #faq-content .read-more #event-description{
@@ -1099,15 +1099,35 @@ ul.event-category li{
 	display: none;
 }
 
+.event-hour{
+	float:left;	
+}
 .event-hour:before {
 
 	content: "";
     display: block;
-    width: 15px;
-    height: 15px;
+    width: 13px;
+    height: 13px;
     float: left;
     margin: 0 6px 0 0;
     background: url("/view/css/calendar/clock.png") no-repeat;
+    background-size: 13px 13px;
+}
+
+.event-location:before {
+
+	content: "";
+    display: block;
+    width: 13px;
+    height: 13px;
+    float: left;
+    margin: 0 6px 0 6px;
+    background: url("/view/css/calendar/location.png") no-repeat;
+    background-size: 13px 13px;
+}
+
+.event-hour{
+
 }
 
 

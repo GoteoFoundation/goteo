@@ -141,7 +141,7 @@ if (NODE_ID != GOTEO_NODE) {
     
               $("#event-date").html(event_date);
               $("#event-location").html(event.location.substr(0,40));
-              $("#event-hour").html(event_start+" - "+event_end+ " | ");
+              $("#event-hour").html(event_start+" - "+event_end);
               $("#event-category").html(event.category);
 
               $("#event-category").removeClass();
@@ -158,6 +158,9 @@ if (NODE_ID != GOTEO_NODE) {
               $("#category-letter").html(event.category.substr(0,1));
               $("#category-letter").removeClass();
               $("#category-letter").addClass("category-legend "+ event.category.substr(0,1).toLowerCase());
+
+              $("#event-facebook").attr("href", "http://facebook.com/sharer.php?u="+event.url);
+              $("#event-twitter").attr("href", "http://twitter.com/home?status="+event.url);
 
               //alert(getDay(event.start));
               /*window.open(event.url, 'gcalevent', 'width=350,height=400');*/
