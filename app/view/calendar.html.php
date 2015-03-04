@@ -49,15 +49,26 @@ include __DIR__ . '/header.html.php';
                 <div id="read-more" class="read-more">
                     <h3 id="event-date"></h3>
                     <div id="event-title"></div>
-                    <div class="extra">
-                        <div><span id="event-hour"></span><span id="event-location"></span></div>
+                    <div id="category-info" class="nodisplay">
+                        <span style="margin-right:0;" id="category-letter"></span>
+                        <span id="event-category"></span>
                     </div>
-                    <p id="event-description">
-                    </p>
+                    <div class="extra">
+                        <div><span id="event-hour" class="event-hour"></span><span id="event-location"></span></div>
+                    </div>
+                    <div id="event-description">
+                    </div>
                 </div>
 			    <div id='loading'>loading...</div>
 
                 <div id='calendar'></div>
+                <div>
+                <ul class="event-category">
+                <li><span class="category-legend t">T</span>Talleres</li>
+                <li><span class="category-legend p">P</span>Proyectos</li>
+                <li><span class="category-legend e">E</span>Eventos</li>
+                <li><span class="category-legend c">C</span>Convocatorias</li>
+                </div>
 			</div>
         </div>
 	<?php include __DIR__ . '/footer.html.php' ?>

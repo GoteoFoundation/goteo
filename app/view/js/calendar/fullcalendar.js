@@ -4690,7 +4690,7 @@ DayGrid.mixin({
 						timeHtml + ' ' + titleHtml   //
 						) +
 				'</div>' +
-				'<div style="margin-top: 5px; background-color: #E11F19; color: #FFF; width: 9px; padding-left: 5px; padding-right: 4px; padding-top: 1px;">'+htmlEscape(event.category.substr(0,1))+'</div>'+
+				'<div class="category '+event.category.substr(0,1).toLowerCase()+'">'+htmlEscape(event.category.substr(0,1))+'</div>'+
 				(isResizable ?
 					'<div class="fc-resizer"/>' :
 					''

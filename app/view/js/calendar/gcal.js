@@ -131,6 +131,7 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
 			var events = [];
 			var successArgs;
 			var successRes;
+			var event_category="";
 
 			if (data.error) {
 				reportError('Google Calendar API: ' + data.error.message, data.error.errors);
@@ -144,10 +145,24 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
 						url = injectQsComponent(url, 'ctz=' + timezoneArg);
 					}
 
+					if ((entry.summary.search("#taller")>=0)||(entry.description.search("#taller")>=0)) {
+   					event_category="Taller";
+					}
+					if ((entry.summary.search("#evento")>=0)||(entry.description.search("#evento")>=0)) {
+   					event_category="Evento";
+					}
+					if ((entry.summary.search("#proyecto")>=0)||(entry.description.search("#proyecto")>=0)) {
+   					event_category="Proyecto";
+					}
+					if ((entry.summary.search("#convocatoria")>=0)||(entry.description.search("#convocatoria")>=0)) {
+   					event_category="Convocatoria";
+					}
+
+
 					events.push({
 						id: entry.id,
-						title: entry.summary.substr(0,entry.summary.length-4),
-						category: entry.summary.substr(entry.summary.length-2),
+						title: entry.summary,
+						category: event_category,
 						start: entry.start.dateTime || entry.start.date, // try timed. will fall back to all-day
 						end: entry.end.dateTime || entry.end.date, // same
 						url: url,

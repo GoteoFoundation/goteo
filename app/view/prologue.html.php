@@ -132,19 +132,33 @@ if (NODE_ID != GOTEO_NODE) {
              
               $("#read-more").css( "display", "block" );;
               $("#event-description").html(event.description);
-              $("#event-title").html(event.title);
+
+              $("#event-title").html(event.title.toUpperCase());
               
               var event_date=moment(new Date(event.start)).format("DD | MM | YYYY");
               var event_start=moment(new Date(event.start)).format("HH:mm");
               var event_end=moment(new Date(event.end)).format("HH:mm");
     
               $("#event-date").html(event_date);
-              $("#event-location").html(event.location);
+              $("#event-location").html(event.location.substr(0,40));
               $("#event-hour").html(event_start+" - "+event_end+ " | ");
+              $("#event-category").html(event.category);
 
-              
+              $("#event-category").removeClass();
+              $("#category-info").removeClass();
 
-              //$("#event-date").html(d1);
+              if(!$('#event-category').is(':empty'))
+              {
+                $("#event-category").addClass("category-background");
+                $("#category-info").addClass("category-info");
+              }
+              else
+                $("#category-info").addClass("nodisplay");
+
+              $("#category-letter").html(event.category.substr(0,1));
+              $("#category-letter").removeClass();
+              $("#category-letter").addClass("category-legend "+ event.category.substr(0,1).toLowerCase());
+
               //alert(getDay(event.start));
               /*window.open(event.url, 'gcalevent', 'width=350,height=400');*/
               return false;
