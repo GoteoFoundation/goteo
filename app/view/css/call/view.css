@@ -610,7 +610,7 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
     display: inline-block;
     width: 120px;
     height: 30px;
-	background: url('/view/css/logoFFA.png') no-repeat 0px 5px transparent;
+	background: url('/view/css/logoFG.png') no-repeat 23px 5px transparent;
     text-indent: 2000px;
     line-height: 2000px;
     overflow: hidden;
@@ -618,7 +618,7 @@ div#header ul > li.dashboard > div > ul > li > a:hover {
 }
 
 #footer div.platoniq a.foundation:hover{
-	background: url('/view/css/logoFFA2.png') no-repeat 0px 5px transparent;
+	background: url('/view/css/logoFG.png') no-repeat 23px 5px transparent;
 }
 
 #footer div.platoniq a.growby {
