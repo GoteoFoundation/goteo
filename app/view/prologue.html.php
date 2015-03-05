@@ -121,7 +121,8 @@ if (NODE_ID != GOTEO_NODE) {
             eventClick: function(event) {
               // opens events in a popup window
              
-              $("#read-more").css( "display", "block" );;
+              $("#read-more").css( "display", "block" );
+
               $("#event-description").html(event.description);
 
               $("#event-title").html(event.title.toUpperCase());
@@ -152,6 +153,7 @@ if (NODE_ID != GOTEO_NODE) {
 
               $("#event-facebook").attr("href", "http://facebook.com/sharer.php?u="+event.url);
               $("#event-twitter").attr("href", "http://twitter.com/home?status="+event.url);
+
 
               //alert(getDay(event.start));
               /*window.open(event.url, 'gcalevent', 'width=350,height=400');*/
