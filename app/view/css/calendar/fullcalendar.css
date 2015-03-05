@@ -1012,8 +1012,7 @@ be a descendant of the grid when it is being dragged.
 
 #faq-content .read-more #event-title{
 	font-weight: bold; 
-	font-size:14px;
-	width: 550px;
+	font-size:15px;
 }
 
 #faq-content .read-more #event-category{
@@ -1025,20 +1024,21 @@ be a descendant of the grid when it is being dragged.
 	border-top:1px solid; 
 	border-bottom:1px dashed; 
 	margin-top: 15px; 
-	width:550px; 
 	margin-bottom:10px; 
 	padding-top:10px; 
 	padding-bottom:10px; 
 	display:table;
 	font-size:13px;
+	width:800px;
 }
 
-#faq-content .read-more #event-description{
-	width:550px; 
+#faq-content .read-more #event-description{ 
 	padding-bottom:15px; 
 	border-bottom:1px solid; 
 	margin-bottom:20px;
 	white-space: pre-line;
+	width: 800px;
+	display: table;
 }
 
 .category{
@@ -1126,8 +1126,12 @@ ul.event-category li{
     background-size: 13px 13px;
 }
 
-.event-hour{
-
+.event-description-img{
+	float: left; 
+	width:200px; 
+	height:150px;
+	margin-right:20px; 
+	margin-bottom:5px;
 }
 
 

@@ -63,6 +63,8 @@ include __DIR__ . '/header.html.php';
 
                     </div>
                     <div id="event-description">
+                        <div id="event-description-img"></div>
+                        <div id="event-description-text"></div>
                     </div>
                 </div>
 			    <div id='loading'>loading...</div>
