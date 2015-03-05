@@ -145,6 +145,9 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
 						url = injectQsComponent(url, 'ctz=' + timezoneArg);
 					}
 
+					if(!entry.description)
+						entry.description="";
+
 					if ((entry.summary.search("#taller")>=0)||(entry.description.search("#taller")>=0)) {
    					event_category="Taller";
 					}
@@ -158,17 +161,18 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
    					event_category="Convocatoria";
 					}
 
-
 					events.push({
 						id: entry.id,
 						title: entry.summary,
 						category: event_category,
-						start: entry.start.dateTime || entry.start.date, // try timed. will fall back to all-day
-						end: entry.end.dateTime || entry.end.date, // same
+						start: entry.start.dateTime || entry.start.date || "Sin determinar", // try timed. will fall back to all-day
+						end: entry.end.dateTime || entry.end.date || "?", // same
 						url: url,
-						location: entry.location,
+						location: entry.location || "Sin determinar",
 						description: entry.description
 					});
+
+					event_category="";
 				});
 
 				// call the success handler(s) and allow it to return a new events array
