@@ -132,7 +132,7 @@ if (NODE_ID != GOTEO_NODE) {
              
               $("#read-more").css( "display", "block" );
 
-              $("#event-description").html(event.description);
+              $("#event-description-text").html(event.description);
 
               $("#event-title").html(event.title.toUpperCase());
               
@@ -141,17 +141,19 @@ if (NODE_ID != GOTEO_NODE) {
               var event_end=moment(new Date(event.end)).format("HH:mm");
     
               $("#event-date").html(event_date);
-              $("#event-location").html(event.location.substr(0,40));
+              $("#event-location").html(event.location.substr(0,65));
               $("#event-hour").html(event_start+" - "+event_end);
               $("#event-category").html(event.category);
 
               $("#event-category").removeClass();
               $("#category-info").removeClass();
+              $("#event-description-img").removeClass();
 
               if(!$('#event-category').is(':empty'))
               {
                 $("#event-category").addClass("category-background");
                 $("#category-info").addClass("category-info");
+                $("#event-description-img").addClass("event-description-img "+event.category.substr(0,1).toLowerCase());
               }
               else
                 $("#category-info").addClass("nodisplay");
@@ -162,6 +164,10 @@ if (NODE_ID != GOTEO_NODE) {
 
               $("#event-facebook").attr("href", "http://facebook.com/sharer.php?u="+event.url);
               $("#event-twitter").attr("href", "http://twitter.com/home?status="+event.url);
+
+              $('html, body').animate({
+              scrollTop: ($('#read-more').offset().top)
+              },500);
 
 
               //alert(getDay(event.start));
