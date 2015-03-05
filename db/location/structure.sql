@@ -23,4 +23,7 @@ ALTER IGNORE TABLE `location`
     ADD UNIQUE KEY `location`(`longitude`,`latitude`) ,
     ADD PRIMARY KEY(`id`) ;
 
-
+-- optimization
+ALTER TABLE `location`
+    ADD KEY `latitude`(`latitude`) ,
+    ADD KEY `longitude`(`longitude`) ;
