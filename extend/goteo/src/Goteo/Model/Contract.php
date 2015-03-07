@@ -89,22 +89,57 @@ namespace Goteo\Model {
          * Creación de registro de contrato.
          * Esto lo lanzará el cron/execute cuando el proyecto pase la primera ronda.
          *
+         * Pero también se puede crear manualmente desde panel gestoria
+         *   hay que tener en cuenta si ya tiene registro de contrato o no
+         *
          * @param varchar(50) $id del proyecto
          * @return true (el control de errores habrá que hacerlo por email)
          */
         public static function create ($id, &$errors = array()) {
-            $contract = new Contract;
-            $contract->project = $id;
-            /* sacar datos del proyecto */
-            $projData = \Goteo\Model\Project::get($id, 'es');
-            if (empty($contract->number) && !empty($projData->published)) {
-                $date = strtotime($projData->published);
-                $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
-                $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)+1));
+
+            $contract = Contract::get($id);
+
+            if (!empty($contract)) {
+                // ya tenemos registro de contrato
+
+                // verificar fechas
+                if ( empty($contract->date) || empty($contract->enddate) ) {
+
+                    // sacar datos del proyecto
+                    $projData = \Goteo\Model\Project::get($id, 'es');
+
+                    if ( !empty($projData->published) ) {
+                        $date = strtotime($projData->published);
+                        $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
+                        $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)+1));
+                    }
+
+                    return $contract->save($errors);
+
+                } else {
+
+                    return $contract;
+
+                }
+
+            } else {
+                // nuevo registro
+                $contract = new Contract;
+                $contract->project = $id;
+                // sacar datos del proyecto
+                $projData = \Goteo\Model\Project::get($id, 'es');
+
+                if ( !empty($projData->published) ) {
+                    $date = strtotime($projData->published);
+                    $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
+                    $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)+1));
+                }
+
             }
+
             $contract->type = 0; // inicialmente persona fisica
 
-            // @TODO como ya no tendremos paso 2, estos datos se inicializan con los datos personales del impulsor
+            // @FIXME esto tendria que venir de lo rellenado en el paso 2 del formulario de proyecto
             $personalData = \Goteo\Model\User::getPersonal($projData->owner);
 
             // persona física o representante
