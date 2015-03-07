@@ -8,3 +8,9 @@ CREATE TABLE IF NOT EXISTS `category_lang` (
 
 -- pendiente de traducir
 ALTER TABLE `category_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+
+-- Optimization
+ALTER TABLE `category_lang`
+    DROP KEY `id_lang` ,
+    ADD KEY `lang`(`lang`) ,
+    ADD PRIMARY KEY(`id`,`lang`) ;

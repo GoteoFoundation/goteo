@@ -150,6 +150,12 @@ if (!$project->draft) {
 
     $title_description_group=Text::get('overview-extra-fields');
 
+    $spread = array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->spread
+    );
+
 } else {
 
     $about = array(
@@ -183,6 +189,15 @@ if (!$project->draft) {
     $video_upload=array(
         'type'  => 'hidden',
         'class' => 'inline'
+    );
+
+    $spread = array(
+                    'type'      => 'textarea',
+                    'title'     => Text::get('overview-field-spread'),
+                    'hint'      => Text::get('tooltip-project-spread'),
+                    'errors'    => !empty($errors['spread']) ? array($errors['spread']) : array(),
+                    'ok'        => !empty($okeys['spread']) ? array($okeys['spread']) : array(),
+                    'value'     => $project->spread
     );
 
 }
@@ -327,6 +342,8 @@ $superform = array(
                     'ok'        => !empty($okeys['related']) ? array($okeys['related']) : array(),
                     'value'     => $project->related
         ),
+
+        'spread' => $spread,
 
         // fin media
 

@@ -1,7 +1,7 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\Normalform;
+    Goteo\Library\NormalForm;
 
 $call = $this['call'];
 $this['level'] = 3;
