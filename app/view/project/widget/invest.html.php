@@ -188,11 +188,15 @@ if ($step == 'start') : ?>
 <div class="widget project-invest method">
     <h<?php echo $level ?> class="beak"><?php echo Text::get('project-invest-continue') ?></h<?php echo $level ?>>
     <input type="hidden" id="paymethod"  />
+    <input type="hidden" id="pool" value="<?php echo $this['pool']; ?>"  />
 
     <div class="buttons">
         <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
         <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
         <?php if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?><button type="submit" class="process pay-cash" name="method"  value="cash">CASH</button><?php endif; ?>
+        <?php
+        // @TODO : desactivar el botón si cambia a un importe mayor al de la reserva
+        if ($this['pool'] > 0) : ?><button type="submit" class="process pay-pool" name="method"  value="pool">GOTAS</button><?php endif; ?>
     </div>
 <br />
 
