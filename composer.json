@@ -1,34 +1,25 @@
 {
 
     "require": {
-
-        "php": ">=5.4",
-
-        "ext-curl": "*",
-
         "tpyo/amazon-s3-php-class": "~0.5",
 
 
-        "phpmailer/phpmailer": "~5.2",
+    "phpmailer/phpmailer": "~5.2",
 
 
-        "jdorn/file-system-cache": "dev-master",
+    "jdorn/file-system-cache": "dev-master",
 
 
-        "intervention/image": "~2.0",
+    "intervention/image": "~2.0",
 
 
-        "mibe/feedwriter": "~1.0",
+    "mibe/feedwriter": "~1.0",
 
+    
+    "lusitanian/oauth": "~0.3",
 
-        "lightopenid/lightopenid": "~0.7",
-
-
-        "lusitanian/oauth": "~0.3",
-
-        "paypal/adaptivepayments-sdk-php": "*",
-
-        "paypal/merchant-sdk-php": "*"
+    
+    "iignatov/lightopenid": "~1.0"
 
     },
 

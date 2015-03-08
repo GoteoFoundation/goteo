@@ -43,4 +43,6 @@ ALTER TABLE `reward` ADD `order` TINYINT NOT NULL DEFAULT '1' COMMENT 'Orden par
 -- Para marcar retornos colectivos adicionales
 ALTER TABLE `reward` ADD `bonus` BOOLEAN NOT NULL DEFAULT '0' COMMENT 'Retorno colectivo adicional';
 
+-- optimization
 ALTER TABLE `reward` ADD INDEX `icon` ( `icon` );
+ALTER TABLE `reward` ADD KEY `type`(`type`) ;

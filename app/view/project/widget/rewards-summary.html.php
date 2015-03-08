@@ -55,7 +55,7 @@ uasort($project->individual_rewards,
     <?php endif; ?>
 
     <?php if (!empty($project->social_rewards) && (!isset($only) || $only == 'social')) : ?>
-    <div class="social">
+    <div class="social" id="social-rewards">
         <h<?php echo $level + 1 ?> class="title"><?php echo Text::get('project-rewards-social_reward-title'); ?></h<?php echo $level + 1 ?>>
         <ul>
         <?php foreach ($project->social_rewards as $social) : ?>

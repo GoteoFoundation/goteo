@@ -155,7 +155,7 @@ function tpvcall($data, $endpoint)
 //    curl_setopt($ch, CURLOPT_HEADER, true);
 //    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 //    curl_setopt($ch, CURLOPT_VERBOSE, true);
-    curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+    // curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
     curl_setopt($ch, CURLOPT_URL,$endpoint);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //no se exactamente para que es, está en los ejemplos

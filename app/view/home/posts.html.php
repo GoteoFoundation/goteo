@@ -15,7 +15,7 @@ $posts = $this['posts'];
 </script>
 <div id="learn" class="widget learn">
     <h2 class="title"><?php echo Text::get('home-posts-header'); ?></h2>
-    <div class="slder_container"<?php if (count($posts)==1) echo ' style="display:block;"'; ?>>
+    <div class="slder_container" style="max-height:290px; overflow:hidden; <?php if (count($posts)==1) echo ' display:block;'; ?>">
 
         <?php $i = 1; foreach ($posts as $post) : ?>
         <div class="slder_slide">

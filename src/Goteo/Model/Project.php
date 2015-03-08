@@ -80,6 +80,7 @@ namespace Goteo\Model {
              $about,
              $goal,
              $related,
+             $spread, //campo para que expliquen la difusión prevista del proyecto
              $reward, // nueva sección, solo editable por admines y traductores
             $categories = array(),
             $media, // video principal
@@ -1308,6 +1309,7 @@ namespace Goteo\Model {
                     'about',
                     'goal',
                     'related',
+                    'spread',
                     'reward',
                     'keywords',
                     'media',
