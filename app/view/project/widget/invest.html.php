@@ -178,6 +178,10 @@ if ($step == 'start') : ?>
     <p>
         <label><input type="checkbox" name="anonymous" value="1" /><span class="chkbox"></span><?php echo Text::get('invest-anonymous') ?></label>
     </p>
+
+    <p>
+        <label><input type="checkbox" name="pool" value="1" /><span class="chkbox"></span><?php echo Text::get('invest-pool') ?></label>
+    </p>
 </div>
 
 

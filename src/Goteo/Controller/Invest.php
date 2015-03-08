@@ -111,6 +111,8 @@ namespace Goteo\Controller {
                 if ($debug) var_dump("$amount_original / $rate = $amount  from aprox ".($amount_original / $rate) );
                 $amount = \number_format($amount, 0, '', '');
 
+                // si está marcado "a reservar" llega $_POST['pool']
+
                 $invest = new Model\Invest(
                     array(
                         'amount' => $amount,
@@ -123,7 +125,8 @@ namespace Goteo\Controller {
                         'status' => '-1',               // aporte en proceso
                         'invested' => date('Y-m-d'),
                         'anonymous' => $_POST['anonymous'],
-                        'resign' => $resign
+                        'resign' => $resign,
+                        'pool' => $_POST['pool']
                     )
                 );
 
@@ -329,7 +332,7 @@ namespace Goteo\Controller {
             $comlang = !empty($prefer->comlang) ? $prefer->comlang : $_SESSION['user']->lang;
 
             // primero monto el texto de recompensas
-            //@TODO el concepto principal sería 'renuncia' (porque todos los aportes son donativos)
+            // @FIXME : estas  4 plantillas tendrian que ser una sola, con textos dinamicos según si renuncia y primera/segunda ronda
             if ($invest->resign) {
                 // Plantilla de donativo segun la ronda
                 if ($projectData->round == 2) {
