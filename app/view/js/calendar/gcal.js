@@ -168,6 +168,11 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
    					entry.description=entry.description.replace('#convocatoria','');
    					entry.summary=entry.summary.replace('#convocatoria','');
 					}
+					if ((entry.summary.search("#red")>=0)||(entry.description.search("#red")>=0)) {
+   					event_category="Red y Políticas";
+   					entry.description=entry.description.replace('#red','');
+   					entry.summary=entry.summary.replace('#red','');
+					}
 
 					events.push({
 						id: entry.id,
