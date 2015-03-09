@@ -150,15 +150,23 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
 
 					if ((entry.summary.search("#taller")>=0)||(entry.description.search("#taller")>=0)) {
    					event_category="Taller";
+   					entry.description=entry.description.replace('#taller','');
+   					entry.summary=entry.summary.replace('#taller','');
 					}
 					if ((entry.summary.search("#evento")>=0)||(entry.description.search("#evento")>=0)) {
    					event_category="Evento";
+   					entry.description=entry.description.replace('#evento','');
+   					entry.summary=entry.summary.replace('#evento','');
 					}
 					if ((entry.summary.search("#proyecto")>=0)||(entry.description.search("#proyecto")>=0)) {
    					event_category="Proyecto";
+   					entry.description=entry.description.replace('#proyecto','');
+   					entry.summary=entry.summary.replace('#proyecto','');
 					}
 					if ((entry.summary.search("#convocatoria")>=0)||(entry.description.search("#convocatoria")>=0)) {
    					event_category="Convocatoria";
+   					entry.description=entry.description.replace('#convocatoria','');
+   					entry.summary=entry.summary.replace('#convocatoria','');
 					}
 
 					events.push({
