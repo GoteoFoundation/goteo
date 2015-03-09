@@ -76,7 +76,7 @@ include __DIR__ . '/header.html.php';
                 <li><span class="category-legend p">P</span>Proyectos</li>
                 <li><span class="category-legend e">E</span>Eventos</li>
                 <li><span class="category-legend c">C</span>Convocatorias</li>
-                <li><span class="category-legend r">R</span>Red</li>
+                <li><span class="category-legend r">R</span>Red y Políticas</li>
                 </div>
 			</div>
         </div>
