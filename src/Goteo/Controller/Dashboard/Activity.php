@@ -47,6 +47,19 @@ namespace Goteo\Controller\Dashboard {
              */
         }
 
+        // gestion de gotas
+        public static function pool ($user) {
+
+            // ver si tiene reserva de gotas
+
+            // ver cual es el último proyecto (en el que se usaron gotas o el que guardó las primeras gotas)
+
+            // si tiene gotas, buscar recomendaciones según este último proyecto
+
+            return null;
+
+        }
+
         // acciones de certificado de donativo
         public static function donor ($user, $action = 'view') {
             $errors = array();

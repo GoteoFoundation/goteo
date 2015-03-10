@@ -1,1 +1,6 @@
 Place in here a non-tracked copy of your settings.php
+
+
+Paypal settings
+---------------------
+'sdk_config.ini' file contains paypal configuration explained here: https://github.com/paypal/sdk-core-php/wiki/Configuring-the-SDK#examples

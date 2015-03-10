@@ -711,6 +711,15 @@ namespace Goteo\Controller {
                         }
                     }
 
+                    // recuperación de gotas si está logueado
+                    if ($user instanceof Model\User) {
+                        if ($step == 'start' || $step == 'confirm') {
+                            $pool = Model\User\Pool::get($user->id);
+                            // pasamos la cantidad a la vista
+                            $viewData['pool'] = $pool->amount;
+                        }
+                    }
+
                     /*
                     elseif (isset($_SESSION['pre-invest'])) {
                         // aporte incompleto, puede ser que aun no esté logueado

@@ -54,3 +54,5 @@ ALTER TABLE `invest` ADD `currency` VARCHAR(4) NOT NULL DEFAULT 'EUR' COMMENT 'D
 ALTER TABLE `invest` ADD `currency_rate` DECIMAL(9, 5) NOT NULL DEFAULT 1 COMMENT 'Ratio de conversión a eurio al aportar' AFTER `currency`;
 
 
+-- funcionalidad credito
+ALTER TABLE `invest` ADD `pool` INT( 1 ) NULL DEFAULT NULL COMMENT 'A reservar si el proyecto falla';

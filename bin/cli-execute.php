@@ -452,10 +452,37 @@ function project_second_round($project, $per_amount)
 /**
  * Cancelar los aportes
  * Se llama cuando cancelAll = true
+ *
+ * Funcionalidad crédito:
+ * ----------------------
+ * Sea cual sea el metodo de pago, los aportes marcados "invest.pool = 1", no se cancelan
+ *   el importe de estos aportes pasa a la reserva de Gotas del usuario "user_pool"
+ *   y NO SE CANCELAN
+ *
+ *
  */
 function cancel_payment($invest, $project, $userData)
 {
     global $FEED, $UPDATE;
+    global $projectAccount; // need project paypal account for if execute preapproval
+
+    // aporte a reservar
+    if ($invest->pool) {
+        echo "Aporte {$invest->id} es para reservar ({$invest->method}).\n";
+        if ($UPDATE) {
+            Model\User\Pool::add($invest);
+            // el aporte se queda en el estado que estuviera
+            // a menos que sea un paypal en preapproval, que se debería ejecutar
+            if ($invest->method == 'paypal' && $invest->status == 0) {
+                execute_payment($invest, $project, $userData, $projectAccount);
+            }
+
+
+        } else {
+            echo "Prevented pool::add() \n";
+        }
+        return true;
+    }
 
     echo "Aporte {$invest->id} cancelamos por proyecto caducado ({$invest->method}).\n";
     if ($UPDATE) {
