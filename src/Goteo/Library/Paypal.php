@@ -375,7 +375,7 @@ namespace Goteo\Library {
                             break;
                         default:
                             if (empty($errorId)) {
-                                Feed::logger('paypal-error', 'invest', $invest->id, 'No tenemos ErrorId.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal::pay()')
+                                Feed::logger('paypal-error', 'invest', $invest->id, 'No tenemos ErrorId.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal::pay()');
 
                                 $log = new Feed();
                                 $log->setTarget($project->id);
