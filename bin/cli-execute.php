@@ -567,7 +567,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
             $invest->fee = $projectAccount->fee;
             $err = array();
             if ($UPDATE) {
-                if (Paypal::pay($invest, $err)) {
+                if (Paypal::execute($invest, $err)) {
                     $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                     echo " -> Ok\n";
                     Model\Invest::setDetail($invest->id, 'executed', 'Se ha ejecutado el preapproval, ha iniciado el pago encadenado. Proceso cli-execute');
@@ -654,7 +654,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
              * @TODO : esto seria el metodo preapproval en Library\Payment\Tpv
              *
                 $err = array();
-                if (Tpv::pay($invest, $err)) {
+                if (Tpv::execute($invest, $err)) {
                     echo "Cargo sermepa correcto";
                     $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s";
                 } else {
