@@ -501,7 +501,7 @@ namespace Goteo\Controller\Admin {
                         // cuenta paypal y comisión goteo
                         $invest->account = $projectAccount->paypal;
                         $invest->fee = $projectAccount->fee;
-                        if (Paypal::pay($invest, $errors)) {
+                        if (Paypal::execute($invest, $errors)) {
                             $errors[] = 'Cargo paypal correcto';
                             $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                             $invest->status = 1;
@@ -520,7 +520,8 @@ namespace Goteo\Controller\Admin {
                         }
                         break;
                     case 'tpv':
-                        if (Tpv::pay($invest, $errors)) {
+                        // no tiene sentido ejecutar así un aporte tpv que ya está cobrado
+                        if (Tpv::execute($invest, $errors)) {
                             $errors[] = 'Cargo sermepa correcto';
                             $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s";
                             $invest->status = 1;

@@ -145,17 +145,39 @@ namespace Goteo\Library {
 
 
         /*
+         *  Metodo para preparar un pago paypal con ExpressCheckout
+         *
+         */
+        public static function preparePay($invest, &$errors = array()) {
+
+            // @TODO : express checkout
+            // https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DGsetExpressCheckout.php
+
+    }
+
+        /*
+         *  Metodo para realizar un pago paypal con ExpressCheckout
+         *
+         */
+        public static function pay($invest, &$errors = array()) {
+
+            // @TODO : express checkout
+            // https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DoExpressCheckout.php
+
+        }
+
+        /*
          *  Metodo para ejecutar pago (desde cron)
          * Recibe parametro del aporte (id, cuenta, cantidad)
          *
          * Es un pago encadenado, la comision del 8% a Goteo y el resto al proyecto
          *
          */
-        public static function pay($invest, &$errors = array()) {
+        public static function execute($invest, &$errors = array()) {
 
             if ($invest->status == 1) {
                 $errors[] = 'Este aporte ya está cobrado!';
-                Feed::logger('paypal-dobleexecution', 'invest', $invest->id, 'Dobleejecución de preapproval. Se intentaba ejecutar un aporte en estado Cobrado. <br /><pre>' . print_r($invest, true) . '</pre>');
+                Feed::logger('paypal-doble_execution-error', 'invest', $invest->id, 'Dobleejecución de preapproval. Se intentaba ejecutar un aporte en estado Cobrado. <br /><pre>' . print_r($invest, true) . '</pre>');
 
                 return false;
             }
@@ -448,7 +470,7 @@ namespace Goteo\Library {
 
                     Invest::setIssue($invest->id);
                     $errors[] = 'No ha obtenido Payment Key.';
-                    Feed::logger('paypal-token', 'invest', $invest->id, ' No payment key obtained.<br /><pre>' . print_r($response, true) . '</pre>');
+                    Feed::logger('paypal-token-error', 'invest', $invest->id, ' No payment key obtained.<br /><pre>' . print_r($response, true) . '</pre>');
 
                     return false;
 
@@ -623,7 +645,7 @@ namespace Goteo\Library {
             catch(Exception $ex) {
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:'.__FUNCTION__);
+                Feed::logger('paypal-exception', 'invest.payment', $key, $ex->getMessage(), '\Library\Paypal.php:'.__FUNCTION__);
 
                 return false;
             }
@@ -654,7 +676,7 @@ namespace Goteo\Library {
                 if(strtoupper($ap->isSuccess) == 'FAILURE') {
                     Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el preapproval. Proceso libary/paypal::cancelPreapproval');
                     $errors[] = 'Preapproval cancel failed.' . $ap->getLastError();
-                    Feed::logger('paypal-error', 'invest', $invest->id, $implode('<br />', $errors), 'libary/paypal::cancelPreapproval');
+                    Feed::logger('paypal-error', 'invest', $invest->id, implode('<br />', $errors), 'libary/paypal::cancelPreapproval');
 
                     return false;
                 } else {

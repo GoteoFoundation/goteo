@@ -33,6 +33,13 @@ namespace Goteo\Library {
             return static::pay($invest, $errors);
         }
 
+        /*
+         * metodo para mantener coherencia
+         */
+        public static function execute($invest, &$errors = array()) {
+            return true;
+        }
+
         public static function pay($invest, &$errors = array()) {
 
 			try {

@@ -420,7 +420,7 @@ namespace Goteo\Controller\Cron {
                     $invest->account = $projectAccount->paypal;
                     $invest->fee = $projectAccount->fee;
                     $err = array();
-                    if (Paypal::pay($invest, $err)) {
+                    if (Paypal::execute($invest, $err)) {
                         $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                         echo ' -> Ok';
                         Model\Invest::setDetail($invest->id, 'executed', 'Se ha ejecutado el preapproval, ha iniciado el pago encadenado. Proceso cron/execute');
