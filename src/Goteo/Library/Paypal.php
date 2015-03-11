@@ -66,9 +66,8 @@ namespace Goteo\Library {
 		            resulting errors
 		            */
 
-                /// @TODO : pasar a src/Goteo/Library/paypal.php como wraper para vendor/paypal
 
-		           $preapprovalRequest = new PPAdaptivePayments\preapprovalRequest;
+		           $preapprovalRequest = new PPAdaptivePayments\PreapprovalRequest;
                    $preapprovalRequest->memo = $memo;
 		           $preapprovalRequest->cancelUrl = $cancelURL;
 		           $preapprovalRequest->returnUrl = $returnURL;
@@ -88,6 +87,7 @@ namespace Goteo\Library {
 		           $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";
 
 		           $ap = new PPService\AdaptivePaymentsService;
+
 		           $response=$ap->Preapproval($preapprovalRequest);
 
                 // @todo : cambiar a catch Exception o return;

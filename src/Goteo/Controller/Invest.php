@@ -162,8 +162,13 @@ namespace Goteo\Controller {
                 }
 
                 if ($invest->save($errors)) {
-                    $invest->urlOK  = SEC_URL."/invest/confirmed/{$project}/{$invest->id}";
-                    $invest->urlNOK = SEC_URL."/invest/fail/{$project}/{$invest->id}";
+                    // urls para paypal (necesita schema)
+                    $URL = (\GOTEO_ENV != 'real')
+                        ? 'http:'.str_replace('http:', '', SITE_URL)
+                        : 'https:'.str_replace('http:', '', SITE_URL);
+
+                    $invest->urlOK  = $URL."/invest/confirmed/{$project}/{$invest->id}";
+                    $invest->urlNOK = $URL."/invest/fail/{$project}/{$invest->id}";
                     Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
 
                     switch($method) {

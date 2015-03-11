@@ -130,7 +130,8 @@ define('CRON_VALUE', '--------------');
  * /config/sdk_config.ini
  * see paypal.php for an example contents of it
 ***************************************************/
-define('PP_CONFIG_PATH', 'config/');
+define('PP_CONFIG_PATH', __DIR__ . '/');
+define('PAYPAL_REDIRECT_URL', 'https://www.sandbox.paypal.com/webscr&cmd=');
 
 /****************************************************
 TPV [Bank Name]
