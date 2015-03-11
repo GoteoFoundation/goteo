@@ -134,6 +134,20 @@ namespace Goteo\Model\User {
             return true;
         }
 
+
+        /*
+         * ver cual es el último proyecto
+         * (en el que se usaron gotas o el que guardó las primeras gotas)
+         */
+        public static function lastProject($user) {
+
+            $sql = "SELECT project FROM invest WHERE user = ? AND ( method = 'pool' OR pool = 1 ) ORDER BY id desc LIMIT 1";
+            $query = static::query($sql, array($user));
+            $last = $query->fetchColumn();
+            return $last;
+
+        }
+
 	}
 
 }
