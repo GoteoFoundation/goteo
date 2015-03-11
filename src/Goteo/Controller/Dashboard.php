@@ -50,6 +50,11 @@ namespace Goteo\Controller {
                 $viewData['donation'] = Dashboard\Activity::donor($user, $action);
             }
 
+            // bote de gotas
+            if ($option == 'pool')  {
+                $viewData['pool'] = Dashboard\Activity::pool($user->id, $action);
+            }
+
 
             // gestión de clave api
             if ($option == 'apikey')  {
