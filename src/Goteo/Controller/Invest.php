@@ -55,26 +55,60 @@ namespace Goteo\Controller {
                 throw new Redirection('/project/'.$project);
             }
 
-            // Funcionalidad crédito:
-            // si el usuario tiene gotas el metodo 'pool' es permitido
-            // si el usuario tiene gotas, pero no son suficientes para este amount, error
-
-
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $errors = array();
-                $los_datos = $_POST;
                 $method = \strtolower($_POST['method']);
+
+                if ($debug) echo \trace($_POST);
+
+                // Funcionalidad crédito:
+                $pool = Model\User\Pool::get($user->id);
+
+                // si el usuario tiene gotas el metodo 'pool' es permitido
+                if ($pool->amount > 0) {
+                    $methods['pool'] = 'pool';
+                }
 
                 if (!isset($methods[$method])) {
                     Message::Error(Text::get('invest-method-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
-                if (empty($_POST['amount'])) {
+                $_amount = $_POST['amount'];
+                if (empty($_amount)) {
                     Message::Error(Text::get('invest-amount-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
+
+                // conversión a euros
+                if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY) {
+                    $rate = Currency::rate();
+                } else {
+                    $rate = 1;
+                }
+                $amount =  round($_amount / $rate);
+                if ($debug) var_dump("$_amount / $rate = $amount  from aprox ".($_amount / $rate) );
+                $amount = \number_format($amount, 0, '', '');
+
+                // si está marcado "a reservar" llega $_POST['pool']
+
+
+
+                // si es a reservar
+                $to_pool = $_POST['pool'];
+
+                // si el usuario tiene gotas
+                if ($pool->amount > 0 && $pool->amount >=  $amount) {
+                    // guay, será tambien un aporte a reservar
+                    $to_pool = 1;
+
+                } elseif ($pool->amount > 0 && $pool->amount <  $amount) {
+                    // pero no son suficientes para este amount, error
+                    Message::Error(Text::get('invest-pool-error'));
+                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                }
+
 
                 // dirección de envio para las recompensas
                 // o datoas fiscales del donativo
@@ -107,24 +141,10 @@ namespace Goteo\Controller {
                 // insertamos los datos personales del usuario si no tiene registro aun
                 Model\User::setPersonal($user->id, $address, false);
 
-                if ($debug) echo \trace($_POST);
-                // conversión a euros
-                if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY) {
-                    $rate = Currency::rate();
-                } else {
-                    $rate = 1;
-                }
-                $amount_original = $_POST['amount'];
-                $amount =  round($amount_original / $rate);
-                if ($debug) var_dump("$amount_original / $rate = $amount  from aprox ".($amount_original / $rate) );
-                $amount = \number_format($amount, 0, '', '');
-
-                // si está marcado "a reservar" llega $_POST['pool']
-
                 $invest = new Model\Invest(
                     array(
                         'amount' => $amount,
-                        'amount_original' => $amount_original,
+                        'amount_original' => $_amount,
                         'currency' => $_SESSION['currency'],
                         'currency_rate' => $rate,
                         'user' => $user->id,
@@ -134,11 +154,9 @@ namespace Goteo\Controller {
                         'invested' => date('Y-m-d'),
                         'anonymous' => $_POST['anonymous'],
                         'resign' => $resign,
-                        'pool' => $_POST['pool']
+                        'pool' => $to_pool
                     )
                 );
-
-                if ($debug) die(\trace($invest));
 
                 if ($reward) {
                     $invest->rewards = array($chosen);
@@ -161,6 +179,8 @@ namespace Goteo\Controller {
                     $invest->called = null;
                 }
 
+                if ($debug) die(\trace($invest));
+
                 if ($invest->save($errors)) {
                     // urls para paypal (necesita schema)
                     $URL = (\GOTEO_ENV != 'real')
@@ -169,6 +189,7 @@ namespace Goteo\Controller {
 
                     $invest->urlOK  = $URL."/invest/confirmed/{$project}/{$invest->id}";
                     $invest->urlNOK = $URL."/invest/fail/{$project}/{$invest->id}";
+
                     Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
 
                     switch($method) {
@@ -181,12 +202,36 @@ namespace Goteo\Controller {
                             }
                             break;
                         case 'paypal':
+
                             // Petición de preapproval y redirección a paypal
                             if (Paypal::preapproval($invest, $errors)) {
                                 die;
                             } else {
                                 Message::Error(Text::get('invest-paypal-error_fatal'));
                             }
+
+                            /*
+                            // si es un aporte a reservar se paga con expresscheckout (y pronto siempre así)
+                            if ($invest->pool) {
+                                // @TODO : expresscheckout
+                                // Petición de preapproval y redirección a paypal
+                                if (Paypal::preparePay($invest, $errors)) {
+                                    die;
+                                } else {
+                                    Message::Error(Text::get('invest-paypal-error_fatal'));
+                                }
+                            } else {
+
+                                // Petición de preapproval y redirección a paypal
+                                if (Paypal::preapproval($invest, $errors)) {
+                                    die;
+                                } else {
+                                    Message::Error(Text::get('invest-paypal-error_fatal'));
+                                }
+
+                            }
+                            */
+
                             break;
                         case 'cash':
                             // En betatest aceptamos cash para pruebas
@@ -232,6 +277,9 @@ namespace Goteo\Controller {
 
             // el aporte
             $invest = Model\Invest::get($id);
+
+            // si es expresscheckout hay que completarlo
+            // @TODO : expresscheckout
 
             $projectData = Model\Project::getMedium($invest->project);
 
@@ -356,7 +404,10 @@ namespace Goteo\Controller {
             $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
 
             // primero monto el texto de recompensas
-            // @FIXME : estas  4 plantillas tendrian que ser una sola, con textos dinamicos según si renuncia y primera/segunda ronda
+            // @FIXME : estas  4 plantillas tendrian que ser una sola, con textos dinamicos
+            //          según si renuncia y primera/segunda ronda
+            //
+            // @TODO : añadir un texto dinámico para cuando el aporte se va a reservar
             if ($invest->resign) {
                 // Plantilla de donativo segun la ronda
                 if ($projectData->round == 2) {

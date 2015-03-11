@@ -153,7 +153,9 @@ namespace Goteo\Library {
             // @TODO : express checkout
             // https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DGsetExpressCheckout.php
 
-    }
+            die('expresscheckout not yet implemented');
+
+        }
 
         /*
          *  Metodo para realizar un pago paypal con ExpressCheckout
@@ -163,6 +165,8 @@ namespace Goteo\Library {
 
             // @TODO : express checkout
             // https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DoExpressCheckout.php
+
+            die('expresscheckout not yet implemented');
 
         }
 
