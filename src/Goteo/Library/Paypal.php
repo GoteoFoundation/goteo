@@ -22,12 +22,17 @@ namespace Goteo\Library {
     use \PayPal\Types\Common as PPTypes;
 
 
+    // para emrchant-sdk-php
+    use \PayPal\EBLBaseComponents as PPComponents;
+    use \PayPal\CoreComponentTypes as PPCTypes;
+    use \PayPal\PayPalAPI as PPApi;
 
+    /*
+     * Clase para usar los adaptive payments de paypal
+     */
 
-	/*
-	 * Clase para usar los adaptive payments de paypal
-	 */
-    class Paypal {
+    class Paypal
+    {
 
         /**
          * @param object invest instancia del aporte: id, usuario, proyecto, cuenta, cantidad
@@ -37,100 +42,100 @@ namespace Goteo\Library {
          *
          * @TODO poner límite máximo de dias a lo que falte para los PRIMERA_RONDA/SEGUNDA_RONDA dias para evitar las cancelaciones
          */
-        public static function preapproval($invest, &$errors = array()) {
+        public static function preapproval($invest, &$errors = array())
+        {
 
-			try {
+            try {
                 $project = Project::getMini($invest->project);
 
-                    $returnURL = $invest->urlOK;
-                    $cancelURL = $invest->urlNOK;
+                $returnURL = $invest->urlOK;
+                $cancelURL = $invest->urlNOK;
 
-                    date_default_timezone_set('UTC');
-                    $currDate = getdate();
-                    $hoy = $currDate['year'].'-'.$currDate['mon'].'-'.$currDate['mday'];
-                    $startDate = strtotime($hoy);
-                    $startDate = date('Y-m-d', mktime(date('h',$startDate),date('i',$startDate),0,date('m',$startDate),date('d',$startDate),date('Y',$startDate)));
-                    $endDate = strtotime($hoy);
-                    $endDate = date('Y-m-d', mktime(0,0,0,date('m',$endDate)+5,date('d',$endDate),date('Y',$endDate)));
-                    // sí, pongo la fecha de caducidad de los preapprovals a 5 meses para tratar incidencias
-
-
-                    // más valores para el preapproval request
-                    $memo = "Aporte de {$invest->amount} EUR al proyecto: {$project->name}";
-                    $customerId = $invest->user->id;
-                    $totalAmount = $invest->amount;
-
-		           /* Make the call to PayPal to get the preapproval token
-		            If the API call succeded, then redirect the buyer to PayPal
-		            to begin to authorize payment.  If an error occured, show the
-		            resulting errors
-		            */
+                date_default_timezone_set('UTC');
+                $currDate = getdate();
+                $hoy = $currDate['year'] . '-' . $currDate['mon'] . '-' . $currDate['mday'];
+                $startDate = strtotime($hoy);
+                $startDate = date('Y-m-d', mktime(date('h', $startDate), date('i', $startDate), 0, date('m', $startDate), date('d', $startDate), date('Y', $startDate)));
+                $endDate = strtotime($hoy);
+                $endDate = date('Y-m-d', mktime(0, 0, 0, date('m', $endDate) + 5, date('d', $endDate), date('Y', $endDate)));
+                // sí, pongo la fecha de caducidad de los preapprovals a 5 meses para tratar incidencias
 
 
-		           $preapprovalRequest = new PPAdaptivePayments\PreapprovalRequest;
-                   $preapprovalRequest->memo = $memo;
-		           $preapprovalRequest->cancelUrl = $cancelURL;
-		           $preapprovalRequest->returnUrl = $returnURL;
-		           $preapprovalRequest->clientDetails = new PPTypes\ClientDetailsType;
-		           $preapprovalRequest->clientDetails->customerId = $customerId;
-		           $preapprovalRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
-		           $preapprovalRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
-		           $preapprovalRequest->clientDetails->ipAddress = $_SERVER['REMOTE_ADDR'];
-		           $preapprovalRequest->currencyCode = "EUR";
-		           $preapprovalRequest->startingDate = $startDate;
-		           $preapprovalRequest->endingDate = $endDate;
-		           $preapprovalRequest->maxNumberOfPayments = 1;
-		           $preapprovalRequest->displayMaxTotalAmount = true;
-		           $preapprovalRequest->feesPayer = 'EACHRECEIVER';
-		           $preapprovalRequest->maxTotalAmountOfAllPayments = $totalAmount;
-		           $preapprovalRequest->requestEnvelope = new PPTypes\RequestEnvelope;
-		           $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";
-
-		           $ap = new PPService\AdaptivePaymentsService;
-
-		           $response=$ap->Preapproval($preapprovalRequest);
-
-                // @todo : cambiar a catch Exception o return;
-                if(strtoupper($ap->isSuccess) == 'FAILURE') {
-
-                        Invest::setDetail($invest->id, 'paypal-conection-fail', 'Ha fallado la comunicacion con paypal al iniciar el preapproval. Proceso libary/paypal::preapproval');
-                       $errors[] = 'No se ha podido iniciar la comunicación con paypal para procesar la preaprovación del cargo. ' . $ap->getLastError();
-                        Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR en ' . __FUNCTION__ . ' ap->success = FAILURE.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal:'.__FUNCTION__);
-
-                        return false;
+                // más valores para el preapproval request
+                $memo = "Aporte de {$invest->amount} EUR al proyecto: {$project->name}";
+                $customerId = $invest->user->id;
+                $totalAmount = $invest->amount;
 
 
-					}
+                // @TODO : lo que use PP.... debería ir a \Library\Paypal\Handler.php
+                // llamada a \Library\Paypal\Handler::preapprovalRequest()
 
-                    // Guardar el codigo de preaproval en el registro de aporte y mandarlo a paypal
-                    $token = $response->preapprovalKey;
+                $preapprovalRequest = new PPAdaptivePayments\PreapprovalRequest;
+                $preapprovalRequest->memo = $memo;
+                $preapprovalRequest->cancelUrl = $cancelURL;
+                $preapprovalRequest->returnUrl = $returnURL;
+                $preapprovalRequest->clientDetails = new PPTypes\ClientDetailsType;
+                $preapprovalRequest->clientDetails->customerId = $customerId;
+                $preapprovalRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
+                $preapprovalRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
+                $preapprovalRequest->clientDetails->ipAddress = $_SERVER['REMOTE_ADDR'];
+                $preapprovalRequest->currencyCode = "EUR";
+                $preapprovalRequest->startingDate = $startDate;
+                $preapprovalRequest->endingDate = $endDate;
+                $preapprovalRequest->maxNumberOfPayments = 1;
+                $preapprovalRequest->displayMaxTotalAmount = true;
+                $preapprovalRequest->feesPayer = 'EACHRECEIVER';
+                $preapprovalRequest->maxTotalAmountOfAllPayments = $totalAmount;
+                $preapprovalRequest->requestEnvelope = new PPTypes\RequestEnvelope;
+                $preapprovalRequest->requestEnvelope->errorLanguage = "es_ES";
+
+                $ap = new PPService\AdaptivePaymentsService;
+
+                $response = $ap->Preapproval($preapprovalRequest);
+
+                ///  de aquí hacia arriba iria en un metodo del handler
+                ///  y obtendríamos de vuelta un result ('failure', 'token' , 'mal)
+                ///  y ya lo siguiente no usa nada del vendor PP.....
 
                 // @todo : cambiar a catch Exception o return;
-                    if (!empty($token)) {
+                if (strtoupper($ap->isSuccess) == 'FAILURE') {
+
+                    Invest::setDetail($invest->id, 'paypal-conection-fail', 'Ha fallado la comunicacion con paypal al iniciar el preapproval. Proceso libary/paypal::preapproval');
+                    $errors[] = 'No se ha podido iniciar la comunicación con paypal para procesar la preaprovación del cargo. ' . $ap->getLastError();
+                    Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR en ' . __FUNCTION__ . ' ap->success = FAILURE.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal:' . __FUNCTION__);
+
+                    return false;
 
 
-                        Invest::setDetail($invest->id, 'paypal-init', 'Se ha iniciado el preaproval y se redirije al usuario a paypal para aceptarlo. Proceso libary/paypal::preapproval');
-                        $invest->setPreapproval($token);
-                        $payPalURL = PAYPAL_REDIRECT_URL.'_ap-preapproval&preapprovalkey='.$token;
-                        throw new Redirection($payPalURL, Redirection::TEMPORARY);
-                        return true;
+                }
+
+                /// este token lo recibiríamos de vuelta para redirigir a la pasarela
+                $token = $response->preapprovalKey;
+
+                // @todo : cambiar a catch Exception o return;
+                if (!empty($token)) {
 
 
-
-                    } else {
-
-
-                        Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
-                        $errors[] = 'No preapproval key obtained. <pre>' . print_r($response, true) . '</pre>';
-                        Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR. No preapproval key obtained.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal:'.__FUNCTION__);
-
-                        return false;
+                    Invest::setDetail($invest->id, 'paypal-init', 'Se ha iniciado el preaproval y se redirije al usuario a paypal para aceptarlo. Proceso libary/paypal::preapproval');
+                    $invest->setPreapproval($token);
+                    $payPalURL = PAYPAL_REDIRECT_URL . '_ap-preapproval&preapprovalkey=' . $token;
+                    throw new Redirection($payPalURL, Redirection::TEMPORARY);
+                    return true;
 
 
-                    }
+                } else {
 
-			}
-			catch(Exception $ex) {
+
+                    Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
+                    $errors[] = 'No preapproval key obtained. <pre>' . print_r($response, true) . '</pre>';
+                    Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR. No preapproval key obtained.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal:' . __FUNCTION__);
+
+                    return false;
+
+
+                }
+
+            } catch (Exception $ex) {
 
                 Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
@@ -139,34 +144,191 @@ namespace Goteo\Library {
                 return false;
 
 
-			}
+            }
 
         }
 
 
         /*
          *  Metodo para preparar un pago paypal con ExpressCheckout
+         *  Básicamente es como preapproval pero con librerías de mérchant en vez de services
+         *
+         * prepare express checkout token
+         * https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DGsetExpressCheckout.php
          *
          */
-        public static function preparePay($invest, &$errors = array()) {
+        public static function preparePay($invest, &$errors = array())
+        {
 
-            // @TODO : express checkout
-            // https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DGsetExpressCheckout.php
+            try {
+                $project = Project::getMini($invest->project);
 
-            die('expresscheckout not yet implemented');
+                $returnURL = $invest->urlOK;
+                $cancelURL = $invest->urlNOK;
+
+                // más valores para el preapproval request
+                $memo = "Aporte de {$invest->amount} EUR al proyecto: {$project->name}";
+                $currencyCode = 'EUR';
+                $customerId = $invest->user->id;
+                $customerMail = $invest->user->email;
+
+
+                // @TODO : lo que use PP.... debería ir a \Library\Paypal\Handler.php
+                // llamada a \Library\Paypal\Handler::preparePay()
+
+
+                $paymentDetailsItem = new PPComponents\PaymentDetailsItemType;
+                $paymentDetailsItem->Name = $memo;
+                $paymentDetailsItem->Quantity = 1;
+                $paymentDetailsItem->Amount = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
+
+                $paymentDetails = new PPComponents\PaymentDetailsType;
+                $paymentDetails->PaymentDetailsItem = $paymentDetailsItem;
+                $paymentDetails->OrderTotal = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
+                $paymentDetails->ItemTotal = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
+                $paymentDetails->PaymentAction = 'Sale';
+
+                $setECReqDetails = new PPComponents\SetExpressCheckoutRequestDetailsType;
+                $setECReqDetails->Custom = $invest->id;
+                $setECReqDetails->OrderDescription = $memo;
+                $setECReqDetails->PaymentDetails[0] = $paymentDetails;
+                $setECReqDetails->ReturnURL = $returnURL;
+                $setECReqDetails->CancelURL = $cancelURL;
+                $setECReqDetails->PayerID = $customerId;
+                $setECReqDetails->BuyerEmail = $customerMail;
+
+                // Advanced options
+                $setECReqDetails->AllowNote = 0;
+                $setECReqDetails->NoShipping = 1;
+
+                $setECReqType = new PPApi\SetExpressCheckoutRequestType;
+                $setECReqType->SetExpressCheckoutRequestDetails = $setECReqDetails;
+                $setECReq = new PPApi\SetExpressCheckoutReq();
+                $setECReq->SetExpressCheckoutRequest = $setECReqType;
+
+                $paypalService = new PPService\PayPalAPIInterfaceServiceService;
+
+                $setECResponse = $paypalService->SetExpressCheckout($setECReq);
+
+                ///  de aquí hacia arriba iria en un metodo del handler
+                ///  y obtendríamos de vuelta un result ('failure', 'token' , 'mal)
+                ///  y ya lo siguiente no usa nada del vendor PP.....
+
+                if (!isset($setECResponse)) {
+                    Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al preparar el pago directo y no se redirije al usuario a paypal. Proceso libary/paypal::preparePay');
+                    $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                    Feed::logger('paypal-exception', 'invest', $invest->id, 'Ha fallado al preparar el pago directo y no se redirije al usuario a paypal.<br /><pre>'.print_r($setECReq, 1).'</pre>', '\Library\Paypal.php::'.__FUNCTION__);
+
+                    return false;
+                }
+
+                if (strtoupper($setECResponse->Ack) == 'FAILURE') {
+
+                    Invest::setDetail($invest->id, 'paypal-conection-fail', 'Ha fallado la comunicacion con paypal al preparar el pago directo. Proceso libary/paypal::preparePay');
+                    $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                    Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR en ' . __FUNCTION__ . ' setECResponse->Ack = FAILURE.<br /><pre>' . print_r($setECResponse, true) . '</pre><hr />La instancia de peticion es:<br /><pre>' . print_r($setECReq, true) . '</pre>', '\Library\Paypal:' . __FUNCTION__);
+
+                    return false;
+
+
+                }
+
+                /// este token lo recibiríamos de vuelta para redirigir a la pasarela
+                $token = $setECResponse->Token;
+
+                if (!empty($token)) {
+
+                    Invest::setDetail($invest->id, 'paypal-init', 'Se ha preparado el pago directo y se redirije al usuario a paypal para completarlo. Proceso libary/paypal::preparePay');
+                    $invest->setTransaction($token);
+                    $payPalURL = \PAYPAL_REDIRECT_URL.'_express-checkout&token=' . $token;
+                    throw new Redirection($payPalURL, Redirection::TEMPORARY);
+                    return true;
+
+
+                } else {
+
+
+                    Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al preparar el pago directo y no se redirije al usuario a paypal. Proceso libary/paypal::preparePay');
+                    $errors[] = 'No payment token obtained.';
+                    Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR. No payment token obtained.<br /><pre>' . print_r($setECResponse, true) . '</pre>', '\Library\Paypal:' . __FUNCTION__);
+
+                    return false;
+
+
+                }
+
+            } catch (Exception $ex) {
+
+                Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al preparar el pago directo y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
+                $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php::' . __FUNCTION__);
+
+                return false;
+
+
+            }
 
         }
 
         /*
-         *  Metodo para realizar un pago paypal con ExpressCheckout
+         *  Metodo para verificar un pago paypal con ExpressCheckout
          *
+         * https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DoExpressCheckout.php
          */
-        public static function pay($invest, &$errors = array()) {
+        public static function completePay($invest, &$errors = array())
+        {
 
-            // @TODO : express checkout
-            // https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DoExpressCheckout.php
+            try {
+                $currencyCode = "EUR";
+                $paymentDetails = new PPComponents\PaymentDetailsType;
+                $paymentDetails->OrderTotal = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
+                $paymentDetails->NotifyURL = 'http://goteo.org/tpv/simulacrum'; // esto me mandara el POST/GET al mail, aunque mejor sería un endpoint tipo Notify o IPN
 
-            die('expresscheckout not yet implemented');
+                $DoECRequestDetails = new PPComponents\DoExpressCheckoutPaymentRequestDetailsType;
+                $DoECRequestDetails->PayerID = $invest->account;
+                $DoECRequestDetails->Token = $invest->transaction;
+                $DoECRequestDetails->PaymentAction = 'Sale';
+                $DoECRequestDetails->PaymentDetails[0] = $paymentDetails;
+
+                $DoECRequest = new PPApi\DoExpressCheckoutPaymentRequestType;
+                $DoECRequest->DoExpressCheckoutPaymentRequestDetails = $DoECRequestDetails;
+
+
+                $DoECReq = new PPApi\DoExpressCheckoutPaymentReq;
+                $DoECReq->DoExpressCheckoutPaymentRequest = $DoECRequest;
+
+                $paypalService = new PPApi\PayPalAPIInterfaceServiceService;
+                $DoECResponse = $paypalService->DoExpressCheckoutPayment($DoECReq);
+
+                if ($DoECResponse->Ack == 'Success') {
+                    // transaction
+                    $transactionId = $DoECResponse->DoExpressCheckoutPaymentResponseDetails->PaymentInfo[0]->TransactionID;
+                    $invest->setPayment($transactionId);
+                    $invest->setStatus(1);
+                    Invest::setDetail($invest->id, 'paypal-pay-completed', 'Ha completado el proceso, clave de pago: '.$transactionId.', estado Cobrado.');
+
+                    return true;
+                } else {
+                    $invest->setStatus(0);
+                    Invest::setIssue($invest->id);
+                    Invest::setDetail($invest->id, 'paypal-completepay-exception', 'Ha fallado al completar el pago directo al volver de paypal. Proceso libary/paypal::completePay');
+                    $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                    Feed::logger('paypal-exception', 'invest', $invest->id, 'Ha fallado al completar el pago directo al volver de paypal.<br /> No payment key obtained.<br /><pre>' . print_r($DoECResponse, 1) . '</pre>', '\Library\Paypal.php::' . __FUNCTION__);
+
+                    return false;
+                }
+
+            }
+            catch (Exception $ex) {
+                $invest->setStatus(0);
+                Invest::setIssue($invest->id);
+                Invest::setDetail($invest->id, 'paypal-completepay-exception', 'Ha fallado al completar el pago directo al volver de paypal. Proceso libary/paypal::completePay');
+                $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
+                Feed::logger('paypal-exception', 'invest', $invest->id, 'Ha fallado al completar el pago directo al volver de paypal.<br />'.$ex->getMessage(), '\Library\Paypal.php::' . __FUNCTION__);
+
+
+                return false;
+            }
 
         }
 
@@ -177,7 +339,8 @@ namespace Goteo\Library {
          * Es un pago encadenado, la comision del 8% a Goteo y el resto al proyecto
          *
          */
-        public static function execute($invest, &$errors = array()) {
+        public static function execute($invest, &$errors = array())
+        {
 
             if ($invest->status == 1) {
                 $errors[] = 'Este aporte ya está cobrado!';
@@ -194,20 +357,21 @@ namespace Goteo\Library {
                 $amountPay = $invest->amount - ($invest->amount * 0.08);
 
 
-                /// @TODO : pasar a src/Goteo/Library/paypal.php como wraper para vendor/paypal
+                // @TODO : lo que use PP.... debería ir a \Library\Paypal\Handler.php
+                // llamada a \Library\Paypal\Handler::executeRequest()
 
                 // Create request object
                 $payRequest = new PPAdaptivePayments\PayRequest;
                 $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR del usuario '{$userData->name}' al proyecto '{$project->name}'";
-                $payRequest->cancelUrl = SEC_URL.'/invest/charge/fail/' . $invest->id;
-                $payRequest->returnUrl = SEC_URL.'/invest/charge/success/' . $invest->id;
+                $payRequest->cancelUrl = SEC_URL . '/invest/charge/fail/' . $invest->id;
+                $payRequest->returnUrl = SEC_URL . '/invest/charge/success/' . $invest->id;
                 $payRequest->clientDetails = new PPTypes\ClientDetailsType;
-		        $payRequest->clientDetails->customerId = $invest->user;
+                $payRequest->clientDetails->customerId = $invest->user;
                 $payRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
                 $payRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
                 $payRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
                 $payRequest->currencyCode = 'EUR';
-           		$payRequest->preapprovalKey = $invest->preapproval;
+                $payRequest->preapprovalKey = $invest->preapproval;
                 $payRequest->actionType = 'PAY_PRIMARY';
                 $payRequest->feesPayer = 'EACHRECEIVER';
                 $payRequest->reverseAllParallelPaymentsOnError = true;
@@ -237,13 +401,16 @@ namespace Goteo\Library {
                 // invoke business method on service wrapper passing in appropriate request params
                 $response = $ap->Pay($payRequest);
 
-                // Check response
-                // @todo : cambiar a catch Exception o return;
+                ///  de aquí hacia arriba iria en un metodo del handler
+                ///  y obtendríamos de vuelta un result ('failure', 'token' , 'mal)
+                ///  y ya lo siguiente no usa nada del vendor PP.....
 
-                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                // Check response
+
+                if (strtoupper($ap->isSuccess) == 'FAILURE') {
                     $error_txt = '';
-                    $soapFault = $ap->getLastError();
-                    if(is_array($soapFault->error)) {
+                    $soapFault = $ap->getLastError(); // esto debería venir del Handler
+                    if (is_array($soapFault->error)) {
                         $errorId = $soapFault->error[0]->errorId;
                         $errorMsg = $soapFault->error[0]->message;
                     } else {
@@ -268,11 +435,11 @@ namespace Goteo\Library {
                                 $log->populate('Aporte cancelado por preaproval cancelado por el usuario paypal', '/admin/accounts',
                                     \vsprintf('Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado', array(
                                         Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('money', $invest->amount . ' &euro;'),
                                         Feed::item('system', $invest->id),
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                                )));
+                                    )));
                                 $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
@@ -280,123 +447,123 @@ namespace Goteo\Library {
                             }
                             break;
                         case '569042': // cuenta del proyecto no confirmada en paypal
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($project->id);
-                                $log->populate('Cuenta del proyecto no confirmada en PayPal', '/admin/accounts',
-                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta del proyecto <span class="red">no está confirmada</span> en PayPal', array(
-                                        Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
-                                        Feed::item('system', $invest->id),
-                                        Feed::item('project', $project->name, $project->id),
-                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->setTarget($project->id);
+                            $log->populate('Cuenta del proyecto no confirmada en PayPal', '/admin/accounts',
+                                \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta del proyecto <span class="red">no está confirmada</span> en PayPal', array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount . ' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin('system');
-                                $error_txt = $log->title;
-                                unset($log);
+                            $log->doAdmin('system');
+                            $error_txt = $log->title;
+                            unset($log);
 
                             break;
                         case '580022': // uno de los mails enviados no es valido
                         case '589039': // el mail del preaproval no está registrada en paypal
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($project->id);
-                                $log->populate('El mail del preaproval no esta registrado en PayPal', '/admin/accounts',
-                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque el mail del preaproval <span class="red">no está registrado</span> en PayPal', array(
-                                        Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
-                                        Feed::item('system', $invest->id),
-                                        Feed::item('project', $project->name, $project->id),
-                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->setTarget($project->id);
+                            $log->populate('El mail del preaproval no esta registrado en PayPal', '/admin/accounts',
+                                \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque el mail del preaproval <span class="red">no está registrado</span> en PayPal', array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount . ' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin('system');
-                                $error_txt = $log->title;
-                                unset($log);
+                            $log->doAdmin('system');
+                            $error_txt = $log->title;
+                            unset($log);
 
                             break;
                         case '520009': // la cuenta esta restringida por paypal
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($project->id);
-                                $log->populate('La cuenta esta restringida por PayPal', '/admin/accounts',
-                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta <span class="red">está restringida</span> por PayPal', array(
-                                        Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
-                                        Feed::item('system', $invest->id),
-                                        Feed::item('project', $project->name, $project->id),
-                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->setTarget($project->id);
+                            $log->populate('La cuenta esta restringida por PayPal', '/admin/accounts',
+                                \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta <span class="red">está restringida</span> por PayPal', array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount . ' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin('system');
-                                $error_txt = $log->title;
-                                unset($log);
+                            $log->doAdmin('system');
+                            $error_txt = $log->title;
+                            unset($log);
 
                             break;
                         case '579033': // misma cuenta que el proyecto
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($project->id);
-                                $log->populate('Se ha usado la misma cuenta que del proyecto', '/admin/accounts',
-                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta <span class="red">es la misma</span> que la del proyecto', array(
-                                        Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
-                                        Feed::item('system', $invest->id),
-                                        Feed::item('project', $project->name, $project->id),
-                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->setTarget($project->id);
+                            $log->populate('Se ha usado la misma cuenta que del proyecto', '/admin/accounts',
+                                \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque la cuenta <span class="red">es la misma</span> que la del proyecto', array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount . ' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin('system');
-                                $error_txt = $log->title;
-                                unset($log);
+                            $log->doAdmin('system');
+                            $error_txt = $log->title;
+                            unset($log);
 
                             break;
                         case '579024': // fuera de fechas
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($project->id);
-                                $log->populate('Está fuera del rango de fechas', '/admin/accounts',
-                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque estamos <span class="red">fuera del rango de fechas</span> del preapproval', array(
-                                        Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
-                                        Feed::item('system', $invest->id),
-                                        Feed::item('project', $project->name, $project->id),
-                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->setTarget($project->id);
+                            $log->populate('Está fuera del rango de fechas', '/admin/accounts',
+                                \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque estamos <span class="red">fuera del rango de fechas</span> del preapproval', array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount . ' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin('system');
-                                $error_txt = $log->title;
-                                unset($log);
+                            $log->doAdmin('system');
+                            $error_txt = $log->title;
+                            unset($log);
 
                             break;
                         case '579031': // The total amount of all payments exceeds the maximum total amount for all payments
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($project->id);
-                                $log->populate('Problema con los importes', '/admin/accounts',
-                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque ha habido <span class="red">algun problema con los importes</span>', array(
-                                        Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
-                                        Feed::item('system', $invest->id),
-                                        Feed::item('project', $project->name, $project->id),
-                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->setTarget($project->id);
+                            $log->populate('Problema con los importes', '/admin/accounts',
+                                \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque ha habido <span class="red">algun problema con los importes</span>', array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount . ' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin('system');
-                                $error_txt = $log->title;
-                                unset($log);
+                            $log->doAdmin('system');
+                            $error_txt = $log->title;
+                            unset($log);
 
                             break;
                         case '520002': // Internal error
-                                // Evento Feed
-                                $log = new Feed();
-                                $log->setTarget($project->id);
-                                $log->populate('Error interno de PayPal', '/admin/accounts',
-                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque ha habido <span class="red">un error interno en PayPal</span>', array(
-                                        Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
-                                        Feed::item('system', $invest->id),
-                                        Feed::item('project', $project->name, $project->id),
-                                        Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                            // Evento Feed
+                            $log = new Feed();
+                            $log->setTarget($project->id);
+                            $log->populate('Error interno de PayPal', '/admin/accounts',
+                                \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s porque ha habido <span class="red">un error interno en PayPal</span>', array(
+                                    Feed::item('user', $userData->name, $userData->id),
+                                    Feed::item('money', $invest->amount . ' &euro;'),
+                                    Feed::item('system', $invest->id),
+                                    Feed::item('project', $project->name, $project->id),
+                                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
                                 )));
-                                $log->doAdmin('system');
-                                $error_txt = $log->title;
-                                unset($log);
+                            $log->doAdmin('system');
+                            $error_txt = $log->title;
+                            unset($log);
 
                             break;
                         default:
@@ -408,11 +575,11 @@ namespace Goteo\Library {
                                 $log->populate('Error interno de PayPal', '/admin/accounts',
                                     \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s <span class="red">NO es soapFault pero no es Success</span>, se ha reportado el error.', array(
                                         Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('money', $invest->amount . ' &euro;'),
                                         Feed::item('system', $invest->id),
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                                )));
+                                    )));
                                 $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
@@ -420,13 +587,13 @@ namespace Goteo\Library {
                                 $log = new Feed();
                                 $log->setTarget($project->id);
                                 $log->populate('Error interno de PayPal', '/admin/accounts',
-                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s <span class="red">Payment '.$errorMsg.' ['.$errorId.']</span>', array(
+                                    \vsprintf('Ha <span class="red">fallado al ejecutar</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s <span class="red">Payment ' . $errorMsg . ' [' . $errorId . ']</span>', array(
                                         Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('money', $invest->amount . ' &euro;'),
                                         Feed::item('system', $invest->id),
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                                )));
+                                    )));
                                 $log->doAdmin('system');
                                 $error_txt = $log->title;
                                 unset($log);
@@ -480,12 +647,11 @@ namespace Goteo\Library {
 
                 }
 
-            }
-            catch (Exception $ex) {
+            } catch (Exception $ex) {
 
                 Invest::setIssue($invest->id);
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:'.__FUNCTION__);
+                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
 
                 return false;
             }
@@ -497,11 +663,17 @@ namespace Goteo\Library {
          *  Metodo para ejecutar pago secundario (desde cron/dopay)
          * Recibe parametro del aporte (id, cuenta, cantidad)
          */
-        public static function doPay($invest, &$errors = array()) {
+        public static function doPay($invest, &$errors = array())
+        {
 
             try {
                 $project = Project::getMini($invest->project);
                 $userData = User::getMini($invest->user);
+
+
+                // @TODO : lo que use PP.... debería ir a \Library\Paypal\Handler.php
+                // llamada a \Library\Paypal\Handler::secondaryPaymentRequest()
+
 
                 // Create request object
                 $payRequest = new PPAdaptivePayments\ExecutePaymentRequest;
@@ -514,10 +686,12 @@ namespace Goteo\Library {
                 // invoke business method on service wrapper passing in appropriate request params
                 $response = $ap->ExecutePayment($payRequest);
 
+                /// y luego ya nada mas de vendor paypal aquí
+
                 // Check response
-                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                if (strtoupper($ap->isSuccess) == 'FAILURE') {
                     $soapFault = $ap->getLastError();
-                    if(is_array($soapFault->error)) {
+                    if (is_array($soapFault->error)) {
                         $errorId = $soapFault->error[0]->errorId;
                         $errorMsg = $soapFault->error[0]->message;
                     } else {
@@ -542,11 +716,11 @@ namespace Goteo\Library {
                                 $log->populate('Aporte cancelado por preaproval cancelado por el usuario paypal', '/admin/invests',
                                     \vsprintf('Se ha <span class="red">Cancelado</span> el aporte de %s de %s (id: %s) al proyecto %s del dia %s por preapproval cancelado', array(
                                         Feed::item('user', $userData->name, $userData->id),
-                                        Feed::item('money', $invest->amount.' &euro;'),
+                                        Feed::item('money', $invest->amount . ' &euro;'),
                                         Feed::item('system', $invest->id),
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-                                )));
+                                    )));
                                 $log->doAdmin('system');
                                 unset($log);
 
@@ -557,7 +731,7 @@ namespace Goteo\Library {
 
                     if (empty($errorId)) {
                         $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, true) . '</pre>';
-                        Feed::logger('paypal-exception', 'invest', $invest->id, ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, true) . '</pre>', '\Library\Paypal::'.__FUNCTION__);
+                        Feed::logger('paypal-exception', 'invest', $invest->id, ' No es un soap fault pero no es un success.<br /><pre>' . print_r($ap, true) . '</pre>', '\Library\Paypal::' . __FUNCTION__);
 
                     } else {
                         $errors[] = "$action $errorMsg [$errorId]";
@@ -572,22 +746,21 @@ namespace Goteo\Library {
                         return true;
                     } else {
                         $errors[] = "Obtenido estatus de ejecución {$response->paymentExecStatus} pero no se ha actualizado el registro de aporte id {$invest->id}.";
-                        Feed::logger('paypal-error', 'invest', $invest->id, 'Obtenido estatus de ejecución '.$response->paymentExecStatus.' pero no se ha actualizado el registro de aporte<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal::'.__FUNCTION__);
+                        Feed::logger('paypal-error', 'invest', $invest->id, 'Obtenido estatus de ejecución ' . $response->paymentExecStatus . ' pero no se ha actualizado el registro de aporte<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal::' . __FUNCTION__);
 
                         return false;
                     }
                 } else {
                     $errors[] = 'No se ha completado el pago encadenado, no se ha pagado al proyecto.';
-                    Feed::logger('paypal-error', 'invest', $invest->id, 'Obtenido estatus de ejecución '.$response->paymentExecStatus.'. No payment exec status completed.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal::'.__FUNCTION__);
+                    Feed::logger('paypal-error', 'invest', $invest->id, 'Obtenido estatus de ejecución ' . $response->paymentExecStatus . '. No payment exec status completed.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal::' . __FUNCTION__);
 
                     return false;
                 }
 
-            }
-            catch (Exception $ex) {
+            } catch (Exception $ex) {
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:'.__FUNCTION__);
+                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
 
                 return false;
             }
@@ -598,8 +771,12 @@ namespace Goteo\Library {
         /*
          * Llamada a paypal para obtener los detalles de un preapproval
          */
-        public static function preapprovalDetails ($key, &$errors = array()) {
+        public static function preapprovalDetails($key, &$errors = array())
+        {
             try {
+
+                // llamada metodo handler
+
                 $PDRequest = new PPAdaptivePayments\PreapprovalDetailsRequest;
 
                 $PDRequest->requestEnvelope = new PPTypes\RequestEnvelope;
@@ -609,17 +786,18 @@ namespace Goteo\Library {
                 $ap = new PPService\AdaptivePaymentsService;
                 $response = $ap->PreapprovalDetails($PDRequest);
 
-                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                // y nada de vendor aqui
+
+                if (strtoupper($ap->isSuccess) == 'FAILURE') {
                     $errors[] = 'No preapproval details obtained. <pre>' . print_r($ap->getLastError(), true) . '</pre>';
                     return false;
                 } else {
                     return $response;
                 }
-            }
-            catch(Exception $ex) {
+            } catch (Exception $ex) {
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:'.__FUNCTION__);
+                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
 
                 return false;
             }
@@ -628,8 +806,12 @@ namespace Goteo\Library {
         /*
          * Llamada a paypal para obtener los detalles de un cargo
          */
-        public static function paymentDetails ($key, &$errors = array()) {
+        public static function paymentDetails($key, &$errors = array())
+        {
             try {
+
+                // llamada metodo handler
+
                 $pdRequest = new PPAdaptivePayments\PaymentDetailsRequest;
                 $pdRequest->payKey = $key;
                 $rEnvelope = new PPTypes\RequestEnvelope;
@@ -637,19 +819,20 @@ namespace Goteo\Library {
                 $pdRequest->requestEnvelope = $rEnvelope;
 
                 $ap = new PPService\AdaptivePaymentsService;
-                $response=$ap->PaymentDetails($pdRequest);
+                $response = $ap->PaymentDetails($pdRequest);
 
-                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                // y nada de vendor aqui
+
+                if (strtoupper($ap->isSuccess) == 'FAILURE') {
                     $errors[] = 'No payment details obtained. <pre>' . print_r($ap->getLastError(), true) . '</pre>';
                     return false;
                 } else {
                     return $response;
                 }
-            }
-            catch(Exception $ex) {
+            } catch (Exception $ex) {
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                Feed::logger('paypal-exception', 'invest.payment', $key, $ex->getMessage(), '\Library\Paypal.php:'.__FUNCTION__);
+                Feed::logger('paypal-exception', 'invest.payment', $key, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
 
                 return false;
             }
@@ -660,12 +843,15 @@ namespace Goteo\Library {
          * Llamada para cancelar un preapproval (si llega a los PRIMERA_RONDA sin conseguir el mínimo)
          * recibe la instancia del aporte
          */
-        public static function cancelPreapproval ($invest, &$errors = array(), $fail = false) {
+        public static function cancelPreapproval($invest, &$errors = array(), $fail = false)
+        {
             try {
                 if (empty($invest->preapproval)) {
                     $invest->cancel($fail);
                     return true;
                 }
+
+                // llamada metodo handler
 
                 $CPRequest = new PPAdaptivePayments\CancelPreapprovalRequest;
 
@@ -677,7 +863,9 @@ namespace Goteo\Library {
                 $response = $ap->CancelPreapproval($CPRequest);
 
 
-                if(strtoupper($ap->isSuccess) == 'FAILURE') {
+                // y nada de vendor aqui
+
+                if (strtoupper($ap->isSuccess) == 'FAILURE') {
                     Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el preapproval. Proceso libary/paypal::cancelPreapproval');
                     $errors[] = 'Preapproval cancel failed.' . $ap->getLastError();
                     Feed::logger('paypal-error', 'invest', $invest->id, implode('<br />', $errors), 'libary/paypal::cancelPreapproval');
@@ -688,20 +876,18 @@ namespace Goteo\Library {
                     $invest->cancel($fail);
                     return true;
                 }
-            }
-            catch(Exception $ex) {
+            } catch (Exception $ex) {
 
 
                 Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el preapproval. Proceso libary/paypal::cancelPreapproval');
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
-                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:'.__FUNCTION__);
+                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
 
                 return false;
             }
         }
 
 
-
-	}
+    }
 
 }

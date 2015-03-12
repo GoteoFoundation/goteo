@@ -22,7 +22,7 @@ namespace Goteo\Model {
             $currency_rate, // ratio de conversión a euros en el momento de hacer el aporte
             $preapproval, //clave del preapproval
             $payment, //clave del cargo
-            $transaction, // id de la transacción
+            $transaction, // id de la transacción / token expresscheckout
             $method, // metodo de pago paypal/tpv/cash/drop/pool (ver Invest::methods() )
             $status, //estado en el que se encuentra esta aportación:
                     // -1 en proceso, 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
