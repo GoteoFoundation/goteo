@@ -1,16 +1,20 @@
 <?php
+namespace Goteo\Library\Tpv {
 /****************************************************
-wshandler.php
+handler.php
 
 This file contains methods to make calls to Ceca "webservice"
 
 Called by /library/tpv.php
 
+ *
+ * @TODO
+ *   los nombres de métodos deberían estar definidos en una interfaz
+ *
+ *
 ****************************************************/
-require_once __DIR__ . '/../../../../../../src/Goteo/Library/paypal/stub.php'; // sí, uso el stub de paypal
-require_once __DIR__ . '/../../../../../../src/Goteo/Library/paypal/log.php'; // sí, uso el log de paypal
 
-class WSHandler {
+class Handler {
 
 	/*
 	 * public variables
@@ -196,4 +200,6 @@ function tpvcall($data, $endpoint)
       }
 
     return $response;
+}
+
 }

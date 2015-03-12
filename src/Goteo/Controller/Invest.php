@@ -179,7 +179,7 @@ namespace Goteo\Controller {
                     $invest->called = null;
                 }
 
-                if ($debug) die(\trace($invest));
+//                if ($debug) die(\trace($invest));
 
                 if ($invest->save($errors)) {
                     // urls para paypal (necesita schema)
@@ -203,18 +203,10 @@ namespace Goteo\Controller {
                             break;
                         case 'paypal':
 
-                            // Petición de preapproval y redirección a paypal
-                            if (Paypal::preapproval($invest, $errors)) {
-                                die;
-                            } else {
-                                Message::Error(Text::get('invest-paypal-error_fatal'));
-                            }
-
-                            /*
                             // si es un aporte a reservar se paga con expresscheckout (y pronto siempre así)
                             if ($invest->pool) {
-                                // @TODO : expresscheckout
-                                // Petición de preapproval y redirección a paypal
+                                // expresscheckout
+                                // Petición de token y redirección a paypal
                                 if (Paypal::preparePay($invest, $errors)) {
                                     die;
                                 } else {
@@ -230,7 +222,6 @@ namespace Goteo\Controller {
                                 }
 
                             }
-                            */
 
                             break;
                         case 'cash':
@@ -278,9 +269,6 @@ namespace Goteo\Controller {
             // el aporte
             $invest = Model\Invest::get($id);
 
-            // si es expresscheckout hay que completarlo
-            // @TODO : expresscheckout
-
             $projectData = Model\Project::getMedium($invest->project);
 
             // si es de Bazar, a /bazar/id-reward/thanks
@@ -327,8 +315,34 @@ namespace Goteo\Controller {
             // Paypal solo disponible si activado
             if ($invest->method == 'paypal') {
 
-                // hay que cambiarle el status a 0
-                $invest->setStatus('0');
+                if (!empty($invest->preapproval)) {
+
+                    // si es preapproval hay que cambiarle el status a 0 (preapprovado)
+                    $invest->setStatus('0');
+
+                } elseif (isset($_GET['token']) && $_GET['token'] == $invest->transaction) {
+
+                    // retorno valido
+                    $token = $_GET['token'];
+                    $payerid = $_GET['PayerID'];
+                    Model\Invest::setDetail($invest->id, 'paypal-completed', 'El usuario ha regresado de PayPal y recibimos el token: '.$token.'  y el PayerID '.$payerid.'.');
+
+                    $invest->setAccount($payerid);
+                    $invest->account = $payerid;
+
+                    // completamos con el DoEsxpresscheckout despues de comprobar que está completado y cobrado
+                    if (Paypal::completePay($invest, $errors)) {
+                        $invest->setPayment($invest->transaction);
+                    } else {
+                        Model\Invest::setDetail($invest->id, 'paypal-completion-error', 'El usuario ha regresado de PayPal y recibimos el token: '.$token.'  y el PayerID '.$payerid.'. Pero completePay ha fallado. <pre>'.print_r($invest ,1).'</pre>');
+                        throw new Redirection("/project/$project/invest/?confirm=fail");
+                    }
+
+                } else {
+                    Model\Invest::setDetail($invest->id, 'paypal-return-error', 'El usuario ha regresado de un aporte de PayPal pero no tiene ni preapproval ni token. <pre>'.print_r($invest ,1).'</pre>');
+                    throw new Redirection("/project/$project/invest/?confirm=fail");
+                }
+
 
                 // Evento Feed
                 $log = new Feed();
