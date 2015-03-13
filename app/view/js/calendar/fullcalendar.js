@@ -42,7 +42,7 @@ var defaults = {
 	//editable: false,
 	
 	// event ajax
-	lazyFetching: true,
+	lazyFetching: false,
 	startParam: 'start',
 	endParam: 'end',
 	timezoneParam: 'timezone',
@@ -3399,7 +3399,7 @@ Grid.mixin({
 					else if (view.isEventDraggable(seg.event)) {
 						_this.segDragMousedown(seg, ev);
 					}
-				}
+				},
 			},
 			function(name, func) {
 				// attach the handler to the container element and only listen for real event elements via bubbling
@@ -3897,6 +3897,8 @@ Grid.mixin({
 		var ranges = [];
 		var i, event;
 		var eventStart, eventEnd;
+		var _this = this;
+		var view = this.view;
 
 		for (i = 0; i < events.length; i++) {
 			event = events[i];
@@ -3912,6 +3914,45 @@ Grid.mixin({
 				eventStartMS: +eventStart,
 				eventDurationMS: eventEnd - eventStart
 			});
+
+
+			if(event.open)
+			{
+			  $("#read-more").css( "display", "block" );
+
+              $("#event-description-text").html(event.description);
+
+              $("#event-title").html(event.title.toUpperCase());
+              
+              var event_date=moment(new Date(event.start)).format("DD | MM | YYYY");
+              var event_start=moment(new Date(event.start)).format("HH:mm");
+              var event_end=moment(new Date(event.end)).format("HH:mm");
+    
+              $("#event-date").html(event_date);
+              $("#event-location").html(event.location.substr(0,65));
+              $("#event-hour").html(event_start+" - "+event_end);
+              $("#event-category").html(event.category);
+
+              $("#event-category").removeClass();
+              $("#category-info").removeClass();
+              $("#event-description-img").removeClass();
+
+              if(!$('#event-category').is(':empty'))
+              {
+                $("#event-category").addClass("category-background");
+                $("#category-info").addClass("category-info");
+                $("#event-description-img").addClass("event-description-img "+event.category.substr(0,1).toLowerCase());
+              }
+              else
+                $("#category-info").addClass("nodisplay");
+
+              $("#category-letter").html(event.category.substr(0,1));
+              $("#category-letter").removeClass();
+              $("#category-letter").addClass("category-legend "+ event.category.substr(0,1).toLowerCase());
+
+              $("#event-facebook").attr("href", "http://facebook.com/sharer.php?u="+event.url);
+              $("#event-twitter").attr("href", "http://twitter.com/home?status="+event.url);
+			}
 		}
 
 		return ranges;
@@ -4676,7 +4717,7 @@ DayGrid.mixin({
 		
 		return '<a class="' + classes.join(' ') + '"' +
 				(event.url ?
-					' href="' + htmlEscape(event.url.substr(0,5)) + '"' :
+					' href="#' + event.id + '"' :
 					''
 					) +
 				(skinCss ?
@@ -5864,7 +5905,7 @@ TimeGrid.mixin({
 
 		return '<a class="' + classes.join(' ') + '"' +
 			(event.url ?
-				' href="' + htmlEscape(event.url) + '"' :
+				' href="#' + event.id + '"' :
 				''
 				) +
 			(skinCss ?

@@ -124,14 +124,15 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
 		googleCalendarId: null, // prevents source-normalizing from happening again
 		url: url,
 		data: data,
-		startParam: false, // `false` omits this parameter. we already included it above
-		endParam: false, // same
+		startParam: true, // `false` omits this parameter. we already included it above
+		endParam: true, // same
 		timezoneParam: false, // same
 		success: function(data) {
 			var events = [];
 			var successArgs;
 			var successRes;
 			var event_category="";
+			var open=0;
 
 			if (data.error) {
 				reportError('Google Calendar API: ' + data.error.message, data.error.errors);
@@ -174,6 +175,13 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
    					entry.summary=entry.summary.replace('#red','');
 					}
 
+					url_hash=window.location.hash.substr(1);
+
+					if (entry.id==url_hash)
+					{
+						open=1;
+					}
+
 					events.push({
 						id: entry.id,
 						title: entry.summary,
@@ -182,10 +190,12 @@ function transformOptions(sourceOptions, start, end, timezone, calendar) {
 						end: entry.end.dateTime || entry.end.date || "?", // same
 						url: url,
 						location: entry.location || "Sin determinar",
-						description: entry.description
+						description: entry.description,
+						open: open
 					});
 
 					event_category="";
+					open=0;
 				});
 
 				// call the success handler(s) and allow it to return a new events array

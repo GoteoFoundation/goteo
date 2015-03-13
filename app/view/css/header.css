@@ -276,9 +276,12 @@ div#sub-header > div > div.mod-pojctopen{
 }
 
 div#sub-header.banners > div > div.mod-pojctopen{
-	margin-right: 32px;
-	margin-top: 16px;
 	margin-left: 0;
+    margin-top:0; 
+    width:235px; 
+    margin-right:0px; 
+    position:relative;
+    display: none;
 }
 
 div#sub-header > div > div.mod-pojctopen > .modpo-open{
@@ -935,3 +938,89 @@ body.project-show div#sub-header div.nodemark a img {
     margin: 0 !important;
 }
 /* fin sello nodo */
+
+/*Calendar en home*/
+div#sub-header.banners > div > div.mod-pojctopen a.expand{
+    position: absolute; 
+    top: 0px; 
+    bottom: 0px;
+    display: block;
+    width: 100%;
+    left: 0px;
+    right: 0px; 
+    z-index: 100;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.main-calendar{
+    float:left; 
+    background-color:#9865ac; 
+    color:#FFFFFF; 
+    width:45%;
+    height:136px; 
+    margin: 10px 0; 
+    border-radius:5px;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.next-event{
+    height:15px; 
+    padding-top:9px; 
+    text-align:center;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.inside{
+    height:102px;
+    background-color:#FFFFFF; 
+    color:#9865ac; 
+    margin:5px; 
+    border-radius:5px; 
+    text-align:center;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.inside div.event-month{
+    padding-top:5px;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.inside div.event-day{
+    font-size:35px; 
+    padding-top:4px;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.inside div.event-text-day{
+    padding-top:3px;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.extra-calendar{
+    float:left;
+    color:#9865ac; 
+    font-size:10px; 
+    text-align:center; 
+    background-color:#FFFFFF; 
+    width:55%; 
+    height:136px; 
+    margin: 10px 0;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.extra-calendar div.event-category{
+
+    padding-top: 13px; 
+    border-bottom: 1px solid #9865AC; 
+    width: 80%; 
+    text-align: center; 
+    margin: 0 15px; 
+    padding-bottom: 3px;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.extra-calendar div.event-title{
+    padding:10px; 
+    height:60px;
+}
+
+div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-interval{
+    font-size:10px;
+    padding-top: 3px;
+}
+
+
+
+
+
