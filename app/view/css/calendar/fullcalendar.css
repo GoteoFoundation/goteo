@@ -1137,5 +1137,17 @@ ul.event-category li{
 	margin-bottom:5px;
 }
 
+#loading {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#calendar {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 
 
