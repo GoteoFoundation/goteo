@@ -20,8 +20,8 @@ $(document).ready(function() {
                 var event_month=moment(new Date(item_start)).format("MMMM");
                 var event_day=moment(new Date(item_start)).format("D");
                 var event_text_day=moment(new Date(item_start)).format("dddd");
-                var event_start=moment(new Date(item_start)).format("h:mm");
-                var event_end=moment(new Date(item_end)).format("h:mm");
+                var event_start=moment(new Date(item_start)).format("hh:mm");
+                var event_end=moment(new Date(item_end)).format("hh:mm");
 
 
                 $("#event-month").html(ucfirst(event_month));
