@@ -1065,7 +1065,7 @@ be a descendant of the grid when it is being dragged.
 	background-color: #7e3f98;
 }
 .r{
-	background-color: #5DC1B9;
+	background-color: #10519b;
 }
  .category-background{
  	background-color: #D7EAEB;
@@ -1135,6 +1135,18 @@ ul.event-category li{
 	height:150px;
 	margin-right:20px; 
 	margin-bottom:5px;
+}
+
+#loading {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#calendar {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 

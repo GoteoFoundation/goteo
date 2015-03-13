@@ -57,7 +57,7 @@ include __DIR__ . '/header.html.php';
                         <span id="event-hour" class="event-hour"></span><span id="event-location" class="event-location"></span>
                         <a id="event-twitter" href=""><img style="float:right;" width="14" src="/view/css/calendar/twitter.png"/></a>
                         <a id="event-facebook" href=""><img style="float:right; margin-right:5px;" width="14" src="/view/css/calendar/facebook.png"/></a>
-                        <span style="float:right; margin-right:5px;">Compartir:</span>
+                        <span style="float:right; margin-right:5px;"><?php echo Text::get('calendar-share'); ?></span>
 
                         
 
@@ -72,11 +72,11 @@ include __DIR__ . '/header.html.php';
                 <div id='calendar'></div>
                 <div>
                 <ul class="event-category">
-                <li><span class="category-legend t">T</span>Talleres</li>
-                <li><span class="category-legend p">P</span>Proyectos</li>
-                <li><span class="category-legend e">E</span>Eventos</li>
-                <li><span class="category-legend c">C</span>Convocatorias</li>
-                <li><span class="category-legend r">R</span>Red y Políticas</li>
+                <li><span class="category-legend t"><?php echo substr(Text::get('calendar-workshops-category'),0,1); ?></span><?php echo Text::get('calendar-workshops-category'); ?></li>
+                <li><span class="category-legend p"><?php echo substr(Text::get('calendar-projects-category'),0,1); ?></span><?php echo Text::get('calendar-projects-category'); ?></li>
+                <li><span class="category-legend e"><?php echo substr(Text::get('calendar-events-category'),0,1); ?></span><?php echo Text::get('calendar-events-category'); ?></li>
+                <li><span class="category-legend c"><?php echo substr(Text::get('calendar-calls-category'),0,1); ?></span><?php echo Text::get('calendar-calls-category'); ?></li>
+                <li><span class="category-legend r"><?php echo substr(Text::get('calendar-net-category'),0,1); ?></span><?php echo Text::get('calendar-net-category'); ?></li>
                 </div>
 			</div>
         </div>

@@ -105,7 +105,6 @@ if (NODE_ID != GOTEO_NODE) {
           <script src="<?php echo SRC_URL ?>/view/js/calendar/fullcalendar.js"></script>
           <script src="<?php echo SRC_URL ?>/view/js/calendar/lang/es.js"></script>
           <script src="<?php echo SRC_URL ?>/view/js/calendar/gcal.js"></script>
-          <script src="<?php echo SRC_URL ?>/view/js/calendar/gcal.js"></script>
 
           <script>
 
@@ -159,10 +158,8 @@ if (NODE_ID != GOTEO_NODE) {
               $('html, body').animate({
               scrollTop: ($('#read-more').offset().top)
               },500);
+              document.location.hash = event.id;
 
-
-              //alert(getDay(event.start));
-              /*window.open(event.url, 'gcalevent', 'width=350,height=400');*/
               return false;
             },
       
@@ -176,21 +173,12 @@ if (NODE_ID != GOTEO_NODE) {
 
           </script>
 
-          <style>
+      <?php endif; ?>
 
-          #loading {
-            display: none;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-          }
-
-          #calendar {
-            max-width: 800px;
-            margin: 0 auto;
-          }
-
-          </style>
+      <?php if (!isset($jsreq_calendar)) : ?>
+      <script src="<?php echo SRC_URL ?>/view/js/calendar/moment.min.js"></script>
+      <script src="<?php echo SRC_URL ?>/view/js/calendar/lang/es.js"></script>
+      <script src="<?php echo SRC_URL ?>/view/js/calendar/home_calendar.js"></script>
 
       <?php endif; ?>
 

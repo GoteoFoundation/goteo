@@ -60,7 +60,26 @@ include __DIR__ . '/header.html.php';
             <div class="subhead-banner"><?php echo Text::html('main-banner-header'); ?></div>
             <?php endif; ?>
         </div>
-        <div class="mod-pojctopen"><?php echo Text::html('open-banner-header', $fbCode); ?></div>
+        <div class="mod-pojctopen" id="mod-pojctopen">
+            <a href="" id="event-link" class="expand"></a>
+            <div class="main-calendar">
+                <div class="next-event">
+                    <span><?php echo Text::get('calendar-home-title'); ?></span>
+                </div>
+                <div class="inside">
+                    <div class="event-month" id="event-month"></div>
+                    <div class="event-day" id="event-day"></div>
+                    <div id="event-text-day"></div>
+                    <div class="event-interval"><span class="icon-clock"></span><span id ="event-start"></span><?php echo Text::get('calendar-home-hour'); ?><span id ="event-end"></span></div>
+                </div>
+            </div>
+            <div class="extra-calendar" class="extra-calendar">
+                <div class="event-category" id="event-category"></div>
+                <div class="event-title" style="padding:10px; height:60px;" id="event-title"></div>
+                <span class="icon-ubication"></span>
+                <span id="event-location"></span>
+            </div>
+        </div>
     </div>
     <div class="sliderbanners-ctrl">
         <a class="prev">prev</a>
