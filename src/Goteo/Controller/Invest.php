@@ -183,9 +183,9 @@ namespace Goteo\Controller {
 
                 if ($invest->save($errors)) {
                     // urls para paypal (necesita schema)
-                    $URL = (\GOTEO_ENV != 'real')
-                        ? 'http:'.str_replace('http:', '', SITE_URL)
-                        : 'https:'.str_replace('http:', '', SITE_URL);
+                    if (substr(SITE_URL, 0, 2) == '//') {
+                        $URL = (\GOTEO_ENV != 'real') ? 'http:'.SITE_URL : 'https:'.SITE_URL;
+                    }
 
                     $invest->urlOK  = $URL."/invest/confirmed/{$project}/{$invest->id}";
                     $invest->urlNOK = $URL."/invest/fail/{$project}/{$invest->id}";
