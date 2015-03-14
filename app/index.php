@@ -243,7 +243,9 @@ try {
 
         }
 
-    } catch (\ReflectionException $e) {}
+    } catch (\ReflectionException $e) {
+        die($e->getMessage());
+    }
 
     throw new Error(Error::NOT_FOUND);
 
