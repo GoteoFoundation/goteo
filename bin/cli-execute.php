@@ -490,12 +490,27 @@ function cancel_payment($invest, $project, $userData)
         switch ($invest->method) {
             case 'paypal':
                 $err = array();
-                if (Paypal::cancelPreapproval($invest, $err, true)) {
-                    $log_text = "Se ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                } else {
-                    $txt_errors = implode('; ', $err);
-                    $log_text = "Ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+
+                // si te codi de preapproval
+                if (!empty($invest->preapproval)) {
+                    if (Paypal::cancelPreapproval($invest, $err, true)) {
+                        $log_text = "Se ha cancelado aporte y preapproval de %s de %s (id: %s) al proyecto %s del dia %s";
+                    } else {
+                        $txt_errors = implode('; ', $err);
+                        $log_text = "Ha fallado al cancelar el preapproval de %s de %s (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                    }
+                } elseif (!empty($invest->transaction)) {
+                    if (Paypal::cancelPay($invest, $err, true)) {
+                        $log_text = "Se ha cancelado aporte y devuelto el pago en PayPal de %s de %s (id: %s) al proyecto %s del dia %s";
+                    } else {
+                        $txt_errors = implode('; ', $err);
+                        $log_text = "Ha fallado al hacer la devolución en PayPal del aporte de %s de %s (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                    }
                 }
+
+
+                // si te codi de payment
+
                 break;
             case 'tpv':
                 $err = array();

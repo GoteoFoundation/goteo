@@ -297,6 +297,36 @@ namespace Goteo\Controller {
             die;
         }
 
+        /**
+         *  Endpoint IPN para notificaciones de paypal
+         */
+        public function ipn () {
+            // LOGGER
+            Feed::logger('paypal', 'invest', '999', 'IPN', SITE_URL.$_SERVER['REQUEST_URI']);
+
+            $errors = array();
+
+            // monitorizando todo lo que llega aqui
+            // mail de aviso
+            $mailHandler = new Library\Mail();
+            $mailHandler->to = \GOTEO_FAIL_MAIL;
+            $mailHandler->toName = 'Tpv Monitor Goteo.org';
+            $mailHandler->subject = 'Comunicacion ipn '.date('H:i:s d/m/Y');
+            $mailHandler->content = 'Comunicacion ipn '.date('H:i:s d/m/Y').'<br /><br />';
+
+            $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
+            $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
+            $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
+
+            $mailHandler->html = true;
+            $mailHandler->template = 11;
+
+            $mailHandler->send($errors);
+
+            unset($mailHandler);
+            die;
+        }
+
         public function simulacrum () {
             echo 'Simulacrum<br />';
 

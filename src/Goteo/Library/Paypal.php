@@ -183,6 +183,7 @@ namespace Goteo\Library {
                 $paymentDetailsItem->Amount = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
 
                 $paymentDetails = new PPComponents\PaymentDetailsType;
+                $paymentDetails->NotifyURL = SITE_URL.'/tpv/ipn'; // IPN
                 $paymentDetails->PaymentDetailsItem = $paymentDetailsItem;
                 $paymentDetails->OrderTotal = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
                 $paymentDetails->ItemTotal = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
@@ -194,7 +195,6 @@ namespace Goteo\Library {
                 $setECReqDetails->PaymentDetails[0] = $paymentDetails;
                 $setECReqDetails->ReturnURL = $returnURL;
                 $setECReqDetails->CancelURL = $cancelURL;
-                $setECReqDetails->PayerID = $customerId;
                 $setECReqDetails->BuyerEmail = $customerMail;
 
                 // Advanced options
@@ -282,7 +282,6 @@ namespace Goteo\Library {
                 $currencyCode = "EUR";
                 $paymentDetails = new PPComponents\PaymentDetailsType;
                 $paymentDetails->OrderTotal = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
-                $paymentDetails->NotifyURL = 'http://goteo.org/tpv/simulacrum'; // esto me mandara el POST/GET al mail, aunque mejor sería un endpoint tipo Notify o IPN
 
                 $DoECRequestDetails = new PPComponents\DoExpressCheckoutPaymentRequestDetailsType;
                 $DoECRequestDetails->PayerID = $invest->account;
@@ -297,7 +296,7 @@ namespace Goteo\Library {
                 $DoECReq = new PPApi\DoExpressCheckoutPaymentReq;
                 $DoECReq->DoExpressCheckoutPaymentRequest = $DoECRequest;
 
-                $paypalService = new PPApi\PayPalAPIInterfaceServiceService;
+                $paypalService = new PPService\PayPalAPIInterfaceServiceService;
                 $DoECResponse = $paypalService->DoExpressCheckoutPayment($DoECReq);
 
                 if ($DoECResponse->Ack == 'Success') {
@@ -332,13 +331,69 @@ namespace Goteo\Library {
 
         }
 
+
         /*
-         *  Metodo para ejecutar pago (desde cron)
-         * Recibe parametro del aporte (id, cuenta, cantidad)
+         *  Metodo para cancelar/devolver un pago paypal hecho con ExpressCheckout
          *
-         * Es un pago encadenado, la comision del 8% a Goteo y el resto al proyecto
-         *
+         * https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DoExpressCheckout.php
          */
+        public static function cancelPay($invest, &$errors = array())
+        {
+            // @TODO : devolver el pago
+
+            return true;
+
+            /*
+                        try {
+
+
+                            $currencyCode = "EUR";
+                            $paymentDetails = new PPComponents\PaymentDetailsType;
+                            $paymentDetails->OrderTotal = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
+                            $paymentDetails->NotifyURL = SITE_URL.'/tpv/ipn'; // IPN
+
+                            $DoECRequestDetails = new PPComponents\DoExpressCheckoutPaymentRequestDetailsType;
+                            $DoECRequestDetails->PayerID = $invest->account;
+                            $DoECRequestDetails->Token = $invest->transaction;
+                            $DoECRequestDetails->PaymentAction = 'Sale';
+                            $DoECRequestDetails->PaymentDetails[0] = $paymentDetails;
+
+                            $DoECRequest = new PPApi\DoExpressCheckoutPaymentRequestType;
+                            $DoECRequest->DoExpressCheckoutPaymentRequestDetails = $DoECRequestDetails;
+
+
+                            $DoECReq = new PPApi\DoExpressCheckoutPaymentReq;
+                            $DoECReq->DoExpressCheckoutPaymentRequest = $DoECRequest;
+
+                            $paypalService = new PPService\PayPalAPIInterfaceServiceService;
+                            $DoECResponse = $paypalService->DoExpressCheckoutPayment($DoECReq);
+
+                            if ($DoECResponse->Ack == 'Success') {
+
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        }
+                        catch (Exception $ex) {
+                            return false;
+                        }
+
+            */
+
+
+
+        }
+
+
+            /*
+             *  Metodo para ejecutar pago (desde cron)
+             * Recibe parametro del aporte (id, cuenta, cantidad)
+             *
+             * Es un pago encadenado, la comision del 8% a Goteo y el resto al proyecto
+             *
+             */
         public static function execute($invest, &$errors = array())
         {
 
