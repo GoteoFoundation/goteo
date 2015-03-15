@@ -239,7 +239,7 @@ namespace Goteo\Library {
                 if (!empty($token)) {
 
                     Invest::setDetail($invest->id, 'paypal-init', 'Se ha preparado el pago directo y se redirije al usuario a paypal para completarlo. Proceso libary/paypal::preparePay');
-                    $invest->setTransaction($token);
+                    $invest->setPayment($token);
                     $payPalURL = \PAYPAL_REDIRECT_URL.'_express-checkout&token=' . $token;
                     throw new Redirection($payPalURL, Redirection::TEMPORARY);
                     return true;
@@ -285,7 +285,7 @@ namespace Goteo\Library {
 
                 $DoECRequestDetails = new PPComponents\DoExpressCheckoutPaymentRequestDetailsType;
                 $DoECRequestDetails->PayerID = $invest->account;
-                $DoECRequestDetails->Token = $invest->transaction;
+                $DoECRequestDetails->Token = $invest->payment;
                 $DoECRequestDetails->PaymentAction = 'Sale';
                 $DoECRequestDetails->PaymentDetails[0] = $paymentDetails;
 
@@ -299,10 +299,10 @@ namespace Goteo\Library {
                 $paypalService = new PPService\PayPalAPIInterfaceServiceService;
                 $DoECResponse = $paypalService->DoExpressCheckoutPayment($DoECReq);
 
-                if ($DoECResponse->Ack == 'Success') {
+                if (strtoupper($DoECResponse->Ack) == 'SUCCESS') {
                     // transaction
                     $transactionId = $DoECResponse->DoExpressCheckoutPaymentResponseDetails->PaymentInfo[0]->TransactionID;
-                    $invest->setPayment($transactionId);
+                    $invest->setTransaction($transactionId);
                     $invest->setStatus(1);
                     Invest::setDetail($invest->id, 'paypal-pay-completed', 'Ha completado el proceso, clave de pago: '.$transactionId.', estado Cobrado.');
 
@@ -335,65 +335,105 @@ namespace Goteo\Library {
         /*
          *  Metodo para cancelar/devolver un pago paypal hecho con ExpressCheckout
          *
-         * https://github.com/paypal/merchant-sdk-php/blob/master/samples/ExpressCheckout/DoExpressCheckout.php
+         *  Se usa el método RefundTransaction para el transactionId del pago
+         *  (solo pagos expresscheckout)
+         *  https://github.com/paypal/merchant-sdk-php/blob/473737430f54835b9d55e99f965546c6de4470ff/samples/PaymentSettlements/Refund.php
          */
-        public static function cancelPay($invest, &$errors = array())
+        public static function cancelPay($invest, &$errors = array(), $fail = false)
         {
-            // @TODO : devolver el pago
 
-            return true;
+            try {
 
-            /*
-                        try {
+                $refundRequest = new PPApi\RefundTransactionRequestType;
 
+                // Full refund (default)
+                $refundRequest->RefundType = 'FULL';
+                $refundRequest->TransactionID = $invest->transaction;
+                $refundRequest->RefundSource = 'instant';
+                $refundRequest->Memo = "Devolucion del aporte id: {$invest->id}";
 
-                            $currencyCode = "EUR";
-                            $paymentDetails = new PPComponents\PaymentDetailsType;
-                            $paymentDetails->OrderTotal = new PPCTypes\BasicAmountType($currencyCode, $invest->amount);
-                            $paymentDetails->NotifyURL = SITE_URL.'/tpv/ipn'; // IPN
+                $refundReq = new PPApi\RefundTransactionReq;
+                $refundReq->RefundTransactionRequest = $refundRequest;
 
-                            $DoECRequestDetails = new PPComponents\DoExpressCheckoutPaymentRequestDetailsType;
-                            $DoECRequestDetails->PayerID = $invest->account;
-                            $DoECRequestDetails->Token = $invest->transaction;
-                            $DoECRequestDetails->PaymentAction = 'Sale';
-                            $DoECRequestDetails->PaymentDetails[0] = $paymentDetails;
+                $paypalService = new PPService\PayPalAPIInterfaceServiceService;
+                $refundResponse = $paypalService->RefundTransaction($refundReq);
 
-                            $DoECRequest = new PPApi\DoExpressCheckoutPaymentRequestType;
-                            $DoECRequest->DoExpressCheckoutPaymentRequestDetails = $DoECRequestDetails;
+                if (strtoupper($refundResponse->Ack) == 'SUCCESS') {
 
+                    Invest::setDetail($invest->id, 'paypal-cancel', 'El pago PayPal se ha cancelado y con ello el aporte. Proceso libary/paypal::cancelPay');
+                    $invest->cancel($fail);
 
-                            $DoECReq = new PPApi\DoExpressCheckoutPaymentReq;
-                            $DoECReq->DoExpressCheckoutPaymentRequest = $DoECRequest;
+                    return true;
 
-                            $paypalService = new PPService\PayPalAPIInterfaceServiceService;
-                            $DoECResponse = $paypalService->DoExpressCheckoutPayment($DoECReq);
+                } else {
 
-                            if ($DoECResponse->Ack == 'Success') {
+                    Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el pago PayPal. Proceso libary/paypal::cancelPay');
+                    $errors[] = 'PayPal cancel failed.';
+                    Feed::logger('paypal-error', 'invest', $invest->id,  'Ha fallado al cancelar el pago PayPal.'. $refundResponse->getLastError(), 'libary/paypal::cancelPay');
 
-                                return true;
-                            } else {
-                                return false;
-                            }
+                    return false;
 
-                        }
-                        catch (Exception $ex) {
-                            return false;
-                        }
+                }
 
-            */
+            } catch (Exception $ex) {
 
+                Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el pago PayPal. Proceso libary/paypal::cancelPay');
+                $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
+                Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
+
+                return false;
+            }
 
 
         }
 
+        /*
+         * Llamada a paypal para obtener los detalles de un pago
+         *
+         * https://github.com/paypal/merchant-sdk-php/blob/473737430f54835b9d55e99f965546c6de4470ff/samples/AdminCalls/GetTransactionDetails.php
+         */
+        public static function payDetails($key, &$errors = array())
+        {
+            try {
 
-            /*
-             *  Metodo para ejecutar pago (desde cron)
-             * Recibe parametro del aporte (id, cuenta, cantidad)
-             *
-             * Es un pago encadenado, la comision del 8% a Goteo y el resto al proyecto
-             *
-             */
+                // llamada metodo handler
+
+                $transactionDetails = new PPApi\GetTransactionDetailsRequestType;
+                $transactionDetails->TransactionID = $key;
+
+                $detailsReq = new PPApi\GetTransactionDetailsReq;
+                $detailsReq->GetTransactionDetailsRequest = $transactionDetails;
+
+                $paypalService = new PPService\PayPalAPIInterfaceServiceService;
+                $transDetailsResponse = $paypalService->GetTransactionDetails($detailsReq);
+
+                // y nada de vendor aqui
+
+                if (strtoupper($transDetailsResponse->isSuccess) == 'SUCCESS') {
+                    return $transDetailsResponse;
+                } else {
+                    $errors[] = 'No payment details obtained. <pre>' . print_r($transDetailsResponse, true) . '</pre>';
+                    return false;
+                }
+
+            } catch (Exception $ex) {
+
+                $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
+                Feed::logger('paypal-exception', 'invest.payment', $key, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
+
+                return false;
+            }
+        }
+
+
+
+        /*
+         *  Metodo para ejecutar pago (desde cron)
+         * Recibe parametro del aporte (id, cuenta, cantidad)
+         *
+         * Es un pago encadenado, la comision del 8% a Goteo y el resto al proyecto
+         *
+         */
         public static function execute($invest, &$errors = array())
         {
 
@@ -932,7 +972,6 @@ namespace Goteo\Library {
                     return true;
                 }
             } catch (Exception $ex) {
-
 
                 Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el preapproval. Proceso libary/paypal::cancelPreapproval');
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
