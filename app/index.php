@@ -244,6 +244,7 @@ try {
         }
 
     } catch (\ReflectionException $e) {
+        // esto tendría que notificar a \GOTEO_FAIL_MAIL
         die($e->getMessage());
     }
 
@@ -255,9 +256,12 @@ try {
     header("Location: {$url}");
 
 } catch (Error $error) {
+    // esto tendría que notificar a \GOTEO_FAIL_MAIL
     include 'view/error.html.php';
 
 } catch (Exception $exception) {
+    // esto tendría que notificar a \GOTEO_FAIL_MAIL
+    die($exception->getMessage());
     // Default error (500)
     include 'view/error.html.php';
 }

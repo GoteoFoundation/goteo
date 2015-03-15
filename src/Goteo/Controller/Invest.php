@@ -322,7 +322,7 @@ namespace Goteo\Controller {
                     // si es preapproval hay que cambiarle el status a 0 (preapprovado)
                     $invest->setStatus('0');
 
-                } elseif (isset($_GET['token']) && $_GET['token'] == $invest->transaction) {
+                } elseif (isset($_GET['token']) && $_GET['token'] == $invest->payment) {
 
                     // retorno valido
                     $token = $_GET['token'];
@@ -334,7 +334,8 @@ namespace Goteo\Controller {
 
                     // completamos con el DoEsxpresscheckout despues de comprobar que está completado y cobrado
                     if (Paypal::completePay($invest, $errors)) {
-                        $invest->setPayment($invest->transaction);
+                        // ok
+
                     } else {
                         Model\Invest::setDetail($invest->id, 'paypal-completion-error', 'El usuario ha regresado de PayPal y recibimos el token: '.$token.'  y el PayerID '.$payerid.'. Pero completePay ha fallado. <pre>'.print_r($invest ,1).'</pre>');
                         throw new Redirection("/project/$project/invest/?confirm=fail");

@@ -403,19 +403,41 @@ namespace Goteo\Controller\Admin {
                     switch ($invest->method) {
                         case 'paypal':
                             $err = array();
-                            if (Paypal::cancelPreapproval($invest, $err)) {
-                                $errors[] = 'Preaproval paypal cancelado.';
-                                $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                            } else {
-                                $txt_errors = implode('; ', $err);
-                                $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . $txt_errors;
-                                $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                                if ($invest->cancel()) {
-                                    $errors[] = 'Aporte cancelado';
-                                } else{
-                                    $errors[] = 'Fallo al cancelar el aporte';
+
+                            if (empty($invest->preapproval)) {
+
+                                if (Paypal::cancelPay($invest, $err)) {
+                                    $errors[] = 'Pago PayPal paypal cancelado.';
+                                    $log_text = "El admin %s ha cancelado aporte y pago PayPal de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                                } else {
+                                    $txt_errors = implode('; ', $err);
+                                    $errors[] = 'Fallo al cancelar el pago PayPal: ' . $txt_errors;
+                                    $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                                    if ($invest->cancel()) {
+                                        $errors[] = 'Aporte cancelado';
+                                    } else{
+                                        $errors[] = 'Fallo al cancelar el aporte';
+                                    }
                                 }
+
+                            } else {
+
+                                if (Paypal::cancelPreapproval($invest, $err)) {
+                                    $errors[] = 'Preaproval paypal cancelado.';
+                                    $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                                } else {
+                                    $txt_errors = implode('; ', $err);
+                                    $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . $txt_errors;
+                                    $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                                    if ($invest->cancel()) {
+                                        $errors[] = 'Aporte cancelado';
+                                    } else{
+                                        $errors[] = 'Fallo al cancelar el aporte';
+                                    }
+                                }
+
                             }
+
                             break;
                         case 'tpv':
                             $err = array();
