@@ -1,5 +1,68 @@
 <?php
-// GENERALES
+// OBSOLETO desde 09/12/2014
+// con vendor/paypal la configuración va en config/sdk_config.ini
+// ahí cada desarrollador tiene que poner los credenciales generados en su panel paypal.developer para su entorno sandbox
+die;
+/* HERE AN EXAMPLE OF sdk_config.ini functional content
+ * see more about configuration at https://github.com/paypal/sdk-core-php/wiki/Configuring-the-SDK#examples
+ *
+;
+; Full explained paypal config file
+;
+;
+
+; 'sandbox' or 'live'.
+mode = sandbox
+
+;Account credentials
+[Account]
+
+; Credentials for 3-token authentication
+acct1.UserName = jb-us-seller_api1.paypal.com
+acct1.Password = WX4WTU3S8MY44S7F
+acct1.Signature = AFcWxV21C7fd0v3bYYYRCpSSRl31A7yDhhsPUU2XhtMoZXsWHFxu-RWy
+acct1.AppId = APP-80W284485P519543T
+# Subject is optional and is required only in case of third party authorization
+acct1.Subject =
+
+; Certificate Credentials Test Account
+;  for client certificate authentication.
+;acct2.UserName = platfo_1255170694_biz_api1.gmail.com
+;acct2.Password = 2DPPKUPKB7DQLXNR
+; Certificate path relative to config folder or absolute path in file system
+;acct2.CertPath = cacert.pem / resource/sdk-cert.p12 / etc..
+
+
+;Connection Information
+[Http]
+
+; Connection timeout (seconds. Default 30)
+http.ConnectionTimeOut = 60
+
+; Number of retries for connection errors (defaults to 5 if not specified)
+;http.Retry = 1
+
+; Example: [username:password@]proxyIP[:port]
+;http.Proxy
+
+
+;Logging Information
+[Log]
+
+; Absolute path to log file
+log.FileName=PayPal.log
+
+; Can be one of FINE, INFO, WARN or ERROR
+log.LogLevel=INFO
+
+; Enable logging
+log.LogEnabled=true
+
+ */
+
+/////////////////////////////////
+////// OBSOLETE FROM HERE ON   //
+/////////////////////////////////
 
 // si proxy y su configuración
 define('USE_PROXY',false);

@@ -6,7 +6,7 @@ namespace Goteo\Library {
         Goteo\Library\Text,
         Goteo\Core\Redirection;
 
-    require_once __DIR__ . '/Tpv/wshandler.php';  // Libreria para comunicaciones con el webservice TPV y log
+    require_once __DIR__ . '/Tpv/Handler.php';  // Libreria para comunicaciones con el webservice TPV y log
 
 	/*
 	 * Clase para usar el tpv de SaNostra mediante CECA
@@ -31,6 +31,13 @@ namespace Goteo\Library {
          */
         public static function preapproval($invest, &$errors = array()) {
             return static::pay($invest, $errors);
+        }
+
+        /*
+         * metodo para mantener coherencia
+         */
+        public static function execute($invest, &$errors = array()) {
+            return true;
         }
 
         public static function pay($invest, &$errors = array()) {
@@ -167,7 +174,7 @@ namespace Goteo\Library {
                 // mandarlo al tpv
                 $urlTPV = TPV_REDIRECT_URL . 'anularparcialmente';
 
-                $handler = new \WSHandler();
+                $handler = new \Handler();
                 $response = $handler->callWebService($datos, $urlTPV);
 
                if(strtoupper($handler->isSuccess) == 'FAILURE') {

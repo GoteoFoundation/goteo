@@ -22,8 +22,8 @@ namespace Goteo\Model {
             $currency_rate, // ratio de conversión a euros en el momento de hacer el aporte
             $preapproval, //clave del preapproval
             $payment, //clave del cargo
-            $transaction, // id de la transacción
-            $method, // metodo de pago paypal/tpv
+            $transaction, // id de la transacción / token expresscheckout
+            $method, // metodo de pago paypal/tpv/cash/drop/pool (ver Invest::methods() )
             $status, //estado en el que se encuentra esta aportación:
                     // -1 en proceso, 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
             $issue, // aporte con incidencia
@@ -44,7 +44,8 @@ namespace Goteo\Model {
                 'namedest'  => '',
                 'emaildest'  => '',
                 'message'  => ''),  // dirección de envio de la recompensa y datos de regalo
-            $call = null; // aportes que tienen capital riego asociado
+            $call = null, // aportes que tienen capital riego asociado
+            $pool = null; // aportes a reservar si el proyecto falla
 
         // añadir los datos del cargo
 
@@ -243,6 +244,9 @@ namespace Goteo\Model {
                     case 'drop':
                         $sqlFilter .= " AND invest.campaign = 1";
                         break;
+                    case 'credit':
+                        $sqlFilter .= " AND invest.pool = 1";
+                        break;
                 }
             }
 
@@ -295,7 +299,8 @@ namespace Goteo\Model {
                         DATE_FORMAT(invest.charged , '%d/%m/%Y') as charged,
                         DATE_FORMAT(invest.returned, '%d/%m/%Y') as returned,
                         user.name as admin,
-                        invest.issue as issue
+                        invest.issue as issue,
+                        invest.pool as pool
                     FROM invest
                     INNER JOIN project
                         ON invest.project = project.id
@@ -360,7 +365,8 @@ namespace Goteo\Model {
                 'admin',
                 'campaign',
                 'call',
-                'drops'
+                'drops',
+                'pool'
                 );
 
             $set = '';
@@ -1269,13 +1275,18 @@ namespace Goteo\Model {
 
         /*
          * Métodos de pago
+         *
+         * paypal puede ser tanto preappoval como checkout
+         *
+         * Gotas es el uso de aportado a crédito (ver Model\User\Pool)
          */
         public static function methods () {
             return array (
                 'paypal' => 'Paypal',
                 'tpv'    => 'Tarjeta',
                 'drop'   => 'Riego',
-                'cash'   => 'Manual'
+                'cash'   => 'Manual',
+                'pool'   => 'Gotas'
             );
         }
 

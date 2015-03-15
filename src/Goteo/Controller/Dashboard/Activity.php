@@ -47,6 +47,30 @@ namespace Goteo\Controller\Dashboard {
              */
         }
 
+        // gestion de gotas
+        public static function pool ($user, $action) {
+
+            // ver si tiene reserva de gotas
+            $pool = Model\User\Pool::get($user);
+
+            // si tiene gotas, buscar recomendaciones según este último proyecto
+            if ($pool->amount > 0) {
+
+                // ver cual es el último proyecto (en el que se usaron gotas o el que guardó las primeras gotas)
+                $pool->project = Model\User\Pool::lastProject($user);
+
+                // por categoria
+
+                // por localización
+
+                $pool->recomended = array();
+
+            }
+
+            return $pool;
+
+        }
+
         // acciones de certificado de donativo
         public static function donor ($user, $action = 'view') {
             $errors = array();

@@ -179,11 +179,14 @@ include __DIR__ . '/../prologue.html.php' ?>
 						// segun el paso de aporte
                         if (!empty($step) && in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) {
 
+                            // variables a pasar a las subvistas
+                            $subView = array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp'], 'pool'=> $this['pool']);
+
                             switch ($step) {
                                 case 'continue':
                                     echo
                                         View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        View::get('project/widget/invest_redirect.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp']));
+                                        View::get('project/widget/invest_redirect.html.php', $subView);
                                     break;
 
                                 case 'ok':
@@ -196,12 +199,12 @@ include __DIR__ . '/../prologue.html.php' ?>
                                 case 'fail':
                                     echo
                                         View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        View::get('project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'allowpp'=> $this['allowpp']));
+                                        View::get('project/widget/invest.html.php', $subView);
                                     break;
                                 default:
                                     echo
                                         View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        View::get('project/widget/invest.html.php', array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp']));
+                                        View::get('project/widget/invest.html.php', $subView);
                                     break;
                             }
                         } else {

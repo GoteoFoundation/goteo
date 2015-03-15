@@ -26,7 +26,11 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <strong>Usuario: </strong><?php echo $user->name ?> [<?php echo $user->email ?>]
     </p>
     <p>
-        <?php if ($invest->status < 1 || ($invest->method == 'tpv' && $invest->status < 2) ||($invest->method == 'cash' && $invest->status < 2)) : ?>
+        <?php if ( $invest->status < 1
+            || ($invest->method == 'tpv' && $invest->status < 2)
+            || ($invest->method == 'cash' && $invest->status < 2)
+            || ($invest->method == 'paypal' && empty($invest->preapproval) && $invest->status < 2)
+        ) : ?>
         <a href="/admin/accounts/cancel/<?php echo $invest->id ?>"
             onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
             class="button">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
@@ -172,11 +176,16 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     } ?>
 </div>
 
-<?php if (isset($_GET['full']) && $_GET['full'] == 'show') : ?>
+<?php if (isset($_GET['full']) && $_GET['full'] == 'show') :
+
+    $errors = array();
+    ?>
 <div class="widget">
     <h3>Detalles técnicos de la transaccion</h3>
-    <?php if (!empty($invest->preapproval)) :
-        $details = Paypal::preapprovalDetails($invest->preapproval);
+    <?php
+    // detalles de preapproval
+    if (!empty($invest->preapproval)) :
+        $details = Paypal::preapprovalDetails($invest->preapproval, $errors);
         ?>
     <dl>
         <dt><strong>Detalles del preapproval:</strong></dt>
@@ -184,14 +193,33 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     </dl>
     <?php endif ?>
 
-    <?php if (!empty($invest->payment)) :
-        $details = Paypal::paymentDetails($invest->payment);
+    <?php
+    // detalles de la ejecución del preapproval
+    if (!empty($invest->preapproval) && !empty($invest->payment)) :
+        $details = Paypal::paymentDetails($invest->payment, $errors);
         ?>
     <dl>
         <dt><strong>Detalles del cargo:</strong></dt>
         <dd><?php echo \trace($details); ?></dd>
     </dl>
     <?php endif; ?>
+
+    <?php
+    // detalles de una transacción PayPal con ExpressCheckout
+    if (empty($invest->preapproval) && !empty($invest->transaction)) :
+        $details = Paypal::payDetails($invest->transaction, $errors);
+        ?>
+    <dl>
+        <dt><strong>Detalles del pago:</strong></dt>
+        <dd><?php echo \trace($details); ?></dd>
+    </dl>
+    <?php endif; ?>
+
+    <?php
+    if (!empty($errors)) {
+        echo '<div>'.implode('<br />', $errors).'</div>';
+    }
+    ?>
 </div>
 <?php endif; ?>
 

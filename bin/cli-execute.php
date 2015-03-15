@@ -452,10 +452,37 @@ function project_second_round($project, $per_amount)
 /**
  * Cancelar los aportes
  * Se llama cuando cancelAll = true
+ *
+ * Funcionalidad crédito:
+ * ----------------------
+ * Sea cual sea el metodo de pago, los aportes marcados "invest.pool = 1", no se cancelan
+ *   el importe de estos aportes pasa a la reserva de Gotas del usuario "user_pool"
+ *   y NO SE CANCELAN
+ *
+ *
  */
 function cancel_payment($invest, $project, $userData)
 {
     global $FEED, $UPDATE;
+    global $projectAccount; // need project paypal account for if execute preapproval
+
+    // aporte a reservar
+    if ($invest->pool) {
+        echo "Aporte {$invest->id} es para reservar ({$invest->method}).\n";
+        if ($UPDATE) {
+            Model\User\Pool::add($invest);
+            // el aporte se queda en el estado que estuviera
+            // a menos que sea un paypal en preapproval, que se debería ejecutar
+            if ($invest->method == 'paypal' && $invest->status == 0) {
+                execute_payment($invest, $project, $userData, $projectAccount);
+            }
+
+
+        } else {
+            echo "Prevented pool::add() \n";
+        }
+        return true;
+    }
 
     echo "Aporte {$invest->id} cancelamos por proyecto caducado ({$invest->method}).\n";
     if ($UPDATE) {
@@ -463,12 +490,27 @@ function cancel_payment($invest, $project, $userData)
         switch ($invest->method) {
             case 'paypal':
                 $err = array();
-                if (Paypal::cancelPreapproval($invest, $err, true)) {
-                    $log_text = "Se ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                } else {
-                    $txt_errors = implode('; ', $err);
-                    $log_text = "Ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+
+                // si te codi de preapproval
+                if (!empty($invest->preapproval)) {
+                    if (Paypal::cancelPreapproval($invest, $err, true)) {
+                        $log_text = "Se ha cancelado aporte y preapproval de %s de %s (id: %s) al proyecto %s del dia %s";
+                    } else {
+                        $txt_errors = implode('; ', $err);
+                        $log_text = "Ha fallado al cancelar el preapproval de %s de %s (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                    }
+                } elseif (!empty($invest->transaction)) {
+                    if (Paypal::cancelPay($invest, $err, true)) {
+                        $log_text = "Se ha cancelado aporte y devuelto el pago en PayPal de %s de %s (id: %s) al proyecto %s del dia %s";
+                    } else {
+                        $txt_errors = implode('; ', $err);
+                        $log_text = "Ha fallado al hacer la devolución en PayPal del aporte de %s de %s (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                    }
                 }
+
+
+                // si te codi de payment
+
                 break;
             case 'tpv':
                 $err = array();
@@ -540,7 +582,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
             $invest->fee = $projectAccount->fee;
             $err = array();
             if ($UPDATE) {
-                if (Paypal::pay($invest, $err)) {
+                if (Paypal::execute($invest, $err)) {
                     $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                     echo " -> Ok\n";
                     Model\Invest::setDetail($invest->id, 'executed', 'Se ha ejecutado el preapproval, ha iniciado el pago encadenado. Proceso cli-execute');
@@ -627,7 +669,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
              * @TODO : esto seria el metodo preapproval en Library\Payment\Tpv
              *
                 $err = array();
-                if (Tpv::pay($invest, $err)) {
+                if (Tpv::execute($invest, $err)) {
                     echo "Cargo sermepa correcto";
                     $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s";
                 } else {
