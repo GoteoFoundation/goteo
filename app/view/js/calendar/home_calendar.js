@@ -61,6 +61,10 @@ $(document).ready(function() {
                 $("#event-title").html(item.summary);
                 $("#event-category").html(event_category);
                 $("#event-link").attr("href", "/calendar#"+item.id);
+
+                $("#main-calendar").addClass(event_category.substr(0,1).toLowerCase()+"-bg");
+                $("#inside").addClass(event_category.substr(0,1).toLowerCase());
+                $("#extra-calendar").addClass(event_category.substr(0,1).toLowerCase());
                 break;
               }
             }

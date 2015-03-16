@@ -952,8 +952,7 @@ div#sub-header.banners > div > div.mod-pojctopen a.expand{
 }
 
 div#sub-header.banners > div > div.mod-pojctopen div.main-calendar{
-    float:left; 
-    background-color:#9865ac; 
+    float:left;  
     color:#FFFFFF; 
     width:45%;
     height:136px; 
@@ -970,7 +969,6 @@ div#sub-header.banners > div > div.mod-pojctopen div.next-event{
 div#sub-header.banners > div > div.mod-pojctopen div.inside{
     height:102px;
     background-color:#FFFFFF; 
-    color:#9865ac; 
     margin:5px; 
     border-radius:5px; 
     text-align:center;
@@ -991,7 +989,6 @@ div#sub-header.banners > div > div.mod-pojctopen div.inside div.event-text-day{
 
 div#sub-header.banners > div > div.mod-pojctopen div.extra-calendar{
     float:left;
-    color:#9865ac; 
     font-size:10px; 
     text-align:center; 
     background-color:#FFFFFF; 
@@ -1003,7 +1000,7 @@ div#sub-header.banners > div > div.mod-pojctopen div.extra-calendar{
 div#sub-header.banners > div > div.mod-pojctopen div.extra-calendar div.event-category{
 
     padding-top: 13px; 
-    border-bottom: 1px solid #9865AC; 
+    border-bottom: 1px solid; 
     width: 80%; 
     text-align: center; 
     margin: 0 15px; 
@@ -1019,6 +1016,8 @@ div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-int
     font-size:10px;
     padding-top: 3px;
 }
+
+/*Fuente para iconos en calendar widget */
 
 @font-face {
     font-family: 'icomoon';
@@ -1045,18 +1044,6 @@ div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-int
     -moz-osx-font-smoothing: grayscale;
 }
 
-
-
-/*.icon-ubication:before {
-    content: "\e604";
-    
-}*/
-/*.icon-ubication .path2:before {
-    content: "\e605";
-    margin-left: -1em;
-    color: rgb(255, 255, 255);
-}*/
-
 .icon-ubication .path1:before {
     content: "\e604";
     font-family: 'icomoon';
@@ -1075,6 +1062,46 @@ div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-int
     font-size:12px;
     margin-right:2px;
 }
+
+/*Colores para personalizar color para cada categoria */
+
+.t-bg{
+    background-color: #58595B;
+}
+
+.e-bg{
+    background-color: #E11F19;
+}
+
+.p-bg{
+    background-color: #20B2B3;
+}
+.c-bg{
+    background-color: #7e3f98;
+}
+.r-bg{
+    background-color: #10519b;
+}
+
+
+.t{
+    color: #58595B;
+}
+
+.e{
+    color: #E11F19;
+}
+
+.p{
+    color: #20B2B3;
+}
+.c{
+    color: #7e3f98;
+}
+.r{
+    color: #10519b;
+}
+
 
 
 
