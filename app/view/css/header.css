@@ -1047,16 +1047,28 @@ div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-int
 
 
 
-.icon-ubication:before {
+/*.icon-ubication:before {
     content: "\e604";
     
-}
+}*/
 /*.icon-ubication .path2:before {
     content: "\e605";
     margin-left: -1em;
     color: rgb(255, 255, 255);
 }*/
 
+.icon-ubication .path1:before {
+    content: "\e604";
+    font-family: 'icomoon';
+    font-size:12px;
+}
+.icon-ubication .path2:before {
+    content: "\e605";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+    font-family: 'icomoon';
+    font-size:12px;
+}
 
 .icon-clock:before {
     content: "\e606";

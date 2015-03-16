@@ -76,7 +76,10 @@ include __DIR__ . '/header.html.php';
             <div class="extra-calendar" class="extra-calendar">
                 <div class="event-category" id="event-category"></div>
                 <div class="event-title" style="padding:10px; height:60px;" id="event-title"></div>
-                <span class="icon-ubication"></span>
+                <!--<span class="icon-ubication"></span>-->
+                <span class="icon-ubication">
+                <span class="path1"></span><span class="path2"></span>
+                </span>
                 <span id="event-location"></span>
             </div>
         </div>
