@@ -640,6 +640,7 @@ namespace Goteo\Controller\Admin {
                 'anonymous' => 'Solo los anónimos',
                 'manual' => 'Solo los manuales',
                 'campaign' => 'Solo con riego',
+                'pool' => 'Solo a reservar',
             );
 
             // filtros de revisión de proyecto
