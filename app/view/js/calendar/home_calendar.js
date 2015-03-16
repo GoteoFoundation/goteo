@@ -10,7 +10,7 @@ $(document).ready(function() {
 
             //tenemos en cuenta eventos de todo un dia
             item_start=item.start.dateTime || item.start.date;
-            item_end=item.start.dateTime || item.start.date;
+            item_end=item.end.dateTime || item.end.date;
 
             var current_day=moment(new Date()).format("MM-DD-YYYY");
             var event_date=moment(new Date(item_start)).format("MM-DD-YYYY");
@@ -20,8 +20,8 @@ $(document).ready(function() {
                 var event_month=moment(new Date(item_start)).format("MMMM");
                 var event_day=moment(new Date(item_start)).format("D");
                 var event_text_day=moment(new Date(item_start)).format("dddd");
-                var event_start=moment(new Date(item_start)).format("hh:mm");
-                var event_end=moment(new Date(item_end)).format("hh:mm");
+                var event_start=moment(new Date(item_start)).format("HH:mm");
+                var event_end=moment(new Date(item_end)).format("HH:mm");
 
 
                 $("#event-month").html(ucfirst(event_month));
@@ -61,6 +61,10 @@ $(document).ready(function() {
                 $("#event-title").html(item.summary);
                 $("#event-category").html(event_category);
                 $("#event-link").attr("href", "/calendar#"+item.id);
+
+                $("#main-calendar").addClass(event_category.substr(0,1).toLowerCase()+"-bg");
+                $("#inside").addClass(event_category.substr(0,1).toLowerCase());
+                $("#extra-calendar").addClass(event_category.substr(0,1).toLowerCase());
                 break;
               }
             }
