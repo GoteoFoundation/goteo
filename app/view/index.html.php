@@ -62,18 +62,18 @@ include __DIR__ . '/header.html.php';
         </div>
         <div class="mod-pojctopen" id="mod-pojctopen">
             <a href="" id="event-link" class="expand"></a>
-            <div class="main-calendar">
+            <div class="main-calendar" id="main-calendar">
                 <div class="next-event">
                     <span><?php echo Text::get('calendar-home-title'); ?></span>
                 </div>
-                <div class="inside">
+                <div class="inside" id="inside">
                     <div class="event-month" id="event-month"></div>
                     <div class="event-day" id="event-day"></div>
                     <div id="event-text-day"></div>
                     <div class="event-interval"><span class="icon-clock"></span><span id ="event-start"></span><?php echo Text::get('calendar-home-hour'); ?><span id ="event-end"></span></div>
                 </div>
             </div>
-            <div class="extra-calendar" class="extra-calendar">
+            <div class="extra-calendar" id="extra-calendar">
                 <div class="event-category" id="event-category"></div>
                 <div class="event-title" style="padding:10px; height:60px;" id="event-title"></div>
                 <!--<span class="icon-ubication"></span>-->
