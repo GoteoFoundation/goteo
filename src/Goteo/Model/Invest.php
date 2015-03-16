@@ -244,7 +244,7 @@ namespace Goteo\Model {
                     case 'drop':
                         $sqlFilter .= " AND invest.campaign = 1";
                         break;
-                    case 'credit':
+                    case 'pool':
                         $sqlFilter .= " AND invest.pool = 1";
                         break;
                 }
