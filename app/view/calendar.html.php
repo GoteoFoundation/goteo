@@ -55,7 +55,8 @@ include __DIR__ . '/header.html.php';
                     </div>
                     <div class="extra">
                         <span id="event-hour" class="event-hour"></span><span id="event-location" class="event-location"></span>
-                        <a id="event-twitter" href=""><img style="float:right;" width="14" src="/view/css/calendar/twitter.png"/></a>
+                        <a id="event-calendar-add" href=""><img style="float:right;" width="14" src="/view/css/calendar/agenda-icon.svg"/></a>
+                        <a id="event-twitter" href=""><img style="float:right; margin-right:5px;" width="14" src="/view/css/calendar/twitter.png"/></a>
                         <a id="event-facebook" href=""><img style="float:right; margin-right:5px;" width="14" src="/view/css/calendar/facebook.png"/></a>
                         <span style="float:right; margin-right:5px;"><?php echo Text::get('calendar-share'); ?></span>
 
