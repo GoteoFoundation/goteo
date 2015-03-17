@@ -196,8 +196,8 @@ if ($step == 'start') : ?>
         <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
         <?php if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?><button type="submit" class="process pay-cash" name="method"  value="cash">CASH</button><?php endif; ?>
         <?php
-        // @TODO : desactivar el botón si cambia a un importe mayor al de la reserva
-        if ($this['pool'] > 0) : ?><button type="submit" class="process pay-pool" name="method" value="pool">GOTAS (<?php echo $this['pool']; ?>)</button><?php endif; ?>
+        // desactivar el botón si cambia a un importe mayor al de la reserva
+        if ($this['pool'] > 0) : ?><button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool">GOTAS (<?php echo $this['pool']; ?>)</button><?php endif; ?>
     </div>
 <br />
 
@@ -255,6 +255,18 @@ if ($step == 'start') : ?>
 
             var $reward = null;
             var val = parseFloat($('#amount').val());
+            var pool = $('#pool').val();
+
+            if(val>pool)
+            {
+                $('#button-pool').attr('disabled',true);
+                $('#button-pool').addClass('disabled');
+            }
+            else
+            {
+                $('#button-pool').attr('disabled',false);
+                $('#button-pool').removeClass('disabled');
+            }
 
             $('div.widget.project-invest-individual_rewards input.individual_reward').each(function (i, cb) {
                var $cb = $(cb);
