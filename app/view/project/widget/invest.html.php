@@ -197,7 +197,12 @@ if ($step == 'start') : ?>
         <?php if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?><button type="submit" class="process pay-cash" name="method"  value="cash">CASH</button><?php endif; ?>
         <?php
         // desactivar el botón si cambia a un importe mayor al de la reserva
-        if ($this['pool'] > 0) : ?><button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool">GOTAS (<?php echo $this['pool']; ?>)</button><?php endif; ?>
+        if ($this['pool'] > 0) : ?>
+
+        <input type="text" class="input-pool" id="amount" disabled="true" style="background: url('/view/css/drop.png') no-repeat;" value="<?php echo $this['pool']; ?>" />
+        <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool">USAR MIS GOTAS</button>
+
+        <?php endif; ?>
     </div>
 <br />
 
