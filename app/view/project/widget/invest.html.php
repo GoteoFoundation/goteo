@@ -199,9 +199,9 @@ if ($step == 'start') : ?>
         // desactivar el botón si cambia a un importe mayor al de la reserva
         if ($this['pool'] > 0) : ?>
 
-        <input type="text" class="input-pool" id="amount" disabled="true" style="background: url('/view/css/drop.png') no-repeat;" value="<?php echo $this['pool']; ?>" />
-        <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool">USAR MIS GOTAS</button>
+        <input type="text" class="input-pool" disabled="true" value="<?php echo $this['pool']; ?>" />
 
+        <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool">USAR MIS GOTAS</button>   
         <?php endif; ?>
     </div>
 <br />
@@ -262,16 +262,7 @@ if ($step == 'start') : ?>
             var val = parseFloat($('#amount').val());
             var pool = $('#pool').val();
 
-            if(val>pool)
-            {
-                $('#button-pool').attr('disabled',true);
-                $('#button-pool').addClass('disabled');
-            }
-            else
-            {
-                $('#button-pool').attr('disabled',false);
-                $('#button-pool').removeClass('disabled');
-            }
+            pool_greater(val,pool);
 
             $('div.widget.project-invest-individual_rewards input.individual_reward').each(function (i, cb) {
                var $cb = $(cb);
@@ -322,6 +313,20 @@ if ($step == 'start') : ?>
             }
         };
 
+        var pool_greater = function (amount, pool) {
+
+            if(amount>pool)
+            {
+                $('#button-pool').attr('disabled',true);
+                $('#button-pool').addClass('disabled');
+            }
+            else
+            {
+                $('#button-pool').attr('disabled',false);
+                $('#button-pool').removeClass('disabled');
+            }
+        };
+
         // funcion resetear inpput de cantidad
         var reset_amount = function (preset) {
             $('#amount').val(preset);
@@ -331,6 +336,9 @@ if ($step == 'start') : ?>
         // funcion resetear copy de cantidad
         var reset_reminder = function (rawamount) {
             var amount = parseFloat(rawamount);
+            var pool = $('#pool').val();
+            pool_greater(amount,pool);
+            
             var rate = parseFloat('<?php echo Currency::rate();?>');
             if (isNaN(amount)) {
                 amount = 0;
@@ -344,6 +352,10 @@ if ($step == 'start') : ?>
             $('#amount').val(amount);
             $('#amount-reminder').html(amount);
             $('#reminder_conversion').html(converted);
+
+            
+           
+
         };
 
 /* Actualizar el copy */
