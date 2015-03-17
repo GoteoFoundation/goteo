@@ -403,19 +403,41 @@ namespace Goteo\Controller\Admin {
                     switch ($invest->method) {
                         case 'paypal':
                             $err = array();
-                            if (Paypal::cancelPreapproval($invest, $err)) {
-                                $errors[] = 'Preaproval paypal cancelado.';
-                                $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                            } else {
-                                $txt_errors = implode('; ', $err);
-                                $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . $txt_errors;
-                                $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                                if ($invest->cancel()) {
-                                    $errors[] = 'Aporte cancelado';
-                                } else{
-                                    $errors[] = 'Fallo al cancelar el aporte';
+
+                            if (empty($invest->preapproval)) {
+
+                                if (Paypal::cancelPay($invest, $err)) {
+                                    $errors[] = 'Pago PayPal paypal cancelado.';
+                                    $log_text = "El admin %s ha cancelado aporte y pago PayPal de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                                } else {
+                                    $txt_errors = implode('; ', $err);
+                                    $errors[] = 'Fallo al cancelar el pago PayPal: ' . $txt_errors;
+                                    $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                                    if ($invest->cancel()) {
+                                        $errors[] = 'Aporte cancelado';
+                                    } else{
+                                        $errors[] = 'Fallo al cancelar el aporte';
+                                    }
                                 }
+
+                            } else {
+
+                                if (Paypal::cancelPreapproval($invest, $err)) {
+                                    $errors[] = 'Preaproval paypal cancelado.';
+                                    $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                                } else {
+                                    $txt_errors = implode('; ', $err);
+                                    $errors[] = 'Fallo al cancelar el preapproval en paypal: ' . $txt_errors;
+                                    $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                                    if ($invest->cancel()) {
+                                        $errors[] = 'Aporte cancelado';
+                                    } else{
+                                        $errors[] = 'Fallo al cancelar el aporte';
+                                    }
+                                }
+
                             }
+
                             break;
                         case 'tpv':
                             $err = array();
@@ -498,8 +520,10 @@ namespace Goteo\Controller\Admin {
                             break;
                         }
 
+                        // cuenta paypal y comisión goteo
                         $invest->account = $projectAccount->paypal;
-                        if (Paypal::pay($invest, $errors)) {
+                        $invest->fee = $projectAccount->fee;
+                        if (Paypal::execute($invest, $errors)) {
                             $errors[] = 'Cargo paypal correcto';
                             $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                             $invest->status = 1;
@@ -518,7 +542,8 @@ namespace Goteo\Controller\Admin {
                         }
                         break;
                     case 'tpv':
-                        if (Tpv::pay($invest, $errors)) {
+                        // no tiene sentido ejecutar así un aporte tpv que ya está cobrado
+                        if (Tpv::execute($invest, $errors)) {
                             $errors[] = 'Cargo sermepa correcto';
                             $log_text = "El admin %s ha ejecutado el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s";
                             $invest->status = 1;
@@ -615,6 +640,7 @@ namespace Goteo\Controller\Admin {
                 'anonymous' => 'Solo los anónimos',
                 'manual' => 'Solo los manuales',
                 'campaign' => 'Solo con riego',
+                'pool' => 'Solo a reservar',
             );
 
             // filtros de revisión de proyecto

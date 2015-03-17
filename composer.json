@@ -19,8 +19,13 @@
     "lusitanian/oauth": "~0.3",
 
     
-    "iignatov/lightopenid": "~1.0"
+    "iignatov/lightopenid": "~1.0",
+	
 
+	"paypal/adaptivepayments-sdk-php": "*",
+
+	"paypal/merchant-sdk-php": "*"
+	
     },
 
     "autoload": {

@@ -2,6 +2,7 @@
 
 namespace Goteo\Controller {
 
+    use Goteo\Application\Session;
     use Goteo\Core\ACL,
         Goteo\Core\Error,
         Goteo\Core\Redirection,
@@ -28,7 +29,9 @@ namespace Goteo\Controller {
          */
         public function index ($project = null) {
 
-            $debug = ($_SESSION['user']->id == 'root');
+            $user = Session::getUser();
+
+            $debug = ($user->id == 'root');
 
             if (empty($project))
                 throw new Redirection('/discover', Redirection::TEMPORARY);
@@ -38,7 +41,7 @@ namespace Goteo\Controller {
             $projectData = Model\Project::get($project);
             $methods = self::$methods;
 
-            if (\GOTEO_ENV  != 'real' || $_SESSION['user']->id == 'root') {
+            if (\GOTEO_ENV  != 'real' || $user->id == 'root') {
                 $methods['cash'] = 'cash';
             }
 
@@ -55,18 +58,57 @@ namespace Goteo\Controller {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $errors = array();
-                $los_datos = $_POST;
                 $method = \strtolower($_POST['method']);
+
+                if ($debug) echo \trace($_POST);
+
+                // Funcionalidad crédito:
+                $pool = Model\User\Pool::get($user->id);
+
+                // si el usuario tiene gotas el metodo 'pool' es permitido
+                if ($pool->amount > 0) {
+                    $methods['pool'] = 'pool';
+                }
 
                 if (!isset($methods[$method])) {
                     Message::Error(Text::get('invest-method-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
-                if (empty($_POST['amount'])) {
+                $_amount = $_POST['amount'];
+                if (empty($_amount)) {
                     Message::Error(Text::get('invest-amount-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
+
+                // conversión a euros
+                if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY) {
+                    $rate = Currency::rate();
+                } else {
+                    $rate = 1;
+                }
+                $amount =  round($_amount / $rate);
+                if ($debug) var_dump("$_amount / $rate = $amount  from aprox ".($_amount / $rate) );
+                $amount = \number_format($amount, 0, '', '');
+
+                // si está marcado "a reservar" llega $_POST['pool']
+
+
+
+                // si es a reservar
+                $to_pool = $_POST['pool'];
+
+                // si el usuario tiene gotas
+                if ($pool->amount > 0 && $pool->amount >=  $amount) {
+                    // guay, será tambien un aporte a reservar
+                    $to_pool = 1;
+
+                } elseif ($pool->amount > 0 && $pool->amount <  $amount) {
+                    // pero no son suficientes para este amount, error
+                    Message::Error(Text::get('invest-pool-error'));
+                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                }
+
 
                 // dirección de envio para las recompensas
                 // o datoas fiscales del donativo
@@ -79,7 +121,7 @@ namespace Goteo\Controller {
                     'country'  => $_POST['country']
                 );
 
-                if ($projectData->owner == $_SESSION['user']->id) {
+                if ($projectData->owner == $user->id) {
                     Message::Error(Text::get('invest-owner-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
@@ -97,37 +139,24 @@ namespace Goteo\Controller {
                 }
 
                 // insertamos los datos personales del usuario si no tiene registro aun
-                Model\User::setPersonal($_SESSION['user']->id, $address, false);
-
-                if ($debug) echo \trace($_POST);
-                // conversión a euros
-                if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY) {
-                    $rate = Currency::rate();
-                } else {
-                    $rate = 1;
-                }
-                $amount_original = $_POST['amount'];
-                $amount =  round($amount_original / $rate);
-                if ($debug) var_dump("$amount_original / $rate = $amount  from aprox ".($amount_original / $rate) );
-                $amount = \number_format($amount, 0, '', '');
+                Model\User::setPersonal($user->id, $address, false);
 
                 $invest = new Model\Invest(
                     array(
                         'amount' => $amount,
-                        'amount_original' => $amount_original,
+                        'amount_original' => $_amount,
                         'currency' => $_SESSION['currency'],
                         'currency_rate' => $rate,
-                        'user' => $_SESSION['user']->id,
+                        'user' => $user->id,
                         'project' => $project,
                         'method' => $method,
                         'status' => '-1',               // aporte en proceso
                         'invested' => date('Y-m-d'),
                         'anonymous' => $_POST['anonymous'],
-                        'resign' => $resign
+                        'resign' => $resign,
+                        'pool' => $to_pool
                     )
                 );
-
-                if ($debug) die(\trace($invest));
 
                 if ($reward) {
                     $invest->rewards = array($chosen);
@@ -138,7 +167,7 @@ namespace Goteo\Controller {
                 if ($projectData->called instanceof Model\Call  && $projectData->called->dropable) {
 
                     // saber si este usuario ya ha generado riego
-                    $allready = $projectData->called->getSupporters(true, $_SESSION['user']->id, $projectData->id);
+                    $allready = $projectData->called->getSupporters(true, $user->id, $projectData->id);
                     if ($allready > 0) {
                         $invest->called = null;
                     } else  {
@@ -150,9 +179,19 @@ namespace Goteo\Controller {
                     $invest->called = null;
                 }
 
+//                if ($debug) die(\trace($invest));
+
                 if ($invest->save($errors)) {
-                    $invest->urlOK  = SEC_URL."/invest/confirmed/{$project}/{$invest->id}";
-                    $invest->urlNOK = SEC_URL."/invest/fail/{$project}/{$invest->id}";
+                    // urls para paypal (necesita schema)
+                    if (substr(SITE_URL, 0, 2) == '//') {
+                        $URL = (\GOTEO_ENV != 'real') ? 'http:'.SITE_URL : 'https:'.SITE_URL;
+                    } else {
+                        $URL = SITE_URL;
+                    }
+
+                    $invest->urlOK  = $URL."/invest/confirmed/{$project}/{$invest->id}";
+                    $invest->urlNOK = $URL."/invest/fail/{$project}/{$invest->id}";
+
                     Model\Invest::setDetail($invest->id, 'init', 'Se ha creado el registro de aporte, el usuario ha clickado el boton de tpv o paypal. Proceso controller/invest');
 
                     switch($method) {
@@ -165,12 +204,27 @@ namespace Goteo\Controller {
                             }
                             break;
                         case 'paypal':
-                            // Petición de preapproval y redirección a paypal
-                            if (Paypal::preapproval($invest, $errors)) {
-                                die;
+
+                            // si es un aporte a reservar se paga con expresscheckout (y pronto siempre así)
+                            if ($invest->pool) {
+                                // expresscheckout
+                                // Petición de token y redirección a paypal
+                                if (Paypal::preparePay($invest, $errors)) {
+                                    die;
+                                } else {
+                                    Message::Error(Text::get('invest-paypal-error_fatal'));
+                                }
                             } else {
-                                Message::Error(Text::get('invest-paypal-error_fatal'));
+
+                                // Petición de preapproval y redirección a paypal
+                                if (Paypal::preapproval($invest, $errors)) {
+                                    die;
+                                } else {
+                                    Message::Error(Text::get('invest-paypal-error_fatal'));
+                                }
+
                             }
+
                             break;
                         case 'cash':
                             // En betatest aceptamos cash para pruebas
@@ -180,6 +234,14 @@ namespace Goteo\Controller {
                             } else {
                                 throw new Redirection('/');
                             }
+                            break;
+                        case 'pool':
+                            // gastar de la reserva y redirect a ok
+                                Model\User\Pool::withdraw($user->id, $invest->amount, $errors);
+                                if (empty($errors)) {
+                                    $invest->setStatus('1');
+                                    throw new Redirection($invest->urlOK);
+                                }
                             break;
                     }
                 } else {
@@ -202,6 +264,9 @@ namespace Goteo\Controller {
                 Message::Error(Text::get('invest-data-error'));
                 throw new Redirection('/', Redirection::TEMPORARY);
             }
+
+            // el usuario
+            $user = Session::getUser();
 
             // el aporte
             $invest = Model\Invest::get($id);
@@ -252,8 +317,35 @@ namespace Goteo\Controller {
             // Paypal solo disponible si activado
             if ($invest->method == 'paypal') {
 
-                // hay que cambiarle el status a 0
-                $invest->setStatus('0');
+                if (!empty($invest->preapproval)) {
+
+                    // si es preapproval hay que cambiarle el status a 0 (preapprovado)
+                    $invest->setStatus('0');
+
+                } elseif (isset($_GET['token']) && $_GET['token'] == $invest->payment) {
+
+                    // retorno valido
+                    $token = $_GET['token'];
+                    $payerid = $_GET['PayerID'];
+                    Model\Invest::setDetail($invest->id, 'paypal-completed', 'El usuario ha regresado de PayPal y recibimos el token: '.$token.'  y el PayerID '.$payerid.'.');
+
+                    $invest->setAccount($payerid);
+                    $invest->account = $payerid;
+
+                    // completamos con el DoEsxpresscheckout despues de comprobar que está completado y cobrado
+                    if (Paypal::completePay($invest, $errors)) {
+                        // ok
+
+                    } else {
+                        Model\Invest::setDetail($invest->id, 'paypal-completion-error', 'El usuario ha regresado de PayPal y recibimos el token: '.$token.'  y el PayerID '.$payerid.'. Pero completePay ha fallado. <pre>'.print_r($invest ,1).'</pre>');
+                        throw new Redirection("/project/$project/invest/?confirm=fail");
+                    }
+
+                } else {
+                    Model\Invest::setDetail($invest->id, 'paypal-return-error', 'El usuario ha regresado de un aporte de PayPal pero no tiene ni preapproval ni token. <pre>'.print_r($invest ,1).'</pre>');
+                    throw new Redirection("/project/$project/invest/?confirm=fail");
+                }
+
 
                 // Evento Feed
                 $log = new Feed();
@@ -261,7 +353,7 @@ namespace Goteo\Controller {
                 $log->populate('Aporte PayPal', '/admin/invests',
                     \vsprintf("%s ha aportado %s al proyecto %s mediante PayPal",
                         array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('user', $user->name, $user->id),
                         Feed::item('money', $invest->amount.' &euro;'),
                         Feed::item('project', $projectData->name, $projectData->id))
                     ));
@@ -273,7 +365,7 @@ namespace Goteo\Controller {
                 if ($invest->anonymous) {
                     $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);
                 } else {
-                    $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
+                    $log->populate($user->name, '/user/profile/'.$user->id, $log_html, $user->avatar->id);
                 }
                 $log->doPublic('community');
                 unset($log);
@@ -325,11 +417,14 @@ namespace Goteo\Controller {
             // email de agradecimiento al cofinanciador
 
             //  idioma de preferencia
-            $prefer = Model\User::getPreferences($_SESSION['user']->id);
-            $comlang = !empty($prefer->comlang) ? $prefer->comlang : $_SESSION['user']->lang;
+            $prefer = Model\User::getPreferences($user->id);
+            $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
 
             // primero monto el texto de recompensas
-            //@TODO el concepto principal sería 'renuncia' (porque todos los aportes son donativos)
+            // @FIXME : estas  4 plantillas tendrian que ser una sola, con textos dinamicos
+            //          según si renuncia y primera/segunda ronda
+            //
+            // @TODO : añadir un texto dinámico para cuando el aporte se va a reservar
             if ($invest->resign) {
                 // Plantilla de donativo segun la ronda
                 if ($projectData->round == 2) {
@@ -363,14 +458,14 @@ namespace Goteo\Controller {
 
             // En el contenido:
             $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%');
-            $replace = array($_SESSION['user']->name, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped);
+            $replace = array($user->name, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped);
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
             $mailHandler->reply = GOTEO_CONTACT_MAIL;
             $mailHandler->replyName = GOTEO_MAIL_NAME;
-            $mailHandler->to = $_SESSION['user']->email;
-            $mailHandler->toName = $_SESSION['user']->name;
+            $mailHandler->to = $user->email;
+            $mailHandler->toName = $user->name;
             $mailHandler->subject = $subject;
             $mailHandler->content = $content;
             $mailHandler->html = true;
@@ -389,11 +484,11 @@ namespace Goteo\Controller {
                 // Notificación al destinatario de regalo
                 $template = Template::get(53);
                 // Sustituimos los datos
-                $subject = str_replace('%USERNAME%', $_SESSION['user']->name, $template->title);
+                $subject = str_replace('%USERNAME%', $user->name, $template->title);
 
                 // En el contenido:
                 $search  = array('%DESTNAME%', '%USERNAME%', '%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%PROJAMOUNT%', '%PROJPER%', '%REWNAME%', '%ADDRESS%', '%DROPED%');
-                $replace = array($invest->address->namedest, $_SESSION['user']->name, $invest->address->message, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $amount, $percent, $txt_rewards, $txt_destaddr, $txt_droped);
+                $replace = array($invest->address->namedest, $user->name, $invest->address->message, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $amount, $percent, $txt_rewards, $txt_destaddr, $txt_droped);
                 $content = \str_replace($search, $replace, $template->text);
 
                 $mailHandler = new Mail();
@@ -427,7 +522,7 @@ namespace Goteo\Controller {
 
             // En el contenido:
             $search  = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
-            $replace = array($projectData->user->name, $_SESSION['user']->name, $projectData->name, $URL, $invest->amount, $URL.'/user/profile/'.$_SESSION['user']->id.'/message', $txt_droped);
+            $replace = array($projectData->user->name, $user->name, $projectData->name, $URL, $invest->amount, $URL.'/user/profile/'.$user->id.'/message', $txt_droped);
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();

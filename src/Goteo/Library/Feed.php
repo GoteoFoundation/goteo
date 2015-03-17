@@ -4,6 +4,7 @@ namespace Goteo\Library {
 	use Goteo\Core\Model,
         Goteo\Model\Blog\Post,
         Goteo\Library\Text,
+        Goteo\Library\Mail,
         Goteo\Model\Image;
 
     /*
@@ -646,6 +647,24 @@ namespace Goteo\Library {
         /* Logger, simple metodo para grabar en la tabla de logs */
         static public function logger( $scope, $target_type, $target_id, $text, $url = '' ) {
 
+            // si $scope contiene 'error' o 'exception', mail a \GOTEO_FAIL_MAIL
+            if ( strpos($scope, 'error') !== false || strpos($scope, 'exception') !== false  ) {
+
+                // mail de aviso
+                $mailHandler = new Mail();
+                $mailHandler->to = \GOTEO_FAIL_MAIL;
+                $mailHandler->toName = 'Goteo Fail Mail';
+                $mailHandler->subject = $scope.' '.$target_type.' '.$target_id.' en '.\SITE_URL.' '.$url;
+                $mailHandler->content = $scope.' '.$target_type.' '.$target_id.' en '.\SITE_URL.' '.$url.'<br />'.$text;
+
+                $mailHandler->html = true;
+                $mailHandler->template = 11;
+                $mailHandler->send($errors);
+                unset($mailHandler);
+
+            }
+
+
             try {
                 $values = array(
                     ':scope' => $scope,
@@ -665,9 +684,6 @@ namespace Goteo\Library {
                 }
 
             } catch(\PDOException $e) {
-                @mail(\GOTEO_FAIL_MAIL,
-                    'PDO Exception evento feed: ' . SITE_URL,
-                    "Ha fallado Feed PDO Exception<br /> {$sql} con " . print_r($values, true) . '<br />' .$e->getMessage() );
                 return false;
             }
 

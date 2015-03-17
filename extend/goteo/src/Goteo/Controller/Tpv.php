@@ -9,9 +9,6 @@ namespace Goteo\Controller {
 		Goteo\Library\Text,
         Goteo\Core\Redirection;
 
-    require_once __DIR__ . '/../../../../../src/Goteo/Library/paypal/stub.php'; // sí, uso el stub de paypal
-    require_once __DIR__ . '/../../../../../src/Goteo/Library/paypal/log.php'; // sí, uso el log de paypal
-
     class Tpv extends \Goteo\Core\Controller {
 
         public static $errcode = array(
@@ -297,6 +294,36 @@ namespace Goteo\Controller {
 //                throw new Redirection('/', Error::BAD_REQUEST);
             }
 
+            die;
+        }
+
+        /**
+         *  Endpoint IPN para notificaciones de paypal
+         */
+        public function ipn () {
+            // LOGGER
+            Feed::logger('paypal', 'invest', '999', 'IPN', SITE_URL.$_SERVER['REQUEST_URI']);
+
+            $errors = array();
+
+            // monitorizando todo lo que llega aqui
+            // mail de aviso
+            $mailHandler = new Library\Mail();
+            $mailHandler->to = \GOTEO_FAIL_MAIL;
+            $mailHandler->toName = 'Tpv Monitor Goteo.org';
+            $mailHandler->subject = 'Comunicacion ipn '.date('H:i:s d/m/Y');
+            $mailHandler->content = 'Comunicacion ipn '.date('H:i:s d/m/Y').'<br /><br />';
+
+            $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
+            $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
+            $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
+
+            $mailHandler->html = true;
+            $mailHandler->template = 11;
+
+            $mailHandler->send($errors);
+
+            unset($mailHandler);
             die;
         }
 
