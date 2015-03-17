@@ -1,3 +1,17 @@
+/*url2link = function(text)
+{
+    var expr = /(https?://S+)/gi;
+    var anchr= '<a href="$1" >$1</a>';
+     
+    return text.replace(expr,anchr);
+}*/
+
+String.prototype.convertirURL = function() {
+    return this.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&~\?\/.=]+/g, function(url) {
+        return url.link(url);
+    });
+};
+
 $(document).ready(function() {
   
             $('#calendar').fullCalendar({
@@ -12,7 +26,7 @@ $(document).ready(function() {
              
               $("#read-more").css( "display", "block" );
 
-              $("#event-description-text").html(event.description);
+              $("#event-description-text").html(event.description.convertirURL());
 
               $("#event-title").html(event.title.toUpperCase());
               
@@ -42,8 +56,9 @@ $(document).ready(function() {
               $("#category-letter").removeClass();
               $("#category-letter").addClass("category-legend "+ event.category.substr(0,1).toLowerCase());
 
-              $("#event-facebook").attr("href", "http://facebook.com/sharer.php?u="+event.url);
-              $("#event-twitter").attr("href", "http://twitter.com/home?status="+event.url);
+              $("#event-facebook").attr("href", "http://facebook.com/sharer.php?u="+document.URL);
+              $("#event-twitter").attr("href", "http://twitter.com/home?status="+document.URL);
+              $("#event-calendar-add").attr("href", event.url);
 
               $('html, body').animate({
               scrollTop: ($('#read-more').offset().top)
