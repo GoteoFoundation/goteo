@@ -7,13 +7,6 @@ $account = $this['account']; // cuentas del proyecto, para tener el porcentaje d
 // comisión goteo para este proyecto
 $GOTEO_FEE = round($account->fee / 100, 2);
 
-var_dump($account->fee);
-var_dump($account->fee / 100);
-var_dump($GOTEO_FEE);
-die;
-
-
-
 $called = $project->called;
 $Data    = $this['Data'];
 $admin = (isset($this['admin']) && $this['admin'] === true) ? true : false;

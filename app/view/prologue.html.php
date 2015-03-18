@@ -96,6 +96,26 @@ if (NODE_ID != GOTEO_NODE) {
         <?php if (isset($jsreq_ckeditor)) : ?>
            <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
         <?php endif; ?>
+        
+        <!--Para calendar -->
+        <?php if (isset($jsreq_calendar)) : ?>
+          <link href="<?php echo SRC_URL ?>/view/css/calendar/fullcalendar.css" rel="stylesheet" />
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/moment.min.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/jquery.min.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/fullcalendar.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/lang/es.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/gcal.js"></script>
+          <script src="<?php echo SRC_URL ?>/view/js/calendar/custom_calendar.js"></script>
+
+      <?php endif; ?>
+
+      <?php if (!isset($jsreq_calendar)) : ?>
+      <script src="<?php echo SRC_URL ?>/view/js/calendar/moment.min.js"></script>
+      <script src="<?php echo SRC_URL ?>/view/js/calendar/lang/es.js"></script>
+      <script src="<?php echo SRC_URL ?>/view/js/calendar/home_calendar.js"></script>
+
+      <?php endif; ?>
+
         <script type="text/javascript">
                     jQuery(document).ready(function ($) {
                          $("#lang").hover(function(){

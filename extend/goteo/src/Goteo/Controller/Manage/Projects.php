@@ -123,6 +123,7 @@ namespace Goteo\Controller\Manage {
                 // informe financiero
                 // Datos para el informe de transacciones correctas
                 $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
+                $account = Model\Project\Account::get($project->id);
 
                 return new View(
                     'manage/index.html.php',
@@ -130,6 +131,7 @@ namespace Goteo\Controller\Manage {
                         'folder' => 'projects',
                         'file' => 'report',
                         'project' => $project,
+                        'account' => $account,
                         'Data' => $Data
                     )
                 );
