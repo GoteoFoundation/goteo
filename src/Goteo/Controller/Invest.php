@@ -454,9 +454,6 @@ namespace Goteo\Controller {
             $replace = array($user->name, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_no_resign, $txt_round, $txt_pool);
             $content = \str_replace($search, $replace, $template->text);
 
-            echo $content;
-            die();
-
             $mailHandler = new Mail();
             $mailHandler->reply = GOTEO_CONTACT_MAIL;
             $mailHandler->replyName = GOTEO_MAIL_NAME;
