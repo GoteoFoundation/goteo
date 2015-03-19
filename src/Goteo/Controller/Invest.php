@@ -421,25 +421,18 @@ namespace Goteo\Controller {
             $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
 
             // primero monto el texto de recompensas
-            // @FIXME : estas  4 plantillas tendrian que ser una sola, con textos dinamicos
-            //          según si renuncia y primera/segunda ronda
-            //
-            // @TODO : añadir un texto dinámico para cuando el aporte se va a reservar
-            if ($invest->resign) {
-                // Plantilla de donativo segun la ronda
-                if ($projectData->round == 2) {
-                    $template = Template::get(36, $comlang); // en segunda ronda
-                } else {
-                    $template = Template::get(28, $comlang); // en primera ronda
-                }
-            } else {
-                // plantilla de agradecimiento segun la ronda
-                if ($projectData->round == 2) {
-                    $template = Template::get(34, $comlang); // en segunda ronda
-                } else {
-                    $template = Template::get(10, $comlang); // en primera ronda
-                }
-            }
+            
+            $template = Template::get(10, $comlang); // en segunda ronda
+
+            if(!$invest->resign)
+                $txt_no_resign=Text::get('invest-template-reward');
+
+            if($projectData->round == 1)
+                $txt_round=Text::get('invest-template-round-one');
+
+            if($to_pool)
+                $txt_pool=Text::get('invest-template-to-pool');
+
 
             $URL = \SITE_URL;
 
@@ -457,9 +450,12 @@ namespace Goteo\Controller {
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
             // En el contenido:
-            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%');
-            $replace = array($user->name, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped);
+            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%NO_RESIGN%', '%ROUND%', '%POOL%');
+            $replace = array($user->name, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_no_resign, $txt_round, $txt_pool);
             $content = \str_replace($search, $replace, $template->text);
+
+            echo $content;
+            die();
 
             $mailHandler = new Mail();
             $mailHandler->reply = GOTEO_CONTACT_MAIL;
