@@ -1,4 +1,4 @@
-.crowd-credit{
+div.widget div.crowd-credit{
 	
 	background:url('/view/css/dashboard/monedero.png') 20px;
 	background-size: 85px;
@@ -6,14 +6,14 @@
     height:100px;
     float:left;
 }
-.amount{
+div.widget div.crowd-credit div.credit-amount{
 	font-size:25px;
 	color:#95268D;
 	font-weight: bold;
 	margin-left: 42px;
 	margin-top:30px;
 }
-.help{
+div.widget div.crowd-credit-help{
 	background-color:#CAE4E6;
 	float:left;
 	margin: 30px;

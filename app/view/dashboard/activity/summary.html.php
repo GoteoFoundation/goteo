@@ -52,12 +52,12 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 <?php if ($this['pool']->amount) : ?>
 <div class="widget">
     <div class="crowd-credit">
-    <h3 class="title">Crédito Crowd</h3>
-     <div class="amount">
-        <?php echo \amount_format($this['pool']->amount); ?>
+        <h3 class="title">Crédito Crowd</h3>
+        <div class="credit-amount">
+            <?php echo \amount_format($this['pool']->amount); ?>
+        </div>
     </div>
-    </div>
-    <div class="help">
+    <div class="crowd-credit-help">
     Dispones de crédito Crowd para utilizar en Goteo. A continuación te proponemos proyectos que creemos pueden ser de tu interés para apoyar.
     </div>
 </div>
