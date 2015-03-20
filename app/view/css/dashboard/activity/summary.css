@@ -1,0 +1,24 @@
+.crowd-credit{
+	
+	background:url('/view/css/dashboard/monedero.png') 20px;
+	background-size: 85px;
+    background-repeat: no-repeat;
+    height:100px;
+    float:left;
+}
+.amount{
+	font-size:25px;
+	color:#95268D;
+	font-weight: bold;
+	margin-left: 42px;
+	margin-top:30px;
+}
+.help{
+	background-color:#CAE4E6;
+	float:left;
+	margin: 30px;
+	padding:12px;
+	max-width:650px;
+	font-size:12px;
+	
+}

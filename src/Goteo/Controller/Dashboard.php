@@ -43,6 +43,7 @@ namespace Goteo\Controller {
                 $viewData['message'] = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
                 $viewData['lists']   = Dashboard\Activity::projList($user);
                 $viewData['status']  = Model\Project::status();
+                $viewData['pool'] = Dashboard\Activity::pool($user->id, $action);
             }
 
             // gestión de certificado
