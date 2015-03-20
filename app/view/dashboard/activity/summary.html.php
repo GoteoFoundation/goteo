@@ -47,6 +47,9 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 
     });
 </script>
+
+<!-- monedero credito goteo -->
+<?php if ($this['pool']->amount) : ?>
 <div class="widget">
     <div class="crowd-credit">
     <h3 class="title">Crédito Crowd</h3>
@@ -58,6 +61,7 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
     Dispones de crédito Crowd para utilizar en Goteo. A continuación te proponemos proyectos que creemos pueden ser de tu interés para apoyar.
     </div>
 </div>
+<?php endif; ?>
 
 <!-- Proyectos que cofinancio -->
 <?php if (!empty($this['lists']['invest_on'])) : ?>
