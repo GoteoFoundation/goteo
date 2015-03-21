@@ -15,3 +15,5 @@ ALTER TABLE `project_account` ADD `allowpp` INT(1) ;
 
 -- porcentaje de comisión goteo
 ALTER TABLE `project_account` ADD `fee` INT(1) NOT NULL DEFAULT 8 COMMENT 'porcentaje de comisión goteo';
+
+ALTER TABLE `project_account` CHANGE `fee` `fee` INT( 1 ) NOT NULL DEFAULT '4' COMMENT 'porcentaje de comisión goteo';
