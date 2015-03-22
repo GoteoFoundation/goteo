@@ -155,7 +155,7 @@ foreach ($this['invests'] as $invest) {
 
 <!-- resumen financiero proyecto -->
     <a name="detail">&nbsp;</a>
-    <?php echo View::get('project/report.html.php', array('project'=>$project, 'Data'=>$Data, 'admin'=>true)); ?>
+    <?php echo View::get('project/report.html.php', array('project'=>$project, 'account'=>$account, 'Data'=>$Data, 'admin'=>true)); ?>
     <hr>
 
 <div class="widget">
