@@ -292,6 +292,7 @@ namespace Goteo\Controller\Admin {
                 // informe financiero
                 // Datos para el informe de transacciones correctas
                 $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
+                $account = Model\Project\Account::get($project->id);
 
                 return new View(
                     'admin/index.html.php',
@@ -299,6 +300,7 @@ namespace Goteo\Controller\Admin {
                         'folder' => 'projects',
                         'file' => 'report',
                         'project' => $project,
+                        'account' => $account,
                         'Data' => $Data
                     )
                 );
