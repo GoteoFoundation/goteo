@@ -8,12 +8,6 @@ $account = $this['account']; // cuentas del proyecto, para tener el porcentaje d
 
 $GOTEO_FEE = round($account->fee / 100, 2);
 
-var_dump($account->fee);
-var_dump($account->fee / 100);
-var_dump($GOTEO_FEE);
-die;
-
-
 $Data = $this['Data'];
 
 $desglose = array();
