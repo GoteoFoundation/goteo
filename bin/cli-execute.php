@@ -612,7 +612,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
                     $txt_errors = implode('; ', $err);
                     echo "Aporte " . $invest->id . ": Fallo al ejecutar cargo paypal: " . $txt_errors . "\n";
                     echo " -> ERROR!!\n";
-                    Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: ".$txt_errors.". Proceso cli-execute');
+                    Model\Invest::setDetail($invest->id, 'execution-failed', 'Fallo al ejecutar el preapproval, no ha iniciado el pago encadenado: '.$txt_errors.'. Proceso cli-execute');
 
                     //  que el sistema NO lance el mensaje a los cofinanciadores
                     // cuando el error lanzado por paypal sea el no estar verificada la cuenta del impulsor

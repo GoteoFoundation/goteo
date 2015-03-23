@@ -451,6 +451,15 @@ namespace Goteo\Library {
                 // al productor le pasamos el importe del cargo menos el 8% que se queda goteo
                 $amountPay = $invest->amount - ($invest->amount * 0.08);
 
+                // urls para paypal (necesita schema)
+                if (substr(SITE_URL, 0, 2) == '//') {
+                    $URL = (\GOTEO_ENV != 'real') ? 'http:'.SITE_URL : 'https:'.SITE_URL;
+                } else {
+                    $URL = SITE_URL;
+                }
+
+                $returnURL = $URL."/invest/confirmed/{$project->id}/{$invest->id}";
+                $cancelURL = $URL."/invest/fail/{$project->id}/{$invest->id}";
 
                 // @TODO : lo que use PP.... debería ir a \Library\Paypal\Handler.php
                 // llamada a \Library\Paypal\Handler::executeRequest()
@@ -458,8 +467,8 @@ namespace Goteo\Library {
                 // Create request object
                 $payRequest = new PPAdaptivePayments\PayRequest;
                 $payRequest->memo = "Cargo del aporte de {$invest->amount} EUR del usuario '{$userData->name}' al proyecto '{$project->name}'";
-                $payRequest->cancelUrl = SEC_URL . '/invest/charge/fail/' . $invest->id;
-                $payRequest->returnUrl = SEC_URL . '/invest/charge/success/' . $invest->id;
+                $payRequest->cancelUrl = $cancelURL;
+                $payRequest->returnUrl = $returnURL;
                 $payRequest->clientDetails = new PPTypes\ClientDetailsType;
                 $payRequest->clientDetails->customerId = $invest->user;
                 $payRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
@@ -488,7 +497,9 @@ namespace Goteo\Library {
                 $receiver->amount = $amountPay;
                 $receiver->primary = false;
 
-                $payRequest->receiverList = array($receiverP, $receiver);
+                $receiverList = new PPAdaptivePayments\ReceiverList(array($receiverP, $receiver));
+
+                $payRequest->receiverList = $receiverList;
 
                 // Create service wrapper object
                 $ap = new PPService\AdaptivePaymentsService;
@@ -496,25 +507,22 @@ namespace Goteo\Library {
                 // invoke business method on service wrapper passing in appropriate request params
                 $response = $ap->Pay($payRequest);
 
+                // debug: echo \trace($response);
+
                 ///  de aquí hacia arriba iria en un metodo del handler
                 ///  y obtendríamos de vuelta un result ('failure', 'token' , 'mal)
                 ///  y ya lo siguiente no usa nada del vendor PP.....
 
                 // Check response
 
-                if (strtoupper($ap->isSuccess) == 'FAILURE') {
+                if (strtoupper($ap->isSuccess) == 'FAILURE' || empty($response->payKey) || empty($response->paymentExecStatus)) {
                     $error_txt = '';
-                    $soapFault = $ap->getLastError(); // esto debería venir del Handler
-                    if (is_array($soapFault->error)) {
-                        $errorId = $soapFault->error[0]->errorId;
-                        $errorMsg = $soapFault->error[0]->message;
-                    } else {
-                        $errorId = $soapFault->error->errorId;
-                        $errorMsg = $soapFault->error->message;
-                    }
-                    if (is_array($soapFault->payErrorList->payError)) {
-                        $errorId = $soapFault->payErrorList->payError[0]->error->errorId;
-                        $errorMsg = $soapFault->payErrorList->payError[0]->error->message;
+                    if (is_array($response->error)) {
+                        $errorId = $response->error[0]->errorId;
+                        $errorMsg = $response->error[0]->message;
+                    } elseif (is_array($response->payErrorList->payError)) {
+                        $errorId = $response->payErrorList->payError[0]->error->errorId;
+                        $errorMsg = $response->payErrorList->payError[0]->error->message;
                     }
 
                     // tratamiento de errores
