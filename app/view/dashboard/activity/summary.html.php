@@ -50,16 +50,12 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 
 <!-- monedero credito goteo -->
 <?php if ($this['pool']->amount) : ?>
-<div class="widget">
-    <div class="crowd-credit">
-        <h3 class="title">Crédito Crowd</h3>
+<div class="widget crowd-credit">
+        <h3 class="beak">Dispones de crédito Crowd para utilizar en proyectos de Goteo.</h3>
         <div class="credit-amount">
-            <?php echo \amount_format($this['pool']->amount); ?>
+            <img style="vertical-align:middle;" src="/view/css/dashboard/monedero.svg" width="40" \>
+            <span class="amount"><?php echo \amount_format($this['pool']->amount); ?></span>
         </div>
-    </div>
-    <div class="crowd-credit-help">
-    Dispones de crédito Crowd para utilizar en Goteo. A continuación te proponemos proyectos que creemos pueden ser de tu interés para apoyar.
-    </div>
 </div>
 <?php endif; ?>
 
