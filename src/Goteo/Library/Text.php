@@ -402,7 +402,8 @@ namespace Goteo\Library {
                 'wof' => 'Wall of friends',
                 'node_public' => 'Nodos',
                 'contract' => 'Formulario Contrato',
-                'donor' => 'Certificado donantes'
+                'donor' => 'Certificado donantes',
+                'template' => 'En plantilla agradecimiento'
             );
 
             \asort($groups);
