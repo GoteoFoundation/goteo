@@ -429,19 +429,24 @@ namespace Goteo\Controller {
 
             // primero monto el texto de recompensas (o renuncia)
             if($invest->resign){
-                $txt_resign = Text::get('invest-template-resign');
+                $txt_rewards = Text::get('invest-template-resign');
             } else {
-                $txt_resign = str_replace('%REWARDS%', $txt_rewards, Text::get('invest-template-reward'));
+                $txt_rewards = str_replace('%REWARDS%', $txt_rewards, Text::get('invest-template-reward'));
             }
 
-            // segun ronda
-            if($projectData->round == 2)
-                $txt_round=Text::get('invest-template-round-two');
-            else
-                $txt_round=Text::get('invest-template-round-one');
-
-            // si reserva al monedero
-            $txt_pool = ($invest->pool) ? Text::get('invest-template-to-pool') : '';
+            // aporte usando gotas:
+            if ($invest->method == 'pool') {
+                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-with-pool'));
+            } elseif ($invest->pool) {
+                // aporte reservando al monedero
+                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-to-pool'));
+            } elseif($projectData->round == 2) {
+                // si aporte en segunda ronda
+                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-round-two'));
+            } else {
+                // resto de casos
+                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-round-one'));
+            }
 
             $URL = \SITE_URL;
 
@@ -462,8 +467,8 @@ namespace Goteo\Controller {
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
             // En el contenido:
-            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%RESIGN%', '%ROUND%', '%POOL%');
-            $replace = array($user->name, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_resign, $txt_round, $txt_pool);
+            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%METHOD%');
+            $replace = array($user->name, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method);
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
