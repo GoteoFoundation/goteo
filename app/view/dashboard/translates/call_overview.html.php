@@ -100,14 +100,14 @@ foreach ($this['scope'] as $value => $label) {
             'ok'        => array()
         ),
 
-        'description-orig' => array(
+        /*'description-orig' => array(
             'type'      => 'html',
             'title'     => Text::get('call-field-description'),
             'html'     => nl2br($original->description)
-        ),
+        ),*/
         'description' => array(
             'type'      => 'textarea',
-            'title'     => '',
+            'title'     => Text::get('call-field-description'),
             'class'     => 'ckeditor-text',
             'html'      => '1',
             'hint'      => Text::get('tooltip-call-description'),
