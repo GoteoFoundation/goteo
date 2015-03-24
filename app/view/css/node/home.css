@@ -281,7 +281,7 @@ body.node.home div.node-projects ul li span.obtained {
 }
 
 body.node.home div.node-projects ul li div.obtained strong {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: #96238F;
     padding-right: 10px;
@@ -289,7 +289,7 @@ body.node.home div.node-projects ul li div.obtained strong {
 }
 
 body.node.home div.node-projects ul li div.obtained span.percent {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: #a7a9ac;
     padding-left: 5px;
