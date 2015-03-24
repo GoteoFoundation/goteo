@@ -59,6 +59,44 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 </div>
 <?php endif; ?>
 
+<!-- proyectos de mi interes -->
+<?php if (!empty($this['lists']['favourite_categories'])) : ?>
+    <div class="widget projects">
+        <h2 class="title"><?php echo Text::get('profile-suggest-projects-interest'); ?></h2>
+        <?php foreach ($this['lists']['favourite_categories'] as $group=>$projects) : ?>
+            <div class="discover-group discover-group-my_projects" id="discover-group-my_projects-<?php echo $group ?>">
+
+                <div class="discover-arrow-left">
+                    <a class="discover-arrow" href="#my_projects" rev="my_projects" rel="<?php echo 'my_projects-'.$projects['prev'] ?>">&nbsp;</a>
+                </div>
+
+                <?php foreach ($projects['items'] as $project) :
+                        echo View::get('project/widget/project.html.php', array(
+                            'project'   => $project,
+                            'investor'  => $user
+                        ));
+                endforeach; ?>
+
+                <div class="discover-arrow-right">
+                    <a class="discover-arrow" href="#my_projects" rev="my_projects" rel="<?php echo 'my_projects-'.$projects['next'] ?>">&nbsp;</a>
+                </div>
+
+            </div>
+        <?php endforeach; ?>
+
+
+        <!-- carrusel de cuadritos -->
+        <div class="navi-bar">
+            <ul class="navi">
+                <?php foreach (array_keys($list) as $group) : ?>
+                <li><a id="navi-discover-group-<?php echo 'my_projects-'.$group ?>" href="#my_projects" rev="my_projects" rel="<?php echo "my_projects-{$group}" ?>" class="navi-discover-group navi-discover-group-my_projects"><?php echo $group ?></a></li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+
+    </div>
+<?php endif; ?>
+
 <!-- Proyectos que cofinancio -->
 <?php if (!empty($this['lists']['invest_on'])) : ?>
     <div class="widget projects">

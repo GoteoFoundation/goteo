@@ -26,6 +26,13 @@ namespace Goteo\Controller\Dashboard {
             if (!empty($invested)) {
                 $lists['invest_on'] = Listing::get($invested);
             }
+
+            //proyectos que coinciden con mis intereses
+            $favourite_categories = Model\Project::favouriteCategories($user->id);
+            if (!empty($favourite_categories)) {
+                $lists['favourite_categories'] = Listing::get($favourite_categories);
+            }
+            
             return $lists;
         }
 
