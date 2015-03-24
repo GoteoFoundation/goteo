@@ -414,31 +414,38 @@ namespace Goteo\Controller {
             $percent = floor(($projectData->amount / $projectData->mincost) * 100);
 
 
-            // email de agradecimiento al cofinanciador
+            // Agradecimiento al cofinanciador
 
             //  idioma de preferencia
             $prefer = Model\User::getPreferences($user->id);
             $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
 
-            // primero monto el texto de recompensas
-            // @FIXME : estas  4 plantillas tendrian que ser una sola, con textos dinamicos
-            //          según si renuncia y primera/segunda ronda
-            //
-            // @TODO : añadir un texto dinámico para cuando el aporte se va a reservar
-            if ($invest->resign) {
-                // Plantilla de donativo segun la ronda
-                if ($projectData->round == 2) {
-                    $template = Template::get(36, $comlang); // en segunda ronda
-                } else {
-                    $template = Template::get(28, $comlang); // en primera ronda
-                }
+
+            // plantilla agradecimiento
+            $template = Template::get(64, $comlang);
+
+            // activamos idioma comunicaciones para los textos
+            $_SESSION['VAR_LANG'] = $comlang;
+
+            // primero monto el texto de recompensas (o renuncia)
+            if($invest->resign){
+                $txt_rewards = Text::get('invest-template-resign');
             } else {
-                // plantilla de agradecimiento segun la ronda
-                if ($projectData->round == 2) {
-                    $template = Template::get(34, $comlang); // en segunda ronda
-                } else {
-                    $template = Template::get(10, $comlang); // en primera ronda
-                }
+                $txt_rewards = str_replace('%REWARDS%', $txt_rewards, Text::get('invest-template-reward'));
+            }
+
+            // aporte usando gotas:
+            if ($invest->method == 'pool') {
+                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-with-pool'));
+            } elseif ($invest->pool) {
+                // aporte reservando al monedero
+                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-to-pool'));
+            } elseif($projectData->round == 2) {
+                // si aporte en segunda ronda
+                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-round-two'));
+            } else {
+                // resto de casos
+                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-round-one'));
             }
 
             $URL = \SITE_URL;
@@ -452,13 +459,16 @@ namespace Goteo\Controller {
             $txt_destaddr = $txt_address;
             $txt_address = Text::get('invest-mail_info-address') .'<br>'. $txt_address;
 
-            // Agradecimiento al cofinanciador
+            // desactivamos idioma comunicaciones para textos
+            unset($_SESSION['VAR_LANG']);
+
+
             // Sustituimos los datos
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
             // En el contenido:
-            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%');
-            $replace = array($user->name, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped);
+            $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%METHOD%');
+            $replace = array($user->name, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method);
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
