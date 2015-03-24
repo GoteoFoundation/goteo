@@ -42,3 +42,26 @@ goteo.keepAlive = function () {
 $(function() {
     goteo.keepAlive();
 });
+
+
+$(function() {
+    // Lanza wysiwyg contenido
+    CKEDITOR.replaceAll('ckeditor-text', {
+        toolbar: 'Full',
+        toolbar_Full: [
+                ['Source','-'],
+                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                '/',
+                ['Bold','Italic','Underline','Strike'],
+                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                ['Link','Unlink','Anchor'],
+                ['Image','Format','FontSize'],
+              ],
+        skin: 'kama',
+        language: 'es',
+        height: '300px',
+        width: '800px'
+    });
+});
