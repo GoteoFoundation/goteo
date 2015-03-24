@@ -2565,6 +2565,87 @@ namespace Goteo\Model {
             return $projects;
         }
 
+        /*
+         * Lista de proyectos que tienen las categorias preferidas de un usuario
+         * @return: array of Model\Project
+         */
+        public static function favouriteCategories($user, $published = false)
+        {
+            $projects = array();
+            $values = array();
+            $values[':lang'] = \LANG;
+            $values[':user'] = $user;
+
+            if(self::default_lang(\LANG)=='es') {
+                $different_select=" IFNULL(project_lang.description, project.description) as description";
+            }
+            else {
+                $different_select=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+                $eng_join=" LEFT JOIN project_lang as eng
+                                ON  eng.id = project.id
+                                AND eng.lang = 'en'";
+            }
+
+            
+            $sqlFilter = " AND project.status = 3";
+            
+
+            $sql ="
+                SELECT
+                    project.id as project,
+                    $different_select,
+                    project.status as status,
+                    project.published as published,
+                    project.created as created,
+                    project.updated as updated,
+                    project.success as success,
+                    project.closed as closed,
+                    project.mincost as mincost,
+                    project.maxcost as maxcost,
+                    project.amount as amount,
+                    project.image as image,
+                    project.gallery as gallery,
+                    project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
+                    project.days as days,
+                    project.name as name,
+                    project.owner as owner,
+                    user.id as user_id,
+                    user.name as user_name,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
+                FROM  project
+                INNER JOIN user
+                    ON user.id = project.owner
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
+                LEFT JOIN project_lang
+                    ON  project_lang.id = project.id
+                    AND project_lang.lang = :lang
+                $eng_join
+                WHERE project.id IN (
+                    SELECT project
+                    FROM project_category
+                    WHERE category IN (
+                        SELECT interest
+                            FROM user_interest
+                        WHERE user = :user
+                    ))
+                $sqlFilter
+                ORDER BY  project.status ASC, project.created DESC
+                ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+                $projects[] = self::getWidget($proj);
+            }
+
+            return $projects;
+        }
+
 
         /*
          * Lista de proyectos publicados

@@ -60,6 +60,52 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 <?php endif; ?>
 
 <!-- Proyectos que cofinancio -->
+<?php if (!empty($this['lists']['favourite_categories'])) : ?>
+    <div class="widget projects">
+        <h2 class="title">Coinciden con mis categorias<?php //echo Text::get('profile-invest_on-header'); ?></h2>
+        <?php foreach ($this['lists']['favourite_categories'] as $group_f=>$projects_f) : ?>
+            <div class="discover-group discover-group-invest_on" id="discover-group-invest_on-<?php echo $group_f ?>">
+
+                <div class="discover-arrow-left">
+                    <a class="discover-arrow" href="#invest_on" rev="invest_on" rel="<?php echo 'invest_on-'.$projects['prev'] ?>">&nbsp;</a>
+                </div>
+
+                <?php foreach ($projects_f['items'] as $project_f) :
+
+                    $url = SITE_URL . '/widget/project/' . $project_f->id;
+                    $widget_code = Text::widget($url . $lsuf);
+                    $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
+                    ?>
+                <div style="float:left;">
+                      <?php  echo View::get('project/widget/project.html.php', array(
+                            'project' => $project_f,
+                            'investor'  => $user
+                        )); ?>
+                <br clear="both"/>
+                </div>
+                <?php endforeach; ?>
+
+                <div class="discover-arrow-right">
+                    <a class="discover-arrow" href="#invest_on" rev="invest_on" rel="<?php echo 'invest_on-'.$projects['next'] ?>">&nbsp;</a>
+                </div>
+
+            </div>
+        <?php endforeach; ?>
+
+
+        <!-- carrusel de cuadritos -->
+        <div class="navi-bar">
+            <ul class="navi">
+                <?php foreach (array_keys($list) as $group) : ?>
+                <li><a id="navi-discover-group-<?php echo 'invest_on-'.$group ?>" href="#invest_on" rev="invest_on" rel="<?php echo "invest_on-{$group}" ?>" class="navi-discover-group navi-discover-group-invest_on"><?php echo $group ?></a></li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+
+    </div>
+<?php endif; ?>
+
+<!-- Proyectos que cofinancio -->
 <?php if (!empty($this['lists']['invest_on'])) : ?>
     <div class="widget projects">
         <h2 class="title"><?php echo Text::get('profile-invest_on-header'); ?></h2>
