@@ -45,6 +45,8 @@ foreach ($this['scope'] as $value => $label) {
 
 
 ?>
+<script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
+
 <form method="post" action="/dashboard/translates/overview/save" class="project" enctype="multipart/form-data">
 <?php echo SuperForm::get(array(
     'autoupdate'    => false,
@@ -106,7 +108,8 @@ foreach ($this['scope'] as $value => $label) {
         'description' => array(
             'type'      => 'textarea',
             'title'     => '',
-            'class'     => 'inline',
+            'class'     => 'ckeditor-text',
+            'html'      => '1',
             'hint'      => Text::get('tooltip-call-description'),
             'value'     => $call->description,
             'errors'    => array(),

@@ -18,6 +18,8 @@ $sizes = array(
     'text'        => 'cols="100" rows="10"'
 );
 ?>
+<script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
+
 <div class="widget board">
     <form action="/translate/<?php echo $table ?>/edit/<?php echo $id ?>/<?php echo $this['filter'] . '&page=' . $_GET['page'] ?>" method="post" >
         <input type="hidden" name="table" value="<?php echo $table ?>" />
@@ -26,10 +28,13 @@ $sizes = array(
         <?php if ($table == 'post') : ?><input type="hidden" name="blog" value="<?php echo $content->blog ?>" /><?php endif; ?>
 
 
-        <?php foreach (Content::$fields[$table] as $field=>$fieldName) : ?>
+        <?php foreach (Content::$fields[$table] as $field=>$fieldName) : 
+        if(($field=="text")&&($table=="post"))
+            $class_field='class="ckeditor-text"';
+        ?>
         <p>
             <label for="<?php echo 'id'.$field ?>"><?php echo $fieldName ?></label><br />
-            <textarea id="<?php echo 'id'.$field ?>" name="<?php echo $field ?>" <?php echo $sizes[$field] ?>><?php echo $content->$field; ?></textarea>
+            <textarea id="<?php echo 'id'.$field ?>" name="<?php echo $field ?>" <?php echo $class_field; ?><?php echo $sizes[$field] ?>><?php echo $content->$field; ?></textarea>
         </p>
         <?php endforeach;  ?>
         <input type="submit" name="save" value="Guardar" />
