@@ -59,34 +59,26 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 </div>
 <?php endif; ?>
 
-<!-- Proyectos que cofinancio -->
+<!-- proyectos de mi interes -->
 <?php if (!empty($this['lists']['favourite_categories'])) : ?>
     <div class="widget projects">
-        <h2 class="title">Coinciden con mis categorias<?php //echo Text::get('profile-invest_on-header'); ?></h2>
-        <?php foreach ($this['lists']['favourite_categories'] as $group_f=>$projects_f) : ?>
-            <div class="discover-group discover-group-invest_on" id="discover-group-invest_on-<?php echo $group_f ?>">
+        <h2 class="title"><?php echo Text::get('profile-suggest-projects-interest'); ?></h2>
+        <?php foreach ($this['lists']['favourite_categories'] as $group=>$projects) : ?>
+            <div class="discover-group discover-group-my_projects" id="discover-group-my_projects-<?php echo $group ?>">
 
                 <div class="discover-arrow-left">
-                    <a class="discover-arrow" href="#invest_on" rev="invest_on" rel="<?php echo 'invest_on-'.$projects['prev'] ?>">&nbsp;</a>
+                    <a class="discover-arrow" href="#my_projects" rev="my_projects" rel="<?php echo 'my_projects-'.$projects['prev'] ?>">&nbsp;</a>
                 </div>
 
-                <?php foreach ($projects_f['items'] as $project_f) :
-
-                    $url = SITE_URL . '/widget/project/' . $project_f->id;
-                    $widget_code = Text::widget($url . $lsuf);
-                    $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
-                    ?>
-                <div style="float:left;">
-                      <?php  echo View::get('project/widget/project.html.php', array(
-                            'project' => $project_f,
+                <?php foreach ($projects['items'] as $project) :
+                        echo View::get('project/widget/project.html.php', array(
+                            'project'   => $project,
                             'investor'  => $user
-                        )); ?>
-                <br clear="both"/>
-                </div>
-                <?php endforeach; ?>
+                        ));
+                endforeach; ?>
 
                 <div class="discover-arrow-right">
-                    <a class="discover-arrow" href="#invest_on" rev="invest_on" rel="<?php echo 'invest_on-'.$projects['next'] ?>">&nbsp;</a>
+                    <a class="discover-arrow" href="#my_projects" rev="my_projects" rel="<?php echo 'my_projects-'.$projects['next'] ?>">&nbsp;</a>
                 </div>
 
             </div>
@@ -97,7 +89,7 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
         <div class="navi-bar">
             <ul class="navi">
                 <?php foreach (array_keys($list) as $group) : ?>
-                <li><a id="navi-discover-group-<?php echo 'invest_on-'.$group ?>" href="#invest_on" rev="invest_on" rel="<?php echo "invest_on-{$group}" ?>" class="navi-discover-group navi-discover-group-invest_on"><?php echo $group ?></a></li>
+                <li><a id="navi-discover-group-<?php echo 'my_projects-'.$group ?>" href="#my_projects" rev="my_projects" rel="<?php echo "my_projects-{$group}" ?>" class="navi-discover-group navi-discover-group-my_projects"><?php echo $group ?></a></li>
                 <?php endforeach ?>
             </ul>
         </div>
