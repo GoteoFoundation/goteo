@@ -267,7 +267,7 @@ div.widget.project div.meter h3.title.obtained {
     padding-left: 5px;
 }
 div.widget.project div.meter div.obtained strong {
-    font-size: 26px;
+    font-size: 23px;
     font-weight: bold;
     color: #96238F;
     padding-right: 15px;
@@ -275,7 +275,7 @@ div.widget.project div.meter div.obtained strong {
 }
 
 div.widget.project div.meter div.obtained span.percent {
-    font-size: 26px;
+    font-size: 23px;
     font-weight: bold;
     color: #a7a9ac;
     padding-left: 10px;
