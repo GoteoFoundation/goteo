@@ -118,7 +118,7 @@ jQuery(document).ready(function($) {
                 <ul>
                     <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
-                    <li class="identica"><a href="/calendar" target="_blank"><?php echo Text::get('regular-calendar') ?></a></li>
+                    <li class="calendar"><a href="/calendar" target="_blank"><?php echo Text::get('regular-calendar') ?></a></li>
                     <li class="gplus"><a href="<?php echo Text::get('social-account-google') ?>" target="_blank"><?php echo Text::get('regular-google') ?></a></li>
                     <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss<?php echo $lang ?>" target="_blank"><?php echo Text::get('regular-share-rss'); ?></a></li>
 
