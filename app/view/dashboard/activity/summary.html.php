@@ -51,7 +51,7 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 <!-- monedero credito goteo -->
 <?php if ($this['pool']->amount) : ?>
 <div class="widget crowd-credit">
-        <h3 class="beak">Dispones de crédito Crowd para utilizar en proyectos de Goteo.</h3>
+        <h3 class="beak"><?php echo Text::get('profile-credit-available'); ?></h3>
         <div class="credit-amount">
             <img style="vertical-align:middle;" src="/view/css/dashboard/monedero.svg" width="40" \>
             <span class="amount"><?php echo \amount_format($this['pool']->amount); ?></span>
