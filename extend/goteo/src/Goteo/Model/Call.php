@@ -995,7 +995,7 @@ namespace Goteo\Model {
                     $sqlJoin
                     $eng_join
                     $sqlFilter
-                    ORDER BY `call`.name ASC";
+                    ORDER BY `call`.status ASC, `call`.name ASC";
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Call') as $call) {
