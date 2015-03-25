@@ -201,7 +201,7 @@ if ($step == 'start') : ?>
 
         <input type="text" class="input-pool" disabled="true" value="<?php echo $this['pool']; ?>" />
 
-        <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool">USAR MIS GOTAS</button>   
+        <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool"><?php echo Text::get('project-invest-pool-button') ?></button>   
         <?php endif; ?>
     </div>
 <br />
