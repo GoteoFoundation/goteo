@@ -47,11 +47,23 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 
     });
 </script>
-<!-- mis proyectos -->
-<?php if (!empty($this['lists']['my_projects'])) : ?>
+
+<!-- monedero credito goteo -->
+<?php if ($this['pool']->amount) : ?>
+<div class="widget crowd-credit">
+        <h3 class="beak">Dispones de crédito Crowd para utilizar en proyectos de Goteo.</h3>
+        <div class="credit-amount">
+            <img style="vertical-align:middle;" src="/view/css/dashboard/monedero.svg" width="40" \>
+            <span class="amount"><?php echo \amount_format($this['pool']->amount); ?></span>
+        </div>
+</div>
+<?php endif; ?>
+
+<!-- proyectos de mi interes -->
+<?php if (!empty($this['lists']['favourite_categories'])) : ?>
     <div class="widget projects">
-        <h2 class="title"><?php echo Text::get('profile-my_projects-header'); ?></h2>
-        <?php foreach ($this['lists']['my_projects'] as $group=>$projects) : ?>
+        <h2 class="title"><?php echo Text::get('profile-suggest-projects-interest'); ?></h2>
+        <?php foreach ($this['lists']['favourite_categories'] as $group=>$projects) : ?>
             <div class="discover-group discover-group-my_projects" id="discover-group-my_projects-<?php echo $group ?>">
 
                 <div class="discover-arrow-left">
@@ -61,10 +73,7 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
                 <?php foreach ($projects['items'] as $project) :
                         echo View::get('project/widget/project.html.php', array(
                             'project'   => $project,
-                            'balloon' => '<h4>' . htmlspecialchars($this['status'][$project->status]) . '</h4>' .
-                                         '<blockquote>' . $waitfor[$project->status] . '</blockquote>',
-                            'dashboard' => true,
-                            'own'       => true
+                            'investor'  => $user
                         ));
                 endforeach; ?>
 
