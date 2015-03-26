@@ -150,7 +150,6 @@ namespace Goteo\Controller {
             }
 
 
-
             if (isset($_POST['Num_operacion'])) {
                 $_POST['invest'] = $id = \substr($_POST['Num_operacion'], 0, -4);
 
@@ -166,6 +165,36 @@ namespace Goteo\Controller {
 
                 // LOGGER
                 Feed::logger('tpv response', 'invest', $id, $response, SITE_URL.$_SERVER['REQUEST_URI']);
+
+                // y la firma
+                $clave = TPV_ENCRYPT_KEY;
+
+                // Clave_encriptacion+MerchantID+AcquirerBIN+TerminalID+Num_operacion+Importe+TipoMoneda+Exponente+Referencia
+                $sign_code = $clave . $_POST['MerchantID'] . $_POST['AcquirerBIN'] . $_POST['TerminalID'] . $_POST['Num_operacion'] . $_POST['Importe'] . $_POST['TipoMoneda'] . $_POST['Exponente'] . $_POST['Referencia'];
+                $Firma = sha1($sign_code);
+                // Comprovacion de firma
+                if($_POST['Firma'] !== $Firma) {
+                    // echo "KK: $sign_code\n";
+                    // notificación del error a dev@goteo.org
+                    $mailHandler = new Library\Mail();
+                    $mailHandler->to = \GOTEO_FAIL_MAIL;
+                    $mailHandler->toName = 'Tpv Monitor Goteo.org';
+                    $mailHandler->subject = 'Error de firma en comunicacion online '.date('H:i:s d/m/Y'). ' ' . \SITE_URL;
+                    $mailHandler->content = 'Error de firma en comunicacion online '.date('H:i:s d/m/Y') . '<br />';
+                    $mailHandler->content .= 'Firma calculada: ' . $Firma . ' = SHA1(' . $sign_code . ')<br />';
+                    $mailHandler->content .= '<hr /> <pre>' . print_r($invest, true) . '</pre><hr />';
+                    $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
+                    $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
+                    $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
+
+                    $mailHandler->html = true;
+                    $mailHandler->template = 11;
+                    $mailHandler->send($errors);
+                    unset($mailHandler);
+                    die('KO');
+                }
+
+                // die("$Firma\n");
 
                 if (!empty($_POST['Referencia'])) {
 
