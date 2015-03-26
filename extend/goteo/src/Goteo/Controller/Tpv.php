@@ -187,8 +187,8 @@ namespace Goteo\Controller {
                         throw new \Exception("Error de firma en comunicacion online  Firma calculada: [$Firma] Cadena-SHA1: [$sign_code]", 1);
                     }
                     // Comprobar duplicado
-                    if($invest->status !== Model\Invest::STATUS_PROCESSING) {
-                        throw new \Exception("Operación duplicada! Invest id: [{$invest->id}] Num. Operación: [{$_POST[Num_operacion]}]", 1);
+                    if((int)$invest->status !== Model\Invest::STATUS_PROCESSING) {
+                        throw new \Exception("Operación duplicada! Invest id: [{$invest->id}] Status: [{$invest->status}] Num. Operación: [{$_POST[Num_operacion]}]", 1);
                     }
                     // print_r($_POST);die("{$invest->status} $Firma $sign_code\n");
                     try {
