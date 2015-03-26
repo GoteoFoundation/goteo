@@ -11,6 +11,20 @@ namespace Goteo\Model {
 
     class Invest extends \Goteo\Core\Model {
 
+        const METHOD_PAYPAL = 'paypal';
+        const METHOD_TPV    = 'tpv';
+        const METHOD_CASH   = 'cash';
+        const METHOD_DROP   = 'drop';
+
+    #INVEST STATUS IDs
+        const STATUS_PROCESSING = -1;
+        const STATUS_PENDING    = 0;
+        const STATUS_CHARGED    = 1;
+        const STATUS_CANCELED   = 2;
+        const STATUS_PAID       = 3;
+        const STATUS_RETURNED   = 4;
+        const STATUS_RELOCATED  = 5;
+
         public
             $id,
             $user,
@@ -1214,9 +1228,9 @@ namespace Goteo\Model {
 
             // si es un proyecto fallido el aporte se queda en el termometro
             if ($fail) {
-                $status = 4;
+                $status = self::STATUS_RETURNED;
             } else {
-                $status = 2;
+                $status = self::STATUS_CANCELED;
             }
 
             $sql = "UPDATE invest SET
@@ -1229,7 +1243,7 @@ namespace Goteo\Model {
                 // si tiene capital riego asociado, lo liberamos
                 if (!empty($this->droped)) {
                     $drop = Invest::get($this->droped);
-                    if ($drop->setStatus(2)) {
+                    if ($drop->setStatus(self::STATUS_CANCELED)) {
                         self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
                     }
                 }
@@ -1256,13 +1270,13 @@ namespace Goteo\Model {
          */
         public static function status ($id = null) {
             $array = array (
-                -1 => 'Incompleto',
-                0  => 'Preaprobado',
-                1  => 'Cobrado por Goteo',
-                2  => 'Cancelado',
-                3  => 'Pagado al proyecto',
-                4  => 'Devuelto (archivado)',
-                5  => 'Reubicado'
+                self::STATUS_PROCESSING => 'Incompleto',
+                self::STATUS_PENDING    => 'Preaprobado',
+                self::STATUS_CHARGED    => 'Cobrado por Goteo',
+                self::STATUS_CANCELED   => 'Cancelado',
+                self::STATUS_PAID       => 'Pagado al proyecto',
+                self::STATUS_RETURNED   => 'Devuelto (archivado)',
+                self::STATUS_RELOCATED  => 'Reubicado'
             );
 
             if (isset($id)) {
@@ -1299,6 +1313,7 @@ namespace Goteo\Model {
 
             // segun estado, ronda y fecha de pase a segunda
             // el cash(1) es igual para todos
+            // TODO: que son estos numeros? estados de que? proyecto?
             switch ($status) {
                 case 0: // descartado
                 case 1: // edicion
