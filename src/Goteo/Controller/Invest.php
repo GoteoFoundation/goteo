@@ -150,7 +150,7 @@ namespace Goteo\Controller {
                         'user' => $user->id,
                         'project' => $project,
                         'method' => $method,
-                        'status' => '-1',               // aporte en proceso
+                        'status' => Model\Invest::STATUS_PROCESSING,  // aporte en proceso
                         'invested' => date('Y-m-d'),
                         'anonymous' => $_POST['anonymous'],
                         'resign' => $resign,
@@ -320,7 +320,7 @@ namespace Goteo\Controller {
                 if (!empty($invest->preapproval)) {
 
                     // si es preapproval hay que cambiarle el status a 0 (preapprovado)
-                    $invest->setStatus('0');
+                    $invest->setStatus(Model\Invest::STATUS_PENDING);
 
                 } elseif (isset($_GET['token']) && $_GET['token'] == $invest->payment) {
 
