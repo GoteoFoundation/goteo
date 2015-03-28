@@ -127,7 +127,7 @@ if ($step == 'start') : ?>
     <h<?php echo $level ?> class="beak"><?php echo Text::get('user-login-required-to_invest') ?></h<?php echo $level ?>>
 
     <div class="buttons">
-        <button type="submit" class="button red" name="go-login" value=""><?php echo Text::get('imperative-register'); ?></button>
+        <button type="submit" class="button green" name="go-login" value=""><?php echo Text::get('imperative-register'); ?></button>
     </div>
 
     <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount; ?></span></div>
@@ -201,7 +201,7 @@ if ($step == 'start') : ?>
 
         <input type="text" class="input-pool" disabled="true" value="<?php echo $this['pool']; ?>" />
 
-        <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool">USAR MIS GOTAS</button>   
+        <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool"><?php echo Text::get('project-invest-pool-button') ?></button>   
         <?php endif; ?>
     </div>
 <br />

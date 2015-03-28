@@ -150,7 +150,7 @@ namespace Goteo\Controller {
                         'user' => $user->id,
                         'project' => $project,
                         'method' => $method,
-                        'status' => '-1',               // aporte en proceso
+                        'status' => Model\Invest::STATUS_PROCESSING,  // aporte en proceso
                         'invested' => date('Y-m-d'),
                         'anonymous' => $_POST['anonymous'],
                         'resign' => $resign,
@@ -241,6 +241,8 @@ namespace Goteo\Controller {
                                 if (empty($errors)) {
                                     $invest->setStatus('1');
                                     throw new Redirection($invest->urlOK);
+                                } else {
+                                    Message::Error(implode('<br />, $errors)'));
                                 }
                             break;
                     }
@@ -320,14 +322,13 @@ namespace Goteo\Controller {
                 if (!empty($invest->preapproval)) {
 
                     // si es preapproval hay que cambiarle el status a 0 (preapprovado)
-                    $invest->setStatus('0');
+                    $invest->setStatus(Model\Invest::STATUS_PENDING);
 
                 } elseif (isset($_GET['token']) && $_GET['token'] == $invest->payment) {
 
                     // retorno valido
                     $token = $_GET['token'];
                     $payerid = $_GET['PayerID'];
-                    Model\Invest::setDetail($invest->id, 'paypal-completed', 'El usuario ha regresado de PayPal y recibimos el token: '.$token.'  y el PayerID '.$payerid.'.');
 
                     $invest->setAccount($payerid);
                     $invest->account = $payerid;
@@ -335,6 +336,7 @@ namespace Goteo\Controller {
                     // completamos con el DoEsxpresscheckout despues de comprobar que está completado y cobrado
                     if (Paypal::completePay($invest, $errors)) {
                         // ok
+                        Model\Invest::setDetail($invest->id, 'paypal-completed', 'El usuario ha regresado de PayPal y recibimos el token: '.$token.'  y el PayerID '.$payerid.'.');
 
                     } else {
                         Model\Invest::setDetail($invest->id, 'paypal-completion-error', 'El usuario ha regresado de PayPal y recibimos el token: '.$token.'  y el PayerID '.$payerid.'. Pero completePay ha fallado. <pre>'.print_r($invest ,1).'</pre>');
@@ -362,6 +364,32 @@ namespace Goteo\Controller {
                 $log_html = Text::html('feed-invest',
                                     Feed::item('money', $invest->amount.' &euro;'),
                                     Feed::item('project', $projectData->name, $projectData->id));
+                if ($invest->anonymous) {
+                    $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);
+                } else {
+                    $log->populate($user->name, '/user/profile/'.$user->id, $log_html, $user->avatar->id);
+                }
+                $log->doPublic('community');
+                unset($log);
+            }
+
+            // Feed al aportar usndo gotas
+            if ($invest->method == 'pool') {
+                // Evento Feed
+                $log = new Feed();
+                $log->setTarget($projectData->id);
+                $log->populate('Aporte Monedero', '/admin/invests',
+                    \vsprintf("%s ha aportado %s al proyecto %s mediante Monedero",
+                        array(
+                            Feed::item('user', $user->name, $user->id),
+                            Feed::item('money', $invest->amount.' &euro;'),
+                            Feed::item('project', $projectData->name, $projectData->id))
+                    ));
+                $log->doAdmin('money');
+                // evento público
+                $log_html = Text::html('feed-invest',
+                    Feed::item('money', $invest->amount.' &euro;'),
+                    Feed::item('project', $projectData->name, $projectData->id));
                 if ($invest->anonymous) {
                     $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);
                 } else {

@@ -150,7 +150,6 @@ namespace Goteo\Controller {
             }
 
 
-
             if (isset($_POST['Num_operacion'])) {
                 $_POST['invest'] = $id = \substr($_POST['Num_operacion'], 0, -4);
 
@@ -167,9 +166,33 @@ namespace Goteo\Controller {
                 // LOGGER
                 Feed::logger('tpv response', 'invest', $id, $response, SITE_URL.$_SERVER['REQUEST_URI']);
 
-                if (!empty($_POST['Referencia'])) {
+                try {
+                    if($_POST['Codigo_error']) {
+                        $Cerr = (string) $_POST['Codigo_error'];
+                        $errTxt = self::$errcode[$Cerr];
+                        // cancelar aporte
+                        Model\Invest::setDetail($invest->id, 'tpv-response-error', 'El tpv ha comunicado el siguiente Codigo error: '.$Cerr . ' - ' . $errTxt .'. El aporte a quedado \'En proceso\'. Proceso controller/tpv');
 
+                        $invest->cancel(true);
+                        // avisar
+                        throw new \Exception($Cerr.' '.$errTxt, 1);
+                    }
+
+                    // Comprovacion de firma
+                    // Clave_encriptacion+MerchantID+AcquirerBIN+TerminalID+Num_operacion+Importe+TipoMoneda+Exponente+Referencia
+                    $sign_code = TPV_ENCRYPT_KEY . $_POST['MerchantID'] . $_POST['AcquirerBIN'] . $_POST['TerminalID'] . $_POST['Num_operacion'] . $_POST['Importe'] . $_POST['TipoMoneda'] . $_POST['Exponente'] . $_POST['Referencia'];
+                    $Firma = sha1($sign_code);
+                    if($_POST['Firma'] !== $Firma) {
+                        // avisar
+                        throw new \Exception("Error de firma en comunicacion online  Firma calculada: [$Firma] Cadena-SHA1: [$sign_code]", 1);
+                    }
+                    // Comprobar duplicado
+                    if((int)$invest->status !== Model\Invest::STATUS_PROCESSING) {
+                        throw new \Exception("Operación duplicada! Invest id: [{$invest->id}] Status: [{$invest->status}] Num. Operación: [{$_POST[Num_operacion]}]", 1);
+                    }
+                    // print_r($_POST);die("{$invest->status} $Firma $sign_code\n");
                     try {
+
                         $tpvRef = $_POST['Referencia'];
                         $tpvAut = $_POST['Num_aut'];
 
@@ -191,22 +214,7 @@ namespace Goteo\Controller {
                             Model\Invest::setDetail($invest->id, 'tpv-response', 'La comunicación online del tpv se ha completado correctamente. Proceso controller/tpv');
                             Model\Invest::invested($invest->project); //actualizar campo precalculado
                         } else {
-
-                            // notificación del error a dev@goteo.org
-                            $mailHandler = new Library\Mail();
-                            $mailHandler->to = \GOTEO_FAIL_MAIL;
-                            $mailHandler->toName = 'Tpv Monitor Goteo.org';
-                            $mailHandler->subject = 'Error db en comunicacion online '.date('H:i:s d/m/Y');
-                            $mailHandler->content = 'Error db en comunicacion online '.date('H:i:s d/m/Y').'<br /> Ha fallado: '.$sql.' <pre>'.print_r($values, true).'</pre><pre>' . print_r($invest, true) . '</pre><hr />';
-                            $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
-                            $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
-                            $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
-
-                            $mailHandler->html = true;
-                            $mailHandler->template = 11;
-                            $mailHandler->send($errors);
-                            unset($mailHandler);
-
+                            throw new \PDOException('SQL ERROR: '.$sql, 1);
                         }
 
                         // si tiene capital riego asociado pasa al mismo estado
@@ -214,6 +222,7 @@ namespace Goteo\Controller {
                             Model\Invest::query("UPDATE invest SET status = 1 WHERE id = :id", array(':id' => $invest->droped));
                         }
                     } catch (\PDOException $e) {
+                        // TODO: esto se considera un pago valido?
 
                         // notificación del error a dev@goteo.org
                         $mailHandler = new Library\Mail();
@@ -236,18 +245,14 @@ namespace Goteo\Controller {
                     $doPublic = true;
 
                     echo '$*$OKY$*$';
-                } else {
 
-                    $Cerr = (string) $_POST['Codigo_error'];
-                    $errTxt = self::$errcode[$Cerr];
-                    Model\Invest::setDetail($invest->id, 'tpv-response-error', 'El tpv ha comunicado el siguiente Codigo error: '.$Cerr.' - '.$errTxt.'. El aporte a quedado \'En proceso\'. Proceso controller/tpv');
-
+                } catch(\Exception $e) {
                     // notificación del error a dev@goteo.org
                     $mailHandler = new Library\Mail();
                     $mailHandler->to = \GOTEO_FAIL_MAIL;
                     $mailHandler->toName = 'Tpv Monitor Goteo.org';
-                    $mailHandler->subject = 'Codigo Error TPV en comunicacion online '.date('H:i:s d/m/Y'). ' ' . \SITE_URL;
-                    $mailHandler->content = 'Codigo error: '.$Cerr.' '.$errTxt.'<br />';
+                    $mailHandler->subject = 'Error TPV en comunicacion online '.date('H:i:s d/m/Y'). ' ' . \SITE_URL;
+                    $mailHandler->content = 'ERROR:<br /> '.$e->getMessage().'<br /><br />';
                     $mailHandler->content .= 'GET:<br /><pre>' . print_r( $_GET, true) . '</pre><hr />';
                     $mailHandler->content .= 'POST:<pre>' . print_r( $_POST, true) . '</pre><hr />';
                     $mailHandler->content .= 'SERVER:<pre>' . print_r( $_SERVER, true) . '</pre>';
@@ -257,11 +262,11 @@ namespace Goteo\Controller {
                     $mailHandler->send($errors);
                     unset($mailHandler);
 
-                    $invest->cancel('ERR '.$Cerr);
                     $_POST['result'] = 'Fail';
 
-                    $log_text = 'Ha habido un <span class="red">ERROR de TPV (Codigo: '.$Cerr.' '.$errTxt.')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
+                    $log_text = 'Ha habido un <span class="red">ERROR de TPV (' . $e->getMessage() . ')</span> en el aporte de %s de %s al proyecto %s mediante TPV';
                     $doPublic = false;
+                    echo 'KO';
                 }
 
                 // Evento Feed
@@ -365,5 +370,4 @@ namespace Goteo\Controller {
         }
 
     }
-
 }

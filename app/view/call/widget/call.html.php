@@ -14,7 +14,7 @@ $call->categories = Model\Call\Category::getNames($call->id);
 $call->icons = Model\Call\Icon::getNames($call->id);
 
 $color = array(
-    3 => 'red',
+    3 => 'green',
     4 => 'aqua',
     5 => 'violet',
     6 => 'grey'
