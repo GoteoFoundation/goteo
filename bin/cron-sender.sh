@@ -22,7 +22,7 @@ if [[ $LINES -gt 2 ]] ; then
 	echo "comprimiendo y conservando log de envio"
 	gzip "$LOG.log"
 	echo "comprimiendo archivos generados"
-	tar cfz "$TAR"".tar.gz" "$LOG_SEND"*.log
+	tar cfz "$TAR"".tar.gz" "$LOG_SEND"*.log 2> /dev/null
     if [ $? != '0' ]; then
         ret=2
     fi
