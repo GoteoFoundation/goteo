@@ -66,6 +66,13 @@ namespace {
         echo nl2br(str_replace($keys, $vals, $sql));
     }
 
+    function date_interval($date1, $date2 = 'now', $format = '%a') {
+        $datetime1 = new \DateTime($date1);
+        $datetime2 = new \DateTime($date2);
+        $interval = $datetime1->diff($datetime2);
+        return $interval->format($format);
+    }
+
     /**
      * Genera un mktime (UNIX_TIMESTAMP) a partir de una fecha (DATE/DATETIME/TIMESTAMP)
      * @param $str

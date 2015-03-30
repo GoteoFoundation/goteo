@@ -1051,8 +1051,8 @@ namespace Goteo\Model {
         public function setDays() {
 
             if ($this->status == 3) { // En campaña
-                $days = $this->daysActive(); // Tiempo de campaña (días desde la fecha de publicación del proyecto)
-                $this->days_active = $days;
+                // Tiempo de campaña (días desde la fecha de publicación del proyecto)
+                $days = $this->days_active = date_interval($this->published);
 
                 if ($days < $this->days_round1) { // En primera ronda
                     $this->round = 1;
@@ -2465,32 +2465,6 @@ namespace Goteo\Model {
             }
         }
 
-
-        /**
-         * Método que devuelve los días que lleva en campaña el proyecto (días desde la fecha de publicación)
-         *
-         * @return numeric days active from published field
-         */
-        public function daysActive() {
-            // se puede hacer sin consultar la base de datos
-            if($this->published) {
-                $published = strtotime($this->published . date(" H:i:s"));
-                $today = time();
-                $diff = $today - $published;
-                $days = floor($diff/60/60/24);
-            }
-            if($days) return (int) $days;
-            // días desde el published
-            $sql = "
-                SELECT DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(CONCAT(published, DATE_FORMAT(now(), ' %H:%i:%s')))), '%j') as days
-                FROM project
-                WHERE id = ?";
-            $query = self::query($sql, array($this->id));
-            $past = $query->fetchObject();
-            // echo "[{$past->days} $days]";die;
-            return $past->days - 1;
-        }
-
         /*
          * Lista de proyectos de un usuario
          * @return: array of Model\Project
@@ -2586,9 +2560,9 @@ namespace Goteo\Model {
                                 AND eng.lang = 'en'";
             }
 
-            
+
             $sqlFilter = " AND project.status = 3";
-            
+
 
             $sql ="
                 SELECT
