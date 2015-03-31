@@ -233,7 +233,7 @@ if ($step == 'start') : ?>
         <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool"><?php echo Text::get('project-invest-pool-button') ?></button>   
         <?php endif; ?>
         -->
-        <button type="submit" style="margin-top:30px;" class="button green" id="button-general">Aportar</button>
+        <button type="submit" style="margin-top:30px;" class="process button green" id="button-general">Aportar</button>
     </div>
 <br />
 
