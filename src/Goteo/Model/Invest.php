@@ -1875,10 +1875,7 @@ namespace Goteo\Model {
             }
 
             $query = self::query($sql, array(':method' => $method));
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-                $list[$item->id] = $item;
-            }
-            return $list;
+            return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
         }
 
         /**
