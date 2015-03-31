@@ -4,7 +4,7 @@
 define('NODE_META_TITLE', 'Goteo Barcelona - Cofinanciació del procomú');
 define('NODE_META_DESCRIPTION', utf8_encode('Xarxa social de finançament col·lectiu'));
 define('NODE_META_KEYWORDS', utf8_encode('crowdfunding, procomún, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres'));
-define('NODE_META_AUTHOR', 'Fundación Fuentes Abiertas');
+define('NODE_META_AUTHOR', 'Fundación Goteo');
 define('NODE_META_COPYRIGHT', 'Platoniq');
 define('NODE_DEFAULT_LANG', 'ca');
 define('NODE_URL', 'http://barcelona.goteo.org');
