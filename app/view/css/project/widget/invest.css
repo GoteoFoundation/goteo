@@ -120,7 +120,7 @@ div.widget.project-invest div.individual ul li.disabled{
 }
 
 div.widget.project-invest.method div.buttons {
-    width: 60%;
+    width: 100%;
     float:left;
 }
 
@@ -151,7 +151,7 @@ div.widget.project-invest.method button.pay-paypal:hover {
 }
 
 div.widget.project-invest div.reminder {
-    width: 40%;
+    width: 95%;
     float: left;
     margin-bottom: 1em;
 }
@@ -162,6 +162,42 @@ div.widget.project-invest div.reminder #amount-reminder, div.widget.project-inve
     font-weight: bold;
     margin-left: 5px;
 }
+
+div.widget.project-invest.method div.method{
+    padding: 15px 0px; 
+}
+
+div.widget.project-invest.method label.label-method{
+    background-color:#E5C8E3; 
+    padding:20px 10px; 
+    margin-left:15px; 
+    border-radius:7px;
+}
+
+div.widget.project-invest.method label.label-method:hover{
+    cursor: pointer; cursor: hand;
+}
+
+
+div.widget.project-invest.method span.method-text{
+    font-size: 16px;
+}
+
+div.widget.project-invest.method img.img-method{
+    vertical-align:middle; 
+    margin-left:15px;
+}
+
+div.widget.project-invest.method span.pool-info{
+    margin-left: 15px; 
+    background-color:#FFF; 
+    font-size: 12px; 
+    padding: 13px; 
+    padding-left:0px;
+    border-radius: 7px;
+}
+
+
 
 div.widget.project-invest div.individual ul li {
 	padding: 0px;
