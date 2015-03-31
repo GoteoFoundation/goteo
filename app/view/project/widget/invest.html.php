@@ -186,12 +186,41 @@ if ($step == 'start') : ?>
 
 
 <div class="widget project-invest method">
-    <h<?php echo $level ?> class="beak"><?php echo Text::get('project-invest-continue') ?></h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title"><?php //echo Text::get('project-invest-continue') ?>Realiza tu aporte</h<?php echo $level ?>>
     <input type="hidden" id="paymethod"  />
     <input type="hidden" id="pool" value="<?php echo $this['pool']; ?>"  />
 
+    <div class="reminder" style="background-color:#E9F4EA; padding:15px;"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span>
+    <?php   if (!$allowpp) : 
+                echo Text::html('invest-paypal_disabled'); 
+            endif;
+            if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) :
+                echo '<div>'.Text::html('currency-alert', \amount_format($amount, 3, true, true) ).'</div>';
+            endif;
+    ?>
+    </div>
 
+    <!--<?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>-->
+    
+    <!--
+    <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
+    <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 3, true, true) ); ?></div>
+    <?php endif; ?>
+    -->
     <div class="buttons">
+        <div class="method"><input type="radio" name="method" id="tpv-method" checked="checked" value="tpv"><label for="tpv-method" class="label-method"><span class="method-text">Tarjeta<span><img class="img-method" src="/view/css/button/logos_tarjetas.png" /></label></div>
+        <?php if ($allowpp) : ?>
+            <div class="method"><input type="radio" name="method" id="paypal-method" value="paypal"><label for="paypal-method" class="label-method"><span class="method-text">Paypal<span><img class="img-method" src="/view/css/button/paypal-logo.png" /></label></div>
+        <?php 
+        endif;
+        if ($this['pool'] > 0) : ?>
+            <div class="method" style="margin-top:5px;"><input type="radio" name="method" id="pool-method" value="pool"><label for="pool-method" class="label-method"><span class="method-text">Monedero virtual<span class="pool-info" class="pool-info"><img class="img-method" height="28" src="/view/css/dashboard/monedero.svg" /><span style="margin-left:15px;"><?php echo \amount_format($this['pool']); ?> disponibles</span></label></div>
+        <?php 
+        endif;
+        if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?>
+        <div class="method" style="margin-top:10px;"><input type="radio" name="method" id="cash-method" value="cash"><label for="cash-method" class="label-method"><span class="method-text">Cash<span></label></div>
+        <?php endif; ?>
+        <!--
         <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
         <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
         <?php if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?><button type="submit" class="process pay-cash" name="method"  value="cash">CASH</button><?php endif; ?>
@@ -200,19 +229,13 @@ if ($step == 'start') : ?>
         if ($this['pool'] > 0) : ?>
 
         <input type="text" class="input-pool" disabled="true" value="<?php echo $this['pool']; ?>" />
-
+        
         <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool"><?php echo Text::get('project-invest-pool-button') ?></button>   
         <?php endif; ?>
+        -->
+        <button type="submit" style="margin-top:30px;" class="process button green" id="button-general">Aportar</button>
     </div>
 <br />
-
-    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span></div>
-
-    <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
-
-    <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
-    <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 3, true, true) ); ?></div>
-    <?php endif; ?>
 
 </div>
 <?php endif; ?>
@@ -317,13 +340,13 @@ if ($step == 'start') : ?>
 
             if(amount>pool)
             {
-                $('#button-pool').attr('disabled',true);
-                $('#button-pool').addClass('disabled');
+                $('#pool-method').attr('disabled',true);
+                $('#pool-method').addClass('disabled');
             }
             else
             {
-                $('#button-pool').attr('disabled',false);
-                $('#button-pool').removeClass('disabled');
+                $('#pool-method').attr('disabled',false);
+                $('#pool-method').removeClass('disabled');
             }
         };
 
