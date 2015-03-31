@@ -87,7 +87,9 @@ try {
                 echo "FOUND FAILED INVEST {$invest->id}: PROJECT: {$invest->project} USER: {$invest->user} PREAPPROVAL: {$invest->preapproval} INVESTED: {$invest->invested}\n";
                 if($UPDATE) {
                     if (Tpv::cancelPreapproval($invest, $err, true)) {
-                        echo "OK CANCELLED\n";
+                        echo "OK CANCELLED";
+                        if($err) echo ", MESSAGES: " . implode('; ', $err);
+                        echo "\n";
                     } else {
                         $txt_errors = implode('; ', $err);
                         echo "KO! ERRORS: $txt_errors\n";
@@ -98,6 +100,10 @@ try {
                 echo "--Dummy execution, use --update to actually cancel the invest--\n";
             }
         }
+        else {
+            echo "--No errors found--\n";
+        }
+
     }
     else {
         // revision de proyectos: dias, conseguido y cambios de estado
