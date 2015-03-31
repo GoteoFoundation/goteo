@@ -86,6 +86,7 @@ try {
                 // print_r($invest);
                 echo "FOUND FAILED INVEST {$invest->id}: PROJECT: {$invest->project} USER: {$invest->user} PREAPPROVAL: {$invest->preapproval} INVESTED: {$invest->invested}\n";
                 if($UPDATE) {
+                    $err = array();
                     if (Tpv::cancelPreapproval($invest, $err, true)) {
                         echo "OK CANCELLED";
                         if($err) echo ", MESSAGES: " . implode('; ', $err);
