@@ -1854,7 +1854,7 @@ namespace Goteo\Model {
          */
         public static function getFailed($method= 'tpv', $limited = false) {
             $sql = "SELECT
-                        *
+                        invest.*
                     FROM invest
                     INNER JOIN project
                         ON invest.project = project.id
