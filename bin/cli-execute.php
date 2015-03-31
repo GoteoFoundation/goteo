@@ -56,6 +56,12 @@ if (in_array('--no-feed', $argv)) {
     echo "Public feedback! Use the --no-feed modifier to avoid it \n";
 }
 // // options
+$FAILED_INVESTS = false;
+if (in_array('--invests', $argv)) {
+    echo "Only failed invests returns will be processed\n";
+    $FAILED_INVESTS = true;
+    $FEED = false;
+}
 
 try {
 
@@ -70,17 +76,40 @@ try {
         throw new Exception('FORCED EXCEPTION Test');
     }
 
-    // revision de proyectos: dias, conseguido y cambios de estado
-    // proyectos en campaña que estén a 5 días de terminar primera ronda a o a 3 de terminar la segunda
 
-    echo "Comenzamos con los proyectos en campaña (esto está en ".\LANG.")\n\n";
-
-    $projects = Model\Project::getActive($FEED);
-    foreach ($projects as $project) {
-        process_project($project);
-        echo "\n---------------------------------------------------------------------------\n";
+    if($FAILED_INVESTS) {
+        // Para procesos manuales, si CECA falla el invest.status deberia ser 1 y el proyecto archivado
+        echo "Getting failed invests for method TPV\n";
+        if($invests = Model\Invest::getFailed('tpv')) {
+            foreach($invests as $invest) {
+                //retorna el dinero
+                // print_r($invest);
+                echo "FOUND FAILED INVEST {$invest->id}: PROJECT: {$invest->project} USER: {$invest->user} PREAPPROVAL: {$invest->preapproval} INVESTED: {$invest->invested}\n";
+                if($UPDATE) {
+                    if (Tpv::cancelPreapproval($invest, $err, true)) {
+                        echo "OK CANCELLED\n";
+                    } else {
+                        $txt_errors = implode('; ', $err);
+                        echo "KO! ERRORS: $txt_errors\n";
+                    }
+                }
+            }
+            if(!$UPDATE) {
+                echo "--Dummy execution, use --update to actually cancel the invest--\n";
+            }
+        }
     }
+    else {
+        // revision de proyectos: dias, conseguido y cambios de estado
+        // proyectos en campaña que estén a 5 días de terminar primera ronda a o a 3 de terminar la segunda
+        echo "Comenzamos con los proyectos en campaña (esto está en ".\LANG.")\n\n";
 
+        $projects = Model\Project::getActive($FEED);
+        foreach ($projects as $project) {
+            process_project($project);
+            echo "\n---------------------------------------------------------------------------\n";
+        }
+    }
 
 } catch (Exception $e) {
 
@@ -860,7 +889,7 @@ function process_invests($project, $projectAccount, $process = null)
             // @TODO : si invest.credit , no ejecutar (ya pagado)
             // marcar como credito reubicado
             execute_payment($invest, $project, $userData, $projectAccount);
-            
+
         }
 
         echo "Aporte " . $invest->id . " tratado con {$process}\n";
