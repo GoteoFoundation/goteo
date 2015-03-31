@@ -190,7 +190,7 @@ if ($step == 'start') : ?>
     <input type="hidden" id="paymethod"  />
     <input type="hidden" id="pool" value="<?php echo $this['pool']; ?>"  />
 
-    <div class="reminder" style="background-color:#E9F4EA; padding:15px;"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span>
+    <div class="reminder reminder-signed"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span>
     <?php   if (!$allowpp) : 
                 echo Text::html('invest-paypal_disabled'); 
             endif;
@@ -200,13 +200,6 @@ if ($step == 'start') : ?>
     ?>
     </div>
 
-    <!--<?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>-->
-    
-    <!--
-    <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
-    <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 3, true, true) ); ?></div>
-    <?php endif; ?>
-    -->
     <div class="buttons">
         <div class="method"><input type="radio" name="method" id="tpv-method" checked="checked" value="tpv"><label for="tpv-method" class="label-method"><span class="method-text">Tarjeta<span><img class="img-method" src="/view/css/button/logos_tarjetas.png" /></label></div>
         <?php if ($allowpp) : ?>
@@ -220,19 +213,7 @@ if ($step == 'start') : ?>
         if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?>
         <div class="method" style="margin-top:10px;"><input type="radio" name="method" id="cash-method" value="cash"><label for="cash-method" class="label-method"><span class="method-text">Cash<span></label></div>
         <?php endif; ?>
-        <!--
-        <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
-        <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
-        <?php if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?><button type="submit" class="process pay-cash" name="method"  value="cash">CASH</button><?php endif; ?>
-        <?php
-        // desactivar el botón si cambia a un importe mayor al de la reserva
-        if ($this['pool'] > 0) : ?>
 
-        <input type="text" class="input-pool" disabled="true" value="<?php echo $this['pool']; ?>" />
-        
-        <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool"><?php echo Text::get('project-invest-pool-button') ?></button>   
-        <?php endif; ?>
-        -->
         <button type="submit" style="margin-top:30px;" class="process button green" id="button-general">Aportar</button>
     </div>
 <br />
@@ -299,6 +280,7 @@ if ($step == 'start') : ?>
                    if ($cb.attr('disabled') != 'disabled') {
                        // nos quedamos con esta y seguimos
                        $reward = $cb;
+                       alert("nueva recompensa");
                    }
                }
 
