@@ -176,6 +176,7 @@ div.widget.project-invest.method label.label-method{
 
 div.widget.project-invest.method label.label-method:hover{
     cursor: pointer; cursor: hand;
+    border:2px #666 solid;
 }
 
 
@@ -186,6 +187,7 @@ div.widget.project-invest.method span.method-text{
 div.widget.project-invest.method img.img-method{
     vertical-align:middle; 
     margin-left:15px;
+    border-radius:5px;
 }
 
 div.widget.project-invest.method span.pool-info{
