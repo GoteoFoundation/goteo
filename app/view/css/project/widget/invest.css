@@ -159,6 +159,7 @@ div.widget.project-invest div.reminder {
 div.widget.project-invest div.reminder-signed {
     background-color:#E9F4EA; 
     padding:15px;
+    font-size:15px;
 }
 
 div.widget.project-invest div.reminder #amount-reminder, div.widget.project-invest div.reminder .amount-reminder {

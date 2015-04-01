@@ -378,7 +378,7 @@ endif;
             var reward_title=$(this).attr('title');
 
             if(reward_title)
-                $('#reward-reminder').html(" <?php echo Text::slash('invest-alert-rewards')?> "+reward_title);
+                $('#reward-reminder').html(" <?php echo Text::slash('invest-alert-rewards')?> "+"<strong>"+reward_title+"</strong>");
 
             <?php if ($step == 'start') : ?>
                 reset_reward(i);
@@ -464,19 +464,6 @@ endif;
                     return false;
                 }
             }
-
-            var currency = '<?php echo $_SESSION['currency']; ?>';
-            var def_currency = '<?php echo Currency::DEFAULT_CURRENCY; ?>';
-            var confirm_msg = '<?php echo Text::slash('invest-alert-investing') ?> '+amount+' '+currency;
-
-            if ( currency != def_currency) {
-                confirm_msg += ' = '+converted+' '+def_currency;
-            }
-
-            if ($('#resign_reward').attr('checked') != 'checked')
-                confirm_msg += ' \n'+'<?php echo Text::slash('invest-alert-rewards') ?> '+reward+' ok?';
-
-            return confirm(confirm_msg);
         });
 
 /* Seteo inicial por url */
