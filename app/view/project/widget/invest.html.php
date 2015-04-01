@@ -191,12 +191,11 @@ if ($step == 'start') : ?>
     <input type="hidden" id="pool" value="<?php echo $this['pool']; ?>"  />
 
     <div class="reminder reminder-signed"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span>
-    <?php   if (!$allowpp) : 
-                echo Text::html('invest-paypal_disabled'); 
-            endif;
-            if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) :
-                echo '<div>'.Text::html('currency-alert', \amount_format($amount, 3, true, true) ).'</div>';
-            endif;
+    <div id="reward-reminder"></div>
+    <?php   
+        if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) :
+            echo '<div>'.Text::html('currency-alert', \amount_format($amount, 3, true, true) ).'</div>';
+        endif;
     ?>
     </div>
 
@@ -217,6 +216,12 @@ if ($step == 'start') : ?>
         <button type="submit" style="margin-top:30px;" class="process button green" id="button-general">Aportar</button>
     </div>
 <br />
+
+<?php 
+if (!$allowpp) : 
+    echo Text::html('invest-paypal_disabled'); 
+endif;
+?>
 
 </div>
 <?php endif; ?>
@@ -280,7 +285,6 @@ if ($step == 'start') : ?>
                    if ($cb.attr('disabled') != 'disabled') {
                        // nos quedamos con esta y seguimos
                        $reward = $cb;
-                       alert("nueva recompensa");
                    }
                }
 
@@ -358,9 +362,6 @@ if ($step == 'start') : ?>
             $('#amount-reminder').html(amount);
             $('#reminder_conversion').html(converted);
 
-            
-           
-
         };
 
 /* Actualizar el copy */
@@ -374,6 +375,10 @@ if ($step == 'start') : ?>
             var curr = $('#amount').val();
             var a = $(this).attr('amount');
             var i = $(this).attr('id');
+            var reward_title=$(this).attr('title');
+
+            if(reward_title)
+                $('#reward-reminder').html(" <?php echo Text::slash('invest-alert-rewards')?> "+reward_title);
 
             <?php if ($step == 'start') : ?>
                 reset_reward(i);
@@ -383,6 +388,7 @@ if ($step == 'start') : ?>
                 $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
                 /*$("#donation-data").show();*/
                 reset_reward(i);
+                $('#reward-reminder').html("");
             } else {
                 $("#address-header").html('<?php echo Text::slash('invest-address-header') ?>');
                 /*$("#donation-data").hide();*/
