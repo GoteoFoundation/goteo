@@ -103,7 +103,7 @@ namespace Goteo\Controller {
                     // guay, será tambien un aporte a reservar
                     $to_pool = 1;
 
-                } elseif ($pool->amount > 0 && $pool->amount <  $amount) {
+                } elseif ($pool->amount > 0 && $pool->amount <  $amount && $method == "pool" ) {
                     // pero no son suficientes para este amount, error
                     Message::Error(Text::get('invest-pool-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
