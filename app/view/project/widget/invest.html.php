@@ -186,7 +186,7 @@ if ($step == 'start') : ?>
 
 
 <div class="widget project-invest method">
-    <h<?php echo $level ?> class="title"><?php //echo Text::get('project-invest-continue') ?>Realiza tu aporte</h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title"><?php //echo Text::get('project-invest-continue') ?><?php echo Text::get('invest-method-title') ?></h<?php echo $level ?>>
     <input type="hidden" id="paymethod"  />
     <input type="hidden" id="pool" value="<?php echo $this['pool']; ?>"  />
 
@@ -200,13 +200,13 @@ if ($step == 'start') : ?>
     </div>
 
     <div class="buttons">
-        <div class="method"><input type="radio" name="method" id="tpv-method" checked="checked" value="tpv"><label for="tpv-method" class="label-method"><span class="method-text">Tarjeta<span><img class="img-method" src="/view/css/button/logos_tarjetas.png" /></label></div>
+        <div class="method"><input type="radio" name="method" id="tpv-method" checked="checked" value="tpv"><label for="tpv-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-card-method') ?><span><img class="img-method" src="/view/css/button/logos_tarjetas.png" /></label></div>
         <?php if ($allowpp) : ?>
-            <div class="method"><input type="radio" name="method" id="paypal-method" value="paypal"><label for="paypal-method" class="label-method"><span class="method-text">Paypal<span><img class="img-method" src="/view/css/button/paypal-logo.png" /></label></div>
+            <div class="method"><input type="radio" name="method" id="paypal-method" value="paypal"><label for="paypal-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-paypal-method') ?><span><img class="img-method" src="/view/css/button/paypal-logo.png" /></label></div>
         <?php 
         endif;
         if ($this['pool'] > 0) : ?>
-            <div class="method" style="margin-top:5px;"><input type="radio" name="method" id="pool-method" value="pool"><label for="pool-method" class="label-method"><span class="method-text">Monedero virtual<span class="pool-info" class="pool-info"><img class="img-method" height="28" src="/view/css/dashboard/monedero.svg" /><span style="margin-left:15px;"><?php echo \amount_format($this['pool']); ?> disponibles</span></label></div>
+            <div class="method" style="margin-top:5px;"><input type="radio" name="method" id="pool-method" value="pool"><label for="pool-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-pool-method') ?><span class="pool-info" class="pool-info"><img class="img-method" height="28" src="/view/css/dashboard/monedero.svg" /><span style="margin-left:15px;"><?php echo \amount_format($this['pool']); ?> disponibles</span></label></div>
         <?php 
         endif;
         if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?>
