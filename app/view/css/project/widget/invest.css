@@ -156,6 +156,12 @@ div.widget.project-invest div.reminder {
     margin-bottom: 1em;
 }
 
+div.widget.project-invest div.reminder-signed {
+    background-color:#E9F4EA; 
+    padding:15px;
+    font-size:15px;
+}
+
 div.widget.project-invest div.reminder #amount-reminder, div.widget.project-invest div.reminder .amount-reminder {
     color: #96238F;
     font-size: 20px;
@@ -324,6 +330,8 @@ div.widget.project-invest.project-called p span.call {
 div.widget.project-invest div.reminder a {
     text-decoration: none;
 }
+
+
 
 div.widget.project-invest input.input-pool  {
 color: #96238F;
