@@ -206,14 +206,14 @@ if ($step == 'start') : ?>
         <?php 
         endif;
         if ($this['pool'] > 0) : ?>
-            <div class="method" style="margin-top:5px;"><input type="radio" name="method" id="pool-method" value="pool"><label for="pool-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-pool-method') ?><span class="pool-info" class="pool-info"><img class="img-method" height="28" src="/view/css/dashboard/monedero.svg" /><span style="margin-left:15px;"><?php echo \amount_format($this['pool']); ?> disponibles</span></label></div>
+            <div class="method" style="margin-top:5px;"><input type="radio" name="method" id="pool-method" value="pool"><label for="pool-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-pool-method') ?><span class="pool-info" class="pool-info"><img class="img-method" height="28" src="/view/css/dashboard/monedero.svg" /><span style="margin-left:15px;"><?php echo \amount_format($this['pool']); ?> <?php echo Text::get('invest-pool-available'); ?></span></label></div>
         <?php 
         endif;
         if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?>
         <div class="method" style="margin-top:10px;"><input type="radio" name="method" id="cash-method" value="cash"><label for="cash-method" class="label-method"><span class="method-text">Cash<span></label></div>
         <?php endif; ?>
 
-        <button type="submit" style="margin-top:30px;" class="process button green" id="button-general">Aportar</button>
+        <button type="submit" style="margin-top:30px;" class="process button green" id="button-general"><?php echo Text::get('invest-button') ?></button>
     </div>
 <br />
 
