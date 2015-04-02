@@ -464,10 +464,10 @@ namespace Goteo\Controller {
 
             // aporte usando gotas:
             if ($invest->method == 'pool') {
-                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-with-pool'));
+                $txt_method = str_replace('%AMOUNT%', \amount_format($invest->amount), Text::get('invest-template-with-pool'));
             } elseif ($invest->pool) {
                 // aporte reservando al monedero
-                $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-to-pool'));
+                $txt_method = str_replace('%AMOUNT%', \amount_format($invest->amount), Text::get('invest-template-to-pool'));
             } elseif($projectData->round == 2) {
                 // si aporte en segunda ronda
                 $txt_method = str_replace('%AMOUNT%', $invest->amount, Text::get('invest-template-round-two'));

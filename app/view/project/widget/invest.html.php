@@ -186,33 +186,42 @@ if ($step == 'start') : ?>
 
 
 <div class="widget project-invest method">
-    <h<?php echo $level ?> class="beak"><?php echo Text::get('project-invest-continue') ?></h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title"><?php //echo Text::get('project-invest-continue') ?><?php echo Text::get('invest-method-title') ?></h<?php echo $level ?>>
     <input type="hidden" id="paymethod"  />
     <input type="hidden" id="pool" value="<?php echo $this['pool']; ?>"  />
 
+    <div class="reminder reminder-signed"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span>
+    <div id="reward-reminder"></div>
+    <?php   
+        if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) :
+            echo '<div>'.Text::html('currency-alert', \amount_format($amount, 3, true, true) ).'</div>';
+        endif;
+    ?>
+    </div>
 
     <div class="buttons">
-        <button type="submit" class="process pay-tpv" name="method"  value="tpv">TPV</button>
-        <?php if ($allowpp) : ?><button type="submit" class="process pay-paypal" name="method"  value="paypal">PAYPAL</button><?php endif; ?>
-        <?php if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?><button type="submit" class="process pay-cash" name="method"  value="cash">CASH</button><?php endif; ?>
-        <?php
-        // desactivar el botón si cambia a un importe mayor al de la reserva
+        <div class="method"><input type="radio" name="method" id="tpv-method" checked="checked" value="tpv"><label for="tpv-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-card-method') ?><span><img class="img-method" src="/view/css/button/logos_tarjetas.png" /></label></div>
+        <?php if ($allowpp) : ?>
+            <div class="method"><input type="radio" name="method" id="paypal-method" value="paypal"><label for="paypal-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-paypal-method') ?><span><img class="img-method" src="/view/css/button/paypal-logo.png" /></label></div>
+        <?php 
+        endif;
         if ($this['pool'] > 0) : ?>
-
-        <input type="text" class="input-pool" disabled="true" value="<?php echo $this['pool']; ?>" />
-
-        <button type="submit" class="process pay-pool" id="button-pool" name="method" value="pool"><?php echo Text::get('project-invest-pool-button') ?></button>   
+            <div class="method" style="margin-top:5px;"><input type="radio" name="method" id="pool-method" value="pool"><label for="pool-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-pool-method') ?><span class="pool-info" class="pool-info"><img class="img-method" height="28" src="/view/css/dashboard/monedero.svg" /><span style="margin-left:15px;"><?php echo \amount_format($this['pool']); ?> <?php echo Text::get('invest-pool-available'); ?></span></label></div>
+        <?php 
+        endif;
+        if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?>
+        <div class="method" style="margin-top:10px;"><input type="radio" name="method" id="cash-method" value="cash"><label for="cash-method" class="label-method"><span class="method-text">Cash<span></label></div>
         <?php endif; ?>
+
+        <button type="submit" style="margin-top:30px;" class="process button green" id="button-general"><?php echo Text::get('invest-button') ?></button>
     </div>
 <br />
 
-    <div class="reminder"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span></div>
-
-    <?php if (!$allowpp) : ?><div class="reminder"><?php echo Text::html('invest-paypal_disabled') ?></div><?php endif; ?>
-
-    <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
-    <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 3, true, true) ); ?></div>
-    <?php endif; ?>
+<?php 
+if (!$allowpp) : 
+    echo Text::html('invest-paypal_disabled'); 
+endif;
+?>
 
 </div>
 <?php endif; ?>
@@ -317,13 +326,13 @@ if ($step == 'start') : ?>
 
             if(amount>pool)
             {
-                $('#button-pool').attr('disabled',true);
-                $('#button-pool').addClass('disabled');
+                $('#pool-method').attr('disabled',true);
+                $('#pool-method').addClass('disabled');
             }
             else
             {
-                $('#button-pool').attr('disabled',false);
-                $('#button-pool').removeClass('disabled');
+                $('#pool-method').attr('disabled',false);
+                $('#pool-method').removeClass('disabled');
             }
         };
 
@@ -353,9 +362,6 @@ if ($step == 'start') : ?>
             $('#amount-reminder').html(amount);
             $('#reminder_conversion').html(converted);
 
-            
-           
-
         };
 
 /* Actualizar el copy */
@@ -369,6 +375,10 @@ if ($step == 'start') : ?>
             var curr = $('#amount').val();
             var a = $(this).attr('amount');
             var i = $(this).attr('id');
+            var reward_title=$(this).attr('title');
+
+            if(reward_title)
+                $('#reward-reminder').html(" <?php echo Text::slash('invest-alert-rewards')?> "+"<strong>"+reward_title+"</strong>");
 
             <?php if ($step == 'start') : ?>
                 reset_reward(i);
@@ -378,6 +388,7 @@ if ($step == 'start') : ?>
                 $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
                 /*$("#donation-data").show();*/
                 reset_reward(i);
+                $('#reward-reminder').html("");
             } else {
                 $("#address-header").html('<?php echo Text::slash('invest-address-header') ?>');
                 /*$("#donation-data").hide();*/
@@ -453,19 +464,6 @@ if ($step == 'start') : ?>
                     return false;
                 }
             }
-
-            var currency = '<?php echo $_SESSION['currency']; ?>';
-            var def_currency = '<?php echo Currency::DEFAULT_CURRENCY; ?>';
-            var confirm_msg = '<?php echo Text::slash('invest-alert-investing') ?> '+amount+' '+currency;
-
-            if ( currency != def_currency) {
-                confirm_msg += ' = '+converted+' '+def_currency;
-            }
-
-            if ($('#resign_reward').attr('checked') != 'checked')
-                confirm_msg += ' \n'+'<?php echo Text::slash('invest-alert-rewards') ?> '+reward+' ok?';
-
-            return confirm(confirm_msg);
         });
 
 /* Seteo inicial por url */
