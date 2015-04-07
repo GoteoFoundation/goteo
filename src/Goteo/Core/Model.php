@@ -121,15 +121,8 @@ namespace Goteo\Core {
             //si no queremos leer de la replica se lo decimos
             $result = $db->prepare($query, array(), $select_from_replica);
 
-            try {
-
-                $result->execute($params);
-
-                return $result;
-
-            } catch (\PDOException $e) {
-                throw new Exception("Error PDO: " . \trace($e));
-            }
+            $result->execute($params);
+            return $result;
 
         }
 

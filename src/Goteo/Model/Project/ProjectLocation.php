@@ -5,35 +5,33 @@ namespace Goteo\Model\Project {
     use Goteo\Model\Location;
 
     class ProjectLocation extends \Goteo\Core\Model {
-        protected $Table = 'location_item';
+        protected $Table = 'project_location';
         public
-            $location,
-            $locations = array(), //array of addresses
             $method, // latitude,longitude obtaining method
                      // ip      = auto detection from ip,
                      // browser = project automatic provided,
                      // manual    = project manually provided
             $locable = true, //if is or not locable
+            $city,
+            $region,
+            $country,
+            $country_code,  // codigo pais  ISO 3166-1 alpha-2
+            $longitude,
+            $latitude,
             $info, //Some stored info
             $project;
 
         /**
          * Recupera la geolocalización de este
-         * @param varcahr(50) $id  project identifier
-         * @return int (id geolocation)
+         * @param varcahr(50) $project  project identifier
+         * @return ProjectLocation instance
          */
-	 	public static function get ($id) {
+	 	public static function get ($project) {
 
-            $query = static::query("SELECT * FROM location_item WHERE type = 'project' AND item = ?", array($id));
+            $query = static::query("SELECT * FROM project_location WHERE project = ?", array($project));
             if($ob = $query->fetchObject()) {
-                if(!($loc = Location::get($ob->location))) {
-                    //location non exists
-                    $loc = new Location();
-                }
                 $loc = new ProjectLocation(array(
-                    'location' => (int) $ob->location,
-                    'locations' => array($loc),
-                    'project' => $id,
+                    'project' => $project,
                     'method' => $ob->method,
                     'info' => $ob->info,
                     'locable' => (bool) $ob->locable
@@ -43,20 +41,31 @@ namespace Goteo\Model\Project {
 		}
 
 		public function validate(&$errors = array()) {
-            if (empty($this->location)) {
-                $errors[] = 'Location ID missing!';
-                return false;
-            }
             if (empty($this->project)) {
                 $errors[] = 'Project ID missing!';
-                return false;
             }
             $methods = array('ip', 'browser', 'manual');
             if (!in_array($this->method, $methods)) {
                 $errors[] = 'Method (' . $this->method . ') error! must be one of: ' . implode(', ', $methods);
+            }
+            if (empty($this->country_code)) {
+                $errors[] = 'Country code missing';
+            }
+            if (empty($this->country)) {
+                $errors[] = 'Country missing';
+            }
+            if (empty($this->longitude)) {
+                $errors[] = 'Longitude missing';
+            }
+            if (empty($this->latitude)) {
+                $errors[] = 'Latitude missing';
+            }
+            if (empty($errors)) {
+                return true;
+            }
+            else {
                 return false;
             }
-            return true;
         }
 
 		/*
@@ -70,19 +79,23 @@ namespace Goteo\Model\Project {
             // remove from unlocable if method is not IP
             if($this->method !== 'ip') $this->locable = true;
 
-            $values = array(':item'     => $this->project,
-                            ':location' => $this->location,
-                            ':method'   => $this->method,
-                            ':locable'  => $this->locable,
-                            ':info'     => $this->info,
-                            ':type'     => 'project'
+            $values = array(':user'         => $this->project,
+                            ':method'       => $this->method,
+                            ':locable'      => $this->locable,
+                            ':info'         => $this->info,
+                            ':city'         => $this->city,
+                            ':region'       => $this->region,
+                            ':country'      => $this->country,
+                            ':country_code' => $this->country_code,
+                            ':longitude'    => $this->longitude,
+                            ':latitude'     => $this->latitude
                             );
 
             try {
-                $sql = "REPLACE INTO location_item (location, item, type, method, locable, info) VALUES (:location, :item, :type, :method, :locable, :info)";
+                $sql = "REPLACE INTO project_location (project, method, locable, info, city, region, country, country_code, longitude, latitude) VALUES (:project, :method, :locable, :info, :city, :region, :country, :country_code, :longitude, :latitude)";
                 self::query($sql, $values);
 			} catch(\PDOException $e) {
-				$errors[] = "No se ha podido asignar. Por favor, revise los datos." . $e->getMessage();
+				$errors[] = "Error updating location for project. " . $e->getMessage();
 				return false;
 			}
             return true;
@@ -91,25 +104,21 @@ namespace Goteo\Model\Project {
 		/**
 		 * Desasignar el usuario de su localización
 		 *
-		 * @param varchar(50) $project id de un usuario
 		 * @param array $errors
 		 * @return boolean
 		 */
 		public function delete (&$errors = array()) {
-            $project = $this->project;
-            $values = array(':item'=>$project, ':type'=>'project');
-
             try {
-                self::query("DELETE FROM location_item WHERE type = :type AND item = :item", $values);
+                self::query("DELETE FROM project_location WHERE project = ?", array($this->project));
             } catch(\PDOException $e) {
-                $errors[] = 'No se ha podido quitar la geolocalización del usuario ' . $project . '.<br />' . $e->getMessage();
+                $errors[] = 'Error removing location for project ' . $this->project . '. ' . $e->getMessage();
                 return false;
             }
 			return true;
 		}
 
         /**
-         * Adds a location to the corresponding location/location_item tables according to the project
+         * Adds a location to the corresponding location/project_location tables according to the project
          * @param [type] $data    [description]
          * @param array  &$errors [description]
          * @return instance of Model\Project\ProjectLocation if successfull, false otherwise
@@ -146,7 +155,7 @@ namespace Goteo\Model\Project {
          */
         public static function setProperty($project, $prop, $value, &$errors) {
             try {
-                if(self::query("INSERT INTO location_item ($prop, type, item) VALUES (:value, 'project', :project)
+                if(self::query("INSERT INTO project_location ($prop, type, item) VALUES (:value, 'project', :project)
                                 ON DUPLICATE KEY UPDATE $prop = :value", array(':value' => $value, ':project' => $project)));
                     return true;
             } catch(\PDOException $e) {
@@ -188,7 +197,7 @@ namespace Goteo\Model\Project {
 	 	public static function isUnlocable ($project) {
 
             try {
-                $query = self::query("SELECT locable FROM location_item WHERE type = 'project' AND item = ?", array($project));
+                $query = self::query("SELECT locable FROM project_location WHERE project = ?", array($project));
                 return !(bool) $query->fetchColumn();
             } catch(\PDOException $e) {
                 return true;
