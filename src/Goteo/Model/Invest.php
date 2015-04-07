@@ -16,7 +16,7 @@ namespace Goteo\Model {
         const METHOD_CASH   = 'cash';
         const METHOD_DROP   = 'drop';
 
-    #INVEST STATUS IDs
+        #INVEST STATUS IDs
         const STATUS_PROCESSING = -1;
         const STATUS_PENDING    = 0;
         const STATUS_CHARGED    = 1;
@@ -1825,7 +1825,7 @@ namespace Goteo\Model {
         /**
          * Tratamiento de aportes pendientes en cron/execute
          */
-        public static function getPending($id) {
+        public static function getPending($project_id) {
 
             // @FIXME esta distinción de métodos de pago es MAL!
             // @TODO capa de pagos
@@ -1843,8 +1843,38 @@ namespace Goteo\Model {
                     )
                 )
                 AND (invest.campaign IS NULL OR invest.campaign = 0)
-                ", array($id));
+                ", array($project_id));
 
+            return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+        }
+
+        /**
+         * Retorna los aportes que no se han retornado correctamente (fallo en ceca por ejemplo)
+         * @return [type] [description]
+         */
+        public static function getFailed($method= 'tpv', $limited = false) {
+            $sql = "SELECT
+                        invest.*
+                    FROM invest
+                    INNER JOIN project
+                        ON invest.project = project.id
+                    LEFT JOIN user
+                        ON invest.admin = user.id
+                    WHERE invest.project IS NOT NULL
+                    AND project.status=6
+                    AND invest.status = 1
+                    AND (invest.pool = 0 OR ISNULL(invest.pool))
+                    #AND invest.status != 4
+                    #AND !ISNULL(invest.returned)
+                    AND invest.method IN (:method)
+                    ORDER BY invest.id DESC
+                    ";
+
+            if ($limited > 0 && is_numeric($limited)) {
+                $sql .= "LIMIT $limited";
+            }
+
+            $query = self::query($sql, array(':method' => $method));
             return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
         }
 

@@ -183,22 +183,26 @@ namespace Goteo\Library {
                 } elseif (!empty($response)) {
                     $respobj = \htmlentities($response);
                     //echo $respobj . '<hr />';
-                    // de cualquier manera el aporte lo cancelamos
-                    $invest->cancel($fail);
                     // buscamos el codigo 900 de anulacion realizada correctamente
                     if (\stripos($response, 'REALIZADA') !== false
                         && \strpos($respobj, '900') !== false ) {
                         Invest::setDetail($invest->id, 'tpv-cancel', 'Se ha anulado la operacion de tpv. Proceso libary/tpv::cancelPay');
                         $errors[] = 'Cargo anulado correctamente';
+                        // cancelamos aporte
+                        $invest->cancel($fail);
                         return true;
                     } elseif (\stripos($response, 'success') !== false
                         && \strpos($respobj, 'anulaoperacionok') !== false ) {
                         Invest::setDetail($invest->id, 'tpv-cancel', 'Se ha anulado la operacion de tpv. Proceso libary/tpv::cancelPay');
                         $errors[] = 'Cargo anulado correctamente';
+                        // cancelamos aporte
+                        $invest->cancel($fail);
                         return true;
                     } elseif (\stripos($response, 'ya anulada') !== false) {
                         Invest::setDetail($invest->id, 'tpv-cancel', 'Se intentaba anular por segunda vez la operacion de tpv. Proceso libary/tpv::cancelPay');
                         $errors[] = 'Este cargo ya estaba anulado';
+                        // cancelamos aporte
+                        $invest->cancel($fail);
                         return true;
                     } else {
                         Invest::setDetail($invest->id, 'tpv-cancel-fail', 'No se ha podido anular la operacion de tpv. Proceso libary/tpv::cancelPay');
