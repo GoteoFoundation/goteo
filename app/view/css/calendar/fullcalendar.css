@@ -1137,6 +1137,33 @@ ul.event-category li{
 	margin-bottom:5px;
 }
 
+.other-event{
+	text-decoration: none;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 12px;
+	padding-bottom: 5px;
+	display: table;
+
+}
+
+
+
+.hour-other-event{
+	margin-right: 5px;
+	color:#58595B;
+	font-weight: normal;
+}
+
+#extra-events{
+	display: none;
+	margin-bottom: 20px;
+}
+
+#extra-events h3{
+	padding-bottom: 5px;
+}
+
 #loading {
     display: none;
     position: absolute;
@@ -1148,6 +1175,5 @@ ul.event-category li{
     max-width: 800px;
     margin: 0 auto;
 }
-
 
 
