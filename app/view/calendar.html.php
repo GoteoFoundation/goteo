@@ -67,6 +67,11 @@ include __DIR__ . '/header.html.php';
                         <div id="event-description-img"></div>
                         <div id="event-description-text"></div>
                     </div>
+                    <div id="extra-events">
+                        <h3><?php echo Text::get('calendar-others-events'); ?></h3>
+                        <div id="other-events">
+                        </div>
+                    </div>
                 </div>
 			    <div id='loading'>loading...</div>
 
