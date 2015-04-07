@@ -41,7 +41,7 @@ function other_events(date){
 
                 if(num>1)
                 {
-                  other_events=other_events+'<a class="other-event" href="http//'+document.domain+'/calendar#'+item.id+'" ><span class="event-hour hour-other-event">'+event_start+' - '+event_end+'</span>'+item.summary.replace(reg,'')+'</a>';
+                  other_events=other_events+'<a class="other-event" href="/calendar#'+item.id+'" ><span class="event-hour hour-other-event">'+event_start+' - '+event_end+'</span>'+item.summary.replace(reg,'')+'</a>';
                   $("#extra-events").css( "display", "block" );
                 }
                
