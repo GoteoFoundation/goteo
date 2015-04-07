@@ -29,15 +29,13 @@ namespace Goteo\Model\User {
 	 	public static function get ($user) {
 
             $query = static::query("SELECT * FROM user_location WHERE user = ?", array($user));
-            if($ob = $query->fetchObject()) {
-                $loc = new UserLocation(array(
-                    'user' => $user,
-                    'method' => $ob->method,
-                    'info' => $ob->info,
-                    'locable' => (bool) $ob->locable
-                ));
+            $usr = $query->fetchObject(__CLASS__);
+
+            if (!$usr instanceof  \Goteo\Model\User\UserLocation) {
+                return false;
             }
-            return $loc ? $loc : false;
+            $usr->locable = (bool) $usr->locable;
+            return $usr;
 		}
 
 		public function validate(&$errors = array()) {
@@ -126,7 +124,7 @@ namespace Goteo\Model\User {
          */
         public static function setProperty($user, $prop, $value, &$errors) {
             try {
-                if(self::query("INSERT INTO user_location ($prop, type, item) VALUES (:value, 'user', :user)
+                if(self::query("INSERT INTO user_location ($prop, user) VALUES (:value, :user)
                                 ON DUPLICATE KEY UPDATE $prop = :value", array(':value' => $value, ':user' => $user)));
                     return true;
             } catch(\PDOException $e) {

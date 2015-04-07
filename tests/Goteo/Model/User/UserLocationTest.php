@@ -4,9 +4,8 @@
 namespace Goteo\Model\User\Tests;
 
 use Goteo\Model\User\UserLocation;
-use Goteo\Model\Location;
 
-class LocationTest extends \PHPUnit_Framework_TestCase {
+class UserLocationTest extends \PHPUnit_Framework_TestCase {
     private static $data = array(
             'city' => 'Simulated City',
             'region' => 'Simulated Region',
@@ -82,7 +81,7 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($user_location->save($errors), print_r($errors, 1));
 
         $user_location2 = UserLocation::get(self::$data['user']);
-        print_r($user_location2);
+
         $this->assertInstanceOf('\Goteo\Model\User\UserLocation', $user_location2);
         $this->assertEquals($user_location->user, $user_location2->user);
         $this->assertEquals($user_location->longitude, $user_location2->longitude);
@@ -101,13 +100,25 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends  testAddUserEntry
+     * @depends  testSaveUserLocation
      */
     public function testSetLocable($user_location) {
 
-        $this->assertTrue($user_location::setLocable($user_location->user, $error), print_r($errors, 1));
+        $this->assertTrue($user_location::setLocable($user_location->user, $errors), print_r($errors, 1));
         $user_location2 = UserLocation::get($user_location->user);
         $this->assertInstanceOf('\Goteo\Model\User\UserLocation', $user_location2);
+        $this->assertEquals($user_location->user, $user_location2->user);
+        $this->assertEquals($user_location->longitude, $user_location2->longitude);
+        $this->assertEquals($user_location->latitude, $user_location2->latitude);
+        $this->assertEquals($user_location->method, $user_location2->method);
+
+        $this->assertEquals($user_location2->latitude, self::$data['latitude']);
+        $this->assertEquals($user_location2->longitude, self::$data['longitude']);
+        $this->assertEquals($user_location2->city, self::$data['city']);
+        $this->assertEquals($user_location2->region, self::$data['region']);
+        $this->assertEquals($user_location2->country, self::$data['country']);
+        $this->assertEquals($user_location2->country_code, self::$data['country_code']);
+        $this->assertEquals($user_location2->user, self::$data['user']);
         $this->assertFalse($user_location::isUnlocable($user_location->user));
         $this->assertTrue($user_location2->locable);
         $this->assertEquals($user_location->locations, $user_location2->locations);
@@ -119,6 +130,7 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
 
         return $user_location;
     }
+
     /**
      * @depends  testSetLocable
      */
@@ -135,17 +147,11 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
      * @depends  testSetProperty
      */
     public function testRemoveAddLocationEntry($user_location) {
-        $location = $user_location->locations[0];
-        $this->assertInstanceOf('\Goteo\Model\Location', $location);
 
         $this->assertTrue($user_location->delete());
         $user_location2 = UserLocation::get($user_location->user);
 
         $this->assertFalse($user_location2);
-        $this->assertTrue($location->delete());
-
-        $location2 = Location::get($location->id);
-        $this->assertFalse($location2);
 
     }
 

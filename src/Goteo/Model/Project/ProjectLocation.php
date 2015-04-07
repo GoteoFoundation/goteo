@@ -29,15 +29,12 @@ namespace Goteo\Model\Project {
 	 	public static function get ($project) {
 
             $query = static::query("SELECT * FROM project_location WHERE project = ?", array($project));
-            if($ob = $query->fetchObject()) {
-                $loc = new ProjectLocation(array(
-                    'project' => $project,
-                    'method' => $ob->method,
-                    'info' => $ob->info,
-                    'locable' => (bool) $ob->locable
-                ));
+            $prj = $query->fetchObject(__CLASS__);
+
+            if (!$prj instanceof  \Goteo\Model\Project\ProjectLocation) {
+                return false;
             }
-            return $loc ? $loc : false;
+            return $prj;
 		}
 
 		public function validate(&$errors = array()) {
