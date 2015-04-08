@@ -237,10 +237,10 @@ namespace Goteo\Model {
          * @return boolean
          */
         public function create ($node = \GOTEO_NODE, &$errors = array()) {
-
-            $user = Session::getUserId();
+            $user = $this->owner;
 
             if (empty($user)) {
+                $errors[] = 'No user owner assigned';
                 return false;
             }
 
@@ -1222,10 +1222,7 @@ namespace Goteo\Model {
                 $this->node = 'goteo';
 
             //cualquiera de estos errores hace fallar la validación
-            if (!empty($errors))
-                return false;
-            else
-                return true;
+            return empty($errors);
         }
 
         /**
@@ -2268,7 +2265,6 @@ namespace Goteo\Model {
                 self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
                 self::query("DELETE FROM call_project WHERE project = ?", array($this->id)); // convocado
                 self::query("DELETE FROM user_project WHERE project = ?", array($this->id)); // asesores
-                self::query("DELETE FROM location_item WHERE type='project' AND item = ?", array($this->id)); // location item
                 self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
@@ -2290,17 +2286,18 @@ namespace Goteo\Model {
          * solo si es md5
          * @return: boolean
          */
-        public function rebase($newid = null) {
+        public function rebase($newid = null, &$errors = array()) {
             try {
                 if (preg_match('/^[A-Fa-f0-9]{32}$/',$this->id)) {
                     // idealizar el nombre
                     $newid = self::checkId(self::idealiza($this->name));
-                    if ($newid == false) return false;
+                    if ($newid == false) return false; //TODO: ???? Esto no pasa nunca, checkId lanza una excepcion...
 
                     // actualizar las tablas relacionadas en una transacción
                     $fail = false;
                     if (self::query("START TRANSACTION")) {
                         try {
+                            // Project_conf se actualiza solo (foreing key CASCADE)
                             self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
@@ -2312,10 +2309,8 @@ namespace Goteo\Model {
                             self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE user_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE project_conf SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE location_item SET item = :newid WHERE item = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             // borro los permisos, el dashboard los creará de nuevo
                             self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
@@ -2326,6 +2321,7 @@ namespace Goteo\Model {
                             return true;
 
                         } catch (\PDOException $e) {
+                            $errors[] = $e->getMessage();
                             self::query("ROLLBACK");
                             return false;
                         }

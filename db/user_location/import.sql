@@ -4,7 +4,7 @@
 INSERT
 INTO user_location
 SELECT
-a.item AS USER,
+a.item AS id,
 b.latitude,
 b.longitude,
 a.method,

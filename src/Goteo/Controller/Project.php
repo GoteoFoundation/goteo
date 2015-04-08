@@ -508,8 +508,8 @@ namespace Goteo\Controller {
                 throw new Redirection("/about/howto");
             }
 
-            $project = new Model\Project;
-            if ($project->create(NODE_ID)) {
+            $project = new Model\Project(array('owner' => Session::getUserId()));
+            if ($project->create(NODE_ID, $errors)) {
 
                 // Evento Feed
                 $log = new Feed();
@@ -585,7 +585,7 @@ namespace Goteo\Controller {
                 throw new Redirection("/project/edit/{$project->id}");
             }
 
-            throw new \Goteo\Core\Exception('Fallo al crear un nuevo proyecto');
+            throw new \Goteo\Core\Exception('Error creating project: ' . implode("\n", $errors));
         }
 
         private function view ($id, $show, $post = null) {

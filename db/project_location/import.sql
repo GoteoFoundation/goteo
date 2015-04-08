@@ -4,7 +4,7 @@
 INSERT IGNORE
 INTO project_location
 SELECT
-a.item AS project,
+a.item AS id,
 b.latitude,
 b.longitude,
 a.method,

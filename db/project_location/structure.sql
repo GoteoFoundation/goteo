@@ -1,5 +1,5 @@
 CREATE TABLE `project_location` (
-  `project` varchar(50) NOT NULL,
+  `id` varchar(50) NOT NULL,
   `latitude` decimal(16,14) NOT NULL,
   `longitude` decimal(16,14) NOT NULL,
   `method` varchar(50) NOT NULL DEFAULT 'ip',

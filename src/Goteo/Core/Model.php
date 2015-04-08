@@ -75,7 +75,7 @@ namespace Goteo\Core {
          * Borrar.
          * @return  type bool   true|false
          */
-        public function delete () {
+        public function delete (&$errors = array()) {
             $id = $this->id;
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
