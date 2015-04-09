@@ -50,9 +50,9 @@ locator.saveGeolocationData = function (type, item, data) {
 // };
 
 locator.setLocationFromFreegeoip = function (type, item) {
-    $.getJSON('//freegeoip.net/json', function(data){
+    $.getJSON('//freegeoip.net/json/?callback=?', function(data){
         if(data.latitude && data.longitude) {
-            locator.trace('geolocated type:', type, ' item:', item, ' data:', data);
+            locator.trace('Freegeoip geolocated type:', type, ' item:', item, ' data:', data);
            //save data
             locator.saveGeolocationData(type, item, {
                 longitude: data.longitude,
@@ -158,7 +158,7 @@ locator.getLocationFromBrowser = function (callback, iteration) {
                       data.info = "An unknown error occurred.";
                       break;
                 }
-                locator.trace('Geocoder error:', error, ' data:', data, ' position:', position);
+                locator.trace('Geocoder error:', error, ' data:', data);
                 if(typeof callback === 'function') {
                     callback(success, data);
                 }
@@ -171,9 +171,15 @@ locator.getLocationFromBrowser = function (callback, iteration) {
  * Sets the location by asking latitude / longitude to the browser
  * @param string type location_item (type) field: 'user', ...
  */
-locator.setLocationFromBrowser = function (type, item) {
+locator.setLocationFromBrowser = function (type, item, onFail) {
     this.getLocationFromBrowser(function(success, data) {
-        locator.saveGeolocationData(type, item, data);
+        locator.trace('Browser geolocation result:', success, data);
+        if(success) {
+            locator.saveGeolocationData(type, item, data);
+        }
+        else if(typeof onFail === 'function') {
+            onFail(type, item);
+        }
     });
 };
 
@@ -320,39 +326,35 @@ locator.setGoogleAutocomplete = function(id, iteration) {
  * Document ready
  */
 $(function(){
-
     // get user current location status, geolocate if needed
     $.getJSON('/json/geolocate/user', function(data){
         locator.trace('Current user localization status: ', data);
 
         //only if user is logged
         if(data.user) {
-            var use_browser = false;
+            var use_browser = true;
             var use_ip = true;
 
             if(data.success) {
                 //Is located, if method is IP, Try to override by browser coordinates
-                if(data.location.location) {
-                    use_ip = false;
+                use_ip = false;
+                //Don't annoy if unlocable or method is 'browser' or 'manual', no further actions are required
+                if(!data.location.locable || data.location.method !== 'ip') {
+                    use_browser = false;
                 }
-                if(data.location.locable) {
-                    if(data.location.method === 'ip') {
-                        use_browser = true;
-                    }
-                    //if method is browser or manual, no further actions are required
-                }
-            }
-
-            if(use_ip) {
-                //try google IP locator
-                // locator.setLocationFromGoogle('user');
-                locator.setLocationFromFreegeoip('user');
             }
 
             if(use_browser) {
                 locator.trace('Trying browser localization');
                 //try the browser for more precision
-                locator.setLocationFromBrowser('user');
+                locator.setLocationFromBrowser('user', null, function() {
+                    locator.setLocationFromFreegeoip('user');
+                });
+            }
+            else if(use_ip) {
+                //try google IP locator
+                // locator.setLocationFromGoogle('user');
+                locator.setLocationFromFreegeoip('user');
             }
         }
     });

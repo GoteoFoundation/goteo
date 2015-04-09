@@ -16,7 +16,7 @@ namespace Goteo\Model {
         const METHOD_CASH   = 'cash';
         const METHOD_DROP   = 'drop';
 
-        #INVEST STATUS IDs
+        // INVEST STATUS IDs
         const STATUS_PROCESSING = -1;
         const STATUS_PENDING    = 0;
         const STATUS_CHARGED    = 1;

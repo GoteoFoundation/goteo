@@ -75,7 +75,7 @@ namespace Goteo\Core {
          * Borrar.
          * @return  type bool   true|false
          */
-        public function delete () {
+        public function delete (&$errors = array()) {
             $id = $this->id;
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
@@ -121,16 +121,35 @@ namespace Goteo\Core {
             //si no queremos leer de la replica se lo decimos
             $result = $db->prepare($query, array(), $select_from_replica);
 
-            try {
+            $result->execute($params);
+            return $result;
 
-                $result->execute($params);
+        }
 
-                return $result;
-
-            } catch (\PDOException $e) {
-                throw new Exception("Error PDO: " . \trace($e));
+        /**
+         * Retorna el total de elementos de la tabla
+         * @param $filters array of pair/values to filter the table
+         */
+        public static function countTotal($filters = array(), $comparator = '=', $joiner = 'AND') {
+            $clas = get_called_class();
+            $instance = new $clas;
+            $sql = 'SELECT COUNT(*) FROM ' . $instance->getTable();
+            $values = array();
+            if($filters) {
+                $add = array();
+                $i=0;
+                foreach($filters as $key => $val) {
+                    $values[":item$i"] = $val;
+                    $add[] = "`$key` $comparator :item$i";
+                    $i++;
+                }
+                if($add) $sql .= ' WHERE ' . implode(" $joiner ", $add);
             }
-
+            try {
+                return (int) self::query($sql, $values)->fetchColumn();
+            }catch (\PDOException $e) {
+            }
+            return false;
         }
 
         /**
