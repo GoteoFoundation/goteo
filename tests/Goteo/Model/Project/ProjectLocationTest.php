@@ -4,10 +4,26 @@
 namespace Goteo\Model\Project\Tests;
 
 use Goteo\Model\Project\ProjectLocation;
-use Goteo\Model\Location;
 
-class LocationTest extends \PHPUnit_Framework_TestCase {
-
+class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
+    private static $data = array(
+            'city' => 'Simulated City',
+            'region' => 'Simulated Region',
+            'country' => 'Neverland',
+            'country_code' => 'XX',
+            'latitude' => '0.1234567890',
+            'longitude' => '-0.1234567890',
+            'method' => 'ip',
+            'id' => '012-simulated-project-test-210'
+        );
+    private static $project = array('id' => '012-simulated-project-test-210',
+                                    'owner' => '012-simulated-user-test-210',
+                                    'name' => '012 Simulated Project Test 210');
+    private static $user = array(
+            'userid' => '012-simulated-user-test-210',
+            'name' => 'Test user - please delete me',
+            'email' => 'simulated-user-test@goteo.org'
+        );
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
 
@@ -28,85 +44,131 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testAddProjectLocation() {
-        $data = array(
-            'city' => 'Simulated City',
-            'region' => 'Simulated Region',
-            'country' => 'Neverland',
-            'country_code' => 'XX',
-            'latitude' => '0.1234567890',
-            'longitude' => '-0.1234567890',
-            'valid' => 1,
-            'method' => 'ip',
-            'project' => '_simulated_project_test_'
-        );
-        $project_location = ProjectLocation::addProjectLocation($data);
+        $project_location = new ProjectLocation(self::$data);
         $this->assertInstanceOf('\Goteo\Model\Project\ProjectLocation', $project_location);
-        foreach($project_location->locations as $loc) {
-            $this->assertInstanceOf('\Goteo\Model\Location', $loc);
+        $this->assertEquals($project_location->latitude, self::$data['latitude']);
+        $this->assertEquals($project_location->longitude, self::$data['longitude']);
+        $this->assertEquals($project_location->city, self::$data['city']);
+        $this->assertEquals($project_location->region, self::$data['region']);
+        $this->assertEquals($project_location->country, self::$data['country']);
+        $this->assertEquals($project_location->country_code, self::$data['country_code']);
+        $this->assertEquals($project_location->user, self::$data['user']);
+
+
+        return $project_location;
+    }
+    /**
+     * @depends testAddProjectLocation
+     */
+    public function testSaveProjectLocationNonProject($project_location) {
+        // We don't care if exists or not the test user:
+        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
+            $user->delete();
+        }
+        //delete test project if exists
+        try {
+            $project = \Goteo\Model\Project::get(self::$data['id']);
+            $project->delete();
+        } catch(\Exception $e) {
+            // project not exists, ok
+        }
+        try {
+            $project = \Goteo\Model\Project::get(self::$data['id']);
+        } catch(\Exception $e) {
+            // project not exists, ok
+            $this->assertInstanceOf('\Goteo\Core\Error', $e);
         }
 
-        $location2 = Location::get($project_location->location);
-        $this->assertInstanceOf('\Goteo\Model\Location', $location2);
-        $this->assertEquals($project_location->locations[0]->latitude, $location2->latitude);
-        $this->assertEquals($project_location->locations[0]->longitude, $location2->longitude);
-        $this->assertEquals($project_location->locations[0]->city, $location2->city);
-        $this->assertEquals($project_location->locations[0]->region, $location2->region);
-        $this->assertEquals($project_location->locations[0]->country, $location2->country);
-        $this->assertEquals($project_location->locations[0]->country_code, $location2->country_code);
-        $this->assertEquals($project_location->locations[0]->id, $location2->id);
-        return $location2;
+        $this->assertFalse($project_location->save());
+    }
+
+    public function testCreateProject() {
+
+        $user = new \Goteo\Model\User(self::$user);
+        $this->assertTrue($user->save($errors, array('password')));
+        $this->assertInstanceOf('\Goteo\Model\User', $user);
+
+        $project = new \Goteo\Model\Project(self::$project);
+        $errors = array();
+        $this->assertTrue($project->validate($errors), print_r($errors, 1));
+        $this->assertNotFalse($project->create(GOTEO_NODE, $errors), print_r($errors, 1));
+        $project->name = self::$project['name'];
+        $this->assertTrue($project->save($errors), print_r($errors, 1));
+        $this->assertTrue($project->rebase(null, $errors), print_r($errors, 1));
+
+
+        $project = \Goteo\Model\Project::get(self::$data['id']);
+        $this->assertEquals($project->id, self::$data['id']);
+        // print_r($project);
     }
 
     /**
      * @depends testAddProjectLocation
      */
-    public function testAddProjectEntry($location) {
-        $data = array(
-            'location' => $location->id,
-            'method' => 'ip',
-            'project' => '_simulated_project_test_'
-        );
-        $project_location = new ProjectLocation($data);
+    public function testSaveProjectLocation($project_location) {
+        $errors = array();
         $this->assertTrue($project_location->validate($errors), print_r($errors, 1));
-        $this->assertTrue($project_location->save());
-        $project_location2 = ProjectLocation::get($project_location->project);
+        $this->assertTrue($project_location->save($errors), print_r($errors, 1));
+
+        $project_location2 = ProjectLocation::get(self::$data['id']);
+
         $this->assertInstanceOf('\Goteo\Model\Project\ProjectLocation', $project_location2);
-        $this->assertEquals($project_location->location, $project_location2->location);
+        $this->assertEquals($project_location->id, $project_location2->id);
+        $this->assertEquals($project_location->longitude, $project_location2->longitude);
+        $this->assertEquals($project_location->latitude, $project_location2->latitude);
         $this->assertEquals($project_location->method, $project_location2->method);
-        $this->assertInternalType('array', $project_location2->locations);
-        foreach($project_location2->locations as $loc) {
-            $this->assertInstanceOf('\Goteo\Model\Location', $loc);
-        }
+
+        $this->assertEquals($project_location2->latitude, self::$data['latitude']);
+        $this->assertEquals($project_location2->longitude, self::$data['longitude']);
+        $this->assertEquals($project_location2->city, self::$data['city']);
+        $this->assertEquals($project_location2->region, self::$data['region']);
+        $this->assertEquals($project_location2->country, self::$data['country']);
+        $this->assertEquals($project_location2->country_code, self::$data['country_code']);
+        $this->assertEquals($project_location2->id, self::$data['id']);
 
         return $project_location2;
     }
 
     /**
-     * @depends  testAddProjectEntry
+     * @depends  testSaveProjectLocation
      */
     public function testSetLocable($project_location) {
-
-        $this->assertTrue($project_location::setLocable($project_location->project, $error), print_r($errors, 1));
-        $project_location2 = ProjectLocation::get($project_location->project);
+        $errors = array();
+        $this->assertTrue($project_location::setLocable($project_location->id, $errors), print_r($errors, 1));
+        $project_location2 = ProjectLocation::get($project_location->id);
         $this->assertInstanceOf('\Goteo\Model\Project\ProjectLocation', $project_location2);
-        $this->assertFalse($project_location::isUnlocable($project_location->project));
+        $this->assertEquals($project_location->id, $project_location2->id);
+        $this->assertEquals($project_location->longitude, $project_location2->longitude);
+        $this->assertEquals($project_location->latitude, $project_location2->latitude);
+        $this->assertEquals($project_location->method, $project_location2->method);
+
+        $this->assertEquals($project_location2->latitude, self::$data['latitude']);
+        $this->assertEquals($project_location2->longitude, self::$data['longitude']);
+        $this->assertEquals($project_location2->city, self::$data['city']);
+        $this->assertEquals($project_location2->region, self::$data['region']);
+        $this->assertEquals($project_location2->country, self::$data['country']);
+        $this->assertEquals($project_location2->country_code, self::$data['country_code']);
+        $this->assertEquals($project_location2->id, self::$data['id']);
+        $this->assertFalse($project_location::isUnlocable($project_location->id));
         $this->assertTrue($project_location2->locable);
         $this->assertEquals($project_location->locations, $project_location2->locations);
 
-        $project_location::setUnlocable($project_location->project);
-        $project_location2 = ProjectLocation::get($project_location2->project);
-        $this->assertTrue($project_location::isUnlocable($project_location->project));
+        $project_location::setUnlocable($project_location->id);
+        $project_location2 = ProjectLocation::get($project_location2->id);
+        $this->assertTrue($project_location::isUnlocable($project_location->id));
         $this->assertFalse($project_location2->locable);
 
         return $project_location;
     }
+
     /**
      * @depends  testSetLocable
      */
     public function testSetProperty($project_location) {
+        $errors = array();
         $txt = "Test info for location";
-        $this->assertTrue($project_location::setProperty($project_location->project, 'info', $txt, $error), print_r($errors, 1));
-        $project_location2 = ProjectLocation::get($project_location->project);
+        $this->assertTrue($project_location::setProperty($project_location->id, 'info', $txt, $error), print_r($errors, 1));
+        $project_location2 = ProjectLocation::get($project_location->id);
         $this->assertInstanceOf('\Goteo\Model\Project\ProjectLocation', $project_location2);
         $this->assertEquals($project_location2->info, $txt);
 
@@ -116,17 +178,27 @@ class LocationTest extends \PHPUnit_Framework_TestCase {
      * @depends  testSetProperty
      */
     public function testRemoveAddLocationEntry($project_location) {
-        $location = $project_location->locations[0];
-        $this->assertInstanceOf('\Goteo\Model\Location', $location);
 
         $this->assertTrue($project_location->delete());
-        $project_location2 = ProjectLocation::get($project_location->project);
+        $project_location2 = ProjectLocation::get($project_location->id);
 
         $this->assertFalse($project_location2);
-        $this->assertTrue($location->delete());
 
-        $location2 = Location::get($location->id);
-        $this->assertFalse($location2);
+    }
 
+    /**
+     * Some cleanup
+     */
+    static function tearDownAfterClass() {
+        //delete test project if exists
+        try {
+            $project = \Goteo\Model\Project::get(self::$data['id']);
+            $project->delete();
+        } catch(\Exception $e) {
+            // project not exists, ok
+        }
+        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
+            $user->delete();
+        }
     }
 }

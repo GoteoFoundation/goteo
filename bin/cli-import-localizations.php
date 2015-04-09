@@ -23,7 +23,7 @@ use Goteo\Core\Resource,
 
 require_once __DIR__ . '/../app/config.php';
 
-echo "This script geolocates Users & Projects into the tables location/location_item\n";
+echo "This script geolocates Users & Projects into the tables location/user_location/project_location\n";
 
 //Google Api day limit
 $GOOGLE_LIMIT = 2500;
@@ -65,7 +65,7 @@ $errors = @json_decode(@file_get_contents($CACHE_FILE));
 if(!is_array($errors)) $errors = array();
 
 echo "\nIMPORTING USERS\n\n";
-if($query = Model::query("SELECT user.id,user.location FROM user WHERE user.location!='' AND !ISNULL(user.location) AND location NOT IN ('" . implode("','", $errors) . "') AND user.id NOT IN (SELECT item FROM location_item WHERE type='user') LIMIT $LIMIT")) {
+if($query = Model::query("SELECT user.id,user.location FROM user WHERE user.location!='' AND !ISNULL(user.location) AND user.location NOT IN ('" . implode("','", $errors) . "') AND user.id NOT IN (SELECT user FROM user_location) LIMIT $LIMIT")) {
     foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $user) {
         echo "USER: {$user->id} LOCATION: [{$user->location}]\n";
         if($data = GoogleGeocoder::getCoordinates(array('address' => $user->location))) {
@@ -74,10 +74,11 @@ if($query = Model::query("SELECT user.id,user.location FROM user WHERE user.loca
             //add user location
             if($UPDATE) {
                 echo " UPDATING:";
-                if(UserLocation::addUserLocation($data + array(
-                    'user' => $user->id,
+                $loc = new UserLocation($data + array(
+                    'id' => $user->id,
                     'method' => 'manual'
-                    ), $err)) {
+                    ));
+                if($loc->save($err)) {
                     echo " OK";
                 }
                 else {
@@ -103,7 +104,7 @@ if($query = Model::query("SELECT user.id,user.location FROM user WHERE user.loca
 }
 
 echo "\nIMPORTING PROJECTS\n\n";
-if($query = Model::query("SELECT project.id,project.location FROM project WHERE project.location!='' AND !ISNULL(project.location) AND location NOT IN ('" . implode("','", $errors) . "') AND project.id NOT IN (SELECT item FROM location_item WHERE type='project') LIMIT $LIMIT")) {
+if($query = Model::query("SELECT project.id,project.location FROM project WHERE project.location!='' AND !ISNULL(project.location) AND project.location NOT IN ('" . implode("','", $errors) . "') AND project.id NOT IN (SELECT project FROM project_location) LIMIT $LIMIT")) {
     foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $project) {
         echo "PROJECT: {$project->id} LOCATION: [{$project->location}]\n";
         if($data = GoogleGeocoder::getCoordinates(array('address' => $project->location))) {
@@ -112,10 +113,11 @@ if($query = Model::query("SELECT project.id,project.location FROM project WHERE 
             //add project location
             if($UPDATE) {
                 echo " UPDATING:";
-                if(ProjectLocation::addProjectLocation($data + array(
+                $loc = new ProjectLocation($data + array(
                     'project' => $project->id,
                     'method' => 'manual'
-                    ), $err)) {
+                    ));
+                if($loc->save($err)) {
                     echo " OK";
                 }
                 else {

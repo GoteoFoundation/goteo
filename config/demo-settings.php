@@ -24,6 +24,9 @@ define('GOTEO_ENV', 'local');
 // nodo central
 define('GOTEO_NODE', 'goteo');
 
+// Comisión de goteo a proyectos
+define('GOTEO_FEE', 4);
+
 
 // Metadata
 define('GOTEO_META_TITLE', '--meta-title--');
