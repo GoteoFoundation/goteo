@@ -15,7 +15,3 @@ CREATE TABLE `user_location` (
   KEY `longitude` (`longitude`),
   CONSTRAINT `user_location_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- DON'T DO THIS BEFORE IMPORT THE project_location TABLE!!!
-DROP TABLE location;
-DROP TABLE location_item;

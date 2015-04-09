@@ -76,7 +76,7 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     public function testCleanUserRelated() {
         foreach(self::$related_tables as $tb => $field) {
-            $this->assertEquals(0, User::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM user)")->fetchColumn(), "DB incoherences in table [$b], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM user)");
+            $this->assertEquals(0, User::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM user)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM user)");
         }
     }
 
