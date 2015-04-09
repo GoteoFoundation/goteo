@@ -172,7 +172,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
 
     public function testCleanProjectRelated() {
         foreach(self::$related_tables as $tb => $field) {
-            $this->assertEquals(0, Project::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM project)")->fetchColumn(), "DB incoherences in table [$b], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM project)");
+            $this->assertEquals(0, Project::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM project)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM project)");
         }
     }
 
