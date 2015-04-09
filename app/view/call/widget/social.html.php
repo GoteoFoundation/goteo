@@ -32,7 +32,7 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
             <?php if (!empty($call->user->linkedin)): ?>
                 <li class="linkedin"><a href="<?php echo htmlspecialchars($call->user->linkedin) ?>"><?php echo Text::get('regular-linkedin'); ?></a></li>
             <?php endif ?>
-            <li class="email"><a href="mailto:<?php echo $call->user->email ?>" target="_blank"><?php echo $call->user->email ?></a></li>
+            <li class="email"><a href="mailto:<?php echo $call->user->email ?>" target="_blank"><?php echo Text::get('regular-email'); ?></a></li>
         </ul>
         <a href="<?php echo $URL ?>/service/resources" id="capital" target="_blank"><?php echo Text::get('footer-service-resources') ?></a>
     </div>
