@@ -18,6 +18,8 @@ ALTER TABLE `project_conf` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `project_conf` CHANGE `project` `project` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 
 -- Foreign index
+DELETE FROM `project_conf` WHERE `project` NOT IN (SELECT `id` FROM `project`);
+
 ALTER TABLE `project_conf`
     ADD CONSTRAINT `project_conf_ibfk_1`
     FOREIGN KEY (`project`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
