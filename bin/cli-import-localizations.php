@@ -74,10 +74,11 @@ if($query = Model::query("SELECT user.id,user.location FROM user WHERE user.loca
             //add user location
             if($UPDATE) {
                 echo " UPDATING:";
-                if(UserLocation::addUserLocation($data + array(
-                    'user' => $user->id,
+                $loc = new UserLocation($data + array(
+                    'id' => $user->id,
                     'method' => 'manual'
-                    ), $err)) {
+                    ));
+                if($loc->save($err)) {
                     echo " OK";
                 }
                 else {
@@ -112,10 +113,11 @@ if($query = Model::query("SELECT project.id,project.location FROM project WHERE 
             //add project location
             if($UPDATE) {
                 echo " UPDATING:";
-                if(ProjectLocation::addProjectLocation($data + array(
+                $loc = new ProjectLocation($data + array(
                     'project' => $project->id,
                     'method' => 'manual'
-                    ), $err)) {
+                    ));
+                if($loc->save($err)) {
                     echo " OK";
                 }
                 else {

@@ -25,6 +25,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         $longitude,
         $latitude,
         $info, //Some stored info
+        $name, //friendly description
         $id;
 
     /**
@@ -38,7 +39,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         $query = static::query("SELECT * FROM " . $instance->Table . " WHERE id = ?", array($id));
         $ob = $query->fetchObject($clas);
         $ob->locable = (bool) $ob->locable;
-
+        $ob->name = $ob->city ? ($ob->region ? $ob->city . ' (' .$ob->region . ')' : $ob->city) : ($ob->region ? $ob->region : $ob->country);
         if (!$ob instanceof  $clas) {
             return false;
         }
@@ -79,9 +80,6 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         if (!$this->validate($errors)) {
             return false;
         }
-
-        // remove from unlocable if method is not IP
-        if($this->method !== 'ip') $this->locable = true;
 
         $values = array(':id'         => $this->id,
                         ':method'       => $this->method,

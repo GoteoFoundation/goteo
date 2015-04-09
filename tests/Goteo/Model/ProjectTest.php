@@ -33,6 +33,26 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         return $ob;
     }
 
+    public function testCount() {
+
+        $total = Project::countTotal();
+        $campaign = Project::countTotal(array('status' => Project::STATUS_IN_CAMPAIGN));
+        $funded = Project::countTotal(array('status' => Project::STATUS_FUNDED));
+        $unfunded = Project::countTotal(array('status' => Project::STATUS_UNFUNDED));
+        $mainnode = Project::countTotal(array('node' => 'goteo'));
+
+        $this->assertInternalType('integer', $total);
+        $this->assertInternalType('integer', $campaign);
+        $this->assertInternalType('integer', $funded);
+        $this->assertInternalType('integer', $unfunded);
+        $this->assertInternalType('integer', $mainnode);
+        $this->assertGreaterThanOrEqual($campaign, $total);
+        $this->assertGreaterThanOrEqual($funded, $total);
+        $this->assertGreaterThanOrEqual($unfunded, $total);
+        $this->assertGreaterThanOrEqual($mainnode, $total);
+        echo "Projects: [$total] In Campaign: [$campaign] Funded: [$funded]  Unfunded: [$unfunded] Node goteo: [$mainnode]\n";
+    }
+
     /**
      * @depends testInstance
      */

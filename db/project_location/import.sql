@@ -19,3 +19,7 @@ FROM location_item AS a
 JOIN location AS b ON b.id=a.location
 JOIN project ON project.id=a.item
 WHERE a.type='project';
+
+-- DON'T DO THIS BEFORE IMPORT THE user_location TABLE!!!
+DROP TABLE location;
+DROP TABLE location_item;

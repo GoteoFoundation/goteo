@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Goteo\Model\User\Tests;
 
 use Goteo\Model\User\UserLocation;

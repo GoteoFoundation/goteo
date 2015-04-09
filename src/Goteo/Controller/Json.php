@@ -100,21 +100,22 @@ namespace Goteo\Controller {
                 $userId = Session::getUserId();
                 if($type === 'user') {
                     //TODO: let admins edit other users
+                    //TODO: don't let overwrite method manual/browser by ip
                     $return['user'] = $userId;
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         //Handles user localization
-                        if($_POST['latitude'] && $_POST['longitude']) {
-                            if ($loc = UserLocation::addUserLocation(array(
-                                'user'         => $userId,
+                        $loc = new UserLocation(array(
+                                'id'         => $userId,
                                 'city'         => $_POST['city'],
                                 'region'       => $_POST['region'],
                                 'country'      => $_POST['country'],
                                 'country_code' => $_POST['country_code'],
                                 'longitude'    => $_POST['longitude'],
                                 'latitude'     => $_POST['latitude'],
-                                'method'       => $_POST['method'],
-                                'valid'        => 1
-                            ), $errors)) {
+                                'method'       => $_POST['method']
+                            ));
+                        if($_POST['latitude'] && $_POST['longitude']) {
+                            if ($loc->save($errors)) {
                                 $return['msg'] = 'Location successfully added for user';
                                 $return['location'] = $loc;
                                 $return['success'] = true;
@@ -165,17 +166,17 @@ namespace Goteo\Controller {
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             //Handles project localization
                             if($_POST['latitude'] && $_POST['longitude']) {
-                                if ($loc = ProjectLocation::addProjectLocation(array(
-                                    'project'         => $projectId,
+                                $loc = new ProjectLocation(array(
+                                    'id'         => $projectId,
                                     'city'         => $_POST['city'],
                                     'region'       => $_POST['region'],
                                     'country'      => $_POST['country'],
                                     'country_code' => $_POST['country_code'],
                                     'longitude'    => $_POST['longitude'],
                                     'latitude'     => $_POST['latitude'],
-                                    'method'       => $_POST['method'],
-                                    'valid'        => 1
-                                ), $errors)) {
+                                    'method'       => $_POST['method']
+                                ));
+                                if ($loc->save($errors)) {
                                     $return['msg'] = 'Location successfully added for project';
                                     $return['location'] = $loc;
                                     $return['success'] = true;

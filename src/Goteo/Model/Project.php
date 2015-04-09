@@ -20,6 +20,15 @@ namespace Goteo\Model {
 
     class Project extends \Goteo\Core\Model {
 
+        // PROJECT STATUS IDs
+        const STATUS_REJECTED    = 0;
+        const STATUS_EDITING     = 1; // en negociación
+        const STATUS_REVIEWING   = 2; //
+        const STATUS_IN_CAMPAIGN = 3;
+        const STATUS_FUNDED      = 4;
+        const STATUS_FULFILLED   = 5; // 'Caso de exito'
+        const STATUS_UNFUNDED    = 6; // proyecto fallido
+
         public
             $id = null,
             $draft, // indica si el id es un md5 [0-9a-f]{32}

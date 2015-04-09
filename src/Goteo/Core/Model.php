@@ -127,6 +127,32 @@ namespace Goteo\Core {
         }
 
         /**
+         * Retorna el total de elementos de la tabla
+         * @param $filters array of pair/values to filter the table
+         */
+        public static function countTotal($filters = array(), $comparator = '=', $joiner = 'AND') {
+            $clas = get_called_class();
+            $instance = new $clas;
+            $sql = 'SELECT COUNT(*) FROM ' . $instance->getTable();
+            $values = array();
+            if($filters) {
+                $add = array();
+                $i=0;
+                foreach($filters as $key => $val) {
+                    $values[":item$i"] = $val;
+                    $add[] = "`$key` $comparator :item$i";
+                    $i++;
+                }
+                if($add) $sql .= ' WHERE ' . implode(" $joiner ", $add);
+            }
+            try {
+                return (int) self::query($sql, $values)->fetchColumn();
+            }catch (\PDOException $e) {
+            }
+            return false;
+        }
+
+        /**
          * Clears the sql cache
          * @return [type] [description]
          */

@@ -41,6 +41,22 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         return $converter;
     }
 
+    public function testCount() {
+
+        $total = User::countTotal();
+        $active = User::countTotal(array('active' => 1, 'hide' => 0));
+        $nolocation = $total - User::countTotal(array('location' => ''), '!=');
+        $mainnode = User::countTotal(array('node' => 'goteo'));
+
+        $this->assertInternalType('integer', $total);
+        $this->assertInternalType('integer', $active);
+        $this->assertInternalType('integer', $mainnode);
+        $this->assertGreaterThanOrEqual($active, $total);
+        $this->assertGreaterThanOrEqual($nolocation, $total);
+        $this->assertGreaterThanOrEqual($mainnode, $total);
+        echo "Users: [$total] Active: [$active] no-location: [$nolocation] Node goteo: [$mainnode]\n";
+    }
+
     public function testCreateUser() {
         // TODO: more tests...
         $user = new User(self::$user);

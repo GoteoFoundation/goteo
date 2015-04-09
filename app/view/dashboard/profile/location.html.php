@@ -12,7 +12,7 @@ $geolocation = $this['geolocation'];
 
 <?php
 
-    if ($geolocation instanceof Model\User\UserLocation && $geolocation->location) :
+    if ($geolocation instanceof Model\User\UserLocation) :
         //show button do not locate me
         echo '<h3>' . Text::get('dashboard-user-location-located-title') . '</h3>';
         echo '<p><a href="/dashboard/profile">' . Text::get('dashboard-user-location-change') . '</p></a>';
@@ -20,9 +20,9 @@ $geolocation = $this['geolocation'];
         //show map located
         echo View::get( 'widget/map.html.php',
                    array(
-                    'latitude' => $geolocation->locations[0]->latitude,
-                    'longitude' => $geolocation->locations[0]->longitude,
-                    'name' => $geolocation->locations[0]->name
+                    'latitude' => $geolocation->latitude,
+                    'longitude' => $geolocation->longitude,
+                    'name' => $geolocation->name
                   )
         );
 ?>
