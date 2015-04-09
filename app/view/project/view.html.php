@@ -236,9 +236,7 @@ include __DIR__ . '/../prologue.html.php' ?>
 					case 'home':
 
                     default:
-                        if (!empty($project->media->url)) {
-                            echo View::get('project/widget/media.html.php', array('project' => $project));
-                        }
+                        echo View::get('project/widget/media.html.php', array('project' => $project));
 
                         echo View::get('project/widget/langs.html.php', array('project' => $project));
 
@@ -246,6 +244,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                         if (!empty($project->patrons)) {
                             echo View::get('project/widget/patrons.html.php', array('patrons' => $project->patrons));
                         }
+
                         echo View::get('project/widget/summary.html.php', array('project' => $project));
 
                         // wall of friends, condicional

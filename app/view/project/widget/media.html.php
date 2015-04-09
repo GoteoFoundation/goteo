@@ -1,12 +1,11 @@
 <?php
 use Goteo\Library\Text;
 
-if (!empty($this['project']->media)) {
+if ($this['project']->media->url):
 
-	if(!empty($this['project']->secGallery['play-video'][0]))
-	{
+	if(!empty($this['project']->secGallery['play-video'][0])):
 		$img_url=$this['project']->secGallery['play-video'][0]->imageData->getLink(620, 380);
-		?>
+?>
         <script type="text/javascript">
             function loadVideo() {
                 var vid = document.getElementById('video_holder');
@@ -18,14 +17,27 @@ if (!empty($this['project']->media)) {
 			<div onclick="loadVideo()" class="video_button"><img src="<?php echo SRC_URL; ?>/view/css/project/widget/play.png" width="6"style="margin-right:12px;"/><?php echo Text::get('project-media-play_video'); ?></div>
 		</div>
 <?php
-	}
-
-	else
-	{ ?>
+	else:
+?>
 		<div class="widget project-media" <?php if ($this['project']->media_usubs) : ?>style="height:412px;"<?php endif; ?>>
 	    <?php echo $this['project']->media->getEmbedCode($this['project']->media_usubs, \LANG); ?>
 		</div>
-	<?php
-	}
-}
+<?php
+	endif;
+elseif($this['project']->image && $this['project']->image->id):
 ?>
+        <div class="widget project-media" style="position:relative;height:auto;" id="video_holder">
+        <img src="<?php echo $this['project']->image->getLink(620, 380); ?>" alt="" />
+        </div>
+<?php
+    // Eliminar de la galeria si ya se ha mostrado
+    // TODO: quiza esto no se deberia hacer aqui
+    //       o no se deberia hacer y punto (repetir imagenes)
+    if($this['project']->gallery) {
+        foreach($this['project']->gallery as $i => $img) {
+            if($img->imageData->id === $this['project']->image->id) {
+                unset($this['project']->gallery[$i]);
+            }
+        }
+    }
+endif;
