@@ -10,8 +10,8 @@ class LocationStats {
     public $errors = array();
 
     public function __construct(LocationInterface $location, Model $model) {
-        $this->location = $location;
-        $this->model = $model;
+        $this->location = $location; // Location instance (could be empty for the count methods), ie: UserLocation
+        $this->model = $model; // Model applied to the location, ie: User for UserLocation
     }
 
     /**
@@ -121,6 +121,5 @@ class LocationStats {
         }
         return false;
     }
-
 
 }

@@ -3,7 +3,10 @@
 
 namespace Goteo\Model\Project\Tests;
 
+use Goteo\Model\Project;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\User;
+use Goteo\Model\User\UserLocation;
 
 class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
     private static $data = array(
@@ -11,8 +14,8 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
             'region' => 'Simulated Region',
             'country' => 'Neverland',
             'country_code' => 'XX',
-            'latitude' => '0.1234567890',
-            'longitude' => '-0.1234567890',
+            'latitude' => 0.1234567890,
+            'longitude' => -0.1234567890,
             'method' => 'ip',
             'id' => '012-simulated-project-test-210'
         );
@@ -62,18 +65,18 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSaveProjectLocationNonProject($project_location) {
         // We don't care if exists or not the test user:
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
+        if($user = User::get(self::$user['userid'])) {
             $user->delete();
         }
         //delete test project if exists
         try {
-            $project = \Goteo\Model\Project::get(self::$data['id']);
+            $project = Project::get(self::$data['id']);
             $project->delete();
         } catch(\Exception $e) {
             // project not exists, ok
         }
         try {
-            $project = \Goteo\Model\Project::get(self::$data['id']);
+            $project = Project::get(self::$data['id']);
         } catch(\Exception $e) {
             // project not exists, ok
             $this->assertInstanceOf('\Goteo\Core\Error', $e);
@@ -84,11 +87,11 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreateProject() {
 
-        $user = new \Goteo\Model\User(self::$user);
+        $user = new User(self::$user);
         $this->assertTrue($user->save($errors, array('password')));
         $this->assertInstanceOf('\Goteo\Model\User', $user);
 
-        $project = new \Goteo\Model\Project(self::$project);
+        $project = new Project(self::$project);
         $errors = array();
         $this->assertTrue($project->validate($errors), print_r($errors, 1));
         $this->assertNotFalse($project->create(GOTEO_NODE, $errors), print_r($errors, 1));
@@ -97,7 +100,7 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($project->rebase(null, $errors), print_r($errors, 1));
 
 
-        $project = \Goteo\Model\Project::get(self::$data['id']);
+        $project = Project::get(self::$data['id']);
         $this->assertEquals($project->id, self::$data['id']);
         // print_r($project);
     }
@@ -174,6 +177,57 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
 
         return $project_location;
     }
+
+
+    /**
+     * @depends testSaveProjectLocation
+     */
+    public function testNearbyEmpty($project_location) {
+        $errors = array();
+        $project = new Project;
+        $loc = new ProjectLocation($project);
+        $this->assertInstanceOf('\Goteo\Model\Project\ProjectLocation', $loc);
+        $sibilings = $loc->getSibilingsNearby();
+        $this->assertInternalType('array', $sibilings);
+        $this->assertEmpty($sibilings);
+
+        return $project_location;
+    }
+
+    /**
+     * @depends testNearbyEmpty
+     */
+    public function testNearbyEmptyProjects($project_location) {
+        $projects_nearby = ProjectLocation::getNearby(new UserLocation, 1);
+        $this->assertInternalType('array', $projects_nearby);
+        $this->assertEmpty($projects_nearby);
+    }
+
+    /**
+     * @depends testNearbyEmpty
+     */
+    public function testNearby($project_location) {
+        // create location for user
+        $data = self::$data;
+        $data['id'] = self::$user['userid'];
+        $data['latitude'] = $data['latitude'] + 0.0001;
+        $data['longitude'] = $data['longitude'] + 0.0001;
+        $user_location = new UserLocation($data);
+        $errors = array();
+        $this->assertTrue($user_location->save($errors), print_r($errors, 1));
+
+        $projects_nearby = ProjectLocation::getNearby($user_location, 100);
+        // print_r($projects_nearby);
+        $this->assertInternalType('array', $projects_nearby);
+        $keys = array();
+        foreach($projects_nearby as $ob) {
+            $this->assertInstanceOf('\Goteo\Model\Project\Projectlocation', $ob);
+            $keys[] = $ob->id;
+        }
+        $this->assertContains($project_location->id, $keys);
+
+    }
+
     /**
      * @depends  testSetProperty
      */
@@ -192,12 +246,12 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
     static function tearDownAfterClass() {
         //delete test project if exists
         try {
-            $project = \Goteo\Model\Project::get(self::$data['id']);
+            $project = Project::get(self::$data['id']);
             $project->delete();
         } catch(\Exception $e) {
             // project not exists, ok
         }
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
+        if($user = User::get(self::$user['userid'])) {
             $user->delete();
         }
     }
