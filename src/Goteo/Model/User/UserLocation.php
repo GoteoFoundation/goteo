@@ -2,6 +2,8 @@
 
 namespace Goteo\Model\User;
 
+use Goteo\Model\Project\ProjectLocation;
+
 class UserLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'user_location';
     public $user;
@@ -19,4 +21,5 @@ class UserLocation extends \Goteo\Model\Location\LocationItem {
         }
         return parent::get($id);
     }
+
 }

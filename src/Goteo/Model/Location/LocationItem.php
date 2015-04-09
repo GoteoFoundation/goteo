@@ -197,15 +197,15 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
     /**
      * Returns Location instances ordered by proximity
      *
-     * Using the spherical law of cosines
-     * Based on "Selecting points within a bounding circle"
-     *          http://www.movable-type.co.uk/scripts/latlong-db.html
      * @usage
      *
-     * $user = User::get('user-id');
-     * $location = UserLocation:get($user);
+     * // getting user near 'user-id':
+     *
+     * $location = UserLocation::get(User::get('user-id'));
+     * // Or $location = UserLocation::get('user-id');
+     *
      * //Get users in a 100 Km radius (max: 3)
-     * foreach($location->getNearby(100, 0, 3) as $distance => $user_location) {
+     * foreach($location->getSibilingsNearby(100, 0, 3) as $distance => $user_location) {
      *     $user = User::get($user_location->id);
      *     echo "User: " . $user->username . ", Distance: " . round($distance, 2) . "Km";
      * }
@@ -216,14 +216,43 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
      * @param  integer $limit Limit for MySQL table limit
      * @return array             Array of LocationItem instances
      */
-    public function getNearby($distance = 100, $offset = 0, $limit = 10) {
+    public function getSibilingsNearby($distance = 100, $offset = 0, $limit = 10) {
+        return $this::getNearby($this, $distance, $offset, $limit);
+    }
+
+    /**
+     * Returns Location instances ordered by proximity
+     *
+     * Using the spherical law of cosines
+     * Based on "Selecting points within a bounding circle"
+     *          http://www.movable-type.co.uk/scripts/latlong-db.html
+     *
+     * @usage
+     *
+     * // Getting Projects near User 'user-id'
+     *
+     * $user_location = UserLocation::get('user-id');
+     * //Get projects in a 100 Km radius (max: 3)
+     * foreach(ProjectLocation::getNearby($user_location, 100, 0, 3) as $distance => $project_location) {
+     *     $project = Project::get($project_location->id);
+     *     echo "Project: " . $user->name . ", Distance: " . round($distance, 2) . "Km";
+     * }
+     *
+     *
+     * @param  integer $distance radius of bounding circle in kilometers
+     * @param  integer $offset Offset for MySQL table limit
+     * @param  integer $limit Limit for MySQL table limit
+     * @return array             Array of LocationItem instances
+     */
+
+    public static function getNearby(LocationInterface $location, $distance = 100, $offset = 0, $limit = 10) {
         // empty if no longitude/latitude
-        if(is_null($this->latitude) || is_null($this->longitude)) return array();
+        if(is_null($location->latitude) || is_null($location->longitude)) return array();
 
         // Creating a square "first cut" to not do the calculation over the full table
 
-        $lat = $this->latitude;  // latitude of centre of bounding circle in degrees
-        $lon = $this->longitude; // longitude of centre of bounding circle in degrees
+        $lat = $location->latitude;  // latitude of centre of bounding circle in degrees
+        $lon = $location->longitude; // longitude of centre of bounding circle in degrees
         $R   = 6371;             // earth's mean radius, km
 
         // first-cut bounding box (in degrees)
@@ -242,26 +271,31 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
             ':maxLon' => $maxLon,
             ':rad'    => $distance,
             ':R'      => $R,
-            ':id'     => $this->id
+            ':id'     => $location->id
         );
 
-        $sql = 'SELECT id, latitude, longitude, method, locable, city, region, country, country_code, info, modified,
-                ACOS(SIN(:lat)*SIN(RADIANS(latitude)) + COS(:lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:lon)) * :R AS Distance
-                FROM (
-                    SELECT id, latitude, longitude, method, locable, city, region, country, country_code, info, modified
-                    FROM user_location
+        $clas = get_called_class();
+        $instance = new $clas;
+        $table = $instance->getTable();
+        $firstCut = "SELECT id, latitude, longitude, method, locable, city, region, country, country_code, info, modified
+                    FROM $table
                     WHERE latitude BETWEEN :minLat AND :maxLat
-                      AND longitude BETWEEN :minLon AND :maxLon
-                      AND id != :id
+                      AND longitude BETWEEN :minLon AND :maxLon";
+        if(get_class($location) === $clas) {
+            $firstCut .= ' AND id != :id';
+        }
 
-                ) AS FirstCut
+        $sql = "SELECT id, latitude, longitude, method, locable, city, region, country, country_code, info, modified,
+                ACOS(SIN(:lat)*SIN(RADIANS(latitude)) + COS(:lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:lon)) * :R AS Distance
+                FROM ($firstCut) AS FirstCut
                 WHERE ACOS(SIN(:lat)*SIN(RADIANS(latitude)) + COS(:lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:lon)) * :R < :rad
                 ORDER BY Distance
-                LIMIT ' . (int) $offset . ',' . (int) $limit;
-
+                LIMIT $offset,$limit";
+        // echo $sql;
         $ret = array();
-        if($query = $this::query($sql, $params)) {
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, get_called_class()) as $ob) {
+
+        if($query = $clas::query($sql, $params)) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, $clas) as $ob) {
                 $key = (float)$ob->Distance;
                 while(array_key_exists((string)$key, $ret)) {
                     $key = (float)$key + 0.001;
