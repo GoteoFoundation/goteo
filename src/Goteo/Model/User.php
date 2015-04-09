@@ -1628,9 +1628,21 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function delete(&$errors = array()) {
+            $id = $this->id;
+            if(empty($id)) {
+                // throw new Exception("Delete error: ID not defined!");
+                return false;
+            }
 
-            $errors[] = "No implementado";
-            return false;
+            $sql = 'DELETE FROM user WHERE id = ?';
+            try {
+                self::query($sql, array($id));
+            } catch (\PDOException $e) {
+                // throw new Exception("Delete error in $sql");
+                $errors[] = "Error deleting user $id. " . $e->getMessage();
+                return false;
+            }
+            return true;
         }
 
         /**

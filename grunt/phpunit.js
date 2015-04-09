@@ -10,7 +10,7 @@ module.exports = function(grunt) {
 
     grunt.config('phpunit', {
         classes: {
-            dir: 'tests/'
+            dir: ''
         },
         options: {
             bin: 'vendor/bin/phpunit',

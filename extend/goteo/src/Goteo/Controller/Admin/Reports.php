@@ -7,6 +7,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
         Goteo\Library\Reporting,
         Goteo\Library\Currency,
+        Goteo\Library\Cacher,
         Goteo\Model;
 
     class Reports {
@@ -594,69 +595,33 @@ namespace Goteo\Controller\Admin {
         //TODO: añadir proyectos
         private static function geoloc() {
 
+            $old_cache = \Goteo\Core\DB::cache();
+            \Goteo\Core\DB::cache(true);
 
-            // para este informe guardamos datos diarios para no saturar la bd a consultas
-            // algo así como un bloqueo
-            $data_file = GOTEO_LOG_PATH . 'report-geoloc.data';
-            if (file_exists($data_file)) {
-                // leemos el archivo de datos
-                $data_content = \file_get_contents($data_file);
-                $data = unserialize($data_content);
-                // sacamos la fecha, si no es de hoy lo borramos y lanzamos de nuevo el report
-                if ($data['date'] != date('Ymd')) {
-                    unlink($data_file);
-                    throw new Redirection('/admin/reports/geoloc');
-                }
-            } else {
-                $query = Model\Location::query('SELECT COUNT(id) FROM user');
-                $registered = $query->fetchColumn();
-                $query = Model\Location::query("SELECT COUNT(id) FROM user WHERE location = '' OR ISNULL(location)");
-                $nolocation = $query->fetchColumn();
-                $located = Model\Location::countBy('user', 'located');
-                $data = array(
-                    'date'          => date('Ymd'),
-                    'report'        => 'geoloc',
-                    'registered'    => $registered,
-                    'no-location'   => $nolocation,
-                    'located'       => $located,
-                    'unlocated'     => $registered - $located,
-                    'unlocable'     => Model\Location::countBy('user', 'unlocable'),
-                    'not-spain'     => Model\Location::countBy('user', 'not-country', 'ES'),
-                    'by-region'     => array(),
-                    'by-country'    => array(),
-                    'by-node'       => array()
-                );
+            $stats = new Model\Location\LocationStats(new Model\User\UserLocation, new Model\User);
+            $total = Model\User::countTotal();
+            $data = array(
+                'date'          => date('Ymd'),
+                'report'        => 'geoloc',
+                'registered'    => $total,
+                'no-location'   => $total - Model\User::countTotal(array('location' => ''), '!='),
+                'located'       => $stats->countLocated(),
+                'unlocated'     => $stats->countUnlocated(),
+                'unlocable'     => $stats->countUnlocable(),
+                'not-spain'     => $stats->countFiltered('country_code', 'ES', true),
+                'by-region'     => $stats->countGroupFiltered('region', 'country_code', 'ES'),
+                'by-country'    => $stats->countGroupCountries(),
+                'by-node'       => array()
+            );
 
-                // por regiones españolas
-                $sql = "SELECT DISTINCT(region) as region FROM location WHERE country_code = 'ES' ORDER BY region ASC";
-                if($query = Model\Location::query($sql)) {
-                    foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
-                        $data['by-region'][$ob->region] = Model\Location::countBy('user', 'region', $ob->region);
-                    }
-                }
 
-                // // por paises
-                $sql = "SELECT country_code, country FROM location GROUP BY country_code ORDER BY country_code ASC";
-                if($query = Model\Location::query($sql)) {
-                    foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
-                        $data['by-country'][$ob->country_code . ' (' . $ob->country . ')'] = Model\Location::countBy('user', 'country', $ob->country_code);
-                    }
-                }
-
-                // por nodo (no exactamente geoloc....)
-                $nodes = Model\Node::getList();
-                foreach ($nodes as $nodeId => $nodeName) {
-                    $query = Model\Location::query("SELECT COUNT(id) FROM user WHERE node = '$nodeId'");
-                    $data['by-node'][$nodeName] = (int) $query->fetchColumn();
-                }
-
-                if (\file_put_contents($data_file, serialize($data), FILE_APPEND)) {
-                    \chmod($data_file, 0777);
-                } else {
-                    die ('No se ha podido crear el archivo de datos');
-                }
+            // por nodo (no exactamente geoloc....)
+            $nodes = Model\Node::getList();
+            foreach ($nodes as $nodeId => $nodeName) {
+                $data['by-node'][$nodeName] = Model\User::countTotal(array('node' => $nodeId));
             }
 
+            \Goteo\Core\DB::cache($old_cache);
             return $data;
 
         }

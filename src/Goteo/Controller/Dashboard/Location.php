@@ -14,7 +14,6 @@ namespace Goteo\Controller\Dashboard {
             $user = Session::getUser();
 
             $errors = array();
-
             // quiere quitarse de los ilocalizables
             if (isset($_POST['locable'])) {
                 UserLocation::setLocable($user->id, $errors);
