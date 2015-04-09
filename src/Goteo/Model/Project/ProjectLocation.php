@@ -4,5 +4,20 @@ namespace Goteo\Model\Project;
 
 class ProjectLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'project_location';
+    public $project;
+
+    public function __construct() {
+        $args = func_get_args();
+        call_user_func_array(array('parent', '__construct'), $args);
+        $this->project = $this->id;
+    }
+
+    public static function get($project) {
+        $id = $project;
+        if($project instanceOf Project) {
+            $id = $project->id;
+        }
+        return parent::get($id);
+    }
 }
 

@@ -2,6 +2,7 @@
 
 namespace Goteo\Model\User\Tests;
 
+use Goteo\Model\User;
 use Goteo\Model\User\UserLocation;
 
 class UserLocationTest extends \PHPUnit_Framework_TestCase {
@@ -10,8 +11,8 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
             'region' => 'Simulated Region',
             'country' => 'Neverland',
             'country_code' => 'XX',
-            'latitude' => '0.1234567890',
-            'longitude' => '-0.1234567890',
+            'latitude' => 0.1234567890,
+            'longitude' => -0.1234567890,
             'method' => 'ip',
             'id' => '012-simulated-user-test-210'
         );
@@ -60,7 +61,7 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSaveUserLocationNonUser($user_location) {
         // We don't care if exists or not the test user:
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
+        if($user = User::get(self::$user['userid'])) {
             $user->delete();
         }
 
@@ -68,7 +69,7 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCreateUser() {
-        $user = new \Goteo\Model\User(self::$user);
+        $user = new User(self::$user);
         $this->assertTrue($user->save($errors, array('password')));
         $this->assertInstanceOf('\Goteo\Model\User', $user);
     }
@@ -145,12 +146,72 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
 
         return $user_location;
     }
+
+    /**
+     * @depends testSaveUserLocation
+     */
+    public function testNearbyEmpty($user_location) {
+        $errors = array();
+        $user = new User;
+        $loc = new UserLocation($user);
+        $this->assertInstanceOf('\Goteo\Model\User\UserLocation', $loc);
+        $sibilings = $loc->getSibilingsNearby();
+        $this->assertInternalType('array', $sibilings);
+        $this->assertEmpty($sibilings);
+    }
+
+    /**
+     * @depends testSaveUserLocation
+     */
+    public function testAddSecondUser($user_location) {
+        $errors = array();
+        $user = self::$user;
+        $user['userid'] = $user['userid'] . '-2';
+        $user['email'] = '2.' . $user['email'];
+        if($u = User::get($user['userid'])) {
+            $u->delete();
+        }
+        $u = new User($user);
+        $this->assertTrue($u->save($errors, array('password')), print_r($errors, 1));
+        $this->assertInstanceOf('\Goteo\Model\User', $u);
+
+        $data = self::$data;
+        $data['id'] = $user['userid'];
+        $data['latitude'] = $data['latitude'] + 0.0001;
+        $data['longitude'] = $data['longitude'] + 0.0001;
+        $location2 = new UserLocation($data);
+        $errors = array();
+        $this->assertTrue($location2->save($errors), print_r($errors, 1));
+
+        return array($user_location, $location2);
+    }
+
+    /**
+     * @depends testAddSecondUser
+     */
+    public function testNearby(array $users) {
+        $errors = array();
+        list($user1, $user2) = $users;
+        $sibilings = $user1->getSibilingsNearby(100);
+        // print_r($sibilings);
+        $this->assertInternalType('array', $sibilings);
+        $keys = array();
+        foreach($sibilings as $ob) {
+            $this->assertInstanceOf('\Goteo\Model\User\Userlocation', $ob);
+            $keys[] = $ob->id;
+        }
+        $this->assertContains($user2->id, $keys);
+
+        $this->assertTrue($user1->delete($errors), print_r($errors, 1));
+        $this->assertTrue($user2->delete($errors), print_r($errors, 1));
+    }
+
     /**
      * @depends  testSetProperty
      */
-    public function testRemoveAddLocationEntry($user_location) {
-
-        $this->assertTrue($user_location->delete());
+    public function testRemoveLocationEntry($user_location) {
+        $errors = array();
+        $this->assertTrue($user_location->delete($errors), print_r($errors, 1));
         $user_location2 = UserLocation::get($user_location->id);
 
         $this->assertFalse($user_location2);
@@ -161,7 +222,10 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass() {
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
+        if($user = User::get(self::$user['userid'])) {
+            $user->delete();
+        }
+        if($user = User::get(self::$user['userid'] . '-2')) {
             $user->delete();
         }
     }
