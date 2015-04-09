@@ -23,3 +23,6 @@ ALTER TABLE `call_lang` ADD `name` TINYTEXT CHARACTER SET utf8 COLLATE utf8_gene
 
 -- pendiente de traducir
 ALTER TABLE `call_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+
+-- Los textos pueden ser muy largos...
+ALTER TABLE `call_lang` CHANGE `description` `description` LONGTEXT NULL;
