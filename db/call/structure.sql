@@ -120,3 +120,5 @@ UPDATE `call` SET applied = null WHERE applied = 0;
 UPDATE `call` SET running_projects = null WHERE running_projects = 0;
 UPDATE `call` SET success_projects = null WHERE success_projects = 0;
 
+-- Los textos pueden ser muy largos...
+ALTER TABLE `call` CHANGE `description` `description` LONGTEXT NULL;

@@ -183,18 +183,17 @@ div#main ul#list>li {
 }
 
 #social-logo li.email {
-    padding-left: 0px !important;
-    margin-top: 10px;
+    background-image: url('/view/css/social/email.png');
 }
 
-#social-logo li.email a {
+/*#social-logo li.email a {
     font-size: 11px !important;
     color: #20B2B3 !important;
 }
 
 #social-logo li.email a:hover {
     text-decoration: underline !important;
-}
+}*/
 
 /*
 #social-actions {
