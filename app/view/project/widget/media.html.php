@@ -24,10 +24,20 @@ if ($this['project']->media->url):
 		</div>
 <?php
 	endif;
-elseif($this['project']->image):
+elseif($this['project']->image && $this['project']->image->id):
 ?>
-        <div class="widget project-media" style="position:relative;" id="video_holder">
-        <img src="<?php echo $this['project']->image->getLink(620, 380); ?>" width="620" height="380"/>
+        <div class="widget project-media" style="position:relative;height:auto;" id="video_holder">
+        <img src="<?php echo $this['project']->image->getLink(620, 380); ?>" alt="" />
         </div>
 <?php
+    // Eliminar de la galeria si ya se ha mostrado
+    // TODO: quiza esto no se deberia hacer aqui
+    //       o no se deberia hacer y punto (repetir imagenes)
+    if($this['project']->gallery) {
+        foreach($this['project']->gallery as $i => $img) {
+            if($img->imageData->id === $this['project']->image->id) {
+                unset($this['project']->gallery[$i]);
+            }
+        }
+    }
 endif;

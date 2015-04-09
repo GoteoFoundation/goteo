@@ -244,6 +244,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                         if (!empty($project->patrons)) {
                             echo View::get('project/widget/patrons.html.php', array('patrons' => $project->patrons));
                         }
+
                         echo View::get('project/widget/summary.html.php', array('project' => $project));
 
                         // wall of friends, condicional
