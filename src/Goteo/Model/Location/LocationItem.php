@@ -235,7 +235,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
      * //Get projects in a 100 Km radius (max: 3)
      * foreach(ProjectLocation::getNearby($user_location, 100, 0, 3) as $distance => $project_location) {
      *     $project = Project::get($project_location->id);
-     *     echo "Project: " . $user->name . ", Distance: " . round($distance, 2) . "Km";
+     *     echo "Project: " . $project->name . ", Distance: " . round($distance, 2) . "Km";
      * }
      *
      *
