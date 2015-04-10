@@ -16,3 +16,5 @@ CREATE TABLE `project_location` (
   CONSTRAINT `project_location_ibfk_1` FOREIGN KEY (`id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--- Index for efficiency
+ALTER TABLE `project_location` ADD INDEX (`locable`);
