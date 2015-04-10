@@ -245,7 +245,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
      * @return array             Array of LocationItem instances
      */
 
-    public static function getNearby(LocationInterface $location, $distance = 100, $offset = 0, $limit = 10) {
+    public static function getNearby(LocationInterface $location, $distance = 100, $offset = 0, $limit = 10, $locable_only = true) {
         // empty if no longitude/latitude
         if(is_null($location->latitude) || is_null($location->longitude)) return array();
 
@@ -281,6 +281,9 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
                     FROM $table
                     WHERE latitude BETWEEN :minLat AND :maxLat
                       AND longitude BETWEEN :minLon AND :maxLon";
+        if($locable_only) {
+            $firstCut .= ' AND locable = 1';
+        }
         if(get_class($location) === $clas) {
             $firstCut .= ' AND id != :id';
         }
