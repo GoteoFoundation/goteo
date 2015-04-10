@@ -160,6 +160,8 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
         $project_location2 = ProjectLocation::get($project_location2->id);
         $this->assertTrue($project_location::isUnlocable($project_location->id));
         $this->assertFalse($project_location2->locable);
+        $project_location::setLocable($project_location->id);
+        $this->assertTrue($project_location2->locable);
 
         return $project_location;
     }
@@ -198,6 +200,7 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
      * @depends testNearbyEmpty
      */
     public function testNearbyEmptyProjects($project_location) {
+
         $projects_nearby = ProjectLocation::getNearby(new UserLocation, 1);
         $this->assertInternalType('array', $projects_nearby);
         $this->assertEmpty($projects_nearby);
@@ -217,7 +220,7 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($user_location->save($errors), print_r($errors, 1));
 
         $projects_nearby = ProjectLocation::getNearby($user_location, 100);
-        // print_r($projects_nearby);
+        // print_r($projects_nearby);die;
         $this->assertInternalType('array', $projects_nearby);
         $keys = array();
         foreach($projects_nearby as $ob) {
