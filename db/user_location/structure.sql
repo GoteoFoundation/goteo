@@ -15,3 +15,6 @@ CREATE TABLE `user_location` (
   KEY `longitude` (`longitude`),
   CONSTRAINT `user_location_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--- Index for efficiency
+ALTER TABLE `user_location` ADD INDEX (`locable`);
