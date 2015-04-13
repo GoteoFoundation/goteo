@@ -44,7 +44,6 @@ if ($project->status == 3 && $project->noinvest) {
     <div class="image">
         <?php switch ($project->tagmark) {
             case 'oneround': // "ronda única"
-                echo '<div class="tagmark aqua">' . Text::get('regular-oneround_mark') . '</div>';
                 break;
             case 'onrun': // "en marcha"
                 echo '<div class="tagmark aqua">' . Text::get('regular-onrun_mark') . '</div>';
