@@ -7,6 +7,7 @@ use Goteo\Core\Resource,
     Goteo\Core\Model,
     Goteo\Core\NodeSys,
     Goteo\Application\Session,
+    Goteo\Application\Cookie,
     Goteo\Library\Text,
     Goteo\Library\Message,
     Goteo\Library\Lang,
@@ -87,10 +88,7 @@ define('SEC_URL', ($SSL) ? 'https:'.$raw_url : $SITE_URL);
 define('HTTPS_ON', ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ));
 
 // SITE_URL, según si estamos en entorno seguro o si el usuario esta autenticado
-if ($SSL
-    && (\HTTPS_ON
-        || $_SESSION['user'] instanceof \Goteo\Model\User)
-    ) {
+if ($SSL && (\HTTPS_ON || Session::isLogged())) {
     define('SITE_URL', SEC_URL);
 } else {
     define('SITE_URL', $SITE_URL);
@@ -98,10 +96,7 @@ if ($SSL
 
 // si el usuario ya está validado debemos mantenerlo en entorno seguro
 // usamos la funcionalidad de salto entre nodos para mantener la sesión
-if ($SSL
-    && $_SESSION['user'] instanceof \Goteo\Model\User
-    && !\HTTPS_ON
-) {
+if ($SSL && Session::isLogged() && !\HTTPS_ON) {
     header('Location: ' . SEC_URL . $_SERVER['REQUEST_URI']);
     die;
 }
@@ -124,11 +119,9 @@ Lang::set($forceLang);
 // set currency
 Session::store('currency', Currency::set()); // depending on request
 
-// cambiamos el locale
-\setlocale(\LC_TIME, Lang::locale());
 /* Cookie para la ley de cookies */
-if (empty($_COOKIE['goteo_cookies'])) {
-    setcookie('goteo_cookies', '1', time() + 3600 * 24 * 365);
+if (Cookie::exists('goteo_cookies')) {
+    Cookie::store('goteo_cookies', '1');
     Message::Info(Text::get('message-cookies'));
 }
 try {

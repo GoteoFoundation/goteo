@@ -130,6 +130,9 @@ namespace Goteo\Library {
             // establecemos la constante
             define('LANG', $_SESSION['lang']);
 
+            // cambiamos el locale
+            setlocale(LC_TIME, Lang::locale());
+
             //echo 'New Session: ' . $_SESSION['lang'] . '<br />';
             //echo 'Const: ' . LANG . '<br />';
         }

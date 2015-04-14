@@ -61,12 +61,12 @@ class Session {
      * @return [type]       [description]
      */
     static public function start($name = 'Goteo', $session_time = null) {
+        global $_SESSION;
 
         if (!isset($_SESSION)) {
             // If we are run from the command line interface then we do not care
             // about headers sent using the session_start.
             if (PHP_SAPI === 'cli') {
-                global $_SESSION;
                 $_SESSION = array();
             }
             elseif (!headers_sent()) {
@@ -101,8 +101,8 @@ class Session {
      * @return [type] [description]
      */
     static public function destroy($throw_callback = true) {
+        global $_SESSION;
         if (PHP_SAPI === 'cli') {
-            global $_SESSION;
             $_SESSION = array();
             unset($_SESSION);
         }
@@ -126,6 +126,7 @@ class Session {
      * @return [type]        [description]
      */
     static public function store($key, $value) {
+        global $_SESSION;
         return $_SESSION[$key] = $value;
     }
 
@@ -135,7 +136,19 @@ class Session {
      * @return [type]      [description]
      */
     static public function get($key) {
+        global $_SESSION;
         return $_SESSION[$key];
+    }
+
+    /**
+     * Delete some value in session
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    static public function del($key) {
+        global $_SESSION;
+        unset($_SESSION[$key]);
+        return !self::exists($key);
     }
 
     /**
@@ -144,6 +157,7 @@ class Session {
      * @return [type]      [description]
      */
     static public function exists($key) {
+        global $_SESSION;
         return is_array($_SESSION) && array_key_exists($key, $_SESSION);
     }
 
