@@ -12,31 +12,55 @@ class Session {
     static protected $start_time = 0;
     static protected $triggers = array('session_expires' => null, 'session_destroyed' => null);
 
+    /**
+     * Set the session time expirity time
+     * @param [type] $time [description]
+     */
     static public function setSessionExpires($time) {
         self::$session_expire_time = (int) $time;
     }
+
+    /**
+     * Set the start time
+     */
     static public function setStartTime($start_time) {
         self::$start_time = (int) $start_time;
     }
+    /**
+     * Get the session expirity time
+     * @return [type] [description]
+     */
     static public function getSessionExpires() {
         return self::$session_expire_time;
     }
+    /**
+     * Gets the start time (when start function has been called)
+     * @return [type] [description]
+     */
     static public function getStartTime() {
         return self::$start_time ? self::$start_time : microtime(true);
     }
+    /**
+     * Gets the time when the session will expire
+     * @return [type] [description]
+     */
     static public function expiresIn() {
         return self::getStartTime() + self::getSessionExpires() - (int)self::get('session_init');
     }
+    /**
+     * Renew the init_time to extend the expire time of the current session
+     * @return [type] [description]
+     */
     static public function renew() {
         self::store('init_time', self::getStartTime());
     }
+
     /**
      * Starts session
      * @param  string $name [description]
      * @return [type]       [description]
      */
     static public function start($name = 'Goteo', $session_time = null) {
-        self::setStartTime(microtime(true));
 
         if (!isset($_SESSION)) {
             // If we are run from the command line interface then we do not care
@@ -54,6 +78,7 @@ class Session {
                 throw new Exception(__METHOD__ . 'Session started after headers sent.');
             }
         }
+        self::setStartTime(microtime(true));
 
         if(!self::exists('init_time')) {
             self::store('init_time', self::getStartTime());
@@ -104,29 +129,54 @@ class Session {
         return $_SESSION[$key] = $value;
     }
 
+    /**
+     * Retrieve some value in session
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
     static public function get($key) {
         return $_SESSION[$key];
     }
 
+    /**
+     * Check if a value exists in session
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
     static public function exists($key) {
         return is_array($_SESSION) && array_key_exists($key, $_SESSION);
     }
 
+    /**
+     * Callback to execute when session expires automatically
+     * @param  [type] $callback [description]
+     * @return [type]           [description]
+     */
     static public function onSessionExpires($callback) {
         if(is_callable($callback)) {
             self::$triggers['session_expires'] = $callback;
         }
     }
+    /**
+     * Callback to execute when the session is destroyed manually
+     * @param  [type] $callback [description]
+     * @return [type]           [description]
+     */
     static public function onSessionDestroyed($callback) {
         if(is_callable($callback)) {
             self::$triggers['session_destroyed'] = $callback;
         }
     }
 
+    /**
+     * Stores a user in session
+     * @param User $user [description]
+     */
     static public function setUser(User $user) {
         if(self::store('user', $user)) return $user;
         return false;
     }
+
     /**
      * Comprueba si el usuario está identificado.
      *
