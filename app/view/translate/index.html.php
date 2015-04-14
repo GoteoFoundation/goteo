@@ -2,10 +2,9 @@
 
 use Goteo\Library\Text,
     Goteo\Core\View,
-    Goteo\Library\Lang;
+    Goteo\Application\Lang;
 
-$langs = Lang::getAll();
-
+// TODO: mejorar esto
 // hay que elegir un idioma al que traducir, no se puede traducir a español, español es el idioma original
 if ($_SESSION['translate_lang'] == 'es') {
     unset($_SESSION['translate_lang']);

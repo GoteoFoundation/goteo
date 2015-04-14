@@ -1,6 +1,6 @@
 <?php
     use Goteo\Library\Text,
-        Goteo\Library\Lang,
+        Goteo\Application\Lang,
         Goteo\Model\Node,
         Goteo\Model\Banner;
 
@@ -25,7 +25,7 @@ $nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>')
                     <li><a href="/about"><?php echo str_replace('Goteo', $nodeData->name, Text::get('regular-header-about')); ?></a></li>
                     <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li>
                     <li><a href="/faq"><?php echo Text::get('regular-header-faq'); ?></a></li>
-                    <li id="lang"><a href="#" ><?php echo Lang::get(LANG)->short ?></a></li>
+                    <li id="lang"><a href="#" ><?php echo Lang::getShort(); ?></a></li>
                     <script type="text/javascript">
                     jQuery(document).ready(function ($) {
 						 $("#lang").hover(function(){

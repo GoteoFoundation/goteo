@@ -9,7 +9,7 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Feed,
 		Goteo\Library\Template,
         Goteo\Library\Message,
-        Goteo\Library\Lang,
+        Goteo\Application\Lang,
         Goteo\Model;
 
     class Users {
@@ -282,7 +282,7 @@ namespace Goteo\Controller\Admin {
                         );
 
                     $viewData['roles'] = Model\User::getRolesList();
-                    $viewData['langs'] = Lang::getAll();
+                    $viewData['langs'] = Lang::listAll('object', false);
                     // quitamos el español
                     unset($viewData['langs']['es']);
 

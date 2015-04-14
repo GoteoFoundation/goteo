@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Application\Session,
+        Goteo\Application\Cookie,
         Goteo\Library,
         Goteo\Library\Feed,
         Goteo\Library\Text,
@@ -84,7 +85,7 @@ namespace Goteo\Controller {
             Session::setUser($user);
 
             // creamos una cookie
-            setcookie('goteo_user', $user->id, time() + 3600 * 24 * 365);
+            Cookie::store('goteo_user', $user->id);
 
             if (!empty($user->lang)) {
                 $_SESSION['lang'] = $user->lang;

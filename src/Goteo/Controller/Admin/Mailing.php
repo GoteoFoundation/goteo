@@ -10,7 +10,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Newsletter,
-        Goteo\Library\Lang,
+        Goteo\Application\Lang,
         Goteo\Model;
 
     class Mailing {
@@ -35,7 +35,7 @@ namespace Goteo\Controller\Admin {
                 'checker' => 'Revisor',
                 'translator' => 'Traductor'
             );
-            $langs = Lang::getAll();
+            $langs = Lang::listAll('object', false);
 
             // una variable de sesion para mantener los datos de todo esto
             if (!isset($_SESSION['mailing'])) {

@@ -8,7 +8,7 @@ namespace Goteo\Controller\Translate {
         Goteo\Library\Feed,
         Goteo\Library\Message,
         Goteo\Library\Text,
-        Goteo\Library\Lang;
+        Goteo\Application\Lang;
 
     class Texts
     {

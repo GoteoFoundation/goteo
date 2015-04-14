@@ -5,7 +5,7 @@ namespace Goteo\Application;
 class Cookie {
 
     const DEFAULT_TTL = 31536000; // 3600 * 24 * 365;
-    protected $path = '/';
+    static protected $path = '/';
 
     static function setPath($path) {
         self::$path = $path;

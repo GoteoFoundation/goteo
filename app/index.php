@@ -8,9 +8,9 @@ use Goteo\Core\Resource,
     Goteo\Core\NodeSys,
     Goteo\Application\Session,
     Goteo\Application\Cookie,
+    Goteo\Application\Lang,
     Goteo\Library\Text,
     Goteo\Library\Message,
-    Goteo\Library\Lang,
     Goteo\Library\Currency;
 
 //si el parametro GET vale:
@@ -107,20 +107,18 @@ if ($SSL && Session::isLogged() && !\HTTPS_ON) {
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
 
 // Get requested segments
-$segments = preg_split('!\s*/+\s*!', $uri, -1, \PREG_SPLIT_NO_EMPTY);
+$segments = preg_split('!\s*/+\s*!', $uri, -1, PREG_SPLIT_NO_EMPTY);
 
 // Normalize URI
 $uri = '/' . implode('/', $segments);
 
-// set Lang (forzado para el cron y el admin)
-$forceLang = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
-Lang::set($forceLang);
+Lang::setFromGlobals();
 
 // set currency
 Session::store('currency', Currency::set()); // depending on request
 
 /* Cookie para la ley de cookies */
-if (Cookie::exists('goteo_cookies')) {
+if (!Cookie::exists('goteo_cookies')) {
     Cookie::store('goteo_cookies', '1');
     Message::Info(Text::get('message-cookies'));
 }

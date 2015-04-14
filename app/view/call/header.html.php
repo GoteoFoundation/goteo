@@ -1,6 +1,6 @@
 <?php
     use Goteo\Library\Text,
-        Goteo\Library\Lang,
+        Goteo\Application\Lang,
         Goteo\Core\ACL;
 ?>
 
@@ -58,7 +58,7 @@
             <?php endif ?>
 
 			<li id="lang">
-				<a href="#" ><?php echo Lang::get(LANG)->short ?></a>
+				<a href="#" ><?php echo Lang::getShort(); ?></a>
 			</li>
 		</ul>
 
