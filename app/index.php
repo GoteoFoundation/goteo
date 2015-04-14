@@ -47,7 +47,7 @@ Session::onSessionExpires(function(){
     Message::Info(Text::get('session-expired'));
 });
 Session::onSessionDestroyed(function(){
-    Message::Info('bye!');
+    Message::Info('That\'s all folks!');
 });
 
 /* Sistema nodos */

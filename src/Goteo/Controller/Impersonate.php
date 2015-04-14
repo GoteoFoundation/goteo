@@ -15,6 +15,7 @@ namespace Goteo\Controller {
 
 	    /**
 	     * Suplantando al usuario
+         * TODO: mejorar esto con excepciones y capacidad para volver al usuario original
 	     * @param string $id   user->id
 	     */
 		public function index () {

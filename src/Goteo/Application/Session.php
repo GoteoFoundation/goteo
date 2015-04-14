@@ -37,8 +37,24 @@ class Session {
      */
     static public function start($name = 'Goteo', $session_time = null) {
         self::setStartTime(microtime(true));
-        session_name($name);
-        session_start();
+
+        if (!isset($_SESSION)) {
+            // If we are run from the command line interface then we do not care
+            // about headers sent using the session_start.
+            if (PHP_SAPI === 'cli') {
+                global $_SESSION;
+                $_SESSION = array();
+            }
+            elseif (!headers_sent()) {
+                session_name($name);
+                if (!session_start()) {
+                   throw new Exception(__METHOD__ . 'session_start failed.');
+                }
+            } else {
+                throw new Exception(__METHOD__ . 'Session started after headers sent.');
+            }
+        }
+
         if(!self::exists('init_time')) {
             self::store('init_time', self::getStartTime());
         }
@@ -60,11 +76,18 @@ class Session {
      * @return [type] [description]
      */
     static public function destroy($throw_callback = true) {
-        session_unset();
-        session_destroy();
-        session_write_close();
-        session_regenerate_id(true);
-        session_start();
+        if (PHP_SAPI === 'cli') {
+            global $_SESSION;
+            $_SESSION = array();
+            unset($_SESSION);
+        }
+        else {
+            session_unset();
+            session_destroy();
+            session_write_close();
+            session_regenerate_id(true);
+            session_start();
+        }
         $callback = self::$triggers['session_destroyed'];
         if($throw_callback && is_callable($callback)) {
             $callback();
