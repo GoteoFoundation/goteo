@@ -7,7 +7,8 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Library\Feed,
         Goteo\Library\Message,
-		Goteo\Model\User,
+        Goteo\Model\User,
+		Goteo\Application\Session,
 		Goteo\Model\Node;
 
 	class Impersonate extends \Goteo\Core\Controller {
@@ -18,18 +19,21 @@ namespace Goteo\Controller {
 	     */
 		public function index () {
 
-            $admin = $_SESSION['user'];
+            $admin = Session::getUser();
 
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' 
+            if ($_SERVER['REQUEST_METHOD'] === 'POST'
                 && !empty($_POST['id'])
                 && !empty($_POST['impersonate'])) {
 
-                $impersonator = $_SESSION['user']->id;
-
-                session_unset();
-                $_SESSION['user'] = User::get($_POST['id']);
-                $_SESSION['impersonating'] = true;
-                $_SESSION['impersonator'] = $impersonator;
+                $impersonator = Session::getUser()->id;
+                $user = User::get($_POST['id']);
+                Session::onSessionDestroyed(function () use ($impersonator, $user) {
+                    Message::Info("User [$impersonator] converted to [" . $user->id . "]");
+                });
+                Session::destroy();
+                Session::setUser($user);
+                session::store('impersonating', true);
+                session::store('impersonator', $impersonator);
 
                 unset($_SESSION['admin_menu']);
                 // si es administrador de nodo cargamos tambien su nodo
@@ -57,7 +61,7 @@ namespace Goteo\Controller {
 
 
                 throw new Redirection('/dashboard');
-                
+
             }
             else {
                 Message::Error('Ha ocurrido un error');

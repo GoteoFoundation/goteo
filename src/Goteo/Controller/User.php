@@ -121,12 +121,8 @@ namespace Goteo\Controller {
          * Cerrar sesión.
          */
         public function logout() {
-            $lang = '?lang=' . $_SESSION['lang'];
-            session_start();
-            session_unset();
-            session_destroy();
-            session_write_close();
-            session_regenerate_id(true);
+            $lang = '?lang=' . Session::get('lang');
+            Session::destroy();
             throw new Redirection('/' . $lang);
             die;
         }
