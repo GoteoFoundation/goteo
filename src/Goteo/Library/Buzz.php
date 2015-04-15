@@ -27,7 +27,7 @@ namespace Goteo\Library {
             $doReq = true;
             // primero miramos si tenemos cache y de cuando es
             $filename = 'buzz_'.md5($query).'.json';
-            echo "BUZZ[$filename]";die;
+            // echo "BUZZ[$filename]";die;
             $cache = new Cacher('buzz');
             $data_file = $cache->getFile($filename);;
             if (file_exists($data_file)) {
