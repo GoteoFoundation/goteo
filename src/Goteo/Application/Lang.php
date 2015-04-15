@@ -2,11 +2,8 @@
 
 namespace Goteo\Application;
 
-use Goteo\Model\User;
-
 class Lang {
-    static protected $fallback = 'en'; //TODO: by config?
-    static protected $default = 'es';
+    static protected $default = '';
 
     static protected  $langs_available = array(
         'en' => array(
@@ -25,21 +22,21 @@ class Lang {
                     'short' => 'CAT',
                     'public' => true,
                     'locale' => 'ca_ES',
-                    'fallback' => 'es'
+                    'fallback' => 'es' //Overwrite fallback
                     ),
         'eu' => array(
                     'name' => 'Euskara',
                     'short' => 'EUSK',
                     'public' => true,
                     'locale' => 'eu_ES',
-                    'fallback' => 'es'
+                    'fallback' => 'es'  //Overwrite fallback
                     ),
         'gl' => array(
                     'name' => 'Galego',
                     'short' => 'GAL',
                     'public' => true,
                     'locale' => 'gl_ES',
-                    'fallback' => 'es'
+                    'fallback' => 'es'  //Overwrite fallback
                     ),
         'fr' => array(
                     'name' => 'Français',
@@ -51,7 +48,7 @@ class Lang {
                     'short' => 'ITA',
                     'public' => true,
                     'locale' => 'it_IT',
-                    'fallback' => 'es'
+                    'fallback' => 'es'  //Overwrite fallback
                     ),
         'nl' => array(
                     'name' => 'Dutch',
@@ -86,16 +83,50 @@ class Lang {
 
 
     /**
+     * Sets the default language
+     * @param [type] $lang [description]
+     */
+    static public function setDefault($lang) {
+        if(array_key_exists($lang, self::$langs_available)) {
+            self::$default = $lang;
+        }
+    }
+    /**
+     * Sets the default language
+     * @param [type] $lang [description]
+     */
+    static public function setPublic($lang, $public = true) {
+        if(array_key_exists($lang, self::$langs_available)) {
+            self::$langs_available[$lang]['public'] = (bool) $public;
+        }
+    }
+
+    static public function isPublic($lang) {
+        return self::get($lang, 'public');
+    }
+
+    /**
      * Returns the default language for a language
      * @param  string $lang [description]
      * @return [type]       [description]
      */
     static public function getDefault($lang = '') {
-        $default = self::$default;
-        if(array_key_exists($lang, self::$langs_available) && array_key_exists('fallback', self::$langs_available[$lang])) {
-            $default = self::$langs_available[$lang]['fallback'];
-        }
+        $default = self::isPublic(self::$default) ? self::$default : '';
 
+        foreach(self::$langs_available as $l => $info) {
+            if($info['public']) {
+                if(empty($default)) {
+                    $default = $l;
+                }
+                if($lang === $l) {
+                    $fallback = self::$langs_available[$lang]['fallback'];
+                    if($fallback && self::isPublic($fallback)) {
+                        $default = $fallback;
+                    }
+                    break;
+                }
+            }
+        }
         return $default;
     }
 
@@ -104,7 +135,7 @@ class Lang {
      * @param [type] $lang [description]
      */
     static public function set($lang) {
-        if(!array_key_exists($lang, self::$langs_available)) {
+        if(!self::isPublic($lang)) {
             // get the default
             $lang = self::getDefault($lang);
         }
@@ -117,8 +148,14 @@ class Lang {
      * @return [type] [description]
      */
     static public function current() {
-        if(Session::exists('lang')) return Session::get('lang');
-        return self::$default;
+        $current = '';
+        if(Session::exists('lang')) {
+            $current = Session::get('lang');
+        }
+        if(empty($current) || !self::isPublic($current)) {
+            $current = self::getDefault();
+        }
+        return $current;
     }
     /**
      * Get the a language
@@ -132,6 +169,7 @@ class Lang {
             if($method === 'name' && $info['name'])       return $info['name'];
             elseif($method === 'short' && $info['short'])  return $info['short'];
             elseif($method === 'locale' && $info['locale'])  return $info['locale'];
+            elseif($method === 'public')  return (bool)$info['public'];
             elseif($method === 'array')  return $info;
             elseif($method === 'object') return (object) $info;
 
@@ -150,32 +188,39 @@ class Lang {
     }
 
     static public function setFromGlobals() {
-        $uri = strtok($_SERVER['REQUEST_URI'], '?');
+        // self::setDefault('es');
+
+        $desired = array();
         // set Lang (forzado para el cron y el admin)
-        $forceLang = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
-        if($forcelang) {
-            $lang = self::set($forceLang);
-        }
+        $uri = strtok($_SERVER['REQUEST_URI'], '?');
+        $desired[] = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
         // set Lang by GET user request
-        elseif(isset($_GET['lang'])) {
-            $lang = self::set($_GET['lang']);
-            //Si el idioma existe, guardar preferencias
-            if($lang === $_GET['lang']) {
-                //Enviar cookie
-                Cookie::store('goteo_lang', $lang);
-                if(Session::isLogged()) {
-                    //guardar preferencias de usuario
-                    User::updateLang(Session::getUserId(), $lang);
-                }
-            }
+        if(isset($_GET['lang'])) {
+            $desired[] = $_GET['lang'];
         }
         // set lang by cookie if exists
-        elseif(Cookie::exists('goteo_lang')) {
-            $lang = self::set(Cookie::get('goteo_lang'));
+        if(Cookie::exists('goteo_lang')) {
+            $desired[] = Cookie::get('goteo_lang');
         }
         // set by navigator
-        else {
-            $lang = self::set(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+        $desired[] = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+
+        // set the lang in order of preference
+        foreach($desired as $l) {
+            $lang = self::set($l);
+            if($lang === $l) {
+                break;
+            }
+        }
+
+        //Si el idioma existe (y se ha especificado), guardar preferencias
+        if($lang === $_GET['lang']) {
+            //Enviar cookie
+            Cookie::store('goteo_lang', $lang);
+            if(Session::isLogged()) {
+                //guardar preferencias de usuario
+                Session::getUser()->updateLang($lang);
+            }
         }
 
         // establecemos la constante

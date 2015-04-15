@@ -494,20 +494,20 @@ namespace Goteo\Model {
         /**
          * Este método actualiza directamente el campo de idioma preferido
          */
-        public function updateLang ($id, $lang) {
+        public function updateLang ($lang, &$errors = array()) {
 
-            $values = array(':id'=>$id, ':lang'=>$lang);
+            $values = array(':id'=>$this->id, ':lang'=>$lang);
 
             try {
                 $sql = "UPDATE user SET `lang` = :lang WHERE id = :id";
                 self::query($sql, $values);
+                $this->lang = $lang;
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
-                return false;
+                $errors[] = "Update lang user preferences failed! " . $e->getMessage();
             }
-
+            return false;
         }
 
         /**
