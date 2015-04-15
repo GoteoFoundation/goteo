@@ -236,9 +236,14 @@ namespace Goteo\Controller\Admin {
                                     break;
 
                                 case 'translator':
-                                    // le ponemos todos los idiomas (excepto el español)
-                                    $sql = "INSERT INTO user_translang (user, lang) SELECT '{$id}' as user, id as lang FROM `lang` WHERE id != 'es'";
-                                    Model\User::query($sql);
+                                    // le ponemos todos los idiomas activos (excepto el español)
+                                    $langs = Lang::listAll('id');
+                                    //TODO: quitar esto de aqui...
+                                    unset($langs['es']);
+                                    foreach($langs as $l) {
+                                        $sql = "INSERT INTO user_translang (user, lang) VALUES (:user, :lang)";
+                                        Model\User::query($sql, array(':user' => $id, ':lang' => $l));
+                                    }
                                     break;
 
                                 case 'notranslator':
@@ -282,7 +287,7 @@ namespace Goteo\Controller\Admin {
                         );
 
                     $viewData['roles'] = Model\User::getRolesList();
-                    $viewData['langs'] = Lang::listAll('object', false);
+                    $viewData['langs'] = Lang::listAll('name', false);
                     // quitamos el español
                     unset($viewData['langs']['es']);
 
@@ -307,19 +312,17 @@ namespace Goteo\Controller\Admin {
 
                     $sql = "DELETE FROM user_translang WHERE user = :user";
                     Model\User::query($sql, array(':user'=>$user));
-
                     $anylang = false;
-                    foreach ($_POST as $key => $value) {
-                        if (\substr($key, 0, \strlen('lang_')) == 'lang_')  {
+                    if(is_array($_POST['langs'])) {
+                        foreach ($_POST['langs'] as $lang) {
                             $sql = "INSERT INTO user_translang (user, lang) VALUES (:user, :lang)";
-                            if (Model\User::query($sql, array(':user'=>$user, ':lang'=>$value))) {
+                            if (Model\User::query($sql, array(':user'=>$user, ':lang'=>$lang))) {
                                 $anylang = true;
                             }
                         }
                     }
-
                     if (!$anylang) {
-                        Message::Error('No se ha seleccionado ningún idioma, este usuario tendrá problemas en su panel de traducción!');
+                        Message::Error('No se ha seleccionado ningún idioma, se ha desactivado la traducción para este usuario!');
                     } else {
                         Message::Info('Se han aplicado al traductor los idiomas seleccionados');
                     }

@@ -583,7 +583,6 @@ namespace Goteo\Model {
                 if (!$user instanceof  \Goteo\Model\User) {
                     return false;
                 }
-
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->avatar);
 
@@ -596,6 +595,7 @@ namespace Goteo\Model {
                 if (!empty($user->node) && $user->node != \GOTEO_NODE) {
                     $user->nodeData = Node::getMini($user->node);
                 }
+
 
                 // si es traductor cargamos sus idiomas
                 if (isset($user->roles['translator'])) {
@@ -1035,7 +1035,7 @@ namespace Goteo\Model {
 
 			if($row = $query->fetch()) {
 			    $user = static::get($row['id']);
-			    if($user->active) {
+                if($user->active) {
                     // ponemos su divisa preferida en sesión
                     $prefs = self::getPreferences($row['id']);
                     if (!empty($prefs->currency)) $_SESSION['currency'] = $prefs->currency;

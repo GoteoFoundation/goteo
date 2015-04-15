@@ -87,7 +87,7 @@ class Lang {
      * @param [type] $lang [description]
      */
     static public function setDefault($lang) {
-        if(array_key_exists($lang, self::$langs_available)) {
+        if(self::exists($lang)) {
             self::$default = $lang;
         }
     }
@@ -96,7 +96,7 @@ class Lang {
      * @param [type] $lang [description]
      */
     static public function setPublic($lang, $public = true) {
-        if(array_key_exists($lang, self::$langs_available)) {
+        if(self::exists($lang)) {
             self::$langs_available[$lang]['public'] = (bool) $public;
         }
     }
@@ -162,11 +162,12 @@ class Lang {
      * @return [type] [description]
      */
     static public function get($lang, $method = 'object') {
-        if(array_key_exists($lang, self::$langs_available)) {
+        if(self::exists($lang)) {
 
             $info = self::$langs_available[$lang];
 
-            if($method === 'name' && $info['name'])       return $info['name'];
+            if($method === 'id')  return $lang;
+            elseif($method === 'name' && $info['name'])       return $info['name'];
             elseif($method === 'short' && $info['short'])  return $info['short'];
             elseif($method === 'locale' && $info['locale'])  return $info['locale'];
             elseif($method === 'public')  return (bool)$info['public'];
@@ -178,6 +179,9 @@ class Lang {
         return false;
     }
 
+    static public function exists($lang) {
+        return array_key_exists($lang, self::$langs_available);
+    }
     /**
      * Returns if the lang is currently selected
      * @param  [type]  $lang [description]
