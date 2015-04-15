@@ -1,6 +1,7 @@
 <?php
 
-use \Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Application\Lang;
 
 if (NODE_ID != GOTEO_NODE) {
     include __DIR__ . '/node/prologue.html.php';
@@ -96,7 +97,7 @@ if (NODE_ID != GOTEO_NODE) {
         <?php if (isset($jsreq_ckeditor)) : ?>
            <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
         <?php endif; ?>
-        
+
         <!--Para calendar -->
         <?php if (isset($jsreq_calendar)) : ?>
           <link href="<?php echo SRC_URL ?>/view/css/calendar/fullcalendar.css" rel="stylesheet" />
@@ -196,7 +197,7 @@ var _prum = [['id', '5434f3beabe53dcd6ff6f0cf'],
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/<?php echo \Goteo\Library\Lang::locale(); ?>/all.js#xfbml=1&appId=189133314484241";
+  js.src = "//connect.facebook.net/<?php echo Lang::getLocale(); ?>/all.js#xfbml=1&appId=189133314484241";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <?php endif; ?>

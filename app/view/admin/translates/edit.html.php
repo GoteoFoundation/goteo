@@ -1,10 +1,10 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\Lang;
+    Goteo\Application\Lang;
 
 $project = $this['project'];
-$langs = Lang::getAll();
+$langs = Lang::listAll('object', false);
 
 $filters = $this['filters'];
 ?>

@@ -2,6 +2,7 @@
 use Goteo\Application\Lang;
 
 $langs = Lang::listAll('short');
+
 // piñonaco para activar portugués en la convocatoria de extremadura
 // TODO: activar el idioma desde el controlador con Lang::setPublic('pt')
 if (isset($call) && $call->id == 'cofinancia-extremadura')

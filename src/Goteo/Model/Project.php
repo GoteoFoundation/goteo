@@ -183,6 +183,26 @@ namespace Goteo\Model {
             return $this->$name;
         }
 
+
+        /**
+         * Returns an array of project languages
+         * @param  [type] $project_id [description]
+         * @return [type]             [description]
+         */
+        public function getLangs() {
+            $sql = 'SELECT lang FROM project WHERE id = :id
+                    UNION
+                SELECT lang FROM project_lang WHERE id = id
+                ORDER BY lang ASC';
+
+            $query = static::query($sql, array(':id' => $this->id));
+            $langs = array();
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $lang) {
+                $langs[$lang->lang] = Lang::getName($lang->lang);
+            }
+            return $langs;
+        }
+
         /**
          * Check if the project is can be seen by the user id
          * @param  string $user_id ID of the user

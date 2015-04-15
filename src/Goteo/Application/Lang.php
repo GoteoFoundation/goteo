@@ -125,12 +125,13 @@ class Lang {
      * @return [type] [description]
      */
     static public function get($lang, $method = 'object') {
-        if(!array_key_exists($lang, self::$langs_available)) {
+        if(array_key_exists($lang, self::$langs_available)) {
 
             $info = self::$langs_available[$lang];
 
-            if($method === 'name')       return $info['name'];
-            elseif($method === 'short')  return $info['short'];
+            if($method === 'name' && $info['name'])       return $info['name'];
+            elseif($method === 'short' && $info['short'])  return $info['short'];
+            elseif($method === 'locale' && $info['locale'])  return $info['locale'];
             elseif($method === 'array')  return $info;
             elseif($method === 'object') return (object) $info;
 
@@ -145,7 +146,7 @@ class Lang {
      * @return boolean       [description]
      */
     static public function isActive($lang) {
-        return self::get('lang') === $lang;
+        return self::current() === $lang;
     }
 
     static public function setFromGlobals() {
@@ -194,10 +195,7 @@ class Lang {
      * @return [type]       [description]
      */
     static function getLocale($lang) {
-        if(array_key_exists($lang, self::$langs_available) && array_key_exists('locale', self::$langs_available[$lang])) {
-            return self::$langs_available[$lang]['locale'];
-        }
-        return $lang;
+        return self::get($lang ? $lang : self::current(), 'locale');
     }
 
     /**
@@ -206,10 +204,7 @@ class Lang {
      * @return [type]       [description]
      */
     static function getName($lang) {
-        if(array_key_exists($lang, self::$langs_available) && array_key_exists('name', self::$langs_available[$lang])) {
-            return self::$langs_available[$lang]['name'];
-        }
-        return $lang;
+        return self::get($lang ? $lang : self::current(), 'name');
     }
 
     /**
@@ -217,11 +212,8 @@ class Lang {
      * @param  [type] $lang [description]
      * @return [type]       [description]
      */
-    static function getShort($lang) {
-        if(array_key_exists($lang, self::$langs_available) && array_key_exists('short', self::$langs_available[$lang])) {
-            return self::$langs_available[$lang]['short'];
-        }
-        return $lang;
+    static function getShort($lang = null) {
+        return self::get($lang ? $lang : self::current(), 'short');
     }
 
 

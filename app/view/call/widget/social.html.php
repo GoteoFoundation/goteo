@@ -1,6 +1,7 @@
 <?php
 
 use Goteo\Library\Text,
+    Goteo\Application\Lang,
     Goteo\Core\View;
 
 $call = $this['call'];
@@ -41,14 +42,14 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
         <h2><?php echo Text::get('call-header-social_spread'); ?></h2>
 
         <?php
-         if (!empty($social->fbappid)) : 
+         if (!empty($social->fbappid)) :
              echo Text::widget($social->fbappid, 'fb-nocount', 'height:20px;'); ?>
             <div id="fb-root"></div>
             <script type="text/javascript">(function(d, s, id) {
               var js, fjs = d.getElementsByTagName(s)[0];
               if (d.getElementById(id)) {return;}
               js = d.createElement(s); js.id = id;
-              js.src = "//connect.facebook.net/<?php echo \Goteo\Library\Lang::locale(); ?>/all.js#xfbml=1&appId=189133314484241";
+              js.src = "//connect.facebook.net/<?php echo Lang::getLocale(); ?>/all.js#xfbml=1&appId=189133314484241";
               fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));</script>
         <?php /* else: // si no tiene app de facebook ponemos un compartir (por ahora no) ?>
@@ -58,7 +59,7 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
         <a href="https://twitter.com/share" class="twitter-share-button"
            data-url="<?php echo $share_url; ?>"
            data-text="<?php echo $share_title; ?>"
-           data-lang="<?php echo \LANG; ?>"
+           data-lang="<?php echo Lang::current(); ?>"
            data-count="none"
            data-counturl="<?php echo SITE_URL . '/call/' . $call->id; ?>"
            target="_blank"><?php echo Text::get('regular-twitter'); ?></a>
