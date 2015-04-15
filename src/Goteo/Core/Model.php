@@ -232,23 +232,7 @@ namespace Goteo\Core {
          * @return  string $default_lang
          */
         public static function default_lang($lang) {
-
-            if(!is_null($lang))
-            {
-                // Si el idioma se habla en España y no está disponible, usar 'es' y sino usar 'en' por defecto
-                // Julian: 22/01/2015 : el texto de referencia para italiano es también español
-                $default_lang = (in_array($lang, array('es','ca', 'gl', 'eu', 'en', 'it'))) ? 'es' : 'en';
-
-            return $default_lang;
-            } else {
-
-                // @ FIXME
-                // si $lang es null (piden el idioma original), devolvemos 'es' a piñon
-                // porque en los modelos se hace ``self::default_lang($lang)=='es'``
-                // y si no damos 'es' mete el IFNULL para inglés y (al no tener registro para "*_lang.lang = null") devuelve contenido en inglés
-                return 'es';
-            }
-
+            return \Goteo\Application\Lang::getDefault($lang);
         }
 
           /**
@@ -260,21 +244,20 @@ namespace Goteo\Core {
          public static function default_lang_by_id($id, $table, $lang) {
 
             // Devolver inglés cuando no esté traducido en idioma no-español
-                if ($lang != 'es') {
-                            // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
-                            $default_lang = self::default_lang($lang);
+            if ($lang != 'es') {
+                // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
+                $default_lang = self::default_lang($lang);
 
-                            $qaux = static::query(
-                                "SELECT id FROM `{$table}` WHERE id = :id AND lang = :lang",
-                                array(':id' => $id, ':lang' => $lang)
-                            );
-                            $ok = $qaux->fetchColumn();
-                            if ($ok != $id)
-                                $lang = $default_lang;
-                        }
+                $qaux = static::query(
+                    "SELECT id FROM `{$table}` WHERE id = :id AND lang = :lang",
+                    array(':id' => $id, ':lang' => $lang)
+                );
+                $ok = $qaux->fetchColumn();
+                if ($ok != $id)
+                    $lang = $default_lang;
+            }
 
-                        return $lang;
-
+            return $lang;
         }
 
         /*

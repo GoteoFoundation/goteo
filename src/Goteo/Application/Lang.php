@@ -140,6 +140,14 @@ class Lang {
             $lang = self::getDefault($lang);
         }
 
+        // establecemos la constante
+        // TODO: por desaparecer
+        // usar Lang::current() en su lugar
+        define('LANG', $lang);
+
+        // cambiamos el locale
+        setlocale(LC_TIME, self::getLocale($lang));
+
         return Session::store('lang', $lang);
     }
 
@@ -226,14 +234,6 @@ class Lang {
                 Session::getUser()->updateLang($lang);
             }
         }
-
-        // establecemos la constante
-        // TODO: por desaparecer
-        // usar Lang::get() en su lugar
-        define('LANG', $lang);
-
-        // cambiamos el locale
-        setlocale(LC_TIME, self::getLocale($lang));
 
         return $lang;
     }

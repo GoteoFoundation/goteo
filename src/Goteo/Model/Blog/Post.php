@@ -40,6 +40,7 @@ namespace Goteo\Model\Blog {
             $debug = false;
 
             //Obtenemos el idioma de soporte
+
             $lang=self::default_lang_by_id($id, 'post_lang', $lang);
 
             $sql = "

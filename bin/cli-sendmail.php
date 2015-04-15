@@ -15,6 +15,7 @@ use Goteo\Core\Resource,
     Goteo\Core\Error,
     Goteo\Core\Redirection,
     Goteo\Core\Model,
+    Goteo\Application\Lang,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
     Goteo\Library\Sender;
@@ -71,10 +72,9 @@ $query = Model::query('SELECT html, template, lang FROM mail WHERE id = ?', arra
 $data = $query->fetch(\PDO::FETCH_ASSOC);
 $content = $data['html'];
 $template = $data['template'];
-$lang = (!empty($data['lang'])) ? $data['lang'] : 'es';
-// set Lang
-define('LANG', $lang);
 
+Lang::setDefault(GOTEO_DEFAULT_LANG);
+Lang::set($data['lang']);
 
 if (empty($content)) {
     die("Mailing {$user->mailing_id} sin contenido!\n");

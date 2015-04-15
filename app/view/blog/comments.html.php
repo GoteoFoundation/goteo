@@ -2,7 +2,7 @@
 use Goteo\Library\Text,
     Goteo\Model\Blog\Post;
 
-$post = Post::get($this['post'], LANG);
+$post = Post::get($this['post']);
 $level = (int) $this['level'] ?: 3;
 //@TODO: Si el usuario es el dueño del blog o tiene permiso para moderar, boton de borrar comentario
 ?>

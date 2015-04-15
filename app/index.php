@@ -112,6 +112,7 @@ $segments = preg_split('!\s*/+\s*!', $uri, -1, PREG_SPLIT_NO_EMPTY);
 // Normalize URI
 $uri = '/' . implode('/', $segments);
 
+Lang::setDefault(GOTEO_DEFAULT_LANG);
 Lang::setFromGlobals();
 
 // set currency
