@@ -4,6 +4,7 @@ namespace Goteo\Model {
 
     use Goteo\Core\ACL,
         Goteo\Application\Session,
+        Goteo\Application\Lang,
         Goteo\Library,
         Goteo\Library\Check,
         Goteo\Library\Text,
