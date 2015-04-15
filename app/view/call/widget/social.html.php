@@ -3,7 +3,6 @@
 use Goteo\Library\Text,
     Goteo\Application\Lang,
     Goteo\Core\View;
-
 $call = $this['call'];
 $social = $this['social'];
 
@@ -14,6 +13,7 @@ if (LANG != 'es')
 
 $share_title = (!empty($social->tweet)) ? $social->tweet : $call->name;
 $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
+
 ?>
 <div id="social">
     <div id="social-logo">
@@ -42,6 +42,7 @@ $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&
         <h2><?php echo Text::get('call-header-social_spread'); ?></h2>
 
         <?php
+
          if (!empty($social->fbappid)) :
              echo Text::widget($social->fbappid, 'fb-nocount', 'height:20px;'); ?>
             <div id="fb-root"></div>
