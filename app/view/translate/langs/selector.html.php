@@ -1,5 +1,5 @@
 <?php
-use Goteo\Library\Lang;
+use Goteo\Application\Lang;
 
 $langs = $_SESSION['user']->translangs;
 unset($langs['es']); // no se puede traducir a español

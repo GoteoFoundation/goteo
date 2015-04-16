@@ -9,7 +9,7 @@ namespace Goteo\Controller\Translate {
         Goteo\Library\Message,
         Goteo\Library\Page,
         Goteo\Library\Text,
-        Goteo\Library\Lang;
+        Goteo\Application\Lang;
 
     class Pages
     {

@@ -3,6 +3,7 @@
 namespace Goteo\Model\User {
 
     use Goteo\Core\ACL,
+        Goteo\Application\Lang,
         Goteo\Model;
 
     class Translate extends \Goteo\Core\Model {
@@ -42,9 +43,9 @@ namespace Goteo\Model\User {
                 return false;
             }
         }
-         * 
+         *
          */
-        
+
 
         /**
          * Lo usamos para conseguir el tipo de ese item
@@ -65,7 +66,7 @@ namespace Goteo\Model\User {
                 } else {
                     return $array[0];
                 }
-                
+
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
             }
@@ -82,7 +83,7 @@ namespace Goteo\Model\User {
 
                 $sql = "SELECT type, item FROM user_translate WHERE user = :user";
                 $values = array(':user'=>$id);
-                
+
                 if (in_array($type, self::$types)) {
                     $sql .= " AND type = :type";
                     $values[':type'] = $type;
@@ -215,7 +216,7 @@ namespace Goteo\Model\User {
 		 *
 		 * @param varchar(50) $user id del usuario
 		 * @param INT(12) $id  identificador de la tabla project
-		 * @param array $errors 
+		 * @param array $errors
 		 * @return boolean
 		 */
 		public function remove (&$errors = array()) {
@@ -256,7 +257,7 @@ namespace Goteo\Model\User {
                 $errors[] = 'No se ha podido marcar la traduccion ' . $this->type .':'. $this->item . ' del usuario ' . $this->user . ' como lista. ' . $e->getMessage();
                 //Text::get('review-set_ready-fail');
 			}
-            
+
             return false;
 		}
 
@@ -277,11 +278,11 @@ namespace Goteo\Model\User {
 			} catch(\PDOException $e) {
                 $errors[] = 'No se ha podido reabrir la traduccion ' . $this->type .':'. $this->item . ' del usuario ' . $this->user . '. ' . $e->getMessage();
 			}
-            
+
             return false;
 		}
 
-        
+
         /*
          * Lista de usuarios que tienen asignada cierta traduccion
          *
@@ -295,7 +296,7 @@ namespace Goteo\Model\User {
 
              $array = array ();
             try {
-               $sql = "SELECT 
+               $sql = "SELECT
                             DISTINCT(user) as id,
                             user.name as user_name
                         FROM user_translate
@@ -323,7 +324,7 @@ namespace Goteo\Model\User {
             if (!in_array($type, self::$types)) {
                 return false;
             }
-            
+
             $sql = "SELECT user FROM user_translate WHERE user = :user AND type = :type AND item = :item";
             $values = array(
                 ':user' => $user,
@@ -345,17 +346,12 @@ namespace Goteo\Model\User {
 	 	public static function getLangs ($id) {
             $array = array ();
 
-            $sql = "SELECT user_translang.lang as id, name
-                FROM user_translang
-                INNER JOIN lang
-                    ON lang.id = user_translang.lang
-                WHERE user_translang.user = :user";
+            $sql = "SELECT lang FROM user_translang WHERE user = :user";
             $values = array(':user'=>$id);
 
             $query = static::query($sql, $values);
-            $langs = $query->fetchAll(\PDO::FETCH_OBJ);
-            foreach ($langs as $lang) {
-                $array[$lang->id] = $lang->name;
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
+                $array[$ob->lang] = Lang::getName($ob->lang);
             }
 
             return $array;
@@ -363,5 +359,5 @@ namespace Goteo\Model\User {
 
 
 	}
-    
+
 }

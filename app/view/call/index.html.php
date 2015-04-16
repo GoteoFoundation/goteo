@@ -9,12 +9,15 @@ $call = $this['call'];
 
 include __DIR__ . '/../call/prologue.html.php';
 include __DIR__ . '/../call/header.html.php';
+
 ?>
 <div id="main">
     <?php echo View::get('call/widget/title.html.php', $this); ?>
     <div id="banners-social">
-        <?php echo View::get('call/widget/banners.html.php', $this) ?>
-        <?php echo View::get('call/widget/social.html.php', $this) ?>
+        <?php
+        echo View::get('call/widget/banners.html.php', $this);
+        echo View::get('call/widget/social.html.php', $this);
+        ?>
     </div>
 
     <div id="info" class="stats-container">

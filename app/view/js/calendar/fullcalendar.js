@@ -3959,7 +3959,12 @@ Grid.mixin({
               $("#event-facebook").attr("href", "http://facebook.com/sharer.php?u="+document.URL);
               $("#event-twitter").attr("href", "http://twitter.com/home?status="+document.URL);
               $("#event-calendar-add").attr("href", event.url);
+              other_events(event.start);
+
+
 			}
+
+
 		}
 
 		return ranges;
@@ -4739,6 +4744,7 @@ DayGrid.mixin({
 						) +
 				'</div>' +
 				'<div class="category '+event.category.substr(0,1).toLowerCase()+'">'+htmlEscape(event.category.substr(0,1))+'</div>'+
+				
 				(isResizable ?
 					'<div class="fc-resizer"/>' :
 					''

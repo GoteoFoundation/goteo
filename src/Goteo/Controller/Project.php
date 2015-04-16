@@ -410,7 +410,7 @@ namespace Goteo\Controller {
 
                 case 'overview':
                     $viewData['categories'] = Model\Project\Category::getAll();
-                    $viewData['languages']  = Library\Lang::getall(true); // idiomas activos
+                    $viewData['languages']  = Application\Lang::listAll('object'); // idiomas activos
                     $viewData['currencies'] = Library\Currency::$currencies; // divisas
                     $viewData['default_currency'] = Library\Currency::DEFAULT_CURRENCY; // divisa por defecto
 

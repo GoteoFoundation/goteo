@@ -19,7 +19,7 @@ namespace Goteo\Controller\Admin {
                 throw new Redirection('/admin');
             }
 
-            $langs = \Goteo\Library\Lang::getAll();
+            $langs = \Goteo\Application\Lang::listAll('object', false);
             unset($langs['es']);
 
             $errors = array();

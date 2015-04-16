@@ -9,8 +9,7 @@ namespace Goteo\Controller {
 	    Goteo\Library\Feed,
 	    Goteo\Library\Text,
 	    Goteo\Library\Page,
-	    Goteo\Library\Content,
-		Goteo\Library\Lang;
+	    Goteo\Library\Content;
 
 	class Manage extends \Goteo\Core\Controller {
 

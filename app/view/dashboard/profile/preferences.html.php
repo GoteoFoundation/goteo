@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text,
     Goteo\Library\NormalForm,
-    Goteo\Library\Lang,
+    Goteo\Application\Lang,
     Goteo\Library\Currency;
 
 $currencies = Currency::$currencies;
@@ -22,12 +22,12 @@ $allow = array(
 );
 
 //Obtenemos todos los idiomas activos
-$languages = Lang::getall(true);
+$languages = Lang::listAll();
 
-foreach ($languages as $value => $objet) {
+foreach ($languages as $value => $name) {
     $langs[] =  array(
         'value'     => $value,
-        'label'     => $objet->name,
+        'label'     => $name,
         );
 }
 

@@ -102,11 +102,11 @@ $langs = $this['langs'];
     <form method="post" action="/admin/users/translang">
         <input type="hidden" name="user" value="<?php echo $user->id; ?>" />
         <table>
-            <?php foreach ($langs as $lang) :
-                $chkckd = (isset($user->translangs[$lang->id])) ? ' checked="checked"' : '';
+            <?php foreach ($langs as $lang => $name) :
+                $chkckd = (isset($user->translangs[$lang])) ? ' checked="checked"' : '';
                 ?>
             <tr>
-                <td><label><input type="checkbox" name="lang_<?php echo $lang->id; ?>" value="<?php echo $lang->id; ?>"<?php echo $chkckd; ?>/> <?php echo $lang->name; ?></label></td>
+                <td><label><input type="checkbox" name="langs[]" value="<?php echo $lang; ?>"<?php echo $chkckd; ?>/> <?php echo $name; ?></label></td>
             </tr>
             <?php endforeach; ?>
         </table>

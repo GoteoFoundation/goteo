@@ -7,7 +7,6 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Model,
         Goteo\Library\Feed,
-        Goteo\Library\Lang,
         Goteo\Library\Page,
         Goteo\Library\Mail,
         Goteo\Library\Template,

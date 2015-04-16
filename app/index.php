@@ -4,13 +4,15 @@ use Goteo\Core\Resource,
     Goteo\Core\Error,
     Goteo\Core\Redirection,
     Goteo\Core\ACL,
+    Goteo\Core\Model,
     Goteo\Core\NodeSys,
+    Goteo\Application\Session,
+    Goteo\Application\Cookie,
+    Goteo\Application\Lang,
     Goteo\Library\Text,
     Goteo\Library\Message,
-    Goteo\Library\Lang,
     Goteo\Library\Currency;
 
-define('START_TIME', microtime(true));
 //si el parametro GET vale:
 // 0 se muestra estadísticas de SQL, pero no los logs
 // 1 se hace un log con las queries no cacheadas
@@ -23,7 +25,7 @@ require_once __DIR__ . '/config.php';
 
 //clean all caches if requested
 if(isset($_GET['cleancache'])) {
-    \Goteo\Core\Model::cleanCache();
+    Model::cleanCache();
 }
 
 
@@ -41,20 +43,13 @@ if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance
 /**
  * Sesión.
  */
-session_name('goteo-'.GOTEO_ENV);
-session_start();
-if(!$_SESSION['init_time']) {
-    $_SESSION['init_time'] = START_TIME;
-}
-if(START_TIME > $_SESSION['init_time'] + (defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600 )) {
-    // session expirada
-    session_unset();
-    session_destroy();
-    session_write_close();
-    session_regenerate_id(true);
-    session_start();
+Session::start('goteo-'.GOTEO_ENV, defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600);
+Session::onSessionExpires(function(){
     Message::Info(Text::get('session-expired'));
-}
+});
+Session::onSessionDestroyed(function(){
+    Message::Info('That\'s all folks!');
+});
 
 /* Sistema nodos */
 // Get Node and check it
@@ -93,10 +88,7 @@ define('SEC_URL', ($SSL) ? 'https:'.$raw_url : $SITE_URL);
 define('HTTPS_ON', ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ));
 
 // SITE_URL, según si estamos en entorno seguro o si el usuario esta autenticado
-if ($SSL
-    && (\HTTPS_ON
-        || $_SESSION['user'] instanceof \Goteo\Model\User)
-    ) {
+if ($SSL && (\HTTPS_ON || Session::isLogged())) {
     define('SITE_URL', SEC_URL);
 } else {
     define('SITE_URL', $SITE_URL);
@@ -104,10 +96,7 @@ if ($SSL
 
 // si el usuario ya está validado debemos mantenerlo en entorno seguro
 // usamos la funcionalidad de salto entre nodos para mantener la sesión
-if ($SSL
-    && $_SESSION['user'] instanceof \Goteo\Model\User
-    && !\HTTPS_ON
-) {
+if ($SSL && Session::isLogged() && !\HTTPS_ON) {
     header('Location: ' . SEC_URL . $_SERVER['REQUEST_URI']);
     die;
 }
@@ -118,25 +107,19 @@ if ($SSL
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
 
 // Get requested segments
-$segments = preg_split('!\s*/+\s*!', $uri, -1, \PREG_SPLIT_NO_EMPTY);
+$segments = preg_split('!\s*/+\s*!', $uri, -1, PREG_SPLIT_NO_EMPTY);
 
 // Normalize URI
 $uri = '/' . implode('/', $segments);
 
-// set Lang (forzado para el cron y el admin)
-$forceLang = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
-Lang::set($forceLang);
+Lang::setFromGlobals();
 
 // set currency
-$CCY = Currency::set(); // depending on request
-$_SESSION['currency'] = $CCY; // session variable
-// end set currency
+Session::store('currency', Currency::set()); // depending on request
 
-// cambiamos el locale
-\setlocale(\LC_TIME, Lang::locale());
 /* Cookie para la ley de cookies */
-if (empty($_COOKIE['goteo_cookies'])) {
-    setcookie('goteo_cookies', '1', time() + 3600 * 24 * 365);
+if (!Cookie::exists('goteo_cookies')) {
+    Cookie::store('goteo_cookies', '1');
     Message::Info(Text::get('message-cookies'));
 }
 try {
@@ -213,8 +196,7 @@ try {
                 header("Content-type: $mime_type");
                 if($mime_type == 'text/html') {
                     //renovar tiempo de sesion si es tipo html
-                    $_SESSION['init_time'] = START_TIME;
-                    $_SESSION['init_time_advised'] = false;
+                    Session::renew();
                 }
             }
 
@@ -230,11 +212,10 @@ try {
                     echo '<b>Client IP:</b> '.$_SERVER['REMOTE_ADDR'] . '<br>';
                     echo '<b>X-Forwarded-for:</b> '.$_SERVER['HTTP_X_FORWARDED_FOR'] . '<br>';
                     echo '<b>SQL STATS:</b><br> '.print_r(Goteo\Core\DB::getQueryStats(), 1);
-                    echo '<b>END:</b> '.(microtime(true) - START_TIME ) . 's';
                     echo '</pre></div>';
                 }
 
-               echo '<!-- '.(microtime(true) - START_TIME ) . 's -->';
+               echo '<!-- '.(microtime(true) - Session::getStartTime() ) . 's -->';
             }
 
 

@@ -11,7 +11,7 @@ namespace Goteo\Controller {
 	    Goteo\Library\Text,
 	    Goteo\Library\Page,
 	    Goteo\Library\Content,
-		Goteo\Library\Lang;
+		Goteo\Application\Lang;
 
 	class Translate extends \Goteo\Core\Controller {
 
@@ -23,8 +23,8 @@ namespace Goteo\Controller {
             // si es un admin le damos todos los idiomas para traducir
             if (isset($_SESSION['user']->roles['admin'])) {
 
-                $langs = Lang::getAll();
-                foreach ($langs as &$lang) {
+                $langs = Lang::listAll('object', false);
+                foreach ($langs as $lang) {
                     $lang = $lang->name;
                 }
                 $_SESSION['user']->translangs = $langs;

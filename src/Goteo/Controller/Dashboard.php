@@ -552,7 +552,7 @@ namespace Goteo\Controller {
 
             $errors = array();
 
-            $langs = \Goteo\Library\Lang::getAll();
+            $langs = \Goteo\Application\Lang::listAll('object', false);
 
             if ($action == 'lang' && !empty($_POST['lang'])) {
                 $_SESSION['translate_lang'] = $_POST['lang'];
@@ -672,7 +672,7 @@ namespace Goteo\Controller {
                                     $project->subtitle_lang = $_POST['subtitle'];
                                     $project->lang_lang = $_SESSION['translate_lang'];
                                     $project->saveLang($errors);
-                                    
+
                                     // redirect para que cargue el registro traducido
                                     throw new Redirection('/dashboard/translates/'.$option);
                                 }

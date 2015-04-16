@@ -1,7 +1,6 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Library\Lang;
+use Goteo\Library\Text;
 
 $node = $this['node'];
 
