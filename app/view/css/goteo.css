@@ -17,6 +17,7 @@
 @import url('about.css');
 @import url('feed.css');
 @import url('call.css');
+@import url('widgets.css');
 
 div#sub-header > div,
 div#sub-header-secondary > div {

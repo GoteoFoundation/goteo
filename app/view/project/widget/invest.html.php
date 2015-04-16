@@ -124,7 +124,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 // si es el primer paso, mostramos el botón para ir a login
 if ($step == 'start') : ?>
 <div class="widget project-invest method">
-    <h<?php echo $level ?> class="beak"><?php echo Text::get('user-login-required-to_invest') ?></h<?php echo $level ?>>
+    <!--<h<?php echo $level ?> class="beak"><?php echo Text::get('user-login-required-to_invest') ?></h<?php echo $level ?>>
 
     <div class="buttons">
         <button type="submit" class="button green" name="go-login" value=""><?php echo Text::get('imperative-register'); ?></button>
@@ -136,6 +136,10 @@ if ($step == 'start') : ?>
     <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
         <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 0, true, true) ); ?></div>
     <?php endif; ?>
+
+    -->
+
+    <?php echo View::get('widget/register.html.php'); ?>
 
 </div>
 <?php else : ?>
