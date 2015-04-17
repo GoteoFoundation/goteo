@@ -103,15 +103,6 @@ if ($SSL && Session::isLogged() && !\HTTPS_ON) {
 /* Fin inicializacion constantes *_URL */
 
 
-// Get URI without query string
-$uri = strtok($_SERVER['REQUEST_URI'], '?');
-
-// Get requested segments
-$segments = preg_split('!\s*/+\s*!', $uri, -1, PREG_SPLIT_NO_EMPTY);
-
-// Normalize URI
-$uri = '/' . implode('/', $segments);
-
 Lang::setDefault(GOTEO_DEFAULT_LANG);
 Lang::setFromGlobals();
 
@@ -124,6 +115,15 @@ if (!Cookie::exists('goteo_cookies')) {
     Message::Info(Text::get('message-cookies'));
 }
 try {
+    // Get URI without query string
+    $uri = strtok($_SERVER['REQUEST_URI'], '?');
+
+    // Get requested segments
+    $segments = preg_split('!\s*/+\s*!', $uri, -1, PREG_SPLIT_NO_EMPTY);
+
+    // Normalize URI
+    $uri = '/' . implode('/', $segments);
+
     // Check permissions on requested URI
     if (!ACL::check($uri) && substr($uri, 0, 11) !== '/user/login') {
         //si es directorio data/cache se supone que es un archivo cache que no existe y que hay que generar

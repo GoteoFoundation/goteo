@@ -240,6 +240,7 @@ namespace Goteo\Core {
          *
          * @param string $id, string $table, string $lang
          * @return  string $lang
+         * TODO: hacer esto de otra manera
          */
          public static function default_lang_by_id($id, $table, $lang) {
 
@@ -280,6 +281,7 @@ namespace Goteo\Core {
          * @param int $page Numero de página que se muestra
          * @param int $items_per_page
          * @return array ($pages,$offset)
+         * TODO: elimninar este metodo
          */
         public static function doPagination($sql, $values, &$page, $items_per_page = 9) {
 
