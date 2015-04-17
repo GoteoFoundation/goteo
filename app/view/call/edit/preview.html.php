@@ -5,13 +5,13 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm,
     Goteo\Model;
 
-$call = $this['call'];
+$call = $vars['call'];
 
 $finishable = true;
 
 // miramos el pruimer paso con errores para mandarlo a ese
 $goto = 'view-step-userProfile';
-foreach ($this['steps'] as $id => $data) {
+foreach ($vars['steps'] as $id => $data) {
     if (empty($step) && !empty($call->errors[$id])) {
         $goto = 'view-step-' . $id;
         $finishable = false;
@@ -75,7 +75,7 @@ $elements['footer'] = array(
             'title' => Text::get('form-footer-errors_title'),
             'view'  => new View('project/edit/errors.html.php', array(
                 'project'   => $call,
-                'step'      => $this['step']
+                'step'      => $vars['step']
             ))
         ),
         'buttons'  => array(
@@ -89,7 +89,7 @@ $elements['footer'] = array(
 // lanzamos el superform
 echo SuperForm::get(array(
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('preview-main-header'),
     'hint'          => Text::get('guide-call-preview'),

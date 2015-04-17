@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$call = $this['call'];
+$call = $vars['call'];
 ?>
 <div id="stats">
     <?php if ($call->status == 3) : //inscripcion   ?>
@@ -56,7 +56,7 @@ $call = $this['call'];
                 </dd>
             </dl>
         </div>
-    
+
         <?php if (!empty($call->call_location)) : ?>
             <dl class="block location">
                 <dt><?php echo Text::get('call-splash-location-header') ?></dt>
@@ -68,7 +68,7 @@ $call = $this['call'];
         <?php if (!$call->expired) : // sigue abierta   ?>
             <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/apply" class="button red join" target="_blank"><?php echo Text::get('call-splash-apply-button') ?></a>
         <?php endif; ?>
-            
+
     <?php else : //en campaña   ?>
         <div class="row">
             <?php if (!empty($call->amount)) : //con dinero   ?>
@@ -139,7 +139,7 @@ $call = $this['call'];
          <?php if ($call->num_projects > 0) : // solo si tiene proyectos  ?>
         <a href="<?php echo SITE_URL ?>/call/<?php echo $call->id ?>/projects" class="button red view"><?php echo Text::get('call-splash-see_projects-button') ?></a>
         <?php endif; ?>
-        
+
     <?php endif; ?>
-        
+
 </div>

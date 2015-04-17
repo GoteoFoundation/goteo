@@ -2,10 +2,10 @@
 
 use Goteo\Library\Text;
 
-$call = $this['call'];
-$projects = $this['projects'];
-//$available = $this['available']; // quitamos los relacionados
-$status = $this['status'];
+$call = $vars['call'];
+$projects = $vars['projects'];
+//$available = $vars['available']; // quitamos los relacionados
+$status = $vars['status'];
 ?>
 <script type="text/javascript">
     function assignproj (id) {
@@ -62,7 +62,7 @@ $status = $this['status'];
 <?php
 /*
  * Quitamos los relacionados
- * 
+ *
 <div class="widget">
     <h3>Proyectos relacionados (no seleccionados)</h3>
     <?php if (!empty($available)) : ?>

@@ -2,8 +2,8 @@
 
 use Goteo\Library\Text;
 
-//$data = $this['data'];
-$filters = $this['filters'];
+//$data = $vars['data'];
+$filters = $vars['filters'];
 ?>
 <div class="widget board">
     <form id="filter-form" action="/manage/donors/excel" method="get" target="_blank">

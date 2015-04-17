@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 $langs = $project->getLangs();
 

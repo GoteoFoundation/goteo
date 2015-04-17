@@ -1,7 +1,7 @@
 <?php
 use Goteo\Model;
 
-$node = $this['node'];
+$node = $vars['node'];
 
 $blog  = Model\Blog::get($node, 'node');
 $posts = Model\Blog\Post::getAll($blog->id, null, false);

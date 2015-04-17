@@ -3,10 +3,10 @@
 use Goteo\Library\Text,
     Goteo\Application\Lang;
 
-$project = $this['project'];
+$project = $vars['project'];
 $langs = Lang::listAll('object', false);
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 ?>
 <script type="text/javascript">
 function assign() {
@@ -20,7 +20,7 @@ function assign() {
 }
 </script>
 <div class="widget">
-<?php if ($this['action'] == 'edit') : ?>
+<?php if ($vars['action'] == 'edit') : ?>
     <h3 class="title">Traductores para el proyecto <?php echo $project->name ?></h3>
         <!-- asignar -->
         <table>
@@ -39,7 +39,7 @@ function assign() {
                 <td colspan="2">
                     <select id="assign-user" name="user">
                         <option value="">Selecciona otro traductor</option>
-                        <?php foreach ($this['translators'] as $user) :
+                        <?php foreach ($vars['translators'] as $user) :
                             if (in_array($user->id, array_keys($project->translators))) continue;
                             ?>
                         <option value="<?php echo $user->id; ?>"><?php if ($user->id == $project->owner) echo '(AUTOR) '; ?><?php echo $user->name; ?></option>
@@ -56,15 +56,15 @@ function assign() {
         <hr />
 <?php endif; ?>
 
-    <form method="post" action="/admin/translates/<?php echo $this['action']; ?>/<?php echo $project->id; ?>">
+    <form method="post" action="/admin/translates/<?php echo $vars['action']; ?>/<?php echo $project->id; ?>">
 
         <table>
             <tr>
-                <td><?php if ($this['action'] == 'add') : ?>
+                <td><?php if ($vars['action'] == 'add') : ?>
                     <label for="add-proj">Proyecto que habilitamos</label><br />
                     <select id="add-proj" name="project">
                         <option value="">Selecciona el proyecto</option>
-                        <?php foreach ($this['availables'] as $proj) : ?>
+                        <?php foreach ($vars['availables'] as $proj) : ?>
                             <option value="<?php echo $proj->id; ?>"<?php if ($_GET['project'] == $proj->id) echo ' selected="selected"';?>><?php echo $proj->name; ?></option>
                         <?php endforeach; ?>
                     </select>

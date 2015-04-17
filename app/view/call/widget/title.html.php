@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Library\Buzz,
     Goteo\Core\View;
 
-$call = $this['call'];
+$call = $vars['call'];
 $URL = \SITE_URL;
 ?>
 

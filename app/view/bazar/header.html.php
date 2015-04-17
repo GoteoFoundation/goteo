@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$page = $this['page'];
+$page = $vars['page'];
 ?>
 <header>
 	<nav>

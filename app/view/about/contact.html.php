@@ -6,8 +6,8 @@ use Goteo\Library\Page,
 $bodyClass = 'about';
 
 $page = Page::get('contact');
-$tags = $this['tags'];
-$showCaptcha = $this['showCaptcha'];
+$tags = $vars['tags'];
+$showCaptcha = $vars['showCaptcha'];
 
 $_SESSION['msg_token'] = uniqid(rand(), true);
 
@@ -37,9 +37,9 @@ include __DIR__ . '/../header.html.php';
         <div class="widget contact-message">
             <h3 class="title"><?php echo $page->name; ?></h3>
 
-            <?php if (!empty($this['errors'])) : ?>
+            <?php if (!empty($vars['errors'])) : ?>
                 <p style="color:red;">
-                    <?php echo implode('<br />', $this['errors']); ?>
+                    <?php echo implode('<br />', $vars['errors']); ?>
                 </p>
             <?php endif; ?>
 
@@ -51,13 +51,13 @@ include __DIR__ . '/../header.html.php';
                             <td>
                                 <div class="field">
                                     <label for="name"><?php echo Text::get('contact-name-field'); ?></label><br />
-                                    <input class="short" type="text" id="name" name="name" value="<?php echo $this['data']['name'] ?>"/>
+                                    <input class="short" type="text" id="name" name="name" value="<?php echo $vars['data']['name'] ?>"/>
                                 </div>
                             </td>
                             <td>
                                 <div class="field">
                                     <label for="email"><?php echo Text::get('contact-email-field'); ?></label><br />
-                                    <input class="short" type="text" id="email" name="email" value="<?php echo $this['data']['email'] ?>"/>
+                                    <input class="short" type="text" id="email" name="email" value="<?php echo $vars['data']['email'] ?>"/>
                                 </div>
                             </td>
                         </tr>
@@ -68,7 +68,7 @@ include __DIR__ . '/../header.html.php';
                                     <label for="tag"><?php echo Text::get('contact-tag-field'); ?></label><br />
                                     <select name="tag" id="tag">
                                         <?php foreach ($tags as $key => $val) {
-                                            $sel = ($key == $this['data']['tag']) ? ' selected="selected"' : '';
+                                            $sel = ($key == $vars['data']['tag']) ? ' selected="selected"' : '';
                                             echo '<option value="'.$key.'"'.$sel.'>'.$val.'</option>';
                                         } ?>
                                     </select>
@@ -80,7 +80,7 @@ include __DIR__ . '/../header.html.php';
                             <td colspan="2">
                                 <div class="field">
                                     <label for="subject"><?php echo Text::get('contact-subject-field'); ?></label><br />
-                                    <input type="text" id="subject" name="subject" value="<?php echo $this['data']['subject'] ?>"/>
+                                    <input type="text" id="subject" name="subject" value="<?php echo $vars['data']['subject'] ?>"/>
                                 </div>
                             </td>
                         </tr>
@@ -88,7 +88,7 @@ include __DIR__ . '/../header.html.php';
                             <td colspan="2">
                                 <div class="field">
                                     <label for="message"><?php echo Text::get('contact-message-field'); ?></label><br />
-                                    <textarea id="message" name="message" cols="50" rows="5"><?php echo $this['data']['message'] ?></textarea>
+                                    <textarea id="message" name="message" cols="50" rows="5"><?php echo $vars['data']['message'] ?></textarea>
                                 </div>
                             </td>
                         </tr>

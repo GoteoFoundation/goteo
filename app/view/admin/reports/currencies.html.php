@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$data = $this['data'];
+$data = $vars['data'];
 ?>
 <div class="widget board">
     <p>Actuales ratios de conversión cacheados para las divisas configuradas:</p>

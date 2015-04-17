@@ -5,14 +5,14 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\Message;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
     Message::Error('Instancia de proyecto corrupta');
     throw new Redirection('/manage/projects');
 }
 
-$accounts = $this['accounts'];
+$accounts = $vars['accounts'];
 ?>
 <div class="widget">
     <form method="post" action="/manage/projects" >
@@ -29,6 +29,6 @@ $accounts = $this['accounts'];
     </p>
 
         <input type="submit" name="save-accounts" value="Guardar" />
-        
+
     </form>
 </div>

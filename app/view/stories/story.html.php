@@ -3,7 +3,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$story = $this['story'];
+$story = $vars['story'];
 
 if(!empty($story->post))
     $link_title='/blog/'.$story->post;

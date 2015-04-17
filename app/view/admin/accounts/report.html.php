@@ -3,12 +3,12 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$project = $this['project'];
-$account = $this['account']; // cuentas del proyecto, para tener el porcentaje de comisión
+$project = $vars['project'];
+$account = $vars['account']; // cuentas del proyecto, para tener el porcentaje de comisión
 
 $GOTEO_FEE = round($account->fee / 100, 2);
 
-$Data = $this['Data'];
+$Data = $vars['Data'];
 
 $desglose = array();
 $goteo    = array();
@@ -17,7 +17,7 @@ $estado   = array();
 $usuario  = array();
 
 $users = array();
-foreach ($this['users'] as $user) {
+foreach ($vars['users'] as $user) {
     $amount = $users[$user->user]->amount + $user->amount;
     $users[$user->user] = (object) array(
         'name'   => $user->name,
@@ -26,7 +26,7 @@ foreach ($this['users'] as $user) {
     );
 }
 
-uasort($this['users'],
+uasort($vars['users'],
     function ($a, $b) {
         if ($a->name == $b->name) return 0;
         return ($a->name > $b->name) ? 1 : -1;
@@ -34,7 +34,7 @@ uasort($this['users'],
     );
 
 // recorremos los aportes
-foreach ($this['invests'] as $invest) {
+foreach ($vars['invests'] as $invest) {
 
 // para cada metodo acumulamos desglose, comision, pago
     $desglose[$invest->method] += $invest->amount;
@@ -58,7 +58,7 @@ foreach ($this['invests'] as $invest) {
 </style>
 <div class="widget report">
     <p>Informe de financiación de <strong><?php echo $project->name ?></strong> al d&iacute;a <?php echo date('d-m-Y') ?></p>
-    <p>Se encuentra en estado <strong><?php echo $this['status'][$project->status] ?></strong>
+    <p>Se encuentra en estado <strong><?php echo $vars['status'][$project->status] ?></strong>
         <?php if ($project->round > 0) : ?>
             , en <?php echo $project->round . 'ª ronda' ?> y le quedan <strong><?php echo $project->days ?> d&iacute;as</strong> para finalizarla
         <?php endif; ?>
@@ -118,7 +118,7 @@ foreach ($this['invests'] as $invest) {
             <th>Cash</th>
             <th>Riego</th>
         </tr>
-        <?php foreach ($this['investStatus'] as $id=>$label) : if (in_array($id, array('-1'))) continue;?>
+        <?php foreach ($vars['investStatus'] as $id=>$label) : if (in_array($id, array('-1'))) continue;?>
         <tr>
             <td><?php echo $label ?></td>
             <td style="text-align:right;"><?php echo \euro_format($estado[$id]['total']) ?></td>
@@ -130,7 +130,7 @@ foreach ($this['invests'] as $invest) {
         <?php endforeach; ?>
     </table>
 
-    <h3>Por cofinanciadores (<?php echo count($this['users']) ?>)</h3>
+    <h3>Por cofinanciadores (<?php echo count($vars['users']) ?>)</h3>
     <table>
         <tr>
             <th>Usuario</th>
@@ -140,7 +140,7 @@ foreach ($this['invests'] as $invest) {
             <th>Cash</th>
             <th>Riego</th>
         </tr>
-        <?php foreach ($this['users'] as $user) : ?>
+        <?php foreach ($vars['users'] as $user) : ?>
         <tr>
             <td><?php echo $user->name ?></td>
             <td style="text-align:right;"><?php echo \euro_format($user->amount, 0) ?></td>

@@ -2,17 +2,17 @@
 use Goteo\Library\Text,
     Goteo\Model\Message;
 
-$project = $this['project'];
-$level = (int) $this['level'] ?: 3;
+$project = $vars['project'];
+$level = (int) $vars['level'] ?: 3;
 
 ?>
 <script type="text/javascript">
-	jQuery(document).ready(function ($) { 
+	jQuery(document).ready(function ($) {
 	    //change div#preview content when textarea lost focus
 		$("#message-text").blur(function(){
 			$("#preview").html($("#message-text").val().replace(/\n/g, "<br />"));
 		});
-		
+
 		//add fancybox on #a-preview click
 		$("#a-preview").fancybox({
 			'titlePosition'		: 'inside',
@@ -44,7 +44,7 @@ $level = (int) $this['level'] ?: 3;
             <a target="_blank" id="a-preview" href="#preview" class="preview">&middot;<?php echo Text::get('regular-preview'); ?></a>
             <div style="display:none">
                 <div id="preview" style="width:400px;height:300px;overflow:auto;">
-                        
+
                     </div>
             </div>
             <button class="green" type="submit"><?php echo Text::get('project-messages-send_message-button'); ?></button>

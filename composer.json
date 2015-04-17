@@ -24,7 +24,22 @@
 
 	"paypal/adaptivepayments-sdk-php": "*",
 
-	"paypal/merchant-sdk-php": "*"
+	"paypal/merchant-sdk-php": "*",
+
+    
+    "symfony/class-loader": "~2.6",
+
+    
+    "symfony/http-foundation": "~2.6",
+
+    
+    "symfony/routing": "~2.6",
+
+    
+    "symfony/http-kernel": "~2.6",
+
+    
+    "league/plates": "~3.1"
 	
     },
 

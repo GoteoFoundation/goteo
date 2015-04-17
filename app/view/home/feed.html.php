@@ -2,7 +2,7 @@
 use Goteo\Library\Feed,
     Goteo\Library\Text;
 
-$feed = $this['feed'];
+$feed = $vars['feed'];
 
 ?>
 <div class="widget feed">

@@ -7,10 +7,10 @@ use Goteo\Library\Text,
 $bodyClass = 'admin';
 
 // paginacion
-$filter = $this['filter'];
-$groups = $this['groups'];
-$nwords = $this['nwords'];
-$data   = $this['data'];
+$filter = $vars['filter'];
+$groups = $vars['groups'];
+$nwords = $vars['nwords'];
+$data   = $vars['data'];
 
 // valores de filtro
 $pagedResults = new Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 1);
@@ -25,19 +25,19 @@ $pagedResults = new Paginated($data, 20, isset($_GET['page']) ? $_GET['page'] : 
             <label for="filter-group">Filtrar por campo:</label><br />
             <select id="filter-group" name="group">
             <?php foreach ($groups as $val=>$opt) : ?>
-                <option value="<?php echo $val; ?>"<?php if ($this['filters']['group'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
+                <option value="<?php echo $val; ?>"<?php if ($vars['filters']['group'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
             <?php endforeach; ?>
             </select>
         </div>
 
         <div style="float:left;margin:5px;">
             <label for="filter-text">Texto:</label><br />
-            <input id="filter-text" name="text" value="<?php echo (string) $this['filters']['text']; ?>" />
+            <input id="filter-text" name="text" value="<?php echo (string) $vars['filters']['text']; ?>" />
         </div>
 
         <div style="float:left;margin:5px;">
             <label for="filter-pending">Solo pendientes:</label><br />
-            <input id="filter-pending" type="checkbox" name="pending" value="1" <?php if ($this['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
+            <input id="filter-pending" type="checkbox" name="pending" value="1" <?php if ($vars['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
         </div>
 
         <br clear="both" />

@@ -5,8 +5,8 @@
 
     $data = $_SESSION['bazar-form-data'];
 
-	$item = $this['item'];
-	$page = $this['page'];
+	$item = $vars['item'];
+	$page = $vars['page'];
 
 	$debug = $page->debug;
     $allowpp = $item->project->allowpp;

@@ -8,8 +8,8 @@ use Goteo\Library\Text,
 // hay que elegir un idioma al que traducir, no se puede traducir a español, español es el idioma original
 if ($_SESSION['translate_lang'] == 'es') {
     unset($_SESSION['translate_lang']);
-    unset($this['section']);
-    unset($this['action']);
+    unset($vars['section']);
+    unset($vars['action']);
 }
 
 $bodyClass = 'admin';
@@ -26,22 +26,22 @@ include __DIR__ . '/../header.html.php'; ?>
         <div id="main">
 
             <div class="widget">
-                <?php echo View::get('translate/langs/selector.html.php', $this); ?>
+                <?php echo View::get('translate/langs/selector.html.php', $vars); ?>
             </div>
 
-            <?php if (!empty($this['errors'])) : ?>
+            <?php if (!empty($vars['errors'])) : ?>
                 <div class="widget">
                     <p>
-                        <?php echo implode('<br />', $this['errors']); ?>
+                        <?php echo implode('<br />', $vars['errors']); ?>
                     </p>
                 </div>
             <?php endif; ?>
 
             <?php
-            if (!empty($this['section']) && !empty($this['action'])) :
-                echo View::get('translate/'.$this['section'].'/'.$this['action'].'.html.php', $this);
+            if (!empty($vars['section']) && !empty($vars['action'])) :
+                echo View::get('translate/'.$vars['section'].'/'.$vars['action'].'.html.php', $vars);
             else :
-                foreach ($this['menu'] as $sCode=>$section) :
+                foreach ($vars['menu'] as $sCode=>$section) :
                     if ($sCode == 'node') continue;
                     ?>
                     <a name="<?php echo $sCode ?>"></a>

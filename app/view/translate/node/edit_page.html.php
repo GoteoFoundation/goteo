@@ -4,8 +4,8 @@ use Goteo\Library\Text,
     Goteo\Library\page,
     Goteo\Model;
 
-$node = $this['node'];
-$id   = $this['id'];
+$node = $vars['node'];
+$id   = $vars['id'];
 
 $original = Page::get($id, $node, 'es');
 $data     = Page::get($id, $node, $_SESSION['translate_lang']);

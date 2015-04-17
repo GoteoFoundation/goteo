@@ -2,7 +2,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$patrons = $this['patrons'];
+$patrons = $vars['patrons'];
 
 if (count($patrons) > 1) : ?>
 <script type="text/javascript">
@@ -13,7 +13,7 @@ if (count($patrons) > 1) : ?>
 <?php endif; ?>
 <div id="slides_patrons" class="widget project-patrons">
     <h4><?php echo Text::get('regular-recomended_by'); ?></h4>
-    
+
     <div class="slides_container">
         <?php foreach ($patrons as $patron) : ?>
         <div class="patron">

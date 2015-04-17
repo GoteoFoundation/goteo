@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 ?>
 <a href="/admin/tasks/add" class="button">Nueva Tarea</a>
 
@@ -14,7 +14,7 @@ $filters = $this['filters'];
                     <label for="status-filter">Mostrar por estado:</label><br />
                     <select id="status-filter" name="done" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier estado</option>
-                    <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
+                    <?php foreach ($vars['status'] as $statusId=>$statusName) : ?>
                         <option value="<?php echo $statusId; ?>"<?php if ($filters['done'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -24,7 +24,7 @@ $filters = $this['filters'];
                     <label for="node-filter">Del nodo:</label><br />
                     <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier nodo</option>
-                    <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+                    <?php foreach ($vars['nodes'] as $nodeId=>$nodeName) : ?>
                         <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -34,7 +34,7 @@ $filters = $this['filters'];
                     <label for="user-filter">Realizadas por:</label><br />
                     <select id="user-filter" name="user" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier admin</option>
-                    <?php foreach ($this['admins'] as $adminId=>$adminName) : ?>
+                    <?php foreach ($vars['admins'] as $adminId=>$adminName) : ?>
                         <option value="<?php echo $adminId; ?>"<?php if ($filters['user'] == $adminId) echo ' selected="selected"';?>><?php echo $adminName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -46,7 +46,7 @@ $filters = $this['filters'];
 </div>
 
 <div class="widget board">
-<?php if (!empty($this['tasks'])) : ?>
+<?php if (!empty($vars['tasks'])) : ?>
     <table>
         <thead>
             <tr>
@@ -59,10 +59,10 @@ $filters = $this['filters'];
         </thead>
 
         <tbody>
-            <?php foreach ($this['tasks'] as $task) : ?>
+            <?php foreach ($vars['tasks'] as $task) : ?>
             <tr>
                 <td><a href="/admin/tasks/edit/<?php echo $task->id; ?>" title="Editar">[Editar]</a></td>
-                <td><strong><?php echo $this['nodes'][$task->node]; ?></strong></td>
+                <td><strong><?php echo $vars['nodes'][$task->node]; ?></strong></td>
                 <td><?php echo substr($task->text, 0, 150); ?></td>
                 <td><?php echo (empty($task->done)) ? 'Pendiente' : 'Realizada ('.$task->user->name.')';?></td>
                 <td><a href="/admin/tasks/remove/<?php echo $task->id; ?>" title="Eliminar" onclick="return confirm('La tarea se eliminará irreversiblemente, ok?')">[Eliminar]</a></td>

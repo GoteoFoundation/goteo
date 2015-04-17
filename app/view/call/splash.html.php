@@ -5,7 +5,7 @@ use Goteo\Library\Text,
 
 $bodyClass = 'splash';
 
-$call = $this['call'];
+$call = $vars['call'];
 
 include __DIR__ . '/../call/prologue.html.php';
 ?>
@@ -27,7 +27,7 @@ include __DIR__ . '/../call/prologue.html.php';
             <p><?php echo $call->description ?></p>
         </li>
         <li class="item" id="numbers">
-            <?php echo View::get('call/widget/stats.html.php', $this); ?>
+            <?php echo View::get('call/widget/stats.html.php', $vars); ?>
         </li>
         <?php if (!empty($call->sponsors)) : ?>
             <li class="item" id="sponsors">

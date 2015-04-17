@@ -3,7 +3,7 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\NormalForm;
 
-$donation = $this['donation'];
+$donation = $vars['donation'];
 
 //echo \trace($donation);
 
@@ -19,14 +19,14 @@ if ($donation->country == 'spain' || empty($donation->country)) {
 //   si es españa, los dos primeros numeros del CP
 //   si es extrajero, 99
 
-switch ($this['action']) :
+switch ($vars['action']) :
     case 'edit':
 ?>
 <div class="widget">
     <h3><?php echo Text::get('dashboard-activity-donor-header'); ?></h3>
     <p><?php echo Text::get('dashboard-donor-edit_guide') ?></p>
 </div>
-    
+
 <form method="post" action="/dashboard/activity/donor/save" class="project" >
     <input type="hidden" name="save" value="donation" />
     <input type="hidden" name="location" value="<?php echo $donation->location ?>" />

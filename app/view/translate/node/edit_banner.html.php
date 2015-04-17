@@ -5,8 +5,8 @@ use Goteo\Core\View,
     Goteo\Library\NormalForm,
     Goteo\Model;
 
-$node = $this['node'];
-$id   = $this['id'];
+$node = $vars['node'];
+$id   = $vars['id'];
 
 $original = Model\Banner::get($id);
 $data     = Model\Banner::get($id, $_SESSION['translate_lang']);

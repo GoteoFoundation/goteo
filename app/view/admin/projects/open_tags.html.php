@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\Message;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
     Message::Error('Instancia de proyecto corrupta');
@@ -43,7 +43,7 @@ function assign() {
             <td colspan="2">
                 <select id="assign-open-tag" name="open_tag">
                     <option value="">Asigna otra agrupación</option>
-                    <?php foreach ($this['open_tags'] as $open_tagId=>$open_tagName) :
+                    <?php foreach ($vars['open_tags'] as $open_tagId=>$open_tagName) :
                         if (isset($project->open_tags[$open_tagId])) continue;
                         ?>
                     <option value="<?php echo $open_tagId; ?>"><?php echo $open_tagName; ?></option>

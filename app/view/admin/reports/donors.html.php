@@ -2,8 +2,8 @@
 
 use Goteo\Library\Text;
 
-$data = $this['data'];
-$filters = $this['filters'];
+$data = $vars['data'];
+$filters = $vars['filters'];
 ?>
 <a href="/sacaexcel/donors/?year=<?php echo $filters['year']; ?>&status=<?php echo $filters['status']; ?>&user=<?php echo $filters['user']; ?>" target="_blank">Sacaexcel</a>
 <div class="widget board">

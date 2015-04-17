@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\Message;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
     Message::Error('Instancia de proyecto corrupta');
@@ -21,7 +21,7 @@ if (!$project instanceof Model\Project) {
     <p>
         <label for="call-filter">Asignarlo a la convocatoria:</label><br />
         <select id="call-filter" name="call" >
-        <?php foreach ($this['available'] as $callId=>$callName) : ?>
+        <?php foreach ($vars['available'] as $callId=>$callName) : ?>
             <option value="<?php echo $callId; ?>"><?php echo $callName; ?></option>
         <?php endforeach; ?>
         </select>

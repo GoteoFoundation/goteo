@@ -2,8 +2,8 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$project = $this['project'];
-$status  = $this['status'];
+$project = $vars['project'];
+$status  = $vars['status'];
 
 ?>
 <a class="button" href="/admin/commons">Volver a la lista</a>

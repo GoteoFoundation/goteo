@@ -29,21 +29,21 @@ $(document).ready(function(){
 </script>
 
 <div class="widget board">
-    <form method="post" action="/admin/pages/edit/<?php echo $this['page']->id; ?>">
+    <form method="post" action="/admin/pages/edit/<?php echo $vars['page']->id; ?>">
 
         <p>
             <label for="page-name">T&iacute;tulo:</label><br />
-            <input type="text" name="name" id="page-name" value="<?php echo $this['page']->name; ?>" />
+            <input type="text" name="name" id="page-name" value="<?php echo $vars['page']->name; ?>" />
         </p>
 
         <p>
             <label for="page-description">Cabecera:</label><br />
-            <textarea name="description" id="page-description" cols="60" rows="4"><?php echo $this['page']->description; ?></textarea>
+            <textarea name="description" id="page-description" cols="60" rows="4"><?php echo $vars['page']->description; ?></textarea>
         </p>
 
         <p>
             <label for="richtext_content">Contenido:</label><br />
-            <textarea id="richtext_content" name="content" cols="100" rows="20"><?php echo $this['page']->content; ?></textarea>
+            <textarea id="richtext_content" name="content" cols="100" rows="20"><?php echo $vars['page']->content; ?></textarea>
         </p>
 
         <input type="submit" name="save" value="Guardar" />

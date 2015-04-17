@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$data = $this['data'];
+$data = $vars['data'];
 ?>
 <div class="widget">
     <form action="/admin/users/add" method="post">
@@ -26,7 +26,7 @@ $data = $this['data'];
     <p>
         <label for="user-node">Nodo:</label><br />
         <select id="user-node" name="node" >
-        <?php foreach ($this['nodes'] as $nodeId=>$nodeName) :
+        <?php foreach ($vars['nodes'] as $nodeId=>$nodeName) :
             if (isset($_SESSION['admin_node']) && $nodeId != $_SESSION['admin_node']) continue;
             ?>
             <option value="<?php echo $nodeId; ?>"<?php if ($nodeId == $_SESSION['admin_node']) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>

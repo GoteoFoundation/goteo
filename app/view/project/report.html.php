@@ -1,15 +1,15 @@
 <?php
 use Goteo\Model\Contract;
 
-$project = $this['project'];
-$account = $this['account']; // cuentas del proyecto, para tener el porcentaje de comisión
+$project = $vars['project'];
+$account = $vars['account']; // cuentas del proyecto, para tener el porcentaje de comisión
 
 // comisión goteo para este proyecto
 $GOTEO_FEE = round($account->fee / 100, 2);
 
 $called = $project->called;
-$Data    = $this['Data'];
-$admin = (isset($this['admin']) && $this['admin'] === true) ? true : false;
+$Data    = $vars['Data'];
+$admin = (isset($vars['admin']) && $vars['admin'] === true) ? true : false;
 
 $total_issues = 0;
 foreach ($Data['issues'] as $issue) {
@@ -172,7 +172,7 @@ $cName = "P-{$cNum}-{$cDate}";
 
     <br />
     <table>
-        <?php foreach ($Data['issues'] as $issue) : 
+        <?php foreach ($Data['issues'] as $issue) :
             $warst = ($issue->status == 1) ? ' style="color: red !important;"' : '';
             ?>
         <tr>

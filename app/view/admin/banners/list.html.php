@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model\User\Translate;
 
-$node = $this['node'];
+$node = $vars['node'];
 $transNode = Translate::is_legal($_SESSION['user']->id, $node, 'node') ? true : false;
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 ?>
@@ -13,7 +13,7 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 <?php endif; ?>
 
 <div class="widget board">
-    <?php if (!empty($this['bannered'])) : ?>
+    <?php if (!empty($vars['bannered'])) : ?>
     <table>
         <thead>
             <tr>
@@ -29,7 +29,7 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
         </thead>
 
         <tbody>
-            <?php foreach ($this['bannered'] as $banner) :
+            <?php foreach ($vars['bannered'] as $banner) :
                 $banner_title = (!empty($banner->name)) ? $banner->name : $banner->title;
                 ?>
             <tr>

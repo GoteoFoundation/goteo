@@ -3,12 +3,12 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$current = $this['current'];
+$current = $vars['current'];
 
 $bodyClass = 'faq';
 
 // funcionalidades con autocomplete
-$jsreq_calendar= $this['calendar'];
+$jsreq_calendar= $vars['calendar'];
 
 
 include __DIR__ . '/prologue.html.php';
@@ -60,7 +60,7 @@ include __DIR__ . '/header.html.php';
                         <a id="event-facebook" href=""><img style="float:right; margin-right:5px;" width="14" src="/view/css/calendar/facebook.png"/></a>
                         <span style="float:right; margin-right:5px;"><?php echo Text::get('calendar-share'); ?></span>
 
-                        
+
 
                     </div>
                     <div id="event-description">

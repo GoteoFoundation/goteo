@@ -4,12 +4,12 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$contract = $this['contract'];
+$contract = $vars['contract'];
 $errors = $contract->errors ?: array();
 
 // miramos el pruimer paso con errores para mandarlo a ese
 $goto = 'view-step-promoter';
-foreach ($this['steps'] as $id => $data) {
+foreach ($vars['steps'] as $id => $data) {
 
     if (empty($step) && !empty($contract->errors[$id])) {
         $goto = 'view-step-' . $id;
@@ -73,7 +73,7 @@ if (!$contract->status->owner) {
                 'title' => Text::get('form-footer-errors_title'),
                 'view'  => new View('contract/edit/errors.html.php', array(
                     'contract'   => $contract,
-                    'step'      => $this['step']
+                    'step'      => $vars['step']
                 ))
             ),
             'buttons'  => array(
@@ -88,7 +88,7 @@ if (!$contract->status->owner) {
 // lanzamos el superform
 echo SuperForm::get(array(
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('contract-step-final'),
     'hint'          => Text::get('guide-contract-final'),

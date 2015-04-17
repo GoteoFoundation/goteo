@@ -1,9 +1,9 @@
 <ul id="pagination">
 <?php
     use Goteo\Library\Text;
-    
-    $queryVars = $this['queryVars'];
-    $currentPage = $this['currentPage'];
+
+    $queryVars = $vars['queryVars'];
+    $currentPage = $vars['currentPage'];
 
     if ($currentPage != 1) {
         if($currentPage > 4) {
@@ -15,12 +15,12 @@
     }
 
     for($j = $currentPage - 3; $j <= $currentPage + 3; $j++) {
-        //if i is less than one then continue to next iteration     
+        //if i is less than one then continue to next iteration
         if($j < 1) {
             continue;
         }
 
-        if($j > $this['pages'] || $this['pages'] == 1) {
+        if($j > $vars['pages'] || $vars['pages'] == 1) {
             break;
         }
 
@@ -31,13 +31,13 @@
         }
     }//end for
 
-    if($currentPage < $this['pages']) {
+    if($currentPage < $vars['pages']) {
         $nextPage = $currentPage + 1;
         echo "<li><a href=\"?page=$nextPage$queryVars\"> ></a></li>";
 
-        if($currentPage < $this['pages'] -3 ) {
-            echo " <li class='hellip'>&hellip;</li><li><a href=\"?page=".$this['pages']."$queryVars\" title=\"".Text::get('regular-last')."\">".Text::get('regular-last')."(".$this['pages'].") </a></li>";
+        if($currentPage < $vars['pages'] -3 ) {
+            echo " <li class='hellip'>&hellip;</li><li><a href=\"?page=".$vars['pages']."$queryVars\" title=\"".Text::get('regular-last')."\">".Text::get('regular-last')."(".$vars['pages'].") </a></li>";
         }
-    }  
+    }
 ?>
 </ul>

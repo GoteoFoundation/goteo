@@ -5,14 +5,14 @@
 
     $URL = \SITE_URL;
 
-    $project = $this['project'];
+    $project = $vars['project'];
 
-	$url = $URL . '/widget/project/' . $this['project']->id;
+	$url = $URL . '/widget/project/' . $vars['project']->id;
     if (LANG != 'es')
         $url .= '?lang=' . LANG;
 
-    if (isset($this['investor']) && is_object($this['investor'])) {
-        $url .= '/invested/'.$this['investor']->id;
+    if (isset($vars['investor']) && is_object($vars['investor'])) {
+        $url .= '/invested/'.$vars['investor']->id;
     }
 
 	$widget_code = Text::widget($url);

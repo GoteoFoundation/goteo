@@ -2,11 +2,11 @@
 
 use Goteo\Library\Text;
 
-$sponsor = $this['data']['sponsor'] ?>
+$sponsor = $vars['data']['sponsor'] ?>
 
 <div class="sponsor">
-    
-    
+
+
     <div class="title"><strong><?php echo htmlspecialchars($sponsor->name) ?></strong></div>
 
     <?php if (is_object($sponsor->image)) : ?>
@@ -21,6 +21,6 @@ $sponsor = $this['data']['sponsor'] ?>
     <input type="submit" class="remove weak" name="sponsor-<?php echo $sponsor->id ?>-remove" value="<?php echo Text::get('form-remove-button') ?>" />
 </div>
 
-    
 
-    
+
+

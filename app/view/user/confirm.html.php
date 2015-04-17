@@ -7,8 +7,8 @@ $bodyClass = 'user-login';
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$errors = $this['errors'];
-$oauth = $this['oauth'];
+$errors = $vars['errors'];
+$oauth = $vars['oauth'];
 
 extract($oauth->user_data);
 

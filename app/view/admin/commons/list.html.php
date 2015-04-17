@@ -3,20 +3,20 @@ use Goteo\Library\Text,
     Goteo\Util\Pagination\Paginated,
     Goteo\Util\Pagination\DoubleBarLayout;
 
-$filters = $this['filters'];
-$status = $this['statuses'];
+$filters = $vars['filters'];
+$status = $vars['statuses'];
 
 $the_filters = '';
 foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new Paginated($this['projects'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($vars['projects'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
 
 //para autocomplete
 $items = array();
 
-foreach ($this['projects'] as $project) {
+foreach ($vars['projects'] as $project) {
     $items[] = '{ value: "'.str_replace('"','\"',$project->name).'", id: "'.$project->id.'" }';
         if($filters['project'] === $project->name) $preval=$project->name;
 }
@@ -29,7 +29,7 @@ foreach ($this['projects'] as $project) {
             <label for="projStatus-filter">Solo proyectos en estado:</label><br />
             <select id="projStatus-filter" name="projStatus">
                 <option value="">Cualquier exitoso</option>
-            <?php foreach ($this['projStatus'] as $Id=>$Name) : ?>
+            <?php foreach ($vars['projStatus'] as $Id=>$Name) : ?>
                 <option value="<?php echo $Id; ?>"<?php if ($filters['projStatus'] == $Id) echo ' selected="selected"';?>><?php echo $Name; ?></option>
             <?php endforeach; ?>
             </select><br />
@@ -48,7 +48,7 @@ foreach ($this['projects'] as $project) {
             <label for="status-filter">Mostrar por estado del retorno:</label><br />
             <select id="status-filter" name="status" >
                 <option value="">Cualquier estado</option>
-            <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
+            <?php foreach ($vars['status'] as $statusId=>$statusName) : ?>
                 <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
             <?php endforeach; ?>
             </select>
@@ -58,7 +58,7 @@ foreach ($this['projects'] as $project) {
             <label for="icon-filter">Mostrar retornos del tipo:</label><br />
             <select id="icon-filter" name="icon" >
                 <option value="">Todos los tipos</option>
-            <?php foreach ($this['icons'] as $iconId=>$iconName) : ?>
+            <?php foreach ($vars['icons'] as $iconId=>$iconName) : ?>
                 <option value="<?php echo $iconId; ?>"<?php if ($filters['icon'] == $iconId) echo ' selected="selected"';?>><?php echo $iconName; ?></option>
             <?php endforeach; ?>
             </select>
@@ -79,7 +79,7 @@ foreach ($this['projects'] as $project) {
 <div class="widget board">
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($this['projects'])) : ?>
+<?php elseif (!empty($vars['projects'])) : ?>
     <table>
         <thead>
             <tr>

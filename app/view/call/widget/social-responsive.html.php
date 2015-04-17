@@ -4,8 +4,8 @@ use Goteo\Library\Text,
     Goteo\Application\Lang,
     Goteo\Core\View;
 
-$call = $this['call'];
-$social = $this['social'];
+$call = $vars['call'];
+$social = $vars['social'];
 
 $URL = \SITE_URL;
 $share_url = $URL . '/call/' . $call->id;

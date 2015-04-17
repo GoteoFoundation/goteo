@@ -16,7 +16,7 @@ use Goteo\Library\Text;
             <label for="call-user">Convocador:</label><br />
             <select id="call-user" name="caller">
                 <option value="">Seleccionar usuario</option>
-            <?php foreach ($this['callers'] as $userId=>$userName) : ?>
+            <?php foreach ($vars['callers'] as $userId=>$userName) : ?>
                 <option value="<?php echo $userId; ?>"><?php echo $userName; ?></option>
             <?php endforeach; ?>
             </select>

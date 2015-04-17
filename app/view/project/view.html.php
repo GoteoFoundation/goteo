@@ -9,11 +9,11 @@ use Goteo\Core\View,
     Goteo\Model\Blog,
     Goteo\Library\Text;
 
-$project = $this['project'];
-$show    = $this['show'];
-$step    = $this['step'];
-$post    = $this['post'];
-$blog    = $this['blog'];
+$project = $vars['project'];
+$show    = $vars['show'];
+$step    = $vars['step'];
+$post    = $vars['post'];
+$blog    = $vars['blog'];
 
 $user    = $_SESSION['user'];
 $personalData = ($user instanceof User) ? User::getPersonal($user->id) : new stdClass();
@@ -162,7 +162,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                 // los modulos centrales son diferentes segun el show
                 switch ($show) {
                     case 'needs':
-                        if ($this['non-economic']) {
+                        if ($vars['non-economic']) {
                             echo
                                 View::get('project/widget/non-needs.html.php',
                                     array('project' => $project, 'types' => Support::types()));
@@ -180,7 +180,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                         if (!empty($step) && in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) {
 
                             // variables a pasar a las subvistas
-                            $subView = array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp'], 'pool'=> $this['pool']);
+                            $subView = array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $vars['allowpp'], 'pool'=> $vars['pool']);
 
                             switch ($step) {
                                 case 'continue':
@@ -209,7 +209,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                             }
                         } else {
                             echo
-                                View::get('project/widget/supporters.html.php', $this),
+                                View::get('project/widget/supporters.html.php', $vars),
                                 View::get('worth/legend.html.php');
                         }
                         break;

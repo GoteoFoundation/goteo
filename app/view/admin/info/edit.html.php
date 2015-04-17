@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\NormalForm;
 
-$post = $this['post'];
+$post = $vars['post'];
 
 if (!$post instanceof Model\Info) {
     throw new Redirection('/admin/info');
@@ -61,7 +61,7 @@ $(document).ready(function(){
 });
 </script>
 
-<form method="post" action="/admin/info/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data" style="margin-bottom: 20px;">
+<form method="post" action="/admin/info/<?php echo $vars['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data" style="margin-bottom: 20px;">
 
     <?php echo new NormalForm(array(
 

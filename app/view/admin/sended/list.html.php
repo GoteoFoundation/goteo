@@ -5,14 +5,14 @@ use Goteo\Library\Text,
     Goteo\Util\Pagination\Paginated,
     Goteo\Core\View;
 
-$filters = $this['filters'];
-$templates = $this['templates'];
+$filters = $vars['filters'];
+$templates = $vars['templates'];
 $the_filters = '';
 foreach ($filters as $key => $value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new Paginated($this['sended'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($vars['sended'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/sended" method="get">
@@ -39,7 +39,7 @@ $pagedResults = new Paginated($this['sended'], 20, isset($_GET['page']) ? $_GET[
                 <label for="node-filter">Enviado por el nodo:</label><br />
                 <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
                     <option value="">Cualquier nodo</option>
-                    <?php foreach ($this['nodes'] as $nodeId => $nodeName) : ?>
+                    <?php foreach ($vars['nodes'] as $nodeId => $nodeName) : ?>
                         <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId)
                     echo ' selected="selected"'; ?>><?php echo $nodeName; ?></option>
             <?php endforeach; ?>
@@ -65,7 +65,7 @@ $pagedResults = new Paginated($this['sended'], 20, isset($_GET['page']) ? $_GET[
 <div class="widget board">
     <?php if ($filters['filtered'] != 'yes') : ?>
         <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($this['sended'])) : ?>
+<?php elseif (!empty($vars['sended'])) : ?>
         <table>
             <thead>
                 <tr>

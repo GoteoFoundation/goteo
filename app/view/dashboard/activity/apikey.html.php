@@ -2,10 +2,10 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$key = $this['apikey'];
+$key = $vars['apikey'];
 
 // contenido
-$content = explode('<hr />', $this['page']->content);
+$content = explode('<hr />', $vars['page']->content);
 
 if (empty($key)) {
     echo $content[0];
@@ -13,4 +13,4 @@ if (empty($key)) {
     echo str_replace('%APIKEY%', $key, $content[1]);
 }
 
-if (!empty($this['errors'])) echo implode('<br />', $this['errors']);
+if (!empty($vars['errors'])) echo implode('<br />', $vars['errors']);

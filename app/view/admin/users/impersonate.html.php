@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$user = $this['user'];
+$user = $vars['user'];
 
 $roles = $user->roles;
 array_walk($roles, function (&$role) { $role = $role->name; });
@@ -22,7 +22,7 @@ array_walk($roles, function (&$role) { $role = $role->name; });
     </dl>
     <dl>
         <dt>Nodo:</dt>
-        <dd><?php echo $this['nodes'][$user->node] ?></dd>
+        <dd><?php echo $vars['nodes'][$user->node] ?></dd>
     </dl>
     <dl>
         <dt>Roles actuales</dt>

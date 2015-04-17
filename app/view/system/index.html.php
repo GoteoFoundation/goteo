@@ -30,7 +30,7 @@ include __DIR__ . '/../prologue.html.php';
             </div>
 
             <div class="widget">
-                <?php foreach ($this['data'] as $item) {
+                <?php foreach ($vars['data'] as $item) {
                     echo \trace($item);
                 } ?>
             </div>

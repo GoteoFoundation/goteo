@@ -2,7 +2,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$posts = $this['posts'];
+$posts = $vars['posts'];
 
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';

@@ -4,9 +4,9 @@ use Goteo\Core\View,
     Goteo\Model\Project;
 
 $user    = $_SESSION['user'];
-$project = $this['project'];
+$project = $vars['project'];
 $the_project = Project::getMedium($project->id);
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 
 $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 $URL = \SITE_URL;

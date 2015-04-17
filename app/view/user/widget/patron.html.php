@@ -4,7 +4,7 @@ use Goteo\Core\View,
     Goteo\Model\Patron,
     Goteo\Library\Text;
 
-$user = $this['user'];
+$user = $vars['user'];
 
 ?>
 <div class="patron">

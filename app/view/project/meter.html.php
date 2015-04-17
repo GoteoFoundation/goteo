@@ -3,13 +3,13 @@ use Goteo\Library\Text,
     Goteo\Library\Check,
     Goteo\Library\Currency;
 
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 
-$horizontal = !empty($this['horizontal']);
-$big = !empty($this['big']);
-$activable = !empty($this['activable']);
+$horizontal = !empty($vars['horizontal']);
+$big = !empty($vars['big']);
+$activable = !empty($vars['activable']);
 
-$project = $this['project'];
+$project = $vars['project'];
 
 $minimum    = $project->mincost;
 $optimum    = $project->maxcost;
@@ -33,13 +33,13 @@ if ($reached >= $minimum) {
     $minimum_done = floor(($reached / $minimum) * 100);
     $minimum_done_per = floor(($reached / $minimum) * 100);
     $minimum_left = 0;
-    
+
 } else {
-    
+
     $minimum_done = min(100, floor(($reached / $minimum) * 100));
     $minimum_done_per = floor(($reached / $minimum) * 100);
     $minimum_left = max(0, floor((1 - $reached / $minimum) * 100));
-    
+
     if ($minimum_done >= 100) {
         // No muestres 100 si falta aunque sea un céntimo
         $minimum_done = 99;
@@ -70,17 +70,17 @@ $more  = $optimum - $minimum;
 $over = $reached - $minimum;
 
 if ($over > 0) {
-    
+
     if ($over >= $more) {
         $optimum_done = 100;
     } else {
         $optimum_done = min(100, floor($over / ($optimum - $minimum)));
-        
+
         if ($optimum_done >= 100) {
             $optimum_done = 99;
         }
-    }    
-    
+    }
+
 } else {
     $optimum_done = 0;
 }
@@ -95,7 +95,7 @@ $num_currencies=count($currencies);
 
 $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 
-?>        
+?>
     <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : ''; echo $activable ? ' activable' : ''; ?>">
         <h<?php echo $level ?> class="title investment"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
         <?php if (!$project->one_round && !empty($round)) : ?><h<?php echo $level ?> class="title ronda"><?php echo $round . Text::get('regular-round'); ?></h<?php echo $level ?>><?php endif; ?>
@@ -194,12 +194,12 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                                 <a href="?currency=<?php echo $ccyId ?>"><?php echo $ccy['html'].' '.$ccyId; ?></a>
                             </li>
                     <?php endforeach ?>
-                </ul> 
-            </div>   
+                </ul>
+            </div>
         </div>
         </div>
         <?php } ?>
-       
+
         <?php if ($activable) : ?>
         <div class="obtained">
             <strong><?php echo \amount_format($reached) ?></strong>

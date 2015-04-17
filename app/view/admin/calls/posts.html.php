@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model\User;
 
-$call = $this['call'];
+$call = $vars['call'];
 ?>
 <script type="text/javascript">
 function save() {

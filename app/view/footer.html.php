@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
 </script>
 
     <div id="footer">
-        <?php if( $bannerPrensa && count($this[news]) ) {?>
+        <?php if( $bannerPrensa && count($vars[news]) ) {?>
         <div id="press_banner">
             <?php echo $bannerPrensa;?>
         </div>

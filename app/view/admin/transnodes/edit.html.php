@@ -2,9 +2,9 @@
 
 use Goteo\Library\Text;
 
-$node = $this['node'];
+$node = $vars['node'];
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 
 ?>
 <script type="text/javascript">
@@ -37,7 +37,7 @@ function assign() {
                 <td colspan="2">
                     <select id="assign-user" name="user">
                         <option value="">Selecciona otro traductor</option>
-                        <?php foreach ($this['translators'] as $user) :
+                        <?php foreach ($vars['translators'] as $user) :
                             if (in_array($user->id, array_keys($node->translators))) continue;
                             ?>
                         <option value="<?php echo $user->id; ?>"><?php echo $user->name; ?></option>

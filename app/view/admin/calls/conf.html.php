@@ -3,9 +3,9 @@
 use Goteo\Library\Text,
     Goteo\Library\NormalForm;
 
-$call = $this['call'];
-$conf = $this['conf'];
-$this['level'] = 3;
+$call = $vars['call'];
+$conf = $vars['conf'];
+$vars['level'] = 3;
 
 // funcion para pintar un selector de limites
 function limitSel ($label, $name, $current) {
@@ -47,7 +47,7 @@ $legend = "<strong>No especificado</strong>: ".Text::get('call-conf-normal')."
 <?php
 echo new NormalForm(array(
 
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'hint'          => "Configuración financiera y funcional de la convocatoria " . addslashes($call->name),
 

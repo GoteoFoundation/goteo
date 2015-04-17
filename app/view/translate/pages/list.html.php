@@ -2,9 +2,9 @@
 use Goteo\Library\Page,
     Goteo\Model\Node;
 
-$filter = $this['filter'];
-$pages = $this['pages'];
-$nwords = $this['nwords'];
+$filter = $vars['filter'];
+$pages = $vars['pages'];
+$nwords = $vars['nwords'];
 
 ?>
 <!-- Filtros -->
@@ -12,12 +12,12 @@ $nwords = $this['nwords'];
     <form id="filter-form" action="/translate/pages/list/<?php echo $filter ?>" method="get">
         <div style="float:left;margin:5px;">
             <label for="filter-text">Texto:</label><br />
-            <input id="filter-text" name="text" value="<?php echo (string) $this['filters']['text']; ?>" style="width: 500px;"/>
+            <input id="filter-text" name="text" value="<?php echo (string) $vars['filters']['text']; ?>" style="width: 500px;"/>
         </div>
 
         <div style="float:left;margin:5px;">
             <label for="filter-pending">Solo pendientes:</label><br />
-            <input id="filter-pending" type="checkbox" name="pending" value="1" <?php if ($this['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
+            <input id="filter-pending" type="checkbox" name="pending" value="1" <?php if ($vars['filters']['pending'] == 1) echo ' checked="checked"'; ?> />
         </div>
 
         <br clear="both" />

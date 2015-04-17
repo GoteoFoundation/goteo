@@ -2,7 +2,7 @@
 use Goteo\Library\Page,
     Goteo\Model\Node;
 
-$node = $this['node'];
+$node = $vars['node'];
 
 $pages = Page::getAll(array(), 'es', $node);
 ?>

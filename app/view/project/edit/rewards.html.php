@@ -5,9 +5,9 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 
-$project = $this['project'];
-$errors = $project->errors[$this['step']] ?: array();
-$okeys  = $project->okeys[$this['step']] ?: array();
+$project = $vars['project'];
+$errors = $project->errors[$vars['step']] ?: array();
+$okeys  = $project->okeys[$vars['step']] ?: array();
 
 $social_rewards = array();
 $individual_rewards = array();
@@ -17,11 +17,11 @@ $txt_details = Text::get('regular-see_details');
 foreach ($project->social_rewards as $social_reward) {
 
     // a ver si es el que estamos editando o no
-    if (!empty($this["social_reward-{$social_reward->id}-edit"])) {
+    if (!empty($vars["social_reward-{$social_reward->id}-edit"])) {
 
         $types = array();
 
-        foreach ($this['stypes'] as $type) {
+        foreach ($vars['stypes'] as $type) {
 
             $licenses = array();
 
@@ -43,7 +43,7 @@ foreach ($project->social_rewards as $social_reward) {
                         'hint'  => $license->description .  $url,
                         'id'    => "social_reward-{$social_reward->id}-license-{$license->id}",
                         'checked' => $license->id == $social_reward->license ? true : false
-                    );                        
+                    );
                 }
 
             }
@@ -160,7 +160,7 @@ foreach ($project->social_rewards as $social_reward) {
         $social_rewards["social_reward-{$social_reward->id}"] = array(
             'class'     => 'reward social_reward',
             'view'      => 'project/edit/rewards/reward.html.php',
-            'data'      => array('reward' => $social_reward, 'licenses' => $this['licenses'], 'types' => $this['stypes']),
+            'data'      => array('reward' => $social_reward, 'licenses' => $vars['licenses'], 'types' => $vars['stypes']),
         );
 
     }
@@ -170,12 +170,12 @@ foreach ($project->social_rewards as $social_reward) {
 foreach ($project->individual_rewards as $individual_reward) {
 
     // a ver si es el que estamos editando o no
-    if (!empty($this["individual_reward-{$individual_reward->id}-edit"])) {
+    if (!empty($vars["individual_reward-{$individual_reward->id}-edit"])) {
 
         // lo mismo que para las licencias solamente para el texto en el tipo otro
         $types = array();
 
-        foreach ($this['itypes'] as $type) {
+        foreach ($vars['itypes'] as $type) {
 
             if ($type->id == 'other') {
                 // un campo para especificar el tipo
@@ -299,7 +299,7 @@ foreach ($project->individual_rewards as $individual_reward) {
         $individual_rewards["individual_reward-{$individual_reward->id}"] = array(
             'class'     => 'reward individual_reward',
             'view'      => 'project/edit/rewards/reward.html.php',
-            'data'      => array('reward' => $individual_reward, 'types' => $this['itypes']),
+            'data'      => array('reward' => $individual_reward, 'types' => $vars['itypes']),
         );
 
     }
@@ -337,7 +337,7 @@ echo SuperForm::get(array(
 
     'id'            => $sfid,
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('rewards-main-header'),
     'hint'          => Text::get('guide-project-rewards'),
@@ -395,7 +395,7 @@ echo SuperForm::get(array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -403,7 +403,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

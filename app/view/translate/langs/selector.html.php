@@ -6,19 +6,19 @@ unset($langs['es']); // no se puede traducir a español
 
 $actual = Lang::get($_SESSION['translate_lang']);
 
-$section = isset($this['table']) ? $this['table'] : $this['section'];
+$section = isset($vars['table']) ? $vars['table'] : $vars['section'];
 // retorno especial para traduccion de nodo
-if (isset($this['node']) && $this['node'] != \GOTEO_NODE) {
-    $return = '/translate/select/'.$section.'/'.$this['node'].'/'.$this['option'];
-    if ($this['option'] == 'data') {
-        $return .= '/edit/'.$this['node'];
-    } else if ($this['action'] == 'edit_'.$this['option']) {
-        $return .= '/edit/'.$this['id'];
+if (isset($vars['node']) && $vars['node'] != \GOTEO_NODE) {
+    $return = '/translate/select/'.$section.'/'.$vars['node'].'/'.$vars['option'];
+    if ($vars['option'] == 'data') {
+        $return .= '/edit/'.$vars['node'];
+    } else if ($vars['action'] == 'edit_'.$vars['option']) {
+        $return .= '/edit/'.$vars['id'];
     } else {
-        $return .= '/'.$this['id'];
+        $return .= '/'.$vars['id'];
     }
 } else {
-    $return = '/translate/select/'.$section.'/'.$this['action'].'/'.$this['id'].'/'.$this['filter'].'&page='.$_GET['page'];
+    $return = '/translate/select/'.$section.'/'.$vars['action'].'/'.$vars['id'].'/'.$vars['filter'].'&page='.$_GET['page'];
 }
 ?>
 <div id="lang-selector">

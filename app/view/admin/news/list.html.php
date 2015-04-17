@@ -8,7 +8,7 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 <a href="/admin/news/add" class="button">Nueva noticia</a>
 
 <div class="widget board">
-    <?php if (!empty($this['news'])) : ?>
+    <?php if (!empty($vars['news'])) : ?>
     <table>
         <thead>
             <tr>
@@ -24,7 +24,7 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
         </thead>
 
         <tbody>
-            <?php foreach ($this['news'] as $new) :
+            <?php foreach ($vars['news'] as $new) :
                 ?>
             <tr>
                 <td><?php echo $new->title; ?></td>

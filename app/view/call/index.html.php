@@ -5,18 +5,18 @@ use Goteo\Library\Text,
 
 $bodyClass = 'info';
 
-$call = $this['call'];
+$call = $vars['call'];
 
 include __DIR__ . '/../call/prologue.html.php';
 include __DIR__ . '/../call/header.html.php';
 
 ?>
 <div id="main">
-    <?php echo View::get('call/widget/title.html.php', $this); ?>
+    <?php echo View::get('call/widget/title.html.php', $vars); ?>
     <div id="banners-social">
         <?php
-        echo View::get('call/widget/banners.html.php', $this);
-        echo View::get('call/widget/social.html.php', $this);
+        echo View::get('call/widget/banners.html.php', $vars);
+        echo View::get('call/widget/social.html.php', $vars);
         ?>
     </div>
 
@@ -45,15 +45,15 @@ include __DIR__ . '/../call/header.html.php';
 
             <p class="subtitle" style="color: #58595b; font-size: 12px;"><?php echo $call->subtitle ?></p>
 
-            <?php echo View::get('call/widget/stats.html.php', $this); ?>
+            <?php echo View::get('call/widget/stats.html.php', $vars); ?>
 
         </div>
-        <?php echo View::get('call/widget/buzz.html.php', $this); ?>
+        <?php echo View::get('call/widget/buzz.html.php', $vars); ?>
     </div>
 
-    <?php echo View::get('call/widget/social-responsive.html.php', $this) ?>
+    <?php echo View::get('call/widget/social-responsive.html.php', $vars) ?>
 
-    <?php echo View::get('call/bottom.html.php', $this); ?>
+    <?php echo View::get('call/bottom.html.php', $vars); ?>
 </div>
 
 <?php

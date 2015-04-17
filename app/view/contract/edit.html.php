@@ -6,9 +6,9 @@ use Goteo\Core\View,
 
 $bodyClass = 'project-edit';
 
-$contract = $this['contract'];
+$contract = $vars['contract'];
 
-$steps  = View::get('contract/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $contract->errors));
+$steps  = View::get('contract/edit/steps.html.php', array('steps' => $vars['steps'], 'step' => $vars['step'], 'errors' => $contract->errors));
 
 if (!$contract->status->owner)
     Message::Info(Text::get('form-ajax-info'));
@@ -26,15 +26,15 @@ include __DIR__ . '/../prologue.html.php';
 
 <?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
 
-    <div id="main" class="<?php echo htmlspecialchars($this['step']) ?>">
+    <div id="main" class="<?php echo htmlspecialchars($vars['step']) ?>">
 
         <form method="post" action="<?php echo "/contract/edit/" . $contract->project ?>" class="project" enctype="multipart/form-data" >
 
-            <input type="hidden" name="view-step-<?php echo $this['step'] ?>" value="please" />
+            <input type="hidden" name="view-step-<?php echo $vars['step'] ?>" value="please" />
 
             <?php echo $steps ?>
 
-            <?php if($this['step']) echo View::get("contract/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3)); ?>
+            <?php if($vars['step']) echo View::get("contract/edit/{$vars['step']}.html.php", $vars + array('level' => 3)); ?>
 
             <?php echo $steps ?>
 

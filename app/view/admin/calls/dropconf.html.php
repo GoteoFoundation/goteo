@@ -3,8 +3,8 @@
 use Goteo\Library\Text,
     Goteo\Library\NormalForm;
 
-$call = $this['call'];
-$this['level'] = 3;
+$call = $vars['call'];
+$vars['level'] = 3;
 
 $maxp_modes = array(
     'imp' => array(
@@ -23,7 +23,7 @@ $maxp_modes = array(
 <?php
 echo new NormalForm(array(
 
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'hint'          => "Configuración financiera de la convocatoria " . addslashes($call->name),
     'class'         => 'gestion_financiera',

@@ -3,14 +3,14 @@
 use Goteo\Library\Text,
     Goteo\Model;
 
-$promo = $this['promo'];
+$promo = $vars['promo'];
 
 $items = array();
 // $iId = id de la recompensa
 // $iObj = datos: recompensa, proyecto, importe
 //@TODO montar identificador idRecompensa¬idProyecto¬importe
 //@TODO montar valor: nomReco(50)+importe€+nomProj(50)
-foreach ($this['items'] as $iId=>$iObj) {
+foreach ($vars['items'] as $iId=>$iObj) {
     $el_val = str_replace(array("'", '"'), '`', $iObj->name).' ['.$iObj->icon.' '.$iObj->amount.'€] ('.str_replace(array("'", '"'), '`', $iObj->projname).')';
     $el_id = $iObj->reward.'¬'.$iObj->project.'¬'.$iObj->amount;
     $items[] = '{ value: "'.$el_val.')", id: "'.$el_id.'" }';
@@ -18,7 +18,7 @@ foreach ($this['items'] as $iId=>$iObj) {
 }
 ?>
 <form method="post" action="/admin/bazar" enctype="multipart/form-data">
-    <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
+    <input type="hidden" name="action" value="<?php echo $vars['action'] ?>" />
     <input type="hidden" name="order" value="<?php echo $promo->order ?>" />
     <input type="hidden" name="id" value="<?php echo $promo->id; ?>" />
 
@@ -27,8 +27,8 @@ foreach ($this['items'] as $iId=>$iObj) {
     <div class="ui-widget">
         <label for="busca-item">Buscador recompensa:</label><br />
         <input type="text" id="busca-item" name="item_searcher" value="<?php echo $preVal; ?>" style="width:500px;"/>
-    </div>        
-    
+    </div>
+
     <br />
 
 <p>

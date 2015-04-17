@@ -4,8 +4,8 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\Worth;
 
-$user = $this['user'];
-$worthcracy = $this['worthcracy'];
+$user = $vars['user'];
+$worthcracy = $vars['worthcracy'];
 ?>
 <div class="supporterContainer">
 	<?php if ($user->campaign) : ?>

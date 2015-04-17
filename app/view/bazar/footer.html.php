@@ -1,8 +1,8 @@
 <?php
-$share = $this['share'];
+$share = $vars['share'];
 ?>
 <hr />
-<div id="pie"><?php echo $this['text']; ?></div>
+<div id="pie"><?php echo $vars['text']; ?></div>
 
 <footer>
 	<section class="logo">

@@ -7,23 +7,23 @@ use Goteo\Library\Text;
     <!-- super form -->
     <form method="post" action="/admin/icons">
 
-        <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
-        <input type="hidden" name="id" value="<?php echo $this['icon']->id; ?>" />
-        <input type="hidden" name="order" value="<?php echo $this['icon']->order; ?>" />
+        <input type="hidden" name="action" value="<?php echo $vars['action']; ?>" />
+        <input type="hidden" name="id" value="<?php echo $vars['icon']->id; ?>" />
+        <input type="hidden" name="order" value="<?php echo $vars['icon']->order; ?>" />
 
         <label for="icon-group">Agrupación:</label><br />
         <select id="icon-group" name="group">
             <option value="">Ambas</option>
-            <?php foreach ($this['groups'] as $id=>$name) : ?>
-            <option value="<?php echo $id; ?>"<?php if ($id == $this['icon']->group) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
+            <?php foreach ($vars['groups'] as $id=>$name) : ?>
+            <option value="<?php echo $id; ?>"<?php if ($id == $vars['icon']->group) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
             <?php endforeach; ?>
         </select>
 <br />
         <label for="icon-name">Nombre:</label><br />
-        <input type="text" name="name" id="icon-name" value="<?php echo $this['icon']->name; ?>" />
+        <input type="text" name="name" id="icon-name" value="<?php echo $vars['icon']->name; ?>" />
 <br />
         <label for="icon-description">Texto tooltip:</label><br />
-        <textarea name="description" id="icon-description" cols="60" rows="10"><?php echo $this['icon']->description; ?></textarea>
+        <textarea name="description" id="icon-description" cols="60" rows="10"><?php echo $vars['icon']->description; ?></textarea>
 
 
 

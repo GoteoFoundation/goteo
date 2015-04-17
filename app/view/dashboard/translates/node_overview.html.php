@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$node = $this['node'];
+$node = $vars['node'];
 ?>
 <div class="widget board">
     <h3>Traducir Contenidos del nodo <strong><?php echo $node->name; ?></strong></h3>

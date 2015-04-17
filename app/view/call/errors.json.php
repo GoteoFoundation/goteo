@@ -1,2 +1,2 @@
 <?php
-echo json_encode($this['errors']);
+echo json_encode($vars['errors']);

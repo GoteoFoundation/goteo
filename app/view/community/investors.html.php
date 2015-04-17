@@ -6,7 +6,7 @@ use Goteo\Library\Text,
 // niveles de meritocracia
 $worthcracy = Worth::getAll();
 
-$investors = $this['investors'];
+$investors = $vars['investors'];
 
 // ordenarlos por cantidad
 uasort($investors,

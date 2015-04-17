@@ -2,11 +2,11 @@
 
 use Goteo\Library\Text;
 
-$invest = $this['invest'];
-$project = $this['project'];
-$calls = $this['calls'];
-$droped = $this['droped'];
-$user = $this['user'];
+$invest = $vars['invest'];
+$project = $vars['project'];
+$calls = $vars['calls'];
+$droped = $vars['droped'];
+$user = $vars['user'];
 
 $rewards = $invest->rewards;
 array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
@@ -14,7 +14,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 ?>
 <div class="widget">
     <p>
-        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this['status'][$project->status] ?>)
+        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $vars['status'][$project->status] ?>)
         <strong>Usuario: </strong><?php echo $user->name ?>
     </p>
 
@@ -34,10 +34,10 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
             ?>
         </dd>
     </dl>
-    
+
     <dl>
         <dt>Estado:</dt>
-        <dd><?php echo $this['investStatus'][$invest->status]; if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>';  ?></dd>
+        <dd><?php echo $vars['investStatus'][$invest->status]; if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>';  ?></dd>
     </dl>
 
     <dl>
@@ -99,5 +99,5 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     </dl>
     <a href="/admin/invests/details/<?php echo $droped->id ?>" target="_blank">Ver aporte completo de riego</a>
     <?php endif; ?>
-    
+
 </div>

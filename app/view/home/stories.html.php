@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$stories = $this['stories'];
+$stories = $vars['stories'];
 
 ?>
 <div class="widget stories-home" style="padding:0;">

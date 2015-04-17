@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\Message;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
     Message::Error('Instancia de proyecto corrupta');
@@ -43,7 +43,7 @@ function assign() {
             <td colspan="2">
                 <select id="assign-user" name="user">
                     <option value="">Asigna otro asesor</option>
-                    <?php foreach ($this['admins'] as $userId=>$userName) :
+                    <?php foreach ($vars['admins'] as $userId=>$userName) :
                         if (isset($project->consultants[$userId])) continue;
                         ?>
                     <option value="<?php echo $userId; ?>"><?php echo $userName; ?></option>

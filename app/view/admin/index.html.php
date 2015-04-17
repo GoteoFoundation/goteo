@@ -14,14 +14,14 @@ if (!isset($_SESSION['admin_menu'])) {
 // piñones usuarios
 $allowed = Admin::$supervisors[$_SESSION['user']->id];
 
-if (isset($allowed) && !empty($this['folder']) && !in_array($this['folder'], $allowed)) {
+if (isset($allowed) && !empty($vars['folder']) && !in_array($vars['folder'], $allowed)) {
     header('Location: /admin/');
 }
 
 $bodyClass = 'admin';
 
 // funcionalidades con autocomplete
-$jsreq_autocomplete = $this['autocomplete'];
+$jsreq_autocomplete = $vars['autocomplete'];
 
 
 include __DIR__ . '/../prologue.html.php';
@@ -67,14 +67,14 @@ include __DIR__ . '/../header.html.php';
             <?php endif; ?>
 
 
-<?php if (!empty($this['folder']) && !empty($this['file'])) :
-        if ($this['folder'] == 'base') {
-            $path = 'admin/'.$this['file'].'.html.php';
+<?php if (!empty($vars['folder']) && !empty($vars['file'])) :
+        if ($vars['folder'] == 'base') {
+            $path = 'admin/'.$vars['file'].'.html.php';
         } else {
-            $path = 'admin/'.$this['folder'].'/'.$this['file'].'.html.php';
+            $path = 'admin/'.$vars['folder'].'/'.$vars['file'].'.html.php';
         }
 
-            echo View::get($path, $this);
+            echo View::get($path, $vars);
        else :
 
             /* PORTADA ADMIN */
@@ -87,9 +87,9 @@ include __DIR__ . '/../header.html.php';
     ?>
         <div class="widget admin-home">
             <h3 class="title">Tareas pendientes</h3>
-            <?php if (!empty($this['tasks'])) : ?>
+            <?php if (!empty($vars['tasks'])) : ?>
             <table>
-                <?php foreach ($this['tasks'] as $task) : ?>
+                <?php foreach ($vars['tasks'] as $task) : ?>
                 <tr>
                     <td><?php if (!empty($task->url)) { echo ' <a href="'.$task->url.'">[IR]</a>';} ?></td>
                     <td><?php echo $task->text; ?></td>

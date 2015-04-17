@@ -3,8 +3,8 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
-$errors = $this['errors'];
+$project = $vars['project'];
+$errors = $vars['errors'];
 
 $costs = array();
 
@@ -16,7 +16,7 @@ if (!empty($project->costs)) {
 
         $ch = array();
 
-        if (!empty($this["cost-{$cost->id}-edit"])) {
+        if (!empty($vars["cost-{$cost->id}-edit"])) {
 
             $original = \Goteo\Model\Project\Cost::get($cost->id);
 

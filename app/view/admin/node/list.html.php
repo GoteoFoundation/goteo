@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection;
 
-$node = $this['node'];
+$node = $vars['node'];
 
 if (!$node instanceof Model\Node) {
     throw new Redirection('/admin');

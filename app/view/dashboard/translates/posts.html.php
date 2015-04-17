@@ -1,7 +1,7 @@
 <?php
 use Goteo\Model\Blog;
 
-$node = $this['node'];
+$node = $vars['node'];
 
 $blog = Blog::get($node->id, 'node');
 ?>

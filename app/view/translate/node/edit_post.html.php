@@ -5,8 +5,8 @@ use Goteo\Core\View,
     Goteo\Library\NormalForm,
     Goteo\Model;
 
-$node = $this['node'];
-$id   = $this['id'];
+$node = $vars['node'];
+$id   = $vars['id'];
 
 $original = Model\Blog\Post::get($id);
 $data     = Model\Blog\Post::get($id, $_SESSION['translate_lang']);

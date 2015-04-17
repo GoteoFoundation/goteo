@@ -8,20 +8,20 @@ use Goteo\Library\Text,
 
 $URL = \SITE_URL;
 
-$blog = $this['blog'];
+$blog = $vars['blog'];
 $posts = $blog->posts;
-$filters = $this['filters'];
+$filters = $vars['filters'];
 $the_filters = '';
 foreach ($filters as $key=>$value) {
     $the_filters = "&{$key}={$value}";
 }
-if (!empty($this['post'])) {
-    $post = Post::get($this['post'], LANG);
+if (!empty($vars['post'])) {
+    $post = Post::get($vars['post'], LANG);
 }
 $bodyClass = 'blog';
 
 // metas og: para que al compartir en facebook coja bien el nombre y las imagenes del blog
-if ($this['show'] == 'list') {
+if ($vars['show'] == 'list') {
     $ogmeta = array(
         'title' => 'Goteo Blog',
         'description' => Text::get('regular-by').' Goteo',
@@ -39,7 +39,7 @@ if ($this['show'] == 'list') {
             $ogmeta['image'][] = $post->image->getLink(500, 285, false, true);
         }
     }
-} elseif ($this['show'] == 'post') {
+} elseif ($vars['show'] == 'post') {
     $ogmeta = array(
         'title' => htmlspecialchars($post->title, ENT_QUOTES),
         'description' => Text::get('regular-by').' '.$post->user->name,
@@ -74,7 +74,7 @@ include __DIR__ . '/../header.html.php';
 
 	<div id="main" class="threecols">
 		<div id="blog-content">
-			<?php if ($this['show'] == 'list') : ?>
+			<?php if ($vars['show'] == 'list') : ?>
 				<?php if (!empty($posts)) : ?>
 					<?php while ($post = $pagedResults->fetchPagedRow()) : ?>
 						<div class="widget blog-content-module">
@@ -91,20 +91,20 @@ include __DIR__ . '/../header.html.php';
 					<p>No hay entradas</p>
 				<?php endif; ?>
 			<?php endif; ?>
-			<?php if ($this['show'] == 'post') : ?>
+			<?php if ($vars['show'] == 'post') : ?>
 				<div class="widget post">
-					<?php echo View::get('blog/post.html.php', $this); ?>
+					<?php echo View::get('blog/post.html.php', $vars); ?>
                     <?php echo View::get('blog/share.html.php', array('urls' => Text::shareLinks($URL . '/blog/' . $post->id, $post->title))); ?>
 					<div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 				</div>
-                <?php echo View::get('blog/comments.html.php', $this) ?>
-                <?php echo View::get('blog/sendComment.html.php', $this) ?>
+                <?php echo View::get('blog/comments.html.php', $vars) ?>
+                <?php echo View::get('blog/sendComment.html.php', $vars) ?>
 			<?php endif; ?>
 		</div>
 		<div id="blog-sidebar">
-			<?php echo View::get('blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'posts')) ; ?>
-			<?php echo View::get('blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'tags')) ; ?>
-			<?php echo View::get('blog/side.html.php', array('blog'=>$this['blog'], 'type'=>'feed')) ; ?>
+			<?php echo View::get('blog/side.html.php', array('blog'=>$vars['blog'], 'type'=>'posts')) ; ?>
+			<?php echo View::get('blog/side.html.php', array('blog'=>$vars['blog'], 'type'=>'tags')) ; ?>
+			<?php echo View::get('blog/side.html.php', array('blog'=>$vars['blog'], 'type'=>'feed')) ; ?>
 		</div>
 
 	</div>

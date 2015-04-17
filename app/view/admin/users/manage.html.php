@@ -2,9 +2,9 @@
 
 use Goteo\Library\Text;
 
-$user = $this['user'];
-$roles = $this['roles'];
-$langs = $this['langs'];
+$user = $vars['user'];
+$roles = $vars['roles'];
+$langs = $vars['langs'];
 ?>
 <div class="widget">
     <table>
@@ -22,7 +22,7 @@ $langs = $this['langs'];
         </tr>
         <tr>
             <td>Nodo</td>
-            <td><?php echo $this['nodes'][$user->node] ?></td>
+            <td><?php echo $vars['nodes'][$user->node] ?></td>
         </tr>
         <tr>
             <td>Roles actuales</td>

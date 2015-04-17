@@ -1,7 +1,7 @@
-<?php 
+<?php
 
-$words = $this['words'];
-//$categories = $this['categories'];
+$words = $vars['words'];
+//$categories = $vars['categories'];
 $list = array();
 $uses = array();
 //$incat = array();
@@ -9,11 +9,11 @@ $uses = array();
 foreach ($categories as $c) {
     $cats[] = \Goteo\Core\Model::idealiza(str_replace('.','',  strtolower($c)));
 }
- * 
+ *
  */
 foreach ($words as $v) {
     if (empty($v)) continue;
-    
+
 //    $clean = \Goteo\Core\Model::idealiza(str_replace('.','', strtolower($v)));
     if (in_array($v, $list)) {
         $uses[$v] += 1;
@@ -24,7 +24,7 @@ foreach ($words as $v) {
         if (in_array($clean, $cats)) {
             $incat[$v] = true;
         }
-         * 
+         *
          */
     }
 }

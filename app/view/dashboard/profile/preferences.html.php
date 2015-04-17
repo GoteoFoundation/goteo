@@ -7,8 +7,8 @@ use Goteo\Library\Text,
 
 $currencies = Currency::$currencies;
 
-$errors = $this['errors'];
-$preferences = $this['preferences'];
+$errors = $vars['errors'];
+$preferences = $vars['preferences'];
 
 $allow = array(
     array(

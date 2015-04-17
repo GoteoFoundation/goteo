@@ -6,7 +6,7 @@ use Goteo\Core\View,
     Goteo\Util\Pagination\DoubleBarLayout;
 
 // en la página de cofinanciadores, paginación de 20 en 20
-$pagedResults = new Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($vars['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
 
 
 
@@ -34,7 +34,7 @@ function projAssign(projId) {
 
         <div id="sub-header">
             <div>
-                <h2 class="title"><?php echo $this['title']; ?></h2>
+                <h2 class="title"><?php echo $vars['title']; ?></h2>
             </div>
 
         </div>

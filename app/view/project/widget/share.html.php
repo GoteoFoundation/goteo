@@ -2,8 +2,8 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$project = $this['project'];
-$level = (int) $this['level'] ?: 3;
+$project = $vars['project'];
+$level = (int) $vars['level'] ?: 3;
 
 $URL = \SITE_URL;
 $share_url = $URL . '/project/' . $project->id;

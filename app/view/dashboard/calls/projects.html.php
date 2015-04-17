@@ -4,7 +4,7 @@ use Goteo\Core\View,
     Goteo\Model\Call,
     Goteo\Model;
 
-$call = $this['call'];
+$call = $vars['call'];
 
 $callStatus = Call::status($call->status);
 $status = Model\Project::status();

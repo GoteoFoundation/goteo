@@ -1,8 +1,8 @@
 <?php
 use Goteo\Library\Text;
 
-$project = $this['project'];
-$step = $this['step'];
+$project = $vars['project'];
+$step = $vars['step'];
 $step_errors = count($project->errors[$step]);
 $total_errors = 0;
 foreach ($project->errors as $st => $errors) {

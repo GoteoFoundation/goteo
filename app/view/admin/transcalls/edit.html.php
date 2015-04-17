@@ -2,9 +2,9 @@
 
 use Goteo\Library\Text;
 
-$call = $this['call'];
+$call = $vars['call'];
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 ?>
 <script type="text/javascript">
 function assign() {
@@ -18,7 +18,7 @@ function assign() {
 }
 </script>
 <div class="widget">
-<?php if ($this['action'] == 'edit') : ?>
+<?php if ($vars['action'] == 'edit') : ?>
     <h3 class="title">Traductores para la convocatoria <?php echo $call->name ?></h3>
         <!-- asignar -->
         <table>
@@ -37,7 +37,7 @@ function assign() {
                 <td colspan="2">
                     <select id="assign-user" name="user">
                         <option value="">Selecciona otro traductor</option>
-                        <?php foreach ($this['translators'] as $user) :
+                        <?php foreach ($vars['translators'] as $user) :
                             if (in_array($user->id, array_keys($call->translators))) continue;
                             ?>
                         <option value="<?php echo $user->id; ?>"><?php if ($user->id == $call->owner) echo '(AUTOR) '; ?><?php echo $user->name; ?></option>
@@ -54,8 +54,8 @@ function assign() {
         <hr />
 <?php endif; ?>
 
-    <?php if ($this['action'] == 'add') : ?>
-    <form method="post" action="/admin/transcalls/<?php echo $this['action']; ?>/<?php echo $call->id; ?>">
+    <?php if ($vars['action'] == 'add') : ?>
+    <form method="post" action="/admin/transcalls/<?php echo $vars['action']; ?>/<?php echo $call->id; ?>">
 
         <table>
             <tr>
@@ -63,7 +63,7 @@ function assign() {
                     <label for="add-proj">Convocatoria que habilitamos</label><br />
                     <select id="add-proj" name="call">
                         <option value="">Selecciona la convocatoria</option>
-                        <?php foreach ($this['availables'] as $call) : ?>
+                        <?php foreach ($vars['availables'] as $call) : ?>
                             <option value="<?php echo $call->id; ?>"<?php if ($_GET['call'] == $call->id) echo ' selected="selected"';?>><?php echo $call->name; ?></option>
                         <?php endforeach; ?>
                     </select>

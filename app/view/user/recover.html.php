@@ -9,9 +9,9 @@ $fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$error = $this['error'];
-$message = $this['message'];
-$email = $this['email'];
+$error = $vars['error'];
+$message = $vars['message'];
+$email = $vars['email'];
 
 ?>
 <div id="sub-header">

@@ -2,8 +2,8 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$calls = $this['calls']['calls'];
-$campaigns = $this['calls']['campaigns'];
+$calls = $vars['calls']['calls'];
+$campaigns = $vars['calls']['campaigns'];
 ?>
 <div id="node-calls" class="content_widget rounded-corners">
 

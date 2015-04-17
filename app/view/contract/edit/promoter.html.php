@@ -4,13 +4,13 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$contract = $this['contract'];
-$errors = $contract->errors[$this['step']] ?: array();
-$okeys  = $contract->okeys[$this['step']] ?: array();
+$contract = $vars['contract'];
+$errors = $contract->errors[$vars['step']] ?: array();
+$okeys  = $contract->okeys[$vars['step']] ?: array();
 
 echo SuperForm::get(array(
 
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('contract-step-promoter'),
     'hint'          => Text::get('guide-contract-promoter'),
@@ -152,7 +152,7 @@ echo SuperForm::get(array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('contract/edit/errors.html.php', array(
                         'contract'   => $contract,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(

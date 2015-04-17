@@ -3,9 +3,9 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\Worth;
 
-$project = $this['project'];
+$project = $vars['project'];
 
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 
 $worthcracy = Worth::getAll();
 

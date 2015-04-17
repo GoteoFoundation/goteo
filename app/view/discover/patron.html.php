@@ -5,7 +5,7 @@ use Goteo\Core\View,
     Goteo\Util\Pagination\Paginated,
     Goteo\Util\Pagination\DoubleBarLayout;
 
-$pagedResults = new Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($vars['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
 
 $bodyClass = 'discover';
 
@@ -17,7 +17,7 @@ include __DIR__ . '/../header.html.php' ?>
         <div id="sub-header">
             <div>
                 <!-- aqui pondremos avatar con nombre y lo que sea -->
-                <h2 class="title"><?php echo $this['title']; ?></h2>
+                <h2 class="title"><?php echo $vars['title']; ?></h2>
             </div>
         </div>
 

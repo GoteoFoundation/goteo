@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Model\Invest;
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 
 $emails = Invest::emails(true);
 ?>
@@ -38,7 +38,7 @@ $emails = Invest::emails(true);
 <a href="/admin/accounts/add" class="button">Generar aporte manual</a>
 <a href="/admin/accounts/viewer" class="button">Visor de logs</a>&nbsp;&nbsp;&nbsp;
 <?php if (!empty($filters['projects'])) : ?>
-    <a href="/admin/accounts/report/<?php echo $filters['projects'] ?>#detail" class="button" target="_blank">Ver informe financiero completo del proyecto <strong><?php echo $this['projects'][$filters['projects']] ?></strong></a>
+    <a href="/admin/accounts/report/<?php echo $filters['projects'] ?>#detail" class="button" target="_blank">Ver informe financiero completo del proyecto <strong><?php echo $vars['projects'][$filters['projects']] ?></strong></a>
 <?php endif ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
@@ -48,7 +48,7 @@ $emails = Invest::emails(true);
             <label for="<?php echo $filter ?>-filter"><?php echo $data['label'] ?></label><br />
             <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>">
                 <option value="<?php if ($filter == 'procStatus' || $filter == 'investStatus' || $filter == 'status' || $filter == 'issue') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
-            <?php foreach ($this[$filter] as $itemId=>$itemName) : ?>
+            <?php foreach ($vars[$filter] as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>
             </select>
@@ -99,8 +99,8 @@ $emails = Invest::emails(true);
 <div class="widget board">
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($this['list'])) : ?>
-<?php $Total = 0; foreach ($this['list'] as $invest) { $Total += $invest->amount; } ?>
+<?php elseif (!empty($vars['list'])) : ?>
+<?php $Total = 0; foreach ($vars['list'] as $invest) { $Total += $invest->amount; } ?>
     <p><strong>TOTAL:</strong>  <?php echo number_format($Total, 0, '', '.') ?> &euro;</p>
     <p><strong>OJO!</strong> Resultado limitado a 999 registros como máximo.</p>
 
@@ -118,7 +118,7 @@ $emails = Invest::emails(true);
         </thead>
 
         <tbody>
-            <?php foreach ($this['list'] as $invest) : ?>
+            <?php foreach ($vars['list'] as $invest) : ?>
             <tr>
                 <td><a href="/admin/accounts/details/<?php echo $invest->id ?>" title="<?php
                     if ($invest->issue)  echo 'Incidencia! ';
@@ -130,10 +130,10 @@ $emails = Invest::emails(true);
                     ?>" <?php if ($invest->issue) echo ' style="color:red !important;"'; ?>>[Detalles]</a></td>
                 <td><?php echo $invest->amount ?></td>
                 <td><?php echo $invest->invested ?></td>
-                <td><a href="mailto:<?php echo $emails[$invest->user] ?>"><?php echo $emails[$invest->user]; ?></a><a href="/admin/users/manage/<?php echo $invest->user ?>" target="_blank" title="<?php echo $this['users'][$invest->user]; ?>">[Usuario]</a></td>
-                <td><a href="/admin/projects/?proj_name=<?php echo $this['projects'][$invest->project] ?>" target="_blank"><?php echo Text::recorta($this['projects'][$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')'; ?></a></td>
-                <td><?php echo $this['methods'][$invest->method] ?></td>
-                <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
+                <td><a href="mailto:<?php echo $emails[$invest->user] ?>"><?php echo $emails[$invest->user]; ?></a><a href="/admin/users/manage/<?php echo $invest->user ?>" target="_blank" title="<?php echo $vars['users'][$invest->user]; ?>">[Usuario]</a></td>
+                <td><a href="/admin/projects/?proj_name=<?php echo $vars['projects'][$invest->project] ?>" target="_blank"><?php echo Text::recorta($vars['projects'][$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')'; ?></a></td>
+                <td><?php echo $vars['methods'][$invest->method] ?></td>
+                <td><?php echo $vars['investStatus'][$invest->investStatus] ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

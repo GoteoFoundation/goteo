@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$patrons = $this['patrons'];
+$patrons = $vars['patrons'];
 
 if (count($patrons) > 3) :  ?>
 <script type="text/javascript">

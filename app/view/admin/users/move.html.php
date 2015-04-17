@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection;
 
-$user = $this['user'];
+$user = $vars['user'];
 
 if (!$user instanceof Model\user) {
     throw new Redirection('/admin/users');
@@ -21,7 +21,7 @@ if (empty($user->node)) {
     <p>
         <label for="node-filter">Pasarselo al nodo:</label><br />
         <select id="node-filter" name="node" >
-        <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+        <?php foreach ($vars['nodes'] as $nodeId=>$nodeName) : ?>
             <option value="<?php echo $nodeId; ?>"<?php if ($user->node == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
         <?php endforeach; ?>
         </select>

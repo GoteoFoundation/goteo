@@ -4,10 +4,10 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$project = $this['project'];
-$errors = $project->errors[$this['step']] ?: array();
-$okeys  = $project->okeys[$this['step']] ?: array();
-$account = $this['account'];
+$project = $vars['project'];
+$errors = $project->errors[$vars['step']] ?: array();
+$okeys  = $project->okeys[$vars['step']] ?: array();
+$account = $vars['account'];
 
 // esto lo hago para que proyectos en convocatoria no les salga para poner cuenta paypal
 $campos_cuentas  = array();
@@ -42,7 +42,7 @@ $campos_cuentas['bank'] = array(
 
 echo SuperForm::get(array(
 
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('personal-main-header'),
     'hint'          => Text::get('guide-project-contract-information'),
@@ -233,7 +233,7 @@ echo SuperForm::get(array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -241,7 +241,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

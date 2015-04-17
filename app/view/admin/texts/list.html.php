@@ -5,7 +5,7 @@ use Goteo\Library\Text,
 
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 $botones = array(
     'edit' => '[Editar]',
     'remove' => '[Quitar]',
@@ -14,17 +14,17 @@ $botones = array(
 );
 
 // ancho de los tds depende del numero de columnas
-$cols = count($this['columns']);
+$cols = count($vars['columns']);
 $per = 100 / $cols;
 
 ?>
-<?php if (!empty($this['addbutton'])) : ?>
-<a href="<?php echo $this['url'] ?>/add" class="button"><?php echo $this['addbutton'] ?></a>
+<?php if (!empty($vars['addbutton'])) : ?>
+<a href="<?php echo $vars['url'] ?>/add" class="button"><?php echo $vars['addbutton'] ?></a>
 <?php endif; ?>
 <!-- Filtro -->
 <?php if (!empty($filters)) : ?>
 <div class="widget board">
-    <form id="filter-form" action="<?php echo $this['url']; ?>" method="get">
+    <form id="filter-form" action="<?php echo $vars['url']; ?>" method="get">
         <?php foreach ($filters as $id=>$fil) : ?>
         <?php if ($fil['type'] == 'select') : ?>
             <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
@@ -49,7 +49,7 @@ $per = 100 / $cols;
 <div class="widget board">
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($this['data'])) : ?>
+<?php elseif (!empty($vars['data'])) : ?>
     <table>
         <thead>
             <tr>
@@ -60,7 +60,7 @@ $per = 100 / $cols;
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($this['data'] as $item) : ?>
+            <?php foreach ($vars['data'] as $item) : ?>
             <tr>
                 <td><a href="/admin/texts/edit/<?php echo $item->id; ?>">[Editar]</a></td>
                 <td><?php echo $item->text; ?></td>

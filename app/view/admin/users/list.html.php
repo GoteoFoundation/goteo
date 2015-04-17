@@ -4,8 +4,8 @@ use Goteo\Library\Text,
     Goteo\Util\Pagination\Paginated,
     Goteo\Util\Pagination\DoubleBarLayout;
 
-$filters = $this['filters'];
-$users = $this['users'];
+$filters = $vars['filters'];
+$users = $vars['users'];
 
 // la ordenación por cantidad y proyectos hay que hacerla aqui
 if ($filters['order'] == 'amount') {
@@ -42,7 +42,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                     <label for="role-filter">Con rol:</label><br />
                     <select id="role-filter" name="role" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier rol</option>
-                    <?php foreach ($this['roles'] as $roleId=>$roleName) : ?>
+                    <?php foreach ($vars['roles'] as $roleId=>$roleName) : ?>
                         <option value="<?php echo $roleId; ?>"<?php if ($filters['role'] == $roleId) echo ' selected="selected"';?>><?php echo $roleName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -51,7 +51,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                     <label for="node-filter">Del nodo:</label><br />
                     <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier nodo</option>
-                    <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+                    <?php foreach ($vars['nodes'] as $nodeId=>$nodeName) : ?>
                         <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -61,7 +61,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                     <select id="project-filter" name="project" onchange="document.getElementById('filter-form').submit();">
                         <option value="">--</option>
                         <option value="any"<?php if ($filters['project'] == 'any') echo ' selected="selected"';?>>Algún proyecto</option>
-                    <?php foreach ($this['projects'] as $projId=>$projName) : ?>
+                    <?php foreach ($vars['projects'] as $projId=>$projName) : ?>
                         <option value="<?php echo $projId; ?>"<?php if ($filters['project'] == $projId) echo ' selected="selected"';?>><?php echo substr($projName, 0, 35); ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -80,7 +80,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                     <label for="type-filter">Del  tipo:</label><br />
                     <select id="type-filter" name="type" onchange="document.getElementById('filter-form').submit();">
                         <option value="">--</option>
-                    <?php foreach ($this['types'] as $type=>$desc) : ?>
+                    <?php foreach ($vars['types'] as $type=>$desc) : ?>
                         <option value="<?php echo $type; ?>"<?php if ($filters['type'] == $type) echo ' selected="selected"';?>><?php echo $desc; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -89,7 +89,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                     <label for="interest-filter">Interesados en:</label><br />
                     <select id="interest-filter" name="interest" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier interés</option>
-                    <?php foreach ($this['interests'] as $interestId=>$interestName) : ?>
+                    <?php foreach ($vars['interests'] as $interestId=>$interestName) : ?>
                         <option value="<?php echo $interestId; ?>"<?php if ($filters['interest'] == $interestId) echo ' selected="selected"';?>><?php echo $interestName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -102,7 +102,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                 <td>
                     <label for="order-filter">Ver por:</label><br />
                     <select id="order-filter" name="order" onchange="document.getElementById('filter-form').submit();">
-                    <?php foreach ($this['orders'] as $orderId=>$orderName) : ?>
+                    <?php foreach ($vars['orders'] as $orderId=>$orderName) : ?>
                         <option value="<?php echo $orderId; ?>"<?php if ($filters['order'] == $orderId) echo ' selected="selected"';?>><?php echo $orderName; ?></option>
                     <?php endforeach; ?>
                     </select>

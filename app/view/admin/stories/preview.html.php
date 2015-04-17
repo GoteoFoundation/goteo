@@ -14,20 +14,20 @@ if (!isset($_SESSION['admin_menu'])) {
 // piñones usuarios
 $allowed = Admin::$supervisors[$_SESSION['user']->id];
 
-if (isset($allowed) && !empty($this['folder']) && !in_array($this['folder'], $allowed)) {
+if (isset($allowed) && !empty($vars['folder']) && !in_array($vars['folder'], $allowed)) {
     header('Location: /admin/');
 }
 
 $bodyClass = 'admin';
 
 // funcionalidades con autocomplete
-$jsreq_autocomplete = $this['autocomplete'];
+$jsreq_autocomplete = $vars['autocomplete'];
 
 
 include __DIR__ . '/../../prologue.html.php';
 include __DIR__ . '/../../header.html.php';
 
-$story = $this['story'];
+$story = $vars['story'];
 ?>
 
 <div id="sub-header">

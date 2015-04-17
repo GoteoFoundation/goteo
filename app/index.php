@@ -1,33 +1,41 @@
 <?php
 
-use Goteo\Core\Resource,
-    Goteo\Core\Error,
-    Goteo\Core\Redirection,
-    Goteo\Core\ACL,
-    Goteo\Core\Model,
-    Goteo\Core\NodeSys,
-    Goteo\Application\Session,
-    Goteo\Application\Cookie,
-    Goteo\Application\Lang,
-    Goteo\Library\Text,
-    Goteo\Library\Message,
-    Goteo\Library\Currency;
+use Goteo\Core\Resource;
+use Goteo\Core\Error;
+use Goteo\Core\Redirection;
+use Goteo\Core\ACL;
+use Goteo\Core\Model;
+use Goteo\Core\NodeSys;
+use Goteo\Application\View;
+use Goteo\Application\Session;
+use Goteo\Application\Cookie;
+use Goteo\Application\Lang;
+use Goteo\Library\Text;
+use Goteo\Library\Message;
+use Goteo\Library\Currency;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\HttpKernel;
 
 //si el parametro GET vale:
 // 0 se muestra estadísticas de SQL, pero no los logs
 // 1 se hace un log con las queries no cacheadas
 // 2 se hace un log con las queries no cacheadas y también las cacheadas
-if(isset($_GET['sqldebug']) && !defined('DEBUG_SQL_QUERIES')) {
+if (isset($_GET['sqldebug']) && !defined('DEBUG_SQL_QUERIES')) {
     define('DEBUG_SQL_QUERIES', intval($_GET['sqldebug']));
 }
 
 require_once __DIR__ . '/config.php';
 
 //clean all caches if requested
-if(isset($_GET['cleancache'])) {
+if (isset($_GET['cleancache'])) {
     Model::cleanCache();
 }
-
 
 /*
  * Pagina de en mantenimiento
@@ -39,15 +47,14 @@ if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance
     die;
 }
 
-
 /**
  * Sesión.
  */
 Session::start('goteo-'.GOTEO_ENV, defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600);
-Session::onSessionExpires(function(){
+Session::onSessionExpires(function () {
     Message::Info(Text::get('session-expired'));
 });
-Session::onSessionDestroyed(function(){
+Session::onSessionDestroyed(function () {
     Message::Info('That\'s all folks!');
 });
 
@@ -71,8 +78,9 @@ if (file_exists($conf_file)) {
 /* Iniciación constantes *_URL */
 
 // Verificar settings
-if (defined('SITE_URL') || !defined('GOTEO_URL'))
+if (defined('SITE_URL') || !defined('GOTEO_URL')) {
     die('En los settings hay que definir la constante GOTEO_URL en vez de SITE_URL.');
+}
 
 // if ssl enabled
 $SSL = (defined('GOTEO_SSL') && GOTEO_SSL === true );
@@ -102,7 +110,6 @@ if ($SSL && Session::isLogged() && !\HTTPS_ON) {
 }
 /* Fin inicializacion constantes *_URL */
 
-
 Lang::setDefault(GOTEO_DEFAULT_LANG);
 Lang::setFromGlobals();
 
@@ -114,136 +121,40 @@ if (!Cookie::exists('goteo_cookies')) {
     Cookie::store('goteo_cookies', '1');
     Message::Info(Text::get('message-cookies'));
 }
+
+/* Using the HTTP Foundation class */
+$request = Request::createFromGlobals();
+$routes = include __DIR__ . '/../src/app.php';
+
+$context = new RequestContext();
+$context->fromRequest($request);
+$matcher = new UrlMatcher($routes, $context);
+$resolver = new HttpKernel\Controller\ControllerResolver();
+
 try {
-    // Get URI without query string
-    $uri = strtok($_SERVER['REQUEST_URI'], '?');
-
-    // Get requested segments
-    $segments = preg_split('!\s*/+\s*!', $uri, -1, PREG_SPLIT_NO_EMPTY);
-
-    // Normalize URI
-    $uri = '/' . implode('/', $segments);
-
-    // Check permissions on requested URI
-    if (!ACL::check($uri) && substr($uri, 0, 11) !== '/user/login') {
-        //si es directorio data/cache se supone que es un archivo cache que no existe y que hay que generar
-        if(strpos($uri, 'data/cache/') !== false && $segments && $segments[3]) {
-            //simularemos la llamada al controlador img: img/XXXxXXX/imagen.jpg
-            array_shift($segments);
-            $segments[0] = 'img';
-        }
-        //si es un cron (ejecutandose) con los parámetros adecuados, no redireccionamos
-        elseif ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
-            define('CRON_EXEC', true);
-        } else {
-            Message::Info(Text::get('user-login-required-access'));
-            throw new Redirection(SEC_URL.'/user/login/?return='.rawurlencode($uri));
-        }
-    }
-
-    // Get controller name
-    $controller = 'Index';
-    if (!empty($segments) && is_array($segments)) {
-        // Take first segment as controller
-        $c = ucfirst(array_shift($segments));
-
-        if(class_exists("Goteo\\Controller\\$c")) {
-            $controller = $c;
-        }
-    }
-
-    // Continue
     try {
+        $request->attributes->add($matcher->match($request->getPathInfo()));
 
-        $class = new ReflectionClass("Goteo\\Controller\\{$controller}");
-        if (!empty($segments) && $class->hasMethod($segments[0])) {
-            $method = array_shift($segments);
-        } else {
-            // Try default method
-            $method = 'index';
+        $controller = $resolver->getController($request);
+        $arguments = $resolver->getArguments($request, $controller);
+
+        $response = call_user_func_array($controller, $arguments);
+    } catch (ResourceNotFoundException $e) {
+        //Try legacy controller
+        try {
+            include __DIR__ . '/../src/legacy_dispatcher.php';
         }
-        // print_r($segments);print_r($method);print_r($class);die;
-
-        // ReflectionMethod
-        $method = $class->getMethod($method);
-
-        // Number of params defined in method
-        $numParams = $method->getNumberOfParameters();
-        // Number of required params
-        $reqParams = $method->getNumberOfRequiredParameters();
-        // Given params
-        $gvnParams = count($segments);
-
-        if ($gvnParams >= $reqParams && (!($gvnParams > $numParams && $numParams <= $reqParams))) {
-
-            // Try to instantiate
-            $instance = $class->newInstance();
-
-
-            // Invoke method
-            $result = $method->invokeArgs($instance, $segments);
-
-            if ($result === null) {
-                // Start output buffer
-                ob_start();
-                // Get buffer contents
-                $result = ob_get_contents();
-                ob_end_clean();
-            }
-
-
-            if ($result instanceof Resource\MIME) {
-                $mime_type = $result->getMIME();
-                header("Content-type: $mime_type");
-                if($mime_type == 'text/html') {
-                    //renovar tiempo de sesion si es tipo html
-                    Session::renew();
-                }
-            }
-
-            //esto suele llamar a un metodo magic: __toString de la vista View
-            echo $result;
-
-            // if($mime_type == "text/html" && GOTEO_ENV != 'real') {
-            if($mime_type == "text/html"){
-
-                if(defined('DEBUG_SQL_QUERIES')) {
-                    echo '<div style="position:static;top:10px;left:10px;padding:10px;z-index:1000;background:rgba(255,255,255,0.6)">[<a href="#" onclick="$(this).parent().remove();return false;">cerrar</a>]<pre>';
-                    echo '<b>Server IP:</b> '.$_SERVER['SERVER_ADDR'] . '<br>';
-                    echo '<b>Client IP:</b> '.$_SERVER['REMOTE_ADDR'] . '<br>';
-                    echo '<b>X-Forwarded-for:</b> '.$_SERVER['HTTP_X_FORWARDED_FOR'] . '<br>';
-                    echo '<b>SQL STATS:</b><br> '.print_r(Goteo\Core\DB::getQueryStats(), 1);
-                    echo '</pre></div>';
-                }
-
-               echo '<!-- '.(microtime(true) - Session::getStartTime() ) . 's -->';
-            }
-
-
-            // Farewell
-            die;
-
+        catch(Error $e) {
+            $response = new Response(View::render('errors/not_found', ['msg' => 'Not found', 'code' => $e->getCode()]), $e->getCode());
         }
-
-    } catch (\ReflectionException $e) {
-        // esto tendría que notificar a \GOTEO_FAIL_MAIL
-        die($e->getMessage());
+        // $response = new Response(View::render('errors/not_found', ['msg' => 'Not found', 'code' => 404]), 404);
     }
-
-    throw new Error(Error::NOT_FOUND);
-
-} catch (Redirection $redirection) {
-    $url = $redirection->getURL();
-    $code = $redirection->getCode();
-    header("Location: {$url}");
-
-} catch (Error $error) {
-    // esto tendría que notificar a \GOTEO_FAIL_MAIL
-    include 'view/error.html.php';
-
-} catch (Exception $exception) {
-    // esto tendría que notificar a \GOTEO_FAIL_MAIL
-    die($exception->getMessage());
-    // Default error (500)
-    include 'view/error.html.php';
+    catch(LogicException $e) {
+        $response = new Response(View::render('errors/not_found', ['msg' => $e->getMessage(), 'code' => 500]), 500);
+    }
+} catch (Exception $e) {
+    $response = new Response(View::render('errors/default', ['msg' => $e->getMessage(), 'code' => 500]), 500);
+    // $response = new Response($e->getMessage(), 500);
 }
+
+$response->send();

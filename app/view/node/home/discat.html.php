@@ -2,10 +2,10 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-/// por cada categoria que tengamos en $this['discover']
+/// por cada categoria que tengamos en $vars['discover']
 // especial para los byreward, que es una caja por cada icono
 
-foreach ($this['categories'] as $cat => $catData) : ?>
+foreach ($vars['categories'] as $cat => $catData) : ?>
 <div id="node-projects-category-<?php echo $cat ?>" class="content_widget node-projects rounded-corners" style="display: none;">
 
     <h2><?php echo Text::get('node-side-searcher-bycategory') . ': ' . $catData['name'] ?>
