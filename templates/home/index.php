@@ -2,7 +2,7 @@
 
 use Goteo\Model\Image;
 
-$this->layout('base::layout');
+$this->layout('base::layout', ['meta_description' => $this->text('meta-description-index')]);
 
 
 $bodyClass = 'home';
@@ -10,23 +10,21 @@ $bodyClass = 'home';
 $fbCode = $this->text_widget($this->text('social-account-facebook'), 'fb');
 
 // metas og: para que al compartir en facebook coja las imagenes de novedades
-$ogmeta = array(
-    'title' => 'Goteo.org',
-    'description' => GOTEO_META_DESCRIPTION,
-    'url' => SITE_URL
-);
 if (!empty($posts)) {
+    $og_image = [];
     foreach ($posts as $post) {
         if (count($post->gallery) > 1) {
             foreach ($post->gallery as $pbimg) {
                 if ($pbimg instanceof Image) {
-                    $ogmeta['image'][] = $pbimg->getLink(500, 285);
+                    $og_image[] = $pbimg->getLink(500, 285);
                 }
             }
         } elseif ((!empty($post->image))&&($post->image instanceof Image)) {
-            $ogmeta['image'][] = $post->image->getLink(500, 285);
+            $og_image[] = $post->image->getLink(500, 285);
         }
     }
+
+    $this->engine->addData(['image' => $og_image], 'base::layout');
 }
 
 ?>

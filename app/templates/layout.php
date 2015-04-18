@@ -1,6 +1,11 @@
 <?php
 use Goteo\Application\Lang;
 
+if(empty($og_description)) $og_description = $meta_description;
+if(empty($og_title)) $og_title = $title;
+if(empty($og_url)) $og_url = $url;
+if(empty($og_image)) $og_image = $image;
+
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -8,30 +13,27 @@ use Goteo\Application\Lang;
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?=$title?></title>
         <link rel="icon" type="image/png" href="/myicon.png" />
-        <meta name="description" content="<?php  echo $this->text('meta-description-index');?>" />
-        <meta name="keywords" content="<?php echo GOTEO_META_KEYWORDS ?>" />
-        <meta name="author" content="<?php echo GOTEO_META_AUTHOR ?>" />
-        <meta name="copyright" content="<?php echo GOTEO_META_COPYRIGHT ?>" />
+        <meta name="description" content="<?=$this->e($meta_description)?>" />
+        <meta name="keywords" content="<?=$this->e($meta_keywords)?>" />
+        <meta name="author" content="<?=$this->e($meta_author)?>" />
+        <meta name="copyright" content="<?=$this->e($meta_copyright)?>" />
         <meta name="robots" content="all" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-<?php if (isset($ogmeta)) : ?>
-        <meta property="og:title" content="<?php echo $ogmeta['title'] ?>" />
+
+        <meta property="og:title" content="<?=$this->e($og_title)?>" />
+        <meta property="og:description" content="<?=$this->e($og_description)?>" />
         <meta property="og:type" content="activity" />
         <meta property="og:site_name" content="Goteo.org" />
-        <meta property="og:description" content="<?php echo $ogmeta['description'] ?>" />
-        <?php if (is_array($ogmeta['image'])) :
-            foreach ($ogmeta['image'] as $ogimg) : ?>
+        <meta property="og:url" content="<?=$this->e($og_url)?>" />
+
+<?php if (is_array($og_image)) :
+            foreach ($og_image as $ogimg) :
+?>
         <meta property="og:image" content="<?php echo $ogimg ?>" />
-        <?php endforeach;
-        else : ?>
-        <meta property="og:image" content="<?php echo $ogmeta['image'] ?>" />
-        <?php endif; ?>
-        <meta property="og:url" content="<?php echo $ogmeta['url'] ?>" />
-<?php else : ?>
-        <meta property="og:title" content="Goteo.org" />
-        <meta property="og:description" content="<?php echo GOTEO_META_DESCRIPTION ?>" />
-        <meta property="og:image" content="<?php echo SRC_URL ?>/goteo_logo.png" />
-        <meta property="og:url" content="<?php echo SITE_URL ?>" />
+<?php   endforeach;
+          else :
+?>
+        <meta property="og:image" content="<?=$og_image?>" />
 <?php endif; ?>
 
 
