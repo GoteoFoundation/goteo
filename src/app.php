@@ -7,6 +7,28 @@ use Symfony\Component\HttpKernel;
 use Goteo\Application\View;
 use Goteo\Plates\Extension;
 
+// LEGACY VIEWS
+\Goteo\Core\View::addViewPath(GOTEO_WEB_PATH . 'view');
+//NormalForm views
+\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/NormalForm/view');
+//SuperForm views
+\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/SuperForm/view');
+//TODO: PROVISIONAL
+//add view
+\Goteo\Core\View::addViewPath(GOTEO_WEB_PATH . 'nodesys');
+
+
+// PLATES VIEWS
+//Cache dir in libs
+\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
+//Default views
+//General views
+View::factory(GOTEO_WEB_PATH . 'templates/main'); //system fallback
+//new templates
+View::addFolder('main',  GOTEO_WEB_PATH . 'templates/main', true);
+View::addFolder('node',  GOTEO_WEB_PATH . 'templates/node', true);
+View::addFolder('call',  GOTEO_WEB_PATH . 'templates/call', true);
+
 // views function registering
 View::getEngine()->loadExtension(new Extension\TextUtils());
 View::getEngine()->loadExtension(new Extension\Pages());
@@ -20,6 +42,7 @@ View::getEngine()->addData([
     'meta_copyright' => GOTEO_META_COPYRIGHT,
     'url' => SITE_URL,
     'image' => SRC_URL . '/goteo_logo.png',
+    'theme' => 'main'
     // 'og_title' => 'Goteo.org',
     // 'og_description' => GOTEO_META_DESCRIPTION,
     ]);

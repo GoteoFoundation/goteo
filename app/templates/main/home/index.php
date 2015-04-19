@@ -2,7 +2,7 @@
 
 use Goteo\Model\Image;
 
-$this->layout('base::layout', ['meta_description' => $this->text('meta-description-index')]);
+$this->layout("$theme::layout", ['meta_description' => $this->text('meta-description-index')]);
 
 
 $bodyClass = 'home';
@@ -24,7 +24,7 @@ if (!empty($posts)) {
         }
     }
 
-    $this->engine->addData(['image' => $og_image], 'base::layout');
+    $this->engine->addData(['image' => $og_image], "$theme::layout");
 }
 
 ?>
@@ -40,7 +40,7 @@ if (!empty($posts)) {
     <div class="clearfix">
         <div class="slides_container">
             <?php if (!empty($banners)) : foreach ($banners as $id=>$banner) : ?>
-            <div class="subhead-banner"><?php $this->insert('header/banner', ['banner' => $banner]); ?></div>
+            <div class="subhead-banner"><?php $this->insert("$theme::partials/header/banner", ['banner' => $banner]); ?></div>
             <?php endforeach; endif;
             if (count($banners) == 1) : ?>
             <div class="subhead-banner"><?php echo $this->text_html('main-banner-header'); ?></div>
@@ -77,22 +77,18 @@ if (!empty($posts)) {
     </div>
 </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/header/message.html.php'; } ?>
-
 <div id="main">
 
     <?php foreach ($order as $item=>$itemData) {
 
         if ($item=="news")
             {
-                $bannerPrensa = $this->insert('home/partials/news', $this->vars);
+                $bannerPrensa = $this->insert("$theme::home/partials/news", $this->vars);
                 continue;
             }
 
         if (!empty($$item)) {
-            $this->insert("home/partials/$item", $this->vars);
-            // echo View::get("home/{$item}.html.php", $this->vars);
-            // echo \Goteo\Application\View::render("home/{$item}", $this->vars);
+            $this->insert("$theme::home/partials/$item", $this->vars);
         }
     }
 

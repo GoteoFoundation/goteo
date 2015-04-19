@@ -14,24 +14,6 @@ require_once GOTEO_PATH . 'src/Goteo/Core/Helpers.php';
 require_once GOTEO_PATH . 'src/autoload.php';
 
 
-//Cache dir in libs
-\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
-//Default views
-//General views
-\Goteo\Application\View::factory(GOTEO_PATH . 'templates'); //Old system fallback
-//new templates
-\Goteo\Application\View::addFolder('base',  GOTEO_WEB_PATH . 'templates', true);
-
-// LEGACY
-\Goteo\Core\View::addViewPath(GOTEO_WEB_PATH . 'view');
-//NormalForm views
-\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/NormalForm/view');
-//SuperForm views
-\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/SuperForm/view');
-//TODO: PROVISIONAL
-//add view
-\Goteo\Core\View::addViewPath(GOTEO_WEB_PATH . 'nodesys');
-
 /**
  * Carga de configuración local si existe
  * Si no se carga el real (si existe)

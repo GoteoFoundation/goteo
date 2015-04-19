@@ -1,7 +1,7 @@
 <?php
-$this->layout('base::layout');
+$this->layout("$theme::layout", ['title' => 'Unexpected Error']);
 
-?>
+$this->start('sub-header') ?>
 
 <div id="sub-header">
     <div>
@@ -9,3 +9,4 @@ $this->layout('base::layout');
         <h3>Error <?=$code?></h3>
     </div>
 </div>
+<?php $this->stop() ?>

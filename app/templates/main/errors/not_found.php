@@ -1,6 +1,6 @@
 <?php
 //Simple overwrite
-$this->layout('base::layout', ['title' => 'Error page']);
+$this->layout("$theme::layout", ['title' => 'Error page']);
 
 if($code === 404) {
     $page = $this->page('error');
@@ -11,17 +11,16 @@ else {
 
 ?>
 
+<?php $this->start('sub-header') ?>
+
 <div id="sub-header">
     <div>
         <h2><?=$msg?></h2>
         <h3>Error <?=$code?></h3>
     </div>
 </div>
+<?php $this->stop() ?>
 
-
-<?php
-// if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; }
-?>
 
 <div id="main">
     <div class="widget">

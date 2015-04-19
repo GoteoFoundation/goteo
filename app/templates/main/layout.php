@@ -151,6 +151,10 @@ if (isset($fbCode)) : ?>
         <div id="wrapper">
 
 
+            <?=$this->section('sub-header')?>
+
+            <?=$this->section('messages', $this->fetch("$theme::partials/header/message"))?>
+
             <?=$this->section('content')?>
 
 

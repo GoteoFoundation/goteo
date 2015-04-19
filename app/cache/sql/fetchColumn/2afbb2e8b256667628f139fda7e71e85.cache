@@ -1,0 +1,7 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:176:"
+                SELECT
+                    id
+                FROM node
+                WHERE id = :id
+                LIMIT 1
+                a:1:{s:3:":id";s:3:"127";}a:0:{}";s:5:"group";s:15:"sql/fetchColumn";}s:5:"value";b:0;s:3:"ttl";i:3600;s:7:"expires";i:1429439863;s:7:"created";i:1429436263;}
