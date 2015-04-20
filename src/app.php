@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel;
 use Goteo\Application\View;
 use Goteo\Application\Config;
-use Goteo\Plates\Extension;
+use Goteo\Foil\Extension;
 
 /**********************************/
 // LEGACY VIEWS
@@ -21,40 +21,38 @@ use Goteo\Plates\Extension;
 /**********************************/
 
 
+//If node, Node templates first
 //Node/call theme
 if(Config::isNode()) {
-    View::setTheme('node');
+    View::addFolder(GOTEO_PATH . 'extend/goteo/templates/node');
+    View::addFolder(GOTEO_PATH . 'templates/node');
 }
 
-// PLATES VIEWS
-//Cache dir in libs
-\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
-//Default views
-//General views
-View::factory(GOTEO_PATH . 'templates/main'); //system fallback
-//new templates
-View::addFolder('main',  GOTEO_PATH . 'templates/main', true);
-View::addFolder('node',  GOTEO_PATH . 'templates/node', true);
-View::addFolder('call',  GOTEO_PATH . 'templates/call', true);
-//Custom templates
+//Custom templates first (PROVISIONAL)
+View::addFolder(GOTEO_PATH . 'extend/goteo/templates/default');
+
+//Default templates
+View::addFolder(GOTEO_PATH . 'templates/default');
+// View::addFolder(GOTEO_PATH . 'templates/node', 'node');
+
 
 // views function registering
-View::getEngine()->loadExtension(new Extension\GoteoCore());
-View::getEngine()->loadExtension(new Extension\TextUtils());
-View::getEngine()->loadExtension(new Extension\Pages());
+// View::getEngine()->loadExtension(new Extension\GoteoCore());
+View::getEngine()->loadExtension(new Extension\TextUtils(), [], true);
+View::getEngine()->loadExtension(new Extension\Pages(), [], true);
 
 
 
-// Some defaults
-View::getEngine()->addData([
-    'title' => GOTEO_META_TITLE,
-    'meta_description' => GOTEO_META_DESCRIPTION,
-    'meta_keywords' => GOTEO_META_KEYWORDS,
-    'meta_author' => GOTEO_META_AUTHOR,
-    'meta_copyright' => GOTEO_META_COPYRIGHT,
-    'url' => SITE_URL,
-    'image' => SRC_URL . '/goteo_logo.png',
-    'theme' => View::getTheme()
+// // Some defaults
+View::getEngine()->useData([
+    'title' => Config::getVar('title'),
+    'meta_description' => Config::getVar('meta_description'),
+    'meta_keywords' => Config::getVar('meta_keywords'),
+    'meta_author' => Config::getVar('meta_author'),
+    'meta_copyright' => Config::getVar('meta_copyright'),
+    'URL' => SITE_URL,
+    'SRC_URL' => SRC_URL,
+    'image' => SRC_URL . '/goteo_logo.png'
     // 'og_title' => 'Goteo.org',
     // 'og_description' => GOTEO_META_DESCRIPTION,
     ]);

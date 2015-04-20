@@ -10,6 +10,7 @@ namespace Goteo\Core {
          * Comprueba si es un nodo válido
          */
         public static function isValid ($id) {
+
             //activamos la cache para este metodo
             $current_cache = \Goteo\Core\DB::cache();
             \Goteo\Core\DB::cache(true);

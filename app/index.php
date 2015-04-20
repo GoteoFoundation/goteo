@@ -76,7 +76,7 @@ if (NodeSys::isValid($host)) {
 
 } else {
     define('NODE_ID', GOTEO_NODE);
-    // define('NODE_ID', 'testnode');
+    // define('NODE_ID', 'barcelona');
 }
 
 // configuracion estatica

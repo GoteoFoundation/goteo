@@ -2,34 +2,28 @@
 
 namespace Goteo\Application;
 
-use League\Plates\Engine as Plates;
+use Foil;
 
 class View {
-    static protected $plates;
-    static protected $theme = 'main';
+    static protected $engine;
+    static protected $theme = 'default';
 
     static public function factory($path) {
-        if(!self::$plates instanceOf Plates) {
-            self::$plates = new Plates($path);
+        if(!self::$engine) {
+            self::$engine = Foil\engine(['folders' => [$path]]);
         }
     }
 
-    static public function addFolder($theme, $path, $fallback = false) {
-        self::factory($path);
-        self::$plates->addFolder($theme, $path, $fallback);
+    static public function addFolder($path, $theme = null,  $fallback = false) {
+        if(is_dir($path)) {
+            self::factory($path);
+            self::$engine->addFolder($path, $theme,  $fallback);
+        }
     }
 
     static public function render($view, $vars = null) {
-        // try {
-            // print_r(self::$plates);
-            $engine = self::$plates->make($view);
-            $engine->vars = $vars;
-            return $engine->render($vars + array('vars' => $vars)); //por compatibilidad
-        // }
-        // catch(\LogicException $e) {
-        // //     // print_r(self::$plates);die;
-        //     return $e->getMessage();
-        // }
+        self::$engine->vars = $vars;
+        return self::$engine->render($view, $vars + array('vars' => $vars)); //por compatibilidad
     }
 
     static public function get($view, $vars = null) {
@@ -37,7 +31,7 @@ class View {
     }
 
     static public function getEngine() {
-        return self::$plates;
+        return self::$engine;
     }
 
     static public function setTheme($theme) {

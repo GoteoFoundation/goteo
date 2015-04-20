@@ -40,6 +40,62 @@ goteo.keepAlive = function () {
 };
 
 $(function() {
+    // VARIS
+    $('.scroll-pane').jScrollPane({showArrows: true});
+
+    $('body').addClass('js');
+    $('.tipsy').tipsy();
+    /* Rolover sobre los cuadros de color */
+    $("li").hover(
+            function () { $(this).addClass('active') },
+            function () { $(this).removeClass('active') }
+    );
+    $('.activable').hover(
+        function () { $(this).addClass('active') },
+        function () { $(this).removeClass('active') }
+    );
+    $(".a-null").click(function (event) {
+        event.preventDefault();
+    });
+
+    // LANG
+    $("#lang").hover(function(){
+       //desplegar idiomas
+       try{clearTimeout(TID_LANG)}catch(e){};
+       var pos = $(this).offset().left;
+       $('ul.lang').css({left:pos+'px'});
+       $("ul.lang").fadeIn();
+       $("#lang").css("background","#808285 url(SRC_URL + '/view/css/bolita.png') 4px 7px no-repeat");
+
+   },function() {
+       TID_LANG = setTimeout('$("ul.lang").hide()',100);
+    });
+    $('ul.lang').hover(function(){
+        try{clearTimeout(TID_LANG)}catch(e){};
+    },function() {
+       TID_LANG = setTimeout('$("ul.lang").hide()',100);
+       $("#lang").css("background","#59595C url(SRC_URL + '/view/css/bolita.png') 4px 7px no-repeat");
+    });
+
+    // CURRENCY
+    $("#currency").hover(function(){
+       //desplegar idiomas
+       try{clearTimeout(TID_CURRENCY)}catch(e){};
+       var pos = $(this).offset().left;
+       $('ul.currency').css({left:pos+'px'});
+       $("ul.currency").fadeIn();
+       $("#currency").css("background","#808285");
+
+   },function() {
+       TID_CURRENCY = setTimeout('$("ul.currency").hide()',100);
+    });
+    $('ul.currency').hover(function(){
+        try{clearTimeout(TID_CURRENCY)}catch(e){};
+    },function() {
+       TID_CURRENCY = setTimeout('$("ul.currency").hide()',100);
+       $("#currency").css("background","#59595C");
+    });
+
     goteo.keepAlive();
 
     try {

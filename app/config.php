@@ -13,7 +13,6 @@ define('GOTEO_CACHE_PATH', GOTEO_PATH . 'var/cache/');
 require_once GOTEO_PATH . 'src/Goteo/Core/Helpers.php';
 require_once GOTEO_PATH . 'src/autoload.php';
 
-
 /**
  * Carga de configuración local si existe
  * Si no se carga el real (si existe)

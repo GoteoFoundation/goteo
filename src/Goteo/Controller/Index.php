@@ -115,7 +115,7 @@ class Index extends \Goteo\Core\Controller
             );
 
 
-        return new Response(View::render('main::home/index', $vars));
+        return new Response(View::render('home/index', $vars));
     }
 
     public function indexNode() {
@@ -246,7 +246,7 @@ class Index extends \Goteo\Core\Controller
         }
 
         return new Response(View::render(
-            'node::home/index',
+            'home/index',
             array(
                 'node'     => $node,
                 'page'     => $pageData,

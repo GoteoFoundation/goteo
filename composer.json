@@ -1,46 +1,47 @@
 {
 
     "require": {
+
         "tpyo/amazon-s3-php-class": "~0.5",
 
 
-    "phpmailer/phpmailer": "~5.2",
+        "phpmailer/phpmailer": "~5.2",
 
 
-    "jdorn/file-system-cache": "dev-master",
+        "jdorn/file-system-cache": "dev-master",
 
 
-    "intervention/image": "~2.0",
+        "intervention/image": "~2.0",
 
 
-    "mibe/feedwriter": "~1.0",
+        "mibe/feedwriter": "~1.0",
 
-    
-    "lusitanian/oauth": "~0.3",
 
-    
-    "iignatov/lightopenid": "~1.0",
-	
+        "lusitanian/oauth": "~0.3",
 
-	"paypal/adaptivepayments-sdk-php": "*",
 
-	"paypal/merchant-sdk-php": "*",
+        "iignatov/lightopenid": "~1.0",
 
-    
-    "symfony/class-loader": "~2.6",
 
-    
-    "symfony/http-foundation": "~2.6",
+    	"paypal/adaptivepayments-sdk-php": "*",
 
-    
-    "symfony/routing": "~2.6",
+    	"paypal/merchant-sdk-php": "*",
 
-    
-    "symfony/http-kernel": "~2.6",
 
-    
-    "league/plates": "~3.1"
-	
+        "symfony/class-loader": "~2.6",
+
+
+        "symfony/http-foundation": "~2.6",
+
+
+        "symfony/routing": "~2.6",
+
+
+        "symfony/http-kernel": "~2.6",
+
+
+        "foil/foil": "~0.3"
+
     },
 
     "autoload": {

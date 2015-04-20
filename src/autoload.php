@@ -7,6 +7,9 @@ $loader = require (__DIR__  . '/../vendor/autoload.php' );
 // ...
 $loader->add('', __DIR__ . '/../extend/goteo/src');
 
+//Cache dir in libs
+\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
+
 // Error handler
 set_error_handler (
 
