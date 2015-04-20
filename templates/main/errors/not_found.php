@@ -12,12 +12,9 @@ else {
 ?>
 
 <?php $this->start('sub-header') ?>
-
-<div id="sub-header">
-    <div>
-        <h2><?=$msg?></h2>
-        <h3>Error <?=$code?></h3>
-    </div>
+<div>
+    <h2><?=$msg?></h2>
+    <h3>Error <?=$code?></h3>
 </div>
 <?php $this->stop() ?>
 

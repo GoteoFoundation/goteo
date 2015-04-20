@@ -41,10 +41,6 @@ class Index extends \Goteo\Core\Controller
     public function index()
     {
 
-        if (NODE_ID != GOTEO_NODE) {
-            return self::node_index();
-        }
-
         if (isset($_GET['error'])) {
             throw new \Goteo\Core\Error('418', Text::html('fatal-error-teapot'));
         }
@@ -118,12 +114,12 @@ class Index extends \Goteo\Core\Controller
                 'order'     => $order
             );
 
-        // si es un nodo
-        if (NODE_ID != GOTEO_NODE) {
-            return new Response(\Goteo\Core\View::get('node/index.html.php', $vars));
-        }
 
-        return new Response(View::render('home/index', $vars));
+        return new Response(View::render('main::home/index', $vars));
+    }
+
+    public function indexNode() {
+        return self::node_index();
     }
 
     public static function node_index($page = 'index')
@@ -249,8 +245,8 @@ class Index extends \Goteo\Core\Controller
             $pageData = null;
         }
 
-        return new View(
-            'node/index.html.php',
+        return new Response(View::render(
+            'node::home/index',
             array(
                 'node'     => $node,
                 'page'     => $pageData,
@@ -280,7 +276,7 @@ class Index extends \Goteo\Core\Controller
                 'discover' => $discover
 
             )
-        );
+        ));
 
     }
 }

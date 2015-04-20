@@ -2,6 +2,8 @@
 
 namespace Goteo\Application;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class Lang {
     static protected $default = '';
 
@@ -199,23 +201,27 @@ class Lang {
         return self::current() === $lang;
     }
 
-    static public function setFromGlobals() {
+    static public function setFromGlobals(Request $request = null) {
         // self::setDefault('es');
 
         $desired = array();
         // set Lang (forzado para el cron y el admin)
-        $uri = strtok($_SERVER['REQUEST_URI'], '?');
-        $desired[] = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
-        // set Lang by GET user request
-        if(isset($_GET['lang'])) {
-            $desired[] = $_GET['lang'];
+        if($request) {
+            $uri = strtok($request->server->get('REQUEST_URI'), '?');
+            $desired[] = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
+            // set Lang by GET user request
+            if($request->query->has('lang')) {
+                $desired[] = $request->query->get('lang');
+            }
         }
         // set lang by cookie if exists
         if(Cookie::exists('goteo_lang')) {
             $desired[] = Cookie::get('goteo_lang');
         }
-        // set by navigator
-        $desired[] = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        if($request) {
+            // set by navigator
+            $desired[] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
+        }
 
         // set the lang in order of preference
         foreach($desired as $l) {
@@ -226,7 +232,7 @@ class Lang {
         }
 
         //Si el idioma existe (y se ha especificado), guardar preferencias
-        if($lang === $_GET['lang']) {
+        if($request && $lang === $request->query->get('lang')) {
             //Enviar cookie
             Cookie::store('goteo_lang', $lang);
             if(Session::isLogged()) {

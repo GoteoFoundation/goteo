@@ -2,14 +2,16 @@
 
 use Goteo\Model\Image;
 
-$this->layout("$theme::layout", ['meta_description' => $this->text('meta-description-index')]);
+$this->layout("$theme::layout", [
+    'bodyClass' => 'home',
+    'meta_description' => $this->text('meta-description-index'),
+    // para que el prologue ponga el código js para botón facebook en el bannerside
+    'fbCode' => $this->text_widget($this->text('social-account-facebook'), 'fb')
+    ]);
 
-
-$bodyClass = 'home';
-// para que el prologue ponga el código js para botón facebook en el bannerside
-$fbCode = $this->text_widget($this->text('social-account-facebook'), 'fb');
 
 // metas og: para que al compartir en facebook coja las imagenes de novedades
+// TODO: esto en el controlador
 if (!empty($posts)) {
     $og_image = [];
     foreach ($posts as $post) {

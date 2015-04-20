@@ -1,11 +1,6 @@
 <?php
 use Goteo\Application\Lang;
 
-if(empty($og_description)) $og_description = $meta_description;
-if(empty($og_title)) $og_title = $title;
-if(empty($og_url)) $og_url = $url;
-if(empty($og_image)) $og_image = $image;
-
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -13,28 +8,8 @@ if(empty($og_image)) $og_image = $image;
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?=$title?></title>
         <link rel="icon" type="image/png" href="/myicon.png" />
-        <meta name="description" content="<?=$this->e($meta_description)?>" />
-        <meta name="keywords" content="<?=$this->e($meta_keywords)?>" />
-        <meta name="author" content="<?=$this->e($meta_author)?>" />
-        <meta name="copyright" content="<?=$this->e($meta_copyright)?>" />
-        <meta name="robots" content="all" />
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 
-        <meta property="og:title" content="<?=$this->e($og_title)?>" />
-        <meta property="og:description" content="<?=$this->e($og_description)?>" />
-        <meta property="og:type" content="activity" />
-        <meta property="og:site_name" content="Goteo.org" />
-        <meta property="og:url" content="<?=$this->e($og_url)?>" />
-
-<?php if (is_array($og_image)) :
-            foreach ($og_image as $ogimg) :
-?>
-        <meta property="og:image" content="<?php echo $ogimg ?>" />
-<?php   endforeach;
-          else :
-?>
-        <meta property="og:image" content="<?=$og_image?>" />
-<?php endif; ?>
+        <?=$this->section('head-meta', $this->fetch("$theme::partials/header/metas", $this->engine->getData("$theme::layout")))?>
 
 
     <!-- build:css view/css/goteo.css -->
@@ -117,6 +92,7 @@ if(empty($og_image)) $og_image = $image;
     <body<?php if (isset($bodyClass)) echo ' class="' . $this->e($bodyClass) . '"' ?>>
 <?php
 
+
 if (isset($fbCode)) : ?>
 <div id="fb-root"></div>
 <script type="text/javascript">(function(d, s, id) {
@@ -127,6 +103,7 @@ if (isset($fbCode)) : ?>
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <?php endif; ?>
+
         <script type="text/javascript">
             // Mark DOM as javascript-enabled
             jQuery(document).ready(function ($) {
@@ -151,9 +128,13 @@ if (isset($fbCode)) : ?>
         <div id="wrapper">
 
 
-            <?=$this->section('sub-header')?>
+            <?php if($this->section('sub-header')): ?>
+                <div id="sub-header">
+                <?=$this->section('sub-header')?>
+                </div>
+            <?php endif ?>
 
-            <?=$this->section('messages', $this->fetch("$theme::partials/header/message"))?>
+            <?=$this->section('messages', $this->fetch("$theme::partials/header/messages"))?>
 
             <?=$this->section('content')?>
 
@@ -206,40 +187,10 @@ if (isset($fbCode)) : ?>
                     });
         </script>
 
-<script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-17744816-4']);
-  _gaq.push(['_trackPageview']);
+    <?=$this->section('analytics', $this->fetch("$theme::partials/header/analytics"))?>
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-
-<script>
-var _prum = [['id', '5434f3beabe53dcd6ff6f0cf'],
-             ['mark', 'firstbyte', (new Date()).getTime()]];
-(function() {
-    var s = document.getElementsByTagName('script')[0]
-      , p = document.createElement('script');
-    p.async = 'async';
-    p.src = '//rum-static.pingdom.net/prum.min.js';
-    s.parentNode.insertBefore(p, s);
-})();
-</script>
-        <!-- Goteo utils: Debug functions, Session keeper -->
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/goteo.js"></script>
-        <script type="text/javascript"><?php
-            echo 'goteo.debug = ' . (GOTEO_ENV !== 'real' ? 'true' : 'false') . ';';
-        ?></script>
-
-        <!-- geolocation -->
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places&amp;sensor=false"></script>
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geolocation.js"></script>
+    <?=$this->section('javascript', $this->fetch("$theme::partials/header/javascript"))?>
 
     </body>
 </html>

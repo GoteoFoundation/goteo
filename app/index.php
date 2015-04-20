@@ -22,26 +22,35 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel;
 
+require_once __DIR__ . '/config.php';
+
+/*
+ * Using the HTTP Foundation class
+ * http://symfony.com/doc/current/book/http_fundamentals.html
+ */
+
+$request = Request::createFromGlobals();
+
 //si el parametro GET vale:
 // 0 se muestra estadísticas de SQL, pero no los logs
 // 1 se hace un log con las queries no cacheadas
 // 2 se hace un log con las queries no cacheadas y también las cacheadas
-if (isset($_GET['sqldebug']) && !defined('DEBUG_SQL_QUERIES')) {
-    define('DEBUG_SQL_QUERIES', intval($_GET['sqldebug']));
+if ($request->query->has('sqldebug') && !defined('DEBUG_SQL_QUERIES')) {
+    define('DEBUG_SQL_QUERIES', intval($request->query->get('sqldebug')));
 }
 
-require_once __DIR__ . '/config.php';
 
 //clean all caches if requested
-if (isset($_GET['cleancache'])) {
+if ($request->query->has('cleancache')) {
     Model::cleanCache();
 }
+
 
 /*
  * Pagina de en mantenimiento
  */
-if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance'
-     && !isset($_POST['Num_operacion'])
+if (GOTEO_MAINTENANCE === true && $request->server->get('REQUEST_URI') != '/about/maintenance'
+     && !$request->request->has('Num_operacion')
     ) {
     header('Location: /about/maintenance');
     die;
@@ -60,14 +69,16 @@ Session::onSessionDestroyed(function () {
 
 /* Sistema nodos */
 // Get Node and check it
-$host = strtok($_SERVER['HTTP_HOST'], '.');
+$host = strtok($request->server->get('HTTP_HOST'), '.');
 
 if (NodeSys::isValid($host)) {
     define('NODE_ID', $host);
 
 } else {
     define('NODE_ID', GOTEO_NODE);
+    // define('NODE_ID', 'testnode');
 }
+
 // configuracion estatica
 $conf_file = 'nodesys/'.NODE_ID.'/config.php';
 if (file_exists($conf_file)) {
@@ -93,7 +104,7 @@ $raw_url = str_replace('http:', '', $SITE_URL);
 define('SEC_URL', ($SSL) ? 'https:'.$raw_url : $SITE_URL);
 
 // si estamos en entorno seguro
-define('HTTPS_ON', ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ));
+define('HTTPS_ON', ($request->server->get('HTTPS') === 'on' || $request->server->get('HTTP_X_FORWARDED_PROTO') === 'https' ));
 
 // SITE_URL, según si estamos en entorno seguro o si el usuario esta autenticado
 if ($SSL && (\HTTPS_ON || Session::isLogged())) {
@@ -105,13 +116,13 @@ if ($SSL && (\HTTPS_ON || Session::isLogged())) {
 // si el usuario ya está validado debemos mantenerlo en entorno seguro
 // usamos la funcionalidad de salto entre nodos para mantener la sesión
 if ($SSL && Session::isLogged() && !\HTTPS_ON) {
-    header('Location: ' . SEC_URL . $_SERVER['REQUEST_URI']);
+    header('Location: ' . SEC_URL . $request->server->get('REQUEST_URI'));
     die;
 }
 /* Fin inicializacion constantes *_URL */
 
 Lang::setDefault(GOTEO_DEFAULT_LANG);
-Lang::setFromGlobals();
+Lang::setFromGlobals($request);
 
 // set currency
 Session::store('currency', Currency::set()); // depending on request
@@ -122,8 +133,6 @@ if (!Cookie::exists('goteo_cookies')) {
     Message::Info(Text::get('message-cookies'));
 }
 
-/* Using the HTTP Foundation class */
-$request = Request::createFromGlobals();
 $routes = include __DIR__ . '/../src/app.php';
 
 $context = new RequestContext();

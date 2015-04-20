@@ -6,6 +6,7 @@ use League\Plates\Engine as Plates;
 
 class View {
     static protected $plates;
+    static protected $theme = 'main';
 
     static public function factory($path) {
         if(!self::$plates instanceOf Plates) {
@@ -31,7 +32,19 @@ class View {
         // }
     }
 
+    static public function get($view, $vars = null) {
+        return self::render(self::getTheme() . '::' . $view, $vars);
+    }
+
     static public function getEngine() {
         return self::$plates;
+    }
+
+    static public function setTheme($theme) {
+        return self::$theme = $theme;
+    }
+
+    static public function getTheme() {
+        return self::$theme;
     }
 }
