@@ -125,8 +125,8 @@ class Discover extends \Goteo\Core\Controller {
      * Descubre proyectos, ver todos los de un tipo
      */
     public function view ($type = 'all') {
-
         $types = self::$types;
+
         $types[] = 'all';
         if (\NODE_ID != \GOTEO_NODE) {
             $types[] = 'others';
@@ -162,10 +162,7 @@ class Discover extends \Goteo\Core\Controller {
                 shuffle($viewData['list']);
             }
 
-            return new View(
-                'discover/view.html.php',
-                $viewData
-             );
+            return new Response(View::render('discover/view', $viewData));
 
         }
     }

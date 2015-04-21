@@ -1,7 +1,5 @@
 <?php
 
-use Goteo\Core\View;
-
 $this->layout("layout", [
     'bodyClass' => 'discover',
     'meta_description' => $this->text('meta-description-discover'),

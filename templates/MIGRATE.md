@@ -254,11 +254,14 @@ Guía de cambio de controladores:
     <?php // Se añadirá al final de la sección 'footer' en el template "layout.php" ?>
 
     ```
+
     Mas info http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html. 
 
-5. Quitar referencias a clases dentro de las vistas (sin obsesionarse pues puede ser un trabajo largo). Empezamos por sustituir las funciones de `Text::algo(...)` por `$this->text_algo(...)`. Mirar la extensión `src/Goteo/Foil/Extension/Textutils.php` para las funciones activas (o añadir las que falten)
+5. Cambiar las referencias al array `$this['variable']` or `$vars['variable']` por referencias al objecto `$this->variable`. Tener en cuenta que si estas variables son arrays o escalares estaran escapadas por defecto.
 
-6. Poner la entrada del controlador para el procesado del nuevo dispacher en `src/app.php`. Se usa el elemento Route de Symfony:
+6. Quitar referencias a clases dentro de las vistas (sin obsesionarse pues puede ser un trabajo largo). Empezamos por sustituir las funciones de `Text::algo(...)` por `$this->text_algo(...)`. Mirar la extensión `src/Goteo/Foil/Extension/Textutils.php` para las funciones activas (o añadir las que falten)
+
+7. Poner la entrada del controlador para el procesado del nuevo dispacher en `src/app.php`. Se usa el elemento Route de Symfony:
 
     ```php
     <?php
@@ -266,14 +269,9 @@ Guía de cambio de controladores:
 
     // ...
 
-    $routes->add('discover-results', new Route(
-        '/discover/results',
-        array('_controller' => 'Goteo\Controller\Discover::results')
-    ));
-
     $routes->add('discover', new Route(
         '/discover',
-        array('_controller' => 'Goteo\Controller\Discover::index')
+        array('_controller' => 'Goteo\Controller\Discover')
     ));
 
     return $routes;
@@ -282,6 +280,7 @@ Guía de cambio de controladores:
 
 
 EJEMPLO REAL
+------------
 
 Para la vista "results" del controlador "Discover":
 
@@ -334,8 +333,6 @@ Después: `templates/default/discover/results.php`
 
 ```php
 <?php
-
-use Goteo\Core\View;
 
 $this->layout("layout", [
     'bodyClass' => 'discover',

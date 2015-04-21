@@ -34,6 +34,7 @@ app/view/home/stories.html.php:            templates/default/home/partials/stori
 app/view/discover/index.html.php:          templates/default/discover/index.php
 app/view/discover/results.html.php:        templates/default/discover/results.php
 app/view/discover/searcher.html.php:       templates/default/discover/partials/searcher.php
+app/view/discover/view.html.php:        templates/default/discover/view.php
 
 # Controller: Project
 app/view/project/widget/project.html.php:   templates/default/project/widget/project.php
