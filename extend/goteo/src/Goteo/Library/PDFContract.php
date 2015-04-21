@@ -54,7 +54,7 @@ class PDFContract extends \PDF_HTML {
     const TEXT_PLACE = "Palma de Mallorca, ";
     const TEXT_HEADER_NUM = "Núm. contrato  ";
     const TEXT_FOOTER_IMPULSOR = "El impulsor";
-    const TEXT_FOOTER_FOUNDATION = "Fundación Fuentes Abiertas";
+    const TEXT_FOOTER_FOUNDATION = "Fundación Goteo";
 
     private $data = array();
 

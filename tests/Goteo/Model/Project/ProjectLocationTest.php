@@ -160,8 +160,8 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
         $project_location2 = ProjectLocation::get($project_location2->id);
         $this->assertTrue($project_location::isUnlocable($project_location->id));
         $this->assertFalse($project_location2->locable);
-        $project_location::setLocable($project_location->id);
-        $this->assertTrue($project_location2->locable);
+        $project_location2::setLocable($project_location2->id);
+        $this->assertFalse($project_location::isUnlocable($project_location->id));
 
         return $project_location;
     }
