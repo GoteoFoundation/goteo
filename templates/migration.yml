@@ -14,6 +14,8 @@ app/view/header/banner.html.php:             templates/default/partials/header/b
 
 app/view/footer.html.php:           templates/default/partials/footer.php
 
+app/view/pagination.html.php:           templates/default/partials/pagination.php
+
 app/view/error/default.html.php:      templates/default/errors/default.php
 app/view/error/404.html.php:          templates/default/errors/not_found.php
 

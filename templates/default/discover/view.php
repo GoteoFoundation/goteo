@@ -26,7 +26,7 @@ $this->section('content');
                 <?php endforeach ?>
             </div>
 
-            <?php echo View::get('pagination.html.php', $vars); ?>
+            <?=$this->insert('partials/pagination')?>
         </div>
 
 
