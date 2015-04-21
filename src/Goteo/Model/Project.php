@@ -1179,9 +1179,6 @@ namespace Goteo\Model {
             // "financiado" al final de los SEGUNDA_RONDA dias
             if ($this->status == 4) :
                 $this->tagmark = 'gotit';
-            // "Ronda única" cuando la campaña es de ronda única
-            elseif ($this->status == 3 && $this->one_round) :
-                $this->tagmark = 'oneround';
             // "en marcha" cuando llega al optimo en primera o segunda ronda
             elseif ($this->status == 3 && $this->amount >= $this->maxcost) :
                 $this->tagmark = 'onrun';
