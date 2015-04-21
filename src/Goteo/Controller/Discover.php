@@ -5,12 +5,12 @@ namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Goteo\Application\View,
-    Goteo\Model,
-    Goteo\Core\Redirection,
-    Goteo\Library\Text,
-    Goteo\Library\Message,
-    Goteo\Library\Listing;
+use Goteo\Application\View;
+use Goteo\Model;
+use Goteo\Core\Redirection;
+use Goteo\Library\Text;
+use Goteo\Library\Message;
+use Goteo\Library\Listing;
 
 class Discover extends \Goteo\Core\Controller {
 
