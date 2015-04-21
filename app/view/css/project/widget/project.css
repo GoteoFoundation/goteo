@@ -317,6 +317,10 @@ div.widget.project div.meter > h3.ronda{
     text-transform: lowercase;
 }
 
+div.widget.project div.meter h3.unica{
+    text-transform: none;
+}
+
 div.widget.project div.meter div.graph .minimum {
     background-color: #96238F;
     height: 100%;
