@@ -105,7 +105,7 @@ if (!empty($project->costs)) {
                                     'label'     => Text::get('costs-field-required_cost-no')
                                 )
                         ),
-                        'value'     => empty($cost->required) ? '0' : $cost->required,
+                        'value'     => $cost->required,
                         'errors'    => !empty($errors["cost-{$cost->id}-required"]) ? array($errors["cost-{$cost->id}-required"]) : array(),
                         'ok'        => !empty($okeys["cost-{$cost->id}-required"]) ? array($okeys["cost-{$cost->id}-required"]) : array(),
                         'hint'      => Text::get('tooltip-project-cost-required'),
@@ -262,7 +262,7 @@ echo SuperForm::get(array(
                                     'label'     => Text::get('project-two-rounds')
                                 )
                         ),
-                        'value'     => $project->one_round,
+                        'value'     => empty($project->one_round) ? '0' : $project->one_round,
                         'errors'    => array(),
                         'ok'        => array(),
                         'hint'      => Text::get('tooltip-project-rounds')
