@@ -16,10 +16,10 @@ $this->section('content');
         </div>
 
         <div id="main">
-            <?=$this->insert('discover/searcher', ['categories' => $categories, 'locations' => $locations, 'rewards' => $rewards]); ?>
+            <?=$this->insert('discover/partials/searcher', ['categories' => $categories, 'locations' => $locations, 'rewards' => $rewards])?>
 
-		<?php foreach ($this->lists as $type=>$list) :
-            if (array_empty($list))
+		<?php foreach ($this->lists as $type => $list) :
+            if (!$list)
                 continue;
             ?>
             <div class="widget projects">
@@ -31,16 +31,16 @@ $this->section('content');
                             <a class="discover-arrow" href="/discover/view/<?php echo $type; ?>" rev="<?php echo $type ?>" rel="<?php echo $type.'-'.$projects['prev'] ?>">&nbsp;</a>
                         </div>
 
-                        <?php foreach ($projects['items'] as $project) :
-                            echo $this->insert('project/widget/project', ['project' => $project]);
-                        endforeach; ?>
+                        <?php foreach ($projects['items'] as $project) : ?>
+                            <?= $this->insert('project/widget/project', ['project' => $project]) ?>
+                        <?php endforeach ?>
 
                         <div class="discover-arrow-right">
                             <a class="discover-arrow" href="/discover/view/<?php echo $type; ?>" rev="<?php echo $type ?>" rel="<?php echo $type.'-'.$projects['next'] ?>">&nbsp;</a>
                         </div>
 
                     </div>
-                <?php endforeach; ?>
+                <?php endforeach ?>
 
 
                 <!-- carrusel de imagenes -->
@@ -50,12 +50,12 @@ $this->section('content');
                         <li><a id="navi-discover-group-<?php echo $type.'-'.$group ?>" href="/discover/view/<?php echo $type; ?>" rev="<?php echo $type ?>" rel="<?php echo "{$type}-{$group}" ?>" class="navi-discover-group navi-discover-group-<?php echo $type ?>"><?php echo $group ?></a></li>
                         <?php endforeach ?>
                     </ul>
-                    <a class="all" href="/discover/view/<?php echo $type; ?>"><?=$this->text('regular-see_all'); ?></a>
+                    <a class="all" href="/discover/view/<?php echo $type; ?>"><?=$this->text('regular-see_all')?></a>
                 </div>
 
             </div>
 
-        <?php endforeach; ?>
+        <?php endforeach ?>
 
         </div>
 
@@ -71,7 +71,7 @@ $this->section('content');
                 if(array_empty($list)) continue; ?>
                 $("#discover-group-<?php echo $type ?>-1").show();
                 $("#navi-discover-group-<?php echo $type ?>-1").addClass('active');
-            <?php endforeach; ?>
+            <?php endforeach ?>
 
             $(".discover-arrow").click(function (event) {
                 event.preventDefault();

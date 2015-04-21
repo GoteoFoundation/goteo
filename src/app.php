@@ -65,7 +65,11 @@ $routes->add('home', new Route(
 
 $routes->add('discover', new Route(
     '/discover',
-    array('_controller' => 'Goteo\Controller\Discover')
+    array('_controller' => 'Goteo\Controller\Discover::index')
+));
+$routes->add('discover-patron', new Route(
+    '/discover/patron',
+    array('_controller' => 'Goteo\Controller\Discover::patron')
 ));
 $routes->add('discover-calls', new Route(
     '/discover/calls',

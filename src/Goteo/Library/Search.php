@@ -57,7 +57,7 @@ namespace Goteo\Library {
                 $values[':text'] = "%{$params['query']}%";
             }
 
-            
+
             if (!empty($params['node'])) {
                 $where[] = ' AND project.node = :node';
                 $values[':node'] = NODE_ID;

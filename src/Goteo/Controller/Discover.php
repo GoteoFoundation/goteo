@@ -4,6 +4,7 @@ namespace Goteo\Controller;
 
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Goteo\Application\View;
 use Goteo\Model;
@@ -52,10 +53,7 @@ class Discover extends \Goteo\Core\Controller {
             $viewData['lists'][$type] = Listing::get($projects);
         }
 
-        return new Response(View::render(
-            'discover/index',
-            $viewData
-         ));
+        return new Response(View::render('discover/index', $viewData));
 
     }
 
@@ -106,18 +104,15 @@ class Discover extends \Goteo\Core\Controller {
 
 
         } else {
-            throw new Redirection('/discover', Redirection::PERMANENT);
+            return new RedirectResponse('/discover');
         }
 
-        return new Response(View::render(
-            'discover/results',
-            [
+        return new Response(View::render('discover/results', [
                 'message' => $message,
                 'results' => $results,
                 'query'   => $query,
                 'params'  => $params
-            ]
-         ));
+            ]));
     }
 
     /*
@@ -132,7 +127,7 @@ class Discover extends \Goteo\Core\Controller {
         }
 
         if (!in_array($type, $types)) {
-            throw new Redirection('/discover');
+            return new RedirectResponse('/discover');
         }
 
         $viewData = array();
