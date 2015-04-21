@@ -56,7 +56,7 @@ class PDF extends \FPDF {
         /*
          * Datos de la fundación
          */
-        $data->ffa->name = 'Fundación Fuentes Abiertas';
+        $data->ffa->name = 'Fundación Goteo';
         $data->ffa->cif = 'G57728172';
         $data->ffa->phone = '00 34 871 57 15 57';
         $data->ffa->email = 'donate@goteo.org';
@@ -97,7 +97,7 @@ class PDF extends \FPDF {
         $pdf->Ln(2);
 
         $pdf->bold(11);
-        $pdf->cell($w1,10,"FUNDACIÓN FUENTES ABIERTAS");
+        $pdf->cell($w1,10,"FUNDACIÓN GOTEO");
         $pdf->cell($s);
         $pdf->cell(0,10,"Donante:");
 
@@ -137,7 +137,7 @@ class PDF extends \FPDF {
         $pdf->bold();
         $pdf->Write(5,'Alfonso Pachecho Cifuentes');
         $pdf->regular();
-        $pdf->Write(5,', como Secretario de la Fundación Fuentes Abiertas, inscrita con el número 1438 en el Registro de Fundaciones del Ministerio de Educación, Cultura y Deportes, a los efectos previstos en el art. 24 de la Ley 49/2002, de 23 de diciembre, de Régimen Fiscal de Entidades Sin Fines Lucrativos e Incentivos Fiscales al Mecenazgo,');
+        $pdf->Write(5,', como Secretario de la Fundación Goteo, inscrita con el número 1438 en el Registro de Fundaciones del Ministerio de Educación, Cultura y Deportes, a los efectos previstos en el art. 24 de la Ley 49/2002, de 23 de diciembre, de Régimen Fiscal de Entidades Sin Fines Lucrativos e Incentivos Fiscales al Mecenazgo,');
 
         $pdf->Ln(10);
 
@@ -169,7 +169,7 @@ class PDF extends \FPDF {
             }
         }
 
-        $pdf->Write(5,'con carácter irrevocable -sin perjuicio de lo establecido en las normas imperativas civiles que regulan la revocación de donaciones- donación dineraria a la Fundación Fuentes Abiertas de');
+        $pdf->Write(5,'con carácter irrevocable -sin perjuicio de lo establecido en las normas imperativas civiles que regulan la revocación de donaciones- donación dineraria a la Fundación Goteo de');
         $pdf->bold();
         $pdf->Write(5,$data->amount_char."euros (".$data->amount." euros)");
         $pdf->regular();

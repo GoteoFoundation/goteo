@@ -17,7 +17,7 @@ use Goteo\Library\Text;
 
         <div class="platoniq">
            <span class="text"><a href="#" class="poweredby"><?php echo Text::get('footer-platoniq-iniciative') ?></a></span>
-           <span class="logo"><a href="http://fuentesabiertas.org" target="_blank" class="foundation">FFA</a></span>
+           <span class="logo"><a href="http://fundacion.goteo.org/" target="_blank" class="foundation">FFA</a></span>
            <span class="logo"><a href="http://www.youcoop.org" target="_blank" class="growby">Platoniq</a></span>
         </div>
 

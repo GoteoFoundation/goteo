@@ -114,14 +114,14 @@ $cName = "P-{$cNum}-{$cDate}";
         -->
 <?php endif; ?>
         <tr>
-            <td>Por el total de estas comisiones  la Fundación Fuentes Abiertas ha emitido la factura <strong>[N&uacute;mero de factura]</strong> por importe de <strong><?php echo \amount_format($sumData['total_fee_project'], 2); ?></strong>, a nombre de la persona o entidad que firma el contrato</td>
+            <td>Por el total de estas comisiones  la Fundación Goteo ha emitido la factura <strong>[N&uacute;mero de factura]</strong> por importe de <strong><?php echo \amount_format($sumData['total_fee_project'], 2); ?></strong>, a nombre de la persona o entidad que firma el contrato</td>
         </tr>
     </table>
 <br />
 
     <table>
         <tr>
-            <th style="text-align:left;">3) Transferencias de la Fundación Fuentes Abiertas (Goteo.org) a los/as  impulsores/as</th>
+            <th style="text-align:left;">3) Transferencias de la Fundación Goteo (Goteo.org) a los/as  impulsores/as</th>
         </tr>
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Envío a través de PayPal (sin descontar comisiones de PayPal  de 3,4&#37;+ 0,35  por transacción/usuario/a, cobradas automáticamente al receptor del dinero): <strong><?php echo \amount_format($sumData['pp_project'], 2); ?> ([fecha transferencia])</strong></td>
@@ -172,7 +172,7 @@ $cName = "P-{$cNum}-{$cDate}";
 
     <br />
     <table>
-        <?php foreach ($Data['issues'] as $issue) : 
+        <?php foreach ($Data['issues'] as $issue) :
             $warst = ($issue->status == 1) ? ' style="color: red !important;"' : '';
             ?>
         <tr>

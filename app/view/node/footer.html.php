@@ -80,7 +80,7 @@ $steps = Post::get(566);
                 <ul>
                     <li><a href="<?php echo SITE_URL ?>/about">Goteo.org</a></li>
                     <li><a href="/user/login"><?php echo Text::get('regular-login'); ?></a></li>
-                    <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li> 
+                    <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li>
                     <li><a href="/press"><?php echo Text::get('footer-resources-press'); ?></a></li>
                     <li><a href="/legal/privacy"><?php echo Text::get('regular-footer-privacy'); ?></a></li>
                     <li><a href="/contact"><?php echo Text::get('regular-footer-contact'); ?></a></li>
@@ -88,7 +88,7 @@ $steps = Post::get(566);
 
                 <div class="platoniq">
                    <span class="text"><a href="#" class="poweredby"><?php echo Text::get('footer-platoniq-iniciative') ?></a></span>
-                   <span class="logo"><a href="http://fuentesabiertas.org" target="_blank" class="foundation">FFA</a></span>
+                   <span class="logo"><a href="http://fundacion.goteo.org/" target="_blank" class="foundation">FFA</a></span>
                    <span class="logo"><a href="http://www.youcoop.org" target="_blank" class="growby">Platoniq</a></span>
                 </div>
 
