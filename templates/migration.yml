@@ -1,0 +1,40 @@
+# Log de conversion de vistas
+---
+# Theme
+app/view/prologue.html.php:         templates/default/layout.php
+app/view/epilogue.html.php:         templates/default/layout.php
+
+app/view/header.html.php:                    templates/default/partials/header.php
+app/view/header/currency.html.php:           templates/default/partials/header.php
+app/view/header/lang.html.php:               templates/default/partials/header.php
+app/view/header/menu.html.php:               templates/default/partials/header/menu.php
+app/view/header/message.html.php:            templates/default/partials/header/messages.php
+app/view/header/highlights.html.php:         templates/default/partials/header/highlights.php
+app/view/header/banner.html.php:             templates/default/partials/header/banner.php
+
+app/view/footer.html.php:           templates/default/partials/footer.php
+
+app/view/error/default.html.php:      templates/default/errors/default.php
+app/view/error/404.html.php:          templates/default/errors/not_found.php
+
+
+
+# Controller: Index
+app/view/index.html.php:                   templates/default/home/index.php
+app/view/home/calls.html.php:              templates/default/home/partials/calls.php
+app/view/home/drops.html.php:              templates/default/home/partials/drops.php
+app/view/home/feed.html.php:               templates/default/home/partials/feed.php
+app/view/home/news.html.php:               templates/default/home/partials/news.php
+app/view/home/patrons.html.php:            templates/default/home/partials/patrons.php
+app/view/home/posts.html.php:              templates/default/home/partials/posts.php
+app/view/home/promotes.html.php:           templates/default/home/partials/promotes.php
+app/view/home/stories.html.php:            templates/default/home/partials/stories.php
+
+# Controller: Discover
+app/view/discover/index.html.php:          templates/default/discover/index.php
+app/view/discover/results.html.php:        templates/default/discover/results.php
+app/view/discover/searcher.html.php:       templates/default/discover/partials/searcher.php
+
+# Controller: Project
+app/view/project/widget/project.html.php:   templates/default/project/widget/project.php
+
