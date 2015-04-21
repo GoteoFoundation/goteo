@@ -1300,8 +1300,15 @@ Mas info <a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">http://
 <p>Poner la entrada del controlador para el procesado del nuevo dispacher en <code>src/app.php</code>. Se usa el elemento Route de Symfony:</p>
 <div class="codehilite"><pre><span class="cp">&lt;?php</span>
 <span class="nv">$routes</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RouteCollection</span><span class="p">();</span>
+
 <span class="c1">// ...</span>
-<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">(</span>
+
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;discover-results&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">(</span>
+    <span class="s1">&#39;/discover/results&#39;</span><span class="p">,</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;_controller&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Goteo\Controller\Discover::results&#39;</span><span class="p">)</span>
+<span class="p">));</span>
+
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;discover&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">(</span>
     <span class="s1">&#39;/discover&#39;</span><span class="p">,</span>
     <span class="k">array</span><span class="p">(</span><span class="s1">&#39;_controller&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Goteo\Controller\Discover::index&#39;</span><span class="p">)</span>
 <span class="p">));</span>
@@ -1312,4 +1319,90 @@ Mas info <a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">http://
 
 
 </li>
-</ol></article></body></html>
+</ol>
+<p>EJEMPLO REAL</p>
+<p>Para la vista &ldquo;results&rdquo; del controlador &ldquo;Discover&rdquo;:</p>
+<p>Antes <code>app/view/discover/results.html.php</code></p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">Goteo\Core\View</span><span class="p">,</span>
+    <span class="nx">Goteo\Library\Text</span><span class="p">;</span>
+
+<span class="nv">$bodyClass</span> <span class="o">=</span> <span class="s1">&#39;discover&#39;</span><span class="p">;</span>
+
+<span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../prologue.html.php&#39;</span><span class="p">;</span>
+
+<span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../header.html.php&#39;</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">        &lt;div id=&quot;sub-header&quot;&gt;</span>
+<span class="x">            &lt;div&gt;</span>
+<span class="x">                &lt;h2 class=&quot;title&quot;&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">Text</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;discover-results-header&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;div id=&quot;main&quot;&gt;</span>
+<span class="x">            </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">View</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;discover/searcher.html.php&#39;</span><span class="p">,</span>
+                                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;params&#39;</span>     <span class="o">=&gt;</span> <span class="nv">$vars</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]));</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">            &lt;div class=&quot;widget projects&quot;&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$vars</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]))</span> <span class="o">:</span>
+                    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$vars</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="o">:</span>
+                        <span class="k">echo</span> <span class="nx">View</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;project/widget/project.html.php&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+                            <span class="s1">&#39;project&#39;</span> <span class="o">=&gt;</span> <span class="nv">$result</span>
+                        <span class="p">));</span>
+                    <span class="k">endforeach</span><span class="p">;</span>
+                <span class="k">else</span> <span class="o">:</span>
+                    <span class="k">echo</span> <span class="nx">Text</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;discover-results-empty&#39;</span><span class="p">);</span>
+                <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        </span><span class="cp">&lt;?php</span> <span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../footer.html.php&#39;</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../epilogue.html.php&#39;</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<p>Después: <code>templates/default/discover/results.php</code><br />
+(implica la conversion de las sub-vistas: <code>templates/default/discover/partials/searcher.php</code> y <code>templates/default/project/widget/project.php</code>)</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">Goteo\Core\View</span><span class="p">;</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">(</span><span class="s2">&quot;layout&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">&#39;bodyClass&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;discover&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;meta_description&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;meta-description-discover&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;image&#39;</span> <span class="o">=&gt;</span> <span class="nv">$og_image</span>
+    <span class="p">]);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">);</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">        &lt;div id=&quot;sub-header&quot;&gt;</span>
+<span class="x">            &lt;div&gt;</span>
+<span class="x">                &lt;h2 class=&quot;title&quot;&gt;</span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;discover-results-header&#39;</span><span class="p">)</span><span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;div id=&quot;main&quot;&gt;</span>
+
+<span class="x">            </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s1">&#39;discover/partials/searcher&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;params&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">])</span><span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">            &lt;div class=&quot;widget projects&quot;&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">results</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">results</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                        </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s1">&#39;project/widget/project&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;project&#39;</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="p">])</span><span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">endforeach</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">else</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                    </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;discover-results-empty&#39;</span><span class="p">)</span><span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">endif</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">replace</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div></article></body></html>

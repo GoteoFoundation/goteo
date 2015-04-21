@@ -67,7 +67,6 @@ class Discover extends \Goteo\Core\Controller {
 
         $message = '';
         $results = null;
-
         // si recibimos categoria por get emulamos post con un parametro 'category'
         if (!empty($category)) {
             $_POST['category'][] = $category;
@@ -106,20 +105,20 @@ class Discover extends \Goteo\Core\Controller {
             // para cada parametro, si no hay ninguno es todos los valores
             $results = \Goteo\Library\Search::params($params, false, 33);
 
+
         } else {
             throw new Redirection('/discover', Redirection::PERMANENT);
         }
 
-        return new View(
-            'discover/results.html.php',
-            array(
+        return new Response(View::render(
+            'discover/results',
+            [
                 'message' => $message,
                 'results' => $results,
                 'query'   => $query,
                 'params'  => $params
-            )
-         );
-
+            ]
+         ));
     }
 
     /*

@@ -263,8 +263,15 @@ Guía de cambio de controladores:
     ```php
     <?php
     $routes = new RouteCollection();
+
     // ...
-    $routes->add('home', new Route(
+
+    $routes->add('discover-results', new Route(
+        '/discover/results',
+        array('_controller' => 'Goteo\Controller\Discover::results')
+    ));
+
+    $routes->add('discover', new Route(
         '/discover',
         array('_controller' => 'Goteo\Controller\Discover::index')
     ));
@@ -274,3 +281,95 @@ Guía de cambio de controladores:
     ```
 
 
+EJEMPLO REAL
+
+Para la vista "results" del controlador "Discover":
+
+Antes `app/view/discover/results.html.php`
+
+```php
+<?php
+
+use Goteo\Core\View,
+    Goteo\Library\Text;
+
+$bodyClass = 'discover';
+
+include __DIR__ . '/../prologue.html.php';
+
+include __DIR__ . '/../header.html.php' ?>
+
+        <div id="sub-header">
+            <div>
+                <h2 class="title"><?php echo Text::get('discover-results-header'); ?></h2>
+            </div>
+
+        </div>
+
+        <div id="main">
+            <?php echo View::get('discover/searcher.html.php',
+                                array('params'     => $vars['params'])); ?>
+
+            <div class="widget projects">
+                <?php if (!empty($vars['results'])) :
+                    foreach ($vars['results'] as $result) :
+                        echo View::get('project/widget/project.html.php', array(
+                            'project' => $result
+                        ));
+                    endforeach;
+                else :
+                    echo Text::get('discover-results-empty');
+                endif; ?>
+            </div>
+
+        </div>
+
+        <?php include __DIR__ . '/../footer.html.php' ?>
+
+<?php include __DIR__ . '/../epilogue.html.php' ?>
+```
+
+Después: `templates/default/discover/results.php`
+(implica la conversion de las sub-vistas: `templates/default/discover/partials/searcher.php` y `templates/default/project/widget/project.php`)
+
+```php
+<?php
+
+use Goteo\Core\View;
+
+$this->layout("layout", [
+    'bodyClass' => 'discover',
+    'meta_description' => $this->text('meta-description-discover'),
+    'image' => $og_image
+    ]);
+
+$this->section('content');
+
+?>
+
+        <div id="sub-header">
+            <div>
+                <h2 class="title"><?=$this->text('discover-results-header')?></h2>
+            </div>
+
+        </div>
+
+        <div id="main">
+
+            <?=$this->insert('discover/partials/searcher', ['params' => $this->params])?>
+
+            <div class="widget projects">
+                <?php if ($this->results) : ?>
+                    <?php foreach ($this->results as $result) : ?>
+                        <?=$this->insert('project/widget/project', ['project' => $result])?>
+                    <?php endforeach ?>
+                <?php else : ?>
+                    <?=$this->text('discover-results-empty')?>
+                <?php endif ?>
+            </div>
+
+        </div>
+
+<?php $this->replace() ?>
+
+```
