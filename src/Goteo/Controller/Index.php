@@ -3,7 +3,6 @@
 namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use League\Plates\Engine as Plates;
 
 use Goteo\Application\View;
 use Goteo\Model;

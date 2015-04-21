@@ -63,4 +63,9 @@ $routes->add('home', new Route(
     array('_controller' => 'Goteo\Controller\Index::' . (Config::isNode() ? 'indexNode' : 'index'))
 ));
 
+$routes->add('home', new Route(
+    '/discover',
+    array('_controller' => 'Goteo\Controller\Discover::index')
+));
+
 return $routes;
