@@ -4,8 +4,8 @@ $bodyClass = 'discover';
 
 $this->layout("layout", [
     'bodyClass' => 'discover',
-    'meta_description' => $this->text('meta-description-discover'),
-    'image' => $og_image
+    'title' => $this->text('meta-title-discover'),
+    'meta_description' => $this->text('meta-description-discover')
     ]);
 
 
@@ -13,7 +13,7 @@ $this->section('content');
 ?>
         <div id="sub-header">
             <div>
-                <h2 class="title"><?=$this->title?></h2>
+                <h2 class="title"><?=$this->raw('title')?></h2>
             </div>
 
         </div>

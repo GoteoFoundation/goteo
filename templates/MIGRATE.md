@@ -219,6 +219,28 @@ Guía de cambio de controladores:
 --------------------------------
 
 1. Usar el objecto Response (de Symfony) como retorno del controlador y no la vista directamente `return new Response(View::render(...));`
+    Para las redirecciones usar la classe `RedirectResponse` de Symfony:
+    ```php
+    <?php
+        namespace Goteo\Controller;
+        use Symfony\Component\HttpFoundation\Response;
+        use Symfony\Component\HttpFoundation\RedirectResponse;
+        use ...
+        class DiscoverAddons extends \Goteo\Core\Controller {
+
+            public function call () {
+                return new RedirectResponse('/discover/calls');
+            }
+
+            public function calls () {
+                $viewData = array();
+                $viewData['title'] = Text::html('discover-calls-header');
+                $viewData['list']  = Model\Call::getActive(null, true);
+                return new Response(View::render('discover/calls', $viewData));
+            }
+        }
+    ?>
+    ```
 
 2. Usar el nuevo wrapper de vistas `Goteo\Application\View` y no el antiguo `Gote\Core\View`. La Función de renderizado es `View::render(...)`
 
@@ -336,8 +358,8 @@ Después: `templates/default/discover/results.php`
 
 $this->layout("layout", [
     'bodyClass' => 'discover',
-    'meta_description' => $this->text('meta-description-discover'),
-    'image' => $og_image
+    'title' => $this->text('meta-title-discover'),
+    'meta_description' => $this->text('meta-description-discover')
     ]);
 
 $this->section('content');

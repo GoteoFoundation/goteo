@@ -1,31 +1,22 @@
 <?php
 
-	use Goteo\Core\View;
-
 $this->layout("layout", [
     'bodyClass' => 'discover',
-    'meta_description' => $this->text('meta-description-discover'),
-    'image' => $og_image
+    'title' => $this->text('meta-title-discover'),
+    'meta_description' => $this->text('meta-description-discover')
     ]);
-
 
 $this->section('content');
 ?>
 
         <div id="sub-header">
             <div>
-                <h2><?=$this->text_html('discover-banner-header') ?></h2>
+                <h2><?=$this->text_html('discover-banner-header')?></h2>
             </div>
         </div>
 
         <div id="main">
-            <?php echo View::get('discover/searcher.html.php',
-                                array(
-                                    'categories' => $categories,
-                                    'locations'  => $locations,
-                                    'rewards'    => $rewards
-                                )
-                ); ?>
+            <?=$this->insert('discover/searcher', ['categories' => $categories, 'locations' => $locations, 'rewards' => $rewards]); ?>
 
 		<?php foreach ($this->lists as $type=>$list) :
             if (array_empty($list))
@@ -41,7 +32,7 @@ $this->section('content');
                         </div>
 
                         <?php foreach ($projects['items'] as $project) :
-                            echo View::get('project/widget/project.html.php', array('project' => $project));
+                            echo $this->insert('project/widget/project', ['project' => $project]);
                         endforeach; ?>
 
                         <div class="discover-arrow-right">

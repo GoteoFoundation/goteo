@@ -2,8 +2,8 @@
 
 $this->layout("layout", [
     'bodyClass' => 'discover',
-    'meta_description' => $this->text('meta-description-discover'),
-    'image' => $og_image
+    'title' => $this->text('meta-title-discover'),
+    'meta_description' => $this->text('meta-description-discover')
     ]);
 
 $this->section('content');

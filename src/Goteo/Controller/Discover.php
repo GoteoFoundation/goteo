@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Application\View;
 use Goteo\Model;
-use Goteo\Core\Redirection;
 use Goteo\Library\Text;
 use Goteo\Library\Message;
 use Goteo\Library\Listing;
@@ -168,35 +167,6 @@ class Discover extends \Goteo\Core\Controller {
     }
 
     /*
-     * Alias a mostrar todas las convocatorias
-     */
-    public function call () {
-        throw new Redirection('/discover/calls');
-    }
-
-     /*
-     * Ver todas las convocatorias
-     */
-    public function calls () {
-
-        $viewData = array();
-
-        // segun el tipo cargamos el título de la página
-        $viewData['title'] = Text::html('discover-calls-header');
-
-        // segun el tipo cargamos la lista
-        $viewData['list']  = Model\Call::getActive(null, true);
-
-
-        return new View(
-            'discover/calls.html.php',
-            $viewData
-         );
-
-    }
-
-
-    /*
      * proyectos recomendados por usuario padrino (patron)
      */
     public function patron ($user) {
@@ -209,11 +179,7 @@ class Discover extends \Goteo\Core\Controller {
         // segun el tipo cargamos la lista
         $viewData['list']  = Model\Patron::getList($user);
 
-
-        return new View(
-            'discover/patron.html.php',
-            $viewData
-         );
+        return new Response(View::render('discover/patron', $viewData));
 
     }
 

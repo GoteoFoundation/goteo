@@ -127,7 +127,6 @@ try {
 
 } catch (Redirection $redirection) {
     $url = $redirection->getURL();
-    die($url);
     $code = $redirection->getCode();
     header("Location: {$url}");
 
