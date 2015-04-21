@@ -105,7 +105,7 @@ if (!empty($project->costs)) {
                                     'label'     => Text::get('costs-field-required_cost-no')
                                 )
                         ),
-                        'value'     => $cost->required,
+                        'value'     => empty($cost->required) ? '0' : $cost->required,
                         'errors'    => !empty($errors["cost-{$cost->id}-required"]) ? array($errors["cost-{$cost->id}-required"]) : array(),
                         'ok'        => !empty($okeys["cost-{$cost->id}-required"]) ? array($okeys["cost-{$cost->id}-required"]) : array(),
                         'hint'      => Text::get('tooltip-project-cost-required'),
