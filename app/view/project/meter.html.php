@@ -98,7 +98,17 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 ?>        
     <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : ''; echo $activable ? ' activable' : ''; ?>">
         <h<?php echo $level ?> class="title investment"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
-        <?php if (!$project->one_round && !empty($round)) : ?><h<?php echo $level ?> class="title ronda"><?php echo $round . Text::get('regular-round'); ?></h<?php echo $level ?>><?php endif; ?>
+        
+        <?php if (!$project->one_round && !empty($round)) : ?>
+            <h<?php echo $level ?> class="title ronda">
+            <?php echo $round . Text::get('regular-round'); ?></h<?php echo $level ?>>
+        <?php elseif ($project->one_round) : ?>
+            <h<?php echo $level ?> class="title ronda unica">
+            <?php echo Text::get('regular-oneround_mark'); ?></h<?php echo $level ?>>
+        <?php endif; ?>
+
+
+        
         <?php if ($activable) : ?><h<?php echo $level ?> class="title obtained"><?php echo Text::get('project-view-metter-got'); ?></h<?php echo $level ?>><?php endif; ?>
         <div class="graph">
             <div class="optimum">
