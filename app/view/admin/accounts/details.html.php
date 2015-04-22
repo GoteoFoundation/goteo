@@ -50,7 +50,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <a href="/admin/accounts/resign/<?php echo $invest->id ?>/?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
         <?php endif; ?>
     </p>
-    
+
     <h3>Detalles de la transaccion</h3>
     <dl>
         <dt>Cantidad aportada:</dt>
@@ -84,6 +84,13 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <dt>Donativo:</dt>
         <dd>
             <?php echo ($invest->resign) ? 'SI' : 'NO'; ?>
+        </dd>
+    </dl>
+
+    <dl>
+        <dt>Pool (guardado cómo crédito):</dt>
+        <dd>
+            <?php echo ($invest->pool) ? 'SI' : 'NO'; ?>
         </dd>
     </dl>
 
