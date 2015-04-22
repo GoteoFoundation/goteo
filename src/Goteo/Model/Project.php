@@ -2937,13 +2937,9 @@ namespace Goteo\Model {
                 LEFT JOIN project_conf ON project_conf.project = project.id
                 WHERE project.status = 3
                 AND (
-                    ((passed IS NULL OR passed = '0000-00-00') AND
                       DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) BETWEEN -3 AND 5
-                    )
                     OR
-                    ((success IS NULL OR success = '0000-00-00') AND
                       DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) BETWEEN -3 AND 3
-                    )
                 )
                 ORDER BY name ASC
             ";
