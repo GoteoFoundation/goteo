@@ -262,7 +262,7 @@ echo SuperForm::get(array(
                                     'label'     => Text::get('project-two-rounds')
                                 )
                         ),
-                        'value'     => $project->one_round,
+                        'value'     => empty($project->one_round) ? '0' : $project->one_round,
                         'errors'    => array(),
                         'ok'        => array(),
                         'hint'      => Text::get('tooltip-project-rounds')

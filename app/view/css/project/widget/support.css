@@ -133,6 +133,10 @@ body.project-show div#main > div.side > div.widget h3.title.ronda {
     text-transform: lowercase;
 }
 
+body.project-show div#main > div.side > div.widget h3.title.ronda {
+    text-transform: none;
+}
+
 div.widget.project-support div.graph {
     background: url('/view/css/project/widget/support/over.png') no-repeat center top;
     width: 26px;
