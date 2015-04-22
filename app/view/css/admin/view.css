@@ -170,3 +170,7 @@ body.admin div#main div.admin-center a.button {
     padding: 0.2em 0.4em !important;
 }
 
+/* tablas en zebra */
+body.admin table tbody tr:nth-child(odd) {
+   background-color: #f0f0f0;
+}

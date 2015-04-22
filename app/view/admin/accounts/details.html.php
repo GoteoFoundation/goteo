@@ -88,6 +88,13 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     </dl>
 
     <dl>
+        <dt>Pool (guardado cómo crédito):</dt>
+        <dd>
+            <?php echo ($invest->pool) ? 'SI' : 'NO'; ?>
+        </dd>
+    </dl>
+
+    <dl>
         <dt>Método de pago:</dt>
         <dd><?php echo $invest->method . '   '; ?>
             <?php

@@ -114,6 +114,7 @@ $emails = Invest::emails(true);
                 <th>Proyecto</th>
                 <th>Metodo</th>
                 <th>Estado</th>
+                <th>Pool</th>
             </tr>
         </thead>
 
@@ -130,10 +131,11 @@ $emails = Invest::emails(true);
                     ?>" <?php if ($invest->issue) echo ' style="color:red !important;"'; ?>>[Detalles]</a></td>
                 <td><?php echo $invest->amount ?></td>
                 <td><?php echo $invest->invested ?></td>
-                <td><a href="mailto:<?php echo $emails[$invest->user] ?>"><?php echo $emails[$invest->user]; ?></a><a href="/admin/users/manage/<?php echo $invest->user ?>" target="_blank" title="<?php echo $vars['users'][$invest->user]; ?>">[Usuario]</a></td>
-                <td><a href="/admin/projects/?proj_name=<?php echo $vars['projects'][$invest->project] ?>" target="_blank"><?php echo Text::recorta($vars['projects'][$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')'; ?></a></td>
+                <td><a href="mailto:<?php echo $emails[$invest->user] ?>"><?php echo $emails[$invest->user]; ?></a><a href="/admin/users/manage/<?php echo $invest->user ?>" target="_blank" title="<?php echo $this['users'][$invest->user]; ?>">[Usuario]</a></td>
+                <td><a href="/admin/projects/?proj_name=<?php echo $this['projects'][$invest->project] ?>" target="_blank"><?php echo Text::recorta($this['projects'][$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')'; ?></a></td>
                 <td><?php echo $vars['methods'][$invest->method] ?></td>
                 <td><?php echo $vars['investStatus'][$invest->investStatus] ?></td>
+                <td><?php echo $invest->pool ? 'Yes' : 'No' ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
