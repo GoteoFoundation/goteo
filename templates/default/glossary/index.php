@@ -1,20 +1,20 @@
 <?php
-use Goteo\Library\Text,
-    Goteo\Core\View,
+use 
+    
     Goteo\Util\Pagination\Paginated,
     Goteo\Util\Pagination\DoubleBarLayout;
 
-$posts = $vars['posts'];
-$index = $vars['index'];
+$posts = $this->posts;
+$index = $this->index;
 
 $letters = array();
 
 $bodyClass = 'glossary';
 
-$go_up = Text::get('regular-go_up');
+$go_up = $this->text('regular-go_up');
 
 // paginacion
-$pagedResults = new Paginated($posts, $vars['tpp'], isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($posts, $this->tpp, isset($_GET['page']) ? $_GET['page'] : 1);
 
 $this->layout("layout", [
     'bodyClass' => 'glossary',
@@ -24,18 +24,16 @@ $this->layout("layout", [
 
 $this->section('content');
 ?>
-
-?>
 	<div id="sub-header-secondary">
 		<div class="clearfix">
-            <h2><a href="/glossary">GOTEO<span class="red"><?php echo Text::get('footer-resources-glossary');?></span></a></h2>
-            <?php echo View::get('header/share.html.php') ?>
+            <h2><a href="/glossary">GOTEO<span class="red"><?=$this->text('footer-resources-glossary') ?></span></a></h2>
+            <?=$this->insert('partials/header/share')?>
 		</div>
 	</div>
 
 	<div id="main" class="threecols">
 		<div id="glossary-content">
-            <h3 class="title"><?php echo Text::get('regular-header-glossary'); ?></h3>
+            <h3 class="title"><?=$this->text('regular-header-glossary') ?></h3>
             <?php if (!empty($posts)) : ?>
                 <div class="glossary-page">
                 <?php while ($post = $pagedResults->fetchPagedRow()) : ?>
@@ -45,7 +43,7 @@ $this->section('content');
                         if (!in_array($leter, $letters)) :
                             $letters[] = $leter;
                         ?>
-                        <h4 class="supertitle"><?php echo $post->title[0]; ?></h4>
+                        <h4 class="supertitle"><?=$post->title[0] ?></h4>
                     <?php endif; ?>
                     <div class="post">
                         <?php if (count($post->gallery) > 1) : ?>

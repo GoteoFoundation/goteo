@@ -11,6 +11,8 @@ app/view/header/menu.html.php:               templates/default/partials/header/m
 app/view/header/message.html.php:            templates/default/partials/header/messages.php
 app/view/header/highlights.html.php:         templates/default/partials/header/highlights.php
 app/view/header/banner.html.php:             templates/default/partials/header/banner.php
+app/view/header/share.html.php:              templates/default/partials/header/share.php
+
 
 app/view/footer.html.php:           templates/default/partials/footer.php
 
@@ -42,4 +44,7 @@ app/view/discover/calls.html.php:          extend/goteo/templates/default/discov
 
 # Controller: Project
 app/view/project/widget/project.html.php:   templates/default/project/widget/project.php
+
+# Controller: Glossary
+app/view/glossary/index.html.php:   	   templates/default/glossary/index.php
 
