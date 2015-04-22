@@ -114,6 +114,7 @@ $emails = Invest::emails(true);
                 <th>Proyecto</th>
                 <th>Metodo</th>
                 <th>Estado</th>
+                <th>Pool</th>
             </tr>
         </thead>
 
@@ -134,6 +135,7 @@ $emails = Invest::emails(true);
                 <td><a href="/admin/projects/?proj_name=<?php echo $this['projects'][$invest->project] ?>" target="_blank"><?php echo Text::recorta($this['projects'][$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')'; ?></a></td>
                 <td><?php echo $this['methods'][$invest->method] ?></td>
                 <td><?php echo $this['investStatus'][$invest->investStatus] ?></td>
+                <td><?php echo $invest->pool ? 'Yes' : 'No' ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
