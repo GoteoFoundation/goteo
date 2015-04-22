@@ -1,7 +1,7 @@
 <?php
 $messages = $_SESSION['messages'];
 if(!$messages) return;
-unset($_SESSION['messages']);
+// unset($_SESSION['messages']);
 ?>
     <div id="message">
         <div id="message-content">
@@ -16,17 +16,3 @@ unset($_SESSION['messages']);
             </ul>
         </div>
     </div>
-
-
-<?php $this->section('footer') ?>
-
-    <script type="text/javascript">
-    	  jQuery(document).ready(function ($) {
-    		   $(".message-close").click(function (event) {
-    					$("#message").fadeOut(2000);
-               });
-    	  });
-    </script>
-
-<?php $this->append() ?>
-
