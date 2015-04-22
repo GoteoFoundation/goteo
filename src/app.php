@@ -75,5 +75,9 @@ $routes->add('discover-call', new Route(
     '/discover/call',
     array('_controller' => 'Goteo\Controller\DiscoverAddons::call')
 ));
+$routes->add('glossary', new Route(
+    '/glossary',
+    array('_controller' => 'Goteo\Controller\Glossary::index')
+));
 
 return $routes;

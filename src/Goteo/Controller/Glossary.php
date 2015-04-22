@@ -2,8 +2,13 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\View,
-        Goteo\Model;
+    use Goteo\Model;
+    use Goteo\Application\View;
+
+    use Symfony\Component\HttpFoundation\Response;
+
+
+
 
     class Glossary extends \Goteo\Core\Controller {
 
@@ -48,14 +53,14 @@ namespace Goteo\Controller {
                 }
             }
 
-            return new View(
-                'glossary/index.html.php',
-                array(
+            return new Response(View::render(
+            'glossary/index',
+            array(
                     'tpp'   => $tpp,
                     'index' => $index,
                     'posts' => $posts
                 )
-             );
+         ));
 
         }
 
