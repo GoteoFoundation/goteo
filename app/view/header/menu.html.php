@@ -14,6 +14,7 @@ $nodes = Nodesys::activeNodes();
             <li class="home"><a class="node-jump" href="<?php echo SITE_URL ?>"><?php echo Text::get('regular-home'); ?></a></li>
             <li class="explore"><a class="button red" href="/discover"><?php echo Text::get('regular-discover'); ?></a></li>
             <li class="create"><a class="button aqua" href="/project/create"><?php echo Text::get('regular-create'); ?></a></li>
+            <li class="create"><a class="button violet" href="/discover/calls"><?php echo Text::get('regular-call-button'); ?></a></li>
             <li class="search">
                 <form method="get" action="/discover/results">
                     <fieldset>
