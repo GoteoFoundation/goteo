@@ -31,7 +31,7 @@ class Discover extends \Goteo\Core\Controller {
         //activamos la cache para todo el controlador index
         \Goteo\Core\DB::cache(true);
 
-        //assign common variables to all methods using views with the word "discover/"
+        //assign common variables to all views containing the word "discover/"
         View::getEngine()->useContext('discover/', [
             'categories' => Category::getList(),   // categorias que se usan en proyectos
             'locations' => Project::getProjLocs(),  //localizaciones de royectos
