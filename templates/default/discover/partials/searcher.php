@@ -28,7 +28,7 @@ $params = $this->params;
                 <select id="category" name="category[]" multiple size="10">
                     <option class="all" value="all"<?php if (empty($params['category'])) echo ' selected="selected"'; ?>><?php echo Text::get('discover-searcher-bycategory-all'); ?></option>
                 <?php foreach ($categories as $id=>$name) : ?>
-                    <option value="<?php echo $id; ?>"<?php if (in_array("'{$id}'", $params['category'])) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
+                    <option value="<?php echo $id; ?>"<?=(in_array($id, $params['category']) ? ' selected="selected"':'')?>><?php echo $name; ?></option>
                 <?php endforeach; ?>
                 </select>
         </div>
@@ -38,7 +38,7 @@ $params = $this->params;
                 <select id="location" name="location[]" multiple size="10">
                     <option class="all" value="all"<?php if (empty($params['location'])) echo ' selected="selected"'; ?>><?php echo Text::get('discover-searcher-bylocation-all'); ?></option>
                 <?php foreach ($locations as $id=>$name) : ?>
-                    <option value="<?php echo $id; ?>"<?php if (in_array("'{$id}'", $params['location'])) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
+                    <option value="<?php echo $id; ?>"<?=(in_array($id, $params['location']) ? ' selected="selected"':'')?>><?php echo $name; ?></option>
                 <?php endforeach; ?>
                 </select>
         </div>
@@ -48,7 +48,7 @@ $params = $this->params;
                 <select id="reward" name="reward[]" multiple size="10">
                     <option class="all" value="all"<?php if (empty($params['reward'])) echo ' selected="selected"'; ?>><?php echo Text::get('discover-searcher-byreward-all'); ?></option>
                 <?php foreach ($rewards as $id=>$reward) : ?>
-                    <option value="<?php echo $id; ?>"<?php if (in_array("'{$id}'", $params['reward'])) echo ' selected="selected"'; ?>><?php echo $reward->name; ?></option>
+                    <option value="<?php echo $id; ?>"<?=(in_array($id, $params['reward']) ? ' selected="selected"':'  ')?>><?php echo $reward->name; ?></option>
                 <?php endforeach; ?>
                 </select>
         </div>

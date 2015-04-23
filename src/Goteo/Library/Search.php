@@ -22,26 +22,37 @@ namespace Goteo\Library {
             $where   = array();
             $values  = array(':lang' => \LANG);
 
-
             // @TODO : estos siguientes deberían ser JOINs
-            if (!empty($params['category'])) {
-                $where[] = 'AND project.id IN (
+            if ($category = $params['category']) {
+                if(!is_array($category)) $category = array($category);
+                $category = array_filter($category, function($v){return is_numeric($v);});
+                if($category) {
+                    $where[] = 'AND project.id IN (
                                     SELECT distinct(project)
                                     FROM project_category
-                                    WHERE category IN ('. implode(', ', $params['category']) . ')
+                                    WHERE category IN ('. implode(', ', $category) . ')
                                 )';
+                }
             }
 
-            if (!empty($params['location'])) {
-                $where[] = 'AND MD5(project.project_location) IN ('. implode(', ', $params['location']) .')';
+            if ($location = $params['location']) {
+                if(!is_array($location)) $location = array($location);
+                $location = array_map(function($v){return "'" .addslashes($v) . "'";}, $location);
+                if($location) {
+                    $where[] = 'AND MD5(project.project_location) IN ('. implode(', ', $location) .')';
             }
 
-            if (!empty($params['reward'])) {
-                $where[] = 'AND project.id IN (
+            if ($reward = $params['reward']) {
+                if(!is_array($reward)) $reward = array($reward);
+                }
+                $reward = array_map(function($v){return "'" .addslashes($v) . "'";}, $reward);
+                if($reward) {
+                    $where[] = 'AND project.id IN (
                                     SELECT DISTINCT(project)
                                     FROM reward
-                                    WHERE icon IN ('. implode(', ', $params['reward']) . ')
+                                    WHERE icon IN ('. implode(', ', $reward) . ')
                                     )';
+                }
             }
 
             if (!empty($params['query'])) {
@@ -134,7 +145,7 @@ namespace Goteo\Library {
                 $sql .= " LIMIT $limit";
             }
 
-//            die(\sqldbg($sql, $values));
+           // die(\sqldbg($sql, $values));
 
             try {
                 $query = Project::query($sql, $values);

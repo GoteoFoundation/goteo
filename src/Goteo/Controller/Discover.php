@@ -4,6 +4,7 @@ namespace Goteo\Controller;
 
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Goteo\Application\View;
@@ -60,50 +61,29 @@ class Discover extends \Goteo\Core\Controller {
     /*
      * Descubre proyectos, resultados de búsqueda
      */
-    public function results ($category = null) {
+    public function results ($category = null, Request $request) {
 
         $message = '';
         $results = null;
-        // si recibimos categoria por get emulamos post con un parametro 'category'
-        if (!empty($category)) {
-            $_POST['category'][] = $category;
+        $query                         = $request->query->get('query');
+        $status                        = $request->query->get('status');
+        if(empty($category)) $category = $request->request->get('category');
+        $location                      = $request->request->get('location');
+        $reward                        = $request->request->get('reward');
+        $params = [];
+        if($query)    $params['query']    =  strip_tags($query);
+        foreach(array('status', 'category', 'location', 'reward') as $key) {
+            if($request->request->has($key)) {
+                $val = $request->request->get($key);
+                $params[$key] = (is_array($val) ? $val : [$val]);
+                if(in_array('all', $val)) $params[$key] = array();
+            }
         }
 
-		if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['query']) && !isset($category)) {
-            $errors = array();
-
-            $query = \strip_tags($_GET['query']); // busqueda de texto
-
-            $results = \Goteo\Library\Search::params(array('query' => $query), false, 33);
-
-		} elseif (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searcher']) || !empty($category))) {
-
-            // vamos montando $params con los 3 parametros y las opciones marcadas en cada uno
-            $params = array('category'=>array(), 'location'=>array(), 'reward'=>array());
-
-            foreach ($params as $param => $empty) {
-                foreach ($_POST[$param] as $key => $value) {
-                    if ($value == 'all') {
-                        $params[$param] = array();
-                        break;
-                    }
-                    $params[$param][] = "'{$value}'";
-                }
-            }
-
-            if (isset($_GET['status'])) {
-                $params['status'] = $_GET['status'];
-            }
-
-
-            $query = \strip_tags($_POST['query']); // busqueda de texto
-            $params['query'] = $query;
-
-            // para cada parametro, si no hay ninguno es todos los valores
+        if($params) {
             $results = \Goteo\Library\Search::params($params, false, 33);
-
-
-        } else {
+        }
+        else {
             return new RedirectResponse('/discover');
         }
 
@@ -118,7 +98,7 @@ class Discover extends \Goteo\Core\Controller {
     /*
      * Descubre proyectos, ver todos los de un tipo
      */
-    public function view ($type = 'all') {
+    public function view ($type = 'all', Request $request) {
         $types = self::$types;
 
         $types[] = 'all';
@@ -135,19 +115,15 @@ class Discover extends \Goteo\Core\Controller {
         // segun el tipo cargamos el título de la página
         $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
-        $page = (is_numeric($_GET['page'])) ? $_GET['page'] : 1;
+        $page = max(1, (int) $request->request->get('page'));
         $items_per_page = 9;
         $viewData['list'] = Model\Project::published($type, $items_per_page, $page, $pages);
         $viewData['pages'] = $pages;
         $viewData['currentPage'] = $page;
 
         // segun el tipo cargamos la lista
-        if (isset($_GET['list'])) {
-
-            return new View(
-                'discover/list.html.php',
-                $viewData
-             );
+        if ($request->request->has('list')) {
+            return new Response(View::render('discover/list', $viewData));
 
         } else {
 
