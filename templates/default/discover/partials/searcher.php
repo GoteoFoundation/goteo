@@ -1,6 +1,6 @@
 <?php
 
-$reward = $this->reward;
+$rewards = $this->rewards;
 $locations = $this->locations;
 $categories = $this->categories;
 $params = $this->params;

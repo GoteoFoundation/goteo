@@ -30,6 +30,7 @@ class Discover extends \Goteo\Core\Controller {
     public function __construct() {
         //activamos la cache para todo el controlador index
         \Goteo\Core\DB::cache(true);
+
         //assign common variables to all methods using views with the word "discover/"
         View::getEngine()->useContext('discover/', [
             'categories' => Category::getList(),   // categorias que se usan en proyectos
@@ -70,28 +71,32 @@ class Discover extends \Goteo\Core\Controller {
     /*
      * Descubre proyectos, resultados de búsqueda
      */
-    public function results ($category = null, Request $request) {
+    public function results ($category = null, $name = null, Request $request) {
 
         $message = '';
         $results = null;
         $query                         = $request->query->get('query');
         if(empty($query))    $query    = $request->request->get('query');
 
-        $status                        = $request->query->get('status');
-        if(empty($category)) $category = $request->request->get('category');
-        $location                      = $request->request->get('location');
-        $reward                        = $request->request->get('reward');
+        // $params['status']              = $request->request->get('status');
         $params = [];
-        if($query)    $params['query']    =  strip_tags($query);
 
-        foreach(array('status', 'category', 'location', 'reward') as $key) {
+        if($query)    $params['query']    =  strip_tags($query);
+        foreach(array('category', 'location', 'reward') as $key) {
             if($request->request->has($key)) {
                 $val = $request->request->get($key);
-                $params[$key] = (is_array($val) ? $val : [$val]);
-                if(in_array('all', $val)) $params[$key] = array();
             }
+            elseif($key === 'category') {
+                if(empty($category)) $val = $request->request->get('category');
+            }
+            else {
+                continue;
+            }
+            $params[$key] = (is_array($val) ? $val : [$val]);
+            if(in_array('all', $val)) $params[$key] = array();
         }
 
+        // print_r($params);die;
         if($params) {
             $results = \Goteo\Library\Search::params($params, false, 33);
         }

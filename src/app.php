@@ -64,8 +64,9 @@ $routes->add('home', new Route(
 ));
 
 $routes->add('discover-results', new Route(
-    '/discover/results/{category}',
+    '/discover/results/{category}/{name}',
     array('category' => null,
+          'name' => null,
           '_controller' => 'Goteo\Controller\Discover::results',
           )
 ));
