@@ -19,7 +19,7 @@ $this->section('content');
 
         <div id="main">
 
-            <?=$this->insert('discover/partials/searcher', ['params' => $this->params])?>
+            <?=$this->insert('discover/partials/searcher')?>
 
             <div class="widget projects">
                 <?php if ($this->results) : ?>

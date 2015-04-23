@@ -11,19 +11,19 @@ $this->section('content');
 
         <div id="sub-header">
             <div>
-                <h2><?=$this->text_html('discover-banner-header')?></h2>
+                <h2><?= $this->text_html('discover-banner-header') ?></h2>
             </div>
         </div>
 
         <div id="main">
-            <?=$this->insert('discover/partials/searcher', ['categories' => $categories, 'locations' => $locations, 'rewards' => $rewards])?>
+            <?= $this->insert('discover/partials/searcher') ?>
 
 		<?php foreach ($this->lists as $type => $list) :
             if (!$list)
                 continue;
             ?>
             <div class="widget projects">
-                <h2 class="title"><?=$this->text('discover-group-'.$type.'-header') ?></h2>
+                <h2 class="title"><?= $this->text('discover-group-'.$type.'-header') ?></h2>
                 <?php foreach ($list as $group=>$projects) : ?>
                     <div class="discover-group discover-group-<?php echo $type ?>" id="discover-group-<?php echo $type ?>-<?php echo $group ?>">
 
@@ -50,7 +50,7 @@ $this->section('content');
                         <li><a id="navi-discover-group-<?php echo $type.'-'.$group ?>" href="/discover/view/<?php echo $type; ?>" rev="<?php echo $type ?>" rel="<?php echo "{$type}-{$group}" ?>" class="navi-discover-group navi-discover-group-<?php echo $type ?>"><?php echo $group ?></a></li>
                         <?php endforeach ?>
                     </ul>
-                    <a class="all" href="/discover/view/<?php echo $type; ?>"><?=$this->text('regular-see_all')?></a>
+                    <a class="all" href="/discover/view/<?php echo $type; ?>"><?= $this->text('regular-see_all') ?></a>
                 </div>
 
             </div>

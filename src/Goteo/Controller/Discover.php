@@ -12,6 +12,9 @@ use Goteo\Model;
 use Goteo\Library\Text;
 use Goteo\Library\Message;
 use Goteo\Library\Listing;
+use Goteo\Model\Category;
+use Goteo\Model\Project;
+use Goteo\Model\Icon;
 
 class Discover extends \Goteo\Core\Controller {
 
@@ -27,6 +30,12 @@ class Discover extends \Goteo\Core\Controller {
     public function __construct() {
         //activamos la cache para todo el controlador index
         \Goteo\Core\DB::cache(true);
+        //assign common variables to all methods using views with the word "discover/"
+        View::getEngine()->useContext('discover/', [
+            'categories' => Category::getList(),   // categorias que se usan en proyectos
+            'locations' => Project::getProjLocs(),  //localizaciones de royectos
+            'rewards' => Icon::getList() // iconos que se usan en proyectos
+            ]);
     }
 
     /*
@@ -66,12 +75,15 @@ class Discover extends \Goteo\Core\Controller {
         $message = '';
         $results = null;
         $query                         = $request->query->get('query');
+        if(empty($query))    $query    = $request->request->get('query');
+
         $status                        = $request->query->get('status');
         if(empty($category)) $category = $request->request->get('category');
         $location                      = $request->request->get('location');
         $reward                        = $request->request->get('reward');
         $params = [];
         if($query)    $params['query']    =  strip_tags($query);
+
         foreach(array('status', 'category', 'location', 'reward') as $key) {
             if($request->request->has($key)) {
                 $val = $request->request->get($key);
