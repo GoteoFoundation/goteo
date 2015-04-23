@@ -94,7 +94,7 @@ namespace Goteo\Controller\Dashboard {
             $errors = array();
 
             // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
-            if ($project->status < 3 || $project->status == 6) {
+            if ($project->status < 3) {
                 Message::Error(Text::get('dashboard-project-blog-wrongstatus'));
                 throw new Redirection('/dashboard/projects/summary');
             }
