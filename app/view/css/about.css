@@ -4,7 +4,7 @@ body.about div#main div.widget {
 }
 
 body.about div#sub-header {
-    min-height: 100px;
+    min-height: 50px;
 }
 
 div.field {
