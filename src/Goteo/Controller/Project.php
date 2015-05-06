@@ -5,7 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Core\ACL,
         Goteo\Core\Error,
         Goteo\Core\Redirection,
-        Goteo\Core\View,
+        Goteo\Application\View,
         Goteo\Application\Session,
         Goteo\Controller\Cron\Send,
         Goteo\Library\Text,
@@ -13,7 +13,9 @@ namespace Goteo\Controller {
         Goteo\Library,
         Goteo\Library\Template,
         Goteo\Library\Feed,
-        Goteo\Model;
+        Goteo\Model,
+        Symfony\Component\HttpFoundation\Response,
+        Symfony\Component\HttpFoundation\RedirectResponse;
 
     class Project extends \Goteo\Core\Controller {
 
@@ -21,9 +23,9 @@ namespace Goteo\Controller {
             if ($id !== null) {
                 return $this->view($id, $show, $post);
             } else if (isset($_GET['create'])) {
-                throw new Redirection("/project/create");
+                return new RedirectResponse('/project/create');
             } else {
-                throw new Redirection("/discover");
+                return new RedirectResponse('/discover');
             }
         }
 
@@ -53,13 +55,13 @@ namespace Goteo\Controller {
                 $project = Model\Project::getMini($id, null);
 
             } catch(\Goteo\Core\Error $e) {
-                throw new Redirection('/dashboard/projects');
+                return new RedirectResponse('/dashboard/projects');
             }
 
             // no lo puede eliminar si
             if (!Model\Project::userRemovable($project, Session::getUser())) {
                 Library\Message::Info('No tienes permiso para eliminar este proyecto');
-                throw new Redirection($goto);
+                return new RedirectResponse($goto);
             }
 
             $errors = array();
@@ -71,7 +73,7 @@ namespace Goteo\Controller {
             } else {
                 Library\Message::Info("No se han podido borrar los datos del proyecto '<strong>{$project->name}</strong>'. Error:" . implode(', ', $errors));
             }
-            throw new Redirection($goto);
+            return new RedirectResponse($goto);
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
@@ -85,12 +87,12 @@ namespace Goteo\Controller {
                 $project = Model\Project::get($id, null);
 
             } catch(\Goteo\Core\Error $e) {
-                throw new Redirection('/dashboard/projects');
+                return new RedirectResponse('/dashboard/projects');
             }
 
             if (!Model\Project::userEditable($project, Session::getUser())) {
                 Library\Message::Info('No tienes permiso para editar este proyecto');
-                throw new Redirection($goto);
+                return new RedirectResponse($goto);
             }
 
             $currency_data = Library\Currency::$currencies[$project->currency];
@@ -348,7 +350,7 @@ namespace Goteo\Controller {
                         $log->doAdmin('project');
                         unset($log);
 
-                        throw new Redirection("/dashboard?ok");
+                        return new RedirectResponse('/dashboard?ok');
                     } else {
                         Library\Message::Error(Text::get('project-review-request_mail-fail'));
                         Library\Message::Error(implode('<br />', $errors));
@@ -501,11 +503,12 @@ namespace Goteo\Controller {
             if (! ($user = Session::getUser()) ) {
                 $_SESSION['jumpto'] = '/project/create';
                 Library\Message::Info(Text::get('user-login-required-to_create'));
-                throw new Redirection(SEC_URL.'/user/login');
+                return new RedirectResponse(SEC_URL.'/user/login');
             }
 
             if ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
-                throw new Redirection("/about/howto");
+                return new RedirectResponse('/about/howto');
+
             }
 
             $project = new Model\Project(array('owner' => Session::getUserId()));
@@ -582,7 +585,7 @@ namespace Goteo\Controller {
                     }
                 }
 
-                throw new Redirection("/project/edit/{$project->id}");
+                return new RedirectResponse('/project/edit/{$project->id}');
             }
 
             throw new \Goteo\Core\Exception('Error creating project: ' . implode("\n", $errors));
@@ -660,12 +663,12 @@ namespace Goteo\Controller {
                     // si no está en campaña no pueden estar aqui ni de coña
                     if ($project->status != 3) {
                         Library\Message::Info(Text::get('project-invest-closed'));
-                        throw new Redirection('/project/'.$id, Redirection::TEMPORARY);
+                        return new RedirectResponse('/project/'.$id, Redirection::TEMPORARY);
                     }
 
                     if ($project->noinvest) {
                         Library\Message::Error(Text::get('investing_closed'));
-                        throw new Redirection('/project/'.$id);
+                        return new RedirectResponse('/project/'.$id);
                     }
 
                     $viewData['show'] = 'supporters';
@@ -769,12 +772,11 @@ namespace Goteo\Controller {
                 if ($show == 'messages' && $project->status < 3) {
                     Library\Message::Info(Text::get('project-messages-closed'));
                 }
-
-                return View::get('project/view.html.php', $viewData);
+                return new Response(View::render('project/index', $viewData));
 
             } else {
                 // no lo puede ver
-                throw new Redirection("/");
+                return new RedirectResponse('/');
             }
         }
 
