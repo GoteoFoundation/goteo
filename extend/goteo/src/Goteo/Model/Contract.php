@@ -141,7 +141,6 @@ namespace Goteo\Model {
 
             // @FIXME esto tendria que venir de lo rellenado en el paso 2 del formulario de proyecto
             $personalData = \Goteo\Model\User::getPersonal($projData->owner);
-
             // persona física o representante
             $contract->name = $personalData->contract_name;
             $contract->nif = $personalData->contract_nif;

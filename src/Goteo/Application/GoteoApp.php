@@ -4,16 +4,16 @@ namespace Goteo\Application;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
+use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
 class GoteoApp
 {
     protected $matcher;
     protected $resolver;
 
-    public function __construct(UrlMatcher $matcher, ControllerResolver $resolver)
+    public function __construct(UrlMatcherInterface $matcher, ControllerResolverInterface $resolver)
     {
         $this->matcher = $matcher;
         $this->resolver = $resolver;
@@ -41,9 +41,8 @@ class GoteoApp
             catch(\Goteo\Core\Error $e) {
                 return new Response(View::render('errors/not_found', ['msg' => $e->getMessage() ? $e->getMessage() : 'Not found', 'code' => $e->getCode()]), $e->getCode());
             }
-        catch(LogicException $e) {
+        } catch(\LogicException $e) {
             return new Response(View::render('errors/not_found', ['msg' => $e->getMessage(), 'code' => 500]), 500);
-        }
         } catch (\Exception $e) {
             return new Response(View::render('errors/default', ['msg' => $e->getMessage(), 'code' => 500]), 500);
             // return new Response('An error occurred', 500);

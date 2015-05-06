@@ -123,9 +123,6 @@ try {
     } catch (\ReflectionException $e) {
         // esto tendría que notificar a \GOTEO_FAIL_MAIL
         die($e->getMessage());
-    } catch (\Exception $e) {
-        // esto tendría que notificar a \GOTEO_FAIL_MAIL
-        throw new Error(Error::NOT_FOUND, $e->getMessage());
     }
     throw new Error(Error::NOT_FOUND);
 

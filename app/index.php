@@ -134,8 +134,9 @@ if (!Cookie::exists('goteo_cookies')) {
     Message::Info(Text::get('message-cookies'));
 }
 
+require_once __DIR__ . '/../src/defaults.php';
 
- $routes = include __DIR__.'/../src/app.php';
+$routes = include __DIR__.'/../src/app.php';
 
 $context = new RequestContext();
 $context->fromRequest($request);
