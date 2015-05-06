@@ -40,6 +40,10 @@ if ($request->query->has('sqldebug') && !defined('DEBUG_SQL_QUERIES')) {
     define('DEBUG_SQL_QUERIES', intval($request->query->get('sqldebug')));
 }
 
+// Quitar legacy
+if (!$request->query->has('no-legacy') && !defined('USE_LEGACY_DISPACHER')) {
+    define('USE_LEGACY_DISPACHER', true);
+}
 
 //clean all caches if requested
 if ($request->query->has('cleancache')) {

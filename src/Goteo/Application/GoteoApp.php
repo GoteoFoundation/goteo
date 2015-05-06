@@ -29,20 +29,25 @@ class GoteoApp
 
             return call_user_func_array($controller, $arguments);
         } catch (ResourceNotFoundException $e) {
-            //Try legacy controller
-            try {
-                ob_start();
-                // Get buffer contents
-                include __DIR__ . '/../../../src/legacy_dispatcher.php';
-                $content = ob_get_contents();
-                ob_get_clean();
-                return new Response($content);
+            if(defined('USE_LEGACY_DISPACHER') && USE_LEGACY_DISPACHER) {
+                //Try legacy controller
+                try {
+                    ob_start();
+                    // Get buffer contents
+                    include __DIR__ . '/../../../src/legacy_dispatcher.php';
+                    $content = ob_get_contents();
+                    ob_get_clean();
+                    return new Response($content);
+                }
+                catch(\Goteo\Core\Error $e) {
+                    return new Response(View::render('errors/not_found', ['msg' => $e->getMessage() ? $e->getMessage() : 'Not found', 'code' => $e->getCode()]), $e->getCode());
+                }
             }
-            catch(\Goteo\Core\Error $e) {
-                return new Response(View::render('errors/not_found', ['msg' => $e->getMessage() ? $e->getMessage() : 'Not found', 'code' => $e->getCode()]), $e->getCode());
+            else {
+                return new Response(View::render('errors/not_found', ['msg' => $e->getMessage(), 'code' => 500]), 500);
             }
         } catch(\LogicException $e) {
-            return new Response(View::render('errors/not_found', ['msg' => $e->getMessage(), 'code' => 500]), 500);
+            return new Response(View::render('errors/not_found', ['msg' => 'Not found', 'code' => 500]), 500);
         } catch (\Exception $e) {
             return new Response(View::render('errors/default', ['msg' => $e->getMessage(), 'code' => 500]), 500);
             // return new Response('An error occurred', 500);
