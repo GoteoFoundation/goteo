@@ -4,6 +4,7 @@ use Goteo\Core\Resource;
 use Goteo\Core\Error;
 use Goteo\Core\Redirection;
 use Goteo\Core\ACL;
+use Goteo\Core\View;
 use Goteo\Application\Session;
 use Goteo\Library\Message;
 use Goteo\Library\Text;
@@ -97,7 +98,10 @@ try {
             }
 
             //esto suele llamar a un metodo magic: __toString de la vista View
-            echo $result;
+            if($result instanceOf View) {
+                echo $result->render();
+            }
+            else echo $result;
 
             // if ($mime_type == "text/html" && GOTEO_ENV != 'real') {
             if ($mime_type == "text/html") {
@@ -112,22 +116,23 @@ try {
 
                 echo '<!-- '.(microtime(true) - Session::getStartTime() ) . 's -->';
             }
-
-            // Farewell
-            die;
-
+            //Farewell
+            return;
         }
 
     } catch (\ReflectionException $e) {
         // esto tendría que notificar a \GOTEO_FAIL_MAIL
         die($e->getMessage());
+    } catch (\Exception $e) {
+        // esto tendría que notificar a \GOTEO_FAIL_MAIL
+        throw new Error(Error::NOT_FOUND, $e->getMessage());
     }
-
     throw new Error(Error::NOT_FOUND);
 
 } catch (Redirection $redirection) {
     $url = $redirection->getURL();
     $code = $redirection->getCode();
     header("Location: {$url}");
-
+    exit;
 }
+
