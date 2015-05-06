@@ -18,26 +18,26 @@ class GoteoAppTest extends \PHPUnit_Framework_TestCase {
         return $ob;
     }
 
-    public function testNotFoundHandling()
-    {
-        $framework = $this->getFrameworkForException(new ResourceNotFoundException());
+    // public function testNotFoundHandling()
+    // {
+    //     $framework = $this->getFrameworkForException(new ResourceNotFoundException());
 
-        $response = $framework->handle(new Request());
+    //     $response = $framework->handle(new Request());
 
-        $this->assertEquals(404, $response->getStatusCode());
-    }
+    //     $this->assertEquals(404, $response->getStatusCode());
+    // }
 
-    protected function getFrameworkForException($exception)
-    {
-        $matcher = $this->getMock('Symfony\Component\Routing\Matcher\UrlMatcherInterface');
-        $matcher
-            ->expects($this->once())
-            ->method('match')
-            ->will($this->throwException($exception))
-        ;
-        $resolver = $this->getMock('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface');
+    // protected function getFrameworkForException($exception)
+    // {
+    //     $matcher = $this->getMock('Symfony\Component\Routing\Matcher\UrlMatcherInterface');
+    //     $matcher
+    //         ->expects($this->once())
+    //         ->method('match')
+    //         ->will($this->throwException($exception))
+    //     ;
+    //     $resolver = $this->getMock('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface');
 
-        return new GoteoApp($matcher, $resolver);
-    }
+    //     return new GoteoApp($matcher, $resolver);
+    // }
 
 }

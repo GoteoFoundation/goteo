@@ -15,13 +15,9 @@ use Goteo\Library\Text;
 use Goteo\Library\Message;
 use Goteo\Library\Currency;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing;
 use Symfony\Component\HttpKernel;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 require_once __DIR__ . '/config.php';
 
@@ -142,12 +138,19 @@ require_once __DIR__ . '/../src/defaults.php';
 
 $routes = include __DIR__.'/../src/app.php';
 
-$context = new RequestContext();
-$context->fromRequest($request);
-$matcher = new UrlMatcher($routes, $context);
+$context = new Routing\RequestContext();
+$matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 $resolver = new HttpKernel\Controller\ControllerResolver();
 
-$framework = new GoteoApp($matcher, $resolver);
+$dispatcher = new EventDispatcher();
+//Rutas
+$dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher));
+//Control 404 y legacy ControllerResolver
+$dispatcher->addSubscriber(new HttpKernel\EventListener\ExceptionListener('Goteo\\Controller\\ErrorController::exceptionAction'));
+//Authomatic HTTP correct specifications
+$dispatcher->addSubscriber(new HttpKernel\EventListener\ResponseListener('UTF-8'));
+
+$framework = new GoteoApp($dispatcher, $resolver);
 $response = $framework->handle($request);
 
 $response->send();
