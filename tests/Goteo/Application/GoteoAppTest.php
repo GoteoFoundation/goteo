@@ -18,8 +18,7 @@ class GoteoAppTest extends \PHPUnit_Framework_TestCase {
         return $ob;
     }
 
-    // Esto solo funcionará cuando no esté el legacy_dispacher
-    public function _testNotFoundHandling()
+    public function testNotFoundHandling()
     {
         $framework = $this->getFrameworkForException(new ResourceNotFoundException());
 

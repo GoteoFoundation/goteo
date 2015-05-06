@@ -44,7 +44,7 @@ class GoteoApp
                 }
             }
             else {
-                return new Response(View::render('errors/not_found', ['msg' => $e->getMessage(), 'code' => 500]), 500);
+                return new Response(View::render('errors/not_found', ['msg' => $e->getMessage(), 'code' => 404]), 404);
             }
         } catch(\LogicException $e) {
             return new Response(View::render('errors/not_found', ['msg' => 'Not found', 'code' => 500]), 500);
