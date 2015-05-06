@@ -143,14 +143,19 @@ $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 $resolver = new HttpKernel\Controller\ControllerResolver();
 
 $dispatcher = new EventDispatcher();
-//Rutas
+//Security ACL
+$dispatcher->addSubscriber(new Goteo\Application\EventListener\AclListener($request));
+//Routes
 $dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher));
 //Control 404 y legacy ControllerResolver
 $dispatcher->addSubscriber(new HttpKernel\EventListener\ExceptionListener('Goteo\\Controller\\ErrorController::exceptionAction'));
-//Authomatic HTTP correct specifications
+//Automatic HTTP correct specifications
 $dispatcher->addSubscriber(new HttpKernel\EventListener\ResponseListener('UTF-8'));
+
+//TODO: debug toolbar for queries
 
 $framework = new GoteoApp($dispatcher, $resolver);
 $response = $framework->handle($request);
 
 $response->send();
+$framework->terminate();

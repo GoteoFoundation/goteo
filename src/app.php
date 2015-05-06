@@ -55,4 +55,6 @@ $routes->add('project', new Route(
     array('_controller' => 'Goteo\Controller\Project::index')
 ));
 
+//TODO IMPORTANTE: data/cache y cron
+
 return $routes;
