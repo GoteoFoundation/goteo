@@ -1,22 +1,41 @@
 <?php
 
-/**
- * Function utils for the templates system in goteo
- */
 namespace Goteo\Foil\Extension;
 
-use Foil\Engine;
-use Foil\Extension\ExtensionInterface;
-use Goteo\Application\View;
+use Foil\Contracts\ExtensionInterface;
+use Goteo\Library\Message;
 
 class GoteoCore implements ExtensionInterface
 {
-    protected $engine;
-    public $template; // must be public
 
-    public function register(Engine $engine)
+    private $args;
+
+    public function setup(array $args = [])
     {
-        $this->engine = $engine;
+        $this->args = $args;
+    }
+
+    public function provideFilters()
+    {
+        return [];
+    }
+
+    public function provideFunctions()
+    {
+        return [
+          'get_messages' => [$this, 'messages'],
+          'get_errors' => [$this, 'errors'],
+        ];
+    }
+
+    public function messages($var)
+    {
+        return Message::getMessages();
+    }
+
+    public function errors($var)
+    {
+        return Message::getErrors();
     }
 
 }

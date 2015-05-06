@@ -32,7 +32,7 @@ div#sub-header > div > h2 {
 }
 
 /* Main container */
-div#main {    
+div#main {
     width: 940px;
     margin: 10px auto;
     clear: both;
@@ -44,14 +44,14 @@ div#main {
 /**
  * Widgets
  */
- 
+
 div.widget {
     background-color: white;
     padding: 15px 20px;
-    overflow: hidden;    
+    overflow: hidden;
 }
 
- 
+
  div.widget .supertitle {
     font-size: 12px;
     font-weight: normal;
@@ -87,6 +87,8 @@ div.read_more a:hover {
 /** end readmore **/
 
 div#message{background: none repeat scroll 0 0 #19B4B2;color: #FFFFFF;padding: 20px 0;font-size: 14px;width: 100%;}
+div#message.message {background-color:#19B4B2; color: #FFFFFF;}
+div#message.error {background-color:#B32928; color: #FFFFFF;}
 div#message div#message-content{width:940px;margin:0 auto;position:relative;}
 div#message div#message-content input.message-close{ background:url('/view/css/message-close.png') no-repeat; width:34px;height:33px;border:none;position:absolute;top:-8px;right:0;z-index:100; cursor:pointer;}
 div#message div#message-content ul{list-style:none;margin:0;padding:0;}

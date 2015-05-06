@@ -34,7 +34,7 @@ View::addFolder(GOTEO_PATH . 'templates/default');
 
 
 // views function registering
-// View::getEngine()->loadExtension(new Extension\GoteoCore());
+View::getEngine()->loadExtension(new Extension\GoteoCore());
 View::getEngine()->loadExtension(new Extension\TextUtils(), [], true);
 View::getEngine()->loadExtension(new Extension\Pages(), [], true);
 

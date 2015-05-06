@@ -133,6 +133,7 @@ if (!Cookie::exists('goteo_cookies')) {
     Cookie::store('goteo_cookies', '1');
     Message::Info(Text::get('message-cookies'));
 }
+    // Message::Error('test error');
 
 require_once __DIR__ . '/../src/defaults.php';
 
@@ -152,6 +153,7 @@ $dispatcher->addSubscriber(new HttpKernel\EventListener\ExceptionListener('Goteo
 //Automatic HTTP correct specifications
 $dispatcher->addSubscriber(new HttpKernel\EventListener\ResponseListener('UTF-8'));
 
+//TODO: auto clear messages subscriber
 //TODO: debug toolbar for queries
 
 $framework = new GoteoApp($dispatcher, $resolver);
