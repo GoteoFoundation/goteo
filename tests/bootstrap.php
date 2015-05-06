@@ -13,4 +13,5 @@ define('SITE_URL', '//localhost');
 define('LANG', 'es');
 define('HTTPS_ON', false);
 
+include_once(__DIR__ . '/../src/defaults.php');
 

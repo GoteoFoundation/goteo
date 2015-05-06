@@ -6,6 +6,7 @@ use Goteo\Core\Redirection;
 use Goteo\Core\ACL;
 use Goteo\Core\Model;
 use Goteo\Core\NodeSys;
+use Goteo\Application\GoteoApp;
 use Goteo\Application\View;
 use Goteo\Application\Session;
 use Goteo\Application\Cookie;
@@ -133,37 +134,16 @@ if (!Cookie::exists('goteo_cookies')) {
     Message::Info(Text::get('message-cookies'));
 }
 
-$routes = include __DIR__ . '/../src/app.php';
+require_once __DIR__ . '/../src/defaults.php';
+
+$routes = include __DIR__.'/../src/app.php';
 
 $context = new RequestContext();
 $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
 $resolver = new HttpKernel\Controller\ControllerResolver();
 
-try {
-    try {
-        $request->attributes->add($matcher->match($request->getPathInfo()));
-
-        $controller = $resolver->getController($request);
-        $arguments = $resolver->getArguments($request, $controller);
-
-        $response = call_user_func_array($controller, $arguments);
-    } catch (ResourceNotFoundException $e) {
-        //Try legacy controller
-        try {
-            include __DIR__ . '/../src/legacy_dispatcher.php';
-        }
-        catch(Error $e) {
-            $response = new Response(View::render('errors/not_found', ['msg' => 'Not found', 'code' => $e->getCode()]), $e->getCode());
-        }
-        // $response = new Response(View::render('errors/not_found', ['msg' => 'Not found', 'code' => 404]), 404);
-    }
-    catch(LogicException $e) {
-        $response = new Response(View::render('errors/not_found', ['msg' => $e->getMessage(), 'code' => 500]), 500);
-    }
-} catch (Exception $e) {
-    $response = new Response(View::render('errors/default', ['msg' => $e->getMessage(), 'code' => 500]), 500);
-    // $response = new Response($e->getMessage(), 500);
-}
+$framework = new GoteoApp($matcher, $resolver);
+$response = $framework->handle($request);
 
 $response->send();

@@ -24,3 +24,4 @@ if (file_exists($config_file)) { //en .gitignore
     $demo_config_file = GOTEO_PATH . 'config/demo-settings.php';
     die('<h2>No se encuentra el archivo de configuraci&oacute;n <code><strong>config/settings.php</strong></code>, debes crear este archivo en el subdirectorio config/.</h2><p>Puedes usar el siguiente c&oacute;digo modificado con los credenciales adecuados.</p>' . highlight_string(file_get_contents($demo_config_file), true) );
 }
+

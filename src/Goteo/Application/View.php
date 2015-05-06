@@ -22,6 +22,9 @@ class View {
     }
 
     static public function render($view, $vars = null) {
+        if(!self::$engine) {
+            self::$engine = Foil\engine();
+        }
         self::$engine->vars = $vars;
         return self::$engine->render($view, $vars + array('vars' => $vars)); //por compatibilidad
     }
