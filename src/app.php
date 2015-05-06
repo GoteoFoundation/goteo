@@ -98,4 +98,14 @@ $routes->add('glossary', new Route(
     array('_controller' => 'Goteo\Controller\Glossary::index')
 ));
 
+$routes->add('project-sections', new Route(
+    '/project/{id}/{show}',
+    array('_controller' => 'Goteo\Controller\Project::index')
+));
+
+$routes->add('project', new Route(
+    '/project/{id}',
+    array('_controller' => 'Goteo\Controller\Project::index')
+));
+
 return $routes;
