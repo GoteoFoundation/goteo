@@ -3,12 +3,13 @@
 namespace Goteo\Controller {
 
     use Goteo\Library\Page,
-        Goteo\Core\Redirection,
-        Goteo\Core\View,
+        Goteo\Application\View,
         Goteo\Model,
         Goteo\Library\Text,
         Goteo\Library\Mail,
-        Goteo\Library\Template;
+        Goteo\Library\Template,
+        Symfony\Component\HttpFoundation\Response,
+        Symfony\Component\HttpFoundation\RedirectResponse;
 
     class About extends \Goteo\Core\Controller {
 
@@ -26,23 +27,30 @@ namespace Goteo\Controller {
 
             // paginas especificas
             if ($id == 'faq' || $id == 'contact') {
-                throw new Redirection('/'.$id, Redirection::TEMPORARY);
+                new RedirectResponse('/'.$id, Redirection::TEMPORARY);
             }
 
             // en estos casos se usa el contenido de goteo
             if ($id == 'howto' || $id == 'call') {
                 if (!$_SESSION['user'] instanceof Model\User) {
-                    throw new Redirection('/');
+                    new RedirectResponse('/');
                 }
                 $page = Page::get($id);
-                return new View(
+                /*return new View(
                     'about/howto.html.php',
                     array(
                         'name' => $page->name,
                         'description' => $page->description,
                         'content' => $page->content
                     )
-                 );
+                 );*/
+                 return new Response(View::render('about/howto', array(
+                        'name' => $page->name,
+                        'description' => $page->description,
+                        'content' => $page->content
+                    )
+                 ));
+
             }
 
             // el tipo de contenido de la pagina about es diferente
@@ -57,12 +65,17 @@ namespace Goteo\Controller {
                 if (NODE_ID == \GOTEO_NODE) {
                     $posts = Model\Info::getAll(true, \GOTEO_NODE);
 
-                    return new View(
+                    /*return new View(
                         'about/info.html.php',
                         array(
                             'posts' => $posts
                         )
-                     );
+                     );*/
+
+                    return new Response(View::render('about/info', array(
+                        'posts' => $posts
+                    )
+                 ));
                 } else {
 
                     return \Goteo\Controller\Index::node_index('about');
@@ -87,14 +100,21 @@ namespace Goteo\Controller {
             // resto de casos
             $page = Page::get($id);
 
-            return new View(
+            /*return new View(
                 'about/sample.html.php',
                 array(
                     'name' => $page->name,
                     'description' => $page->description,
                     'content' => $page->content
                 )
-             );
+             );*/
+
+            return new Response(View::render('about/sample', array(
+                        'name' => $page->name,
+                        'description' => $page->description,
+                        'content' => $page->content
+                    )
+                 ));
 
         }
 

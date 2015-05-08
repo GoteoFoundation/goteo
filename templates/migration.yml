@@ -44,7 +44,19 @@ app/view/discover/calls.html.php:          extend/goteo/templates/default/discov
 
 # Controller: Project
 app/view/project/widget/project.html.php:   templates/default/project/widget/project.php
+app/view/project/view.html.php:   			templates/default/project/index.php
+
 
 # Controller: Glossary
 app/view/glossary/index.html.php:   	   templates/default/glossary/index.php
+
+# Controller: About
+app/view/about/contact.html.php:   	   	   templates/default/about/contact.php
+app/view/about/howto.html.php:   	   	   templates/default/about/howto.php
+app/view/about/info.html.php:   	   	   templates/default/about/info.php
+app/view/about/sample.html.php:   	   	   templates/default/about/sample.php
+
+
+
+
 
