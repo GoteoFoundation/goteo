@@ -29,7 +29,10 @@ if (isset($vars['investor']) && is_object($vars['investor'])) {
 
 // veamos si tiene el grifo cerrado mientras continua en campaña
 if ($project->status == 3 && $project->noinvest) {
-    $project->tagmark = 'gotit'; // banderolo financiado
+    if($project->amount >= $project->mincost)
+        $project->tagmark = 'gotit'; // banderolo financiado
+    else
+        $project->tagmark= '';
     $project->status = null; // para termometro, sin fecha de financiación
     $project->round = null; // no mostrar ronda
 }
