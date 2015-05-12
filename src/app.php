@@ -45,6 +45,16 @@ $routes->add('glossary', new Route(
     array('_controller' => 'Goteo\Controller\Glossary::index')
 ));
 
+$routes->add('project-edit', new Route(
+    '/project/edit/{id}',
+    array('_controller' => 'Goteo\Controller\Project::edit')
+));
+
+$routes->add('project-create', new Route(
+    '/project/create',
+    array('_controller' => 'Goteo\Controller\Project::create')
+));
+
 $routes->add('project-sections', new Route(
     '/project/{id}/{show}',
     array('_controller' => 'Goteo\Controller\Project::index')
@@ -53,6 +63,11 @@ $routes->add('project-sections', new Route(
 $routes->add('project', new Route(
     '/project/{id}',
     array('_controller' => 'Goteo\Controller\Project::index')
+));
+
+$routes->add('about-sections', new Route(
+    '/about/{id}',
+    array('_controller' => 'Goteo\Controller\About::index')
 ));
 
 $routes->add('about', new Route(

@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Application\View,
+        Goteo\Application\Lang,
         Goteo\Application\Session,
         Goteo\Controller\Cron\Send,
         Goteo\Library\Text,
@@ -78,6 +79,7 @@ namespace Goteo\Controller {
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
         public function edit ($id, $step = 'userProfile') {
+
             $user = Session::getUser();
             // redirección según usuario
             $goto = isset($user->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
@@ -412,7 +414,7 @@ namespace Goteo\Controller {
 
                 case 'overview':
                     $viewData['categories'] = Model\Project\Category::getAll();
-                    $viewData['languages']  = Application\Lang::listAll('object'); // idiomas activos
+                    $viewData['languages']  = Lang::listAll('object'); // idiomas activos
                     $viewData['currencies'] = Library\Currency::$currencies; // divisas
                     $viewData['default_currency'] = Library\Currency::DEFAULT_CURRENCY; // divisa por defecto
 
@@ -490,12 +492,14 @@ namespace Goteo\Controller {
             }
 
 
-            $view = new View (
+            /*$view = new View (
                 'project/edit.html.php',
                 $viewData
-            );
+            );*/
 
-            return $view;
+            return new Response(View::render('project/edit', $viewData));
+
+            //return $view;
 
         }
 
@@ -585,7 +589,7 @@ namespace Goteo\Controller {
                     }
                 }
 
-                return new RedirectResponse('/project/edit/{$project->id}');
+                return new RedirectResponse('/project/edit/'.$project->id);
             }
 
             throw new \Goteo\Core\Exception('Error creating project: ' . implode("\n", $errors));

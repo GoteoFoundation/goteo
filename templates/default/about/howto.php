@@ -2,7 +2,7 @@
 
 $this->layout("layout", [
     'bodyClass' => 'about',
-    'title' => $this->text('meta-title-glossary'),
+    'title' => $this->text('meta-title-howto'),
     'meta_description' => $this->text('meta-description-glossary')
     ]);
 
@@ -24,15 +24,15 @@ jQuery(document).ready(function($) {
 
     <div id="sub-header">
         <div>
-            <h2><?php echo $vars['description']; ?></h2>
+            <h2><?= $this->raw('description') ?></h2>
         </div>
     </div>
 
     <div id="main">
 
         <div class="widget">
-            <h3 class="title"><?php echo $vars['name']; ?></h3>
-            <?php echo $vars['content']; ?>
+            <h3 class="title"><?= $this->raw('name'); ?></h3>
+            <?= $this->raw('content'); ?>
         </div>
 
     </div>
