@@ -651,10 +651,7 @@ namespace Goteo\Model\Blog {
 
             $sql = "DELETE FROM post WHERE id = :id";
             if (self::query($sql, array(':id'=>$id))) {
-
-                // que elimine tambien sus imágenes
-                $sql = "DELETE FROM post_image WHERE post = :id";
-                self::query($sql, array(':id'=>$id));
+                // Imagenes se eliminan solas (foreign key)
 
                 return true;
             }
