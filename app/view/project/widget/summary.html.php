@@ -80,7 +80,7 @@ $putImages = function ($images) {
         <a class="next">next</a>
 		<!-- carrusel de imagenes -->
 	</div>
-    <?php elseif (!empty($project->gallery)) : ?>
+    <?php elseif ($project->gallery && $project->gallery[0]->imageData) : ?>
         <div class="gallery-image" id="gallery-image-<?php echo $i ?>"style="display:block;">
             <img src="<?php echo $project->gallery[0]->imageData->getLink(580, 580); ?>" alt="<?php echo $project->name; ?>" />
         </div>
