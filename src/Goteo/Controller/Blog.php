@@ -2,10 +2,12 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\View,
+    use Goteo\Application\View,
         Goteo\Library\Text,
         Goteo\Library\Message,
-        Goteo\Model;
+        Goteo\Model,
+        Symfony\Component\HttpFoundation\Response,
+        Symfony\Component\HttpFoundation\RedirectResponse;;
 
     class Blog extends \Goteo\Core\Controller {
 
@@ -63,20 +65,19 @@ namespace Goteo\Controller {
                         || !isset($_GET['preview'])
                         )
                     )
-                    throw new \Goteo\Core\Redirection('/blog');
+                    new RedirectResponse('/blog');
             }
 
             // segun eso montamos la vista
-            return new View(
-                'blog/index.html.php',
-                array(
-                    'blog' => $blog,
-                    'show' => $show,
-                    'filters'  => $filters,
-                    'post' => $post,
-                    'owner' => \GOTEO_NODE
-                )
-             );
+
+            return new Response(View::render('blog/index', array(
+                        'blog' => $blog,
+                        'show' => $show,
+                        'filters' => $filters,
+                        'post' => $post,
+                        'owner' => \GOTEO_NODE
+                    )
+            ));
 
         }
 

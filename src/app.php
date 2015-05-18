@@ -80,6 +80,15 @@ $routes->add('service', new Route(
     array('_controller' => 'Goteo\Controller\About::index')
 ));
 
+$routes->add('blog-post', new Route(
+    '/blog/{post}',
+    array('_controller' => 'Goteo\Controller\Blog::index')
+));
+$routes->add('blog', new Route(
+    '/blog',
+    array('_controller' => 'Goteo\Controller\Blog::index')
+));
+
 //TODO IMPORTANTE: data/cache y cron
 
 return $routes;
