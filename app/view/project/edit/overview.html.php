@@ -305,7 +305,7 @@ $superform = array(
             //use google maps autocomplete
             'class'     => 'geo-autocomplete',
             //write data to location tables
-            'data'      => array('geocoder-filter' => '(regions)', 'geocoder-type' => 'project', 'geocoder-item' => $project->id)
+            'data'      => array('geocoder-type' => 'project', 'geocoder-item' => $project->id)
         ),
 
         // video principal del proyecto
