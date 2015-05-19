@@ -1,17 +1,17 @@
 <?php
 
-
 namespace Goteo\Model\Tests;
 
 use Goteo\Model\Glossary;
 use Goteo\Model\Image;
 
 class GlossaryTest extends \PHPUnit_Framework_TestCase {
+
+    private static $data = array('title' => 'Test title', 'text' => 'Test text');
+
     private static $related_tables = array(
                     'glossary_image' => 'glossary',
                     'glossary_lang' => 'id');
-
-    private static $data = array('title' => 'Test title', 'text' => 'Test text');
 
     private static $image = array(
                         'name' => 'test.png',
@@ -19,16 +19,21 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
                         'tmp_name' => '',
                         'error' => '',
                         'size' => 0);
+    private static $image2;
 
     public static function setUpBeforeClass() {
 
        //temp file
         $i = base64_decode('iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABkElEQVRYhe3Wv2qDQBgA8LxJH8BXcHLN4pCgBxIOddAlSILorFDaQRzFEHEXUWyXlo6BrkmeI32Hr1PTMyb1rtpIIQff6vdTvz83unt+giFjdAP8awCXZ8Dl2XCAcRjAOAyGA8iaDrKmDwMQ4ggQUgAhBYQ4uj5AMswjQDLM6wJE3zsm/wrR964D4NOkkbzLr2AC8GkC8gxfBMgzDHya/A2AyzOQNf1i8iNC05lmAxWAy7Na0bWFZJjUCCrAdLmoJbDmFlRFCe+bDVhz6yxiulz0AyD7HSEFHu8fgDyu7XQqylbAxP1O4NoOnB6M1YuAiet0B5CF9/by2gC0FWRnAPnAj8OBCYCQ0i+A9vQKIAfPfrtrTb7f7mqDqTOAbMF1vGoFrOMVUyu2AsZhUPukP30F8u0RUqguK1SDiJyCGKtQFWUjeVWUtZakXdFUgHNLCGMVXNsB13Yas4BlKVEvIz5NqJcRy0ZkWsdcnoHoe2dXsjzDIPoe8y3511cyPk1AiCMQ4oj5DtALoK+4AQYHfALaYBdH6m2UnQAAAABJRU5ErkJggg==');
+        self::$image2 = self::$image;
         self::$image['tmp_name'] = __DIR__ . '/test-tmp.png';
+        self::$image2['tmp_name'] = __DIR__ . '/test-tmp2.png';
+        self::$image['name'] = 'other.png';
         file_put_contents(self::$image['tmp_name'], $i);
+        file_put_contents(self::$image2['tmp_name'], $i);
         self::$image['size'] = strlen($i);
+        self::$image2['size'] = strlen($i);
     }
-
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -54,8 +59,8 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
     public function testCreateGlossary() {
         $ob = new Glossary(self::$data);
         $this->assertTrue($ob->validate($errors));
-        $this->assertTrue($ob->save());
-
+        $this->assertTrue($ob->save($errors), $errors);
+        $this->assertNotEmpty($ob->id);
         return $ob;
 
     }
@@ -78,18 +83,23 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
      * @depends testGetGlossary
      */
     public function testEditGlossary($ob) {
-        //add image
         $ob->title = self::$data['title'] . " (edited)";
 
+        //add image
         $ob->image = self::$image;
 
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
+
+        //add second image
+        $ob->image = self::$image2;
+        $this->assertTrue($ob->save());
+
         $sob = Glossary::get($ob->id);
         $this->assertEquals($sob->title, $ob->title);
         $this->assertInternalType('array', $ob->gallery);
         $this->assertInternalType('array', $sob->gallery);
-        $this->assertCount(1, $sob->gallery);
+        $this->assertCount(2, $sob->gallery);
         $this->assertEquals($sob->gallery[0]->id, $ob->gallery[0]->id);
         $this->assertEquals($sob->image->id, $ob->gallery[0]->id);
         return $sob;
@@ -104,8 +114,8 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
         $ob->gallery = Image::getModelGallery('glossary', $ob->id);
         $ob->image = Image::getModelImage('', $ob->gallery);
         $this->assertInternalType('array', $ob->gallery);
-        $this->assertCount(0, $ob->gallery);
-        $this->assertEmpty($ob->image);
+        $this->assertCount(1, $ob->gallery);
+        $this->assertEquals($ob->image, $ob->gallery[0]);
     }
     /**
      * @depends testGetGlossary
@@ -127,5 +137,6 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
     static function tearDownAfterClass() {
         // Remove temporal files on finish
         unlink(self::$image['tmp_name']);
+        unlink(self::$image2['tmp_name']);
     }
 }

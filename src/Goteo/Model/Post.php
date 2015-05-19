@@ -329,7 +329,6 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             $fields = array(
-                'id',
                 'blog',
                 'title',
                 'text',
@@ -343,18 +342,10 @@ namespace Goteo\Model {
                 );
 
             $set = '';
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
 
             try {
-                $sql = "REPLACE INTO post SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->insertUpdate($fields);
 
                 return true;
             } catch(\PDOException $e) {

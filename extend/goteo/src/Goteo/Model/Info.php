@@ -144,7 +144,6 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             $fields = array(
-                'id',
                 'node',
                 'title',
                 'text',
@@ -154,18 +153,9 @@ namespace Goteo\Model {
                 'publish'
                 );
 
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
             try {
-                $sql = "REPLACE INTO info SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->insertUpdate($fields);
 
                 // Luego la imagen
                 if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {

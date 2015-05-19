@@ -166,7 +166,7 @@ namespace Goteo\Model\Project {
         /*
          * Para aplicar una seccion o un enlace
          */
-        public static function update ($project, $image, $field, $value) {
+        public static function updateImage ($project, $image, $field, $value) {
 
             $sql = "UPDATE project_image SET `$field` = :val WHERE project = :project AND MD5(image) = :image";
             if (self::query($sql, array(':project'=>$project, ':image'=>$image, ':val'=>$value))) {
@@ -213,33 +213,6 @@ namespace Goteo\Model\Project {
                 'play-video' => Text::get('overview-field-play-video')
             );
        }
-
-
-
-
-
-        // quizás no usamos esto para proyecto....
-
-        /*
-         * Recalcular galeria
-         * Para proyecto hay secciones y orden
-         *
-        public function setGallery () {
-            // $section
-            $this->gallery[] = Image::setGallery('project', $this->id);
-            return true;
-        }
-
-        /*
-         * Recalcular imagen principal
-         * Para widget es la primera de la galería principal
-         *
-        public function setImage () {
-            $this->image = Image::setImage('project', $this->id, $this->gallery);
-            return true;
-        }
-
-*/
 
     }
 

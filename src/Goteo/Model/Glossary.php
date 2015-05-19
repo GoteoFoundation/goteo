@@ -126,29 +126,21 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             $fields = array(
-                'id',
+                // 'id',
                 'title',
                 'text',
                 'legend',
                 'media'
                 );
 
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
             try {
-                $sql = "REPLACE INTO glossary SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->insertUpdate($fields);
 
                 // Luego la imagen
                 if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
+
                     if ($image->addToModelGallery('glossary', $this->id)) {
                         $this->gallery[] = $image;
                         // Pre-calculated field
@@ -161,7 +153,7 @@ namespace Goteo\Model {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = "Save error: " . $e->getMessage();
                 return false;
             }
         }

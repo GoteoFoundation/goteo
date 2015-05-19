@@ -472,7 +472,7 @@ namespace Goteo\Model\Blog {
             $set = '';
 
             $fields = array(
-                'id',
+                // 'id',
                 'blog',
                 'title',
                 'text',
@@ -486,22 +486,13 @@ namespace Goteo\Model\Blog {
                 'author'
                 );
 
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
             //eliminamos etiquetas script,iframe.. si no es admin o superadmin
             if(!(isset($_SESSION['user']->roles['superadmin'])||isset($_SESSION['user']->roles['admin'])))
-                $values[':text']=Text::tags_filter($values[':text']);
+                $this->text = Text::tags_filter($this->text);
 
             try {
-                $sql = "REPLACE INTO post SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->insertUpdate($fields);
 
                 // Luego la imagen
                 if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {
