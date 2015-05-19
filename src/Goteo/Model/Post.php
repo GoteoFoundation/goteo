@@ -38,7 +38,6 @@ namespace Goteo\Model {
                         IFNULL(post_lang.text, post.text) as `text`,
                         post.blog as blog,
                         post.image as image,
-                        post.gallery as gallery,
                         post.media as `media`,
                         DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                         post.author as author,
@@ -66,22 +65,8 @@ namespace Goteo\Model {
                 }
 
                 if($post instanceOf \Goteo\Model\Post) {
-                    // campo calculado gallery
-                    if (!empty($post->gallery) && $post->gallery !== 'empty') {
-                        $post->gallery = Image::getGallery($post->gallery);
-                    } elseif ($post->gallery !== 'empty') {
-                        $post->setGallery();
-                    } else {
-                        $post->gallery = array();
-                    }
-
-                    if (!empty($post->image) && $post->image !== 'empty') {
-                        $post->image = Image::get($post->image);
-                    } elseif ($post->image !== 'empty') {
-                        $post->setImage();
-                    } else {
-                        $post->image = null;
-                    }
+                    $post->gallery = Image::getModelGallery('post', $post->id);
+                    $post->image = Image::getModelImage($post->image, $post->gallery);
                 }
 
                 // autor
@@ -150,7 +135,6 @@ namespace Goteo\Model {
                     post.blog as blog,
                     $different_select,
                     post.image as `image`,
-                    post.gallery as gallery,
                     post.media as `media`,
                     $sqlField
                     DATE_FORMAT(post.date, '%d-%m-%Y') as date,
@@ -186,23 +170,8 @@ namespace Goteo\Model {
 
                 $post->media = new Media($post->media);
 
-                // campo calculado gallery
-                if (!empty($post->gallery) && $post->gallery !== 'empty') {
-                    $post->gallery = Image::getGallery($post->gallery);
-                } elseif ($post->gallery !== 'empty') {
-                    $post->setGallery();
-                } else {
-                    $post->gallery = array();
-                }
-
-                if (!empty($post->image) && $post->image !== 'empty') {
-                    $post->image = Image::get($post->image);
-                } elseif ($post->image !== 'empty') {
-                    $post->setImage();
-                } else {
-                    $post->image = null;
-                }
-
+                $post->gallery = Image::getModelGallery('post', $post->id);
+                $post->image = Image::getModelImage($post->image, $post->gallery);
 
                 $post->type = $post->home == 1 ? 'home' : 'footer';
 
@@ -580,23 +549,6 @@ namespace Goteo\Model {
             return ++$order;
 
         }
-
-        /*
-         * Recalcular galeria
-         */
-        public function setGallery () {
-            $this->gallery = Image::setGallery('post', $this->id);
-            return true;
-        }
-
-        /*
-         * Recalcular imagen principal
-         */
-        public function setImage () {
-            $this->image = Image::setImage('post', $this->id, $this->gallery);
-            return true;
-        }
-
 
     }
 

@@ -451,9 +451,9 @@ namespace Goteo\Model {
 
                 //all galleries
                 $project->all_galleries = Project\Image::getGalleries($project->id);
-                $project->secGallery = $project->all_galleries;
                 //Main gallery
-                $project->gallery = $project->secGallery[''];
+                $project->gallery = $project->all_galleries[''];
+                $project->secGallery = $project->all_galleries;
 
                 // image from main gallery
                 if (!empty($project->image)) {

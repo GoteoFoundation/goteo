@@ -131,6 +131,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $this->assertCount(1, $project->gallery);
         $this->assertCount(7, $project->all_galleries);
         $this->assertCount(1, $project->all_galleries['']);
+        $this->assertEquals($project->image->id, $project->gallery[0]->imageData->id);
         $this->assertEquals($project->owner, self::$user['userid']);
         $this->assertEquals($project->name, self::$data['name']);
 
