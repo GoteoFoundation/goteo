@@ -131,6 +131,7 @@ namespace Goteo\Model {
 
                     $this->id = $this->name;
                     $this->hash = md5($this->id);
+                    $this->tmp = null;
 
                     return true;
 
@@ -297,85 +298,6 @@ namespace Goteo\Model {
             }
 
         }
-
-        /**
-         * Lista de imágenes de galeria
-         *
-         *  Para proyecto hay que usar Project\Image::getList  por el tema de secciones y
-         *
-         *
-         * @param  varchar(50)  $id  entity item id  user | project | post | info | glossary
-         * @param  string       $which    entity
-         * @return string       list of filenames
-         */
-        public static function getList ($id, $which) {
-
-            if (!\is_string($which) || !\in_array($which, self::$types)) {
-                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
-                return false;
-            }
-
-            $gallery = array();
-
-            try {
-                $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
-                if ($which == 'project') $sql .= ' ORDER BY section ASC, `order` ASC';
-                $query = self::query($sql, array($id));
-                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
-                    $gallery[] = $image['image'];
-                }
-
-                return implode(', ', $gallery);
-            } catch(\PDOException $e) {
-                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
-                return false;
-            }
-
-        }
-
-        /**
-         * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
-         *
-         * @param  string       $which    'project', 'post', 'glossary', 'info'
-         * @return bool        true|false
-         *
-         */
-        public function remove(&$errors = array(), $which = null) {
-
-            /*
-            NOTA: El borrado de archivos no debe hacerse aqui pues en casos de sistemas
-                  distribuidos puede haber problemas porque las instancias web pueden no tener
-                  el cache generado.
-                  Otro problema (sobretodo si se usan CDN) es la cache de proxy sobre los archivos generados
-
-            @FIXME: crear un script en cron que repase todas las tablas con imagenes y borre
-                    del disco y el cache:
-
-                    //borrado disco:
-                    $this->fp->delete($this->id);
-
-                    //borrado cache (hack horrible por mejorar):
-                    $c = new Cache($this->dir_cache);
-                    $c->rm('*\/' . $this->name);
-
-             */
-            // no borramos nunca la imagen de la gota
-            if ($this->id == 'la_gota.png') return false;
-
-            try {
-                if (\is_string($which) && \in_array($which, self::$types)) {
-                    $sql = "DELETE FROM {$which}_image WHERE image = ?";
-                    $query = self::query($sql, array($this->id));
-                }
-
-                return true;
-            } catch(\PDOException $e) {
-                $errors[] = $e->getMessage();
-                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
-                return false;
-            }
-        }
-
 
 		/**
 		 * Para montar la url de una imagen (porque las url con parametros no se cachean bien)
@@ -551,87 +473,143 @@ namespace Goteo\Model {
     	}
 
         /**
-         * Este método crea un array de objetod Image a partir de una lista de archivos
+         *  Get a valid gallery for a generic Model
+         *  Para proyecto hay que usar Project\Image::getList  por el tema de secciones y
          *
-         * @param $list string list of files separatd by commas
-         * @return array of Image objects
+         *
+         * @param  varchar(50)  $id  entity item id  user | project | post | info | glossary
+         * @param  string       $which    entity
          */
-        public static function getGallery($list, $debug = false) {
+        public static function getModelGallery($model_table, $model_id) {
+            $gallery = [];
 
-            $gallery = array();
-
-            if ($debug) echo $list.'<br />';
-
-            if (empty($list))
+            if (!is_string($model_table) || !in_array($model_table, self::$types)) {
                 return $gallery;
-
-            $items = explode(',', $list);
-
-            foreach ($items as $item) {
-                if ($debug) echo '*'.trim($item).'*';
-                $gallery[] = static::get( trim($item) );
             }
 
-            if ($debug) echo \trace($gallery);
-            if ($debug) die;
+            try {
+                $sql = "SELECT image FROM {$model_table}_image WHERE {$model_table} = ?";
+                if ($model_table === 'project') $sql .= ' ORDER BY section ASC, `order` ASC';
+                $query = self::query($sql, array($model_id));
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $image) {
+                    $gallery[] = self::get($image->image);
+                }
 
-                return $gallery;
-
+            } catch(\PDOException $e) {
+                //
+            }
+            return $gallery;
         }
 
-        /*
-         * Recalcular galeria
-         */
-        public function setGallery ($which, $id, $section = '') {
+        public static function getModelImage($image, Array $gallery = []) {
 
-            if (!\is_string($which) || !\in_array($which, self::$types)) {
-                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
-                return array();
+            if($image instanceOf Image && $image->id) {
+                return $image;
             }
-
-            // sacar galeria de glossary_image
-            $gallery = Image::getList($id, $which, $section);
-
-            if (empty($gallery)) {
-                $the_gallery = $gallery = 'empty';
-            } else {
-                // poner en la instancia
-                $the_gallery = Image::getGallery($gallery);
+            if ($image && $image !== 'empty') {
+                return self::get($image);
             }
-
-            // guardar serializado en la base de datos
-            $sql = "UPDATE $which SET gallery = :gallery WHERE id = :id";
-            self::query($sql, array(':gallery'=>$gallery, ':id'=>$id));
-
-            return $the_gallery;
+            if(count($gallery) > 0) {
+                if($gallery[0] instanceOf Image) {
+                    return $gallery[0];
+                }
+                return self::get($gallery[0]);
+            }
+            return null;
         }
 
-        /*
-         * Recalcular imagen principal
-         */
-        public function setImage ($which, $id, $gallery) {
+        public function addToModelGallery($model_table, $model_id) {
+           if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+                return false;
+            }
+            $ok = !empty($this->id);
+            if($this->tmp && $this->name) $ok = $this->save();
+            if($ok) {
+                try {
+                    self::query("INSERT INTO {$model_table}_image ({$model_table}, image) VALUES (:id, :image)", array(':id' => $model_id, ':image' => $this->id));
+                } catch(\PDOException $e) {
+                    //
+                    return false;
+                }
 
-            if (!\is_string($which) || !\in_array($which, self::$types)) {
+            }
+            return $ok;
+        }
+
+        public function setModelImage($model_table, $model_id) {
+
+            $ok = !empty($this->id);
+            if($this->tmp && $this->name) $ok = $this->save();
+            if($ok) {
+                try {
+                    $sql = "UPDATE $model_table SET image = :image WHERE id = :id";
+                    self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
+                } catch(\PDOException $e) {
+                    //
+                    return false;
+                }
+            }
+            return $ok;
+        }
+
+        /**
+         * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
+         *
+         * @param  string       $which    'project', 'post', 'glossary', 'info'
+         * @return bool        true|false
+         *
+         */
+        public function remove(&$errors = array(), $model_table = null) {
+
+            /*
+            NOTA: El borrado de archivos no debe hacerse aqui pues en casos de sistemas
+                  distribuidos puede haber problemas porque las instancias web pueden no tener
+                  el cache generado.
+                  Otro problema (sobretodo si se usan CDN) es la cache de proxy sobre los archivos generados
+
+            @FIXME: crear un script en cron que repase todas las tablas con imagenes y borre
+                    del disco y el cache:
+
+                    //borrado disco:
+                    $this->fp->delete($this->id);
+
+                    //borrado cache (hack horrible por mejorar):
+                    $c = new Cache($this->dir_cache);
+                    $c->rm('*\/' . $this->name);
+
+             */
+            // no borramos nunca la imagen de la gota
+            if ($this->id == 'la_gota.png') return false;
+
+            try {
+                if (is_string($model_table) && in_array($model_table, self::$types)) {
+
+                    $sql = "SELECT `{$model_table}` FROM {$model_table}_image WHERE image = ?";
+                    $query = self::query($sql, array($this->id));
+                    $model_id = $query->fetchColumn();
+
+                    if($model_id) {
+                        try {
+                            // Actualiza el campo calculado
+                            $sql = "UPDATE $model_table SET image = :image WHERE id = :id";
+                            self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
+                        } catch(\PDOException $e) {}
+
+                        $sql = "DELETE FROM {$model_table}_image WHERE image = ?";
+                        $query = self::query($sql, array($this->id));
+                    }
+                    else {
+                        $errors[] = "{$this->id} not found in {$model_table}_image";
+                    }
+                }
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = $e->getMessage();
                 // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
                 return false;
             }
-
-            // sacar objeto imagen de la galeria
-            $image = (empty($gallery) || $gallery === 'empty') ? 'empty' : $gallery[0];
-
-            // poner en la instancia
-            $the_image = ($image === 'empty') ? 'empty' : $image->id;
-
-            // guardar en la base de datos
-            $sql = "UPDATE $which SET image = :image WHERE id = :id";
-            self::query($sql, array(':image'=>$the_image, ':id'=>$id));
-
-            return $image;
-
         }
-
-
-
 	}
 
 }

@@ -58,13 +58,13 @@ div#sub-header.banners{
 
 div#sub-header-secondary{
     background-color: #d7eaeb;
-	height: 100px;
+	height: 90px;
 	margin: 0 0 18px;
-	padding: 5px 0 0;
+	padding: 0px 0 0;
 }
 
 div#sub-header-secondary > div > h2{
-    font: bold 38px/100px Helvetica, Arial, Geneva, sans-serif;
+    font: bold 38px/90px Helvetica, Arial, Geneva, sans-serif;
     margin: 0px;
     text-transform: uppercase;
 	width:40%;
@@ -416,7 +416,7 @@ div#sub-header > div > h2 .greenblue{
 
 /* subheader secundario  */
 div#sub-header-secondary > div > ul.share-goteo{
-	margin: 40px 9px 0 0;
+	margin: 33px 9px 0 0;
 	padding:0px;
 	list-style:none;
 	float:right;

@@ -326,8 +326,6 @@ namespace Goteo\Model {
             // Primero tratamos la imagen
             if (is_array($this->logo) && !empty($this->logo['name'])) {
                 $image = new Image($this->logo);
-                // eliminando tabla images
-                $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                 if ($image->save($errors)) {
                     $this->logo = $image->id;
@@ -460,11 +458,11 @@ namespace Goteo\Model {
 
 
         /** Resumen proyectos: (asignados a este nodo)
-         * total proyectos, 
-         * activos (en campaña), 
-         * exitosos (que han llegado al mínimo), 
-         * cofinanciadores (diferentes), 
-         * colaboradores (diferentes) 
+         * total proyectos,
+         * activos (en campaña),
+         * exitosos (que han llegado al mínimo),
+         * cofinanciadores (diferentes),
+         * colaboradores (diferentes)
          * total de dinero recaudado
          *
          * @return array asoc
@@ -665,7 +663,7 @@ namespace Goteo\Model {
                 ", $values);
             $data['campaigns'] = $query->fetchColumn();
 
-            
+
 
             //grabamos los datos en la tabla
             $set = 'node = :node';
@@ -700,5 +698,5 @@ namespace Goteo\Model {
         }
 
     }
-    
+
 }

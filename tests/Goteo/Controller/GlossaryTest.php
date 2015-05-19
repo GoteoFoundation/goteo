@@ -15,4 +15,6 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
 
         return $controller;
     }
+
+
 }

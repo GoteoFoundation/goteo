@@ -57,7 +57,7 @@ namespace Goteo\Library {
                 $values[':text'] = "%{$params['query']}%";
             }
 
-            
+
             if (!empty($params['node'])) {
                 $where[] = ' AND project.node = :node';
                 $values[':node'] = NODE_ID;
@@ -97,7 +97,6 @@ namespace Goteo\Library {
                     project.maxcost as maxcost,
                     project.amount as amount,
                     project.image as image,
-                    project.gallery as gallery,
                     project.num_investors as num_investors,
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,

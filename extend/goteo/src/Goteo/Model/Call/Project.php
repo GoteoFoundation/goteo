@@ -71,7 +71,6 @@ namespace Goteo\Model\Call {
                             project.subtitle as subtitle,
                             project.description as description,
                             project.image as image,
-                            project.gallery as gallery,
                             project.maxproj as maxproj,
                             project.called as called,
                             project.amount_users as amount_users,
