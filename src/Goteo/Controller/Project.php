@@ -1047,8 +1047,8 @@ namespace Goteo\Controller {
                     $image->remove($errors, 'project');
                     // recalculamos las galerias e imagen
 
-                    // setGallery en Project\Image  procesa todas las secciones
-                    $galleries = Model\Project\Image::setGallery($project->id);
+                    // getGalleries en Project\Image  procesa todas las secciones
+                    $galleries = Model\Project\Image::getGalleries($project->id);
                     Model\Project\Image::setImage($project->id, $galleries['']);
 
                     unset($project->images[$key]);

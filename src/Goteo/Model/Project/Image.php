@@ -18,12 +18,29 @@ namespace Goteo\Model\Project {
             asort($errors);
             return true;
         }
-        
+
         function save(&$errors = array()) {
             asort($errors);
            return null;
         }
-        
+
+        //TODO: use URL base from config
+        private static function get_image_resource_url($url) {
+            if($url) {
+                if(stripos($url, 'http') === 0 && strpos($url, '://') !== false) {
+                    return $url;
+                }
+                if(stripos($url, 'goteo.org') === 0) {
+                    return 'http://' . $url;
+                }
+                if(stripos($url, '/') !== 0) {
+                    $url = '/' . $url;
+                }
+                return 'http://goteo.org' . $url;
+            return '';
+            }
+        }
+
         /**
          * Get the images for a project
          *
@@ -33,38 +50,36 @@ namespace Goteo\Model\Project {
          * @return array of categories identifiers
          */
 	 	public static function get ($id, $section = null) {
-            
+
             $URL = \SITE_URL;
 
-            
+
             $array = array ();
             try {
                 $values = array(':id' => $id);
-                
+
                 if (!empty($section)) {
                     $sqlFilter = " AND section = :section";
                     $values[':section'] = $section;
                 } elseif (isset($section) && $section == '') {
                     $sqlFilter = " AND (section = '' OR section IS NULL)";
                 }
-                
-                $sql = "SELECT * 
-                    FROM project_image 
-                    WHERE project = :id 
+
+                $sql = "SELECT *
+                    FROM project_image
+                    WHERE project = :id
                     $sqlFilter
                     ORDER BY `order` ASC, image DESC";
 
                 $query = static::query($sql, $values);
                 $images = $query->fetchAll(\PDO::FETCH_OBJ);
+
                 foreach ($images as $image) {
                     $image->imageData = Model\Image::get($image->image);
-                    if (!empty($image->url)) {
-                        $image->link = $image->url;
-                    }
-                    
+                    $image->link = self::get_image_resource_url($image->url);
                     $array[] = $image;
                 }
-                
+
                 return $array;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
@@ -101,15 +116,9 @@ namespace Goteo\Model\Project {
                 $query = static::query($sql, $values);
                 $images = $query->fetchAll(\PDO::FETCH_OBJ);
                 foreach ($images as $image) {
-                    if (!empty($image->url)) {
-                        $image->link = $image->url;
-                    } else {
-                        $image->link = '';
-                    }
-
-                    $array[] = array('img'=>$image->image, 'url'=>$image->link);
+                    $array[] = (object) array( 'imageData' => Model\Image::get($image->image),
+                                      'link' => self::get_image_resource_url($image->url));
                 }
-
                 return $array;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
@@ -117,31 +126,22 @@ namespace Goteo\Model\Project {
 		}
 
         /*
-         * Solo imágenes para galeria
+         * Same as getList by with several galleries at once
          */
-        public static function setGallery ($id) {
-
+        public static function getGalleries ($id, $section = null) {
             $galleries = array();
 
             // galerías de sección
             foreach (static::sections() as $sec => $val) {
                 // sacar galeria de glossary_image
                 // no puede ser de Model\Image porque estas imagenes de seccion llevan enlace
+                if(!is_null($section)) {
+                    if(is_array($section) && !in_array($sec, $section)) continue;
+                    elseif($sec === $section) continue;
+                }
+
                 $galleries[$sec] = self::getList($id, $sec);
             }
-
-            $sGallery = serialize($galleries);
-            if (strlen($sGallery) > 10000) {
-                // tenemos un problema, hay que aumentar el campo
-                @mail(\GOTEO_FAIL_MAIL,
-                    'Galeria de proyecto serializada no cabe. ',
-                    'Galeria de proyecto serializada no cabe. '.SITE_URL.' '. \trace($sGallery));
-
-            }
-
-            // guardar serializado en la tabla proyecto
-            $sql = "UPDATE project SET gallery = :gallery WHERE id = :id";
-            self::query($sql, array(':gallery'=>$sGallery, ':id'=>$id));
 
             return $galleries;
         }
@@ -166,8 +166,8 @@ namespace Goteo\Model\Project {
         /*
          * Para aplicar una seccion o un enlace
          */
-        public static function update ($project, $image, $field, $value) {
-            
+        public static function updateImage ($project, $image, $field, $value) {
+
             $sql = "UPDATE project_image SET `$field` = :val WHERE project = :project AND MD5(image) = :image";
             if (self::query($sql, array(':project'=>$project, ':image'=>$image, ':val'=>$value))) {
                 return true;
@@ -211,36 +211,9 @@ namespace Goteo\Model\Project {
                 'related' => Text::get('overview-field-related'),
                 'reward' => Text::get('overview-field-reward'),
                 'play-video' => Text::get('overview-field-play-video')
-            ); 
+            );
        }
 
-
-
-
-
-        // quizás no usamos esto para proyecto....
-
-        /*
-         * Recalcular galeria
-         * Para proyecto hay secciones y orden
-         *
-        public function setGallery () {
-            // $section
-            $this->gallery[] = Image::setGallery('project', $this->id);
-            return true;
-        }
-
-        /*
-         * Recalcular imagen principal
-         * Para widget es la primera de la galería principal
-         *
-        public function setImage () {
-            $this->image = Image::setImage('project', $this->id, $this->gallery);
-            return true;
-        }
-
-*/
-
     }
-    
+
 }
