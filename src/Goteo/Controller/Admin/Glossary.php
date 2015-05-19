@@ -52,8 +52,8 @@ namespace Goteo\Controller\Admin {
                             $image->remove($errors, 'glossary');
 
                             // Actualiza el campo calculado
-                            $post->setGallery();
-                            $post->setImage();
+                            $post->gallery = Model\Image::getModelGallery('glossary', $glossary->id);
+                            $post->image = Model\Image::getModelImage('', $post->gallery);
 
                             $editing = true;
                         }

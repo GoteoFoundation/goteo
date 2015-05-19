@@ -299,50 +299,6 @@ namespace Goteo\Model {
 
         }
 
-        /**
-         * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
-         *
-         * @param  string       $which    'project', 'post', 'glossary', 'info'
-         * @return bool        true|false
-         *
-         */
-        public function remove(&$errors = array(), $which = null) {
-
-            /*
-            NOTA: El borrado de archivos no debe hacerse aqui pues en casos de sistemas
-                  distribuidos puede haber problemas porque las instancias web pueden no tener
-                  el cache generado.
-                  Otro problema (sobretodo si se usan CDN) es la cache de proxy sobre los archivos generados
-
-            @FIXME: crear un script en cron que repase todas las tablas con imagenes y borre
-                    del disco y el cache:
-
-                    //borrado disco:
-                    $this->fp->delete($this->id);
-
-                    //borrado cache (hack horrible por mejorar):
-                    $c = new Cache($this->dir_cache);
-                    $c->rm('*\/' . $this->name);
-
-             */
-            // no borramos nunca la imagen de la gota
-            if ($this->id == 'la_gota.png') return false;
-
-            try {
-                if (\is_string($which) && \in_array($which, self::$types)) {
-                    $sql = "DELETE FROM {$which}_image WHERE image = ?";
-                    $query = self::query($sql, array($this->id));
-                }
-
-                return true;
-            } catch(\PDOException $e) {
-                $errors[] = $e->getMessage();
-                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
-                return false;
-            }
-        }
-
-
 		/**
 		 * Para montar la url de una imagen (porque las url con parametros no se cachean bien)
 		 *  - Si el thumb está creado, montamos la url de /data/cache
@@ -592,6 +548,67 @@ namespace Goteo\Model {
             }
             return $ok;
         }
+
+        /**
+         * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
+         *
+         * @param  string       $which    'project', 'post', 'glossary', 'info'
+         * @return bool        true|false
+         *
+         */
+        public function remove(&$errors = array(), $model_table = null) {
+
+            /*
+            NOTA: El borrado de archivos no debe hacerse aqui pues en casos de sistemas
+                  distribuidos puede haber problemas porque las instancias web pueden no tener
+                  el cache generado.
+                  Otro problema (sobretodo si se usan CDN) es la cache de proxy sobre los archivos generados
+
+            @FIXME: crear un script en cron que repase todas las tablas con imagenes y borre
+                    del disco y el cache:
+
+                    //borrado disco:
+                    $this->fp->delete($this->id);
+
+                    //borrado cache (hack horrible por mejorar):
+                    $c = new Cache($this->dir_cache);
+                    $c->rm('*\/' . $this->name);
+
+             */
+            // no borramos nunca la imagen de la gota
+            if ($this->id == 'la_gota.png') return false;
+
+            try {
+                if (is_string($model_table) && in_array($model_table, self::$types)) {
+
+                    $sql = "SELECT `{$model_table}` FROM {$model_table}_image WHERE image = ?";
+                    $query = self::query($sql, array($this->id));
+                    $model_id = $query->fetchColumn();
+                    if($model_id) {
+                        try {
+                            // Actualiza el campo calculado
+                            $sql = "UPDATE $model_table SET image = :image WHERE id = :id";
+                            self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
+                        } catch(\PDOException $e) {}
+
+                        $sql = "DELETE FROM {$model_table}_image WHERE image = ?";
+                        $query = self::query($sql, array($this->id));
+                    }
+                    else {
+                        $errors[] = "{$this->id} not found in {$model_table}_image";
+                    }
+                }
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = $e->getMessage();
+                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
+                return false;
+            }
+        }
+
+
+
 
         /**
          * Lista de imágenes de galeria

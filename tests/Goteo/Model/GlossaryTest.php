@@ -4,6 +4,7 @@
 namespace Goteo\Model\Tests;
 
 use Goteo\Model\Glossary;
+use Goteo\Model\Image;
 
 class GlossaryTest extends \PHPUnit_Framework_TestCase {
     private static $related_tables = array(
@@ -91,8 +92,21 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
         $this->assertCount(1, $sob->gallery);
         $this->assertEquals($sob->gallery[0]->id, $ob->gallery[0]->id);
         $this->assertEquals($sob->image->id, $ob->gallery[0]->id);
+        return $sob;
     }
-
+    /**
+     * @depends testEditGlossary
+     */
+    public function testRemoveImageGlossary($ob) {
+        $errors = array();
+        $this->assertEquals($ob->image, Image::getModelImage('', $ob->gallery));
+        $this->assertTrue($ob->image->remove($errors, 'glossary'), print_r($errors, 1));
+        $ob->gallery = Image::getModelGallery('glossary', $ob->id);
+        $ob->image = Image::getModelImage('', $ob->gallery);
+        $this->assertInternalType('array', $ob->gallery);
+        $this->assertCount(0, $ob->gallery);
+        $this->assertEmpty($ob->image);
+    }
     /**
      * @depends testGetGlossary
      */
