@@ -124,6 +124,16 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
         $this->assertCount(0, $ob->gallery);
         $this->assertEmpty($ob->image);
 
+        //add image (to check autodelete)
+        $ob->image = self::$image;
+
+        $this->assertTrue($ob->validate($errors));
+        $this->assertTrue($ob->save());
+        $ob = Glossary::get($ob->id);
+        $this->assertInternalType('array', $ob->gallery);
+        $this->assertCount(1, $ob->gallery);
+        $this->assertEquals($ob->image, $ob->gallery[0]);
+
     }
     /**
      * @depends testGetGlossary

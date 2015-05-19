@@ -219,6 +219,23 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $this->assertInternalType('array', $project->gallery);
         $this->assertCount(1, $project->gallery);
         $this->assertEquals($project->image, $project->gallery[0]->imageData);
+
+        //remove second image
+        $this->assertTrue($project->gallery[0]->imageData->remove($errors, 'project'), print_r($errors, 1));
+        $project = Project::get($project->id);
+        $this->assertInternalType('array', $project->gallery);
+        $this->assertCount(0, $project->gallery);
+        $this->assertEmpty($project->image);
+
+        //add image (to check autodelete)
+        $project->image = self::$image;
+
+        $this->assertTrue($project->validate($errors));
+        $this->assertTrue($project->save());
+        $project = Project::get($project->id);
+        $this->assertInternalType('array', $project->gallery);
+        $this->assertCount(1, $project->gallery);
+        $this->assertEquals($project->image, $project->gallery[0]->imageData);
     }
     /**
      * @depends testCreateProject
