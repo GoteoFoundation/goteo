@@ -477,8 +477,8 @@ namespace Goteo\Model {
          *  Para proyecto hay que usar Project\Image::getList  por el tema de secciones y
          *
          *
-         * @param  varchar(50)  $id  entity item id  user | project | post | info | glossary
-         * @param  string       $which    entity
+         * @param  string       $model_table    entity
+         * @param  varchar(50)  $model_id  entity item id  user | project | post | info | glossary
          */
         public static function getModelGallery($model_table, $model_id) {
             $gallery = [];
@@ -501,6 +501,9 @@ namespace Goteo\Model {
             return $gallery;
         }
 
+        /**
+         * Get the precalculated image for a Model o from the gallery
+         */
         public static function getModelImage($image, Array $gallery = []) {
 
             if($image instanceOf Image && $image->id) {
@@ -517,7 +520,11 @@ namespace Goteo\Model {
             }
             return null;
         }
-
+        /**
+         * Add current image to a Model gallery
+         * @param string $model_table The Model table (post, glossary, project, etc)
+         * @param string/integer $model_id    the ID of the Model
+         */
         public function addToModelGallery($model_table, $model_id) {
            if (!is_string($model_table) || !in_array($model_table, self::$types)) {
                 return false;
@@ -536,13 +543,20 @@ namespace Goteo\Model {
             return $ok;
         }
 
+        /**
+         * Sets the current image to a Model main image
+         * @param string $model_table The Model table (post, glossary, project, etc)
+         * @param string/integer $model_id    the ID of the Model
+         */
         public function setModelImage($model_table, $model_id) {
-
+           if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+                return false;
+            }
             $ok = !empty($this->id);
             if($this->tmp && $this->name) $ok = $this->save();
             if($ok) {
                 try {
-                    $sql = "UPDATE $model_table SET image = :image WHERE id = :id";
+                    $sql = "UPDATE `$model_table` SET image = :image WHERE id = :id";
                     self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
                 } catch(\PDOException $e) {
                     //
@@ -550,6 +564,24 @@ namespace Goteo\Model {
                 }
             }
             return $ok;
+        }
+
+        /**
+         * deletes the main image from a Model gallery
+         * @param string $model_table The Model table (post, glossary, project, etc)
+         * @param string/integer $model_id    the ID of the Model
+         */
+        public static function deleteModelImage($model_table, $model_id) {
+            if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+                return false;
+            }
+            try {
+                $sql = "UPDATE `$model_table` SET image = :image WHERE id = :id";
+                self::query($sql, array(':image'=>'', ':id'=>$model_id));
+            } catch(\PDOException $e) {
+                //
+                return false;
+            }
         }
 
         /**
@@ -589,14 +621,15 @@ namespace Goteo\Model {
                     $model_id = $query->fetchColumn();
 
                     if($model_id) {
-                        try {
-                            // Actualiza el campo calculado
-                            $sql = "UPDATE $model_table SET image = :image WHERE id = :id";
-                            self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
-                        } catch(\PDOException $e) {}
-
                         $sql = "DELETE FROM {$model_table}_image WHERE image = ?";
                         $query = self::query($sql, array($this->id));
+                        // Actualiza el campo con uno de la galeria
+                        if($gallery = self::getModelGallery($model_table, $model_id)) {
+                            $gallery[0]->setModelImage($model_table, $model_id);
+                        }
+                        else {
+                            self::deleteModelImage($model_table, $model_id);
+                        }
                     }
                     else {
                         $errors[] = "{$this->id} not found in {$model_table}_image";
