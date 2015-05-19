@@ -116,6 +116,24 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
         $this->assertInternalType('array', $ob->gallery);
         $this->assertCount(1, $ob->gallery);
         $this->assertEquals($ob->image, $ob->gallery[0]);
+
+        //remove second image
+        $this->assertEquals($ob->image, Image::getModelImage('', $ob->gallery));
+        $this->assertTrue($ob->gallery[0]->remove($errors, 'info'), print_r($errors, 1));
+        $ob = Info::get($ob->id);
+        $this->assertInternalType('array', $ob->gallery);
+        $this->assertCount(0, $ob->gallery);
+        $this->assertEmpty($ob->image);
+
+        //add image (to check autodelete)
+        $ob->image = self::$image;
+
+        $this->assertTrue($ob->validate($errors));
+        $this->assertTrue($ob->save());
+        $ob = Info::get($ob->id);
+        $this->assertInternalType('array', $ob->gallery);
+        $this->assertCount(1, $ob->gallery);
+        $this->assertEquals($ob->image, $ob->gallery[0]);
     }
     /**
      * @depends testGetInfo
