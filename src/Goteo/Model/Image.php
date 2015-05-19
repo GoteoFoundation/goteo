@@ -131,6 +131,7 @@ namespace Goteo\Model {
 
                     $this->id = $this->name;
                     $this->hash = md5($this->id);
+                    $this->tmp = null;
 
                     return true;
 
@@ -293,41 +294,6 @@ namespace Goteo\Model {
 
                 return $gallery;
             } catch(\PDOException $e) {
-                return false;
-            }
-
-        }
-
-        /**
-         * Lista de imágenes de galeria
-         *
-         *  Para proyecto hay que usar Project\Image::getList  por el tema de secciones y
-         *
-         *
-         * @param  varchar(50)  $id  entity item id  user | project | post | info | glossary
-         * @param  string       $which    entity
-         * @return string       list of filenames
-         */
-        public static function getList ($id, $which) {
-
-            if (!\is_string($which) || !\in_array($which, self::$types)) {
-                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
-                return false;
-            }
-
-            $gallery = array();
-
-            try {
-                $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
-                if ($which == 'project') $sql .= ' ORDER BY section ASC, `order` ASC';
-                $query = self::query($sql, array($id));
-                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
-                    $gallery[] = $image['image'];
-                }
-
-                return implode(', ', $gallery);
-            } catch(\PDOException $e) {
-                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
                 return false;
             }
 
@@ -549,6 +515,118 @@ namespace Goteo\Model {
     	    unset($pathinfo["extension"]);
     	    return implode(DIRECTORY_SEPARATOR, $pathinfo) . '.' . $new;
     	}
+
+        /**
+         *  Get a valid gallery for a generic Model
+         *  Para proyecto hay que usar Project\Image::getList  por el tema de secciones y
+         *
+         *
+         * @param  varchar(50)  $id  entity item id  user | project | post | info | glossary
+         * @param  string       $which    entity
+         */
+        public static function getModelGallery($model_table, $model_id) {
+            $gallery = [];
+
+            if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+                return $gallery;
+            }
+
+            try {
+                $sql = "SELECT image FROM {$model_table}_image WHERE {$model_table} = ?";
+                if ($model_table === 'project') $sql .= ' ORDER BY section ASC, `order` ASC';
+                $query = self::query($sql, array($model_id));
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $image) {
+                    $gallery[] = self::get($image->image);
+                }
+
+            } catch(\PDOException $e) {
+                //
+            }
+            return $gallery;
+        }
+        public static function getModelImage($image, Array $gallery = []) {
+
+            if($image instanceOf Image && $image->id) {
+                return $image;
+            }
+            if ($image && $image !== 'empty') {
+                return self::get($image);
+            }
+            if(count($gallery) > 0) {
+                if($gallery[0] instanceOf Image) {
+                    return $gallery[0];
+                }
+                return self::get($gallery[0]);
+            }
+            return null;
+        }
+        public function addToModelGallery($model_table, $model_id) {
+           if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+                return false;
+            }
+            $ok = !empty($this->id);
+            if($this->tmp && $this->name) $ok = $this->save();
+            if($ok) {
+                try {
+                    self::query("REPLACE {$model_table}_image ({$model_table}, image) VALUES (:id, :image)", array(':id' => $model_id, ':image' => $this->id));
+                } catch(\PDOException $e) {
+                    //
+                    return false;
+                }
+
+            }
+            return $ok;
+        }
+        public function setModelImage($model_table, $model_id) {
+
+            $ok = !empty($this->id);
+            if($this->tmp && $this->name) $ok = $this->save();
+            if($ok) {
+                try {
+                    $sql = "UPDATE $model_table SET image = :image WHERE id = :id";
+                    self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
+                } catch(\PDOException $e) {
+                    //
+                    return false;
+                }
+            }
+            return $ok;
+        }
+
+        /**
+         * Lista de imágenes de galeria
+         *
+         *  Para proyecto hay que usar Project\Image::getList  por el tema de secciones y
+         *
+         *
+         * @param  varchar(50)  $id  entity item id  user | project | post | info | glossary
+         * @param  string       $which    entity
+         * @return string       list of filenames
+         */
+        public static function getList ($id, $which) {
+
+            if (!\is_string($which) || !\in_array($which, self::$types)) {
+                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
+                return false;
+            }
+
+            $gallery = array();
+
+            try {
+                $sql = "SELECT image FROM {$which}_image WHERE {$which} = ?";
+                if ($which == 'project') $sql .= ' ORDER BY section ASC, `order` ASC';
+                $query = self::query($sql, array($id));
+                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $image) {
+                    $gallery[] = $image['image'];
+                }
+
+                return implode(', ', $gallery);
+            } catch(\PDOException $e) {
+                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
+                return false;
+            }
+
+        }
 
         /**
          * Este método crea un array de objetod Image a partir de una lista de archivos

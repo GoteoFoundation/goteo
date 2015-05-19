@@ -106,22 +106,8 @@ namespace Goteo\Model\Blog {
                 $post->user   = new User;
                 $post->user->name = $post->user_name;
 
-                // campo calculado gallery
-                if (!empty($post->gallery) && $post->gallery !== 'empty') {
-                    $post->gallery = Image::getGallery($post->gallery);
-                } elseif ($post->gallery !== 'empty') {
-                    $post->setGallery();
-                } else {
-                    $post->gallery = array();
-                }
-
-                if (!empty($post->image) && $post->image !== 'empty') {
-                    $post->image = Image::get($post->image);
-                } elseif ($post->image !== 'empty') {
-                    $post->setImage();
-                } else {
-                    $post->image = null;
-                }
+                $post->gallery = Image::getModelGallery('post', $post->id);
+                $post->image = Image::getModelImage($post->image, $post->gallery);
 
                 // video
                 if (isset($post->media)) {
@@ -142,8 +128,6 @@ namespace Goteo\Model\Blog {
                     $post->text = nl2br(Text::urlink($post->text));
 
             }
-
-            if($debug) die('ok');
 
             return $post;
         }
@@ -286,22 +270,8 @@ namespace Goteo\Model\Blog {
                 $post->user   = new User;
                 $post->user->name = $post->user_name;
 
-                // campo calculado gallery
-                if (!empty($post->gallery) && $post->gallery !== 'empty') {
-                    $post->gallery = Image::getGallery($post->gallery);
-                } elseif ($post->gallery !== 'empty') {
-                    $post->setGallery();
-                } else {
-                    $post->gallery = array();
-                }
-
-                if (!empty($post->image) && $post->image !== 'empty') {
-                    $post->image = Image::get($post->image);
-                } elseif ($post->image !== 'empty') {
-                    $post->setImage();
-                } else {
-                    $post->image = null;
-                }
+                $post->gallery = Image::getModelGallery('post', $post->id);
+                $post->image = Image::getModelImage($post->image, $post->gallery);
 
                 // video
                 if (!empty($post->media)) {
@@ -465,22 +435,8 @@ namespace Goteo\Model\Blog {
                 $post->user   = new User;
                 $post->user->name = $post->user_name;
 
-                // campo calculado gallery
-                if (!empty($post->gallery) && $post->gallery !== 'empty') {
-                    $post->gallery = Image::getGallery($post->gallery);
-                } elseif ($post->gallery !== 'empty') {
-                    $post->setGallery();
-                } else {
-                    $post->gallery = array();
-                }
-
-                if (!empty($post->image) && $post->image !== 'empty') {
-                    $post->image = Image::get($post->image);
-                } elseif ($post->image !== 'empty') {
-                    $post->setImage();
-                } else {
-                    $post->image = null;
-                }
+                $post->gallery = Image::getModelGallery('post', $post->id);
+                $post->image = Image::getModelImage($post->image, $post->gallery);
 
                 // video
                 if (isset($post->media)) {
@@ -554,23 +510,10 @@ namespace Goteo\Model\Blog {
                 if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
 
-                    if ($image->save($errors)) {
+                    if ($image->addToModelGallery('post', $this->id)) {
                         $this->gallery[] = $image;
-//                        $this->image = $image->id;
-
-                        /**
-                         * Guarda la relación NM en la tabla 'post_image'.
-                         */
-                        if(!empty($image->id)) {
-                            self::query("REPLACE post_image (post, image) VALUES (:post, :image)", array(':post' => $this->id, ':image' => $image->id));
-                        }
-
-
-                        // Actualiza el campo calculado
-                        $this->setGallery();
-                        $this->setImage();
-
-
+                        // Pre-calculated field
+                        $this->gallery[0]->setModelImage('post', $this->id);
                     }
                     else {
                         Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
@@ -641,19 +584,17 @@ namespace Goteo\Model\Blog {
             }
         }
 
-        /*
-         * Para quitar una entrada
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
          */
-        public function delete ($id = null) {
-            if(empty($id) && $this->id) $id = $this->id;
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
 
-            $sql = "DELETE FROM post WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
-                // Imagenes se eliminan solas (foreign key)
+            if(!($ob = Post::get($id))) return false;
+            return $ob->delete();
 
-                return true;
-            }
-            return false;
         }
 
         /*
@@ -715,24 +656,6 @@ namespace Goteo\Model\Blog {
 
             return (int) $got->posts;
         }
-
-
-        /*
-        * Recalcular galeria
-        */
-        public function setGallery () {
-            $this->gallery = Image::setGallery('post', $this->id);
-            return true;
-        }
-
-        /*
-         * Recalcular imagen principal
-         */
-        public function setImage () {
-            $this->image = Image::setImage('post', $this->id, $this->gallery);
-            return true;
-        }
-
     }
 
 }

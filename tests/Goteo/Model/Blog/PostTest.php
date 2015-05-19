@@ -6,12 +6,31 @@ namespace Goteo\Model\Blog\Tests;
 use Goteo\Model\Blog\Post;
 
 class PostTest extends \PHPUnit_Framework_TestCase {
+    private static $related_tables = array('post_node' => 'post',
+                    'post_image' => 'post',
+                    'post_lang' => 'id',
+                    'post_tag' => 'post');
     private static $data = array('title' => 'Test post', 'text' => 'test text',
         'blog' => 1,
         'date' => '2015-01-01',
         'allow' => 1,
         'publish' => 1);
 
+    private static $image = array(
+                        'name' => 'test.png',
+                        'type' => 'image/png',
+                        'tmp_name' => '',
+                        'error' => '',
+                        'size' => 0);
+
+    public static function setUpBeforeClass() {
+
+       //temp file
+        $i = base64_decode('iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABkElEQVRYhe3Wv2qDQBgA8LxJH8BXcHLN4pCgBxIOddAlSILorFDaQRzFEHEXUWyXlo6BrkmeI32Hr1PTMyb1rtpIIQff6vdTvz83unt+giFjdAP8awCXZ8Dl2XCAcRjAOAyGA8iaDrKmDwMQ4ggQUgAhBYQ4uj5AMswjQDLM6wJE3zsm/wrR964D4NOkkbzLr2AC8GkC8gxfBMgzDHya/A2AyzOQNf1i8iNC05lmAxWAy7Na0bWFZJjUCCrAdLmoJbDmFlRFCe+bDVhz6yxiulz0AyD7HSEFHu8fgDyu7XQqylbAxP1O4NoOnB6M1YuAiet0B5CF9/by2gC0FWRnAPnAj8OBCYCQ0i+A9vQKIAfPfrtrTb7f7mqDqTOAbMF1vGoFrOMVUyu2AsZhUPukP30F8u0RUqguK1SDiJyCGKtQFWUjeVWUtZakXdFUgHNLCGMVXNsB13Yas4BlKVEvIz5NqJcRy0ZkWsdcnoHoe2dXsjzDIPoe8y3511cyPk1AiCMQ4oj5DtALoK+4AQYHfALaYBdH6m2UnQAAAABJRU5ErkJggg==');
+        self::$image['tmp_name'] = __DIR__ . '/test-tmp.png';
+        file_put_contents(self::$image['tmp_name'], $i);
+        self::$image['size'] = strlen($i);
+    }
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -25,35 +44,86 @@ class PostTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testInstance
      */
-    public function testValidate($ob) {
+    public function testValidatePost($ob) {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
     }
 
-    public function testCreate() {
+    /**
+     * @depends testInstance
+     */
+    public function testCreatePost() {
         $ob = new Post(self::$data);
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
+
+        return $ob;
+
+    }
+
+    /**
+     * @depends testCreatePost
+     */
+    public function testGetPost($ob) {
         $ob = Post::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Blog\Post', $ob);
 
         foreach(self::$data as $key => $val) {
-            $this->assertEquals($ob->$key, $val);
+            $this->assertEquals($ob->$key, $val, "[$key : $val] != [{$ob->key}]");
         }
-        $this->assertTrue($ob->delete());
-
-        $ob = new Post(self::$data);
-        //save and delete statically
-        $this->assertTrue($ob->save());
-        $this->assertTrue(Post::delete($ob->id));
 
         return $ob;
     }
+
     /**
-     * @depends testCreate
+     * @depends testGetPost
+     */
+    public function testEditPost($ob) {
+        //add image
+        $ob->title = self::$data['title'] . " (edited)";
+
+        $ob->image = self::$image;
+
+        $this->assertTrue($ob->validate($errors));
+        $this->assertTrue($ob->save());
+        $sob = Post::get($ob->id);
+        $this->assertEquals($sob->title, $ob->title);
+        $this->assertInternalType('array', $ob->gallery);
+        $this->assertInternalType('array', $sob->gallery);
+        $this->assertCount(1, $sob->gallery);
+        $this->assertEquals($sob->gallery[0]->id, $ob->gallery[0]->id);
+        $this->assertEquals($sob->image->id, $ob->gallery[0]->id);
+    }
+
+    /**
+     * @depends testGetPost
+     */
+    public function testDeletePost($ob) {
+        //delete post
+        $this->assertTrue($ob->delete());
+
+        return $ob;
+    }
+
+    /**
+     * @depends testDeletePost
      */
     public function testNonExisting($ob) {
-        $ob = Post::get($ob->id);
-        $this->assertFalse($ob);
+        $sob = Post::get($ob->id);
+        $this->assertFalse($sob);
+        $this->assertFalse(Post::delete($ob->id));
+    }
+
+    public function testCleanProjectRelated() {
+        foreach(self::$related_tables as $tb => $field) {
+            $this->assertEquals(0, Post::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM post)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM post)");
+        }
+    }
+    /**
+     * Some cleanup
+     */
+    static function tearDownAfterClass() {
+        // Remove temporal files on finish
+        unlink(self::$image['tmp_name']);
     }
 }
