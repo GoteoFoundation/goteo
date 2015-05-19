@@ -15,13 +15,27 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
                     'project_lang' => 'id',
                     'project_location' => 'id',
                     'project_open_tag' => 'project');
-
+    private static $image = array(
+                        'name' => 'test.png',
+                        'type' => 'image/png',
+                        'tmp_name' => '',
+                        'error' => '',
+                        'size' => 0);
     private static $data = array('id' => '012-simulated-project-test-210', 'owner' => '012-simulated-user-test-210', 'name' => '012 Simulated Project Test 210');
     private static $user = array(
             'userid' => '012-simulated-user-test-210',
             'name' => 'Test user - please delete me',
             'email' => 'simulated-user-test@goteo.org'
         );
+
+    public static function setUpBeforeClass() {
+
+       //temp file
+        $i = base64_decode('iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABkElEQVRYhe3Wv2qDQBgA8LxJH8BXcHLN4pCgBxIOddAlSILorFDaQRzFEHEXUWyXlo6BrkmeI32Hr1PTMyb1rtpIIQff6vdTvz83unt+giFjdAP8awCXZ8Dl2XCAcRjAOAyGA8iaDrKmDwMQ4ggQUgAhBYQ4uj5AMswjQDLM6wJE3zsm/wrR964D4NOkkbzLr2AC8GkC8gxfBMgzDHya/A2AyzOQNf1i8iNC05lmAxWAy7Na0bWFZJjUCCrAdLmoJbDmFlRFCe+bDVhz6yxiulz0AyD7HSEFHu8fgDyu7XQqylbAxP1O4NoOnB6M1YuAiet0B5CF9/by2gC0FWRnAPnAj8OBCYCQ0i+A9vQKIAfPfrtrTb7f7mqDqTOAbMF1vGoFrOMVUyu2AsZhUPukP30F8u0RUqguK1SDiJyCGKtQFWUjeVWUtZakXdFUgHNLCGMVXNsB13Yas4BlKVEvIz5NqJcRy0ZkWsdcnoHoe2dXsjzDIPoe8y3511cyPk1AiCMQ4oj5DtALoK+4AQYHfALaYBdH6m2UnQAAAABJRU5ErkJggg==');
+        self::$image['tmp_name'] = __DIR__ . '/test-tmp.png';
+        file_put_contents(self::$image['tmp_name'], $i);
+        self::$image['size'] = strlen($i);
+    }
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -107,10 +121,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
     public function testEditProject($project) {
         $errors = array();
         $project->name = self::$data['name'];
+        //add image
+        $project->image = self::$image;
         $this->assertTrue($project->save($errors), print_r($errors, 1));
 
         $project = Project::get($project->id);
-
+        $this->assertInternalType('array', $project->all_galleries);
+        $this->assertInternalType('array', $project->gallery);
+        $this->assertCount(1, $project->gallery);
+        $this->assertCount(7, $project->all_galleries);
+        $this->assertCount(1, $project->all_galleries['']);
         $this->assertEquals($project->owner, self::$user['userid']);
         $this->assertEquals($project->name, self::$data['name']);
 
@@ -143,6 +163,27 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($project->id, $newid);
         $project = Project::get($newid);
         $this->assertEquals($project->id, $newid);
+
+        return $newid;
+    }
+
+    /**
+     * @depends testRebaseProject
+     */
+    public function testGetProject($id) {
+        $errors = array();
+        $project = Project::getMini($id);
+        $this->assertInstanceOf('\Goteo\Model\Project', $project);
+        $this->assertEquals($project->id, $id);
+
+        $project = Project::getMedium($id);
+        $this->assertInstanceOf('\Goteo\Model\Project', $project);
+        $this->assertEquals($project->id, $id);
+
+        $widget = Project::getWidget($project);
+        $this->assertInstanceOf('\Goteo\Model\Project', $widget);
+        $this->assertEquals($widget->id, $id);
+
 
         return $project;
     }
@@ -183,5 +224,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         if($user = \Goteo\Model\User::get(self::$user['userid'])) {
             $user->delete();
         }
+        // Remove temporal files on finish
+        unlink(self::$image['tmp_name']);
     }
 }

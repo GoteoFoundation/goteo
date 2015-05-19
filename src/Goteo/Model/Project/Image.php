@@ -24,6 +24,7 @@ namespace Goteo\Model\Project {
            return null;
         }
 
+        //TODO: use URL base from config
         private static function get_image_resource_url($url) {
             if($url) {
                 if(stripos($url, 'http') === 0 && strpos($url, '://') !== false) {

@@ -82,6 +82,7 @@ namespace Goteo\Model {
             $image,
             $gallery = array(), // array de instancias image de project_image
             $secGallery = array(), // array de instancias image de project_image (secundarias)
+            $all_galleries = array(), // array de instancias image de project_image (secundarias)
             $description,
              $motivation,
               $video,   // video de motivacion
@@ -449,7 +450,8 @@ namespace Goteo\Model {
                 $project->user->facebook = $project->user_facebook;
 
                 //all galleries
-                $project->secGallery = Project\Image::getGalleries($project->id);
+                $project->all_galleries = Project\Image::getGalleries($project->id);
+                $project->secGallery = $project->all_galleries;
                 //Main gallery
                 $project->gallery = $project->secGallery[''];
 
@@ -612,7 +614,7 @@ namespace Goteo\Model {
                 $project->dontsave = true;
 
                 // owner
-                $project->user=new user;
+                $project->user=new User;
                 $project->user->id=$project->user_id;
                 $project->user->name=$project->user_name;
                 $project->user->email=$project->user_email;
@@ -752,7 +754,7 @@ namespace Goteo\Model {
         /*
          *  Datos extra para un widget de proyectos
          */
-        public static function getWidget($project, $lang = \LANG) {
+        public static function getWidget(Project $project, $lang = \LANG) {
 
                 $Widget = new Project();
                 $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
