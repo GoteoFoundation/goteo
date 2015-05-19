@@ -537,12 +537,14 @@ namespace Goteo\Model {
         }
 
         public function setModelImage($model_table, $model_id) {
-
+           if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+                return false;
+            }
             $ok = !empty($this->id);
             if($this->tmp && $this->name) $ok = $this->save();
             if($ok) {
                 try {
-                    $sql = "UPDATE $model_table SET image = :image WHERE id = :id";
+                    $sql = "UPDATE `$model_table` SET image = :image WHERE id = :id";
                     self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
                 } catch(\PDOException $e) {
                     //
@@ -550,6 +552,19 @@ namespace Goteo\Model {
                 }
             }
             return $ok;
+        }
+
+        public static function deleteModelImage($model_table, $model_id) {
+            if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+                return false;
+            }
+            try {
+                $sql = "UPDATE `$model_table` SET image = :image WHERE id = :id";
+                self::query($sql, array(':image'=>'', ':id'=>$model_id));
+            } catch(\PDOException $e) {
+                //
+                return false;
+            }
         }
 
         /**
@@ -589,14 +604,15 @@ namespace Goteo\Model {
                     $model_id = $query->fetchColumn();
 
                     if($model_id) {
-                        try {
-                            // Actualiza el campo calculado
-                            $sql = "UPDATE $model_table SET image = :image WHERE id = :id";
-                            self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
-                        } catch(\PDOException $e) {}
-
                         $sql = "DELETE FROM {$model_table}_image WHERE image = ?";
                         $query = self::query($sql, array($this->id));
+                        // Actualiza el campo con uno de la galeria
+                        if($gallery = self::getModelGallery($model_table, $model_id)) {
+                            $gallery[0]->setModelImage($model_table, $model_id);
+                        }
+                        else {
+                            self::deleteModelImage($model_table, $model_id);
+                        }
                     }
                     else {
                         $errors[] = "{$this->id} not found in {$model_table}_image";
