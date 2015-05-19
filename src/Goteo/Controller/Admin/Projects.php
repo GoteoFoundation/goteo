@@ -132,7 +132,7 @@ namespace Goteo\Controller\Admin {
                         $parts = explode('_', $key);
 
                         if ($parts[1] == 'image' && in_array($parts[0], array('section', 'url', 'order'))) {
-                            if (Model\Project\Image::update($id, $parts[2], $parts[0], $value)) {
+                            if (Model\Project\Image::updateImage($id, $parts[2], $parts[0], $value)) {
                                 // OK
                             } else {
                                 $todook = false;
@@ -145,8 +145,8 @@ namespace Goteo\Controller\Admin {
                         Message::Info('Se han actualizado los datos');
                         // recalculamos las galerias e imagen
 
-                        // setGallery en Project\Image  procesa todas las secciones
-                        $galleries = Model\Project\Image::setGallery($id);
+                        // getGalleries en Project\Image  procesa todas las secciones
+                        $galleries = Model\Project\Image::getGalleries($id);
                         Model\Project\Image::setImage($id, $galleries['']);
                     }
 

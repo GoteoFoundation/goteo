@@ -193,7 +193,6 @@ namespace Goteo\Model {
                         $different_select_project,
                         project.amount as amount,
                         project.image as image,
-                        project.gallery as gallery,
                         project.num_investors as num_investors,
                         project.num_messengers as num_messengers,
                         project.num_posts as num_posts,

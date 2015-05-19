@@ -16,7 +16,7 @@ namespace Goteo\Model\User {
          * @param varcahr(50) $id  user identifier
          */
 	 	public static function get ($id) {
-            
+
             try {
                 $query = static::query("SELECT * FROM user_vip WHERE user = ?", array($id));
                 if ($vip = $query->fetchObject(__CLASS__)) {
@@ -44,8 +44,6 @@ namespace Goteo\Model\User {
             // Imagen
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
-                // eliminando tabla images
-                $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                 if ($image->save($errors)) {
                     $image = $image->id;

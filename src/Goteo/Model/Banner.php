@@ -245,8 +245,6 @@ namespace Goteo\Model {
             // Imagen de fondo de banner
             if (is_array($this->image) && !empty($this->image['name'])) {
                 $image = new Image($this->image);
-                // eliminando tabla images
-                $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                 if ($image->save($errors)) {
                     $this->image = $image->id;

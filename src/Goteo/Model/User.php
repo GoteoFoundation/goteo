@@ -190,8 +190,6 @@ namespace Goteo\Model {
                     // Avatar
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
-                        // eliminando tabla images
-                        $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                         if ($image->save($errors)) {
                             $data[':avatar'] = $image->id;
@@ -1561,7 +1559,6 @@ namespace Goteo\Model {
                     project.maxcost as maxcost,
                     project.amount as amount,
                     project.image as image,
-                    project.gallery as gallery,
                     project.num_investors as num_investors,
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,

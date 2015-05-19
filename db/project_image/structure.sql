@@ -9,3 +9,8 @@ CREATE TABLE IF NOT EXISTS `project_image` (
 
 -- campo imagen a nombre archivo
 ALTER TABLE `project_image` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
+
+-- Foreign keys
+ALTER TABLE `project_image` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+-- Gallery pre-calculated not needed
+ALTER TABLE `project` DROP COLUMN `gallery`;
