@@ -44,7 +44,6 @@ namespace Goteo\Model\Call {
                             post.id as id,
                             $different_select,
                             post.image as `image`,
-                            post.gallery as `gallery`,
                             DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                             DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                             post.author as author,
@@ -74,26 +73,12 @@ namespace Goteo\Model\Call {
                 $query = static::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Blog\Post') as $post) {
 
-                    // campo calculado gallery
-                    if (!empty($post->gallery) && $post->gallery !== 'empty') {
-                        $post->gallery = Image::getGallery($post->gallery);
-                    } elseif ($post->gallery !== 'empty') {
-                        $post->setGallery();
-                    } else {
-                        $post->gallery = array();
-                    }
-
-                    if (!empty($post->image) && $post->image !== 'empty') {
-                        $post->image = Image::get($post->image);
-                    } elseif ($post->image !== 'empty') {
-                        $post->setImage();
-                    } else {
-                        $post->image = null;
-                    }
+                    $post->gallery = Image::getModelGallery('post', $post->id);
+                    $post->image = Image::getModelImage($post->image, $post->gallery);
 
                     $list[] = $post;
                 }
-                
+
                 return $list;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
@@ -138,7 +123,7 @@ namespace Goteo\Model\Call {
 		 *
 		 * @param varchar(50) $call id de un proyecto
 		 * @param INT(12) $id  identificador de la tabla keyword
-		 * @param array $errors 
+		 * @param array $errors
 		 * @return boolean
 		 */
 		public function remove (&$errors = array()) {
@@ -161,22 +146,6 @@ namespace Goteo\Model\Call {
 			}
 		}
 
-        /*
-         * Recalcular galeria
-         */
-        public function setGallery () {
-            $this->gallery = Image::setGallery('post', $this->id);
-            return true;
-        }
-
-        /*
-         * Recalcular imagen principal
-         */
-        public function setImage () {
-            $this->image = Image::setImage('post', $this->id, $this->gallery);
-            return true;
-        }
-
     }
-    
+
 }
