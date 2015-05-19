@@ -190,8 +190,6 @@ namespace Goteo\Model {
                     // Avatar
                     if (is_array($this->avatar) && !empty($this->avatar['name'])) {
                         $image = new Image($this->avatar);
-                        // eliminando tabla images
-                        $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                         if ($image->save($errors)) {
                             $data[':avatar'] = $image->id;
