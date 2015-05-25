@@ -446,13 +446,13 @@ namespace Goteo\Controller {
                 }
                 // Avatar
                 if (!empty($_FILES['user_avatar']['name'])) {
-                    $user->avatar = $_FILES['user_avatar'];
+                    $user->user_avatar = $_FILES['user_avatar'];
                 }
 
                 // tratar si quitan la imagen
                 if (!empty($_POST['avatar-' . $user->avatar->hash . '-remove'])) {
                     $user->avatar->remove($errors);
-                    $user->avatar = null;
+                    $user->user_avatar = null;
                 }
 
                 // Perfil público
