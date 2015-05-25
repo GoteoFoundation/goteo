@@ -170,7 +170,7 @@ namespace Goteo\Model\User {
                             user.id as id,
                             user.id as user,
                             user.name as name,
-                            user.avatar as avatar,
+                            user.avatar as user_avatar,
                             user.amount as amount,
                             user.num_invested as invests,
                             user.num_owned as projects
@@ -196,7 +196,7 @@ namespace Goteo\Model\User {
                 $shares = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User');
                 foreach ($shares as $share) {
 
-                    $share->avatar = Image::get($share->avatar);
+                    $share->avatar = Image::get($share->user_avatar);
                     $share->invests = (isset($share->invests)) ? $share->invests : $share->get_numInvested;
                     $share->projects = (isset($share->projects)) ? $share->projects : $share->get_numOwned;
                     $share->amount = (isset($share->amount)) ? $share->amount : $share->get_amount;
@@ -226,7 +226,7 @@ namespace Goteo\Model\User {
                 $sql = "SELECT
                           user.id as user,
                           user.name as name,
-                          user.avatar as avatar,
+                          user.avatar as user_avatar,
                           user.num_invested as invests,
                           user.num_owned as projects
                         FROM user_interest
@@ -240,7 +240,7 @@ namespace Goteo\Model\User {
                 $shares = $query->fetchAll(\PDO::FETCH_ONJ);
                 foreach ($shares as $share) {
 
-                    $share->avatar = Image::get($share->avatar);
+                    $share->avatar = Image::get($share->user_avatar);
 
                     $array[] = $share;
                 }

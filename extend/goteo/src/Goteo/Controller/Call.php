@@ -260,6 +260,7 @@ namespace Goteo\Controller {
                 case 'userProfile':
                     $owner = Model\User::get($call->owner);
                     // si es el avatar por defecto no lo mostramos aqui
+                    // TODO: esto en la vista!
                     if ($owner->avatar->id == 1) {
                         unset($owner->avatar);
                     }
@@ -582,13 +583,13 @@ namespace Goteo\Controller {
 
             // Avatar
             if(!empty($_FILES['avatar_upload']['name'])) {
-                $user->avatar = $_FILES['avatar_upload'];
+                $user->image = $_FILES['avatar_upload'];
             }
 
             // tratar si quitan la imagen
             if (!empty($_POST['avatar-' . $user->avatar->hash .  '-remove'])) {
                 $user->avatar->remove($errors);
-                $user->avatar = null;
+                $user->image = null;
             }
 
             $user->interests = $_POST['user_interests'];
