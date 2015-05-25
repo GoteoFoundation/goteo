@@ -644,11 +644,6 @@ namespace Goteo\Model {
 
                 $project->user->avatar = Image::get($project->user_avatar);
 
-                // @LACRA
-                if (empty($project->user->avatar->id) || !$project->user->avatar instanceof Image) {
-                    $project->user->avatar = Image::get(1);
-                }
-
                 // convocado
                 $call = Call\Project::calledMini($project->id);
 

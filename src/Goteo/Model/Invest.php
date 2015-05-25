@@ -781,7 +781,7 @@ namespace Goteo\Model {
                 SELECT
                     invest.user as user,
                     user.name as name,
-                    user.avatar as avatar,
+                    user.avatar as user_avatar,
                     user.worth as worth,
                     invest.amount as amount,
                     DATE_FORMAT(invest.invested, '%d/%m/%Y') as date,
@@ -801,7 +801,7 @@ namespace Goteo\Model {
             $query = self::query($sql, array($project));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
 
-                $investor->avatar = Image::get($investor->avatar);
+                $investor->avatar = Image::get($investor->user_avatar);
 
                 // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
                 if (!$showall && ($investor->hide == 1 || $investor->anonymous == 1)) {
@@ -855,7 +855,7 @@ namespace Goteo\Model {
                     invest.user as id,
                     invest.user as user,
                     user.name as name,
-                    user.avatar as avatar,
+                    user.avatar as user_avatar,
                     user.worth as worth,
                     user.num_invested as projects,
                     SUM(invest.amount) as amount,
@@ -889,7 +889,7 @@ namespace Goteo\Model {
                     // mantenemos la fecha del anonimo mas reciente
                     $investor->date = empty($investors['anonymous']->date) ? $investor->date : $investors['anonymous']->date;
                     $investor->user = 'anonymous';
-                    $investors->avatar = 1;
+                    $investors->avatar = new Image();
                     $investors->name = Text::get('regular-anonymous');
                 }
 
@@ -897,7 +897,7 @@ namespace Goteo\Model {
                     'user' => $investor->user,
                     'name' => $investor->name,
                     'projects' => (isset($investor->projects)) ? $investor->projects : $investor->get_numInvested,
-                    'avatar' => Image::get($investor->avatar),
+                    'avatar' => Image::get($investor->user_avatar),
                     'worth' => (isset($investor->worth)) ? $investor->worth : $investor->get_worth,
                     'amount' => $investor->amount,
                     'date' => $investor->date
