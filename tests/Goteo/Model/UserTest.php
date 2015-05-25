@@ -61,8 +61,10 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         // TODO: more tests...
         $user = new User(self::$user);
         $user->save($errors, array('password'));
+        $this->assertInstanceOf('\Goteo\Model\Image', $user->avatar);
         $user = User::get(self::$user['userid']);
         $this->assertInstanceOf('\Goteo\Model\User', $user);
+        $this->assertInstanceOf('\Goteo\Model\Image', $user->avatar);
         return $user;
     }
 

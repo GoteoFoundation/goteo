@@ -213,9 +213,9 @@ namespace Goteo\Core {
             }
             try {
                 return (int) self::query($sql, $values)->fetchColumn();
-            }catch (\PDOException $e) {
+            } catch (\PDOException $e) {
             }
-            return false;
+            return 0;
         }
 
         /**

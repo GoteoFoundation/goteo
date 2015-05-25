@@ -67,6 +67,7 @@ namespace Goteo\Model {
 
             $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_STATIC));
             $this->fp->setPath($this->dir_originals);
+            return $this;
         }
 
         public function setCache(Cacher $cache = null) {
@@ -74,6 +75,7 @@ namespace Goteo\Model {
                 $this->cache = $cache;
                 $this->cache->setCacheGroup($this->dir_originals);
             }
+            return $this;
         }
 
         /**
@@ -240,6 +242,8 @@ namespace Goteo\Model {
             if (empty($id))
                 $id = $default;
 
+            $image = new Image;
+
             // imagenes especiales
             switch ($id) {
                 case '1':
@@ -250,7 +254,6 @@ namespace Goteo\Model {
                     break;
             }
 
-            $image = new Image;
             $image->name = $id;
             $image->id = $id;
             $image->hash = md5($id);
@@ -624,13 +627,13 @@ namespace Goteo\Model {
                         $errors[] = "{$this->id} not found in {$model_table}_image";
                     }
                 }
-
-                return true;
             } catch(\PDOException $e) {
                 $errors[] = $e->getMessage();
                 // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
                 return false;
             }
+            $this->id = 1;
+            return true;
         }
 	}
 
