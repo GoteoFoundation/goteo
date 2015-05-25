@@ -335,11 +335,11 @@ namespace Goteo\Model {
                 }
 
                 // proyectos asignados
-                if (!isset($call->applied)) {
+                //if (!isset($call->applied)) {
                     // número de proyectos presentados a la campaña
                     $applied = $call->getConf('applied');
                     $call->applied = (isset($applied)) ? $applied : $call->getApplied();
-                }
+                //}
 
                 return $call;
             } catch (\PDOException $e) {
