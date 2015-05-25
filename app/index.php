@@ -115,7 +115,7 @@ if ($SSL
 
 
 // Get URI without query string
-$uri = strtok($_SERVER['REQUEST_URI'], '?');
+$uri = rawurldecode(strtok($_SERVER['REQUEST_URI'], '?'));
 
 // Get requested segments
 $segments = preg_split('!\s*/+\s*!', $uri, -1, \PREG_SPLIT_NO_EMPTY);
@@ -194,7 +194,6 @@ try {
 
             // Try to instantiate
             $instance = $class->newInstance();
-
 
             // Invoke method
             $result = $method->invokeArgs($instance, $segments);
