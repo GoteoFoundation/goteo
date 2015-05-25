@@ -234,39 +234,28 @@ namespace Goteo\Model {
          * @param type int    $id
          * @return type object    Image
          */
-        static public function get($id, $debug = false)
+        static public function get($id, $default = 1)
         {
 
-            if ($debug) echo "Request image $id<br />";
-            try {
+            if (empty($id))
+                $id = $default;
 
-                if (empty($id))
-                    $id = 1;
-
-                // imagenes especiales
-                switch ($id) {
-                    case '1':
-                        $id = 'la_gota.png'; // imagen por defecto en toda la aplicación
-                        break;
-                    case '2':
-                        $id = 'la_gota-wof.png'; // imagen por defecto en el wall of friends
-                        break;
-                }
-
-                $image = new Image;
-                $image->name = $id;
-                $image->id = $id;
-                $image->hash = md5($id);
-
-                if ($debug) echo 'Not numeric, from name: <br />';
-                if ($debug) echo \trace($image);
-                if ($debug) echo $image->getLink(150, 85);
-                if ($debug) die;
-
-                return $image;
-            } catch (\PDOException $e) {
-                return false;
+            // imagenes especiales
+            switch ($id) {
+                case '1':
+                    $id = 'la_gota.png'; // imagen por defecto en toda la aplicación
+                    break;
+                case '2':
+                    $id = 'la_gota-wof.png'; // imagen por defecto en el wall of friends
+                    break;
             }
+
+            $image = new Image;
+            $image->name = $id;
+            $image->id = $id;
+            $image->hash = md5($id);
+
+            return $image;
         }
 
         /**
