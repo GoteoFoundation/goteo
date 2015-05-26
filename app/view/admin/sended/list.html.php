@@ -3,6 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Library\Mail,
     Goteo\Util\Pagination\Paginated,
+    Goteo\Util\Pagination\DoubleBarLayout,
     Goteo\Core\View;
 
 $filters = $this['filters'];
