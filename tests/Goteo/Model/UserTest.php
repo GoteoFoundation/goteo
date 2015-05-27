@@ -43,10 +43,10 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     public function testCount() {
 
-        $total = User::countTotal();
-        $active = User::countTotal(array('active' => 1, 'hide' => 0));
-        $nolocation = $total - User::countTotal(array('location' => ''), '!=');
-        $mainnode = User::countTotal(array('node' => 'goteo'));
+        $total = User::dbCount();
+        $active = User::dbCount(array('active' => 1, 'hide' => 0));
+        $nolocation = $total - User::dbCount(array('location' => ''), '!=');
+        $mainnode = User::dbCount(array('node' => 'goteo'));
 
         $this->assertInternalType('integer', $total);
         $this->assertInternalType('integer', $active);

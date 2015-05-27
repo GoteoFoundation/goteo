@@ -345,7 +345,7 @@ namespace Goteo\Model {
 
             try {
                 //automatic $this->id assignation
-                $this->insertUpdate($fields);
+                $this->dbInsertUpdate($fields);
 
                 return true;
             } catch(\PDOException $e) {

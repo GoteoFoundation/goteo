@@ -87,7 +87,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
     public function testDbInsert($mock) {
         $tb = $mock->getTable();
         $query = $mock::query("INSERT INTO $tb (uniq, name) VALUES ('test1', 'Name 1')");
-        $this->assertEquals($mock::countTotal(), 1);
+        $this->assertEquals($mock::dbCount(), 1);
         $query = $mock::query("SELECT * FROM $tb");
         $res = $query->fetchObject();
         $this->assertEquals('test1', $res->uniq);
@@ -99,11 +99,11 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
             $this->assertInstanceOf('\PDOException', $e);
         }
         $mock::query("TRUNCATE TABLE $tb");
-        $this->assertEquals($mock::countTotal(), 0);
+        $this->assertEquals($mock::dbCount(), 0);
 
         $mock->uniq = 'test1';
         $mock->name = 'Name 2';
-        $this->assertNotEmpty($mock->insert(['uniq', 'name']));
+        $this->assertNotEmpty($mock->dbInsert(['uniq', 'name']));
         $mock->id = $mock::insertId();
         $this->assertEquals(1, $mock->id);
         $query = $mock::query("SELECT * FROM $tb LIMIT 1");
@@ -112,7 +112,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('Name 2', $res->name);
         $this->assertEquals(1, $res->id);
         try {
-            $mock->insert(['uniq', 'name']);
+            $mock->dbInsert(['uniq', 'name']);
         }
         catch(\Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
@@ -127,14 +127,14 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $tb = $mock->getTable();
         $mock->uniq = 'test2';
         $mock->name = 'Name 3';
-        $mock->update(['uniq', 'name']);
+        $mock->dbUpdate(['uniq', 'name']);
         $query = $mock::query("SELECT * FROM $tb LIMIT 1");
         $res = $query->fetchObject();
         $this->assertEquals('test2', $res->uniq);
         $this->assertEquals('Name 3', $res->name);
         $this->assertEquals(1, $res->id);
         $mock->name = 'Name 4';
-        $mock->update(['name'], ['uniq']);
+        $mock->dbUpdate(['name'], ['uniq']);
         $query = $mock::query("SELECT * FROM $tb LIMIT 1");
         $res = $query->fetchObject();
         $this->assertEquals('test2', $res->uniq);
@@ -142,7 +142,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(1, $res->id);
 
         try {
-            $mock->update(['non-existing']);
+            $mock->dbUpdate(['non-existing']);
         }
         catch(\Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
@@ -156,16 +156,16 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
     public function testDbInsertUpdate($mock) {
         $tb = $mock->getTable();
         $mock::query("TRUNCATE TABLE $tb");
-        $this->assertEquals($mock::countTotal(), 0);
+        $this->assertEquals($mock::dbCount(), 0);
         $mock->id = null;
         $mock->uniq = 'test1';
         $mock->name = 'Name 1';
         try {
-            $mock->update(['uniq', 'name']);
+            $mock->dbUpdate(['uniq', 'name']);
         } catch(\Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
         }
-        $mock->insertUpdate(['uniq', 'name']);
+        $mock->dbInsertUpdate(['uniq', 'name']);
         $this->assertEquals(1, $mock->id);
 
         $query = $mock::query("SELECT * FROM $tb LIMIT 1");
@@ -175,7 +175,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(1, $res->id);
 
         $mock->name = 'Name 2';
-        $mock->insertUpdate(['name'], ['uniq']);
+        $mock->dbInsertUpdate(['name'], ['uniq']);
         $query = $mock::query("SELECT * FROM $tb LIMIT 1");
         $res = $query->fetchObject();
         $this->assertEquals('test1', $res->uniq);
@@ -184,7 +184,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
 
         try {
             $mock->uniq = 'test2';
-            $mock->insertUpdate(['name']);
+            $mock->dbInsertUpdate(['name']);
         }
         catch(\Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
@@ -195,6 +195,19 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @depends testDbInsertUpdate
+     */
+    public function testDbDelete($mock) {
+        $this->assertNotEmpty($mock->dbDelete());
+        try {
+            $mock->dbDelete();
+        } catch(\Exception $e) {
+            $this->assertInstanceOf('\PDOException', $e);
+        }
+        $this->assertEquals($mock::dbCount(), 0);
+        return $mock;
+    }
+    /**
+     * @depends testDbDelete
      */
     public function testQueryCache($mock) {
         DB::cache(true);

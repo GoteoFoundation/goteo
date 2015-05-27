@@ -62,11 +62,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
 
     public function testCount() {
 
-        $total = Project::countTotal();
-        $campaign = Project::countTotal(array('status' => Project::STATUS_IN_CAMPAIGN));
-        $funded = Project::countTotal(array('status' => Project::STATUS_FUNDED));
-        $unfunded = Project::countTotal(array('status' => Project::STATUS_UNFUNDED));
-        $mainnode = Project::countTotal(array('node' => 'goteo'));
+        $total = Project::dbCount();
+        $campaign = Project::dbCount(array('status' => Project::STATUS_IN_CAMPAIGN));
+        $funded = Project::dbCount(array('status' => Project::STATUS_FUNDED));
+        $unfunded = Project::dbCount(array('status' => Project::STATUS_UNFUNDED));
+        $mainnode = Project::dbCount(array('node' => 'goteo'));
 
         $this->assertInternalType('integer', $total);
         $this->assertInternalType('integer', $campaign);
