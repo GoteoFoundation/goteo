@@ -203,7 +203,16 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         } catch(\Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
         }
-        $this->assertEquals($mock::dbCount(), 0);
+        $this->assertEquals(0, $mock::dbCount());
+
+        //test depreacted delete func
+        $mock->id=null;
+        $mock->dbInsertUpdate(['uniq','name']);
+        $this->assertEquals(1, $mock::dbCount());
+        $this->assertTrue($mock->delete());
+        $this->assertEquals(0, $mock::dbCount());
+        // $this->assertFalse($mock->delete());
+
         return $mock;
     }
     /**
