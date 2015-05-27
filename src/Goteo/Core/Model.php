@@ -76,7 +76,7 @@ namespace Goteo\Core {
          * insert to sql
          * @return [type] [description]
          */
-        public function insert(Array $fields) {
+        public function insert(array $fields) {
             $values = $set = $keys = [];
             foreach($fields as $field) {
                 if(property_exists($this, $field)) {
@@ -97,7 +97,7 @@ namespace Goteo\Core {
          * update to sql
          * @return [type] [description]
          */
-        public function update(Array $fields, Array $where = ['id']) {
+        public function update(array $fields, array $where = ['id']) {
             $values = $set = [];
             foreach($fields as $field) {
                 if(property_exists($this, $field)) {
@@ -118,6 +118,7 @@ namespace Goteo\Core {
             }
             if(empty($values)) throw new \PDOException("No fields specified!", 1);
             $sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(',', $clause);
+
             return self::query($sql, $values);
         }
 
@@ -127,7 +128,7 @@ namespace Goteo\Core {
          * Expects a id property
          * @return [type] [description]
          */
-        public function insertUpdate(Array $fields, Array $where = ['id']) {
+        public function insertUpdate(array $fields, array $where = ['id']) {
             if($this->id) {
                 $ok = $this->update($fields, $where);
             } else {
