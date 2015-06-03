@@ -88,6 +88,17 @@ $routes->add('blog', new Route(
     '/blog',
     array('_controller' => 'Goteo\Controller\Blog::index')
 ));
+$routes->add('user-login', new Route(
+    '/user/login',
+    array('_controller' => 'Goteo\Controller\User::login')
+));
+
+$routes->add('user-edit', new Route(
+    '/user/edit',
+    array('_controller' => 'Goteo\Controller\User::edit')
+));
+
+
 
 //TODO IMPORTANTE: data/cache y cron
 

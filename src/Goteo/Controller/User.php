@@ -4,7 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Core\Redirection,
         Goteo\Core\Error,
-        Goteo\Core\View,
+        Goteo\Application\View,
         Goteo\Model,
         Goteo\Application\Session,
         Goteo\Application\Cookie,
@@ -12,7 +12,9 @@ namespace Goteo\Controller {
         Goteo\Library\Feed,
         Goteo\Library\Text,
         Goteo\Library\OAuth\SocialAuth,
-        Goteo\Library\Listing;
+        Goteo\Library\Listing,
+        Symfony\Component\HttpFoundation\Response,
+        Symfony\Component\HttpFoundation\RedirectResponse;;
 
     class User extends \Goteo\Core\Controller {
 
@@ -21,7 +23,8 @@ namespace Goteo\Controller {
          * @param string $id   Nombre de usuario
          */
         public function index($id, $show = '') {
-            throw new Redirection('/user/profile/' . $id . '/' . $show, Redirection::PERMANENT);
+            //throw new Redirection('/user/profile/' . $id . '/' . $show, Redirection::PERMANENT);
+            return new RedirectResponse('/user/profile/' . $id . '/' . $show);
         }
 
         public function raw($id) {
@@ -41,7 +44,9 @@ namespace Goteo\Controller {
 
             // si está logueado, redirigir a dashboard
             if (Session::isLogged()) {
-                throw new Redirection('/dashboard/activity');
+                //throw new Redirection('/dashboard/activity');
+                return new RedirectResponse('/dashboard/activity');
+
             }
 
 /*
@@ -69,10 +74,12 @@ namespace Goteo\Controller {
                 }
             } elseif (empty($_SESSION['user']) && !empty($_COOKIE['goteo_user'])) {
                 // si tenemos cookie de usuario
-                return new View('user/login.html.php', array('username'=>$_COOKIE['goteo_user']));
+                //return new View('user/login.html.php', array('username'=>$_COOKIE['goteo_user']));
+                return new Response(View::render('user/login',array('username'=>$_COOKIE['goteo_user'])));
             }
 
-            return new View('user/login.html.php');
+            //return new View('user/login.html.php');
+            return new Response(View::render('user/login'));
         }
 
         /**
@@ -103,15 +110,19 @@ namespace Goteo\Controller {
 
             if($redirect) {
                 if (!empty($_REQUEST['return'])) {
-                    throw new Redirection($_REQUEST['return']);
+                    //throw new Redirection($_REQUEST['return']);
+                    return new RedirectResponse($_REQUEST['return']);
                 } elseif (!empty($_SESSION['jumpto'])) {
                     $jumpto = $_SESSION['jumpto'];
                     unset($_SESSION['jumpto']);
-                    throw new Redirection($jumpto);
+                    //throw new Redirection($jumpto);
+                    return new RedirectResponse($jumpto);
                 } elseif (isset($user->roles['admin']) || isset($user->roles['superadmin'])) {
-                    throw new Redirection('/admin');
+                    //throw new Redirection('/admin');
+                    return new RedirectResponse('/admin');
                 } else {
-                    throw new Redirection('/dashboard');
+                    //throw new Redirection('/dashboard');
+                    return new RedirectResponse('/dashboard');
                 }
             }
 
@@ -124,7 +135,8 @@ namespace Goteo\Controller {
         public function logout() {
             $lang = '?lang=' . Session::get('lang');
             Session::destroy();
-            throw new Redirection('/' . $lang);
+            //throw new Redirection('/' . $lang);
+            return new RedirectResponse('/'.$lang);
             die;
         }
 
@@ -168,12 +180,17 @@ namespace Goteo\Controller {
                     }
                 }
             }
-            return new View(
+            /*return new View(
                             'user/login.html.php',
                             array(
                                 'errors' => $errors
                             )
-            );
+            );*/
+            return new Response(View::render('user/login',
+                            array(
+                                'errors' => $errors
+                            )
+            ));
         }
 
         /**
@@ -234,7 +251,8 @@ namespace Goteo\Controller {
                         else {
                             //si no: registrar errores
                             Library\Message::Error($oauth->last_error);
-                            throw new Redirection(SEC_URL . '/user/login');
+                            //throw new Redirection(SEC_URL . '/user/login');
+                            return new RedirectResponse(SEC_URL . '/user/login');
                         }
                     } else {
                         // si tiene contraseña permitir vincular la cuenta,
@@ -243,13 +261,19 @@ namespace Goteo\Controller {
                             if($_POST) {
                                 Library\Message::Error(Text::get('login-fail'));
                             }
-                            return new View(
+                            /*return new View(
                                             'user/confirm_account.html.php',
                                             array(
                                                 'oauth' => $oauth,
                                                 'user' => Model\User::get($u->id)
                                             )
-                            );
+                            );*/
+                            return new Response(View::render('user/confirm_account',
+                                                array(
+                                                'oauth' => $oauth,
+                                                'user' => Model\User::get($u->id)
+                                            )
+                            ));
                         }
                         else {
                             Library\Message::Error(Text::get('oauth-goteo-user-password-error'));
@@ -273,13 +297,20 @@ namespace Goteo\Controller {
                     }
                 }
             }
-            return new View(
+            /*return new View(
                             'user/confirm.html.php',
                             array(
                                 'errors' => $errors,
                                 'oauth' => $oauth
                             )
-            );
+            );*/
+
+            return new Response(View::render('user/confirm',
+                            array(
+                                'errors' => $errors,
+                                'oauth' => $oauth
+                            )
+            ));
         }
 
         /**
@@ -299,43 +330,61 @@ namespace Goteo\Controller {
                     else {
                         //si falla: error o formulario de confirmación
                         if ($oauth->error_type == 'user-not-exists') {
-                            return new View(
+                            /*return new View(
                                             'user/confirm.html.php',
                                             array(
                                                 'oauth' => $oauth
                                             )
-                            );
+                            );*/
+                            return new Response(View::render('user/confirm',
+                                            array(
+                                                'oauth' => $oauth
+                                            )
+                            ));
                         }
                         // existe usuario, formulario de vinculacion
                         elseif ($oauth->error_type == 'user-password-exists') {
                             Library\Message::Error($oauth->last_error);
-                            return new View(
+                            /*return new View(
                                             'user/confirm_account.html.php',
                                             array(
                                                 'oauth' => $oauth,
                                                 'user' => Model\User::get($oauth->user_data['username'])
                                             )
-                            );
+                            );*/
+                            return new Response(View::render('user/confirm_account',
+                                            array(
+                                                'oauth' => $oauth,
+                                                'user' => Model\User::get($oauth->user_data['username'])
+                                            )
+                            ));
                         }
                         else {
                             Message::Error($oauth->last_error);
-                            throw new Redirection(SEC_URL . '/user/login');
+                            //throw new Redirection(SEC_URL . '/user/login');
+                            return new RedirectResponse(SEC_URL . '/user/login');
                         }
                     }
                 }
                 else {
                     //si falla: error, si no siempre se redirige al proveedor
                     Library\Message::Error($oauth->last_error);
-                    throw new Redirection(SEC_URL . '/user/login');
+                    //throw new Redirection(SEC_URL . '/user/login');
+                    return new RedirectResponse(SEC_URL . '/user/login');
                 }
             }
 
-            return new View(
+            /*return new View(
                             'user/login.html.php',
                             array(
                                 'errors' => $errors
                             )
-            );
+            );*/
+            return new Response(View::render('user/login',
+                            array(
+                                'errors' => $errors
+                            )
+            ));
         }
 
         /**
@@ -474,20 +523,28 @@ namespace Goteo\Controller {
                     // Refresca la sesión.
                     $user = Model\User::flush();
                     if (isset($_POST['save'])) {
-                        throw new Redirection('/dashboard');
+                        //throw new Redirection('/dashboard');
+                        return new RedirectResponse('/dashboard');
                     } else {
-                        throw new Redirection('/user/edit');
+                        //throw new Redirection('/user/edit');
+                        return new RedirectResponse('/user/edit');
                     }
                 }
             }
 
-            return new View(
+            /*return new View(
                             'user/edit.html.php',
                             array(
                                 'user' => $user,
                                 'errors' => $errors
                             )
-            );
+            );*/
+            return new Response(View::render('user/edit',
+                            array(
+                                'user' => $user,
+                                'errors' => $errors
+                            )
+            ));
         }
 
         /**
@@ -526,7 +583,8 @@ namespace Goteo\Controller {
                 if ($show == 'message') {
                     $_SESSION['jumpto'] = '/user/profile/' . $id . '/message';
                     Library\Message::Info(Text::get('user-login-required-to_message'));
-                    throw new Redirection(SEC_URL."/user/login");
+                    //throw new Redirection(SEC_URL."/user/login");
+                    return new RedirectResponse(SEC_URL . '/user/login');
                 }
 
 
@@ -534,7 +592,8 @@ namespace Goteo\Controller {
                 if (!isset($user->roles['vip'])) {
                     $_SESSION['jumpto'] = '/user/profile/' . $id . '/' . $show;
                     Library\Message::Info(Text::get('user-login-required-to_see'));
-                    throw new Redirection(SEC_URL."/user/login");
+                    //throw new Redirection(SEC_URL."/user/login");
+                    return new RedirectResponse(SEC_URL . '/user/login');
                 }
             }
 
@@ -598,7 +657,8 @@ namespace Goteo\Controller {
             // si ya esta en la página de mensaje
             if ($show == 'message' && !$user->messageable) {
                 Library\Message::Info(Text::get('user-message-restricted'));
-                throw new Redirection('/user/profile/' . $id);
+                //throw new Redirection('/user/profile/' . $id);
+                return new RedirectResponse('/user/profile/' . $id);
             } else {
                 // para el controller/message::personal
                 $_SESSION['message_autorized'] = true;
@@ -637,7 +697,8 @@ namespace Goteo\Controller {
                     // agrupados para carrusel
                     $invested = Listing::get($invest_on);
 
-                    return new View('user/patron.html.php', array('user' => $user, 'recos' => $recos, 'lists' => array('invest_on' => $invested)));
+                    //return new View('user/patron.html.php', array('user' => $user, 'recos' => $recos, 'lists' => array('invest_on' => $invested)));
+                    return new Response(View::render('user/patron', array('user' => $user, 'recos' => $recos, 'lists' => array('invest_on' => $invested))));
                 }
             }
 
@@ -763,7 +824,8 @@ namespace Goteo\Controller {
                 die('Tiempo total antes de saltar a la vista ' . $tt . ' segundos');
 
 
-            return new View('user/' . $show . '.html.php', $viewData);
+            //return new View('user/' . $show . '.html.php', $viewData);
+            return new Response(View::render('user/' . $show, $viewData));
         }
 
         /**
@@ -804,7 +866,9 @@ namespace Goteo\Controller {
             } else {
                 Library\Message::Error(Text::get('user-activate-fail'));
             }
-            throw new Redirection('/dashboard');
+            //throw new Redirection('/dashboard');
+            return new RedirectResponse('/dashboard');
+
         }
 
         /**
@@ -834,7 +898,8 @@ namespace Goteo\Controller {
             } else {
                 Library\Message::Error(Text::get('user-changeemail-fail'));
             }
-            throw new Redirection('/dashboard');
+            //throw new Redirection('/dashboard');
+            return new RedirectResponse('/dashboard');
         }
 
         /**
@@ -864,7 +929,8 @@ namespace Goteo\Controller {
                             $user = Model\User::get($id);
                             self::loginUser($user, false);
                             $_SESSION['recovering'] = $user->id;
-                            throw new Redirection(SEC_URL.'/dashboard/profile/access/recover#password');
+                            //throw new Redirection(SEC_URL.'/dashboard/profile/access/recover#password');
+                            return new RedirectResponse(SEC_URL.'/dashboard/profile/access/recover#password');
                         }
                     }
                 }
@@ -883,14 +949,21 @@ namespace Goteo\Controller {
                 }
             }
 
-            return new View(
+            /*return new View(
                             'user/recover.html.php',
                             array(
                                 'error' => $error,
                                 'email' => $_REQUEST['email'],
                                 'message' => $message
                             )
-            );
+            );*/
+            return new Response(View::render('user/recover',
+                            array(
+                                'error' => $error,
+                                'email' => $_REQUEST['email'],
+                                'message' => $message
+                            )
+            ));
         }
 
         /**
@@ -917,10 +990,12 @@ namespace Goteo\Controller {
                             // el token coincide con el email y he obtenido una id
                             if (Model\User::cancel($id)) {
                                 Library\Message::Info(Text::get('leave-process-completed'));
-                                throw new Redirection(SEC_URL.'/user/login');
+                                //throw new Redirection(SEC_URL.'/user/login');
+                                return new RedirectResponse(SEC_URL.'/user/login');
                             } else {
                                 Library\Message::Error(Text::get('leave-process-fail'));
-                                throw new Redirection(SEC_URL.'/user/login');
+                                //throw new Redirection(SEC_URL.'/user/login');
+                                return new RedirectResponse(SEC_URL.'/user/login');
                             }
                         }
                     }
@@ -946,6 +1021,12 @@ namespace Goteo\Controller {
                                 'message' => $message
                             )
             );
+            return new Response(View::render('user/leave',
+                            array(
+                                'error' => $error,
+                                'message' => $message
+                            )
+            ));
         }
 
         /*
@@ -984,13 +1065,19 @@ namespace Goteo\Controller {
                 $error = Text::get('leave-request-fail');
             }
 
-            return new View(
+            /*return new View(
                 'user/unsuscribe.html.php',
                 array(
                     'error' => $error,
                     'message' => $message
                 )
-            );
+            );*/
+            return new Response(View::render('user/unsuscribe',
+                array(
+                    'error' => $error,
+                    'message' => $message
+                )
+            ));
         }
 
 
