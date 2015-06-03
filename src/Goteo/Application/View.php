@@ -21,7 +21,7 @@ class View {
         }
     }
 
-    static public function render($view, $vars = null) {
+    static public function render($view, $vars = []) {
         if(!self::$engine) {
             self::$engine = Foil\engine();
         }
@@ -30,7 +30,7 @@ class View {
         return self::$engine->render($view, $vars + array('vars' => $vars)); //por compatibilidad
     }
 
-    static public function get($view, $vars = null) {
+    static public function get($view, $vars = []) {
         return self::render(self::getTheme() . '::' . $view, $vars);
     }
 

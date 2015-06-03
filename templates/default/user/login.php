@@ -1,64 +1,63 @@
 <?php
 
-use Goteo\Core\View,
-    Goteo\Library\Text;
+use Goteo\Core\View;
 
-$bodyClass = 'user-login';
 // para que el prologue ponga el código js para botón facebook en el bannerside
-$fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
+$fbCode = $this->text_widget($this->text('social-account-facebook'), 'fb');
 $errors = $this->errors;
 extract($_POST);
 if (empty($username) && isset($this->username)) $username = $this->username;
-?>
-<?php
+
+
 $this->layout("layout", [
     'bodyClass' => 'user-login',
     'jscrypt' => 'true',
     'title' => $this->text('meta-title-login'),
     'meta_description' => $this->text('meta-description-login')
     ]);
+
 $this->section('content');
 ?>
 <div id="sub-header">
 	<div class="clearfix">
 		<div class="subhead-banner">
-			<h2 class="message"><?php echo Text::html('login-banner-header'); ?></h2>
+			<h2 class="message"><?= $this->text_html('login-banner-header') ?></h2>
 		</div>
-		<div class="mod-pojctopen"><?php echo Text::html('open-banner-header', $fbCode); ?></div>
+		<div class="mod-pojctopen"><?= $this->text_html('open-banner-header',$fbCode); ?></div>
 	</div>
 </div>
 
     <div id="main">
         <div class="login">
             <div>
-                <h2><?php echo Text::get('login-access-header'); ?></h2>
+                <h2><?= $this->text('login-access-header') ?></h2>
 
                 <form action="<?php echo SEC_URL ?>/user/login" method="post" id="login_frm">
                     <input type="hidden" name="return" value="<?php echo $_GET['return']; ?>" />
                     <div class="username">
-                        <label><?php echo Text::get('login-access-username-field'); ?>
+                        <label><?= $this->text('login-access-username-field') ?>
                         <input type="text" name="username" value="<?php echo $username?>" /></label>
                     </div>
 
                     <div class="password">
-                        <label><?php echo Text::get('login-access-password-field'); ?>
+                        <label><?= $this->text('login-access-password-field') ?>
                         <input type="password" id="thepw" name="password" value="" /></label>
                     </div>
 
-                    <input type="submit" name="login" value="<?php echo Text::get('login-access-button'); ?>" />
+                    <input type="submit" name="login" value="<?= $this->text('login-access-button') ?>" />
 
                 </form>
 
-                <p><a href="<?php echo SEC_URL; ?>/user/recover?email=<?php echo $username; ?>"><?php echo Text::get('login-recover-link'); ?></a></p>
+                <p><a href="<?php echo SEC_URL; ?>/user/recover?email=<?php echo $username; ?>"><?= $this->text('login-recover-link') ?></a></p>
                 <br />
-                <p><a class="baja" href="<?php echo SEC_URL; ?>/user/leave"><?php echo Text::get('login-leave-button'); ?></a></p>
+                <p><a class="baja" href="<?php echo SEC_URL; ?>/user/leave"><?= $this->text('login-leave-button') ?></a></p>
 
             </div>
         </div>
 
         <div class="external-login">
             <div>
-                <h2><?php echo Text::get('login-oneclick-header'); ?></h2>
+                <h2><?= $this->text('login-oneclick-header') ?></h2>
                 <ul class="sign-in-with">
                 <?php
 
@@ -70,22 +69,22 @@ $this->section('content');
 
 				//l'ordre que es vulgui...
                 $logins = array(
-					'facebook' => '<a href="/user/oauth?provider=facebook">' . Text::get('login-signin-facebook') . '</a>',
-					'twitter' => '<a href="/user/oauth?provider=twitter">' . Text::get('login-signin-twitter') . '</a>',
-					'Google' => '<a href="/user/oauth?provider=Google">' . Text::get('login-signin-google') . '</a>',
-					'Yahoo' => '<a href="/user/oauth?provider=Yahoo">' . Text::get('login-signin-yahoo') . '</a>',
-					'Ubuntu' => '<a href="/user/oauth?provider=Ubuntu">' . Text::get('login-signin-ubuntu') . '</a>',
-					'linkedin' => '<a href="/user/oauth?provider=linkedin">' . Text::get('login-signin-linkedin') . '</a>',
+					'facebook' => '<a href="/user/oauth?provider=facebook">' . $this->text('login-signin-facebook') . '</a>',
+					'twitter' => '<a href="/user/oauth?provider=twitter">' . $this->text('login-signin-twitter') . '</a>',
+					'Google' => '<a href="/user/oauth?provider=Google">' . $this->text('login-signin-google') . '</a>',
+					'Yahoo' => '<a href="/user/oauth?provider=Yahoo">' . $this->text('login-signin-yahoo') . '</a>',
+					'Ubuntu' => '<a href="/user/oauth?provider=Ubuntu">' . $this->text('login-signin-ubuntu') . '</a>',
+					'linkedin' => '<a href="/user/oauth?provider=linkedin">' . $this->text('login-signin-linkedin') . '</a>',
 					'openid' => ''
                 );
                 $is_openid = !array_key_exists($openid,$logins);
-                $logins['openid'] = '<form><input type="text"'.($is_openid ? ' class="used"' : '').' name="openid" value="' . htmlspecialchars( $is_openid ? $openid : Text::get('login-signin-openid')) . '" /><a href="/user/oauth" class="button">' . Text::get('login-signin-openid-go') . '&rarr;</a></form>';
+                $logins['openid'] = '<form><input type="text"'.($is_openid ? ' class="used"' : '').' name="openid" value="' . htmlspecialchars( $is_openid ? $openid : $this->text('login-signin-openid')) . '" /><a href="/user/oauth" class="button">' . $this->text('login-signin-openid-go') . '&rarr;</a></form>';
                 //si se ha guardado la preferencia, lo ponemos primero
                 $key = '';
                 if($openid) {
 					$key = array_key_exists($openid,$logins) ? $openid : 'openid';
 					echo '<li class="'.strtolower($key).'">'.$logins[$key].'</li>';
-					echo '<li class="more">&rarr;<a href="#">'.Text::get('login-signin-view-more').'</a></li>';
+					echo '<li class="more">&rarr;<a href="#">'.$this->text('login-signin-view-more').'</a></li>';
 
 				}
                 foreach($logins as $k => $v) {
@@ -99,51 +98,51 @@ $this->section('content');
 
         <div class="register">
             <div>
-                <h2><?php echo Text::get('login-register-header'); ?></h2>
+                <h2><?= $this->text('login-register-header') ?></h2>
                 <form action="<?php echo SEC_URL; ?>/user/register" method="post">
 
                     <div class="userid">
-                        <label for="RegisterUserid"><?php echo Text::get('login-register-userid-field'); ?></label>
+                        <label for="RegisterUserid"><?= $this->text('login-register-userid-field') ?></label>
                         <input type="text" id="RegisterUserid" name="userid" value="<?php echo htmlspecialchars($userid) ?>" maxlength="15" />
                     <?php if(isset($errors['userid'])) { ?><em><?php echo $errors['userid']?></em><?php } ?>
                     </div>
 
                     <div class="username">
-                        <label for="RegisterUsername"><?php echo Text::get('login-register-username-field'); ?></label>
+                        <label for="RegisterUsername"><?= $this->text('login-register-username-field') ?></label>
                         <input type="text" id="RegisterUsername" name="username" value="<?php echo htmlspecialchars($username) ?>" maxlength="20" />
                     <?php if(isset($errors['username'])) { ?><em><?php echo $errors['username']?></em><?php } ?>
                     </div>
 
                     <div class="email">
-                        <label for="RegisterEmail"><?php echo Text::get('login-register-email-field'); ?></label>
+                        <label for="RegisterEmail"><?= $this->text('login-register-email-field') ?></label>
                         <input type="text" id="RegisterEmail" name="email" value="<?php echo htmlspecialchars($email) ?>"/>
                     <?php if(isset($errors['email'])) { ?><em><?php echo $errors['email']?></em><?php } ?>
                     </div>
 
                     <div class="remail">
-                        <label for="RegisterREmail"><?php echo Text::get('login-register-confirm-field'); ?></label>
+                        <label for="RegisterREmail"><?= $this->text('login-register-confirm-field') ?></label>
                         <input type="text" id="RegisterREmail" name="remail" value="<?php echo htmlspecialchars($remail) ?>"/>
                     <?php if(isset($errors['remail'])) { ?><em><?php echo $errors['remail']?></em><?php } ?>
                     </div>
 
 
                     <div class="password">
-                        <label for="RegisterPassword"><?php echo Text::get('login-register-password-field'); ?></label> <?php if (strlen($password) < 6) echo '<em>'.Text::get('login-register-password-minlength').'</em>'; ?>
+                        <label for="RegisterPassword"><?= $this->text('login-register-password-field') ?></label> <?php if (strlen($password) < 6) echo '<em>' . $this->text('login-register-password-minlength') . '</em>'; ?>
                         <input type="password" id="RegisterPassword" name="password" value="<?php echo htmlspecialchars($password) ?>"/>
                     <?php if(isset($errors['password'])) { ?><em><?php echo $errors['password']?></em><?php } ?>
                     </div>
 
                      <div class="rpassword">
-                        <label for="RegisterRPassword"><?php echo Text::get('login-register-confirm_password-field'); ?></label>
+                        <label for="RegisterRPassword"><?= $this->text('login-register-confirm_password-field') ?></label>
                         <input type="password" id="RegisterRPassword" name="rpassword" value="<?php echo htmlspecialchars($rpassword) ?>"/>
                     <?php if(isset($errors['rpassword'])) { ?><em><?php echo $errors['rpassword']?></em><?php } ?>
                     </div>
 
 
                     <input class="checkbox" id="register_accept" name="confirm" type="checkbox" value="true" />
-                    <label class="conditions" for="register_accept"><?php echo Text::html('login-register-conditions'); ?></label><br />
+                    <label class="conditions" for="register_accept"><?= $this->text_html('login-register-conditions') ?></label><br />
 
-                    <button class="disabled" disabled="disabled" id="register_continue" name="register" type="submit" value="register"><?php echo Text::get('login-register-button'); ?></button>
+                    <button class="disabled" disabled="disabled" id="register_continue" name="register" type="submit" value="register"><?= $this->text('login-register-button') ?></button>
 
             </form>
             </div>
@@ -169,11 +168,11 @@ jQuery(document).ready(function($) {
     //openid
     $('.sign-in-with li.openid input').focus(function(){
         $(this).addClass('focus');
-        if($(this).val() == '<?php echo Text::get('login-signin-openid'); ?>') $(this).val('');
+        if($(this).val() == '<?= $this->text('login-signin-openid') ?>') $(this).val('');
     });
     $('.sign-in-with li.openid input').blur(function(){
         $(this).removeClass('focus');
-        if($(this).val().trim() == '') $(this).val('<?php echo Text::get('login-signin-openid'); ?>');
+        if($(this).val().trim() == '') $(this).val('<?= $this->text('login-signin-openid') ?>');
     });
     $('.sign-in-with li.openid a').click(function(){
         $(this).attr('href',$(this).attr('href') + '?provider=' + $('.sign-in-with li.openid input').val());
@@ -202,5 +201,5 @@ jQuery(document).ready(function($) {
 
 });
 </script>
-    
+
 <?php $this->append() ?>

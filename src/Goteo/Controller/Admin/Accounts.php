@@ -8,7 +8,7 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Tpv,
 		Goteo\Library\Paypal,
 		Goteo\Library\Feed,
-		Goteo\Library\Message,
+		Goteo\Application\Message,
         Goteo\Model;
 
     class Accounts {

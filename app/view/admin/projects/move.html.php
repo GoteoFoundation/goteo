@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection,
-    Goteo\Library\Message;
+    Goteo\Application\Message;
 
 $project = $vars['project'];
 

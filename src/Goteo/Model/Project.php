@@ -477,12 +477,12 @@ namespace Goteo\Model {
                 $project->secGallery = $project->all_galleries;
 
                 // image from main gallery
-                if (!empty($project->image)) {
-                    $project->image = Image::get($project->image);
-                } else {
+                if (empty($project->image)) {
                     $project->image = Project\Image::setImage($project->id, $project->gallery);
                 }
-
+                else {
+                    $project->image = Image::get($project->image);
+                }
 
                 // categorias
                 $project->categories = Project\Category::get($id);
@@ -643,6 +643,7 @@ namespace Goteo\Model {
                 $project->user->node=$project->user_node;
 
                 $project->user->avatar = Image::get($project->user_avatar);
+                $project->image = Image::get($project->image);
 
                 // convocado
                 $call = Call\Project::calledMini($project->id);
@@ -706,6 +707,7 @@ namespace Goteo\Model {
                     user.id as user_id,
                     user.name as user_name,
                     user.email as user_email,
+                    user.avatar as user_avatar,
                     user.lang as user_lang,
                     project_conf.noinvest as noinvest,
                     project_conf.one_round as one_round,
@@ -722,6 +724,15 @@ namespace Goteo\Model {
                 $values = array(':id'=>$id);
 				$query = self::query($sql, $values);
 				$project = $query->fetchObject(__CLASS__);
+                $project->user=new User;
+                $project->user->id=$project->user_id;
+                $project->user->name=$project->user_name;
+                $project->user->email=$project->user_email;
+                $project->user->lang=$project->user_lang;
+                $project->user->node=$project->user_node;
+
+                $project->user->avatar = Image::get($project->user_avatar);
+                $project->image = Image::get($project->image);
 
                 // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
                 if(!empty($lang) && $lang!=$project->lang) {
@@ -793,17 +804,8 @@ namespace Goteo\Model {
                 $Widget->one_round = $project->one_round;
                 $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
 
-                //all galleries
-                $project->secGallery = Project\Image::getGalleries($project->id);
-                //Main gallery
-                $project->gallery = $project->secGallery[''];
-
                 // image from main gallery
-                if (!empty($project->image)) {
-                    $Widget->image = Image::get($project->image);
-                } else {
-                    $Widget->image = Project\Image::setImage($Widget->id, $gallery);
-                }
+                $Widget->image = $project->image;
 
                 $Widget->amount = $project->amount;
                 $Widget->invested = $project->amount; // compatibilidad, ->invested no debe usarse

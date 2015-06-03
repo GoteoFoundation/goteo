@@ -6,7 +6,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Feed,
-		Goteo\Library\Message,
+		Goteo\Application\Message,
         Goteo\Model;
 
     class Invests {

@@ -505,7 +505,7 @@ namespace Goteo\Model {
                     if ($logo->save($errors)) {
                         $this->logo = $logo->id;
                     } else {
-                        \Goteo\Library\Message::Error(Text::get('call-logo-upload-fail') . implode(', ', $errors));
+                        \Goteo\Application\Message::Error(Text::get('call-logo-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -516,7 +516,7 @@ namespace Goteo\Model {
                     if ($image->save($errors)) {
                         $this->image = $image->id;
                     } else {
-                        \Goteo\Library\Message::Error(Text::get('call-image-upload-fail') . implode(', ', $errors));
+                        \Goteo\Application\Message::Error(Text::get('call-image-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -527,7 +527,7 @@ namespace Goteo\Model {
                     if ($backimage->save($errors)) {
                         $this->backimage = $backimage->id;
                     } else {
-                        \Goteo\Library\Message::Error(Text::get('call-backimage-upload-fail') . implode(', ', $errors));
+                        \Goteo\Application\Message::Error(Text::get('call-backimage-upload-fail') . implode(', ', $errors));
                     }
                 }
 

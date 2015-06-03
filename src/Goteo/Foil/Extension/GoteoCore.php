@@ -3,7 +3,7 @@
 namespace Goteo\Foil\Extension;
 
 use Foil\Contracts\ExtensionInterface;
-use Goteo\Library\Message;
+use Goteo\Application\Message;
 
 class GoteoCore implements ExtensionInterface
 {

@@ -6,7 +6,7 @@ namespace Goteo\Controller\Translate {
         Goteo\Core\Redirection,
         Goteo\Model,
         Goteo\Library\Feed,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
         Goteo\Library\Content,
         Goteo\Library\Page,
         Goteo\Application\Lang;

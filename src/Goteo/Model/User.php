@@ -11,7 +11,7 @@ namespace Goteo\Model {
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Check,
-        Goteo\Library;
+        Goteo\Application;
 
 	class User extends \Goteo\Core\Model {
 
@@ -152,11 +152,10 @@ namespace Goteo\Model {
 						$mail->content = $content;
 						$mail->html = false;
 						$mail->template = $template->id;
-						if ($mail->send($errors)) {
-							Library\Message::Info(Text::get('register-confirm_mail-success'));
+						if ($mail->send($errors)) {Application::Info(Text::get('register-confirm_mail-success'));
 						} else {
-							Library\Message::Error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
-							Library\Message::Error(implode('<br />', $errors));
+							Application\Message::Error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
+							Application\Message::Error(implode('<br />', $errors));
 						}
 					}
                 }
@@ -1048,7 +1047,7 @@ namespace Goteo\Model {
 
                     return $user;
 			    } else {
-			        Library\Message::Error(Text::get('user-account-inactive'));
+			        Application\Message::Error(Text::get('user-account-inactive'));
 			    }
 			}
 			return false;

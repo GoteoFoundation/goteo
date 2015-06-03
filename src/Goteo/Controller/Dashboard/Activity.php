@@ -4,7 +4,7 @@ namespace Goteo\Controller\Dashboard {
 
     use Goteo\Model,
         Goteo\Core\Redirection,
-		Goteo\Library\Message,
+		Goteo\Application\Message,
         Goteo\Library\FileHandler\File,
         Goteo\Library\Text,
 		Goteo\Library\Check,
@@ -32,7 +32,7 @@ namespace Goteo\Controller\Dashboard {
             if (!empty($favourite_categories)) {
                 $lists['favourite_categories'] = Listing::get($favourite_categories);
             }
-            
+
             return $lists;
         }
 

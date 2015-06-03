@@ -6,7 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Model,
-	    Goteo\Library,
+	    Goteo\Application,
         Goteo\Library\Feed,
 	    Goteo\Library\Text,
 	    Goteo\Library\Page,
@@ -34,7 +34,7 @@ namespace Goteo\Controller {
                 $_SESSION['user']->translangs = Model\User\Translate::getLangs($_SESSION['user']->id);
                 if (empty($_SESSION['user']->translangs) ) {
 
-                    Library\Message::Error('No tienes ningún idioma, contacta con el administrador');
+                    Application\Message::Error('No tienes ningún idioma, contacta con el administrador');
                     throw new Redirection('/dashboard');
                 }
 
@@ -65,7 +65,7 @@ namespace Goteo\Controller {
                 // verificar si este usuario puede traducir este nodo
                 // (ojo, al ser  table 'node' el id del nodo está en el parametro $action
                 if ( !Model\User\Translate::is_legal($_SESSION['user']->id, $action, 'node') ) {
-                    Library\Message::Info(Text::get('user-login-required-access'));
+                    Application\Message::Info(Text::get('user-login-required-access'));
                     throw new Redirection('/dashboard/translates');
                 }
 

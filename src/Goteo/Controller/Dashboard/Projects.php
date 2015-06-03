@@ -10,7 +10,7 @@ namespace Goteo\Controller\Dashboard {
         Goteo\Library\Mail,
 		Goteo\Library\Page,
 		Goteo\Library\Template,
-		Goteo\Library\Message;
+		Goteo\Application\Message;
 
 /*
  * las opciones para /dashboard/projects:

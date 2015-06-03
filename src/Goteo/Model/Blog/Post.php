@@ -8,7 +8,7 @@ namespace Goteo\Model\Blog {
         \Goteo\Model\Node,
         \Goteo\Model\User,
         \Goteo\Library\Text,
-        \Goteo\Library\Message;
+        \Goteo\Application\Message;
 
     class Post extends \Goteo\Core\Model {
 

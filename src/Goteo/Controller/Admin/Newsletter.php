@@ -8,7 +8,7 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Text,
         Goteo\Model,
         Goteo\Library\Mail,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
 		Goteo\Library\Template,
         Goteo\Library\Newsletter as Boletin,
 		Goteo\Library\Sender;

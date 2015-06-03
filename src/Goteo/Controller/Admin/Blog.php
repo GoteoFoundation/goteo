@@ -7,7 +7,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
-		Goteo\Library\Message,
+		Goteo\Application\Message,
         Goteo\Model;
 
     class Blog {

@@ -5,7 +5,7 @@ namespace Goteo\Controller\Dashboard {
     use Goteo\Model,
         Goteo\Core\ACL,
         Goteo\Core\Redirection,
-		Goteo\Library\Message,
+		Goteo\Application\Message,
 		Goteo\Library\Text;
 
     class Calls {

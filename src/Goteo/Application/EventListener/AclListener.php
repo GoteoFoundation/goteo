@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Goteo\Core\ACL;
-use Goteo\Library\Message;
+use Goteo\Application\Message;
 use Goteo\Library\Text;
 
 //TODO: use symfony components for security

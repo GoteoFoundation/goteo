@@ -7,7 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Application\Session,
         Goteo\Model,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
         Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Text;

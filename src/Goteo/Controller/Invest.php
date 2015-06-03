@@ -11,7 +11,7 @@ namespace Goteo\Controller {
         Goteo\Library\Text,
         Goteo\Library\Mail,
         Goteo\Library\Template,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv,
         Goteo\Library\Currency;

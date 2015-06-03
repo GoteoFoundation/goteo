@@ -2,7 +2,7 @@
 
 use Goteo\Core\View,
     Goteo\Library\Text,
-    Goteo\Library\Message;
+    Goteo\Application\Message;
 
 $bodyClass = 'project-edit';
 

@@ -1,7 +1,6 @@
 <?php
 
-namespace Goteo\Library;
-use Goteo\Application\Session;
+namespace Goteo\Application;
 
 class Message {
 

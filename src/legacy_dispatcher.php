@@ -6,7 +6,7 @@ use Goteo\Core\Redirection;
 use Goteo\Core\ACL;
 use Goteo\Core\View;
 use Goteo\Application\Session;
-use Goteo\Library\Message;
+use Goteo\Application\Message;
 use Goteo\Library\Text;
 
 try {
@@ -103,6 +103,9 @@ try {
             }
             //Provisional mientras la transicion
             elseif($result instanceOf \Symfony\Component\HttpFoundation\Response) {
+                return $result;
+            }
+            elseif($result instanceOf \Symfony\Component\HttpFoundation\RedirectResponse) {
                 return $result;
             }
             else {

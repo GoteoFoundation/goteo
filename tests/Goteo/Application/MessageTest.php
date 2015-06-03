@@ -3,7 +3,7 @@
 
 namespace Goteo\Library\Tests;
 
-use Goteo\Library\Message;
+use Goteo\Application\Message;
 
 class MessageTest extends \PHPUnit_Framework_TestCase {
 
@@ -11,7 +11,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
         $converter = new Message();
 
-        $this->assertInstanceOf('\Goteo\Library\Message', $converter);
+        $this->assertInstanceOf('\Goteo\Application\Message', $converter);
 
         return $converter;
     }

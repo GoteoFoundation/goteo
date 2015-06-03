@@ -4,7 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Application\View,
         Goteo\Library\Text,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
         Goteo\Model,
         Symfony\Component\HttpFoundation\Response,
         Symfony\Component\HttpFoundation\RedirectResponse;;
