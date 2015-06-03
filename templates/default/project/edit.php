@@ -4,8 +4,6 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$bodyClass = 'project-edit';
-
 $project = $this->project;
 $status = View::get('project/edit/status.html.php', array('status' => $project->status, 'progress' => $project->progress));
 $steps  = View::get('project/edit/steps.html.php', array('steps' => $this->steps, 'step' => $this->step, 'errors' => $project->errors, 'id_project' => $project->id));
@@ -24,6 +22,7 @@ $superform = true;
 
 $this->layout("layout", [
     'bodyClass' => 'project-edit',
+    'superform' => true,
     'title' => $this->text('meta-title-edit-project'),
     'meta_description' => $this->text('meta-description-edit-project')
     ]);

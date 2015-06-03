@@ -50,7 +50,7 @@
             <script src="<?php echo SRC_URL ?>/view/js/sha1.min.js"></script>
         <?php endif; ?>
 
-        <?php if (isset($superform)) : ?>
+        <?php if ($this->superform) : ?>
             <script src="<?php echo SRC_URL ?>/view/js/datepicker.min.js"></script>
             <script src="<?php echo SRC_URL ?>/view/js/datepicker/datepicker.<?php echo LANG; ?>.js"></script>
             <script src="<?php echo SRC_URL ?>/view/js/superform.js"></script>
