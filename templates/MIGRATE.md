@@ -19,7 +19,7 @@ Diferencias en las plantillas
 
 Antes:
 
-Las variables están dentro del array **$this** o $vars[]
+Las variables están dentro del array **$this** (objecto) o **$vars[]** (array)
 
 ```php
 <?php
