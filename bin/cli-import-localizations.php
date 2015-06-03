@@ -63,7 +63,7 @@ else {
 
 $errors = @json_decode(@file_get_contents($CACHE_FILE));
 if(!is_array($errors)) $errors = array();
-
+/*
 echo "\nIMPORTING USERS\n\n";
 if($query = Model::query("SELECT user.id,user.location FROM user WHERE user.location!='' AND !ISNULL(user.location) AND user.location NOT IN ('" . implode("','", $errors) . "') AND user.id NOT IN (SELECT user FROM user_location) LIMIT $LIMIT")) {
     foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $user) {
@@ -102,9 +102,9 @@ if($query = Model::query("SELECT user.id,user.location FROM user WHERE user.loca
 
     }
 }
-
+*/
 echo "\nIMPORTING PROJECTS\n\n";
-if($query = Model::query("SELECT project.id,project.location FROM project WHERE project.location!='' AND !ISNULL(project.location) AND project.location NOT IN ('" . implode("','", $errors) . "') AND project.id NOT IN (SELECT project FROM project_location) LIMIT $LIMIT")) {
+if($query = Model::query("SELECT project.id,project.project_location AS location FROM project WHERE project.project_location!='' AND !ISNULL(project.project_location) AND project.project_location NOT IN ('" . implode("','", $errors) . "') AND project.id NOT IN (SELECT project FROM project_location) LIMIT $LIMIT")) {
     foreach ($list = $query->fetchAll(\PDO::FETCH_OBJ) as $project) {
         echo "PROJECT: {$project->id} LOCATION: [{$project->location}]\n";
         if($data = GoogleGeocoder::getCoordinates(array('address' => $project->location))) {
