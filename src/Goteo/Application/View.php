@@ -26,7 +26,7 @@ class View {
             self::$engine = Foil\engine();
         }
         //por compatibilidad
-        self::$engine->vars = $vars;
+        // self::$engine->vars = $vars;
         return self::$engine->render($view, $vars + array('vars' => $vars)); //por compatibilidad
     }
 
