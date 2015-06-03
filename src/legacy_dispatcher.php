@@ -101,6 +101,10 @@ try {
             if($result instanceOf View) {
                 echo $result->render();
             }
+            //Provisional mientras la transicion
+            elseif($result instanceOf \Symfony\Component\HttpFoundation\Response) {
+                echo $result->sendContent();
+            }
             else echo $result;
 
             // if ($mime_type == "text/html" && GOTEO_ENV != 'real') {
@@ -114,7 +118,7 @@ try {
                     echo '</pre></div>';
                 }
 
-                echo '<!-- '.(microtime(true) - Session::getStartTime() ) . 's -->';
+                echo '<!-- legacy: '.(microtime(true) - Session::getStartTime() ) . 's -->';
             }
             //Farewell
             return;

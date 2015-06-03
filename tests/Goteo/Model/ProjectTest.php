@@ -17,7 +17,27 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
                     'project_image' => 'project',
                     'project_lang' => 'id',
                     'project_location' => 'id',
-                    'project_open_tag' => 'project');
+                    'project_open_tag' => 'project',
+                    // 'banner' => 'project', => investigar, parece que hay banners que pueden no tener proyecto
+                    'bazar' => 'project',
+                    // 'blog' => 'owner', => el campo type indica la tabla del owner, se deberia cambiar
+                    'call_project' => 'project',
+                    'contract' => 'project',
+                    'cost' => 'project',
+                    // 'cost_lang' => 'project', => investigar...
+                    'invest' => 'project',
+                    'invest_node' => 'project_id',
+                    // 'message' => 'project', => borrar con tranquilidad
+                    'patron' => 'project',
+                    'promote' => 'project',
+                    // 'review' => 'project', => borrar con tranquilidad
+                    // 'reward' => 'project', => borrar con tranquilidad
+                    // 'reward_lang' => 'project', => borrar con tranquilidad
+                    'stories' => 'project',
+                    // 'support' => 'project', => borrar con tranquilidad
+                    'user_project' => 'project',
+
+                    );
 
     private static $image = array(
                         'name' => 'test.png',
@@ -262,7 +282,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
 
     public function testCleanProjectRelated() {
         foreach(self::$related_tables as $tb => $field) {
-            $this->assertEquals(0, Project::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM project)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM project)");
+            $this->assertEquals(0, Project::query("SELECT COUNT(*) FROM `$tb`  WHERE `$field` NOT IN (SELECT id FROM project)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM  `$tb` WHERE `$field` NOT IN (SELECT id FROM project)");
         }
     }
 
