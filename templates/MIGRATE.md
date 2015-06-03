@@ -19,7 +19,7 @@ Diferencias en las plantillas
 
 Antes:
 
-Las variables están dentro del array **$this** o $vars[]
+Las variables están dentro del array **$this** (objeto) o **$vars[]** (array)
 
 ```php
 <?php
@@ -40,7 +40,8 @@ echo $this['variable']; //sin escapar
 
 Después:
 
-Las variables están instanciadas por defecto en el objecto $this
+Las variables están instanciadas por defecto en el objecto **$this**
+**NOTA** Por compatibilidad también es posible usar el array `$this->vars` que contiene todas las variables en un array
 
 ```php
 <?php
@@ -50,9 +51,11 @@ $obj->doSomething();
 echo $this->e($this->raw('obj')->doMore()); // escapado con $this->e()
 
 //escalar
-echo $this->variable; // escapada por defecto
+echo $this->variable; // HTML escapada por defecto (strings y arrays)
 echo $this->raw('variable'); // sin escapar
 
+//COMPATIBILIDAD CON VISTAS QUE NECESITAN UN ARRAY
+echo $this->vars['variable']; // HTML escapada si es un string o array simple
 ?>
 ```
 

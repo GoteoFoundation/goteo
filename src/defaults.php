@@ -18,20 +18,25 @@ use Goteo\Foil\Extension;
 /**********************************/
 
 
+//Compiled views by grunt
+View::addFolder(GOTEO_WEB_PATH . 'templates/grunt', 'compiled');
+
 //If node, Node templates first
 //Node/call theme
 if(Config::isNode()) {
-    View::addFolder(GOTEO_PATH . 'extend/goteo/templates/node');
-    View::addFolder(GOTEO_PATH . 'templates/node');
+    //Custom templates first (PROVISIONAL: should be configurable in settings)
+    View::addFolder(GOTEO_PATH . 'extend/goteo/templates/node', 'node-goteo');
+    //Nodes views
+    View::addFolder(GOTEO_PATH . 'templates/node', 'node');
 }
 
-//Custom templates first (PROVISIONAL)
-View::addFolder(GOTEO_PATH . 'extend/goteo/templates/default');
+//Custom templates first (PROVISIONAL: should be configurable in settings)
+View::addFolder(GOTEO_PATH . 'extend/goteo/templates/default', 'goteo');
 
 //Default templates
-View::addFolder(GOTEO_PATH . 'templates/default');
-// View::addFolder(GOTEO_PATH . 'templates/node', 'node');
+View::addFolder(GOTEO_PATH . 'templates/default', 'default');
 
+// print_r(View::getEngine());
 
 // views function registering
 View::getEngine()->loadExtension(new Extension\GoteoCore());

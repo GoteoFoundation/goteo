@@ -38,18 +38,15 @@ if (!empty($project->num_posts)) {
 $URL = \SITE_URL;
 
 // metas og: para que al compartir en facebook coja bien el nombre y la imagen (todas las de proyecto y las novedades
-$ogmeta = array(
-    'title' => htmlspecialchars($project->name, ENT_QUOTES),
-    'description' => htmlspecialchars($project->subtitle, ENT_QUOTES)."\n".$this->text('regular-by').' '.$project->user->name,
-    'url' => $URL . '/project/'.$project->id
-);
-
+$title = $project->name;
+$url = $URL . '/project/'.$project->id;
+$images = array();
 if ($show == 'updates') {
-    $ogmeta['url'] .= '/updates';
+    $url .= '/updates';
     if (!empty($post)) {
-        $ogmeta['url'] .= '/'.$post;
+        $url .= '/'.$post;
         $tpost = $blog->posts[$post];
-        $ogmeta['title'] .= (empty($tpost->title)) ?: ' - '.$tpost->title;
+        $title .= (empty($tpost->title)) ?: ' - '.$tpost->title;
     }
 }
 
@@ -57,7 +54,7 @@ if ($show == 'updates') {
 if (is_array($project->gallery)) {
     foreach ($project->gallery as $pgimg) {
         if ($pgimg->imageData instanceof Image) {
-            $ogmeta['image'][] = $pgimg->imageData->getLink(580, 580, false, true);
+            $images[] = $pgimg->imageData->getLink(580, 580, false, true);
         }
     }
 }
@@ -66,7 +63,7 @@ foreach ($blog->posts as $bpost) {
     if (is_array($bpost->gallery)) {
         foreach ($bpost->gallery as $bpimg) {
             if ($bpimg instanceof Image) {
-                $ogmeta['image'][] = $bpimg->getLink(500, 285, false, true);
+                $images[] = $bpimg->getLink(500, 285, false, true);
             }
         }
     }
@@ -74,9 +71,11 @@ foreach ($blog->posts as $bpost) {
 
 $this->layout("layout", [
     'bodyClass' => 'project-show',
-    'title' => $project->name,
+    'title' => $title,
     'meta_description' => $project->subtitle,
-    'image' => $ogmeta['image']
+    'og_description' => $project->subtitle ."\n". $this->text('regular-by').' '.$project->user->name,
+    'url' => $url,
+    'image' => $images
     ]);
 
 $this->section('content');
