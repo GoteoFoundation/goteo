@@ -15,3 +15,6 @@ ALTER TABLE `glossary` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'Galería de i
 
 -- imagen principal
 ALTER TABLE `glossary` ADD `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Imagen principal';
+
+-- depreacted gallery field
+ALTER TABLE `glossary` DROP COLUMN `gallery`;

@@ -335,11 +335,11 @@ namespace Goteo\Model {
                 }
 
                 // proyectos asignados
-                if (!isset($call->applied)) {
+                //if (!isset($call->applied)) {
                     // número de proyectos presentados a la campaña
                     $applied = $call->getConf('applied');
                     $call->applied = (isset($applied)) ? $applied : $call->getApplied();
-                }
+                //}
 
                 return $call;
             } catch (\PDOException $e) {
@@ -501,8 +501,6 @@ namespace Goteo\Model {
                 // Logo
                 if (is_array($this->logo) && !empty($this->logo['name'])) {
                     $logo = new Image($this->logo);
-                    // eliminando tabla images
-                    $logo->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                     if ($logo->save($errors)) {
                         $this->logo = $logo->id;
@@ -514,8 +512,6 @@ namespace Goteo\Model {
                 // Imagen widget
                 if (is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
-                    // eliminando tabla images
-                    $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                     if ($image->save($errors)) {
                         $this->image = $image->id;
@@ -527,8 +523,6 @@ namespace Goteo\Model {
                 // Imagen de fondo resto de páginas
                 if (is_array($this->backimage) && !empty($this->backimage['name'])) {
                     $backimage = new Image($this->backimage);
-                    // eliminando tabla images
-                    $backimage->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
                     if ($backimage->save($errors)) {
                         $this->backimage = $backimage->id;

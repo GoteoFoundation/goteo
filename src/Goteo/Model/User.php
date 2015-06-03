@@ -25,7 +25,8 @@ namespace Goteo\Model {
             $password, // para gestion de super admin
             $name,
             $location,
-            $avatar = false,
+            $avatar = null, // Always a Image class
+            $user_avatar = '', //image string
             $about,
             $contribution,
             $keywords,
@@ -44,6 +45,12 @@ namespace Goteo\Model {
             $interests = array(),
             $webs = array(),
             $roles = array();
+
+        public function __construct() {
+            $args = func_get_args();
+            call_user_func_array(array('parent', '__construct'), $args);
+            $this->avatar = new Image();
+        }
 
         /**
          * Sobrecarga de métodos 'setter'.
@@ -105,6 +112,7 @@ namespace Goteo\Model {
          * @return type bool	true|false
          */
         public function save (&$errors = array(), $skip_validations = array()) {
+            $data = array();
             if($this->validate($errors, $skip_validations)) {
                 // Nuevo usuario.
                 if(empty($this->id)) {
@@ -188,21 +196,20 @@ namespace Goteo\Model {
                     }
 
                     // Avatar
-                    if (is_array($this->avatar) && !empty($this->avatar['name'])) {
-                        $image = new Image($this->avatar);
-                        // eliminando tabla images
-                        $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
+                    if (is_array($this->user_avatar) && !empty($this->user_avatar['name'])) {
+                        $image = new Image($this->user_avatar);
 
                         if ($image->save($errors)) {
                             $data[':avatar'] = $image->id;
+                            $this->avatar = $image;
                         } else {
                             unset($data[':avatar']);
                         }
                     }
-                    if(is_null($this->avatar)) {
+                    if(empty($this->user_avatar)) {
                         $data[':avatar'] = '';
+                        $this->avatar->remove();
                     }
-
 
                     // Perfil público
                     if(isset($this->name)) {
@@ -550,7 +557,7 @@ namespace Goteo\Model {
                         user.active as active,
                         IFNULL(user.lang, 'es') as lang,
                         user.location as location,
-                        user.avatar as avatar,
+                        user.avatar as user_avatar,
                         IFNULL(user_lang.about, user.about) as about,
                         IFNULL(user_lang.contribution, user.contribution) as contribution,
                         IFNULL(user_lang.keywords, user.keywords) as keywords,
@@ -584,8 +591,7 @@ namespace Goteo\Model {
                     return false;
                 }
                 $user->roles = $user->getRoles();
-                $user->avatar = Image::get($user->avatar);
-
+                $user->avatar = Image::get($user->user_avatar);
                 $user->interests = User\Interest::get($id);
 
                 // campo calculado tipo lista para las webs del usuario
@@ -616,7 +622,7 @@ namespace Goteo\Model {
                     SELECT
                         id,
                         name,
-                        avatar,
+                        avatar as user_avatar,
                         email,
                         IFNULL(lang, 'es') as lang,
                         node
@@ -625,7 +631,7 @@ namespace Goteo\Model {
                     ", array(':id' => $id));
                 $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
 
-                $user->avatar = Image::get($user->avatar);
+                $user->avatar = Image::get($user->user_avatar);
 
                 return $user;
             } catch(\PDOException $e) {
@@ -1561,7 +1567,6 @@ namespace Goteo\Model {
                     project.maxcost as maxcost,
                     project.amount as amount,
                     project.image as image,
-                    project.gallery as gallery,
                     project.num_investors as num_investors,
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,

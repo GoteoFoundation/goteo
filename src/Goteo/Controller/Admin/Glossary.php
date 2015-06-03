@@ -27,6 +27,7 @@ namespace Goteo\Controller\Admin {
                     } else {
                         $post = new Model\Glossary();
                     }
+
                     // campos que actualizamos
                     $fields = array(
                         'id',
@@ -50,11 +51,6 @@ namespace Goteo\Controller\Admin {
                     foreach ($post->gallery as $key=>$image) {
                         if (!empty($_POST["gallery-{$image->hash}-remove"])) {
                             $image->remove($errors, 'glossary');
-
-                            // Actualiza el campo calculado
-                            $post->setGallery();
-                            $post->setImage();
-
                             $editing = true;
                         }
                     }

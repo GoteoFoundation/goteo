@@ -38,7 +38,6 @@ namespace Goteo\Model {
                         IFNULL(info_lang.legend, info.legend) as legend,
                         info.media as `media`,
                         info.image as `image`,
-                        info.gallery as `gallery`,
                         info.publish as `publish`,
                         info.order as `order`
                     FROM    info
@@ -55,22 +54,8 @@ namespace Goteo\Model {
                         $info->media = new Media($info->media);
                     }
 
-                    // campo calculado gallery
-                    if (!empty($info->gallery) && $info->gallery !== 'empty') {
-                        $info->gallery = Image::getGallery($info->gallery);
-                    } elseif ($info->gallery !== 'empty') {
-                        $info->setGallery();
-                    } else {
-                        $info->gallery = array();
-                    }
-
-                    if (!empty($info->image) && $info->image !== 'empty') {
-                        $info->image = Image::get($info->image);
-                    } elseif ($info->image !== 'empty') {
-                        $info->setImage();
-                    } else {
-                        $info->image = null;
-                    }
+                    $info->gallery = Image::getModelGallery('info', $info->id);
+                    $info->image = Image::getModelImage($info->image, $info->gallery);
                 }
                 return $info;
         }
@@ -102,7 +87,6 @@ namespace Goteo\Model {
                         $different_select,
                         info.media as `media`,
                         info.image as `image`,
-                        info.gallery as `gallery`,
                         info.publish as `publish`,
                         info.order as `order`
                     FROM    info
@@ -129,22 +113,9 @@ namespace Goteo\Model {
                     $info->media = new Media($info->media);
                 }
 
-                // campo calculado gallery
-                if (!empty($info->gallery) && $info->gallery !== 'empty') {
-                    $info->gallery = Image::getGallery($info->gallery);
-                } elseif ($info->gallery !== 'empty') {
-                    $info->setGallery();
-                } else {
-                    $info->gallery = array();
-                }
+                $info->gallery = Image::getModelGallery('info', $info->id);
+                $info->image = Image::getModelImage($info->image, $info->gallery);
 
-                if (!empty($info->image) && $info->image !== 'empty') {
-                    $info->image = Image::get($info->image);
-                } elseif ($info->image !== 'empty') {
-                    $info->setImage();
-                } else {
-                    $info->image = null;
-                }
 
 
                 $list[$info->id] = $info;
@@ -173,7 +144,6 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             $fields = array(
-                'id',
                 'node',
                 'title',
                 'text',
@@ -183,41 +153,20 @@ namespace Goteo\Model {
                 'publish'
                 );
 
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
             try {
-                $sql = "REPLACE INTO info SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->insertUpdate($fields);
 
                 // Luego la imagen
                 if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
-                    // eliminando tabla images
-                    $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
-
-                    if ($image->save($errors)) {
+                    if ($image->addToModelGallery('info', $this->id)) {
                         $this->gallery[] = $image;
-
-                        /**
-                         * Guarda la relación NM en la tabla 'info_image'.
-                         */
-                        if(!empty($image->id)) {
-                            self::query("REPLACE info_image (info, image) VALUES (:info, :image)", array(':info' => $this->id, ':image' => $image->id));
-                        }
-
-                        // Actualiza el campo calculado
-                        $this->setGallery();
-                        $this->setImage();
-
-                    } else {
-                        Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                        // Pre-calculated field
+                        $this->gallery[0]->setModelImage('info', $this->id);
+                    }
+                    else {
+                        Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -228,31 +177,19 @@ namespace Goteo\Model {
             }
         }
 
-        /*
-         * Para quitar una entrada
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
          */
-        public function delete ($id = null) {
-            if(empty($id) && $this->id) {
-                $id = $this->id;
-            }
-            if(empty($id)) {
-                // throw new Exception("Delete error: ID not defined!");
-                return false;
-            }
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
 
-            try {
-                $sql = "DELETE FROM info WHERE id = :id";
-                if (self::query($sql, array(':id'=>$id))) {
-                    // que elimine tambien sus imágenes
-                    $sql = "DELETE FROM info_image WHERE info = :id";
-                    self::query($sql, array(':id'=>$id));
-                }
-            } catch (\PDOException $e) {
-                // throw new Exception("Delete error in $sql");
-                return false;
-            }
-            return true;
+            if(!($ob = Glossary::get($id))) return false;
+            return $ob->delete();
+
         }
+
 
         /*
          * Para que una entrada salga antes  (disminuir el order)
@@ -283,22 +220,6 @@ namespace Goteo\Model {
             $order = $query->fetchColumn(0);
             return ++$order;
 
-        }
-
-        /*
-         * Recalcular galeria
-         */
-        public function setGallery () {
-            $this->gallery = Image::setGallery('info', $this->id);
-            return true;
-        }
-
-        /*
-         * Recalcular imagen principal
-         */
-        public function setImage () {
-            $this->image = Image::setImage('info', $this->id, $this->gallery);
-            return true;
         }
 
     }

@@ -33,8 +33,7 @@ namespace Goteo\Model {
                         IFNULL(glossary_lang.text, glossary.text) as text,
                         IFNULL(glossary_lang.legend, glossary.legend) as legend,
                         glossary.media as `media`,
-                        glossary.image as `image`,
-                        glossary.gallery as `gallery`
+                        glossary.image as `image`
                     FROM    glossary
                     LEFT JOIN glossary_lang
                         ON  glossary_lang.id = glossary.id
@@ -49,22 +48,8 @@ namespace Goteo\Model {
                         $glossary->media = new Media($glossary->media);
                     }
 
-                    // campo calculado gallery
-                    if (!empty($glossary->gallery) && $glossary->gallery !== 'empty') {
-                        $glossary->gallery = Image::getGallery($glossary->gallery);
-                    } elseif ($glossary->gallery !== 'empty') {
-                        $glossary->setGallery();
-                    } else {
-                        $glossary->gallery = array();
-                    }
-
-                    if (!empty($glossary->image) && $glossary->image !== 'empty') {
-                        $glossary->image = Image::get($glossary->image);
-                    } elseif ($glossary->image !== 'empty') {
-                        $glossary->setImage();
-                    } else {
-                        $glossary->image = null;
-                    }
+                    $glossary->gallery = Image::getModelGallery('glossary', $glossary->id);
+                    $glossary->image = Image::getModelImage($glossary->image, $glossary->gallery);
                 }
                 return $glossary;
         }
@@ -95,8 +80,7 @@ namespace Goteo\Model {
                     glossary.id as id,
                     $different_select,
                     glossary.media as `media`,
-                    glossary.image as `image`,
-                    glossary.gallery as `gallery`
+                    glossary.image as `image`
                 FROM    glossary
                 LEFT JOIN glossary_lang
                     ON  glossary_lang.id = glossary.id
@@ -116,22 +100,8 @@ namespace Goteo\Model {
                     $glossary->media = new Media($glossary->media);
                 }
 
-                // campo calculado gallery
-                if (!empty($glossary->gallery) && $glossary->gallery !== 'empty') {
-                    $glossary->gallery = Image::getGallery($glossary->gallery);
-                } elseif ($glossary->gallery !== 'empty') {
-                    $glossary->setGallery();
-                } else {
-                    $glossary->gallery = array();
-                }
-
-                if (!empty($glossary->image) && $glossary->image !== 'empty') {
-                    $glossary->image = Image::get($glossary->image);
-                } elseif ($glossary->image !== 'empty') {
-                    $glossary->setImage();
-                } else {
-                    $glossary->image = null;
-                }
+                $glossary->gallery = Image::getModelGallery('glossary', $glossary->id);
+                $glossary->image = Image::getModelImage($glossary->image, $glossary->gallery);
 
                 $list[$glossary->id] = $glossary;
             }
@@ -156,96 +126,51 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             $fields = array(
-                'id',
+                // 'id',
                 'title',
                 'text',
                 'legend',
                 'media'
                 );
 
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
             try {
-                $sql = "REPLACE INTO glossary SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->insertUpdate($fields);
 
                 // Luego la imagen
                 if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {
                     $image = new Image($this->image);
-                    // eliminando tabla images
-                    $image->newstyle = true; // comenzamosa  guardar nombre de archivo en la tabla
 
-                    if ($image->save($errors)) {
-
-                        /**
-                         * Guarda la relación NM en la tabla 'glossary_image'.
-                         */
-                        if(!empty($image->id)) {
-                            self::query("REPLACE glossary_image (glossary, image) VALUES (:glossary, :image)", array(':glossary' => $this->id, ':image' => $image->id));
-                        }
-
-                        // Actualiza el campo calculado
-                        $this->setGallery();
-                        $this->setImage();
-
-                    } else {
+                    if ($image->addToModelGallery('glossary', $this->id)) {
+                        $this->gallery[] = $image;
+                        // Pre-calculated field
+                        $this->gallery[0]->setModelImage('glossary', $this->id);
+                    }
+                    else {
                         Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = "Save error: " . $e->getMessage();
                 return false;
             }
         }
 
-        /*
-         * Para quitar una entrada
+        /**
+         * Static compatible version of parent delete()
+         * @param  [type] $id [description]
+         * @return [type]     [description]
          */
-        public function delete ($id = null) {
-            if(empty($id) && $this->id) {
-                $id = $this->id;
-            }
-            if(empty($id)) {
-                // throw new Exception("Delete error: ID not defined!");
-                return false;
-            }
+        public function delete($id = null) {
+            if(empty($id)) return parent::delete();
 
-            $sql = "DELETE FROM glossary WHERE id = :id";
-            if (self::query($sql, array(':id'=>$id))) {
+            if(!($ob = Glossary::get($id))) return false;
+            return $ob->delete();
 
-                // que elimine tambien sus imágenes
-                $sql = "DELETE FROM glossary_image WHERE glossary = :id";
-                self::query($sql, array(':id'=>$id));
-
-                return true;
-            }
-            return false;
         }
 
-        /*
-         * Recalcular galeria
-         */
-        public function setGallery () {
-            $this->gallery = Image::setGallery('glossary', $this->id);
-            return true;
-        }
-
-        /*
-         * Recalcular imagen principal
-         */
-        public function setImage () {
-            $this->image = Image::setImage('glossary', $this->id, $this->gallery);
-            return true;
-        }
 
     }
 

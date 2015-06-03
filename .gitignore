@@ -25,3 +25,5 @@ app/logs/*
 !app/logs/.htaccess
 !app/logs/README
 app/nodesys/_*
+phpunit.xml
+tests/build

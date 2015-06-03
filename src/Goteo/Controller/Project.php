@@ -825,13 +825,13 @@ namespace Goteo\Controller {
 
             // Avatar
             if (isset($_FILES['avatar_upload']) && $_FILES['avatar_upload']['error'] != UPLOAD_ERR_NO_FILE) {
-                $user->avatar = $_FILES['avatar_upload'];
+                $user->user_avatar = $_FILES['avatar_upload'];
             }
 
             // tratar si quitan la imagen
             if (!empty($_POST['avatar-' . $user->avatar->hash .  '-remove'])) {
                 $user->avatar->remove($errors);
-                $user->avatar = null;
+                $user->user_avatar = null;
             }
 
             $user->interests = $_POST['user_interests'];
@@ -1047,8 +1047,8 @@ namespace Goteo\Controller {
                     $image->remove($errors, 'project');
                     // recalculamos las galerias e imagen
 
-                    // setGallery en Project\Image  procesa todas las secciones
-                    $galleries = Model\Project\Image::setGallery($project->id);
+                    // getGalleries en Project\Image  procesa todas las secciones
+                    $galleries = Model\Project\Image::getGalleries($project->id);
                     Model\Project\Image::setImage($project->id, $galleries['']);
 
                     unset($project->images[$key]);

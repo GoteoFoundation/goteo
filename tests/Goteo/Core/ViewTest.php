@@ -56,7 +56,6 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
         global $_SESSION;
         $project = new Project();
         $project->user = new User();
-        $project->user->avatar = new Image();
         $post = new \Goteo\Model\Blog\Post();
         $post->gallery = 'empty';
         $post->image = new Image();

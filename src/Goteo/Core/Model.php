@@ -9,6 +9,7 @@ namespace Goteo\Core {
 
         //Override in the model the table if different from the class name
         protected $Table = null;
+        static $db = null;
 
         /**
          * Constructor.
@@ -72,6 +73,72 @@ namespace Goteo\Core {
         abstract public function validate (&$errors = array());
 
         /**
+         * insert to sql
+         * @return [type] [description]
+         */
+        public function insert(Array $fields) {
+            $values = $set = $keys = [];
+            foreach($fields as $field) {
+                if(property_exists($this, $field)) {
+                    $set[] = "`$field`";
+                    $keys[] = ":$field";
+                    $values[":$field"] = $this->$field;
+                }
+            }
+            if(empty($values)) throw new \PDOException("No fields specified!", 1);
+            $sql = 'INSERT INTO `' . $this->Table . '` (' . implode(',', $set) . ') VALUES (' . implode(',', $keys) . ')';
+            // print_r($values);die($sql);
+            $res = self::query($sql, $values);
+            return $res;
+        }
+
+
+        /**
+         * update to sql
+         * @return [type] [description]
+         */
+        public function update(Array $fields, Array $where = ['id']) {
+            $values = $set = [];
+            foreach($fields as $field) {
+                if(property_exists($this, $field)) {
+                    $set[] = "`$field` = :$field ";
+                    $values[":$field"] = $this->$field;
+                }
+            }
+            $clause = [];
+            foreach($where as $field) {
+                if(property_exists($this, $field)) {
+                    $clause[] = "`$field` = :$field ";
+                    $values[":$field"] = $this->$field;
+                }
+                else {
+                    throw new \PDOException("Property $field does not exists!", 1);
+
+                }
+            }
+            if(empty($values)) throw new \PDOException("No fields specified!", 1);
+            $sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(',', $clause);
+            return self::query($sql, $values);
+        }
+
+
+        /**
+         * Authomatic insert or update behaviour
+         * Expects a id property
+         * @return [type] [description]
+         */
+        public function insertUpdate(Array $fields, Array $where = ['id']) {
+            if($this->id) {
+                $ok = $this->update($fields, $where);
+            } else {
+                $ok = $this->insert($fields);
+                $this->id = static::insertId();
+            }
+            return $ok;
+        }
+
+
+        /**
          * Borrar.
          * @return  type bool   true|false
          */
@@ -82,7 +149,7 @@ namespace Goteo\Core {
                 return false;
             }
 
-            $sql = 'DELETE FROM ' . $this->Table . ' WHERE id = ?';
+            $sql = 'DELETE FROM `' . $this->Table . '` WHERE id = ?';
             // var_dump($this);
             // echo get_called_class()." $sql $id\n";
             try {
@@ -105,23 +172,22 @@ namespace Goteo\Core {
          */
         public static function query ($query, $params = null, $select_from_replica = true) {
 
-            static $db = null;
-
-            if ($db === null) {
+            if (self::$db === null) {
                 $cacher = null;
                 if(defined('SQL_CACHE_TIME') && SQL_CACHE_TIME) {
                     $cacher = new Cacher('sql', SQL_CACHE_TIME);
                 }
 
-                $db = new DB($cacher);
+                self::$db = new DB($cacher);
             }
 
             $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
 
             //si no queremos leer de la replica se lo decimos
-            $result = $db->prepare($query, array(), $select_from_replica);
+            $result = self::$db->prepare($query, array(), $select_from_replica);
 
             $result->execute($params);
+
             return $result;
 
         }
@@ -147,9 +213,9 @@ namespace Goteo\Core {
             }
             try {
                 return (int) self::query($sql, $values)->fetchColumn();
-            }catch (\PDOException $e) {
+            } catch (\PDOException $e) {
             }
-            return false;
+            return 0;
         }
 
         /**

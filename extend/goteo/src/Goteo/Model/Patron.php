@@ -193,7 +193,6 @@ namespace Goteo\Model {
                         $different_select_project,
                         project.amount as amount,
                         project.image as image,
-                        project.gallery as gallery,
                         project.num_investors as num_investors,
                         project.num_messengers as num_messengers,
                         project.num_posts as num_posts,
@@ -276,7 +275,7 @@ namespace Goteo\Model {
                         patron.user as id,
                         user.name as name,
                         user.num_patron_active as num_patron_active,
-                        user.avatar as avatar,
+                        user.avatar as user_avatar,
                         user_vip.image as vip_image
                     FROM patron
                     LEFT JOIN user_vip
@@ -292,13 +291,10 @@ namespace Goteo\Model {
                 $user->id = $item->id;
                 $user->name = $item->name;
                 // nos ahorramos las llamadas sql a image pues en la vista solo se usa el nombre y la id (de la funcion getLink)
-                $user->avatar = Image::get($item->avatar);
-                //si existe una imagen vip, la ponemos (esto no es muy costso porque hay muy pocas, solo una de momento...):
+                $user->avatar = Image::get($item->user_avatar);
+                //si existe una imagen vip, la ponemos
                 if($item->vip_image) {
-                    $avatar = Image::get($item->vip_image);
-                    if (!empty($avatar)) {
-                        $user->avatar = $avatar;
-                    }
+                    $this->avatar = Image::get($item->vip_image);
                 }
                 //si no existe el numero de recomendaciones lo actualizamos
                 $user->num_patron_active = $item->num_patron_active;
@@ -329,7 +325,7 @@ namespace Goteo\Model {
                         user.num_patron_active as num_patron_active,
                         patron_order.order as `order`,
                         user_vip.image as vip_image,
-                        user.avatar as user_image
+                        user.avatar as user_avatar
                     FROM patron_order
                     INNER JOIN user
                         ON user.id = patron_order.id
@@ -346,14 +342,9 @@ namespace Goteo\Model {
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
 
                     // usar avatar del usuario si no tiene imagen propia de vip (apaisada)
-                    $item->avatar = (empty($item->vip_image) && !empty($item->user_image))
-                        ? Model\Image::get($item->user_image)
+                    $item->avatar = (empty($item->vip_image) && !empty($item->user_avatar))
+                        ? Model\Image::get($item->user_avatar)
                         : Model\Image::get($item->vip_image);
-
-                    // y si no tiene ninguna, la gota
-                    if (!$item->avatar instanceof Model\Image ) {
-                        $item->avatar = Model\Image::get(1);
-                    }
 
                     // solo en caso de que no tenga grabado el numero de proyectos apadrinados
                     if (!isset($item->num_patron_active)) {

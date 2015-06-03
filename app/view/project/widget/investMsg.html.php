@@ -1,6 +1,5 @@
 <?php
-use Goteo\Library\Text,
-    Goteo\Model;
+use Goteo\Library\Text;
 
 // aviso para el usuario, puede ser start->hola , ok->gracias o fail->lo sentimos
 
@@ -10,7 +9,7 @@ if (!$user instanceof Model\User) {
     $avatarhtml = '';
 } else {
     $name = $user->name;
-    $avatar = ($user->avatar instanceof Model\Image) ? $user->avatar : Model\Image::get(1);
+    $avatar = $user->avatar;
     $avatarhtml = '<img src="'.$avatar->getLink(50, 50, true).'" />';
 }
 
