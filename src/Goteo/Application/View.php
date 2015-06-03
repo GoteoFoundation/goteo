@@ -8,16 +8,16 @@ class View {
     static protected $engine;
     static protected $theme = 'default';
 
-    static public function factory($path) {
+    static public function factory($path, $theme = 'default') {
         if(!self::$engine) {
-            self::$engine = Foil\engine(['folders' => [$path]]);
+            self::$engine = Foil\engine(['folders' => [$theme => $path]]);
         }
     }
 
-    static public function addFolder($path, $theme = null,  $fallback = false) {
+    static public function addFolder($path, $theme = null) {
         if(is_dir($path)) {
-            self::factory($path);
-            self::$engine->addFolder($path, $theme,  $fallback);
+            self::factory($path, $theme);
+            self::$engine->addFolder($path, $theme);
         }
     }
 
