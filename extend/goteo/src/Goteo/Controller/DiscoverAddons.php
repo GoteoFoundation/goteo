@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\View;
 use Goteo\Model;
 use Goteo\Library\Text;
-use Goteo\Library\Message;
+use Goteo\Application\Message;
 use Goteo\Library\Listing;
 
 class DiscoverAddons extends \Goteo\Core\Controller {

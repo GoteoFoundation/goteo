@@ -7,7 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
-        Goteo\Library,
+        Goteo\Application,
         Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Text;
@@ -143,9 +143,9 @@ namespace Goteo\Controller {
             if ($option == 'evaluate') {
                 //Text::get
                 if ($review->ready == 1) {
-                    Library\Message::Info(Text::get('review-closed-alert'));
+                    Application\Message::Info(Text::get('review-closed-alert'));
                 } else {
-                    Library\Message::Info(Text::get('review-ajax-alert'));
+                    Application\Message::Info(Text::get('review-ajax-alert'));
                 }
             }
 

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\View;
 use Goteo\Model;
 use Goteo\Library\Text;
-use Goteo\Library\Message;
+use Goteo\Application\Message;
 use Goteo\Library\Listing;
 use Goteo\Model\Category;
 use Goteo\Model\Project;

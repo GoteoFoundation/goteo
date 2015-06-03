@@ -249,7 +249,7 @@ namespace Goteo\Model {
                 if ($image->save($errors)) {
                     $this->image = $image->id;
                 } else {
-                    \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    \Goteo\Application\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
             }

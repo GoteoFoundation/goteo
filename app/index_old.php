@@ -9,8 +9,8 @@ use Goteo\Core\NodeSys;
 use Goteo\Application\Session;
 use Goteo\Application\Cookie;
 use Goteo\Application\Lang;
+use Goteo\Application\Message;
 use Goteo\Library\Text;
-use Goteo\Library\Message;
 use Goteo\Library\Currency;
 
 //si el parametro GET vale:

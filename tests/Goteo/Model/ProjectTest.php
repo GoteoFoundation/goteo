@@ -142,6 +142,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
 
         $project = Project::get($project->id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         $this->assertEquals($project->owner, self::$user['userid']);
         return $project;
@@ -213,14 +214,17 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $project = Project::getMini($id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         $this->assertEquals($project->id, $id);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         $project = Project::getMedium($id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         $this->assertEquals($project->id, $id);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         $widget = Project::getWidget($project);
         $this->assertInstanceOf('\Goteo\Model\Project', $widget);
         $this->assertEquals($widget->id, $id);
+        $this->assertInstanceOf('\Goteo\Model\Image', $widget->image);
 
 
         return $project;
@@ -237,15 +241,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $project->image = ProjectImage::setImage($project->id, $project->gallery);
 
         $this->assertInternalType('array', $project->gallery);
-        $this->assertCount(1, $project->gallery);
-        $this->assertEquals($project->image, $project->gallery[0]->imageData);
+        $this->assertCount(1, $project->gallery, print_r($project->gallery, 1));
+        $this->assertEquals($project->image, $project->gallery[0]->imageData, print_r($project->image, 1));
 
         //remove second image
         $this->assertTrue($project->gallery[0]->imageData->remove($errors, 'project'), print_r($errors, 1));
         $project = Project::get($project->id);
         $this->assertInternalType('array', $project->gallery);
         $this->assertCount(0, $project->gallery);
-        $this->assertEmpty($project->image);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         //add image (to check autodelete)
         $project->image = self::$image;

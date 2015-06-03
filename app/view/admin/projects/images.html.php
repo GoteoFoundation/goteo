@@ -1,7 +1,7 @@
 <?php
 
 use Goteo\Core\Redirection,
-    Goteo\Library\Message,
+    Goteo\Application\Message,
     Goteo\Model;
 
 $project = $vars['project'];

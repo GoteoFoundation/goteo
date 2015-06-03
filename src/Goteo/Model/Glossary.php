@@ -5,7 +5,7 @@ namespace Goteo\Model {
     use \Goteo\Model\Project\Media,
         \Goteo\Model\Image,
         \Goteo\Library\Text,
-        \Goteo\Library\Message;
+        \Goteo\Application\Message;
 
     class Glossary extends \Goteo\Core\Model {
 

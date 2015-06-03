@@ -4,6 +4,7 @@ namespace Goteo\Controller;
 
 use Goteo\Application\View;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\FlattenException;
 
 class ErrorController extends \Goteo\Core\Controller {
@@ -20,7 +21,7 @@ class ErrorController extends \Goteo\Core\Controller {
                     $res = include __DIR__ . '/../../../src/legacy_dispatcher.php';
                     $content = ob_get_contents();
                     ob_get_clean();
-                    if($res instanceOf Response) {
+                    if($res instanceOf Response || $res instanceOf RedirectResponse) {
                         return $res;
                     }
 

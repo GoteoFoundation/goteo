@@ -8,7 +8,7 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
 		Goteo\Library\Template,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
         Goteo\Application\Lang,
         Goteo\Model;
 

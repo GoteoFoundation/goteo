@@ -6,7 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\View,
         Goteo\Library\Feed,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
         Goteo\Model\User,
 		Goteo\Application\Session,
 		Goteo\Model\Node;

@@ -9,6 +9,7 @@ namespace Goteo\Controller {
         Goteo\Model,
 		Goteo\Library\Feed,
         Goteo\Library,
+        Goteo\Application,
         Goteo\Library\Template,
         Goteo\Library\Text;
 
@@ -23,7 +24,7 @@ namespace Goteo\Controller {
                 $projectData = Model\Project::getMini($project);
 
                 if ($projectData->status < 3) {
-                    Library\Message::Error(Text::get('project-messages-closed'));
+                    Application\Message::Error(Text::get('project-messages-closed'));
                     throw new Redirection("/project/{$project}");
                 }
 
@@ -250,9 +251,9 @@ namespace Goteo\Controller {
                 $mailHandler->template = $template->id;
                 if ($mailHandler->send($errors)) {
                     // ok
-                    Library\Message::Info(Text::get('regular-message_success'));
+                    Application\Message::Info(Text::get('regular-message_success'));
                 } else {
-                    Library\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
+                    Application\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
                 }
 
                 unset($mailHandler);
@@ -267,7 +268,7 @@ namespace Goteo\Controller {
         public function personal ($user = null) {
             // verificacion de que esté autorizasdo a enviar mensaje
             if (!isset($_SESSION['message_autorized']) || $_SESSION['message_autorized'] !== true) {
-                Library\Message::Info('Temporalmente no disponible. Disculpen las molestias');
+                Application\Message::Info('Temporalmente no disponible. Disculpen las molestias');
                 throw new Redirection('/');
             } else {
                 // y quitamos esta autorización
@@ -335,9 +336,9 @@ namespace Goteo\Controller {
                 $mailHandler->template = $template->id;
                 if ($mailHandler->send($errors)) {
                     // ok
-                    Library\Message::Info(Text::get('regular-message_success'));
+                    Application\Message::Info(Text::get('regular-message_success'));
                 } else {
-                    Library\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
+                    Application\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
                 }
 
                 unset($mailHandler);

@@ -7,7 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
-        Goteo\Library,
+        Goteo\Application,
         Goteo\Library\Template,
         Goteo\Library\Feed,
         Goteo\Library\Buzz,
@@ -57,7 +57,7 @@ namespace Goteo\Controller {
                 $grant = true;
 
             if (!$grant) {
-                Library\Message::Info('No tienes permiso para eliminar esta convocatoria');
+                Application\Message::Info('No tienes permiso para eliminar esta convocatoria');
 
                 throw new Redirection($goto);
             }
@@ -95,7 +95,7 @@ namespace Goteo\Controller {
                 $grant = true;
 
             if (!$grant) {
-                Library\Message::Info('No tienes permiso para editar esta convocatoria');
+                Application\Message::Info('No tienes permiso para editar esta convocatoria');
                 throw new Redirection($goto);
             }
 
@@ -195,10 +195,10 @@ namespace Goteo\Controller {
                         $mailHandler->html = true;
                         $mailHandler->template = 0;
                         if ($mailHandler->send($errors)) {
-                            Library\Message::Info(Text::get('call-review-request_mail-success'));
+                            Application\Message::Info(Text::get('call-review-request_mail-success'));
                         } else {
-                            Library\Message::Error(Text::get('call-review-request_mail-fail'));
-                            Library\Message::Error(implode('<br />', $errors));
+                            Application\Message::Error(Text::get('call-review-request_mail-fail'));
+                            Application\Message::Error(implode('<br />', $errors));
                         }
 
                         unset($mailHandler);
@@ -213,10 +213,10 @@ namespace Goteo\Controller {
                         $mailHandler->html = true;
                         $mailHandler->template = 0;
                         if ($mailHandler->send($errors)) {
-                            Library\Message::Info(Text::get('call-review-confirm_mail-success'));
+                            Application\Message::Info(Text::get('call-review-confirm_mail-success'));
                         } else {
-                            Library\Message::Error(Text::get('call-review-confirm_mail-fail'));
-                            Library\Message::Error(implode('<br />', $errors));
+                            Application\Message::Error(Text::get('call-review-confirm_mail-fail'));
+                            Application\Message::Error(implode('<br />', $errors));
                         }
 
                         unset($mailHandler);
@@ -338,15 +338,15 @@ namespace Goteo\Controller {
 
             if (empty($_SESSION['user'])) {
                 $_SESSION['jumpto'] = '/call/create';
-                Library\Message::Info(Text::get('user-login-required-to_create'));
+                Application\Message::Info(Text::get('user-login-required-to_create'));
                 throw new Redirection(SEC_URL."/user/login");
             } elseif ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
                 $error = true;
             } elseif (empty($_POST['name'])) {
-                Library\Message::Error('Falta identificador');
+                Application\Message::Error('Falta identificador');
                 $error = true;
             } elseif (isset($_POST['admin']) && empty($_POST['caller'])) {
-                Library\Message::Error('Falta convocador');
+                Application\Message::Error('Falta convocador');
                 $error = true;
             } else {
                 $name = $_POST['name'];
@@ -370,7 +370,7 @@ namespace Goteo\Controller {
                     unset($log);
 
                 } else {
-                    Library\Message::Error(Text::get('call-create-fail'));
+                    Application\Message::Error(Text::get('call-create-fail'));
                     $error = true;
                 }
 
@@ -395,7 +395,7 @@ namespace Goteo\Controller {
             $call = Model\Call::get($id, LANG);
 
             if (!$call instanceof Model\Call) {
-                Library\Message::Error('Ha habido algun errror al cargar la convocatoria solicitada');
+                Application\Message::Error('Ha habido algun errror al cargar la convocatoria solicitada');
                 throw new Redirection("/");
             } else {
                 $call->logo = Model\Image::get($call->logo);
@@ -526,15 +526,15 @@ namespace Goteo\Controller {
             $call = Model\Call::getMini($id);
 
             if (!$call instanceof Model\Call) {
-                Library\Message::Error(Text::get('call-apply-failed'));
+                Application\Message::Error(Text::get('call-apply-failed'));
                 throw new Redirection("/");
             }
 
             if ($call->expired) {
-                Library\Message::Error(Text::get('call-apply-expired'));
+                Application\Message::Error(Text::get('call-apply-expired'));
                 throw new Redirection("/project/create");
             } else {
-                Library\Message::Info(Text::get('call-apply-notice', $call->name));
+                Application\Message::Info(Text::get('call-apply-notice', $call->name));
                 $_SESSION['oncreate_applyto'] = $id;
                 throw new Redirection("/project/create");
             }
