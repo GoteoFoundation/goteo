@@ -6,8 +6,6 @@ use Goteo\Core\View,
 $bodyClass = 'user-login';
 // para que el prologue ponga el código js para botón facebook en el bannerside
 $fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
-$jscrypt = true;
-
 $errors = $this->errors;
 extract($_POST);
 if (empty($username) && isset($this->username)) $username = $this->username;
@@ -15,6 +13,7 @@ if (empty($username) && isset($this->username)) $username = $this->username;
 <?php
 $this->layout("layout", [
     'bodyClass' => 'user-login',
+    'jscrypt' => 'true',
     'title' => $this->text('meta-title-login'),
     'meta_description' => $this->text('meta-description-login')
     ]);
