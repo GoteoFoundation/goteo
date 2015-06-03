@@ -18,8 +18,6 @@ if (!empty($this->success)) {
     Goteo\Library\Message::Info($this->text('form-ajax-info'));
 }
 
-$superform = true;
-
 $this->layout("layout", [
     'bodyClass' => 'project-edit',
     'superform' => true,

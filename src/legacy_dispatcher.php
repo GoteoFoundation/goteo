@@ -103,9 +103,11 @@ try {
             }
             //Provisional mientras la transicion
             elseif($result instanceOf \Symfony\Component\HttpFoundation\Response) {
-                echo $result->sendContent();
+                return $result;
             }
-            else echo $result;
+            else {
+                echo $result;
+            }
 
             // if ($mime_type == "text/html" && GOTEO_ENV != 'real') {
             if ($mime_type == "text/html") {

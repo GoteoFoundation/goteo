@@ -17,9 +17,12 @@ class ErrorController extends \Goteo\Core\Controller {
                 try {
                     ob_start();
                     // Get buffer contents
-                    include __DIR__ . '/../../../src/legacy_dispatcher.php';
+                    $res = include __DIR__ . '/../../../src/legacy_dispatcher.php';
                     $content = ob_get_contents();
                     ob_get_clean();
+                    if($res instanceOf Response) {
+                        return $res;
+                    }
 
                     return new Response($content);
                 }
