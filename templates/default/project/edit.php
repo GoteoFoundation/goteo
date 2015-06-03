@@ -7,7 +7,6 @@ use Goteo\Core\View,
 $bodyClass = 'project-edit';
 
 $project = $this->project;
-
 $status = View::get('project/edit/status.html.php', array('status' => $project->status, 'progress' => $project->progress));
 $steps  = View::get('project/edit/steps.html.php', array('steps' => $this->steps, 'step' => $this->step, 'errors' => $project->errors, 'id_project' => $project->id));
 
@@ -67,7 +66,7 @@ $this->section('content');
 
                 if (count($this->steps) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación
 
-                if($this->step) echo View::get("project/edit/{$this->step}.html.php", (array)$this + array('level' => 3, 'next' => $next_step));
+                if($this->step) echo View::get("project/edit/{$this->step}.html.php", $this->vars + array('level' => 3, 'next' => $next_step));
 
                 if (count($this->steps) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación
 

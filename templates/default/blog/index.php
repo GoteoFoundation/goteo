@@ -98,7 +98,7 @@ $this->section('content');
 			<?php endif; ?>
 			<?php if ($this->show == 'post') : ?>
 				<div class="widget post">
-					<?php echo View::get('blog/post.html.php', (array)$this); ?>
+					<?php echo View::get('blog/post.html.php', $this->vars) ?>
                     <?php echo View::get('blog/share.html.php', array('urls' => Text::shareLinks($URL . '/blog/' . $post->id, $post->title))); ?>
 					<div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 				</div>
