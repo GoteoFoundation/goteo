@@ -131,14 +131,15 @@ try {
 
     } catch (\ReflectionException $e) {
         // esto tendría que notificar a \GOTEO_FAIL_MAIL
-        die($e->getMessage());
+        throw new Error(Error::BAD_REQUEST, $e->getMessage());
     }
     throw new Error(Error::NOT_FOUND);
 
 } catch (Redirection $redirection) {
     $url = $redirection->getURL();
     $code = $redirection->getCode();
-    header("Location: {$url}");
-    exit;
+    return new \Symfony\Component\HttpFoundation\RedirectResponse($url);
+    // header("Location: {$url}");
+    // exit;
 }
 
