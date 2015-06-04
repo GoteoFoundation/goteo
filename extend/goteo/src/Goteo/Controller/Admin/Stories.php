@@ -50,7 +50,7 @@ namespace Goteo\Controller\Admin {
                 }
 
 				if ($story->save($errors)) {
-                    Message::Info('Datos guardados');
+                    Message::info('Datos guardados');
 
                     if ($_POST['action'] == 'add') {
                         $projectData = Model\Project::getMini($_POST['project']);
@@ -70,13 +70,13 @@ namespace Goteo\Controller\Admin {
                     // tratar si han marcado pendiente de traducir
                     if (isset($_POST['pending']) && $_POST['pending'] == 1
                         && !Model\Stories::setPending($story->id, 'post')) {
-                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                        Message::error('NO se ha marcado como pendiente de traducir!');
                     }
 
                     throw new Redirection('/admin/stories');
 				}
 				else {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
 
                     // otros elementos disponibles
                     $items = Model\Post::getAutocomplete();
@@ -129,9 +129,9 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'remove':
                     if (Model\Stories::delete($id)) {
-                        Message::Info('Historia quitada correctamente');
+                        Message::info('Historia quitada correctamente');
                     } else {
-                        Message::Error('No se ha podido quitar la historia');
+                        Message::error('No se ha podido quitar la historia');
                     }
                     throw new Redirection('/admin/stories');
                     break;

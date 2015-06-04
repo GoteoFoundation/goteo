@@ -73,7 +73,7 @@ namespace Goteo\Controller\Dashboard {
             if ($project instanceof \Goteo\Model\Project) {
                 $_SESSION['project'] = $project; // lo guardamos en sesión para la próxima verificación
             } else {
-                Message::Error('No se puede trabajar con el proyecto seleccionado');
+                Message::error('No se puede trabajar con el proyecto seleccionado');
                 throw new Redirection('/dashboard/projects/');
                 $project = null;
             }
@@ -95,7 +95,7 @@ namespace Goteo\Controller\Dashboard {
 
             // tenemos proyecto de trabajo, comprobar si el proyecto esta en estado de tener blog
             if ($project->status < 3) {
-                Message::Error(Text::get('dashboard-project-blog-wrongstatus'));
+                Message::error(Text::get('dashboard-project-blog-wrongstatus'));
                 throw new Redirection('/dashboard/projects/summary');
             }
 
@@ -113,12 +113,12 @@ namespace Goteo\Controller\Dashboard {
                                 )
                 );
                 if (!$blog->save($errors)) {
-                    Message::Error(Text::get('dashboard-project-blog-fail'));
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(Text::get('dashboard-project-blog-fail'));
+                    Message::error(implode('<br />', $errors));
                     throw new Redirection('/dashboard/projects/summary');
                 }
             } elseif (!$blog->active) {
-                Message::Error(Text::get('dashboard-project-blog-inactive'));
+                Message::error(Text::get('dashboard-project-blog-inactive'));
                 throw new Redirection('/dashboard/projects/summary');
             }
 
@@ -156,14 +156,14 @@ namespace Goteo\Controller\Dashboard {
                     break;
                 case 'edit':
                     if (empty($id)) {
-                        Message::Error(Text::get('dashboard-project-updates-nopost'));
+                        Message::error(Text::get('dashboard-project-updates-nopost'));
                         $action = 'list';
                         break;
                     } else {
                         $post = Model\Blog\Post::get($id);
 
                         if (!$post instanceof Model\Blog\Post) {
-                            Message::Error(Text::get('dashboard-project-updates-postcorrupt'));
+                            Message::error(Text::get('dashboard-project-updates-postcorrupt'));
                             $action = 'list';
                             break;
                         }
@@ -174,9 +174,9 @@ namespace Goteo\Controller\Dashboard {
                 case 'delete':
                     $post = Model\Blog\Post::get($id);
                     if ($post->delete($id)) {
-                        Message::Info(Text::get('dashboard-project-updates-deleted'));
+                        Message::info(Text::get('dashboard-project-updates-deleted'));
                     } else {
-                        Message::Error(Text::get('dashboard-project-updates-delete_fail'));
+                        Message::error(Text::get('dashboard-project-updates-delete_fail'));
                     }
                     $posts = Model\Blog\Post::getAll($blog, null, false);
                     $action = 'list';
@@ -233,7 +233,7 @@ namespace Goteo\Controller\Dashboard {
 
             // verificar que hay mensaje
             if (empty($_POST['message'])) {
-                Message::Error(Text::get('dashboard-investors-mail-text-required'));
+                Message::error(Text::get('dashboard-investors-mail-text-required'));
                 return false;
             } else {
                 $msg_content = nl2br(\strip_tags($_POST['message']));
@@ -277,7 +277,7 @@ namespace Goteo\Controller\Dashboard {
 
             // no hay destinatarios
             if (count($who) == 0) {
-                Message::Error(Text::get('dashboard-investors-mail-nowho'));
+                Message::error(Text::get('dashboard-investors-mail-nowho'));
                 return false;
             }
 
@@ -286,9 +286,9 @@ namespace Goteo\Controller\Dashboard {
             $allsome = explode('/', Text::get('regular-allsome'));
             $enviandoa = !empty($_POST['msg_all']) ? $allsome[0] : $allsome[1];
             if ($option == 'messengers') {
-                Message::Info(Text::get('dashboard-messegers-mail-sendto', $enviandoa));
+                Message::info(Text::get('dashboard-messegers-mail-sendto', $enviandoa));
             } else {
-                Message::Info(Text::get('dashboard-investors-mail-sendto', $enviandoa));
+                Message::info(Text::get('dashboard-investors-mail-sendto', $enviandoa));
             }
 
             //  idioma de preferencia
@@ -341,9 +341,9 @@ namespace Goteo\Controller\Dashboard {
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
             // , también metemos el reply y repplyName (remitente) en la instancia de envío
             if (\Goteo\Library\Sender::initiateSending($mailId, $subject, $receivers, 1, $project->user->email, $remite)) {
-                Message::Info(Text::get('dashboard-investors-mail-sended', 'la cola de envíos')); // cambiar este texto
+                Message::info(Text::get('dashboard-investors-mail-sended', 'la cola de envíos')); // cambiar este texto
             } else {
-                Message::Error(Text::get('dashboard-investors-mail-fail', 'la cola de envíos')); // cambiar este texto
+                Message::error(Text::get('dashboard-investors-mail-fail', 'la cola de envíos')); // cambiar este texto
             }
 
 
@@ -547,9 +547,9 @@ namespace Goteo\Controller\Dashboard {
 
                 $id = $post->id;
                 if ($action == 'edit') {
-                    Message::Info(Text::get('dashboard-project-updates-saved'));
+                    Message::info(Text::get('dashboard-project-updates-saved'));
                 } else {
-                    Message::Info(Text::get('dashboard-project-updates-inserted'));
+                    Message::info(Text::get('dashboard-project-updates-inserted'));
                 }
                 $action = $editing ? 'edit' : 'list';
 

@@ -51,14 +51,14 @@ namespace Goteo\Controller\Admin {
                     // tratar si han marcado pendiente de traducir
                     if (isset($_POST['pending']) && $_POST['pending'] == 1
                         && !Model\Bazar::setPending($promo->id, 'bazar')) {
-                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                        Message::error('NO se ha marcado como pendiente de traducir!');
                     }
 
                     throw new Redirection('/admin/bazar');
 				}
 				else {
 
-                    Message::Error(implode(', ', $errors));
+                    Message::error(implode(', ', $errors));
 
                     // otros elementos disponibles
                     $items = Model\Bazar::available($promo->reward);
@@ -110,9 +110,9 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'remove':
                     if (Model\Bazar::delete($id)) {
-                        Message::Info('elemento quitado correctamente');
+                        Message::info('elemento quitado correctamente');
                     } else {
-                        Message::Error('No se ha podido quitar el elemento');
+                        Message::error('No se ha podido quitar el elemento');
                     }
                     throw new Redirection('/admin/bazar');
                     break;

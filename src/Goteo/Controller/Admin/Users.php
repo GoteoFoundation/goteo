@@ -121,12 +121,12 @@ namespace Goteo\Controller\Admin {
 
                         if(empty($errors)) {
                           // mensaje de ok y volvemos a la lista de usuarios
-                          Message::Info(Text::get('user-register-success'));
+                          Message::info(Text::get('user-register-success'));
                           throw new Redirection('/admin/users/manage/'.$user->id);
                         } else {
                             // si hay algun error volvemos a poner los datos en el formulario
                             $data = $_POST;
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                     }
 
@@ -173,13 +173,13 @@ namespace Goteo\Controller\Admin {
                             unset($log);
 
                             // mensaje de ok y volvemos a la lista de usuarios
-                            Message::Info('Datos actualizados');
+                            Message::info('Datos actualizados');
                             throw new Redirection('/admin/users');
 
                         } else {
                             // si hay algun error volvemos a poner los datos en el formulario
                             $data = $_POST;
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                     }
 
@@ -212,7 +212,7 @@ namespace Goteo\Controller\Admin {
                         if (Model\User::query($sql, array(':user'=>$id))) {
 
                             // mensaje de ok y volvemos a la gestion del usuario
-//                            Message::Info('Ha <strong>' . $log_action . '</strong> al usuario <strong>'.$user->name.'</strong> CORRECTAMENTE');
+//                            Message::info('Ha <strong>' . $log_action . '</strong> al usuario <strong>'.$user->name.'</strong> CORRECTAMENTE');
                             $log_text = 'El admin %s ha %s al usuario %s';
 
                             $onNode = Model\Node::get($node);
@@ -221,17 +221,17 @@ namespace Goteo\Controller\Admin {
                             switch ($subaction) {
                                 case 'admin':
                                     if ($onNode->assign($id)) {
-                                        Message::Info('El nuevo admin se ha añadido a los administradores del nodo <strong>'.$onNode->name.'</strong>.');
+                                        Message::info('El nuevo admin se ha añadido a los administradores del nodo <strong>'.$onNode->name.'</strong>.');
                                     } else{
-                                        Message::Error('ERROR!!! El nuevo admin no se ha podido añadir a los administradores del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
+                                        Message::error('ERROR!!! El nuevo admin no se ha podido añadir a los administradores del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
                                     }
                                     break;
 
                                 case 'noadmin':
                                     if ($onNode->unassign($id)) {
-                                        Message::Info('El ex-admin se ha quitado de los administradores del nodo <strong>'.$onNode->name.'</strong>.');
+                                        Message::info('El ex-admin se ha quitado de los administradores del nodo <strong>'.$onNode->name.'</strong>.');
                                     } else{
-                                        Message::Error('ERROR!!! El ex-admin no se ha podido quitar de los administradores del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
+                                        Message::error('ERROR!!! El ex-admin no se ha podido quitar de los administradores del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
                                     }
                                     break;
 
@@ -257,7 +257,7 @@ namespace Goteo\Controller\Admin {
                         } else {
 
                             // mensaje de error y volvemos a la gestion del usuario
-                            Message::Error('Ha FALLADO cuando ha <strong>' . $log_action . '</strong> al usuario <strong>'.$id.'</strong>');
+                            Message::error('Ha FALLADO cuando ha <strong>' . $log_action . '</strong> al usuario <strong>'.$id.'</strong>');
                             $log_text = 'Al admin %s le ha <strong>FALLADO</strong> cuando ha %s al usuario %s';
 
                         }
@@ -304,7 +304,7 @@ namespace Goteo\Controller\Admin {
                 case 'translang':
 
                     if (!isset($_POST['user'])) {
-                        Message::Error('Hemos perdido de vista al usuario');
+                        Message::error('Hemos perdido de vista al usuario');
                         throw new Redirection('/admin/users');
                     } else {
                         $user = $_POST['user'];
@@ -322,9 +322,9 @@ namespace Goteo\Controller\Admin {
                         }
                     }
                     if (!$anylang) {
-                        Message::Error('No se ha seleccionado ningún idioma, se ha desactivado la traducción para este usuario!');
+                        Message::error('No se ha seleccionado ningún idioma, se ha desactivado la traducción para este usuario!');
                     } else {
-                        Message::Info('Se han aplicado al traductor los idiomas seleccionados');
+                        Message::info('Se han aplicado al traductor los idiomas seleccionados');
                     }
 
                     throw new Redirection('/admin/users/manage/'.$user);
@@ -367,14 +367,14 @@ namespace Goteo\Controller\Admin {
                                     Feed::item('user', $user->name, $user->id),
                                     Feed::item('user', $nodes[$_POST['node']])
                             )));
-                            Message::Error($log->html);
+                            Message::error($log->html);
                             $log->doAdmin('user');
                             unset($log);
 
                             throw new Redirection('/admin/users');
 
                         } catch(\PDOException $e) {
-                            Message::Error("Ha fallado! " . $e->getMessage());
+                            Message::error("Ha fallado! " . $e->getMessage());
                         }
                     }
 

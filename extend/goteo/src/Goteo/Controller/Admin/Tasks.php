@@ -36,12 +36,12 @@ namespace Goteo\Controller\Admin {
                         $task->done = null;
                         if($task->save($errors)) {
                           // mensaje de ok y volvemos a la lista de tareas
-                          Message::Info('Nueva tarea pendiente creada correctamente');
+                          Message::info('Nueva tarea pendiente creada correctamente');
                           throw new Redirection('/admin/tasks');
                         } else {
                             // si hay algun error volvemos a poner los datos en el formulario
                             $task = (object) $_POST;
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                     } else {
                         $task = (object) array('node'=>\GOTEO_NODE);
@@ -75,12 +75,12 @@ namespace Goteo\Controller\Admin {
                         if($task->save($errors)) {
 
                             // mensaje de ok y volvemos a la lista de tareas
-                            Message::Info('Tarea actualizada');
+                            Message::info('Tarea actualizada');
                             throw new Redirection('/admin/tasks');
 
                         } else {
                             // si hay algun error volvemos a poner los datos en el formulario
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                     }
 
@@ -103,9 +103,9 @@ namespace Goteo\Controller\Admin {
                     if ($task instanceof  Model\Task) {
                         if ($task->remove())  {
                           // mensaje de ok y volvemos a la lista
-                          Message::Info('Tarea eliminada correctamente');
+                          Message::info('Tarea eliminada correctamente');
                         } else {
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                         throw new Redirection('/admin/tasks');
                     }

@@ -75,7 +75,7 @@ namespace Goteo\Controller\Admin {
                         if ($item->save($errors)) {
                             throw new Redirection($url);
                         } else {
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                     } else {
                         $item = $model::get($id);

@@ -123,7 +123,7 @@ namespace Goteo\Controller {
                     $contract = Model\Contract::get($id);
                     die (\trace($contract));
                 } else {
-                    Application\Message::Error('fallo al crear el registro de contrato');
+                    Application\Message::error('fallo al crear el registro de contrato');
                     throw new Redirection('/manage/projects');
                 }
             }
@@ -212,7 +212,7 @@ namespace Goteo\Controller {
             }
 
             if (!empty($errors)) {
-                Application\Message::Error(implode('<br />', $errors));
+                Application\Message::error(implode('<br />', $errors));
             }
 
             // variables para la vista
@@ -378,7 +378,7 @@ namespace Goteo\Controller {
             if (isset($_POST['finish'])) {
                 // marcar en el registro de gestión, "datos de contrato" cerrados
                 if (Model\Contract::setStatus($contract->project, array('owner'=>true))) {
-                    Application\Message::Info('El formulario de contrato ha sido cerrado para revisión');
+                    Application\Message::info('El formulario de contrato ha sido cerrado para revisión');
 
                     // Evento Feed
                     $log = new Feed();
@@ -408,7 +408,7 @@ namespace Goteo\Controller {
                     return true;
 
                 } else {
-                    Application\Message::Error('Ha habido algún error al cerrar los datos de contrato');
+                    Application\Message::error('Ha habido algún error al cerrar los datos de contrato');
                     return false;
                 }
             }

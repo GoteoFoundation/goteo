@@ -171,12 +171,12 @@ namespace Goteo\Controller\Admin {
                             $_SESSION['mailing']['receivers'][$receiver->id] = $receiver;
                         }
                     } else {
-                        Message::Error('Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, true).'</pre>');
+                        Message::error('Fallo el SQL!!!!! <br />' . $sql . '<pre>'.print_r($values, true).'</pre>');
                     }
 
                     // si no hay destinatarios, salta a la lista con mensaje de error
                     if (empty($_SESSION['mailing']['receivers'])) {
-                        Message::Error('No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt']);
+                        Message::error('No se han encontrado destinatarios para ' . $_SESSION['mailing']['filters_txt']);
 
                         throw new Redirection('/admin/mailing/list');
                     }

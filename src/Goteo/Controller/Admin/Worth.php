@@ -26,7 +26,7 @@ namespace Goteo\Controller\Admin {
 
 				if (WorthLib::save($data, $errors)) {
                     $action = 'list';
-                    Message::Info('Nivel de meritocracia modificado');
+                    Message::info('Nivel de meritocracia modificado');
 
                     // Evento Feed
                     $log = new Feed();
@@ -42,12 +42,12 @@ namespace Goteo\Controller\Admin {
                     // tratar si han marcado pendiente de traducir
                     if (isset($_POST['pending']) && $_POST['pending'] == 1
                         && !\Goteo\Core\Model::setPending($data->id, 'worth')) {
-                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                        Message::error('NO se ha marcado como pendiente de traducir!');
                     }
 
                 }
 				else {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
 
                     return new View(
                         'admin/index.html.php',

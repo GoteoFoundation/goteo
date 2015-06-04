@@ -38,7 +38,7 @@ namespace Goteo\Controller\Admin {
 
 				if ($promo->save($errors)) {
                     if ($_POST['action'] == 'add') {
-                        Message::Info('Proyecto apadrinado correctamente');
+                        Message::info('Proyecto apadrinado correctamente');
 
                         $projectData = Model\Project::getMini($_POST['project']);
                         $userData = Model\User::getMini($_POST['user']);
@@ -59,13 +59,13 @@ namespace Goteo\Controller\Admin {
                     // tratar si han marcado pendiente de traducir
                     if (isset($_POST['pending']) && $_POST['pending'] == 1
                         && !Model\Patron::setPending($promo->id, 'post')) {
-                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                        Message::error('NO se ha marcado como pendiente de traducir!');
                     }
 
                     throw new Redirection('/admin/patron/view/'.$_POST['user']);
                 }
 				else {
-                    Message::Error('El registro no se ha grabado correctamente. '. implode(', ', $errors));
+                    Message::error('El registro no se ha grabado correctamente. '. implode(', ', $errors));
                     switch ($_POST['action']) {
                         case 'add':
                             return new View(
@@ -137,7 +137,7 @@ namespace Goteo\Controller\Admin {
                         unset($log);
 
                     } else {
-                        Message::Error('No se ha podido quitar correctamente el apadrinamiento');
+                        Message::error('No se ha podido quitar correctamente el apadrinamiento');
                     }
 
                     if (isset($_GET['user']))

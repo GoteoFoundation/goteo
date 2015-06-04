@@ -108,7 +108,7 @@ namespace Goteo\Controller\Dashboard {
             // claro que si no tiene ningún aporte si que lo sacamos de esta página
             if (empty($donation->dates)) {
                 // tendrá el message de  'dashboard-donor-no_donor' anterior
-                Message::Error(Text::get('dashboard-donor-no_donor', $year));
+                Message::error(Text::get('dashboard-donor-no_donor', $year));
                 throw new Redirection('/dashboard/activity');
             }
 
@@ -127,17 +127,17 @@ namespace Goteo\Controller\Dashboard {
 
                 if ($confirm_closed) {
                     // aviso que el certificado aun no está disponible
-                    Message::Error(Text::get('dashboard-donor-confirm_closed', $year));
+                    Message::error(Text::get('dashboard-donor-confirm_closed', $year));
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
             } elseif (isset($donation) && $donation instanceof Model\User\Donor && $donation->edited && !$donation->confirmed && !$confirm_closed) {
                 // si ha editado pero no ha confirmado
-                Message::Info(Text::get('dashboard-donor-remember'));
+                Message::info(Text::get('dashboard-donor-remember'));
             }
 
             if ($action == 'edit' && $donation->confirmed) {
-                Message::Error(Text::get('dashboard-donor-confirmed', $donation->year));
+                Message::error(Text::get('dashboard-donor-confirmed', $donation->year));
                 throw new Redirection('/dashboard/activity/donor');
             }
 
@@ -158,11 +158,11 @@ namespace Goteo\Controller\Dashboard {
                 $donation->year = $year;
 
                 if ($donation->save($errors)) {
-                    Message::Info(Text::get('dashboard-donor-saved'));
+                    Message::info(Text::get('dashboard-donor-saved'));
                     throw new Redirection('/dashboard/activity/donor');
                 } else {
-                    Message::Error(implode('<br />', $errors));
-                    Message::Error(Text::get('dashboard-donor-save_fail'));
+                    Message::error(implode('<br />', $errors));
+                    Message::error(Text::get('dashboard-donor-save_fail'));
                     throw new Redirection('/dashboard/activity/donor/edit');
                 }
             }
@@ -186,7 +186,7 @@ namespace Goteo\Controller\Dashboard {
                 ) {
                     $donation->edited = false;
                     $donation->confirmable = false;
-                    Message::Error(Text::get('validate-donor-mandatory'));
+                    Message::error(Text::get('validate-donor-mandatory'));
                 }
                 // nombre
                 // apellidos
@@ -199,7 +199,7 @@ namespace Goteo\Controller\Dashboard {
 
                 // verificar que el nif es correcto
                 if ($donation->valid_nif === false) {
-                    Message::Error(Text::get('validate-project-value-contract_nif'));
+                    Message::error(Text::get('validate-project-value-contract_nif'));
                     $donation->edited = false;
                     $donation->confirmable = false;
                 }
@@ -220,7 +220,7 @@ namespace Goteo\Controller\Dashboard {
             if ($action == 'download') {
 
                 if (!$donation->confirmed) {
-                    Message::Error(Text::get('dashboard-donor-pdf_closed', $year));
+                    Message::error(Text::get('dashboard-donor-pdf_closed', $year));
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
@@ -231,7 +231,7 @@ namespace Goteo\Controller\Dashboard {
 
                 // verificar que el nif es correcto
                 if ($donation->valid_nif === false) {
-                    Message::Error(Text::get('validate-project-value-contract_nif'));
+                    Message::error(Text::get('validate-project-value-contract_nif'));
                     throw new Redirection('/dashboard/activity/donor');
                 }
 
@@ -244,7 +244,7 @@ namespace Goteo\Controller\Dashboard {
                     || empty($donation->region)
                     || empty($donation->country)
                 ) {
-                    Message::Error(Text::get('validate-donor-mandatory'));
+                    Message::error(Text::get('validate-donor-mandatory'));
                     throw new Redirection('/dashboard/activity/donor');
                 }
 

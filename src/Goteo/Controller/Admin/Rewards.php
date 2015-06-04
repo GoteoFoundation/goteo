@@ -17,16 +17,16 @@ namespace Goteo\Controller\Admin {
                 case 'fulfill':
                     $sql = "UPDATE invest_reward SET fulfilled = 1 WHERE invest = ?";
                     if (Model\Invest::query($sql, array($id))) {
-                        Message::Info('La recompensa se ha marcado como cumplido');
+                        Message::info('La recompensa se ha marcado como cumplido');
                     } else {
-                        Message::Error('Ha fallado al marcar la recompensa');
+                        Message::error('Ha fallado al marcar la recompensa');
                     }
                     throw new Redirection('/admin/rewards');
                     break;
                 case 'unfill':
                     $sql = "UPDATE invest_reward SET fulfilled = 0 WHERE invest = ?";
                     if (Model\Invest::query($sql, array($id))) {
-                        Message::Info('La recompensa se ha desmarcado, ahora está pendiente');
+                        Message::info('La recompensa se ha desmarcado, ahora está pendiente');
                     } else {
                         message::Error('Ha fallado al desmarcar');
                     }
@@ -74,10 +74,10 @@ namespace Goteo\Controller\Admin {
 
 
                     if ($invest->update($errors)) {
-                        Message::Info('Se han actualizado los datos del aporte: recompensa y dirección');
+                        Message::info('Se han actualizado los datos del aporte: recompensa y dirección');
                         throw new Redirection('/admin/rewards');
                     } else {
-                        Message::Error('No se han actualizado correctamente los datos del aporte. ERROR: '.implode(', ', $errors));
+                        Message::error('No se han actualizado correctamente los datos del aporte. ERROR: '.implode(', ', $errors));
                     }
 
                 }

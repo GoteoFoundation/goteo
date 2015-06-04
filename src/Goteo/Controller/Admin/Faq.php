@@ -37,21 +37,21 @@ namespace Goteo\Controller\Admin {
 				if ($faq->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            Message::Info('Pregunta añadida correctamente');
+                            Message::info('Pregunta añadida correctamente');
                             break;
                         case 'edit':
-                            Message::Info('Pregunta editado correctamente');
+                            Message::info('Pregunta editado correctamente');
                             break;
                     }
 
                     // tratar si han marcado pendiente de traducir
                     if (isset($_POST['pending']) && $_POST['pending'] == 1
                         && !Model\Faq::setPending($faq->id, 'post')) {
-                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                        Message::error('NO se ha marcado como pendiente de traducir!');
                     }
 
                 } else {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
 
                     return new View(
                         'admin/index.html.php',

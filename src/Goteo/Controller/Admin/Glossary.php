@@ -62,9 +62,9 @@ namespace Goteo\Controller\Admin {
                     /// este es el único save que se lanza desde un metodo process_
                     if ($post->save($errors)) {
                         if ($action == 'edit') {
-                            Message::Info('El término se ha actualizado correctamente');
+                            Message::info('El término se ha actualizado correctamente');
                         } else {
-                            Message::Info('Se ha añadido un nuevo término');
+                            Message::info('Se ha añadido un nuevo término');
                             $id = $post->id;
                         }
                         $action = $editing ? 'edit' : 'list';
@@ -72,12 +72,12 @@ namespace Goteo\Controller\Admin {
                         // tratar si han marcado pendiente de traducir
                         if (isset($_POST['pending']) && $_POST['pending'] == 1
                             && !Model\Glossary::setPending($post->id, 'post')) {
-                            Message::Error('NO se ha marcado como pendiente de traducir!');
+                            Message::error('NO se ha marcado como pendiente de traducir!');
                         }
 
                     } else {
-                        Message::Error(implode('<br />', $errors));
-                        Message::Error('Ha habido algun problema al guardar los datos');
+                        Message::error(implode('<br />', $errors));
+                        Message::error('Ha habido algun problema al guardar los datos');
                     }
             }
 
@@ -85,9 +85,9 @@ namespace Goteo\Controller\Admin {
                 case 'remove':
                     // eliminar un término
                     if (Model\Glossary::delete($id)) {
-                        Message::Info('Término eliminado');
+                        Message::info('Término eliminado');
                     } else {
-                        Message::Error('No se ha podido eliminar el término');
+                        Message::error('No se ha podido eliminar el término');
                     }
                     break;
                 case 'add':
@@ -116,7 +116,7 @@ namespace Goteo\Controller\Admin {
                         $post = Model\Glossary::get($id);
 
                         if (!$post instanceof Model\Glossary) {
-                            Message::Error('La entrada esta corrupta, contacte con nosotros.');
+                            Message::error('La entrada esta corrupta, contacte con nosotros.');
                             $action = 'list';
                             break;
                         }

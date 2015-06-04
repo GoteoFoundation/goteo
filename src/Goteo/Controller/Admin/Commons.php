@@ -70,7 +70,7 @@ namespace Goteo\Controller\Admin {
                             $log->doAdmin('admin');
 
                         } else {
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
 
                         throw new Redirection('/admin/commons');
@@ -125,7 +125,7 @@ namespace Goteo\Controller\Admin {
                             if ($reward->save($errors)) {
                                 throw new Redirection('/admin/commons/view/'.$id);
                             } else {
-                                Message::Error(implode('<br />', $errors));
+                                Message::error(implode('<br />', $errors));
                             }
                         }
 
@@ -156,7 +156,7 @@ namespace Goteo\Controller\Admin {
                             $reward = Model\Project\Reward::get($_GET['reward_id']);
 
                             if(!$reward->remove($errors)) {
-                                Message::Error(implode('<br />', $errors));
+                                Message::error(implode('<br />', $errors));
                             }
                         }
                         throw new Redirection('/admin/commons/view/'.$id);

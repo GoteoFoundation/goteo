@@ -8,7 +8,7 @@ use Goteo\Library\Text,
 $project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
-    Message::Error('Instancia de proyecto corrupta');
+    Message::error('Instancia de proyecto corrupta');
     throw new Redirection('/manage/projects');
 }
 

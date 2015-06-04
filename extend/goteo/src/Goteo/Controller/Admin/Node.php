@@ -15,7 +15,7 @@ namespace Goteo\Controller\Admin {
             if (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) {
                 $node = Model\Node::get($_SESSION['admin_node']);
             } else {
-                Message::Info('No hay nada que gestionar aquí para Goteo Central');
+                Message::info('No hay nada que gestionar aquí para Goteo Central');
                 throw new Redirection('/admin');
             }
 
@@ -58,10 +58,10 @@ namespace Goteo\Controller\Admin {
 
                         /// este es el único save que se lanza desde un metodo process_
                         if ($node->update($errors)) {
-                            Message::Info('Datos del nodo actualizados correctamente');
+                            Message::info('Datos del nodo actualizados correctamente');
                             throw new Redirection('/admin/node');
                         } else {
-                            Message::Error('Falló al actualizar los datos del nodo:<br />'.implode('<br />', $errors));
+                            Message::error('Falló al actualizar los datos del nodo:<br />'.implode('<br />', $errors));
                         }
 
                     }
@@ -79,7 +79,7 @@ namespace Goteo\Controller\Admin {
                 case 'lang':
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['lang'])) {
                         $_SESSION['translate_lang'] = $_POST['lang'];
-                        Message::Info('Ahora estás traduciendo al <strong>'.$langs[$_SESSION['translate_lang']]->name.'</strong>');
+                        Message::info('Ahora estás traduciendo al <strong>'.$langs[$_SESSION['translate_lang']]->name.'</strong>');
                         throw new Redirection('/admin/node/translate');
                     }
                     break;
@@ -97,10 +97,10 @@ namespace Goteo\Controller\Admin {
 
                         /// este es el único save que se lanza desde un metodo process_
                         if ($node->updateLang($errors)) {
-                            Message::Info('Traducción del nodo al '.$langs[$_SESSION['translate_lang']].' actualizada correctamente');
+                            Message::info('Traducción del nodo al '.$langs[$_SESSION['translate_lang']].' actualizada correctamente');
                             throw new Redirection('/admin/node');
                         } else {
-                            Message::Error('Falló al actualizar la traducción al '.$langs[$_SESSION['translate_lang']]);
+                            Message::error('Falló al actualizar la traducción al '.$langs[$_SESSION['translate_lang']]);
                         }
 
                     }

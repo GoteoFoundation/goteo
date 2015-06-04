@@ -34,7 +34,7 @@ namespace Goteo\Controller\Admin {
                     if (!empty($id)) {
                         $call = Model\Call::getMini($id);
                     } elseif ($action != 'add') {
-                        Message::Error('No hay convocatoria sobre la que operar');
+                        Message::error('No hay convocatoria sobre la que operar');
                         throw new Redirection('/admin/transcalls');
                     }
 
@@ -78,7 +78,7 @@ namespace Goteo\Controller\Admin {
 
                             throw new Redirection('/admin/transcalls/edit/'.$call->id);
                         } else {
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
 
                         $action = 'edit';
@@ -93,9 +93,9 @@ namespace Goteo\Controller\Admin {
                         $sql = "UPDATE `call` SET translate = 1 WHERE id = :id";
                         if (Model\Project::query($sql, array(':id'=>$id))) {
                             if ($action == 'add') {
-                                Message::Info('La convocatoria '.$call->name.' se ha habilitado para traducir');
+                                Message::info('La convocatoria '.$call->name.' se ha habilitado para traducir');
                             } else {
-                                Message::Info('Datos de traducción actualizados');
+                                Message::info('Datos de traducción actualizados');
                             }
 
                             if ($action == 'add') {
@@ -115,7 +115,7 @@ namespace Goteo\Controller\Admin {
                                 throw new Redirection('/admin/transcalls/edit/'.$call->id);
                             }
                         } else {
-                            Message::Error('Ha fallado al habilitar la traducción de la convocatoria ' . $call->name);
+                            Message::error('Ha fallado al habilitar la traducción de la convocatoria ' . $call->name);
                         }
                     }
 
@@ -142,9 +142,9 @@ namespace Goteo\Controller\Admin {
                         $mailHandler->html = true;
                         $mailHandler->template = $template->id;
                         if ($mailHandler->send()) {
-                            Message::Info('Se ha enviado un email a <strong>'.$call->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
+                            Message::info('Se ha enviado un email a <strong>'.$call->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
                         } else {
-                            Message::Error('Ha fallado informar a <strong>'.$call->user->name.'</strong> de la posibilidad de traducción de su convocatoria');
+                            Message::error('Ha fallado informar a <strong>'.$call->user->name.'</strong> de la posibilidad de traducción de su convocatoria');
                         }
                         unset($mailHandler);
 
@@ -176,7 +176,7 @@ namespace Goteo\Controller\Admin {
                     // el campo translate de la convocatoria $id a false
                     $sql = "UPDATE `call` SET translate = 0 WHERE id = :id";
                     if (Model\Call::query($sql, array(':id'=>$id))) {
-                        Message::Info('La traducción de la convocatoria '.$call->name.' se ha finalizado');
+                        Message::info('La traducción de la convocatoria '.$call->name.' se ha finalizado');
 
                         Model\Call::query("DELETE FROM user_translate WHERE type = 'call' AND item = :id", array(':id'=>$id));
 
@@ -194,7 +194,7 @@ namespace Goteo\Controller\Admin {
 
                         throw new Redirection('/admin/transcalls/edit/'.$call->id);
                  } else {
-                        Message::Error('Falló al finalizar la traducción de la convocatoria ' . $call->name);
+                        Message::error('Falló al finalizar la traducción de la convocatoria ' . $call->name);
                     }
                     break;
             }

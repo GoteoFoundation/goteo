@@ -33,9 +33,9 @@ namespace Goteo\Controller\Admin {
 
 				if ($item->save($errors)) {
                     // ok, sin mensaje porque todo se gestiona en la portada
-                    // Message::Info('Elemento añadido correctamente');
+                    // Message::info('Elemento añadido correctamente');
 				} else {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
                 }
 			}
 
@@ -59,7 +59,7 @@ namespace Goteo\Controller\Admin {
                     $availables = Model\Home::available($node);
 
                     if (empty($availables)) {
-                        Message::Info('Todos los elementos disponibles ya estan en portada');
+                        Message::info('Todos los elementos disponibles ya estan en portada');
                         throw new Redirection('/admin/home');
                         break;
                     }
@@ -79,7 +79,7 @@ namespace Goteo\Controller\Admin {
                     $availables = Model\Home::availableSide($node);
 
                     if (empty($availables)) {
-                        Message::Info('Todos los elementos laterales disponibles ya estan en portada');
+                        Message::info('Todos los elementos laterales disponibles ya estan en portada');
                         throw new Redirection('/admin/home');
                         break;
                     }

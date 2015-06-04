@@ -27,7 +27,7 @@ namespace Goteo\Controller\Admin {
                     $project = Model\Project::getMini($review->project);
 
                     if (empty($id) || ($action == 'edit' && !$review instanceof Model\Review)) {
-                        Message::Error('Hemos perdido de vista el proyecto o la revisión');
+                        Message::error('Hemos perdido de vista el proyecto o la revisión');
                         throw new Redirection('/admin/reviews');
                     }
 
@@ -42,7 +42,7 @@ namespace Goteo\Controller\Admin {
                         if ($review->save($errors)) {
                             switch ($action) {
                                 case 'add':
-                                    Message::Info('Revisión iniciada correctamente');
+                                    Message::info('Revisión iniciada correctamente');
 
                                     // Evento Feed
                                     $log = new Feed();
@@ -59,12 +59,12 @@ namespace Goteo\Controller\Admin {
                                     throw new Redirection('/admin/reviews/?project='.  urlencode($project->id));
                                     break;
                                 case 'edit':
-                                    Message::Info('Datos editados correctamente');
+                                    Message::info('Datos editados correctamente');
                                     throw new Redirection('/admin/reviews');
                                     break;
                             }
                         } else {
-                            Message::Error('No se han podido grabar los datos. ', implode(', ', $errors));
+                            Message::error('No se han podido grabar los datos. ', implode(', ', $errors));
                         }
                     }
 
@@ -86,7 +86,7 @@ namespace Goteo\Controller\Admin {
 
                     // marcamos la revision como completamente cerrada
                     if (Model\Review::close($id, $errors)) {
-                        Message::Info('La revisión se ha cerrado');
+                        Message::info('La revisión se ha cerrado');
 
                         // Evento Feed
                         $log = new Feed();
@@ -101,7 +101,7 @@ namespace Goteo\Controller\Admin {
                         unset($log);
 
                     } else {
-                        Message::Error('La revisión no se ha podido cerrar. '.implode(', ', $errors));
+                        Message::error('La revisión no se ha podido cerrar. '.implode(', ', $errors));
                     }
                     throw new Redirection('/admin/reviews');
                     break;
@@ -117,7 +117,7 @@ namespace Goteo\Controller\Admin {
                         ));
                         $user_rev->unready($errors);
                         if (!empty($errors)) {
-                            Message::Error(implode(', ', $errors));
+                            Message::error(implode(', ', $errors));
                         }
                     }
                     throw new Redirection('/admin/reviews');
@@ -137,7 +137,7 @@ namespace Goteo\Controller\Admin {
                             $userData = Model\User::getMini($user);
                             $reviewData = Model\Review::getData($id);
 
-                            Message::Info('Revisión asignada correctamente');
+                            Message::info('Revisión asignada correctamente');
 
                             // Evento Feed
                             $log = new Feed();
@@ -154,7 +154,7 @@ namespace Goteo\Controller\Admin {
                             unset($log);
 
                         } else {
-                            Message::Error(implode(', ', $errors));
+                            Message::error(implode(', ', $errors));
                         }
                     }
                     throw new Redirection('/admin/reviews');
@@ -174,7 +174,7 @@ namespace Goteo\Controller\Admin {
                             $userData = Model\User::getMini($user);
                             $reviewData = Model\Review::getData($id);
 
-                            Message::Info('Revisión desasignada correctamente');
+                            Message::info('Revisión desasignada correctamente');
 
                             // Evento Feed
                             $log = new Feed();
@@ -190,7 +190,7 @@ namespace Goteo\Controller\Admin {
                             unset($log);
 
                         } else {
-                            Message::Error(implode(', ', $errors));
+                            Message::error(implode(', ', $errors));
                         }
                     }
                     throw new Redirection('/admin/reviews');

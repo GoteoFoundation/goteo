@@ -105,10 +105,10 @@ namespace Goteo\Controller\Admin {
                         }
 
                         if ($item->save($errors)) {
-                            Message::Info('Datos grabados correctamente');
+                            Message::info('Datos grabados correctamente');
                             throw new Redirection($url);
                         } else {
-                            Message::Error('No se han podido grabar los datos. ' . implode(', ', $errors));
+                            Message::error('No se han podido grabar los datos. ' . implode(', ', $errors));
                         }
                     } else {
                         $item = $model::get($id);
@@ -177,10 +177,10 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'remove':
                     if ($model::delete($id)) {
-                        Message::Info('Se ha eliminado el registro');
+                        Message::info('Se ha eliminado el registro');
                         throw new Redirection($url);
                     } else {
-                        Message::Info('No se ha podido eliminar el registro');
+                        Message::info('No se ha podido eliminar el registro');
                     }
                     break;
             }

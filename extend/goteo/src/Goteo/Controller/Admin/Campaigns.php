@@ -38,20 +38,20 @@ namespace Goteo\Controller\Admin {
 				if ($campaign->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            Message::Info('Convocatoria destacada correctamente');
+                            Message::info('Convocatoria destacada correctamente');
 
                             // parece que no se usa
                             // $callData = Model\Call::getMini($_POST['call']);
 
                             break;
                         case 'edit':
-                            Message::Info('Destacado actualizado correctamente');
+                            Message::info('Destacado actualizado correctamente');
                             break;
                     }
 				}
 				else {
 
-                    Message::Error(implode(', ', $errors));
+                    Message::error(implode(', ', $errors));
 
                     // Convocatorias disponibles
                     $calls = Model\campaign::available($campaign->call, $node);
@@ -106,7 +106,7 @@ namespace Goteo\Controller\Admin {
                     if (Model\Campaign::delete($id)) {
                         // ok
                     } else {
-                        Message::Error('No se ha podido quitar la convocatoria');
+                        Message::error('No se ha podido quitar la convocatoria');
                     }
                     throw new Redirection('/admin/campaigns');
                     break;
@@ -117,7 +117,7 @@ namespace Goteo\Controller\Admin {
                     // Convocatorias disponibles disponibles
                     $calls = Model\Campaign::available(null, $node);
                     if (empty($calls)) {
-                        Message::Info('No hay convocatorias disponibles para destacar');
+                        Message::info('No hay convocatorias disponibles para destacar');
                         throw new Redirection('/admin/campaigns');
                     }
 

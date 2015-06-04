@@ -62,10 +62,10 @@ if (GOTEO_MAINTENANCE === true && $request->server->get('REQUEST_URI') != '/abou
  */
 Session::start('goteo-'.GOTEO_ENV, defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600);
 Session::onSessionExpires(function () {
-    Message::Info(Text::get('session-expired'));
+    Message::info(Text::get('session-expired'));
 });
 Session::onSessionDestroyed(function () {
-    Message::Info('That\'s all folks!');
+    Message::info('That\'s all folks!');
 });
 
 /* Sistema nodos */
@@ -131,9 +131,9 @@ Session::store('currency', Currency::set()); // depending on request
 /* Cookie para la ley de cookies */
 if (!Cookie::exists('goteo_cookies')) {
     Cookie::store('goteo_cookies', '1');
-    Message::Info(Text::get('message-cookies'));
+    Message::info(Text::get('message-cookies'));
 }
-    // Message::Error('test error');
+    // Message::error('test error');
 
 require_once __DIR__ . '/../src/defaults.php';
 

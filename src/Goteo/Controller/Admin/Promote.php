@@ -60,14 +60,14 @@ namespace Goteo\Controller\Admin {
                     // tratar si han marcado pendiente de traducir
                     if (isset($_POST['pending']) && $_POST['pending'] == 1
                         && !Model\Promote::setPending($promo->id, 'post')) {
-                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                        Message::error('NO se ha marcado como pendiente de traducir!');
                     }
 
                     throw new Redirection('/admin/promote');
 				}
 				else {
 
-                    Message::Error(implode(', ', $errors));
+                    Message::error(implode(', ', $errors));
 
                     switch ($_POST['action']) {
                         case 'add':
@@ -112,9 +112,9 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'remove':
                     if (Model\Promote::delete($id)) {
-                        Message::Info('Destacado quitado correctamente');
+                        Message::info('Destacado quitado correctamente');
                     } else {
-                        Message::Error('No se ha podido quitar el destacado');
+                        Message::error('No se ha podido quitar el destacado');
                     }
                     throw new Redirection('/admin/promote');
                     break;

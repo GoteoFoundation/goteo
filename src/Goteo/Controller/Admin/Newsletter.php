@@ -103,7 +103,7 @@ namespace Goteo\Controller\Admin {
                             if (Sender::initiateSending($mailId, $subject, $recipients, 1)) {
                                 // ok...
                             } else {
-                                Message::Error('No se ha podido iniciar el mailing con asunto "'.$subject.'"');
+                                Message::error('No se ha podido iniciar el mailing con asunto "'.$subject.'"');
                             }
                         }
 
@@ -117,9 +117,9 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'activate':
                     if (Sender::activateSending($id)) {
-                        Message::Info('Se ha activado un nuevo envío automático');
+                        Message::info('Se ha activado un nuevo envío automático');
                     } else {
-                        Message::Error('No se pudo activar el envío. Iniciar de nuevo');
+                        Message::error('No se pudo activar el envío. Iniciar de nuevo');
                     }
                     throw new Redirection('/admin/newsletter');
                     break;

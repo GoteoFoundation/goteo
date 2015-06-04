@@ -31,10 +31,10 @@ namespace Goteo\Controller\Admin {
 				if ($icon->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            Message::Info('Nuevo tipo añadido correctamente');
+                            Message::info('Nuevo tipo añadido correctamente');
                             break;
                         case 'edit':
-                            Message::Info('Tipo editado correctamente');
+                            Message::info('Tipo editado correctamente');
 
                             // Evento Feed
                             $log = new Feed();
@@ -53,12 +53,12 @@ namespace Goteo\Controller\Admin {
                     // tratar si han marcado pendiente de traducir
                     if (isset($_POST['pending']) && $_POST['pending'] == 1
                         && !Model\Icon::setPending($icon->id, 'post')) {
-                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                        Message::error('NO se ha marcado como pendiente de traducir!');
                     }
 
                 }
 				else {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
 
                     return new View(
                         'admin/index.html.php',

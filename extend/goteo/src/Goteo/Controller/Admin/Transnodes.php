@@ -30,7 +30,7 @@ namespace Goteo\Controller\Admin {
                     if (!empty($id)) {
                         $node = Model\Node::getMini($id);
                     } else {
-                        Message::Error('No hay nodo sobre la que operar');
+                        Message::error('No hay nodo sobre la que operar');
                         throw new Redirection('/admin/transnodes');
                     }
 
@@ -72,7 +72,7 @@ namespace Goteo\Controller\Admin {
                             $log->doAdmin('admin');
                             unset($log);
                         } else {
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
 
                         throw new Redirection('/admin/transnodes/edit/'.$node->id);

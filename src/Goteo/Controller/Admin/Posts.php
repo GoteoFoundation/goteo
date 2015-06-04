@@ -30,9 +30,9 @@ namespace Goteo\Controller\Admin {
                 ));
 
 				if ($post->update($errors)) {
-                    Message::Info('Entrada colocada en la portada correctamente');
+                    Message::info('Entrada colocada en la portada correctamente');
 				} else {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
                     return new View(
                         'admin/index.html.php',
                         array(

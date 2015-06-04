@@ -68,7 +68,7 @@ namespace Goteo\Controller\Admin {
                     /// este es el único save que se lanza desde un metodo process_
                     if ($post->save($errors)) {
                         if ($action == 'edit') {
-                            Message::Info('La entrada se ha actualizado correctamente');
+                            Message::info('La entrada se ha actualizado correctamente');
 
                             if ((bool) $post->publish) {
                                 $log_action = 'Publicado';
@@ -77,7 +77,7 @@ namespace Goteo\Controller\Admin {
                             }
 
                         } else {
-                            Message::Info('Se ha añadido una nueva entrada');
+                            Message::info('Se ha añadido una nueva entrada');
                             $id = $post->id;
                             $log_action = 'Añadido';
                         }
@@ -97,12 +97,12 @@ namespace Goteo\Controller\Admin {
                         // tratar si han marcado pendiente de traducir
                         if (isset($_POST['pending']) && $_POST['pending'] == 1
                             && !Model\Info::setPending($post->id, 'post')) {
-                            Message::Error('NO se ha marcado como pendiente de traducir!');
+                            Message::error('NO se ha marcado como pendiente de traducir!');
                         }
 
                     } else {
-                        Message::Error(implode('<br />', $errors));
-                        Message::Error('Ha habido algun problema al guardar los datos');
+                        Message::error(implode('<br />', $errors));
+                        Message::error('Ha habido algun problema al guardar los datos');
                     }
             }
 
@@ -117,7 +117,7 @@ namespace Goteo\Controller\Admin {
                     $tempData = Model\Info::get($id);
                     // eliminar un término
                     if (Model\Info::delete($id)) {
-                        Message::Info('Entrada eliminada');
+                        Message::info('Entrada eliminada');
 
                         // Evento Feed
                         $log = new Feed();
@@ -131,7 +131,7 @@ namespace Goteo\Controller\Admin {
                         unset($log);
 
                     } else {
-                        Message::Error('No se ha podido eliminar la entrada');
+                        Message::error('No se ha podido eliminar la entrada');
                     }
                     break;
                 case 'add':
@@ -162,7 +162,7 @@ namespace Goteo\Controller\Admin {
                         $post = Model\Info::get($id);
 
                         if (!$post instanceof Model\Info) {
-                            Message::Error('La entrada esta corrupta, contacte con nosotros.');
+                            Message::error('La entrada esta corrupta, contacte con nosotros.');
                             $action = 'list';
                             break;
                         }

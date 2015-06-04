@@ -24,7 +24,7 @@ namespace Goteo\Controller {
                 $projectData = Model\Project::getMini($project);
 
                 if ($projectData->status < 3) {
-                    Application\Message::Error(Text::get('project-messages-closed'));
+                    Application\Message::error(Text::get('project-messages-closed'));
                     throw new Redirection("/project/{$project}");
                 }
 
@@ -251,9 +251,9 @@ namespace Goteo\Controller {
                 $mailHandler->template = $template->id;
                 if ($mailHandler->send($errors)) {
                     // ok
-                    Application\Message::Info(Text::get('regular-message_success'));
+                    Application\Message::info(Text::get('regular-message_success'));
                 } else {
-                    Application\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
+                    Application\Message::info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
                 }
 
                 unset($mailHandler);
@@ -268,7 +268,7 @@ namespace Goteo\Controller {
         public function personal ($user = null) {
             // verificacion de que esté autorizasdo a enviar mensaje
             if (!isset($_SESSION['message_autorized']) || $_SESSION['message_autorized'] !== true) {
-                Application\Message::Info('Temporalmente no disponible. Disculpen las molestias');
+                Application\Message::info('Temporalmente no disponible. Disculpen las molestias');
                 throw new Redirection('/');
             } else {
                 // y quitamos esta autorización
@@ -336,9 +336,9 @@ namespace Goteo\Controller {
                 $mailHandler->template = $template->id;
                 if ($mailHandler->send($errors)) {
                     // ok
-                    Application\Message::Info(Text::get('regular-message_success'));
+                    Application\Message::info(Text::get('regular-message_success'));
                 } else {
-                    Application\Message::Info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
+                    Application\Message::info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
                 }
 
                 unset($mailHandler);

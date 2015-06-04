@@ -28,11 +28,11 @@ namespace Goteo\Controller\Admin {
                         $page->name = $_POST['name'];
                         if ($page->add($errors)) {
 
-                            Message::Info('La página <strong>'.$page->name. '</strong> se ha creado correctamente, se puede editar ahora.');
+                            Message::info('La página <strong>'.$page->name. '</strong> se ha creado correctamente, se puede editar ahora.');
 
                             throw new Redirection("/admin/pages/edit/{$page->id}");
                         } else {
-                            Message::Error('No se ha creado bien '. implode('<br />', $errors));
+                            Message::error('No se ha creado bien '. implode('<br />', $errors));
                             throw new Redirection("/admin/pages/add");
                         }
                     }
@@ -48,7 +48,7 @@ namespace Goteo\Controller\Admin {
 
                 case 'edit':
                     if ($node != \GOTEO_NODE && !in_array($id, self::$node_pages)) {
-                        Message::Info('No puedes gestionar la página <strong>'.$id.'</strong>');
+                        Message::info('No puedes gestionar la página <strong>'.$id.'</strong>');
                         throw new Redirection("/admin/pages");
                     }
                     // si estamos editando una página
@@ -75,20 +75,20 @@ namespace Goteo\Controller\Admin {
                             $log->doAdmin('admin');
                             unset($log);
 
-                            Message::Info('La página '.$page->name. ' se ha actualizado correctamente');
+                            Message::info('La página '.$page->name. ' se ha actualizado correctamente');
 
                             // tratar si han marcado pendiente de traducir
                             // no usamos Core\Model porque no es tabla _lang
                             if (isset($_POST['pending']) && $_POST['pending'] == 1) {
                                 $ok = Page::setPending($id, $node, $errors);
                                 if (!$ok) {
-                                    Message::Error(implode('<br />', $errors));
+                                    Message::error(implode('<br />', $errors));
                                 }
                             }
 
                             throw new Redirection("/admin/pages");
                         } else {
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                     }
 

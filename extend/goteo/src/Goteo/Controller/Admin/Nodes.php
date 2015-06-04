@@ -35,7 +35,7 @@ namespace Goteo\Controller\Admin {
 
                         if ($node->create($errors)) {
 
-                                Message::Info('Nodo creado');
+                                Message::info('Nodo creado');
                                 $txt_log = 'creado';
 
                             // Evento feed
@@ -50,11 +50,11 @@ namespace Goteo\Controller\Admin {
                             unset($log);
 
                             if ($_POST['action'] == 'add') {
-                                Message::Info('Puedes asignar ahora sus administradores');
+                                Message::info('Puedes asignar ahora sus administradores');
                                 throw new Redirection('/admin/nodes/admins/' . $node->id);
                             }
                         } else {
-                            Message::Error('Fallo al crear, revisar los campos');
+                            Message::error('Fallo al crear, revisar los campos');
 
                             return new View(
                                             'admin/index.html.php',
@@ -78,7 +78,7 @@ namespace Goteo\Controller\Admin {
 
                         if ($node->save($errors)) {
 
-                                Message::Info('Nodo actualizado');
+                                Message::info('Nodo actualizado');
                                 $txt_log = 'actualizado';
 
                             // Evento feed
@@ -93,11 +93,11 @@ namespace Goteo\Controller\Admin {
                             unset($log);
 
                             if ($_POST['action'] == 'add') {
-                                Message::Info('Puedes asignar ahora sus administradores');
+                                Message::info('Puedes asignar ahora sus administradores');
                                 throw new Redirection('/admin/nodes/admins/' . $node->id);
                             }
                         } else {
-                            Message::Error('Fallo al actualizar, revisar los campos');
+                            Message::error('Fallo al actualizar, revisar los campos');
 
                             return new View(
                                             'admin/index.html.php',
@@ -145,7 +145,7 @@ namespace Goteo\Controller\Admin {
                         if ($node->$_GET['op']($_GET['user'])) {
                             // ok
                         } else {
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                     }
 

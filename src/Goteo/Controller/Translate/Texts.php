@@ -59,7 +59,7 @@ namespace Goteo\Controller\Translate {
                     unset($log);
                     */
 
-                    Message::Info('Texto <strong>' . $id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
+                    Message::info('Texto <strong>' . $id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
 
                     throw new Redirection("/translate/texts/$filter&page=" . $_GET['page']);
                 } else {
@@ -76,7 +76,7 @@ namespace Goteo\Controller\Translate {
                     $log->doAdmin('admin');
                     unset($log);
 
-                    Message::Error('Ha habido algun ERROR al traducir el Texto <strong>' . $id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
+                    Message::error('Ha habido algun ERROR al traducir el Texto <strong>' . $id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
                 }
             }
 

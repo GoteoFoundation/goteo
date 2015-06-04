@@ -143,9 +143,9 @@ namespace Goteo\Controller {
             if ($option == 'evaluate') {
                 //Text::get
                 if ($review->ready == 1) {
-                    Application\Message::Info(Text::get('review-closed-alert'));
+                    Application\Message::info(Text::get('review-closed-alert'));
                 } else {
-                    Application\Message::Info(Text::get('review-ajax-alert'));
+                    Application\Message::info(Text::get('review-ajax-alert'));
                 }
             }
 

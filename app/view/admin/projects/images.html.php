@@ -7,7 +7,7 @@ use Goteo\Core\Redirection,
 $project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
-    Message::Error('Instancia de proyecto corrupta');
+    Message::error('Instancia de proyecto corrupta');
     throw new Redirection('/admin/projects');
 }
 

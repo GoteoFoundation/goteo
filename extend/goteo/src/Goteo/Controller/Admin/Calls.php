@@ -36,11 +36,11 @@ namespace Goteo\Controller\Admin {
                 ) {
                     // Si no la tiene asignada no puede gestionar cosas
                     if (isset($id) && !$call->isAdmin($_SESSION['user']->id)) {
-                        Message::Error('No tienes permiso para gestionar esta convocatoria');
+                        Message::error('No tienes permiso para gestionar esta convocatoria');
                         throw new Redirection("/admin/calls");
                     } elseif (!isset($id)) {
                         // si no hay id es crear y tampoco puede
-                        Message::Error('No tienes permiso para gestionar convocatorias');
+                        Message::error('No tienes permiso para gestionar convocatorias');
                         throw new Redirection("/admin/calls");
                     }
             }
@@ -98,7 +98,7 @@ namespace Goteo\Controller\Admin {
             }
 
             if (!empty($errors)) {
-                Message::Error(implode('<br />', $errors));
+                Message::error(implode('<br />', $errors));
             }
 
             //si llega post, verificamos los datos y hacemos lo que se tenga que hacer
@@ -110,7 +110,7 @@ namespace Goteo\Controller\Admin {
                             $registry->id = $_POST['project'];
                             $registry->call = $call->id;
                             if ($registry->save($errors)) {
-                                Message::Info('Proyecto seleccionado correctamente');
+                                Message::info('Proyecto seleccionado correctamente');
 
                                 $projectData = Model\Project::getMini($_POST['project']);
 
@@ -136,10 +136,10 @@ namespace Goteo\Controller\Admin {
                                 unset($log);
 
                             } else {
-                                Message::Error('Fallo al seleccionar proyecto');
+                                Message::error('Fallo al seleccionar proyecto');
                             }
                         } else {
-                            Message::Error('No has seleccionado ningun proyecto para asignar a la convocatoria, no?');
+                            Message::error('No has seleccionado ningun proyecto para asignar a la convocatoria, no?');
                         }
                         break;
                     case 'unassign':
@@ -148,12 +148,12 @@ namespace Goteo\Controller\Admin {
                             $registry->id = $_POST['project'];
                             $registry->call = $call->id;
                             if ($registry->remove($errors)) {
-                                Message::Info('Proyecto desasignado correctamente');
+                                Message::info('Proyecto desasignado correctamente');
                             } else {
-                                Message::Error('Fallo al desasignar proyecto');
+                                Message::error('Fallo al desasignar proyecto');
                             }
                         } else {
-                            Message::Error('No has clickado ningun proyecto para desasignar, no?');
+                            Message::error('No has clickado ningun proyecto para desasignar, no?');
                         }
                         break;
                 }
@@ -166,7 +166,7 @@ namespace Goteo\Controller\Admin {
                     $log_text = 'El admin %s ha <span class="red">cambiado la configuracion</span> de la convocatoria %s';
                 } else {
                     $log_text = 'Al admin %s le ha <span class="red">fallado al cambiar la configuracion</span> de la convocatoria %s';
-                    Message::Info('Ha dado estos errores:<br/>'.implode('<br />', $errors));
+                    Message::info('Ha dado estos errores:<br/>'.implode('<br />', $errors));
                 }
             }
 
@@ -176,7 +176,7 @@ namespace Goteo\Controller\Admin {
                     $log_text = 'El admin %s ha <span class="red">cambiado la configuracion financiera</span> de la convocatoria %s';
                 } else {
                     $log_text = 'Al admin %s le ha <span class="red">fallado al cambiar la configuracion financiera</span> de la convocatoria %s';
-                    Message::Info('Ha dado estos errores:<br/>'.implode('<br />', $errors));
+                    Message::info('Ha dado estos errores:<br/>'.implode('<br />', $errors));
                 }
             }
 
@@ -190,7 +190,7 @@ namespace Goteo\Controller\Admin {
                         Feed::item('call', $call->name, $call->id))
                     );
                 // Mensaje como el log
-                Message::Info($log_html);
+                Message::info($log_html);
                 $log->populate('Gestion de una convocatoria desde el admin', '/admin/calls', $log_html);
                 $log->doAdmin('admin');
 
@@ -240,7 +240,7 @@ namespace Goteo\Controller\Admin {
             // lista de proyectos seleccionados
             if ($action == 'projects') {
                 if (empty($call)) {
-                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
+                    Message::error('No se ha especificado ninguna convocatoria en la URL');
                     throw new Redirection('/admin/calls/list');
                 }
                 // $filters = ($call->status > 3) ? array('published'=>true) : array('all'=>true);
@@ -287,7 +287,7 @@ namespace Goteo\Controller\Admin {
 
             if ($action == 'admins') {
                 if (empty($call)) {
-                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
+                    Message::error('No se ha especificado ninguna convocatoria en la URL');
                     throw new Redirection('/admin/calls');
                 }
 
@@ -295,7 +295,7 @@ namespace Goteo\Controller\Admin {
                     if ($call->$_GET['op']($_GET['user'])) {
                         // ok
                     } else {
-                        Message::Error(implode('<br />', $errors));
+                        Message::error(implode('<br />', $errors));
                     }
                 }
 
@@ -321,7 +321,7 @@ namespace Goteo\Controller\Admin {
                     // verificar que existe
                     $thepost = Model\Blog\Post::get($postId);
                     if ($_GET['op'] == 'save' && !$thepost instanceof Model\Blog\Post) {
-                        Message::Error("La entrada de blog id {$postId} NO es válida");
+                        Message::error("La entrada de blog id {$postId} NO es válida");
                     } else {
                         // objeto
                         $post = new Model\Call\Post(array(
@@ -331,7 +331,7 @@ namespace Goteo\Controller\Admin {
                         if ($post->$_GET['op']($errors)) {
                             // ok
                         } else {
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                     }
 
@@ -354,7 +354,7 @@ namespace Goteo\Controller\Admin {
 
             if ($action == 'conf') {
                 if (empty($call)) {
-                    Message::Error('No se ha especificado ninguna convocatoria en la URL');
+                    Message::error('No se ha especificado ninguna convocatoria en la URL');
                     throw new Redirection('/admin/calls');
                 }
                 $conf = $call->getConf();

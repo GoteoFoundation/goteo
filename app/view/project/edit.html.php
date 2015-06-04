@@ -16,9 +16,9 @@ $keys = array_keys($vars['steps']);
 $next_step = $keys[ array_search($vars['step'], $keys) + 1];
 
 if (!empty($vars['success'])) {
-    Goteo\Application\Message::Info($vars['success']);
+    Goteo\Application\Message::info($vars['success']);
 } elseif ($project->status == 1) {
-    Goteo\Application\Message::Info(Text::get('form-ajax-info'));
+    Goteo\Application\Message::info(Text::get('form-ajax-info'));
 }
 
 $superform = true;

@@ -465,12 +465,12 @@ namespace Goteo\Controller {
             if (!empty($id) && isset($_SESSION['user']->id)) {
                 $task = Model\Task::get($id);
                 if ($task->setDone($errors)) {
-                    Message::Info('La tarea se ha marcado como realizada');
+                    Message::info('La tarea se ha marcado como realizada');
                 } else {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
                 }
             } else {
-                Message::Error('Faltan datos');
+                Message::error('Faltan datos');
             }
             throw new Redirection('/admin');
         }
@@ -522,7 +522,7 @@ namespace Goteo\Controller {
                     }
 
                     if (!$puede) {
-                        Message::Error('No tienes permisos para acceder a <strong>' . $options[$BC['option']]['label'] . '</strong>');
+                        Message::error('No tienes permisos para acceder a <strong>' . $options[$BC['option']]['label'] . '</strong>');
                         throw new Redirection('/admin');
                     }
                 }

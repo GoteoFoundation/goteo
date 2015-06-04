@@ -43,10 +43,10 @@ if (GOTEO_MAINTENANCE === true && $_SERVER['REQUEST_URI'] != '/about/maintenance
  */
 Session::start('goteo-'.GOTEO_ENV, defined('GOTEO_SESSION_TIME') ? GOTEO_SESSION_TIME : 3600);
 Session::onSessionExpires(function () {
-    Message::Info(Text::get('session-expired'));
+    Message::info(Text::get('session-expired'));
 });
 Session::onSessionDestroyed(function () {
-    Message::Info('That\'s all folks!');
+    Message::info('That\'s all folks!');
 });
 
 /* Sistema nodos */
@@ -110,7 +110,7 @@ Session::store('currency', Currency::set()); // depending on request
 /* Cookie para la ley de cookies */
 if (!Cookie::exists('goteo_cookies')) {
     Cookie::store('goteo_cookies', '1');
-    Message::Info(Text::get('message-cookies'));
+    Message::info(Text::get('message-cookies'));
 }
 try {
     // Get URI without query string
@@ -133,7 +133,7 @@ try {
         elseif ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
             define('CRON_EXEC', true);
         } else {
-            Message::Info(Text::get('user-login-required-access'));
+            Message::info(Text::get('user-login-required-access'));
             throw new Redirection(SEC_URL.'/user/login/?return='.rawurlencode($uri));
         }
     }

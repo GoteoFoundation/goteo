@@ -11,7 +11,7 @@ $contract = $vars['contract'];
 $steps  = View::get('contract/edit/steps.html.php', array('steps' => $vars['steps'], 'step' => $vars['step'], 'errors' => $contract->errors));
 
 if (!$contract->status->owner)
-    Message::Info(Text::get('form-ajax-info'));
+    Message::info(Text::get('form-ajax-info'));
 
 $superform = true;
 include __DIR__ . '/../prologue.html.php';

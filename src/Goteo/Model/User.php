@@ -154,8 +154,8 @@ namespace Goteo\Model {
 						$mail->template = $template->id;
 						if ($mail->send($errors)) {Application::Info(Text::get('register-confirm_mail-success'));
 						} else {
-							Application\Message::Error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
-							Application\Message::Error(implode('<br />', $errors));
+							Application\Message::error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
+							Application\Message::error(implode('<br />', $errors));
 						}
 					}
                 }
@@ -1047,7 +1047,7 @@ namespace Goteo\Model {
 
                     return $user;
 			    } else {
-			        Application\Message::Error(Text::get('user-account-inactive'));
+			        Application\Message::error(Text::get('user-account-inactive'));
 			    }
 			}
 			return false;

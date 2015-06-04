@@ -29,7 +29,7 @@ namespace Goteo\Controller {
                 $impersonator = Session::getUser()->id;
                 $user = User::get($_POST['id']);
                 Session::onSessionDestroyed(function () use ($impersonator, $user) {
-                    Message::Info("User [$impersonator] converted to [" . $user->id . "]");
+                    Message::info("User [$impersonator] converted to [" . $user->id . "]");
                 });
                 Session::destroy();
                 Session::setUser($user);
@@ -65,7 +65,7 @@ namespace Goteo\Controller {
 
             }
             else {
-                Message::Error('Ha ocurrido un error');
+                Message::error('Ha ocurrido un error');
                 throw new Redirection('/dashboard');
             }
 		}

@@ -48,7 +48,7 @@ namespace Goteo\Model\User {
                 if ($image->save($errors)) {
                     $image = $image->id;
                 } else {
-                    Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $image = '';
                 }
             } elseif ($this->image instanceof Image) {

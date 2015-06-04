@@ -44,7 +44,7 @@ namespace Goteo\Controller\Admin {
                 }
 
 				if ($banner->save($errors)) {
-                    Message::Info('Datos guardados');
+                    Message::info('Datos guardados');
 
                     if ($_POST['action'] == 'add') {
                         $projectData = Model\Project::getMini($_POST['project']);
@@ -64,13 +64,13 @@ namespace Goteo\Controller\Admin {
                     // tratar si han marcado pendiente de traducir
                     if (isset($_POST['pending']) && $_POST['pending'] == 1
                         && !Model\Banner::setPending($banner->id, 'banner')) {
-                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                        Message::error('NO se ha marcado como pendiente de traducir!');
                     }
 
                     throw new Redirection('/admin/banners');
 				}
 				else {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
 
                     switch ($_POST['action']) {
                         case 'add':
@@ -117,9 +117,9 @@ namespace Goteo\Controller\Admin {
                     break;
                 case 'remove':
                     if (Model\Banner::delete($id)) {
-                        Message::Info('Banner quitado correctamente');
+                        Message::info('Banner quitado correctamente');
                     } else {
-                        Message::Error('No se ha podido quitar el banner');
+                        Message::error('No se ha podido quitar el banner');
                     }
                     throw new Redirection('/admin/banners');
                     break;

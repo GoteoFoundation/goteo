@@ -27,7 +27,7 @@ namespace Goteo\Controller\Admin {
 
                 $projData = Model\Project::get($_POST['id']);
                 if (empty($projData->id)) {
-                    Message::Error('El proyecto '.$_POST['id'].' no existe');
+                    Message::error('El proyecto '.$_POST['id'].' no existe');
                     throw new Redirection('/admin/projects');
                 }
 
@@ -61,7 +61,7 @@ namespace Goteo\Controller\Admin {
                             $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto '.$projData->name.' %s';
                         }
                     } catch(\PDOException $e) {
-                        Message::Error("Ha fallado! " . $e->getMessage());
+                        Message::error("Ha fallado! " . $e->getMessage());
                     }
                 } elseif (isset($_POST['save-accounts'])) {
 
@@ -71,9 +71,9 @@ namespace Goteo\Controller\Admin {
                     $accounts->paypal = $_POST['paypal'];
                     $accounts->paypal_owner = $_POST['paypal_owner'];
                     if ($accounts->save($errors)) {
-                        Message::Info('Se han actualizado las cuentas del proyecto '.$projData->name);
+                        Message::info('Se han actualizado las cuentas del proyecto '.$projData->name);
                     } else {
-                        Message::Error(implode('<br />', $errors));
+                        Message::error(implode('<br />', $errors));
                     }
 
                 } elseif (isset($_POST['save-rounds'])) {
@@ -85,14 +85,14 @@ namespace Goteo\Controller\Admin {
                     // si es ronda única, los días de segunda deben grabarse a cero (para que el getActive no lo cuente para segunda)
                     if ($project_conf->one_round) $project_conf->days_round2 = 0;
                     if ($project_conf->save($errors)) {
-                        Message::Info('Se han actualizado los días de campaña del proyecto ' . $projData->name);
+                        Message::info('Se han actualizado los días de campaña del proyecto ' . $projData->name);
                     } else {
-                        Message::Error(implode('<br />', $errors));
+                        Message::error(implode('<br />', $errors));
                     }
                 } elseif (isset($_POST['save-node'])) {
 
                     if (!isset($nodes[$_POST['node']])) {
-                        Message::Error('El nodo '.$_POST['node'].' no existe! ');
+                        Message::error('El nodo '.$_POST['node'].' no existe! ');
                     } else {
 
                         $values = array(':id' => $projData->id, ':node' => $_POST['node']);
@@ -111,7 +111,7 @@ namespace Goteo\Controller\Admin {
                                 $log_text = 'Al admin %s le ha <span class="red">fallado al mover al nodo '.$nodes[$_POST['node']].'</span> el proyecto '.$projData->name.' %s';
                             }
                         } catch(\PDOException $e) {
-                            Message::Error("Ha fallado! " . $e->getMessage());
+                            Message::error("Ha fallado! " . $e->getMessage());
                         }
 
                     }
@@ -136,13 +136,13 @@ namespace Goteo\Controller\Admin {
                                 // OK
                             } else {
                                 $todook = false;
-                                Message::Error("No se ha podido actualizar campo {$parts[0]} al valor {$value}");
+                                Message::error("No se ha podido actualizar campo {$parts[0]} al valor {$value}");
                             }
                         }
                     }
 
                     if ($todook) {
-                        Message::Info('Se han actualizado los datos');
+                        Message::info('Se han actualizado los datos');
                         // recalculamos las galerias e imagen
 
                         // getGalleries en Project\Image  procesa todas las secciones
@@ -164,20 +164,20 @@ namespace Goteo\Controller\Admin {
                         // pimero miramos que no hay otro proyecto con esa id
                         $test = Model\Project::getMini($newid);
                         if ($test->id == $newid) {
-                            Message::Error('Ya hay un proyecto con ese Id.');
+                            Message::error('Ya hay un proyecto con ese Id.');
                             throw new Redirection('/admin/projects/rebase/'.$id);
                         }
 
                         if ($projData->status >= 3 && $_POST['force'] != 1) {
-                            Message::Error('El proyecto no está ni en Edición ni en Revisión, no se modifica nada.');
+                            Message::error('El proyecto no está ni en Edición ni en Revisión, no se modifica nada.');
                             throw new Redirection('/admin/projects/rebase/'.$id);
                         }
 
                         if ($projData->rebase($newid)) {
-                            Message::Info('Verificar el proyecto -> <a href="'.SITE_URL.'/project/'.$newid.'" target="_blank">'.$projData->name.'</a>');
+                            Message::info('Verificar el proyecto -> <a href="'.SITE_URL.'/project/'.$newid.'" target="_blank">'.$projData->name.'</a>');
                             throw new Redirection('/admin/projects');
                         } else {
-                            Message::Info('Ha fallado algo en el rebase, verificar el proyecto -> <a href="'.SITE_URL.'/project/'.$projData->id.'" target="_blank">'.$projData->name.' ('.$id.')</a>');
+                            Message::info('Ha fallado algo en el rebase, verificar el proyecto -> <a href="'.SITE_URL.'/project/'.$projData->id.'" target="_blank">'.$projData->name.' ('.$id.')</a>');
                             throw new Redirection('/admin/projects/rebase/'.$id);
                         }
 
@@ -197,7 +197,7 @@ namespace Goteo\Controller\Admin {
                         Model\Call\Project::addOneApplied($_POST['call']);
 
                     } catch(\PDOException $e) {
-                        Message::Error("Ha fallado! " . $e->getMessage());
+                        Message::error("Ha fallado! " . $e->getMessage());
                     }
 
                 }
@@ -242,7 +242,7 @@ namespace Goteo\Controller\Admin {
                     if ($_SESSION['user']->id != 'root') {
                         if ((!isset($project->consultants[$_SESSION['user']->id])) && ($project->assignConsultant($_SESSION['user']->id, $errors))) {
                             $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
-                            Message::Info($msg);
+                            Message::info($msg);
                         }
                     }
 
@@ -260,7 +260,7 @@ namespace Goteo\Controller\Admin {
                     if ((empty($project->consultants)) && $_SESSION['user']->id != 'root') {
                         if ($project->assignConsultant($_SESSION['user']->id, $errors)) {
                             $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
-                            Message::Info($msg);
+                            Message::info($msg);
                         }
                     }
 
@@ -397,7 +397,7 @@ namespace Goteo\Controller\Admin {
                     if ($project->$_GET['op']($_GET['open_tag'])) {
                         // ok
                     } else {
-                        Message::Error(implode('<br />', $errors));
+                        Message::error(implode('<br />', $errors));
                     }
                 }
 
@@ -435,7 +435,7 @@ namespace Goteo\Controller\Admin {
                     if ($project->$_GET['op']($_GET['user'])) {
                         // ok
                     } else {
-                        Message::Error(implode('<br />', $errors));
+                        Message::error(implode('<br />', $errors));
                     }
                 }
 
@@ -455,7 +455,7 @@ namespace Goteo\Controller\Admin {
                 //   está en edición a campaña
                 //   y no está asignado
                 if (!in_array($project->status, array('1', '2', '3')) || $project->called) {
-                    Message::Error("No se puede asignar en este estado o ya esta asignado a una convocatoria");
+                    Message::error("No se puede asignar en este estado o ya esta asignado a una convocatoria");
                     throw new Redirection('/admin/projects/list');
                 }
                 // disponibles
@@ -476,7 +476,7 @@ namespace Goteo\Controller\Admin {
             // Rechazo express
             if ($action == 'reject') {
                 if (empty($project)) {
-                    Message::Error('No hay proyecto sobre el que operar');
+                    Message::error('No hay proyecto sobre el que operar');
                 } else {
 
                     //  idioma de preferencia
@@ -499,9 +499,9 @@ namespace Goteo\Controller\Admin {
                     $mailHandler->html = true;
                     $mailHandler->template = $template->id;
                     if ($mailHandler->send()) {
-                        Message::Info('Se ha enviado un email a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
+                        Message::info('Se ha enviado un email a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
                     } else {
-                        Message::Error('Ha fallado al enviar el mail a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
+                        Message::error('Ha fallado al enviar el mail a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
                     }
                     unset($mailHandler);
 
@@ -509,7 +509,7 @@ namespace Goteo\Controller\Admin {
                     if ($_SESSION['user']->id != 'root') {
                         if ((!isset($project->consultants[$_SESSION['user']->id])) && ($project->assignConsultant($_SESSION['user']->id, $errors))) {
                             $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
-                            Message::Info($msg);
+                            Message::info($msg);
                         }
                     }
 
@@ -525,7 +525,7 @@ namespace Goteo\Controller\Admin {
                 if (Model\Project\Conf::closeInvest($project->id)) {
                     $log_text = 'El admin %s ha <span class="red">cerrado el grifo</span> al proyecto %s';
                 } else {
-                    Message::Error('Ha fallado <strong>cerrar el grifo</strong>');
+                    Message::error('Ha fallado <strong>cerrar el grifo</strong>');
                     $log_text = 'Al admin %s le ha <span class="red">fallado al cerrar el grifo</span> al proyecto %s';
                 }
             }
@@ -535,7 +535,7 @@ namespace Goteo\Controller\Admin {
                 if (Model\Project\Conf::openInvest($project->id)) {
                     $log_text = 'El admin %s ha <span class="red">abierto el grifo</span> al proyecto %s';
                 } else {
-                    Message::Error('Ha fallado <strong>abrir el grifo</strong>');
+                    Message::error('Ha fallado <strong>abrir el grifo</strong>');
                     $log_text = 'Al admin %s le ha <span class="red">fallado al abrir el grifo</span> al proyecto %s';
                 }
             }
@@ -545,7 +545,7 @@ namespace Goteo\Controller\Admin {
                 if (Model\Project\Conf::watch($project->id)) {
                     $log_text = 'El admin %s ha empezado a <span class="red">vigilar</span> el proyecto %s';
                 } else {
-                    Message::Error('Ha fallado <strong>empezar a vigilar</strong>');
+                    Message::error('Ha fallado <strong>empezar a vigilar</strong>');
                     $log_text = 'Al admin %s le ha <span class="red">fallado la vigilancia</span> el proyecto %s';
                 }
             }
@@ -555,7 +555,7 @@ namespace Goteo\Controller\Admin {
                 if (Model\Project\Conf::unwatch($project->id)) {
                     $log_text = 'El admin %s ha <span class="red">dejado de vigilar</span> el proyecto %s';
                 } else {
-                    Message::Error('Ha fallado <strong>dejar de vigilar</strong>');
+                    Message::error('Ha fallado <strong>dejar de vigilar</strong>');
                     $log_text = 'Al admin %s le ha <span class="red">fallado dejar de vigilar</span> el proyecto %s';
                 }
             }
@@ -566,7 +566,7 @@ namespace Goteo\Controller\Admin {
                 if (Model\Project\Conf::finish($project)) {
                     $log_text = 'El admin %s ha <span class="red">finalizado la campaña</span> del proyecto %s';
                 } else {
-                    Message::Error('Ha fallado <strong>finalizar campaña</strong>');
+                    Message::error('Ha fallado <strong>finalizar campaña</strong>');
                     $log_text = 'Al admin %s le ha <span class="red">fallado finalizar campaña</span> del proyecto %s';
                 }
             }
@@ -584,9 +584,9 @@ namespace Goteo\Controller\Admin {
                     )));
                 $log->doAdmin('admin');
 
-                Message::Info($log->html);
+                Message::info($log->html);
                 if (!empty($errors)) {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
                 }
 
                 if ($action == 'publish') {

@@ -272,7 +272,7 @@ namespace Goteo\Controller {
 
                 case 'commons':
                     if ($project->status != 4 && empty($project->social_rewards)) {
-                        Message::Error('Este proyecto no tiene retornos colectivos');
+                        Message::error('Este proyecto no tiene retornos colectivos');
                         throw new Redirection('/dashboard/projects/');
                     }
 
@@ -414,7 +414,7 @@ namespace Goteo\Controller {
                                 if ($reward->save($errors)) {
                                     throw new Redirection('/dashboard/projects/commons');
                                 } else {
-                                    Message::Error(implode('<br />', $errors));
+                                    Message::error(implode('<br />', $errors));
                                 }
                             }
 
@@ -435,7 +435,7 @@ namespace Goteo\Controller {
                                 }
 
                                 if (!$reward->remove($errors)) {
-                                    Message::Error(implode('<br />', $errors));
+                                    Message::error(implode('<br />', $errors));
                                 }
                             }
                             throw new Redirection('/dashboard/projects/commons');
@@ -617,13 +617,13 @@ namespace Goteo\Controller {
                         }
 
                     } catch (\Goteo\Core\Error $e) {
-                        Message::Error('Ha fallado al cargar los datos del proyecto');
+                        Message::error('Ha fallado al cargar los datos del proyecto');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
 
                     if (!$project instanceof Model\Project || !$project_original instanceof Model\Project) {
-                        Message::Error('Ha fallado al cargar los datos del proyecto');
+                        Message::error('Ha fallado al cargar los datos del proyecto');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
@@ -843,13 +843,13 @@ namespace Goteo\Controller {
                         }
 
                     } catch (\Goteo\Core\Error $e) {
-                        Message::Error('Ha fallado al cargar los datos de la convocatoria');
+                        Message::error('Ha fallado al cargar los datos de la convocatoria');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
 
                     if (!$call instanceof Model\Call || !$call_original instanceof Model\Call) {
-                        Message::Error('Ha fallado al cargar los datos de la convocatoria');
+                        Message::error('Ha fallado al cargar los datos de la convocatoria');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
@@ -956,13 +956,13 @@ namespace Goteo\Controller {
                         }
 
                     } catch (\Goteo\Core\Error $e) {
-                        Message::Error('Ha fallado al cargar los datos del nodo');
+                        Message::error('Ha fallado al cargar los datos del nodo');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
 
                     if (!$node instanceof Model\Node || !$node_original instanceof Model\Node) {
-                        Message::Error('Ha fallado al cargar los datos del nodo');
+                        Message::error('Ha fallado al cargar los datos del nodo');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
@@ -999,7 +999,7 @@ namespace Goteo\Controller {
             }
 
             if (!empty($errors)) {
-                Message::Error('HA HABIDO ERRORES: <br />' . implode('<br />', $errors));
+                Message::error('HA HABIDO ERRORES: <br />' . implode('<br />', $errors));
             }
 
             return new View('dashboard/index.html.php', $viewData);
@@ -1043,7 +1043,7 @@ namespace Goteo\Controller {
                             $_SESSION['assign_mode'] = true;
                             throw new Redirection('/discover/call');
                         } else {
-                            Message::Error('No se pueden asignar proyectos ahora');
+                            Message::error('No se pueden asignar proyectos ahora');
                             unset($_SESSION['assign_mode']);
                         }
                     } elseif ($action == 'assign_mode' && $id == 'off') {
@@ -1058,13 +1058,13 @@ namespace Goteo\Controller {
                         $registry->id = $id;
                         $registry->call = $call->id;
                         if ($registry->remove($errors)) {
-                            Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
+                            Message::error('El proyecto se ha quitado correctamente de la convocatoria');
                             $call->projects = Model\Call\Project::get($call->id);
                         } else {
-                            Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
+                            Message::error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
                         }
                     } elseif ($action == 'unassign') {
-                        Message::Error('No se puede quitar este proyecto ahora');
+                        Message::error('No se puede quitar este proyecto ahora');
                     }
                     */
 

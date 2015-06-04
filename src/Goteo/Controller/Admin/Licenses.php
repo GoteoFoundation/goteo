@@ -38,10 +38,10 @@ namespace Goteo\Controller\Admin {
 				if ($license->save($errors)) {
                     switch ($_POST['action']) {
                         case 'add':
-                            Message::Info('Licencia añadida correctamente');
+                            Message::info('Licencia añadida correctamente');
                             break;
                         case 'edit':
-                            Message::Info('Licencia editada correctamente');
+                            Message::info('Licencia editada correctamente');
 
                             // Evento Feed
                             $log = new Feed();
@@ -60,12 +60,12 @@ namespace Goteo\Controller\Admin {
                     // tratar si han marcado pendiente de traducir
                     if (isset($_POST['pending']) && $_POST['pending'] == 1
                         && !Model\License::setPending($license->id, 'post')) {
-                        Message::Error('NO se ha marcado como pendiente de traducir!');
+                        Message::error('NO se ha marcado como pendiente de traducir!');
                     }
 
                 }
 				else {
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(implode('<br />', $errors));
 
                     return new View(
                         'admin/index.html.php',

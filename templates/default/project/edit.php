@@ -13,9 +13,9 @@ $keys = array_keys($this->steps);
 $next_step = $keys[ array_search($this->step, $keys) + 1];
 
 if (!empty($this->success)) {
-    Goteo\Application\Message::Info($this->success);
+    Goteo\Application\Message::info($this->success);
 } elseif ($project->status == 1) {
-    Goteo\Application\Message::Info($this->text('form-ajax-info'));
+    Goteo\Application\Message::info($this->text('form-ajax-info'));
 }
 
 $this->layout("layout", [

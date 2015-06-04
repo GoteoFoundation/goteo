@@ -38,7 +38,7 @@ namespace Goteo\Controller\Translate {
             if ($action == 'edit' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
 
                 if (!in_array($table, \array_keys(Content::$tables))) {
-                    Message::Error("Tabla $table desconocida");
+                    Message::error("Tabla $table desconocida");
                     if (isset($_SESSION['translate_node']))
                         throw new Redirection('/dashboard/translates');
                     else
@@ -62,7 +62,7 @@ namespace Goteo\Controller\Translate {
                     unset($log);
                     */
 
-                    Message::Info('Contenido del registro <strong>' . $id . '</strong> de la tabla <strong>' . $table . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
+                    Message::info('Contenido del registro <strong>' . $id . '</strong> de la tabla <strong>' . $table . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
 
                     if (isset($_SESSION['translate_node'])) {
                         throw new Redirection('/dashboard/translates/' . $table . 's');
@@ -84,7 +84,7 @@ namespace Goteo\Controller\Translate {
                     $log->doAdmin('admin');
                     unset($log);
 
-                    Message::Error('Ha habido algun ERROR al traducir el contenido del registro <strong>' . $id . '</strong> de la tabla <strong>' . $table . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
+                    Message::error('Ha habido algun ERROR al traducir el contenido del registro <strong>' . $id . '</strong> de la tabla <strong>' . $table . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
                 }
             }
 

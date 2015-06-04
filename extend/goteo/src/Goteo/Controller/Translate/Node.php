@@ -40,10 +40,10 @@ namespace Goteo\Controller\Translate {
                             'lang' => $_POST['lang']
                         ), $errors)
                         ) {
-                            Message::Info('El Banner <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
+                            Message::info('El Banner <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
                             throw new Redirection("/translate/node/$node/$contentTable/list");
                         } else {
-                            Message::Error('Ha habido algun ERROR al traducir el Banner <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
+                            Message::error('Ha habido algun ERROR al traducir el Banner <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
                         }
                         break;
                     case 'page':
@@ -53,10 +53,10 @@ namespace Goteo\Controller\Translate {
                             $_POST['name'], $_POST['description'], $_POST['content'],
                             $errors)
                         ) {
-                            Message::Info('La página <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
+                            Message::info('La página <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
                             throw new Redirection("/translate/node/$node/$contentTable/list");
                         } else {
-                            Message::Error('Ha habido algun ERROR al traducir la página <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
+                            Message::error('Ha habido algun ERROR al traducir la página <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
                         }
                         break;
                     case 'post':
@@ -70,10 +70,10 @@ namespace Goteo\Controller\Translate {
                             'blog' => $_POST['blog']
                         ), $errors)
                         ) {
-                            Message::Info('La entrada <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
+                            Message::info('La entrada <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
                             throw new Redirection("/translate/node/$node/$contentTable/list");
                         } else {
-                            Message::Error('Ha habido algun ERROR al traducir la Entrada <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
+                            Message::error('Ha habido algun ERROR al traducir la Entrada <strong>' . $contentId . '</strong> del nodo <strong>' . $node . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
                         }
                         break;
                     default:
@@ -82,10 +82,10 @@ namespace Goteo\Controller\Translate {
                         $node->subtitle_lang = $_POST['subtitle'];
                         $node->description_lang = $_POST['description'];
                         if ($node->updateLang($errors)) {
-                            Message::Info('La Descripción del nodo <strong>' . $node->id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
+                            Message::info('La Descripción del nodo <strong>' . $node->id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
                             throw new Redirection("/translate/node/$node->id");
                         } else {
-                            Message::Error('Ha habido algun ERROR al traducir la Descripción del nodo <strong>' . $node->id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
+                            Message::error('Ha habido algun ERROR al traducir la Descripción del nodo <strong>' . $node->id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
                         }
 
                 }

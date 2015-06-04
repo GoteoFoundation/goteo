@@ -330,7 +330,7 @@ namespace Goteo\Model {
                 if ($image->save($errors)) {
                     $this->logo = $image->id;
                 } else {
-                    \Goteo\Application\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->logo = '';
                 }
             }

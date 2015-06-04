@@ -505,7 +505,7 @@ namespace Goteo\Model\Blog {
                         $this->gallery[0]->setModelImage('post', $this->id);
                     }
                     else {
-                        Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                        Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 

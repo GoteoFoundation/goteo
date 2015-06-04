@@ -28,17 +28,17 @@ namespace Goteo\Controller\Admin {
                         $template->title = $_POST['title'];
                         $template->text  = $_POST['text'];
                         if ($template->save($errors)) {
-                            Message::Info('La plantilla se ha actualizado correctamente');
+                            Message::info('La plantilla se ha actualizado correctamente');
 
                             // tratar si han marcado pendiente de traducir
                             if (isset($_POST['pending']) && $_POST['pending'] == 1
                                 && !\Goteo\Core\Model::setPending($id, 'template')) {
-                                Message::Error('NO se ha marcado como pendiente de traducir!');
+                                Message::error('NO se ha marcado como pendiente de traducir!');
                             }
 
                             throw new Redirection("/admin/templates");
                         } else {
-                            Message::Error(implode('<br />', $errors));
+                            Message::error(implode('<br />', $errors));
                         }
                     }
 
@@ -69,7 +69,7 @@ namespace Goteo\Controller\Admin {
                     );
                     break;
                 default:
-                    Message::Error('No se ha especificado una acción válida para plantillas en la URL');
+                    Message::error('No se ha especificado una acción válida para plantillas en la URL');
                     throw new Redirection('/admin/templates');
             }
 

@@ -9,9 +9,9 @@ $bodyClass = 'project-edit';
 $call = $vars['call'];
 
 if (!empty($vars['success'])) {
-    Goteo\Application\Message::Info($vars['success']);
+    Goteo\Application\Message::info($vars['success']);
 } elseif ($call->status == 1) {
-    Goteo\Application\Message::Info(Text::get('call-form-ajax-info'));
+    Goteo\Application\Message::info(Text::get('call-form-ajax-info'));
 }
 
 $steps  = View::get('call/edit/steps.html.php', array('steps' => $vars['steps'], 'step' => $vars['step'], 'id_call' => $call->id));

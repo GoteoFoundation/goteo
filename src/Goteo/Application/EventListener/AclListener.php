@@ -20,7 +20,7 @@ class AclListener implements EventSubscriberInterface
         $uri = $request->server->get('PATH_INFO');
         if (!ACL::check($uri) && substr($uri, 0, 11) !== '/user/login') {
 
-            Message::Info(Text::get('user-login-required-access'));
+            Message::info(Text::get('user-login-required-access'));
             return new RedirectResponse(SEC_URL . '/user/login/?return='.rawurlencode($uri));
         }
     }

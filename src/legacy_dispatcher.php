@@ -44,7 +44,7 @@ try {
             //if page exists, throw redirection, make it 404 otherwise
             // die($controller."-$firstSegment");
             if($controller !== 'Index') {
-                Message::Info(Text::get('user-login-required-access'));
+                Message::info(Text::get('user-login-required-access'));
                 throw new Redirection(SEC_URL.'/user/login/?return='.rawurlencode($uri));
             }
             throw new Error(Error::NOT_FOUND);

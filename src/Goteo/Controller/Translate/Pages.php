@@ -54,7 +54,7 @@ namespace Goteo\Controller\Translate {
                     unset($log);
                     */
 
-                    Message::Info('Contenido de la Pagina <strong>' . $id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
+                    Message::info('Contenido de la Pagina <strong>' . $id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
 
                     if ($_POST['node'] != \GOTEO_NODE) {
                         if (isset($_SESSION['translate_node'])) {
@@ -80,7 +80,7 @@ namespace Goteo\Controller\Translate {
                     $log->doAdmin('admin');
                     unset($log);
 
-                    Message::Error('Ha habido algun ERROR al traducir el contenido de la pagina <strong>' . $id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
+                    Message::error('Ha habido algun ERROR al traducir el contenido de la pagina <strong>' . $id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
                 }
             }
 
