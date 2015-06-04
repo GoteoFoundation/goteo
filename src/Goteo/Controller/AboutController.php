@@ -12,14 +12,14 @@ namespace Goteo\Controller {
         Symfony\Component\HttpFoundation\Response,
         Symfony\Component\HttpFoundation\RedirectResponse;
 
-    class About extends \Goteo\Core\Controller {
+    class AboutController extends \Goteo\Core\Controller {
 
         public function __construct() {
             //activamos la cache para todo el controlador about
             \Goteo\Core\DB::cache(true);
         }
 
-        public function index ($id = null) {
+        public function indexAction ($id = '') {
 
             // si llegan a la de mantenimiento sin estar en mantenimiento
             if ($id == 'maintenance' && GOTEO_MAINTENANCE !== true) {
@@ -28,13 +28,13 @@ namespace Goteo\Controller {
 
             // paginas especificas
             if ($id == 'faq' || $id == 'contact') {
-                new RedirectResponse('/'.$id);
+                return new RedirectResponse('/'.$id);
             }
 
             // en estos casos se usa el contenido de goteo
             if ($id == 'howto' || $id == 'call') {
                 if (!Session::isLogged()) {
-                    new RedirectResponse('/');
+                    return new RedirectResponse('/');
                 }
                 $page = Page::get($id);
 

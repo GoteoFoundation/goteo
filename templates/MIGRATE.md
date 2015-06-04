@@ -41,7 +41,8 @@ echo $this['variable']; //sin escapar
 Después:
 
 Las variables están instanciadas por defecto en el objecto **$this**
-**NOTA** Por compatibilidad también es posible usar el array `$this->vars` que contiene todas las variables en un array. Aunque en todas las nuevas vistas no deberia usarse.
+
+**NOTA**: Por compatibilidad también es posible usar el array `$this->vars` que contiene todas las variables en un array. Aunque en todas las nuevas vistas no deberia usarse.
 
 ```php
 <?php
@@ -133,11 +134,13 @@ Ejemplo de llamada en un controlador:
 
 ```php
 <?php
+// src/Goteo/Controller/DiscoverController.php
+
 namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class Discover extends \Goteo\Core\Controller {
+class DiscoverController extends \Goteo\Core\Controller {
     public function index () {
         return new Response(View::render(
             'discover/index',
@@ -222,7 +225,7 @@ Guía de cambio de controladores:
 --------------------------------
 
 1. Usar el objecto Response (de Symfony) como retorno del controlador y no la vista directamente `return new Response(View::render(...));`
-    **NOTAS:**
+    - **NOTAS:**
     - Para las redirecciones usar la classe `RedirectResponse` de Symfony
     - No usar directamente variables `$_GET` o `$_POST`, usar el objecto `Symfony\Component\HttpFoundation\Request` inyectado automáticamente al controlador (recomendable ponerlo al final del método). Para más información ver el [objeto Request](http://symfony.com/doc/current/components/http_foundation/introduction.html)
     - Los nombres de las variables deben concordar con los definidos en las rutas (ver [Rutas](#routes)). En realidad el orden de las variables no es importante.
@@ -230,12 +233,14 @@ Guía de cambio de controladores:
 
     ```php
     <?php
+        // src/extend/goteo/src/Goteo/Controller/DiscoverAddonsController.php
+
         namespace Goteo\Controller;
         use Symfony\Component\HttpFoundation\Response;
         use Symfony\Component\HttpFoundation\RedirectResponse;
         use Symfony\Component\HttpFoundation\Request;
         use ...
-        class DiscoverAddons extends \Goteo\Core\Controller {
+        class DiscoverAddonsController extends \Goteo\Core\Controller {
 
             public function call () {
                 return new RedirectResponse('/discover/calls');
@@ -264,34 +269,34 @@ Guía de cambio de controladores:
 
 4. Eliminar includes a prologue.html.php, header.html.php, etc. del principio y final de las vistas. Reestructurar el contenido de la vista en bloques (secciones). Las secciones principales actuales se pueden consultar en `templates/default/layout.php`. Todas las sub-vistas deben implementar la sección 'content'. El javascript debería idealmente eliminarse pero como paso intermedio puede simplemente añadirse al final de la sección `footer`.
     
-    **Ejemplo de adición de javascript dentro de una vista:**
+**Ejemplo de adición de javascript dentro de una vista:**
 
-    `templates/default/discover/index.php`
+`templates/default/discover/index.php`
 
-    ```php
-    <?php $this->layout("layout", ['bodyClass' => 'discover']) ?>
+```php
+<?php $this->layout("layout", ['bodyClass' => 'discover']) ?>
 
-    <?php $this->section('content') ?>
+<?php $this->section('content') ?>
 
     Contenido de la vista:
-    <?=$this->test?>
+<?=$this->test?>
 
-    <?php $this->replace() ?>
-    <?php // Se reemplazará la sección 'content' en el template "layout.php" ?>
+<?php $this->replace() ?>
+<?php // Se reemplazará la sección 'content' en el template "layout.php" ?>
 
-    <?php $this->section('footer') ?>
+<?php $this->section('footer') ?>
 
-        <script type="text/javascript">
+    <script type="text/javascript">
         jQuery(document).ready(function ($) {
             ...
         });
 
     </script>
 
-    <?php $this->append() ?>
-    <?php // Se añadirá al final de la sección 'footer' en el template "layout.php" ?>
+<?php $this->append() ?>
+<?php // Se añadirá al final de la sección 'footer' en el template "layout.php" ?>
 
-    ```
+```
 
     Mas info http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html. 
 
@@ -308,12 +313,29 @@ Algunas funciones útiles:
     - `$this->is_logged()` => Devuelve "true" si el usuario está loggeado
 
 7. <a name="routes"></a>Poner la entrada del controlador para el procesado del nuevo dispacher en `src/app.php`. Se usa el elemento [Route de Symfony](http://symfony.com/doc/current/components/routing/introduction.html).
-    **NOTAS:**
-    - Añadir **Action** al final del método del controlador por claridad (ej: `edit()` pasa a `editAction()`)
+    - **NOTAS:**
     - No añadir `/`  al final de la ruta (hay un controlador al final que se encarga de redirigir peticiones con `/` al final de la ruta)
+    - Añadir **Action** al final del método del controlador por claridad (ej: `edit()` pasa a `editAction()`)
+    - **UNA VEZ SE HAN PROCESADO TODOS LOS METODOS DEL CONTROLADOR:**
+    - Añadir **Controller** al final del nombre del archivo y nombre de clase del controlador. Esto se hace por claridad. **CAMBIAR LOS TESTS ACORDE**
+    - Añadir a la variable `$non_legacy_routes` del archivo `src/Goteo/Controller/ErrorController.php` los prefijos de rutas que nunca deben tratarse con el controlador antiguo. **ES DECIR:** Cuando un controlador está completamente actualizado al nuevo sistema de rutas evitar que si hay una ruta no existente se procese segun el controlador antiguo.
+    **Por ejemplo:** `\Goteo\Controller\DiscoverController` y `\Goteo\Controller\UserController` ya estan acabados. Hay que evitar que todas las rutas que empiezan por "/discover" se procesen con el controlador antiguo:
+    ```php
+    <?php
+    // src/Goteo/Controller/ErrorController.php
+    ...
+    $non_legacy_routes = array(
+                '/discover',
+                '/user',
+                ...
+                );
+    ?>
+    ```
 
 ```php
 <?php
+// src/app.php
+
 $routes = new RouteCollection();
 
 // ...
@@ -327,14 +349,14 @@ $routes->add('discover-results', new Route(
     '/discover/results/{category}',
     array('category' => null,
           'name' => null,
-          '_controller' => 'Goteo\Controller\Discover::resultsAction',
+          '_controller' => 'Goteo\Controller\DiscoverController::resultsAction',
           'category' => '' //parametro opcional
          )
 ));
 // esta ruta no tiene parametros
 $routes->add('discover', new Route(
     '/discover',
-    array('_controller' => 'Goteo\Controller\Discover::discoverAction')
+    array('_controller' => 'Goteo\Controller\DiscoverController::discoverAction')
 ));
 
 return $routes;
@@ -345,12 +367,13 @@ return $routes;
 EJEMPLO REAL
 ------------
 
-Para la vista "results" del controlador "Discover":
+Para la vista "results" del controlador "DiscoverController":
 
 Antes `app/view/discover/results.html.php`
 
 ```php
 <?php
+// app/view/discover/results.html.php
 
 use Goteo\Core\View,
     Goteo\Library\Text;
@@ -396,6 +419,7 @@ Después: `templates/default/discover/results.php`
 
 ```php
 <?php
+// templates/default/discover/results.php
 
 $this->layout("layout", [
     'bodyClass' => 'discover', // variable de classe en <body class="...">

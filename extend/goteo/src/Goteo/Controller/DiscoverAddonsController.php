@@ -12,7 +12,7 @@ use Goteo\Library\Text;
 use Goteo\Application\Message;
 use Goteo\Library\Listing;
 
-class DiscoverAddons extends \Goteo\Core\Controller {
+class DiscoverAddonsController extends \Goteo\Core\Controller {
 
     public function __construct() {
         //activamos la cache para todo el controlador index

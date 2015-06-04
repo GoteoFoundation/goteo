@@ -900,8 +900,9 @@ body .markdown-body
 
 <p>Después:</p>
 
-<p>Las variables están instanciadas por defecto en el objecto <strong>$this</strong>
-<strong>NOTA</strong> Por compatibilidad también es posible usar el array <code>$this-&gt;vars</code> que contiene todas las variables en un array. Aunque en todas las nuevas vistas no deberia usarse.</p>
+<p>Las variables están instanciadas por defecto en el objecto <strong>$this</strong></p>
+
+<p><strong>NOTA</strong>: Por compatibilidad también es posible usar el array <code>$this-&gt;vars</code> que contiene todas las variables en un array. Aunque en todas las nuevas vistas no deberia usarse.</p>
 
 <div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-c">//objecto</span></span>
@@ -983,11 +984,13 @@ templates/...
 <p>Ejemplo de llamada en un controlador:</p>
 
 <div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// src/Goteo/Controller/DiscoverController.php</span></span>
+<span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-k">namespace</span> <span class="pl-en">Goteo\Controller</span>;</span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Symfony\Component\HttpFoundation\Response</span>;</span>
 <span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">Discover</span> <span class="pl-k">extends</span> <span class="pl-c1">\Goteo\Core\</span><span class="pl-e">Controller</span> {</span>
+<span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">DiscoverController</span> <span class="pl-k">extends</span> <span class="pl-c1">\Goteo\Core\</span><span class="pl-e">Controller</span> {</span>
 <span class="pl-s1">    <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">index</span> () {</span>
 <span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-c1">Response</span>(<span class="pl-c1">View</span><span class="pl-k">::</span>render(</span>
 <span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>discover/index<span class="pl-pds">'</span></span>,</span>
@@ -1070,10 +1073,10 @@ Contenido de la vista:
 
 <ol>
 <li>
-<p>Usar el objecto Response (de Symfony) como retorno del controlador y no la vista directamente <code>return new Response(View::render(...));</code>
-<strong>NOTAS:</strong></p>
+<p>Usar el objecto Response (de Symfony) como retorno del controlador y no la vista directamente <code>return new Response(View::render(...));</code></p>
 
 <ul>
+<li><strong>NOTAS:</strong></li>
 <li>Para las redirecciones usar la classe <code>RedirectResponse</code> de Symfony</li>
 <li>No usar directamente variables <code>$_GET</code> o <code>$_POST</code>, usar el objecto <code>Symfony\Component\HttpFoundation\Request</code> inyectado automáticamente al controlador (recomendable ponerlo al final del método). Para más información ver el <a href="http://symfony.com/doc/current/components/http_foundation/introduction.html">objeto Request</a>
 </li>
@@ -1082,12 +1085,14 @@ Contenido de la vista:
 </ul>
 
 <div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// src/extend/goteo/src/Goteo/Controller/DiscoverAddonsController.php</span></span>
+<span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-k">namespace</span> <span class="pl-en">Goteo\Controller</span>;</span>
 <span class="pl-s1">    <span class="pl-k">use</span> <span class="pl-c1">Symfony\Component\HttpFoundation\Response</span>;</span>
 <span class="pl-s1">    <span class="pl-k">use</span> <span class="pl-c1">Symfony\Component\HttpFoundation\RedirectResponse</span>;</span>
 <span class="pl-s1">    <span class="pl-k">use</span> <span class="pl-c1">Symfony\Component\HttpFoundation\Request</span>;</span>
 <span class="pl-s1">    <span class="pl-k">use</span> ...</span>
-<span class="pl-s1">    <span class="pl-c1">class DiscoverAddons extends \Goteo\Core\Controller</span> {</span>
+<span class="pl-s1">    <span class="pl-c1">class DiscoverAddonsController extends \Goteo\Core\Controller</span> {</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">        <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">call</span> () {</span>
 <span class="pl-s1">            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-c1">RedirectResponse</span>(<span class="pl-s"><span class="pl-pds">'</span>/discover/calls<span class="pl-pds">'</span></span>);</span>
@@ -1111,8 +1116,8 @@ Contenido de la vista:
 </li>
 <li><p>Usar el nuevo wrapper de vistas <code>Goteo\Application\View</code> y no el antiguo <code>Gote\Core\View</code>. La Función de renderizado es <code>View::render(...)</code></p></li>
 <li><p>Trasladar las vistas de <code>app/view/controller/vista.html.php</code> al nuevo directorio <code>templates/default/controller/vista.php</code>. La sub extension <code>.html.php</code> no hace falta.</p></li>
-<li>
-<p>Eliminar includes a prologue.html.php, header.html.php, etc. del principio y final de las vistas. Reestructurar el contenido de la vista en bloques (secciones). Las secciones principales actuales se pueden consultar en <code>templates/default/layout.php</code>. Todas las sub-vistas deben implementar la sección 'content'. El javascript debería idealmente eliminarse pero como paso intermedio puede simplemente añadirse al final de la sección <code>footer</code>.</p>
+<li><p>Eliminar includes a prologue.html.php, header.html.php, etc. del principio y final de las vistas. Reestructurar el contenido de la vista en bloques (secciones). Las secciones principales actuales se pueden consultar en <code>templates/default/layout.php</code>. Todas las sub-vistas deben implementar la sección 'content'. El javascript debería idealmente eliminarse pero como paso intermedio puede simplemente añadirse al final de la sección <code>footer</code>.</p></li>
+</ol>
 
 <p><strong>Ejemplo de adición de javascript dentro de una vista:</strong></p>
 
@@ -1122,7 +1127,7 @@ Contenido de la vista:
 
 <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>section(<span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
 
-Contenido de la vista:
+    Contenido de la vista:
 <span class="pl-pse">&lt;?=</span><span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">test</span></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
 
 <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>replace() </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
@@ -1131,18 +1136,20 @@ Contenido de la vista:
 <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>section(<span class="pl-s"><span class="pl-pds">'</span>footer<span class="pl-pds">'</span></span>) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
 
 <span class="pl-s1">    &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;</span>
-<span class="pl-s1">    jQuery(<span class="pl-c1">document</span>).ready(<span class="pl-k">function</span> (<span class="pl-smi">$</span>) {</span>
-<span class="pl-s1">        ...</span>
-<span class="pl-s1">    });</span>
+<span class="pl-s1">        jQuery(<span class="pl-c1">document</span>).ready(<span class="pl-k">function</span> (<span class="pl-smi">$</span>) {</span>
+<span class="pl-s1">            ...</span>
+<span class="pl-s1">        });</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">&lt;/<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s1">    &lt;/<span class="pl-ent">script</span>&gt;</span>
 
 <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>append() </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
 <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-c">// Se añadirá al final de la sección 'footer' en el template "layout.php" </span></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
 </pre></div>
 
-<p>Mas info <a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html</a>. </p>
-</li>
+<pre><code>Mas info http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html. 
+</code></pre>
+
+<ol>
 <li><p>Cambiar las referencias al array <code>$this['variable']</code> or <code>$vars['variable']</code> por referencias al objecto <code>$this-&gt;variable</code>. Tener en cuenta que si estas variables son arrays o escalares estaran escapadas por defecto.</p></li>
 <li>
 <p>Quitar referencias a clases dentro de las vistas (sin obsesionarse pues puede ser un trabajo largo). Empezamos por sustituir las funciones de <code>Text::algo(...)</code> por <code>$this-&gt;text_algo(...)</code>. Mirar la extensiones <code>src/Goteo/Foil/Extension/TextUtils.php</code> y <code>src/Goteo/Foil/Extension/GoteoCore.php</code> para las funciones activas (o añadir las que falten).
@@ -1165,17 +1172,34 @@ Algunas funciones útiles:</p>
 </ul>
 </li>
 <li>
-<p><a name="user-content-routes"></a>Poner la entrada del controlador para el procesado del nuevo dispacher en <code>src/app.php</code>. Se usa el elemento <a href="http://symfony.com/doc/current/components/routing/introduction.html">Route de Symfony</a>.
-<strong>NOTAS:</strong></p>
+<p><a name="user-content-routes"></a>Poner la entrada del controlador para el procesado del nuevo dispacher en <code>src/app.php</code>. Se usa el elemento <a href="http://symfony.com/doc/current/components/routing/introduction.html">Route de Symfony</a>.</p>
 
 <ul>
-<li>Añadir <strong>Action</strong> al final del método del controlador por claridad (ej: <code>edit()</code> pasa a <code>editAction()</code>)</li>
+<li><strong>NOTAS:</strong></li>
 <li>No añadir <code>/</code>  al final de la ruta (hay un controlador al final que se encarga de redirigir peticiones con <code>/</code> al final de la ruta)</li>
+<li>Añadir <strong>Action</strong> al final del método del controlador por claridad (ej: <code>edit()</code> pasa a <code>editAction()</code>)</li>
+<li><strong>UNA VEZ SE HAN PROCESADO TODOS LOS METODOS DEL CONTROLADOR:</strong></li>
+<li>Añadir <strong>Controller</strong> al final del nombre del archivo y nombre de clase del controlador. Esto se hace por claridad. <strong>CAMBIAR LOS TESTS ACORDE</strong>
+</li>
+<li>Añadir a la variable <code>$non_legacy_routes</code> del archivo <code>src/Goteo/Controller/ErrorController.php</code> los prefijos de rutas que nunca deben tratarse con el controlador antiguo. <strong>ES DECIR:</strong> Cuando un controlador está completamente actualizado al nuevo sistema de rutas evitar que si hay una ruta no existente se procese segun el controlador antiguo.
+<strong>Por ejemplo:</strong> <code>\Goteo\Controller\DiscoverController</code> y <code>\Goteo\Controller\UserController</code> ya estan acabados. Hay que evitar que todas las rutas que empiezan por "/discover" se procesen con el controlador antiguo:</li>
 </ul>
+
+<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// src/Goteo/Controller/ErrorController.php</span></span>
+<span class="pl-s1"><span class="pl-k">...</span></span>
+<span class="pl-s1"><span class="pl-smi">$non_legacy_routes</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>/discover<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>/user<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-k">...</span></span>
+<span class="pl-s1">            );</span>
+<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
 </li>
 </ol>
 
 <div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// src/app.php</span></span>
+<span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-smi">$routes</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">RouteCollection</span>();</span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-c">// ...</span></span>
@@ -1189,14 +1213,14 @@ Algunas funciones útiles:</p>
 <span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>/discover/results/{category}<span class="pl-pds">'</span></span>,</span>
 <span class="pl-s1">    <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>category<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">null</span>,</span>
 <span class="pl-s1">          <span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">null</span>,</span>
-<span class="pl-s1">          <span class="pl-s"><span class="pl-pds">'</span>_controller<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Goteo\Controller\Discover::resultsAction<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">          <span class="pl-s"><span class="pl-pds">'</span>_controller<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Goteo\Controller\DiscoverController::resultsAction<span class="pl-pds">'</span></span>,</span>
 <span class="pl-s1">          <span class="pl-s"><span class="pl-pds">'</span>category<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span> <span class="pl-c">//parametro opcional</span></span>
 <span class="pl-s1">         )</span>
 <span class="pl-s1">));</span>
 <span class="pl-s1"><span class="pl-c">// esta ruta no tiene parametros</span></span>
 <span class="pl-s1"><span class="pl-smi">$routes</span><span class="pl-k">-&gt;</span>add(<span class="pl-s"><span class="pl-pds">'</span>discover<span class="pl-pds">'</span></span>, <span class="pl-k">new</span> <span class="pl-c1">Route</span>(</span>
 <span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>/discover<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">    <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>_controller<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Goteo\Controller\Discover::discoverAction<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">    <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>_controller<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Goteo\Controller\DiscoverController::discoverAction<span class="pl-pds">'</span></span>)</span>
 <span class="pl-s1">));</span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-k">return</span> <span class="pl-smi">$routes</span>;</span>
@@ -1205,11 +1229,12 @@ Algunas funciones útiles:</p>
 <h2>
 <a id="user-content-ejemplo-real" class="anchor" href="#ejemplo-real" aria-hidden="true"><span class="octicon octicon-link"></span></a>EJEMPLO REAL</h2>
 
-<p>Para la vista "results" del controlador "Discover":</p>
+<p>Para la vista "results" del controlador "DiscoverController":</p>
 
 <p>Antes <code>app/view/discover/results.html.php</code></p>
 
 <div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// app/view/discover/results.html.php</span></span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Goteo\Core\View</span>,</span>
 <span class="pl-s1">    <span class="pl-c1">Goteo\Library\Text</span>;</span>
@@ -1253,6 +1278,7 @@ Algunas funciones útiles:</p>
 (implica la conversion de las sub-vistas: <code>templates/default/discover/partials/searcher.php</code> y <code>templates/default/project/widget/project.php</code>)</p>
 
 <div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// templates/default/discover/results.php</span></span>
 <span class="pl-s1"></span>
 <span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>layout(<span class="pl-s"><span class="pl-pds">"</span>layout<span class="pl-pds">"</span></span>, [</span>
 <span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>bodyClass<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>discover<span class="pl-pds">'</span></span>, <span class="pl-c">// variable de classe en &lt;body class="..."&gt;</span></span>

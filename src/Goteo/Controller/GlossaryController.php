@@ -10,14 +10,14 @@ namespace Goteo\Controller {
 
 
 
-    class Glossary extends \Goteo\Core\Controller {
+    class GlossaryController extends \Goteo\Core\Controller {
 
         public function __construct() {
             //activamos la cache para todo el controlador glossary
             \Goteo\Core\DB::cache(true);
         }
 
-        public function index () {
+        public function indexAction () {
 
             // Términos por página
             $tpp = 5;

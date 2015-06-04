@@ -16,7 +16,7 @@ use Goteo\Model\Category;
 use Goteo\Model\Project;
 use Goteo\Model\Icon;
 
-class Discover extends \Goteo\Core\Controller {
+class DiscoverController extends \Goteo\Core\Controller {
 
     public static $types = array(
             'popular',

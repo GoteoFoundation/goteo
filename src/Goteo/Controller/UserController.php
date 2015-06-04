@@ -18,19 +18,15 @@ use Goteo\Library\Text;
 use Goteo\Library\OAuth\SocialAuth;
 use Goteo\Library\Listing;
 
-class User extends \Goteo\Core\Controller {
+class UserController extends \Goteo\Core\Controller {
 
     /**
      * Atajo al perfil de usuario.
      * @param string $id   Nombre de usuario
      */
-    public function indexAction($id, $show = '') {
+    public function indexAction($id = '', $show = '') {
         // die("['/user/profile/' . $id . '/' . $show]");
-        if (Session::isLogged()) {
-            return new RedirectResponse('/user/profile/' . $id . ($show ? '/' . $show : ''));
-        }
-
-        return new RedirectResponse('/user/login');
+        return new RedirectResponse('/user/profile/' . $id . ($show ? '/' . $show : ''));
     }
 
 
