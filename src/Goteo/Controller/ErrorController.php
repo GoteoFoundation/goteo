@@ -23,6 +23,7 @@ class ErrorController extends \Goteo\Core\Controller {
                 '/about',
                 '/service',
                 '/blog',
+                '/project',
                 );
 
             $legacy = true;

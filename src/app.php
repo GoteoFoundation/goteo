@@ -7,7 +7,7 @@ use Goteo\Application\Config;
 $routes = new RouteCollection();
 $routes->add('home', new Route(
     '/',
-    array('_controller' => 'Goteo\Controller\Index::' . (Config::isNode() ? 'indexNode' : 'index'))
+    array('_controller' => 'Goteo\Controller\IndexController::' . (Config::isNode() ? 'indexNodeAction' : 'indexAction'))
 ));
 
 //// DISCOVER /////
@@ -51,25 +51,39 @@ $routes->add('glossary', new Route(
 ));
 
 //// PROJECT /////
+/// TODO: more methods... ///
 
 $routes->add('project-edit', new Route(
-    '/project/edit/{id}',
-    array('_controller' => 'Goteo\Controller\Project::edit')
+    '/project/edit/{id}/{step}',
+    array(
+        '_controller' => 'Goteo\Controller\ProjectController::editAction',
+        'step' => 'userProfile'
+        )
 ));
 
 $routes->add('project-create', new Route(
     '/project/create',
-    array('_controller' => 'Goteo\Controller\Project::create')
+    array('_controller' => 'Goteo\Controller\ProjectController::createAction')
+));
+
+//TODO: quitar esta guarrada:
+$routes->add('project-raw', new Route(
+    '/project/raw/{id}',
+    array('_controller' => 'Goteo\Controller\ProjectController::rawAction')
+));
+
+$routes->add('project-delete', new Route(
+    '/project/delete/{id}',
+    array('_controller' => 'Goteo\Controller\ProjectController::deleteAction')
 ));
 
 $routes->add('project-sections', new Route(
-    '/project/{id}/{show}',
-    array('_controller' => 'Goteo\Controller\Project::index')
-));
-
-$routes->add('project', new Route(
-    '/project/{id}',
-    array('_controller' => 'Goteo\Controller\Project::index')
+    '/project/{id}/{show}/{post}',
+    array('_controller' => 'Goteo\Controller\ProjectController::indexAction',
+        'id' => null, //optional
+        'show' => 'home', //default
+        'post' => null //optional
+        )
 ));
 
 ///// ABOUT /////

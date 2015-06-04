@@ -16,22 +16,24 @@ namespace Goteo\Controller {
         Goteo\Library\Template,
         Goteo\Library\Feed,
         Goteo\Model,
+        Symfony\Component\HttpFoundation\Request,
         Symfony\Component\HttpFoundation\Response,
         Symfony\Component\HttpFoundation\RedirectResponse;
 
-    class Project extends \Goteo\Core\Controller {
+    class ProjectController extends \Goteo\Core\Controller {
 
-        public function index($id = null, $show = 'home', $post = null) {
+        public function indexAction ($id = null, $show = 'home', $post = null, Request $request) {
             if ($id !== null) {
                 return $this->view($id, $show, $post);
-            } else if (isset($_GET['create'])) {
-                return new RedirectResponse('/project/create');
-            } else {
-                return new RedirectResponse('/discover');
             }
+            if ($request->query->has('create')) {
+                return new RedirectResponse('/project/create');
+            }
+            return new RedirectResponse('/discover');
         }
 
-        public function raw ($id) {
+        //** esto es una guarrada **/
+        public function rawAction ($id) {
             $project = Model\Project::get($id, LANG);
             // pasos para el check
             if ($project->draft) {
@@ -47,7 +49,7 @@ namespace Goteo\Controller {
             die;
         }
 
-        public function delete ($id) {
+        public function deleteAction ($id) {
             $user = Session::getUser();
             // redirección según usuario
             $goto = isset($user->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
@@ -79,7 +81,7 @@ namespace Goteo\Controller {
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
-        public function edit ($id, $step = 'userProfile') {
+        public function editAction ($id, $step = 'userProfile') {
 
             $user = Session::getUser();
             // redirección según usuario
@@ -504,14 +506,14 @@ namespace Goteo\Controller {
 
         }
 
-        public function create () {
+        public function createAction (Request $request) {
             if (! ($user = Session::getUser()) ) {
-                $_SESSION['jumpto'] = '/project/create';
+                Session::store('jumpto', '/project/create');
                 Application\Message::info(Text::get('user-login-required-to_create'));
                 return new RedirectResponse(SEC_URL.'/user/login');
             }
 
-            if ($_POST['action'] != 'continue' || $_POST['confirm'] != 'true') {
+            if ($request->request->get('action') != 'continue' || $request->request->get('confirm') != 'true') {
                 return new RedirectResponse('/about/howto');
 
             }
@@ -531,8 +533,7 @@ namespace Goteo\Controller {
                 unset($log);
 
                 // Si hay que asignarlo a un proyecto
-                if (isset($_SESSION['oncreate_applyto'])) {
-                    $call = $_SESSION['oncreate_applyto'];
+                if ($call = Session::get('oncreate_applyto')) {
 
                     $registry = new Model\Call\Project;
                     $registry->id = $project->id;
@@ -809,8 +810,8 @@ namespace Goteo\Controller {
                 'user_location'=>'location',
                 'user_avatar'=>'avatar',
                 'user_about'=>'about',
-//                'user_keywords'=>'keywords',
-//                'user_contribution'=>'contribution',
+                // 'user_keywords'=>'keywords',
+                // 'user_contribution'=>'contribution',
                 'user_facebook'=>'facebook',
                 'user_google'=>'google',
                 'user_twitter'=>'twitter',
@@ -890,20 +891,20 @@ namespace Goteo\Controller {
                 'contract_nif',
                 'contract_email',
                 'phone',
-//                'contract_entity',
+                // 'contract_entity',
                 'contract_birthdate',
-//                'entity_office',
+                // 'entity_office',
                 'entity_name',
-//                'entity_cif',
+                // 'entity_cif',
                 'address',
                 'zipcode',
                 'location',
                 'country',
-//                'secondary_address',
-//                'post_address',
-//                'post_zipcode',
-//                'post_location',
-//                'post_country'
+                // 'secondary_address',
+                // 'post_address',
+                // 'post_zipcode',
+                // 'post_location',
+                // 'post_country'
             );
 
             $personalData = array();
@@ -1226,7 +1227,7 @@ namespace Goteo\Controller {
         /*
          * Paso 6 - COLABORACIONES
          */
-         private function process_supports(&$project, &$errors) {
+        private function process_supports(&$project, &$errors) {
             if (!isset($_POST['process_supports'])) {
                 return false;
             }

@@ -28,7 +28,7 @@ use Goteo\Library\Page;
 
 // para sacar el contenido de about
 
-class Index extends \Goteo\Core\Controller
+class IndexController extends \Goteo\Core\Controller
 {
 
     public function __construct()
@@ -37,7 +37,7 @@ class Index extends \Goteo\Core\Controller
         \Goteo\Core\DB::cache(true);
     }
 
-    public function index()
+    public function indexAction()
     {
 
         if (isset($_GET['error'])) {
@@ -117,7 +117,7 @@ class Index extends \Goteo\Core\Controller
         return new Response(View::render('home/index', $vars));
     }
 
-    public function indexNode() {
+    public function indexNodeAction() {
         return self::node_index();
     }
 
