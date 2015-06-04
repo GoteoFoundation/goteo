@@ -66,7 +66,7 @@ namespace Goteo\Controller {
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['login'])) {
                 $username = \strtolower($_POST['username']);
-                $password = $_POST['password']
+                $password = $_POST['password'];
                 if (false !== ($user = (Model\User::login($username, $password)))) {
                     return self::loginUser($user);
                 } else {
