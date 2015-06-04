@@ -55,7 +55,7 @@ $worthcracy = Worth::getAll();
 
 <?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 

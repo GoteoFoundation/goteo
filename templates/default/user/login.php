@@ -5,15 +5,14 @@ use Goteo\Core\View;
 // para que el prologue ponga el código js para botón facebook en el bannerside
 $fbCode = $this->text_widget($this->text('social-account-facebook'), 'fb');
 $errors = $this->errors;
-extract($_POST);
-if (empty($username) && isset($this->username)) $username = $this->username;
+
+//Obtain oauth from remembering cookie
+$goteo_oauth_provider = $this->get_cookie('goteo_oauth_provider');
 
 
 $this->layout("layout", [
     'bodyClass' => 'user-login',
     'jscrypt' => 'true',
-    'title' => $this->text('meta-title-login'),
-    'meta_description' => $this->text('meta-description-login')
     ]);
 
 $this->section('content');
@@ -36,7 +35,7 @@ $this->section('content');
                     <input type="hidden" name="return" value="<?php echo $_GET['return']; ?>" />
                     <div class="username">
                         <label><?= $this->text('login-access-username-field') ?>
-                        <input type="text" name="username" value="<?php echo $username?>" /></label>
+                        <input type="text" name="username" value="<?= $this->username ? $this->username : $this->get_cookie('goteo_user') ?>" /></label>
                     </div>
 
                     <div class="password">
@@ -48,7 +47,7 @@ $this->section('content');
 
                 </form>
 
-                <p><a href="<?php echo SEC_URL; ?>/user/recover?email=<?php echo $username; ?>"><?= $this->text('login-recover-link') ?></a></p>
+                <p><a href="<?php echo SEC_URL; ?>/user/recover?email=<?= $this->username ?>"><?= $this->text('login-recover-link') ?></a></p>
                 <br />
                 <p><a class="baja" href="<?php echo SEC_URL; ?>/user/leave"><?= $this->text('login-leave-button') ?></a></p>
 
@@ -64,9 +63,6 @@ $this->section('content');
 				//posarem primer l'ultim servei utilitzat
 				//de manera que si l'ultima vegada t'has autentificat correctament amb google, el tindras el primer de la llista
 
-				//la cookie serveix per saber si ja ens hem autentificat algun cop amb "un sol click"
-				$openid = $_COOKIE['goteo_oauth_provider'];
-
 				//l'ordre que es vulgui...
                 $logins = array(
 					'facebook' => '<a href="/user/oauth?provider=facebook">' . $this->text('login-signin-facebook') . '</a>',
@@ -77,18 +73,18 @@ $this->section('content');
 					'linkedin' => '<a href="/user/oauth?provider=linkedin">' . $this->text('login-signin-linkedin') . '</a>',
 					'openid' => ''
                 );
-                $is_openid = !array_key_exists($openid,$logins);
-                $logins['openid'] = '<form><input type="text"'.($is_openid ? ' class="used"' : '').' name="openid" value="' . htmlspecialchars( $is_openid ? $openid : $this->text('login-signin-openid')) . '" /><a href="/user/oauth" class="button">' . $this->text('login-signin-openid-go') . '&rarr;</a></form>';
+                $is_openid = !array_key_exists($goteo_oauth_provider, $logins);
+                $logins['openid'] = '<form><input type="text"'.($is_openid ? ' class="used"' : '').' name="openid" value="' . htmlspecialchars( $is_openid ? $goteo_oauth_provider : $this->text('login-signin-openid')) . '" /><a href="/user/oauth" class="button">' . $this->text('login-signin-openid-go') . '&rarr;</a></form>';
                 //si se ha guardado la preferencia, lo ponemos primero
                 $key = '';
-                if($openid) {
-					$key = array_key_exists($openid,$logins) ? $openid : 'openid';
+                if($goteo_oauth_provider) {
+					$key = array_key_exists($goteo_oauth_provider,$logins) ? $goteo_oauth_provider : 'openid';
 					echo '<li class="'.strtolower($key).'">'.$logins[$key].'</li>';
 					echo '<li class="more">&rarr;<a href="#">'.$this->text('login-signin-view-more').'</a></li>';
 
 				}
                 foreach($logins as $k => $v) {
-					if($key != $k) echo '<li class="'.strtolower($k) .'"'. ( $openid ? ' style="display:none"' :'') .'>'.$v.'</li>';
+					if($key != $k) echo '<li class="'.strtolower($k) .'"'. ( $goteo_oauth_provider ? ' style="display:none"' :'') .'>'.$v.'</li>';
 				}
                 ?>
 
@@ -103,38 +99,38 @@ $this->section('content');
 
                     <div class="userid">
                         <label for="RegisterUserid"><?= $this->text('login-register-userid-field') ?></label>
-                        <input type="text" id="RegisterUserid" name="userid" value="<?php echo htmlspecialchars($userid) ?>" maxlength="15" />
+                        <input type="text" id="RegisterUserid" name="userid" value="<?= $this->userid ?>" maxlength="15" />
                     <?php if(isset($errors['userid'])) { ?><em><?php echo $errors['userid']?></em><?php } ?>
                     </div>
 
                     <div class="username">
                         <label for="RegisterUsername"><?= $this->text('login-register-username-field') ?></label>
-                        <input type="text" id="RegisterUsername" name="username" value="<?php echo htmlspecialchars($username) ?>" maxlength="20" />
+                        <input type="text" id="RegisterUsername" name="username" value="<?= $this->username ?>" maxlength="20" />
                     <?php if(isset($errors['username'])) { ?><em><?php echo $errors['username']?></em><?php } ?>
                     </div>
 
                     <div class="email">
                         <label for="RegisterEmail"><?= $this->text('login-register-email-field') ?></label>
-                        <input type="text" id="RegisterEmail" name="email" value="<?php echo htmlspecialchars($email) ?>"/>
+                        <input type="text" id="RegisterEmail" name="email" value="<?= $this->email ?>"/>
                     <?php if(isset($errors['email'])) { ?><em><?php echo $errors['email']?></em><?php } ?>
                     </div>
 
                     <div class="remail">
                         <label for="RegisterREmail"><?= $this->text('login-register-confirm-field') ?></label>
-                        <input type="text" id="RegisterREmail" name="remail" value="<?php echo htmlspecialchars($remail) ?>"/>
+                        <input type="text" id="RegisterREmail" name="remail" value="<?= $this->remail ?>"/>
                     <?php if(isset($errors['remail'])) { ?><em><?php echo $errors['remail']?></em><?php } ?>
                     </div>
 
 
                     <div class="password">
-                        <label for="RegisterPassword"><?= $this->text('login-register-password-field') ?></label> <?php if (strlen($password) < 6) echo '<em>' . $this->text('login-register-password-minlength') . '</em>'; ?>
-                        <input type="password" id="RegisterPassword" name="password" value="<?php echo htmlspecialchars($password) ?>"/>
+                        <label for="RegisterPassword"><?= $this->text('login-register-password-field') ?></label> <?php if (strlen($this->password) < 6) echo '<em>' . $this->text('login-register-password-minlength') . '</em>'; ?>
+                        <input type="password" id="RegisterPassword" name="password" value="<?= $this->password ?>"/>
                     <?php if(isset($errors['password'])) { ?><em><?php echo $errors['password']?></em><?php } ?>
                     </div>
 
                      <div class="rpassword">
                         <label for="RegisterRPassword"><?= $this->text('login-register-confirm_password-field') ?></label>
-                        <input type="password" id="RegisterRPassword" name="rpassword" value="<?php echo htmlspecialchars($rpassword) ?>"/>
+                        <input type="password" id="RegisterRPassword" name="rpassword" value="<?= $this->rpassword ?>"/>
                     <?php if(isset($errors['rpassword'])) { ?><em><?php echo $errors['rpassword']?></em><?php } ?>
                     </div>
 
@@ -150,9 +146,10 @@ $this->section('content');
 
     </div>
 
-    <?php $this->replace() ?>
+<?php $this->replace() ?>
 
 <?php $this->section('footer') ?>
+
     <script type="text/javascript">
 jQuery(document).ready(function($) {
     $("#register_accept").click(function (event) {

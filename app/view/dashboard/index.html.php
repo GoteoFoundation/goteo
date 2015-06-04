@@ -29,7 +29,7 @@ include __DIR__ . '/../header.html.php'; ?>
 
         <?php  echo View::get('dashboard/menu.html.php', $vars) ?>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main" class="<?php echo $vars['option'] ?>">
 

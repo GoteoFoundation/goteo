@@ -8,20 +8,6 @@ $this->layout("layout", [
 
 $this->section('content');
 ?>
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-    $("#create_accept").click(function (event) {
-        if (this.checked) {
-            $("#create_continue").removeClass('disabled').addClass('weak');
-            $("#create_continue").removeAttr('disabled');
-        } else {
-            $("#create_continue").removeClass('weak').addClass('disabled');
-            $("#create_continue").attr('disabled', 'disabled');
-        }
-    });
-});
-</script>
-
     <div id="sub-header">
         <div>
             <h2><?= $this->raw('description') ?></h2>
@@ -38,3 +24,21 @@ jQuery(document).ready(function($) {
     </div>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $("#create_accept").click(function (event) {
+        if (this.checked) {
+            $("#create_continue").removeClass('disabled').addClass('weak');
+            $("#create_continue").removeAttr('disabled');
+        } else {
+            $("#create_continue").removeClass('weak').addClass('disabled');
+            $("#create_continue").attr('disabled', 'disabled');
+        }
+    });
+});
+</script>
+
+<?php $this->append() ?>

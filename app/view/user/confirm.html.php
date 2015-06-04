@@ -38,7 +38,7 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 
     <div id="main">

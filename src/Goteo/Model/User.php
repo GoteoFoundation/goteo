@@ -152,7 +152,7 @@ namespace Goteo\Model {
 						$mail->content = $content;
 						$mail->html = false;
 						$mail->template = $template->id;
-						if ($mail->send($errors)) {Application::Info(Text::get('register-confirm_mail-success'));
+						if ($mail->send($errors)) {Application\Message::info(Text::get('register-confirm_mail-success'));
 						} else {
 							Application\Message::error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
 							Application\Message::error(implode('<br />', $errors));
@@ -171,6 +171,7 @@ namespace Goteo\Model {
                         else {
                             $query = self::query('SELECT email FROM user WHERE id = ?', array($this->id));
                             if($this->email !== $query->fetchColumn()) {
+                                //MAGIC METHOD HERE!!!
                                 $this->token = md5(uniqid()).'¬'.$this->email.'¬'.date('Y-m-d');
                             }
                         }

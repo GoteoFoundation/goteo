@@ -9,3 +9,6 @@ CREATE TABLE `user_login` (
 
 -- alters
 -- añadido campo datetime con current timestamp
+
+-- Add foreign key
+ALTER TABLE `user_login` ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

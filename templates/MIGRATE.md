@@ -41,7 +41,7 @@ echo $this['variable']; //sin escapar
 Después:
 
 Las variables están instanciadas por defecto en el objecto **$this**
-**NOTA** Por compatibilidad también es posible usar el array `$this->vars` que contiene todas las variables en un array
+**NOTA** Por compatibilidad también es posible usar el array `$this->vars` que contiene todas las variables en un array. Aunque en todas las nuevas vistas no deberia usarse.
 
 ```php
 <?php
@@ -222,12 +222,18 @@ Guía de cambio de controladores:
 --------------------------------
 
 1. Usar el objecto Response (de Symfony) como retorno del controlador y no la vista directamente `return new Response(View::render(...));`
-    Para las redirecciones usar la classe `RedirectResponse` de Symfony:
+    **NOTAS:**
+    - Para las redirecciones usar la classe `RedirectResponse` de Symfony
+    - No usar directamente variables `$_GET` o `$_POST`, usar el objecto `Symfony\Component\HttpFoundation\Request` inyectado automáticamente al controlador (recomendable ponerlo al final del método). Para más información ver el [objeto Request](http://symfony.com/doc/current/components/http_foundation/introduction.html)
+    - Los nombres de las variables deben concordar con los definidos en las rutas (ver [Rutas](#routes)). En realidad el orden de las variables no es importante.
+    - No usar directamente variables `$_SESSION` o `$_COOKIE`, usar la clase `\Goteo\Application\Session` y `\Goteo\Application\Cookie` respectivamente. Mirar los archivos correspondientes para más informacion.
+
     ```php
     <?php
         namespace Goteo\Controller;
         use Symfony\Component\HttpFoundation\Response;
         use Symfony\Component\HttpFoundation\RedirectResponse;
+        use Symfony\Component\HttpFoundation\Request;
         use ...
         class DiscoverAddons extends \Goteo\Core\Controller {
 
@@ -240,6 +246,13 @@ Guía de cambio de controladores:
                 $viewData['title'] = Text::html('discover-calls-header');
                 $viewData['list']  = Model\Call::getActive(null, true);
                 return new Response(View::render('discover/calls', $viewData));
+            }
+
+            public function prueba ($foo, $bar = '', Request $request) {
+                // Variable en "POST":
+                $post_var = $request->request->get('var');
+                // Variable en "GET":
+                $get_var = $request->query->get('var');
             }
         }
     ?>
@@ -284,24 +297,49 @@ Guía de cambio de controladores:
 
 5. Cambiar las referencias al array `$this['variable']` or `$vars['variable']` por referencias al objecto `$this->variable`. Tener en cuenta que si estas variables son arrays o escalares estaran escapadas por defecto.
 
-6. Quitar referencias a clases dentro de las vistas (sin obsesionarse pues puede ser un trabajo largo). Empezamos por sustituir las funciones de `Text::algo(...)` por `$this->text_algo(...)`. Mirar la extensión `src/Goteo/Foil/Extension/Textutils.php` para las funciones activas (o añadir las que falten)
+6. Quitar referencias a clases dentro de las vistas (sin obsesionarse pues puede ser un trabajo largo). Empezamos por sustituir las funciones de `Text::algo(...)` por `$this->text_algo(...)`. Mirar la extensiones `src/Goteo/Foil/Extension/TextUtils.php` y `src/Goteo/Foil/Extension/GoteoCore.php` para las funciones activas (o añadir las que falten).
+Tampoco usar directamente variables `$_SESSION` o `$_COOKIE`, ni asignar nada en esas variables dentro de la vista. Usar en su lugar las funciones `$this->get_session('foo')` o `$this->get_cookie('foo')` si es imprescindible
+Algunas funciones útiles:
+    - `$this->text()` => antiguo Text::get()
+    - `$this->text_html()` => antiguo Text::html()
+    - `$this->text_widget()` => antiguo Text::widget()
+    - `$this->get_session('foo')` => obtiene la variable de session "foo"
+    - `$this->get_cookie('foo')` => obtiene la cookie "foo"
+    - `$this->is_logged()` => Devuelve "true" si el usuario está loggeado
 
-7. Poner la entrada del controlador para el procesado del nuevo dispacher en `src/app.php`. Se usa el elemento Route de Symfony:
+7. <a name="routes"></a>Poner la entrada del controlador para el procesado del nuevo dispacher en `src/app.php`. Se usa el elemento [Route de Symfony](http://symfony.com/doc/current/components/routing/introduction.html).
+    **NOTAS:**
+    - Añadir **Action** al final del método del controlador por claridad (ej: `edit()` pasa a `editAction()`)
+    - No añadir `/`  al final de la ruta (hay un controlador al final que se encarga de redirigir peticiones con `/` al final de la ruta)
 
-    ```php
-    <?php
-    $routes = new RouteCollection();
+```php
+<?php
+$routes = new RouteCollection();
 
-    // ...
+// ...
 
-    $routes->add('discover', new Route(
-        '/discover',
-        array('_controller' => 'Goteo\Controller\Discover')
-    ));
+// Esta ruta tiene parametros, algunos opcionales, va primero
+// Esta ruta concuerda con:
+//      /discover/results/2
+//      /discover/results
+// La última ruta no concuerdaria si no fuera opcional el parametro
+$routes->add('discover-results', new Route(
+    '/discover/results/{category}',
+    array('category' => null,
+          'name' => null,
+          '_controller' => 'Goteo\Controller\Discover::resultsAction',
+          'category' => '' //parametro opcional
+         )
+));
+// esta ruta no tiene parametros
+$routes->add('discover', new Route(
+    '/discover',
+    array('_controller' => 'Goteo\Controller\Discover::discoverAction')
+));
 
-    return $routes;
-    ?>
-    ```
+return $routes;
+?>
+```
 
 
 EJEMPLO REAL
@@ -360,9 +398,9 @@ Después: `templates/default/discover/results.php`
 <?php
 
 $this->layout("layout", [
-    'bodyClass' => 'discover',
-    'title' => $this->text('meta-title-discover'),
-    'meta_description' => $this->text('meta-description-discover')
+    'bodyClass' => 'discover', // variable de classe en <body class="...">
+    'title' => $this->text('meta-title-discover'), //esto solo si hace falta cambiar el titulo de la pagina por otro
+    'meta_description' => $this->text('meta-description-discover') // idem
     ]);
 
 $this->section('content');

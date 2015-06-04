@@ -17,7 +17,7 @@ include __DIR__ . '/../header.html.php';
             <div class="breadcrumbs">Panel Gestor&iacute;a<?php // echo ADMIN_BCPATH; ?></div>
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main">
 

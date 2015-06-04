@@ -30,22 +30,22 @@ class TextUtils implements ExtensionInterface
         ];
     }
 
-    public function get($input, $part)
+    public function get()
     {
-        return Text::get($input);
+        return call_user_func_array ( 'Goteo\Library\Text::get' , func_get_args() );
     }
 
-    public function html($var)
+    public function html()
     {
-        return Text::html($var);
+        return call_user_func_array ( 'Goteo\Library\Text::html' , func_get_args() );
     }
 
     public function widget($var)
     {
-        return Text::widget($var);
+        return call_user_func_array ( 'Goteo\Library\Text::widget' , func_get_args() );
     }
     public function recorta($var, $len = 10)
     {
-        return Text::recorta($var, $len);
+        return call_user_func_array ( 'Goteo\Library\Text::recorta' , func_get_args() );
     }
 }

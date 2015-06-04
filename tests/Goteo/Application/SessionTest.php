@@ -18,7 +18,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase {
 
     public function testStore() {
         Session::start('test', 3600);
-        $this->assertEquals(Session::store('test-key', 'test-value'), 'test-value');
+        $this->assertEquals('test-value', Session::store('test-key', 'test-value'));
         $this->assertTrue(Session::exists('test-key'));
     }
 
@@ -28,6 +28,13 @@ class SessionTest extends \PHPUnit_Framework_TestCase {
 
     public function testDelete() {
         $this->assertTrue(Session::del('test-key'));
+        $this->assertFalse(Session::exists('test-key'));
+    }
+
+    public function testGetAndDelete() {
+        $this->assertEquals('test-value', Session::store('test-key', 'test-value'));
+        $this->assertTrue(Session::exists('test-key'));
+        $this->assertEquals('test-value', Session::getAndDel('test-key'));
         $this->assertFalse(Session::exists('test-key'));
     }
 

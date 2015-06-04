@@ -22,14 +22,14 @@ class DiscoverAddons extends \Goteo\Core\Controller {
     /*
      * Alias a mostrar todas las convocatorias
      */
-    public function call () {
+    public function callAction () {
         return new RedirectResponse('/discover/calls');
     }
 
      /*
      * Ver todas las convocatorias
      */
-    public function calls () {
+    public function callsAction () {
 
         $viewData = array();
 

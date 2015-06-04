@@ -141,6 +141,18 @@ class Session {
     }
 
     /**
+     * Retrieve some value in session and deletes it afterwards
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    static public function getAndDel($key) {
+        global $_SESSION;
+        $val = $_SESSION[$key];
+        unset($_SESSION[$key]);
+        return $val;
+    }
+
+    /**
      * Delete some value in session
      * @param  [type] $key [description]
      * @return [type]      [description]
@@ -184,10 +196,32 @@ class Session {
 
     /**
      * Stores a user in session
-     * @param User $user [description]
+     * @param User $user Object user to store in session
+     * @param boolean $full_storage sets a cookie to remember user and other sessions vars
      */
-    static public function setUser(User $user) {
-        if(self::store('user', $user)) return $user;
+    static public function setUser(User $user, $full_storage = false) {
+        if(self::store('user', $user)) {
+            if($full_storage) {
+                // Username remembering cookie
+                Cookie::store('goteo_user', $user->id);
+                if (!empty($user->lang)) {
+                    self::store('lang', $user->lang);
+                }
+                self::del('admin_menu');
+
+                if (isset($user->roles['admin'])) {
+                    // posible admin de nodo
+                    if ($node = \Goteo\Model\Node::getAdminNode($user->id)) {
+                        self::store('admin_node', $node);
+                    }
+                } else {
+                    self::del('admin_node');
+                }
+
+
+            }
+            return $user;
+        }
         return false;
     }
 

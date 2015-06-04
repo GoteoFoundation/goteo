@@ -35,7 +35,7 @@ include __DIR__ . '/../node/header.html.php';
 </script>
 <?php endif; ?>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="node-main">
     <div id="side">

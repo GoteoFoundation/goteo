@@ -42,7 +42,7 @@ class Discover extends \Goteo\Core\Controller {
     /*
      * Descubre proyectos, página general
      */
-    public function index () {
+    public function indexAction () {
 
         $types = self::$types;
 
@@ -71,7 +71,7 @@ class Discover extends \Goteo\Core\Controller {
     /*
      * Descubre proyectos, resultados de búsqueda
      */
-    public function results ($category = null, $name = null, Request $request) {
+    public function resultsAction ($category = null, $name = null, Request $request) {
 
         $message = '';
         $results = null;
@@ -115,7 +115,7 @@ class Discover extends \Goteo\Core\Controller {
     /*
      * Descubre proyectos, ver todos los de un tipo
      */
-    public function view ($type = 'all', Request $request) {
+    public function viewAction ($type = 'all', Request $request) {
         $types = self::$types;
 
         $types[] = 'all';
@@ -157,7 +157,7 @@ class Discover extends \Goteo\Core\Controller {
     /*
      * proyectos recomendados por usuario padrino (patron)
      */
-    public function patron ($user) {
+    public function patronAction ($user) {
 
         $viewData = array();
 
