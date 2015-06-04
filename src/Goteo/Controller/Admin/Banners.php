@@ -5,7 +5,8 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -54,7 +55,7 @@ namespace Goteo\Controller\Admin {
                         $log->setTarget($projectData->id);
                         $log->populate('nuevo banner de proyecto destacado en portada (admin)', '/admin/promote',
                             \vsprintf('El admin %s ha %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('relevant', 'Publicado un banner', '/')
                         )));
                         $log->doAdmin('admin');

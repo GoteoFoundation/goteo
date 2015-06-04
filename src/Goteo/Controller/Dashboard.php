@@ -5,8 +5,8 @@ namespace Goteo\Controller {
     use Goteo\Core\ACL,
         Goteo\Core\Redirection,
         Goteo\Core\View,
-        Goteo\Application\Session,
         Goteo\Model,
+        Goteo\Application\Session,
         Goteo\Application\Message,
         Goteo\Library\Feed,
         Goteo\Library\Page,
@@ -40,7 +40,7 @@ namespace Goteo\Controller {
             // portada
             if ($option == 'summary') {
                 $page = Page::get('dashboard');
-                $viewData['message'] = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
+                $viewData['message'] = \str_replace('%USER_NAME%', Session::getUser()->name, $page->content);
                 $viewData['lists']   = Dashboard\Activity::projList($user);
                 $viewData['status']  = Model\Project::status();
                 $viewData['pool'] = Dashboard\Activity::pool($user->id, $action);
@@ -73,19 +73,19 @@ namespace Goteo\Controller {
             if (in_array($option, array('admin', 'review', 'translate'))) {
 
                 // si tiene algún rol de admin
-                if ( $option == 'admin' &&  ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) )
+                if ( $option == 'admin' &&  ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) ) )
                     throw new Redirection('/'.$option, Redirection::TEMPORARY);
                 else
                     throw new Redirection('/dashboard', Redirection::TEMPORARY);
 
                 // si tiene rol de revisor
-                if ( $option == 'review' && isset($_SESSION['user']->roles['checker']) )
+                if ( $option == 'review' && isset(Session::getUser()->roles['checker']) )
                     throw new Redirection('/'.$option, Redirection::TEMPORARY);
                 else
                     throw new Redirection('/dashboard', Redirection::TEMPORARY);
 
                 // si tiene rol de traductor
-                if ( $option == 'translate' &&  isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) || isset($_SESSION['user']->roles['translator']) )
+                if ( $option == 'translate' &&  isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) || isset(Session::getUser()->roles['translator']) )
                     throw new Redirection('/'.$option, Redirection::TEMPORARY);
                 else
                     throw new Redirection('/dashboard', Redirection::TEMPORARY);
@@ -241,7 +241,7 @@ namespace Goteo\Controller {
          */
         public function projects($option = 'summary', $action = 'list', $id = null) {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $errors = array();
 
@@ -548,7 +548,7 @@ namespace Goteo\Controller {
 
         public function translates($option = 'overview', $action = 'list', $id = null) {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $errors = array();
 
@@ -1014,7 +1014,7 @@ namespace Goteo\Controller {
 
         public function calls($option = 'summary', $action = 'list', $id = null) {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $errors = array();
 
@@ -1119,7 +1119,7 @@ namespace Goteo\Controller {
             );
 
             // si es un convocador
-            if (isset($_SESSION['user']->roles['caller'])) {
+            if (isset(Session::getUser()->roles['caller'])) {
                 $menu['calls'] = array(
                     'label' => Text::get('dashboard-menu-calls'),
                     'options' => array(
@@ -1173,15 +1173,15 @@ namespace Goteo\Controller {
             }
 
             // si tiene algún rol de admin
-            if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) )
+            if ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) )
                 $menu['activity']['options']['admin'] = Text::get('dashboard-menu-admin_board');
 
             // si tiene rol de revisor
-            if ( isset($_SESSION['user']->roles['checker']) )
+            if ( isset(Session::getUser()->roles['checker']) )
                 $menu['activity']['options']['review'] = Text::get('dashboard-menu-review_board');
 
             // si tiene rol de traductor
-            if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['translator']) )
+            if ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['translator']) )
                 $menu['activity']['options']['translate'] = Text::get('dashboard-menu-translate_board');
 
             return $menu;

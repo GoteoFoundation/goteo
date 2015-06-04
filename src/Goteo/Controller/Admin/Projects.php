@@ -8,6 +8,7 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
         Goteo\Application\Message,
+        Goteo\Application\Session,
         Goteo\Library\Mail,
 		Goteo\Library\Template,
         Goteo\Model,
@@ -239,9 +240,9 @@ namespace Goteo\Controller\Admin {
                     // descartar un proyecto por malo
 
                     // Asignar como asesor al admin que lo ha descartado
-                    if ($_SESSION['user']->id != 'root') {
-                        if ((!isset($project->consultants[$_SESSION['user']->id])) && ($project->assignConsultant($_SESSION['user']->id, $errors))) {
-                            $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
+                    if (Session::getUserId() != 'root') {
+                        if ((!isset($project->consultants[Session::getUserId()])) && ($project->assignConsultant(Session::getUserId(), $errors))) {
+                            $msg = 'Se ha asignado tu usuario (' . Session::getUserId() . ') como asesor del proyecto "' . $project->id . '"';
                             Message::info($msg);
                         }
                     }
@@ -257,9 +258,9 @@ namespace Goteo\Controller\Admin {
 
                     // Si el proyecto no tiene asesor, asignar al admin que lo ha pasado a negociación
                     // No funciona con el usuario root
-                    if ((empty($project->consultants)) && $_SESSION['user']->id != 'root') {
-                        if ($project->assignConsultant($_SESSION['user']->id, $errors)) {
-                            $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
+                    if ((empty($project->consultants)) && Session::getUserId() != 'root') {
+                        if ($project->assignConsultant(Session::getUserId(), $errors)) {
+                            $msg = 'Se ha asignado tu usuario (' . Session::getUserId() . ') como asesor del proyecto "' . $project->id . '"';
                             Message::info($msg);
                         }
                     }
@@ -506,9 +507,9 @@ namespace Goteo\Controller\Admin {
                     unset($mailHandler);
 
                     // Asignar como asesor al admin que lo ha rechazado
-                    if ($_SESSION['user']->id != 'root') {
-                        if ((!isset($project->consultants[$_SESSION['user']->id])) && ($project->assignConsultant($_SESSION['user']->id, $errors))) {
-                            $msg = 'Se ha asignado tu usuario (' . $_SESSION['user']->id . ') como asesor del proyecto "' . $project->id . '"';
+                    if (Session::getUserId() != 'root') {
+                        if ((!isset($project->consultants[Session::getUserId()])) && ($project->assignConsultant(Session::getUserId(), $errors))) {
+                            $msg = 'Se ha asignado tu usuario (' . Session::getUserId() . ') como asesor del proyecto "' . $project->id . '"';
                             Message::info($msg);
                         }
                     }
@@ -579,7 +580,7 @@ namespace Goteo\Controller\Admin {
                 $log->setTarget($project->id);
                 $log->populate('Acción sobre un proyecto desde el admin', '/admin/projects',
                     \vsprintf($log_text, array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
                         Feed::item('project', $project->name, $project->id)
                     )));
                 $log->doAdmin('admin');

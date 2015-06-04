@@ -5,6 +5,7 @@ namespace Goteo\Library {
         Goteo\Model\Blog\Post,
         Goteo\Library\Text,
         Goteo\Library\Mail,
+        Goteo\Application\Session,
         Goteo\Model\Image;
 
     /*
@@ -478,7 +479,7 @@ namespace Goteo\Library {
                 return false;
             }
 
-            if ($this->scope == 'public' && $_SESSION['user']->id == 'doukeshi') {
+            if ($this->scope == 'public' && Session::getUserId() == 'doukeshi') {
                 return false;
             }
 

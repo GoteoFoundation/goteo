@@ -10,6 +10,7 @@ namespace Goteo\Controller\Dashboard {
         Goteo\Library\Mail,
 		Goteo\Library\Page,
 		Goteo\Library\Template,
+        Goteo\Application\Session,
 		Goteo\Application\Message;
 
 /*
@@ -418,7 +419,7 @@ namespace Goteo\Controller\Dashboard {
                             $log = new Feed();
                             $log->setTarget($project->id);
                             $log->populate('usuario pone una nueva colaboracion en su proyecto (dashboard)', '/admin/projects', \vsprintf('%s ha publicado una nueva %s en el proyecto %s, con el título "%s"', array(
-                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                         Feed::item('message', 'Colaboración'),
                                         Feed::item('project', $project->name, $project->id),
                                         Feed::item('update', $support->support, $project->id . '/messages#message' . $msg->id)
@@ -427,8 +428,8 @@ namespace Goteo\Controller\Dashboard {
 
                             // evento público, si el proyecto es público
                             if ($project->status > 2) {
-                                $log->populate($_SESSION['user']->name, '/user/profile/' . $_SESSION['user']->id, Text::html('feed-new_support', Feed::item('project', $project->name, $project->id), Feed::item('update', $support->support, $project->id . '/messages#message' . $msg->id)
-                                        ), $_SESSION['user']->avatar->id);
+                                $log->populate(Session::getUser()->name, '/user/profile/' . Session::getUserId(), Text::html('feed-new_support', Feed::item('project', $project->name, $project->id), Feed::item('update', $support->support, $project->id . '/messages#message' . $msg->id)
+                                        ), Session::getUser()->avatar->id);
                                 $log->doPublic('community');
                             }
                             unset($log);
@@ -572,7 +573,7 @@ namespace Goteo\Controller\Dashboard {
                     $log->setPost($post->id);
                     $log->populate('usuario publica una novedad en su proyecto (dashboard)', '/project/' . $project->id . '/updates/' . $post->id,
                             \vsprintf('%s ha publicado un nuevo post en %s sobre el proyecto %s, con el título "%s"', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('blog', Text::get('project-menu-updates')),
                                 Feed::item('project', $project->name, $project->id),
                                 Feed::item('update', $post->title, $project->id . '/updates/' . $post->id)
@@ -586,7 +587,7 @@ namespace Goteo\Controller\Dashboard {
                     // evento público
                     $log->populate($post->title,
                             '/project/' . $project->id . '/updates/' . $post->id,
-                            Text::html('feed-new_update', Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Text::html('feed-new_update', Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('blog', Text::get('project-menu-updates')),
                             Feed::item('project', $project->name, $project->id)
                         ), $image);

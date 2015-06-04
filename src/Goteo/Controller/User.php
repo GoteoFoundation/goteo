@@ -4,8 +4,8 @@ namespace Goteo\Controller {
 
     use Goteo\Core\Redirection,
         Goteo\Core\Error,
-        Goteo\Application\View,
         Goteo\Model,
+        Goteo\Application\View,
         Goteo\Application\Session,
         Goteo\Application\Cookie,
         Goteo\Application,
@@ -72,7 +72,7 @@ namespace Goteo\Controller {
                 } else {
                     Application\Message::error(Text::get('login-fail'));
                 }
-            } elseif (empty($_SESSION['user']) && !empty($_COOKIE['goteo_user'])) {
+            } elseif (empty(Session::getUser()) && !empty($_COOKIE['goteo_user'])) {
                 // si tenemos cookie de usuario
                 //return new View('user/login.html.php', array('username'=>$_COOKIE['goteo_user']));
                 return new Response(View::render('user/login',array('username'=>$_COOKIE['goteo_user'])));
@@ -446,7 +446,7 @@ namespace Goteo\Controller {
          * Metodo Obsoleto porque esto lo hacen en el dashboard
          */
         public function edit() {
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -577,7 +577,7 @@ namespace Goteo\Controller {
             }
 
             //--- para usuarios públicos---
-            if (empty($_SESSION['user'])) {
+            if (empty(Session::getUser())) {
                 // la subpágina de mensaje también está restringida
                 if ($show == 'message') {
                     $_SESSION['jumpto'] = '/user/profile/' . $id . '/message';
@@ -600,7 +600,7 @@ namespace Goteo\Controller {
             if ($show == 'message' || $show == 'profile') {
 
                 // ver si el usuario logueado (A)
-                $uLoged = $_SESSION['user']->id;
+                $uLoged = Session::getUserId();
 
                 // puede enviar mensaje (mensajear)
                 $user->messageable = false;  // por defecto no

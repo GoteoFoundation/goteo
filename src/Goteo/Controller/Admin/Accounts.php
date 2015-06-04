@@ -8,7 +8,8 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Tpv,
 		Goteo\Library\Paypal,
 		Goteo\Library\Feed,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
         Goteo\Model;
 
     class Accounts {
@@ -54,7 +55,7 @@ namespace Goteo\Controller\Admin {
                             'charged'   => $original->charged,
                             'anonymous' => $original->anonymous,
                             'resign'    => $original->resign,
-                            'admin'     => $_SESSION['user']->id,
+                            'admin'     => Session::getUserId(),
                             'campaign'  => $campaign
                         )
                     );
@@ -84,7 +85,7 @@ namespace Goteo\Controller\Admin {
                             $log->setTarget($projectData->id);
                             $log->populate('Aporte reubicado', '/admin/accounts',
                                 \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                     Feed::item('money', $invest->amount.' &euro;'),
                                     Feed::item('project', $projectData->name, $projectData->id),
                                     Feed::item('user', $userData->name, $userData->id)
@@ -138,13 +139,13 @@ namespace Goteo\Controller\Admin {
                     // si estan desmarcando incidencia
                     if ($invest->issue && $_POST['resolve'] == 1) {
                         Model\Invest::unsetIssue($id);
-                        Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . $_SESSION['user']->name);
+                        Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . Session::getUser()->name);
                         Message::info('La incidencia se ha dado por resuelta');
                     }
 
                     if ($new != $invest->status && isset($new) && isset($status[$new])) {
                         if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
-                            Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $_SESSION['user']->name . ' ha cambiado el estado a '.$status[$new]);
+                            Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . Session::getUser()->name . ' ha cambiado el estado a '.$status[$new]);
                             Message::info('Se ha actualizado el estado del aporte');
                         } else {
                             Message::error('Ha fallado al actualizar el estado del aporte');
@@ -227,7 +228,7 @@ namespace Goteo\Controller\Admin {
                 $log->setTarget($projectData->id);
                 $log->populate('Cargo cancelado al resolver (admin)', '/admin/accounts',
                     \vsprintf($log_text, array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
                         Feed::item('user', $userData->name, $userData->id),
                         Feed::item('money', $invest->amount.' &euro;'),
                         Feed::item('system', $invest->id),
@@ -244,7 +245,7 @@ namespace Goteo\Controller\Admin {
                     $log->setTarget($projectData->id);
                     $log->populate('Incidencia resuelta (admin)', '/admin/accounts',
                         \vsprintf("El admin %s ha dado por resuelta la incidencia con el botón \"Nos han hecho la transferencia\" para el aporte %s", array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('system', $id, 'accounts/details/'.$id)
                     )));
                     $log->doAdmin('admin');
@@ -261,7 +262,7 @@ namespace Goteo\Controller\Admin {
                     $log->setTarget($projectData->id);
                     $log->populate('Fallo al resolver incidencia (admin)', '/admin/accounts',
                         \vsprintf("Al admin %s le ha fallado el botón \"Nos han hecho la transferencia\" para el aporte %s", array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('system', $id, 'accounts/details/'.$id)
                     )));
                     $log->doAdmin('admin');
@@ -301,7 +302,7 @@ namespace Goteo\Controller\Admin {
                             'charged'   => date('Y-m-d'),
                             'anonymous' => $_POST['anonymous'],
                             'resign'    => 1,
-                            'admin'     => $_SESSION['user']->id
+                            'admin'     => Session::getUserId()
                         )
                     );
 
@@ -320,7 +321,7 @@ namespace Goteo\Controller\Admin {
                         $log->setTarget($projectData->id);
                         $log->populate('Aporte manual (admin)', '/admin/accounts',
                             \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('money', $invest->amount.' &euro;'),
                                 Feed::item('project', $projectData->name, $projectData->id),
                                 Feed::item('user', $userData->name, $userData->id)
@@ -328,7 +329,7 @@ namespace Goteo\Controller\Admin {
                         $log->doAdmin('money');
                         unset($log);
 
-                        Model\Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . $_SESSION['user']->name);
+                        Model\Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . Session::getUser()->name);
                         Message::info('Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.');
                         throw new Redirection('/admin/rewards/edit/'.$invest->id);
                     } else{
@@ -469,7 +470,7 @@ namespace Goteo\Controller\Admin {
                     $log->setTarget($project->id);
                     $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
                         \vsprintf($log_text, array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('user', $userData->name, $userData->id),
                             Feed::item('money', $invest->amount.' &euro;'),
                             Feed::item('system', $invest->id),
@@ -533,7 +534,7 @@ namespace Goteo\Controller\Admin {
                             // si era incidencia la desmarcamos
                             if ($invest->issue) {
                                 Model\Invest::unsetIssue($invest->id);
-                                Model\Invest::setDetail($invest->id, 'issue-solved', 'La incidencia se ha dado por resuelta al ejecutar el aporte manualmente por el admin ' . $_SESSION['user']->name);
+                                Model\Invest::setDetail($invest->id, 'issue-solved', 'La incidencia se ha dado por resuelta al ejecutar el aporte manualmente por el admin ' . Session::getUser()->name);
                             }
 
 
@@ -569,7 +570,7 @@ namespace Goteo\Controller\Admin {
                     $log->setTarget($project->id);
                     $log->populate('Cargo ejecutado manualmente (admin)', '/admin/accounts',
                         \vsprintf($log_text, array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('user', $userData->name, $userData->id),
                             Feed::item('money', $invest->amount.' &euro;'),
                             Feed::item('system', $invest->id),

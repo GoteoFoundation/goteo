@@ -11,6 +11,7 @@ namespace Goteo\Controller {
         Goteo\Library\Mail,
         Goteo\Library\Template,
         Goteo\Application\Message,
+        Goteo\Application\Session,
         Goteo\Library\Newsletter,
         Goteo\Library\Worth;
 
@@ -462,7 +463,7 @@ namespace Goteo\Controller {
         // Para marcar tareas listas
         public function done($id) {
             $errors = array();
-            if (!empty($id) && isset($_SESSION['user']->id)) {
+            if (!empty($id) && Session::getUserId()) {
                 $task = Model\Task::get($id);
                 if ($task->setDone($errors)) {
                     Message::info('La tarea se ha marcado como realizada');
@@ -496,12 +497,12 @@ namespace Goteo\Controller {
             // Superadmin = todo
             // Admin = contenidos de Nodo
             // Supervisor = menus especiales
-            if (isset(self::$supervisors[$_SESSION['user']->id])) {
-                $menu = self::setMenu('supervisor', $_SESSION['user']->id);
-            } elseif (isset($_SESSION['user']->roles['admin'])) {
-                $menu = self::setMenu('admin', $_SESSION['user']->id);
+            if (isset(self::$supervisors[Session::getUserId()])) {
+                $menu = self::setMenu('supervisor', Session::getUserId());
+            } elseif (isset(Session::getUser()->roles['admin'])) {
+                $menu = self::setMenu('admin', Session::getUserId());
             } else {
-                $menu = self::setMenu('superadmin', $_SESSION['user']->id);
+                $menu = self::setMenu('superadmin', Session::getUserId());
             }
 
             // si el breadcrumbs no es un array vacio,

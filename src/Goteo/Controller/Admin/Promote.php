@@ -6,7 +6,8 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Feed,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
         Goteo\Model;
 
     class Promote {
@@ -48,7 +49,7 @@ namespace Goteo\Controller\Admin {
                             $log->setTarget($projectData->id);
                             $log->populate('nuevo proyecto destacado en portada (admin)', '/admin/promote',
                                 \vsprintf('El admin %s ha %s el proyecto %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                     Feed::item('relevant', 'Destacado en portada', '/'),
                                     Feed::item('project', $projectData->name, $projectData->id)
                             )));

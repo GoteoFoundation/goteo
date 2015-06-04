@@ -5,7 +5,8 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
 		Goteo\Library\Feed,
         Goteo\Library\Worth as WorthLib;
 
@@ -32,7 +33,7 @@ namespace Goteo\Controller\Admin {
                     $log = new Feed();
                     $log->populate('modificacion de meritocracia (admin)', '/admin/worth',
                         \vsprintf("El admin %s ha %s el nivel de meritocrácia %s", array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('relevant', 'Modificado'),
                             Feed::item('project', $data->name)
                     )));

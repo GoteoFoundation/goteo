@@ -10,6 +10,7 @@ namespace Goteo\Controller {
 		Goteo\Library\Feed,
         Goteo\Library,
         Goteo\Application,
+        Goteo\Application\Session,
         Goteo\Library\Template,
         Goteo\Library\Text;
 
@@ -29,7 +30,7 @@ namespace Goteo\Controller {
                 }
 
                 $message = new Model\Message(array(
-                    'user' => $_SESSION['user']->id,
+                    'user' => Session::getUserId(),
                     'project' => $project,
                     'thread' => $_POST['thread'],
                     'message' => $_POST['message']
@@ -44,7 +45,7 @@ namespace Goteo\Controller {
                     if (empty($_POST['thread'])) {
                         // nuevo hilo
                         $log_html = \vsprintf('%s ha creado un tema en %s del proyecto %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
                             Feed::item('project', $projectData->name, $projectData->id)
                         ));
@@ -53,13 +54,13 @@ namespace Goteo\Controller {
                         // si una respuesta a un mensaje de colaboraicón
                         if (!empty($support)) {
                             $log_html = \vsprintf('Nueva colaboración de %s con %s en el proyecto %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('message', $support, $projectData->id.'/messages#message'.$_POST['thread']),
                                 Feed::item('project', $projectData->name, $projectData->id)
                             ));
                         } else { // es una respuesta a un hilo normal
                             $log_html = \vsprintf('%s ha respondido en %s del proyecto %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('message', Text::get('project-menu-messages'), $projectData->id.'/messages#message'.$message->id),
                                 Feed::item('project', $projectData->name, $projectData->id)
                             ));
@@ -88,7 +89,7 @@ namespace Goteo\Controller {
                                         );
                         }
                     }
-                    $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
+                    $log->populate(Session::getUser()->name, '/user/profile/'.Session::getUserId(), $log_html, Session::getUser()->avatar->id);
                     $log->doPublic('community');
                     unset($log);
 
@@ -115,11 +116,11 @@ namespace Goteo\Controller {
                             // Sustituimos los datos
                             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
-                            $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                            $response_url = SITE_URL . '/user/profile/' . Session::getUserId() . '/message';
                             $project_url = SITE_URL . '/project/' . $projectData->id . '/messages#message'.$message->id;
 
                             $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
-                            $replace = array($_POST['message'], $thread->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
+                            $replace = array($_POST['message'], $thread->user->name, Session::getUser()->name, $projectData->name, $project_url, $response_url);
                             $content = \str_replace($search, $replace, $template->text);
 
                             $mailHandler = new Library\Mail();
@@ -147,11 +148,11 @@ namespace Goteo\Controller {
                         // Sustituimos los datos
                         $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
-                        $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                        $response_url = SITE_URL . '/user/profile/' . Session::getUserId() . '/message';
                         $project_url = SITE_URL . '/project/' . $projectData->id . '/messages#message'.$message->id;
 
                         $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
-                        $replace = array($_POST['message'], $projectData->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
+                        $replace = array($_POST['message'], $projectData->user->name, Session::getUser()->name, $projectData->name, $project_url, $response_url);
                         $content = \str_replace($search, $replace, $template->text);
 
                         $mailHandler = new Library\Mail();
@@ -230,15 +231,15 @@ namespace Goteo\Controller {
                 // En el asunto: %PROJECTNAME% por $project->name
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
 
-                $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                $response_url = SITE_URL . '/user/profile/' . Session::getUserId() . '/message';
 
                 // En el contenido:  nombre del autor -> %OWNERNAME% por $project->contract_name
                 // el mensaje que ha escrito el productor -> %MESSAGE% por $msg_content
-                // nombre del usuario que ha aportado -> %USERNAME% por $_SESSION['user']->name
+                // nombre del usuario que ha aportado -> %USERNAME% por Session::getUser()->name
                 // nombre del proyecto -> %PROJECTNAME% por $project->name
                 // url de la plataforma -> %SITEURL% por SITE_URL
                 $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%RESPONSEURL%');
-                $replace = array($msg_content, $ownerData->name, $_SESSION['user']->name, $project->name, SITE_URL, $response_url);
+                $replace = array($msg_content, $ownerData->name, Session::getUser()->name, $project->name, SITE_URL, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
 
                 $mailHandler = new Library\Mail();
@@ -307,21 +308,21 @@ namespace Goteo\Controller {
                 if (isset($_POST['subject']) && !empty($_POST['subject'])) {
                     $subject = $_POST['subject'];
                 } else {
-                    // En el asunto por defecto: %USERNAME% por $_SESSION['user']->name
-                    $subject = str_replace('%USERNAME%', $_SESSION['user']->name, $template->title);
+                    // En el asunto por defecto: %USERNAME% por Session::getUser()->name
+                    $subject = str_replace('%USERNAME%', Session::getUser()->name, $template->title);
                 }
 
-                $remite = $_SESSION['user']->name . ' ' . Text::get('regular-from') . ' ';
+                $remite = Session::getUser()->name . ' ' . Text::get('regular-from') . ' ';
                 $remite .= (NODE_ID != GOTEO_NODE) ? NODE_NAME : GOTEO_MAIL_NAME;
 
-                $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                $response_url = SITE_URL . '/user/profile/' . Session::getUserId() . '/message';
                 $profile_url = SITE_URL."/user/profile/{$user->id}";
                 // En el contenido:  nombre del destinatario -> %TONAME% por $user->name
                 // el mensaje que ha escrito el usuario -> %MESSAGE% por $msg_content
-                // nombre del usuario -> %USERNAME% por $_SESSION['user']->name
+                // nombre del usuario -> %USERNAME% por Session::getUser()->name
                 // url del perfil -> %PROFILEURL% por ".SITE_URL."/user/profile/{$user->id}"
                 $search  = array('%MESSAGE%','%TONAME%',  '%USERNAME%', '%PROFILEURL%', '%RESPONSEURL%');
-                $replace = array($msg_content, $user->name, $_SESSION['user']->name, $profile_url, $response_url);
+                $replace = array($msg_content, $user->name, Session::getUser()->name, $profile_url, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
 
                 $mailHandler = new Library\Mail();
@@ -357,7 +358,7 @@ namespace Goteo\Controller {
                  //eliminamos etiquetas script, iframe, embed y form.
 
                 $comment = new Model\Blog\Post\Comment(array(
-                    'user' => $_SESSION['user']->id,
+                    'user' => Session::getUserId(),
                     'post' => $post,
                     'date' => date('Y-m-d H:i:s'),
                     'text' => $_POST['message']
@@ -377,7 +378,7 @@ namespace Goteo\Controller {
                         $log = new Feed();
                         $log->setTarget($projectData->id);
                         $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" en las %s del proyecto %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('message', 'Comentario'),
                             Feed::item('update-comment', $postData->title, $projectData->id.'/updates/'.$postData->id.'#comment'.$comment->id),
                             Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
@@ -392,7 +393,7 @@ namespace Goteo\Controller {
                             Feed::item('update-comment', 'Novedades', $projectData->id.'/updates/'),
                             Feed::item('project', $projectData->name, $projectData->id)
                         );
-                        $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
+                        $log->populate(Session::getUser()->name, '/user/profile/'.Session::getUserId(), $log_html, Session::getUser()->avatar->id);
                         $log->doPublic('community');
                         unset($log);
 
@@ -408,11 +409,11 @@ namespace Goteo\Controller {
                         // Sustituimos los datos
                         $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
-                        $response_url = SITE_URL . '/user/profile/' . $_SESSION['user']->id . '/message';
+                        $response_url = SITE_URL . '/user/profile/' . Session::getUserId() . '/message';
                         $project_url = SITE_URL . '/project/' . $projectData->id . '/updates/'.$postData->id.'#comment'.$comment->id;
 
                         $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
-                        $replace = array($_POST['message'], $projectData->user->name, $_SESSION['user']->name, $projectData->name, $project_url, $response_url);
+                        $replace = array($_POST['message'], $projectData->user->name, Session::getUser()->name, $projectData->name, $project_url, $response_url);
                         $content = \str_replace($search, $replace, $template->text);
 
                         // que no pete si no puede enviar el mail al autor
@@ -439,7 +440,7 @@ namespace Goteo\Controller {
                         $log = new Feed();
                         $log->setTarget('goteo', 'blog');
                         $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" del blog de %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('message', 'Comentario'),
                             Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
                             Feed::item('blog', 'Goteo', '/')
@@ -452,7 +453,7 @@ namespace Goteo\Controller {
                             Feed::item('blog', $postData->title, $postData->id.'#comment'.$comment->id),
                             Feed::item('blog', 'Goteo', '/')
                         );
-                        $log->populate($_SESSION['user']->name, '/user/profile/'.$_SESSION['user']->id, $log_html, $_SESSION['user']->avatar->id);
+                        $log->populate(Session::getUser()->name, '/user/profile/'.Session::getUserId(), $log_html, Session::getUser()->avatar->id);
                         $log->doPublic('community');
                         unset($log);
 
@@ -461,7 +462,7 @@ namespace Goteo\Controller {
                 } else {
                     // error
                     @mail(\GOTEO_FAIL_MAIL, 'FAIL '. __FUNCTION__ .' en ' . SITE_URL,
-                        'No ha grabado el comentario en post. '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id . ' Errores: '.implode('<br />', $errors));
+                        'No ha grabado el comentario en post. '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. Session::getUserId() . ' Errores: '.implode('<br />', $errors));
 
                 }
 			}

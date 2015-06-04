@@ -5,6 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Application\View,
         Goteo\Library\Text,
         Goteo\Application\Message,
+        Goteo\Application\Session,
         Goteo\Model,
         Symfony\Component\HttpFoundation\Response,
         Symfony\Component\HttpFoundation\RedirectResponse;;
@@ -21,7 +22,7 @@ namespace Goteo\Controller {
             if (!empty($post)) {
                 $show = 'post';
                 // -- Mensaje azul molesto para usuarios no registrados
-                if (empty($_SESSION['user'])) {
+                if (empty(Session::getUser())) {
                     $_SESSION['jumpto'] = '/blog/' .  $post;
                     Message::info(Text::html('user-login-required'));
                 }
@@ -61,7 +62,7 @@ namespace Goteo\Controller {
 
                 // si preview
                 if (!$blog->posts[$post]->publish &&
-                    ( $_GET['preview'] != $_SESSION['user']->id
+                    ( $_GET['preview'] != Session::getUserId()
                         || !isset($_GET['preview'])
                         )
                     )

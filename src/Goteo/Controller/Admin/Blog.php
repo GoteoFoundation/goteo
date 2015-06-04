@@ -7,7 +7,8 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Error,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
         Goteo\Model;
 
     class Blog {
@@ -134,7 +135,7 @@ namespace Goteo\Controller\Admin {
                             $log->setPost($post->id);
                             $log->populate('nueva entrada blog Goteo (admin)', '/admin/blog',
                                 \vsprintf('El admin %s ha %s en el blog Goteo la entrada "%s"', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('relevant', 'Publicado'),
                                 Feed::item('blog', $post->title, $post->id)
                             )), $post->image
@@ -225,7 +226,7 @@ namespace Goteo\Controller\Admin {
                                 'publish' => false,
                                 'allow' => true,
                                 'tags' => array(),
-                                'author' => $_SESSION['user']->id
+                                'author' => Session::getUserId()
                             )
                         );
 
@@ -287,7 +288,7 @@ namespace Goteo\Controller\Admin {
                         $log->setTarget('goteo', 'blog');
                         $log->populate('Quita entrada de blog (admin)', '/admin/blog',
                             \vsprintf('El admin %s ha %s la entrada "%s" del blog de Goteo', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('relevant', 'Quitado'),
                                 Feed::item('blog', $tempData->title)
                         )));

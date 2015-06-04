@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Model,
+        Goteo\Application\Session,
         Goteo\Library\Feed,
         Goteo\Library\Mail,
         Goteo\Library\Paypal;
@@ -32,7 +33,7 @@ namespace Goteo\Controller {
 
             if (!\defined('CRON_EXEC')) {
                 @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado MANUALMENTE el cron '. __FUNCTION__ .' en ' . SITE_URL,
-                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. Session::getUserId());
                 echo 'Lanzamiento manual a las ' . date ('H:i:s') . ' <br />';
             } else {
                 echo 'Lanzamiento automatico a las ' . date ('H:i:s') . ' <br />';
@@ -77,7 +78,7 @@ namespace Goteo\Controller {
         public function verify () {
             if (!\defined('CRON_EXEC')) {
                 @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
-                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. Session::getUserId());
                echo 'Lanzamiento manual<br />';
             } else {
                echo 'Lanzamiento automatico<br />';
@@ -107,7 +108,7 @@ namespace Goteo\Controller {
         public function cleanup () {
             if (\defined('CRON_EXEC')) {
                 @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
-                    'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+                    'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. Session::getUserId());
                die;
             } else {
 
@@ -125,7 +126,7 @@ namespace Goteo\Controller {
             /*
             if (!\defined('CRON_EXEC')) {
                 @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
-                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. Session::getUserId());
                echo 'Lanzamiento manual<br />';
             } else {
                echo 'Lanzamiento automatico<br />';
@@ -160,7 +161,7 @@ namespace Goteo\Controller {
             }
 
             @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
-                'Se ha lanzado manualmente el cron '. __FUNCTION__ .' para el proyecto '.$project.' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+                'Se ha lanzado manualmente el cron '. __FUNCTION__ .' para el proyecto '.$project.' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. Session::getUserId());
 
             // a ver si existe el bloqueo
             $block_file = GOTEO_LOG_PATH . 'cron-'.__FUNCTION__.'.block';
@@ -290,7 +291,7 @@ namespace Goteo\Controller {
         public function daily () {
             if (!\defined('CRON_EXEC')) {
                 @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
-                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+                    'Se ha lanzado manualmente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. Session::getUserId());
 //                die('Este proceso no necesitamos lanzarlo manualmente');
             }
 
@@ -323,7 +324,7 @@ namespace Goteo\Controller {
         public function imgrename () {
             if (\defined('CRON_EXEC')) {
                 @mail(\GOTEO_FAIL_MAIL, 'Se ha lanzado el cron '. __FUNCTION__ .' en ' . SITE_URL,
-                    'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. $_SESSION['user']->id);
+                    'Se intentaba lanzar automáticamente el cron '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. Session::getUserId());
                die;
             } else {
 

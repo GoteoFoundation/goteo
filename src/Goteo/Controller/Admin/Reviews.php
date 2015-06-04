@@ -6,7 +6,8 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Feed,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
         Goteo\Model;
 
     class Reviews {
@@ -49,7 +50,7 @@ namespace Goteo\Controller\Admin {
                                     $log->setTarget($project->id);
                                     $log->populate('valoración iniciada (admin)', '/admin/reviews',
                                         \vsprintf('El admin %s ha %s la valoración de %s', array(
-                                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                             Feed::item('relevant', 'Iniciado'),
                                             Feed::item('project', $project->name, $project->id)
                                     )));
@@ -93,7 +94,7 @@ namespace Goteo\Controller\Admin {
                         $log->setTarget($review->project);
                         $log->populate('valoración finalizada (admin)', '/admin/reviews',
                             \vsprintf('El admin %s ha dado por %s la valoración de %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('relevant', 'Finalizada'),
                                 Feed::item('project', $review->name, $review->project)
                         )));
@@ -144,7 +145,7 @@ namespace Goteo\Controller\Admin {
                             $log->setTarget($userData->id, 'user');
                             $log->populate('asignar revision (admin)', '/admin/reviews',
                                 \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                     Feed::item('relevant', 'Asignado'),
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('project', $reviewData->name, $reviewData->project)
@@ -181,7 +182,7 @@ namespace Goteo\Controller\Admin {
                             $log->setTarget($userData->id, 'user');
                             $log->populate('Desasignar revision (admin)', '/admin/reviews',
                                 \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                     Feed::item('relevant', 'Desasignado'),
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('project', $reviewData->name, $reviewData->project)

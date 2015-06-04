@@ -5,7 +5,8 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
 		Goteo\Library\Feed,
 		Goteo\Library\Page;
 
@@ -68,7 +69,7 @@ namespace Goteo\Controller\Admin {
                             }
                             $log->populate('modificacion de página institucional (admin)', '/admin/pages',
                                 \vsprintf("El admin %s ha %s la página institucional %s", array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('relevant', 'Modificado'),
                                 Feed::item('relevant', $page->name, $page->url)
                             )));

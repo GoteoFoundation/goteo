@@ -23,7 +23,7 @@ namespace Goteo\Core {
                     $user->roles = array((object) array('id' => 'public', 'name' => 'Perfil público'));
                     $id = $user->id;
                 } else {
-                    $user = $_SESSION['user'];
+                    $user = Session::getUser();
                     $id = $user->id;
                 }
             } elseif($user instanceof User) {

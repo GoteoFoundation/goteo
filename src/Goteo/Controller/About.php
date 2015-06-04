@@ -4,6 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Library\Page,
         Goteo\Application\View,
+        Goteo\Application\Session,
         Goteo\Model,
         Goteo\Library\Text,
         Goteo\Library\Mail,
@@ -32,11 +33,11 @@ namespace Goteo\Controller {
 
             // en estos casos se usa el contenido de goteo
             if ($id == 'howto' || $id == 'call') {
-                if (!$_SESSION['user'] instanceof Model\User) {
+                if (!Session::isLogged()) {
                     new RedirectResponse('/');
                 }
                 $page = Page::get($id);
-               
+
                  return new Response(View::render('about/howto', array(
                         'name' => $page->name,
                         'description' => $page->description,

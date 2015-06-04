@@ -9,6 +9,7 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Feed,
 		Goteo\Library\Template,
         Goteo\Application\Message,
+        Goteo\Application\Session,
         Goteo\Application\Lang,
         Goteo\Model;
 
@@ -165,7 +166,7 @@ namespace Goteo\Controller\Admin {
                             $log = new Feed();
                             $log->setTarget($user->id, 'user');
                             $log->populate('Operación sobre usuario (admin)', '/admin/users', \vsprintf('El admin %s ha %s del usuario %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('relevant', 'Tocado ' . implode (' y ', $tocado)),
                                 Feed::item('user', $user->name, $user->id)
                             )));
@@ -267,7 +268,7 @@ namespace Goteo\Controller\Admin {
                         $log->setTarget($user->id, 'user');
                         $log->populate('Operación sobre usuario (admin)', '/admin/users',
                             \vsprintf($log_text, array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('relevant', $log_action),
                                 Feed::item('user', $user->name, $user->id)
                         )));
@@ -363,7 +364,7 @@ namespace Goteo\Controller\Admin {
                             $log->setTarget($user->id, 'user');
                             $log->populate('User cambiado de nodo (admin)', '/admin/users',
                                 \vsprintf($log_text, array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                     Feed::item('user', $user->name, $user->id),
                                     Feed::item('user', $nodes[$_POST['node']])
                             )));

@@ -235,7 +235,7 @@ namespace Goteo\Controller {
                     $log->setTarget($projectData->id);
                     $log->populate('proyecto asignado a convocatoria por convocador', 'admin/calls/'.$_SESSION['call']->id.'/projects',
                         \vsprintf('El convocador %s ha asignado el proyecto %s a la convocatoria %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('project', $projectData->name, $projectData->id),
                             Feed::item('call', $_SESSION['call']->name, $_SESSION['call']->id))
                         ));

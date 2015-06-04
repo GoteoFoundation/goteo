@@ -8,6 +8,7 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
         Goteo\Application\Message,
+        Goteo\Application\Session,
         Goteo\Model;
 
     class News {
@@ -120,7 +121,7 @@ namespace Goteo\Controller\Admin {
                                 // Evento Feed
                                 $log = new Feed();
                                 $log->populate('nueva micronoticia (admin)', '/admin/news', \vsprintf('El admin %s ha %s la micronoticia "%s"', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                     Feed::item('relevant', 'Publicado'),
                                     Feed::item('news', $_POST['title'], '#news'.$item->id)
                                 )));
@@ -214,7 +215,7 @@ namespace Goteo\Controller\Admin {
                         $log = new Feed();
                         $log->populate('micronoticia quitada (admin)', '/admin/news',
                             \vsprintf('El admin %s ha %s la micronoticia "%s"', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('relevant', 'Quitado'),
                                 Feed::item('blog', $tempData->title)
                         )));

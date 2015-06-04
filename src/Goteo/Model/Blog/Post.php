@@ -2,13 +2,14 @@
 
 namespace Goteo\Model\Blog {
 
-    use \Goteo\Model\Project\Media,
-        \Goteo\Model\Image,
-        \Goteo\Model\Project,
-        \Goteo\Model\Node,
-        \Goteo\Model\User,
-        \Goteo\Library\Text,
-        \Goteo\Application\Message;
+    use Goteo\Model\Project\Media;
+    use Goteo\Model\Image;
+    use Goteo\Model\Project;
+    use Goteo\Model\Node;
+    use Goteo\Model\User;
+    use Goteo\Library\Text;
+    use Goteo\Application\Message;
+    use Goteo\Application\Session;
 
     class Post extends \Goteo\Core\Model {
 
@@ -488,7 +489,7 @@ namespace Goteo\Model\Blog {
                 );
 
             //eliminamos etiquetas script,iframe.. si no es admin o superadmin
-            if(!(isset($_SESSION['user']->roles['superadmin'])||isset($_SESSION['user']->roles['admin'])))
+            if(!(isset(Session::getUser()->roles['superadmin'])||isset(Session::getUser()->roles['admin'])))
                 $this->text = Text::tags_filter($this->text);
 
             try {
@@ -559,7 +560,7 @@ namespace Goteo\Model\Blog {
             }
 
              //eliminamos etiquetas script,iframe.. si no es admin o superadmin
-            if(!(isset($_SESSION['user']->roles['superadmin'])||isset($_SESSION['user']->roles['admin'])))
+            if(!(isset(Session::getUser()->roles['superadmin'])||isset(Session::getUser()->roles['admin'])))
                 $values[':text']=Text::tags_filter($values[':text']);
 
             try {

@@ -5,7 +5,8 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
 		Goteo\Library\Feed,
         Goteo\Library\Template,
         Goteo\Library\Mail,
@@ -242,7 +243,7 @@ namespace Goteo\Controller\Admin {
                         $log = new Feed();
                         $log->populate('comunicación masiva a usuarios (admin)', '/admin/mailing',
                             \vsprintf("El admin %s ha iniciado una %s a %s", array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('relevant', 'Comunicacion masiva'),
                             $_SESSION['mailing']['filters_txt']
                         )));
@@ -254,7 +255,7 @@ namespace Goteo\Controller\Admin {
                         $log = new Feed();
                         $log->populate('comunicación masiva a usuarios (admin)', '/admin/mailing',
                             \vsprintf("El admin %s le ha %s una %s a %s", array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('relevant', 'fallado'),
                             Feed::item('relevant', 'Comunicacion masiva'),
                             $_SESSION['mailing']['filters_txt']

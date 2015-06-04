@@ -5,7 +5,8 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
 		Goteo\Library\Feed,
         Goteo\Model;
 
@@ -64,7 +65,7 @@ namespace Goteo\Controller\Admin {
                             $log->setTarget($project->id);
                             $log->populate('Cambio estado de un proyecto desde retornos colectivos', '/admin/projects',
                                 \vsprintf('El admin/revisor %s ha pasado el proyecto %s al estado <span class="red">Retorno cumplido</span>', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                     Feed::item('project', $project->name, $project->id)
                                 )));
                             $log->doAdmin('admin');

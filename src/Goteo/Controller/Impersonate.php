@@ -6,8 +6,8 @@ namespace Goteo\Controller {
         Goteo\Core\Error,
         Goteo\Core\View,
         Goteo\Library\Feed,
-        Goteo\Application\Message,
         Goteo\Model\User,
+        Goteo\Application\Message,
 		Goteo\Application\Session,
 		Goteo\Model\Node;
 
@@ -38,9 +38,9 @@ namespace Goteo\Controller {
 
                 unset($_SESSION['admin_menu']);
                 // si es administrador de nodo cargamos tambien su nodo
-                if (isset($_SESSION['user']->roles['admin'])) {
+                if (isset(Session::getUser()->roles['admin'])) {
                     // posible admin de nodo
-                    if ($node = Node::getAdminNode($_SESSION['user']->id)) {
+                    if ($node = Node::getAdminNode(Session::getUserId())) {
                         $_SESSION['admin_node'] = $node;
                     } else {
                         unset($user->roles['admin']);
@@ -51,11 +51,11 @@ namespace Goteo\Controller {
 
                 // Evento Feed
                 $log = new Feed();
-                $log->setTarget($_SESSION['user']->id, 'user');
+                $log->setTarget(Session::getUserId(), 'user');
                 $log->populate('Suplantación usuario (admin)', '/admin/users', \vsprintf('El admin %s ha %s al usuario %s', array(
                     Feed::item('user', $admin->name, $admin->id),
                     Feed::item('relevant', 'Suplantado'),
-                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id)
+                    Feed::item('user', Session::getUser()->name, Session::getUserId())
                 )));
                 $log->doAdmin('user');
                 unset($log);

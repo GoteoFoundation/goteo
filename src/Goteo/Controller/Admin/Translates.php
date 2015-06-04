@@ -8,7 +8,8 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Feed,
         Goteo\Library\Mail,
 		Goteo\Library\Template,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
         Goteo\Model;
 
     class Translates {
@@ -86,7 +87,7 @@ namespace Goteo\Controller\Admin {
                             $log->setTarget($userData->id, 'user');
                             $log->populate($what . ' traduccion (admin)', '/admin/translates',
                                 \vsprintf('El admin %s ha %s a %s la traducción del proyecto %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                     Feed::item('relevant', $what),
                                     Feed::item('user', $userData->name, $userData->id),
                                     Feed::item('project', $project->name, $project->id)
@@ -140,7 +141,7 @@ namespace Goteo\Controller\Admin {
                                 $log->setTarget($project->id);
                                 $log->populate('proyecto habilitado para traducirse (admin)', '/admin/translates',
                                     \vsprintf('El admin %s ha %s la traducción del proyecto %s', array(
-                                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                         Feed::item('relevant', 'Habilitado'),
                                         Feed::item('project', $project->name, $project->id)
                                     )));
@@ -227,7 +228,7 @@ namespace Goteo\Controller\Admin {
                         $log->setTarget($project->id);
                         $log->populate('traducción finalizada (admin)', '/admin/translates',
                             \vsprintf('El admin %s ha dado por %s la traducción del proyecto %s', array(
-                                Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
                                 Feed::item('relevant', 'Finalizada'),
                                 Feed::item('project', $project->name, $project->id)
                         )));

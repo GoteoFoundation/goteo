@@ -4,7 +4,8 @@ namespace Goteo\Controller\Dashboard {
 
     use Goteo\Model,
         Goteo\Core\Redirection,
-		Goteo\Application\Message,
+        Goteo\Application\Message,
+		Goteo\Application\Session,
         Goteo\Library\FileHandler\File,
         Goteo\Library\Text,
 		Goteo\Library\Check,
@@ -45,11 +46,11 @@ namespace Goteo\Controller\Dashboard {
              * Depurar antes de poner esto
              *
               // eventos privados del usuario
-              $items['private'] = Feed::getUserItems($_SESSION['user']->id, 'private');
+              $items['private'] = Feed::getUserItems(Session::getUserId(), 'private');
               // eventos de proyectos que he cofinanciado
-              $items['supported'] = Feed::getUserItems($_SESSION['user']->id, 'supported');
+              $items['supported'] = Feed::getUserItems(Session::getUserId(), 'supported');
               // eventos de proyectos donde he mensajeado o comentado
-              $items['comented'] = Feed::getUserItems($_SESSION['user']->id, 'comented');
+              $items['comented'] = Feed::getUserItems(Session::getUserId(), 'comented');
              *
              */
         }
