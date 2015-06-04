@@ -98,6 +98,11 @@ $routes->add('user-edit', new Route(
     array('_controller' => 'Goteo\Controller\User::edit')
 ));
 
+$routes->add('chanel', new Route(
+    '/chanel/{id}',
+    array('_controller' => 'Goteo\Controller\Chanel::indexAction')
+));
+
 
 
 //TODO IMPORTANTE: data/cache y cron
