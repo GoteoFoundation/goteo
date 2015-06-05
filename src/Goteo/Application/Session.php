@@ -3,6 +3,7 @@
 namespace Goteo\Application;
 
 use Goteo\Model\User;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class for dealing with $_SESSION related stuff
@@ -11,6 +12,16 @@ class Session {
     static protected $session_expire_time = 3600;
     static protected $start_time = 0;
     static protected $triggers = array('session_expires' => null, 'session_destroyed' => null);
+    static protected $request = null;
+
+    /**
+     * TODO:
+     * Initializes session managem with Symfony Request object
+     * @return [type] [description]
+     */
+    static public function factory(Request $request) {
+        self::$request = $request;
+    }
 
     /**
      * Set the session time expirity time

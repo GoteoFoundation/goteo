@@ -2,10 +2,26 @@
 
 namespace Goteo\Application;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 class Cookie {
 
     const DEFAULT_TTL = 31536000; // 3600 * 24 * 365;
     static protected $path = '/';
+
+    static protected $response = null;
+    static protected $request = null;
+
+    /**
+     * TODO:
+     * Initializes session managem with Symfony Request object
+     * @return [type] [description]
+     */
+    static public function factory(Response $response, Request $request) {
+        self::$response = $response;
+        self::$request = $request;
+    }
 
     static function setPath($path) {
         self::$path = $path;

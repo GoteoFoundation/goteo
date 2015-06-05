@@ -32,13 +32,7 @@ try {
 
     // Check permissions on requested URI
     if (!ACL::check($uri) && substr($uri, 0, 11) !== '/user/login') {
-        //si es directorio data/cache se supone que es un archivo cache que no existe y que hay que generar
-        if (strpos($uri, 'data/cache/') !== false && $segments && $segments[3]) {
-            //simularemos la llamada al controlador img: img/XXXxXXX/imagen.jpg
-            array_shift($segments);
-            $segments[0] = 'img';
-        } //si es un cron (ejecutandose) con los parámetros adecuados, no redireccionamos
-        elseif ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
+        if ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
             define('CRON_EXEC', true);
         } else {
             //if page exists, throw redirection, make it 404 otherwise

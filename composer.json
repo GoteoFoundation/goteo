@@ -40,7 +40,8 @@
         "symfony/http-kernel": "~2.6",
 
 
-        "foil/foil": "~0.3"
+        "foil/foil": "~0.3",
+        "symfony/security": "^2.7"
 
     },
 
