@@ -148,12 +148,13 @@ $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new Goteo\Application\EventListener\AclListener($request));
 //Routes
 $dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher));
-//Control 404 y legacy ControllerResolver
+//Control 404 and other errors
 $dispatcher->addSubscriber(new HttpKernel\EventListener\ExceptionListener('Goteo\\Controller\\ErrorController::exceptionAction'));
+// Streamed responses
+// $dispatcher->addSubscriber(new HttpKernel\EventListener\StreamedResponseListener());
 //Automatic HTTP correct specifications
 $dispatcher->addSubscriber(new HttpKernel\EventListener\ResponseListener('UTF-8'));
 
-//TODO: auto clear messages subscriber
 //TODO: debug toolbar for queries
 
 $framework = new GoteoApp($dispatcher, $resolver);

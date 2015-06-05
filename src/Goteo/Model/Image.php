@@ -16,6 +16,7 @@ namespace Goteo\Model {
             $tmp,
             $error,
             $size,
+            $quality = 92,
             $dir_originals = 'images/', //directorio archivos originales (relativo a GOTEO_DATA_PATH o al bucket s3)
             $dir_cache = 'cache/', //directorio archivos cache
             $fallback_image = 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC3ElEQVRYhb2XW1PiMBzF/f6POiMMBZO0KdBFZEBHnWGViKy7IIEtCmgvn+XsQ5tYLlIuZR8yfUib88v5X5qc+L6PLIfneQvPtHGStXgQBPr5XwA8z9tJMBMAtcvJZKKFkxDb2n+wA+2fj/j9Z7AAdXQHlND7dA7Oy7i9u4fnh3pu+d2jOSCenkEoA+dluJP3vcOwM4Ba+PLyCpyXQShDvd5YeSfDKgiX7A9wVW9ocUIsGMUS+v1XHZ6jJaHneRCiq8UpM2EYBLm8Ac7LmM0+di7HnQCGchyJEwuUchjFEnJ5A4RYsO0KHKeG6XS+E0QqgLJzOJJwnBooM0GIhYJxgVy+AEIscF6NoJiJVusGs9lH9g7c3t1H4pTFOy/oKlCOUMrBeRlXS0l5sANCdMFMC4QyFEsXMIolCNGFlGNQZibEqxqi0+lkA9DrvUTZHu98ueTUnG07X+GIE3Q6nx0O0Gxe62x3nNrCXBAEC2FQECpUj52ndIBNGeu6blTnBkEuX9AdL/mNbTsaglL+lQ/MXHFrowMq25OLu64LwyA4zxXgODXd85ONhjIzEo93rSA4r6Ja/bEdQFI0ubiUUtd5q3UDzw/jNpt8Z4zBYAApJYZyjKEcw7IqsO0KOC8flgNSyjjBosU+vSCG/dzwzRi2XdFh2Qsg+TNJtt2hHG8sV9/30ek8gTETlJloNq+3A0javpyUyQYUJVX4Laz7NlnIh9Ho7/YOfPcfV2GgzMTp2Tlu7+4xn3+uQAxHEvV6I2pMcWKmia8Nwbqy7IguTs/Oo07HTHBuo91+QLv9ACG6Cy5RykEoQ6/3sh/Ad/Fttx90bAmxdKmp9qtcIpRBCLHWzb0B1Oj1XnSMtbiCogzN5jX6g+FKYmYGEI0Q/f4rhOjiunWDer2B7vMvvL1NFwSPciZMu/XsczlJBVh33t+0u8yPZOt6RJrIUQ6lnuchDMO1c/tcyXYG2PfqlTb+AaY7ymbFQPTOAAAAAElFTkSuQmCC';
@@ -78,18 +79,6 @@ namespace Goteo\Model {
             return $this;
         }
 
-        /**
-         * Sobrecarga de métodos 'getter'.
-         *
-         * @param type string $name
-         * @return type mixed
-         */
-        public function __get ($name) {
-            if($name == 'content') {
-	            return $this->getContent();
-	        }
-            return $this->$name;
-        }
 
         /**
          * (non-PHPdoc)
@@ -329,20 +318,20 @@ namespace Goteo\Model {
         public function display ($width, $height, $crop = false) {
             $width = (int) $width;
             $height = (int) $height;
-            if($this->cache) {
+            if($this->cache && $this->name) {
                 if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
                     //correccion de extension para el cache
                     //si no la funcion save() no funciona bien
-
+                    // die("[$cache_file");
                     $info = pathinfo($cache_file, PATHINFO_EXTENSION);
                     if(!in_array($info, array('jpg', 'jpeg', 'png', 'gif'))) {
                         $cache_file = $cache_file . '.jpg';
                     }
 
-                    header('Cache-Control: max-age=2592000');
-                    //tries to flush the file and exit
-                    if(Cacher::flushFile($cache_file))
-                        return;
+                    //returns the content of the file
+                    if($ret = @file_get_contents($cache_file)) {
+                        return $ret;
+                    }
                 }
             }
             $file = $this->dir_originals . $this->name;
@@ -365,6 +354,7 @@ namespace Goteo\Model {
 
             if($width <= 0) $width = null;
             if($height <= 0) $height = null;
+
             try {
                 $img =  ImageManager::make($file);
                 if($crop) {
@@ -382,87 +372,25 @@ namespace Goteo\Model {
                     $img->save($cache_file);
                 }
 
-                //30days (60sec * 60min * 24hours * 30days)
-                header('Cache-Control: max-age=2592000');
-                //flush data
-                echo $img->response();
-
-            }catch(\Exception $e) {
+            } catch(\Exception $e) {
                 //Shows a fallback image with the error message
-                try {
-                    $msg = $e->getMessage();
-                    $w = $width ? $width : 32;
-                    $h = $height ? $height : 32;
-
-                    //flush data
-                    echo $img =  ImageManager::canvas($w, $h, '#DCDCDC')
-                                 ->insert($this->fallback_image, 'center')
-                                 ->text($msg, round($w/2), round($h/2), function($font){
-                                    $font->align('center');
-                                    $font->valign('middle');
-                                    $font->color('#666666');
-                                 })
-                                 ->response('png');
-                }
-
-                catch(\Exception $e) {
-                    //if the fallback image fails, what can i do?
-                    die($e->getMessage());
-                }
+                $msg = $e->getMessage();
+                $w = $width ? $width : 32;
+                $h = $height ? $height : 32;
+                $this->error = 'not_found';
+                //flush data
+                $img =  ImageManager::canvas($w, $h, '#DCDCDC')
+                             ->insert($this->fallback_image, 'center')
+                             ->text($msg, round($w/2), round($h/2), function($font){
+                                $font->align('center');
+                                $font->valign('middle');
+                                $font->color('#666666');
+                             });
             }
+            //flush data
+            $img->encode($image->mime, $this->quality);
+            return $img->getEncoded();
 		}
-
-        /**
-         * Passthru a file with content-type, name
-         * @param  [type] $file [description]
-         * @return [type]       [description]
-         */
-        static function stream($file, $exit = true) {
-            //redirection if is http stream
-            if(substr($file,0,2) == '//') $file = (HTTPS_ON ? 'https:' : 'http:') . $file;
-            if(substr($file, 0 , 7) == 'http://' || substr($file, 0 , 8) == 'https://') {
-                header("Location: $file");
-            }
-            else {
-                list($width, $height, $type, $attr) = @getimagesize( $file );
-                if(!$type && function_exists( 'exif_imagetype' ) ) {
-                    $type = exif_imagetype($file);
-                }
-                if($type) {
-                     $type = image_type_to_mime_type($type);
-                }
-                else {
-                    $type = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-                    if($type == 'jpg') $type = "jpeg";
-                    if(!in_array($type, array('jpeg', 'png', 'gif'))) die("file $type not image!");
-                    $type = "image/$type";
-                }
-
-                header("Content-type: " . $type);
-                header('Content-Disposition: inline; filename="' . str_replace("'", "\'", basename($file)) . '"');
-                header("Content-Length: " . @filesize($file));
-                readfile($file);
-            }
-            if($exit) exit;
-        }
-
-        private function getContent () {
-            return file_get_contents($this->name);
-    	}
-
-        /**
-         * Reemplaza la extensión de la imagen.
-         *
-         * @param type string	$src
-         * @param type string	$new
-         * @return type string
-         */
-    	static private function replace_extension($src, $new) {
-    	    $pathinfo = pathinfo($src);
-    	    unset($pathinfo["basename"]);
-    	    unset($pathinfo["extension"]);
-    	    return implode(DIRECTORY_SEPARATOR, $pathinfo) . '.' . $new;
-    	}
 
         /**
          *  Get a valid gallery for a generic Model
