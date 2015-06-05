@@ -1,0 +1,10 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:351:"
+                SELECT
+                    DISTINCT(user_node.user) as admin,
+                    user.name as name
+                FROM user_node
+                INNER JOIN user
+                    ON user.id = user_node.user
+                 WHERE user_node.node = 'goteo'
+                ORDER BY user.name ASC
+                a:0:{}a:1:{i:0;i:5;}";s:5:"group";s:12:"sql/fetchAll";}s:5:"value";a:10:{i:0;O:8:"stdClass":2:{s:5:"admin";s:9:"ann-marie";s:4:"name";s:9:"Ann Marie";}i:1;O:8:"stdClass":2:{s:5:"admin";s:18:"antonioj-fernandez";s:4:"name";s:20:"Antonio J. Fernandez";}i:2;O:8:"stdClass":2:{s:5:"admin";s:8:"elsasoro";s:4:"name";s:9:"Elsa Soro";}i:3;O:8:"stdClass":2:{s:5:"admin";s:8:"esenabre";s:4:"name";s:8:"esenabre";}i:4;O:8:"stdClass":2:{s:5:"admin";s:10:"luis-ginfo";s:4:"name";s:4:"LUIS";}i:5;O:8:"stdClass":2:{s:5:"admin";s:8:"perulera";s:4:"name";s:6:"María";}i:6;O:8:"stdClass":2:{s:5:"admin";s:12:"martinagoteo";s:4:"name";s:7:"Martina";}i:7;O:8:"stdClass":2:{s:5:"admin";s:7:"olivier";s:4:"name";s:7:"Olivier";}i:8;O:8:"stdClass":2:{s:5:"admin";s:10:"rosa-goteo";s:4:"name";s:18:"Rosa Goteo Euskadi";}i:9;O:8:"stdClass":2:{s:5:"admin";s:11:"tonioquendo";s:4:"name";s:12:"Toni Oquendo";}}s:3:"ttl";i:5;s:7:"expires";i:1433528522;s:7:"created";i:1433528517;}

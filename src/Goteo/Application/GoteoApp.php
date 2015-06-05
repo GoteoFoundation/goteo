@@ -15,10 +15,10 @@ class GoteoApp extends HttpKernel\HttpKernel
         $resolver = new HttpKernel\Controller\ControllerResolver();
 
         $dispatcher = new EventDispatcher();
-        //Security ACL
-        $dispatcher->addSubscriber(new EventListener\AclListener($request));
         //Lang, cookies info, etc
         $dispatcher->addSubscriber(new EventListener\SessionListener($request));
+        //Security ACL
+        $dispatcher->addSubscriber(new EventListener\AclListener($request));
         //Routes
         $dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher));
         //Control 404 and other errors

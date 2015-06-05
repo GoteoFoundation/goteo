@@ -1,0 +1,63 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:1895:"
+                SELECT
+                    project.id as project,
+                     IFNULL(project_lang.description, project.description) as description,
+                    project.status as status,
+                    project.published as published,
+                    project.created as created,
+                    project.updated as updated,
+                    project.success as success,
+                    project.closed as closed,
+                    project.mincost as mincost,
+                    project.maxcost as maxcost,
+                    project.amount as amount,
+                    project.image as image,
+                    project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
+                    project.days as days,
+                    project.name as name,
+                    project.popularity as popularity,
+                    user.id as user_id,
+                    user.name as user_name,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
+                FROM  project
+                INNER JOIN user
+                    ON user.id = project.owner
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
+                LEFT JOIN project_lang
+                            ON  project_lang.id = project.id
+                            AND project_lang.lang = :lang
+                
+                WHERE project.status > 2
+                    AND project.status < 7
+                 AND project.node = :node ORDER BY project.status ASC, project.published DESC LIMIT 4a:2:{s:5:":lang";s:2:"es";s:5:":node";s:9:"barcelona";}a:1:{i:0;i:5;}";s:5:"group";s:12:"sql/fetchAll";}s:5:"value";a:4:{i:0;O:8:"stdClass":24:{s:7:"project";s:16:"corazones-verdes";s:11:"description";s:987:"Vivimos un momento decisivo en la historia de la humanidad. El cambio climático está amenazando el orden natural de la vida en el planeta. Cada vez más, la comunidad científica nos advierte de las consecuencias catastróficas de las emisiones elevadas de CO2.
+
+Nuestro estilo de vida debe cambiar. El mundo y sus recursos no son infinitos y nuestros hábitos ponen en peligro el equilibrio de la vida en la Tierra. El ser humano debe cambiar sus patrones de consumo y establecer una relación más coherente con el ecosistema.
+
+Sin embargo, esto no es suficiente ya que la acción de cada individuo no se puede comparar con la actividad de las grandes empresas contaminantes, interesadas solo en su propio beneficio económico. Estas corporaciones son el mayor obstáculo para que nuestro planeta recupere su salud y tienen esposadas a nuestras instituciones mediante la presión de sus lobbies, sus privilegiadas relaciones con los políticos y las campañas de desinformación.";s:6:"status";s:1:"3";s:9:"published";s:10:"2015-05-11";s:7:"created";s:10:"2015-02-27";s:7:"updated";s:10:"2015-04-19";s:7:"success";N;s:6:"closed";N;s:7:"mincost";s:4:"7500";s:7:"maxcost";s:5:"10000";s:6:"amount";s:4:"1773";s:5:"image";s:49:"10687940-636796366418136-753730329026543047-o.jpg";s:13:"num_investors";s:2:"48";s:14:"num_messengers";s:1:"9";s:9:"num_posts";s:1:"3";s:4:"days";s:2:"16";s:4:"name";s:60:"CORAZONES VERDES. La Ciudadanía contra el Cambio Climático";s:10:"popularity";s:2:"57";s:7:"user_id";s:7:"350-bcn";s:9:"user_name";s:7:"350 BCN";s:8:"noinvest";s:1:"0";s:9:"one_round";s:1:"0";s:11:"days_round1";s:2:"41";s:11:"days_round2";s:2:"40";}i:1;O:8:"stdClass":24:{s:7:"project";s:16:"agafa-la-tauleta";s:11:"description";s:1801:"Conecta Joven es un proyecto estatal de Aprendizaje y Servicio (ApS) intergeneracional desarrollado por el Club d'Esplai Diversitat Lúdica desde el año 2006 con el apoyo de la Fundació Esplai y Microsoft, que promueve la participación de jóvenes de Sant Feliu de Llobregat en su comunidad mediante acciones formativas, orientadas a la mejora de las competencias digitales de la ciudadanía (jóvenes, personas adultas, tercera edad) y colectivos con más dificultades de integración.
+
+Se trata de un programa intergeneracional, educativo y social en el que jóvenes de 15 a 19 años imparten voluntariamente talleres de informçatica básica y competencias digitales a personas adultas del entorno que no han tenido la posibilidad de aprender a usar un ordenador o dispositivos móviles. También adquieren experiencia como orientadores en el uso seguro de Internet para adolescentes y otros jóvenes. 
+
+Para realizar dichas tareas, los jóvenes reciben una formación (inicial y contínua), asesoramiento y tutorización periódica de sus actividades cuando empiezan a desarrollar el papel de profesores i durante todo el curso. 
+
+Ahora los jóvenes participantes se proponen un nuevo reto, que es enseñar a los adultos las múltiples utilidades que pueden tener las tabletas en la vida cotidiana. Para poder realizar estas formaciones de manera gratuita y cercana a los ciudadanos de Sant Feliu de Llobregat, necesitamos disponer de tabletas para poder enseñar cómo funcionan. 
+
+Desde el mes de enero de 2015, un grupo de unos 20 jóvenes trabajan voluntariamente con los dinamizadores del esplai para conseguir los objetivos propuestos. Ahora, el reto es poder conseguir financiación suficiente para tener las tabletas y poder seguir con el trabajo que ya han empezado este año. ";s:6:"status";s:1:"3";s:9:"published";s:10:"2015-04-24";s:7:"created";s:10:"2015-03-08";s:7:"updated";s:10:"2015-04-21";s:7:"success";N;s:6:"closed";N;s:7:"mincost";s:4:"1800";s:7:"maxcost";s:4:"2500";s:6:"amount";s:3:"120";s:5:"image";s:23:"img-20150313-wa0003.jpg";s:13:"num_investors";s:1:"4";s:14:"num_messengers";s:1:"1";s:9:"num_posts";s:1:"0";s:4:"days";s:2:"39";s:4:"name";s:32:"Agafa la tauleta: posa't al dia!";s:10:"popularity";s:1:"5";s:7:"user_id";s:10:"diversitat";s:9:"user_name";s:18:"Diversitat Lúdica";s:8:"noinvest";s:1:"0";s:9:"one_round";s:1:"0";s:11:"days_round1";s:2:"41";s:11:"days_round2";s:2:"40";}i:2;O:8:"stdClass":24:{s:7:"project";s:13:"drone-xplorer";s:11:"description";s:1180:"Nuestro objetivo es diseñar y construir un drone quadrotor lo más versátil posible. Utilizaremos algunos de los elementos más punteros del mercado, con la finalidad de que éste pueda ayudar en la seguridad de la población y en el rescate de personas perdidas por la montaña, sin la necesidad de tener que desplazar a más gente, o simplemente en la seguridad ciudadana.
+
+En un principio, todos estos objetivos se lograrán con la ayuda de un gps, que nos permitirá saber dónde se encuentra el drone, una cámara go pro, para ver en primera persona qué es lo que nuestro drone ve y siente, y finalmente un equipo de telemetría, que nos enviará toda esta información directa a nuestra base en tierra.
+
+Pero este proyecto no solo tiene como objetivo el diseño y la creación de un drone quadrotor, sino también crear una memoria donde quede registrado todo el proceso de desarrollo. Así, posteriormente, cualquiera que quiera emprender el camino para crear su propio drone, tendrá la oportunidad de hacerlo. Es decir, también tenemos la finalidad de difundir y motivar a la gente a emprender un proyecto tecnológico, con mucha utilidad en un futuro próximo.
+";s:6:"status";s:1:"3";s:9:"published";s:10:"2015-03-16";s:7:"created";s:10:"2015-02-06";s:7:"updated";s:10:"2015-03-11";s:7:"success";N;s:6:"closed";N;s:7:"mincost";s:3:"420";s:7:"maxcost";s:3:"600";s:6:"amount";s:3:"645";s:5:"image";s:11:"drone-0.jpg";s:13:"num_investors";s:2:"15";s:14:"num_messengers";s:1:"2";s:9:"num_posts";s:1:"4";s:4:"days";s:1:"0";s:4:"name";s:13:"Drone Xplorer";s:10:"popularity";s:2:"17";s:7:"user_id";s:14:"oriolnavarro98";s:9:"user_name";s:13:"Oriol Navarro";s:8:"noinvest";s:1:"0";s:9:"one_round";s:1:"0";s:11:"days_round1";s:2:"41";s:11:"days_round2";s:2:"40";}i:3;O:8:"stdClass":24:{s:7:"project";s:20:"projectedesigualtats";s:11:"description";s:905:"Estamos buscando financiación para la edición en papel de una revista acerca de las distintas desigualdades presentes en el mundo y que está realizada por nosotros mismos, unos alumnos de 2º de ESO del Instituto Les Vinyes. Esta revista se enmarca en el trabajo a base de proyectos que se lleva a cabo en el centro. Cada trimestre realizamos un proyecto, todos ellos con finalidades educativas que, una vez finalizados, nos gusta compartir.
+
+Los productores tenemos como objetivo conseguir ayuda para la revista a través de esta página de financiación colectiva. 
+
+Los objetivos respecto al proyecto en global, son:
+- Aprender sobre las diferentes desigualdades sociales y luchar contra ellas
+- Transmitir esta información a través de la revista
+- Aprender a hacer una revista con todo su proceso incluido (redactar, diseñar, producir, difundir...)
+- Aprender a trabajar cooperativamente";s:6:"status";s:1:"4";s:9:"published";s:10:"2015-03-24";s:7:"created";s:10:"2015-03-20";s:7:"updated";s:10:"2015-03-23";s:7:"success";s:10:"2015-04-14";s:6:"closed";N;s:7:"mincost";s:3:"526";s:7:"maxcost";s:4:"1062";s:6:"amount";s:4:"1318";s:5:"image";s:23:"img-20150317-140000.jpg";s:13:"num_investors";s:2:"50";s:14:"num_messengers";s:1:"3";s:9:"num_posts";s:1:"8";s:4:"days";s:1:"0";s:4:"name";s:21:"#projectedesigualtats";s:10:"popularity";s:2:"53";s:7:"user_id";s:11:"ielesvinyes";s:9:"user_name";s:26:"Institut-Escola Les Vinyes";s:8:"noinvest";s:1:"0";s:9:"one_round";s:1:"1";s:11:"days_round1";s:2:"21";s:11:"days_round2";s:1:"0";}}s:3:"ttl";i:5;s:7:"expires";i:1433525927;s:7:"created";i:1433525922;}

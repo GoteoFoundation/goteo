@@ -1,0 +1,11 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:586:"SELECT 
+                            category.id,
+                             IFNULL(category_lang.name, category.name) as name
+                        FROM category
+                        LEFT JOIN category_lang
+                            ON  category_lang.id = category.id
+                            AND category_lang.lang = :lang
+                        
+                         WHERE category.id IN (SELECT category FROM project_category WHERE project = 'nodo-movil')
+                        ORDER BY `order` ASC
+                         LIMIT 2a:1:{s:5:":lang";s:2:"es";}a:0:{}";s:5:"group";s:12:"sql/fetchAll";}s:5:"value";a:2:{i:0;a:4:{s:2:"id";s:1:"7";i:0;s:1:"7";s:4:"name";s:12:"Tecnológico";i:1;s:12:"Tecnológico";}i:1;a:4:{s:2:"id";s:1:"6";i:0;s:1:"6";s:4:"name";s:12:"Comunicativo";i:1;s:12:"Comunicativo";}}s:3:"ttl";i:5;s:7:"expires";i:1433525927;s:7:"created";i:1433525922;}

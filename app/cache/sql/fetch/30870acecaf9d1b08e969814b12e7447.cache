@@ -1,0 +1,13 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:435:"
+                SELECT
+                    projects,
+                    active,
+                    success,
+                    investors,
+                    supporters,
+                    amount,
+                    unix_timestamp(now()) - unix_timestamp(updated) as timeago
+                FROM node_data
+                WHERE node = :node
+                LIMIT 1
+                a:1:{s:5:":node";s:9:"barcelona";}a:1:{i:0;i:2;}";s:5:"group";s:9:"sql/fetch";}s:5:"value";a:7:{s:8:"projects";s:2:"90";s:6:"active";s:1:"3";s:7:"success";s:2:"71";s:9:"investors";s:4:"7709";s:10:"supporters";s:3:"648";s:6:"amount";s:6:"532196";s:7:"timeago";s:4:"7206";}s:3:"ttl";i:5;s:7:"expires";i:1433525928;s:7:"created";i:1433525923;}

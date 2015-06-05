@@ -1,0 +1,11 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:421:"
+                    SELECT
+                         IFNULL(text.text,purpose.purpose) as `text`
+                    FROM purpose
+                    LEFT JOIN text
+                        ON text.id = purpose.text
+                        AND text.lang = :lang
+                    
+                    WHERE purpose.text = :id
+
+                    a:2:{s:3:":id";s:22:"footer-header-projects";s:5:":lang";s:2:"es";}a:0:{}";s:5:"group";s:15:"sql/fetchObject";}s:5:"value";O:8:"stdClass":1:{s:4:"text";s:9:"Proyectos";}s:3:"ttl";i:30;s:7:"expires";i:1433528543;s:7:"created";i:1433528513;}

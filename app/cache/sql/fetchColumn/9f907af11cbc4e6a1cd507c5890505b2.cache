@@ -1,0 +1,5 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:205:"
+                SELECT COUNT(id)
+                FROM project
+                WHERE days <= 15 AND days > 0 AND status = 3 AND project.node = :node
+                a:1:{s:5:":node";s:9:"barcelona";}a:0:{}";s:5:"group";s:15:"sql/fetchColumn";}s:5:"value";s:1:"0";s:3:"ttl";i:30;s:7:"expires";i:1433525952;s:7:"created";i:1433525922;}

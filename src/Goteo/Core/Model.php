@@ -35,6 +35,16 @@ namespace Goteo\Core {
                 $this->setTable($table);
             }
         }
+
+        public static function factory() {
+            $cacher = null;
+            if(defined('SQL_CACHE_TIME') && SQL_CACHE_TIME) {
+                $cacher = new Cacher('sql', SQL_CACHE_TIME);
+            }
+
+            self::$db = new DB($cacher);
+        }
+
         /**
          * Get the table name
          * @return string Table name
@@ -173,12 +183,7 @@ namespace Goteo\Core {
         public static function query ($query, $params = null, $select_from_replica = true) {
 
             if (self::$db === null) {
-                $cacher = null;
-                if(defined('SQL_CACHE_TIME') && SQL_CACHE_TIME) {
-                    $cacher = new Cacher('sql', SQL_CACHE_TIME);
-                }
-
-                self::$db = new DB($cacher);
+                self::factory();
             }
 
             $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);

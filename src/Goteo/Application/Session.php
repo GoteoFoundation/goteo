@@ -83,10 +83,10 @@ class Session {
             elseif (!headers_sent()) {
                 session_name($name);
                 if (!session_start()) {
-                   throw new Exception(__METHOD__ . 'session_start failed.');
+                   throw new Config\ConfigException(__METHOD__ . 'session_start failed.');
                 }
             } else {
-                throw new Exception(__METHOD__ . 'Session started after headers sent.');
+                throw new Config\ConfigException(__METHOD__ . 'Session started after headers sent.');
             }
         }
         self::setStartTime(microtime(true));
