@@ -34,7 +34,8 @@ class ErrorController extends \Goteo\Core\Controller {
             '/img',
             );
 
-        $legacy = true;
+        $legacy = false;
+        if(defined('USE_LEGACY_DISPACHER') && USE_LEGACY_DISPACHER) $legacy = true;
         $path = $request->getPathInfo();
         foreach($non_legacy_routes as $route) {
             if(strpos($path, $route) === 0) {

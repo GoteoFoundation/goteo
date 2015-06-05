@@ -3,8 +3,10 @@
 use Goteo\Application\GoteoApp;
 use Symfony\Component\HttpFoundation\Request;
 
+//Public Web path
+define('GOTEO_WEB_PATH', __DIR__ . '/');
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../src/autoload.php';
 
 $request = Request::createFromGlobals();
 

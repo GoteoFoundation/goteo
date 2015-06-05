@@ -26,10 +26,19 @@ url:
     # url de recursos estaticos (imagenes, CSS)
     assets: //static.example.com
 
-    #Opcional: si se define la constante GOTEO_DATA_URL se usara en lugar de SRC_URL para el contenido de data
-    #Sirve para utilzar con CDN que hagan mirror de SITE_URL
-    #IMPORTANTE: definir la ruta sin / al final (con el prefijo "/data" si aplica)
-    # data: //cdn-example.com/data
+    # If you want to use a CDN or another web server to serve the cached images
+    # You can define this constants. All cached images links will point to this
+    # Url, event if don't exists yet.
+    # Example:
+    # Point a data.example.com to var/cache/images
+    # the place a .htaccess in var/cache/images/.htaccess with this content
+    # <ifmodule mod_rewrite.c>
+    # RewriteEngine on
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^(.*) http://example.com/img/$1 [R=302,L]
+    # </ifmodule>
+    #
     data:
 
 # Force using https protocol

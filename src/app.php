@@ -249,17 +249,16 @@ $routes->add('remove-trailing-slash', new Route(
 ));
 
 /// LEGACY DISPATCHER ////
-if(defined('USE_LEGACY_DISPACHER') && USE_LEGACY_DISPACHER) {
-    $routes->add('legacy-dispacher', new Route(
-            '/{url}',
-            array(
-                '_controller' => 'Goteo\Controller\ErrorController::legacyControllerAction',
-            ),
-            array(
-                'url' => '.*',
-            )
-    ));
-}
+
+$routes->add('legacy-dispacher', new Route(
+        '/{url}',
+        array(
+            '_controller' => 'Goteo\Controller\ErrorController::legacyControllerAction',
+        ),
+        array(
+            'url' => '.*',
+        )
+));
 
 //TODO IMPORTANTE: data/cache y cron
 
