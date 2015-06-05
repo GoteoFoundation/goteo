@@ -105,9 +105,6 @@ try {
             elseif($result instanceOf \Symfony\Component\HttpFoundation\Response) {
                 return $result;
             }
-            elseif($result instanceOf \Symfony\Component\HttpFoundation\RedirectResponse) {
-                return $result;
-            }
             else {
                 echo $result;
             }

@@ -92,6 +92,7 @@ $routes->add('about-sections', new Route(
     '/about/{id}',
     array(
         '_controller' => 'Goteo\Controller\AboutController::indexAction',
+        'id' => '' //optional
         )
 ));
 
@@ -202,6 +203,26 @@ $routes->add('user-redirect', new Route(
         )
 ));
 
+//// IMAGES ////
+// Live resize
+$routes->add('images', new Route(
+    '/img/{params}/{filename}',
+    array('_controller' => 'Goteo\Controller\ImageController::indexAction',
+        'params' => '', //default
+        'filename' => ''
+        )
+));
+
+//OLD routes: TODO remove url from views...
+$routes->add('images-old', new Route(
+    '/image/{id}/{width}/{height}/{crop}',
+    array('_controller' => 'Goteo\Controller\ImageController::oldIndexAction',
+        'width' => 200,
+        'height' => 200,
+        'crop' => false
+        )
+));
+
 ///// CHANNELS /////
 
 $routes->add('channel', new Route(
@@ -226,6 +247,19 @@ $routes->add('remove-trailing-slash', new Route(
         array(),
         array('GET')
 ));
+
+/// LEGACY DISPATCHER ////
+if(defined('USE_LEGACY_DISPACHER') && USE_LEGACY_DISPACHER) {
+    $routes->add('legacy-dispacher', new Route(
+            '/{url}',
+            array(
+                '_controller' => 'Goteo\Controller\ErrorController::legacyControllerAction',
+            ),
+            array(
+                'url' => '.*',
+            )
+    ));
+}
 
 //TODO IMPORTANTE: data/cache y cron
 
