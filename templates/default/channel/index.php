@@ -2,7 +2,6 @@
 
 $channel=$this->channel;
 
-
 $this->layout("layout", [
     'bodyClass' => 'channel home',
     'title' => $channel->name,
@@ -13,9 +12,10 @@ $this->section('content');
 
 ?>
 
-<div id="sub-header-secondary">
+<div id="sub-header-secondary" class="sub-header-channel">
+    <div class="owner-info">
         <div class="avatar">
-            <img src="<?php echo $channel->logo; ?>" alt="<?php echo $channel->name ?>"/><br />
+            <img src="<?php echo SITE_URL . '/image/' . $channel->logo. '/128/128/1'; ?>" alt="<?php echo $channel->name ?>"/><br />
             <!-- enlaces sociales (iconitos como footer) -->
             <ul>
                 <?php if (!empty($channel->facebook)): ?>
@@ -47,6 +47,7 @@ $this->section('content');
             </ul>
             -->
         </div>
+    </div>
 </div>
 
 
@@ -54,7 +55,7 @@ $this->section('content');
     <div id="side">
     
     <?php foreach ($this->side_order as $sideitem=>$sideitemName) {
-        if (!empty($this->$sideitem)) echo $this->insert("channel/partials/$sideitemName");
+            echo $this->insert("channel/partials/side/$sideitem");
     } ?>
     </div>
 

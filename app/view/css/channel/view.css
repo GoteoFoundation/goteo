@@ -437,3 +437,159 @@ body.channel.home div#channel-patrons div#slides_patrons div.slder_patrons {
 
 
 /* Fin de estilos elementos centrales */
+
+/* Common */
+
+input.grey[type="submit"],
+input.grey[type="reset"],
+button.grey,
+a.button.grey {
+    background: #b51000 url('/view/css/button/grey.png') repeat-x top;
+    color: white;    
+} 
+
+input.grey[type="submit"]:active,
+input.grey[type="reset"]:active,
+button.grey:active,
+a.button.grey:active {
+    background: #e44000 url('/view/css/button/grey-active.png') repeat-x top;
+} 
+
+input.grey[type="submit"]:hover,
+input.grey[type="reset"]:hover,
+button.grey:hover,
+a.button.grey:hover {
+    background: #e44000 url('/view/css/button/grey-active.png') repeat-x top;
+}
+
+
+.rounded-corners{  -moz-border-radius: 5px; /* Firefox */  -webkit-border-radius: 5px; /* Safari, Chrome */  border-radius: 5px; /* CSS3 */}
+.rounded-corners-bottom{
+-moz-border-radius-bottomright: 5px;
+-moz-border-radius-bottomleft: 5px;
+-webkit-border-bottom-right-radius: 5px;
+-webkit-border-bottom-left-radius: 5px;
+border-bottom-right-radius: 5px;
+border-bottom-left-radius: 5px;}
+
+
+a.file{background-image:url('/view/css/icon/m/file.png')}
+a.money{background-image:url('/view/css/icon/m/money.png')}
+a.code{background-image:url('/view/css/icon/m/code.png')}
+a.service{background-image:url('/view/css/icon/m/service.png')}
+a.manual{background-image:url('/view/css/icon/m/manual.png')}
+a.product{background-image:url('/view/css/icon/m/product.png')}
+a.design{background-image:url('/view/css/icon/m/design.png')}
+a.thanks{background-image:url('/view/css/icon/m/thanks.png')}
+a.other{background-image:url('/view/css/icon/m/other.png')}
+
+div#channel-main div#side span.euro{ text-indent:-9999px;overflow:hidden}
+
+div#side div.line{clear:both}
+div#side div.half{width:68px;margin-right:6px;float:left;padding:13px 10px;font-size:10px;overflow:hidden;}
+div#side div.half.last{margin-right:0}
+
+
+/* Info cabecera*/
+
+div.owner-info div.avatar {
+    float: left;
+    margin-right: 25px;
+}
+
+/* enlaces sociales */
+div.owner-info div.avatar ul{
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    margin: 10px 0px;
+}
+
+div.owner-info div.avatar ul li{
+    margin-right: 4px;
+    display: inline-block;
+    overflow: hidden;
+    width: 20px;
+    height: 20px;
+}
+
+div.owner-info div.avatar ul li a{
+    background: no-repeat left center;
+    padding-left: 40px;
+    padding-top: 20px;
+    overflow: hidden;
+    line-height: 40px
+}
+
+div.owner-info div.avatar li a:hover{
+    opacity:0.7;
+    filter:alpha(opacity=70)
+}
+
+div.owner-info div.avatar li.twitter a {
+    background-image: url('/view/css/twitter.png');
+}
+
+div.owner-info div.avatar li.facebook a {
+    background-image: url('/view/css/facebook.png');
+}
+
+div.owner-info div.avatar li.identica a {
+    background-image: url('/view/css/identica.png');
+}
+
+div.owner-info div.avatar li.google a {
+    background-image: url('/view/css/google.png');
+}
+
+div.owner-info div.avatar li.linkedin a {
+    background-image: url('/view/css/linkedin.png');
+}
+/* Fin enlaces sociales */
+
+div.owner-info div.info {
+    float: left;
+    overflow: visible;
+    font-size: 16px;
+    color: #6A6B6E;
+    width: 590px;
+}
+
+div.owner-info div.info p {
+    padding: 0;
+    margin: 0px 0px 10px 0px;
+}
+
+div.owner-info div.info p a {
+    font-size: 16px !important;
+}
+
+div.owner-info div.info p a:hover {
+    color: #20B2B3 !important;
+}
+
+div.owner-info div.info ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0px;
+}
+
+v div.info ul li {
+}
+
+div.owner-info div.info ul li a {
+    text-decoration: none;
+    color: #20B2B3;
+    font-size: 12px;
+}
+
+.owner-info{
+    width: 940px;
+    margin: 6px auto;
+    padding: 20px 0;
+    display: table !important;
+}
+
+div.sub-header-channel{
+    height: auto !important;
+}

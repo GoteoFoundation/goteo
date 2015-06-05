@@ -2,7 +2,7 @@
     <div class="line rounded-corners">
     	<p class="text"><?= $this->text('regular-total') ?></p>
         <p class="quantity projects">
-           	<?= \amount_format($vars['summary']['projects'], 0, true) ?><span class="text"><?= $this->text('regular-projects'); ?></span>
+           	<?= \amount_format($this->summary['projects'], 0, true) ?><span class="text"><?= $this->text('regular-projects'); ?></span>
         </p>
     </div>
     <div class="half rounded-corners">
