@@ -92,7 +92,7 @@ div#message.message {background-color:#19B4B2; color: #FFFFFF;}
 div#message.error {background-color:#B32928; color: #FFFFFF;}
 div#message div#message-content{width:940px;margin:0 auto;position:relative;}
 div#message div#message-content input.message-close{ background:url('/view/css/message-close.png') no-repeat; width:34px;height:33px;border:none;position:absolute;top:-8px;right:0;z-index:100; cursor:pointer;}
-div#message div#message-content input.error-message-error{ background:url('/view/css/message-close.png') no-repeat; width:34px;height:33px;border:none;position:absolute;top:-8px;right:0;z-index:100; cursor:pointer;}
+div#message div#message-content input.red-close{ background:url('/view/css/message-close-red.png') no-repeat; width:34px;height:33px; border:none;position:absolute;top:-8px;right:0;z-index:100; cursor:pointer;}
 div#message div#message-content ul{list-style:none;margin:0;padding:0;}
 
 

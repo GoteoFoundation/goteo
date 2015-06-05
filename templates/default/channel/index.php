@@ -15,7 +15,7 @@ $this->section('content');
 <div id="sub-header-secondary" class="sub-header-channel">
     <div class="owner-info">
         <div class="avatar">
-            <img src="<?php echo SITE_URL . '/image/' . $channel->logo. '/128/128/1'; ?>" alt="<?php echo $channel->name ?>"/><br />
+            <img src="<?php echo SITE_URL . '/image/' . $channel->logo->name; ?>" alt="<?php echo $channel->name ?>"/><br />
             <!-- enlaces sociales (iconitos como footer) -->
             <ul>
                 <?php if (!empty($channel->facebook)): ?>
@@ -26,9 +26,6 @@ $this->section('content');
                 <?php endif ?>
                    <?php if (!empty($channel->twitter)): ?>
                 <li class="twitter"><a href="<?php echo htmlspecialchars($channel->twitter) ?>" target="_blank">T</a></li>
-                <?php endif ?>
-                 <?php if (!empty($channel->identica)): ?>
-                <li class="identica"><a href="<?php echo htmlspecialchars($channel->identica) ?>" target="_blank">I</a></li>
                 <?php endif ?>
                 <?php if (!empty($channel->linkedin)): ?>
                 <li class="linkedin"><a href="<?php echo htmlspecialchars($channel->linkedin) ?>" target="_blank">L</a></li>
@@ -60,19 +57,19 @@ $this->section('content');
     </div>
 
     <div id="content">
-    <?php
-    // primero los ocultos, los destacados si esta el buscador lateral lo ponemos anyway
-    /*if (isset($vars['side_order']['searcher'])) echo View::get('node/home/discover.html.php', $vars);
-    if (isset($vars['side_order']['categories'])) echo View::get('node/home/discat.html.php', $vars);
-    if (!empty($vars['page']->content)) {
-        if (isset($vars['searcher']['promote'])) echo View::get('node/home/promotes.html.php', $vars);
-        echo '<div id="node-about-content" class="widget">' . $vars['page']->content . '</div>';
-    } else {
-        foreach ($vars['order'] as $item=>$itemName) {
-            if (!empty($vars[$item])) echo View::get("node/home/{$item}.html.php", $vars);
-        }
-    }*/
-    ?>
+        <?php
+        echo $this->insert("channel/partials/home/promotes");
+        // primero los ocultos, los destacados si esta el buscador lateral lo ponemos anyway
+        //if (isset($this->side_order['searcher'])) echo $this->insert("channel/partials/home/discover");
+        //if (isset($this->side_order['categories'])) echo $this->insert("channel/partials/home/discat");
+      
+        /*if (isset($this->searcher['promote'])) echo $this->insert("channel/partials/home/promotes");
+        else 
+        {
+            foreach ($this->order as $item=>$itemName)
+                if (!empty($vars[$item])) echo $this->insert("channel/partials/home/$item");
+        }*/
+        ?>
     </div>
 </div>
 

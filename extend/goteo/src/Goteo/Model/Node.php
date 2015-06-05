@@ -37,7 +37,11 @@ namespace Goteo\Model {
                         node.logo as logo,
                         node.location as location,
                         node.url as url,
-                        node.active as active
+                        node.active as active,
+                        node.twitter as twitter,
+                        node.facebook as facebook,
+                        node.linkedin as linkedin,
+                        node.google as google
                     FROM node
                     LEFT JOIN node_lang
                         ON  node_lang.id = node.id

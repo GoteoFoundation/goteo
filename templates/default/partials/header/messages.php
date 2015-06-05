@@ -25,7 +25,7 @@ if($errors):
 ?>
 <div id="message" class="error">
     <div id="message-content">
-        <input type="button" class="error-message-close" />
+        <input type="button" class="red-close" />
         <ul>
     <?php foreach($errors as $message): ?>
             <li>
