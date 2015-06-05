@@ -1,0 +1,11 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:456:"SELECT 
+                            icon.id,
+                             IFNULL(icon_lang.name, icon.name) as name
+                        FROM icon
+                        LEFT JOIN icon_lang
+                            ON  icon_lang.id = icon.id
+                            AND icon_lang.lang = :lang
+                        
+                        
+                        ORDER BY `order` ASC
+                        a:1:{s:5:":lang";s:2:"es";}a:0:{}";s:5:"group";s:12:"sql/fetchAll";}s:5:"value";a:9:{i:0;a:4:{s:2:"id";s:4:"code";i:0;s:4:"code";s:4:"name";s:14:"Código fuente";i:1;s:14:"Código fuente";}i:1;a:4:{s:2:"id";s:6:"design";i:0;s:6:"design";s:4:"name";s:7:"Diseño";i:1;s:7:"Diseño";}i:2;a:4:{s:2:"id";s:4:"file";i:0;s:4:"file";s:4:"name";s:18:"Archivos digitales";i:1;s:18:"Archivos digitales";}i:3;a:4:{s:2:"id";s:6:"manual";i:0;s:6:"manual";s:4:"name";s:8:"Manuales";i:1;s:8:"Manuales";}i:4;a:4:{s:2:"id";s:7:"product";i:0;s:7:"product";s:4:"name";s:8:"Producto";i:1;s:8:"Producto";}i:5;a:4:{s:2:"id";s:7:"service";i:0;s:7:"service";s:4:"name";s:9:"Servicios";i:1;s:9:"Servicios";}i:6;a:4:{s:2:"id";s:5:"money";i:0;s:5:"money";s:4:"name";s:6:"Dinero";i:1;s:6:"Dinero";}i:7;a:4:{s:2:"id";s:6:"thanks";i:0;s:6:"thanks";s:4:"name";s:14:"Reconocimiento";i:1;s:14:"Reconocimiento";}i:8;a:4:{s:2:"id";s:5:"other";i:0;s:5:"other";s:4:"name";s:4:"Otro";i:1;s:4:"Otro";}}s:3:"ttl";i:5;s:7:"expires";i:1433528522;s:7:"created";i:1433528517;}

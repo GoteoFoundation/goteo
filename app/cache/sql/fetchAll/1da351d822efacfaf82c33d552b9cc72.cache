@@ -1,0 +1,18 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:878:"SELECT
+                        user.id as id,
+                        user.name as name,
+                        user.num_patron_active as num_patron_active,
+                        patron_order.order as `order`,
+                        user_vip.image as vip_image,
+                        user.avatar as user_avatar
+                    FROM patron_order
+                    INNER JOIN user
+                        ON user.id = patron_order.id
+                    LEFT JOIN user_vip
+                        ON user_vip.user = patron_order.id
+                    INNER JOIN patron
+                        ON patron.user = patron_order.id
+                        AND patron.node = :node
+                    WHERE patron_order.order IS NOT NULL
+                    GROUP BY patron.user
+                    ORDER BY patron_order.order ASCa:1:{s:5:":node";s:5:"goteo";}a:1:{i:0;i:8;}";s:5:"group";s:12:"sql/fetchAll";}s:5:"value";a:9:{i:0;O:8:"stdClass":6:{s:2:"id";s:4:"unia";s:4:"name";s:4:"UNIA";s:17:"num_patron_active";s:2:"15";s:5:"order";s:1:"1";s:9:"vip_image";N;s:11:"user_avatar";s:22:"logo-unia-perfil_2.jpg";}i:1;O:8:"stdClass":6:{s:2:"id";s:9:"framasoft";s:4:"name";s:9:"Framasoft";s:17:"num_patron_active";s:1:"1";s:5:"order";s:1:"2";s:9:"vip_image";N;s:11:"user_avatar";s:33:"framasoft-2009-nowhite-notext.png";}i:2;O:8:"stdClass":6:{s:2:"id";s:3:"upc";s:4:"name";s:3:"UPC";s:17:"num_patron_active";s:1:"6";s:5:"order";s:1:"3";s:9:"vip_image";N;s:11:"user_avatar";s:27:"upc-positiu-p3005-thumb.png";}i:3;O:8:"stdClass":6:{s:2:"id";s:4:"uc3m";s:4:"name";s:32:"Universidad Carlos III de Madrid";s:17:"num_patron_active";s:2:"13";s:5:"order";s:1:"4";s:9:"vip_image";N;s:11:"user_avatar";s:14:"avataruc3m.jpg";}i:4;O:8:"stdClass":6:{s:2:"id";s:7:"toshiba";s:4:"name";s:10:"Homocrisis";s:17:"num_patron_active";s:1:"3";s:5:"order";s:1:"5";s:9:"vip_image";N;s:11:"user_avatar";s:35:"logo-homocrisis-toshibagrande-q.png";}i:5;O:8:"stdClass":6:{s:2:"id";s:5:"civio";s:4:"name";s:26:"Fundación Ciudadana Civio";s:17:"num_patron_active";s:1:"2";s:5:"order";s:1:"6";s:9:"vip_image";N;s:11:"user_avatar";s:15:"imagotipo_2.png";}i:6;O:8:"stdClass":6:{s:2:"id";s:8:"antonigr";s:4:"name";s:23:"Antoni Gutiérrez-Rubí";s:17:"num_patron_active";s:1:"3";s:5:"order";s:1:"7";s:9:"vip_image";N;s:11:"user_avatar";s:12:"antonigr.jpg";}i:7;O:8:"stdClass":6:{s:2:"id";s:9:"jsubirats";s:4:"name";s:13:"Joan Subirats";s:17:"num_patron_active";s:1:"3";s:5:"order";s:1:"8";s:9:"vip_image";N;s:11:"user_avatar";s:22:"fotosubiratspublic.gif";}i:8;O:8:"stdClass":6:{s:2:"id";s:8:"ouishare";s:4:"name";s:8:"OuiShare";s:17:"num_patron_active";s:1:"2";s:5:"order";s:1:"9";s:9:"vip_image";N;s:11:"user_avatar";s:25:"cv5j7lqavy3wfjmz3mi0.jpeg";}}s:3:"ttl";i:5;s:7:"expires";i:1433528522;s:7:"created";i:1433528517;}

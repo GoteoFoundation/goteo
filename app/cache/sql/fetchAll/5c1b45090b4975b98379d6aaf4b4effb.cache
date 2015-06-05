@@ -1,0 +1,52 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:1868:"
+                SELECT
+                    project.id as project,
+                    project.name as name,
+                     IFNULL(project_lang.description, project.description) as description,
+                    project.status as status,
+                    project.published as published,
+                    project.created as created,
+                    project.updated as updated,
+                    project.success as success,
+                    project.closed as closed,
+                    project.mincost as mincost,
+                    project.maxcost as maxcost,
+                    project.amount as amount,
+                    project.image as image,
+                    project.num_investors as num_investors,
+                    project.num_messengers as num_messengers,
+                    project.num_posts as num_posts,
+                    project.days as days,
+                    
+                    user.id as user_id,
+                    user.name as user_name,
+                    project_conf.noinvest as noinvest,
+                    project_conf.one_round as one_round,
+                    project_conf.days_round1 as days_round1,
+                    project_conf.days_round2 as days_round2
+                FROM  project
+                INNER JOIN user
+                    ON user.id = project.owner
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
+                LEFT JOIN project_lang
+                            ON  project_lang.id = project.id
+                            AND project_lang.lang = :lang
+                
+                WHERE
+                project.status = 3 AND project.passed IS NULL AND project.node = :node
+                ORDER BY published DESC
+                LIMIT 0,4
+                a:2:{s:5:":node";s:9:"barcelona";s:5:":lang";s:2:"es";}a:1:{i:0;i:5;}";s:5:"group";s:12:"sql/fetchAll";}s:5:"value";a:2:{i:0;O:8:"stdClass":23:{s:7:"project";s:16:"corazones-verdes";s:4:"name";s:60:"CORAZONES VERDES. La Ciudadanía contra el Cambio Climático";s:11:"description";s:987:"Vivimos un momento decisivo en la historia de la humanidad. El cambio climático está amenazando el orden natural de la vida en el planeta. Cada vez más, la comunidad científica nos advierte de las consecuencias catastróficas de las emisiones elevadas de CO2.
+
+Nuestro estilo de vida debe cambiar. El mundo y sus recursos no son infinitos y nuestros hábitos ponen en peligro el equilibrio de la vida en la Tierra. El ser humano debe cambiar sus patrones de consumo y establecer una relación más coherente con el ecosistema.
+
+Sin embargo, esto no es suficiente ya que la acción de cada individuo no se puede comparar con la actividad de las grandes empresas contaminantes, interesadas solo en su propio beneficio económico. Estas corporaciones son el mayor obstáculo para que nuestro planeta recupere su salud y tienen esposadas a nuestras instituciones mediante la presión de sus lobbies, sus privilegiadas relaciones con los políticos y las campañas de desinformación.";s:6:"status";s:1:"3";s:9:"published";s:10:"2015-05-11";s:7:"created";s:10:"2015-02-27";s:7:"updated";s:10:"2015-04-19";s:7:"success";N;s:6:"closed";N;s:7:"mincost";s:4:"7500";s:7:"maxcost";s:5:"10000";s:6:"amount";s:4:"1773";s:5:"image";s:49:"10687940-636796366418136-753730329026543047-o.jpg";s:13:"num_investors";s:2:"48";s:14:"num_messengers";s:1:"9";s:9:"num_posts";s:1:"3";s:4:"days";s:2:"16";s:7:"user_id";s:7:"350-bcn";s:9:"user_name";s:7:"350 BCN";s:8:"noinvest";s:1:"0";s:9:"one_round";s:1:"0";s:11:"days_round1";s:2:"41";s:11:"days_round2";s:2:"40";}i:1;O:8:"stdClass":23:{s:7:"project";s:16:"agafa-la-tauleta";s:4:"name";s:32:"Agafa la tauleta: posa't al dia!";s:11:"description";s:1801:"Conecta Joven es un proyecto estatal de Aprendizaje y Servicio (ApS) intergeneracional desarrollado por el Club d'Esplai Diversitat Lúdica desde el año 2006 con el apoyo de la Fundació Esplai y Microsoft, que promueve la participación de jóvenes de Sant Feliu de Llobregat en su comunidad mediante acciones formativas, orientadas a la mejora de las competencias digitales de la ciudadanía (jóvenes, personas adultas, tercera edad) y colectivos con más dificultades de integración.
+
+Se trata de un programa intergeneracional, educativo y social en el que jóvenes de 15 a 19 años imparten voluntariamente talleres de informçatica básica y competencias digitales a personas adultas del entorno que no han tenido la posibilidad de aprender a usar un ordenador o dispositivos móviles. También adquieren experiencia como orientadores en el uso seguro de Internet para adolescentes y otros jóvenes. 
+
+Para realizar dichas tareas, los jóvenes reciben una formación (inicial y contínua), asesoramiento y tutorización periódica de sus actividades cuando empiezan a desarrollar el papel de profesores i durante todo el curso. 
+
+Ahora los jóvenes participantes se proponen un nuevo reto, que es enseñar a los adultos las múltiples utilidades que pueden tener las tabletas en la vida cotidiana. Para poder realizar estas formaciones de manera gratuita y cercana a los ciudadanos de Sant Feliu de Llobregat, necesitamos disponer de tabletas para poder enseñar cómo funcionan. 
+
+Desde el mes de enero de 2015, un grupo de unos 20 jóvenes trabajan voluntariamente con los dinamizadores del esplai para conseguir los objetivos propuestos. Ahora, el reto es poder conseguir financiación suficiente para tener las tabletas y poder seguir con el trabajo que ya han empezado este año. ";s:6:"status";s:1:"3";s:9:"published";s:10:"2015-04-24";s:7:"created";s:10:"2015-03-08";s:7:"updated";s:10:"2015-04-21";s:7:"success";N;s:6:"closed";N;s:7:"mincost";s:4:"1800";s:7:"maxcost";s:4:"2500";s:6:"amount";s:3:"120";s:5:"image";s:23:"img-20150313-wa0003.jpg";s:13:"num_investors";s:1:"4";s:14:"num_messengers";s:1:"1";s:9:"num_posts";s:1:"0";s:4:"days";s:2:"39";s:7:"user_id";s:10:"diversitat";s:9:"user_name";s:18:"Diversitat Lúdica";s:8:"noinvest";s:1:"0";s:9:"one_round";s:1:"0";s:11:"days_round1";s:2:"41";s:11:"days_round2";s:2:"40";}}s:3:"ttl";i:5;s:7:"expires";i:1433525927;s:7:"created";i:1433525922;}

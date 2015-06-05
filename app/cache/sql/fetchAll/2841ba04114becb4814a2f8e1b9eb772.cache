@@ -1,0 +1,15 @@
+O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:596:"
+                SELECT
+                reward.id,
+                reward.project,
+                reward.icon,
+                reward.license,
+                IFNULL(reward_lang.reward, reward.reward) as reward
+                FROM reward
+                LEFT JOIN reward_lang
+                    ON  reward_lang.id = reward.id
+                    AND reward_lang.lang = :lang
+                    AND reward_lang.project = reward.project
+                WHERE
+                reward.project IN ('')
+                AND type = :typea:2:{s:4:"lang";s:2:"es";s:4:"type";s:6:"social";}a:1:{i:0;i:8;}";s:5:"group";s:12:"sql/fetchAll";}s:5:"value";a:0:{}s:3:"ttl";i:5;s:7:"expires";i:1433525930;s:7:"created";i:1433525925;}

@@ -1,5 +1,43 @@
 #Goteo settings file
 ---
+
+# Maintenance
+maintenance: false
+
+# Max session time
+session:
+    time: 3600
+
+# Internal secret for hashes
+secret: --a-very-secret-string---
+
+# local enviroment: local, beta, real
+env: local
+
+# main node
+node: goteo
+
+# Default system language
+lang: es
+
+# url
+url:
+    main: //example.com
+    # url de recursos estaticos (imagenes, CSS)
+    assets: //static.example.com
+
+    #Opcional: si se define la constante GOTEO_DATA_URL se usara en lugar de SRC_URL para el contenido de data
+    #Sirve para utilzar con CDN que hagan mirror de SITE_URL
+    #IMPORTANTE: definir la ruta sin / al final (con el prefijo "/data" si aplica)
+    # data: //cdn-example.com/data
+    data:
+
+# Force using https protocol
+ssl: false
+
+# Default commission fee
+fee: 4
+
 # Filesystem used by goteo
 filesystem:
     handler:    local      # 's3' to use AmazonS3 storage, 'local' to use local filesistem
@@ -13,8 +51,114 @@ filesystem:
     bucket:
         static:     static.example.com        # where to store the assets (css, js, images)
         mail:       mail-archive.example.com  # where to store alternative mail view
-        document:   document.example.com      # TODO ???
-        press:      press.example.com         # TODO ???
+
+# Database stuff
+db:
+    driver:   mysql     # Database driver (mysql)
+    host:     localhost # Database host
+    port:     3306      # Database port
+    charset:  UTF-8     # Database charset
+    database: goteo     # Database schema (database name)
+    username: goteo     # Database user for the goteo database
+    password: password  # Password for the goteo database
+
+    # SELECT queries caching
+    # setup it as 'files' to enable sql cache
+    cache:
+        driver:           # dejar vacia para no activar cache
+        time: 20          # Segundos de cache para las queries SELECT (puede ser sobreescrito por las query->cacheTime())
+        long_time: 3600   # Cache larga para textos
+
+    # Replica de lectura (opcional)
+
+    replica:
+        host:  # leave empty to not activate replica
+        # si se define una replica de lectura los siguientes parametros son opcionales
+        port: 3306
+        username: db-replica-username
+        password: db-replica-password
+
+# HTML Metas
+meta:
+    title:       --meta-title--       # Html default <title>
+    description: --meta-description-- # Html default <meta description>
+    keywords:    --keywords--         # Html default <meta keywords>
+    author:      --author--           # Html default <meta author>
+    copyright:   --copyright--        # Html default <meta copyright>
 
 
+# Mail transport
+mail:
+    # receiving emails
+    mail:         info@example.com     # Main
+    contact:      info@example.com     # consulting head
+    manager:      manager@example.com  # accounts manager
+    fail:         dev@example.com      # dev head
+    log:          sitelog@example.com  # Loggin mail
+
+    transport:
+        from:          noreply@example.com
+        name:          Goteo Sender
+        type:          smtp
+        # if type is smtp:
+        smtp:
+            auth:     true
+            secure:   ssl
+            host:     smtp.example.com
+            port:     587
+            username: smtp-usermail
+            password: smtp-password
+
+    quota:
+        total: 50000  # Quota de envio máximo para goteo en 24 horas
+        sender: 40000 # Quota de envio máximo para newsletters para goteo en 24 horas
+
+    #clave de Amazon SNS para recopilar bounces automaticamente: 'arn:aws:sns:us-east-1:XXXXXXXXX:amazon-ses-bounces'
+    #la URL de informacion debe ser: goteo_url.tld/aws-sns.php
+    sns:
+        client_id:        XXXXXXXXX
+        region:           us-east-1
+        bounces_topic:    amazon-ses-bounces
+        complaints_topic: amazon-ses-complaints
+
+
+# Cron params
+cron:
+    param: --------------
+    value: --------------
+
+
+# Paypal config location path
+# /config/sdk_config.ini
+# see paypal.php for an example contents of it
+paypal:
+    redirect_url:  https://www.sandbox.paypal.com/webscr&cmd=
+
+# TPV [Bank Name]
+tpv:
+    merchant_code: xxxxxxxxx
+    redirect_url:  --bank-rest-api-url--
+    encrypt_key:   xxxxxxxxx
+
+# Social Services constants
+oauth:
+    # Credenciales app Facebook
+    facebook:
+        id:     000000000000000                  #
+        secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+
+    # Credenciales app Twitter
+    twitter:
+        id:      aaaaaaaaaaaaaaaaaaaaaa                     #
+        secret:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+
+    # Credenciales app Linkedin
+    linkedin:
+        id:     aaaaaaaaaaaa     #
+        secret: aaaaaaaaaaaaaaaa #
+
+# recaptcha
+recaptcha:
+    public:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    private: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
