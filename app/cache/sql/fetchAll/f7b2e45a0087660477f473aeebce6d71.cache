@@ -1,9 +1,0 @@
-O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:360:"SELECT
-                        home.item as item,
-                        home.node as node,
-                        home.order as `order`
-                    FROM home
-                    WHERE home.node = :node
-                    AND type = 'side'
-                    ORDER BY `order` ASC
-                    a:1:{s:5:":node";s:9:"barcelona";}a:1:{i:0;i:8;}";s:5:"group";s:12:"sql/fetchAll";}s:5:"value";a:3:{i:0;O:8:"stdClass":3:{s:4:"item";s:7:"summary";s:4:"node";s:9:"barcelona";s:5:"order";s:1:"1";}i:1;O:8:"stdClass":3:{s:4:"item";s:8:"searcher";s:4:"node";s:9:"barcelona";s:5:"order";s:1:"2";}i:2;O:8:"stdClass":3:{s:4:"item";s:10:"categories";s:4:"node";s:9:"barcelona";s:5:"order";s:1:"4";}}s:3:"ttl";i:5;s:7:"expires";i:1433525927;s:7:"created";i:1433525922;}

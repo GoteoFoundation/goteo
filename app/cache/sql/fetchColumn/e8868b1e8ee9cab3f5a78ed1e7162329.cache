@@ -1,9 +1,0 @@
-O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:330:"
-                SELECT
-                    SUM(invest.amount)
-                FROM  invest
-                INNER JOIN project
-                    ON project.id = invest.project
-                WHERE project.node = :node
-                AND invest.status IN ('0', '1', '3')
-                a:1:{s:5:":node";s:9:"barcelona";}a:0:{}";s:5:"group";s:15:"sql/fetchColumn";}s:5:"value";s:6:"532196";s:3:"ttl";i:5;s:7:"expires";i:1433525929;s:7:"created";i:1433525924;}

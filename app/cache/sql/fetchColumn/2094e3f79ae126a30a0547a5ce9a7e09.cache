@@ -1,1 +1,0 @@
-O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:110:"SELECT id FROM `node_lang` WHERE id = :id AND lang = :langa:2:{s:3:":id";s:9:"barcelona";s:5:":lang";N;}a:0:{}";s:5:"group";s:15:"sql/fetchColumn";}s:5:"value";b:0;s:3:"ttl";i:5;s:7:"expires";i:1433525927;s:7:"created";i:1433525922;}
