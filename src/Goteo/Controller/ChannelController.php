@@ -25,12 +25,12 @@ use Goteo\Library\Text;
 use Goteo\Library\Feed;
 use Goteo\Library\Page;
 
-class Chanel extends \Goteo\Core\Controller {
+class ChannelController extends \Goteo\Core\Controller {
 
 public static function indexAction($id, $page = 'index')
     {
 
-        $chanel = Node::get($id);
+        $channel = Node::get($id);
 
         // orden de los elementos en portada
         $order = Home::getAll($id);
@@ -119,11 +119,11 @@ public static function indexAction($id, $page = 'index')
         }
 
         if (isset($side_order['summary'])) {
-            $summary = $chanel->getSummary();
+            $summary = $channel->getSummary();
         }
 
         if (isset($side_order['sumcalls'])) {
-            $sumcalls = $chanel->getSumcalls();
+            $sumcalls = $channel->getSumcalls();
         }
 
         if (isset($side_order['sponsors'])) {
@@ -151,9 +151,9 @@ public static function indexAction($id, $page = 'index')
         }
 
         return new Response(View::render(
-            'chanel/index',
+            'channel/index',
             array(
-                'chanel'     => $chanel,
+                'channel'     => $channel,
                 'page'     => $pageData,
 
                 // centrales

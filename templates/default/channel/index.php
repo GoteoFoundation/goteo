@@ -1,10 +1,10 @@
 <?php
 
-$chanel=$this->chanel;
+$channel=$this->channel;
 
 
 $this->layout("layout", [
-    'bodyClass' => 'chanel home',
+    'bodyClass' => 'channel home',
     'title' => $channel->name,
     'meta_description' => $channel->description
     ]);
@@ -15,29 +15,29 @@ $this->section('content');
 
 <div id="sub-header-secondary">
         <div class="avatar">
-            <img src="<?php echo $chanel->logo; ?>" alt="<?php echo $chanel->name ?>"/><br />
+            <img src="<?php echo $channel->logo; ?>" alt="<?php echo $channel->name ?>"/><br />
             <!-- enlaces sociales (iconitos como footer) -->
             <ul>
-                <?php if (!empty($chanel->facebook)): ?>
-               <li class="facebook"><a href="<?php echo htmlspecialchars($chanel->facebook) ?>" target="_blank">F</a></li>
+                <?php if (!empty($channel->facebook)): ?>
+               <li class="facebook"><a href="<?php echo htmlspecialchars($channel->facebook) ?>" target="_blank">F</a></li>
                 <?php endif ?>
-                <?php if (!empty($chanel->google)): ?>
-                <li class="google"><a href="<?php echo htmlspecialchars($chanel->google) ?>" target="_blank">G</a></li>
+                <?php if (!empty($channel->google)): ?>
+                <li class="google"><a href="<?php echo htmlspecialchars($channel->google) ?>" target="_blank">G</a></li>
                 <?php endif ?>
-                   <?php if (!empty($chanel->twitter)): ?>
-                <li class="twitter"><a href="<?php echo htmlspecialchars($chanel->twitter) ?>" target="_blank">T</a></li>
+                   <?php if (!empty($channel->twitter)): ?>
+                <li class="twitter"><a href="<?php echo htmlspecialchars($channel->twitter) ?>" target="_blank">T</a></li>
                 <?php endif ?>
-                 <?php if (!empty($chanel->identica)): ?>
-                <li class="identica"><a href="<?php echo htmlspecialchars($chanel->identica) ?>" target="_blank">I</a></li>
+                 <?php if (!empty($channel->identica)): ?>
+                <li class="identica"><a href="<?php echo htmlspecialchars($channel->identica) ?>" target="_blank">I</a></li>
                 <?php endif ?>
-                <?php if (!empty($chanel->linkedin)): ?>
-                <li class="linkedin"><a href="<?php echo htmlspecialchars($chanel->linkedin) ?>" target="_blank">L</a></li>
+                <?php if (!empty($channel->linkedin)): ?>
+                <li class="linkedin"><a href="<?php echo htmlspecialchars($channel->linkedin) ?>" target="_blank">L</a></li>
                 <?php endif ?>
             </ul>                   
         </div>              
         <div class="info">
             <!-- Nombre y texto presentación -->
-            <p><strong><?php echo $chanel->name ?></strong> <?php echo $chanel->description; ?></p>
+            <p><strong><?php echo $channel->name ?></strong> <?php echo $channel->description; ?></p>
             <!-- 2 webs -->
             <!--
             <ul>
@@ -50,11 +50,11 @@ $this->section('content');
 </div>
 
 
-<div id="chanel-main">
+<div id="channel-main">
     <div id="side">
-    <?= $this->insert('chanel/partials/summary') ?>
+    
     <?php foreach ($this->side_order as $sideitem=>$sideitemName) {
-        if (!empty($this->$sideitem)) echo $this->insert("chanel/partials/$sideitemName");
+        if (!empty($this->$sideitem)) echo $this->insert("channel/partials/$sideitemName");
     } ?>
     </div>
 

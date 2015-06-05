@@ -204,9 +204,9 @@ $routes->add('user-redirect', new Route(
 
 ///// CHANNELS /////
 
-$routes->add('chanel', new Route(
-    '/chanel/{id}',
-    array('_controller' => 'Goteo\Controller\Chanel::indexAction')
+$routes->add('channel', new Route(
+    '/channel/{id}',
+    array('_controller' => 'Goteo\Controller\ChannelController::indexAction')
 ));
 
 ///// END USER /////

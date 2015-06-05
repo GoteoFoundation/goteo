@@ -24,6 +24,7 @@ class ErrorController extends \Goteo\Core\Controller {
                 '/service',
                 '/blog',
                 '/project',
+                '/channel',
                 );
 
             $legacy = true;
