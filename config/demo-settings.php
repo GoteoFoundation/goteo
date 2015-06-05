@@ -15,9 +15,6 @@ define('GOTEO_SESSION_TIME', 3600);
 //secreto interno para generación de ID's CAMBIAR!!!!
 define('GOTEO_MISC_SECRET', 'gl,+PQ7`}i8fv}CX0B7qhbqnV[3RHpq0\KPQg|1I|dTz=m=u6BJ;k27mzLuo');
 
-//Estoy en alto rendimiento
-define('GOTEO_EASY', null);
-
 // tipo de entorno: local, beta, real
 define('GOTEO_ENV', 'local');
 
@@ -162,7 +159,3 @@ define('OAUTH_LINKEDIN_SECRET', '-----------------------------------'); //
 define('RECAPTCHA_PUBLIC_KEY','-----------------------------------');
 define('RECAPTCHA_PRIVATE_KEY','-----------------------------------');
 
-/****************************************************
-Google Analytics
-****************************************************/
-define('GOTEO_ANALYTICS_TRACKER', '');
