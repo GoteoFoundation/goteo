@@ -18,10 +18,6 @@ namespace Goteo\Controller {
 
         public function index ($show = 'activity', $category = null) {
 
-            if (defined('GOTEO_EASY') && \GOTEO_EASY === true) {
-                throw new Redirection('/');
-            }
-
             $page = Page::get('community');
 
             $items = array();

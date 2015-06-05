@@ -47,11 +47,6 @@ class IndexController extends \Goteo\Core\Controller
         // orden de los elementos en portada
         $order = Home::getAll();
 
-        // si estamos en easy mode, quitamos el feed
-        if (defined('GOTEO_EASY') && \GOTEO_EASY === true && isset($order['feed'])) {
-            unset($order['feed']);
-        }
-
         // entradas de blog
         if (isset($order['posts'])) {
             // entradas en portada
