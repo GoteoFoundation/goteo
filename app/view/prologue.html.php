@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Application\Lang;
 
-if (NODE_ID != GOTEO_NODE) {
+if (\Goteo\Application\Config::isNode()) {
     include __DIR__ . '/node/prologue.html.php';
     return;
 }

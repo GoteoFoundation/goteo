@@ -5,7 +5,7 @@ use Goteo\Core\View,
     Goteo\Library\Text;
 
 // si es un nodo
-if (NODE_ID != GOTEO_NODE) {
+if (\Goteo\Application\Config::isNode()) {
     include __DIR__ . '/node/index.html.php';
     return;
 }

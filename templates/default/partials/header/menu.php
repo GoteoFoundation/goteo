@@ -37,8 +37,8 @@ $nodes = Nodesys::activeNodes();
                 </div>
             </li>
 
-            <?php if (!empty($_SESSION['user'])): ?>
-            <li class="dashboard"><a href="/dashboard"><span><?= $this->text('dashboard-menu-main') ?></span><img src="<?php echo $_SESSION['user']->avatar->getLink(28, 28, true); ?>" /></a>
+            <?php if ($this->is_logged()): ?>
+            <li class="dashboard"><a href="/dashboard"><span><?= $this->text('dashboard-menu-main') ?></span><img src="<?php echo $this->get_user()->avatar->getLink(28, 28, true); ?>" /></a>
                 <div>
                     <ul>
                         <li><a href="/dashboard/profile"><span><?= $this->text('dashboard-menu-profile') ?></span></a></li>
@@ -46,23 +46,23 @@ $nodes = Nodesys::activeNodes();
                         <li><a href="/dashboard/projects"><span><?= $this->text('dashboard-menu-projects') ?></span></a></li>
                         <li><a href="/dashboard/profile/preferences"><span><?= $this->text('dashboard-menu-profile-references'); ?></span></a></li>
 
-                        <?php if ( isset($_SESSION['user']->roles['caller']) ) : ?>
+                        <?php if ( isset($this->get_user()->roles['caller']) ) : ?>
                             <li><a href="/dashboard/calls"><span><?= $this->text('dashboard-menu-calls') ?></span></a></li>
                         <?php endif; ?>
 
-                        <?php if ( isset($_SESSION['user']->roles['translator']) ||  isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) : ?>
+                        <?php if ( isset($this->get_user()->roles['translator']) ||  isset($this->get_user()->roles['admin']) || isset($this->get_user()->roles['superadmin']) ) : ?>
                             <li><a href="/translate"><span><?= $this->text('regular-translate_board') ?></span></a></li>
                         <?php endif; ?>
 
-                        <?php if ( isset($_SESSION['user']->roles['checker']) ) : ?>
+                        <?php if ( isset($this->get_user()->roles['checker']) ) : ?>
                             <li><a href="/review"><span><?= $this->text('regular-review_board') ?></span></a></li>
                         <?php endif; ?>
 
-                        <?php if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) : ?>
+                        <?php if ( isset($this->get_user()->roles['admin']) || isset($this->get_user()->roles['superadmin']) ) : ?>
                             <li><a href="/admin"><span><?= $this->text('regular-admin_board') ?></span></a></li>
                         <?php endif; ?>
 
-                        <?php if ( isset($_SESSION['user']->roles['manager']) ) : ?>
+                        <?php if ( isset($this->get_user()->roles['manager']) ) : ?>
                             <li><a href="/manage"><span><?= $this->text('regular-manage_board') ?></span></a></li>
                         <?php endif; ?>
 

@@ -3,6 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Core\ACL,
+        Goteo\Application\Config,
         Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Model\User,
@@ -945,13 +946,13 @@ namespace Goteo\Model {
                 $sqlFilter .= " WHERE call.status IN ('3', '4')"; // solo aplicacion y campaña
             }
 
-            if (\NODE_ID != \GOTEO_NODE) {
+            if (\Goteo\Application\Config::isNode()) {
                 $sqlJoin .= " INNER JOIN campaign
                     ON campaign.call = call.id
                     AND campaign.node = :node
                     AND campaign.active = 1
                     ";
-                $values[':node'] = \NODE_ID;
+                $values[':node'] = Config::get('current_node');
             }
 
 

@@ -30,22 +30,6 @@ try {
         }
     }
 
-    // Check permissions on requested URI
-    if (!ACL::check($uri) && substr($uri, 0, 11) !== '/user/login') {
-        if ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && strcmp($_GET[md5(CRON_PARAM)], md5(CRON_VALUE)) === 0) {
-            define('CRON_EXEC', true);
-        } else {
-            //if page exists, throw redirection, make it 404 otherwise
-            // die($controller."-$firstSegment");
-            if($controller !== 'Index') {
-                Message::info(Text::get('user-login-required-access'));
-                throw new Redirection(SEC_URL.'/user/login/?return='.rawurlencode($uri));
-            }
-            throw new Error(Error::NOT_FOUND);
-
-        }
-    }
-
     // Continue
     try {
         $class = new ReflectionClass("Goteo\\Controller\\{$controller}");

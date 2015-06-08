@@ -26,7 +26,7 @@ $author_twitter = str_replace(
                         ), '', $project->user->twitter);
 $author = !empty($author_twitter) ? ' '.Text::get('regular-by').' @'.$author_twitter : '';
 $share_title = Text::get('project-spread-social', $project->name . $author);
-if (NODE_ID != GOTEO_NODE)
+if (\Goteo\Application\Config::isNode())
     $share_title = str_replace ('#goteo', '#'.strtolower (NODE_NAME), $share_title);
 $share_url = $URL . '/project/'.$project->id;
 $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);

@@ -3,6 +3,7 @@
 namespace Goteo\Model {
 
 	use Goteo\Library\Text,
+        Goteo\Application\Config,
         Goteo\Application\Session,
         Goteo\Model\Image,
         Goteo\Model\Node,
@@ -127,7 +128,7 @@ namespace Goteo\Model {
                     $data[':active'] = true;
                     $data[':confirmed'] = false;
                     $data[':lang'] = \LANG;
-                    $data[':node'] = \NODE_ID;
+                    $data[':node'] = Config::get('current_node');
 
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;

@@ -5,6 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Library\Page,
         Goteo\Core\Redirection,
         Goteo\Core\View,
+        Goteo\Application\Config,
         Goteo\Library\Text;
 
     class Press extends \Goteo\Core\Controller {
@@ -16,7 +17,7 @@ namespace Goteo\Controller {
 
         public function index () {
 
-            $page = Page::get('press', \NODE_ID);
+            $page = Page::get('press', Config::get('current_node'));
 
             return new View(
                 'about/sample.html.php',

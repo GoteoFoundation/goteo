@@ -26,11 +26,39 @@ url:
     # url de recursos estaticos (imagenes, CSS)
     assets: //static.example.com
 
-    #Opcional: si se define la constante GOTEO_DATA_URL se usara en lugar de SRC_URL para el contenido de data
-    #Sirve para utilzar con CDN que hagan mirror de SITE_URL
-    #IMPORTANTE: definir la ruta sin / al final (con el prefijo "/data" si aplica)
-    # data: //cdn-example.com/data
+    # If you want to use a CDN or another web server to serve the cached images
+    # You can define this constants. All cached images links will point to this
+    # Url, event if don't exists yet.
+    # Example:
+    # Point a data.example.com to var/cache/images
+    # the place a .htaccess in var/cache/images/.htaccess with this content
+    # <ifmodule mod_rewrite.c>
+    # RewriteEngine on
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^(.*) http://example.com/img/$1 [R=302,L]
+    # </ifmodule>
+    #
     data:
+
+# extend/ folder can override any template, add controllers, etc
+# example:
+# extend:
+#       - goteo # extend/goteo/src/Controllers
+#               # extend/goteo/src/Models
+#               # extend/goteo/src/app.php
+#               # ...
+# Extend is the directory to personalize your copy of goteo.org
+# Routes, classes and templates can be overrided
+extend:
+    # If defined, the php app that returns a Symfony\Component\Routing\RouteCollection
+    routes: custom_dir/app.php # => extend/custom_dir/app.php
+    # Extra dirs where to find additional autoload classes
+    autoload:
+        - custom_dir/src # extend goteo folders, "extend/goteo"
+    # Extra dirs to load (before templates/default)
+    templates:
+        - custom_dir/templates/default
 
 # Force using https protocol
 ssl: false

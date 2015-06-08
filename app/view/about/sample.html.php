@@ -3,7 +3,7 @@ $bodyClass = 'about';
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 ?>
-<?php if (\NODE_ID == \GOTEO_NODE) : ?>
+<?php if (!\Goteo\Application\Config::isNode()) : ?>
     <div id="sub-header">
         <div>
             <h2><?php echo $vars['description']; ?></h2>

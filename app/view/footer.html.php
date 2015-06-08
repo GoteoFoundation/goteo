@@ -8,7 +8,7 @@ use Goteo\Library\Text,
 //activamos la cache para las consultas de categorias, posts, sponsors
 \Goteo\Core\DB::cache(true);
 
-if (NODE_ID != GOTEO_NODE) {
+if (\Goteo\Application\Config::isNode()) {
     include __DIR__ . '/node/footer.html.php';
     return;
 }

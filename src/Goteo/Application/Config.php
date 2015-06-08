@@ -2,26 +2,158 @@
 
 namespace Goteo\Application;
 
+use Symfony\Component\Config\Loader\LoaderResolver;
+use Symfony\Component\Config\Loader\DelegatingLoader;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouteCollection;
+
+use Goteo\Application\Config\YamlSettingsLoader;
+use Goteo\Application\Config\ConfigException;
+use Symfony\Component\Config\FileLocator;
+
+use Goteo\Application\View;
+
 class Config {
+    static protected $loader;
+    static protected $routes;
     static protected $config;
 
-    static function factory(array $config) {
+    static public function factory(array $config) {
         self::$config = $config;
         self::setConstants();
+        self::setDirConfiguration();
+    }
+
+    static public function loadFromYaml($file) {
+        //
+        //LOAD CONFIG
+        //
+
+        $configDirectories = array(__DIR__ . '/../../../config');
+
+        $locator = new FileLocator($configDirectories);
+
+        $loaderResolver = new LoaderResolver(array(new YamlSettingsLoader($locator)));
+        $delegatingLoader = new DelegatingLoader($loaderResolver);
+
+        try {
+            $config = $delegatingLoader->load(__DIR__ . '/../../../config/' . $file);
+            // ... handle the config values
+            self::factory($config);
+
+        }
+        catch(ConfigException $e) {
+            $code = \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN;
+            // TODO: custom template
+            die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'code' => $code], $code));
+            return;
+        }
+    }
+
+
+    static public function setLoader(\Composer\Autoload\ClassLoader $loader) {
+        self::$loader = $loader;
+    }
+
+    static public function addAutoloadDir($dir) {
+        self::$loader->add('', $dir);
+    }
+
+    static public function getRoutes() {
+        if( ! self::$routes ) {
+            self::$routes = include( __DIR__ . '/../../app.php' );
+        }
+
+        return self::$routes;
+    }
+
+
+    static public function setDirConfiguration() {
+        $extend = self::get('extend.autoload');
+        if(is_array($extend)) {
+            foreach($extend as $plugin) {
+                //Autoload classes
+                self::addAutoloadDir(__DIR__ . '/../../../extend/goteo/src');
+            }
+        }
+        // Route app
+        if(is_file(__DIR__ . '/../../../extend/' .  self::get('extend.routes'))) {
+            self::$routes = include(__DIR__ . '/../../../extend/' . self::get('extend.routes'));
+        }
+
+        //Cache dir in libs
+        \Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
+
+        /**********************************/
+        // LEGACY VIEWS
+        \Goteo\Core\View::addViewPath(GOTEO_WEB_PATH . 'view');
+        //NormalForm views
+        \Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/NormalForm/view');
+        //SuperForm views
+        \Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/SuperForm/view');
+        //TODO: PROVISIONAL
+        //add view
+        \Goteo\Core\View::addViewPath(GOTEO_WEB_PATH . 'nodesys');
+        /**********************************/
+
+        //Compiled views by grunt
+        View::addFolder(__DIR__ . '/../../../templates/grunt', 'compiled');
+
+        // //If node, Node templates first
+        // //Node/call theme
+        // if(self::isNode()) {
+        //     //Custom templates first (PROVISIONAL: should be configurable in settings)
+        //     View::addFolder(GOTEO_PATH . 'extend/goteo/templates/node', 'node-goteo');
+        //     //Nodes views
+        //     View::addFolder(GOTEO_PATH . 'templates/node', 'node');
+        // }
+        $extend = self::get('extend.templates');
+        if(is_array($extend)) {
+            foreach($extend as $path) {
+                //Custom templates first
+                View::addFolder(__DIR__ . '/../../../extend/' . $path, str_replace('/', '-', $path));
+            }
+        }
+        //Default templates
+        View::addFolder(__DIR__ . '/../../../templates/default', 'default');
+
+
+        // print_r(View::getEngine());
+
+        // views function registering
+        View::getEngine()->loadExtension(new \Goteo\Foil\Extension\GoteoCore(), [], true);
+        View::getEngine()->loadExtension(new \Goteo\Foil\Extension\TextUtils(), [], true);
+        View::getEngine()->loadExtension(new \Goteo\Foil\Extension\Pages(), [], true);
+
+
+        // Some defaults
+        View::getEngine()->useData([
+            'title' => Config::get('meta.title'),
+            'meta_description' => Config::get('meta.description'),
+            'meta_keywords' => Config::get('meta.keywords'),
+            'meta_author' => Config::get('meta.author'),
+            'meta_copyright' => Config::get('meta.copyright'),
+            'URL' => SITE_URL,
+            'SRC_URL' => SRC_URL,
+            'image' => SRC_URL . '/goteo_logo.png'
+            // 'og_title' => 'Goteo.org',
+            // 'og_description' => GOTEO_META_DESCRIPTION,
+            ]);
     }
 
     /**
      * Compatibility constants
      */
-    static function setConstants() {
+    static public function setConstants() {
         // foreach(self::$config as $name => $value) {
         //     echo "$name => " . print_r($value, 1)."\n";
         // };die;
-        define('GOTEO_MAINTENANCE', self::get('maintenance', true));
+        define('GOTEO_MAINTENANCE', self::get('maintenance'));
         define('GOTEO_SESSION_TIME', self::get('session.time', true));
         define('GOTEO_MISC_SECRET', self::get('secret', true));
         define('GOTEO_ENV', self::get('env', true));
         define('GOTEO_NODE', self::get('node', true));
+        self::set('current_node', self::get('node', true));
         define('GOTEO_FEE', self::get('fee', true));
 
         define('GOTEO_META_TITLE', self::get('meta.title', true));
@@ -54,7 +186,7 @@ class Config {
         define('GOTEO_MAIL_FROM', self::get('mail.transport.from'));
         define('GOTEO_MAIL_NAME', self::get('mail.transport.name'));
         define('GOTEO_MAIL_TYPE', self::get('mail.transport.type'));
-        define('GOTEO_MAIL_SMTP_AUTH', self::get('mail.transport.smtp'));
+        define('GOTEO_MAIL_SMTP_AUTH', self::get('mail.transport.smtp.auth'));
         define('GOTEO_MAIL_SMTP_SECURE', self::get('mail.transport.smtp.secure'));
         define('GOTEO_MAIL_SMTP_HOST', self::get('mail.transport.smtp.host'));
         define('GOTEO_MAIL_SMTP_PORT', self::get('mail.transport.smtp.port'));
@@ -99,6 +231,7 @@ class Config {
         define('OAUTH_LINKEDIN_SECRET', self::get('oauth.linkedin.secret'));
         define('RECAPTCHA_PUBLIC_KEY', self::get('recaptcha.public'));
         define('RECAPTCHA_PRIVATE_KEY', self::get('recaptcha.private'));
+
     }
 
     /**
@@ -109,7 +242,7 @@ class Config {
      * @param  string $strick throws a Exception on fail
      * @return [type]       [description]
      */
-    static function get($name, $strict = false) {
+    static public function get($name, $strict = false) {
         $part = strtok($name, '.');
         if(array_key_exists($part, self::$config)) {
             $ret = self::$config[$part];
@@ -121,6 +254,9 @@ class Config {
                 elseif($strict) {
                     throw new Config\ConfigException("Config var [$name] not found!", 1);
                 }
+                else {
+                    $ret = null;
+                }
             }
             return $ret;
         }
@@ -130,8 +266,33 @@ class Config {
         return null;
     }
 
-    static function isNode() {
-        return NODE_ID !== GOTEO_NODE;
+    static public function set($name, $value) {
+        $config = self::_set(self::$config, $name, $value);
+    }
+
+    static private function _set(&$config, $name, $value) {
+        $pos = strpos($name, '.');
+        if($pos === false) {
+            return $config[$name] = $value;
+        }
+        return self::_set($config[substr($name, 0, $pos)], substr($name, $pos + 1), $value);
+    }
+
+    /**
+     * If a node is active
+     * @param  [type]  $node [description]
+     * @return boolean       [description]
+     */
+    static public function isCurrentNode($node) {
+        return self::get('current_node') === $node;
+    }
+
+    /**
+     * If is not the main node
+     * @return boolean [description]
+     */
+    static public function isNode() {
+        return !self::isCurrentNode(self::get('node'));
     }
 
 }

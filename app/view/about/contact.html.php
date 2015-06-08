@@ -1,7 +1,8 @@
 <?php
 
 use Goteo\Library\Page,
-    Goteo\Library\Text;
+    Goteo\Library\Text,
+    Goteo\Application\Config;
 
 $bodyClass = 'about';
 
@@ -23,7 +24,7 @@ include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 ?>
 <style>#recaptcha_widget_div{display:none;}</style>
-<?php if (\NODE_ID == \GOTEO_NODE) : ?>
+<?php if (!Config::isNode()) : ?>
     <div id="sub-header">
         <div>
             <h2><?php echo $page->description; ?></h2>

@@ -12,9 +12,7 @@ class YamlSettingsLoader extends FileLoader
     public function load($resource, $type = null)
     {
         $config = Yaml::parse(file_get_contents($resource));
-        // ... handle the config values
-        Config::factory($config);
-
+        return $config;
     }
 
     public function supports($resource, $type = null)

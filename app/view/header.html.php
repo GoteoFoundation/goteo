@@ -3,7 +3,7 @@
         Goteo\Application\Lang;
 
 // si es un nodo
-if (NODE_ID != GOTEO_NODE) {
+if (\Goteo\Application\Config::isNode()) {
     include __DIR__ . '/node/header.html.php';
     return;
 }

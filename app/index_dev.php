@@ -1,10 +1,11 @@
 <?php
 
 use Goteo\Application\App;
-use Goteo\Application\Config;
-
 use Symfony\Component\HttpFoundation\Request;
 
+
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+ini_set("display_errors",1);
 
 //Public Web path
 define('GOTEO_WEB_PATH', __DIR__ . '/');

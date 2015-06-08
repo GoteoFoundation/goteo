@@ -28,7 +28,7 @@ $this->section('content');
 
 ?>
 <style>#recaptcha_widget_div{display:none;}</style>
-<?php if (\NODE_ID == \GOTEO_NODE) : ?>
+<?php if (!\Goteo\Application\Config::isNode()) : ?>
     <div id="sub-header">
         <div>
             <h2><?php echo $page->description; ?></h2>

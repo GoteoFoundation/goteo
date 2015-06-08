@@ -34,7 +34,7 @@ $go_up = Text::get('regular-go_up');
 
 
 </script>
-<?php if (\NODE_ID == \GOTEO_NODE) : ?>
+<?php if (!\Goteo\Application\Config::isNode()) : ?>
 		<div id="sub-header-secondary">
             <div class="clearfix">
                 <h2>GOTEO<span class="red">FAQ</span></h2>

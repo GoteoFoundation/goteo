@@ -1,9 +1,0 @@
-O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:260:"
-                SELECT
-                    id, name, url
-                FROM node
-                WHERE id != 'goteo'
-                AND active = 1
-                AND id != 'testnode'
-                ORDER BY `name` ASC
-                a:0:{}a:1:{i:0;i:5;}";s:5:"group";s:12:"sql/fetchAll";}s:5:"value";a:3:{i:0;O:8:"stdClass":3:{s:2:"id";s:9:"andalucia";s:4:"name";s:16:"Goteo Andalucía";s:3:"url";s:26:"http://andalucia.goteo.org";}i:1;O:8:"stdClass":3:{s:2:"id";s:9:"barcelona";s:4:"name";s:15:"Goteo Barcelona";s:3:"url";s:27:"http://barcelona.goteo.org ";}i:2;O:8:"stdClass":3:{s:2:"id";s:7:"euskadi";s:4:"name";s:13:"Goteo Euskadi";s:3:"url";s:24:"http://euskadi.goteo.org";}}s:3:"ttl";i:30;s:7:"expires";i:1433528543;s:7:"created";i:1433528513;}

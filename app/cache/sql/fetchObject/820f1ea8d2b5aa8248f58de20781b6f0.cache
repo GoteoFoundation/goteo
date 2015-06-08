@@ -1,1 +1,0 @@
-O:20:"FileSystemCacheValue":5:{s:3:"key";O:18:"FileSystemCacheKey":2:{s:3:"key";s:92:"SELECT html FROM purpose WHERE text = :ida:1:{s:3:":id";s:21:"profile-patron-header";}a:0:{}";s:5:"group";s:15:"sql/fetchObject";}s:5:"value";O:8:"stdClass":1:{s:4:"html";s:1:"1";}s:3:"ttl";i:5;s:7:"expires";i:1433528522;s:7:"created";i:1433528517;}

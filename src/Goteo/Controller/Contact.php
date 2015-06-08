@@ -89,13 +89,9 @@ namespace Goteo\Controller {
                     $subject = $tag.$subject;
 
                     // destinatario
-                    if (\defined('NODE_MAIL')) {
-                        $to = \NODE_MAIL;
-                        $toName = \NODE_NAME;
-                    } else {
-                        $to = \GOTEO_CONTACT_MAIL;
-                        $toName = 'Goteo';
-                    }
+                    $to = \Goteo\Application\Config::get('mail.contact');
+                    $toName = \Goteo\Application\Config::get('mail.contact_name');
+                    if(empty($toName)) $toName = 'Goteo';
 
                     // En el contenido:
                     $search  = array('%TONAME%', '%MESSAGE%', '%USEREMAIL%');
