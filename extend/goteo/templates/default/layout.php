@@ -1,6 +1,10 @@
 <?php
 
+
 $node = $this->get_config('current_node');
+if($node === $this->get_config('node')) {
+    $node = '';
+}
 
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
