@@ -36,7 +36,7 @@ include __DIR__ . '/header.html.php';
 
 
 </script>
-<?php if (\NODE_ID == \GOTEO_NODE) : ?>
+<?php if (!\Goteo\Application\Config::isNode()) : ?>
 		<div id="sub-header-secondary">
             <div class="clearfix">
                 <h2>GOTEO<span class="red">AGENDA</span></h2>

@@ -4,6 +4,7 @@ namespace Goteo\Model {
 
     use Goteo\Core\Model;
     use Goteo\Application\Session;
+    use Goteo\Application\Config;
     use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\User,
@@ -458,7 +459,7 @@ namespace Goteo\Model {
                     ':uid' => $this->user,
                     ':unode' => $unode,
                     ':iid' => $this->id,
-                    ':inode' => NODE_ID)
+                    ':inode' => Config::get('current_node'))
                 );
 
                 // y las recompensas

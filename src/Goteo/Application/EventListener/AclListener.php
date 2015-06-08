@@ -19,8 +19,13 @@ class AclListener implements EventSubscriberInterface
 {
     public function onRequest(GetResponseEvent $event)
     {
+        //not need to do anything on sub-requests
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
         $request = $event->getRequest();
-        $uri = $request->server->get('PATH_INFO');
+        $uri = $request->getPathInfo();
         if (!ACL::check($uri) && substr($uri, 0, 11) !== '/user/login') {
 
             // TEMPORAL CRON

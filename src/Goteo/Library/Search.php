@@ -3,6 +3,7 @@
 namespace Goteo\Library {
 
     use Goteo\Model\Project;
+    use Goteo\Application\Config;
 
 	/*
 	 * Clase para realizar búsquedas de proyectos
@@ -71,7 +72,7 @@ namespace Goteo\Library {
 
             if (!empty($params['node'])) {
                 $where[] = ' AND project.node = :node';
-                $values[':node'] = NODE_ID;
+                $values[':node'] = Config::get('current_node');
             }
 
             if (!empty($params['status'])) {

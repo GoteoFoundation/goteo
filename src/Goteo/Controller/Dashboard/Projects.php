@@ -307,7 +307,7 @@ namespace Goteo\Controller\Dashboard {
             }
 
             $remite = $project->name . ' ' . Text::get('regular-from') . ' ';
-            $remite .= (NODE_ID != GOTEO_NODE) ? NODE_NAME : GOTEO_MAIL_NAME;
+            $remite .= \Goteo\Application\Config::isNode() ? NODE_NAME : GOTEO_MAIL_NAME;
 
             $search = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%OWNERURL%', '%OWNERNAME%');
             $replace = array($msg_content, $project->name, SITE_URL . "/project/" . $project->id,

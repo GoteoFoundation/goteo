@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Core\Redirection;
 use Goteo\Core\Error;
 use Goteo\Model;
+use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Application\Session;
 use Goteo\Application\Cookie;
@@ -124,7 +125,7 @@ class UserController extends \Goteo\Core\Controller {
             $user->email = $vars['email'];
             $user->password = $vars['password'];
             $user->active = true;
-            $user->node = \NODE_ID;
+            $user->node = Config::get('current_node');
 
             $user->save($errors);
 
@@ -346,7 +347,7 @@ class UserController extends \Goteo\Core\Controller {
         $user->email = $email;
         $user->password = $name;
         $user->active = false;
-        $user->node = \NODE_ID;
+        $user->node = Config::get('current_node');
 
         if ($user->save($errors)) {
             Session::setUser(Model\User::get($user->id), true);

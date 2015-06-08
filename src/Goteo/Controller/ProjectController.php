@@ -5,6 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Core\ACL,
         Goteo\Core\Error,
         Goteo\Core\Redirection,
+        Goteo\Application\Config,
         Goteo\Application\View,
         Goteo\Application\Lang,
         Goteo\Application\Session,
@@ -519,7 +520,7 @@ namespace Goteo\Controller {
             }
 
             $project = new Model\Project(array('owner' => Session::getUserId()));
-            if ($project->create(NODE_ID, $errors)) {
+            if ($project->create(Config::get('current_node'), $errors)) {
 
                 // Evento Feed
                 $log = new Feed();

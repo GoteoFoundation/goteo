@@ -50,28 +50,21 @@ namespace Goteo\Controller {
             // el tipo de contenido de la pagina about es diferente
             if ( empty($id) ||
                  $id == 'about' ||
-                ( NODE_ID != \GOTEO_NODE
+                ( \Goteo\Application\Config::isNode()
                  && !\in_array($id, array('about', 'contact', 'press', 'service', 'maintenance', 'donations'))
                  )
                 ) {
                 $id = 'about';
 
-                if (NODE_ID == \GOTEO_NODE) {
-                    $posts = Model\Info::getAll(true, \GOTEO_NODE);
+                $posts = Model\Info::getAll(true, \Goteo\Application\Config::get('node'));
 
-                    return new Response(View::render('about/info', array(
-                        'posts' => $posts
-                    )
-                 ));
-                } else {
-
-                    return \Goteo\Controller\Index::node_index('about');
-
-                }
-
+                return new Response(View::render('about/info', array(
+                    'posts' => $posts
+                )
+             ));
 
             }
-
+echo $id;
             // resto de casos
             $page = Page::get($id);
 

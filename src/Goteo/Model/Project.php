@@ -3,6 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Core\ACL,
+        Goteo\Application\Config,
         Goteo\Application\Session,
         Goteo\Application\Lang,
         Goteo\Library,
@@ -2543,9 +2544,9 @@ namespace Goteo\Model {
 
             $values = array();
             // si es un nodo, filtrado
-            if (\NODE_ID != \GOTEO_NODE) {
+            if (\Goteo\Application\Config::isNode()) {
                 $sqlFilter = " AND project.node = :node";
-                $values[':node'] = NODE_ID;
+                $values[':node'] = Config::get('current_node');
             } else {
                 $sqlFilter = "";
             }

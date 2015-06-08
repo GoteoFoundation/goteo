@@ -8,6 +8,8 @@ $this->layout("layout", [
 
 ?>
 
+<?php /* MAIN PAGE CONTENT */ ?>
+
 <?php $this->section('content') ?>
 
 <div id="node-main">
@@ -35,28 +37,3 @@ $this->layout("layout", [
 </div>
 <?php $this->stop() ?>
 
-<?php $this->section('footer') ?>
-    <!-- funcion jquery para mostrar uno y ocultar el resto -->
-    <script type="text/javascript">
-        $(function(){
-            $(".show_cat").click(function (event) {
-                event.preventDefault();
-
-                if ($("#node-projects-"+$(this).attr('href')).is(":visible")) {
-                    $(".button").removeClass('current');
-                    $(".rewards").removeClass('current');
-                    $(".categories").removeClass('current');
-                    $(".node-projects").hide();
-                } else {
-                    $(".button").removeClass('current');
-                    $(".rewards").removeClass('current');
-                    $(".categories").removeClass('current');
-                    $(".node-projects").hide();
-                    $(this).parents('div').addClass('current');
-                    $("#node-projects-"+$(this).attr('href')).show();
-                }
-
-            });
-        });
-    </script>
-<?php $this->append() ?>

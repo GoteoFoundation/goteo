@@ -41,6 +41,25 @@ url:
     #
     data:
 
+# extend/ folder can override any template, add controllers, etc
+# example:
+# extend:
+#       - goteo # extend/goteo/src/Controllers
+#               # extend/goteo/src/Models
+#               # extend/goteo/src/app.php
+#               # ...
+# Extend is the directory to personalize your copy of goteo.org
+# Routes, classes and templates can be overrided
+extend:
+    # If defined, the php app that returns a Symfony\Component\Routing\RouteCollection
+    routes: custom_dir/app.php # => extend/custom_dir/app.php
+    # Extra dirs where to find additional autoload classes
+    autoload:
+        - custom_dir/src # extend goteo folders, "extend/goteo"
+    # Extra dirs to load (before templates/default)
+    templates:
+        - custom_dir/templates/default
+
 # Force using https protocol
 ssl: false
 

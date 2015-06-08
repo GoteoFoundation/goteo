@@ -5,6 +5,7 @@ namespace Goteo\Controller;
 use Goteo\Application\View;
 use Goteo\Library\Text;
 use Goteo\Application\Message;
+use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Model;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,7 +79,7 @@ class BlogController extends \Goteo\Core\Controller {
                     'show' => $show,
                     'filters' => $filters,
                     'post' => $post,
-                    'owner' => \GOTEO_NODE
+                    'owner' => Config::get('node')
                 )
         ));
 

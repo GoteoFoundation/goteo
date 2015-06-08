@@ -7,7 +7,7 @@ use Goteo\Application\Config;
 $routes = new RouteCollection();
 $routes->add('home', new Route(
     '/',
-    array('_controller' => 'Goteo\Controller\IndexController::indexNodeAction')
+    array('_controller' => 'Goteo\Controller\IndexController::indexAction')
 ));
 
 //// DISCOVER /////

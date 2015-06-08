@@ -7,7 +7,7 @@ $this->layout("layout", [
 
 $this->section('content');
 ?>
-<?php if (\NODE_ID == \GOTEO_NODE) : ?>
+<?php if ($this->get_config('current_node') == $this->get_config('node')) : ?>
     <div id="sub-header">
         <div>
             <h2><?= $this->raw('description') ?></h2>

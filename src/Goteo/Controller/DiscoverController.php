@@ -50,7 +50,7 @@ class DiscoverController extends \Goteo\Core\Controller {
             'lists' => array()
         );
 
-        if (\NODE_ID != \GOTEO_NODE) {
+        if (\Goteo\Application\Config::isNode()) {
             $types[] = 'others';
         }
 
@@ -119,7 +119,7 @@ class DiscoverController extends \Goteo\Core\Controller {
         $types = self::$types;
 
         $types[] = 'all';
-        if (\NODE_ID != \GOTEO_NODE) {
+        if (\Goteo\Application\Config::isNode()) {
             $types[] = 'others';
         }
 

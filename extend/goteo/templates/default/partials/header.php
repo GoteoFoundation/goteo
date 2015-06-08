@@ -1,14 +1,7 @@
 <?php
+
 use Goteo\Application\Lang;
 use Goteo\Library\Currency;
-use Goteo\Model\Node,
-    Goteo\Model\Banner;
-
-$nodeData = Node::get(NODE_ID, LANG);
-$banners = Banner::getAll(true, NODE_ID);
-
-$nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>'), $nodeData->description);
-
 
 $currencies = Currency::$currencies;
 
@@ -16,9 +9,14 @@ $num_currencies=count($currencies);
 
 $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 
-$langs = Lang::listAll('short');
-?>
+// piñonaco para activar portugués en la convocatoria de extremadura
+// TODO: por configuracion
+if (isset($call) && $call->id == 'cofinancia-extremadura')
+    Lang::setPublic('pt');
 
+$langs = Lang::listAll('short');
+
+?>
                         <ul class="currency">
                             <?php foreach ($currencies as $ccyId => $ccy): ?>
                                 <?php if ($ccyId == $_SESSION['currency']) continue; ?>
@@ -42,16 +40,12 @@ $langs = Lang::listAll('short');
 <div id="header">
     <h1><?=$this->text('regular-main-header')?></h1>
     <div id="super-header">
-		<div id="goteo-logo">
-			<ul>
-				<li class="home"><a class="node-jump" href="<?php echo GOTEO_URL ?>">Inicio</a></li>
-			</ul>
-		</div>
+       <?php include __DIR__ . '/../../../../../templates/default/partials/header/highlights.php' ?>
 
-	   <div id="rightside" style="float:right;">
+       <div id="rightside" style="float:right;">
            <div id="about">
                 <ul>
-                    <li><a href="/about"><?php echo str_replace('Goteo', $nodeData->name, $this->text('regular-header-about')); ?></a></li>
+                    <li><a href="/about"><?=$this->text('regular-header-about')?></a></li>
                     <li><a href="/blog"><?=$this->text('regular-header-blog')?></a></li>
                     <li><a href="/faq"><?=$this->text('regular-header-faq')?></a></li>
                     <?php if($num_currencies>1) { ?>
@@ -61,12 +55,17 @@ $langs = Lang::listAll('short');
 
                     </li>
                     <?php } ?>
+                    <li id="lang"><a href="#" ><?php echo Lang::getShort(); ?></a>
 
-                    <li id="lang"><a href="#" ><?php echo Lang::getShort(); ?></a></li>
+                        <?php // TODO: UL LANG AQUI ?>
+
+                    </li>
                 </ul>
             </div>
 
-		</div>
+
+        </div>
+
 
     </div>
 
@@ -76,12 +75,14 @@ $langs = Lang::listAll('short');
             <div class="node-intro"><?php echo $nodeText; ?></div>
             <?php if ($nodeData->logo instanceof \Goteo\Model\Image) : ?>
             <div class="node-logo">
-                <span><?=$this->text('node-header-sponsorby')?></span>
+                <span><?php echo Text::get('node-header-sponsorby'); ?></span>
                 <img src="<?php echo $nodeData->logo->getLink(150, 75) ?>" alt="<?php echo htmlspecialchars($nodeData->subtitle) ?>" />
             </div>
             <?php endif; ?>
         </div>
     </div>
-    <?php include __DIR__ . '/../node/menu.html.php' ?>
-    <?php include __DIR__ . '/../node/banners.html.php' ?>
+
+    <?php include __DIR__ . '/../../../../../templates/default/partials/header/menu.php' ?>
+
 </div>
+
