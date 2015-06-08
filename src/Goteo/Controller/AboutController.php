@@ -64,7 +64,7 @@ namespace Goteo\Controller {
              ));
 
             }
-echo $id;
+
             // resto de casos
             $page = Page::get($id);
 
