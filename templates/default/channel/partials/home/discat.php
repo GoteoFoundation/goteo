@@ -4,16 +4,17 @@
 // especial para los byreward, que es una caja por cada icono
 
 foreach ($this->categories as $cat => $catData) : ?>
-<div id="node-projects-category-<?php echo $cat ?>" class="content_widget node-projects rounded-corners" style="display: none;">
+<div id="channel-projects-category-<?= $cat ?>" class="content_widget channel-projects rounded-corners" style="display: none;">
 
-    <h2><?= $this->text('node-side-searcher-bycategory') . ': ' . $catData['name'] ?>
+    <h2><?= $this->text('channel-side-searcher-bycategory') . ': ' . $catData['name'] ?>
     <span class="line"></span>
     </h2>
 
     <ul>
         <?php foreach ($catData['projects'] as $project) {
             $project->per_amount = round(($project->amount / $project->mincost) * 100);
-            echo View::get('project/widget/tiny_project.html.php', array('project'=>$project));
+            echo $this->insert('project/widget/tiny_project', ['project' => $project]);
+
         } ?>
     </ul>
 
