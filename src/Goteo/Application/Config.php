@@ -102,7 +102,7 @@ class Config {
         /**********************************/
 
         //Compiled views by grunt
-        View::addFolder(__DIR__ . '/../../../templates/grunt', 'compiled');
+        View::addFolder(GOTEO_WEB_PATH . 'templates', 'compiled');
 
         // //If node, Node templates first
         // //Node/call theme

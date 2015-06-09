@@ -1,7 +1,3 @@
-        <!-- processhtml:remove:dist -->
-        <script src="//localhost:35729/livereload.js"></script>
-        <!-- /processhtml -->
-
         <script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
         {

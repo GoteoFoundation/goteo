@@ -11,6 +11,7 @@ module.exports = function(grunt) {
                 mode: '777'
             },
             src: [
+                '<%= goteo.dist %>/data/images/',
                 '<%= goteo.dist %>/data/',
                 '<%= goteo.dist %>/logs/'
             ]

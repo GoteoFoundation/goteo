@@ -1,7 +1,6 @@
 <?php
 
-use Goteo\Library\Text,
-Goteo\Model\Category,
+use Goteo\Model\Category,
 Goteo\Model\Post,  // esto son entradas en portada o en footer
 Goteo\Model\Sponsor;
 

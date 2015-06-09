@@ -21,7 +21,7 @@ module.exports = function(grunt) {
                 '<%= goteo.app %>/**/view/**/*.php',
                 '<%= goteo.app %>/**/view/css/**/*.css',
                 '<%= goteo.app %>/**/view/js/**/*.js',
-                '<%= goteo.app %>/**/view/**/*..{gif,jpeg,jpg,png,svg,webp}',
+                '<%= goteo.app %>/**/view/**/*.{gif,jpeg,jpg,png,svg,webp}',
             ]
         }
     });

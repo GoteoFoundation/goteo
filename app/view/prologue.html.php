@@ -42,19 +42,22 @@ if (\Goteo\Application\Config::isNode()) {
         <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>
 
+<?php
 
-    <!-- build:css view/css/goteo.css -->
-    <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.css" />
-    <!-- endbuild -->
+// Incluir la nueva plantilla, es compatible simple php
+// Version "dist"
+if(is_file(__DIR__ . '/../templates/partials/header/styles.php')) {
+    include __DIR__ . '/../templates/partials/header/styles.php';
+}
+else {
+    include __DIR__ . '/../../templates/default/partials/header/styles.php';
+}
+ ?>
 
         <!-- processhtml:remove:dist -->
         <script src="//localhost:35729/livereload.js"></script>
         <!-- /processhtml -->
 
-
-      <!--[if IE]>
-      <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
-      <![endif]-->
 
         <script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
