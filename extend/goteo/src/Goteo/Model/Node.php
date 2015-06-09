@@ -13,6 +13,7 @@ namespace Goteo\Model {
             $email,
             $admins = array(), // administradores
             $logo,
+            $sello,
             $image;
 
 
@@ -35,6 +36,7 @@ namespace Goteo\Model {
                         IFNULL(node_lang.subtitle, node.subtitle) as subtitle,
                         IFNULL(node_lang.description, node.description) as description,
                         node.logo as logo,
+                        node.label as label,
                         node.location as location,
                         node.url as url,
                         node.active as active,
@@ -55,6 +57,9 @@ namespace Goteo\Model {
 
                 // logo
                 $item->logo = (!empty($item->logo)) ? Image::get($item->logo) : null;
+
+                // label
+                $item->label = (!empty($item->label)) ? Image::get($item->label) : null;
 
                 return $item;
         }
@@ -183,6 +188,10 @@ namespace Goteo\Model {
 
             if (isset($this->logo->id)) {
                 $this->logo = $this->logo->id;
+            }
+
+            if (isset($this->label->id)) {
+                $this->label = $this->label->id;
             }
 
             if (empty($errors))
@@ -342,12 +351,28 @@ namespace Goteo\Model {
                 $this->logo = '';
             }
 
+            // Tratamos el sello
+            if (is_array($this->label) && !empty($this->label['name'])) {
+                $image = new Image($this->label);
+
+                if ($image->save($errors)) {
+                    $this->label = $image->id;
+                } else {
+                    \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    $this->label = '';
+                }
+            }
+            if (is_null($this->label)) {
+                $this->label = '';
+            }
+
             $fields = array(
                 'name',
                 'subtitle',
                 'email',
                 'location',
                 'logo',
+                'label',
                 'description'
                 );
 

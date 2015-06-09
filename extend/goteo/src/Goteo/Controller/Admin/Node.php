@@ -56,6 +56,20 @@ namespace Goteo\Controller\Admin {
                             $node->logo = (isset($node->logo->id)) ? $node->logo->id : null;
                         }
 
+                        // tratar si quitan el sello
+                        if (!empty($_POST['label-' . $node->label->hash .  '-remove'])) {
+                            if ($node->label instanceof Model\Image) $node->label->remove($errors);
+                            $node->label = null;
+                        }
+
+                        // tratar la imagen y ponerla en la propiedad label
+                        if(!empty($_FILES['label_upload']['name'])) {
+                            if ($node->label instanceof Model\Image) $node->label->remove($errors);
+                            $node->label = $_FILES['label_upload'];
+                        } else {
+                            $node->label = (isset($node->label->id)) ? $node->label->id : null;
+                        }
+
                         /// este es el único save que se lanza desde un metodo process_
                         if ($node->update($errors)) {
                             Message::info('Datos del canal actualizados correctamente');

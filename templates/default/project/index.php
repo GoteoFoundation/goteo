@@ -101,7 +101,7 @@ $this->section('content');
                 <?php endif; ?>
 
                 <?php if (!empty($project->node) && $project->node != $this->get_config('current_node')) : ?>
-                <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" ><img src ="/nodesys/<?php echo $project->node ?>/sello.png" alt="<?php echo htmlspecialchars($project->nodeData->name) ?>" title="Nodo <?php echo htmlspecialchars($project->nodeData->name) ?>"/></a></div>
+                <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" ><img src ="<?= $project->nodeData->label->getLink(100,100) ?>" alt="<?php echo htmlspecialchars($project->nodeData->name) ?>" title="Nodo <?php echo htmlspecialchars($project->nodeData->name) ?>"/></a></div>
                 <?php endif; ?>
             </div>
 

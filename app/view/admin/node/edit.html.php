@@ -76,6 +76,32 @@ if (!$node instanceof Model\Node) {
                 )
             ),
 
+            'label' => array(
+                'type' => 'Hidden',
+                'value' => $node->label->id,
+            ),
+
+            'thelabel' => array(
+                'type'      => 'group',
+                'title'     => 'Sello',
+                'class'     => 'user_avatar',
+                'children'  => array(
+                    'label_upload'    => array(
+                        'type'  => 'file',
+                        'label' => Text::get('form-image_upload-button'),
+                        'class' => 'inline avatar_upload'
+                    ),
+                    'label-image' => array(
+                        'type'  => 'HTML',
+                        'class' => 'inline avatar-image',
+                        'html'  => is_object($node->label) ?
+                                   $node->label . '<img src="' . SITE_URL . '/image/' . $node->label->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="label-'.$node->label->hash.'-remove" title="Quitar este sello" value="remove">X</button>' :
+                                   ''
+                    )
+
+                )
+            ),
+
             'email' => array(
                 'type'      => 'TextBox',
                 'size'      => 20,

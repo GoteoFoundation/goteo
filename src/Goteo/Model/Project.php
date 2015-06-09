@@ -367,6 +367,7 @@ namespace Goteo\Model {
                                 project.id REGEXP '[0-9a-f]{32}' as draft,
                                 node.name as node_name,
                                 node.url as node_url,
+                                node.label as node_label,
                                 project_conf.*,
                                 user.name as user_name,
                                 user.email as user_email,
@@ -439,6 +440,9 @@ namespace Goteo\Model {
                     $project->nodeData->id = $project->node;
                     $project->nodeData->name = $project->node_name;
                     $project->nodeData->url = $project->node_url;
+
+                    // label
+                    $project->nodeData->label = (!empty($project->node_label)) ? Image::get($project->node_label) : null;
                 }
 
                 if (isset($project->media)) {

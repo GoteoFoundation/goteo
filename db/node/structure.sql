@@ -28,3 +28,7 @@ ALTER TABLE `node`
   	ADD `facebook` tinytext COLLATE utf8_general_ci,
     ADD `google` tinytext COLLATE utf8_general_ci,
   	ADD `linkedin` tinytext COLLATE utf8_general_ci;
+
+-- campo imagen a nombre archivo
+ALTER TABLE `node` ADD `label` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Sello en proyectos';
+
