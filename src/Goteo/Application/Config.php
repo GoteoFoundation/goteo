@@ -44,6 +44,7 @@ class Config {
         }
         catch(ConfigException $e) {
             $code = \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN;
+            \Goteo\Application\View::addFolder(__DIR__ . '/../../../templates/default');
             // TODO: custom template
             die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'code' => $code], $code));
             return;
