@@ -86,7 +86,7 @@ namespace Goteo\Core {
          * insert to sql
          * @return [type] [description]
          */
-        public function insert(Array $fields) {
+        public function dbInsert(array $fields) {
             $values = $set = $keys = [];
             foreach($fields as $field) {
                 if(property_exists($this, $field)) {
@@ -107,7 +107,7 @@ namespace Goteo\Core {
          * update to sql
          * @return [type] [description]
          */
-        public function update(Array $fields, Array $where = ['id']) {
+        public function dbUpdate(array $fields, array $where = ['id']) {
             $values = $set = [];
             foreach($fields as $field) {
                 if(property_exists($this, $field)) {
@@ -128,6 +128,7 @@ namespace Goteo\Core {
             }
             if(empty($values)) throw new \PDOException("No fields specified!", 1);
             $sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(',', $clause);
+
             return self::query($sql, $values);
         }
 
@@ -137,11 +138,11 @@ namespace Goteo\Core {
          * Expects a id property
          * @return [type] [description]
          */
-        public function insertUpdate(Array $fields, Array $where = ['id']) {
+        public function dbInsertUpdate(array $fields, array $where = ['id']) {
             if($this->id) {
-                $ok = $this->update($fields, $where);
+                $ok = $this->dbUpdate($fields, $where);
             } else {
-                $ok = $this->insert($fields);
+                $ok = $this->dbInsert($fields);
                 $this->id = static::insertId();
             }
             return $ok;
@@ -149,7 +150,29 @@ namespace Goteo\Core {
 
 
         /**
-         * Borrar.
+         * Delete
+         * @return  type bool   true|false
+         */
+        public function dbDelete ($where = ['id']) {
+            $clause = [];
+            foreach($where as $field) {
+                if(property_exists($this, $field)) {
+                    $clause[] = "`$field` = :$field ";
+                    $values[":$field"] = $this->$field;
+                }
+                else {
+                    throw new \PDOException("Property $field does not exists!", 1);
+                }
+            }
+            if(empty($values)) throw new \PDOException("No fields specified!", 1);
+            $sql = 'DELETE FROM `' . $this->Table . '` WHERE ' . implode(',', $clause);
+
+            return self::query($sql, $values);
+        }
+
+        /**
+         * Delete without exception.
+         * TODO: remove this method...
          * @return  type bool   true|false
          */
         public function delete (&$errors = array()) {
@@ -159,13 +182,9 @@ namespace Goteo\Core {
                 return false;
             }
 
-            $sql = 'DELETE FROM `' . $this->Table . '` WHERE id = ?';
-            // var_dump($this);
-            // echo get_called_class()." $sql $id\n";
             try {
-                self::query($sql, array($id));
+                $this->dbDelete();
             } catch (\PDOException $e) {
-                // throw new Exception("Delete error in $sql");
                 return false;
             }
             return true;
@@ -201,7 +220,7 @@ namespace Goteo\Core {
          * Retorna el total de elementos de la tabla
          * @param $filters array of pair/values to filter the table
          */
-        public static function countTotal($filters = array(), $comparator = '=', $joiner = 'AND') {
+        public static function dbCount($filters = array(), $comparator = '=', $joiner = 'AND') {
             $clas = get_called_class();
             $instance = new $clas;
             $sql = 'SELECT COUNT(*) FROM ' . $instance->getTable();
