@@ -38,26 +38,32 @@ class NodeController extends \Goteo\Core\Controller {
      * Any route node controller
      */
     public function barcelonaAction ($url = '', Request $request) {
-        Config::set('mail.contact', 'barcelona@goteo.org');
-        Config::set('mail.contact_name', 'Goteo Barcelona');
-        Config::set('current_node', 'barcelona');
 
         define('NODE_META_TITLE', 'Goteo Barcelona - Cofinanciació del procomú');
+
+        Config::set('mail.contact', 'barcelona@goteo.org');
+        Config::set('mail.contact_name', 'Goteo Barcelona');
+
+        Config::set('current_node', 'barcelona');
+        View::addFolder(__DIR__ . '/../../../templates/barcelona', 'barcelona');
+
         View::getEngine()->useData([
             'title' => 'Goteo Barcelona - Cofinanciació del procomú',
             'meta_description' => 'Xarxa social de finançament col·lectiu',
             'meta_keywords' => 'crowdfunding, procomún, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres'
             ]);
         $pages = array('' => 'index', 'about' => 'about');
-        View::addFolder(__DIR__ . '/../../../templates/barcelona', 'barcelona');
+
+
         if(array_key_exists($url, $pages)) {
             //Get vars
             $vars = self::node_index($pages[$url]);
             // NEW SYSTEM:
-            return new Response(View::render( 'barcelona::index', $vars ));
+            // return new Response(View::render( 'barcelona::index', $vars ));
             // OLD SYSTEM
-            // return new Response(\Goteo\Core\View::get( 'node/index.html.php', $vars ));
+            return new Response(\Goteo\Core\View::get( 'node/index.html.php', $vars ));
         }
+
         // die("$url");
         // Default: route to defaults
         // get routes
