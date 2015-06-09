@@ -11,6 +11,7 @@ use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Application\Config\ConfigException;
 use Symfony\Component\Config\FileLocator;
 
+use Goteo\Core\Model;
 use Goteo\Application\View;
 
 class Config {
@@ -22,6 +23,9 @@ class Config {
         self::$config = $config;
         self::setConstants();
         self::setDirConfiguration();
+        // Init database
+        Model::factory();
+
     }
 
     static public function loadFromYaml($file) {

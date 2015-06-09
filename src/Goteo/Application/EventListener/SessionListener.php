@@ -34,8 +34,6 @@ class SessionListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        // Init database
-        Model::factory();
         // Init session
         Session::start('goteo-'.Config::get('env'), Config::get('session.time'));
 
