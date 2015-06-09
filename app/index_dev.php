@@ -12,6 +12,8 @@ define('GOTEO_WEB_PATH', __DIR__ . '/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
+App::debug(true);
+
 $request = Request::createFromGlobals();
 
 //si el parametro GET vale:

@@ -3,6 +3,7 @@
 namespace Goteo\Controller {
 
     use Goteo\Library\Page,
+        Goteo\Application\Config,
         Goteo\Application\View,
         Goteo\Application\Session,
         Goteo\Model,
@@ -22,7 +23,7 @@ namespace Goteo\Controller {
         public function indexAction ($id = '') {
 
             // si llegan a la de mantenimiento sin estar en mantenimiento
-            if ($id == 'maintenance' && GOTEO_MAINTENANCE !== true) {
+            if ($id == 'maintenance' && Config::get('maintenance') !== true) {
                 $id = 'credits';
             }
 
