@@ -3,7 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Model\Image,
-        Goteo\Core\ACL;
+        Goteo\Core\ACL,
+        Goteo\Library\Text;
 
     class Node extends \Goteo\Core\Model {
 
