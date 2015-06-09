@@ -3,17 +3,18 @@
 
 namespace Goteo\Application\Tests;
 
-use Goteo\Application\GoteoApp;
+use Goteo\Application\App;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-class GoteoAppTest extends \PHPUnit_Framework_TestCase {
+class AppTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
 
-        $ob = new GoteoApp();
+        $ob = App::get();
 
-        $this->assertInstanceOf('\Goteo\Application\GoteoApp', $ob);
+        $this->assertInstanceOf('\Goteo\Application\App', $ob);
+        $this->assertInstanceOf('\Goteo\Application\App', App::get());
 
         return $ob;
     }
@@ -37,7 +38,7 @@ class GoteoAppTest extends \PHPUnit_Framework_TestCase {
     //     ;
     //     $resolver = $this->getMock('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface');
 
-    //     return new GoteoApp($matcher, $resolver);
+    //     return new App($matcher, $resolver);
     // }
 
 }
