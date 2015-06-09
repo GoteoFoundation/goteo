@@ -27,7 +27,8 @@ namespace Goteo\Controller\Admin {
              * redirect
              *
              */
-            $call = Model\Call::getMini($id);
+            $call = Model\Call::get($id);
+
 
             // si es admin (no superadmin) si no la tiene asignada no puede hacer otra cosa que no sea listar.
             if ($action != 'list'
