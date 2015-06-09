@@ -2,10 +2,21 @@
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\Config;
 
 
 $custom_routes = new RouteCollection();
+$custom_routes->add('barcelona-node-redirection', new Route(
+    '/channel/barcelona',
+    array(
+        '_controller' => function() {
+                return new RedirectResponse('//barcelona.goteo.org');
+            }
+        )
+    )
+);
+
 $custom_routes->add('barcelona-node', new Route(
     '/{url}',
     array(
