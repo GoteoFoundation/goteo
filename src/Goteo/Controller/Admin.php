@@ -450,14 +450,19 @@ namespace Goteo\Controller {
                 define('ADMIN_BCPATH', $BC);
                 $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
                 $tasks = Model\Task::getAll(array(), $node, true);
-                $ret = new View('admin/index.html.php', array('tasks' => $tasks));
+                $ret = array('tasks' => $tasks);
             } else {
                 $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
                 define('ADMIN_BCPATH', $BC);
                 $SubC = 'Goteo\Controller\Admin' . \chr(92) . \strtoCamelCase($option);
                 $ret = $SubC::process($action, $id, self::setFilters($option), $subaction);
+                // Por compatibilidad
+                if($ret instanceOf View) {
+                    return $ret;
+                }
             }
-            return $ret;
+
+            return new View('admin/index.html.php', $ret);
         }
 
         // Para marcar tareas listas
@@ -741,7 +746,10 @@ namespace Goteo\Controller {
                         $menu['projects']['options']['bazar'] = $options['bazar']; // gestion de retornos colectivos
                         $menu['contents']['options']['open_tags'] = $options['open_tags']; // gestión de agrupaciones
                     }
-
+                    // mas cutreces
+                    if ($_SESSION['admin_node'] == 'barcelona') {
+                        unset($menu['projects']['options']['invests']);
+                    }
                     break;
                 case 'superadmin':
                     $menu = array(

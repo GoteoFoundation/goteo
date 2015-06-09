@@ -112,10 +112,7 @@ namespace Goteo\Controller\Admin {
                     'project'  => $projectData
                 );
 
-                return new View(
-                    'admin/index.html.php',
-                    $viewData
-                );
+                return $viewData;
 
                 // fin de la historia dereubicar
            }

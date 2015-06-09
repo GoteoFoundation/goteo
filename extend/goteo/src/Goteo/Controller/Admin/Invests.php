@@ -93,10 +93,7 @@ namespace Goteo\Controller\Admin {
                     'investStatus'  => $investStatus
                 );
 
-            return new View(
-                'admin/index.html.php',
-                $viewData
-            );
+            return $viewData;
 
         }
 
