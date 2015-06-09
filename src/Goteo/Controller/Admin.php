@@ -218,21 +218,21 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('show' => 'receivers')
             ),
-            'node' => array(
-                'label' => 'Datos del Nodo',
+            'channel' => array(
+                'label' => 'Datos del Canal',
                 'actions' => array(
                     'list' => array('label' => 'Datos actuales', 'item' => false),
                     'edit' => array('label' => 'Editando', 'item' => false),
                     'admins' => array('label' => 'Viendo administradores', 'item' => false)
                 )
             ),
-            'nodes' => array(
-                'label' => 'Gestión de Nodos',
+            'channels' => array(
+                'label' => 'Gestión de Canales',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
-                    'add' => array('label' => 'Nuevo Nodo', 'item' => false),
-                    'edit' => array('label' => 'Gestionando Nodo', 'item' => true),
-                    'admins' => array('label' => 'Asignando administradores del Nodo', 'item' => true)
+                    'add' => array('label' => 'Nuevo Canal', 'item' => false),
+                    'edit' => array('label' => 'Gestionando Canal', 'item' => true),
+                    'admins' => array('label' => 'Asignando administradores del Canal', 'item' => true)
                 ),
                 'filters' => array('status' => '', 'admin' => '', 'name' => '')
             ),
@@ -746,9 +746,26 @@ namespace Goteo\Controller {
                         $menu['projects']['options']['bazar'] = $options['bazar']; // gestion de retornos colectivos
                         $menu['contents']['options']['open_tags'] = $options['open_tags']; // gestión de agrupaciones
                     }
-                    // mas cutreces
-                    if ($_SESSION['admin_node'] == 'barcelona') {
+                    // para administradores de nodo
+                    if (($_SESSION['admin_node'] != \GOTEO_NODE) && ($_SESSION['admin_node'] != 'barcelona')) {
+                        
+                        unset($menu['contents']['options']['pages']);
+                        unset($menu['contents']['options']['blog']);
+                        unset($menu['contents']['options']['banners']);
                         unset($menu['projects']['options']['invests']);
+                        unset($menu['projects']['options']['patron']);
+                        unset($menu['projects']['options']['commons']);
+                        unset($menu['projects']['options']['calls']);
+
+                        unset($menu['users']);
+
+                        unset($menu['home']['options']['news']);
+                        unset($menu['home']['options']['blog']);
+                        unset($menu['home']['options']['recent']);
+                        unset($menu['home']['options']['sponsors']);
+                        unset($menu['home']['options']['stories']);
+                        
+
                     }
                     break;
                 case 'superadmin':
