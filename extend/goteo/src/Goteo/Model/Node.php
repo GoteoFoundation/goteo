@@ -374,7 +374,11 @@ namespace Goteo\Model {
                 'location',
                 'logo',
                 'label',
-                'description'
+                'description',
+                'twitter',
+                'facebook',
+                'google',
+                'linkedin'
                 );
 
             $values = array (':id' => $this->id);
