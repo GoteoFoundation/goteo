@@ -12,6 +12,7 @@ class App extends HttpKernel\HttpKernel
 {
     static protected $app;
     static protected $request;
+    static protected $debug = false;
 
     public function __construct(RouteCollection $routes, Request $request)
     {
@@ -37,6 +38,7 @@ class App extends HttpKernel\HttpKernel
         $dispatcher->addSubscriber(new HttpKernel\EventListener\ResponseListener('UTF-8'));
 
         //TODO: debug toolbar for queries
+        //if (self::debug()) { ... }
 
         parent::__construct($dispatcher, $resolver);
     }
@@ -81,4 +83,15 @@ class App extends HttpKernel\HttpKernel
 
         self::$app->terminate();
     }
+
+    static public function debug($enable = null) {
+        if($enable === true) {
+            self::$debug = true;
+        }
+        if($enable === false) {
+            self::$debug = false;
+        }
+        return self::$debug;
+    }
+
 }

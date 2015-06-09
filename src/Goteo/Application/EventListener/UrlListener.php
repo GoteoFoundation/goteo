@@ -40,7 +40,8 @@ class UrlListener implements EventSubscriberInterface
             && Session::isLogged()
             && !$request->isSecure()
         ) {
-            return new RedirectResponse( str_replace('http://', 'https://', $request->getUri()));
+            $event->setResponse(new RedirectResponse( str_replace('http://', 'https://', $request->getUri())));
+            return;
         }
     }
 

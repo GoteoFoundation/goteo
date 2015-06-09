@@ -57,17 +57,17 @@ class SessionListener implements EventSubscriberInterface
         // si el usuario ya está validado debemos mantenerlo en entorno seguro
         // usamos la funcionalidad de salto entre nodos para mantener la sesión
         if (Config::get('ssl') && Session::isLogged() && !HTTPS_ON) {
-            $this->setResponse(new RedirectResponse(SEC_URL . $request->server->get('REQUEST_URI')));
+            $event->setResponse(new RedirectResponse(SEC_URL . $request->server->get('REQUEST_URI')));
             return;
         }
 
         /*
          * Pagina de en mantenimiento
          */
-        if (Config::get('maintenance') && $request->server->get('REQUEST_URI') != '/about/maintenance'
+        if (Config::get('maintenance') && $request->getPathInfo() !== '/about/maintenance'
              && !$request->request->has('Num_operacion')
             ) {
-            $this->setResponse(new RedirectResponse('/about/maintenance'));
+            $event->setResponse(new RedirectResponse('/about/maintenance'));
             return;
         }
 
