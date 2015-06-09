@@ -58,10 +58,10 @@ namespace Goteo\Controller\Admin {
 
                         /// este es el único save que se lanza desde un metodo process_
                         if ($node->update($errors)) {
-                            Message::info('Datos del nodo actualizados correctamente');
+                            Message::info('Datos del canal actualizados correctamente');
                             throw new Redirection('/admin/node');
                         } else {
-                            Message::error('Falló al actualizar los datos del nodo:<br />'.implode('<br />', $errors));
+                            Message::error('Falló al actualizar los datos del canal:<br />'.implode('<br />', $errors));
                         }
 
                     }
@@ -97,7 +97,7 @@ namespace Goteo\Controller\Admin {
 
                         /// este es el único save que se lanza desde un metodo process_
                         if ($node->updateLang($errors)) {
-                            Message::info('Traducción del nodo al '.$langs[$_SESSION['translate_lang']].' actualizada correctamente');
+                            Message::info('Traducción del canal al '.$langs[$_SESSION['translate_lang']].' actualizada correctamente');
                             throw new Redirection('/admin/node');
                         } else {
                             Message::error('Falló al actualizar la traducción al '.$langs[$_SESSION['translate_lang']]);

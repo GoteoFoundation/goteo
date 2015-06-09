@@ -10,7 +10,7 @@ namespace Goteo\Controller\Admin {
         Goteo\Model;
 
         /**
-         * Gestion nodos por administradores
+         * Gestion canales por administradores
          */
     class Nodes {
 
@@ -35,13 +35,13 @@ namespace Goteo\Controller\Admin {
 
                         if ($node->create($errors)) {
 
-                                Message::info('Nodo creado');
+                                Message::info('Canal creado');
                                 $txt_log = 'creado';
 
                             // Evento feed
                             $log = new Feed();
                             $log->setTarget($node->id, 'node');
-                            $log->populate('Nodo gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Nodo %s', array(
+                            $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
                                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                         Feed::item('relevant', $txt_log),
                                         Feed::item('project', $node->name))
@@ -78,13 +78,13 @@ namespace Goteo\Controller\Admin {
 
                         if ($node->save($errors)) {
 
-                                Message::info('Nodo actualizado');
+                                Message::info('Canal actualizado');
                                 $txt_log = 'actualizado';
 
                             // Evento feed
                             $log = new Feed();
                             $log->setTarget($node->id, 'node');
-                            $log->populate('Nodo gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Nodo %s', array(
+                            $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
                                         Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
                                         Feed::item('relevant', $txt_log),
                                         Feed::item('project', $node->name))

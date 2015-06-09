@@ -218,7 +218,7 @@ namespace Goteo\Controller {
                 ),
                 'filters' => array('show' => 'receivers')
             ),
-            'channel' => array(
+            'node' => array(
                 'label' => 'Datos del Canal',
                 'actions' => array(
                     'list' => array('label' => 'Datos actuales', 'item' => false),
@@ -226,7 +226,7 @@ namespace Goteo\Controller {
                     'admins' => array('label' => 'Viendo administradores', 'item' => false)
                 )
             ),
-            'channels' => array(
+            'nodes' => array(
                 'label' => 'Gestión de Canales',
                 'actions' => array(
                     'list' => array('label' => 'Listando', 'item' => false),
@@ -491,7 +491,7 @@ namespace Goteo\Controller {
             // si es admin de nodo
             if (isset($_SESSION['admin_node'])) {
                 $nodeData = Model\Node::get($_SESSION['admin_node']);
-                $admin_label = 'Admin ' . $nodeData->name;
+                $admin_label = 'Admin Canal ' . $nodeData->name;
             } else {
                 $admin_label = 'Admin';
             }
