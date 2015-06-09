@@ -31,7 +31,7 @@ class LocationStatsTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertInternalType('integer', $unlocated);
         $this->assertInternalType('integer', $located);
-        $this->assertEquals(User::countTotal(), $located + $unlocated);
+        $this->assertEquals(User::dbCount(), $located + $unlocated);
         $this->assertInternalType('integer', $unlocable);
         $this->assertInternalType('integer', $notSpain);
         $this->assertEquals($located, $spain + $notSpain);
@@ -58,7 +58,7 @@ class LocationStatsTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertInternalType('integer', $unlocated);
         $this->assertInternalType('integer', $located);
-        $this->assertEquals(Project::countTotal(), $located + $unlocated);
+        $this->assertEquals(Project::dbCount(), $located + $unlocated);
         $this->assertInternalType('integer', $unlocable);
         $this->assertInternalType('integer', $notSpain);
         $this->assertEquals($located, $spain + $notSpain);

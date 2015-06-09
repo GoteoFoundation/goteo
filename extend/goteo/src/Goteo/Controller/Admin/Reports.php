@@ -599,12 +599,12 @@ namespace Goteo\Controller\Admin {
             \Goteo\Core\DB::cache(true);
 
             $stats = new Model\Location\LocationStats(new Model\User\UserLocation, new Model\User);
-            $total = Model\User::countTotal();
+            $total = Model\User::dbCount();
             $data = array(
                 'date'          => date('Ymd'),
                 'report'        => 'geoloc',
                 'registered'    => $total,
-                'no-location'   => $total - Model\User::countTotal(array('location' => ''), '!='),
+                'no-location'   => $total - Model\User::dbCount(array('location' => ''), '!='),
                 'located'       => $stats->countLocated(),
                 'unlocated'     => $stats->countUnlocated(),
                 'unlocable'     => $stats->countUnlocable(),
@@ -618,7 +618,7 @@ namespace Goteo\Controller\Admin {
             // por nodo (no exactamente geoloc....)
             $nodes = Model\Node::getList();
             foreach ($nodes as $nodeId => $nodeName) {
-                $data['by-node'][$nodeName] = Model\User::countTotal(array('node' => $nodeId));
+                $data['by-node'][$nodeName] = Model\User::dbCount(array('node' => $nodeId));
             }
 
             \Goteo\Core\DB::cache($old_cache);

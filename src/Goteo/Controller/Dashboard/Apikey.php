@@ -22,7 +22,7 @@ namespace Goteo\Controller\Dashboard {
                 $key = Model\User\Apikey::get($user->id);
             }
 
-            return $key;
+            return array('key' => $key, 'user' => $user->id);
         }
 
     }

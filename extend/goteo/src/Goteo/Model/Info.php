@@ -6,7 +6,8 @@ namespace Goteo\Model {
         \Goteo\Model\Image,
         \Goteo\Library\Text,
         \Goteo\Library,
-        \Goteo\Library\Check;
+        \Goteo\Library\Check,
+        \Goteo\Application;
 
     class Info extends \Goteo\Core\Model {
 
@@ -155,7 +156,7 @@ namespace Goteo\Model {
 
             try {
                 //automatic $this->id assignation
-                $this->insertUpdate($fields);
+                $this->dbInsertUpdate($fields);
 
                 // Luego la imagen
                 if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {
@@ -166,7 +167,7 @@ namespace Goteo\Model {
                         $this->gallery[0]->setModelImage('info', $this->id);
                     }
                     else {
-                        Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
+                       Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 

@@ -135,7 +135,7 @@ namespace Goteo\Model {
 
             try {
                 //automatic $this->id assignation
-                $this->insertUpdate($fields);
+                $this->dbInsertUpdate($fields);
 
                 // Luego la imagen
                 if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {

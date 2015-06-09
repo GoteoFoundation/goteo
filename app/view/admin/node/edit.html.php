@@ -102,11 +102,32 @@ if (!$node instanceof Model\Node) {
                 )
             ),
 
-            'email' => array(
+            'twitter' => array(
                 'type'      => 'TextBox',
                 'size'      => 20,
-                'title'     => 'Email',
-                'value'     => $node->email,
+                'title'     => 'Twitter',
+                'value'     => $node->twitter,
+            ),
+
+            'facebook' => array(
+                'type'      => 'TextBox',
+                'size'      => 20,
+                'title'     => 'facebook',
+                'value'     => $node->facebook,
+            ),
+
+            'google' => array(
+                'type'      => 'TextBox',
+                'size'      => 20,
+                'title'     => 'Google +',
+                'value'     => $node->google,
+            ),
+
+            'linkedin' => array(
+                'type'      => 'TextBox',
+                'size'      => 20,
+                'title'     => 'LInkedin',
+                'value'     => $node->linkedin,
             ),
 
             'location' => array(

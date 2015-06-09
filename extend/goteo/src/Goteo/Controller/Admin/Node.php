@@ -33,7 +33,11 @@ namespace Goteo\Controller\Admin {
                             'subtitle',
                             'email',
                             'location',
-                            'description'
+                            'description',
+                            'twitter',
+                            'facebook',
+                            'google',
+                            'linkedin'
                         );
 
                         foreach ($fields as $field) {
