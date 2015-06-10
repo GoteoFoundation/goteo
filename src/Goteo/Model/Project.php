@@ -2541,7 +2541,7 @@ namespace Goteo\Model {
          * @param $pages int
          * @return: array of Model\Project
          */
-        public static function published($type = 'all', $limit = 9, $page = 1, &$pages)
+        public static function published($type = 'all', $limit = 9, $page = 1, &$pages = 0)
         {
 
             $different_select='';
@@ -2700,7 +2700,7 @@ namespace Goteo\Model {
             $projects = array();
             $query = self::query($sql, $values);
 
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[]=self::getWidget($proj);
             }
             return $projects;

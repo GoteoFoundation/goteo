@@ -12,7 +12,14 @@ class DB extends \PDO {
     public $is_select = false;
     public $type = 'master';
 
-    public function __construct(Cacher $cache = null) {
+
+    /**
+     * [__construct description]
+     * @param Cacher|null $cache [description]
+     * @param int     $debug    si debug es 1, se recojeran en el array las queries no cacheadas
+     *                          si debug es 2, se recojeran todas las queries
+     */
+    public function __construct(Cacher $cache = null, $debug = false) {
 
         try {
 
@@ -38,7 +45,7 @@ class DB extends \PDO {
 
             //no queremos que las queries vayan al servidor para preparase si usamos cache
             $this->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
-            $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('\Goteo\Core\CacheStatement', array($this, $this->cache)));
+            $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('\Goteo\Core\CacheStatement', array($this, $this->cache, $debug)));
 
             //Preparamos un objeto para los select que lean de las replicas
             if(defined('GOTEO_DB_READ_REPLICA_HOST') && GOTEO_DB_READ_REPLICA_HOST) {
@@ -61,7 +68,7 @@ class DB extends \PDO {
 
                 //no queremos que las queries vayan al servidor para preparase si usamos cache
                 $this->read_replica->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
-                $this->read_replica->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('\Goteo\Core\CacheStatement', array($this->read_replica, $this->cache)));
+                $this->read_replica->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('\Goteo\Core\CacheStatement', array($this->read_replica, $this->cache, $debug)));
 
             }
 
@@ -144,17 +151,16 @@ class CacheStatement extends \PDOStatement {
     static $query_stats = array('replica' => array(0, 0, 0), 'master' => array(0, 0, 0)); // array(num-non-cached, num-cached, total-time-non-cached )
     static $queries = array('replica' => array(array(), array()), 'master' => array(array(), array()));
     static $queries_time = 0;
-    public $debug = false;
+    public $debug = false; //si debug es 1, se recojeran en el array las queries no cacheadas
+                           //si debug es 2, se recojeran todas las queries
 
-    protected function __construct($dbh, $cache=null) {
+    protected function __construct($dbh, $cache=null, $debug = false) {
         $this->dbh = $dbh;
         $this->cache = $cache;
         $this->is_select = $dbh->is_select;
         $this->cache_active = \Goteo\Core\DB::$cache_active;
         if($cache) $this->cache_time = $cache->getCacheTime();
-        //si debug es 1, se recojeran en el array las queries no cacheadas
-        //si debug es 2, se recojeran todas las queries
-        if(defined('DEBUG_SQL_QUERIES')) $this->debug = DEBUG_SQL_QUERIES;
+        $this->debug = $debug;
     }
 
     /**
@@ -181,7 +187,7 @@ class CacheStatement extends \PDOStatement {
         $this->execute = parent::execute($input_parameters);
         $query_time = round(microtime(true) - $t, 4);
         self::$query_stats[$this->dbh->type][2] += $query_time;
-        if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ' (' . $query_time . 's): ' . $query .' | '. print_r($input_parameters,true);
+        if($this->debug) self::$queries[$this->dbh->type][0][] = array(self::$query_stats[$this->dbh->type][0], $this->queryString, $this->input_parameters, $query_time);
         return $this->execute;
     }
 
@@ -198,7 +204,7 @@ class CacheStatement extends \PDOStatement {
                 $this->execute =  parent::execute($params);
                 $query_time = round(microtime(true) - $t, 4);
                 self::$query_stats[$this->dbh->type][2] += $query_time;
-                if($this->debug) self::$queries[$this->dbh->type][0][] = self::$query_stats[$this->dbh->type][0]. ' (' . $query_time . 's): ' . $this->queryString .' | '. print_r($this->input_parameters,true);
+                if($this->debug) self::$queries[$this->dbh->type][0][] = array(self::$query_stats[$this->dbh->type][0], $this->queryString, $this->input_parameters, $query_time);
             }
             return $this->execute;
         } catch (\PDOException $e) {
@@ -227,7 +233,7 @@ class CacheStatement extends \PDOStatement {
             if($value !== false) {
                 //incrementar queries cacheadas
                 self::$query_stats[$this->dbh->type][1]++;
-                if($this->debug>1) self::$queries[$this->dbh->type][1][] = self::$query_stats[$this->dbh->type][1]. ': ' . $this->queryString .' | '. print_r($this->input_parameters,true);
+                if($this->debug>1) self::$queries[$this->dbh->type][1][] = array(self::$query_stats[$this->dbh->type][1], $this->queryString, $this->input_parameters);
 
                 // echo "[cached [$method $class_name] cache time: [{$this->cache_time}s]";
 

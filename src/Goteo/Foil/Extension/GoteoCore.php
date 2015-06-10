@@ -36,12 +36,12 @@ class GoteoCore implements ExtensionInterface
         ];
     }
 
-    public function messages($var)
+    public function messages()
     {
         return Message::getMessages();
     }
 
-    public function errors($var)
+    public function errors()
     {
         return Message::getErrors();
     }

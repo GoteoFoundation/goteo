@@ -123,7 +123,7 @@ namespace Goteo\Model {
                 ORDER BY promote.order ASC, title ASC
                 ", array(':node' => $node, ':lang'=>$lang));
 
-            foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
+            foreach($query->fetchAll(\PDO::FETCH_CLASS, '\\Goteo\\Model\\Project') as $promo) {
                 $promo->promo_text = Text::recorta($promo->promo_text, 100, false);
                 //variables usadas en view/project/widget/project.html.php
 

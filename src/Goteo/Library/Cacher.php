@@ -3,6 +3,7 @@
 namespace Goteo\Library;
 
 use FileSystemCache;
+use FileSystemCacheKey;
 
 /**
  * General cache class
@@ -163,7 +164,7 @@ class Cacher {
     /**
      * Gets the cache dir (static value) whit / char at the end
      */
-    static function getCacheDir($dir) {
+    static function getCacheDir() {
         $dir = FileSystemCache::$cacheDir;
         if(substr($dir, -1, 1) != DIRECTORY_SEPARATOR) $dir .= DIRECTORY_SEPARATOR;
         return $dir;
