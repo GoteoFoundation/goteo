@@ -584,9 +584,6 @@ div.owner-info div.info ul {
     margin: 10px 0px;
 }
 
-v div.info ul li {
-}
-
 div.owner-info div.info ul li a {
     text-decoration: none;
     color: #20B2B3;
@@ -595,7 +592,7 @@ div.owner-info div.info ul li a {
 
 .owner-info{
     width: 100%;
-    background: none repeat scroll 0% 0% #FFF;
+    background: none repeat scroll 0% 0% #27AD7A;
     margin: 15px auto;
     padding: 30px 0;
     display: table !important;

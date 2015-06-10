@@ -44,7 +44,8 @@ namespace Goteo\Model {
                         node.twitter as twitter,
                         node.facebook as facebook,
                         node.linkedin as linkedin,
-                        node.google as google
+                        node.google as google,
+                        node.owner_background as owner_background
                     FROM node
                     LEFT JOIN node_lang
                         ON  node_lang.id = node.id
@@ -378,7 +379,8 @@ namespace Goteo\Model {
                 'twitter',
                 'facebook',
                 'google',
-                'linkedin'
+                'linkedin',
+                'owner_background'
                 );
 
             $values = array (':id' => $this->id);

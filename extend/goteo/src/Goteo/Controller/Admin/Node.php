@@ -37,7 +37,8 @@ namespace Goteo\Controller\Admin {
                             'twitter',
                             'facebook',
                             'google',
-                            'linkedin'
+                            'linkedin',
+                            'owner_background'
                         );
 
                         foreach ($fields as $field) {

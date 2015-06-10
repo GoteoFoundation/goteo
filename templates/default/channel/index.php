@@ -12,7 +12,7 @@ $this->section('content');
 
 ?>
 <div id="channel-main">
-    <div class="owner-info rounded-corners" style="background-color:#27AD7A;">
+    <div class="owner-info rounded-corners" <?php if(!empty($channel->owner_background)) echo 'style="background-color:'.$channel->owner_background.'"'; ?>>
         <div class="avatar">
             <img src="<?php echo SITE_URL . '/image/' . $channel->logo->name; ?>" alt="<?php echo $channel->name ?>"/><br />
             <!-- enlaces sociales (iconitos como footer) -->                   

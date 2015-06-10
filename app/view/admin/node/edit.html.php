@@ -102,6 +102,13 @@ if (!$node instanceof Model\Node) {
                 )
             ),
 
+            'owner_background' => array(
+                'type'      => 'TextBox',
+                'size'      => 10,
+                'title'     => 'Background color (Hex)',
+                'value'     => $node->owner_background,
+            ),
+
             'twitter' => array(
                 'type'      => 'TextBox',
                 'size'      => 20,
@@ -112,7 +119,7 @@ if (!$node instanceof Model\Node) {
             'facebook' => array(
                 'type'      => 'TextBox',
                 'size'      => 20,
-                'title'     => 'facebook',
+                'title'     => 'Facebook',
                 'value'     => $node->facebook,
             ),
 
@@ -143,3 +150,5 @@ if (!$node instanceof Model\Node) {
     ?>
 
 </form>
+
+<script>
