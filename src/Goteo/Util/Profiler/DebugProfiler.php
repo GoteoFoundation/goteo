@@ -104,10 +104,11 @@ class DebugProfiler {
         $cookies = array(
             'keys' => Cookie::getAll(),
         );
-
+        $code = $this->response->getStatusCode();
         $headers = array(
             'request' => (string) App::getRequest()->headers,
-            'response' => sprintf('HTTP/%s %s %s', $this->response->getProtocolVersion(), $this->response->getStatusCode(), Response::$statusTexts[$this->response->getStatusCode()]) ."\n". $this->response->headers
+            'response_code' => $code,
+            'response' => sprintf('HTTP/%s %s %s', $this->response->getProtocolVersion(), $code, Response::$statusTexts[$code]) ."\n". $this->response->headers
         );
         return View::render("profiler::$view", $with_vars ? [
             'errors' => App::getErrors(),
