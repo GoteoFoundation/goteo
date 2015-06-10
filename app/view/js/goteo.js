@@ -46,7 +46,9 @@ $(function() {
    });
 
     // VARIS
-    $('.scroll-pane').jScrollPane({showArrows: true});
+    if(jQuery().pluginName) {
+        $('.scroll-pane').jScrollPane({showArrows: true});
+    }
 
     $('body').addClass('js');
     $('.tipsy').tipsy();

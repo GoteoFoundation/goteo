@@ -4,12 +4,16 @@ namespace Goteo\Util\Profiler;
 
 use Symfony\Component\HttpKernel\Event;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Core\CacheStatement;
 use Goteo\Application\App;
+use Goteo\Application\Session;
+use Goteo\Application\Cookie;
 use Goteo\Application\View;
 
 class DebugProfiler {
+    protected $response;
     protected $events = array();
     protected $controllers = array();
     protected $stopwatch = array();
@@ -41,6 +45,7 @@ class DebugProfiler {
         }
         if(method_exists($event, 'getResponse')) {
             $ob->responses[] = $event->getResponse();
+            $this->response = $event->getResponse();
         }
 
         $this->events[] = $ob;
@@ -86,10 +91,31 @@ class DebugProfiler {
             $events[$i]['responses'] = $event->responses;
         }
 
+        // session stuff
+        $session = array(
+            'start_time' => Session::getStartTime(),
+            'expire_time' => Session::getSessionExpires(),
+            'expires_in' => Session::expiresIn(),
+            'duration' => microtime(true) - Session::getStartTime(),
+            'keys' => Session::getAll(),
+        );
+
+        // cookie stuff
+        $cookies = array(
+            'keys' => Cookie::getAll(),
+        );
+
+        $headers = array(
+            'request' => (string) App::getRequest()->headers,
+            'response' => sprintf('HTTP/%s %s %s', $this->response->getProtocolVersion(), $this->response->getStatusCode(), Response::$statusTexts[$this->response->getStatusCode()]) ."\n". $this->response->headers
+        );
         return View::render("profiler::$view", $with_vars ? [
             'errors' => App::getErrors(),
             'queries' => $queries,
-            'events' => $events
+            'events' => $events,
+            'session' => $session,
+            'cookies' => $cookies,
+            'headers' => $headers
             ] : []);
     }
 

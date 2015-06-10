@@ -25,7 +25,7 @@ class Session {
 
     /**
      * Set the session time expirity time
-     * @param [type] $time [description]
+     * @param [type] $time seconds
      */
     static public function setSessionExpires($time) {
         self::$session_expire_time = (int) $time;
@@ -33,6 +33,7 @@ class Session {
 
     /**
      * Set the start time
+     * @param $start_time seconds
      */
     static public function setStartTime($start_time) {
         self::$start_time = (int) $start_time;
@@ -149,6 +150,16 @@ class Session {
     static public function get($key) {
         global $_SESSION;
         return $_SESSION[$key];
+    }
+
+    /**
+     * Retrieve all values in session
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    static public function getAll() {
+        global $_SESSION;
+        return $_SESSION;
     }
 
     /**
