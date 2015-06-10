@@ -1,6 +1,6 @@
 body.channel.home div#channel-main {
     width: 940px;
-    margin: 6px auto;
+    margin: 0 auto;
     clear: both;
     overflow: hidden;
     position: relative;
@@ -494,18 +494,19 @@ div#side div.half.last{margin-right:0}
 
 div.owner-info div.avatar {
     float: left;
-    margin-right: 25px;
+    margin: 0 25px;
+    width: 20%;
 }
 
 /* enlaces sociales */
-div.owner-info div.avatar ul{
+div.owner-info ul.social{
     overflow: hidden;
     list-style: none;
     padding: 0;
-    margin: 10px 0px;
+    margin: 15px 0px;
 }
 
-div.owner-info div.avatar ul li{
+div.owner-info ul.social li{
     margin-right: 4px;
     display: inline-block;
     overflow: hidden;
@@ -513,7 +514,7 @@ div.owner-info div.avatar ul li{
     height: 20px;
 }
 
-div.owner-info div.avatar ul li a{
+div.owner-info ul.social li a{
     background: no-repeat left center;
     padding-left: 40px;
     padding-top: 20px;
@@ -521,28 +522,28 @@ div.owner-info div.avatar ul li a{
     line-height: 40px
 }
 
-div.owner-info div.avatar li a:hover{
+div.owner-info ul.social li a:hover{
     opacity:0.7;
     filter:alpha(opacity=70)
 }
 
-div.owner-info div.avatar li.twitter a {
+div.owner-info ul.social li.twitter a {
     background-image: url('/view/css/twitter.png');
 }
 
-div.owner-info div.avatar li.facebook a {
+div.owner-info ul.social li.facebook a {
     background-image: url('/view/css/facebook.png');
 }
 
-div.owner-info div.avatar li.identica a {
+div.owner-info ul.social li.identica a {
     background-image: url('/view/css/identica.png');
 }
 
-div.owner-info div.avatar li.google a {
+div.owner-info ul.social li.google a {
     background-image: url('/view/css/google.png');
 }
 
-div.owner-info div.avatar li.linkedin a {
+div.owner-info ul.social li.linkedin a {
     background-image: url('/view/css/linkedin.png');
 }
 /* Fin enlaces sociales */
@@ -551,13 +552,15 @@ div.owner-info div.info {
     float: left;
     overflow: visible;
     font-size: 16px;
-    color: #6A6B6E;
-    width: 590px;
+    color: #FFF;
+    width: 70%;
+    
 }
 
 div.owner-info div.info p {
     padding: 0;
     margin: 0px 0px 10px 0px;
+    font-size:18px
 }
 
 div.owner-info div.info p a {
@@ -584,12 +587,19 @@ div.owner-info div.info ul li a {
 }
 
 .owner-info{
-    width: 940px;
-    margin: 6px auto;
-    padding: 20px 0;
+    width: 100%;
+    background: none repeat scroll 0% 0% #FFF;
+    margin: 15px auto;
+    padding: 30px 0;
     display: table !important;
 }
 
 div.sub-header-channel{
     height: auto !important;
+}
+
+h2.channel-name{
+    margin: 0px; 
+    padding-bottom: 20px; 
+    font-size: 40px;
 }

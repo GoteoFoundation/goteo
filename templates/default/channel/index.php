@@ -11,13 +11,17 @@ $this->layout("layout", [
 $this->section('content');
 
 ?>
-
-<div id="sub-header-secondary" class="sub-header-channel">
-    <div class="owner-info">
+<div id="channel-main">
+    <div class="owner-info rounded-corners" style="background-color:#27AD7A;">
         <div class="avatar">
             <img src="<?php echo SITE_URL . '/image/' . $channel->logo->name; ?>" alt="<?php echo $channel->name ?>"/><br />
-            <!-- enlaces sociales (iconitos como footer) -->
-            <ul>
+            <!-- enlaces sociales (iconitos como footer) -->                   
+        </div>              
+        <div class="info">
+            <!-- Nombre y texto presentación -->
+            <h2 class="channel-name"><?php echo $channel->name ?></h2>
+            <p><?php echo $channel->description; ?></p>
+            <ul class="social">
                 <?php if (!empty($channel->facebook)): ?>
                <li class="facebook"><a href="<?= htmlspecialchars($channel->facebook) ?>" target="_blank">F</a></li>
                 <?php endif ?>
@@ -30,11 +34,7 @@ $this->section('content');
                 <?php if (!empty($channel->linkedin)): ?>
                 <li class="linkedin"><a href="<?= htmlspecialchars($channel->linkedin) ?>" target="_blank">L</a></li>
                 <?php endif ?>
-            </ul>                   
-        </div>              
-        <div class="info">
-            <!-- Nombre y texto presentación -->
-            <p><strong><?php echo $channel->name ?></strong> <?php echo $channel->description; ?></p>
+            </ul>
             <!-- 2 webs -->
             <!--
             <ul>
@@ -45,10 +45,6 @@ $this->section('content');
             -->
         </div>
     </div>
-</div>
-
-
-<div id="channel-main">
     <div id="side">
     
     <?php foreach ($this->side_order as $sideitem=>$sideitemName) {
