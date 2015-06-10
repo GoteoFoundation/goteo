@@ -1,6 +1,6 @@
 <div id="g_profiler">
     <ul>
-        <li><a href="phpinfo">PHP <?= phpversion() ?></a></li>
+        <li><a href="#phpinfo">PHP <?= phpversion() ?></a></li>
         <li class="<?= count($this->errors) ? 'ko' : 'ok' ?>"><a href="#errors">Errors: <?= count($this->errors) ?></a></li>
         <li class="<?= count($this->events) ? 'ok' : 'ko' ?>"><a href="#events">Events: <?= count($this->events) ?></a></li>
         <li class="<?= $this->queries['total'] > 100 ? ($this->queries['total'] > 300 ? 'ko' : 'warn') : 'ok' ?>"><a href="#queries_server">SQL queries: <?= $this->queries['total'] ?></a></li>
