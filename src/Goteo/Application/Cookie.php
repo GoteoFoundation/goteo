@@ -57,6 +57,16 @@ class Cookie {
     }
 
     /**
+     * Retrieve all values in cookies
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    static public function getAll() {
+        global $_COOKIE;
+        return $_COOKIE;
+    }
+
+    /**
      * Delete some value in cookie
      * @param  [type] $key [description]
      * @return [type]      [description]

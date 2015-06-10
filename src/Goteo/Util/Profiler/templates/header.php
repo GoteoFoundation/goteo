@@ -2,11 +2,13 @@
     #g_profiler {
         position: fixed;
         bottom: 0;
+        right: 0;
         height: 35px;
         width: 100%;
         font-family: monospace;
         font-size:10px;
         color:#000;
+        z-index: 1000;
         border-top: 5px solid #2FB6B5;
         background: #B5DADA;
     }
@@ -20,6 +22,11 @@
         width: 100%;
         z-index: 1000;
         display: none;
+    }
+
+    #g_profiler_info>div h2{
+        font-size: 14px;
+        text-transform: uppercase;
     }
     #g_profiler_info>div {
         position: absolute;
@@ -48,10 +55,17 @@
     }
     #g_profiler a {
         color:#000;
+        text-decoration: none;
     }
+    #g_profiler a.active {
+        opacity: 0.5;
+        text-decoration: underline;
+    }
+
     #g_profiler>ul {
         padding: 0;
         margin: 0;
+        position: relative;
         /*display: table;*/
     }
     #g_profiler>ul>li {
@@ -60,9 +74,31 @@
         padding: 5px 10px;
         margin: 5px;
         height:15px;
+        overflow: hidden;
         list-style: none;
         border-radius:10px;
         background: #aaa;
+    }
+    #g_profiler>ul>li.right {
+        position:absolute;
+        padding:0;
+        margin:0;
+        width: 20px;
+        height: 35px;
+        top:0;
+        right:0;
+        border-radius: 0;
+        background: #2FB6B5;
+        background: #B5DADA;
+    }
+    #g_profiler>ul>li.right a{
+        font-size: 20px;
+        font-weight: bold;
+        height:30px;
+        padding:10px 5px;
+    }
+    #g_profiler>ul>li.warn {
+        background: #FF983F;
     }
     #g_profiler>ul>li.ok {
         background: #66C171;
@@ -72,19 +108,3 @@
     }
 
 </style>
-
-<script>
-$(function() {
-    $('#g_profiler a').click(function(e){
-        e.preventDefault();
-        $('#g_profiler_info>div').hide();
-        if($('#g_profiler_info').is(':visible')) {
-            $('#g_profiler_info').hide();
-        }
-        else {
-            $('#g_profiler_info').show();
-            $('#g_profiler_info>.' + $(this).attr('href')).show();
-        }
-    });
-});
-</script>

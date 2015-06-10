@@ -25,9 +25,13 @@ class ProfilerListener implements EventSubscriberInterface
 
     public function onResponse(Event\FilterResponseEvent $event) {
         DebugProfiler::addEvent($event);
+        $response = $event->getResponse();
+        if(!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html')) {
+            return;
+        }
+        // die($response->headers->get('Content-Type'));
         $head = DebugProfiler::getHeadContent();
         $body = DebugProfiler::getBodyContent();
-        $response = $event->getResponse();
         $content = $response->getContent();
         $pos = strpos($content, '</head>');
         if($pos !== false) {

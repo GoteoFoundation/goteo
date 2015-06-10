@@ -168,10 +168,10 @@ class App extends HttpKernel\HttpKernel
                     echo '  ' . (isset($item['file']) ? $item['file'] : '<unknown file>') . ' ' . (isset($item['line']) ? $item['line'] : '<unknown line>') . ' calling ' . $item['function'] . '()' . "\n";
             } else {
                 $info .= '<p class="error_backtrace">' . "\n";
-                $info .= '  Backtrace from ' . $type . ' \'' . $errstr . '\' at ' . $errfile . ' ' . $errline . ':' . "\n";
+                $info .= '  Backtrace from ' . $type . ' \'<b>' . $errstr . '</b>\' at <b>' . $errfile . ' ' . $errline . '</b>:' . "\n";
                 $info .= '  <ol>' . "\n";
                 foreach($trace as $item)
-                    $info .= '    <li>' . (isset($item['file']) ? $item['file'] : '<unknown file>') . ' ' . (isset($item['line']) ? $item['line'] : '<unknown line>') . ' calling ' . $item['function'] . '()</li>' . "\n";
+                    $info .= '    <li><b>' . (isset($item['file']) ? $item['file'] : '<unknown file>') . ' ' . (isset($item['line']) ? $item['line'] : '<unknown line>') . '</b> calling ' . $item['function'] . '()</li>' . "\n";
                 $info .= '  </ol>' . "\n";
                 $info .= '</p>' . "\n";
             }
