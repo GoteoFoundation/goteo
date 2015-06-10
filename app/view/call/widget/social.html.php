@@ -7,7 +7,7 @@ $call = $this['call'];
 $social = $this['social'];
 
 $URL = \SITE_URL;
-$share_url = $URL . '/call/' . $call->id;
+$share_url = $URL . '/call/' . $call->id.'/project';
 if (LANG != 'es')
     $share_url .= '?lang=' . LANG;
 
