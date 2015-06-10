@@ -327,21 +327,20 @@ namespace Goteo\Model {
                 // campos calculados
 
                 // riego comprometido
-                if (!isset($call->used)) {
+                
                     $call->used = $call->getUsed();
-                }
+               
 
                 // riego restante
-                if (!isset($call->rest)) {
+                
                     $call->rest = $call->getRest($call->used);
-                }
+                
 
                 // proyectos asignados
-                //if (!isset($call->applied)) {
                     // número de proyectos presentados a la campaña
                     $applied = $call->getConf('applied');
                     $call->applied = (isset($applied)) ? $applied : $call->getApplied();
-                //}
+        
 
                 return $call;
             } catch (\PDOException $e) {
