@@ -16,7 +16,6 @@ use Goteo\Application\View;
 
 class Config {
     static protected $loader;
-    static protected $routes;
     static protected $config;
 
     static public function factory(array $config) {
@@ -64,15 +63,6 @@ class Config {
         self::$loader->add('', $dir);
     }
 
-    static public function getRoutes() {
-        if( ! self::$routes ) {
-            self::$routes = include( __DIR__ . '/../../app.php' );
-        }
-
-        return self::$routes;
-    }
-
-
     static public function setDirConfiguration() {
         $extend = self::get('extend.autoload');
         if(is_array($extend)) {
@@ -83,7 +73,8 @@ class Config {
         }
         // Route app
         if(is_file(__DIR__ . '/../../../extend/' .  self::get('extend.routes'))) {
-            self::$routes = include(__DIR__ . '/../../../extend/' . self::get('extend.routes'));
+            $routes = include(__DIR__ . '/../../../extend/' . self::get('extend.routes'));
+            App::setRoutes($routes);
         }
 
         //Cache dir in libs

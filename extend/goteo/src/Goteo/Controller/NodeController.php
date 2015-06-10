@@ -67,7 +67,7 @@ class NodeController extends \Goteo\Core\Controller {
         // die("$url");
         // Default: route to defaults
         // get routes
-        $routes = Config::getRoutes();
+        $routes = App::getRoutes();
         // remove this route to avoid recursion
         $routes->remove('barcelona-node');
         //Return a sub-request

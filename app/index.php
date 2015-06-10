@@ -11,19 +11,12 @@ define('GOTEO_WEB_PATH', __DIR__ . '/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
-$request = Request::createFromGlobals();
+//Get from globals defaults
+$request = App::getRequest();
 
-//si el parametro GET vale:
-// 0 se muestra estadísticas de SQL, pero no los logs
-// 1 se hace un log con las queries no cacheadas
-// 2 se hace un log con las queries no cacheadas y también las cacheadas
-if ($request->query->has('sqldebug') && !defined('DEBUG_SQL_QUERIES')) {
-    define('DEBUG_SQL_QUERIES', intval($request->query->get('sqldebug')));
-}
-
-// Quitar legacy
-if (!$request->query->has('no-legacy') && !defined('USE_LEGACY_DISPACHER')) {
-    define('USE_LEGACY_DISPACHER', true);
+// Temporary debug... TODO: to be removed
+if($request->query->has('debug')) {
+    App::debug(true);
 }
 
 $app = App::get();

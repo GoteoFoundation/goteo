@@ -249,7 +249,7 @@ class Lang {
      * @param  [type] $lang [description]
      * @return [type]       [description]
      */
-    static function getLocale($lang) {
+    static function getLocale($lang = null) {
         return self::get($lang ? $lang : self::current(), 'locale');
     }
 
@@ -258,7 +258,7 @@ class Lang {
      * @param  [type] $lang [description]
      * @return [type]       [description]
      */
-    static function getName($lang) {
+    static function getName($lang = null) {
         return self::get($lang ? $lang : self::current(), 'name');
     }
 

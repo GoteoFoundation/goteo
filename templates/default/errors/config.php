@@ -16,8 +16,8 @@ $file = $path .'/config/settings.yml';
 
 <div id="sub-header">
     <div>
-        <h2><?=$this->msg?></h2>
-        <h3>Error <?=$this->code?></h3>
+        <h2>Error <?=$this->code?></h2>
+        <h3 style="text-transform: none"><?=$this->msg?></h3>
     </div>
 </div>
 

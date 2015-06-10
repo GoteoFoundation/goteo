@@ -2,6 +2,7 @@
 
 namespace Goteo\Controller;
 
+use Goteo\Application\App;
 use Goteo\Application\View;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,8 +35,8 @@ class ErrorController extends \Goteo\Core\Controller {
             '/img',
             );
 
-        $legacy = false;
-        if(defined('USE_LEGACY_DISPACHER') && USE_LEGACY_DISPACHER) $legacy = true;
+        $legacy = true;
+        if(App::debug() && $request->query->has('no-legacy')) $legacy = false;
         $path = $request->getPathInfo();
         foreach($non_legacy_routes as $route) {
             if(strpos($path, $route) === 0) {

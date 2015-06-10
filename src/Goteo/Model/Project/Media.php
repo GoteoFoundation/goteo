@@ -15,7 +15,7 @@ namespace Goteo\Model\Project {
         }
 
         protected static function getYouTubeCode ($video, $https = false, $autoplay=false) {
-            
+
             if($autoplay)
                 $cod_auto="&autoplay=1";
             return '<iframe width="100%" height="100%" style="max-width:none !important;" src="'
@@ -25,7 +25,7 @@ namespace Goteo\Model\Project {
         }
 
         protected static function getVimeoCode ($id, $https = false, $autoplay=false) {
-            
+
             if($autoplay)
                 $cod_auto=";autoplay=1";
             return '<iframe src="'
@@ -56,7 +56,7 @@ namespace Goteo\Model\Project {
         }
 
         protected static function getBlipCode ($id, $https = false) {
-          
+
             return '<iframe src="'
                     . ($https ? 'https' : 'http') . '://blip.tv/play/'
                     .$id.'.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
@@ -74,7 +74,7 @@ namespace Goteo\Model\Project {
 
         }
 
-        public function getEmbedCode ($universalSubtitles = false, $lang = \LANG, $autoplay) {
+        public function getEmbedCode ($universalSubtitles = false, $lang = \LANG, $autoplay = false) {
 
             $https = \HTTPS_ON;
 

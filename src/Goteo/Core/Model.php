@@ -2,6 +2,7 @@
 
 namespace Goteo\Core {
 
+    use Goteo\Application\App;
 	use Goteo\Core\Error,
         Goteo\Library\Cacher;
 
@@ -42,7 +43,7 @@ namespace Goteo\Core {
                 $cacher = new Cacher('sql', SQL_CACHE_TIME);
             }
 
-            self::$db = new DB($cacher);
+            self::$db = new DB($cacher, App::debug() ? 2 : false);
         }
 
         /**
