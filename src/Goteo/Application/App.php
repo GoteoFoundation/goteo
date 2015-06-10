@@ -184,11 +184,11 @@ class App extends HttpKernel\HttpKernel
             }
             self::$_errors["$errfile:$errline"] = $info;
             if($fatal) {
-                $code = \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
-                \Goteo\Application\View::addFolder(__DIR__ . '/../../../templates/default');
-                // views function registering
-                // TODO: custom template
-                die(\Goteo\Application\View::render('errors/internal', ['msg' => $errstr, 'code' => $code, 'info' => $info], $code));
+                // $code = \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
+                // \Goteo\Application\View::addFolder(__DIR__ . '/../../../templates/default');
+                // // views function registering
+                // // TODO: custom template
+                // die(\Goteo\Application\View::render('errors/internal', ['msg' => $errstr, 'code' => $code, 'info' => $info], $code));
             }
         }
     }
