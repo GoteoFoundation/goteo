@@ -12,6 +12,6 @@ require_once __DIR__ . '/../src/autoload.php';
 define('SQL_CACHE_TIME', 1);
 define('DEBUG_SQL_QUERIES', 2);
 
-App::debug(true);
+App::debug(false);
 $app = App::get();
 
