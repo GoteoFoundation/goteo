@@ -503,8 +503,7 @@ div.owner-info div.avatar {
 div.owner-info ul.social{
     overflow: hidden;
     list-style: none;
-    padding: 0;
-    margin: 5% 0px !important;
+    padding-bottom: 0 !important;
 }
 
 div.owner-info ul.social li{
