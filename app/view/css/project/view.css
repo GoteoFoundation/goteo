@@ -326,6 +326,10 @@ div.widget.project-invest-amount.called  p strong {
 
 /* Widget horizontal */
 
+div.widget.project.horizontal{
+    overflow: auto;
+}
+
 div.widget.project.horizontal div.image {
     width:40%;
     float:left;
@@ -357,7 +361,31 @@ div.widget.project.horizontal .title.horizontal{
     height: auto;
 }
 
-div.widget.project.horizontal .meter-container{
-    clear:both;
-    width: 40%;
+div.widget.project.horizontal ul.amounts{
+    
+    
 }
+
+div.widget.project.horizontal ul.amounts li{
+    width: auto;
+    min-height: 0;
+    position: static;
+    overflow: auto;
+    background-color:#FFF;
+    padding-left: 0;
+}
+
+div.widget.project.horizontal ul.amounts li.active{
+    background-color: #FFF !important;
+}
+
+div.widget.project.horizontal ul.amounts li div.amount{
+    font-weight: bold;
+}
+
+div.widget.project.horizontal ul.amounts li div.label{
+    font-size: 11px;
+}
+
+
+

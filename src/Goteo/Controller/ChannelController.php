@@ -92,18 +92,6 @@ public static function indexAction($id, $page = 'index')
                 $discover['outdate'] = $disc_outdate;
             }
 
-            $disc_byreward = array();
-            foreach ($icons as $icon => $iconData) {
-                $icon_projs = \Goteo\Library\Search::params(array('reward'=>array("'$icon'"), 'node'=>true), false, 4);
-                if (!empty($icon_projs)) {
-                    $disc_byreward[$icon] = $icon_projs;
-                }
-            }
-            if (!empty($disc_byreward)) {
-                $searcher['byreward'] = Text::get('node-side-searcher-byreward');
-                $discover['byreward'] = $disc_byreward;
-            }
-
         }
 
         if (isset($side_order['categories'])) {

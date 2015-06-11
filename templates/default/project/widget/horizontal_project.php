@@ -7,8 +7,22 @@ use Goteo\Core\View,
 
 $URL = \SITE_URL;
 
+
+
 $project = $this->project;
 $level = $this->level ?: 3;
+
+$date_created = $project->created;
+$date_updated = $project->updated;
+$date_success = $project->success;
+$date_closed  = $project->closed;
+$days       = $project->days;
+
+$reached= $project->invested;
+$minimum= $project->mincost;
+
+$minimum_done_per = floor(($reached / $minimum) * 100);
+
 
 if ($this->global === true) {
     $blank = ' target="_blank"';
@@ -37,7 +51,7 @@ if ($project->status == 3 && $project->noinvest) {
 <div class="widget project horizontal">
 	<a href="<?php echo $url ?>/project/<?php echo $project->id ?>" class="expand"<?php echo $blank; ?>></a>
     
-    <h<?php echo $level ?> class="title horizontal"><a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars($project->name,150) ?></a></h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title horizontal"><a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?= htmlspecialchars($project->name,150) ?></a></h<?php echo $level ?>>
     <h<?php echo $level + 1 ?> class="author"><?php echo $this->text('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"<?php echo $blank; ?>><?php echo htmlspecialchars($this->text_recorta($project->user->name,37)) ?></a></h<?php echo $level + 1?>>
 
     <div class="image">
@@ -77,9 +91,23 @@ if ($project->status == 3 && $project->noinvest) {
     </div>
 
 
-    <div class="description"><?php echo $this->text_recorta($project->description, 300); ?></div>
-
-    <div class="meter-container">
-    <?php echo View::get('project/meter_hor_big.html.php', array('project' => $project)) ?>
+    <div class="description">
+        <?php echo $this->text_recorta($project->description, 200); ?>
+        <div style="border-top:1px solid #1AB3B1; width:10%; margin-top:5px; display:none;"></div>
+        <ul class="amounts">
+            <li>
+                <div class="amount"><?= \amount_format($reached) ?></div>
+                <div class="label">conseguidos</div>
+            </li>
+            <li>
+                <div class="amount"><?= $minimum_done_per.' %' ?></div>
+                <div class="label">financiado</div>
+            </li>
+            <li>
+                <div class="amount"><?= $project->num_investors ?></div>
+                <div class="label">cofinanciadores</div>
+            </li>
+        </ul>
     </div>
+
 </div>

@@ -32,12 +32,10 @@ foreach ($this->discover as $cat => $projects) :
     <ul>
         <?php foreach ($projects as $project) {
             $project->per_amount = round(($project->amount / $project->mincost) * 100);
-            echo $this->insert('project/widget/tiny_project', ['project' => $project]);
+            echo $this->insert('project/widget/horizontal_project', ['project' => $project]);
 
         } ?>
     </ul>
-
-    <div class="see_more"><a href="/discover"><?= $this->text('regular-see_more') ?></a></div>
 </div>
     <?php endif; ?>
 <?php endforeach; ?>
