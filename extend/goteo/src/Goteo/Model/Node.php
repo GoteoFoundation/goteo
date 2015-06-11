@@ -3,7 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Model\Image,
-        Goteo\Core\ACL,
+        Goteo\Application\Exception,
         Goteo\Library\Text;
 
     class Node extends \Goteo\Core\Model {
@@ -26,44 +26,48 @@ namespace Goteo\Model {
          */
         static public function get ($id, $lang = null) {
 
-                //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'node_lang', $lang);
+            //Obtenemos el idioma de soporte
+            $lang=self::default_lang_by_id($id, 'node_lang', $lang);
 
-                $sql = static::query("
-                    SELECT
-                        node.id as id,
-                        node.name as name,
-                        node.email as email,
-                        IFNULL(node_lang.subtitle, node.subtitle) as subtitle,
-                        IFNULL(node_lang.description, node.description) as description,
-                        node.logo as logo,
-                        node.label as label,
-                        node.location as location,
-                        node.url as url,
-                        node.active as active,
-                        node.twitter as twitter,
-                        node.facebook as facebook,
-                        node.linkedin as linkedin,
-                        node.google as google,
-                        node.owner_background as owner_background
-                    FROM node
-                    LEFT JOIN node_lang
-                        ON  node_lang.id = node.id
-                        AND node_lang.lang = :lang
-                    WHERE node.id = :id
-                    ", array(':id' => $id, ':lang' => $lang));
-                $item = $sql->fetchObject(__CLASS__);
+            $sql = static::query("
+                SELECT
+                    node.id as id,
+                    node.name as name,
+                    node.email as email,
+                    IFNULL(node_lang.subtitle, node.subtitle) as subtitle,
+                    IFNULL(node_lang.description, node.description) as description,
+                    node.logo as logo,
+                    node.label as label,
+                    node.location as location,
+                    node.url as url,
+                    node.active as active,
+                    node.twitter as twitter,
+                    node.facebook as facebook,
+                    node.linkedin as linkedin,
+                    node.google as google,
+                    node.owner_background as owner_background
+                FROM node
+                LEFT JOIN node_lang
+                    ON  node_lang.id = node.id
+                    AND node_lang.lang = :lang
+                WHERE node.id = :id
+                ", array(':id' => $id, ':lang' => $lang));
+            $item = $sql->fetchObject(__CLASS__);
 
-                // y sus administradores
-                $item->admins = self::getAdmins($id);
+            if (!$item instanceof Node) {
+                throw new Exception\ModelNotFoundException(Text::html('fatal-error-node'));
+            }
 
-                // logo
-                $item->logo = (!empty($item->logo)) ? Image::get($item->logo) : null;
+            // y sus administradores
+            $item->admins = self::getAdmins($id);
 
-                // label
-                $item->label = (!empty($item->label)) ? Image::get($item->label) : null;
+            // logo
+            $item->logo = (!empty($item->logo)) ? Image::get($item->logo) : null;
 
-                return $item;
+            // label
+            $item->label = (!empty($item->label)) ? Image::get($item->label) : null;
+
+            return $item;
         }
 
         static public function getMini ($id) {

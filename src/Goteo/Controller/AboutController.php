@@ -33,7 +33,11 @@ namespace Goteo\Controller {
             }
 
             // en estos casos se usa el contenido de goteo
-            if ($id == 'howto' || $id == 'call') {
+            if ($id == 'howto') {
+                return new RedirectResponse('/project/create');
+            }
+            //TODO: delete this
+            if( $id == 'call') {
                 if (!Session::isLogged()) {
                     return new RedirectResponse('/');
                 }

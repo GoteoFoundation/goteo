@@ -7,6 +7,14 @@ $this->layout("layout", [
     ]);
 
 $this->section('content');
+$action = $this->action ? $this->action : '/project/create';
+// We dont want containing <form> tags
+$content = preg_replace(
+    array('#<form[^>]*>#i', '#</form>#i'),
+    array('', ''),
+    $this->raw('content')
+    );
+
 ?>
     <div id="sub-header">
         <div>
@@ -15,12 +23,14 @@ $this->section('content');
     </div>
 
     <div id="main">
+        <form action="<?= $action; ?>" method="post">
 
         <div class="widget">
             <h3 class="title"><?= $this->raw('name'); ?></h3>
-            <?= $this->raw('content'); ?>
+            <?= $content ?>
         </div>
 
+        </form>
     </div>
 
 <?php $this->replace() ?>

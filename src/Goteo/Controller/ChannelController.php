@@ -3,7 +3,11 @@
 namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
+use Goteo\Application\Session;
+use Goteo\Application;
 use Goteo\Application\View;
 use Goteo\Model;
 use Goteo\Model\Node;
@@ -22,15 +26,29 @@ use // convocatorias en portada
 use Goteo\Model\Icon;
 use Goteo\Model\Category;
 use Goteo\Library\Text;
-use Goteo\Library\Feed;
 use Goteo\Library\Page;
 
 class ChannelController extends \Goteo\Core\Controller {
 
-public static function indexAction($id, $page = 'index')
+    // Gets the channel and assign some default vars to all views
+    private static function getChannel($id) {
+        $channel = Node::get($id);
+        View::getEngine()->useContext('/', [
+            'url_project_create' => '/channel/' . $id . '/create'
+            ]);
+        return $channel;
+    }
+
+    /**
+     * TODO: @javier, se usa ¿¿¿ $page ???
+     * @param  [type] $id   [description]
+     * @param  string $page [description]
+     * @return [type]       [description]
+     */
+    public function indexAction($id, $page = 'index')
     {
 
-        $channel = Node::get($id);
+        $channel = self::getChannel($id);
 
         // orden de los elementos en portada
         $order = Home::getAll($id);
@@ -170,6 +188,39 @@ public static function indexAction($id, $page = 'index')
 
             )
         ));
+    }
+
+
+    /**
+     * Initial create project action
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function createAction ($id, Request $request)
+    {
+        $channel = self::getChannel($id);
+
+        if (! ($user = Session::getUser()) ) {
+            Session::store('jumpto', '/channel/' . $channel->id . '/create');
+            Application\Message::info(Text::get('user-login-required-to_create'));
+            return new RedirectResponse(SEC_URL.'/user/login');
+        }
+
+        if ($request->request->get('action') != 'continue' || $request->request->get('confirm') != 'true') {
+            $page = Page::get('howto');
+
+             return new Response(View::render('project/howto', array(
+                    'action' => '/channel/' . $channel->id . '/create',
+                    'name' => $page->name,
+                    'description' => $page->description,
+                    'content' => $page->content
+                )
+             ));
+        }
+
+        //Do the creation stuff (exception will be throwed on fail)
+        $project = Project::createNewProject(Session::getUser(), $channel->id);
+        return new RedirectResponse('/project/edit/'.$project->id);
     }
 
 }

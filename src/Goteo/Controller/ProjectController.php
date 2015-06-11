@@ -15,7 +15,9 @@ namespace Goteo\Controller {
         Goteo\Library\Check,
         Goteo\Library,
         Goteo\Library\Template,
+        Goteo\Library\Page,
         Goteo\Library\Feed,
+        Goteo\Model\Project,
         Goteo\Model,
         Symfony\Component\HttpFoundation\Request,
         Symfony\Component\HttpFoundation\Response,
@@ -35,7 +37,7 @@ namespace Goteo\Controller {
 
         //** esto es una guarrada **/
         public function rawAction ($id) {
-            $project = Model\Project::get($id, LANG);
+            $project = Project::get($id, LANG);
             // pasos para el check
             if ($project->draft) {
                 // primer borrador, menos pasos
@@ -57,14 +59,14 @@ namespace Goteo\Controller {
 
             // preveer posible cambio de id
             try {
-                $project = Model\Project::getMini($id, null);
+                $project = Project::getMini($id, null);
 
             } catch(\Goteo\Core\Error $e) {
                 return new RedirectResponse('/dashboard/projects');
             }
 
             // no lo puede eliminar si
-            if (!Model\Project::userRemovable($project, Session::getUser())) {
+            if (!Project::userRemovable($project, Session::getUser())) {
                 Application\Message::info('No tienes permiso para eliminar este proyecto');
                 return new RedirectResponse($goto);
             }
@@ -90,13 +92,13 @@ namespace Goteo\Controller {
 
             // preveer posible cambio de id
             try {
-                $project = Model\Project::get($id, null);
+                $project = Project::get($id, null);
 
             } catch(\Goteo\Core\Error $e) {
                 return new RedirectResponse('/dashboard/projects');
             }
 
-            if (!Model\Project::userEditable($project, Session::getUser())) {
+            if (!Project::userEditable($project, Session::getUser())) {
                 Application\Message::info('No tienes permiso para editar este proyecto');
                 return new RedirectResponse($goto);
             }
@@ -413,11 +415,11 @@ namespace Goteo\Controller {
                     break;
 
                 case 'userPersonal':
-                    $viewData['account'] = Model\Project\Account::get($project->id);
+                    $viewData['account'] = Project\Account::get($project->id);
                     break;
 
                 case 'overview':
-                    $viewData['categories'] = Model\Project\Category::getAll();
+                    $viewData['categories'] = Project\Category::getAll();
                     $viewData['languages']  = Lang::listAll('object'); // idiomas activos
                     $viewData['currencies'] = Library\Currency::$currencies; // divisas
                     $viewData['default_currency'] = Library\Currency::DEFAULT_CURRENCY; // divisa por defecto
@@ -429,7 +431,7 @@ namespace Goteo\Controller {
                     break;
 
                 case 'costs':
-                    $viewData['types'] = Model\Project\Cost::types();
+                    $viewData['types'] = Project\Cost::types();
 
                     // convert costs to project currency
                     foreach ($project->costs as &$cost) {
@@ -463,13 +465,13 @@ namespace Goteo\Controller {
                     }
 
 
-                    $viewData['stypes'] = Model\Project\Reward::icons('social');
-                    $viewData['itypes'] = Model\Project\Reward::icons('individual');
-                    $viewData['licenses'] = Model\Project\Reward::licenses();
+                    $viewData['stypes'] = Project\Reward::icons('social');
+                    $viewData['itypes'] = Project\Reward::icons('individual');
+                    $viewData['licenses'] = Project\Reward::licenses();
                     break;
 
                 case 'supports':
-                    $viewData['types'] = Model\Project\Support::types();
+                    $viewData['types'] = Project\Support::types();
 
                     break;
 
@@ -483,7 +485,7 @@ namespace Goteo\Controller {
                         $success[] = Text::get('guide-project-success-okfinish');
                     }
                     $viewData['success'] = $success;
-                    $viewData['types'] = Model\Project\Cost::types();
+                    $viewData['types'] = Project\Cost::types();
 
                     break;
             }
@@ -507,102 +509,40 @@ namespace Goteo\Controller {
 
         }
 
+        /**
+         * Initial create project action
+         * @param  Request $request [description]
+         * @return [type]           [description]
+         */
         public function createAction (Request $request) {
-            if (! ($user = Session::getUser()) ) {
+            if (! Session::isLogged() ) {
                 Session::store('jumpto', '/project/create');
                 Application\Message::info(Text::get('user-login-required-to_create'));
-                return new RedirectResponse(SEC_URL.'/user/login');
+                return new RedirectResponse(SEC_URL . '/user/login');
             }
 
             if ($request->request->get('action') != 'continue' || $request->request->get('confirm') != 'true') {
-                return new RedirectResponse('/about/howto');
+                $page = Page::get('howto');
+
+                 return new Response(View::render('project/howto', array(
+                        'action' => '/project/create',
+                        'name' => $page->name,
+                        'description' => $page->description,
+                        'content' => $page->content
+                    )
+                 ));
 
             }
-
-            $project = new Model\Project(array('owner' => Session::getUserId()));
-            if ($project->create(Config::get('current_node'), $errors)) {
-
-                // Evento Feed
-                $log = new Feed();
-                $log->setTarget($user->id, 'user');
-                $log->populate('usuario crea nuevo proyecto', 'admin/projects',
-                    \vsprintf('%s ha creado un nuevo proyecto, %s', array(
-                        Feed::item('user', $user->name, $user->id),
-                        Feed::item('project', $project->name, $project->id))
-                    ));
-                $log->doAdmin('project');
-                unset($log);
-
-                // Si hay que asignarlo a un proyecto
-                if ($call = Session::get('oncreate_applyto')) {
-
-                    $registry = new Model\Call\Project;
-                    $registry->id = $project->id;
-                    $registry->call = $call;
-                    if ($registry->save($errors)) {
-
-                        $callData = Model\Call::getMini($call);
-                        // email al autor
-
-                        //  idioma de preferencia del usuario
-                        $prefer = Model\User::getPreferences($user->id);
-                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
-
-                        // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(39, $comlang);
-
-                        // Sustituimos los datos
-                        $subject = str_replace('%CALLNAME%', $callData->name, $template->title);
-
-                        // En el contenido:
-                        $search  = array('%USERNAME%', '%CALLNAME%', '%CALLERNAME%', '%CALLURL%');
-                        $replace = array($user->name, $callData->name, $callData->user->name, SITE_URL.'/call/'.$call);
-                        $content = \str_replace($search, $replace, $template->text);
-
-
-                        $mailHandler = new Library\Mail();
-
-                        $mailHandler->to = $user->email;
-                        $mailHandler->toName = $user->name;
-                        $mailHandler->subject = $subject;
-                        $mailHandler->content = $content;
-                        $mailHandler->html = true;
-                        $mailHandler->template = $template->id;
-                        if ($mailHandler->send($errors)) {
-                            Application\Message::info(Text::get('assign-call-success', $callData->name));
-                        } else {
-                            Application\Message::error(Text::get('project-review-confirm_mail-fail'));
-                            \mail(\GOTEO_FAIL_MAIL, 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $user->email . ' con esta instancia <pre>'.print_r($mailHandler, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
-                        }
-
-                        unset($mailHandler);
-
-                        // Evento feed
-                        $log = new Feed();
-                        $log->setTarget($call, 'call');
-                        $log->populate('nuevo proyecto asignado a convocatoria ' . $call, 'admin/calls/'.$call.'/projects',
-                            \vsprintf('Nuevo proyecto %s aplicado a la convocatoria %s', array(
-                                Feed::item('project', $project->name, $project->id),
-                                Feed::item('call', $call, $call))
-                            ));
-                        $log->doAdmin('project');
-                        unset($log);
-                    } else {
-                        \mail(\GOTEO_FAIL_MAIL, 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
-                    }
-                }
-
-                return new RedirectResponse('/project/edit/'.$project->id);
-            }
-
-            throw new \Goteo\Core\Exception('Error creating project: ' . implode("\n", $errors));
+            //Do the creation stuff (exception will be throwed on fail)
+            $project = Project::createNewProject(Session::getUser(), Config::get('current_node'));
+            return new RedirectResponse('/project/edit/'.$project->id);
         }
 
         private function view ($id, $show, $post = null) {
             //activamos la cache para esta llamada
             \Goteo\Core\DB::cache(true);
 
-            $project = Model\Project::get($id, LANG);
+            $project = Project::get($id, LANG);
             $user = Session::getUser();
 
             // recompensas
@@ -643,9 +583,9 @@ namespace Goteo\Controller {
             }
 
             // si lo puede ver
-            if (Model\Project::userPublicable($project, Session::getUser())) {
+            if (Project::userPublicable($project, Session::getUser())) {
 
-                $project->cat_names = Model\Project\Category::getNames($id);
+                $project->cat_names = Project\Category::getNames($id);
 
                 if ($show == 'home') {
                     // para el widget embed
@@ -682,7 +622,7 @@ namespace Goteo\Controller {
                     $viewData['show'] = 'supporters';
 
                     // si permite uso de paypal
-                    $viewData['allowpp'] = Model\Project\Account::getAllowpp($id);
+                    $viewData['allowpp'] = Project\Account::getAllowpp($id);
 
                     /* pasos de proceso aporte
                      *
@@ -941,7 +881,7 @@ namespace Goteo\Controller {
                 $project->okeys['userPersonal']['paypal'] = true;
             }
 
-            $accounts = Model\Project\Account::get($project->id);
+            $accounts = Project\Account::get($project->id);
             $accounts->paypal = $ppacc;
             $accounts->bank = $bankacc;
             $accounts->save($project->errors['userPersonal']);
@@ -997,11 +937,11 @@ namespace Goteo\Controller {
 
             // Media
             if (!empty($project->media)) {
-                $project->media = new Model\Project\Media($project->media);
+                $project->media = new Project\Media($project->media);
             }
             // Video de motivación
             if (!empty($project->video)) {
-                $project->video = new Model\Project\Media($project->video);
+                $project->video = new Project\Media($project->video);
             }
 
             //categorias
@@ -1015,7 +955,7 @@ namespace Goteo\Controller {
             }
             $guarda = array_diff($viene, $tiene);
             foreach ($guarda as $key=>$cat) {
-                $category = new Model\Project\Category(array('id'=>$cat,'project'=>$project->id));
+                $category = new Project\Category(array('id'=>$cat,'project'=>$project->id));
                 $project->categories[] = $category;
             }
 
@@ -1052,8 +992,8 @@ namespace Goteo\Controller {
                     // recalculamos las galerias e imagen
 
                     // getGalleries en Project\Image  procesa todas las secciones
-                    $galleries = Model\Project\Image::getGalleries($project->id);
-                    Model\Project\Image::setImage($project->id, $galleries['']);
+                    $galleries = Project\Image::getGalleries($project->id);
+                    Project\Image::setImage($project->id, $galleries['']);
 
                     unset($project->images[$key]);
                 }
@@ -1110,7 +1050,7 @@ namespace Goteo\Controller {
             //añadir nuevo coste
             if (!empty($_POST['cost-add'])) {
 
-                $project->costs[] = new Model\Project\Cost(array(
+                $project->costs[] = new Project\Cost(array(
                     'project' => $project->id,
                     'cost'  => 'Nueva tarea',
                     'type'  => 'task',
@@ -1141,7 +1081,7 @@ namespace Goteo\Controller {
                 return false;
             }
 
-            $types = Model\Project\Reward::icons('');
+            $types = Project\Reward::icons('');
 
             //tratar retornos sociales
             foreach ($project->social_rewards as $k => $reward) {
@@ -1198,7 +1138,7 @@ namespace Goteo\Controller {
 
             // tratar nuevos retornos
             if (!empty($_POST['social_reward-add'])) {
-                $project->social_rewards[] = new Model\Project\Reward(array(
+                $project->social_rewards[] = new Project\Reward(array(
                     'type'      => 'social',
                     'project'   => $project->id,
                     'reward'    => 'Nuevo retorno colectivo',
@@ -1209,7 +1149,7 @@ namespace Goteo\Controller {
             }
 
             if (!empty($_POST['individual_reward-add'])) {
-                $project->individual_rewards[] = new Model\Project\Reward(array(
+                $project->individual_rewards[] = new Project\Reward(array(
                     'type'      => 'individual',
                     'project'   => $project->id,
                     'reward'    => 'Nueva recompensa individual',
@@ -1276,7 +1216,7 @@ namespace Goteo\Controller {
 
             // añadir nueva colaboracion
             if (!empty($_POST['support-add'])) {
-                $project->supports[] = new Model\Project\Support(array(
+                $project->supports[] = new Project\Support(array(
                     'project'       => $project->id,
                     'support'       => 'Nueva colaboración',
                     'type'          => 'task',

@@ -4,6 +4,7 @@ use Goteo\Core\ACL,
 
 $nodes = Nodesys::activeNodes();
 
+$url_project_create = $this->url_project_create ? $this->url_project_create : '/project/create';
 ?>
     <div id="menu">
 
@@ -12,7 +13,7 @@ $nodes = Nodesys::activeNodes();
         <ul>
             <li class="home"><a class="node-jump" href="<?php echo SITE_URL ?>"><?= $this->text('regular-home') ?></a></li>
             <li class="explore"><a class="button red" href="/discover"><?= $this->text('regular-discover') ?></a></li>
-            <li class="create"><a class="button aqua" href="/project/create"><?= $this->text('regular-create') ?></a></li>
+            <li class="create"><a class="button aqua" href="<?= $url_project_create ?>"><?= $this->text('regular-create') ?></a></li>
             <li class="search">
                 <form method="get" action="/discover/results">
                     <fieldset>

@@ -230,6 +230,13 @@ $routes->add('channel', new Route(
     array('_controller' => 'Goteo\Controller\ChannelController::indexAction')
 ));
 
+$routes->add('channel-project-create', new Route(
+    '/channel/{id}/create',
+    array('_controller' => 'Goteo\Controller\ChannelController::createAction')
+));
+
+
+
 ///// END USER /////
 
 ///////// REDIRECT "/" ENDING ROUTES ///////////////
