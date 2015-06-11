@@ -32,7 +32,7 @@ $custom_routes->add('barcelona-node', new Route(
 ));
 
 // Adding Default routes
-$main_routes = include(__DIR__ . '/../../../src/app.php');
+$main_routes = include(__DIR__ . '/../../../src/routes.php');
 $custom_routes->addCollection($main_routes);
 
 return $custom_routes;

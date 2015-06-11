@@ -11,14 +11,20 @@ body .markdown-body
 }
 
 @font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+@font-face {
   font-family: octicons-anchor;
   src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
 }
 
 .markdown-body {
+  font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  color: #333;
+  color: #333333;
   overflow: hidden;
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
   font-size: 16px;
@@ -35,8 +41,30 @@ body .markdown-body
   outline: 0;
 }
 
+.markdown-body b,
 .markdown-body strong {
   font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
 }
 
 .markdown-body h1 {
@@ -60,7 +88,8 @@ body .markdown-body
 
 .markdown-body code,
 .markdown-body kbd,
-.markdown-body pre {
+.markdown-body pre,
+.markdown-body samp {
   font-family: monospace, monospace;
   font-size: 1em;
 }
@@ -80,7 +109,6 @@ body .markdown-body
 }
 
 .markdown-body input[type="checkbox"] {
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 0;
 }
@@ -95,13 +123,72 @@ body .markdown-body
   padding: 0;
 }
 
+.markdown-body .codehilitetable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
 .markdown-body * {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 .markdown-body input {
-  font: 13px/1.4 Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
 }
 
 .markdown-body a {
@@ -124,15 +211,14 @@ body .markdown-body
   border-bottom: 1px solid #ddd;
 }
 
-.markdown-body hr:before {
+.markdown-body hr:before,
+.markdown-body hr:after {
   display: table;
-  content: "";
+  content: " ";
 }
 
 .markdown-body hr:after {
-  display: table;
   clear: both;
-  content: "";
 }
 
 .markdown-body h1,
@@ -197,31 +283,31 @@ body .markdown-body
   margin-left: 0;
 }
 
-.markdown-body code {
-  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
 }
 
 .markdown-body pre {
   margin-top: 0;
   margin-bottom: 0;
-  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 
-.markdown-body .octicon {
-  font: normal normal 16px octicons-anchor;
-  line-height: 1;
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
   display: inline-block;
-  text-decoration: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.markdown-body .octicon-link:before {
-  content: '\f05c';
 }
 
 .markdown-body>*:first-child {
@@ -232,7 +318,7 @@ body .markdown-body
   margin-bottom: 0 !important;
 }
 
-.markdown-body .anchor {
+.markdown-body .headeranchor-link {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -243,7 +329,7 @@ body .markdown-body
   margin-left: -30px;
 }
 
-.markdown-body .anchor:focus {
+.markdown-body .headeranchor-link:focus {
   outline: none;
 }
 
@@ -260,35 +346,36 @@ body .markdown-body
   line-height: 1.4;
 }
 
-.markdown-body h1 .octicon-link,
-.markdown-body h2 .octicon-link,
-.markdown-body h3 .octicon-link,
-.markdown-body h4 .octicon-link,
-.markdown-body h5 .octicon-link,
-.markdown-body h6 .octicon-link {
+.markdown-body h1 .headeranchor,
+.markdown-body h2 .headeranchor,
+.markdown-body h3 .headeranchor,
+.markdown-body h4 .headeranchor,
+.markdown-body h5 .headeranchor,
+.markdown-body h6 .headeranchor {
   display: none;
   color: #000;
   vertical-align: middle;
 }
 
-.markdown-body h1:hover .anchor,
-.markdown-body h2:hover .anchor,
-.markdown-body h3:hover .anchor,
-.markdown-body h4:hover .anchor,
-.markdown-body h5:hover .anchor,
-.markdown-body h6:hover .anchor {
+.markdown-body h1:hover .headeranchor-link,
+.markdown-body h2:hover .headeranchor-link,
+.markdown-body h3:hover .headeranchor-link,
+.markdown-body h4:hover .headeranchor-link,
+.markdown-body h5:hover .headeranchor-link,
+.markdown-body h6:hover .headeranchor-link {
+  height: 1em;
   padding-left: 8px;
   margin-left: -30px;
   line-height: 1;
   text-decoration: none;
 }
 
-.markdown-body h1:hover .anchor .octicon-link,
-.markdown-body h2:hover .anchor .octicon-link,
-.markdown-body h3:hover .anchor .octicon-link,
-.markdown-body h4:hover .anchor .octicon-link,
-.markdown-body h5:hover .anchor .octicon-link,
-.markdown-body h6:hover .anchor .octicon-link {
+.markdown-body h1:hover .headeranchor-link .headeranchor,
+.markdown-body h2:hover .headeranchor-link .headeranchor,
+.markdown-body h3:hover .headeranchor-link .headeranchor,
+.markdown-body h4:hover .headeranchor-link .headeranchor,
+.markdown-body h5:hover .headeranchor-link .headeranchor,
+.markdown-body h6:hover .headeranchor-link .headeranchor {
   display: inline-block;
 }
 
@@ -330,7 +417,8 @@ body .markdown-body
 .markdown-body ol,
 .markdown-body dl,
 .markdown-body table,
-.markdown-body pre {
+.markdown-body pre,
+.markdown-body .admonition {
   margin-top: 0;
   margin-bottom: 16px;
 }
@@ -424,7 +512,8 @@ body .markdown-body
   box-sizing: border-box;
 }
 
-.markdown-body code {
+.markdown-body code,
+.markdown-body samp {
   padding: 0;
   padding-top: 0.2em;
   padding-bottom: 0.2em;
@@ -450,11 +539,11 @@ body .markdown-body
   border: 0;
 }
 
-.markdown-body .highlight {
+.markdown-body .codehilite {
   margin-bottom: 16px;
 }
 
-.markdown-body .highlight pre,
+.markdown-body .codehilite pre,
 .markdown-body pre {
   padding: 16px;
   overflow: auto;
@@ -464,7 +553,7 @@ body .markdown-body
   border-radius: 3px;
 }
 
-.markdown-body .highlight pre {
+.markdown-body .codehilite pre {
   margin-bottom: 0;
   word-break: normal;
 }
@@ -490,362 +579,325 @@ body .markdown-body
   content: normal;
 }
 
-.markdown-body .highlight {
-  background: #fff;
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
 }
 
-.markdown-body .highlight .h {
-  color: #333;
-  font-style: normal;
-  font-weight: normal;
-}
-
-.markdown-body .highlight .mf,
-.markdown-body .highlight .mh,
-.markdown-body .highlight .mi,
-.markdown-body .highlight .mo,
-.markdown-body .highlight .il,
-.markdown-body .highlight .m {
-  color: #945277;
-}
-
-.markdown-body .highlight .s,
-.markdown-body .highlight .sb,
-.markdown-body .highlight .sc,
-.markdown-body .highlight .sd,
-.markdown-body .highlight .s2,
-.markdown-body .highlight .se,
-.markdown-body .highlight .sh,
-.markdown-body .highlight .si,
-.markdown-body .highlight .sx,
-.markdown-body .highlight .s1 {
-  color: #df5000;
-}
-
-.markdown-body .highlight .kc,
-.markdown-body .highlight .kd,
-.markdown-body .highlight .kn,
-.markdown-body .highlight .kp,
-.markdown-body .highlight .kr,
-.markdown-body .highlight .kt,
-.markdown-body .highlight .k,
-.markdown-body .highlight .o {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .kt {
-  color: #458;
-}
-
-.markdown-body .highlight .c,
-.markdown-body .highlight .cm,
-.markdown-body .highlight .c1 {
-  color: #998;
-  font-style: italic;
-}
-
-.markdown-body .highlight .cp,
-.markdown-body .highlight .cs,
-.markdown-body .highlight .cp .h {
-  color: #999;
-  font-weight: bold;
-}
-
-.markdown-body .highlight .cs {
-  font-style: italic;
-}
-
-.markdown-body .highlight .n {
+.markdown-body .admonition table {
   color: #333;
 }
 
-.markdown-body .highlight .na,
-.markdown-body .highlight .nv,
-.markdown-body .highlight .vc,
-.markdown-body .highlight .vg,
-.markdown-body .highlight .vi {
-  color: #008080;
+.markdown-body .admonition p {
+  padding: 0;
 }
 
-.markdown-body .highlight .nb {
-  color: #0086B3;
-}
-
-.markdown-body .highlight .nc {
-  color: #458;
+.markdown-body .admonition-title {
   font-weight: bold;
+  margin: 0;
 }
 
-.markdown-body .highlight .no {
-  color: #094e99;
+.markdown-body .admonition>.admonition-title {
+  color: #333;
 }
 
-.markdown-body .highlight .ni {
-  color: #800080;
+.markdown-body .attention>.admonition-title {
+  color: #a6d796;
 }
 
-.markdown-body .highlight .ne {
-  color: #990000;
+.markdown-body .caution>.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint>.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger>.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question>.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note>.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: "\f056\00a0";
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: "\f058\00a0";
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: "\f06a\00a0";
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: "\f05a\00a0";
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: "\f057\00a0";
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: "\f059\00a0";
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: "\f040\00a0";
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
   font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-.markdown-body .highlight .nf {
-  color: #945277;
-  font-weight: bold;
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
 }
 
-.markdown-body .highlight .nn {
-  color: #555;
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
 }
 
-.markdown-body .highlight .nt {
-  color: #000080;
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
 }
 
-.markdown-body .highlight .err {
-  color: #a61717;
-  background-color: #e3d2d2;
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
 }
 
-.markdown-body .highlight .gd {
-  color: #000;
-  background-color: #fdd;
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
 }
 
-.markdown-body .highlight .gd .x {
-  color: #000;
-  background-color: #faa;
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
 }
 
-.markdown-body .highlight .ge {
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* Multimarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
   font-style: italic;
 }
 
-.markdown-body .highlight .gr {
-  color: #aa0000;
-}
-
-.markdown-body .highlight .gh {
-  color: #999;
-}
-
-.markdown-body .highlight .gi {
-  color: #000;
-  background-color: #dfd;
-}
-
-.markdown-body .highlight .gi .x {
-  color: #000;
-  background-color: #afa;
-}
-
-.markdown-body .highlight .go {
-  color: #888;
-}
-
-.markdown-body .highlight .gp {
-  color: #555;
-}
-
-.markdown-body .highlight .gs {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .gu {
-  color: #800080;
-  font-weight: bold;
-}
-
-.markdown-body .highlight .gt {
-  color: #aa0000;
-}
-
-.markdown-body .highlight .ow {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .w {
-  color: #bbb;
-}
-
-.markdown-body .highlight .sr {
-  color: #017936;
-}
-
-.markdown-body .highlight .ss {
-  color: #8b467f;
-}
-
-.markdown-body .highlight .bp {
-  color: #999;
-}
-
-.markdown-body .highlight .gc {
-  color: #999;
-  background-color: #EAF2F5;
-}
-
-.markdown-body kbd {
-  background-color: #e7e7e7;
-  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
-  background-image: linear-gradient(#fefefe, #e7e7e7);
-  background-repeat: repeat-x;
+.markdown-body .headeranchor {
+  font: normal normal 16px octicons-anchor;
+  line-height: 1;
   display: inline-block;
-  padding: 3px 5px;
-  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  line-height: 10px;
-  color: #000;
-  border: 1px solid #cfcfcf;
-  border-radius: 2px;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.markdown-body .highlight .pl-coc,
-.markdown-body .highlight .pl-entm,
-.markdown-body .highlight .pl-eoa,
-.markdown-body .highlight .pl-mai .pl-sf,
-.markdown-body .highlight .pl-pdv,
-.markdown-body .highlight .pl-sc,
-.markdown-body .highlight .pl-sr,
-.markdown-body .highlight .pl-v,
-.markdown-body .highlight .pl-vpf {
-  color: #0086b3;
-}
-
-.markdown-body .highlight .pl-eoac,
-.markdown-body .highlight .pl-mdht,
-.markdown-body .highlight .pl-mi1,
-.markdown-body .highlight .pl-mri,
-.markdown-body .highlight .pl-va,
-.markdown-body .highlight .pl-vpu {
-  color: #008080;
-}
-
-.markdown-body .highlight .pl-c,
-.markdown-body .highlight .pl-pdc {
-  color: #b4b7b4;
-  font-style: italic;
-}
-
-.markdown-body .highlight .pl-k,
-.markdown-body .highlight .pl-ko,
-.markdown-body .highlight .pl-kolp,
-.markdown-body .highlight .pl-mc,
-.markdown-body .highlight .pl-mr,
-.markdown-body .highlight .pl-ms,
-.markdown-body .highlight .pl-s,
-.markdown-body .highlight .pl-sok,
-.markdown-body .highlight .pl-st {
-  color: #6e5494;
-}
-
-.markdown-body .highlight .pl-ef,
-.markdown-body .highlight .pl-enf,
-.markdown-body .highlight .pl-enm,
-.markdown-body .highlight .pl-entc,
-.markdown-body .highlight .pl-eoi,
-.markdown-body .highlight .pl-sf,
-.markdown-body .highlight .pl-smc {
-  color: #d12089;
-}
-
-.markdown-body .highlight .pl-ens,
-.markdown-body .highlight .pl-eoai,
-.markdown-body .highlight .pl-kos,
-.markdown-body .highlight .pl-mh .pl-pdh,
-.markdown-body .highlight .pl-mp,
-.markdown-body .highlight .pl-pde,
-.markdown-body .highlight .pl-stp {
-  color: #458;
-}
-
-.markdown-body .highlight .pl-enti {
-  color: #d12089;
-  font-weight: bold;
-}
-
-.markdown-body .highlight .pl-cce,
-.markdown-body .highlight .pl-enc,
-.markdown-body .highlight .pl-kou,
-.markdown-body .highlight .pl-mq {
-  color: #f93;
-}
-
-.markdown-body .highlight .pl-mp1 .pl-sf {
-  color: #458;
-  font-weight: bold;
-}
-
-.markdown-body .highlight .pl-cos,
-.markdown-body .highlight .pl-ent,
-.markdown-body .highlight .pl-md,
-.markdown-body .highlight .pl-mdhf,
-.markdown-body .highlight .pl-ml,
-.markdown-body .highlight .pl-pdc1,
-.markdown-body .highlight .pl-pds,
-.markdown-body .highlight .pl-s1,
-.markdown-body .highlight .pl-scp,
-.markdown-body .highlight .pl-sol {
-  color: #df5000;
-}
-
-.markdown-body .highlight .pl-c1,
-.markdown-body .highlight .pl-cn,
-.markdown-body .highlight .pl-pse,
-.markdown-body .highlight .pl-pse .pl-s2,
-.markdown-body .highlight .pl-vi {
-  color: #a31515;
-}
-
-.markdown-body .highlight .pl-mb,
-.markdown-body .highlight .pl-pdb {
-  color: #df5000;
-  font-weight: bold;
-}
-
-.markdown-body .highlight .pl-mi,
-.markdown-body .highlight .pl-pdi {
-  color: #6e5494;
-  font-style: italic;
-}
-
-.markdown-body .highlight .pl-ms1 {
-  background-color: #f5f5f5;
-}
-
-.markdown-body .highlight .pl-mdh,
-.markdown-body .highlight .pl-mdi {
-  font-weight: bold;
-}
-
-.markdown-body .highlight .pl-mdr {
-  color: #0086b3;
-  font-weight: bold;
-}
-
-.markdown-body .highlight .pl-s2 {
-  color: #333;
-}
-
-.markdown-body .highlight .pl-ii {
-  background-color: #df5000;
-  color: #fff;
-}
-
-.markdown-body .highlight .pl-ib {
-  background-color: #f93;
-}
-
-.markdown-body .highlight .pl-id {
-  background-color: #a31515;
-  color: #fff;
-}
-
-.markdown-body .highlight .pl-iu {
-  background-color: #b4b7b4;
-}
-
-.markdown-body .highlight .pl-mo {
-  color: #969896;
+.headeranchor:before {
+  content: '\f05c';
 }
 
 .markdown-body .task-list-item {
@@ -857,202 +909,343 @@ body .markdown-body
 }
 
 .markdown-body .task-list-item input {
-  float: left;
-  margin: 0.3em 0 0.25em -1.6em;
+  margin: 0 4px 0.25em -20px;
   vertical-align: middle;
-}</style><title>MIGRATE</title></head><body><article class="markdown-body"><h1>
-<a id="user-content-migración-de-plantillas" class="anchor" href="#migraci%C3%B3n-de-plantillas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Migración de plantillas</h1>
+}
 
-<p>Se usa PHP FOIL
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown-body abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^="javascript:"]:after,
+  .markdown-body a[href^="#"]:after {
+    content: "";
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+</style><style>.codehilite pre .hll { background-color: #f8eec7 }
+.codehilite pre  { background: #ffffff; color: #333333 }
+.codehilite pre .c { color: #999988; font-style: italic } /* Comment */
+.codehilite pre .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.codehilite pre .k { font-weight: bold } /* Keyword */
+.codehilite pre .n { color: #333333 } /* Name */
+.codehilite pre .o { font-weight: bold } /* Operator */
+.codehilite pre .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.codehilite pre .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.codehilite pre .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.codehilite pre .cs { color: #999988; font-style: italic } /* Comment.Special */
+.codehilite pre .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.codehilite pre .ge { font-style: italic } /* Generic.Emph */
+.codehilite pre .gr { color: #aa0000 } /* Generic.Error */
+.codehilite pre .gh { color: #999999 } /* Generic.Heading */
+.codehilite pre .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.codehilite pre .go { color: #888888 } /* Generic.Output */
+.codehilite pre .gp { color: #555555 } /* Generic.Prompt */
+.codehilite pre .gs { font-weight: bold } /* Generic.Strong */
+.codehilite pre .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.codehilite pre .gt { color: #aa0000 } /* Generic.Traceback */
+.codehilite pre .kc { font-weight: bold } /* Keyword.Constant */
+.codehilite pre .kd { font-weight: bold } /* Keyword.Declaration */
+.codehilite pre .kn { font-weight: bold } /* Keyword.Namespace */
+.codehilite pre .kp { font-weight: bold } /* Keyword.Pseudo */
+.codehilite pre .kr { font-weight: bold } /* Keyword.Reserved */
+.codehilite pre .kt { font-weight: bold } /* Keyword.Type */
+.codehilite pre .m { color: #945277 } /* Literal.Number */
+.codehilite pre .s { color: #df5000 } /* Literal.String */
+.codehilite pre .na { color: #008080 } /* Name.Attribute */
+.codehilite pre .nb { color: #0086b3 } /* Name.Builtin */
+.codehilite pre .nc { color: #445588; font-weight: bold } /* Name.Class */
+.codehilite pre .no { color: #094e99 } /* Name.Constant */
+.codehilite pre .nd { color: #333333 } /* Name.Decorator */
+.codehilite pre .ni { color: #800080 } /* Name.Entity */
+.codehilite pre .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.codehilite pre .nf { color: #945277; font-weight: bold } /* Name.Function */
+.codehilite pre .nl { color: #333333 } /* Name.Label */
+.codehilite pre .nn { color: #555555 } /* Name.Namespace */
+.codehilite pre .nx { color: #333333 } /* Name.Other */
+.codehilite pre .py { color: #333333 } /* Name.Property */
+.codehilite pre .nt { color: #000080 } /* Name.Tag */
+.codehilite pre .nv { color: #008080 } /* Name.Variable */
+.codehilite pre .ow { font-weight: bold } /* Operator.Word */
+.codehilite pre .w { color: #bbbbbb } /* Text.Whitespace */
+.codehilite pre .mb { color: #945277 } /* Literal.Number.Bin */
+.codehilite pre .mf { color: #945277 } /* Literal.Number.Float */
+.codehilite pre .mh { color: #945277 } /* Literal.Number.Hex */
+.codehilite pre .mi { color: #945277 } /* Literal.Number.Integer */
+.codehilite pre .mo { color: #945277 } /* Literal.Number.Oct */
+.codehilite pre .sb { color: #df5000 } /* Literal.String.Backtick */
+.codehilite pre .sc { color: #df5000 } /* Literal.String.Char */
+.codehilite pre .sd { color: #df5000 } /* Literal.String.Doc */
+.codehilite pre .s2 { color: #df5000 } /* Literal.String.Double */
+.codehilite pre .se { color: #df5000 } /* Literal.String.Escape */
+.codehilite pre .sh { color: #df5000 } /* Literal.String.Heredoc */
+.codehilite pre .si { color: #df5000 } /* Literal.String.Interpol */
+.codehilite pre .sx { color: #df5000 } /* Literal.String.Other */
+.codehilite pre .sr { color: #017936 } /* Literal.String.Regex */
+.codehilite pre .s1 { color: #df5000 } /* Literal.String.Single */
+.codehilite pre .ss { color: #8b467f } /* Literal.String.Symbol */
+.codehilite pre .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.codehilite pre .vc { color: #008080 } /* Name.Variable.Class */
+.codehilite pre .vg { color: #008080 } /* Name.Variable.Global */
+.codehilite pre .vi { color: #008080 } /* Name.Variable.Instance */
+.codehilite pre .il { color: #945277 } /* Literal.Number.Integer.Long */</style><title>MIGRATE</title></head><body><article class="markdown-body"><h1 id="migracion-de-plantillas"><a name="user-content-migracion-de-plantillas" href="#migracion-de-plantillas" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Migración de plantillas</h1>
+<p>Se usa PHP FOIL<br />
 <a href="http://foilphp.it/">http://foilphp.it/</a></p>
-
 <p>Antiguo sistema</p>
-
 <p><code>\Goteo\Core\View::get('plantilla.php', array( 'obj' =&gt; ... ));</code></p>
-
 <p>Nuevo</p>
-
 <p><code>\Goteo\Application\View::render('plantilla', [ 'obj' =&gt; ... ]);</code></p>
-
-<h2>
-<a id="user-content-diferencias-en-las-plantillas" class="anchor" href="#diferencias-en-las-plantillas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Diferencias en las plantillas</h2>
-
+<h2 id="diferencias-en-las-plantillas"><a name="user-content-diferencias-en-las-plantillas" href="#diferencias-en-las-plantillas" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Diferencias en las plantillas</h2>
 <p><code>plantilla.php</code></p>
-
 <p>Antes:</p>
-
 <p>Las variables están dentro del array <strong>$this</strong> (objeto) o <strong>$vars[]</strong> (array)</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
 
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">//Objecto</span></span>
-<span class="pl-s1"><span class="pl-smi">$obj</span> <span class="pl-k">=</span> <span class="pl-smi">$this</span>[<span class="pl-s"><span class="pl-pds">'</span>obj<span class="pl-pds">'</span></span>];</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-smi">$obj</span><span class="pl-k">-&gt;</span>doSomething();</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-c1">htmlspecialchars</span>(<span class="pl-smi">$this</span>[<span class="pl-s"><span class="pl-pds">'</span>obj<span class="pl-pds">'</span></span>]<span class="pl-k">-&gt;</span>doMore()); <span class="pl-c">// escapado con htmlspecialchars</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">//Escalar</span></span>
-<span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-c1">htmlspecialchars</span>(<span class="pl-smi">$this</span>[<span class="pl-s"><span class="pl-pds">'</span>variable<span class="pl-pds">'</span></span>]); <span class="pl-c">//escapada</span></span>
-<span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-smi">$this</span>[<span class="pl-s"><span class="pl-pds">'</span>variable<span class="pl-pds">'</span></span>]; <span class="pl-c">//sin escapar</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
+<span class="c1">//Objecto</span>
+<span class="nv">$obj</span> <span class="o">=</span> <span class="nv">$this</span><span class="p">[</span><span class="s1">&#39;obj&#39;</span><span class="p">];</span>
+
+<span class="nv">$obj</span><span class="o">-&gt;</span><span class="na">doSomething</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$this</span><span class="p">[</span><span class="s1">&#39;obj&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">doMore</span><span class="p">());</span> <span class="c1">// escapado con htmlspecialchars</span>
+
+<span class="c1">//Escalar</span>
+<span class="k">echo</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$this</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">]);</span> <span class="c1">//escapada</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">];</span> <span class="c1">//sin escapar</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
 
 <p>Después:</p>
-
 <p>Las variables están instanciadas por defecto en el objecto <strong>$this</strong></p>
-
 <p><strong>NOTA</strong>: Por compatibilidad también es posible usar el array <code>$this-&gt;vars</code> que contiene todas las variables en un array. Aunque en todas las nuevas vistas no deberia usarse.</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">//objecto</span>
+<span class="nv">$obj</span><span class="o">-&gt;</span><span class="na">doSomething</span><span class="p">();</span>
 
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">//objecto</span></span>
-<span class="pl-s1"><span class="pl-smi">$obj</span><span class="pl-k">-&gt;</span>doSomething();</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>e(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>raw(<span class="pl-s"><span class="pl-pds">'</span>obj<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>doMore()); <span class="pl-c">// escapado con $this-&gt;e()</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">//escalar</span></span>
-<span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">variable</span>; <span class="pl-c">// HTML escapada por defecto (strings y arrays)</span></span>
-<span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>raw(<span class="pl-s"><span class="pl-pds">'</span>variable<span class="pl-pds">'</span></span>); <span class="pl-c">// sin escapar</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">//COMPATIBILIDAD CON VISTAS QUE NECESITAN UN ARRAY</span></span>
-<span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">vars</span>[<span class="pl-s"><span class="pl-pds">'</span>variable<span class="pl-pds">'</span></span>]; <span class="pl-c">// HTML escapada si es un string o array simple</span></span>
-<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">e</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s1">&#39;obj&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">doMore</span><span class="p">());</span> <span class="c1">// escapado con $this-&gt;e()</span>
 
-<h2>
-<a id="user-content-nuevas-funcionalidades" class="anchor" href="#nuevas-funcionalidades" aria-hidden="true"><span class="octicon octicon-link"></span></a>Nuevas funcionalidades</h2>
+<span class="c1">//escalar</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">variable</span><span class="p">;</span> <span class="c1">// HTML escapada por defecto (strings y arrays)</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s1">&#39;variable&#39;</span><span class="p">);</span> <span class="c1">// sin escapar</span>
 
+<span class="c1">//COMPATIBILIDAD CON VISTAS QUE NECESITAN UN ARRAY</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">vars</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">];</span> <span class="c1">// HTML escapada si es un string o array simple</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<h2 id="nuevas-funcionalidades"><a name="user-content-nuevas-funcionalidades" href="#nuevas-funcionalidades" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Nuevas funcionalidades</h2>
 <p>FOIL soporta herencia, funciones y reasignación de variables</p>
-
 <p>Funcionamiento básico</p>
-
 <p><code>layout.php</code></p>
+<div class="codehilite"><pre><span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">    &lt;title&gt;</span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="cp">?&gt;</span><span class="x">&lt;/title&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
 
-<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">&lt;</span><span class="pl-c1">html</span><span class="pl-k">&gt;</span></span>
-<span class="pl-s1"><span class="pl-k">&lt;</span><span class="pl-c1">head</span><span class="pl-k">&gt;</span></span>
-<span class="pl-s1">    <span class="pl-k">&lt;</span><span class="pl-c1">title</span><span class="pl-k">&gt;&lt;</span>?<span class="pl-k">=</span><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">title</span></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>&lt;/<span class="pl-ent">title</span>&gt;
-&lt;/<span class="pl-ent">head</span>&gt;
-&lt;<span class="pl-ent">body</span>&gt;
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">stop</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
 
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>section(<span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>stop() </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
 
-&lt;/<span class="pl-ent">body</span>&gt;
-&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
 
-<p>reescritura del titulo y sustitución de la sección 'content':</p>
-
+<p>reescritura del titulo y sustitución de la sección &lsquo;content&rsquo;:</p>
 <p><code>profile.php</code></p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">(</span><span class="s1">&#39;template&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User Profile&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x"></span>
 
-<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">&lt;</span>?<span class="pl-c1">php</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>layout(<span class="pl-s"><span class="pl-pds">'</span>template<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>User Profile<span class="pl-pds">'</span></span>]) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;h1&gt;User Profile&lt;/h1&gt;</span>
+<span class="x">&lt;p&gt;Hello, </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">stop</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
 
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>section(<span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-&lt;<span class="pl-ent">h1</span>&gt;User Profile&lt;/<span class="pl-ent">h1</span>&gt;
-&lt;<span class="pl-ent">p</span>&gt;Hello, <span class="pl-pse">&lt;?=</span><span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">name</span></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>&lt;/<span class="pl-ent">p</span>&gt;
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>stop() </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
 
-<p>Mas información en:
-<a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html</a>
+<p>Mas información en:<br />
+<a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html</a><br />
 <a href="http://www.foilphp.it/docs/DATA/PASS-DATA.html">http://www.foilphp.it/docs/DATA/PASS-DATA.html</a></p>
-
-<h2>
-<a id="user-content-migración-de-las-vistas-actuales" class="anchor" href="#migraci%C3%B3n-de-las-vistas-actuales" aria-hidden="true"><span class="octicon octicon-link"></span></a>Migración de las vistas actuales:</h2>
-
+<h2 id="migracion-de-las-vistas-actuales"><a name="user-content-migracion-de-las-vistas-actuales" href="#migracion-de-las-vistas-actuales" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Migración de las vistas actuales:</h2>
 <p>La nueva estructura de directorios deberia marcar de manera clara el próposito de cada vista:</p>
-
 <p><strong>Primer nivel</strong></p>
-
 <p>Multiples directorios que permiten sobreescritura de vistas segun las extensiones cargadas</p>
-
-<pre lang="text"><code>templates               &lt;- Carpeta de vistas generales
+<div class="codehilite"><pre>templates               &lt;- Carpeta de vistas generales
 extend/goteo/templates  &lt;- Carpeta de vistas privadas de goteo 
                            (si existe una vista aquí sobreescribira la general)
-</code></pre>
+</pre></div>
 
-<p>Las vistas del primer nivel no se llaman directamente desde los controladores,
+
+<p>Las vistas del primer nivel no se llaman directamente desde los controladores,<br />
 se llaman con la función <code>$this-&gt;layout('...')</code> dentro de otras vistas</p>
-
 <p><strong>Segundo nivel</strong></p>
-
-<p>Multiples directorios que permiten sobreescritura de vistas segun el tema usado
+<p>Multiples directorios que permiten sobreescritura de vistas segun el tema usado<br />
 (por ejemplo: nodos, convocatorias, widgets, etc)</p>
-
-<pre lang="text"><code>templates/default      &lt;- primer nivel, indica el tema a usar
+<div class="codehilite"><pre>templates/default      &lt;- primer nivel, indica el tema a usar
 templates/node            Un tema son paginas dentro de los tags &lt;html&gt;&lt;/html&gt;
 templates/...
-</code></pre>
+</pre></div>
+
 
 <p>Ejemplo de llamada en un controlador:</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// src/Goteo/Controller/DiscoverController.php</span>
 
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">// src/Goteo/Controller/DiscoverController.php</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-k">namespace</span> <span class="pl-en">Goteo\Controller</span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Symfony\Component\HttpFoundation\Response</span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">DiscoverController</span> <span class="pl-k">extends</span> <span class="pl-c1">\Goteo\Core\</span><span class="pl-e">Controller</span> {</span>
-<span class="pl-s1">    <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">index</span> () {</span>
-<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-c1">Response</span>(<span class="pl-c1">View</span><span class="pl-k">::</span>render(</span>
-<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>discover/index<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">            [ <span class="pl-s"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Es un texto que se escapará automáticamente<span class="pl-pds">'</span></span> ]</span>
-<span class="pl-s1">         ));</span>
-<span class="pl-s1">    }</span>
-<span class="pl-s1">}</span>
-<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
+<span class="k">namespace</span> <span class="nx">Goteo\Controller</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">DiscoverController</span> <span class="k">extends</span> <span class="nx">\Goteo\Core\Controller</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">View</span><span class="o">::</span><span class="na">render</span><span class="p">(</span>
+            <span class="s1">&#39;discover/index&#39;</span><span class="p">,</span>
+            <span class="p">[</span> <span class="s1">&#39;test&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Es un texto que se escapará automáticamente&#39;</span> <span class="p">]</span>
+         <span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
 
 <p>Como se ve, la ruta empieza en el tercer nivel (<code>discover</code>), la primera parte se busca automaticamente segun el tema en el que estamos (nodo, convocatoria, etc)</p>
-
 <p><strong>Tercer nivel</strong></p>
-
 <p>El tercel nivel es territorio de controladores, vistas que heredan del tema principal:</p>
-
-<pre lang="text"><code>templates/default/errors/   &lt;- tercer nivel estan las secciones de cada tema
+<div class="codehilite"><pre>templates/default/errors/   &lt;- tercer nivel estan las secciones de cada tema
 templates/default/home/        Por ej. vistas principales de los controladores
 templates/default/discover/            que usan herencia
-</code></pre>
+</pre></div>
+
 
 <p>Ejemplo de uso en una vista (<code>templates/default/discover/index.php</code>):</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">(</span><span class="s2">&quot;layout&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;bodyClass&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;discover&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x"></span>
 
-<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">&lt;</span>?<span class="pl-c1">php</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>layout(<span class="pl-s"><span class="pl-pds">"</span>layout<span class="pl-pds">"</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>bodyClass<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>discover<span class="pl-pds">'</span></span>]) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
 
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>section(<span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
+<span class="x">Contenido de la vista:</span>
+<span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">test</span><span class="cp">?&gt;</span><span class="x"></span>
 
-Contenido de la vista:
-<span class="pl-pse">&lt;?=</span><span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">test</span></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">replace</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
 
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>replace() </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
 
 <p>También dentro de una carpeta <code>partials</code> (para especificar que no son controladores que heredan) se pueden poner partes de vistas que se incluyen dentro de otras:</p>
-
-<pre lang="text"><code>templates/default/partials/  &lt;- O bien bloques parciales que se incluyen en la
+<div class="codehilite"><pre>templates/default/partials/  &lt;- O bien bloques parciales que se incluyen en la
                                 vista padre
-</code></pre>
+</pre></div>
+
 
 <p>Ejemplo de uso de inclusión de un parcial (<code>templates/default/layout.php</code>):</p>
+<div class="codehilite"><pre><span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s2">&quot;partials/header/metas&quot;</span><span class="p">)</span><span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;/head&gt;</span>
 
-<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">&lt;</span><span class="pl-c1">html</span><span class="pl-k">&gt;</span></span>
-<span class="pl-s1"><span class="pl-k">&lt;</span><span class="pl-c1">head</span><span class="pl-k">&gt;</span></span>
-<span class="pl-s1"><span class="pl-k">&lt;</span>?<span class="pl-k">=</span><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>insert(<span class="pl-s"><span class="pl-pds">"</span>partials/header/metas<span class="pl-pds">"</span></span>)</span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-&lt;/<span class="pl-ent">head</span>&gt;
+<span class="x">&lt;body&gt;</span>
 
-&lt;<span class="pl-ent">body</span>&gt;
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">stop</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
 
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>section(<span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>stop() </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
 
-&lt;/<span class="pl-ent">body</span>&gt;
-&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
 
 <p>La vista <code>partials/header/metas</code> heredará las variables que tenga <code>layout.php</code></p>
-
-<h2>
-<a id="user-content-objetivos-para-las-vistas" class="anchor" href="#objetivos-para-las-vistas" aria-hidden="true"><span class="octicon octicon-link"></span></a>OBJETIVOS PARA LAS VISTAS:</h2>
-
-<h3>
-<a id="user-content-syntaxis" class="anchor" href="#syntaxis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Syntaxis:</h3>
-
+<h2 id="objetivos-para-las-vistas"><a name="user-content-objetivos-para-las-vistas" href="#objetivos-para-las-vistas" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>OBJETIVOS PARA LAS VISTAS:</h2>
+<h3 id="syntaxis"><a name="user-content-syntaxis" href="#syntaxis" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Syntaxis:</h3>
 <p>Las vistas deberían ser lo más simple posible y no tener código acoplado, el objetivo a largo plazo debería ser:</p>
-
 <ul>
 <li>Siempre usar HTML con PHP incrustado. No usar bloques de PHP.</li>
 <li>Siempre escapar las variables (por defecto las variables estan escapadas en Foil). Leer mas en <a href="http://www.foilphp.it/docs/DATA/RETRIEVE-DATA.html">http://www.foilphp.it/docs/DATA/RETRIEVE-DATA.html</a> </li>
@@ -1061,258 +1254,249 @@ Contenido de la vista:
 <li>Nunca usar llaves PHP.</li>
 <li>Tener una sola orden de código por cada tag PHP.</li>
 <li>Evitar el uso de punto y coma. No son necesarios cuando sólo hay una declaración por etiqueta PHP.</li>
-<li>Nunca utilizar el operador <code>use</code>. Las plantillas no deberían estar interactuando con las clases de esta manera. Utilizar en su lugar funciones <em>wrapper</em>
-</li>
-<li>Nunca utilizar las estructuras de control <em>for</em>, <em>while</em> o <em>switch</em>. Utilizar su lugar <em>if</em> y *foreach. También estructuras del lenguage propias: <a href="http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html">http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html</a> <a href="http://www.foilphp.it/docs/FUNCTIONS/ARRAY-HELPERS.html">http://www.foilphp.it/docs/FUNCTIONS/ARRAY-HELPERS.html</a>
-</li>
+<li>Nunca utilizar el operador <code>use</code>. Las plantillas no deberían estar interactuando con las clases de esta manera. Utilizar en su lugar funciones <em>wrapper</em></li>
+<li>Nunca utilizar las estructuras de control <em>for</em>, <em>while</em> o <em>switch</em>. Utilizar su lugar <em>if</em> y *foreach. También estructuras del lenguage propias: <a href="http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html">http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html</a> <a href="http://www.foilphp.it/docs/FUNCTIONS/ARRAY-HELPERS.html">http://www.foilphp.it/docs/FUNCTIONS/ARRAY-HELPERS.html</a></li>
 <li>Evitar la asignación de variables.</li>
 </ul>
-
-<h2>
-<a id="user-content-guía-de-cambio-de-controladores" class="anchor" href="#gu%C3%ADa-de-cambio-de-controladores" aria-hidden="true"><span class="octicon octicon-link"></span></a>Guía de cambio de controladores:</h2>
-
+<h2 id="guia-de-cambio-de-controladores"><a name="user-content-guia-de-cambio-de-controladores" href="#guia-de-cambio-de-controladores" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Guía de cambio de controladores:</h2>
 <ol>
 <li>
 <p>Usar el objecto Response (de Symfony) como retorno del controlador y no la vista directamente <code>return new Response(View::render(...));</code></p>
-
 <ul>
 <li><strong>NOTAS:</strong></li>
 <li>Para las redirecciones usar la classe <code>RedirectResponse</code> de Symfony</li>
-<li>No usar directamente variables <code>$_GET</code> o <code>$_POST</code>, usar el objecto <code>Symfony\Component\HttpFoundation\Request</code> inyectado automáticamente al controlador (recomendable ponerlo al final del método). Para más información ver el <a href="http://symfony.com/doc/current/components/http_foundation/introduction.html">objeto Request</a>
-</li>
+<li>No usar directamente variables <code>$_GET</code> o <code>$_POST</code>, usar el objecto <code>Symfony\Component\HttpFoundation\Request</code> inyectado automáticamente al controlador (recomendable ponerlo al final del método). Para más información ver el <a href="http://symfony.com/doc/current/components/http_foundation/introduction.html">objeto Request</a></li>
 <li>Los nombres de las variables deben concordar con los definidos en las rutas (ver <a href="#routes">Rutas</a>). En realidad el orden de las variables no es importante.</li>
 <li>No usar directamente variables <code>$_SESSION</code> o <code>$_COOKIE</code>, usar la clase <code>\Goteo\Application\Session</code> y <code>\Goteo\Application\Cookie</code> respectivamente. Mirar los archivos correspondientes para más informacion.</li>
 </ul>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+    <span class="c1">// src/extend/goteo/src/Goteo/Controller/DiscoverAddonsController.php</span>
 
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// src/extend/goteo/src/Goteo/Controller/DiscoverAddonsController.php</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-k">namespace</span> <span class="pl-en">Goteo\Controller</span>;</span>
-<span class="pl-s1">    <span class="pl-k">use</span> <span class="pl-c1">Symfony\Component\HttpFoundation\Response</span>;</span>
-<span class="pl-s1">    <span class="pl-k">use</span> <span class="pl-c1">Symfony\Component\HttpFoundation\RedirectResponse</span>;</span>
-<span class="pl-s1">    <span class="pl-k">use</span> <span class="pl-c1">Symfony\Component\HttpFoundation\Request</span>;</span>
-<span class="pl-s1">    <span class="pl-k">use</span> ...</span>
-<span class="pl-s1">    <span class="pl-c1">class DiscoverAddonsController extends \Goteo\Core\Controller</span> {</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">        <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">call</span> () {</span>
-<span class="pl-s1">            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-c1">RedirectResponse</span>(<span class="pl-s"><span class="pl-pds">'</span>/discover/calls<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">        }</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">        <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">calls</span> () {</span>
-<span class="pl-s1">            <span class="pl-smi">$viewData</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>();</span>
-<span class="pl-s1">            <span class="pl-smi">$viewData</span>[<span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span>] <span class="pl-k">=</span> <span class="pl-c1">Text</span><span class="pl-k">::</span>html(<span class="pl-s"><span class="pl-pds">'</span>discover-calls-header<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">            <span class="pl-smi">$viewData</span>[<span class="pl-s"><span class="pl-pds">'</span>list<span class="pl-pds">'</span></span>]  <span class="pl-k">=</span> <span class="pl-c1">Model\</span><span class="pl-c1">Call</span><span class="pl-k">::</span>getActive(<span class="pl-c1">null</span>, <span class="pl-c1">true</span>);</span>
-<span class="pl-s1">            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-c1">Response</span>(<span class="pl-c1">View</span><span class="pl-k">::</span>render(<span class="pl-s"><span class="pl-pds">'</span>discover/calls<span class="pl-pds">'</span></span>, <span class="pl-smi">$viewData</span>));</span>
-<span class="pl-s1">        }</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">        <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">prueba</span> (<span class="pl-smi">$foo</span>, <span class="pl-smi">$bar</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>, <span class="pl-c1">Request</span> <span class="pl-smi">$request</span>) {</span>
-<span class="pl-s1">            <span class="pl-c">// Variable en "POST":</span></span>
-<span class="pl-s1">            <span class="pl-smi">$post_var</span> <span class="pl-k">=</span> <span class="pl-smi">$request</span><span class="pl-k">-&gt;</span><span class="pl-smi">request</span><span class="pl-k">-&gt;</span>get(<span class="pl-s"><span class="pl-pds">'</span>var<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">            <span class="pl-c">// Variable en "GET":</span></span>
-<span class="pl-s1">            <span class="pl-smi">$get_var</span> <span class="pl-k">=</span> <span class="pl-smi">$request</span><span class="pl-k">-&gt;</span><span class="pl-smi">query</span><span class="pl-k">-&gt;</span>get(<span class="pl-s"><span class="pl-pds">'</span>var<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">        }</span>
-<span class="pl-s1">    }</span>
-<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
-</li>
-<li><p>Usar el nuevo wrapper de vistas <code>Goteo\Application\View</code> y no el antiguo <code>Gote\Core\View</code>. La Función de renderizado es <code>View::render(...)</code></p></li>
-<li><p>Trasladar las vistas de <code>app/view/controller/vista.html.php</code> al nuevo directorio <code>templates/default/controller/vista.php</code>. La sub extension <code>.html.php</code> no hace falta.</p></li>
-<li><p>Eliminar includes a prologue.html.php, header.html.php, etc. del principio y final de las vistas. Reestructurar el contenido de la vista en bloques (secciones). Las secciones principales actuales se pueden consultar en <code>templates/default/layout.php</code>. Todas las sub-vistas deben implementar la sección 'content'. El javascript debería idealmente eliminarse pero como paso intermedio puede simplemente añadirse al final de la sección <code>footer</code>.</p></li>
-</ol>
+    <span class="k">namespace</span> <span class="nx">Goteo\Controller</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\RedirectResponse</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+    <span class="k">use</span> <span class="o">...</span>
+    <span class="k">class</span> <span class="nc">DiscoverAddonsController</span> <span class="k">extends</span> <span class="nx">\Goteo\Core\Controller</span> <span class="p">{</span>
 
-<p><strong>Ejemplo de adición de javascript dentro de una vista:</strong></p>
+        <span class="k">public</span> <span class="k">function</span> <span class="nf">call</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">RedirectResponse</span><span class="p">(</span><span class="s1">&#39;/discover/calls&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
 
-<p><code>templates/default/discover/index.php</code></p>
+        <span class="k">public</span> <span class="k">function</span> <span class="nf">calls</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nv">$viewData</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+            <span class="nv">$viewData</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Text</span><span class="o">::</span><span class="na">html</span><span class="p">(</span><span class="s1">&#39;discover-calls-header&#39;</span><span class="p">);</span>
+            <span class="nv">$viewData</span><span class="p">[</span><span class="s1">&#39;list&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="nx">Model\Call</span><span class="o">::</span><span class="na">getActive</span><span class="p">(</span><span class="k">null</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">View</span><span class="o">::</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;discover/calls&#39;</span><span class="p">,</span> <span class="nv">$viewData</span><span class="p">));</span>
+        <span class="p">}</span>
 
-<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">&lt;</span>?<span class="pl-c1">php</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>layout(<span class="pl-s"><span class="pl-pds">"</span>layout<span class="pl-pds">"</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>bodyClass<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>discover<span class="pl-pds">'</span></span>]) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>section(<span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-    Contenido de la vista:
-<span class="pl-pse">&lt;?=</span><span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">test</span></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>replace() </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-c">// Se reemplazará la sección 'content' en el template "layout.php" </span></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>section(<span class="pl-s"><span class="pl-pds">'</span>footer<span class="pl-pds">'</span></span>) </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-<span class="pl-s1">    &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;</span>
-<span class="pl-s1">        jQuery(<span class="pl-c1">document</span>).ready(<span class="pl-k">function</span> (<span class="pl-smi">$</span>) {</span>
-<span class="pl-s1">            ...</span>
-<span class="pl-s1">        });</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    &lt;/<span class="pl-ent">script</span>&gt;</span>
-
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>append() </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-c">// Se añadirá al final de la sección 'footer' en el template "layout.php" </span></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
+        <span class="k">public</span> <span class="k">function</span> <span class="nf">prueba</span> <span class="p">(</span><span class="nv">$foo</span><span class="p">,</span> <span class="nv">$bar</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Variable en &quot;POST&quot;:</span>
+            <span class="nv">$post_var</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;var&#39;</span><span class="p">);</span>
+            <span class="c1">// Variable en &quot;GET&quot;:</span>
+            <span class="nv">$get_var</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;var&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
 </pre></div>
 
-<pre><code>Mas info http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html. 
-</code></pre>
+
+</li>
+<li>
+<p>Usar el nuevo wrapper de vistas <code>Goteo\Application\View</code> y no el antiguo <code>Gote\Core\View</code>. La Función de renderizado es <code>View::render(...)</code></p>
+</li>
+<li>
+<p>Trasladar las vistas de <code>app/view/controller/vista.html.php</code> al nuevo directorio <code>templates/default/controller/vista.php</code>. La sub extension <code>.html.php</code> no hace falta.</p>
+</li>
+<li>
+<p>Eliminar includes a prologue.html.php, header.html.php, etc. del principio y final de las vistas. Reestructurar el contenido de la vista en bloques (secciones). Las secciones principales actuales se pueden consultar en <code>templates/default/layout.php</code>. Todas las sub-vistas deben implementar la sección &lsquo;content&rsquo;. El javascript debería idealmente eliminarse pero como paso intermedio puede simplemente añadirse al final de la sección <code>footer</code>.</p>
+</li>
+</ol>
+<p><strong>Ejemplo de adición de javascript dentro de una vista:</strong></p>
+<p><code>templates/default/discover/index.php</code></p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">(</span><span class="s2">&quot;layout&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;bodyClass&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;discover&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">    Contenido de la vista:</span>
+<span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">test</span><span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">replace</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="c1">// Se reemplazará la sección &#39;content&#39; en el template &quot;layout.php&quot; ?&gt;</span>
+
+<span class="o">&lt;?</span><span class="nx">php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;footer&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">    &lt;script type=&quot;text/javascript&quot;&gt;</span>
+<span class="x">        jQuery(document).ready(function ($) {</span>
+<span class="x">            ...</span>
+<span class="x">        });</span>
+
+<span class="x">    &lt;/script&gt;</span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">append</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="c1">// Se añadirá al final de la sección &#39;footer&#39; en el template &quot;layout.php&quot; ?&gt;</span>
+</pre></div>
+
+
+<div class="codehilite"><pre>Mas info http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html.
+</pre></div>
+
 
 <ol>
-<li><p>Cambiar las referencias al array <code>$this['variable']</code> or <code>$vars['variable']</code> por referencias al objecto <code>$this-&gt;variable</code>. Tener en cuenta que si estas variables son arrays o escalares estaran escapadas por defecto.</p></li>
 <li>
-<p>Quitar referencias a clases dentro de las vistas (sin obsesionarse pues puede ser un trabajo largo). Empezamos por sustituir las funciones de <code>Text::algo(...)</code> por <code>$this-&gt;text_algo(...)</code>. Mirar la extensiones <code>src/Goteo/Foil/Extension/TextUtils.php</code> y <code>src/Goteo/Foil/Extension/GoteoCore.php</code> para las funciones activas (o añadir las que falten).
-Tampoco usar directamente variables <code>$_SESSION</code> o <code>$_COOKIE</code>, ni asignar nada en esas variables dentro de la vista. Usar en su lugar las funciones <code>$this-&gt;get_session('foo')</code> o <code>$this-&gt;get_cookie('foo')</code> si es imprescindible
+<p>Cambiar las referencias al array <code>$this['variable']</code> or <code>$vars['variable']</code> por referencias al objecto <code>$this-&gt;variable</code>. Tener en cuenta que si estas variables son arrays o escalares estaran escapadas por defecto.</p>
+</li>
+<li>
+<p>Quitar referencias a clases dentro de las vistas (sin obsesionarse pues puede ser un trabajo largo). Empezamos por sustituir las funciones de <code>Text::algo(...)</code> por <code>$this-&gt;text_algo(...)</code>. Mirar la extensiones <code>src/Goteo/Foil/Extension/TextUtils.php</code> y <code>src/Goteo/Foil/Extension/GoteoCore.php</code> para las funciones activas (o añadir las que falten).<br />
+Tampoco usar directamente variables <code>$_SESSION</code> o <code>$_COOKIE</code>, ni asignar nada en esas variables dentro de la vista. Usar en su lugar las funciones <code>$this-&gt;get_session('foo')</code> o <code>$this-&gt;get_cookie('foo')</code> si es imprescindible<br />
 Algunas funciones útiles:</p>
-
 <ul>
-<li>
-<code>$this-&gt;text()</code> =&gt; antiguo Text::get()</li>
-<li>
-<code>$this-&gt;text_html()</code> =&gt; antiguo Text::html()</li>
-<li>
-<code>$this-&gt;text_widget()</code> =&gt; antiguo Text::widget()</li>
-<li>
-<code>$this-&gt;get_session('foo')</code> =&gt; obtiene la variable de session "foo"</li>
-<li>
-<code>$this-&gt;get_cookie('foo')</code> =&gt; obtiene la cookie "foo"</li>
-<li>
-<code>$this-&gt;is_logged()</code> =&gt; Devuelve "true" si el usuario está loggeado</li>
+<li><code>$this-&gt;text()</code> =&gt; antiguo Text::get()</li>
+<li><code>$this-&gt;text_html()</code> =&gt; antiguo Text::html()</li>
+<li><code>$this-&gt;text_widget()</code> =&gt; antiguo Text::widget()</li>
+<li><code>$this-&gt;get_session('foo')</code> =&gt; obtiene la variable de session &ldquo;foo&rdquo;</li>
+<li><code>$this-&gt;get_cookie('foo')</code> =&gt; obtiene la cookie &ldquo;foo&rdquo;</li>
+<li><code>$this-&gt;is_logged()</code> =&gt; Devuelve &ldquo;true&rdquo; si el usuario está loggeado</li>
 </ul>
 </li>
 <li>
-<p><a name="user-content-routes"></a>Poner la entrada del controlador para el procesado del nuevo dispacher en <code>src/app.php</code>. Se usa el elemento <a href="http://symfony.com/doc/current/components/routing/introduction.html">Route de Symfony</a>.</p>
-
+<p><a name="routes"></a>Poner la entrada del controlador para el procesado del nuevo dispacher en <code>src/routes.php</code>. Se usa el elemento <a href="http://symfony.com/doc/current/components/routing/introduction.html">Route de Symfony</a>.</p>
 <ul>
 <li><strong>NOTAS:</strong></li>
 <li>No añadir <code>/</code>  al final de la ruta (hay un controlador al final que se encarga de redirigir peticiones con <code>/</code> al final de la ruta)</li>
 <li>Añadir <strong>Action</strong> al final del método del controlador por claridad (ej: <code>edit()</code> pasa a <code>editAction()</code>)</li>
 <li><strong>UNA VEZ SE HAN PROCESADO TODOS LOS METODOS DEL CONTROLADOR:</strong></li>
-<li>Añadir <strong>Controller</strong> al final del nombre del archivo y nombre de clase del controlador. Esto se hace por claridad. <strong>CAMBIAR LOS TESTS ACORDE</strong>
+<li>Añadir <strong>Controller</strong> al final del nombre del archivo y nombre de clase del controlador. Esto se hace por claridad. <strong>CAMBIAR LOS TESTS ACORDE</strong></li>
+<li>Añadir a la variable <code>$non_legacy_routes</code> del archivo <code>src/Goteo/Controller/ErrorController.php</code> los prefijos de rutas que nunca deben tratarse con el controlador antiguo. <strong>ES DECIR:</strong> Cuando un controlador está completamente actualizado al nuevo sistema de rutas evitar que si hay una ruta no existente se procese segun el controlador antiguo.<br />
+<strong>Por ejemplo:</strong> <code>\Goteo\Controller\DiscoverController</code> y <code>\Goteo\Controller\UserController</code> ya estan acabados. Hay que evitar que todas las rutas que empiezan por &ldquo;/discover&rdquo; se procesen con el controlador antiguo:<br />
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// src/Goteo/Controller/ErrorController.php</span>
+<span class="o">...</span>
+<span class="nv">$non_legacy_routes</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;/discover&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;/user&#39;</span><span class="p">,</span>
+            <span class="o">...</span>
+            <span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
 </li>
-<li>Añadir a la variable <code>$non_legacy_routes</code> del archivo <code>src/Goteo/Controller/ErrorController.php</code> los prefijos de rutas que nunca deben tratarse con el controlador antiguo. <strong>ES DECIR:</strong> Cuando un controlador está completamente actualizado al nuevo sistema de rutas evitar que si hay una ruta no existente se procese segun el controlador antiguo.
-<strong>Por ejemplo:</strong> <code>\Goteo\Controller\DiscoverController</code> y <code>\Goteo\Controller\UserController</code> ya estan acabados. Hay que evitar que todas las rutas que empiezan por "/discover" se procesen con el controlador antiguo:</li>
 </ul>
-
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">// src/Goteo/Controller/ErrorController.php</span></span>
-<span class="pl-s1"><span class="pl-k">...</span></span>
-<span class="pl-s1"><span class="pl-smi">$non_legacy_routes</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>(</span>
-<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>/discover<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>/user<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">            <span class="pl-k">...</span></span>
-<span class="pl-s1">            );</span>
-<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
 </li>
 </ol>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// src/routes.php</span>
 
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">// src/app.php</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-smi">$routes</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">RouteCollection</span>();</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">// ...</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">// Esta ruta tiene parametros, algunos opcionales, va primero</span></span>
-<span class="pl-s1"><span class="pl-c">// Esta ruta concuerda con:</span></span>
-<span class="pl-s1"><span class="pl-c">//      /discover/results/2</span></span>
-<span class="pl-s1"><span class="pl-c">//      /discover/results</span></span>
-<span class="pl-s1"><span class="pl-c">// La última ruta no concuerdaria si no fuera opcional el parametro</span></span>
-<span class="pl-s1"><span class="pl-smi">$routes</span><span class="pl-k">-&gt;</span>add(<span class="pl-s"><span class="pl-pds">'</span>discover-results<span class="pl-pds">'</span></span>, <span class="pl-k">new</span> <span class="pl-c1">Route</span>(</span>
-<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>/discover/results/{category}<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">    <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>category<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">null</span>,</span>
-<span class="pl-s1">          <span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">null</span>,</span>
-<span class="pl-s1">          <span class="pl-s"><span class="pl-pds">'</span>_controller<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Goteo\Controller\DiscoverController::resultsAction<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">          <span class="pl-s"><span class="pl-pds">'</span>category<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span> <span class="pl-c">//parametro opcional</span></span>
-<span class="pl-s1">         )</span>
-<span class="pl-s1">));</span>
-<span class="pl-s1"><span class="pl-c">// esta ruta no tiene parametros</span></span>
-<span class="pl-s1"><span class="pl-smi">$routes</span><span class="pl-k">-&gt;</span>add(<span class="pl-s"><span class="pl-pds">'</span>discover<span class="pl-pds">'</span></span>, <span class="pl-k">new</span> <span class="pl-c1">Route</span>(</span>
-<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>/discover<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">    <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>_controller<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Goteo\Controller\DiscoverController::discoverAction<span class="pl-pds">'</span></span>)</span>
-<span class="pl-s1">));</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-k">return</span> <span class="pl-smi">$routes</span>;</span>
-<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
+<span class="nv">$routes</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RouteCollection</span><span class="p">();</span>
 
-<h2>
-<a id="user-content-ejemplo-real" class="anchor" href="#ejemplo-real" aria-hidden="true"><span class="octicon octicon-link"></span></a>EJEMPLO REAL</h2>
+<span class="c1">// ...</span>
 
-<p>Para la vista "results" del controlador "DiscoverController":</p>
+<span class="c1">// Esta ruta tiene parametros, algunos opcionales, va primero</span>
+<span class="c1">// Esta ruta concuerda con:</span>
+<span class="c1">//      /discover/results/2</span>
+<span class="c1">//      /discover/results</span>
+<span class="c1">// La última ruta no concuerdaria si no fuera opcional el parametro</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;discover-results&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">(</span>
+    <span class="s1">&#39;/discover/results/{category}&#39;</span><span class="p">,</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;category&#39;</span> <span class="o">=&gt;</span> <span class="k">null</span><span class="p">,</span>
+          <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="k">null</span><span class="p">,</span>
+          <span class="s1">&#39;_controller&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Goteo\Controller\DiscoverController::resultsAction&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;category&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span> <span class="c1">//parametro opcional</span>
+         <span class="p">)</span>
+<span class="p">));</span>
+<span class="c1">// esta ruta no tiene parametros</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;discover&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">(</span>
+    <span class="s1">&#39;/discover&#39;</span><span class="p">,</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;_controller&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Goteo\Controller\DiscoverController::discoverAction&#39;</span><span class="p">)</span>
+<span class="p">));</span>
 
-<p>Antes <code>app/view/discover/results.html.php</code></p>
-
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">// app/view/discover/results.html.php</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Goteo\Core\View</span>,</span>
-<span class="pl-s1">    <span class="pl-c1">Goteo\Library\Text</span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-smi">$bodyClass</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>discover<span class="pl-pds">'</span></span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-k">include</span> <span class="pl-c1">__DIR__</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>/../prologue.html.php<span class="pl-pds">'</span></span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-k">include</span> <span class="pl-c1">__DIR__</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>/../header.html.php<span class="pl-pds">'</span></span> </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-        &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>sub-header<span class="pl-pds">"</span></span>&gt;
-            &lt;<span class="pl-ent">div</span>&gt;
-                &lt;<span class="pl-ent">h2</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-c1">echo</span> <span class="pl-c1">Text</span><span class="pl-k">::</span>get(<span class="pl-s"><span class="pl-pds">'</span>discover-results-header<span class="pl-pds">'</span></span>); </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>&lt;/<span class="pl-ent">h2</span>&gt;
-            &lt;/<span class="pl-ent">div</span>&gt;
-
-        &lt;/<span class="pl-ent">div</span>&gt;
-
-        &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>main<span class="pl-pds">"</span></span>&gt;
-            <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-c1">echo</span> <span class="pl-c1">View</span><span class="pl-k">::</span>get(<span class="pl-s"><span class="pl-pds">'</span>discover/searcher.html.php<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">                                <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>params<span class="pl-pds">'</span></span>     <span class="pl-k">=&gt;</span> <span class="pl-smi">$vars</span>[<span class="pl-s"><span class="pl-pds">'</span>params<span class="pl-pds">'</span></span>])); </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>widget projects<span class="pl-pds">"</span></span>&gt;
-                <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-k">if</span> (<span class="pl-k">!</span><span class="pl-c1">empty</span>(<span class="pl-smi">$vars</span>[<span class="pl-s"><span class="pl-pds">'</span>results<span class="pl-pds">'</span></span>])) :</span>
-<span class="pl-s1">                    <span class="pl-k">foreach</span> (<span class="pl-smi">$vars</span>[<span class="pl-s"><span class="pl-pds">'</span>results<span class="pl-pds">'</span></span>] <span class="pl-k">as</span> <span class="pl-smi">$result</span>) :</span>
-<span class="pl-s1">                        <span class="pl-c1">echo</span> <span class="pl-c1">View</span><span class="pl-k">::</span>get(<span class="pl-s"><span class="pl-pds">'</span>project/widget/project.html.php<span class="pl-pds">'</span></span>, <span class="pl-c1">array</span>(</span>
-<span class="pl-s1">                            <span class="pl-s"><span class="pl-pds">'</span>project<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$result</span></span>
-<span class="pl-s1">                        ));</span>
-<span class="pl-s1">                    <span class="pl-k">endforeach</span>;</span>
-<span class="pl-s1">                <span class="pl-k">else</span> :</span>
-<span class="pl-s1">                    <span class="pl-c1">echo</span> <span class="pl-c1">Text</span><span class="pl-k">::</span>get(<span class="pl-s"><span class="pl-pds">'</span>discover-results-empty<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">                <span class="pl-k">endif</span>; </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-            &lt;/<span class="pl-ent">div</span>&gt;
-
-        &lt;/<span class="pl-ent">div</span>&gt;
-
-        <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-k">include</span> <span class="pl-c1">__DIR__</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>/../footer.html.php<span class="pl-pds">'</span></span> </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-k">include</span> <span class="pl-c1">__DIR__</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>/../epilogue.html.php<span class="pl-pds">'</span></span> </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
-
-<p>Después: <code>templates/default/discover/results.php</code>
-(implica la conversion de las sub-vistas: <code>templates/default/discover/partials/searcher.php</code> y <code>templates/default/project/widget/project.php</code>)</p>
-
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-c">// templates/default/discover/results.php</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>layout(<span class="pl-s"><span class="pl-pds">"</span>layout<span class="pl-pds">"</span></span>, [</span>
-<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>bodyClass<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>discover<span class="pl-pds">'</span></span>, <span class="pl-c">// variable de classe en &lt;body class="..."&gt;</span></span>
-<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>text(<span class="pl-s"><span class="pl-pds">'</span>meta-title-discover<span class="pl-pds">'</span></span>), <span class="pl-c">//esto solo si hace falta cambiar el titulo de la pagina por otro</span></span>
-<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>meta_description<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>text(<span class="pl-s"><span class="pl-pds">'</span>meta-description-discover<span class="pl-pds">'</span></span>) <span class="pl-c">// idem</span></span>
-<span class="pl-s1">    ]);</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>section(<span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-        &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>sub-header<span class="pl-pds">"</span></span>&gt;
-            &lt;<span class="pl-ent">div</span>&gt;
-                &lt;<span class="pl-ent">h2</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>&gt;<span class="pl-pse">&lt;?=</span><span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>text(<span class="pl-s"><span class="pl-pds">'</span>discover-results-header<span class="pl-pds">'</span></span>)</span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>&lt;/<span class="pl-ent">h2</span>&gt;
-            &lt;/<span class="pl-ent">div</span>&gt;
-
-        &lt;/<span class="pl-ent">div</span>&gt;
-
-        &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>main<span class="pl-pds">"</span></span>&gt;
-
-            <span class="pl-pse">&lt;?=</span><span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>insert(<span class="pl-s"><span class="pl-pds">'</span>discover/partials/searcher<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>params<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">params</span>])</span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-
-            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>widget projects<span class="pl-pds">"</span></span>&gt;
-                <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-k">if</span> (<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">results</span>) : </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-                    <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-k">foreach</span> (<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">results</span> <span class="pl-k">as</span> <span class="pl-smi">$result</span>) : </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-                        <span class="pl-pse">&lt;?=</span><span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>insert(<span class="pl-s"><span class="pl-pds">'</span>project/widget/project<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>project<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$result</span>])</span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-                    <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-k">endforeach</span> </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-                <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-k">else</span> : </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-                    <span class="pl-pse">&lt;?=</span><span class="pl-s1"><span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>text(<span class="pl-s"><span class="pl-pds">'</span>discover-results-empty<span class="pl-pds">'</span></span>)</span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-                <span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-k">endif</span> </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
-            &lt;/<span class="pl-ent">div</span>&gt;
-
-        &lt;/<span class="pl-ent">div</span>&gt;
-
-<span class="pl-pse">&lt;?php</span><span class="pl-s1"> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>replace() </span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span>
+<span class="k">return</span> <span class="nv">$routes</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
 </pre></div>
-</article></body></html>
+
+
+<h2 id="ejemplo-real"><a name="user-content-ejemplo-real" href="#ejemplo-real" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>EJEMPLO REAL</h2>
+<p>Para la vista &ldquo;results&rdquo; del controlador &ldquo;DiscoverController&rdquo;:</p>
+<p>Antes <code>app/view/discover/results.html.php</code></p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// app/view/discover/results.html.php</span>
+
+<span class="k">use</span> <span class="nx">Goteo\Core\View</span><span class="p">,</span>
+    <span class="nx">Goteo\Library\Text</span><span class="p">;</span>
+
+<span class="nv">$bodyClass</span> <span class="o">=</span> <span class="s1">&#39;discover&#39;</span><span class="p">;</span>
+
+<span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../prologue.html.php&#39;</span><span class="p">;</span>
+
+<span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../header.html.php&#39;</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">        &lt;div id=&quot;sub-header&quot;&gt;</span>
+<span class="x">            &lt;div&gt;</span>
+<span class="x">                &lt;h2 class=&quot;title&quot;&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">Text</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;discover-results-header&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;div id=&quot;main&quot;&gt;</span>
+<span class="x">            </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">View</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;discover/searcher.html.php&#39;</span><span class="p">,</span>
+                                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;params&#39;</span>     <span class="o">=&gt;</span> <span class="nv">$vars</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]));</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">            &lt;div class=&quot;widget projects&quot;&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$vars</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]))</span> <span class="o">:</span>
+                    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$vars</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="o">:</span>
+                        <span class="k">echo</span> <span class="nx">View</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;project/widget/project.html.php&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+                            <span class="s1">&#39;project&#39;</span> <span class="o">=&gt;</span> <span class="nv">$result</span>
+                        <span class="p">));</span>
+                    <span class="k">endforeach</span><span class="p">;</span>
+                <span class="k">else</span> <span class="o">:</span>
+                    <span class="k">echo</span> <span class="nx">Text</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;discover-results-empty&#39;</span><span class="p">);</span>
+                <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        </span><span class="cp">&lt;?php</span> <span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../footer.html.php&#39;</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../epilogue.html.php&#39;</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<p>Después: <code>templates/default/discover/results.php</code><br />
+(implica la conversion de las sub-vistas: <code>templates/default/discover/partials/searcher.php</code> y <code>templates/default/project/widget/project.php</code>)</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// templates/default/discover/results.php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">(</span><span class="s2">&quot;layout&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">&#39;bodyClass&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;discover&#39;</span><span class="p">,</span> <span class="c1">// variable de classe en &lt;body class=&quot;...&quot;&gt;</span>
+    <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;meta-title-discover&#39;</span><span class="p">),</span> <span class="c1">//esto solo si hace falta cambiar el titulo de la pagina por otro</span>
+    <span class="s1">&#39;meta_description&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;meta-description-discover&#39;</span><span class="p">)</span> <span class="c1">// idem</span>
+    <span class="p">]);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">);</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">        &lt;div id=&quot;sub-header&quot;&gt;</span>
+<span class="x">            &lt;div&gt;</span>
+<span class="x">                &lt;h2 class=&quot;title&quot;&gt;</span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;discover-results-header&#39;</span><span class="p">)</span><span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;div id=&quot;main&quot;&gt;</span>
+
+<span class="x">            </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s1">&#39;discover/partials/searcher&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;params&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">])</span><span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">            &lt;div class=&quot;widget projects&quot;&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">results</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">results</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                        </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s1">&#39;project/widget/project&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;project&#39;</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="p">])</span><span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">endforeach</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">else</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                    </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;discover-results-empty&#39;</span><span class="p">)</span><span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">endif</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">replace</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div></article></body></html>

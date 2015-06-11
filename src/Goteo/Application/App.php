@@ -71,7 +71,7 @@ class App extends HttpKernel\HttpKernel
 
     static public function getRoutes() {
         if( ! self::$_routes ) {
-            self::$_routes = include( __DIR__ . '/../../app.php' );
+            self::$_routes = include( __DIR__ . '/../../routes.php' );
         }
         return self::$_routes;
     }

@@ -312,7 +312,7 @@ Algunas funciones útiles:
     - `$this->get_cookie('foo')` => obtiene la cookie "foo"
     - `$this->is_logged()` => Devuelve "true" si el usuario está loggeado
 
-7. <a name="routes"></a>Poner la entrada del controlador para el procesado del nuevo dispacher en `src/app.php`. Se usa el elemento [Route de Symfony](http://symfony.com/doc/current/components/routing/introduction.html).
+7. <a name="routes"></a>Poner la entrada del controlador para el procesado del nuevo dispacher en `src/routes.php`. Se usa el elemento [Route de Symfony](http://symfony.com/doc/current/components/routing/introduction.html).
     - **NOTAS:**
     - No añadir `/`  al final de la ruta (hay un controlador al final que se encarga de redirigir peticiones con `/` al final de la ruta)
     - Añadir **Action** al final del método del controlador por claridad (ej: `edit()` pasa a `editAction()`)
@@ -334,7 +334,7 @@ Algunas funciones útiles:
 
 ```php
 <?php
-// src/app.php
+// src/routes.php
 
 $routes = new RouteCollection();
 

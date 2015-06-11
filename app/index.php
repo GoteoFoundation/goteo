@@ -14,11 +14,6 @@ require_once __DIR__ . '/../src/autoload.php';
 //Get from globals defaults
 $request = App::getRequest();
 
-// Temporary debug... TODO: to be removed
-if($request->query->has('debug')) {
-    App::debug(true);
-}
-
 $app = App::get();
 
 $app->run();
