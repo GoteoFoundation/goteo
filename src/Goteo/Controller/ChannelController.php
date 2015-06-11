@@ -110,7 +110,7 @@ public static function indexAction($id, $page = 'index')
             // Proyectos por categorías
             $categories = array();
             foreach ($cats as $cat => $catName) {
-                $cat_projs = \Goteo\Library\Search::params(array('category'=>array("'$cat'"), 'node'=>true), false);
+                $cat_projs = \Goteo\Library\Search::params(array('category'=>array("'$cat'"), 'channel'=>$id), false);
                 if (!empty($cat_projs)) {
                     $categories[$cat]['name'] = $catName;
                     $categories[$cat]['projects'] = $cat_projs;

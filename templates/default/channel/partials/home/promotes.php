@@ -14,7 +14,7 @@ $promotes = $this->promotes;
         <?php foreach ($promotes as $promo) {
             $project = $promo->projectData;
             $project->per_amount = round(($project->amount / $project->mincost) * 100);
-            echo $this->insert('project/widget/tiny_project', ['project' => $project]);
+            echo $this->insert('project/widget/horizontal_project', ['project' => $project]);
         }?>
     </ul>
 
