@@ -7,7 +7,7 @@
         <li class="<?= $this->queries['total_cached'] < 10 ? 'warn' : 'ok' ?>"><a href="#queries_cached">Cached: <?= $this->queries['total_cached'] ?></a></li>
         <li class="<?= $this->queries['total_non_cached'] > 100 ? 'warn' : 'ok' ?>"><a href="#queries_non_cached">Non cached: <?= $this->queries['total_non_cached'] ?></a></li>
         <li class="<?= $this->queries['time'] > 1 ? ($this->queries['time'] > 3 ? 'ko' : 'warn') : 'ok' ?>"><a href="#queries_long">Query time: <?= round( 1000 * $this->queries['time']) ?> ms</a></li>
-        <li class="<?= $this->headers['response_code'] === 200 ? 'ok' : 'ko' ?>"><a href="#session">HTTP <?= $this->headers['response_code'] ?> &nbsp; Render: <?= round( 1000 * $this->session['duration']) ?> ms</a></li>
+        <li class="<?= ($this->headers['response_code'] === 200 && $this->session['duration'] < 2) ? ($this->session['duration'] < 1 ? 'ok' : 'warn') : 'ko' ?>"><a href="#session">HTTP <?= $this->headers['response_code'] ?> &nbsp; Render: <?= round( 1000 * $this->session['duration']) ?> ms</a></li>
 
         <li class="right top"><a href="#hide_bar">&times;</a></li>
     </ul>

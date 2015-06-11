@@ -47,7 +47,12 @@ class DiscoverController extends \Goteo\Core\Controller {
         $types = self::$types;
 
         $viewData = array(
-            'lists' => array()
+            'lists' => [],
+            'params' => [
+                'category' => [],
+                'location' => [],
+                'reward' => [],
+            ]
         );
 
         if (\Goteo\Application\Config::isNode()) {
@@ -76,12 +81,12 @@ class DiscoverController extends \Goteo\Core\Controller {
         $message = '';
         $results = null;
         $query                         = $request->query->get('query');
-        if(empty($query))    $query    = $request->request->get('query');
+        if(empty($query))    $query    = $request->request->get('query'); //POST
 
         // $params['status']              = $request->request->get('status');
         $params = [];
 
-        if($query)    $params['query']    =  strip_tags($query);
+        $params['query']   =  strip_tags($query);
         foreach(array('category', 'location', 'reward') as $key) {
             if($request->request->has($key)) {
                 $val = $request->request->get($key);

@@ -149,7 +149,7 @@ namespace Goteo\Library {
 
             try {
                 $query = Project::query($sql, $values);
-                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\\Model\\Project') as $row) {
                     $results[] = Project::getWidget($row);
                 }
                 return $results;
