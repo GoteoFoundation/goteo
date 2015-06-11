@@ -218,14 +218,26 @@ class App extends HttpKernel\HttpKernel
      */
     public function run() {
 
-        $response = self::$_app->handle(self::$_request);
+        $request = self::getRequest();
+        $response = self::$_app->handle($request);
 
         $response->send();
 
-        self::$_app->terminate(self::$_request, $response);
+        self::$_app->terminate($request, $response);
     }
 
-
+    /**
+     * Resets the current app
+     * @return [type] [description]
+     */
+    public function clearApp() {
+        self::$_app = null;
+        self::$_dispatcher = null;
+        self::$_matcher = null;
+        self::$_resolver = null;
+        self::$_routes = null;
+        self::$_request = null;
+    }
     /**
      * Retrieves current colletected errors
      * @return array array of errors

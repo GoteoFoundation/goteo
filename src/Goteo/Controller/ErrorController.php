@@ -16,7 +16,6 @@ class ErrorController extends \Goteo\Core\Controller {
     {
 
         $msg = 'Something went wrong! ('.$exception->getMessage().')';
-        die($msg);
         $code = $exception->getStatusCode();
         return new Response(View::render('errors/not_found', ['msg' => $msg, 'code' => $code], $code));
     }

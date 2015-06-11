@@ -10,5 +10,4 @@ require_once __DIR__ . '/../src/autoload.php';
 
 //ensures we have cache to test
 define('SQL_CACHE_TIME', 1);
-define('DEBUG_SQL_QUERIES', 2);
 

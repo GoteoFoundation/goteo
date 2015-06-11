@@ -4,6 +4,8 @@ namespace Goteo\Model {
 
     use Goteo\Library\Check,
         Goteo\Library\Text,
+        Goteo\Application\Config,
+        Goteo\Application\Lang,
         Goteo\Model\Image;;
 
     class News extends \Goteo\Core\Model {
@@ -76,7 +78,7 @@ namespace Goteo\Model {
 
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(Lang::current() === Config::get('lang')) {
                 $different_select=" IFNULL(news_lang.title, news.title) as title,
                                     IFNULL(news_lang.description, news.description) as description";
                 }
@@ -102,7 +104,7 @@ namespace Goteo\Model {
                     AND news_lang.lang = :lang
                 $eng_join
                 ORDER BY `order` ASC, title ASC
-                ", array(':lang'=>\LANG));
+                ", array(':lang'=> Lang::current()));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 if ($highlights) {
