@@ -15,6 +15,8 @@ class App extends HttpKernel\HttpKernel
     static protected $_dispatcher;
     static protected $_request;
     static protected $_routes;
+    static protected $_matcher;
+    static protected $_resolver;
     static protected $_debug = false;
     static protected $_errors = array();
 
@@ -32,8 +34,8 @@ class App extends HttpKernel\HttpKernel
 
     /**
      * Sets the dispacher
-     * Must be called
-     * @param EventDispatcherInterface $dispatcher [description]
+     * Must be called befor App::get() in order to set a diferent dispatcher object
+     * @param EventDispatcherInterface $dispatcher
      */
     static public function setDispatcher(EventDispatcherInterface $dispatcher) {
         self::$_dispatcher = $dispatcher;
@@ -78,6 +80,53 @@ class App extends HttpKernel\HttpKernel
     }
 
     /**
+     * Gets the matcher object for the app
+     * This is used to decide the controller against the Request
+     * If no matcher is defined a new one using UrlMatcher and the current Request will be created
+     * @return UrlMatcher object
+     */
+    static public function getMatcher() {
+        if( ! self::$_matcher ) {
+            //Get the routes, either the default or the extended
+            $routes = self::getRoutes();
+            //Creating a context from request
+            $context = new Routing\RequestContext();
+            $context->fromRequest(self::getRequest());
+            self::setMatcher(new Routing\Matcher\UrlMatcher($routes, $context));
+        }
+        return self::$_matcher;
+    }
+
+    /**
+     * Sets the matcher for the app
+     * Must be called befor App::get() in order to set a different matcher
+     */
+    static public function setMatcher(Routing\Matcher\UrlMatcherInterface $matcher) {
+        self::$_matcher = $matcher;
+    }
+
+    /**
+     * Gets the current resolver
+     * If the resolver doesn't exists, a new one will be created
+     * @return ControllerResolver object
+     */
+    static public function getResolver() {
+        if( ! self::$_resolver) {
+            self::setResolver(new HttpKernel\Controller\ControllerResolver());
+        }
+        return self::$_resolver;
+    }
+
+    /**
+     * Sets the resolver
+     * Must be called befor App::get() in order to set a diferent resolver object
+     * @param ControllerResolver $resolver
+     */
+    static public function setResolver(HttpKernel\Controller\ControllerResolverInterface $resolver) {
+        self::$_resolver = $resolver;
+    }
+
+    /**
      * Creates a new instance of the App ready to run
      * This methods can be optionally called before this ::get() call:
      *     ::setRequest()
@@ -114,15 +163,9 @@ class App extends HttpKernel\HttpKernel
                 define('SITE_URL', 'http://' . $SITE_URL);
             }
 
-            //Get the routes, either the default or the extended
-            $routes = self::getRoutes();
-            //Creating a context from request
-            $context = new Routing\RequestContext();
-            $context->fromRequest($request);
-            $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
-            $resolver = new HttpKernel\Controller\ControllerResolver();
-
+            $matcher = self::getMatcher();
             $dispatcher = self::getDispatcher();
+            $resolver = self::getResolver();
 
             //Node configuration
             $dispatcher->addSubscriber(new EventListener\UrlListener());
