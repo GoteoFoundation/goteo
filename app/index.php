@@ -12,7 +12,7 @@ define('GOTEO_WEB_PATH', __DIR__ . '/');
 require_once __DIR__ . '/../src/autoload.php';
 
 //Get from globals defaults
-$request = App::getRequest();
+App::setRequest(Request::createFromGlobals());
 
 $app = App::get();
 

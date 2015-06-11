@@ -11,12 +11,14 @@ class AppTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
 
-        $ob = App::get();
+        $app = $this->getAppForException(new ResourceNotFoundException());
 
-        $this->assertInstanceOf('\Goteo\Application\App', $ob);
-        $this->assertInstanceOf('\Goteo\Application\App', App::get());
+        // $response = $app->handle(new Request());
+        // $this->assertEquals(404, $response->getStatusCode());
 
-        return $ob;
+        die($response->getStatusCode().'');
+
+        return $app;
     }
 
     // public function testNotFoundHandling()
@@ -28,17 +30,20 @@ class AppTest extends \PHPUnit_Framework_TestCase {
     //     $this->assertEquals(404, $response->getStatusCode());
     // }
 
-    // protected function getFrameworkForException($exception)
-    // {
-    //     $matcher = $this->getMock('Symfony\Component\Routing\Matcher\UrlMatcherInterface');
-    //     $matcher
-    //         ->expects($this->once())
-    //         ->method('match')
-    //         ->will($this->throwException($exception))
-    //     ;
-    //     $resolver = $this->getMock('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface');
+    protected function getAppForException($exception)
+    {
+        $matcher = $this->getMock('Symfony\Component\Routing\Matcher\UrlMatcherInterface');
+        $matcher
+            ->expects($this->once())
+            ->method('match')
+            ->will($this->throwException($exception))
+        ;
 
-    //     return new App($matcher, $resolver);
-    // }
+        App::setMatcher($matcher);
+        $resolver = $this->getMock('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface');
+
+        App::setResolver($resolver);
+        return App::get();
+    }
 
 }

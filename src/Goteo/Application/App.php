@@ -5,6 +5,7 @@ namespace Goteo\Application;
 use Symfony\Component\Routing;
 use Symfony\Component\HttpKernel;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -14,61 +15,55 @@ class App extends HttpKernel\HttpKernel
     static protected $_dispatcher;
     static protected $_request;
     static protected $_routes;
+    static protected $_matcher;
+    static protected $_resolver;
     static protected $_debug = false;
     static protected $_errors = array();
 
-
-    public function __construct()
-    {
-        $request = self::getRequest();
-        $routes = self::getRoutes();
-        $context = new Routing\RequestContext();
-        $context->fromRequest($request);
-        $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
-        $resolver = new HttpKernel\Controller\ControllerResolver();
-
-        $dispatcher = self::getDispatcher();
-        //Node configuration
-        $dispatcher->addSubscriber(new EventListener\UrlListener());
-        //Lang, cookies info, etc
-        $dispatcher->addSubscriber(new EventListener\SessionListener());
-        //Security ACL
-        $dispatcher->addSubscriber(new EventListener\AclListener());
-        //Routes
-        $dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher));
-        //Control 404 and other errors
-        $dispatcher->addSubscriber(new HttpKernel\EventListener\ExceptionListener('Goteo\\Controller\\ErrorController::exceptionAction'));
-        // Streamed responses
-        // $dispatcher->addSubscriber(new HttpKernel\EventListener\StreamedResponseListener());
-        //Automatic HTTP correct specifications
-        $dispatcher->addSubscriber(new HttpKernel\EventListener\ResponseListener('UTF-8'));
-
-        //debug toolbar for queries and errors
-        if (self::debug()) {
-            $dispatcher->addSubscriber(new \Goteo\Util\Profiler\EventListener\ProfilerListener());
-        }
-
-        parent::__construct($dispatcher, $resolver);
-    }
-
+    /**
+     * Gets the current dispatcher, wich is the central event driver of the App
+     * If the dispacher doesn't exists, a new one will be created
+     * @return EventDispatcher object
+     */
     static public function getDispatcher() {
         if( ! self::$_dispatcher) {
-            self::$_dispatcher = new EventDispatcher();
+            self::setDispatcher(new EventDispatcher());
         }
         return self::$_dispatcher;
     }
 
+    /**
+     * Sets the dispacher
+     * Must be called befor App::get() in order to set a diferent dispatcher object
+     * @param EventDispatcherInterface $dispatcher
+     */
+    static public function setDispatcher(EventDispatcherInterface $dispatcher) {
+        self::$_dispatcher = $dispatcher;
+    }
+
+    /**
+     * Gets the current request, if not defined is created from globals (_POST, _GET, etc)
+     * @return Request object
+     */
     static public function getRequest() {
         if( ! self::$_request) {
-            self::$_request = Request::createFromGlobals();
+            self::setRequest(Request::createFromGlobals());
         }
         return self::$_request;
     }
 
+    /**
+     * Sets the request,
+     * must be called before App::get() in order to set a request different from globals
+     */
     static public function setRequest(Request $request) {
         self::$_request = $request;
     }
 
+    /**
+     * Gets the routes for the app
+     * @return RouteColletion object
+     */
     static public function getRoutes() {
         if( ! self::$_routes ) {
             self::$_routes = include( __DIR__ . '/../../routes.php' );
@@ -76,19 +71,78 @@ class App extends HttpKernel\HttpKernel
         return self::$_routes;
     }
 
+    /**
+     * Sets the routes for the app
+     * Must be called befor App::get() in order to set a different sets of routes
+     */
     static public function setRoutes(RouteCollection $routes) {
         self::$_routes = $routes;
     }
 
+    /**
+     * Gets the matcher object for the app
+     * This is used to decide the controller against the Request
+     * If no matcher is defined a new one using UrlMatcher and the current Request will be created
+     * @return UrlMatcher object
+     */
+    static public function getMatcher() {
+        if( ! self::$_matcher ) {
+            //Get the routes, either the default or the extended
+            $routes = self::getRoutes();
+            //Creating a context from request
+            $context = new Routing\RequestContext();
+            $context->fromRequest(self::getRequest());
+            self::setMatcher(new Routing\Matcher\UrlMatcher($routes, $context));
+        }
+        return self::$_matcher;
+    }
+
+    /**
+     * Sets the matcher for the app
+     * Must be called befor App::get() in order to set a different matcher
+     */
+    static public function setMatcher(Routing\Matcher\UrlMatcherInterface $matcher) {
+        self::$_matcher = $matcher;
+    }
+
+    /**
+     * Gets the current resolver
+     * If the resolver doesn't exists, a new one will be created
+     * @return ControllerResolver object
+     */
+    static public function getResolver() {
+        if( ! self::$_resolver) {
+            self::setResolver(new HttpKernel\Controller\ControllerResolver());
+        }
+        return self::$_resolver;
+    }
+
+    /**
+     * Sets the resolver
+     * Must be called befor App::get() in order to set a diferent resolver object
+     * @param ControllerResolver $resolver
+     */
+    static public function setResolver(HttpKernel\Controller\ControllerResolverInterface $resolver) {
+        self::$_resolver = $resolver;
+    }
+
+    /**
+     * Creates a new instance of the App ready to run
+     * This methods can be optionally called before this ::get() call:
+     *     ::setRequest()
+     *     ::setRoutes()
+     *     ::setDispacher()
+     * Next calls to this method will return the current instantatied App
+     * @return App object
+     */
     static public function get() {
         if( ! self::$_app ) {
+
+            // Getting the request either from global or simulated
             $request = self::getRequest();
 
             // TODO: configurable file...
             Config::loadFromYaml('settings.yml');
-
-            // Routes
-            $routes = self::getRoutes();
 
             // Additional constants
             // si estamos en entorno seguro
@@ -109,11 +163,45 @@ class App extends HttpKernel\HttpKernel
                 define('SITE_URL', 'http://' . $SITE_URL);
             }
 
-            self::$_app = new self($routes);
+            $matcher = self::getMatcher();
+            $dispatcher = self::getDispatcher();
+            $resolver = self::getResolver();
+
+            //Node configuration
+            $dispatcher->addSubscriber(new EventListener\UrlListener());
+            //Lang, cookies info, etc
+            $dispatcher->addSubscriber(new EventListener\SessionListener());
+            //Security ACL
+            $dispatcher->addSubscriber(new EventListener\AclListener());
+            //Routes
+            $dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher));
+            //Control 404 and other errors
+            $dispatcher->addSubscriber(new HttpKernel\EventListener\ExceptionListener('Goteo\\Controller\\ErrorController::exceptionAction'));
+            // Streamed responses
+            // $dispatcher->addSubscriber(new HttpKernel\EventListener\StreamedResponseListener());
+            //Automatic HTTP correct specifications
+            $dispatcher->addSubscriber(new HttpKernel\EventListener\ResponseListener('UTF-8'));
+
+            //debug toolbar for queries and errors
+            if (self::debug()) {
+                $dispatcher->addSubscriber(new \Goteo\Util\Profiler\EventListener\ProfilerListener());
+            }
+
+            self::$_app = new self($dispatcher, $resolver);
         }
         return self::$_app;
     }
 
+    /**
+     * Enables debug mode witch does:
+     *     - *.yml settings always read
+     *     - A bottom html profiler tool will be displayed on the bottom of the page
+     *     - SQL queries will be collected fo statistics
+     *     - Html/php error will be shown
+     * @param  boolean $enable If must or no be enabled (do it before call App::get())
+     *                         A null value does nothing
+     * @return boolean         Returns the current debug mode
+     */
     static public function debug($enable = null) {
         if($enable === true) {
             self::$_debug = true;
@@ -124,6 +212,10 @@ class App extends HttpKernel\HttpKernel
         return self::$_debug;
     }
 
+    /**
+     * Executes the App HttpKernel::handle() function and sends the response to the navigator
+     * Script should die after this call
+     */
     public function run() {
 
         $response = self::$_app->handle(self::$_request);
@@ -134,10 +226,18 @@ class App extends HttpKernel\HttpKernel
     }
 
 
+    /**
+     * Retrieves current colletected errors
+     * @return array array of errors
+     */
     static public function getErrors() {
         return self::$_errors;
     }
 
+    /**
+     * Error handler function to collect whatever error that can be collected
+     * For use with the set_error_handler() function
+     */
     static public function errorHandler($errno, $errstr, $errfile, $errline, $errcontext) {
         if(self::debug()) {
             if(!(error_reporting() & $errno))
