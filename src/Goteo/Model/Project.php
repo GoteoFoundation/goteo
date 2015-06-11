@@ -435,15 +435,13 @@ namespace Goteo\Model {
                 }
 
                 // datos del nodo
-                if (!empty($project->node)) {
-                    $project->nodeData = new Node;
-                    $project->nodeData->id = $project->node;
-                    $project->nodeData->name = $project->node_name;
-                    $project->nodeData->url = $project->node_url;
+                $project->nodeData = new Node;
+                $project->nodeData->id = $project->node;
+                $project->nodeData->name = $project->node_name;
+                $project->nodeData->url = $project->node_url;
 
-                    // label
-                    $project->nodeData->label = (!empty($project->node_label)) ? Image::get($project->node_label) : null;
-                }
+                // label
+                $project->nodeData->label = Image::get($project->node_label);
 
                 if (isset($project->media)) {
                     $project->media = new Project\Media($project->media);

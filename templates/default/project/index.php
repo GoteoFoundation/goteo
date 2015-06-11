@@ -59,11 +59,13 @@ if (is_array($project->gallery)) {
     }
 }
 
-foreach ($blog->posts as $bpost) {
-    if (is_array($bpost->gallery)) {
-        foreach ($bpost->gallery as $bpimg) {
-            if ($bpimg instanceof Image) {
-                $images[] = $bpimg->getLink(500, 285, false, true);
+if($blog) {
+    foreach ($blog->posts as $bpost) {
+        if (is_array($bpost->gallery)) {
+            foreach ($bpost->gallery as $bpimg) {
+                if ($bpimg instanceof Image) {
+                    $images[] = $bpimg->getLink(500, 285, false, true);
+                }
             }
         }
     }
@@ -89,7 +91,6 @@ $this->section('content');
                 <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
                 <div class="project-subtitle"><?php echo htmlspecialchars($project->subtitle) ?></div>
                 <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?= $this->text('regular-by') ?> <?php echo $project->user->name; ?></a></div>
-                <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?=  $this->text('regular-by') ?> <?php echo $project->user->name; ?></a></div>
                 <br/>
 
                 <?php if (!empty($project->cat_names)) : ?>
@@ -100,7 +101,7 @@ $this->section('content');
                 </div>
                 <?php endif; ?>
 
-                <?php if (!empty($project->node) && $project->node != $this->get_config('current_node')) : ?>
+                <?php if ($project->node !== $this->get_config('current_node')) : ?>
                 <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" ><img src ="<?= $project->nodeData->label->getLink(100,100) ?>" alt="<?php echo htmlspecialchars($project->nodeData->name) ?>" title="Nodo <?php echo htmlspecialchars($project->nodeData->name) ?>"/></a></div>
                 <?php endif; ?>
             </div>

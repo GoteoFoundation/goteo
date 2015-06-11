@@ -606,7 +606,7 @@ namespace Goteo\Controller {
             $user = Session::getUser();
 
             // recompensas
-            foreach ($project->individual_rewards as &$reward) {
+            foreach ($project->individual_rewards as $reward) {
                 $reward->none = false;
                 $reward->taken = $reward->getTaken(); // cofinanciadores quehan optado por esta recompensas
                 // si controla unidades de esta recompensa, mirar si quedan
@@ -654,7 +654,8 @@ namespace Goteo\Controller {
 
                 $viewData = array(
                         'project' => $project,
-                        'show' => $show
+                        'show' => $show,
+                        'blog' => null
                     );
 
 
@@ -693,7 +694,7 @@ namespace Goteo\Controller {
                      */
 
                     // usamos la variable de url $post para movernos entre los pasos
-                    $step = (isset($post) && in_array($post, array('start', 'login', 'confirm', 'continue'))) ? $post : 'start';
+                    $step = ($post && in_array($post, array('start', 'login', 'confirm', 'continue'))) ? $post : 'start';
 
                     // si llega confirm ya ha terminado el proceso de aporte
                     if (isset($_GET['confirm']) && \in_array($_GET['confirm'], array('ok', 'fail'))) {
