@@ -323,3 +323,41 @@ div.widget.project-invest-amount.called  p strong {
 #project-called.active div.amount {
     display: block !important;
 }
+
+/* Widget horizontal */
+
+div.widget.project.horizontal div.image {
+    width:40%;
+    float:left;
+}
+
+div.widget.project.horizontal div.description{
+    width:50%;
+    float:left;
+    font-size:1.3em;
+    margin-top: 7px;
+}
+
+div.widget.project.horizontal > .author{
+    font-size:1.1em !important;
+    padding-top:5px;
+    padding-bottom: 5px;
+}
+
+div.widget.project.horizontal > .author a {
+    font-size: 1.1em;
+    color: #00B259;
+}
+div.widget.project.horizontal .title.horizontal a{
+    font-size:1.5em;
+    line-height: 1;
+}
+
+div.widget.project.horizontal .title.horizontal{
+    height: auto;
+}
+
+div.widget.project.horizontal .meter-container{
+    clear:both;
+    width: 40%;
+}

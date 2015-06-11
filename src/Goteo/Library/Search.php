@@ -75,6 +75,11 @@ namespace Goteo\Library {
                 $values[':node'] = Config::get('current_node');
             }
 
+            if (!empty($params['channel'])) {
+                $where[] = ' AND project.node = :node';
+                $values[':node'] = $params['channel'];
+            }
+
             if (!empty($params['status'])) {
                 $where[] = ' AND project.status = :status';
                 $values[':status'] = $params['status'];
