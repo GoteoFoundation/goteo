@@ -84,6 +84,12 @@ class SessionListener implements EventSubscriberInterface
 
     public function onResponse(FilterResponseEvent $event)
     {
+
+        //not need to do anything on sub-requests
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
         $response = $event->getResponse();
 
         // Cookie

@@ -26,7 +26,6 @@ use Goteo\Foil\Extension;
 class UrlListener implements EventSubscriberInterface
 {
     public function onRequest(GetResponseEvent $event) {
-
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
             return;
