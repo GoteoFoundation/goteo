@@ -3,7 +3,6 @@
 use Goteo\Application\App;
 use Symfony\Component\HttpFoundation\Request;
 
-
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 ini_set("display_errors",1);
 
@@ -15,7 +14,7 @@ require_once __DIR__ . '/../src/autoload.php';
 App::debug(true);
 
 //Get from globals defaults
-$request = App::getRequest();
+App::setRequest(Request::createFromGlobals());
 
 $app = App::get();
 
