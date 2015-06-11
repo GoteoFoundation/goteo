@@ -92,7 +92,7 @@ if ($project->status == 3 && $project->noinvest) {
 
 
     <div class="description">
-        <?php echo $this->text_recorta($project->description, 200); ?>
+        <?php echo $this->text_recorta($project->description, 225); ?>
         <div style="border-top:1px solid #1AB3B1; width:10%; margin-top:5px; display:none;"></div>
         <ul class="amounts">
             <li>
