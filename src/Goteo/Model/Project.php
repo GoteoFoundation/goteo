@@ -808,7 +808,7 @@ namespace Goteo\Model {
                 $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
 
                 // image from main gallery
-                $Widget->image = $project->image;
+                $Widget->image = Image::get($project->image);
 
                 $Widget->amount = $project->amount;
                 $Widget->invested = $project->amount; // compatibilidad, ->invested no debe usarse
