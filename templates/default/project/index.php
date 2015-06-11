@@ -216,7 +216,7 @@ $this->section('content');
                             }
                         } else {
                             echo
-                                View::get('project/widget/supporters.html.php', (array)$this),
+                                View::get('project/widget/supporters.html.php', $this->vars),
                                 View::get('worth/legend.html.php');
                         }
                         break;
