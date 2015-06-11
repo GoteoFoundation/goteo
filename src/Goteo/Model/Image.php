@@ -228,6 +228,10 @@ namespace Goteo\Model {
         static public function get($id, $default = 1)
         {
 
+            if($id instanceOf Image) {
+                return $id;
+            }
+
             if (empty($id))
                 $id = $default;
 
