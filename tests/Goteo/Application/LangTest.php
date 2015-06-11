@@ -29,6 +29,8 @@ class LangTest extends \PHPUnit_Framework_TestCase {
      */
     public function testShortFunctions($all) {
         Lang::setDefault('es');
+        $this->assertEquals('es', Lang::getDefault());
+        Lang::set('es');
         $current = Lang::current();
         $this->assertEquals('es', $current);
         $this->assertContains($current, array_keys($all));
