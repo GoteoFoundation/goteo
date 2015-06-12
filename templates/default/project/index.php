@@ -121,8 +121,8 @@ $this->section('content');
 
         </div>
 
-<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
+        <!-- TODO: HEADER -->
 
         <div id="main" class="threecols">
 
@@ -169,7 +169,7 @@ $this->section('content');
                 // los modulos centrales son diferentes segun el show
                 switch ($show) {
                     case 'needs':
-                        if ($this->non-economic) {
+                        if ($this->non_economic) {
                             echo
                                 View::get('project/widget/non-needs.html.php',
                                     array('project' => $project, 'types' => Support::types()));

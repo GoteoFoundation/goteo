@@ -8,6 +8,8 @@ use Goteo\TestCase;
 use Goteo\Application\App;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\DependencyInjection;
+use Symfony\Component\DependencyInjection\Reference;
 
 class AppTest extends TestCase {
     public function testApp() {
@@ -16,21 +18,14 @@ class AppTest extends TestCase {
         $this->assertInstanceOf('Goteo\Application\App', App::get());
         $this->assertInstanceOf('Goteo\Application\App', $this->getAttribute($app, '_app'));
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $this->getAttribute($app, '_routes'));
-        $this->assertInstanceOf('Symfony\Component\Routing\Matcher\UrlMatcherInterface', $this->getAttribute($app, '_matcher'));
-        $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventDispatcher', $this->getAttribute($app, '_dispatcher'));
+        $this->assertInstanceOf('Symfony\Component\DependencyInjection\ContainerBuilder', $this->getAttribute($app, '_sc'));
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Request', $this->getAttribute($app, '_request'));
-        $this->assertInstanceOf('Symfony\Component\HttpKernel\Controller\ControllerResolver', $this->getAttribute($app, '_resolver'));
 
         App::clearApp();
         $this->assertNull($this->getAttribute($app, '_routes'));
-        $this->assertNull($this->getAttribute($app, '_matcher'));
-        $this->assertNull($this->getAttribute($app, '_dispatcher'));
         $this->assertNull($this->getAttribute($app, '_app'));
         $this->assertNull($this->getAttribute($app, '_request'));
-        $this->assertNull($this->getAttribute($app, '_resolver'));
-
-        App::setDispatcher($this->getMock('Symfony\Component\EventDispatcher\EventDispatcher'));
-        $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventDispatcher', App::getDispatcher());
+        $this->assertNull($this->getAttribute($app, '_sc'));
 
         App::setRoutes($this->getMock('Symfony\Component\Routing\RouteCollection'));
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', App::getRoutes());
@@ -38,24 +33,15 @@ class AppTest extends TestCase {
         App::setRequest($this->getMock('Symfony\Component\HttpFoundation\Request'));
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Request', App::getRequest());
 
-        App::setMatcher($this->getMock('Symfony\Component\Routing\Matcher\UrlMatcherInterface'));
-        $this->assertInstanceOf('Symfony\Component\Routing\Matcher\UrlMatcherInterface', App::getMatcher());
-
-        App::setResolver($this->getMock('Symfony\Component\HttpKernel\Controller\ControllerResolver'));
-        $this->assertInstanceOf('Symfony\Component\HttpKernel\Controller\ControllerResolver', App::getResolver());
+        App::setServiceContainer(new DependencyInjection\ContainerBuilder());
+        $this->assertInstanceOf('Symfony\Component\DependencyInjection\ContainerBuilder', App::getServiceContainer());
     }
-
-    // public function testAppMethods() {
-
-    // }
 
     public function testNotFound() {
 
-        App::setRequest(new Request());
         $app = $this->getAppForException(new ResourceNotFoundException());
 
-        $response = $app->handle(App::getRequest());
-        // die($response->getStatusCode().'');
+        $response = $app->handle(new Request());
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertContains('</body>', $response->getContent());
     }
@@ -103,23 +89,46 @@ class AppTest extends TestCase {
     protected function getFullApp($exception)
     {
         App::clearApp();
+        //no extend configuration
         App::setRoutes(include( __DIR__ . '/../../../src/routes.php' ));
+        App::setServiceContainer(include( __DIR__ . '/../../../src/container.php' ));
         return App::get();
     }
 
     protected function getAppForException($exception)
     {
-        App::clearApp();
-        App::setRoutes(include( __DIR__ . '/../../../src/routes.php' ));
+        $sc = new DependencyInjection\ContainerBuilder();
+
         $matcher = $this->getMock('Symfony\Component\Routing\Matcher\UrlMatcherInterface');
-        $matcher
-            ->expects($this->once())
-            ->method('match')
-            ->will($this->throwException($exception))
+        // $matcher
+        //     ->expects($this->once())
+        //     ->method('match')
+        //     ->will($this->throwException($exception))
+        // ;
+        $sc->register('context', 'Symfony\Component\Routing\RequestContext');
+        $sc->register('matcher', $matcher);
         ;
 
-        App::setMatcher($matcher);
-        return App::get();
+        $sc->register('resolver', 'Symfony\Component\HttpKernel\Controller\ControllerResolver');
+        $sc->register('listener.router', 'Symfony\Component\HttpKernel\EventListener\RouterListener')
+            ->setArguments(array(new Reference('matcher')))
+        ;
+        $sc->register('listener.response', 'Symfony\Component\HttpKernel\EventListener\ResponseListener')
+            ->setArguments(array('UTF-8'))
+        ;
+        $sc->register('listener.exception', 'Symfony\Component\HttpKernel\EventListener\ExceptionListener')
+            ->setArguments(array('Goteo\\Controller\\ErrorController::exceptionAction'))
+        ;
+        $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
+            ->addMethodCall('addSubscriber', array(new Reference('listener.router')))
+            ->addMethodCall('addSubscriber', array(new Reference('listener.response')))
+            ->addMethodCall('addSubscriber', array(new Reference('listener.exception')))
+        ;
+        $sc->register('app', 'Goteo\Application\App')
+            ->setArguments(array(new Reference('dispatcher'), new Reference('resolver')))
+        ;
+
+        return $sc->get('app');
     }
 
 }

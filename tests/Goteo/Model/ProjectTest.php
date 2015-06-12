@@ -275,12 +275,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         try {
             $ob = Project::get(self::$data['id']);
         }catch(\Exception $e) {
-            $this->assertInstanceOf('\Goteo\Core\Error', $e);
+            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
         }
         try {
             $ob = Project::get('non-existing-project');
         }catch(\Exception $e) {
-            $this->assertInstanceOf('\Goteo\Core\Error', $e);
+            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
         }
     }
 

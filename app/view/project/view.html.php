@@ -162,7 +162,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                 // los modulos centrales son diferentes segun el show
                 switch ($show) {
                     case 'needs':
-                        if ($vars['non-economic']) {
+                        if ($vars['non_economic']) {
                             echo
                                 View::get('project/widget/non-needs.html.php',
                                     array('project' => $project, 'types' => Support::types()));

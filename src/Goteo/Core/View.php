@@ -72,15 +72,21 @@ namespace Goteo\Core {
                 // echo "La vista [$view] lanza una exception de redireccion!\nEsto no deberia hacerse aqui!\n";
                 return ob_get_clean();
             }
-            //TODO: catch not found and show 404 file
+            // Catch not found models
+            catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+                // echo "La vista [$view] lanza una exception de modelo!\nEsto no deberia hacerse aqui!";
+                ob_get_clean();
+                throw $e;
+            }
             catch(\Exception $e) {
+                ob_get_clean();
                 throw new View\Exception("Error in Included view [{$this->file}]\nView Exception Message:\n" . $e->getMessage()."\n", 1);
             }
-            catch(View\Exception $e) {
-                throw new View\Exception("Error in View [{$this->file}]\nView Exception Message:\n" . $e->getMessage()."\n", 1);
-                // print($e);
-                // die($e->getMessage());
-            }
+            // catch(View\Exception $e) {
+            //     throw new View\Exception("Error in View [{$this->file}]\nView Exception Message:\n" . $e->getMessage()."\n", 1);
+            //     // print($e);
+            //     // die($e->getMessage());
+            // }
 
         }
 

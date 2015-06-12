@@ -1,7 +1,10 @@
 <?php
 
 namespace Goteo\Model\Blog\Post {
+
     use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+
     class Tag extends \Goteo\Core\Model {
 
         public

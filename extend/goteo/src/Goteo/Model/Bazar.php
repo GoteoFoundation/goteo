@@ -51,8 +51,7 @@ namespace Goteo\Model {
 
                 if($promo = $query->fetchObject(__CLASS__)) {
 
-                    if (!empty($promo->image))
-                        $promo->image = Image::get($promo->image);
+                    $promo->image = Image::get($promo->image);
 
                     $promo->project = Project::getMini($promo->project);
                 }
@@ -279,10 +278,12 @@ namespace Goteo\Model {
          */
         public function delete($id = null) {
             if(empty($id)) return parent::delete();
-
-            if(!($ob = Bazar::get($id))) return false;
-            return $ob->delete();
-
+            $sql = "SELECT id FROM bazar WHERE id = :id";
+            $query = self::query($sql, array(':id' => $id));
+            if ($ob = $query->fetchObject(__CLASS__)) {
+                return $ob->delete();
+            }
+            return false;
         }
 
         /*

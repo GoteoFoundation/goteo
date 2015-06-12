@@ -5,7 +5,8 @@ use Goteo\Core\View,
 
 $user    = $_SESSION['user'];
 $project = $vars['project'];
-$the_project = Project::getMedium($project->id);
+$the_project = Project::getWidget($project);
+
 $level = (int) $vars['level'] ?: 3;
 
 $lsuf = (LANG != 'es') ? '?lang='.LANG : '';

@@ -78,7 +78,7 @@ class App extends HttpKernel\HttpKernel
      * This methods can be optionally called before this ::get() call:
      *     ::setRequest()
      *     ::setRoutes()
-     *     ::setDispacher()
+     *     ::setServiceContainer()
      * Next calls to this method will return the current instantatied App
      * @return App object
      */
@@ -154,7 +154,7 @@ class App extends HttpKernel\HttpKernel
      */
     public function clearApp() {
         self::$_app = null;
-        self::$_dispatcher = null;
+        self::$_sc = null;
         self::$_routes = null;
         self::$_request = null;
     }

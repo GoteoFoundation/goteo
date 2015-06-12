@@ -602,7 +602,7 @@ namespace Goteo\Controller {
                 // tenemos que tocar esto un poquito para motrar las necesitades no economicas
                 if ($show == 'needs-non') {
                     $viewData['show'] = 'needs';
-                    $viewData['non-economic'] = true;
+                    $viewData['non_economic'] = true;
                 }
 
                 //tenemos que tocar esto un poquito para gestionar los pasos al aportar

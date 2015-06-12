@@ -5,11 +5,12 @@ namespace Goteo\Core\Tests;
 use Goteo\Core\View,
     Goteo\Core\Redirection,
     Goteo\Core\View\Exception,
+    Goteo\Application\Session,
     Goteo\Model\Project,
     Goteo\Model\Image,
     Goteo\Model\User;
 
-class ViewTest extends \PHPUnit_Framework_TestCase {
+class ViewTest extends \Goteo\TestCase {
 
     protected static $views = array();
 
@@ -53,7 +54,6 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
      * @return [type] [description]
      */
     public function testGoteoViews() {
-        global $_SESSION;
         $project = new Project();
         $project->user = new User();
         $post = new \Goteo\Model\Blog\Post();
@@ -68,7 +68,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
             'call' => $call
             );
 
-        $_SESSION['user'] = $project->user;
+        Session::setUser($project->user);
         foreach(self::$views as $view) {
             try {
                 $v = new View($view, $vars);
@@ -76,8 +76,11 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
                 $out = $v->render();
                 $this->assertInternalType('string', $out);
             }
+            catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+                echo "\nLa vista [$view] lanza una exception de modelo!\nEsto no deberia hacerse aqui!\n";
+            }
             catch(\Goteo\Core\Redirection $e) {
-                echo "La vista [$view] lanza una exception de redireccion!\nEsto no deberia hacerse aqui!\n";
+                echo "\nLa vista [$view] lanza una exception de redireccion!\nEsto no deberia hacerse aqui!\n";
             }
             // echo $out;
         }
