@@ -4,7 +4,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\Config;
-
+use Goteo\Application\App;
 
 $custom_routes = new RouteCollection();
 $custom_routes->add('barcelona-node-redirection', new Route(

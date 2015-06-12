@@ -51,8 +51,10 @@ url:
 # Extend is the directory to personalize your copy of goteo.org
 # Routes, classes and templates can be overrided
 extend:
-    # If defined, the php app that returns a Symfony\Component\Routing\RouteCollection
+    # If defined, the php include file that returns a Symfony\Component\Routing\RouteCollection
     routes: custom_dir/routes.php # => extend/custom_dir/routes.php
+    # If defined, the php include file that returns a Symfony\Component\DependencyInjection
+    service_container: custom_dir/src/service_container.php # extend/custom_dir/service_container.php
     # Extra dirs where to find additional autoload classes
     autoload:
         - custom_dir/src # extend goteo folders, "extend/goteo"

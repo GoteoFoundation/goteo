@@ -72,9 +72,14 @@ class Config {
             }
         }
         // Route app
-        if(is_file(__DIR__ . '/../../../extend/' .  self::get('extend.routes'))) {
+        if(self::get('extend.routes') && is_file(__DIR__ . '/../../../extend/' .  self::get('extend.routes'))) {
             $routes = include(__DIR__ . '/../../../extend/' . self::get('extend.routes'));
             App::setRoutes($routes);
+        }
+        // Route app
+        if(self::get('extend.service_container') && is_file(__DIR__ . '/../../../extend/' .  self::get('extend.service_container'))) {
+            $service_container = include(__DIR__ . '/../../../extend/' . self::get('extend.service_container'));
+            App::setServiceContainer($service_container);
         }
 
         //Cache dir in libs

@@ -26,10 +26,8 @@ App::debug(true);
 // Too much notices...
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
 //
-// Bored? Try the hard way:
+// Bored? Try the hard way and fix some notices:
 // Debug\Debug::enable();
-
-
 
 
 // Config file...
@@ -37,9 +35,9 @@ Config::loadFromYaml('settings.yml');
 
 // Add the debug toolbar as a service
 $sc = App::getServiceContainer();
-$sc->register('listener.profiler', 'Goteo\Util\Profiler\EventListener\ProfilerListener');
+$sc->register('app.listener.profiler', 'Goteo\Util\Profiler\EventListener\ProfilerListener');
 // add to the dispatcher as a subscriber
-$sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Symfony\Component\DependencyInjection\Reference('listener.profiler')));
+$sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Symfony\Component\DependencyInjection\Reference('app.listener.profiler')));
 
 //Get from globals defaults
 App::setRequest(Request::createFromGlobals());

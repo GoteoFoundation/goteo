@@ -40,6 +40,7 @@ $sc->register('app.listener.session', 'Goteo\Application\EventListener\SessionLi
 // Security ACL
 $sc->register('app.listener.acl', 'Goteo\Application\EventListener\AclListener');
 
+// TODO: add listeners for feed, etc
 
 // Event Dispatcher object
 $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
