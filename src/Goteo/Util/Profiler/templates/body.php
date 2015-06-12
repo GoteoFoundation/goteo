@@ -1,7 +1,7 @@
 <div id="g_profiler">
     <ul>
         <li><a href="#phpinfo">PHP <?= phpversion() ?></a></li>
-        <li class="<?= count($this->errors) ? 'ko' : 'ok' ?>"><a href="#errors">Errors: <?= count($this->errors) ?></a></li>
+        <li class="<?= count($this->errors) ? 'ko' : (count($this->texts) ? 'warn' : 'ok') ?>"><a href="#errors">Errors: <?= (count($this->errors) + count($this->texts)) ?></a></li>
         <li class="<?= count($this->events) ? 'ok' : 'ko' ?>"><a href="#events">Events: <?= count($this->events) ?></a></li>
         <li class="<?= $this->queries['total'] > 100 ? ($this->queries['total'] > 300 ? 'ko' : 'warn') : 'ok' ?>"><a href="#queries_server">SQL queries: <?= $this->queries['total'] ?></a></li>
         <li class="<?= $this->queries['total_cached'] < 10 ? 'warn' : 'ok' ?>"><a href="#queries_cached">Cached: <?= $this->queries['total_cached'] ?></a></li>
@@ -28,11 +28,27 @@
     </div>
 
     <div class="errors">
-        <ul>
-        <?php foreach($this->raw('errors') as $err): ?>
-            <li><?= $err ?></li>
-        <?php endforeach ?>
-        </ul>
+        <h2>PHP Errors:</h2>
+        <?php if($this->errors): ?>
+            <ul>
+            <?php foreach($this->raw('errors') as $err): ?>
+                <li><?= $err ?></li>
+            <?php endforeach ?>
+            </ul>
+        <?php else: ?>
+            Great, None found!
+        <?php endif; ?>
+
+        <h2>Text copies errors:</h2>
+        <?php if($this->texts): ?>
+            <ul>
+            <?php foreach($this->texts as $id => $err): ?>
+                <li><strong><?= $id ?></strong>: <?= $err ?></li>
+            <?php endforeach ?>
+            </ul>
+        <?php else: ?>
+            Great, None found!
+        <?php endif; ?>
     </div>
     <div class="session">
         <p>Session start time: <strong><?= date("r", $this->session['start_time']) ?></strong></p>

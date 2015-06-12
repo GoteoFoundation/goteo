@@ -36,14 +36,14 @@ namespace Goteo\Controller {
             if ($id == 'howto') {
                 return new RedirectResponse('/project/create');
             }
-            //TODO: delete this
+            //TODO: delete this, do it on call controller
             if( $id == 'call') {
                 if (!Session::isLogged()) {
                     return new RedirectResponse('/');
                 }
                 $page = Page::get($id);
 
-                 return new Response(View::render('about/howto', array(
+                 return new Response(View::render('project/howto', array(
                         'name' => $page->name,
                         'description' => $page->description,
                         'content' => $page->content

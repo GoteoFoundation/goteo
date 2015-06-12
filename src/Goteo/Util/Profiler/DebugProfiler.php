@@ -11,6 +11,7 @@ use Goteo\Application\App;
 use Goteo\Application\Session;
 use Goteo\Application\Cookie;
 use Goteo\Application\View;
+use Goteo\Library\Text;
 
 class DebugProfiler {
     protected $response;
@@ -110,13 +111,18 @@ class DebugProfiler {
             'response_code' => $code,
             'response' => sprintf('HTTP/%s %s %s', $this->response->getProtocolVersion(), $code, Response::$statusTexts[$code]) ."\n". $this->response->headers
         );
+
+        //Text copies errors
+        $texts = Text::getErrors();
+
         return View::render("profiler::$view", $with_vars ? [
             'errors' => App::getErrors(),
             'queries' => $queries,
             'events' => $events,
             'session' => $session,
             'cookies' => $cookies,
-            'headers' => $headers
+            'headers' => $headers,
+            'texts' => $texts
             ] : []);
     }
 
