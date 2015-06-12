@@ -1237,7 +1237,8 @@ namespace Goteo\Model {
 
             $sql = "UPDATE invest SET
                         returned = :returned,
-                        status = $status
+                        status = $status,
+                        pool = 0
                     WHERE id = :id";
 
             if (self::query($sql, $values)) {
