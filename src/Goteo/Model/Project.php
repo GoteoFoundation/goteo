@@ -189,7 +189,7 @@ namespace Goteo\Model {
         public function getLangs() {
             $sql = 'SELECT lang FROM project WHERE id = :id
                     UNION
-                SELECT lang FROM project_lang WHERE id = id
+                SELECT lang FROM project_lang WHERE id = :id
                 ORDER BY lang ASC';
 
             $query = static::query($sql, array(':id' => $this->id));
