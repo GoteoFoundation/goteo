@@ -8,6 +8,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Library\Text,
         Goteo\Application,
+        Goteo\Application\Lang,
         Goteo\Library\Template,
         Goteo\Library\Feed,
         Goteo\Library\Buzz,
@@ -37,7 +38,7 @@ namespace Goteo\Controller {
         }
 
         public function raw ($id) {
-            $call = Model\Call::get($id, LANG);
+            $call = Model\Call::get($id, Lang::current());
             \trace($call);
             die;
         }
@@ -392,7 +393,7 @@ namespace Goteo\Controller {
             //activamos la cache para esta llamada
             \Goteo\Core\DB::cache(true);
 
-            $call = Model\Call::get($id, LANG);
+            $call = Model\Call::get($id, Lang::current());
 
             if (!$call instanceof Model\Call) {
                 Application\Message::error('Ha habido algun errror al cargar la convocatoria solicitada');

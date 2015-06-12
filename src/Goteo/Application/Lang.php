@@ -88,7 +88,8 @@ class Lang {
      * Sets the default language
      * @param [type] $lang [description]
      */
-    static public function setDefault($lang) {
+    static public function setDefault($lang = null) {
+        if(empty($lang)) $lang = Config::get('lang');
         if(self::exists($lang)) {
             self::$default = $lang;
         }

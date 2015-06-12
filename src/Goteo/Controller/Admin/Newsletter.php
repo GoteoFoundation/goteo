@@ -8,6 +8,7 @@ namespace Goteo\Controller\Admin {
 		Goteo\Library\Text,
         Goteo\Model,
         Goteo\Library\Mail,
+        Goteo\Application\Lang,
         Goteo\Application\Message,
 		Goteo\Library\Template,
         Goteo\Library\Newsletter as Boletin,
@@ -16,7 +17,7 @@ namespace Goteo\Controller\Admin {
     class Newsletter {
 
         public static function process ($action = 'list', $id = null, $filters = array()) {
-
+            $current_lang = Lang::current();
             $debug = false;
 
             $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
@@ -46,7 +47,7 @@ namespace Goteo\Controller\Admin {
                         $nolang = $_POST['nolang'];
                         if ($nolang) {
                             foreach ($users as $usr) {
-                                $receivers[LANG][$usr->user] = $usr;
+                                $receivers[$current_lang][$usr->user] = $usr;
                             }
                         } else {
                             // separamos destinatarios en idiomas
@@ -55,7 +56,7 @@ namespace Goteo\Controller\Admin {
 
                                 // idioma de preferencia
                                 $comlang = !empty($usr->comlang) ? $usr->comlang : $usr->lang;
-                                if (empty($comlang)) $comlang = LANG;
+                                if (empty($comlang)) $comlang = $current_lang;
 
                                 // he visto un 'eN' raro en beta, pongo esto hasta que confirme en real
                                 $comlang = strtolower($comlang);

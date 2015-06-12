@@ -17,6 +17,7 @@ use Goteo\Core\Resource,
     Goteo\Core\Redirection,
     Goteo\Core\Model,
     Goteo\Application\Lang,
+    Goteo\Application\Config,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
     Goteo\Library\Sender;
@@ -33,8 +34,8 @@ define('LOGS_DIR', GOTEO_LOG_PATH . 'mailing/'); //ruta a logs
 //Archivo de bloqueo en la carpeta var
 define('LOCK_FILE',  __DIR__ . '/../var/' . basename(__FILE__) . '.lock');
 // set Lang
-Lang::setDefault(GOTEO_DEFAULT_LANG);
-Lang::set(GOTEO_DEFAULT_LANG);
+Lang::setDefault(Config::get('lang'));
+Lang::set(Config::get('lang'));
 
 
 /**

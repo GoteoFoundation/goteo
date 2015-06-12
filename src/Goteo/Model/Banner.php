@@ -4,6 +4,8 @@ namespace Goteo\Model {
     use Goteo\Library\Text,
         Goteo\Model\Project,
         Goteo\Model\Image,
+        Goteo\Application\Lang,
+        Goteo\Application\Config,
         Goteo\Library\Check;
 
     class Banner extends \Goteo\Core\Model {
@@ -66,7 +68,7 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND banner.active = 1" : '';
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang(Lang::current()) === Config::get('lang')) {
                 $different_select=" IFNULL(banner_lang.title, banner.title) as title,
                                     IFNULL(banner_lang.description, banner.description) as description";
                 }
@@ -109,7 +111,7 @@ namespace Goteo\Model {
                     $sqlFilter
                     ORDER BY `order` ASC";
 
-            $query = static::query($sql, array(':node' => $node, ':lang' => \LANG));
+            $query = static::query($sql, array(':node' => $node, ':lang' => Lang::current()));
 
             $used_projects = array();
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
@@ -126,7 +128,7 @@ namespace Goteo\Model {
                 }
 
                 //rewards, metodo antiguo un sql por proyecto
-                // $banner->project_social_rewards = Project\Reward::getAll($banner->project, 'social', \LANG);
+                // $banner->project_social_rewards = Project\Reward::getAll($banner->project, 'social', Lang::current());
                 //
                 // usado para obtener los rewards de golpe
                 if (!empty($banner->project)) $used_projects[$banner->project] = $banner->id;
@@ -150,7 +152,7 @@ namespace Goteo\Model {
                     AND reward_lang.project = reward.project
                 WHERE
                 reward.project IN ('" . implode("','", array_keys($used_projects)) . "')
-                AND type = :type", array('lang' => \LANG, 'type' => 'social'));
+                AND type = :type", array('lang' => Lang::current(), 'type' => 'social'));
             //añadir a cada banner:
             foreach($query->fetchAll(\PDO::FETCH_CLASS) as $reward){
                 $banners[$used_projects[$reward->project]]->project_social_rewards[$reward->id] = $reward;

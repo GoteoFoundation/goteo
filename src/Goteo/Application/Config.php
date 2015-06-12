@@ -199,7 +199,6 @@ class Config {
         define('AWS_SNS_REGION', self::get('mail.sns.region'));
         define('AWS_SNS_BOUNCES_TOPIC', self::get('mail.sns.bounces_topic'));
         define('AWS_SNS_COMPLAINTS_TOPIC', self::get('mail.sns.complaints_topic'));
-        define('GOTEO_DEFAULT_LANG', self::get('lang'));
 
         define('GOTEO_URL', self::get('url.main'));
         define('SRC_URL', self::get('url.assets'));

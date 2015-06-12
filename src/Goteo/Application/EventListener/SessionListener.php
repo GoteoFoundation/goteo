@@ -75,11 +75,6 @@ class SessionListener implements EventSubscriberInterface
         // set currency
         Session::store('currency', Currency::set()); // depending on request
 
-        // Set lang
-        Lang::setDefault(GOTEO_DEFAULT_LANG);
-        Lang::setFromGlobals($request);
-
-
     }
 
     public function onResponse(FilterResponseEvent $event)

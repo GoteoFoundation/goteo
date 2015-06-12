@@ -25,7 +25,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'news_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'news_lang', Lang::current());
 
                 $sql = static::query("
                     SELECT
@@ -62,7 +62,7 @@ namespace Goteo\Model {
                     news.order as `order`
                 FROM news
                 ORDER BY `order` ASC, title ASC
-                ", array(':lang'=>\LANG));
+                ", array(':lang'=>Lang::current()));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 $list[] = $item;

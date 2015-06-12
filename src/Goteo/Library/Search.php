@@ -4,6 +4,7 @@ namespace Goteo\Library {
 
     use Goteo\Model\Project;
     use Goteo\Application\Config;
+    use Goteo\Application\Lang;
 
 	/*
 	 * Clase para realizar búsquedas de proyectos
@@ -18,10 +19,10 @@ namespace Goteo\Library {
          * @return array results
          */
 		public static function params ($params, $showall = false, $limit = null) {
-
+            $lang = Lang::current();
             $results = array();
             $where   = array();
-            $values  = array(':lang' => \LANG);
+            $values  = array(':lang' => $lang);
 
             // @TODO : estos siguientes deberían ser JOINs
             if ($category = $params['category']) {
@@ -90,7 +91,7 @@ namespace Goteo\Library {
 
             $different_select="project.popularity as popularity,";
 
-            if(Project::default_lang(\LANG)=='es') {
+            if(Project::default_lang($lang) === Config::get('lang')) {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
             }
             else {

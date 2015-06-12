@@ -5,6 +5,8 @@ namespace Goteo\Model {
         \Goteo\Model\Project,
         \Goteo\Model\Image,
         \Goteo\Library\Check;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Bazar extends \Goteo\Core\Model {
 
@@ -26,7 +28,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'bazar_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'bazar_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -62,10 +64,10 @@ namespace Goteo\Model {
          * Solo proyectos en campaña (y recompensas que queden unidades)
          */
         public static function getAll () {
-
+            $lang = Lang::current();
             $promos = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(bazar_lang.title, bazar.title) as title,
                                     IFNULL(bazar_lang.description, bazar.description) as description";
                 }
@@ -98,7 +100,7 @@ namespace Goteo\Model {
                     WHERE bazar.active = 1
                     ORDER BY `order` ASC, title ASC";
 
-            $query = static::query($sql, array(':lang'=>\LANG));
+            $query = static::query($sql, array(':lang'=>$lang));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
 

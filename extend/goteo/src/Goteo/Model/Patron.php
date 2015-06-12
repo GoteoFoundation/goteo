@@ -6,6 +6,8 @@ namespace Goteo\Model {
         \Goteo\Library\Check,
         \Goteo\Model\User,
         \Goteo\Model\Image;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Patron extends \Goteo\Core\Model {
 
@@ -26,7 +28,7 @@ namespace Goteo\Model {
         public static function get ($id, $node = \GOTEO_NODE) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'patron_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'patron_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -76,7 +78,7 @@ namespace Goteo\Model {
          * Para la gestión
          */
         public static function getAll ($node = \GOTEO_NODE, $activeonly = false) {
-
+            $lang = Lang::current();
             // estados
             $status = Model\Project::status();
 
@@ -84,7 +86,7 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND patron.active = 1" : '';
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(patron_lang.title, patron.title) as title,
                                     IFNULL(patron_lang.description, patron.description) as description";
                 }
@@ -127,7 +129,7 @@ namespace Goteo\Model {
                 ORDER BY `order` ASC, name ASC
                 ";
 
-            $query = static::query($sql, array(':node' => $node, ':lang'=>\LANG));
+            $query = static::query($sql, array(':node' => $node, ':lang'=>$lang));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
                 $promo->description =Text::recorta($promo->description, 100, false);
@@ -155,14 +157,14 @@ namespace Goteo\Model {
          * @param varchar50 $user padrino
          */
         public static function getList($user, $activeonly = true) {
-
+            $lang = Lang::current();
             $projects = array();
 
-            $values = array(':user'=>$user, ':lang'=>\LANG);
+            $values = array(':user'=>$user, ':lang'=>$lang);
 
             $sqlFilter = ($activeonly) ? " AND patron.active = 1" : '';
 
-             if(self::default_lang(\LANG)=='es') {
+             if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(patron_lang.title, patron.title) as title,
                                     IFNULL(patron_lang.description, patron.description) as patron_description";
                  $different_select_project=" IFNULL(project_lang.description, project.description) as description";
@@ -376,7 +378,7 @@ namespace Goteo\Model {
 
             $recos = array();
 
-            $values = array(':project'=>$project, ':lang'=>\LANG);
+            $values = array(':project'=>$project, ':lang'=> Lang::current());
 
             if (!empty($node)) {
                 $values[':node'] = $node;

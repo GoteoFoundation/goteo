@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\DependencyInjection\ServiceContainerBuilder;
 
 class App extends HttpKernel\HttpKernel
 {
@@ -17,6 +18,7 @@ class App extends HttpKernel\HttpKernel
     static protected $_routes;
     static protected $_matcher;
     static protected $_resolver;
+    static protected $_sc;
     static protected $_debug = false;
     static protected $_errors = array();
 
@@ -58,6 +60,25 @@ class App extends HttpKernel\HttpKernel
      */
     static public function setRequest(Request $request) {
         self::$_request = $request;
+    }
+
+    /**
+     * Gets the service container for the app
+     * @return RouteColletion object
+     */
+    static public function getServiceContainer() {
+        if( ! self::$_sc ) {
+            self::$_sc = include( __DIR__ . '/../../container.php' );
+        }
+        return self::$_sc;
+    }
+
+    /**
+     * Sets the service container for the app
+     * Must be called befor App::get() in order to set a different service container
+     */
+    static public function setServiceContainer(ServiceContainerBuilder $sc) {
+        self::$_sc = $sc;
     }
 
     /**
@@ -141,9 +162,6 @@ class App extends HttpKernel\HttpKernel
             // Getting the request either from global or simulated
             $request = self::getRequest();
 
-            // TODO: configurable file...
-            Config::loadFromYaml('settings.yml');
-
             // Additional constants
             // si estamos en entorno seguro
             define('HTTPS_ON', $request->isSecure());
@@ -162,32 +180,13 @@ class App extends HttpKernel\HttpKernel
                 define('SEC_URL', 'http://' . $SITE_URL);
                 define('SITE_URL', 'http://' . $SITE_URL);
             }
+                    // Set lang
+            Lang::setDefault();
+            Lang::setFromGlobals($request);
 
-            $matcher = self::getMatcher();
-            $dispatcher = self::getDispatcher();
-            $resolver = self::getResolver();
-
-            //Node configuration
-            $dispatcher->addSubscriber(new EventListener\UrlListener());
-            //Lang, cookies info, etc
-            $dispatcher->addSubscriber(new EventListener\SessionListener());
-            //Security ACL
-            $dispatcher->addSubscriber(new EventListener\AclListener());
-            //Routes
-            $dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher));
-            //Control 404 and other errors
-            $dispatcher->addSubscriber(new HttpKernel\EventListener\ExceptionListener('Goteo\\Controller\\ErrorController::exceptionAction'));
-            // Streamed responses
-            // $dispatcher->addSubscriber(new HttpKernel\EventListener\StreamedResponseListener());
-            //Automatic HTTP correct specifications
-            $dispatcher->addSubscriber(new HttpKernel\EventListener\ResponseListener('UTF-8'));
-
-            //debug toolbar for queries and errors
-            if (self::debug()) {
-                $dispatcher->addSubscriber(new \Goteo\Util\Profiler\EventListener\ProfilerListener());
-            }
-
-            self::$_app = new self($dispatcher, $resolver);
+            $sc = self::getServiceContainer();
+            $sc->setParameter('routes', self::getRoutes());
+            self::$_app = $sc->get('app');
         }
         return self::$_app;
     }

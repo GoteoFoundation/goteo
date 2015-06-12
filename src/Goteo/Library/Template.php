@@ -3,6 +3,7 @@ namespace Goteo\Library {
 
 	use Goteo\Core\Model,
         Goteo\Core\Exception;
+    use Goteo\Application\Lang;
 
 	/*
 	 * Clase para gestionar las plantillas de los emails automáticos
@@ -17,11 +18,11 @@ namespace Goteo\Library {
             $title,
             $text;
 
-        static public function get ($id, $lang = \LANG) {
+        static public function get ($id, $lang = null) {
 
             // por si llega idioma vacio
             if (empty($lang))
-                $lang = \LANG;
+                $lang = Lang::current();
 
             //Obtenemos el idioma de soporte
             $lang=Model::default_lang_by_id($id, 'template_lang', $lang);
@@ -58,7 +59,7 @@ namespace Goteo\Library {
 
             try {
 
-                $values = array(':lang' => \LANG);
+                $values = array(':lang' => Lang::current());
                 $sqlFilter = '';
                 $and = "WHERE";
                 if (!empty($filters['id'])) {
@@ -76,7 +77,7 @@ namespace Goteo\Library {
                     $and = "AND";
                     $values[':name'] = "%{$filters['name']}%";
                 }
-                
+
                 $sql = "SELECT
                             template.id as id,
                             template.name as name,
@@ -174,7 +175,7 @@ namespace Goteo\Library {
                     $errors[] = "Ha fallado $sql con <pre>" . print_r($values, true) . "</pre>";
                     return false;
                 }
-                
+
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el contenido de la plantilla. ' . $e->getMessage();
                 return false;

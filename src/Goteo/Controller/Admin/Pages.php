@@ -6,7 +6,8 @@ namespace Goteo\Controller\Admin {
         Goteo\Core\Redirection,
         Goteo\Core\Error,
         Goteo\Application\Message,
-		Goteo\Application\Session,
+        Goteo\Application\Session,
+		Goteo\Application\Lang,
 		Goteo\Library\Feed,
 		Goteo\Library\Page;
 
@@ -53,7 +54,7 @@ namespace Goteo\Controller\Admin {
                         throw new Redirection("/admin/pages");
                     }
                     // si estamos editando una página
-                    $page = Page::get($id, $node, \GOTEO_DEFAULT_LANG);
+                    $page = Page::get($id, $node, Lang::getDefault('get'));
 
                     // si llega post, vamos a guardar los cambios
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

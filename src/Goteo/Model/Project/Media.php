@@ -3,6 +3,7 @@
 namespace Goteo\Model\Project {
 
     use \DOMDocument;
+    use Goteo\Application\Lang;
 
     class Media {
 
@@ -74,8 +75,8 @@ namespace Goteo\Model\Project {
 
         }
 
-        public function getEmbedCode ($universalSubtitles = false, $lang = \LANG, $autoplay = false) {
-
+        public function getEmbedCode ($universalSubtitles = false, $lang = null, $autoplay = false) {
+            if(empty($lang)) $lang = Lang::current();
             $https = \HTTPS_ON;
 
             $code = '';

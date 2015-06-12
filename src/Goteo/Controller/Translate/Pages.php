@@ -125,7 +125,7 @@ namespace Goteo\Controller\Translate {
 
 
                 $page = Page::get($id, $node, $_SESSION['translate_lang']);
-                $original = Page::get($id, $node, \GOTEO_DEFAULT_LANG);
+                $original = Page::get($id, $node, Lang::getDefault());
 
 
             }

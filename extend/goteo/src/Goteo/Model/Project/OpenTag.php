@@ -2,6 +2,9 @@
 
 namespace Goteo\Model\Project {
 
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+
     class OpenTag extends \Goteo\Core\Model {
         //table for this model is not opentag but project_open_tag
         protected $Table = 'project_open_tag';
@@ -38,11 +41,11 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getAll () {
-
+            $lang = Lang::current();
             $array = array ();
             try {
 
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
                 }
                 else {
@@ -62,7 +65,7 @@ namespace Goteo\Model\Project {
                         $eng_join
                         ORDER BY name ASC ";
 
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>$lang));
                 $open_tags = $query->fetchAll();
                 foreach ($open_tags as $cat) {
                     $array[$cat[0]] = $cat[1];
@@ -81,7 +84,7 @@ namespace Goteo\Model\Project {
          * @return array
          */
 		public static function getNames ($project = null, $limit = null) {
-
+            $lang = Lang::current();
             $array = array ();
 
             try {
@@ -90,7 +93,7 @@ namespace Goteo\Model\Project {
                     $sqlFilter = " WHERE open_tag.id IN (SELECT open_tag FROM project_open_tag WHERE project = '$project')";
                 }
 
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
                 }
                 else {
@@ -115,7 +118,7 @@ namespace Goteo\Model\Project {
                 if (!empty($limit)) {
                     $sql .= "LIMIT $limit";
                 }
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>$lang));
                 $open_tags = $query->fetchAll();
                 foreach ($open_tags as $cat) {
                     $array[$cat[0]] = $cat[1];

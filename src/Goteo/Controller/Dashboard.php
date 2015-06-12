@@ -7,6 +7,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Application\Session,
+        Goteo\Application\Lang,
         Goteo\Application\Message,
         Goteo\Library\Feed,
         Goteo\Library\Page,
@@ -213,7 +214,7 @@ namespace Goteo\Controller {
 
                     //Si no hay un idioma preferido para notificaciones
                     if(!$viewData['preferences']->comlang)
-                        $viewData['preferences']->comlang=LANG;
+                        $viewData['preferences']->comlang=Lang::current();
 
                     //Si no hay una moneda preferida usamos la de sesión
                     if(!$viewData['preferences']->currency)

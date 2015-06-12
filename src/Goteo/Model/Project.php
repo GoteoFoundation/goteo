@@ -677,8 +677,8 @@ namespace Goteo\Model {
         /*
          *  Cargamos los datos suficientes para pintar un widget de proyecto
          */
-        public static function getMedium($id, $lang = \LANG) {
-
+        public static function getMedium($id, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             try {
 
                 $sql ="
@@ -783,61 +783,61 @@ namespace Goteo\Model {
         /*
          *  Datos extra para un widget de proyectos
          */
-        public static function getWidget(Project $project, $lang = \LANG) {
+        public static function getWidget(Project $project, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
+            $Widget = new Project();
+            $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
+            $Widget->status = $project->status;
+            $Widget->name = $project->name;
+            $Widget->owner = $project->owner;
+            $Widget->description = $project->description;
+            $Widget->published = $project->published;
+            $Widget->created = $project->created;
+            $Widget->updated = $project->updated;
+            $Widget->success = $project->success;
+            $Widget->closed = $project->closed;
 
-                $Widget = new Project();
-                $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
-                $Widget->status = $project->status;
-                $Widget->name = $project->name;
-                $Widget->owner = $project->owner;
-                $Widget->description = $project->description;
-                $Widget->published = $project->published;
-                $Widget->created = $project->created;
-                $Widget->updated = $project->updated;
-                $Widget->success = $project->success;
-                $Widget->closed = $project->closed;
+            // configuración de campaña
+            // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
+            // no necesario: $Widget->watch = $project->watch;
+            $Widget->noinvest = $project->noinvest;
+            $Widget->days_round1 = (!empty($project->days_round1)) ? $project->days_round1 : 40;
+            $Widget->days_round2 = (!empty($project->days_round2)) ? $project->days_round2 : 40;
+            $Widget->one_round = $project->one_round;
+            $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
 
-                // configuración de campaña
-                // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
-                // no necesario: $Widget->watch = $project->watch;
-                $Widget->noinvest = $project->noinvest;
-                $Widget->days_round1 = (!empty($project->days_round1)) ? $project->days_round1 : 40;
-                $Widget->days_round2 = (!empty($project->days_round2)) ? $project->days_round2 : 40;
-                $Widget->one_round = $project->one_round;
-                $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
+            // image from main gallery
+            $Widget->image = Image::get($project->image);
 
-                // image from main gallery
-                $Widget->image = Image::get($project->image);
+            $Widget->amount = $project->amount;
+            $Widget->invested = $project->amount; // compatibilidad, ->invested no debe usarse
+            $Widget->num_investors = $project->num_investors;
 
-                $Widget->amount = $project->amount;
-                $Widget->invested = $project->amount; // compatibilidad, ->invested no debe usarse
-                $Widget->num_investors = $project->num_investors;
+            // @TODO : hay que hacer campos calculados conn traducción para esto
+            $Widget->cat_names = Project\Category::getNames($Widget->id, 2, $lang);
+            $Widget->rewards = Project\Reward::getWidget($Widget->id);
 
-                // @TODO : hay que hacer campos calculados conn traducción para esto
-                $Widget->cat_names = Project\Category::getNames($Widget->id, 2, $lang);
-                $Widget->rewards = Project\Reward::getWidget($Widget->id);
+            if(!empty($project->mincost) && !empty($project->maxcost)) {
+                $Widget->mincost = $project->mincost;
+                $Widget->maxcost = $project->maxcost;
+            } else {
+                $calc = Project::calcCosts($project->project);
+                $Widget->mincost = $calc->mincost;
+                $Widget->maxcost = $calc->maxcost;
+            }
+            $Widget->user = new User;
+            $Widget->user->id = $project->user_id;
+            $Widget->user->name = $project->user_name;
+            $Widget->user->email = $project->user_email;
+            $Widget->user->lang = $project->user_lang;
 
-                if(!empty($project->mincost) && !empty($project->maxcost)) {
-                    $Widget->mincost = $project->mincost;
-                    $Widget->maxcost = $project->maxcost;
-                } else {
-                    $calc = Project::calcCosts($project->project);
-                    $Widget->mincost = $calc->mincost;
-                    $Widget->maxcost = $calc->maxcost;
-                }
-                $Widget->user = new User;
-                $Widget->user->id = $project->user_id;
-                $Widget->user->name = $project->user_name;
-                $Widget->user->email = $project->user_email;
-                $Widget->user->lang = $project->user_lang;
+            // calcular dias sin consultar sql
+            $Widget->days = $project->days;
 
-                // calcular dias sin consultar sql
-                $Widget->days = $project->days;
+            $Widget->setDays(); // esto hace una consulta para el número de días que le faltaan segun configuración
+            $Widget->setTagmark(); // esto no hace consulta
 
-                $Widget->setDays(); // esto hace una consulta para el número de días que le faltaan segun configuración
-                $Widget->setTagmark(); // esto no hace consulta
-
-                return $Widget;
+            return $Widget;
 
         }
 
@@ -2472,12 +2472,13 @@ namespace Goteo\Model {
          */
         public static function ofmine($owner, $published = false)
         {
+            $lang = Lang::current();
             $projects = array();
             $values = array();
-            $values[':lang'] = \LANG;
+            $values[':lang'] = $lang;
             $values[':owner'] = $owner;
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(project_lang.description, project.description) as description";
             }
             else {
@@ -2545,12 +2546,13 @@ namespace Goteo\Model {
          */
         public static function favouriteCategories($user, $published = false)
         {
+            $lang = Lang::current();
             $projects = array();
             $values = array();
-            $values[':lang'] = \LANG;
+            $values[':lang'] = $lang;
             $values[':user'] = $user;
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Lang::current()) {
                 $different_select=" IFNULL(project_lang.description, project.description) as description";
             }
             else {
@@ -2631,7 +2633,7 @@ namespace Goteo\Model {
          */
         public static function published($type = 'all', $limit = 9, $page = 1, &$pages = 0)
         {
-
+            $lang = Lang::current();
             $different_select='';
 
             $values = array();
@@ -2732,7 +2734,7 @@ namespace Goteo\Model {
             $offset = $ret['offset'];
             $pages = $ret['pages'];
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
             }
             else {
@@ -2783,7 +2785,7 @@ namespace Goteo\Model {
                 LIMIT $offset,$limit
                 ";
 
-            $values[':lang'] = \LANG;
+            $values[':lang'] = $lang;
 
             $projects = array();
             $query = self::query($sql, $values);

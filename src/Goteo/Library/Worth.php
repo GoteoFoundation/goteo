@@ -3,16 +3,19 @@
 namespace Goteo\Library {
 
     use Goteo\Core\Model;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Worth {
-		
+
         /*
          * Devuelve el nombre de un nivel por id
          */
 		public static function get ($id) {
+            $lang = Lang::current();
 
             //Obtenemos el idioma de soporte
-            $lang=Model::default_lang_by_id($id, 'worthcracy_lang', \LANG);
+            $lang=Model::default_lang_by_id($id, 'worthcracy_lang', $lang);
 
             $values = array(':id'=>$id, ':lang' => $lang);
             $sql = "SELECT
@@ -55,10 +58,11 @@ namespace Goteo\Library {
          * Devuelve los niveles de meritocracia
          */
 		public static function getAll () {
+            $lang = Lang::current();
             $array = array();
-            $values = array(':lang' => \LANG);
+            $values = array(':lang' => $lang);
 
-            if(Model::default_lang(\LANG)=='es') {
+            if(Model::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(worthcracy_lang.name, worthcracy.name) as name";
                 }
             else {
@@ -129,20 +133,20 @@ namespace Goteo\Library {
          * @TODO tener en cuenta el nivel actual
          */
 		public static function abitmore ($amount) {
-
+            $lang = Lang::current();
             if (!is_numeric($amount))
                 return $amount;
 
-            $values = array(':amount'=>$amount, ':lang' => \LANG);
+            $values = array(':amount'=>$amount, ':lang' => $lang);
 
-            if(Model::default_lang(\LANG)=='es') {
+            if(Model::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(worthcracy_lang.name, worthcracy.name) as name";
                 }
             else {
                 $different_select=" IFNULL(worthcracy_lang.name, IFNULL(eng.name, worthcracy.name)) as name";
                 $eng_join=" LEFT JOIN worthcracy_lang as eng
                                    ON  eng.id = worthcracy.id
-                                   AND eng.lang = 'en'";       
+                                   AND eng.lang = 'en'";
                 }
 
             $sql = "SELECT
@@ -159,7 +163,7 @@ namespace Goteo\Library {
             $query = Model::query($sql, $values);
 			$next = $query->fetchObject();
             $abit = $next->amount - $amount; //cuanto para el siguiente nivel
-            
+
 			return array('amount'=>$abit, 'name'=>$next->name);
 		}
 
@@ -167,19 +171,20 @@ namespace Goteo\Library {
          * Devuelve el nombre de un nivel por importe acumulado
          */
 		public static function reach ($amount) {
+            $lang = Lang::current();
             if (!is_numeric($amount))
                 return false;
-            
-            $values = array(':amount'=>$amount, ':lang' => \LANG);
 
-             if(Model::default_lang(\LANG)=='es') {
+            $values = array(':amount'=>$amount, ':lang' => $lang);
+
+             if(Model::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(worthcracy_lang.name, worthcracy.name) as name";
                 }
             else {
                 $different_select=" IFNULL(worthcracy_lang.name, IFNULL(eng.name, worthcracy.name)) as name";
                 $eng_join=" LEFT JOIN worthcracy_lang as eng
                                    ON  eng.id = worthcracy.id
-                                   AND eng.lang = 'en'";       
+                                   AND eng.lang = 'en'";
                 }
 
             $sql = "SELECT
@@ -200,5 +205,5 @@ namespace Goteo\Library {
 		}
 
 	}
-	
+
 }

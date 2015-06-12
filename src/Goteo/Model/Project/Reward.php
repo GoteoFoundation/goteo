@@ -3,7 +3,8 @@
 namespace Goteo\Model\Project {
 
     use \Goteo\Model\Icon,
-        \Goteo\Model\License;
+        \Goteo\Model\License,
+        \Goteo\Application\Lang;
 
     class Reward extends \Goteo\Core\Model {
 
@@ -81,7 +82,7 @@ namespace Goteo\Model\Project {
                                         ON  eng.id = reward.id
                                         AND eng.project = :project
                                         AND eng.lang = 'en'";
-                    }                
+                    }
 
                 $sql = "SELECT
                             reward.id as id,
@@ -126,8 +127,8 @@ namespace Goteo\Model\Project {
             }
         }
 
-        public static function getWidget($project, $lang = \LANG) {
-
+        public static function getWidget($project, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             $debug = false;
 
             try {
@@ -379,7 +380,7 @@ namespace Goteo\Model\Project {
          * @param string $type individual|social
          * @return boolean
          */
-         
+
         public static function areFulfilled($project, $type = 'individual') {
 
             // diferente segun tipo
@@ -415,7 +416,7 @@ namespace Goteo\Model\Project {
                 return false;
             }
         }
-        
+
         public static function getChosen($filters = array()) {
             try {
                 $array = array();
@@ -484,7 +485,7 @@ namespace Goteo\Model\Project {
 
         /*
          * Método simple para sacar la lista de recompensas de un aporte
-         */        
+         */
         public static function txtRewards($invest) {
             try {
                 $array = array();
@@ -509,7 +510,7 @@ namespace Goteo\Model\Project {
             }
         }
 
-        
+
     }
 
 }

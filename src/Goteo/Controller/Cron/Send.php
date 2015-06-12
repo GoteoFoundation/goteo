@@ -6,6 +6,7 @@
 namespace Goteo\Controller\Cron {
 
     use Goteo\Model;
+    use Goteo\Application\Lang;
     use Goteo\Application\Session,
         Goteo\Core\View,
         Goteo\Core\Redirection,
@@ -529,7 +530,7 @@ namespace Goteo\Controller\Cron {
 
             // Luego, un mailing para cada idioma (como al enviar boletín)
 
-            $comlang = \LANG;
+            $comlang = Lang::current();
 
             // Obtenemos la plantilla para asunto y contenido
             $template = Template::get($tpl, $comlang);

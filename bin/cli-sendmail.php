@@ -16,6 +16,7 @@ use Goteo\Core\Resource,
     Goteo\Core\Redirection,
     Goteo\Core\Model,
     Goteo\Application\Lang,
+    Goteo\Application\Config,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
     Goteo\Library\Sender;
@@ -73,7 +74,7 @@ $data = $query->fetch(\PDO::FETCH_ASSOC);
 $content = $data['html'];
 $template = $data['template'];
 
-Lang::setDefault(GOTEO_DEFAULT_LANG);
+Lang::setDefault(Config::get('lang'));
 Lang::set($data['lang']);
 
 if (empty($content)) {

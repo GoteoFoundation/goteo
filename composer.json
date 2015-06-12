@@ -43,7 +43,8 @@
         "foil/foil": "~0.3",
         "symfony/security": "^2.7",
         "symfony/config": "^2.7",
-        "symfony/stopwatch": "^2.7"
+        "symfony/stopwatch": "^2.7",
+        "symfony/dependency-injection": "^2.7"
 
     },
 

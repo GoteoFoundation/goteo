@@ -9,6 +9,8 @@ namespace Goteo\Model\Blog {
     use Goteo\Model\User;
     use Goteo\Library\Text;
     use Goteo\Application\Message;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
     use Goteo\Application\Session;
 
     class Post extends \Goteo\Core\Model {
@@ -138,7 +140,7 @@ namespace Goteo\Model\Blog {
          */
         public static function getMini ($id) {
 
-            $lang = \LANG;
+            $lang = Lang::current();
 
                 //Obtenemos el idioma de soporte
                 $lang=self::default_lang_by_id($id, 'post_lang', $lang);
@@ -178,11 +180,12 @@ namespace Goteo\Model\Blog {
          * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
          */
         public static function getAll ($blog = null, $limit = null, $published = true) {
+            $lang = Lang::current();
             $list = array();
 
-            $values = array(':lang'=>\LANG);
+            $values = array(':lang'=>$lang);
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(post_lang.title, post.title) as title,
                                     IFNULL(post_lang.text, post.text) as `text`,
                                     IFNULL(post_lang.legend, post.legend) as `legend`,
@@ -300,12 +303,12 @@ namespace Goteo\Model\Blog {
          * de mas nueva a mas antigua
          */
         public static function getList ($filters = array(), $published = true) {
-
-            $values = array(':lang'=>\LANG);
+            $lang = Lang::current();
+            $values = array(':lang'=>$lang);
 
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(post_lang.title, post.title) as title,
                                     IFNULL(post_lang.text, post.text) as `text`,
                                     IFNULL(post_lang.legend, post.legend) as `legend`";

@@ -37,7 +37,7 @@ namespace Goteo\Controller {
 
         //** esto es una guarrada **/
         public function rawAction ($id) {
-            $project = Project::get($id, LANG);
+            $project = Project::get($id, Lang::current());
             // pasos para el check
             if ($project->draft) {
                 // primer borrador, menos pasos
@@ -542,7 +542,7 @@ namespace Goteo\Controller {
             //activamos la cache para esta llamada
             \Goteo\Core\DB::cache(true);
 
-            $project = Project::get($id, LANG);
+            $project = Project::get($id, Lang::current());
             $user = Session::getUser();
 
             // recompensas

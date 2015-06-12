@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin {
     use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Core\Error,
+        Goteo\Application\Lang,
         Goteo\Application\Message,
 		Goteo\Application\Session,
 		Goteo\Library\Feed,
@@ -17,7 +18,7 @@ namespace Goteo\Controller\Admin {
          * ya no usa acciones de fulfill y unfulfill
          */
         public static function process ($action = 'list', $id = null, $filters = array()) {
-
+            $lang = Lang::current();
             // variables comunes
             $status = array(
                 'nok' => 'Pendiente',
@@ -79,7 +80,7 @@ namespace Goteo\Controller\Admin {
 
                     case 'view':
                         // ver los retornos de un proyecto
-                        $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', LANG);
+                        $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', $lang);
 
                         return new View(
                             'admin/index.html.php',
@@ -173,7 +174,7 @@ namespace Goteo\Controller\Admin {
             }
 
             foreach ($projects as $kay=>&$project) {
-                $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', LANG);
+                $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', $lang);
                 $cumplidos = 0;
                 foreach ($project->social_rewards as $ret) {
                     if ($ret->fulsocial) {

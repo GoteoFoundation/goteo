@@ -63,7 +63,8 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de páginas
 		 */
-		public static function getAll($filters = array(), $lang = \LANG, $node = \GOTEO_NODE) {
+		public static function getAll($filters = array(), $lang = null, $node = \GOTEO_NODE) {
+            if(empty($lang)) $lang = Lang::current();
             $pages = array();
 
             try {

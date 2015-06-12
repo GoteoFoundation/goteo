@@ -11,19 +11,19 @@ use Goteo\Util\Profiler\DebugProfiler;
 
 class ProfilerListener implements EventSubscriberInterface
 {
-    public function onRequest(Event\GetResponseEvent $event) {
+    public function onKernelRequest(Event\GetResponseEvent $event) {
         DebugProfiler::addEvent($event);
     }
 
-    public function onController(Event\FilterControllerEvent $event) {
+    public function onKernelController(Event\FilterControllerEvent $event) {
         DebugProfiler::addEvent($event);
     }
 
-    public function onView(Event\GetResponseForControllerResultEvent $event) {
-        DebugProfiler::addEvent($event);
-    }
+    // public function onKernelView(Event\GetResponseForControllerResultEvent $event) {
+    //     DebugProfiler::addEvent($event);
+    // }
 
-    public function onResponse(Event\FilterResponseEvent $event) {
+    public function onKernelResponse(Event\FilterResponseEvent $event) {
         DebugProfiler::addEvent($event);
         $response = $event->getResponse();
         if(!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html')) {
@@ -51,27 +51,25 @@ class ProfilerListener implements EventSubscriberInterface
         $event->setResponse($response);
     }
 
-    public function onFinishRequest(Event\FinishRequestEvent $event) {
-    }
 
-    public function onTerminate(Event\PostResponseEvent $event) {
+    public function onKernelTerminate(Event\PostResponseEvent $event) {
 
     }
 
-    public function onException(Event\GetResponseForExceptionEvent $event) {
+    public function onKernelException(Event\GetResponseForExceptionEvent $event) {
 
     }
 
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => 'onRequest',
-            KernelEvents::CONTROLLER => 'onController',
-            KernelEvents::VIEW => 'onView',
-            KernelEvents::RESPONSE => 'onResponse',
-            KernelEvents::FINISH_REQUEST => 'onFinishRequest',
-            KernelEvents::TERMINATE => 'onTerminate',
-            KernelEvents::EXCEPTION => 'onException'
+            // kernel.request must be registered as early as possible to not break
+            // when an exception is thrown in any other kernel.request listener
+            KernelEvents::REQUEST => array('onKernelRequest', 1024),
+            KernelEvents::CONTROLLER => array('onKernelController', -100),
+            KernelEvents::RESPONSE => array('onKernelResponse', -1024),
+            KernelEvents::EXCEPTION => 'onKernelException',
+            KernelEvents::TERMINATE => array('onKernelTerminate', -1024),
         );
     }
 }

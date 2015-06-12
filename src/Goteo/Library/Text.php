@@ -4,6 +4,7 @@ namespace Goteo\Library {
 
 	use Goteo\Core\Model,
         Goteo\Application\Config,
+        Goteo\Application\Lang,
         Goteo\Core\Exception;
 	/*
 	 * Clase para sacar textos dinámicos de la tabla text
@@ -95,7 +96,7 @@ namespace Goteo\Library {
 
         static public function get ($id) {
 
-            $lang = Config::get('lang');
+            $lang = Lang::current();
 
             // lang variable para generar contenido en distintos idiomas (/admin/newsletter)
             if (isset($_SESSION['VAR_LANG']) && !empty($_SESSION['VAR_LANG'])) {

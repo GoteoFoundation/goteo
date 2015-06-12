@@ -4,6 +4,7 @@ namespace Goteo\Model {
 
     use Goteo\Core\ACL,
         Goteo\Application\Config,
+        Goteo\Application\Lang,
         Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Model\User,
@@ -930,7 +931,7 @@ namespace Goteo\Model {
 
             $debug = false;
 
-            $lang = \LANG;
+            $lang = Lang::current();
 
             $sqlFilter = '';
             $sqlJoin = '';

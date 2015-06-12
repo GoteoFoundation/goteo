@@ -5,6 +5,8 @@ namespace Goteo\Library {
         Goteo\Model\Blog\Post,
         Goteo\Library\Text,
         Goteo\Library\Mail,
+        Goteo\Application\Lang,
+        Goteo\Application\Config,
         Goteo\Application\Session,
         Goteo\Model\Image;
 
@@ -170,13 +172,13 @@ namespace Goteo\Library {
          * @return array list of items
 		 */
 		public static function getAll($type = 'all', $scope = 'public', $limit = '99', $node = null) {
-
+            $lang = Lang::current();
             $debug = ($_GET['debug'] == '1');
 
             $list = array();
 
             try {
-                $values = array(':scope' => $scope, ':lang' => \LANG);
+                $values = array(':scope' => $scope, ':lang' => $lang);
 
                 $sqlType = '';
                 if ($type != 'all') {
@@ -218,7 +220,7 @@ namespace Goteo\Library {
                 }
 
 
-                if(\Goteo\Core\Model::default_lang(\LANG)=='es') {
+                if(\Goteo\Core\Model::default_lang($lang) === Config::get('lang')) {
                     $different_select=" IFNULL(post_lang.title, post.title) as post_title,
                                     IFNULL(post_lang.text, post.text) as post_text";
                 }

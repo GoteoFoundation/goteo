@@ -3,8 +3,6 @@
 namespace Goteo\Model {
 
 	use Goteo\Library\Text,
-        Goteo\Application\Config,
-        Goteo\Application\Session,
         Goteo\Model\Image,
         Goteo\Model\Node,
         Goteo\Model\Project,
@@ -13,6 +11,9 @@ namespace Goteo\Model {
         Goteo\Library\Mail,
         Goteo\Library\Check,
         Goteo\Application;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+    use Goteo\Application\Session;
 
 	class User extends \Goteo\Core\Model {
 
@@ -127,7 +128,7 @@ namespace Goteo\Model {
                     $data[':created'] = date('Y-m-d H:i:s');
                     $data[':active'] = true;
                     $data[':confirmed'] = false;
-                    $data[':lang'] = \LANG;
+                    $data[':lang'] = Lang::current();
                     $data[':node'] = Config::get('current_node');
 
 					//active = 1 si no se quiere comprovar
@@ -1534,13 +1535,13 @@ namespace Goteo\Model {
         public static function invested($user, $publicOnly = true)
         {
             $debug = false;
-
+            $lang = Lang::current();
             $projects = array();
             $values = array();
-            $values[':lang'] = \LANG;
+            $values[':lang'] = $lang;
             $values[':user'] = $user;
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(project_lang.description, project.description) as description";
             }
             else {

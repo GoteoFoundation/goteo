@@ -5,6 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Core\View,
         Goteo\Model,
         Goteo\Core\Redirection,
+        Goteo\Application\Lang,
         Goteo\Library\WallFriends,
         Goteo\Core\Error;
 
@@ -17,7 +18,7 @@ namespace Goteo\Controller {
 
         public function project ($id) {
 
-            $project  = Model\Project::getMedium($id, LANG);
+            $project  = Model\Project::getMedium($id, Lang::current());
 
             if (! $project instanceof  Model\Project) {
                 throw new Redirection('/', Redirection::TEMPORARY);

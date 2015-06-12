@@ -3,6 +3,7 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Text;
+    use Goteo\Application\Lang;
 
     class Icon extends \Goteo\Core\Model {
 
@@ -20,7 +21,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'icon_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'icon_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -45,11 +46,11 @@ namespace Goteo\Model {
          */
         public static function getAll ($group = '') {
 
-            $values = array(':lang'=>\LANG);
+            $values = array(':lang'=>Lang::current());
 
             $icons = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang(Lang::current())=='es') {
                 $different_select=" IFNULL(icon_lang.name, icon.name) as name,
                                     IFNULL(icon_lang.description, icon.description) as description";
             }
@@ -96,11 +97,11 @@ namespace Goteo\Model {
          */
         public static function getList ($group = '') {
 
-            $values = array(':lang'=>\LANG);
+            $values = array(':lang'=>Lang::current());
 
             $icons = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang(Lang::current())=='es') {
                 $different_select=" IFNULL(icon_lang.name, icon.name) as name";
             }
             else {

@@ -5,6 +5,7 @@ namespace Goteo\Library {
 	use Goteo\Core\Model,
         Goteo\Core\Exception,
         Goteo\Library\Template,
+        Goteo\Application\Lang,
         Goteo\Core\View;
 	/*
 	 * Clase para montar contenido de Boletín
@@ -107,8 +108,8 @@ namespace Goteo\Library {
 
         }
 
-		static public function getContent ($content, $lang = LANG) {
-
+		static public function getContent ($content, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             // necesitamos generar contenido en diferentes idiomas
             $_SESSION['VAR_LANG'] = $lang;
 

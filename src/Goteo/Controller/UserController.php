@@ -10,6 +10,7 @@ use Goteo\Core\Redirection;
 use Goteo\Core\Error;
 use Goteo\Model;
 use Goteo\Application\Config;
+use Goteo\Application\Lang;
 use Goteo\Application\View;
 use Goteo\Application\Session;
 use Goteo\Application\Cookie;
@@ -381,7 +382,7 @@ class UserController extends \Goteo\Core\Controller {
             $show = 'profile';
         }
 
-        if($id) $user = Model\User::get($id, LANG);
+        if($id) $user = Model\User::get($id, Lang::current());
         else    $user = Session::getUser();
 
         if (!$user instanceof Model\User || $user->hide) {

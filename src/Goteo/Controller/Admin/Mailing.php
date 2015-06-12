@@ -202,7 +202,7 @@ namespace Goteo\Controller\Admin {
 
                     $URL = \SITE_URL;
 
-                    $comlang = (isset($_POST['lang'])) ? $_POST['lang'] : \LANG;
+                    $comlang = (isset($_POST['lang'])) ? $_POST['lang'] : Lang::current();
 
                     // Enviando contenido recibido a destinatarios recibidos
                     $receivers = array();
