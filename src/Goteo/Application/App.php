@@ -5,7 +5,7 @@ namespace Goteo\Application;
 use Symfony\Component\HttpKernel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\DependencyInjection\ServiceContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class App extends HttpKernel\HttpKernel
 {
@@ -50,7 +50,7 @@ class App extends HttpKernel\HttpKernel
      * Sets the service container for the app
      * Must be called befor App::get() in order to set a different service container
      */
-    static public function setServiceContainer(ServiceContainerBuilder $sc) {
+    static public function setServiceContainer(ContainerBuilder $sc) {
         self::$_sc = $sc;
     }
 
