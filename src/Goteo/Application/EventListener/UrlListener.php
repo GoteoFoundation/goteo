@@ -32,6 +32,15 @@ class UrlListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
+        /*
+         * Pagina de en mantenimiento
+         */
+        if (Config::get('maintenance') && $request->getPathInfo() !== '/about/maintenance'
+             && !$request->request->has('Num_operacion')
+            ) {
+            $event->setResponse(new RedirectResponse('/about/maintenance'));
+            return;
+        }
 
         // si el usuario ya está validado debemos mantenerlo en entorno seguro
         // usamos la funcionalidad de salto entre nodos para mantener la sesión

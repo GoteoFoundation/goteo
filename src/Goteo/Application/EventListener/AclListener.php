@@ -38,7 +38,7 @@ class AclListener implements EventSubscriberInterface
             if(Session::isLogged()) {
                 $code = Response::HTTP_FORBIDDEN;
                 // TODO: custom template
-                $event->setResponse(new Response(View::render('errors/default', ['msg' => 'Access denied', 'code' => $code], $code)));
+                $event->setResponse(new Response(View::render('errors/access_denied', ['msg' => 'Access denied', 'code' => $code], $code)));
                 return;
             }
             $event->setResponse(new RedirectResponse(SEC_URL . '/user/login/?return='.rawurlencode($uri)));

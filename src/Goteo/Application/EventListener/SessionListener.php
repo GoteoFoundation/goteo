@@ -37,7 +37,8 @@ class SessionListener implements EventSubscriberInterface
         // Init session
         Session::start('goteo-'.Config::get('env'), Config::get('session.time'));
 
-        //clean all caches if requested
+        // clean all caches if requested
+        // TODO: replace by some controller
         if ($request->query->has('cleancache')) {
             Model::cleanCache();
         }
@@ -60,17 +61,6 @@ class SessionListener implements EventSubscriberInterface
             $event->setResponse(new RedirectResponse(SEC_URL . $request->server->get('REQUEST_URI')));
             return;
         }
-
-        /*
-         * Pagina de en mantenimiento
-         */
-        if (Config::get('maintenance') && $request->getPathInfo() !== '/about/maintenance'
-             && !$request->request->has('Num_operacion')
-            ) {
-            $event->setResponse(new RedirectResponse('/about/maintenance'));
-            return;
-        }
-
 
         // set currency
         Session::store('currency', Currency::set()); // depending on request

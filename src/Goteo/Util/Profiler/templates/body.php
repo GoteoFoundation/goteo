@@ -53,6 +53,7 @@ $duration = microtime(true) - $this->starttime;
         <?php endif; ?>
     </div>
     <div class="session">
+        <p>PHP max memory: <strong><?= number_format(memory_get_peak_usage(true)/1024/1024, 2, '.', ' ') ?> MB</strong></p>
         <p>Session start time: <strong><?= date("r", $this->session['start_time']) ?></strong></p>
         <p>Session expires in: <strong><?= date("r", $this->session['expires_in']) ?></strong></p>
         <p>Session expiration time: <strong><?= number_format($this->session['expire_time']/60, 2, '.', ' ') ?> minutes</strong></p>
