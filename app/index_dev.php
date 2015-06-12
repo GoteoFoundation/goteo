@@ -3,6 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\App;
 use Goteo\Application\Config;
+use Symfony\Component\Debug;
 
 // This check prevents access to debug front controllers that are deployed by accident to production servers.
 // Feel free to remove this, extend it, or make something more sophisticated.
@@ -14,16 +15,22 @@ use Goteo\Application\Config;
 //     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 // }
 
-// Error reporting
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-ini_set("display_errors",1);
 
 //Public Web path
 define('GOTEO_WEB_PATH', __DIR__ . '/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
+// Error reporting
 App::debug(true);
+// Too much notices...
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
+//
+// Bored? Try the hard way:
+// Debug\Debug::enable();
+
+
+
 
 // Config file...
 Config::loadFromYaml('settings.yml');

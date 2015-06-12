@@ -24,6 +24,17 @@
         display: none;
     }
 
+    #g_profiler_info .error_backtrace .type {
+        border-radius: 3px;
+        padding:2px 4px;
+        background: #ccc;
+    }
+    #g_profiler_info .error_backtrace .type.warning {
+        background: #FF983F;
+    }
+    #g_profiler_info .error_backtrace .type.fatal {
+        background: #DC2A00;
+    }
     #g_profiler_info>div h2{
         font-size: 14px;
         text-transform: uppercase;

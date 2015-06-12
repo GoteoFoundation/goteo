@@ -74,6 +74,9 @@ class SessionListener implements EventSubscriberInterface
 
         // set currency
         Session::store('currency', Currency::set()); // depending on request
+        // Set lang
+        Lang::setDefault();
+        Lang::setFromGlobals($request);
 
     }
 

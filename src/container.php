@@ -13,6 +13,7 @@ $sc->register('matcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
     ->setArguments(array('%routes%', new Reference('context')))
 ;
 
+
 // resolver for the HttpKernel handle()
 $sc->register('resolver', 'Symfony\Component\HttpKernel\Controller\ControllerResolver');
 
@@ -31,8 +32,20 @@ $sc->register('listener.exception', 'Symfony\Component\HttpKernel\EventListener\
     ->setArguments(array('Goteo\\Controller\\ErrorController::exceptionAction'))
 ;
 
+// APP LISTENERS
+// Node configuration
+$sc->register('app.listener.url', 'Goteo\Application\EventListener\UrlListener');
+// Lang, cookies info, etc
+$sc->register('app.listener.session', 'Goteo\Application\EventListener\SessionListener');
+// Security ACL
+$sc->register('app.listener.acl', 'Goteo\Application\EventListener\AclListener');
+
+
 // Event Dispatcher object
 $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
+    ->addMethodCall('addSubscriber', array(new Reference('app.listener.url')))
+    ->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
+    ->addMethodCall('addSubscriber', array(new Reference('app.listener.acl')))
     ->addMethodCall('addSubscriber', array(new Reference('listener.router')))
     ->addMethodCall('addSubscriber', array(new Reference('listener.response')))
     ->addMethodCall('addSubscriber', array(new Reference('listener.exception')))

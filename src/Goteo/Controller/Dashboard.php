@@ -29,6 +29,7 @@ namespace Goteo\Controller {
         public function activity($option = 'summary', $action = 'view') {
 
             $user = Session::getUser();
+
             $errors = array();
 
             $viewData = array(

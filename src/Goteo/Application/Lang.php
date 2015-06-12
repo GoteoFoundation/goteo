@@ -121,7 +121,7 @@ class Lang {
                 if(empty($default)) {
                     $default = $l;
                 }
-                if($lang === $l) {
+                if($lang === $l && array_key_exists($lang, self::$langs_available) && array_key_exists('fallback', self::$langs_available[$lang])) {
                     $fallback = self::$langs_available[$lang]['fallback'];
                     if($fallback && self::isPublic($fallback)) {
                         $default = $fallback;
@@ -146,7 +146,8 @@ class Lang {
         // establecemos la constante
         // TODO: por desaparecer
         // usar Lang::current() en su lugar
-        define('LANG', $lang);
+        if(!defined('LANG'))
+            define('LANG', $lang);
 
         // cambiamos el locale
         setlocale(LC_TIME, self::getLocale($lang));

@@ -266,19 +266,19 @@ class CacheStatement extends \PDOStatement {
     }
 
     /* métodos cacheables */
-    public function fetchColumn() {
+    public function fetchColumn($column_number = NULL) {
         return self::_cachedMethod('fetchColumn', func_get_args());
     }
 
-    public function fetchObject() {
+    public function fetchObject($class_name = NULL, $ctor_args = NULL) {
         return self::_cachedMethod('fetchObject', func_get_args());
     }
 
-    public function fetchAll() {
+    public function fetchAll($how = NULL, $class_name = NULL, $ctor_args = NULL) {
         return self::_cachedMethod('fetchAll', func_get_args());
     }
 
-    public function fetch() {
+    public function fetch($how = NULL, $orientation = NULL, $offset = NULL) {
         return self::_cachedMethod('fetch', func_get_args());
     }
 

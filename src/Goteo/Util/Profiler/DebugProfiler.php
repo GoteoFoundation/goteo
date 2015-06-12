@@ -18,11 +18,13 @@ class DebugProfiler {
     protected $events = array();
     protected $controllers = array();
     protected $stopwatch = array();
+    protected $starttime = 0;
     static protected $instance = null;
 
     public function __construct() {
         View::addFolder(__DIR__ . '/templates/', 'profiler');
         $this->stopwatch = new Stopwatch();
+        $this->starttime = microtime(true);
     }
 
     public function addKernelEvent(Event\KernelEvent $event) {
@@ -122,7 +124,8 @@ class DebugProfiler {
             'session' => $session,
             'cookies' => $cookies,
             'headers' => $headers,
-            'texts' => $texts
+            'texts' => $texts,
+            'starttime' => $this->starttime
             ] : []);
     }
 

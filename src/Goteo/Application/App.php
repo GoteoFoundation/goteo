@@ -2,10 +2,7 @@
 
 namespace Goteo\Application;
 
-use Symfony\Component\Routing;
 use Symfony\Component\HttpKernel;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\DependencyInjection\ServiceContainerBuilder;
@@ -13,35 +10,11 @@ use Symfony\Component\DependencyInjection\ServiceContainerBuilder;
 class App extends HttpKernel\HttpKernel
 {
     static protected $_app;
-    static protected $_dispatcher;
     static protected $_request;
     static protected $_routes;
-    static protected $_matcher;
-    static protected $_resolver;
     static protected $_sc;
     static protected $_debug = false;
     static protected $_errors = array();
-
-    /**
-     * Gets the current dispatcher, wich is the central event driver of the App
-     * If the dispacher doesn't exists, a new one will be created
-     * @return EventDispatcher object
-     */
-    static public function getDispatcher() {
-        if( ! self::$_dispatcher) {
-            self::setDispatcher(new EventDispatcher());
-        }
-        return self::$_dispatcher;
-    }
-
-    /**
-     * Sets the dispacher
-     * Must be called befor App::get() in order to set a diferent dispatcher object
-     * @param EventDispatcherInterface $dispatcher
-     */
-    static public function setDispatcher(EventDispatcherInterface $dispatcher) {
-        self::$_dispatcher = $dispatcher;
-    }
 
     /**
      * Gets the current request, if not defined is created from globals (_POST, _GET, etc)
@@ -101,53 +74,6 @@ class App extends HttpKernel\HttpKernel
     }
 
     /**
-     * Gets the matcher object for the app
-     * This is used to decide the controller against the Request
-     * If no matcher is defined a new one using UrlMatcher and the current Request will be created
-     * @return UrlMatcher object
-     */
-    static public function getMatcher() {
-        if( ! self::$_matcher ) {
-            //Get the routes, either the default or the extended
-            $routes = self::getRoutes();
-            //Creating a context from request
-            $context = new Routing\RequestContext();
-            $context->fromRequest(self::getRequest());
-            self::setMatcher(new Routing\Matcher\UrlMatcher($routes, $context));
-        }
-        return self::$_matcher;
-    }
-
-    /**
-     * Sets the matcher for the app
-     * Must be called befor App::get() in order to set a different matcher
-     */
-    static public function setMatcher(Routing\Matcher\UrlMatcherInterface $matcher) {
-        self::$_matcher = $matcher;
-    }
-
-    /**
-     * Gets the current resolver
-     * If the resolver doesn't exists, a new one will be created
-     * @return ControllerResolver object
-     */
-    static public function getResolver() {
-        if( ! self::$_resolver) {
-            self::setResolver(new HttpKernel\Controller\ControllerResolver());
-        }
-        return self::$_resolver;
-    }
-
-    /**
-     * Sets the resolver
-     * Must be called befor App::get() in order to set a diferent resolver object
-     * @param ControllerResolver $resolver
-     */
-    static public function setResolver(HttpKernel\Controller\ControllerResolverInterface $resolver) {
-        self::$_resolver = $resolver;
-    }
-
-    /**
      * Creates a new instance of the App ready to run
      * This methods can be optionally called before this ::get() call:
      *     ::setRequest()
@@ -180,9 +106,6 @@ class App extends HttpKernel\HttpKernel
                 define('SEC_URL', 'http://' . $SITE_URL);
                 define('SITE_URL', 'http://' . $SITE_URL);
             }
-                    // Set lang
-            Lang::setDefault();
-            Lang::setFromGlobals($request);
 
             $sc = self::getServiceContainer();
             $sc->setParameter('routes', self::getRoutes());
@@ -232,8 +155,6 @@ class App extends HttpKernel\HttpKernel
     public function clearApp() {
         self::$_app = null;
         self::$_dispatcher = null;
-        self::$_matcher = null;
-        self::$_resolver = null;
         self::$_routes = null;
         self::$_request = null;
     }
@@ -256,13 +177,18 @@ class App extends HttpKernel\HttpKernel
             switch($errno) {
                 case E_USER_DEPRECATED  :
                     // some symfony deprecated errors...
-                    return;
+                    $type = 'user deprecated';
+                    // return;
                 case E_WARNING      :
-                case E_USER_WARNING :
-                case E_STRICT       :
-                case E_NOTICE       :
-                case E_USER_NOTICE  :
                     $type = 'warning';
+                case E_USER_WARNING :
+                    $type = 'user warning';
+                case E_STRICT       :
+                    $type = 'strict standards';
+                case E_NOTICE       :
+                    $type = 'notice';
+                case E_USER_NOTICE  :
+                    $type = 'user notice';
                     $fatal = false;
                     break;
                 default             :
@@ -274,12 +200,12 @@ class App extends HttpKernel\HttpKernel
             $info = '';
             array_pop($trace);
             if(php_sapi_name() == 'cli') {
-                echo 'Backtrace from ' . $type . ' \'' . $errstr . '\' at ' . $errfile . ' ' . $errline . ':' . "\n";
+                echo strtoupper($type) . ': \'' . $errstr . '\' at ' . $errfile . ' ' . $errline . ':' . "\n";
                 foreach($trace as $item)
                     echo '  ' . (isset($item['file']) ? $item['file'] : '<unknown file>') . ' ' . (isset($item['line']) ? $item['line'] : '<unknown line>') . ' calling ' . $item['function'] . '()' . "\n";
             } else {
                 $info .= '<p class="error_backtrace">' . "\n";
-                $info .= '  Backtrace from ' . $type . ' \'<b>' . $errstr . '</b>\' at <b>' . $errfile . ' ' . $errline . '</b>:' . "\n";
+                $info .= '<span class="type ' . $type . '">' . $type . '</span> \'<b>' . $errstr . '</b>\' at <b>' . $errfile . ' ' . $errline . '</b>:' . "\n";
                 $info .= '  <ol>' . "\n";
                 foreach($trace as $item)
                     $info .= '    <li><b>' . (isset($item['file']) ? $item['file'] : '<unknown file>') . ' ' . (isset($item['line']) ? $item['line'] : '<unknown line>') . '</b> calling ' . $item['function'] . '()</li>' . "\n";
@@ -290,7 +216,7 @@ class App extends HttpKernel\HttpKernel
                 $items = array();
                 foreach($trace as $item)
                     $items[] = (isset($item['file']) ? $item['file'] : '<unknown file>') . ' ' . (isset($item['line']) ? $item['line'] : '<unknown line>') . ' calling ' . $item['function'] . '()';
-                $message = 'Backtrace from ' . $type . ' \'' . $errstr . '\' at ' . $errfile . ' ' . $errline . ': ' . join(' | ', $items);
+                $message = strtoupper($type) . ': \'' . $errstr . '\' at ' . $errfile . ' ' . $errline . ': ' . join(' | ', $items);
                 error_log($message);
             }
             self::$_errors["$errfile:$errline"] = $info;

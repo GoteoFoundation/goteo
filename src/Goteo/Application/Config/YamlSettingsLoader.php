@@ -28,7 +28,7 @@ class YamlSettingsLoader extends FileLoader
               "// date: %s\nreturn %s;\n";
             $code = sprintf($code, __CLASS__, date('Y/m/d H:i:s'), var_export($config, true));
 
-            $cacheMatcher->write($code, $resources);
+            $cacheMatcher->write($code);
 
         }
 

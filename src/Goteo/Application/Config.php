@@ -129,11 +129,7 @@ class Config {
             'meta_keywords' => Config::get('meta.keywords'),
             'meta_author' => Config::get('meta.author'),
             'meta_copyright' => Config::get('meta.copyright'),
-            'URL' => SITE_URL,
-            'SRC_URL' => SRC_URL,
-            'image' => SRC_URL . '/goteo_logo.png'
-            // 'og_title' => 'Goteo.org',
-            // 'og_description' => GOTEO_META_DESCRIPTION,
+            'image' => self::get('url.assets') . '/goteo_logo.png'
             ]);
     }
 
