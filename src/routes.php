@@ -236,6 +236,21 @@ $routes->add('channel-project-create', new Route(
 ));
 
 
+////// ADMIN //////
+$routes->add('admin', new Route(
+    '/admin',
+    array('_controller' => 'Goteo\Controller\AdminController::indexAction',
+        )
+));
+$routes->add('admin-action', new Route(
+    '/admin/{option}/{action}/{id}/{subaction}',
+    array('_controller' => 'Goteo\Controller\AdminController::optionAction',
+        'action' => 'list',
+        'id' => null,
+        'subaction' => null
+        )
+));
+
 
 ///// END USER /////
 

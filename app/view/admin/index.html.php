@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\ACL,
     Goteo\Library\Feed,
     Goteo\Model\Node,
-    Goteo\Controller\Admin;
+    Goteo\Controller\AdminController as Admin;
 
 if (!isset($_SESSION['admin_menu'])) {
     $_SESSION['admin_menu'] = Admin::menu();

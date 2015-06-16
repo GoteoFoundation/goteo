@@ -1057,11 +1057,60 @@ namespace Goteo\Model {
 		}
 
         /**
+         * Check if the user has a role
+         * Multiple roles can be specified, returns true if any of them is available
+         * @param  string  $role1 role to check
+         * @param string  $role2 ... and so on
+         * @return boolean       [description]
+         */
+        public function hasRole($role) {
+            if( ! $this->roles ) $this->roles = $this->getRoles();
+            $roles = func_get_args();
+            foreach($roles as $role) {
+                if(array_key_exists($role, $this->roles)) return true;
+            }
+            return false;
+        }
+
+
+        public function getAdminNodes() {
+            if(is_array($this->admin_nodes)) return $this->admin_nodes;
+            $this->admin_nodes = array();
+
+            //assign all nodes if none specified and is a kind of superadmin
+            if($this->hasRole('superadmin', 'root')) {
+                $query = self::query("
+                SELECT
+                    node.id AS `node`,
+                    node.name AS `name`
+                FROM node
+                ", array($this->id));
+            }
+            elseif($this->hasRole('admin')) {
+                $query = self::query("
+                SELECT
+                    user_node.node AS `node`,
+                    node.name AS `name`
+                FROM user_node
+                JOIN node
+                    ON node.id = user_node.node
+                WHERE user_node.user = ?
+                ", array($this->id));
+            }
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $node) {
+                $this->admin_nodes[$node->node] = $node->name;
+            }
+
+            return $this->admin_nodes;
+        }
+
+        /**
          * Comprueba si el usuario es administrador
          * @param   type varchar(50)  $id   Usuario admin
          * @return  type bool true/false
          */
-        public function isAdmin ($id) {
+        public static function isAdmin ($id) {
 
             $sql = "
                 SELECT

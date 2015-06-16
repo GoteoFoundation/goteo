@@ -2,20 +2,25 @@
 
 namespace Goteo\Controller {
 
+    use Symfony\Component\HttpFoundation\RedirectResponse;
+    use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\HttpFoundation\Request;
+    use Goteo\Application\Exception\ControllerAccessDeniedException;
     use Goteo\Core\ACL,
-        Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Model,
         Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Mail,
         Goteo\Library\Template,
+        Goteo\Application\View,
         Goteo\Application\Message,
         Goteo\Application\Session,
+        Goteo\Application\Config,
         Goteo\Library\Newsletter,
         Goteo\Library\Worth;
 
-    class Admin extends \Goteo\Core\Controller {
+    class AdminController extends \Goteo\Core\Controller {
 
         // Array de usuarios con permisos especiales
         static public $supervisors = array(
@@ -443,54 +448,165 @@ namespace Goteo\Controller {
             )
         );
 
+        /**
+         * Security method
+         * Gets the current user
+         * Gets the menu
+         * Sets the current node to admin from the user or the get Request
+         * @param Model\User $user    [description]
+         * @param Request    $request [description]
+         */
+        private static function checkCurrentUser(Request $request, $option = null) {
+            //refresh permission status
+            Model\User::flush();
+            $user = Session::getUser();
+
+            // get working node
+            $nodes = $user->getAdminNodes();
+            $node = Config::get('node');
+            //if need to change the current node
+            if($request->query->has('node') && array_key_exists($request->query->get('node'), $nodes)) {
+                $node = $request->query->get('node');
+                Session::store('admin_node', $node);
+            }
+
+
+            // Get menu
+            $menu = array();
+            if (isset(self::$supervisors[$user->id])) {
+                $menu = self::setMenu('supervisor', $user->id);
+            } elseif (isset($user->roles['admin'])) {
+                $menu = self::setMenu('admin', $user->id);
+            } elseif (isset($user->roles['superadmin'])) {
+                $menu = self::setMenu('superadmin', $user->id);
+            }
+
+            if($option) {
+                $ok = false;
+                foreach ($menu as $sCode => $section) {
+                    if (isset($section['options'][$option])) {
+                        $ok = true;
+                        break;
+                    }
+                }
+
+                //if option/action not in the menu, kickout the user
+                if( ! $ok ) {
+                    $zone = self::$options[$option]['label'] ? self::$options[$option]['label'] : $option;
+                    if($zone) $msg = 'Access denied to <strong>' . $zone . '</strong>';
+                    else      $msg = 'Access denied!';
+                    Message::error($msg);
+                    throw new ControllerAccessDeniedException($msg);
+                }
+            }
+
+            View::getEngine()->useContext('admin/', [
+                    'admin_menu' => $menu,
+                    'admin_node' => $node,
+                    'admin_nodes' => $nodes,
+                    'breadcrumb' => self::getBreadCrumb()
+                ]);
+
+            return $user;
+        }
+
+        /** Default index action */
+        public function indexAction(Request $request) {
+            $ret = array();
+            $user = self::checkCurrentUser($request);
+
+            //feed by default for someones
+            if($nodes = $user->getAdminNodes()) {
+                //TODO: allow Feed to handle multiple nodes
+                $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, current($nodes));
+
+            }
+            //default admin dashboard (nothing!)
+            return new Response(View::render('admin/default', $ret));
+
+        }
+
         // preparado para index unificado
-        public function index($option = 'index', $action = 'list', $id = null, $subaction = null) {
-            if ($option == 'index') {
-                $BC = self::menu(array('option' => $option, 'action' => null, 'id' => null));
-                define('ADMIN_BCPATH', $BC);
-                $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
-                $tasks = Model\Task::getAll(array(), $node, true);
-                $ret = array('tasks' => $tasks);
-            } else {
+        public function optionAction($option, $action = 'list', $id = null, $subaction = null, Request $request) {
+            $ret = array();
+            $user = self::checkCurrentUser($request, $option);
+
+            $SubC = 'Goteo\Controller\Admin\\' . \strtoCamelCase($option);
+            $ret = $SubC::process($action, $id, self::setFilters($option), $subaction);
+            // Por compatibilidad
+            if($ret instanceOf \Goteo\Core\View) {
+                // Por compatibilidad
                 $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
                 define('ADMIN_BCPATH', $BC);
-                $SubC = 'Goteo\Controller\Admin' . \chr(92) . \strtoCamelCase($option);
-                $ret = $SubC::process($action, $id, self::setFilters($option), $subaction);
-                // Por compatibilidad
-                if($ret instanceOf View) {
-                    return $ret;
-                }
+
+                return new Response($ret->render());
             }
-
-            return new View('admin/index.html.php', $ret);
-        }
-
-        // Para marcar tareas listas
-        public function done($id) {
-            $errors = array();
-            if (!empty($id) && Session::getUserId()) {
-                $task = Model\Task::get($id);
-                if ($task->setDone($errors)) {
-                    Message::info('La tarea se ha marcado como realizada');
+            // también mas o menos por compatibilidad, deberian ser vistas heredables en templates
+            if (!empty($ret['folder']) && !empty($ret['file'])) {
+                if ($ret['folder'] == 'base') {
+                    $path = 'admin/'.$ret['file'].'.html.php';
                 } else {
-                    Message::error(implode('<br />', $errors));
+                    $path = 'admin/'.$ret['folder'].'/'.$ret['file'].'.html.php';
                 }
-            } else {
-                Message::error('Faltan datos');
+                return new Response(View::render('admin/option', [
+                    'option' => \Goteo\Core\View::get($path, $ret),
+                    'breadcrumb' => self::getBreadCrumb($option, $action, $id)
+                    ]));
             }
-            throw new Redirection('/admin');
+
+            //default admin dashboard (nothing!)
+            return new Response(View::render('admin/default', $ret));
+
         }
 
+        /**
+         * Gets an array to mount a breadcrumb from the current admin zone
+         * @param  string $option [description]
+         * @param  string $action [description]
+         * @param  [type] $id     [description]
+         * @return [type]         [description]
+         */
+        public static function getBreadCrumb($option = '', $action = 'list', $id = null) {
+            // Top level
+            $parts = array(['Admin', '/admin']);
+            // if option defined lets add the parent
+            if ($option && isset(self::$options[$option])) {
+                $o = self::$options[$option];
+                // si es una accion no catalogada, mostramos la lista
+                if (!array_key_exists($action, $o['actions'])) {
+                    $action = '';
+                    $id = null;
+                }
+
+                if ($action === 'list') {
+                    $parts[] = [ $o['label'] ]; // no link needed, default action
+                } else {
+
+                    $parts[] = [ $o['label'], '/admin/' . $option]; // link to parent
+
+                    // Add current action
+                    if ($action && isset($o['actions'][$action])) {
+                        $a = $o['actions'][$action];
+                        // si es de item , añadir el id (si viene)
+                        $parts[] = [ $a['label'] . ( $id ? ' ' . $id : '') ]; // no link
+                    }
+
+                }
+            }
+
+            return $parts;
+        }
 
         /*
          * Menu de secciones, opciones, acciones y config para el panel Admin
+         * DEPRECATED
          */
 
         public static function menu($BC = array()) {
 
             // si es admin de nodo
-            if (isset($_SESSION['admin_node'])) {
-                $nodeData = Model\Node::get($_SESSION['admin_node']);
+            if (Session::exists('admin_node')) {
+                $nodeData = Model\Node::get(Session::get('admin_node'));
                 $admin_label = 'Admin Canal ' . $nodeData->name;
             } else {
                 $admin_label = 'Admin';
@@ -517,64 +633,13 @@ namespace Goteo\Controller {
                 return $menu;
             } else {
 
-                // a ver si puede estar aqui!
-                if ($BC['option'] != 'index') {
-                    $puede = false;
-                    foreach ($menu as $sCode => $section) {
-                        if (isset($section['options'][$BC['option']])) {
-                            $puede = true;
-                            break;
-                        }
-                    }
-
-                    if (!$puede) {
-                        Message::error('No tienes permisos para acceder a <strong>' . $options[$BC['option']]['label'] . '</strong>');
-                        throw new Redirection('/admin');
-                    }
-                }
-
                 // Los últimos serán los primeros
-                $path = '';
-
-                // si el BC tiene Id, accion sobre ese registro
-                // si el BC tiene Action
-                if (!empty($BC['action']) && $BC['action'] != 'list') {
-
-                    // si es una accion no catalogada, mostramos la lista
-                    if (!in_array(
-                                    $BC['action'], array_keys($options[$BC['option']]['actions'])
-                    )) {
-                        $BC['action'] = '';
-                        $BC['id'] = null;
-                    }
-
-                    $action = $options[$BC['option']]['actions'][$BC['action']];
-                    // si es de item , añadir el id (si viene)
-                    if ($action['item'] && !empty($BC['id'])) {
-                        $path = " &gt; <strong>{$action['label']}</strong> {$BC['id']}";
-                    } else {
-                        $path = " &gt; <strong>{$action['label']}</strong>";
-                    }
+                $parts = array();
+                foreach(self::getBreadCrumb($BC['option'], $BC['action'], $BC['id']) as $val) {
+                    if($val[1]) $parts[] = '<a href="' . $val[1] .  '">' . $val[0] . '</a>';
+                    else        $parts[] = '<strong>' . $val[0] . '</strong>';
                 }
-
-                // si el BC tiene Option, enlace a la portada de esa gestión (a menos que sea laaccion por defecto)
-                if (!empty($BC['option']) && isset($options[$BC['option']])) {
-                    $option = $options[$BC['option']];
-                    if ($BC['action'] == 'list') {
-                        $path = " &gt; <strong>{$option['label']}</strong>";
-                    } else {
-                        $path = ' &gt; <a href="/admin/' . $BC['option'] . '">' . $option['label'] . '</a>' . $path;
-                    }
-                }
-
-                // si el BC tiene section, facil, enlace al admin
-                if ($BC['option'] == 'index') {
-                    $path = "<strong>{$admin_label}</strong>";
-                } else {
-                    $path = '<a href="/admin">' . $admin_label . '</a>' . $path;
-                }
-
-                return $path;
+                return implode(' &gt; ', $parts);
             }
         }
 
@@ -669,7 +734,7 @@ namespace Goteo\Controller {
         public static function setMenu($role, $user = null) {
 
             $options = self::$options;
-
+            $menu = array();
             switch ($role) {
                 case 'supervisor':
                     $menu = array(
@@ -732,7 +797,7 @@ namespace Goteo\Controller {
                     );
 
                     // para admines de central
-                    if ($_SESSION['admin_node'] == \GOTEO_NODE) {
+                    if (Session::get('admin_node') === Config::get('node')) {
                         unset($menu['contents']['options']['node']);
                         unset($menu['projects']['options']['invests']);
                         $menu['projects']['options']['accounts'] = $options['accounts']; // gestion completa de aportes
@@ -747,8 +812,9 @@ namespace Goteo\Controller {
                         $menu['contents']['options']['open_tags'] = $options['open_tags']; // gestión de agrupaciones
                     }
                     // para administradores de nodo
-                    if (($_SESSION['admin_node'] != \GOTEO_NODE) && ($_SESSION['admin_node'] != 'barcelona')) {
-                        
+                    // TODO: barcelona hardcoded!
+                    if (Session::get('admin_node') !== Config::get('node') && Session::get('admin_node') !== 'barcelona') {
+
                         unset($menu['contents']['options']['pages']);
                         unset($menu['contents']['options']['blog']);
                         unset($menu['contents']['options']['banners']);
@@ -764,7 +830,7 @@ namespace Goteo\Controller {
                         unset($menu['home']['options']['recent']);
                         unset($menu['home']['options']['sponsors']);
                         unset($menu['home']['options']['stories']);
-                        
+
 
                     }
                     break;

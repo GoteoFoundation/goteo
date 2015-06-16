@@ -2,8 +2,7 @@
 
 namespace Goteo\Controller\Admin {
 
-    use Goteo\Core\View,
-        Goteo\Core\Redirection,
+    use Goteo\Core\Redirection,
         Goteo\Core\Error,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
@@ -295,27 +294,21 @@ namespace Goteo\Controller\Admin {
                 $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
                 $account = Model\Project\Account::get($project->id);
 
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return array(
                         'folder' => 'projects',
                         'file' => 'report',
                         'project' => $project,
                         'account' => $account,
                         'Data' => $Data
-                    )
                 );
             }
 
             if ($action == 'dates') {
                 // cambiar fechas
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return array(
                         'folder' => 'projects',
                         'file' => 'dates',
                         'project' => $project
-                    )
                 );
             }
 
@@ -324,14 +317,11 @@ namespace Goteo\Controller\Admin {
                 $accounts = Model\Project\Account::get($project->id);
 
                 // cambiar fechas
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return array(
                         'folder' => 'projects',
                         'file' => 'accounts',
                         'project' => $project,
                         'accounts' => $accounts
-                    )
                 );
             }
 
@@ -340,14 +330,11 @@ namespace Goteo\Controller\Admin {
                 $conf = Model\Project\Conf::get($project->id);
 
                 // cambiar fechas
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return array(
                         'folder' => 'projects',
                         'file' => 'conf',
                         'project' => $project,
                         'conf' => $conf
-                    )
                 );
             }
 
@@ -365,28 +352,22 @@ namespace Goteo\Controller\Admin {
                     }
                 }
 
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return array(
                         'folder' => 'projects',
                         'file' => 'images',
                         'project' => $project,
                         'images' => $images,
                         'sections' => $sections
-                    )
                 );
             }
 
             if ($action == 'move') {
                 // cambiar el nodo
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return array(
                         'folder' => 'projects',
                         'file' => 'move',
                         'project' => $project,
                         'nodes' => $nodes
-                    )
                 );
             }
 
@@ -405,27 +386,21 @@ namespace Goteo\Controller\Admin {
                 $project->open_tags = Model\Project::getOpen_tags($project->id);
                 // disponibles
                 $open_all_tags = Model\Project\OpenTag::getAll();
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return array(
                         'folder' => 'projects',
                         'file' => 'open_tags',
                         'project' => $project,
                         'open_tags' =>$open_all_tags
-                    )
                 );
             }
 
 
             if ($action == 'rebase') {
                 // cambiar la id
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return array(
                         'folder' => 'projects',
                         'file' => 'rebase',
                         'project' => $project
-                    )
                 );
             }
 
@@ -440,15 +415,12 @@ namespace Goteo\Controller\Admin {
                     }
                 }
 
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return  array(
                         'folder' => 'projects',
                         'file' => 'consultants',
                         'project' => $project,
                         'admins' => $admins
-                    )
-                );
+                    );
             }
 
             if ($action == 'assign') {
@@ -462,14 +434,11 @@ namespace Goteo\Controller\Admin {
                 // disponibles
                 $available = Model\Call::getAvailable();
 
-                return new View(
-                    'admin/index.html.php',
-                    array(
+                return array(
                         'folder' => 'projects',
                         'file' => 'assign',
                         'project' => $project,
                         'available' => $available
-                    )
                 );
             }
 
@@ -630,9 +599,7 @@ namespace Goteo\Controller\Admin {
                 'updated' => 'Enviado a revision'
             );
 
-            return new View(
-                'admin/index.html.php',
-                array(
+            return  array(
                     'folder' => 'projects',
                     'file' => 'list',
                     'projects' => $projects,
@@ -647,7 +614,6 @@ namespace Goteo\Controller\Admin {
                     'orders' => $orders,
                     'pages' => $pages,
                     'currentPage' => $page
-                )
             );
 
         }

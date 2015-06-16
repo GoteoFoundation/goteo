@@ -33,6 +33,8 @@ class AclListener implements EventSubscriberInterface
                 define('CRON_EXEC', true);
                 return;
             }
+            //refresh permission status
+            \Goteo\Model\User::flush();
 
             Message::error(Text::get('user-login-required-access'));
             if(Session::isLogged()) {
