@@ -504,6 +504,9 @@ div.owner-info ul.social{
     overflow: hidden;
     list-style: none;
     padding-bottom: 0 !important;
+    position:absolute; 
+    top:2px; 
+    right:15px;
 }
 
 div.owner-info ul.social li{
@@ -516,7 +519,7 @@ div.owner-info ul.social li{
 }
 
 div.owner-info ul.social li.facebook{
-    padding: 6px;
+    padding: 7px;
 }
 
 div.owner-info ul.social li.twitter{
@@ -559,7 +562,7 @@ div.owner-info div.info {
     overflow: visible;
     font-size: 16px;
     color: #FFF;
-    width: 65%;
+    width: 68%;
     
 }
 
@@ -594,8 +597,9 @@ div.owner-info div.info ul li a {
     width: 100%;
     background: none repeat scroll 0% 0% #27AD7A;
     margin: 15px auto;
-    padding: 30px 0;
+    padding: 60px 0;
     display: table !important;
+    position:relative;
 }
 
 div.sub-header-channel{

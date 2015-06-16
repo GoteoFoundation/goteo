@@ -19,9 +19,18 @@ $this->section('content');
         </div>              
         <div class="info">
             <!-- Nombre y texto presentación -->
-            <h2 class="channel-name"><?php echo $channel->name ?></h2>
+            <h2 class="channel-name">canal <?php echo $channel->name ?></h2>
             <p><?php echo $channel->description; ?></p>
-            <ul class="social">
+            <!-- 2 webs -->
+            <!--
+            <ul>
+                <?php $c=0; foreach ($user->webs as $link): ?>
+                <li><a href="<?php echo htmlspecialchars($link->url) ?>" target="_blank"><?php echo htmlspecialchars($link->url) ?></a></li>
+                <?php $c++; if ($c>=2) break; endforeach ?>
+            </ul>
+            -->
+        </div>
+        <ul class="social">
                 <?php if (!empty($channel->facebook)): ?>
                <li class="facebook"><a href="<?= htmlspecialchars($channel->facebook) ?>" target="_blank">F</a></li>
                 <?php endif ?>
@@ -34,16 +43,7 @@ $this->section('content');
                 <?php if (!empty($channel->linkedin)): ?>
                 <li class="linkedin"><a href="<?= htmlspecialchars($channel->linkedin) ?>" target="_blank">L</a></li>
                 <?php endif ?>
-            </ul>
-            <!-- 2 webs -->
-            <!--
-            <ul>
-                <?php $c=0; foreach ($user->webs as $link): ?>
-                <li><a href="<?php echo htmlspecialchars($link->url) ?>" target="_blank"><?php echo htmlspecialchars($link->url) ?></a></li>
-                <?php $c++; if ($c>=2) break; endforeach ?>
-            </ul>
-            -->
-        </div>
+        </ul>
     </div>
     <div id="side">
     
