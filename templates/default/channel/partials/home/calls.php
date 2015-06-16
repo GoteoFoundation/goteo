@@ -1,9 +1,11 @@
 <?php
 
+use Goteo\Core\View;
+
 $calls = $this->calls['calls'];
 $campaigns = $this->calls['campaigns'];
 ?>
-<div id="node-calls" class="content_widget rounded-corners">
+<div id="channel-calls" class="content_widget rounded-corners">
 
     <h2><?= $this->text('node-home-calls-header') ?>
     <span class="line"></span>

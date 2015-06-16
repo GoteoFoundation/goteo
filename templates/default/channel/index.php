@@ -57,12 +57,10 @@ $this->section('content');
         // primero los ocultos, los destacados si esta el buscador lateral lo ponemos anyway
         if (isset($this->side_order['searcher'])) echo $this->insert("channel/partials/home/discover");
         if (isset($this->side_order['categories'])) echo $this->insert("channel/partials/home/discat");
-      
-        if (isset($this->searcher['promote'])) echo $this->insert("channel/partials/home/promotes");
-        else 
+
+        foreach ($this->order as $item=>$itemName)
         {
-            foreach ($this->order as $item=>$itemName)
-                if (!empty($vars[$item])) echo $this->insert("channel/partials/home/$item");
+            echo $this->insert("channel/partials/home/$item");
         }
         ?>
     </div>

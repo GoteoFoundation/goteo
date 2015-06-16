@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$patrons = $vars['patrons'];
+$patrons = $this->patrons;
 
 if (count($patrons) > 3) :  ?>
 <script type="text/javascript">
@@ -15,7 +15,7 @@ if (count($patrons) > 3) :  ?>
     });
 </script>
 <?php endif; ?>
-<div id="node-patrons" class="content_widget rounded-corners">
+<div id="channel-patrons" class="content_widget rounded-corners">
 
     <h2><?php echo Text::get('home-patrons-header'); ?>
     <span class="line"></span>

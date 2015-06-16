@@ -10,6 +10,7 @@ body.home div#main div.learn {
  Los que no sean identicos en la portada de nodo no se les pone la regla y se definen en /view/css/node/home.css
 */
 body.node.home div#node-news ul.slderpag,
+body.channel.home div#channel-news ul.slderpag,
 body.home div#main div.learn ul.slderpag {
     margin: 8px 0 0 0;
 	list-style:none;
@@ -19,6 +20,7 @@ body.home div#main div.learn ul.slderpag {
 }
 
 body.node.home div#node-news ul.slderpag li,
+body.channel.home div#channel-news ul.slderpag li,
 body.home div#main div.learn ul.slderpag li {
     cursor:pointer;
     display: block;
@@ -28,6 +30,7 @@ body.home div#main div.learn ul.slderpag li {
 }
 
 body.node.home div#node-news ul.slderpag li a,
+body.channel.home div#channel-news ul.slderpag li a,
 body.home div#main div.learn ul.slderpag li a {
     width: 12px;
     height: 6px;
@@ -38,12 +41,14 @@ body.home div#main div.learn ul.slderpag li a {
 }
 
 body.node.home div#node-news ul.slderpag li a:hover,
+body.channel.home div#channel-news ul.slderpag li a:hover,
 body.home div#main div.learn ul.slderpag li a:hover {
     background-color: #20b3b2;
     color: #20b3b2;
 }
 
 body.node.home div#node-news ul.slderpag li.current a,
+body.channel.home div#channel-news ul.slderpag li.current a,
 body.home div#main div.learn ul.slderpag li.current a {
     background-color: #808184 !important;
     color: #808184 !important;
@@ -51,6 +56,8 @@ body.home div#main div.learn ul.slderpag li.current a {
 
 body.node.home div#node-news a.next,
 body.node.home div#node-news a.prev,
+body.channel.home div#channel-news a.next,
+body.channel.home div#channel-news a.prev,
 body.home div#main div.learn a.next,
 body.home div#main div.learn a.prev {
     width: 16px;
@@ -64,21 +71,25 @@ body.home div#main div.learn a.prev {
 }
 
 body.node.home div#node-news a.prev,
+body.channel.home div#channel-news a.prev,
 body.home div#main div.learn a.prev {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 0;
 }
 
 body.node.home div#node-news a.prev:hover,
+body.channel.home div#channel-news a.prev:hover,
 body.home div#main div.learn a.prev:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
 }
 
 body.node.home div#node-news a.next,
+body.channel.home div#channel-news a.next,
 body.home div#main div.learn a.next{
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
 }
 
 body.node.home div#node-news a.next:hover,
+body.channel.home div#channel-news a.next:hover,
 body.home div#main div.learn a.next:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
@@ -91,6 +102,7 @@ body.home div#main div.learn  div.slder_container div.slder_slide {
 }
 
 body.node.home div#node-news  div.slder_container div.slder_slide . div.post,
+body.channel.home div#channel-news  div.slder_container div.slder_slide . div.post,
 body.home div#main div.learn  div.slder_container div.slder_slide . div.post {
     position: relative;
     min-height: 305px;
@@ -106,6 +118,8 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.re
 
 body.node.home div#node-news div.slder_container div.slder_slide div.post h3,
 body.node.home div#node-news div.slder_container div.slder_slide div.post div.description,
+body.channel.home div#channel-news div.slder_container div.slder_slide div.post h3,
+body.channel.home div#channel-news div.slder_container div.slder_slide div.post div.description,
 body.home div#main div.learn div.slder_container div.slder_slide div.post h3,
 body.home div#main div.learn div.slder_container div.slder_slide div.post div.description {
 	float: left;
@@ -116,6 +130,7 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.de
 }
 
 body.node.home div#node-news div.slder_container div.slder_slide div.post h3 a,
+body.channel.home div#node-news div.slder_container div.slder_slide div.post h3 a,
 body.home div#main div.learn div.slder_container div.slder_slide div.post h3 a {
     font-size: 14px;
     text-decoration: none;
@@ -123,6 +138,7 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post h3 a {
 }
 
 body.node.home div#node-news div.slder_container div.slder_slide div.post h3 a:hover,
+body.channel.home div#channel-news div.slder_container div.slder_slide div.post h3 a:hover,
 body.home div#main div.learn div.slder_container div.slder_slide div.post h3 a:hover {
     text-decoration: underline;
 }
@@ -136,6 +152,7 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.im
 }
 
 body.node.home div#node-news div.slder_container div.slder_slide div.post div.author,
+body.channel.home div#channel-news div.slder_container div.slder_slide div.post div.author,
 body.home div#main div.learn div.slder_container div.slder_slide div.post div.author {
 	float: left;
     margin: -5px 0 0 20px;
@@ -145,6 +162,7 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.au
 }
 
 body.node.home div#node-news div.slder_container div.slder_slide div.post div.author a,
+body.channel.home div#channel-news div.slder_container div.slder_slide div.post div.author a,
 body.home div#main div.learn div.slder_container div.slder_slide div.post div.author a {
     font-size: 11px;
     text-decoration: none;
@@ -152,6 +170,7 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.au
 }
 
 body.node.home div#node-news div.slder_container div.slder_slide div.post div.author a:hover,
+body.channel.home div#channel-news div.slder_container div.slder_slide div.post div.author a:hover,
 body.home div#main div.learn div.slder_container div.slder_slide div.post div.author a:hover {
     text-decoration: underline;
 }
@@ -161,6 +180,8 @@ body.home div#main div.learn div.slder_container div.slder_slide div.post div.au
 
 body.node.home div#node-news div.slder_container div.slder_slide div.post h3,
 body.node.home div#node-news div.slder_container div.slder_slide div.post div.post_text,
+body.channel.home div#channel-news div.slder_container div.slder_slide div.post h3,
+body.channel.home div#channel-news div.slder_container div.slder_slide div.post div.post_text,
 body.home div#main div.learn div.slder_container div.slder_slide div.post h3,
 body.home div#main div.learn div.slder_container div.slder_slide div.post div.post_text {
     float: left;
