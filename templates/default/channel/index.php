@@ -19,7 +19,7 @@ $this->section('content');
         </div>              
         <div class="info">
             <!-- Nombre y texto presentación -->
-            <h2 class="channel-name">canal <?php echo $channel->name ?></h2>
+            <h2 class="channel-name"><?= $this->text('regular-channel').' '.$channel->name ?></h2>
             <p><?php echo $channel->description; ?></p>
             <!-- 2 webs -->
             <!--

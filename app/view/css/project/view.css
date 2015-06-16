@@ -84,7 +84,7 @@ body.project-show div#sub-header div.project-by a:hover {
 body.project-show div#sub-header div.categories {
 	position: absolute;
     right: 0;
-	top: 70px;
+	top: 115px;
     text-align: right;
 	max-width: 320px;
 	max-height: 45px;
@@ -385,6 +385,13 @@ div.widget.project.horizontal ul.amounts li div.amount{
 
 div.widget.project.horizontal ul.amounts li div.label{
     font-size: 11px;
+}
+
+
+div.nodemark .label-title{
+    color:#20B3B2; 
+    margin-bottom:0.5em; 
+    font-weight: normal;
 }
 
 

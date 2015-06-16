@@ -94,7 +94,7 @@ $this->section('content');
                 <br/>
 
                 <?php if (!empty($project->cat_names)) : ?>
-                <div class="categories"><h3><?= $this->text('project-view-categories-title') ?></h3>
+                <div class="categories">
                     <?php $sep = ''; foreach ($project->cat_names as $key=>$value) :
                         echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'">'.htmlspecialchars($value).'</a>';
                     $sep = ', '; endforeach; ?>
@@ -102,7 +102,14 @@ $this->section('content');
                 <?php endif; ?>
 
                 <?php if ($project->node !== $this->get_config('current_node')) : ?>
-                <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" ><img src ="<?= $project->nodeData->label->getLink(100,100) ?>" alt="<?php echo htmlspecialchars($project->nodeData->name) ?>" title="Nodo <?php echo htmlspecialchars($project->nodeData->name) ?>"/></a></div>
+                <div class="nodemark">
+                    <?php if($project->nodeData->id!="barcelona")
+                            echo '<h4 class="label-title">'.$this->text('regular-channel').'</h4>';
+                    ?>
+                    <a class="node-jump" href="<?php echo $project->nodeData->url ?>" >
+                        <img src ="<?= $project->nodeData->label->getLink(100,100) ?>" alt="<?php echo htmlspecialchars($project->nodeData->name) ?>" title="<?php echo htmlspecialchars($project->nodeData->name) ?>"/>
+                    </a>
+                </div>
                 <?php endif; ?>
             </div>
 
