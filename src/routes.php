@@ -259,7 +259,7 @@ $routes->add('admin-action', new Route(
 $routes->add('remove-trailing-slash', new Route(
         '/{url}',
         array(
-            '_controller' => 'Goteo\Controller\RedirectingController::removeTrailingSlashAction',
+            '_controller' => 'Goteo\Controller\ErrorController::removeTrailingSlashAction',
         ),
         array(
             'url' => '.*/$',

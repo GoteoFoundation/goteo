@@ -229,18 +229,6 @@ class Session {
                 if (!empty($user->lang)) {
                     self::store('lang', $user->lang);
                 }
-                self::del('admin_menu');
-
-                if (isset($user->roles['admin'])) {
-                    // posible admin de nodo
-                    if ($node = \Goteo\Model\Node::getAdminNode($user->id)) {
-                        self::store('admin_node', $node);
-                    }
-                } else {
-                    self::del('admin_node');
-                }
-
-
             }
             return $user;
         }

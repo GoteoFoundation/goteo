@@ -5,7 +5,7 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 $bodyClass = 'project-edit';
-
+$vars = $this->vars;
 $call = $vars['call'];
 
 if (!empty($vars['success'])) {

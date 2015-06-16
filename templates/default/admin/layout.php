@@ -3,17 +3,6 @@
     Base layout for admin
  */
 
-use Goteo\Core\View,
-    Goteo\Controller\AdminController as Admin;
-
-// piñones usuarios
-$allowed = Admin::$supervisors[$_SESSION['user']->id];
-
-if (isset($allowed) && !empty($vars['folder']) && !in_array($vars['folder'], $allowed)) {
-    header('Location: /admin/');
-    exit;
-}
-
 $this->layout('layout', [
     'bodyClass' => 'admin',
     'jsreq_autocomplete' => true,
@@ -42,6 +31,20 @@ $this->layout('layout', [
 
 <?php $this->replace() ?>
 
+<?php $this->section('head') ?>
+<style type="text/css">
+
+    ul.ul-admin>li.selected{
+        background-color:#C3DFE1 !important;
+        /*font-weight: bold;*/
+    }
+
+    .admin-center table tbody tr:hover {
+        background-color:#C3DFE1 !important;
+    }
+
+</style>
+<?php $this->append() ?>
 
 <?php $this->section('footer') ?>
 <script type="text/javascript">

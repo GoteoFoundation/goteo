@@ -1,10 +1,7 @@
 <?php $this->layout('admin/layout') ?>
 
-
 <?php $this->section('admin-content') ?>
 
-<?= $this->raw('content') ?>
+<div class="widget admin-home">Not available</div>
 
-<?php $this->replace() ?>
-
-
+<?php $this->append() ?>

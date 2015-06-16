@@ -15,12 +15,27 @@ class ErrorController extends \Goteo\Core\Controller {
     public function exceptionAction(FlattenException $exception, Request $request)
     {
         $msg = 'Something went wrong! ('.$exception->getMessage().')';
+        // Compatibility
+        if($exception->getClass() === 'Goteo\Core\Redirection') {
+            return new RedirectResponse($exception->getMessage());
+        }
         $code = $exception->getStatusCode();
         $template = 'not_found';
         if($code === 403) {
             $template = 'access_denied';
         }
         return new Response(View::render('errors/' . $template, ['msg' => $msg, 'code' => $code], $code));
+    }
+
+    public function removeTrailingSlashAction(Request $request)
+    {
+        $pathInfo = $request->getPathInfo();
+        $requestUri = $request->getRequestUri();
+
+        $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
+
+        // return new RedirectResponse($url, 301); //permanent ?
+        return new RedirectResponse($url, 302);
     }
 
     public function legacyControllerAction(Request $request) {

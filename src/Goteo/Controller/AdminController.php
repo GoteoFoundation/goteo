@@ -463,7 +463,7 @@ namespace Goteo\Controller {
 
             // get working node
             $nodes = $user->getAdminNodes();
-            $node = Config::get('node');
+            $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
             //if need to change the current node
             if($request->query->has('node') && array_key_exists($request->query->get('node'), $nodes)) {
                 $node = $request->query->get('node');
@@ -474,12 +474,19 @@ namespace Goteo\Controller {
             // Get menu
             $menu = array();
             if (isset(self::$supervisors[$user->id])) {
-                $menu = self::setMenu('supervisor', $user->id);
+                $menu = self::getMenu('supervisor', $node, $user->id);
             } elseif (isset($user->roles['admin'])) {
-                $menu = self::setMenu('admin', $user->id);
+                $menu = self::getMenu('admin', $node, $user->id);
             } elseif (isset($user->roles['superadmin'])) {
-                $menu = self::setMenu('superadmin', $user->id);
+                $menu = self::getMenu('superadmin', $node, $user->id);
             }
+
+            View::getEngine()->useContext('admin/', [
+                    'admin_menu' => $menu,
+                    'admin_node' => $node,
+                    'admin_nodes' => $nodes,
+                    'breadcrumb' => self::getBreadCrumb()
+                ]);
 
             if($option) {
                 $ok = false;
@@ -500,13 +507,6 @@ namespace Goteo\Controller {
                 }
             }
 
-            View::getEngine()->useContext('admin/', [
-                    'admin_menu' => $menu,
-                    'admin_node' => $node,
-                    'admin_nodes' => $nodes,
-                    'breadcrumb' => self::getBreadCrumb()
-                ]);
-
             return $user;
         }
 
@@ -518,7 +518,8 @@ namespace Goteo\Controller {
             //feed by default for someones
             if($nodes = $user->getAdminNodes()) {
                 //TODO: allow Feed to handle multiple nodes
-                $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, current($nodes));
+                // $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, current($nodes));
+                $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, Session::get('admin_node'));
 
             }
             //default admin dashboard (nothing!)
@@ -529,10 +530,28 @@ namespace Goteo\Controller {
         // preparado para index unificado
         public function optionAction($option, $action = 'list', $id = null, $subaction = null, Request $request) {
             $ret = array();
-            $user = self::checkCurrentUser($request, $option);
+            try {
+                $user = self::checkCurrentUser($request, $option);
+            } catch(ControllerAccessDeniedException $e) {
+                // Instead of the default denied page, let's shows a custom admin page
+                return new Response(View::render('admin/denied'));
+            }
 
-            $SubC = 'Goteo\Controller\Admin\\' . \strtoCamelCase($option);
-            $ret = $SubC::process($action, $id, self::setFilters($option), $subaction);
+            $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
+
+            $SubC = 'Goteo\Controller\Admin\\' . \strtoCamelCase($option) . 'SubController';
+
+            if(class_exists($SubC)) {
+            // if(is_file(__DIR__  . '/Admin/' . \strtoCamelCase($option) . 'SubController.php')) {
+                $controller = new $SubC($node, $request);
+                $ret = $controller->process($action, $id, self::setFilters($option), $subaction);
+            }
+            else {
+                $SubC = 'Goteo\Controller\Admin\\' . \strtoCamelCase($option);
+                Message::error("Admin controller $SubC pending!");
+                $ret = $SubC::process($action, $id, self::setFilters($option), $subaction);
+
+            }
             // Por compatibilidad
             if($ret instanceOf \Goteo\Core\View) {
                 // Por compatibilidad
@@ -541,6 +560,11 @@ namespace Goteo\Controller {
 
                 return new Response($ret->render());
             }
+
+            if($ret instanceOf Response) {
+                return $ret;
+            }
+
             // también mas o menos por compatibilidad, deberian ser vistas heredables en templates
             if (!empty($ret['folder']) && !empty($ret['file'])) {
                 if ($ret['folder'] == 'base') {
@@ -549,7 +573,8 @@ namespace Goteo\Controller {
                     $path = 'admin/'.$ret['folder'].'/'.$ret['file'].'.html.php';
                 }
                 return new Response(View::render('admin/option', [
-                    'option' => \Goteo\Core\View::get($path, $ret),
+                    'option' => $option,
+                    'content' => \Goteo\Core\View::get($path, $ret),
                     'breadcrumb' => self::getBreadCrumb($option, $action, $id)
                     ]));
             }
@@ -612,19 +637,22 @@ namespace Goteo\Controller {
                 $admin_label = 'Admin';
             }
 
-            $options = self::$options;
+            $user = Session::getUser();
 
-            // El menu del panel admin dependerá del rol del usuario que accede
-            // Superadmin = todo
-            // Admin = contenidos de Nodo
-            // Supervisor = menus especiales
-            if (isset(self::$supervisors[Session::getUserId()])) {
-                $menu = self::setMenu('supervisor', Session::getUserId());
-            } elseif (isset(Session::getUser()->roles['admin'])) {
-                $menu = self::setMenu('admin', Session::getUserId());
-            } else {
-                $menu = self::setMenu('superadmin', Session::getUserId());
+            // get working node
+            $nodes = $user->getAdminNodes();
+            $node = Session::get('admin_node');
+
+            // Get menu
+            $menu = array();
+            if (isset(self::$supervisors[$user->id])) {
+                $menu = self::getMenu('supervisor', $node, $user->id);
+            } elseif (isset($user->roles['admin'])) {
+                $menu = self::getMenu('admin', $node, $user->id);
+            } elseif (isset($user->roles['superadmin'])) {
+                $menu = self::getMenu('superadmin', $node, $user->id);
             }
+
 
             // si el breadcrumbs no es un array vacio,
             // devolveremos el contenido html para pintar el camino de migas de pan
@@ -651,6 +679,7 @@ namespace Goteo\Controller {
 
             // arary de fltros para el sub controlador
             $filters = array();
+            if(!is_array(self::$options[$option]['filters'])) return $filters;
 
             if (isset($_GET['reset']) && $_GET['reset'] == 'filters') {
                 unset($_SESSION['admin_filters'][$option]);
@@ -729,9 +758,12 @@ namespace Goteo\Controller {
 
         /*
          * Diferentes menus para diferentes perfiles
+         * El menu del panel admin dependerá del rol del usuario que accede
+         * Superadmin = todo
+         * Admin = contenidos de Nodo
+         * Supervisor = menus especiales
          */
-
-        public static function setMenu($role, $user = null) {
+        private static function getMenu($role, $node, $user = null) {
 
             $options = self::$options;
             $menu = array();
@@ -797,7 +829,7 @@ namespace Goteo\Controller {
                     );
 
                     // para admines de central
-                    if (Session::get('admin_node') === Config::get('node')) {
+                    if ($node === Config::get('node')) {
                         unset($menu['contents']['options']['node']);
                         unset($menu['projects']['options']['invests']);
                         $menu['projects']['options']['accounts'] = $options['accounts']; // gestion completa de aportes
@@ -810,28 +842,6 @@ namespace Goteo\Controller {
                         $menu['projects']['options']['commons'] = $options['commons']; // gestion de retornos colectivos
                         $menu['projects']['options']['bazar'] = $options['bazar']; // gestion de retornos colectivos
                         $menu['contents']['options']['open_tags'] = $options['open_tags']; // gestión de agrupaciones
-                    }
-                    // para administradores de nodo
-                    // TODO: barcelona hardcoded!
-                    if (Session::get('admin_node') !== Config::get('node') && Session::get('admin_node') !== 'barcelona') {
-
-                        unset($menu['contents']['options']['pages']);
-                        unset($menu['contents']['options']['blog']);
-                        unset($menu['contents']['options']['banners']);
-                        unset($menu['projects']['options']['invests']);
-                        unset($menu['projects']['options']['patron']);
-                        unset($menu['projects']['options']['commons']);
-                        unset($menu['projects']['options']['calls']);
-
-                        unset($menu['users']);
-
-                        unset($menu['home']['options']['news']);
-                        unset($menu['home']['options']['blog']);
-                        unset($menu['home']['options']['recent']);
-                        unset($menu['home']['options']['sponsors']);
-                        unset($menu['home']['options']['stories']);
-
-
                     }
                     break;
                 case 'superadmin':
@@ -906,6 +916,29 @@ namespace Goteo\Controller {
                         )
                     );
                     break;
+            }
+
+            // para administradores de nodo
+            // TODO: barcelona hardcoded!
+            if ($node !== Config::get('node') && $node !== 'barcelona') {
+
+                unset($menu['contents']['options']['pages']);
+                unset($menu['contents']['options']['blog']);
+                unset($menu['contents']['options']['banners']);
+                unset($menu['projects']['options']['invests']);
+                unset($menu['projects']['options']['patron']);
+                unset($menu['projects']['options']['commons']);
+                unset($menu['projects']['options']['calls']);
+
+                unset($menu['users']);
+
+                unset($menu['home']['options']['news']);
+                unset($menu['home']['options']['blog']);
+                unset($menu['home']['options']['recent']);
+                unset($menu['home']['options']['sponsors']);
+                unset($menu['home']['options']['stories']);
+
+
             }
 
             return $menu;

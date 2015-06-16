@@ -184,7 +184,11 @@ class Lang {
             elseif($method === 'locale' && $info['locale'])  return $info['locale'];
             elseif($method === 'public')  return (bool)$info['public'];
             elseif($method === 'array')  return $info;
-            elseif($method === 'object') return (object) $info;
+            elseif($method === 'object') {
+                $obj = (object) $info;
+                $obj->id = $lang;
+                return $obj;
+            }
 
             return $lang;
         }
