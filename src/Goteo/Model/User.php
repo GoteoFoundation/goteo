@@ -1098,10 +1098,11 @@ namespace Goteo\Model {
                 ", array($this->id));
             }
 
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $node) {
-                $this->admin_nodes[$node->node] = $node->name;
+            if($query) {
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $node) {
+                    $this->admin_nodes[$node->node] = $node->name;
+                }
             }
-
             return $this->admin_nodes;
         }
 
