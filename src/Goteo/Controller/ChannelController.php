@@ -22,6 +22,7 @@ use // esto son entradas en portada o en footer
 use Goteo\Model\Patron;
 use Goteo\Model\Campaign;
 use // convocatorias en portada
+    Goteo\Model\Call,
     Goteo\Model\User;
 use Goteo\Model\Icon;
 use Goteo\Model\Category;
