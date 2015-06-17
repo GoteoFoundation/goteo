@@ -13,6 +13,67 @@ use Goteo\Library\Text,
 
 class NewsletterSubController extends AbstractSubController {
 
+static protected $labels = array (
+  'list' => 'Estado del envío automático',
+  'details' => 'Detalles del aporte',
+  'update' => 'Cambiando el estado al aporte',
+  'add' => 'Nueva Micronoticia',
+  'move' => 'Reubicando el aporte',
+  'execute' => 'Ejecución del cargo',
+  'cancel' => 'Cancelando aporte',
+  'report' => 'Informe de proyecto',
+  'viewer' => 'Viendo logs',
+  'edit' => 'Editando Micronoticia',
+  'translate' => 'Traduciendo Micronoticia',
+  'reorder' => 'Ordenando las entradas en Portada',
+  'footer' => 'Ordenando las entradas en el Footer',
+  'projects' => 'Gestionando proyectos de la convocatoria',
+  'admins' => 'Asignando administradores de la convocatoria',
+  'posts' => 'Entradas de blog en la convocatoria',
+  'conf' => 'Configurando la convocatoria',
+  'dropconf' => 'Gestionando parte económica de la convocatoria',
+  'keywords' => 'Palabras clave',
+  'view' => 'Gestión de retornos',
+  'info' => 'Información de contacto',
+  'send' => 'Comunicación enviada',
+  'init' => 'Iniciando un nuevo envío',
+  'activate' => 'Iniciando envío',
+  'detail' => 'Viendo destinatarios',
+);
+
+
+static protected $label = 'Boletín';
+
+
+    protected $filters = array (
+  'show' => 'receivers',
+);
+
+
+    public function detailAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('detail', $id, $this->filters, $subaction));
+    }
+
+
+    public function activateAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('activate', $id, $this->filters, $subaction));
+    }
+
+
+    public function initAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('init', $id, $this->filters, $subaction));
+    }
+
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+
     public function process ($action = 'list', $id = null, $filters = array()) {
         $current_lang = Lang::current();
         $debug = false;

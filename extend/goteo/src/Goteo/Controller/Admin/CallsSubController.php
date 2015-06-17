@@ -10,6 +10,83 @@ use Goteo\Library\Text,
 
 class CallsSubController extends AbstractSubController {
 
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nueva convocatoria',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Entrada',
+      'translate' => 'Traduciendo Entrada',
+      'reorder' => 'Ordenando las entradas en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Gestionando proyectos de la convocatoria',
+      'admins' => 'Asignando administradores de la convocatoria',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configurando la convocatoria',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+    );
+
+
+    static protected $label = 'Convocatorias';
+
+
+    protected $filters = array (
+      'status' => '',
+      'category' => '',
+      'caller' => '',
+      'name' => '',
+      'admin' => '',
+      'order' => '',
+    );
+
+
+    public function dropconfAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('dropconf', $id, $this->filters, $subaction));
+    }
+
+
+    public function confAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('conf', $id, $this->filters, $subaction));
+    }
+
+
+    public function postsAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('posts', $id, $this->filters, $subaction));
+    }
+
+
+    public function adminsAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('admins', $id, $this->filters, $subaction));
+    }
+
+
+    public function projectsAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('projects', $id, $this->filters, $subaction));
+    }
+
+
+    public function addAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('add', $id, $this->filters, $subaction));
+    }
+
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+
     /**
      * @param action: (review | open | publish | cancel | enable | complete | delete)
      */

@@ -2,15 +2,77 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Config;
 use Goteo\Application\Message,
     Goteo\Model;
 
 class NodeSubController extends AbstractSubController {
 
+    static protected $labels = array (
+      'list' => 'Datos actuales',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nueva Micronoticia',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando',
+      'translate' => 'Traduciendo Micronoticia',
+      'reorder' => 'Ordenando las entradas en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Gestionando proyectos de la convocatoria',
+      'admins' => 'Viendo administradores',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configurando la convocatoria',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+      'keywords' => 'Palabras clave',
+      'view' => 'Gestión de retornos',
+      'info' => 'Información de contacto',
+      'send' => 'Comunicación enviada',
+      'init' => 'Iniciando un nuevo envío',
+      'activate' => 'Iniciando envío',
+      'detail' => 'Viendo destinatarios',
+    );
+
+
+    static protected $label = 'Datos del Canal';
+
+    /**
+     * Overwrite some permissions
+     * @param  User    $user [description]
+     * @param  [type]  $node [description]
+     * @return boolean       [description]
+     */
+    static public function isAllowed(User $user, $node) {
+        // Central node not allowed here
+        if(Config::get('node') === $node) return false;
+        return parent::isAllowed($user, $node);
+    }
+
+    public function adminsAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('admins', $id, $this->filters, $subaction));
+    }
+
+
+    public function editAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('edit', $id, $this->filters, $subaction));
+    }
+
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+
     public function process ($action = 'list', $id = null) {
 
         $node = Model\Node::get($this->node);
-        if($this->isDefaultNode()) {
+        if($this->isMasterNode()) {
             Message::info('No hay nada que gestionar aquí para Goteo Central');
             return $this->redirect('/admin');
         }

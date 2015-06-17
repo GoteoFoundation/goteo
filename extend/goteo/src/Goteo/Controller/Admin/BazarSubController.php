@@ -8,6 +8,48 @@ use Goteo\Library\Feed,
 
 class BazarSubController extends AbstractSubController {
 
+static protected $labels = array (
+  'list' => 'Listando',
+  'details' => 'Detalles del aporte',
+  'update' => 'Cambiando el estado al aporte',
+  'add' => 'Nuevo Elemento',
+  'move' => 'Reubicando el aporte',
+  'execute' => 'Ejecución del cargo',
+  'cancel' => 'Cancelando aporte',
+  'report' => 'Informe de proyecto',
+  'viewer' => 'Viendo logs',
+  'edit' => 'Editando Elemento',
+  'translate' => 'Traduciendo Elemento',
+);
+
+
+static protected $label = 'Gestión del Catálogo';
+
+
+    public function translateAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('translate', $id, $this->filters, $subaction));
+    }
+
+
+    public function editAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('edit', $id, $this->filters, $subaction));
+    }
+
+
+    public function addAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('add', $id, $this->filters, $subaction));
+    }
+
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+
     public function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
 
         $errors = array();

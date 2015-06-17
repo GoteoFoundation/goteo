@@ -8,6 +8,68 @@ use Goteo\Library\Feed,
 
 class PatronSubController extends AbstractSubController {
 
+static protected $labels = array (
+  'list' => 'Listando',
+  'details' => 'Detalles del aporte',
+  'update' => 'Cambiando el estado al aporte',
+  'add' => 'Nuevo apadrinamiento',
+  'move' => 'Reubicando el aporte',
+  'execute' => 'Ejecución del cargo',
+  'cancel' => 'Cancelando aporte',
+  'report' => 'Informe de proyecto',
+  'viewer' => 'Viendo logs',
+  'edit' => 'Editando Apadrinamiento',
+  'translate' => 'Traduciendo Página',
+  'reorder' => 'Ordenando los padrinos en Portada',
+  'footer' => 'Ordenando las entradas en el Footer',
+  'projects' => 'Gestionando proyectos de la convocatoria',
+  'admins' => 'Asignando administradores del Canal',
+  'posts' => 'Entradas de blog en la convocatoria',
+  'conf' => 'Configurando la convocatoria',
+  'dropconf' => 'Gestionando parte económica de la convocatoria',
+  'keywords' => 'Palabras clave',
+  'view' => 'Apadrinamientos',
+  'info' => 'Información de contacto',
+  'send' => 'Comunicación enviada',
+  'init' => 'Iniciando un nuevo envío',
+  'activate' => 'Iniciando envío',
+  'detail' => 'Viendo destinatarios',
+);
+
+
+static protected $label = 'Padrinos';
+
+
+    public function reorderAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('reorder', $id, $this->filters, $subaction));
+    }
+
+
+    public function viewAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('view', $id, $this->filters, $subaction));
+    }
+
+
+    public function editAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('edit', $id, $this->filters, $subaction));
+    }
+
+
+    public function addAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('add', $id, $this->filters, $subaction));
+    }
+
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+
     public function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
 
         $node = $this->node;

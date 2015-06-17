@@ -6,6 +6,7 @@ namespace Goteo\Controller {
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\HttpFoundation\Request;
     use Goteo\Application\Exception\ControllerAccessDeniedException;
+    use Goteo\Application\Exception\ControllerException;
     use Goteo\Core\ACL,
         Goteo\Core\Redirection,
         Goteo\Model,
@@ -126,14 +127,6 @@ namespace Goteo\Controller {
                     'translate' => array('label' => 'Traduciendo Criterio', 'item' => true)
                 ),
                 'filters' => array('section' => 'project')
-            ),
-            'currencies' => array(
-                'label' => 'Divisas',
-                'actions' => array(
-                    'list' => array('label' => 'Listando', 'item' => false),
-                    'test' => array('label' => 'Listando', 'item' => false)
-                ),
-                'filters' => array()
             ),
             'faq' => array(
                 'label' => 'FAQs',
@@ -448,6 +441,12 @@ namespace Goteo\Controller {
             )
         );
 
+        private static $subcontrollers = array();
+
+        public static function addSubController($classname) {
+            self::$subcontrollers[] = $classname;
+        }
+
         /**
          * Security method
          * Gets the current user
@@ -462,7 +461,10 @@ namespace Goteo\Controller {
             $user = Session::getUser();
 
             // get working node
-            $nodes = $user->getAdminNodes();
+            $nodes = array();
+            foreach($user->getAdminNodes() as $id => $node) {
+                $nodes[$id] = $node->name;
+            }
             $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
             //if need to change the current node
             if($request->query->has('node') && array_key_exists($request->query->get('node'), $nodes)) {
@@ -470,15 +472,11 @@ namespace Goteo\Controller {
                 Session::store('admin_node', $node);
             }
 
-
-            // Get menu
             $menu = array();
-            if (isset(self::$supervisors[$user->id])) {
-                $menu = self::getMenu('supervisor', $node, $user->id);
-            } elseif (isset($user->roles['admin'])) {
-                $menu = self::getMenu('admin', $node, $user->id);
-            } elseif (isset($user->roles['superadmin'])) {
-                $menu = self::getMenu('superadmin', $node, $user->id);
+            // Build menu from subcontrollers for the current user/node
+            foreach(self::$subcontrollers as $class) {
+                if($class::isAllowed($user, $node))
+                    $menu[$class::getId()] = $class::getLabel();
             }
 
             View::getEngine()->useContext('admin/', [
@@ -489,23 +487,13 @@ namespace Goteo\Controller {
                     'breadcrumb' => self::getBreadCrumb($option, $action, $id)
                 ]);
 
-            if($option) {
-                $ok = false;
-                foreach ($menu as $sCode => $section) {
-                    if (isset($section['options'][$option])) {
-                        $ok = true;
-                        break;
-                    }
-                }
-
-                //if option/action not in the menu, kickout the user
-                if( ! $ok ) {
-                    $zone = self::$options[$option]['label'] ? self::$options[$option]['label'] : $option;
-                    if($zone) $msg = 'Access denied to <strong>' . $zone . '</strong>';
-                    else      $msg = 'Access denied!';
-                    Message::error($msg);
-                    throw new ControllerAccessDeniedException($msg);
-                }
+            // If menu is not allowed, throw exception
+            if($option && ! array_key_exists($option, $menu) ) {
+                $zone = $menu[$option];
+                if($zone) $msg = 'Access denied to <strong>' . $zone . '</strong>';
+                else      $msg = 'Access denied!';
+                Message::error($msg);
+                throw new ControllerAccessDeniedException($msg);
             }
 
             return $user;
@@ -523,6 +511,85 @@ namespace Goteo\Controller {
                 $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, Session::get('admin_node'));
 
             }
+
+//             foreach(self::$options as $controller => $ops) {
+//                 $cont = 'Goteo\Controller\Admin\\' . \strtoCamelCase($controller) . 'SubController';
+//                 $file =__DIR__ . '/Admin/' . \strtoCamelCase($controller) . 'SubController.php';
+//                 if(!is_file($file))
+//                     $file = dirname(dirname(dirname(__DIR__))) . '/extend/goteo/src/Goteo/Controller/Admin/' . \strtoCamelCase($controller) . 'SubController.php';
+
+//                 if(!is_file($file)) die("kk $file");
+//                 echo "$file\n";
+//                 $code = file_get_contents($file);
+//                 foreach($ops['actions'] as $action => $parts)
+//                 {
+
+// // $func = '
+// //     public function ' . $action . 'Action($id = null, $subaction = null) {
+// //         // Action code should go here instead of all in one process funcion
+// //         return call_user_func_array(array($this, \'process\'), array(\'' . $action . '\', $id, $this->filters, $subaction));
+// //     }
+// // ';
+// //                     if(strpos($code, "function {$action}Action(") === false) {
+// //                         $code = str_replace(
+// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {",
+// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {\n$func",
+// //                             $code
+// //                             );
+// //                     }
+// //                 }
+// //                 if($ops['filters']) {
+// //                     $func = '
+// //     protected $filters = ' . var_export($ops['filters'], true) . ';
+// // ';
+// //                     if(strpos($code, 'protected filters = ') === false) {
+// //                         $code = str_replace(
+// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {",
+// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {\n$func",
+// //                             $code
+// //                             );
+// //                     }
+// //
+// //
+// //                     if($ops['label']) {
+// //                     $func = '
+// //     protected $label = ' . var_export($ops['label'], true) . ';
+// // ';
+// //                     if(strpos($code, 'protected $label = ') === false) {
+// //                         $code = str_replace(
+// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {",
+// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {\n$func",
+// //                             $code
+// //                             );
+// //                     }
+// //                     }
+// //                     if($parts['label']) {
+// //                     $labels[$action] = $parts['label'];
+
+// //                     }
+// //                }
+// //                 if($labels) {
+// //                 $func = '
+// //     protected $labels = ' . var_export($labels, true) .  ';
+// // ';
+// //                 if(strpos($code, 'protected $labels = ') === false) {
+// //                     $code = str_replace(
+// //                         "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {",
+// //                         "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {\n$func",
+// //                         $code
+// //                         );
+// //                 }
+//                 }
+//                 $code = str_replace('    protected $label', '    static protected $label', $code);
+//                 $code = str_replace('    protected $labels', '    static protected $labelss', $code);
+//                 if($code !== file_get_contents($file)) {
+//                     // file_put_contents($file, $code);
+//                     echo $code;
+//                     // die;
+//                 }
+//             }
+//             die;
+
             //default admin dashboard (nothing!)
             return new Response(View::render('admin/default', $ret));
 
@@ -536,15 +603,20 @@ namespace Goteo\Controller {
             try {
                 $user = self::checkCurrentUser($request, $option, $action, $id);
                 if( ! class_exists($SubC) ) {
-                    throw new ControllerAccessDeniedException("Not found $SubC");
+                    throw new ControllerAccessDeniedException("Class [$SubC] not found");
                 }
                 $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
                 $controller = new $SubC($node, $request);
-                $ret = $controller->process($action, $id, self::setFilters($option), $subaction);
+                $method = $action . 'Action';
+                if( ! method_exists($controller, $method) ) {
+                    throw new ControllerAccessDeniedException("Method [$method()] not found for class [$SubC]");
+                }
+                $controller->setFilters(self::setFilters($option));
+                $ret = $controller->$method($id, $subaction);
 
             } catch(ControllerAccessDeniedException $e) {
                 // Instead of the default denied page, let's shows a custom admin page
-                return new Response(View::render('admin/denied'));
+                return new Response(View::render('admin/denied', ['msg' => $e->getMessage()]), Response::HTTP_BAD_REQUEST);
             }
 
             //Return the response if the subcontroller is a handy guy
@@ -608,61 +680,12 @@ namespace Goteo\Controller {
         }
 
         /*
-         * Menu de secciones, opciones, acciones y config para el panel Admin
-         * DEPRECATED
-         */
-
-        public static function menu($BC = array()) {
-
-            // si es admin de nodo
-            if (Session::exists('admin_node')) {
-                $nodeData = Model\Node::get(Session::get('admin_node'));
-                $admin_label = 'Admin Canal ' . $nodeData->name;
-            } else {
-                $admin_label = 'Admin';
-            }
-
-            $user = Session::getUser();
-
-            // get working node
-            $nodes = $user->getAdminNodes();
-            $node = Session::get('admin_node');
-
-            // Get menu
-            $menu = array();
-            if (isset(self::$supervisors[$user->id])) {
-                $menu = self::getMenu('supervisor', $node, $user->id);
-            } elseif (isset($user->roles['admin'])) {
-                $menu = self::getMenu('admin', $node, $user->id);
-            } elseif (isset($user->roles['superadmin'])) {
-                $menu = self::getMenu('superadmin', $node, $user->id);
-            }
-
-
-            // si el breadcrumbs no es un array vacio,
-            // devolveremos el contenido html para pintar el camino de migas de pan
-            // con enlaces a lo anterior
-            if (empty($BC)) {
-                return $menu;
-            } else {
-
-                // Los últimos serán los primeros
-                $parts = array();
-                foreach(self::getBreadCrumb($BC['option'], $BC['action'], $BC['id']) as $val) {
-                    if($val[1]) $parts[] = '<a href="' . $val[1] .  '">' . $val[0] . '</a>';
-                    else        $parts[] = '<strong>' . $val[0] . '</strong>';
-                }
-                return implode(' &gt; ', $parts);
-            }
-        }
-
-        /*
          * Si no tenemos filtros para este gestor los cogemos de la sesion
          */
 
         private static function setFilters($option) {
 
-            // arary de fltros para el sub controlador
+            // array de fltros para el sub controlador
             $filters = array();
             if(!is_array(self::$options[$option]['filters'])) return $filters;
 

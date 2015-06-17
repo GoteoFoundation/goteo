@@ -10,6 +10,62 @@ use Goteo\Application\Message,
 
 class PagesSubController extends AbstractSubController {
 
+static protected $labels = array (
+  'list' => 'Listando',
+  'details' => 'Detalles del aporte',
+  'update' => 'Cambiando el estado al aporte',
+  'add' => 'Nueva Página',
+  'move' => 'Reubicando el aporte',
+  'execute' => 'Ejecución del cargo',
+  'cancel' => 'Cancelando aporte',
+  'report' => 'Informe de proyecto',
+  'viewer' => 'Viendo logs',
+  'edit' => 'Editando Página',
+  'translate' => 'Traduciendo Página',
+  'reorder' => 'Ordenando las entradas en Portada',
+  'footer' => 'Ordenando las entradas en el Footer',
+  'projects' => 'Gestionando proyectos de la convocatoria',
+  'admins' => 'Asignando administradores del Canal',
+  'posts' => 'Entradas de blog en la convocatoria',
+  'conf' => 'Configurando la convocatoria',
+  'dropconf' => 'Gestionando parte económica de la convocatoria',
+  'keywords' => 'Palabras clave',
+  'view' => 'Gestión de retornos',
+  'info' => 'Información de contacto',
+  'send' => 'Comunicación enviada',
+  'init' => 'Iniciando un nuevo envío',
+  'activate' => 'Iniciando envío',
+  'detail' => 'Viendo destinatarios',
+);
+
+
+static protected $label = 'Páginas';
+
+
+    public function translateAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('translate', $id, $this->filters, $subaction));
+    }
+
+
+    public function addAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('add', $id, $this->filters, $subaction));
+    }
+
+
+    public function editAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('edit', $id, $this->filters, $subaction));
+    }
+
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+
     static public $node_pages = array('about', 'contact', 'press', 'service');
 
 
@@ -43,7 +99,7 @@ class PagesSubController extends AbstractSubController {
                 break;
 
             case 'edit':
-                if (!$this->isDefaultNode() && !in_array($id, self::$node_pages)) {
+                if (!$this->isMasterNode() && !in_array($id, self::$node_pages)) {
                     Message::info('No puedes gestionar la página <strong>'.$id.'</strong>');
                     return $this->redirect("/admin/pages");
                 }
@@ -59,7 +115,7 @@ class PagesSubController extends AbstractSubController {
 
                         // Evento Feed
                         $log = new Feed();
-                        if (!$this->isDefaultNode() && in_array($id, self::$node_pages)) {
+                        if (!$this->isMasterNode() && in_array($id, self::$node_pages)) {
                             $log->setTarget($node, 'node');
                         }
                         $log->populate('modificacion de página institucional (admin)', '/admin/pages',

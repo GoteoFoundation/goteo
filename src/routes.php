@@ -251,6 +251,41 @@ $routes->add('admin-action', new Route(
         )
 ));
 
+//Admin subcontrollers added manually for legacy compatibility
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodeSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TransnodesSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\HomeSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\GlossarySubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\IconsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\LicensesSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MailingSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NewsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NewsletterSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PagesSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ProjectsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RecentSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ReviewsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RewardsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SendedSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SponsorsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TagsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TemplatesSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TextsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WordcountSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
+
+
 
 ///// END USER /////
 
