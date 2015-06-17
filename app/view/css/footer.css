@@ -144,7 +144,9 @@ div#footer div.block ul.paginacion li.current a {
 div#slides_patrons .sliderspatrons-ctrl .next,
 div#slides_patrons .sliderspatrons-ctrl .prev,
 div#slides_sponsor .slidersponsors-ctrl .next,
-div#slides_sponsor .slidersponsors-ctrl .prev {
+div#slides_sponsor .slidersponsors-ctrl .prev,
+div#slides_side_sponsor .slidersponsors-ctrl .next,
+div#slides_side_sponsor .slidersponsors-ctrl .prev  {
     width: 16px;
     height: 16px;
 	line-height: 2000px;
@@ -156,22 +158,26 @@ div#slides_sponsor .slidersponsors-ctrl .prev {
 }
 
 div#slides_patrons .sliderspatrons-ctrl .prev,
-div#slides_sponsor .slidersponsors-ctrl .prev {
+div#slides_sponsor .slidersponsors-ctrl .prev,
+div#slides_side_sponsor .slidersponsors-ctrl .prev  {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 0;
 }
 
 div#slides_patrons .sliderspatrons-ctrl .prev:hover,
-div#slides_sponsor .slidersponsors-ctrl .prev:hover {
+div#slides_sponsor .slidersponsors-ctrl .prev:hover,
+div#slides_side_sponsor .slidersponsors-ctrl .prev:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
 }
 
 div#slides_patrons .sliderspatrons-ctrl .next,
-div#slides_sponsor .slidersponsors-ctrl .next{
+div#slides_sponsor .slidersponsors-ctrl .next,
+div#slides_side_sponsor .slidersponsors-ctrl .next{
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
 }
 
 div#slides_patrons .sliderspatrons-ctrl .next:hover,
-div#slides_sponsor .slidersponsors-ctrl .next:hover {
+div#slides_sponsor .slidersponsors-ctrl .next:hover,
+div#slides_side_sponsor .slidersponsors-ctrl .next:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
 /* fin reutilizacion para carrusel patronos y sponsors nodo */
