@@ -2,9 +2,11 @@
 
 namespace Goteo\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
+use Goteo\Application\View;
 
 abstract class AbstractSubController {
     protected $request;
@@ -67,4 +69,7 @@ abstract class AbstractSubController {
         return new RedirectResponse($url);
     }
 
+    public function response($view, $data = []) {
+        return new Response(View::render($view, $data));
+    }
 }

@@ -456,7 +456,7 @@ namespace Goteo\Controller {
          * @param Model\User $user    [description]
          * @param Request    $request [description]
          */
-        private static function checkCurrentUser(Request $request, $option = null) {
+        private static function checkCurrentUser(Request $request, $option = null, $action = null, $id = null) {
             //refresh permission status
             Model\User::flush();
             $user = Session::getUser();
@@ -482,10 +482,11 @@ namespace Goteo\Controller {
             }
 
             View::getEngine()->useContext('admin/', [
+                    'option' => $option,
                     'admin_menu' => $menu,
                     'admin_node' => $node,
                     'admin_nodes' => $nodes,
-                    'breadcrumb' => self::getBreadCrumb()
+                    'breadcrumb' => self::getBreadCrumb($option, $action, $id)
                 ]);
 
             if($option) {
@@ -530,52 +531,36 @@ namespace Goteo\Controller {
         // preparado para index unificado
         public function optionAction($option, $action = 'list', $id = null, $subaction = null, Request $request) {
             $ret = array();
+            $SubC = 'Goteo\Controller\Admin\\' . \strtoCamelCase($option) . 'SubController';
+
             try {
-                $user = self::checkCurrentUser($request, $option);
+                $user = self::checkCurrentUser($request, $option, $action, $id);
+                if( ! class_exists($SubC) ) {
+                    throw new ControllerAccessDeniedException("Not found $SubC");
+                }
+                $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
+                $controller = new $SubC($node, $request);
+                $ret = $controller->process($action, $id, self::setFilters($option), $subaction);
+
             } catch(ControllerAccessDeniedException $e) {
                 // Instead of the default denied page, let's shows a custom admin page
                 return new Response(View::render('admin/denied'));
             }
 
-            $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
-
-            $SubC = 'Goteo\Controller\Admin\\' . \strtoCamelCase($option) . 'SubController';
-
-            if(class_exists($SubC)) {
-            // if(is_file(__DIR__  . '/Admin/' . \strtoCamelCase($option) . 'SubController.php')) {
-                $controller = new $SubC($node, $request);
-                $ret = $controller->process($action, $id, self::setFilters($option), $subaction);
-            }
-            else {
-                $SubC = 'Goteo\Controller\Admin\\' . \strtoCamelCase($option);
-                Message::error("Admin controller $SubC pending!");
-                $ret = $SubC::process($action, $id, self::setFilters($option), $subaction);
-
-            }
-            // Por compatibilidad
-            if($ret instanceOf \Goteo\Core\View) {
-                // Por compatibilidad
-                $BC = self::menu(array('option' => $option, 'action' => $action, 'id' => $id));
-                define('ADMIN_BCPATH', $BC);
-
-                return new Response($ret->render());
-            }
-
+            //Return the response if the subcontroller is a handy guy
             if($ret instanceOf Response) {
                 return $ret;
             }
 
-            // también mas o menos por compatibilidad, deberian ser vistas heredables en templates
-            if (!empty($ret['folder']) && !empty($ret['file'])) {
-                if ($ret['folder'] == 'base') {
-                    $path = 'admin/'.$ret['file'].'.html.php';
-                } else {
-                    $path = 'admin/'.$ret['folder'].'/'.$ret['file'].'.html.php';
-                }
-                return new Response(View::render('admin/option', [
-                    'option' => $option,
-                    'content' => \Goteo\Core\View::get($path, $ret),
-                    'breadcrumb' => self::getBreadCrumb($option, $action, $id)
+            // Old view compatibility
+            // They return a file to be rendered along with vars
+            $old_path = $ret['old_view_path'];
+            if(!$old_path && $ret['folder'] && $ret['file']) {
+                $old_path = 'admin/' . ($ret['folder'] === 'base' ? '' : $ret['folder'] . '/') . $ret['file'].'.html.php';
+            }
+            if ($old_path) {
+                return new Response(View::render('admin/simple', [
+                    'content' => \Goteo\Core\View::get($old_path, $ret)
                     ]));
             }
 
