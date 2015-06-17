@@ -84,7 +84,7 @@ body.project-show div#sub-header div.project-by a:hover {
 body.project-show div#sub-header div.categories {
 	position: absolute;
     right: 0;
-	top: 115px;
+	top: 70px;
     text-align: right;
 	max-width: 320px;
 	max-height: 45px;

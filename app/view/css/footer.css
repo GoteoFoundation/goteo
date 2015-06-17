@@ -71,6 +71,7 @@ div#footer div.block h6{
 porque usan los mismos estilos
 */
 div#node-main div#side div.sponsors ul,
+div#channel-main div#side div.sponsors ul
 div.widget.project-patrons ul,
 div#footer div.block ul{
 	list-style:none;
@@ -79,6 +80,7 @@ div#footer div.block ul{
 	overflow:auto;
 }
 div#node-main div#side div.sponsors ul.paginacion,
+div#channel-main div#side div.sponsors ul.paginacion,
 div.widget.project-patrons ul.paginacion,
 div#footer div.block ul.paginacion {
 	margin: 8px 0 0 0;
@@ -94,12 +96,14 @@ div#footer div.block ul.paginacion {
 }
 
 /* Solo portada de nodo, para el salto de linea cada 8 */
-div#node-main div#side div.sponsors ul.paginacion {
+div#node-main div#side div.sponsors ul.paginacion,
+div#channel-main div#side div.sponsors ul.paginacion {
     max-width: 144px;
 }
 
 
 div#node-main div#side div.sponsors ul.paginacion li,
+div#channel-main div#side div.sponsors ul.paginacion li,
 div.widget.project-patrons ul.paginacion li,
 div#footer div.block ul.paginacion li {
 	cursor:pointer;
@@ -110,6 +114,7 @@ div#footer div.block ul.paginacion li {
 }
 
 div#node-main div#side div.sponsors ul.paginacion li a,
+div#channel-main div#side div.sponsors ul.paginacion li a,
 div.widget.project-patrons ul.paginacion li a,
 div#footer div.block ul.paginacion li a {
     width: 10px;
@@ -121,6 +126,7 @@ div#footer div.block ul.paginacion li a {
 }
 
 div#node-main div#side div.sponsors ul.paginacion li a:hover,
+div#channel-main div#side div.sponsors ul.paginacion li a:hover,
 div.widget.project-patrons ul.paginacion li a:hover,
 div#footer div.block ul.paginacion li a:hover {
     background-color: #20b3b2;
@@ -128,6 +134,7 @@ div#footer div.block ul.paginacion li a:hover {
 }
 
 div#node-main div#side div.sponsors ul.paginacion li.current a,
+div#channel-main div#side div.sponsors ul.paginacion li.current a,
 div.widget.project-patrons ul.paginacion li.current a,
 div#footer div.block ul.paginacion li.current a {
     background-color: #808184 !important;
@@ -425,7 +432,8 @@ div#footer div.slidersponsors-ctrl {
 }
 
 /* Es diferente para el side de home de nodo*/
-div#node-main div#side div.sponsors div.slidersponsors-ctrl {
+div#node-main div#side div.sponsors div.slidersponsors-ctrl,
+div#channel-main div#side div.sponsors div.slidersponsors-ctrl {
 	padding:0px !important;
     margin-top: -15px !important;
     display: block;

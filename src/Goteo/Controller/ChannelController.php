@@ -40,90 +40,21 @@ class ChannelController extends \Goteo\Core\Controller {
         return $channel;
     }
 
-    /**
-     * TODO: @javier, se usa ¿¿¿ $page ???
-     * @param  [type] $id   [description]
-     * @param  string $page [description]
-     * @return [type]       [description]
-     */
-    public function indexAction($id, $page = 'index')
+    // Set the global vars to all the channel views
+    private static function setChannel($id)
     {
+        $channel=self::getChannel($id);
 
-        $channel = self::getChannel($id);
+        $categories=Category::getList();
 
-        // orden de los elementos en portada
-        $order = Home::getAll($id);
-        $side_order = Home::getAllSide($id);
+        $side_order = Home::getAllSide($id); //orden de lateral side
 
-        $icons = Icon::getAll();
-        $cats  = Category::getList();  // categorias que se usan en proyectos
-        $hide_promotes = false;
-
-        // Proyectos destacados primero para saber si lo meto en el buscador o no
-        if (isset($order['promotes']) || isset($side_order['searcher'])) {
-            $promotes  = Promote::getAll(true, $id);
-        }
-
-        // padrinos
-        if (isset($order['patrons'])) {
-            $patrons  =  $patrons = Patron::getInHome();
-        }
-
-
-
-        // Laterales
-        // ---------------------
-        if (isset($side_order['searcher'])) {
-            // Selector proyectos: los destacados, los grupos de discover y los retornos
-            $searcher = array();
-            $discover = array();
-
-            if (!empty($promotes)) {
-                $searcher['promote'] = Text::get('node-side-searcher-promote');
-                if ($page == 'about') {
-                    $hide_promotes = true;
-                }
-            }
-
-            // vamos sacando los 4 primeros de cada categoria (excepto promotes y excepto byreward)
-            // si una categoria no tiene proyectos no la ponemos en los pastillos del buscador
-            $disc_popular = Project::published('popular', 4);
-            if (!empty($disc_popular)) {
-                $searcher['popular'] = Text::get('node-side-searcher-popular');
-                $discover['popular'] = $disc_popular;
-            }
-
-            $disc_recent = Project::published('recent', 4);
-            if (!empty($disc_recent)) {
-                $searcher['recent'] = Text::get('node-side-searcher-recent');
-                $discover['recent'] = $disc_recent;
-            }
-
-            $disc_success = Project::published('success', 4);
-            if (!empty($disc_success)) {
-                $searcher['success'] = Text::get('node-side-searcher-success');
-                $discover['success'] = $disc_success;
-            }
-
-            $disc_outdate = Project::published('outdate', 4);
-            if (!empty($disc_outdate)) {
-                $searcher['outdate'] = Text::get('node-side-searcher-outdate');
-                $discover['outdate'] = $disc_outdate;
-            }
-
-        }
-
-        if (isset($side_order['categories'])) {
-            // Proyectos por categorías
-            $categories = array();
-            foreach ($cats as $cat => $catName) {
-                $cat_projs = \Goteo\Library\Search::params(array('category'=>array("'$cat'"), 'channel'=>$id), false);
-                if (!empty($cat_projs)) {
-                    $categories[$cat]['name'] = $catName;
-                    $categories[$cat]['projects'] = $cat_projs;
-                }
-            }
-        }
+        $types = array(
+            'popular',
+            'recent',
+            'success',
+            'outdate'
+        );
 
         if (isset($side_order['summary'])) {
             $summary = $channel->getSummary();
@@ -138,6 +69,58 @@ class ChannelController extends \Goteo\Core\Controller {
             $sponsors = \Goteo\Model\Sponsor::getList($id);
         }
 
+
+        View::getEngine()->useContext('channel/', [
+            'channel'     => $channel,
+            'side_order' => $side_order,
+            'summary' => $summary,
+            'sumcalls' => $sumcalls,
+            'sponsors' => $sponsors,
+            'categories' => $categories,
+            'types' => $types
+        ]);
+    }
+
+    /**
+     * TODO: 
+     * @param  [type] $id   [description]
+     * @param  string $page [description]
+     * @return [type]       [description]
+     */
+    public function indexAction($id)
+    {
+        self::setChannel($id);
+
+        $channel = self::getChannel($id);
+
+        // orden de los elementos en portada
+        $order = Home::getAll($id);
+        $side_order = Home::getAllSide($id);
+
+        
+        $hide_promotes = false;
+
+        // Proyectos destacados primero para saber si lo meto en el buscador o no
+        if (isset($order['promotes']) || isset($side_order['searcher'])) {
+            $promotes  = Promote::getAll(true, $id);
+        }
+
+        // padrinos
+        if (isset($order['patrons'])) {
+            $patrons  =  $patrons = Patron::getInHome();
+        }
+
+        // Laterales
+        // ---------------------
+        if (isset($side_order['searcher'])) {
+            // Selector proyectos: los destacados, los grupos de discover y los retornos
+            
+            if (!empty($promotes)) {
+                $searcher['promote'] = Text::get('node-side-searcher-promote');
+                
+            }
+        }
+
         // resto de centrales
         // entradas de blog
         if (isset($order['posts'])) {
@@ -145,24 +128,16 @@ class ChannelController extends \Goteo\Core\Controller {
             $posts     = Post::getAll('home', $id);
         }
 
-        // Convocatoris destacadas
+        // Convocatorias destacadas
         if (isset($order['calls'])) {
             $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
             $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
         }
 
-        if ($page == 'about') {
-            $pageData = Page::get($page, $id);
-        } else {
-            $pageData = null;
-        }
-
         return new Response(View::render(
             'channel/index',
             array(
-                'channel'     => $channel,
-                'page'     => $pageData,
-
+                
                 // centrales
                 'order'    => $order,
                     'posts'    => $posts,
@@ -171,18 +146,7 @@ class ChannelController extends \Goteo\Core\Controller {
                     'patrons' => $patrons,
 
                 // laterales
-                'side_order' => $side_order,
                     'searcher' => $searcher,
-                    'categories' => $categories,
-                    'summary'  => $summary,
-                    'sumcalls' => $sumcalls,
-                    'sponsors' => $sponsors,
-
-                // iconos de recompensas
-                'icons' => $icons,
-
-                // si hay que ocultar los destacados (por ser el about)
-                'hide_promotes' => $hide_promotes,
 
                 // los ocultos del discover
                 'discover' => $discover
@@ -191,6 +155,50 @@ class ChannelController extends \Goteo\Core\Controller {
         ));
     }
 
+    /**
+     * Project filter by category
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function filterCategoryAction($id,$category)
+    {
+        self::setChannel($id);
+        $cat_projs = \Goteo\Library\Search::params(array('category'=>array($category), 'channel'=>$id), false);
+        $category=Category::get($category);
+
+        $title_text=Text::get('discover-searcher-bycategory-header').' '.$category->name;
+        
+        return new Response(View::render(
+        'channel/searchprojects',
+        array(
+            'projects' => $cat_projs,
+            'category'=> $category->name,
+            'title_text' => $title_text
+            )
+        ));
+    }
+
+    /**
+     * Project filter by type of project
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function filterTypeAction($id,$type)
+    {
+        self::setChannel($id);
+        $cat_projs = Project::published($type, 10, 1, $pages, $id);
+
+        $title_text=Text::get('node-side-searcher-'.$type);
+        return new Response(View::render(
+        'channel/searchprojects',
+        array(
+            'projects' => $cat_projs,
+            'category'=> $type,
+            'title_text' => $title_text,
+            'type' => $type
+            )
+        ));
+    }
 
     /**
      * Initial create project action

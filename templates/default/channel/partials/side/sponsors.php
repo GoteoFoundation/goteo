@@ -1,8 +1,6 @@
 <?php
-use Goteo\Library\Text,
-    Goteo\Core\View;
 
-$sponsors = $vars['sponsors'];
+$sponsors = $this->sponsors;
 
 ?>
 <script type="text/javascript">
@@ -20,7 +18,7 @@ $sponsors = $vars['sponsors'];
 <div id="slides_sponsor" class="side_widget sponsors">
     <p class="title">
         <span class="line"></span>
-        <?php echo Text::get('node-header-sponsorby'); ?>
+        <?= $this->text('node-header-sponsorby'); ?>
     </p>
     <div class="slides_container" style="min-height: 75px;">
         <?php $i = 1; foreach ($sponsors as $sponsor) : ?>

@@ -5,7 +5,6 @@ use Goteo\Library\Text,
 // ver página de ver mas convocatorias
 ?>
 <div class="side_widget convocatorias activable">
-    <a href="/discover/calls" class="expand"></a>
     <div class="block rounded-corners">
         <p class="title"><?php echo Text::get('node-side-sumcalls-header'); ?></p>
         <div style="margin-bottom:6px">

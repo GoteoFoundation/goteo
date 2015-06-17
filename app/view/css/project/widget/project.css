@@ -78,6 +78,7 @@ div.widget.project div.image div.tagmark.grey {
 div.widget.project div.image div.tagmark span.small {
     font-size: 0.8em !important;
 	line-height: normal;
+    display: inherit;
 }
 
 /* Dos lineas para el en marcha y aun puedes */
