@@ -13,6 +13,124 @@ use Goteo\Library\Text,
 
 class ProjectsSubController extends AbstractSubController {
 
+static protected $labels = array (
+  'list' => 'Listando',
+  'details' => 'Detalles del aporte',
+  'update' => 'Cambiando el estado al aporte',
+  'add' => 'Nuevo apadrinamiento',
+  'move' => 'Moviendo a otro Nodo el proyecto',
+  'execute' => 'Ejecución del cargo',
+  'cancel' => 'Cancelando aporte',
+  'report' => 'Informe Financiero del proyecto',
+  'viewer' => 'Viendo logs',
+  'edit' => 'Editando Apadrinamiento',
+  'translate' => 'Traduciendo Página',
+  'reorder' => 'Ordenando los padrinos en Portada',
+  'footer' => 'Ordenando las entradas en el Footer',
+  'projects' => 'Gestionando proyectos de la convocatoria',
+  'admins' => 'Asignando administradores del Canal',
+  'posts' => 'Entradas de blog en la convocatoria',
+  'conf' => 'Configuración de campaña del proyecto',
+  'dropconf' => 'Gestionando parte económica de la convocatoria',
+  'keywords' => 'Palabras clave',
+  'view' => 'Apadrinamientos',
+  'info' => 'Información de contacto',
+  'send' => 'Comunicación enviada',
+  'init' => 'Iniciando un nuevo envío',
+  'activate' => 'Iniciando envío',
+  'detail' => 'Viendo destinatarios',
+  'dates' => 'Fechas del proyecto',
+  'accounts' => 'Cuentas del proyecto',
+  'images' => 'Imágenes del proyecto',
+  'assign' => 'Asignando a una Convocatoria el proyecto',
+  'open_tags' => 'Asignando una agrupación al proyecto',
+  'rebase' => 'Cambiando Id de proyecto',
+  'consultants' => 'Cambiando asesor del proyecto',
+);
+
+
+static protected $label = 'Proyectos';
+
+
+    protected $filters = array (
+  'status' => '-1',
+  'category' => '',
+  'proj_name' => '',
+  'name' => '',
+  'node' => '',
+  'called' => '',
+  'order' => '',
+  'consultant' => '',
+  'proj_id' => '',
+);
+
+
+    public function confAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('conf', $id, $this->filters, $subaction));
+    }
+
+
+    public function consultantsAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('consultants', $id, $this->filters, $subaction));
+    }
+
+
+    public function rebaseAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('rebase', $id, $this->filters, $subaction));
+    }
+
+
+    public function reportAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('report', $id, $this->filters, $subaction));
+    }
+
+
+    public function open_tagsAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('open_tags', $id, $this->filters, $subaction));
+    }
+
+
+    public function assignAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('assign', $id, $this->filters, $subaction));
+    }
+
+
+    public function moveAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('move', $id, $this->filters, $subaction));
+    }
+
+
+    public function imagesAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('images', $id, $this->filters, $subaction));
+    }
+
+
+    public function accountsAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('accounts', $id, $this->filters, $subaction));
+    }
+
+
+    public function datesAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('dates', $id, $this->filters, $subaction));
+    }
+
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+
     public function process ($action = 'list', $id = null, $filters = array()) {
 
         $log_text = null;

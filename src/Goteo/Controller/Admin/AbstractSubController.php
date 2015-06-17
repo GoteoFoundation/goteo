@@ -7,10 +7,23 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
 use Goteo\Application\View;
+use Goteo\Model\User;
 
 abstract class AbstractSubController {
     protected $request;
     protected $node;
+    protected $filters;
+    // Main label
+    static protected $label = 'Abstract admin controller';
+    // Labels for methods
+    static protected $labels = array();
+
+    /***
+    * PERMISSIONS
+    * Overwrite on extended classes
+    ***/
+    // Roles users allowed to admin this module
+    static protected $allowed_roles = array('superadmin', 'admin', 'root');
 
     /**
      * Some defaults
@@ -21,7 +34,54 @@ abstract class AbstractSubController {
     }
 
 
-    public function isDefaultNode() {
+    public function setFilters(array $filters) {
+        $this->filters = $filters;
+    }
+
+    public function addAllowedNode($node) {
+        static::$allowed_nodes[] = $node;
+    }
+
+    /**
+     * Returns the identificator for this controller
+     * @return MyControllerSubController becames mycontroller
+     */
+    public static function getId() {
+        $class = get_called_class();
+        return strtolower(substr(end(explode('\\',$class)),0,-13));
+    }
+    /**
+     * Returns the label for this controller
+     * TODO: Text:: translation
+     * @param  string $action if label is specified returns the label text instead of the general one
+     */
+    public static function getLabel($action = null) {
+        if($action) return static::$labels[$action];
+        return static::$label;
+    }
+
+    /**
+     * Returns if this class can be administred by the user in the node
+     * Overwrite this function to more specific control
+     */
+    public static function isAllowed(User $user, $node) {
+        foreach($user->getAdminNodes() as $id => $user_node) {
+            // Roles must be specified
+            // if($node$user->hasRole($user_node->role)
+        }
+        return true;
+    }
+
+    // public static function getMenu(User $user, $node) {
+    //     $menu = array();
+    //     foreach(static::$labels as $action => $label) {
+    //         // TODO: permission check
+    //         $menu[$action] = $label;
+    //     }
+    //     return $menu;
+    // }
+
+    public function isMasterNode() {
         return Config::get('node') === $this->node;
     }
 

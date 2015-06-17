@@ -3,7 +3,6 @@
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Goteo\Application\Config;
 use Goteo\Application\App;
 
 $custom_routes = new RouteCollection();
@@ -34,5 +33,19 @@ $custom_routes->add('barcelona-node', new Route(
 // Adding Default routes
 $main_routes = include(__DIR__ . '/../../../src/routes.php');
 $custom_routes->addCollection($main_routes);
+
+// Adding more admin subcontrollers
+
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BazarSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CallsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TranscallsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CampaignsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\InfoSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\InvestsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PatronSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ReportsSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TasksSubController');
 
 return $custom_routes;

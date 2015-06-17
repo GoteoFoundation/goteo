@@ -1,29 +1,64 @@
 <div class="admin-menu">
+<?php
 
-    <?php foreach ($this->admin_menu as $sCode => $section) : ?>
-    <fieldset>
-        <legend><?php echo $section['label'] ?></legend>
-        <ul class="ul-admin">
-        <?php foreach ($section['options'] as $oCode => $option) :
-            echo '<li' . ( $oCode === $this->option ? ' class="selected"' : '') . '><a href="/admin/'.$oCode.'">'.$option['label'].'</a></li>';
-        endforeach; ?>
-        </ul>
-    </fieldset>
-    <?php endforeach; ?>
+$zones = array(
+    'admin-contents' => array('node', 'blog', 'texts', 'faq', 'pages', 'categories', 'licenses', 'icons', 'tags', 'criteria', 'templates', 'glossary', 'info', 'wordcount'),
+    'admin-projects' => array('projects', 'accounts', 'reviews', 'translates', 'rewards', 'commons'),
+    'admin-users' => array('users', 'worth', 'mailing', 'sended'),
+    'admin-home' => array('home', 'promote', 'news', 'banners', 'footer', 'recent'),
+    'admin-sponsors' => array('newsletter', 'sponsors', 'nodes', 'transnodes'),
+    );
+
+foreach($zones as $id => $parts) {
+    $zones[$id] = array_intersect($parts, array_keys($this->admin_menu));
+    if(empty($zones[$id])) unset($zones[$id]);
+}
+$super = array('projects', 'users', 'accounts', 'nodes', 'newsletter');
+
+$super = array_intersect($super, array_keys($this->admin_menu));
+?>
+
+<?php $this->section('admin-menu-left') // This allows to be extended ?>
+
+    <?php foreach ($zones as $id => $parts) : ?>
+
+        <fieldset id="menu-<?= $id ?>">
+            <legend><?= $this->text($id) ?></legend>
+            <ul class="ul-admin">
+
+            <?php $this->section('menu-fieldset-' . $id) // This allows to be extended ?>
+
+                <?php foreach ($parts as $action) : ?>
+                    <li<?= ($action === $this->option ? ' class="selected"' : '') ?>><a href="/admin/<?= $action ?>"><?= $this->admin_menu[$action] ?></a></li>
+                <?php endforeach ?>
+
+            <?php $this->stop() ?>
+
+            </ul>
+        </fieldset>
+
+    <?php endforeach ?>
+
+<?php $this->stop() ?>
+
+
 </div>
 
-<?php if($this->get_user()->roles['superadmin']): ?>
+<?php if($super): ?>
 
     <div class="widget board">
         <ul class="ul-admin">
-            <li<?= ('projects' === $this->option ? ' class="selected"' : '') ?>><a href="/admin/projects">Proyectos</a></li>
-            <li<?= ('users' === $this->option ? ' class="selected"' : '') ?>><a href="/admin/users">Usuarios</a></li>
-            <li<?= ('accounts' === $this->option ? ' class="selected"' : '') ?>><a href="/admin/accounts">Aportes</a></li>
-            <li<?= ('calls' === $this->option ? ' class="selected"' : '') ?>><a href="/admin/calls">Convocatorias</a></li>
-            <li<?= ('tasks' === $this->option ? ' class="selected"' : '') ?>><a href="/admin/tasks">Tareas</a></li>
-            <li<?= ('nodes' === $this->option ? ' class="selected"' : '') ?>><a href="/admin/nodes">Nodos</a></li>
-            <li<?= ('reports' === $this->option ? ' class="selected"' : '') ?>><a href="/admin/reports">Informes</a></li>
-            <li<?= ('newsletter' === $this->option ? ' class="selected"' : '') ?>><a href="/admin/newsletter">Boletin</a></li>
+
+            <?php $this->section('admin-menu-top') // This allows to be extended ?>
+
+                <?php foreach ($super as $id) : ?>
+
+                        <li<?= ($id === $this->option ? ' class="selected"' : '') ?>><a href="/admin/<?= $id ?>"><?=  $this->admin_menu[$id] ?></a></li>
+
+                <?php endforeach ?>
+
+            <?php $this->stop() ?>
+
         </ul>
     </div>
 

@@ -8,6 +8,40 @@ use Goteo\Model;
 
 class HomeSubController extends AbstractSubController {
 
+static protected $labels = array (
+  'list' => 'Gestionando',
+  'details' => 'Detalles del aporte',
+  'update' => 'Cambiando el estado al aporte',
+  'add' => 'Nueva Pregunta',
+  'move' => 'Reubicando el aporte',
+  'execute' => 'Ejecución del cargo',
+  'cancel' => 'Cancelando aporte',
+  'report' => 'Informe de proyecto',
+  'viewer' => 'Viendo logs',
+  'edit' => 'Editando Pregunta',
+  'translate' => 'Traduciendo Pregunta',
+  'reorder' => 'Ordenando las entradas en Portada',
+  'footer' => 'Ordenando las entradas en el Footer',
+  'projects' => 'Gestionando proyectos de la convocatoria',
+  'admins' => 'Asignando administradores de la convocatoria',
+  'posts' => 'Entradas de blog en la convocatoria',
+  'conf' => 'Configurando la convocatoria',
+  'dropconf' => 'Gestionando parte económica de la convocatoria',
+  'keywords' => 'Palabras clave',
+  'view' => 'Gestión de retornos',
+  'info' => 'Información de contacto',
+);
+
+
+static protected $label = 'Elementos en portada';
+
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+
     public function process ($action = 'list', $id = null, $filters = array(), $type = 'main') {
 
         $node = $this->node;

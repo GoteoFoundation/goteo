@@ -10,6 +10,68 @@ use Goteo\Library\Text,
 
 class BlogSubController extends AbstractSubController {
 
+static protected $labels = array (
+  'list' => 'Listando',
+  'details' => 'Detalles del aporte',
+  'update' => 'Cambiando el estado al aporte',
+  'add' => 'Nueva Entrada',
+  'move' => 'Reubicando el aporte',
+  'execute' => 'Ejecución del cargo',
+  'cancel' => 'Cancelando aporte',
+  'report' => 'Informe de proyecto',
+  'viewer' => 'Viendo logs',
+  'edit' => 'Editando Entrada',
+  'translate' => 'Traduciendo Entrada',
+  'reorder' => 'Ordenando las entradas en Portada',
+  'footer' => 'Ordenando las entradas en el Footer',
+);
+
+
+static protected $label = 'Blog';
+
+
+    protected $filters = array (
+  'show' => 'owned',
+  'blog' => '',
+);
+
+
+    public function footerAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('footer', $id, $this->filters, $subaction));
+    }
+
+
+    public function reorderAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('reorder', $id, $this->filters, $subaction));
+    }
+
+
+    public function translateAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('translate', $id, $this->filters, $subaction));
+    }
+
+
+    public function editAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('edit', $id, $this->filters, $subaction));
+    }
+
+
+    public function addAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('add', $id, $this->filters, $subaction));
+    }
+
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+
     public function process ($action = 'list', $id = null, $filters = array()) {
 
         $errors = array();
@@ -193,7 +255,7 @@ class BlogSubController extends AbstractSubController {
                 $homes = Model\Post::getList('home', $node);
                 $footers = Model\Post::getList('footer', $node);
 
-                if ($this->isDefaultNode()) {
+                if ($this->isMasterNode()) {
                     $show['footer'] = 'Solamente las del footer';
                 }
 
@@ -245,7 +307,7 @@ class BlogSubController extends AbstractSubController {
                     if (!$post instanceof Model\Blog\Post) {
                         Message::error('La entrada esta corrupta, contacte con nosotros.');
                         return $this->redirect('/admin/blog/list');
-                    } elseif (!$this->isDefaultNode() && $post->owner_type == 'node' && $post->owner_id != $node) {
+                    } elseif (!$this->isMasterNode() && $post->owner_type == 'node' && $post->owner_id != $node) {
                         Message::error('No puedes editar esta entrada.');
                         return $this->redirect('/admin/blog/list');
                     }
@@ -265,7 +327,7 @@ class BlogSubController extends AbstractSubController {
             case 'remove':
                 // eliminar una entrada
                 $tempData = Model\Blog\Post::get($id);
-                if (!$this->isDefaultNode() && $tempData->owner_type == 'node' && $tempData->owner_id != $node ) {
+                if (!$this->isMasterNode() && $tempData->owner_type == 'node' && $tempData->owner_id != $node ) {
                     Message::error('No puedes eliminar esta entrada.');
                     return $this->redirect('/admin/blog');
                 }
@@ -302,7 +364,7 @@ class BlogSubController extends AbstractSubController {
                 );
                 break;
             case 'up':
-                if (!$this->isDefaultNode()) {
+                if (!$this->isMasterNode()) {
                     Model\Post::up_node($id, $node);
                 } else {
                     Model\Post::up($id, 'home');
@@ -310,7 +372,7 @@ class BlogSubController extends AbstractSubController {
                 return $this->redirect('/admin/blog/reorder');
                 break;
             case 'down':
-                if (!$this->isDefaultNode()) {
+                if (!$this->isMasterNode()) {
                     Model\Post::up_node($id, $node);
                 } else {
                     Model\Post::down($id, 'home');
@@ -319,7 +381,7 @@ class BlogSubController extends AbstractSubController {
                 break;
             case 'add_home':
                 // siguiente orden
-                if (!$this->isDefaultNode()) {
+                if (!$this->isMasterNode()) {
                     $next = Model\Post::next_node($node);
                     $data = (object) array('post' => $id, 'node' => $node, 'order' => $next);
                     if (Model\Post::update_node($data, $errors)) {
@@ -346,7 +408,7 @@ class BlogSubController extends AbstractSubController {
             case 'remove_home':
                 // se quita de la portada solamente
                 $ok = false;
-                if (!$this->isDefaultNode()) {
+                if (!$this->isMasterNode()) {
                     $ok = Model\Post::remove_node($id, $node);
                 } else {
                     $ok = Model\Post::remove($id, 'home');
@@ -361,7 +423,7 @@ class BlogSubController extends AbstractSubController {
 
             // acciones footer (solo para superadmin y admins de goteo
             case 'footer':
-                if ($this->isDefaultNode()) {
+                if ($this->isMasterNode()) {
                     // lista de entradas en el footer
                     // obtenemos los datos
                     $posts = Model\Post::getAll('footer');
@@ -376,7 +438,7 @@ class BlogSubController extends AbstractSubController {
                 }
                 break;
             case 'up_footer':
-                if ($this->isDefaultNode()) {
+                if ($this->isMasterNode()) {
                     Model\Post::up($id, 'footer');
                     return $this->redirect('/admin/blog/footer');
                 } else {
@@ -384,7 +446,7 @@ class BlogSubController extends AbstractSubController {
                 }
                 break;
             case 'down_footer':
-                if ($this->isDefaultNode()) {
+                if ($this->isMasterNode()) {
                     Model\Post::down($id, 'footer');
                     return $this->redirect('/admin/blog/footer');
                 } else {
@@ -392,7 +454,7 @@ class BlogSubController extends AbstractSubController {
                 }
                 break;
             case 'add_footer':
-                if ($this->isDefaultNode()) {
+                if ($this->isMasterNode()) {
                     // siguiente orden
                     $next = Model\Post::next('footer');
                     $post = new Model\Post(array(
@@ -410,7 +472,7 @@ class BlogSubController extends AbstractSubController {
                 return $this->redirect('/admin/blog');
                 break;
             case 'remove_footer':
-                if ($this->isDefaultNode()) {
+                if ($this->isMasterNode()) {
                     // se quita del footer solamente
                     if (Model\Post::remove($id, 'footer')) {
                         Message::info('Entrada quitada del footer correctamente');
