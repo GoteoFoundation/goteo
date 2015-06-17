@@ -12,8 +12,8 @@ use Goteo\Model;
 abstract class AbstractSubController {
     protected $request;
     protected $node;
-    protected $url;
     protected $filters;
+    protected static $url;
     // Main label
     static protected $label = 'Abstract admin controller';
     // Labels for methods
@@ -32,7 +32,6 @@ abstract class AbstractSubController {
     public function __construct($node, Request $request) {
         $this->request = $request;
         $this->node = $node;
-        $this->url = '/admin/' . static::getId();
     }
 
 
@@ -60,6 +59,16 @@ abstract class AbstractSubController {
     public static function getLabel($action = null) {
         if($action) return static::$labels[$action];
         return static::$label;
+    }
+    /**
+     * Returns the url for this controller
+     * @param  string $action if label is specified returns the url for the action instead of the general one
+     */
+    public function getUrl($action = null, $id = null) {
+        $url = '/admin/' . static::getId();
+        if($action) $url .= '/' .$action; // TODO: check if method exists
+        if($id) $url .= '/' .$id;
+        return $url;
     }
 
     /**

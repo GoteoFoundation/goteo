@@ -465,8 +465,8 @@ namespace Goteo\Controller {
 
             // get working node
             $nodes = array();
-            foreach($user->getAdminNodes() as $id => $node) {
-                $nodes[$id] = $node->name;
+            foreach($user->getAdminNodes() as $node_id => $node) {
+                $nodes[$node_id] = $node->name;
             }
             $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
             //if need to change the current node
@@ -476,10 +476,22 @@ namespace Goteo\Controller {
             }
 
             $menu = array();
+            $breadcrumb = array(['Admin', '/admin']);
             // Build menu from subcontrollers for the current user/node
             foreach(self::$subcontrollers as $class) {
-                if($class::isAllowed($user, $node))
+                if($class::isAllowed($user, $node)) {
                     $menu[$class::getId()] = $class::getLabel();
+                    if($option === $class::getId()) {
+                        // add option
+                        $breadcrumb[] = [$class::getLabel(), $class::getUrl()];
+                        // add action
+                        if($action)
+                            $breadcrumb[] = [
+                                    $class::getLabel($action) . ($id ? " [$id]" : ''),
+                                    ($action === 'list' || $id) ? '' : $class::getUrl($action, $id)
+                                ];
+                    }
+                }
             }
 
             View::getEngine()->useContext('admin/', [
@@ -487,7 +499,7 @@ namespace Goteo\Controller {
                     'admin_menu' => $menu,
                     'admin_node' => $node,
                     'admin_nodes' => $nodes,
-                    'breadcrumb' => self::getBreadCrumb($option, $action, $id)
+                    'breadcrumb' => $breadcrumb
                 ]);
 
             // If menu is not allowed, throw exception
@@ -516,89 +528,8 @@ namespace Goteo\Controller {
             //feed by default for someones
             if($nodes = $user->getAdminNodes()) {
                 //TODO: allow Feed to handle multiple nodes
-                // $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, current($nodes));
                 $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, Session::get('admin_node'));
-
             }
-
-//             foreach(self::$options as $controller => $ops) {
-//                 $cont = 'Goteo\Controller\Admin\\' . \strtoCamelCase($controller) . 'SubController';
-//                 $file =__DIR__ . '/Admin/' . \strtoCamelCase($controller) . 'SubController.php';
-//                 if(!is_file($file))
-//                     $file = dirname(dirname(dirname(__DIR__))) . '/extend/goteo/src/Goteo/Controller/Admin/' . \strtoCamelCase($controller) . 'SubController.php';
-
-//                 if(!is_file($file)) die("kk $file");
-//                 echo "$file\n";
-//                 $code = file_get_contents($file);
-//                 foreach($ops['actions'] as $action => $parts)
-//                 {
-
-// // $func = '
-// //     public function ' . $action . 'Action($id = null, $subaction = null) {
-// //         // Action code should go here instead of all in one process funcion
-// //         return call_user_func_array(array($this, \'process\'), array(\'' . $action . '\', $id, $this->filters, $subaction));
-// //     }
-// // ';
-// //                     if(strpos($code, "function {$action}Action(") === false) {
-// //                         $code = str_replace(
-// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {",
-// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {\n$func",
-// //                             $code
-// //                             );
-// //                     }
-// //                 }
-// //                 if($ops['filters']) {
-// //                     $func = '
-// //     protected $filters = ' . var_export($ops['filters'], true) . ';
-// // ';
-// //                     if(strpos($code, 'protected filters = ') === false) {
-// //                         $code = str_replace(
-// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {",
-// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {\n$func",
-// //                             $code
-// //                             );
-// //                     }
-// //
-// //
-// //                     if($ops['label']) {
-// //                     $func = '
-// //     protected $label = ' . var_export($ops['label'], true) . ';
-// // ';
-// //                     if(strpos($code, 'protected $label = ') === false) {
-// //                         $code = str_replace(
-// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {",
-// //                             "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {\n$func",
-// //                             $code
-// //                             );
-// //                     }
-// //                     }
-// //                     if($parts['label']) {
-// //                     $labels[$action] = $parts['label'];
-
-// //                     }
-// //                }
-// //                 if($labels) {
-// //                 $func = '
-// //     protected $labels = ' . var_export($labels, true) .  ';
-// // ';
-// //                 if(strpos($code, 'protected $labels = ') === false) {
-// //                     $code = str_replace(
-// //                         "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {",
-// //                         "class " . \strtoCamelCase($controller) . "SubController extends AbstractSubController {\n$func",
-// //                         $code
-// //                         );
-// //                 }
-//                 }
-//                 $code = str_replace('    protected $label', '    static protected $label', $code);
-//                 $code = str_replace('    protected $labels', '    static protected $labelss', $code);
-//                 if($code !== file_get_contents($file)) {
-//                     // file_put_contents($file, $code);
-//                     echo $code;
-//                     // die;
-//                 }
-//             }
-//             die;
-
             //default admin dashboard (nothing!)
             return new Response(View::render('admin/default', $ret));
 
@@ -645,6 +576,8 @@ namespace Goteo\Controller {
                     'content' => \Goteo\Core\View::get($old_path, $ret)
                     ]));
             }
+
+            // If the subcontroller just specifies a template to render let's do it
             if ($ret['template']) {
                   return new Response(View::render($ret['template'], $ret));
             }
@@ -652,44 +585,6 @@ namespace Goteo\Controller {
             //default admin dashboard (nothing!)
             return new Response(View::render('admin/default', $ret));
 
-        }
-
-        /**
-         * Gets an array to mount a breadcrumb from the current admin zone
-         * @param  string $option [description]
-         * @param  string $action [description]
-         * @param  [type] $id     [description]
-         * @return [type]         [description]
-         */
-        public static function getBreadCrumb($option = '', $action = 'list', $id = null) {
-            // Top level
-            $parts = array(['Admin', '/admin']);
-            // if option defined lets add the parent
-            if ($option && isset(self::$options[$option])) {
-                $o = self::$options[$option];
-                // si es una accion no catalogada, mostramos la lista
-                if (!array_key_exists($action, $o['actions'])) {
-                    $action = '';
-                    $id = null;
-                }
-
-                if ($action === 'list') {
-                    $parts[] = [ $o['label'] ]; // no link needed, default action
-                } else {
-
-                    $parts[] = [ $o['label'], '/admin/' . $option]; // link to parent
-
-                    // Add current action
-                    if ($action && isset($o['actions'][$action])) {
-                        $a = $o['actions'][$action];
-                        // si es de item , añadir el id (si viene)
-                        $parts[] = [ $a['label'] . ( $id ? ' ' . $id : '') ]; // no link
-                    }
-
-                }
-            }
-
-            return $parts;
         }
 
         /*

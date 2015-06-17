@@ -83,7 +83,7 @@ class SponsorsSubController extends AbstractSubController {
 
             if ($item->save($errors)) {
                 Message::info('Datos grabados correctamente');
-                return $this->redirect($this->url);
+                return $this->redirect(static::getUrl());
             } else {
                 Message::error('No se han podido grabar los datos. ' . implode(', ', $errors));
             }
@@ -95,7 +95,7 @@ class SponsorsSubController extends AbstractSubController {
             'template' => 'admin/generic_edit',
             'data' => $item,
             'form' => array(
-                'action' => $this->url . "/edit/$id",
+                'action' => static::getUrl('edit', $id),
                 'submit' => array(
                     'name' => 'update',
                     'label' => Text::get('regular-save')
@@ -148,7 +148,7 @@ class SponsorsSubController extends AbstractSubController {
             'template' => 'admin/generic_edit',
             'data' => (object) array('order' => Sponsor::next($this->node), 'node' => $this->node ),
             'form' => array(
-                'action' => $this->url . '/edit',
+                'action' => static::getUrl('edit'),
                 'submit' => array(
                     'name' => 'update',
                     'label' => 'Añadir'
@@ -209,19 +209,19 @@ class SponsorsSubController extends AbstractSubController {
                 'down' => '',
                 'remove' => ''
             ),
-            'url' => $this->url
+            'url' => static::getUrl()
         );
 
     }
 
     public function upAction($id = null, $subaction = null) {
         Sponsor::up($id, $this->node);
-        return $this->redirect($this->url);
+        return $this->redirect(static::getUrl());
     }
 
     public function downAction($id = null, $subaction = null) {
         Sponsor::down($id, $this->node);
-        return $this->redirect($this->url);
+        return $this->redirect(static::getUrl());
     }
 
     public function removeAction($id = null, $subaction = null) {
@@ -230,7 +230,7 @@ class SponsorsSubController extends AbstractSubController {
         } else {
             Message::info('No se ha podido eliminar el registro');
         }
-        return $this->redirect($this->url);
+        return $this->redirect(static::getUrl());
     }
 
 }
