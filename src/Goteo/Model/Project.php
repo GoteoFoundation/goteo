@@ -437,6 +437,10 @@ namespace Goteo\Model {
                 // label
                 $project->nodeData->label = Image::get($project->node_label);
 
+                 //para diferenciar el único nodo de los canales
+                if($project->node=='barcelona')
+                    $project->nodeData->type='node';
+
                 if (isset($project->media)) {
                     $project->media = new Project\Media($project->media);
                 }
