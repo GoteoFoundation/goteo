@@ -140,7 +140,7 @@ class StoriesSubController extends AbstractSubController {
                         'items' => $items,
                         'autocomplete' => true
                 );
-                break;
+
             case 'edit':
                 // datos del elemento
                 $story = Model\Stories::get($id);
@@ -155,20 +155,12 @@ class StoriesSubController extends AbstractSubController {
                         'items' => $items,
                         'autocomplete' => true
                 );
-                break;
+
                 case 'preview':
                         // datos del elemento
                         $story = Model\Stories::get($id);
 
-                        return new \Goteo\Core\View(
-                            'admin/stories/preview.html.php',
-                            array(
-                                'story' =>$story,
-                                'action' => 'preview'
-
-                            )
-                        );
-                        break;
+                        return $this->response('admin/stories/preview', ['story' =>$story]);
         }
 
         $storyed = Model\Stories::getList($node);

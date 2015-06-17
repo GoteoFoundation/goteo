@@ -11,6 +11,9 @@ use Goteo\Library\Tpv,
 
 class AccountsSubController extends AbstractSubController {
 
+    public function listAction($id, $filters) {
+        return $this->process('list', $id, $filters);
+    }
     public function process ($action = 'list', $id = null, $filters = array()) {
 
         $errors = array();
