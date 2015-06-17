@@ -8,7 +8,7 @@ $categories  = $this->categories;
         <p class="title"><?= $this->text('node-side-searcher-bycategory') ?></p>
         <ul>
             <?php foreach ($categories as $cat=>$catData) : ?>
-            <li><a href="<?= 'category-' . $cat ?>" class="show_cat"><?= $catData['name'] ?></a></li>
+            <li><a href="<?= $URL.'/channel/'.$this->channel->id.'/category/'.$cat.'#content' ?>" class="show_cat"><?= $catData ?></a></li>
             <?php endforeach; ?>
         </ul>
     </div>

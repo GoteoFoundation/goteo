@@ -2631,7 +2631,7 @@ namespace Goteo\Model {
          * @param $pages int
          * @return: array of Project
          */
-        public static function published($type = 'all', $limit = 9, $page = 1, &$pages = 0)
+        public static function published($type = 'all', $limit = 9, $page = 1, &$pages = 0, $node=NULL)
         {
             $lang = Lang::current();
             $different_select='';
@@ -2641,7 +2641,13 @@ namespace Goteo\Model {
             if (\Goteo\Application\Config::isNode()) {
                 $sqlFilter = " AND project.node = :node";
                 $values[':node'] = Config::get('current_node');
-            } else {
+            } 
+            elseif(!is_null($node))
+            {
+                $sqlFilter = " AND project.node = :node";
+                $values[':node'] = $node;
+            }
+            else {
                 $sqlFilter = "";
             }
 

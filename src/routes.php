@@ -225,10 +225,21 @@ $routes->add('images-old', new Route(
 
 ///// CHANNELS /////
 
+$routes->add('channel-category-projects', new Route(
+    '/channel/{id}/category/{category}',
+    array('_controller' => 'Goteo\Controller\ChannelController::filterCategoryAction')
+));
+
+$routes->add('channel-filter-projects', new Route(
+    '/channel/{id}/{type}',
+    array('_controller' => 'Goteo\Controller\ChannelController::filterTypeAction')
+));
+
 $routes->add('channel', new Route(
     '/channel/{id}',
     array('_controller' => 'Goteo\Controller\ChannelController::indexAction')
 ));
+
 
 $routes->add('channel-project-create', new Route(
     '/channel/{id}/create',

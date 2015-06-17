@@ -6,7 +6,7 @@
 foreach ($this->categories as $cat => $catData) : ?>
 <div id="channel-projects-category-<?= $cat ?>" class="content_widget channel-projects rounded-corners" style="display: none;">
 
-    <h2><?= $this->text('channel-side-searcher-bycategory') . ': ' . $catData['name'] ?>
+    <h2><?= $this->text('channel-side-searcher-by-category') . ': ' . $catData['name'] ?>
     <span class="line"></span>
     </h2>
 
