@@ -7,11 +7,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
 use Goteo\Application\View;
-use Goteo\Model\User;
+use Goteo\Model;
 
 abstract class AbstractSubController {
     protected $request;
     protected $node;
+    protected $url;
     protected $filters;
     // Main label
     static protected $label = 'Abstract admin controller';
@@ -31,6 +32,7 @@ abstract class AbstractSubController {
     public function __construct($node, Request $request) {
         $this->request = $request;
         $this->node = $node;
+        $this->url = '/admin/' . static::getId();
     }
 
 
@@ -64,15 +66,21 @@ abstract class AbstractSubController {
      * Returns if this class can be administred by the user in the node
      * Overwrite this function to more specific control
      */
-    public static function isAllowed(User $user, $node) {
+    public static function isAllowed(Model\User $user, $node) {
         foreach($user->getAdminNodes() as $id => $user_node) {
-            // Roles must be specified
-            // if($node$user->hasRole($user_node->role)
+            $has_required_role = in_array($user_node->role, static::$allowed_roles); // static refers to the called class
+            // no id means all nodes allowed
+            if(empty($id)) {
+                // only check if the user has the required role for this module
+                return $has_required_role;
+            }
+            // Ok if has the role and is the same node
+            if($node === $id && $has_required_role) return true;
         }
-        return true;
+        return false;
     }
 
-    // public static function getMenu(User $user, $node) {
+    // public static function getMenu(Model\User $user, $node) {
     //     $menu = array();
     //     foreach(static::$labels as $action => $label) {
     //         // TODO: permission check

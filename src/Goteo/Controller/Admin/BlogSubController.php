@@ -10,30 +10,32 @@ use Goteo\Library\Text,
 
 class BlogSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Nueva Entrada',
-  'move' => 'Reubicando el aporte',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe de proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Entrada',
-  'translate' => 'Traduciendo Entrada',
-  'reorder' => 'Ordenando las entradas en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nueva Entrada',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Entrada',
+      'translate' => 'Traduciendo Entrada',
+      'reorder' => 'Ordenando las entradas en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+    );
 
 
-static protected $label = 'Blog';
+    static protected $label = 'Blog';
 
 
-    protected $filters = array (
-  'show' => 'owned',
-  'blog' => '',
-);
+        protected $filters = array (
+      'show' => 'owned',
+      'blog' => '',
+    );
+
+    static protected $allowed_roles = array('superadmin', 'root');
 
 
     public function footerAction($id = null, $subaction = null) {

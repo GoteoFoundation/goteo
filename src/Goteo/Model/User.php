@@ -934,7 +934,7 @@ namespace Goteo\Model {
                 ";
 
             if ($availableonly) {
-                $sql .= " WHERE id NOT IN (SELECT distinct(user) FROM user_node)";
+                $sql .= " WHERE ISNULL(user_role.node_id)";
             }
 
             $sql .= " ORDER BY user.name ASC
@@ -1072,42 +1072,47 @@ namespace Goteo\Model {
             return false;
         }
 
-
+        /**
+         * Returns all nodes administrable by the user along with the role in that node
+         * @return array Array of nodes containing a simple object of node, name, role property
+         */
         public function getAdminNodes() {
             if(is_array($this->admin_nodes)) return $this->admin_nodes;
             $this->admin_nodes = array();
 
-            //assign all nodes if none specified and is a root
-            if($this->hasRole('root')) {
-                $query = self::query("
-                SELECT
-                    node.id AS `node`,
-                    node.name AS `name`,
-                    'root' AS `role`
-                FROM node
-                ", array($this->id));
-            }
-            else {
-                $query = self::query("
-                SELECT
-                    user_node.node AS `node`,
+            $query = self::query("
+                SELECT DISTINCT
+                    user_role.node_id AS `node`,
                     node.name AS `name`,
                     user_role.role_id AS `role`
-                FROM user_node
-                INNER JOIN node
-                    ON node.id = user_node.node
-                INNER JOIN user_role
-                    ON  user_role.user_id = user_node.user
-                    AND user_role.role_id IN ('admin', 'superadmin')
-                WHERE user_node.user = ?
+                FROM user_role
+                LEFT JOIN node
+                    ON node.id = user_role.node_id
+                WHERE
+                        user_role.role_id IN ('admin', 'superadmin', 'root')
+                    AND user_role.user_id = ?
                 ", array($this->id));
-            }
 
             if($query) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $node) {
-                    $this->admin_nodes[$node->node] = $node;
+                    //assign all nodes if node_id not specified
+                    if($node->node) {
+                        $this->admin_nodes[$node->node] = $node;
+                    } else {
+                        $query = self::query("
+                            SELECT
+                                node.id AS `node`,
+                                node.name AS `name`
+                            FROM node
+                            ", array($this->id));
+                        foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $n) {
+                            $n->role = $node->role;
+                            $this->admin_nodes[$n->node] = $n;
+                        }
+                    }
                 }
             }
+            // print_r($this->admin_nodes);
             return $this->admin_nodes;
         }
 

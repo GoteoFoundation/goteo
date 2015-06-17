@@ -4,6 +4,7 @@ namespace Goteo\Controller;
 
 use Goteo\Application\App;
 use Goteo\Application\View;
+use Goteo\Application\Message;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,10 @@ class ErrorController extends \Goteo\Core\Controller {
         $requestUri = $request->getRequestUri();
 
         $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
-
+        // if is a POST let's show a message
+        if($request->getMethod() === 'POST') {
+            Message::error("[$requestUri] has been redirected to [$url]. Please remove final slash in the action form!");
+        }
         // return new RedirectResponse($url, 301); //permanent ?
         return new RedirectResponse($url, 302);
     }

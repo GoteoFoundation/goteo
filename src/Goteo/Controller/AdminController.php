@@ -458,7 +458,10 @@ namespace Goteo\Controller {
         private static function checkCurrentUser(Request $request, $option = null, $action = null, $id = null) {
             //refresh permission status
             Model\User::flush();
-            $user = Session::getUser();
+            if ( ! $user = Session::getUser() ) {
+                throw new ControllerAccessDeniedException("Not logged!");
+            }
+
 
             // get working node
             $nodes = array();
@@ -502,7 +505,13 @@ namespace Goteo\Controller {
         /** Default index action */
         public function indexAction(Request $request) {
             $ret = array();
-            $user = self::checkCurrentUser($request);
+            try {
+               $user = self::checkCurrentUser($request);
+            } catch(ControllerAccessDeniedException $e) {
+                // Instead of the default denied page, redirect to login
+                Message::error($e->getMessage());
+                return new RedirectResponse('/user/login');
+            }
 
             //feed by default for someones
             if($nodes = $user->getAdminNodes()) {
@@ -603,20 +612,21 @@ namespace Goteo\Controller {
             try {
                 $user = self::checkCurrentUser($request, $option, $action, $id);
                 if( ! class_exists($SubC) ) {
-                    throw new ControllerAccessDeniedException("Class [$SubC] not found");
+                    return new Response(View::render('admin/denied', ['msg' => "Class [$SubC] not found"]), Response::HTTP_BAD_REQUEST);
                 }
                 $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
                 $controller = new $SubC($node, $request);
                 $method = $action . 'Action';
                 if( ! method_exists($controller, $method) ) {
-                    throw new ControllerAccessDeniedException("Method [$method()] not found for class [$SubC]");
+                    return new Response(View::render('admin/denied', ['msg' => "Method [$method()] not found for class [$SubC]"]), Response::HTTP_BAD_REQUEST);
                 }
                 $controller->setFilters(self::setFilters($option));
                 $ret = $controller->$method($id, $subaction);
 
             } catch(ControllerAccessDeniedException $e) {
-                // Instead of the default denied page, let's shows a custom admin page
-                return new Response(View::render('admin/denied', ['msg' => $e->getMessage()]), Response::HTTP_BAD_REQUEST);
+                // Instead of the default denied page, redirect to login
+                Message::error($e->getMessage());
+                return new RedirectResponse('/admin');
             }
 
             //Return the response if the subcontroller is a handy guy
@@ -634,6 +644,9 @@ namespace Goteo\Controller {
                 return new Response(View::render('admin/simple', [
                     'content' => \Goteo\Core\View::get($old_path, $ret)
                     ]));
+            }
+            if ($ret['template']) {
+                  return new Response(View::render($ret['template'], $ret));
             }
 
             //default admin dashboard (nothing!)

@@ -10,37 +10,38 @@ use Goteo\Application\Message,
 
 class PagesSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Nueva Página',
-  'move' => 'Reubicando el aporte',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe de proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Página',
-  'translate' => 'Traduciendo Página',
-  'reorder' => 'Ordenando las entradas en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-  'projects' => 'Gestionando proyectos de la convocatoria',
-  'admins' => 'Asignando administradores del Canal',
-  'posts' => 'Entradas de blog en la convocatoria',
-  'conf' => 'Configurando la convocatoria',
-  'dropconf' => 'Gestionando parte económica de la convocatoria',
-  'keywords' => 'Palabras clave',
-  'view' => 'Gestión de retornos',
-  'info' => 'Información de contacto',
-  'send' => 'Comunicación enviada',
-  'init' => 'Iniciando un nuevo envío',
-  'activate' => 'Iniciando envío',
-  'detail' => 'Viendo destinatarios',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nueva Página',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Página',
+      'translate' => 'Traduciendo Página',
+      'reorder' => 'Ordenando las entradas en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Gestionando proyectos de la convocatoria',
+      'admins' => 'Asignando administradores del Canal',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configurando la convocatoria',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+      'keywords' => 'Palabras clave',
+      'view' => 'Gestión de retornos',
+      'info' => 'Información de contacto',
+      'send' => 'Comunicación enviada',
+      'init' => 'Iniciando un nuevo envío',
+      'activate' => 'Iniciando envío',
+      'detail' => 'Viendo destinatarios',
+    );
 
 
-static protected $label = 'Páginas';
+    static protected $label = 'Páginas';
 
+    static protected $allowed_roles = array('superadmin', 'root');
 
     public function translateAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
