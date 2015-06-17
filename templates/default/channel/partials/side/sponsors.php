@@ -5,7 +5,7 @@ $sponsors = $this->sponsors;
 ?>
 <script type="text/javascript">
     $(function(){
-        $('#slides_sponsor').slides({
+        $('#slides_side_sponsor').slides({
             container: 'slides_container',
             effect: 'fade',
             crossfade: false,
@@ -15,7 +15,7 @@ $sponsors = $this->sponsors;
         });
     });
 </script>
-<div id="slides_sponsor" class="side_widget sponsors">
+<div id="slides_side_sponsor" class="side_widget sponsors">
     <p class="title">
         <span class="line"></span>
         <?= $this->text('node-header-sponsorby'); ?>
