@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Gestion de usuarios
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Text,
@@ -7,6 +9,7 @@ use Goteo\Library\Text,
 	Goteo\Library\Template,
     Goteo\Application\Message,
     Goteo\Application\Session,
+    Goteo\Application\Config,
     Goteo\Application\Lang,
     Goteo\Model;
 
@@ -71,6 +74,15 @@ class UsersSubController extends AbstractSubController {
       'type' => '',
     );
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node or superadmins allowed here
+        if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function moveAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -251,7 +263,7 @@ class UsersSubController extends AbstractSubController {
                         $log = new Feed();
                         $log->setTarget($user->id, 'user');
                         $log->populate('Operación sobre usuario (admin)', '/admin/users', \vsprintf('El admin %s ha %s del usuario %s', array(
-                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                            Feed::item('user', $this->user->name, $this->user->id),
                             Feed::item('relevant', 'Tocado ' . implode (' y ', $tocado)),
                             Feed::item('user', $user->name, $user->id)
                         )));
@@ -350,7 +362,7 @@ class UsersSubController extends AbstractSubController {
                     $log->setTarget($user->id, 'user');
                     $log->populate('Operación sobre usuario (admin)', '/admin/users',
                         \vsprintf($log_text, array(
-                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                            Feed::item('user', $this->user->name, $this->user->id),
                             Feed::item('relevant', $log_action),
                             Feed::item('user', $user->name, $user->id)
                     )));
@@ -440,7 +452,7 @@ class UsersSubController extends AbstractSubController {
                         $log->setTarget($user->id, 'user');
                         $log->populate('User cambiado de nodo (admin)', '/admin/users',
                             \vsprintf($log_text, array(
-                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                                Feed::item('user', $this->user->name, $this->user->id),
                                 Feed::item('user', $user->name, $user->id),
                                 Feed::item('user', $nodes[$this->getPost('node')])
                         )));

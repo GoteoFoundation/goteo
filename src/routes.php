@@ -286,7 +286,7 @@ $routes->add('admin-action', new Route(
 \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RecentSubController');
 \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ReviewsSubController');
 \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RewardsSubController');
-\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SendedSubController');
+\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SentSubController');
 \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SponsorsSubController');
 \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TagsSubController');
 \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TemplatesSubController');

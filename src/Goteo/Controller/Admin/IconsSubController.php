@@ -89,7 +89,7 @@ static protected $label = 'Tipos de Retorno';
                         $log = new Feed();
                         $log->populate('modificacion de tipo de retorno/recompensa (admin)', '/admin/icons',
                             \vsprintf("El admin %s ha %s el tipo de retorno/recompensa %s", array(
-                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                                Feed::item('user', $this->user->name, $this->user->id),
                                 Feed::item('relevant', 'Modificado'),
                                 Feed::item('project', $icon->name)
                         )));

@@ -1073,13 +1073,53 @@ namespace Goteo\Model {
         }
 
         /**
+         * Returns the current role in node
+         */
+        public function getNodeRole($node) {
+            $roles = $this->getAllNodeRoles();
+            if(array_key_exists($node, $roles)) return $roles[$node]->role;
+            return false;
+        }
+        /**
+         * Returns if a user has certain role in node
+         * By default checks if its a kind of admin
+         * @param  string  $node  the node to check
+         * @param  array|string   $roles if is an array check if has some of the roles specified
+         *                               if is a string, checks that role only
+         * @return boolean        return true if has role
+         */
+        public function hasRoleInNode($node, $roles = array('admin','superadmin','root')) {
+            if(!is_array($roles)) $roles = [ (string) $roles ];
+            foreach($this->getAllNodeRoles() as $id => $n) {
+                if($node === $n->node && in_array($n->role, $roles)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
          * Returns all nodes administrable by the user along with the role in that node
          * @return array Array of nodes containing a simple object of node, name, role property
          */
         public function getAdminNodes() {
             if(is_array($this->admin_nodes)) return $this->admin_nodes;
             $this->admin_nodes = array();
+            foreach($this->getAllNodeRoles() as $id => $node) {
+                if(in_array($node->role, array('admin', 'superadmin', 'root'))) {
+                    $this->admin_nodes[$id] = $node;
+                }
+            }
+            return $this->admin_nodes;
+        }
 
+        /**
+         * Returns an array of all nodes and roles in each one for the user
+         * @return array Array of nodes containing a simple object of node, name, role property
+         */
+        public function getAllNodeRoles() {
+            if(is_array($this->all_roles_nodes)) return $this->all_roles_nodes;
+            $this->all_roles_nodes = array();
             $query = self::query("
                 SELECT DISTINCT
                     user_role.node_id AS `node`,
@@ -1089,15 +1129,14 @@ namespace Goteo\Model {
                 LEFT JOIN node
                     ON node.id = user_role.node_id
                 WHERE
-                        user_role.role_id IN ('admin', 'superadmin', 'root')
-                    AND user_role.user_id = ?
+                    user_role.user_id = ?
                 ", array($this->id));
 
             if($query) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $node) {
                     //assign all nodes if node_id not specified
                     if($node->node) {
-                        $this->admin_nodes[$node->node] = $node;
+                        $this->all_roles_nodes[$node->node] = $node;
                     } else {
                         $query = self::query("
                             SELECT
@@ -1107,35 +1146,13 @@ namespace Goteo\Model {
                             ", array($this->id));
                         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $n) {
                             $n->role = $node->role;
-                            $this->admin_nodes[$n->node] = $n;
+                            $this->all_roles_nodes[$n->node] = $n;
                         }
                     }
                 }
             }
-            // print_r($this->admin_nodes);
-            return $this->admin_nodes;
-        }
-
-        /**
-         * Comprueba si el usuario es administrador
-         * @param   type varchar(50)  $id   Usuario admin
-         * @return  type bool true/false
-         */
-        public static function isAdmin ($id) {
-
-            $sql = "
-                SELECT
-                    user.id as id
-                FROM    user
-                INNER JOIN user_role
-                    ON  user_role.user_id = user.id
-                    AND user_role.role_id IN ('admin', 'superadmin')
-                WHERE user.id = :id
-                LIMIT 1
-                ";
-            $query = static::query($sql, array(':id' => $id));
-            $res = $query->fetchColumn();
-            return ($res == $id);
+            // print_r($this->all_roles_nodes);die;
+            return $this->all_roles_nodes;
         }
 
 		/**

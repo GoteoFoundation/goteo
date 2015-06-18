@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Seleccion de proyectos destacados
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Feed,
@@ -9,43 +11,43 @@ use Goteo\Library\Feed,
 
 class PromoteSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Nuevo Destacado',
-  'move' => 'Moviendo a otro Nodo el proyecto',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe Financiero del proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Destacado',
-  'translate' => 'Traduciendo Destacado',
-  'reorder' => 'Ordenando los padrinos en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-  'projects' => 'Gestionando proyectos de la convocatoria',
-  'admins' => 'Asignando administradores del Canal',
-  'posts' => 'Entradas de blog en la convocatoria',
-  'conf' => 'Configuración de campaña del proyecto',
-  'dropconf' => 'Gestionando parte económica de la convocatoria',
-  'keywords' => 'Palabras clave',
-  'view' => 'Apadrinamientos',
-  'info' => 'Información de contacto',
-  'send' => 'Comunicación enviada',
-  'init' => 'Iniciando un nuevo envío',
-  'activate' => 'Iniciando envío',
-  'detail' => 'Viendo destinatarios',
-  'dates' => 'Fechas del proyecto',
-  'accounts' => 'Cuentas del proyecto',
-  'images' => 'Imágenes del proyecto',
-  'assign' => 'Asignando a una Convocatoria el proyecto',
-  'open_tags' => 'Asignando una agrupación al proyecto',
-  'rebase' => 'Cambiando Id de proyecto',
-  'consultants' => 'Cambiando asesor del proyecto',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nuevo Destacado',
+      'move' => 'Moviendo a otro Nodo el proyecto',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe Financiero del proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Destacado',
+      'translate' => 'Traduciendo Destacado',
+      'reorder' => 'Ordenando los padrinos en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Gestionando proyectos de la convocatoria',
+      'admins' => 'Asignando administradores del Canal',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configuración de campaña del proyecto',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+      'keywords' => 'Palabras clave',
+      'view' => 'Apadrinamientos',
+      'info' => 'Información de contacto',
+      'send' => 'Comunicación enviada',
+      'init' => 'Iniciando un nuevo envío',
+      'activate' => 'Iniciando envío',
+      'detail' => 'Viendo destinatarios',
+      'dates' => 'Fechas del proyecto',
+      'accounts' => 'Cuentas del proyecto',
+      'images' => 'Imágenes del proyecto',
+      'assign' => 'Asignando a una Convocatoria el proyecto',
+      'open_tags' => 'Asignando una agrupación al proyecto',
+      'rebase' => 'Cambiando Id de proyecto',
+      'consultants' => 'Cambiando asesor del proyecto',
+    );
 
 
-static protected $label = 'Proyectos destacados';
+    static protected $label = 'Proyectos destacados';
 
 
     public function translateAction($id = null, $subaction = null) {
@@ -106,7 +108,7 @@ static protected $label = 'Proyectos destacados';
                         $log->setTarget($projectData->id);
                         $log->populate('nuevo proyecto destacado en portada (admin)', '/admin/promote',
                             \vsprintf('El admin %s ha %s el proyecto %s', array(
-                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                                Feed::item('user', $this->user->name, $this->user->id),
                                 Feed::item('relevant', 'Destacado en portada', '/'),
                                 Feed::item('project', $projectData->name, $projectData->id)
                         )));

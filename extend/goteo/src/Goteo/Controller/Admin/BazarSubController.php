@@ -1,30 +1,43 @@
 <?php
-
+/**
+ * Gestion del catalogo para navidad
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Feed,
-	Goteo\Application\Message,
+    Goteo\Application\Message,
+	Goteo\Application\Config,
     Goteo\Model;
 
 class BazarSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Nuevo Elemento',
-  'move' => 'Reubicando el aporte',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe de proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Elemento',
-  'translate' => 'Traduciendo Elemento',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nuevo Elemento',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Elemento',
+      'translate' => 'Traduciendo Elemento',
+    );
 
 
-static protected $label = 'Gestión del Catálogo';
+    static protected $label = 'Gestión del Catálogo';
 
+
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node allowed here
+        if( ! Config::isMasterNode($node) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function translateAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion

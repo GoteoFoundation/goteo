@@ -3,10 +3,11 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Message,
+    Goteo\Application\Config,
     Goteo\Application\Session,
 	Goteo\Application\Lang,
 	Goteo\Library\Feed,
-	Goteo\Library\Page;
+    Goteo\Library\Page;
 
 class PagesSubController extends AbstractSubController {
 
@@ -41,7 +42,15 @@ class PagesSubController extends AbstractSubController {
 
     static protected $label = 'Páginas';
 
-    static protected $allowed_roles = array('superadmin', 'root');
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node or superadmins allowed here
+        if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function translateAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -121,7 +130,7 @@ class PagesSubController extends AbstractSubController {
                         }
                         $log->populate('modificacion de página institucional (admin)', '/admin/pages',
                             \vsprintf("El admin %s ha %s la página institucional %s", array(
-                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                            Feed::item('user', $this->user->name, $this->user->id),
                             Feed::item('relevant', 'Modificado'),
                             Feed::item('relevant', $page->name, $page->url)
                         )));

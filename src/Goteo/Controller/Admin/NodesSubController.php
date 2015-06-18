@@ -1,9 +1,12 @@
 <?php
-
+/**
+ * Gestion de canales/nodos
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Feed,
     Goteo\Application\Message,
+    Goteo\Application\Config,
     Goteo\Model;
 
     /**
@@ -43,12 +46,22 @@ class NodesSubController extends AbstractSubController {
     static protected $label = 'Canales';
 
 
-        protected $filters = array (
-      'status' => '',
-      'admin' => '',
-      'name' => '',
-    );
+    protected $filters = array (
+          'status' => '',
+          'admin' => '',
+          'name' => '',
+        );
 
+
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node and superadmins allowed here
+        if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function adminsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -102,7 +115,7 @@ class NodesSubController extends AbstractSubController {
                         $log = new Feed();
                         $log->setTarget($node->id, 'node');
                         $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', $this->user->name, $this->user->id),
                                     Feed::item('relevant', $txt_log),
                                     Feed::item('project', $node->name))
                                 ));
@@ -142,7 +155,7 @@ class NodesSubController extends AbstractSubController {
                         $log = new Feed();
                         $log->setTarget($node->id, 'node');
                         $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
-                                    Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                                    Feed::item('user', $this->user->name, $this->user->id),
                                     Feed::item('relevant', $txt_log),
                                     Feed::item('project', $node->name))
                                 ));

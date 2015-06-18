@@ -123,7 +123,7 @@ static protected $label = 'Revisiones';
                                 $log->setTarget($project->id);
                                 $log->populate('valoración iniciada (admin)', '/admin/reviews',
                                     \vsprintf('El admin %s ha %s la valoración de %s', array(
-                                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                                        Feed::item('user', $this->user->name, $this->user->id),
                                         Feed::item('relevant', 'Iniciado'),
                                         Feed::item('project', $project->name, $project->id)
                                 )));
@@ -164,7 +164,7 @@ static protected $label = 'Revisiones';
                     $log->setTarget($review->project);
                     $log->populate('valoración finalizada (admin)', '/admin/reviews',
                         \vsprintf('El admin %s ha dado por %s la valoración de %s', array(
-                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                            Feed::item('user', $this->user->name, $this->user->id),
                             Feed::item('relevant', 'Finalizada'),
                             Feed::item('project', $review->name, $review->project)
                     )));
@@ -215,7 +215,7 @@ static protected $label = 'Revisiones';
                         $log->setTarget($userData->id, 'user');
                         $log->populate('asignar revision (admin)', '/admin/reviews',
                             \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
-                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                                Feed::item('user', $this->user->name, $this->user->id),
                                 Feed::item('relevant', 'Asignado'),
                                 Feed::item('user', $userData->name, $userData->id),
                                 Feed::item('project', $reviewData->name, $reviewData->project)
@@ -252,7 +252,7 @@ static protected $label = 'Revisiones';
                         $log->setTarget($userData->id, 'user');
                         $log->populate('Desasignar revision (admin)', '/admin/reviews',
                             \vsprintf('El admin %s ha %s a %s la revisión de %s', array(
-                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                                Feed::item('user', $this->user->name, $this->user->id),
                                 Feed::item('relevant', 'Desasignado'),
                                 Feed::item('user', $userData->name, $userData->id),
                                 Feed::item('project', $reviewData->name, $reviewData->project)

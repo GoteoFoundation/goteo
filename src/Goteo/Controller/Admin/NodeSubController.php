@@ -47,7 +47,7 @@ class NodeSubController extends AbstractSubController {
      */
     static public function isAllowed(Model\User $user, $node) {
         // Central node not allowed here
-        if(Config::get('node') === $node) return false;
+        if(Config::isMasterNode($node)) return false;
         return parent::isAllowed($user, $node);
     }
 

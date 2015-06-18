@@ -50,7 +50,7 @@ namespace Goteo\Controller {
                         } else {
                             $baja = SEC_URL . '/user/leave/?email=' . $parts[1];
 
-                            if (\Goteo\Application\Config::isNode() && \file_exists('nodesys/' . Config::get('current_node') . '/view/email/default.html.php')) {
+                            if (!\Goteo\Application\Config::isMasterNode() && \file_exists('nodesys/' . Config::get('current_node') . '/view/email/default.html.php')) {
                                 return new View (Config::get('current_node') . '/view/email/default.html.php', array('content'=>$content, 'baja' => $baja));
                             } else {
                                 return new View ('email/goteo.html.php', array('content'=>$content, 'baja' => $baja));

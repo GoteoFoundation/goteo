@@ -24,7 +24,7 @@ include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 ?>
 <style>#recaptcha_widget_div{display:none;}</style>
-<?php if (!Config::isNode()) : ?>
+<?php if (Config::isMasterNode()) : ?>
     <div id="sub-header">
         <div>
             <h2><?php echo $page->description; ?></h2>

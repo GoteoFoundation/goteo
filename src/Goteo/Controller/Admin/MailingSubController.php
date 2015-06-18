@@ -1,7 +1,10 @@
 <?php
-
+/**
+ * Comunicaciones del nodo a sus usuarios
+ */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Config;
 use Goteo\Application\Message,
 	Goteo\Application\Session,
 	Goteo\Library\Feed,
@@ -13,47 +16,56 @@ use Goteo\Application\Message,
 
 class MailingSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Seleccionando destinatarios',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Creando Idea',
-  'move' => 'Reubicando el aporte',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe de proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Escribiendo contenido',
-  'translate' => 'Traduciendo Licencia',
-  'reorder' => 'Ordenando las entradas en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-  'projects' => 'Gestionando proyectos de la convocatoria',
-  'admins' => 'Asignando administradores de la convocatoria',
-  'posts' => 'Entradas de blog en la convocatoria',
-  'conf' => 'Configurando la convocatoria',
-  'dropconf' => 'Gestionando parte económica de la convocatoria',
-  'keywords' => 'Palabras clave',
-  'view' => 'Gestión de retornos',
-  'info' => 'Información de contacto',
-  'send' => 'Comunicación enviada',
-);
+    static protected $labels = array (
+      'list' => 'Seleccionando destinatarios',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Creando Idea',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Escribiendo contenido',
+      'translate' => 'Traduciendo Licencia',
+      'reorder' => 'Ordenando las entradas en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Gestionando proyectos de la convocatoria',
+      'admins' => 'Asignando administradores de la convocatoria',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configurando la convocatoria',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+      'keywords' => 'Palabras clave',
+      'view' => 'Gestión de retornos',
+      'info' => 'Información de contacto',
+      'send' => 'Comunicación enviada',
+    );
 
 
-static protected $label = 'Comunicaciones';
+    static protected $label = 'Comunicaciones';
 
 
-    protected $filters = array (
-  'project' => '',
-  'type' => '',
-  'status' => '-1',
-  'method' => '',
-  'interest' => '',
-  'role' => '',
-  'name' => '',
-  'donant' => '',
-  'comlang' => '',
-);
+        protected $filters = array (
+      'project' => '',
+      'type' => '',
+      'status' => '-1',
+      'method' => '',
+      'interest' => '',
+      'role' => '',
+      'name' => '',
+      'donant' => '',
+      'comlang' => '',
+    );
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node or superadmins allowed here
+        if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function sendAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -297,7 +309,7 @@ static protected $label = 'Comunicaciones';
                     $log = new Feed();
                     $log->populate('comunicación masiva a usuarios (admin)', '/admin/mailing',
                         \vsprintf("El admin %s ha iniciado una %s a %s", array(
-                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                        Feed::item('user', $this->user->name, $this->user->id),
                         Feed::item('relevant', 'Comunicacion masiva'),
                         $_SESSION['mailing']['filters_txt']
                     )));
@@ -309,7 +321,7 @@ static protected $label = 'Comunicaciones';
                     $log = new Feed();
                     $log->populate('comunicación masiva a usuarios (admin)', '/admin/mailing',
                         \vsprintf("El admin %s le ha %s una %s a %s", array(
-                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                        Feed::item('user', $this->user->name, $this->user->id),
                         Feed::item('relevant', 'fallado'),
                         Feed::item('relevant', 'Comunicacion masiva'),
                         $_SESSION['mailing']['filters_txt']

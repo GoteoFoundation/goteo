@@ -1,9 +1,12 @@
 <?php
-
+/**
+ * Gestion de convocatorias
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Text,
     Goteo\Application\Message,
+    Goteo\Application\Config,
 	Goteo\Application\Session,
 	Goteo\Library\Feed,
     Goteo\Model;
@@ -44,6 +47,15 @@ class CallsSubController extends AbstractSubController {
       'order' => '',
     );
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node or superadmins allowed here
+        if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function dropconfAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion

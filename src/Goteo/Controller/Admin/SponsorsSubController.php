@@ -1,10 +1,13 @@
 <?php
-
+/**
+ * Apoyos institucionales
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Text,
 	Goteo\Library\Feed,
-	Goteo\Application\Message,
+    Goteo\Application\Message,
+	Goteo\Application\Config,
     Goteo\Model\Sponsor;
 
 class SponsorsSubController extends AbstractSubController {
@@ -53,6 +56,15 @@ class SponsorsSubController extends AbstractSubController {
 
     static protected $label = 'Apoyos institucionales';
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node or superadmins allowed here
+        if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function editAction($id = null, $subaction = null) {
 

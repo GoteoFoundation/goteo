@@ -947,7 +947,7 @@ namespace Goteo\Model {
                 $sqlFilter .= " WHERE call.status IN ('3', '4')"; // solo aplicacion y campaña
             }
 
-            if (\Goteo\Application\Config::isNode()) {
+            if (!\Goteo\Application\Config::isMasterNode()) {
                 $sqlJoin .= " INNER JOIN campaign
                     ON campaign.call = call.id
                     AND campaign.node = :node

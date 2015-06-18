@@ -5,19 +5,23 @@
 $this->layout('default::admin/layout');
 
 $addons = array('calls', 'campaigns', 'transcalls', 'bazar', 'info', 'invests', 'opentags', 'patron', 'stories', 'tasks', 'reports');
+
+$extra = array_intersect($addons, array_keys($this->admin_menu));
 ?>
 
 <?php $this->section('admin-menu-left') ?>
+<?php if ($extra): ?>
     <fieldset id="menu-goteo-addons">
         <legend>Extra</legend>
         <ul class="ul-admin">
 
-    <?php foreach (array_intersect($addons, array_keys($this->admin_menu)) as $action) : ?>
+    <?php foreach ($extra as $action) : ?>
         <li<?= ($action === $this->option ? ' class="selected"' : '') ?>><a href="/admin/<?= $action ?>"><?= $this->admin_menu[$action] ?></a></li>
     <?php endforeach ?>
 
         </ul>
     </fieldset>
+<?php endif ?>
 
 <?php $this->append() ?>
 

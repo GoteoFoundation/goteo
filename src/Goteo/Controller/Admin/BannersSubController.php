@@ -1,31 +1,43 @@
 <?php
-
+/**
+ * Gestion de banners
+ */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Message,
+use Goteo\Application\Message;
+use Goteo\Application\Config,
 	Goteo\Application\Session,
 	Goteo\Library\Feed,
     Goteo\Model;
 
 class BannersSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Nuevo Banner',
-  'move' => 'Reubicando el aporte',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe de proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Banner',
-  'translate' => 'Traduciendo Banner',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nuevo Banner',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Banner',
+      'translate' => 'Traduciendo Banner',
+    );
 
 
-static protected $label = 'Banners';
+    static protected $label = 'Banners';
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node or superadmins allowed here
+        if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function translateAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -94,7 +106,7 @@ static protected $label = 'Banners';
                     $log->setTarget($projectData->id);
                     $log->populate('nuevo banner de proyecto destacado en portada (admin)', '/admin/promote',
                         \vsprintf('El admin %s ha %s', array(
-                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                        Feed::item('user', $this->user->name, $this->user->id),
                         Feed::item('relevant', 'Publicado un banner', '/')
                     )));
                     $log->doAdmin('admin');

@@ -1,51 +1,63 @@
 <?php
-
+/**
+ * Gestion parcial de aportes para nodos tipo superadmin (barcelona)
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Feed,
-	Goteo\Application\Message,
+    Goteo\Application\Message,
+	Goteo\Application\Config,
     Goteo\Model;
 
 class InvestsSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Creando Idea',
-  'move' => 'Reubicando el aporte',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe de proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Idea',
-  'translate' => 'Traduciendo Idea',
-  'reorder' => 'Ordenando las entradas en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-  'projects' => 'Gestionando proyectos de la convocatoria',
-  'admins' => 'Asignando administradores de la convocatoria',
-  'posts' => 'Entradas de blog en la convocatoria',
-  'conf' => 'Configurando la convocatoria',
-  'dropconf' => 'Gestionando parte económica de la convocatoria',
-  'keywords' => 'Palabras clave',
-  'view' => 'Gestión de retornos',
-  'info' => 'Información de contacto',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Creando Idea',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Idea',
+      'translate' => 'Traduciendo Idea',
+      'reorder' => 'Ordenando las entradas en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Gestionando proyectos de la convocatoria',
+      'admins' => 'Asignando administradores de la convocatoria',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configurando la convocatoria',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+      'keywords' => 'Palabras clave',
+      'view' => 'Gestión de retornos',
+      'info' => 'Información de contacto',
+    );
 
 
-static protected $label = 'Aportes';
+    static protected $label = 'Aportes';
 
 
     protected $filters = array (
-  'methods' => '',
-  'status' => 'all',
-  'investStatus' => 'all',
-  'projects' => '',
-  'name' => '',
-  'calls' => '',
-  'types' => '',
-);
+      'methods' => '',
+      'status' => 'all',
+      'investStatus' => 'all',
+      'projects' => '',
+      'name' => '',
+      'calls' => '',
+      'types' => '',
+    );
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only non-central nodes with superadmins roles are allowed here
+        if( Config::isMasterNode($node) || ! $user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function detailsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion

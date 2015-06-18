@@ -1,31 +1,32 @@
 <?php
 /**
- * Feed de actividad reciente
+ * Historial de envios en el nodo
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Message;
-use Goteo\Application\config,
+use Goteo\Application\Config;
+use Goteo\Model\Node,
 	Goteo\Library\Feed,
-    Goteo\Model;
+	Goteo\Library\Template,
+	Goteo\Library\Mail;
 
-class RecentSubController extends AbstractSubController {
+class SentSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
+      'list' => 'Emails enviados',
       'details' => 'Detalles del aporte',
       'update' => 'Cambiando el estado al aporte',
-      'add' => 'Nuevo Destacado',
+      'add' => 'Iniciando briefing',
       'move' => 'Moviendo a otro Nodo el proyecto',
       'execute' => 'Ejecución del cargo',
       'cancel' => 'Cancelando aporte',
-      'report' => 'Informe Financiero del proyecto',
+      'report' => 'Informe',
       'viewer' => 'Viendo logs',
-      'edit' => 'Editando Destacado',
+      'edit' => 'Gestionando recompensa',
       'translate' => 'Traduciendo Destacado',
       'reorder' => 'Ordenando los padrinos en Portada',
       'footer' => 'Ordenando las entradas en el Footer',
-      'projects' => 'Gestionando proyectos de la convocatoria',
+      'projects' => 'Informe Impulsores',
       'admins' => 'Asignando administradores del Canal',
       'posts' => 'Entradas de blog en la convocatoria',
       'conf' => 'Configuración de campaña del proyecto',
@@ -44,10 +45,25 @@ class RecentSubController extends AbstractSubController {
       'open_tags' => 'Asignando una agrupación al proyecto',
       'rebase' => 'Cambiando Id de proyecto',
       'consultants' => 'Cambiando asesor del proyecto',
+      'paypal' => 'Informe PayPal',
+      'geoloc' => 'Informe usuarios Localizados',
+      'calls' => 'Informe Convocatorias',
+      'donors' => 'Informe Donantes',
+      'top' => 'Top Cofinanciadores',
+      'currencies' => 'Actuales ratios de conversión',
     );
 
 
-    static protected $label = 'Actividad reciente';
+    static protected $label = 'Historial envíos';
+
+
+    protected $filters = array (
+      'user' => '',
+      'template' => '',
+      'node' => '',
+      'date_from' => '',
+      'date_until' => '',
+    );
 
     /**
      * Overwrite some permissions
@@ -65,19 +81,24 @@ class RecentSubController extends AbstractSubController {
     }
 
 
-    public function process ($action = 'list', $id = null) {
-
+    public function process ($action = 'list', $id = null, $filters = array()) {
+        $templates = Template::getAllMini();
+        $nodes = Node::getList();
         $node = $this->node;
 
-        $feed = $this->getGet('feed') ? $this->getGet('feed') : 'all';
-
-        $items = Feed::getAll($feed, 'admin', 50, $node);
+        if ($filters['filtered'] == 'yes'){
+            $sended = Mail::getSended($filters, $node);
+        } else {
+            $sended = array();
+        }
 
         return array(
-                'folder' => 'recent',
-                'file' => $action,
-                'feed' => $feed,
-                'items' => $items
+                'folder' => 'sended',
+                'file' => 'list',
+                'filters' => $filters,
+                'templates' => $templates,
+                'nodes' => $nodes,
+                'sended' => $sended
         );
 
     }

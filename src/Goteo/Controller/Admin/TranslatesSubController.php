@@ -1,67 +1,79 @@
 <?php
-
+/**
+ * Traducciones de proyectos
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Feed,
     Goteo\Library\Mail,
 	Goteo\Library\Template,
     Goteo\Application\Message,
-	Goteo\Application\Session,
+    Goteo\Application\Session,
+	Goteo\Application\Config,
     Goteo\Model;
 
 class TranslatesSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Habilitando traducción',
-  'move' => 'Moviendo a otro Nodo el proyecto',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Asignando traducción',
-  'translate' => 'Traduciendo Texto',
-  'reorder' => 'Ordenando los padrinos en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-  'projects' => 'Informe Impulsores',
-  'admins' => 'Asignando administradores del Canal',
-  'posts' => 'Entradas de blog en la convocatoria',
-  'conf' => 'Configuración de campaña del proyecto',
-  'dropconf' => 'Gestionando parte económica de la convocatoria',
-  'keywords' => 'Palabras clave',
-  'view' => 'Apadrinamientos',
-  'info' => 'Información de contacto',
-  'send' => 'Comunicación enviada',
-  'init' => 'Iniciando un nuevo envío',
-  'activate' => 'Iniciando envío',
-  'detail' => 'Viendo destinatarios',
-  'dates' => 'Fechas del proyecto',
-  'accounts' => 'Cuentas del proyecto',
-  'images' => 'Imágenes del proyecto',
-  'assign' => 'Asignando a una Convocatoria el proyecto',
-  'open_tags' => 'Asignando una agrupación al proyecto',
-  'rebase' => 'Cambiando Id de proyecto',
-  'consultants' => 'Cambiando asesor del proyecto',
-  'paypal' => 'Informe PayPal',
-  'geoloc' => 'Informe usuarios Localizados',
-  'calls' => 'Informe Convocatorias',
-  'donors' => 'Informe Donantes',
-  'top' => 'Top Cofinanciadores',
-  'currencies' => 'Actuales ratios de conversión',
-  'preview' => 'Previsualizando Historia',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Habilitando traducción',
+      'move' => 'Moviendo a otro Nodo el proyecto',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Asignando traducción',
+      'translate' => 'Traduciendo Texto',
+      'reorder' => 'Ordenando los padrinos en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Informe Impulsores',
+      'admins' => 'Asignando administradores del Canal',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configuración de campaña del proyecto',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+      'keywords' => 'Palabras clave',
+      'view' => 'Apadrinamientos',
+      'info' => 'Información de contacto',
+      'send' => 'Comunicación enviada',
+      'init' => 'Iniciando un nuevo envío',
+      'activate' => 'Iniciando envío',
+      'detail' => 'Viendo destinatarios',
+      'dates' => 'Fechas del proyecto',
+      'accounts' => 'Cuentas del proyecto',
+      'images' => 'Imágenes del proyecto',
+      'assign' => 'Asignando a una Convocatoria el proyecto',
+      'open_tags' => 'Asignando una agrupación al proyecto',
+      'rebase' => 'Cambiando Id de proyecto',
+      'consultants' => 'Cambiando asesor del proyecto',
+      'paypal' => 'Informe PayPal',
+      'geoloc' => 'Informe usuarios Localizados',
+      'calls' => 'Informe Convocatorias',
+      'donors' => 'Informe Donantes',
+      'top' => 'Top Cofinanciadores',
+      'currencies' => 'Actuales ratios de conversión',
+      'preview' => 'Previsualizando Historia',
+    );
 
 
-static protected $label = 'Traducciones de proyectos';
+    static protected $label = 'Traducciones de proyectos';
 
 
     protected $filters = array (
-  'owner' => '',
-  'translator' => '',
-);
+      'owner' => '',
+      'translator' => '',
+    );
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node and superadmins allowed here
+        if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function editAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -154,7 +166,7 @@ static protected $label = 'Traducciones de proyectos';
                         $log->setTarget($userData->id, 'user');
                         $log->populate($what . ' traduccion (admin)', '/admin/translates',
                             \vsprintf('El admin %s ha %s a %s la traducción del proyecto %s', array(
-                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                                Feed::item('user', $this->user->name, $this->user->id),
                                 Feed::item('relevant', $what),
                                 Feed::item('user', $userData->name, $userData->id),
                                 Feed::item('project', $project->name, $project->id)
@@ -208,7 +220,7 @@ static protected $label = 'Traducciones de proyectos';
                             $log->setTarget($project->id);
                             $log->populate('proyecto habilitado para traducirse (admin)', '/admin/translates',
                                 \vsprintf('El admin %s ha %s la traducción del proyecto %s', array(
-                                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                                    Feed::item('user', $this->user->name, $this->user->id),
                                     Feed::item('relevant', 'Habilitado'),
                                     Feed::item('project', $project->name, $project->id)
                                 )));
@@ -292,7 +304,7 @@ static protected $label = 'Traducciones de proyectos';
                     $log->setTarget($project->id);
                     $log->populate('traducción finalizada (admin)', '/admin/translates',
                         \vsprintf('El admin %s ha dado por %s la traducción del proyecto %s', array(
-                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                            Feed::item('user', $this->user->name, $this->user->id),
                             Feed::item('relevant', 'Finalizada'),
                             Feed::item('project', $project->name, $project->id)
                     )));

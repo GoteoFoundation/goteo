@@ -55,7 +55,7 @@ namespace Goteo\Controller {
             // el tipo de contenido de la pagina about es diferente
             if ( empty($id) ||
                  $id == 'about' ||
-                ( \Goteo\Application\Config::isNode()
+                ( !\Goteo\Application\Config::isMasterNode()
                  && !\in_array($id, array('about', 'contact', 'press', 'service', 'maintenance', 'donations'))
                  )
                 ) {

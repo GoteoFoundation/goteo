@@ -1,11 +1,12 @@
 <?php
-
+/**
+ * Gestion proyectos
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Text,
 	Goteo\Library\Feed,
     Goteo\Application\Message,
-    Goteo\Application\Session,
     Goteo\Library\Mail,
 	Goteo\Library\Template,
     Goteo\Model,
@@ -13,56 +14,56 @@ use Goteo\Library\Text,
 
 class ProjectsSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Nuevo apadrinamiento',
-  'move' => 'Moviendo a otro Nodo el proyecto',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe Financiero del proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Apadrinamiento',
-  'translate' => 'Traduciendo Página',
-  'reorder' => 'Ordenando los padrinos en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-  'projects' => 'Gestionando proyectos de la convocatoria',
-  'admins' => 'Asignando administradores del Canal',
-  'posts' => 'Entradas de blog en la convocatoria',
-  'conf' => 'Configuración de campaña del proyecto',
-  'dropconf' => 'Gestionando parte económica de la convocatoria',
-  'keywords' => 'Palabras clave',
-  'view' => 'Apadrinamientos',
-  'info' => 'Información de contacto',
-  'send' => 'Comunicación enviada',
-  'init' => 'Iniciando un nuevo envío',
-  'activate' => 'Iniciando envío',
-  'detail' => 'Viendo destinatarios',
-  'dates' => 'Fechas del proyecto',
-  'accounts' => 'Cuentas del proyecto',
-  'images' => 'Imágenes del proyecto',
-  'assign' => 'Asignando a una Convocatoria el proyecto',
-  'open_tags' => 'Asignando una agrupación al proyecto',
-  'rebase' => 'Cambiando Id de proyecto',
-  'consultants' => 'Cambiando asesor del proyecto',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nuevo apadrinamiento',
+      'move' => 'Moviendo a otro Nodo el proyecto',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe Financiero del proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Apadrinamiento',
+      'translate' => 'Traduciendo Página',
+      'reorder' => 'Ordenando los padrinos en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Gestionando proyectos de la convocatoria',
+      'admins' => 'Asignando administradores del Canal',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configuración de campaña del proyecto',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+      'keywords' => 'Palabras clave',
+      'view' => 'Apadrinamientos',
+      'info' => 'Información de contacto',
+      'send' => 'Comunicación enviada',
+      'init' => 'Iniciando un nuevo envío',
+      'activate' => 'Iniciando envío',
+      'detail' => 'Viendo destinatarios',
+      'dates' => 'Fechas del proyecto',
+      'accounts' => 'Cuentas del proyecto',
+      'images' => 'Imágenes del proyecto',
+      'assign' => 'Asignando a una Convocatoria el proyecto',
+      'open_tags' => 'Asignando una agrupación al proyecto',
+      'rebase' => 'Cambiando Id de proyecto',
+      'consultants' => 'Cambiando asesor del proyecto',
+    );
 
 
-static protected $label = 'Proyectos';
+    static protected $label = 'Proyectos';
 
 
     protected $filters = array (
-  'status' => '-1',
-  'category' => '',
-  'proj_name' => '',
-  'name' => '',
-  'node' => '',
-  'called' => '',
-  'order' => '',
-  'consultant' => '',
-  'proj_id' => '',
-);
+      'status' => '-1',
+      'category' => '',
+      'proj_name' => '',
+      'name' => '',
+      'node' => '',
+      'called' => '',
+      'order' => '',
+      'consultant' => '',
+      'proj_id' => '',
+    );
 
 
     public function confAction($id = null, $subaction = null) {
@@ -356,9 +357,9 @@ static protected $label = 'Proyectos';
                 // descartar un proyecto por malo
 
                 // Asignar como asesor al admin que lo ha descartado
-                if (Session::getUserId() != 'root') {
-                    if ((!isset($project->consultants[Session::getUserId()])) && ($project->assignConsultant(Session::getUserId(), $errors))) {
-                        $msg = 'Se ha asignado tu usuario (' . Session::getUserId() . ') como asesor del proyecto "' . $project->id . '"';
+                if ($this->user->id != 'root') {
+                    if ((!isset($project->consultants[$this->user->id])) && ($project->assignConsultant($this->user->id, $errors))) {
+                        $msg = 'Se ha asignado tu usuario (' . $this->user->id . ') como asesor del proyecto "' . $project->id . '"';
                         Message::info($msg);
                     }
                 }
@@ -374,9 +375,9 @@ static protected $label = 'Proyectos';
 
                 // Si el proyecto no tiene asesor, asignar al admin que lo ha pasado a negociación
                 // No funciona con el usuario root
-                if ((empty($project->consultants)) && Session::getUserId() != 'root') {
-                    if ($project->assignConsultant(Session::getUserId(), $errors)) {
-                        $msg = 'Se ha asignado tu usuario (' . Session::getUserId() . ') como asesor del proyecto "' . $project->id . '"';
+                if ((empty($project->consultants)) && $this->user->id != 'root') {
+                    if ($project->assignConsultant($this->user->id, $errors)) {
+                        $msg = 'Se ha asignado tu usuario (' . $this->user->id . ') como asesor del proyecto "' . $project->id . '"';
                         Message::info($msg);
                     }
                 }
@@ -490,10 +491,10 @@ static protected $label = 'Proyectos';
 
         if ($action == 'open_tags') {
             // cambiar la agrupacion
-
-            if (isset($_GET['op']) && isset($_GET['open_tag']) &&
-                (($_GET['op'] == 'assignOpen_tag') || ($_GET['op'] == 'unassignOpen_tag'))) {
-                if ($project->$_GET['op']($_GET['open_tag'])) {
+            $op = $this->getGet('op');
+            if ($this->hasGet('op') && $this->hasGet('open_tag') &&
+                ($op === 'assignOpen_tag' || $op === 'unassignOpen_tag')) {
+                if ($project->$op($this->getGet('open_tag'))) {
                     // ok
                 } else {
                     Message::error(implode('<br />', $errors));
@@ -523,9 +524,10 @@ static protected $label = 'Proyectos';
 
         if ($action == 'consultants') {
             // cambiar el asesor
-            if (isset($_GET['op']) && isset($_GET['user']) &&
-                (($_GET['op'] == 'assignConsultant' && Model\User::isAdmin($_GET['user'])) || ($_GET['op'] == 'unassignConsultant'))) {
-                if ($project->$_GET['op']($_GET['user'])) {
+            $op = $this->getGet('op');
+            $user = Model\User::get($this->getGet('user'));
+            if (($user && $op === 'assignConsultant' && $user->hasRoleInNode($this->node, ['admin', 'superadmin'])) || $op === 'unassignConsultant') {
+                if ($project->$op($user)) {
                     // ok
                 } else {
                     Message::error(implode('<br />', $errors));
@@ -593,9 +595,9 @@ static protected $label = 'Proyectos';
                 unset($mailHandler);
 
                 // Asignar como asesor al admin que lo ha rechazado
-                if (Session::getUserId() != 'root') {
-                    if ((!isset($project->consultants[Session::getUserId()])) && ($project->assignConsultant(Session::getUserId(), $errors))) {
-                        $msg = 'Se ha asignado tu usuario (' . Session::getUserId() . ') como asesor del proyecto "' . $project->id . '"';
+                if ($this->user->id != 'root') {
+                    if ((!isset($project->consultants[$this->user->id])) && ($project->assignConsultant($this->user->id, $errors))) {
+                        $msg = 'Se ha asignado tu usuario (' . $this->user->id . ') como asesor del proyecto "' . $project->id . '"';
                         Message::info($msg);
                     }
                 }
@@ -666,7 +668,7 @@ static protected $label = 'Proyectos';
             $log->setTarget($project->id);
             $log->populate('Acción sobre un proyecto desde el admin', '/admin/projects',
                 \vsprintf($log_text, array(
-                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                    Feed::item('user', $this->user->name, $this->user->id),
                     Feed::item('project', $project->name, $project->id)
                 )));
             $log->doAdmin('admin');
@@ -692,11 +694,11 @@ static protected $label = 'Proyectos';
         }
 
         if (!empty($filters['filtered'])) {
-            $page = (is_numeric($_GET['page'])) ? $_GET['page'] : 1;
+            $page = (is_numeric($this->getGet('page'))) ? $this->getGet('page') : 1;
             $items_per_page = 10;
 
             $projects = Model\Project::getList($filters,
-                                                $_SESSION['admin_node'],
+                                                $this->node,
                                                 $items_per_page,
                                                 $pages,
                                                 $page

@@ -5,6 +5,7 @@ namespace Goteo\Controller\Admin;
 use Goteo\Library\Text,
 	Goteo\Library\Feed,
     Goteo\Application\Message,
+    Goteo\Application\Config,
     Goteo\Application\Session,
     Goteo\Model;
 
@@ -30,12 +31,20 @@ class BlogSubController extends AbstractSubController {
     static protected $label = 'Blog';
 
 
-        protected $filters = array (
+    protected $filters = array (
       'show' => 'owned',
       'blog' => '',
     );
 
-    static protected $allowed_roles = array('superadmin', 'root');
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(Model\User $user, $node) {
+        // Only central node or superadmins allowed here
+        if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
 
     public function footerAction($id = null, $subaction = null) {
@@ -196,7 +205,7 @@ class BlogSubController extends AbstractSubController {
                         $log->setPost($post->id);
                         $log->populate('nueva entrada blog Goteo (admin)', '/admin/blog',
                             \vsprintf('El admin %s ha %s en el blog Goteo la entrada "%s"', array(
-                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                            Feed::item('user', $this->user->name, $this->user->id),
                             Feed::item('relevant', 'Publicado'),
                             Feed::item('blog', $post->title, $post->id)
                         )), $post->image
@@ -283,7 +292,7 @@ class BlogSubController extends AbstractSubController {
                             'publish' => false,
                             'allow' => true,
                             'tags' => array(),
-                            'author' => Session::getUserId()
+                            'author' => $this->user->id
                         )
                     );
 
@@ -339,7 +348,7 @@ class BlogSubController extends AbstractSubController {
                     $log->setTarget('goteo', 'blog');
                     $log->populate('Quita entrada de blog (admin)', '/admin/blog',
                         \vsprintf('El admin %s ha %s la entrada "%s" del blog de Goteo', array(
-                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                            Feed::item('user', $this->user->name, $this->user->id),
                             Feed::item('relevant', 'Quitado'),
                             Feed::item('blog', $tempData->title)
                     )));

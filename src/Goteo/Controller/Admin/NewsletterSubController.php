@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Gestion de la newsletter
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Text,
@@ -7,48 +9,58 @@ use Goteo\Library\Text,
     Goteo\Library\Mail,
     Goteo\Application\Lang,
     Goteo\Application\Message,
+    Goteo\Application\Config,
 	Goteo\Library\Template,
     Goteo\Library\Newsletter as Boletin,
 	Goteo\Library\Sender;
 
 class NewsletterSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Estado del envío automático',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Nueva Micronoticia',
-  'move' => 'Reubicando el aporte',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe de proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Micronoticia',
-  'translate' => 'Traduciendo Micronoticia',
-  'reorder' => 'Ordenando las entradas en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-  'projects' => 'Gestionando proyectos de la convocatoria',
-  'admins' => 'Asignando administradores de la convocatoria',
-  'posts' => 'Entradas de blog en la convocatoria',
-  'conf' => 'Configurando la convocatoria',
-  'dropconf' => 'Gestionando parte económica de la convocatoria',
-  'keywords' => 'Palabras clave',
-  'view' => 'Gestión de retornos',
-  'info' => 'Información de contacto',
-  'send' => 'Comunicación enviada',
-  'init' => 'Iniciando un nuevo envío',
-  'activate' => 'Iniciando envío',
-  'detail' => 'Viendo destinatarios',
-);
+    static protected $labels = array (
+      'list' => 'Estado del envío automático',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nueva Micronoticia',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Micronoticia',
+      'translate' => 'Traduciendo Micronoticia',
+      'reorder' => 'Ordenando las entradas en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Gestionando proyectos de la convocatoria',
+      'admins' => 'Asignando administradores de la convocatoria',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configurando la convocatoria',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+      'keywords' => 'Palabras clave',
+      'view' => 'Gestión de retornos',
+      'info' => 'Información de contacto',
+      'send' => 'Comunicación enviada',
+      'init' => 'Iniciando un nuevo envío',
+      'activate' => 'Iniciando envío',
+      'detail' => 'Viendo destinatarios',
+    );
 
 
-static protected $label = 'Boletín';
+    static protected $label = 'Boletín';
 
 
-    protected $filters = array (
-  'show' => 'receivers',
-);
+        protected $filters = array (
+      'show' => 'receivers',
+    );
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node and superadmins allowed here
+        if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function detailAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion

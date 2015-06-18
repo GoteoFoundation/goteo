@@ -43,6 +43,37 @@ $this->layout('layout', [
         background-color:#C3DFE1 !important;
     }
 
+    .label {
+        font-size: 75%;
+        font-weight: 700;
+        background: #777;
+        color:#fff;
+        white-space: nowrap;
+        text-align: center;
+        vertical-align: baseline;
+        border-radius: 0.25em;
+        padding: 0.15em 0.6em 0.1em;
+    }
+    .label.label-admin {
+        background: #5BC0DE;
+    }
+    .label.label-superadmin {
+        background: #F0AD4E;
+    }
+    .label.label-root {
+        background: #D9534F;
+    }
+    .admin .channel {
+        float:right;
+        position: relative;
+    }
+    .admin .channel .label {
+        font-size: 55%;
+        position: absolute;
+        top:-15px;
+        right: 4px;
+    }
+
 </style>
 <?php $this->append() ?>
 

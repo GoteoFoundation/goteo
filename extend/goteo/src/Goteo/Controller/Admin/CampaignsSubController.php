@@ -1,37 +1,49 @@
 <?php
-
+/**
+ * Convocatorias en portada
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Feed,
-	Goteo\Application\Message,
+    Goteo\Application\Message,
+	Goteo\Application\Config,
     Goteo\Model;
 
 class CampaignsSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Nueva convocatoria destacada',
-  'move' => 'Reubicando el aporte',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe de proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Entrada',
-  'translate' => 'Traduciendo Entrada',
-  'reorder' => 'Ordenando las entradas en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-  'projects' => 'Gestionando proyectos de la convocatoria',
-  'admins' => 'Asignando administradores de la convocatoria',
-  'posts' => 'Entradas de blog en la convocatoria',
-  'conf' => 'Configurando la convocatoria',
-  'dropconf' => 'Gestionando parte económica de la convocatoria',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nueva convocatoria destacada',
+      'move' => 'Reubicando el aporte',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe de proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Entrada',
+      'translate' => 'Traduciendo Entrada',
+      'reorder' => 'Ordenando las entradas en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Gestionando proyectos de la convocatoria',
+      'admins' => 'Asignando administradores de la convocatoria',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configurando la convocatoria',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+    );
 
 
-static protected $label = 'Convocatorias destacadas';
+    static protected $label = 'Convocatorias destacadas';
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node and superadmins allowed here
+        if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function addAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -50,12 +62,6 @@ static protected $label = 'Convocatorias destacadas';
         $status = Model\Call::status();
 
         $errors = array();
-
-        // solo para nodos
-        if ($this->isMasterNode()) {
-            Message::error('Non valid for default node!');
-            return $this->redirect('/admin');
-        }
 
         $node = $this->node;
 

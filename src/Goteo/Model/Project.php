@@ -2642,10 +2642,10 @@ namespace Goteo\Model {
 
             $values = array();
             // si es un nodo, filtrado
-            if (\Goteo\Application\Config::isNode()) {
+            if (!\Goteo\Application\Config::isMasterNode()) {
                 $sqlFilter = " AND project.node = :node";
                 $values[':node'] = Config::get('current_node');
-            } 
+            }
             elseif(!is_null($node))
             {
                 $sqlFilter = " AND project.node = :node";

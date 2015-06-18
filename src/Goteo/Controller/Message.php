@@ -313,7 +313,7 @@ namespace Goteo\Controller {
                 }
 
                 $remite = Session::getUser()->name . ' ' . Text::get('regular-from') . ' ';
-                $remite .= \Goteo\Application\Config::isNode() ? NODE_NAME : GOTEO_MAIL_NAME;
+                $remite .= \Goteo\Application\Config::isMasterNode() ? GOTEO_MAIL_NAME : NODE_NAME;
 
                 $response_url = SITE_URL . '/user/profile/' . Session::getUserId() . '/message';
                 $profile_url = SITE_URL."/user/profile/{$user->id}";

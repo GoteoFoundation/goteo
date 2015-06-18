@@ -1,11 +1,56 @@
 <?php
-
+/**
+ * Gestion del footer
+ */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Config;
 use Goteo\Application\Message,
     Goteo\Model;
 
 class FooterSubController extends AbstractSubController {
+
+    static protected $label = 'Footer web';
+
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node and superadmins allowed here
+        if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
+        return parent::isAllowed($user, $node);
+    }
+
+    public function listAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+    }
+
+    public function upAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('up', $id, $this->filters, $subaction));
+    }
+
+    public function downAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('down', $id, $this->filters, $subaction));
+    }
+
+    public function addAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('add', $id, $this->filters, $subaction));
+    }
+
+    public function editAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('edit', $id, $this->filters, $subaction));
+    }
+
+    public function removeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('remove', $id, $this->filters, $subaction));
+    }
 
     public function process ($action = 'list', $id = null) {
 

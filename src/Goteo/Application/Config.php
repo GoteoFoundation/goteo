@@ -102,7 +102,7 @@ class Config {
 
         // //If node, Node templates first
         // //Node/call theme
-        // if(self::isNode()) {
+        // if(!self::isMasterNode()) {
         //     //Custom templates first (PROVISIONAL: should be configurable in settings)
         //     View::addFolder(GOTEO_PATH . 'extend/goteo/templates/node', 'node-goteo');
         //     //Nodes views
@@ -284,11 +284,13 @@ class Config {
     }
 
     /**
-     * If is not the main node
+     * If is the main node
      * @return boolean [description]
      */
-    static public function isNode() {
-        return !self::isCurrentNode(self::get('node'));
+    static public function isMasterNode($node = null) {
+        if($node) return self::get('node') === $node;
+        return self::isCurrentNode(self::get('node'));
     }
+
 
 }

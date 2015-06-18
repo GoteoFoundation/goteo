@@ -1,11 +1,14 @@
 <?php
-
+/**
+ * Gestion completa de aportes para nodo central solo
+ */
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Tpv,
 	Goteo\Library\Paypal,
 	Goteo\Library\Feed,
     Goteo\Application\Message,
+    Goteo\Application\Config,
 	Goteo\Application\Session,
     Goteo\Model;
 
@@ -44,6 +47,16 @@ class AccountsSubController extends AbstractSubController {
       'maxamount' => '',
     );
 
+
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node allowed here
+        if( ! Config::isMasterNode($node) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function viewerAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -139,7 +152,7 @@ class AccountsSubController extends AbstractSubController {
                         'charged'   => $original->charged,
                         'anonymous' => $original->anonymous,
                         'resign'    => $original->resign,
-                        'admin'     => Session::getUserId(),
+                        'admin'     => $this->user->id,
                         'campaign'  => $campaign
                     )
                 );
@@ -169,7 +182,7 @@ class AccountsSubController extends AbstractSubController {
                         $log->setTarget($projectData->id);
                         $log->populate('Aporte reubicado', '/admin/accounts',
                             \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
-                                Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                                Feed::item('user', $this->user->name, $this->user->id),
                                 Feed::item('money', $invest->amount.' &euro;'),
                                 Feed::item('project', $projectData->name, $projectData->id),
                                 Feed::item('user', $userData->name, $userData->id)
@@ -220,13 +233,13 @@ class AccountsSubController extends AbstractSubController {
                 // si estan desmarcando incidencia
                 if ($invest->issue && $this->getPost('resolve') == 1) {
                     Model\Invest::unsetIssue($id);
-                    Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . Session::getUser()->name);
+                    Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . $this->user->name);
                     Message::info('La incidencia se ha dado por resuelta');
                 }
 
                 if ($new != $invest->status && isset($new) && isset($status[$new])) {
                     if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
-                        Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . Session::getUser()->name . ' ha cambiado el estado a '.$status[$new]);
+                        Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $this->user->name . ' ha cambiado el estado a '.$status[$new]);
                         Message::info('Se ha actualizado el estado del aporte');
                     } else {
                         Message::error('Ha fallado al actualizar el estado del aporte');
@@ -309,7 +322,7 @@ class AccountsSubController extends AbstractSubController {
             $log->setTarget($projectData->id);
             $log->populate('Cargo cancelado al resolver (admin)', '/admin/accounts',
                 \vsprintf($log_text, array(
-                    Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                    Feed::item('user', $this->user->name, $this->user->id),
                     Feed::item('user', $userData->name, $userData->id),
                     Feed::item('money', $invest->amount.' &euro;'),
                     Feed::item('system', $invest->id),
@@ -326,7 +339,7 @@ class AccountsSubController extends AbstractSubController {
                 $log->setTarget($projectData->id);
                 $log->populate('Incidencia resuelta (admin)', '/admin/accounts',
                     \vsprintf("El admin %s ha dado por resuelta la incidencia con el botón \"Nos han hecho la transferencia\" para el aporte %s", array(
-                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                        Feed::item('user', $this->user->name, $this->user->id),
                         Feed::item('system', $id, 'accounts/details/'.$id)
                 )));
                 $log->doAdmin('admin');
@@ -343,7 +356,7 @@ class AccountsSubController extends AbstractSubController {
                 $log->setTarget($projectData->id);
                 $log->populate('Fallo al resolver incidencia (admin)', '/admin/accounts',
                     \vsprintf("Al admin %s le ha fallado el botón \"Nos han hecho la transferencia\" para el aporte %s", array(
-                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                        Feed::item('user', $this->user->name, $this->user->id),
                         Feed::item('system', $id, 'accounts/details/'.$id)
                 )));
                 $log->doAdmin('admin');
@@ -383,7 +396,7 @@ class AccountsSubController extends AbstractSubController {
                         'charged'   => date('Y-m-d'),
                         'anonymous' => $this->getPost('anonymous'),
                         'resign'    => 1,
-                        'admin'     => Session::getUserId()
+                        'admin'     => $this->user->id
                     )
                 );
 
@@ -402,7 +415,7 @@ class AccountsSubController extends AbstractSubController {
                     $log->setTarget($projectData->id);
                     $log->populate('Aporte manual (admin)', '/admin/accounts',
                         \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
-                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                            Feed::item('user', $this->user->name, $this->user->id),
                             Feed::item('money', $invest->amount.' &euro;'),
                             Feed::item('project', $projectData->name, $projectData->id),
                             Feed::item('user', $userData->name, $userData->id)
@@ -410,7 +423,7 @@ class AccountsSubController extends AbstractSubController {
                     $log->doAdmin('money');
                     unset($log);
 
-                    Model\Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . Session::getUser()->name);
+                    Model\Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . $this->user->name);
                     Message::info('Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.');
                     return $this->redirect('/admin/rewards/edit/'.$invest->id);
                 } else{
@@ -545,7 +558,7 @@ class AccountsSubController extends AbstractSubController {
                 $log->setTarget($project->id);
                 $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
                     \vsprintf($log_text, array(
-                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                        Feed::item('user', $this->user->name, $this->user->id),
                         Feed::item('user', $userData->name, $userData->id),
                         Feed::item('money', $invest->amount.' &euro;'),
                         Feed::item('system', $invest->id),
@@ -609,7 +622,7 @@ class AccountsSubController extends AbstractSubController {
                         // si era incidencia la desmarcamos
                         if ($invest->issue) {
                             Model\Invest::unsetIssue($invest->id);
-                            Model\Invest::setDetail($invest->id, 'issue-solved', 'La incidencia se ha dado por resuelta al ejecutar el aporte manualmente por el admin ' . Session::getUser()->name);
+                            Model\Invest::setDetail($invest->id, 'issue-solved', 'La incidencia se ha dado por resuelta al ejecutar el aporte manualmente por el admin ' . $this->user->name);
                         }
 
 
@@ -645,7 +658,7 @@ class AccountsSubController extends AbstractSubController {
                 $log->setTarget($project->id);
                 $log->populate('Cargo ejecutado manualmente (admin)', '/admin/accounts',
                     \vsprintf($log_text, array(
-                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
+                        Feed::item('user', $this->user->name, $this->user->id),
                         Feed::item('user', $userData->name, $userData->id),
                         Feed::item('money', $invest->amount.' &euro;'),
                         Feed::item('system', $invest->id),

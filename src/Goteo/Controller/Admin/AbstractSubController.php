@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Extensible class for admin sub modules
+ * Default permissions:
+ *     - User has to be one of 'superadmin', 'admin' or 'root' roles in the node
+ */
 namespace Goteo\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -7,11 +11,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
 use Goteo\Application\View;
-use Goteo\Model;
 
 abstract class AbstractSubController {
     protected $request;
     protected $node;
+    protected $user;
     protected $filters;
     protected static $url;
     // Main label
@@ -29,7 +33,7 @@ abstract class AbstractSubController {
     /**
      * Some defaults
      */
-    public function __construct($node, Request $request) {
+    public function __construct($node, \Goteo\Model\User $user, Request $request) {
         $this->request = $request;
         $this->node = $node;
     }
@@ -75,10 +79,11 @@ abstract class AbstractSubController {
      * Returns if this class can be administred by the user in the node
      * Overwrite this function to more specific control
      */
-    public static function isAllowed(Model\User $user, $node) {
+    public static function isAllowed(\Goteo\Model\User $user, $node) {
         foreach($user->getAdminNodes() as $id => $user_node) {
             $has_required_role = in_array($user_node->role, static::$allowed_roles); // static refers to the called class
             // no id means all nodes allowed
+            // NOTE: This condition should not happen anymore
             if(empty($id)) {
                 // only check if the user has the required role for this module
                 return $has_required_role;
@@ -89,7 +94,7 @@ abstract class AbstractSubController {
         return false;
     }
 
-    // public static function getMenu(Model\User $user, $node) {
+    // public static function getMenu(\Goteo\Model\User $user, $node) {
     //     $menu = array();
     //     foreach(static::$labels as $action => $label) {
     //         // TODO: permission check
@@ -99,7 +104,7 @@ abstract class AbstractSubController {
     // }
 
     public function isMasterNode() {
-        return Config::get('node') === $this->node;
+        return Config::isMasterNode($this->node);
     }
 
     public function getGet($var = null) {

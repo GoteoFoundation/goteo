@@ -90,22 +90,22 @@ namespace Goteo\Model {
 
             $list = array();
 
-            $sqlFilter = "";
-            if (!empty($node)) {
-                $sqlFilter .= " WHERE user_node.node = '{$node}'";
+            $sqlFilter = " WHERE user_role.role_id IN ('admin', 'superadmin')";
+            if ($node) {
+                $sqlFilter .= " AND user_role.node_id = ?";
             }
 
 
             $query = static::query("
                 SELECT
-                    DISTINCT(user_node.user) as admin,
+                    DISTINCT(user_role.user_id) as admin,
                     user.name as name
-                FROM user_node
+                FROM user_role
                 INNER JOIN user
-                    ON user.id = user_node.user
+                    ON user.id = user_role.user_id
                 $sqlFilter
                 ORDER BY user.name ASC
-                ");
+                ", array($node));
 
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[$item->admin] = $item->name;

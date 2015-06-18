@@ -11,11 +11,17 @@
 
     ?>
 
-    <?php if($this->admin_nodes): ?>
-        <div style="float:right">
-            Channel: <?= $this->html('select', ['options' => $this->admin_nodes, 'value' => $this->admin_node, 'name' => 'select-node', 'attribs' => ['id' => 'select-node']]) ?>
-        </div>
-    <?php endif ?>
+    <div class="channel">
 
+        <?php if($this->admin_nodes): ?>
+            <?php if(count($this->admin_nodes) > 1): ?>
+                Channel: <?= $this->html('select', ['options' => $this->admin_nodes, 'value' => $this->admin_node, 'name' => 'select-node', 'attribs' => ['id' => 'select-node']]) ?>
+            <?php else: ?>
+                Channel: <strong><?= $this->admin_nodes[$this->admin_node] ?></strong>
+            <?php endif ?>
+        <?php endif ?>
+
+        <span class="label label-<?= $this->get_user()->getNodeRole($this->admin_node) ?>"><?= $this->get_user()->getNodeRole($this->admin_node) ?></span>
+    </div>
     </div>
 </div>

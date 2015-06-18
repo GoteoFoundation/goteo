@@ -1,7 +1,10 @@
 <?php
-
+/**
+ * Estadísticas e informes
+ */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Config;
 use Goteo\Library\Reporting,
     Goteo\Library\Currency,
     Goteo\Library\Cacher,
@@ -9,62 +12,72 @@ use Goteo\Library\Reporting,
 
 class ReportsSubController extends AbstractSubController {
 
-static protected $labels = array (
-  'list' => 'Listando',
-  'details' => 'Detalles del aporte',
-  'update' => 'Cambiando el estado al aporte',
-  'add' => 'Nuevo Destacado',
-  'move' => 'Moviendo a otro Nodo el proyecto',
-  'execute' => 'Ejecución del cargo',
-  'cancel' => 'Cancelando aporte',
-  'report' => 'Informe Financiero del proyecto',
-  'viewer' => 'Viendo logs',
-  'edit' => 'Editando Destacado',
-  'translate' => 'Traduciendo Destacado',
-  'reorder' => 'Ordenando los padrinos en Portada',
-  'footer' => 'Ordenando las entradas en el Footer',
-  'projects' => 'Informe Impulsores',
-  'admins' => 'Asignando administradores del Canal',
-  'posts' => 'Entradas de blog en la convocatoria',
-  'conf' => 'Configuración de campaña del proyecto',
-  'dropconf' => 'Gestionando parte económica de la convocatoria',
-  'keywords' => 'Palabras clave',
-  'view' => 'Apadrinamientos',
-  'info' => 'Información de contacto',
-  'send' => 'Comunicación enviada',
-  'init' => 'Iniciando un nuevo envío',
-  'activate' => 'Iniciando envío',
-  'detail' => 'Viendo destinatarios',
-  'dates' => 'Fechas del proyecto',
-  'accounts' => 'Cuentas del proyecto',
-  'images' => 'Imágenes del proyecto',
-  'assign' => 'Asignando a una Convocatoria el proyecto',
-  'open_tags' => 'Asignando una agrupación al proyecto',
-  'rebase' => 'Cambiando Id de proyecto',
-  'consultants' => 'Cambiando asesor del proyecto',
-  'paypal' => 'Informe PayPal',
-  'geoloc' => 'Informe usuarios Localizados',
-  'calls' => 'Informe Convocatorias',
-  'donors' => 'Informe Donantes',
-  'top' => 'Top Cofinanciadores',
-  'currencies' => 'Actuales ratios de conversión',
-);
+    static protected $labels = array (
+      'list' => 'Listando',
+      'details' => 'Detalles del aporte',
+      'update' => 'Cambiando el estado al aporte',
+      'add' => 'Nuevo Destacado',
+      'move' => 'Moviendo a otro Nodo el proyecto',
+      'execute' => 'Ejecución del cargo',
+      'cancel' => 'Cancelando aporte',
+      'report' => 'Informe Financiero del proyecto',
+      'viewer' => 'Viendo logs',
+      'edit' => 'Editando Destacado',
+      'translate' => 'Traduciendo Destacado',
+      'reorder' => 'Ordenando los padrinos en Portada',
+      'footer' => 'Ordenando las entradas en el Footer',
+      'projects' => 'Informe Impulsores',
+      'admins' => 'Asignando administradores del Canal',
+      'posts' => 'Entradas de blog en la convocatoria',
+      'conf' => 'Configuración de campaña del proyecto',
+      'dropconf' => 'Gestionando parte económica de la convocatoria',
+      'keywords' => 'Palabras clave',
+      'view' => 'Apadrinamientos',
+      'info' => 'Información de contacto',
+      'send' => 'Comunicación enviada',
+      'init' => 'Iniciando un nuevo envío',
+      'activate' => 'Iniciando envío',
+      'detail' => 'Viendo destinatarios',
+      'dates' => 'Fechas del proyecto',
+      'accounts' => 'Cuentas del proyecto',
+      'images' => 'Imágenes del proyecto',
+      'assign' => 'Asignando a una Convocatoria el proyecto',
+      'open_tags' => 'Asignando una agrupación al proyecto',
+      'rebase' => 'Cambiando Id de proyecto',
+      'consultants' => 'Cambiando asesor del proyecto',
+      'paypal' => 'Informe PayPal',
+      'geoloc' => 'Informe usuarios Localizados',
+      'calls' => 'Informe Convocatorias',
+      'donors' => 'Informe Donantes',
+      'top' => 'Top Cofinanciadores',
+      'currencies' => 'Actuales ratios de conversión',
+    );
 
 
-static protected $label = 'Informes';
+    static protected $label = 'Informes';
 
 
     protected $filters = array (
-  'report' => '',
-  'date_from' => '',
-  'date_until' => '',
-  'year' => '2014',
-  'status' => '',
-  'user' => '',
-  'top' => 'numproj',
-  'limit' => 25,
-);
+      'report' => '',
+      'date_from' => '',
+      'date_until' => '',
+      'year' => '2014',
+      'status' => '',
+      'user' => '',
+      'top' => 'numproj',
+      'limit' => 25,
+    );
 
+
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node allowed here
+        if( ! Config::isMasterNode($node) ) return false;
+        return parent::isAllowed($user, $node);
+    }
 
     public function currenciesAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion

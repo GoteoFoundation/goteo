@@ -55,7 +55,7 @@ class DiscoverController extends \Goteo\Core\Controller {
             ]
         );
 
-        if (\Goteo\Application\Config::isNode()) {
+        if (!\Goteo\Application\Config::isMasterNode()) {
             $types[] = 'others';
         }
 
@@ -124,7 +124,7 @@ class DiscoverController extends \Goteo\Core\Controller {
         $types = self::$types;
 
         $types[] = 'all';
-        if (\Goteo\Application\Config::isNode()) {
+        if (!\Goteo\Application\Config::isMasterNode()) {
             $types[] = 'others';
         }
 
