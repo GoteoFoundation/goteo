@@ -4,6 +4,7 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\Request;
 use Goteo\Library\Text,
 	Goteo\Library\Feed,
     Goteo\Application\Message,
@@ -66,69 +67,95 @@ class ProjectsSubController extends AbstractSubController {
     );
 
 
+    /**
+     * Some defaults
+     */
+    public function __construct($node, \Goteo\Model\User $user, Request $request) {
+        parent::__construct($node, $user, $request);
+        $this->admins = Model\User::getAdmins();
+        $this->nodes = $user->getAdminNodes();
+    }
+
+
     public function confAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('conf', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('conf', $id, $this->getFilters(), $subaction));
     }
 
 
     public function consultantsAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('consultants', $id, $this->filters, $subaction));
+        // cambiar el asesor
+        $op = $this->getGet('op');
+        $user = Model\User::get($this->getGet('user'));
+        if (($user && $op === 'assignConsultant' && $user->hasRoleInNode($this->node, ['admin', 'superadmin'])) || $op === 'unassignConsultant') {
+            if ($project->$op($user)) {
+                // ok
+            } else {
+                Message::error(implode('<br />', $errors));
+            }
+        }
+
+        return  array(
+                'folder' => 'projects',
+                'file' => 'consultants',
+                'project' => $project,
+                'admins' => $this->admins
+            );
+
     }
 
 
     public function rebaseAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('rebase', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('rebase', $id, $this->getFilters(), $subaction));
     }
 
 
     public function reportAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('report', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('report', $id, $this->getFilters(), $subaction));
     }
 
 
     public function open_tagsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('open_tags', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('open_tags', $id, $this->getFilters(), $subaction));
     }
 
 
     public function assignAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('assign', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('assign', $id, $this->getFilters(), $subaction));
     }
 
 
     public function moveAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('move', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('move', $id, $this->getFilters(), $subaction));
     }
 
 
     public function imagesAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('images', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('images', $id, $this->getFilters(), $subaction));
     }
 
 
     public function accountsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('accounts', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('accounts', $id, $this->getFilters(), $subaction));
     }
 
 
     public function datesAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('dates', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('dates', $id, $this->getFilters(), $subaction));
     }
 
 
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
 
@@ -136,9 +163,7 @@ class ProjectsSubController extends AbstractSubController {
 
         $log_text = null;
         $errors = array();
-
-        // multiples usos
-        $nodes = Model\Node::getList();
+        $nodes = $this->nodes;
 
         if ($this->isPost() && $this->hasPost('id')) {
 
@@ -209,7 +234,7 @@ class ProjectsSubController extends AbstractSubController {
                 }
             } elseif ($this->hasPost('save-node')) {
 
-                if (!isset($nodes[$this->getPost('node')])) {
+                if (!array_key_exists($this->getPost('node'), $nodes)) {
                     Message::error('El nodo '.$this->getPost('node').' no existe! ');
                 } else {
 
@@ -327,7 +352,7 @@ class ProjectsSubController extends AbstractSubController {
          * redirect
          *
          */
-        $admins = Model\User::getAdmins();
+        $admins = $this->admins;
 
         if (isset($id)) {
             $project = Model\Project::get($id);
@@ -520,26 +545,6 @@ class ProjectsSubController extends AbstractSubController {
                     'file' => 'rebase',
                     'project' => $project
             );
-        }
-
-        if ($action == 'consultants') {
-            // cambiar el asesor
-            $op = $this->getGet('op');
-            $user = Model\User::get($this->getGet('user'));
-            if (($user && $op === 'assignConsultant' && $user->hasRoleInNode($this->node, ['admin', 'superadmin'])) || $op === 'unassignConsultant') {
-                if ($project->$op($user)) {
-                    // ok
-                } else {
-                    Message::error(implode('<br />', $errors));
-                }
-            }
-
-            return  array(
-                    'folder' => 'projects',
-                    'file' => 'consultants',
-                    'project' => $project,
-                    'admins' => $admins
-                );
         }
 
         if ($action == 'assign') {

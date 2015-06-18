@@ -61,13 +61,13 @@ class InvestsSubController extends AbstractSubController {
 
     public function detailsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('details', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('details', $id, $this->getFilters(), $subaction));
     }
 
 
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
 

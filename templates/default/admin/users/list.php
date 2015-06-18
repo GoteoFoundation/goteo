@@ -1,11 +1,11 @@
+<?php $this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
+
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Util\Pagination\Paginated,
-    Goteo\Util\Pagination\DoubleBarLayout;
-
-$filters = $vars['filters'];
-$users = $vars['users'];
+$filters = $this->filters;
+$users = $this->users;
 
 // la ordenación por cantidad y proyectos hay que hacerla aqui
 if ($filters['order'] == 'amount') {
@@ -30,7 +30,6 @@ foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/users/add" class="button">Crear usuario</a>
 
@@ -42,16 +41,16 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                     <label for="role-filter">Con rol:</label><br />
                     <select id="role-filter" name="role" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier rol</option>
-                    <?php foreach ($vars['roles'] as $roleId=>$roleName) : ?>
+                    <?php foreach ($this->roles as $roleId => $roleName) : ?>
                         <option value="<?php echo $roleId; ?>"<?php if ($filters['role'] == $roleId) echo ' selected="selected"';?>><?php echo $roleName; ?></option>
                     <?php endforeach; ?>
                     </select>
                 </td>
-                <td><?php if (!isset($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE) : ?>
+                <td><?php if (count($this->admin_nodes) > 0) : ?>
                     <label for="node-filter">Del nodo:</label><br />
                     <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier nodo</option>
-                    <?php foreach ($vars['nodes'] as $nodeId=>$nodeName) : ?>
+                    <?php foreach ($this->admin_nodes as $nodeId => $nodeName) : ?>
                         <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -61,7 +60,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                     <select id="project-filter" name="project" onchange="document.getElementById('filter-form').submit();">
                         <option value="">--</option>
                         <option value="any"<?php if ($filters['project'] == 'any') echo ' selected="selected"';?>>Algún proyecto</option>
-                    <?php foreach ($vars['projects'] as $projId=>$projName) : ?>
+                    <?php foreach ($this->projects as $projId=>$projName) : ?>
                         <option value="<?php echo $projId; ?>"<?php if ($filters['project'] == $projId) echo ' selected="selected"';?>><?php echo substr($projName, 0, 35); ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -80,7 +79,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                     <label for="type-filter">Del  tipo:</label><br />
                     <select id="type-filter" name="type" onchange="document.getElementById('filter-form').submit();">
                         <option value="">--</option>
-                    <?php foreach ($vars['types'] as $type=>$desc) : ?>
+                    <?php foreach ($this->types as $type=>$desc) : ?>
                         <option value="<?php echo $type; ?>"<?php if ($filters['type'] == $type) echo ' selected="selected"';?>><?php echo $desc; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -89,7 +88,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                     <label for="interest-filter">Interesados en:</label><br />
                     <select id="interest-filter" name="interest" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier interés</option>
-                    <?php foreach ($vars['interests'] as $interestId=>$interestName) : ?>
+                    <?php foreach ($this->interests as $interestId=>$interestName) : ?>
                         <option value="<?php echo $interestId; ?>"<?php if ($filters['interest'] == $interestId) echo ' selected="selected"';?>><?php echo $interestName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -102,7 +101,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
                 <td>
                     <label for="order-filter">Ver por:</label><br />
                     <select id="order-filter" name="order" onchange="document.getElementById('filter-form').submit();">
-                    <?php foreach ($vars['orders'] as $orderId=>$orderName) : ?>
+                    <?php foreach ($this->orders as $orderId=>$orderName) : ?>
                         <option value="<?php echo $orderId; ?>"<?php if ($filters['order'] == $orderId) echo ' selected="selected"';?>><?php echo $orderName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -116,11 +115,7 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
 </div>
 
 <div class="widget board">
-<?php if ($filters['filtered'] != 'yes') : ?>
-    <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($users)) : ?>
-    <p><strong>OJO!</strong> Resultado limitado a 999 registros como máximo.</p>
-    <p><strong><?php echo count($users) ?></strong> usuarios cumplen este filtro </p>
+    <p><strong><?= $this->total ?></strong> usuarios cumplen este filtro </p>
     <table>
         <thead>
             <tr>
@@ -135,16 +130,16 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
         </thead>
 
         <tbody>
-            <?php while ($user = $pagedResults->fetchPagedRow()) :
-                if ($user->admin) {
-                    $adminNode = $user->admin_node;
-                    $adminNode = (!empty($adminNode) && $adminNode != \GOTEO_NODE) ? "Admin nodo ".ucfirst($user->admin_node) : null;
-                } else {
-                    $adminNode = null;
+            <?php
+             foreach ($users as $user) :
+                $node_roles = array_intersect_key($user->getAllNodeRoles(), $this->admin_nodes);
+                $role_node_info = array();
+                foreach($node_roles as $n => $roles) {
+                    $role_node_info[] = $n .'[' . implode(' ', $roles) . ']';
                 }
                 ?>
             <tr>
-                <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" <?php echo (!empty($adminNode)) ? 'style="color: green;" title="'.$adminNode.'"' : 'title="Ver perfil público"'; ?>><?php echo substr($user->name, 0, 20); ?></a></td>
+                <td><a href="/user/profile/<?php echo $user->id; ?>" target="_blank" <?= $role_node_info ? 'style="color: green;" title="'.implode(' ', $role_node_info).'"' : 'title="Ver perfil público"'; ?>><?php echo substr($user->name, 0, 20); ?></a></td>
                 <td><strong><?php echo substr($user->id, 0, 20); ?></strong></td>
                 <td><a href="mailto:<?php echo $user->email; ?>"><?php echo $user->email; ?></a></td>
                 <td><?php echo (isset($user->num_owned)) ? $user->num_owned : $user->get_numOwned; ?></td>
@@ -175,15 +170,15 @@ $pagedResults = new Paginated($users, 20, isset($_GET['page']) ? $_GET['page'] :
             <tr>
                 <td colspan="7"><hr /></td>
             </tr>
-            <?php endwhile; ?>
+            <?php endforeach ?>
         </tbody>
 
     </table>
+
 </div>
-<ul id="pagination">
-<?php   $pagedResults->setLayout(new DoubleBarLayout());
-        echo $pagedResults->fetchPagedNavigation($the_filters); ?>
-</ul>
-<?php else : ?>
-<p>No se han encontrado registros</p>
-<?php endif; ?>
+
+<?= $this->insert('partials/utils/paginator', ['page' => 0, 'total' => $this->total, 'limit' => 100]) ?>
+
+
+
+<?php $this->replace() ?>

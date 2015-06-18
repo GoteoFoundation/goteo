@@ -59,43 +59,43 @@ class CallsSubController extends AbstractSubController {
 
     public function dropconfAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('dropconf', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('dropconf', $id, $this->getFilters(), $subaction));
     }
 
 
     public function confAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('conf', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('conf', $id, $this->getFilters(), $subaction));
     }
 
 
     public function postsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('posts', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('posts', $id, $this->getFilters(), $subaction));
     }
 
 
     public function adminsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('admins', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('admins', $id, $this->getFilters(), $subaction));
     }
 
 
     public function projectsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('projects', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('projects', $id, $this->getFilters(), $subaction));
     }
 
 
     public function addAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('add', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('add', $id, $this->getFilters(), $subaction));
     }
 
 
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
 

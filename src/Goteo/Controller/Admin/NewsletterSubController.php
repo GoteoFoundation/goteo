@@ -64,25 +64,25 @@ class NewsletterSubController extends AbstractSubController {
 
     public function detailAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('detail', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('detail', $id, $this->getFilters(), $subaction));
     }
 
 
     public function activateAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('activate', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('activate', $id, $this->getFilters(), $subaction));
     }
 
 
     public function initAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('init', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('init', $id, $this->getFilters(), $subaction));
     }
 
 
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
 

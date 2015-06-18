@@ -1,8 +1,11 @@
+<?php $this->layout('admin/layout') ?>
+
+
+<?php $this->section('admin-content') ?>
+
 <?php
 
-use Goteo\Library\Text;
-
-$data = $vars['data'];
+$data = $this->data;
 ?>
 <div class="widget">
     <form action="/admin/users/add" method="post">
@@ -26,10 +29,8 @@ $data = $vars['data'];
     <p>
         <label for="user-node">Nodo:</label><br />
         <select id="user-node" name="node" >
-        <?php foreach ($vars['nodes'] as $nodeId=>$nodeName) :
-            if (isset($_SESSION['admin_node']) && $nodeId != $_SESSION['admin_node']) continue;
-            ?>
-            <option value="<?php echo $nodeId; ?>"<?php if ($nodeId == $_SESSION['admin_node']) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
+        <?php foreach ($this->admin_nodes as $nodeId => $nodeName) : ?>
+            <option value="<?php echo $nodeId; ?>"<?php if ($nodeId == $this->admin_node) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
         <?php endforeach; ?>
         </select>
     </p>
@@ -39,3 +40,6 @@ $data = $vars['data'];
 
     </form>
 </div>
+
+<?php $this->replace() ?>
+

@@ -2,6 +2,7 @@
 
 namespace Goteo\Foil\Extension;
 
+use Symfony\Component\HttpFoundation\Request;
 use Foil\Contracts\ExtensionInterface;
 use Goteo\Application\Message;
 use Goteo\Application\Cookie;
@@ -12,6 +13,17 @@ class GoteoCore implements ExtensionInterface
 {
 
     private $args;
+    private static $request;
+
+    public static function setRequest(Request $request) {
+        self::$request = $request;
+    }
+
+    public static function getRequest() {
+        if(!self::$request)
+            self::$request = Request::create();
+        return self::$request;
+    }
 
     public function setup(array $args = [])
     {
@@ -33,6 +45,10 @@ class GoteoCore implements ExtensionInterface
           'get_config' => [$this, 'get_config'],
           'get_user' => [$this, 'get_user'],
           'is_logged' => [$this, 'is_logged'],
+          'get_query' => [$this, 'get_query'],
+          'get_post' => [$this, 'get_post'],
+          'get_pathinfo' => [$this, 'get_pathinfo'],
+          'get_querystring' => [$this, 'get_querystring'],
         ];
     }
 
@@ -54,6 +70,28 @@ class GoteoCore implements ExtensionInterface
     //Session
     public function get_session($var) {
         return Session::get($var);
+    }
+
+    //Request (_GET) var
+    public function get_query($var = null) {
+        if($var) return self::getRequest()->query->get($var);
+        return self::getRequest()->query->all();
+    }
+
+    //Request (_POST) var
+    public function get_post($var = null) {
+        if($var) return self::getRequest()->request->get($var);
+        return self::getRequest()->request->all();
+    }
+
+    //pathinfo
+    public function get_pathinfo() {
+        return self::getRequest()->getPathInfo();
+    }
+
+    //querystring
+    public function get_querystring() {
+        return self::getRequest()->getQueryString();
     }
 
     //Config

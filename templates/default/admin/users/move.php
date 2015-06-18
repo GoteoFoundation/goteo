@@ -1,18 +1,10 @@
+<?php $this->layout('admin/users/view_layout') ?>
+
+<?php $this->section('admin-user-board') ?>
+
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Model,
-    Goteo\Core\Redirection;
-
-$user = $vars['user'];
-
-if (!$user instanceof Model\user) {
-    throw new Redirection('/admin/users');
-}
-
-if (empty($user->node)) {
-    $user->node = \GOTEO_NODE;
-}
+$user = $this->user;
 
 ?>
 <div class="widget" >
@@ -21,7 +13,7 @@ if (empty($user->node)) {
     <p>
         <label for="node-filter">Pasarselo al nodo:</label><br />
         <select id="node-filter" name="node" >
-        <?php foreach ($vars['nodes'] as $nodeId=>$nodeName) : ?>
+        <?php foreach ($this->admin_nodes as $nodeId => $nodeName) : ?>
             <option value="<?php echo $nodeId; ?>"<?php if ($user->node == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
         <?php endforeach; ?>
         </select>
@@ -30,3 +22,7 @@ if (empty($user->node)) {
         <input type="submit" name="save" value="Aplicar" />
     </form>
 </div>
+
+
+
+<?php $this->append() ?>

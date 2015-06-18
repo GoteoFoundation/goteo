@@ -82,7 +82,7 @@ $this->layout('layout', [
 $(function(){
     $('#select-node').change(function(e){
         e.preventDefault();
-        location.search = '?node=' + $(this).val();
+        location.search = '?admin_node=' + $(this).val();
     });
 });
 </script>

@@ -7,7 +7,6 @@ namespace Goteo\Library {
         Goteo\Library\Mail,
         Goteo\Application\Lang,
         Goteo\Application\Config,
-        Goteo\Application\Session,
         Goteo\Model\Image;
 
     /*
@@ -473,15 +472,10 @@ namespace Goteo\Library {
          *
 		 */
 		public function add() {
-
             if (empty($this->html)) {
                 @mail(\GOTEO_FAIL_MAIL,
                     'Evento feed sin html: ' . SITE_URL,
                     "Feed sin contenido html<hr /><pre>" . print_r($this, true) . "</pre>");
-                return false;
-            }
-
-            if ($this->scope == 'public' && Session::getUserId() == 'doukeshi') {
                 return false;
             }
 
@@ -518,7 +512,8 @@ namespace Goteo\Library {
                         VALUES
                             ('', :title, :url, :scope, :type, :html, :image, :target_type, :target_id, :post)
                         ";
-				if (Model::query($sql, $values)) {
+
+                if (Model::query($sql, $values)) {
                     return true;
                 } else {
                     @mail(\GOTEO_FAIL_MAIL,

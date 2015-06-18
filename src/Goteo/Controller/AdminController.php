@@ -23,7 +23,7 @@ namespace Goteo\Controller {
 
     class AdminController extends \Goteo\Core\Controller {
 
-        // Array de usuarios con permisos especiales
+        // TODO: Array de usuarios con permisos especiales
         static public $supervisors = array(
             'contratos' => array(
                 // paneles de admin permitidos
@@ -46,23 +46,31 @@ namespace Goteo\Controller {
          * @param Request    $request [description]
          */
         private static function checkCurrentUser(Request $request, $option = null, $action = null, $id = null) {
+
             //refresh permission status
             Model\User::flush();
             $user = Session::getUser();
-            if ( ! $user || empty($user->getAdminNodes())) {
+
+
+            if ( ! $user || empty($user->getAdminNodes()) ) {
                 throw new ControllerAccessDeniedException("Access denied! User has no permissions");
             }
 
+            // all node names
+            $all_nodes = Model\Node::getList();
+            // simple list of administrable nodes
+            $admin_nodes = array();
+            foreach($user->getAdminNodes() as $node_id => $role) {
+                $admin_nodes[$node_id] = $all_nodes[$node_id];
+            }
+            // all roles names
+            $all_roles = Model\User::getRolesList();
 
             // get working node
-            $nodes = array();
-            foreach($user->getAdminNodes() as $node_id => $node) {
-                $nodes[$node_id] = $node->name;
-            }
             $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
             //if need to change the current node
-            if($request->query->has('node') && array_key_exists($request->query->get('node'), $nodes)) {
-                $node = $request->query->get('node');
+            if($request->query->has('admin_node') && array_key_exists($request->query->get('admin_node'), $admin_nodes)) {
+                $node = $request->query->get('admin_node');
                 Session::store('admin_node', $node);
             }
 
@@ -91,10 +99,12 @@ namespace Goteo\Controller {
             View::getEngine()->useContext('admin/', [
                     'option' => $option,
                     'admin_menu' => $menu,
+                    'all_roles' => $all_roles,
+                    'all_nodes' => $all_nodes,
                     'admin_node' => $node,
-                    'admin_nodes' => $nodes,
-                    'breadcrumb' => $breadcrumb
-                ]);
+                    'admin_nodes' => $admin_nodes,
+                    'breadcrumb' => $breadcrumb,
+                    ]);
 
             // If menu is not allowed, throw exception
             if($option && ! array_key_exists($option, $menu) ) {
@@ -145,7 +155,6 @@ namespace Goteo\Controller {
                 if( ! method_exists($controller, $method) ) {
                     return new Response(View::render('admin/denied', ['msg' => "Method [$method()] not found for class [$SubC]"]), Response::HTTP_BAD_REQUEST);
                 }
-                // $controller->setFilters(self::setFilters($option));
                 $ret = $controller->$method($id, $subaction);
 
             } catch(ControllerAccessDeniedException $e) {
@@ -179,91 +188,6 @@ namespace Goteo\Controller {
             //default admin dashboard (nothing!)
             return new Response(View::render('admin/default', $ret));
 
-        }
-
-        /*
-         * Si no tenemos filtros para este gestor los cogemos de la sesion
-         */
-
-        private static function setFilters($option) {
-
-            // array de fltros para el sub controlador
-            $filters = array();
-            if(!is_array(self::$options[$option]['filters'])) return $filters;
-
-            if (isset($_GET['reset']) && $_GET['reset'] == 'filters') {
-                unset($_SESSION['admin_filters'][$option]);
-                unset($_SESSION['admin_filters']['main']);
-                foreach (self::$options[$option]['filters'] as $field => $default) {
-                    $filters[$field] = $default;
-                }
-                return $filters;
-            }
-
-            // si hay algun filtro
-            $filtered = false;
-
-            // filtros de este gestor:
-            // para cada uno tenemos el nombre del campo y el valor por defecto
-            foreach (self::$options[$option]['filters'] as $field => $default) {
-                if (isset($_GET[$field])) {
-                    // si lo tenemos en el get, aplicamos ese a la sesión y al array
-                    $filters[$field] = (string) $_GET[$field];
-                    $_SESSION['admin_filters'][$option][$field] = (string) $_GET[$field];
-                    if (($option == 'reports' && $field == 'user')
-                            || ($option == 'projects' && $field == 'user')
-                            || ($option == 'users' && $field == 'name')
-                            || ($option == 'accounts' && $field == 'name')
-                            || ($option == 'rewards' && $field == 'name')) {
-
-                        $_SESSION['admin_filters']['main']['user_name'] = (string) $_GET[$field];
-                    }
-                    $filtered = true;
-                } elseif (!empty($_SESSION['admin_filters'][$option][$field])) {
-                    // si no lo tenemos en el get, cogemos de la sesion pero no lo pisamos
-                    $filters[$field] = $_SESSION['admin_filters'][$option][$field];
-                    $filtered = true;
-                } else {
-                    // a ver si tenemos un filtro equivalente
-                    switch ($option) {
-                        case 'projects':
-                            if ($field == 'name' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
-                                $filters['name'] = $_SESSION['admin_filters']['main']['user_name'];
-                                $filtered = true;
-                            }
-                            break;
-                        case 'users':
-                            if ($field == 'name' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
-                                $filters['name'] = $_SESSION['admin_filters']['main']['user_name'];
-                                $filtered = true;
-                            }
-                            break;
-                        case 'accounts':
-                            if ($field == 'name' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
-                                $filters['name'] = $_SESSION['admin_filters']['main']['user_name'];
-                                $filtered = true;
-                            }
-                            break;
-                        case 'rewards':
-                            if ($field == 'name' && !empty($_SESSION['admin_filters']['main']['user_name'])) {
-                                $filters['name'] = $_SESSION['admin_filters']['main']['user_name'];
-                                $filtered = true;
-                            }
-                            break;
-                    }
-
-                    // si no tenemos en sesion, ponemos el valor por defecto
-                    if (empty($filters[$field])) {
-                        $filters[$field] = $default;
-                    }
-                }
-            }
-
-            if ($filtered) {
-                $filters['filtered'] = 'yes';
-            }
-
-            return $filters;
         }
 
     }

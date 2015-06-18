@@ -81,49 +81,49 @@ class ReportsSubController extends AbstractSubController {
 
     public function currenciesAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('currencies', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('currencies', $id, $this->getFilters(), $subaction));
     }
 
 
     public function topAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('top', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('top', $id, $this->getFilters(), $subaction));
     }
 
 
     public function donorsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('donors', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('donors', $id, $this->getFilters(), $subaction));
     }
 
 
     public function callsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('calls', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('calls', $id, $this->getFilters(), $subaction));
     }
 
 
     public function projectsAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('projects', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('projects', $id, $this->getFilters(), $subaction));
     }
 
 
     public function geolocAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('geoloc', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('geoloc', $id, $this->getFilters(), $subaction));
     }
 
 
     public function paypalAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('paypal', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('paypal', $id, $this->getFilters(), $subaction));
     }
 
 
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('list', $id, $this->filters, $subaction));
+        return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
 

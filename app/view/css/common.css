@@ -8,21 +8,21 @@ html {
     overflow: auto;
 }
 
-html, body {        
-    padding: 0;    
+html, body {
+    padding: 0;
     background-color: #e7e7e7;
 }
 
 
 body {
 	min-width: 780px;
-    min-height: 100%;    
+    min-height: 100%;
     margin: 0 auto;
     top: 0;
     position: relative;
 }
 
-body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {    
+body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {
     font-size: 12px;
     color: #58595b;
 }
@@ -50,7 +50,7 @@ fieldset {
 
 fieldset {
     display: inline-block;
-    background: transparent;    
+    background: transparent;
 }
 
 textarea {
@@ -59,7 +59,7 @@ textarea {
 
 input[type="text"]:focus,
 input[type="password"]:focus,
-textarea:focus {    
+textarea:focus {
     background-color: white !important;
 }
 
@@ -69,12 +69,12 @@ button,
 a.button {
     background-color: #58595B;
     text-transform: uppercase;
-    border: none;    
+    border: none;
     cursor: pointer;
     font-weight: normal;
     color: white;
     display: inline-block;
-    text-decoration: none;    
+    text-decoration: none;
     text-align: center;
     border-radius: 3px;
     -moz-border-radius: 3px;
@@ -90,7 +90,7 @@ input[type="submit"]:active,
 input[type="reset"]:active,
 button:active,
 a.button:active {
-    background: #60c1bf url('button/aqua-active.png') repeat-x top;    
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;
 }
 
 input[type="submit"]:hover,
@@ -103,17 +103,17 @@ a.button:hover {
 input.red[type="submit"],
 input.red[type="reset"],
 button.red,
-a.button.red {    
-    background: #b5161e url('button/red.png') repeat-x top;    
-    color: white;    
-} 
+a.button.red {
+    background: #b5161e url('button/red.png') repeat-x top;
+    color: white;
+}
 
 input.red[type="submit"]:active,
 input.red[type="reset"]:active,
 button.red:active,
 a.button.red:active {
-    background: #e44133 url('button/red-active.png') repeat-x top;    
-} 
+    background: #e44133 url('button/red-active.png') repeat-x top;
+}
 
 input.red[type="submit"]:hover,
 input.red[type="reset"]:hover,
@@ -128,8 +128,8 @@ input.violet[type="submit"],
 input.violet[type="reset"],
 button.violet,
 a.button.violet {
-    background: #96238F url('button/violet.png') repeat-x top;    
-} 
+    background: #96238F url('button/violet.png') repeat-x top;
+}
 
 input.violet[type="submit"]:hover,
 input.violet[type="reset"]:hover,
@@ -187,7 +187,7 @@ button.green,
 a.button.green {
     background: #00b05b url('button/green.png') repeat-x top;
     color: white;
-} 
+}
 
 input.green[type="submit"]:active,
 input.green[type="reset"]:active,
@@ -230,7 +230,7 @@ a.button.blue:hover {
 
 
 h1, h2, h3, h4, h5, h6, h7, h8 {
-    font-weight: bold;        
+    font-weight: bold;
     text-transform: uppercase;
     margin: 1em 0;
 }
@@ -249,13 +249,13 @@ h1, h2, h3, h4, h5, h6, h7, h8 {
 /* End hide from IE-mac */
 
 /** pagination **/
- ul#pagination {
+ ul#pagination, ul.pagination {
 	list-style:none;
 	float:left;
 	margin: 0px;
 	padding:0px;
 }
-ul#pagination li {
+ul#pagination li, ul.pagination li {
 	display:inline;
 	margin: 0 6px 0 0;
 	background: white;
@@ -263,21 +263,21 @@ ul#pagination li {
 	float: left;
 	text-align: center;
 }
-ul#pagination li.selected {
+ul#pagination li.selected, ul.pagination li.selected {
 	background:#cde4e5;
 	font-weight:bold;
 	padding: 6px 20px;
 }
-ul#pagination li.hellip {
+ul#pagination li.hellip, ul.pagination li.hellip {
 	padding: 6px 20px;
 }
-ul#pagination li a {
+ul#pagination li a, ul.pagination li a {
 	display: block;
 	padding: 6px 20px;
 	text-decoration:none;
 	font-weight:bold;
 }
-ul#pagination li a:hover {
+ul#pagination li a:hover, ul.pagination li a:hover {
 	background:#F3F3F3;
 }
 /** end of pagination **/
