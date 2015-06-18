@@ -39,7 +39,7 @@ $url = '/' . $this->template . '/' . $user->id;
 
         <h3>Idiomas de traductor</h3>
         <?php if (empty($user->translangs)) : ?><p style="font-weight: bold; color:red;">¡No tiene ningún idioma asignado!</p><?php endif; ?>
-        <form method="post" action="/admin/users/translang">
+        <form method="post" action="<?= $url ?>/translang">
             <input type="hidden" name="user" value="<?php echo $user->id; ?>" />
             <table>
                 <?php foreach ($langs as $lang => $name) :
@@ -69,7 +69,7 @@ $url = '/' . $this->template . '/' . $user->id;
             <tr>
                 <td><?= $this->all_roles[$role] ?></td>
                 <td><?= $this->nodes[$node] ?></td>
-                <td><a href="/admin/users/manage/<?= $user->id ?>?<?= http_build_query(array('del_role' => $role, 'from_node' => $node)) ?>">[Eliminar]</a></td>
+                <td><a href="<?= $url ?>?<?= http_build_query(array('del_role' => $role, 'from_node' => $node)) ?>">[Eliminar]</a></td>
             </tr>
         <?php endforeach; endforeach ?>
 

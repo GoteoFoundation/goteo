@@ -8,7 +8,7 @@ $user = $this->user;
 
 ?>
 
-    <form action="/impersonate" method="post">
+    <form action="<?= '/' . $this->template . '/' . $user->id ?>" method="post">
         <input type="hidden" name="id" value="<?php echo $user->id ?>" />
 
         <input type="submit" class="red" name="impersonate" value="Suplantar a este usuario" onclick="return confirm('Estás completamente seguro de entender lo que esás haciendo?');" /><br />

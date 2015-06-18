@@ -18,44 +18,9 @@ class UsersSubController extends AbstractSubController {
 
     static protected $labels = array (
       'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
       'add' => 'Creando Usuario',
       'move' => 'Moviendo a otro Nodo el usuario ',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe',
-      'viewer' => 'Viendo logs',
       'edit' => 'Editando Usuario',
-      'translate' => 'Traduciendo Texto',
-      'reorder' => 'Ordenando los padrinos en Portada',
-      'footer' => 'Ordenando las entradas en el Footer',
-      'projects' => 'Informe Impulsores',
-      'admins' => 'Asignando administradores del Canal',
-      'posts' => 'Entradas de blog en la convocatoria',
-      'conf' => 'Configuración de campaña del proyecto',
-      'dropconf' => 'Gestionando parte económica de la convocatoria',
-      'keywords' => 'Palabras clave',
-      'view' => 'Apadrinamientos',
-      'info' => 'Información de contacto',
-      'send' => 'Comunicación enviada',
-      'init' => 'Iniciando un nuevo envío',
-      'activate' => 'Iniciando envío',
-      'detail' => 'Viendo destinatarios',
-      'dates' => 'Fechas del proyecto',
-      'accounts' => 'Cuentas del proyecto',
-      'images' => 'Imágenes del proyecto',
-      'assign' => 'Asignando a una Convocatoria el proyecto',
-      'open_tags' => 'Asignando una agrupación al proyecto',
-      'rebase' => 'Cambiando Id de proyecto',
-      'consultants' => 'Cambiando asesor del proyecto',
-      'paypal' => 'Informe PayPal',
-      'geoloc' => 'Informe usuarios Localizados',
-      'calls' => 'Informe Convocatorias',
-      'donors' => 'Informe Donantes',
-      'top' => 'Top Cofinanciadores',
-      'currencies' => 'Actuales ratios de conversión',
-      'preview' => 'Previsualizando Historia',
       'manage' => 'Gestionando Usuario',
       'impersonate' => 'Suplantando al Usuario',
     );
@@ -73,25 +38,6 @@ class UsersSubController extends AbstractSubController {
       'order' => '',
       'project' => '',
       'type' => '',
-    );
-
-    public static $manageSubAct = array(
-        "ban" => array (
-            'sql' => "UPDATE user SET active = 0 WHERE id = :user",
-            'log' => "Desactivado"
-            ),
-        "unban" => array (
-            'sql' => "UPDATE user SET active = 1 WHERE id = :user",
-            'log' => "Activado"
-            ),
-        "show" => array (
-            'sql' => "UPDATE user SET hide = 0 WHERE id = :user",
-            'log' => "Mostrado"
-            ),
-        "hide" => array (
-            'sql' => "UPDATE user SET hide = 1 WHERE id = :user",
-            'log' => "Ocultado"
-            ),
     );
 
     /**
@@ -162,7 +108,8 @@ class UsersSubController extends AbstractSubController {
         return array(
                 'template' => 'admin/users/move',
                 'user'   => $user
-        );    }
+        );
+    }
 
 
     public function impersonateAction($id = null, $subaction = null) {
@@ -174,6 +121,30 @@ class UsersSubController extends AbstractSubController {
             return $this->redirect();
         }
 
+        if($this->isPost()) {
+            if(Session::exists('shadowed_by')) {
+                Message::error('Ya estas suplantando un usuario, por favor cierra primero la sesión!');
+                return $this->redirect();
+            }
+
+            Session::onSessionDestroyed(function () use ($user) {
+                Message::error('User <strong>' . $this->user->name . ' ('. $this->user->id. ')</strong> converted to <strong>' . $user->name . ' ('. $user->id. ')</strong>');
+            });
+            Session::destroy();
+            Session::setUser($user);
+            Session::store('shadowed_by', [$this->user->id, $this->user->name, self::getUrl('impersonate', $id)]);
+            // Evento Feed
+            $log = new Feed();
+            $log->setTarget(Session::getUserId(), 'user');
+            $log->populate('Suplantación usuario (admin)', self::getUrl(), \vsprintf('El admin %s ha %s al usuario %s', array(
+                Feed::item('user', $this->user->name, $this->user->id),
+                Feed::item('relevant', 'Suplantado'),
+                Feed::item('user', Session::getUser()->name, Session::getUserId())
+            )));
+            $log->doAdmin('user');
+            return $this->redirect('/dashboard');
+        }
+
         // vista de acceso a suplantación de usuario
         return array(
             'template' => 'admin/users/impersonate',
@@ -183,13 +154,6 @@ class UsersSubController extends AbstractSubController {
 
 
     public function manageAction($id = null, $subaction = null) {
-        $log = array(
-            "checker"      => ["Hecho revisor", "Quitado de revisor"],
-            "translator"   => ["Hecho traductor", "Quitado de traductor"],
-            "caller"       => ["Hecho convocador", "Quitado de convocador"],
-            "admin"        => ["Hecho admin", "Quitado de admin"],
-            "vip"          => ["Hecho VIP", "Quitado el VIP"],
-            "manager"      => ["Hecho gestor", "Quitado de gestor"]);
 
         $user = Model\User::get($id);
         $all_roles = Model\User::getRolesList();
@@ -236,6 +200,42 @@ class UsersSubController extends AbstractSubController {
                             $all_nodes[$this->getGet('from_node')]);
             }
         }
+        elseif($subaction) {
+            $actions = array(
+                'ban' =>   ['active', 0, 'Desactivado'],
+                'unban' => ['active', 1, 'Activado'],
+                'show' =>  ['hide', 0, 'Mostrado'],
+                'hide' =>  ['hide', 1, 'Ocultado']
+            );
+            if($p = $actions[$subaction]) {
+                if(Model\User::setProperty($user->id, $p[1], $p[0])) {
+                    $text = $p[2] . ' correctamente';
+                    $mod = true;
+                }
+                else {
+                    $text = $p[2] . ' erróneamente!';
+                }
+            }
+            elseif($subaction === 'translang') {
+                $sql = "DELETE FROM user_translang WHERE user = :user";
+                Model\User::query($sql, array(':user' => $id));
+                $anylang = false;
+                if(is_array($this->getPost('langs'))) {
+                    foreach ($this->getPost('langs') as $lang) {
+                        $sql = "INSERT INTO user_translang (user, lang) VALUES (:user, :lang)";
+                        if (Model\User::query($sql, array(':user' => $id, ':lang' => $lang))) {
+                            $anylang = true;
+                        }
+                    }
+                }
+                if (!$anylang) {
+                    Message::error('No se ha seleccionado ningún idioma, se ha desactivado la traducción para este usuario!');
+                } else {
+                    Message::info('Se han aplicado al traductor los idiomas seleccionados');
+                }
+                return $this->redirect(self::getUrl('manage', $id));
+            }
+        }
         if($text) {
             if($mod) Message::info($text);
             else     Message::error($text);
@@ -251,66 +251,6 @@ class UsersSubController extends AbstractSubController {
                        ));
             $log->doAdmin('user');
             return $this->redirect(self::getUrl('manage', $id));
-        }
-
-
-        if (!empty($sql)) {
-
-            if (Model\User::query($sql, array(':user'=>$id))) {
-
-                $log_text = 'El admin %s ha %s al usuario %s';
-
-                $onNode = Model\Node::get($node);
-
-                // procesos adicionales
-                switch ($subaction) {
-                    case 'admin':
-                        if ($onNode->assign($id)) {
-                            Message::info('El nuevo admin se ha añadido a los administradores del nodo <strong>'.$onNode->name.'</strong>.');
-                        } else{
-                            Message::error('ERROR!!! El nuevo admin no se ha podido añadir a los administradores del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
-                        }
-                        break;
-
-                    case 'noadmin':
-                        if ($onNode->unassign($id)) {
-                            Message::info('El ex-admin se ha quitado de los administradores del nodo <strong>'.$onNode->name.'</strong>.');
-                        } else{
-                            Message::error('ERROR!!! El ex-admin no se ha podido quitar de los administradores del nodo <strong>'.$onNode->name.'</strong>. Contactar con el superadmin');
-                        }
-                        break;
-
-                    case 'translator':
-                        // le ponemos todos los idiomas activos (excepto el español)
-                        $langs = Lang::listAll('id');
-                        //TODO: quitar esto de aqui...
-                        unset($langs['es']);
-                        foreach($langs as $l) {
-                            $sql = "INSERT INTO user_translang (user, lang) VALUES (:user, :lang)";
-                            Model\User::query($sql, array(':user' => $id, ':lang' => $l));
-                        }
-                        break;
-
-                    case 'notranslator':
-                        // quitamos los idiomas
-                        $sql = "DELETE FROM user_translang WHERE user = :user";
-                        Model\User::query($sql, array(':user'=>$id));
-                        break;
-                }
-
-
-            } else {
-
-                // mensaje de error y volvemos a la gestion del usuario
-                Message::error('Ha FALLADO cuando ha <strong>' . $log_action . '</strong> al usuario <strong>'.$id.'</strong>');
-                $log_text = 'Al admin %s le ha <strong>FALLADO</strong> cuando ha %s al usuario %s';
-
-            }
-
-
-            unset($log);
-
-            return $this->redirect('/admin/users/manage/'.$id);
         }
 
         $nodes = $this->nodes;
@@ -462,55 +402,6 @@ class UsersSubController extends AbstractSubController {
                 'projects' => $projects,
                 'orders' => $orders
         );
-    }
-
-
-
-    public function process ($action = 'list', $id = null, $filters = array(), $subaction = '') {
-
-        $node = $this->node;
-        $nodes = $this->nodes;
-        if (!$this->isMasterNode()) {
-            // Fuerza el filtro de nodo para que el admin de un nodo no pueda cambiarlo
-            // $filters['node'] = $node;
-        }
-
-        $errors = array();
-
-        switch ($action)  {
-
-            // aplicar idiomas
-            case 'translang':
-
-                if (!$this->hasPost('user')) {
-                    Message::error('Hemos perdido de vista al usuario');
-                    return $this->redirect();
-                } else {
-                    $user = $this->getPost('user');
-                }
-
-                $sql = "DELETE FROM user_translang WHERE user = :user";
-                Model\User::query($sql, array(':user'=>$user));
-                $anylang = false;
-                if(is_array($this->getPost('langs'))) {
-                    foreach ($this->getPost('langs') as $lang) {
-                        $sql = "INSERT INTO user_translang (user, lang) VALUES (:user, :lang)";
-                        if (Model\User::query($sql, array(':user'=>$user, ':lang'=>$lang))) {
-                            $anylang = true;
-                        }
-                    }
-                }
-                if (!$anylang) {
-                    Message::error('No se ha seleccionado ningún idioma, se ha desactivado la traducción para este usuario!');
-                } else {
-                    Message::info('Se han aplicado al traductor los idiomas seleccionados');
-                }
-
-                return $this->redirect('/admin/users/manage/'.$user);
-
-                break;
-        }
-
     }
 
 }

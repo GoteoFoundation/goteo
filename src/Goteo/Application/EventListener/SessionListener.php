@@ -78,13 +78,24 @@ class SessionListener implements EventSubscriberInterface
             return;
         }
 
-        $response = $event->getResponse();
-
         // Cookie
         // the stupid law cookie
         if (!Cookie::exists('goteo_cookies')) {
             Cookie::store('goteo_cookies', '1');
             Message::info(Text::get('message-cookies'));
+        }
+
+        $response = $event->getResponse();
+        //Are we shadowing some user?
+        if($shadowed_by = Session::get('shadowed_by')) {
+            $body = '<div class="user-shadowing-bar">Back to <a href="/user/logout">' . $shadowed_by[1] . '</a></div>';
+            $content = $response->getContent();
+            $pos = strpos($content, '<div id="header">');
+            if($pos !== false) {
+                $content = substr($content, 0, $pos + 17) . $body . substr($content, $pos + 17);
+                $response->setContent($content);
+                $event->setResponse($response);
+            }
         }
 
     }

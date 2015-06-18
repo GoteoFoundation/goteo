@@ -1817,14 +1817,20 @@ namespace Goteo\Model {
          * @param string $userId
          * @return bool
          */
-        public static function cancel($userId) {
-
+        public static function cancel($userId, $param = null) {
             if (self::query('UPDATE user SET active = 0, hide = 1 WHERE id = :id', array(':id' => $userId))) {
                 return true;
-            } else {
-                return false;
             }
+            return false;
+        }
 
+        public static function setProperty($userId, $value, $param = 'active') {
+            if(in_array($param, array('active', 'hide'))) {
+                if (self::query("UPDATE user SET user.$param = :value WHERE id = :id", array(':id' => $userId, ':value' => $value))) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /*

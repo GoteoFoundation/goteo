@@ -96,9 +96,22 @@ class UserController extends \Goteo\Core\Controller {
      * Cerrar sesión.
      */
     public function logoutAction() {
-        $lang = '?lang=' . Session::get('lang');
+        $url = '/?lang=' . Session::get('lang');
+        // Shadowing?
+        if($shadowed_by = Session::get('shadowed_by')) {
+            $user = Session::getUser();
+            if($old_user = Model\User::get($shadowed_by[0])) {
+                if($shadowed_by[2]) $url = $shadowed_by[2];
+                Session::onSessionDestroyed(function () use ($shadowed_by, $user) {
+                    Application\Message::error('User <strong>' . $user->name . ' ('. $user->id. ')</strong> returned to <strong>' . $shadowed_by[1] . ' ('. $shadowed_by[0]. ')</strong>');
+                });
+            }
+        }
         Session::destroy();
-        return new RedirectResponse('/'.$lang);
+        if($old_user) {
+            Session::setUser($old_user);
+        }
+        return new RedirectResponse($url);
     }
 
     /**
