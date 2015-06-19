@@ -5,20 +5,20 @@ $langs = $_SESSION['user']->translangs;
 unset($langs['es']); // no se puede traducir a español
 
 $actual = Lang::get($_SESSION['translate_lang']);
-
 $section = isset($vars['table']) ? $vars['table'] : $vars['section'];
 // retorno especial para traduccion de nodo
 if (isset($vars['node']) && $vars['node'] != \GOTEO_NODE) {
     $return = '/translate/select/'.$section.'/'.$vars['node'].'/'.$vars['option'];
     if ($vars['option'] == 'data') {
         $return .= '/edit/'.$vars['node'];
-    } else if ($vars['action'] == 'edit_'.$vars['option']) {
-        $return .= '/edit/'.$vars['id'];
-    } else {
-        $return .= '/'.$vars['id'];
+    } elseif ($vars['action'] == 'edit_'.$vars['option']) {
+        $return .= '/edit';
     }
+    if($vars['id']) $return .= '/'.$vars['id'];
 } else {
-    $return = '/translate/select/'.$section.'/'.$vars['action'].'/'.$vars['id'].'/'.$vars['filter'].'&page='.$_GET['page'];
+    $return = '/translate/select/'.$section.'/'.$vars['action'];
+    if($vars['id']) $return .= '/'.$vars['id'];
+    $return .= $vars['filter'].'&page='.$_GET['page'];
 }
 ?>
 <div id="lang-selector">

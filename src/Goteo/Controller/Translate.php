@@ -24,7 +24,7 @@ namespace Goteo\Controller {
             // si es un admin le damos todos los idiomas para traducir
             if (isset(Session::getUser()->roles['admin'])) {
 
-                $langs = Lang::listAll('object', false);
+                $langs = Lang::listAll('name', false);
                 foreach ($langs as $lang) {
                     $lang = $lang->name;
                 }
