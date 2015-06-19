@@ -67,11 +67,11 @@ namespace Goteo\Controller {
             $all_roles = Model\User::getRolesList();
 
             // get working node
-            $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
+            $admin_node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
             //if need to change the current node
             if($request->query->has('admin_node') && array_key_exists($request->query->get('admin_node'), $admin_nodes)) {
-                $node = $request->query->get('admin_node');
-                Session::store('admin_node', $node);
+                $admin_node = $request->query->get('admin_node');
+                Session::store('admin_node', $admin_node);
             }
 
 
@@ -81,7 +81,7 @@ namespace Goteo\Controller {
             $breadcrumb = array(['Admin', '/admin']);
 
             foreach(static::$subcontrollers as $class) {
-                if($class::isAllowed($user, $node)) {
+                if($class::isAllowed($user, $admin_node)) {
                     $menu[$class::getId()] = $class::getLabel();
                     if($option === $class::getId()) {
                         // add option
@@ -101,7 +101,7 @@ namespace Goteo\Controller {
                     'admin_menu' => $menu,
                     'all_roles' => $all_roles,
                     'all_nodes' => $all_nodes,
-                    'admin_node' => $node,
+                    'admin_node' => $admin_node,
                     'admin_nodes' => $admin_nodes,
                     'breadcrumb' => $breadcrumb,
                     ]);

@@ -21,11 +21,13 @@ $part = end(explode('/', $this->template));
     <li<?= ($part === 'edit' ? ' class="selected"' : '') ?>><a href="/admin/users/edit/<?php echo $user->id; ?>">[Email/contraseña]</a></li>
     <li<?= ($part === 'move' ? ' class="selected"' : '') ?>><a href="/admin/users/move/<?php echo $user->id; ?>">[Mover de   Nodo]</a></li>
     <li<?= ($part === 'impersonate' ? ' class="selected"' : '') ?>><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></li>
-    <?php if (\Goteo\Controller\Admin\AccountsSubController::isAllowed($user, $this->admin_node)) : ?>
-    <li><a href="/admin/accounts/add/?user=<?php echo $user->id; ?>">[Crear aporte]</a></li>
-    <?php endif; ?>
-    <li><a href="/admin/<?= $this->admin_node ?>/?name=<?php echo $user->email; ?>">[Historial aportes]</a></li>
-    <li><a href="/admin/sent/?user=<?php echo urlencode($user->email); ?>">[Historial envíos]</a></li>
+    <?php if (\Goteo\Controller\Admin\AccountsSubController::isAllowed($this->get_user(), $this->admin_node)) : ?>
+        <li><a href="/admin/accounts/add?user=<?php echo $user->id; ?>">[Crear aporte]</a></li>
+        <li><a href="/admin/accounts?name=<?php echo $user->email; ?>">[Historial aportes]</a></li>
+    <?php else: ?>
+        <li><a href="/admin/invests?name=<?php echo $user->email; ?>">[Historial aportes]</a></li>
+    <?php endif ?>
+    <li><a href="/admin/sent?user=<?php echo urlencode($user->email); ?>">[Historial envíos]</a></li>
 </ul>
 </div>
 
