@@ -59,11 +59,7 @@ $url_project_create = $this->url_project_create ? $this->url_project_create : '/
                             <li><a href="/review"><span><?= $this->text('regular-review_board') ?></span></a></li>
                         <?php endif; ?>
 
-                        <?php
-                        // TODO: Permissions granularity
-                        // HARDCODED user contratos
-                        // check CommonsSubControllers.php
-                         if ( isset($this->get_user()->roles['admin']) || isset($this->get_user()->roles['superadmin']) || $this->get_user()->id === 'contratos' ) : ?>
+                        <?php if ( $this->user_can_admin() ): ?>
                             <li><a href="/admin"><span><?= $this->text('regular-admin_board') ?></span></a></li>
                         <?php endif; ?>
 

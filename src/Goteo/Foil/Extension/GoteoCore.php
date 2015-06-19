@@ -45,6 +45,7 @@ class GoteoCore implements ExtensionInterface
           'get_config' => [$this, 'get_config'],
           'get_user' => [$this, 'get_user'],
           'is_logged' => [$this, 'is_logged'],
+          'user_can_admin' => [$this, 'user_can_admin'],
           'get_query' => [$this, 'get_query'],
           'get_post' => [$this, 'get_post'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
@@ -104,7 +105,12 @@ class GoteoCore implements ExtensionInterface
         return Session::getUser();
     }
 
-    //is logges
+    // Returns if the user can admin anything or not
+    public function user_can_admin() {
+        return \Goteo\Controller\AdminController::isAllowed(Session::getUser());
+    }
+
+    //is logged
     public function is_logged() {
         return Session::isLogged();
     }

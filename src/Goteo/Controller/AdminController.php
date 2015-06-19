@@ -33,10 +33,29 @@ namespace Goteo\Controller {
 
         private static $subcontrollers = array();
 
-        public static function addSubController($classname) {
+        /**
+         * Registers a subcontroller in the admin
+         * @param [type] $classname [description]
+         */
+        public static function addSubController(Admin\AbstractSubController $classname) {
             self::$subcontrollers[] = $classname;
         }
 
+        /**
+         * Returns if a user is allowed to view the admin
+         * @param  Model\User $user [description]
+         * @return boolean          [description]
+         */
+        public static function isAllowed(Model\User $user = null) {
+            if(!$user) return false;
+            $admin_node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
+            foreach(static::$subcontrollers as $class) {
+                if($class::isAllowed($user, $admin_node)) {
+                    return true;
+                }
+            }
+            return false;
+        }
         /**
          * Security method
          * Gets the current user
