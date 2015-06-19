@@ -51,8 +51,7 @@ namespace Goteo\Controller {
             Model\User::flush();
             $user = Session::getUser();
 
-
-            if ( ! $user || empty($user->getAdminNodes()) ) {
+            if ( ! $user ) {
                 throw new ControllerAccessDeniedException("Access denied! User has no permissions");
             }
 
@@ -107,7 +106,7 @@ namespace Goteo\Controller {
                     ]);
 
             // If menu is not allowed, throw exception
-            if($option && ! array_key_exists($option, $menu) ) {
+            if(empty($menu) || ($option && ! array_key_exists($option, $menu)) ) {
                 $zone = $menu[$option] ? $menu[$option] : $option;
                 if($zone) $msg = 'Access denied to <strong>' . $zone . '</strong>';
                 else      $msg = 'Access denied!';

@@ -53,6 +53,10 @@ class CommonsSubController extends AbstractSubController {
      * @inherit
      */
     static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // TODO: permission granularity
+        // HARDCODED user 'contratos'
+        if($user->id === 'contratos') return true;
+
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);
