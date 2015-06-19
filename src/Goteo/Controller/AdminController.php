@@ -81,6 +81,7 @@ namespace Goteo\Controller {
             foreach($user->getAdminNodes() as $node_id => $role) {
                 $admin_nodes[$node_id] = $all_nodes[$node_id];
             }
+
             // all roles names
             $all_roles = Model\User::getRolesList();
 

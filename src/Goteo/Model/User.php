@@ -1168,34 +1168,32 @@ namespace Goteo\Model {
                 FROM user_role
                 WHERE
                     user_role.user_id = ?
-                ORDER BY user_role.node_id ASC
                 ', array($this->id));
 
             if($query) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $n) {
                     $role = $n->role;
                     $node = $n->node;
+
                     if(!array_key_exists($node, $this->all_roles_nodes)) {
                         $this->all_roles_nodes[$node] = array();
                     }
                     if(in_array($role, $this->all_roles_nodes[$node])) {
                         continue;
                     }
-                    if($node) {
-                        $this->all_roles_nodes[$node][] = $role;
-                    } else {
-
-                        //assign all nodes if node_id not specified
-                        $query = self::query('SELECT node.id AS `node` FROM node', array($this->id));
-
-                        foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $m) {
-                            $node = $m->node;
-                            if(!array_key_exists($node, $this->all_roles_nodes)) {
-                                $this->all_roles_nodes[$node] = array();
-                            }
-                            $this->all_roles_nodes[$node][] = $role;
+                    $this->all_roles_nodes[$node][] = $role;
+                }
+                // Add all nodes if empty node specified
+                if(array_key_exists('', $this->all_roles_nodes)) {
+                    //assign all nodes if node_id not specified
+                    $query = self::query('SELECT node.id AS `node` FROM node');
+                    $roles = $this->all_roles_nodes[''];
+                    foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $m) {
+                        if(!array_key_exists($m->node, $this->all_roles_nodes)) {
+                            $this->all_roles_nodes[$m->node] = $roles;
                         }
                     }
+                    unset($this->all_roles_nodes['']);
                 }
                 // Order array
                 foreach($this->all_roles_nodes as $node => $roles) {
