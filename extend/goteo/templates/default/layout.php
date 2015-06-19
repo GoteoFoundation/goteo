@@ -4,7 +4,7 @@ $this->layout('default::layout');
 
 
 // some customs view replacements
-$lang = '/'.$this->current_lang();
+$lang = '/'.$this->lang_current();
 ?>
 
 <?php $this->section('footer-social') ?>

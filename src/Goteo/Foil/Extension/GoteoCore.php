@@ -51,7 +51,8 @@ class GoteoCore implements ExtensionInterface
           'get_post' => [$this, 'get_post'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
           'get_querystring' => [$this, 'get_querystring'],
-          'current_lang' => [$this, 'current_lang'],
+          'lang_current' => [$this, 'lang_current'],
+          'lang_locale' => [$this, 'lang_locale'],
         ];
     }
 
@@ -65,9 +66,14 @@ class GoteoCore implements ExtensionInterface
         return Message::getErrors();
     }
 
-    public function current_lang()
+    public function lang_current()
     {
         return Lang::current();
+    }
+
+    public function lang_locale()
+    {
+        return Lang::getLocale();
     }
 
     //Cookies

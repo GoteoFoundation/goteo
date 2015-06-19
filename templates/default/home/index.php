@@ -1,7 +1,6 @@
 <?php
 
 use Goteo\Model\Image;
-use Goteo\Application\Lang;
 
 $posts = $this->posts;
 $banners = $this->banners;
@@ -22,64 +21,46 @@ if (!empty($posts)) {
     }
 }
 // print_r($og_image);die;
-$this->layout("layout", [
+$this->layout('layout', [
     'bodyClass' => 'home',
     'meta_description' => $this->text('meta-description-index'),
     'image' => $og_image
     ]);
 
 
-
-$this->section('content');
+$this->section('sub-header');
 
 ?>
-<div id="sub-header" class="banners">
-    <div class="clearfix">
-        <div class="slides_container">
-            <?php if (!empty($banners)) : foreach ($banners as $id=>$banner) : ?>
-            <div class="subhead-banner"><?=$this->insert("partials/header/banner", ['banner' => $banner]); ?></div>
-            <?php endforeach; endif;
-            if (count($banners) == 1) : ?>
-            <div class="subhead-banner"><?=$this->text_html('main-banner-header')?></div>
-            <?php endif; ?>
-        </div>
-        <div class="mod-pojctopen" id="mod-pojctopen">
-            <a href="" id="event-link" class="expand"></a>
-            <div class="main-calendar" id="main-calendar">
-                <div class="next-event">
-                    <span><?=$this->text('calendar-home-title')?></span>
-                </div>
-                <div class="inside" id="inside">
-                    <div class="event-month" id="event-month"></div>
-                    <div class="event-day" id="event-day"></div>
-                    <div id="event-text-day"></div>
-                    <div class="event-interval"><span class="icon-clock"></span><span id ="event-start"></span><?=$this->text('calendar-home-hour')?><span id ="event-end"></span></div>
-                </div>
+    <div id="sub-header" class="banners">
+        <div class="clearfix">
+            <div class="slides_container">
+                <?php if (!empty($banners)) : foreach ($banners as $id=>$banner) : ?>
+                <div class="subhead-banner"><?=$this->insert("partials/header/banner", ['banner' => $banner]); ?></div>
+                <?php endforeach; endif;
+                if (count($banners) == 1) : ?>
+                <div class="subhead-banner"><?=$this->text_html('main-banner-header')?></div>
+                <?php endif; ?>
             </div>
-            <div class="extra-calendar" id="extra-calendar">
-                <div class="event-category" id="event-category"></div>
-                <div class="event-title" style="padding:10px; height:60px;" id="event-title"></div>
-                <!--<span class="icon-ubication"></span>-->
-                <span class="icon-ubication">
-                <span class="path1"></span><span class="path2"></span>
-                </span>
-                <span id="event-location"></span>
-            </div>
-        </div>
-    </div>
-    <div class="sliderbanners-ctrl">
-        <a class="prev">prev</a>
-        <ul class="paginacion"></ul>
-        <a class="next">next</a>
-    </div>
-</div>
 
+        <?= $this->supply('index-sub-header-right', '<img src="/goteo_logo.png" alt="Goteo">') ?>
+
+        </div>
+        <div class="sliderbanners-ctrl">
+            <a class="prev">prev</a>
+            <ul class="paginacion"></ul>
+            <a class="next">next</a>
+        </div>
+    </div>
+<?php $this->replace() ?>
+
+
+<?php $this->section('content') ?>
     <div id="main">
 
      <?php
      foreach ($this->order as $item=>$itemData) {
 
-        if ($item !== "news" && $this->order[$item]) {
+        if ($item !== 'news' && $this->order[$item]) {
             echo $this->insert("home/partials/$item");
         }
     }
@@ -87,17 +68,17 @@ $this->section('content');
 
     </div>
 
-<?php $this->stop() ?>
+<?php $this->replace() ?>
 
 
 <?php if($this->order['news']): ?>
-<?php $this->section('footer-news') ?>
+    <?php $this->section('footer-news') ?>
 
-    <div id="press_banner">
-    <?=$this->insert("home/partials/news")?>
-    </div>
+        <div id="press_banner">
+        <?=$this->insert("home/partials/news")?>
+        </div>
 
-<?php $this->replace() ?>
+    <?php $this->replace() ?>
 <?php endif ?>
 
 
@@ -112,7 +93,7 @@ $this->section('content');
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) {return;}
       js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/<?php echo Lang::getLocale(); ?>/all.js#xfbml=1&appId=189133314484241";
+      js.src = "//connect.facebook.net/<?= $this->lang_locale() ?>/all.js#xfbml=1&appId=189133314484241";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 

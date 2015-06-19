@@ -95,7 +95,7 @@ $sponsors   = Sponsor::getList();
                 <li class="twitter"><a href="<?=$this->text('social-account-twitter') ?>" target="_blank"><?=$this->text('regular-twitter') ?></a></li>
                 <li class="facebook"><a href="<?=$this->text('social-account-facebook') ?>" target="_blank"><?=$this->text('regular-facebook') ?></a></li>
                 <li class="gplus"><a href="<?=$this->text('social-account-google') ?>" target="_blank"><?=$this->text('regular-google') ?></a></li>
-                <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss/<?= $this->current_lang() ?>" target="_blank"><?=$this->text('regular-share-rss')?></a></li>
+                <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss/<?= $this->lang_current() ?>" target="_blank"><?=$this->text('regular-share-rss')?></a></li>
 
             </ul>
         </div>
