@@ -60,7 +60,7 @@ class AppTest extends TestCase {
     }
 
     public function testPublicRoutes() {
-        $common = array('name="description"', 'property="og:title"', 'property="og:description"', '<title>', '<div id="wrapper"', '<div id="header"', '<div id="main"', '<div id="footer"', '<div id="sub-footer"', '<div id="press_banner"', 'js/goteo.js"', 'js/goteo.js"', 'css/goteo.css"');
+        $common = array('name="description"', 'property="og:title"', 'property="og:description"', '<title>', '<div id="wrapper"', '<div id="header"', '<div id="main"', '<div id="footer"', '<div id="sub-footer"', 'js/goteo.js"', 'css/goteo.css"', '</html>');
         $routes = array(
             '/' => ['<body class="home', '<div class="widget'],
             '/discover' => ['<body class="discover', '<div id="sub-header">', '<div id="menu">', '<form method="get" action="/discover/results">'],
