@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Model\Blog\Post,
     Goteo\Core\View;
 
-$post = $this['post'];
+$post = $vars['post'];
 ?>
 <div id="post">
     <?php  if (!empty($post->image)) : ?>

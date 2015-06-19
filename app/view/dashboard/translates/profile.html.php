@@ -3,9 +3,9 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$user = $this['user'];
-$original = $this['original'];
-$errors = $this['errors'];
+$user = $vars['user'];
+$original = $vars['original'];
+$errors = $vars['errors'];
 
 $sfid = 'sf-project-profile';
 ?>

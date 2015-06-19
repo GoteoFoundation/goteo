@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$banner = $this['data']['banner'] ?>
+$banner = $vars['data']['banner'] ?>
 
 <div class="support">
 
@@ -14,4 +14,4 @@ $banner = $this['data']['banner'] ?>
 
     <input type="submit" class="edit" name="banner-<?php echo $banner->id ?>-edit" value="<?php echo Text::get('regular-edit') ?>" />
 </div>
-    
+

@@ -11,7 +11,7 @@ $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo ca
 $success = Call::getActive(5); // convocatorias en modalidad 2; repartiendo capital riego
 
 // en la página de cofinanciadores, paginación de 20 en 20
-$pagedResults = new Paginated($this['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($vars['list'], 9, isset($_GET['page']) ? $_GET['page'] : 1);
 
 $bodyClass = 'discover';
 
@@ -22,7 +22,7 @@ include __DIR__ . '/../header.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2 class="title"><?php echo $this['title']; ?></h2>
+                <h2 class="title"><?php echo $vars['title']; ?></h2>
             </div>
         </div>
 

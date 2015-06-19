@@ -5,7 +5,7 @@ use Goteo\Core\Error,
     Goteo\Library\Text,
     Goteo\Model;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 // if($project instanceof \Goteo\Model\Project)
     $wof = new WallFriends($project);

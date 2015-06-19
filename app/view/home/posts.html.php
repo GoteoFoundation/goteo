@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$posts = $this['posts'];
+$posts = $vars['posts'];
 ?>
 <script type="text/javascript">
     $(function(){
@@ -29,7 +29,7 @@ $posts = $this['posts'];
                         <img src="<?php echo $post->image->getLink(500, 285); ?>" alt="Imagen"/>
                     </div>
                 <?php endif; ?>
-                <h3><?php if ($post->owner_type == 'project') { echo '<a href="/project/'.$post->owner_id.'/updates/'.$post->id.'">'.Text::get('project-menu-home').' '.$post->owner_name.'</a>: ' . $post->title; } 
+                <h3><?php if ($post->owner_type == 'project') { echo '<a href="/project/'.$post->owner_id.'/updates/'.$post->id.'">'.Text::get('project-menu-home').' '.$post->owner_name.'</a>: ' . $post->title; }
                 else { echo '<a href="/blog/'.$post->id.'">'.$post->title.'</a>'; } ?></h3>
                 <?php if (!empty($post->author)) : ?>
                     <div class="author"><a href="/user/profile/<?php echo $post->author ?>"><?php echo Text::get('regular-by') ?> <?php echo $post->user->name ?></a></div>

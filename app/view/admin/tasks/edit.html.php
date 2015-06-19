@@ -2,16 +2,16 @@
 
 use Goteo\Library\Text;
 
-$task = $this['task'];
-$nodes = $this['nodes'];
+$task = $vars['task'];
+$nodes = $vars['nodes'];
 ?>
 <div class="widget">
-    <form action="/admin/tasks/<?php echo ($this['action'] == 'add') ? 'add' : 'edit/'.$task->id ?>" method="post">
+    <form action="/admin/tasks/<?php echo ($vars['action'] == 'add') ? 'add' : 'edit/'.$task->id ?>" method="post">
         <?php if (!isset($_SESSION['admin_node']) && $_SESSION['admin_node'] != \GOTEO_NODE) : ?>
         <p>
             <label for="task-node">Nodo:</label><br />
             <select id="task-node" name="node" >
-            <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+            <?php foreach ($vars['nodes'] as $nodeId=>$nodeName) : ?>
                 <option value="<?php echo $nodeId; ?>"<?php if ($task->node == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
             <?php endforeach; ?>
             </select>

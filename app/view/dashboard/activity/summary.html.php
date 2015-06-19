@@ -49,21 +49,21 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 </script>
 
 <!-- monedero credito goteo -->
-<?php if ($this['pool']->amount) : ?>
+<?php if ($vars['pool']->amount) : ?>
 <div class="widget crowd-credit">
         <h3 class="beak"><?php echo Text::get('profile-credit-available'); ?></h3>
         <div class="credit-amount">
             <img style="vertical-align:middle;" src="/view/css/dashboard/monedero.svg" width="40" \>
-            <span class="amount"><?php echo \amount_format($this['pool']->amount); ?></span>
+            <span class="amount"><?php echo \amount_format($vars['pool']->amount); ?></span>
         </div>
 </div>
 <?php endif; ?>
 
 <!-- proyectos de mi interes -->
-<?php if (!empty($this['lists']['favourite_categories'])) : ?>
+<?php if (!empty($vars['lists']['favourite_categories'])) : ?>
     <div class="widget projects">
         <h2 class="title"><?php echo Text::get('profile-suggest-projects-interest'); ?></h2>
-        <?php foreach ($this['lists']['favourite_categories'] as $group=>$projects) : ?>
+        <?php foreach ($vars['lists']['favourite_categories'] as $group=>$projects) : ?>
             <div class="discover-group discover-group-my_projects" id="discover-group-my_projects-<?php echo $group ?>">
 
                 <div class="discover-arrow-left">
@@ -98,10 +98,10 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 <?php endif; ?>
 
 <!-- Proyectos que cofinancio -->
-<?php if (!empty($this['lists']['invest_on'])) : ?>
+<?php if (!empty($vars['lists']['invest_on'])) : ?>
     <div class="widget projects">
         <h2 class="title"><?php echo Text::get('profile-invest_on-header'); ?></h2>
-        <?php foreach ($this['lists']['invest_on'] as $group=>$projects) : ?>
+        <?php foreach ($vars['lists']['invest_on'] as $group=>$projects) : ?>
             <div class="discover-group discover-group-invest_on" id="discover-group-invest_on-<?php echo $group ?>">
 
                 <div class="discover-arrow-left">

@@ -3,6 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Core\ACL,
+        Goteo\Application\Config,
+        Goteo\Application\Lang,
         Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Model\User,
@@ -504,7 +506,7 @@ namespace Goteo\Model {
                     if ($logo->save($errors)) {
                         $this->logo = $logo->id;
                     } else {
-                        \Goteo\Library\Message::Error(Text::get('call-logo-upload-fail') . implode(', ', $errors));
+                        \Goteo\Application\Message::error(Text::get('call-logo-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -515,7 +517,7 @@ namespace Goteo\Model {
                     if ($image->save($errors)) {
                         $this->image = $image->id;
                     } else {
-                        \Goteo\Library\Message::Error(Text::get('call-image-upload-fail') . implode(', ', $errors));
+                        \Goteo\Application\Message::error(Text::get('call-image-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -526,7 +528,7 @@ namespace Goteo\Model {
                     if ($backimage->save($errors)) {
                         $this->backimage = $backimage->id;
                     } else {
-                        \Goteo\Library\Message::Error(Text::get('call-backimage-upload-fail') . implode(', ', $errors));
+                        \Goteo\Application\Message::error(Text::get('call-backimage-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -928,7 +930,7 @@ namespace Goteo\Model {
 
             $debug = false;
 
-            $lang = \LANG;
+            $lang = Lang::current();
 
             $sqlFilter = '';
             $sqlJoin = '';
@@ -944,13 +946,13 @@ namespace Goteo\Model {
                 $sqlFilter .= " WHERE call.status IN ('3', '4')"; // solo aplicacion y campaña
             }
 
-            if (\NODE_ID != \GOTEO_NODE) {
+            if (!\Goteo\Application\Config::isMasterNode()) {
                 $sqlJoin .= " INNER JOIN campaign
                     ON campaign.call = call.id
                     AND campaign.node = :node
                     AND campaign.active = 1
                     ";
-                $values[':node'] = \NODE_ID;
+                $values[':node'] = Config::get('current_node');
             }
 
 

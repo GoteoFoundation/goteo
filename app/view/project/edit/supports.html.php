@@ -4,9 +4,9 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
-$errors = $project->errors[$this['step']] ?: array();
-$okeys  = $project->okeys[$this['step']] ?: array();
+$project = $vars['project'];
+$errors = $project->errors[$vars['step']] ?: array();
+$okeys  = $project->okeys[$vars['step']] ?: array();
 
 $supports = array();
 
@@ -15,11 +15,11 @@ foreach ($project->supports as $support) {
     $ch = array();
 
     // a ver si es el que estamos editando o no
-    if (!empty($this["support-{$support->id}-edit"])) {
+    if (!empty($vars["support-{$support->id}-edit"])) {
 
         $support_types = array();
 
-        foreach ($this['types'] as $id => $type) {
+        foreach ($vars['types'] as $id => $type) {
             $support_types["support-{$support->id}-type-{$id}"] = array(
                 'name'  => "support-{$support->id}-type",
                 'value' => $id,
@@ -114,7 +114,7 @@ echo SuperForm::get(array(
     'id'            => $sfid,
 
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('supports-main-header'),
     'hint'          => Text::get('guide-project-supports'),
@@ -149,7 +149,7 @@ echo SuperForm::get(array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -157,7 +157,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

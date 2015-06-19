@@ -2,10 +2,10 @@
 
 use Goteo\Library\Text;
 
-$banner = $this['data']['banner'] ?>
+$banner = $vars['data']['banner'] ?>
 
 <div class="support">
-    
+
     <?php if (is_object($banner->image)) : ?>
     <div class="thumb"><img src="<?php echo $banner->image->getLink(270, 100) ?>" alt="Imagen" /></div>
     <?php endif; ?>
@@ -16,6 +16,6 @@ $banner = $this['data']['banner'] ?>
     <input type="submit" class="remove weak" name="banner-<?php echo $banner->id ?>-remove" value="<?php echo Text::get('form-remove-button') ?>" />
 </div>
 
-    
 
-    
+
+

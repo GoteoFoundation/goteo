@@ -3,7 +3,7 @@ use Goteo\Model\Node,
     Goteo\Model\Banner;
 
 $nodes = Node::getList();
-$node = $this['node'];
+$node = $vars['node'];
 
 $banners = Banner::getList($node);
 ?>

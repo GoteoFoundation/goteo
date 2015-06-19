@@ -4,9 +4,9 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
-$errors = $project->errors[$this['step']] ?: array();
-$okeys  = $project->okeys[$this['step']] ?: array();
+$project = $vars['project'];
+$errors = $project->errors[$vars['step']] ?: array();
+$okeys  = $project->okeys[$vars['step']] ?: array();
 
 $images = array();
 foreach ($project->images as $image) {
@@ -55,7 +55,7 @@ if (!empty($project->video->url)) {
 */
 
 $superform = array(
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'action'        => '',
     'method'        => 'post',
     'title'         => Text::get('images-main-header'),
@@ -106,7 +106,7 @@ $superform = array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -114,7 +114,7 @@ $superform = array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )
@@ -131,7 +131,7 @@ $superform = array(
 
 foreach ($superform['elements'] as $id => &$element) {
 
-    if (!empty($this['errors'][$this['step']][$id])) {
+    if (!empty($vars['errors'][$vars['step']][$id])) {
         $element['errors'] = arrray();
     }
 

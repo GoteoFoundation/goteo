@@ -1,9 +1,9 @@
 <?php
 use Goteo\Core\View;
 
-echo View::get('review/reviews/selector.html.php', $this);
+echo View::get('review/reviews/selector.html.php', $vars);
 
-$review = $this['review'];
+$review = $vars['review'];
 
 ?>
 

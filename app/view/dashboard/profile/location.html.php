@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Model;
 
-$geolocation = $this['geolocation'];
+$geolocation = $vars['geolocation'];
 
 ?>
 <form action="/dashboard/profile/location" method="post" enctype="multipart/form-data">

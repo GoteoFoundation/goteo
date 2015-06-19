@@ -3,14 +3,14 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Model;
 
-$call = $this['call'];
-$sponsor = $this['sponsor'];
+$call = $vars['call'];
+$sponsor = $vars['sponsor'];
 
-if ($this['action'] == 'add' || $this['action'] == 'edit') : ?>
+if ($vars['action'] == 'add' || $vars['action'] == 'edit') : ?>
 <div class="widget">
-    <?php if ($this['action'] == 'add') : ?><h3>Nuevo patrocinador</h3><?php endif; ?>
+    <?php if ($vars['action'] == 'add') : ?><h3>Nuevo patrocinador</h3><?php endif; ?>
     <form method="post" action="/dashboard/calls/sponsors/edit" enctype="multipart/form-data" >
-        <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
+        <input type="hidden" name="action" value="<?php echo $vars['action'] ?>" />
         <input type="hidden" name="order" value="<?php echo $sponsor->order ?>" />
         <input type="hidden" name="id" value="<?php echo $sponsor->id; ?>" />
 

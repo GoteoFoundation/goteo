@@ -4,8 +4,11 @@ namespace Goteo\Model {
 
     use \Goteo\Model\Project\Media,
         \Goteo\Model\Image,
-        \Goteo\Library\Text,
-        \Goteo\Library\Message;
+        \Goteo\Library\Text;
+
+    use Goteo\Application\Message;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Glossary extends \Goteo\Core\Model {
 
@@ -24,7 +27,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'glossary_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'glossary_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -58,10 +61,10 @@ namespace Goteo\Model {
          * Lista de entradas por orden alfabético
          */
         public static function getAll () {
-
+            $lang = Lang::current();
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(glossary_lang.title, glossary.title) as title,
                                     IFNULL(glossary_lang.text, glossary.text) as `text`,
                                     IFNULL(glossary_lang.legend, glossary.legend) as `legend`";
@@ -91,7 +94,7 @@ namespace Goteo\Model {
             $sql .= " ORDER BY title ASC
                 ";
 
-            $query = static::query($sql, array(':lang'=>\LANG));
+            $query = static::query($sql, array(':lang'=>$lang));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $glossary) {
 
@@ -147,7 +150,7 @@ namespace Goteo\Model {
                         $this->gallery[0]->setModelImage('glossary', $this->id);
                     }
                     else {
-                        Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                        Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 

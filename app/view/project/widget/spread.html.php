@@ -4,9 +4,10 @@ use Goteo\Core\View,
     Goteo\Model\Project;
 
 $user    = $_SESSION['user'];
-$project = $this['project'];
-$the_project = Project::getMedium($project->id);
-$level = (int) $this['level'] ?: 3;
+$project = $vars['project'];
+$the_project = Project::getWidget($project);
+
+$level = (int) $vars['level'] ?: 3;
 
 $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 $URL = \SITE_URL;
@@ -26,7 +27,7 @@ $author_twitter = str_replace(
                         ), '', $project->user->twitter);
 $author = !empty($author_twitter) ? ' '.Text::get('regular-by').' @'.$author_twitter : '';
 $share_title = Text::get('project-spread-social', $project->name . $author);
-if (NODE_ID != GOTEO_NODE)
+if (!\Goteo\Application\Config::isMasterNode())
     $share_title = str_replace ('#goteo', '#'.strtolower (NODE_NAME), $share_title);
 $share_url = $URL . '/project/'.$project->id;
 $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);

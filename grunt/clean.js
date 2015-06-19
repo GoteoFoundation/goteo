@@ -31,7 +31,12 @@ module.exports = function(grunt) {
                     'php/**/*',
                     '!php/php.ini',
                     '<%= goteo.dist %>/**/view/css/{goteo,node,config}*.css',
-                    '<%= goteo.dist %>/view/prologue.html.php',
+                    '<%= goteo.dist %>/templates/**',
+                    'var/cache/sql/**',
+                    'var/cache/**/*',
+                    '!var/cache/images/**',
+                    '!var/cache/README',
+                    '!var/cache/**/.*',
                 ]
             }]
         }

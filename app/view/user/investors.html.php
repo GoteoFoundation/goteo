@@ -11,15 +11,15 @@ $bodyClass = 'user-profile';
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$user = $this['user'];
+$user = $vars['user'];
 $worthcracy = Worth::getAll();
 
 // en la página de cofinanciadores, paginación de 20 en 20
-$pagedResults = new Paginated($this['investors'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($vars['investors'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -28,7 +28,7 @@ $pagedResults = new Paginated($this['investors'], 20, isset($_GET['page']) ? $_G
             <h3 class="title"><?php echo Text::get('profile-my_investors-header'); ?></h3>
             <dl class="summary">
                 <dt class="supporters"><?php echo Text::get('project-menu-supporters'); ?></dt>
-                <dd class="supporters"><?php echo count($this['investors']) ?></dd>
+                <dd class="supporters"><?php echo count($vars['investors']) ?></dd>
             </dl>
 
             <div class="supporters">
@@ -47,8 +47,8 @@ $pagedResults = new Paginated($this['investors'], 20, isset($_GET['page']) ? $_G
         </div>
     </div>
     <div class="side">
-        <?php echo View::get('user/widget/sharemates.html.php', $this) ?>
-        <?php echo View::get('user/widget/user.html.php', $this) ?>
+        <?php echo View::get('user/widget/sharemates.html.php', $vars) ?>
+        <?php echo View::get('user/widget/user.html.php', $vars) ?>
     </div>
 
 </div>

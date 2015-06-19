@@ -1,8 +1,8 @@
 <?php
 use Goteo\Library\Text;
 
-$contract = $this['contract'];
-$step = $this['step'];
+$contract = $vars['contract'];
+$step = $vars['step'];
 $step_errors = count($contract->errors[$step]);
 $total_errors = 0;
 

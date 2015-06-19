@@ -5,7 +5,7 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 
-$call = $this['call'];
+$call = $vars['call'];
 
 $banners = array();
 $sponsors = array();
@@ -13,7 +13,7 @@ $sponsors = array();
 foreach ($call->banners as $banner) {
 
     // a ver si es el que estamos editando o no
-    if (!empty($this["banner-{$banner->id}-edit"])) {
+    if (!empty($vars["banner-{$banner->id}-edit"])) {
 
         // a este grupo le ponemos estilo de edicion
         $banners["banner-{$banner->id}"] = array(
@@ -107,7 +107,7 @@ foreach ($call->banners as $banner) {
 foreach ($call->sponsors as $sponsor) {
 
     // a ver si es el que estamos editando o no
-    if (!empty($this["sponsor-{$sponsor->id}-edit"])) {
+    if (!empty($vars["sponsor-{$sponsor->id}-edit"])) {
 
         // a este grupo le ponemos estilo de edicion
         $sponsors["sponsor-{$sponsor->id}"] = array(
@@ -201,7 +201,7 @@ echo SuperForm::get(array(
 
     'id'            => $sfid,
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('call-supports-main-header'),
     'hint'          => Text::get('guide-call-supports'),
@@ -261,7 +261,7 @@ echo SuperForm::get(array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'call'   => $call,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -269,7 +269,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

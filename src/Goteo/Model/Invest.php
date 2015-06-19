@@ -3,6 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Core\Model;
+    use Goteo\Application\Session;
+    use Goteo\Application\Config;
     use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\User,
@@ -15,6 +17,7 @@ namespace Goteo\Model {
         const METHOD_TPV    = 'tpv';
         const METHOD_CASH   = 'cash';
         const METHOD_DROP   = 'drop';
+        const METHOD_POOL   = 'pool';
 
         // INVEST STATUS IDs
         const STATUS_PROCESSING = -1;
@@ -63,6 +66,44 @@ namespace Goteo\Model {
 
         // añadir los datos del cargo
 
+        /*
+         * Estados del aporte
+         */
+        public static function status ($id = null) {
+            $array = array (
+                self::STATUS_PROCESSING => 'Incompleto',
+                self::STATUS_PENDING    => 'Preaprobado',
+                self::STATUS_CHARGED    => 'Cobrado por Goteo',
+                self::STATUS_CANCELED   => 'Cancelado',
+                self::STATUS_PAID       => 'Pagado al proyecto',
+                self::STATUS_RETURNED   => 'Devuelto (archivado)',
+                self::STATUS_RELOCATED  => 'Reubicado'
+            );
+
+            if (isset($id)) {
+                return $array[$id];
+            } else {
+                return $array;
+            }
+
+        }
+
+        /*
+         * Métodos de pago
+         *
+         * paypal puede ser tanto preappoval como checkout
+         *
+         * Gotas es el uso de aportado a crédito (ver Model\User\Pool)
+         */
+        public static function methods () {
+            return array (
+                self::METHOD_PAYPAL => 'Paypal',
+                self::METHOD_TPV    => 'Tarjeta',
+                self::METHOD_DROP   => 'Riego',
+                self::METHOD_CASH   => 'Manual',
+                self::METHOD_DROP   => 'Gotas'
+            );
+        }
 
         /*
          *  Devuelve datos de una inversión
@@ -127,9 +168,9 @@ namespace Goteo\Model {
             $query = static::query("
                 SELECT  *
                 FROM  invest
-                WHERE   invest.project = ?
-                AND invest.status IN ('0', '1', '3', '4')
-                ", array($project));
+                WHERE   invest.project = :p
+                AND invest.status IN (:s0, :s1, :s3 :s4)
+                ", array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
                 // datos del usuario
                 $invest->user = User::get($invest->user);
@@ -418,7 +459,7 @@ namespace Goteo\Model {
                                     'amount' => $drop_amount,
                                     'user' => $this->called->owner,
                                     'project' => $this->project,
-                                    'method' => 'drop',
+                                    'method' => self::METHOD_DROP,
                                     'status' => $this->status,
                                     'invested' => date('Y-m-d'),
                                     'anonymous' => null,
@@ -457,7 +498,7 @@ namespace Goteo\Model {
                     ':uid' => $this->user,
                     ':unode' => $unode,
                     ':iid' => $this->id,
-                    ':inode' => NODE_ID)
+                    ':inode' => Config::get('current_node'))
                 );
 
                 // y las recompensas
@@ -568,7 +609,7 @@ namespace Goteo\Model {
                 $sql = "INSERT INTO invest_detail (invest, type, log, date)
                     VALUES (:id, 'solved', :log, NOW())";
 
-                self::query($sql, array(':id'=>$this->id, ':log'=>'Incidencia resuelta por el admin '.$_SESSION['user']->name.', aporte pasado a cash y cobrado'));
+                self::query($sql, array(':id'=>$this->id, ':log'=>'Incidencia resuelta por el admin '.Session::getUser()->name.', aporte pasado a cash y cobrado'));
 
 
                 self::query("COMMIT");
@@ -729,12 +770,12 @@ namespace Goteo\Model {
          */
         public static function invested ($project, $only = null, $call = null) {
 
-            $values = array(':project' => $project);
+            $values = array(':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
 
             $sql = "SELECT  SUM(amount) as much
                 FROM    invest
                 WHERE   project = :project
-                AND     invest.status IN ('0', '1', '3', '4')
+                AND     invest.status IN (:s0, :s1, :s3, :s4)
                 ";
 
             if (isset ($only) && in_array($only, array('users', 'call'))) {
@@ -793,12 +834,12 @@ namespace Goteo\Model {
                 FROM    invest
                 INNER JOIN user
                     ON  user.id = invest.user
-                WHERE   project = ?
-                AND     invest.status IN ('0', '1', '3', '4')
+                WHERE   project = :p
+                AND     invest.status IN (:s0, :s1, :s3, :s4)
                 ORDER BY invest.invested DESC, invest.id DESC
                 ";
 
-            $query = self::query($sql, array($project));
+            $query = self::query($sql, array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
 
                 $investor->avatar = Image::get($investor->user_avatar);
@@ -870,13 +911,13 @@ namespace Goteo\Model {
                 INNER JOIN user
                     ON  user.id = invest.user
                 WHERE   (invest.campaign IS NULL OR invest.campaign = '' )
-                AND     invest.status IN ('0', '1', '3', '4')
+                AND     invest.status IN (:s0, :s1, :s3, :s4)
                 GROUP BY invest.user
                 ORDER BY amount DESC
                 LIMIT {$limit}
                 ";
 
-            $values = array(':id'=>$owner);
+            $values = array(':id'=>$owner, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
 
             //die(\sqldbg($sql, $values));
 
@@ -916,14 +957,14 @@ namespace Goteo\Model {
 
             $debug = false;
 
-            $values = array(':project' => $project);
+            $values = array(':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
 
             $sql = "SELECT  COUNT(DISTINCT(invest.user)) as investors, project.num_investors as num, project.num_messengers as pop
                 FROM    invest
                 INNER JOIN project
                     ON project.id = invest.project
                 WHERE   invest.project = :project
-                AND     invest.status IN ('0', '1', '3', '4')
+                AND     invest.status IN (:s0, :s1, :s3, :s4)
                 ";
 
             if ($debug) {
@@ -944,12 +985,12 @@ namespace Goteo\Model {
         }
 
         public static function my_numInvestors ($owner) {
-            $values = array(':owner' => $owner);
+            $values = array(':owner' => $owner, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
 
             $sql = "SELECT  COUNT(DISTINCT(user)) as investors
                 FROM    invest
                 WHERE   project IN (SELECT id FROM project WHERE owner = :owner)
-                AND     invest.status IN ('0', '1', '3', '4')
+                AND     invest.status IN (:s0, :s1, :s3, :s4)
                 ";
 
             $query = static::query($sql, $values);
@@ -968,11 +1009,11 @@ namespace Goteo\Model {
                 FROM    invest
                 WHERE   user = :user
                 AND     project = :project
-                AND     invest.status IN ('0', '1', '3', '4')
+                AND     invest.status IN (:s0, :s1, :s3, :s4)
                 AND     (anonymous = 0 OR anonymous IS NULL)
                 ORDER BY invested DESC";
 
-            $query = self::query($sql, array(':user' => $user, ':project' => $project));
+            $query = self::query($sql, array(':user' => $user, ':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
             return $query->fetchObject();
         }
 
@@ -988,14 +1029,14 @@ namespace Goteo\Model {
                 FROM    invest
                 INNER JOIN invest_reward
                     ON invest_reward.invest = invest.id
-                    AND invest_reward.reward = ?
+                    AND invest_reward.reward = :reward
                 INNER JOIN user
                     ON  user.id = invest.user
                     AND (user.hide = 0 OR user.hide IS NULL)
-                WHERE   invest.status IN ('0', '1', '3', '4')
+                WHERE   invest.status IN (:s0, :s1, :s3, :s4)
                 ";
 
-            $query = self::query($sql, array($reward));
+            $query = self::query($sql, array(':reward' => $reward, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
                 $users[] = $investor['user'];
             }
@@ -1084,7 +1125,7 @@ namespace Goteo\Model {
          */
         public function setStatus ($status) {
 
-            if (!in_array($status, array('-1', '0', '1', '2', '3', '4', '5'))) {
+            if (!in_array($status, array(self::STATUS_PROCESSING, self::STATUS_PENDING, self::STATUS_PAID, self::STATUS_CANCELED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_RELOCATED))) {
                 return false;
             }
 
@@ -1100,8 +1141,8 @@ namespace Goteo\Model {
                     $drop = Invest::get($this->droped);
                     // si estan reubicando o caducando
                     // liberamos el capital riego
-                    if (in_array($status, array(2, 4, 5))) {
-                        $drop->setStatus(2);
+                    if (in_array($status, array(self::STATUS_CANCELED, self::STATUS_RETURNED, self::STATUS_RELOCATED))) {
+                        $drop->setStatus(self::STATUS_CANCELED);
                         self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
                     } else {
                         $drop->setStatus($status);
@@ -1235,7 +1276,8 @@ namespace Goteo\Model {
 
             $sql = "UPDATE invest SET
                         returned = :returned,
-                        status = $status
+                        status = $status,
+                        pool = 0
                     WHERE id = :id";
 
             if (self::query($sql, $values)) {
@@ -1266,46 +1308,6 @@ namespace Goteo\Model {
         }
 
         /*
-         * Estados del aporte
-         */
-        public static function status ($id = null) {
-            $array = array (
-                self::STATUS_PROCESSING => 'Incompleto',
-                self::STATUS_PENDING    => 'Preaprobado',
-                self::STATUS_CHARGED    => 'Cobrado por Goteo',
-                self::STATUS_CANCELED   => 'Cancelado',
-                self::STATUS_PAID       => 'Pagado al proyecto',
-                self::STATUS_RETURNED   => 'Devuelto (archivado)',
-                self::STATUS_RELOCATED  => 'Reubicado'
-            );
-
-            if (isset($id)) {
-                return $array[$id];
-            } else {
-                return $array;
-            }
-
-        }
-
-        /*
-         * Métodos de pago
-         *
-         * paypal puede ser tanto preappoval como checkout
-         *
-         * Gotas es el uso de aportado a crédito (ver Model\User\Pool)
-         */
-        public static function methods () {
-            return array (
-                'paypal' => 'Paypal',
-                'tpv'    => 'Tarjeta',
-                'drop'   => 'Riego',
-                'cash'   => 'Manual',
-                'pool'   => 'Gotas'
-            );
-        }
-
-
-        /*
          * Metodo para obtener datos para el informe completo (con incidencias y netos)
          */
          public static function getReportData($project, $status, $round, $passed) {
@@ -1330,9 +1332,9 @@ namespace Goteo\Model {
                     // si hay aportes de cash activos no es incidencia porque puede venir de taller
                     // a menos que sea de convocatoria (que deberian estar cancelados)
                     $inv_cash = self::getList(array(
-                        'methods' => 'cash',
+                        'methods' => self::METHOD_CASH,
                         'projects' => $project,
-                        'investStatus' => '1'
+                        'investStatus' => self::STATUS_CHARGED
                     ));
                     if (!empty($inv_cash)) {
                         $Data['cash']['total']['fail'] = 0;
@@ -1350,7 +1352,7 @@ namespace Goteo\Model {
                     // A ver si tiene paypal
                     // si estan pendientes, ejecutados o pagados al proyecto es una incidencia
                     $inv_paypal = self::getList(array(
-                        'methods' => 'paypal',
+                        'methods' => self::METHOD_PAYPAL,
                         'projects' => $project
                     ));
                     if (!empty($inv_paypal)) {
@@ -1366,7 +1368,7 @@ namespace Goteo\Model {
                     // A ver si tiene tpv
                     // si estan pendientes, ejecutados o pagados al proyecto es una incidencia
                     $inv_tpv = self::getList(array(
-                        'methods' => 'tpv',
+                        'methods' => self::METHOD_TPV,
                         'projects' => $project
                     ));
                     if (!empty($inv_tpv)) {
@@ -1423,9 +1425,9 @@ namespace Goteo\Model {
                     if ($act_eq === 'first') {
                         // CASH
                         $inv_cash = self::getList(array(
-                            'methods' => 'cash',
+                            'methods' => self::METHOD_CASH,
                             'projects' => $project,
-                            'investStatus' => '1'
+                            'investStatus' => self::STATUS_CHARGED
                         ));
                         if (!empty($inv_cash)) {
                             $Data['cash']['first']['fail'] = 0;
@@ -1439,9 +1441,9 @@ namespace Goteo\Model {
 
                         // Cash no cobrados (aportes fantasma)
                         $inv_ghost = self::getList(array(
-                            'methods' => 'cash',
+                            'methods' => self::METHOD_CASH,
                             'projects' => $project,
-                            'investStatus' => '0'
+                            'investStatus' => self::STATUS_PENDING
                         ));
                         if (!empty($inv_ghost)) {
                             $Data['ghost']['first']['fail'] = 0;
@@ -1455,9 +1457,9 @@ namespace Goteo\Model {
 
                         // TPV
                         $inv_tpv = self::getList(array(
-                            'methods' => 'tpv',
+                            'methods' => self::METHOD_TPV,
                             'projects' => $project,
-                            'investStatus' => '1'
+                            'investStatus' => self::STATUS_CHARGED
                         ));
                         if (!empty($inv_tpv)) {
                             $Data['tpv']['first']['fail'] = 0;
@@ -1472,13 +1474,13 @@ namespace Goteo\Model {
 
                         // PAYPAL
                         $inv_paypal = self::getList(array(
-                            'methods' => 'paypal',
+                            'methods' => self::METHOD_PAYPAL,
                             'projects' => $project
                         ));
                         if (!empty($inv_paypal)) {
                             $Data['paypal']['first']['fail'] = 0;
                             foreach ($inv_paypal as $invId => $invest) {
-                                if (in_array($invest->investStatus, array('0', '1', '3'))) {
+                                if (in_array($invest->investStatus, array(self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID))) {
                                     $Data['paypal']['first']['users'][$invest->user] = $invest->user;
                                     $Data['paypal']['first']['invests']++;
                                     $Data['paypal']['first']['amount'] += $invest->amount;
@@ -1489,9 +1491,9 @@ namespace Goteo\Model {
 
                         // DROP
                         $inv_drop = self::getList(array(
-                            'methods' => 'drop',
+                            'methods' => self::METHOD_DROP,
                             'projects' => $project,
-                            'investStatus' => '1'
+                            'investStatus' => self::STATUS_CHARGED
                         ));
                         if (!empty($inv_drop)) {
                             $Data['drop']['first']['fail'] = 0;
@@ -1503,6 +1505,22 @@ namespace Goteo\Model {
                             $Data['drop']['total'] = $Data['drop']['first'];
                         }
 
+                        // POOL
+                        $inv_pool = self::getList(array(
+                            'methods' => self::METHOD_POOL,
+                            'projects' => $project,
+                            'investStatus' => self::STATUS_CHARGED
+                        ));
+                        if (!empty($inv_pool)) {
+                            $Data['pool']['first']['fail'] = 0;
+                            foreach ($inv_pool as $invId => $invest) {
+                                $Data['pool']['first']['users'][$invest->user] = $invest->user;
+                                $Data['pool']['first']['invests']++;
+                                $Data['pool']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['pool']['total'] = $Data['pool']['first'];
+                        }
+
                     } elseif ($act_eq === 'sum') {
                         // complicado: primero los de primera ronda, luego los de segunda ronda sumando al total
                         // calcular ultimo dia de primera ronda segun la fecha de pase
@@ -1511,9 +1529,9 @@ namespace Goteo\Model {
 
                         // CASH first
                         $inv_cash = self::getList(array(
-                            'methods' => 'cash',
+                            'methods' => self::METHOD_CASH,
                             'projects' => $project,
-                            'investStatus' => '1',
+                            'investStatus' => self::STATUS_CHARGED,
                             'date_until' => $last_day
                         ));
                         if (!empty($inv_cash)) {
@@ -1528,9 +1546,9 @@ namespace Goteo\Model {
 
                         // Cash no cobrados (aportes fantasma) first
                         $inv_ghost = self::getList(array(
-                            'methods' => 'cash',
+                            'methods' => self::METHOD_CASH,
                             'projects' => $project,
-                            'investStatus' => '0',
+                            'investStatus' => self::STATUS_PENDING,
                             'date_until' => $last_day
                         ));
                         if (!empty($inv_ghost)) {
@@ -1545,9 +1563,9 @@ namespace Goteo\Model {
 
                         // TPV first
                         $inv_tpv = self::getList(array(
-                            'methods' => 'tpv',
+                            'methods' => self::METHOD_TPV,
                             'projects' => $project,
-                            'investStatus' => '1',
+                            'investStatus' => self::STATUS_CHARGED,
                             'date_until' => $last_day
                         ));
                         if (!empty($inv_tpv)) {
@@ -1563,16 +1581,16 @@ namespace Goteo\Model {
 
                         // PAYPAL first
                         $inv_paypal = self::getList(array(
-                            'methods' => 'paypal',
+                            'methods' => self::METHOD_PAYPAL,
                             'projects' => $project,
                             'date_until' => $last_day
                         ));
                         if (!empty($inv_paypal)) {
                             $Data['paypal']['first']['fail'] = 0;
                             foreach ($inv_paypal as $invId => $invest) {
-                                if (in_array($invest->investStatus, array('0', '1', '3'))) {
+                                if (in_array($invest->investStatus, array(self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID))) {
                                     // a ver si cargo pendiente es incidencia...
-                                    if ($invest->investStatus == 0 && ($p0 === 'first' || $p0 === 'all')) {
+                                    if ($invest->investStatus == self::STATUS_PENDING && ($p0 === 'first' || $p0 === 'all')) {
                                         $Data['paypal']['first']['fail'] += $invest->amount;
                                         $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
                                         continue;
@@ -1587,9 +1605,9 @@ namespace Goteo\Model {
 
                         // DROP first
                         $inv_drop = self::getList(array(
-                            'methods' => 'drop',
+                            'methods' => self::METHOD_DROP,
                             'projects' => $project,
-                            'investStatus' => '1',
+                            'investStatus' => self::STATUS_CHARGED,
                             'date_until' => $last_day
                         ));
                         if (!empty($inv_drop)) {
@@ -1602,13 +1620,30 @@ namespace Goteo\Model {
                             $Data['drop']['total'] = $Data['drop']['first'];
                         }
 
+                        // POOL first
+                        $inv_pool = self::getList(array(
+                            'methods' => self::METHOD_POOL,
+                            'projects' => $project,
+                            'investStatus' => self::STATUS_CHARGED,
+                            'date_until' => $last_day
+                        ));
+                        if (!empty($inv_pool)) {
+                            $Data['pool']['first']['fail'] = 0;
+                            foreach ($inv_pool as $invId => $invest) {
+                                $Data['pool']['first']['users'][$invest->user] = $invest->user;
+                                $Data['pool']['first']['invests']++;
+                                $Data['pool']['first']['amount'] += $invest->amount;
+                            }
+                            $Data['pool']['total'] = $Data['pool']['first'];
+                        }
+
                         // -- Los de segunda
 
                         // CASH  second
                         $inv_cash = self::getList(array(
-                            'methods' => 'cash',
+                            'methods' => self::METHOD_CASH,
                             'projects' => $project,
-                            'investStatus' => '1',
+                            'investStatus' => self::STATUS_CHARGED,
                             'date_from' => $passed
 
                         ));
@@ -1626,9 +1661,9 @@ namespace Goteo\Model {
 
                         // CASH no cobrado (fantasmas)  second
                         $inv_ghost = self::getList(array(
-                            'methods' => 'cash',
+                            'methods' => self::METHOD_CASH,
                             'projects' => $project,
-                            'investStatus' => '0',
+                            'investStatus' => self::STATUS_PENDING,
                             'date_from' => $passed
 
                         ));
@@ -1646,9 +1681,9 @@ namespace Goteo\Model {
 
                         // TPV  second
                         $inv_tpv = self::getList(array(
-                            'methods' => 'tpv',
+                            'methods' => self::METHOD_TPV,
                             'projects' => $project,
-                            'investStatus' => '1',
+                            'investStatus' => self::STATUS_CHARGED,
                             'date_from' => $passed
 
                         ));
@@ -1666,16 +1701,16 @@ namespace Goteo\Model {
 
                         // PAYPAL second
                         $inv_paypal = self::getList(array(
-                            'methods' => 'paypal',
+                            'methods' => self::METHOD_PAYPAL,
                             'projects' => $project,
                             'date_from' => $passed
                         ));
                         if (!empty($inv_paypal)) {
                             $Data['paypal']['second']['fail'] = 0;
                             foreach ($inv_paypal as $invId => $invest) {
-                                if (in_array($invest->investStatus, array('0', '1', '3'))) {
+                                if (in_array($invest->investStatus, array(self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID))) {
                                     // a ver si cargo pendiente es incidencia...
-                                    if ($invest->investStatus == 0 && $p0 === 'all') {
+                                    if ($invest->investStatus == self::STATUS_PENDING && $p0 === 'all') {
                                         $Data['paypal']['second']['fail'] += $invest->amount;
                                         $Data['paypal']['total']['fail'] += $invest->amount;
                                         $Data['note'][] = "El aporte paypal {$invId} no debería estar en estado '".self::status($invest->investStatus)."'. <a href=\"/admin/invests/details/{$invId}\" target=\"_blank\">Abrir detalles</a>";
@@ -1693,9 +1728,9 @@ namespace Goteo\Model {
 
                         // DROP second
                         $inv_drop = self::getList(array(
-                            'methods' => 'drop',
+                            'methods' => self::METHOD_DROP,
                             'projects' => $project,
-                            'investStatus' => '1',
+                            'investStatus' => self::STATUS_CHARGED,
                             'date_from' => $passed
                         ));
                         if (!empty($inv_drop)) {
@@ -1708,6 +1743,25 @@ namespace Goteo\Model {
                                 $Data['drop']['second']['amount'] += $invest->amount;
                             }
                             $Data['drop']['total']['amount'] += $Data['drop']['second']['amount'];
+                        }
+
+                        // POOL second
+                        $inv_pool = self::getList(array(
+                            'methods' => self::METHOD_POOL,
+                            'projects' => $project,
+                            'investStatus' => self::STATUS_CHARGED,
+                            'date_from' => $passed
+                        ));
+                        if (!empty($inv_pool)) {
+                            $Data['pool']['second']['fail'] = 0;
+                            foreach ($inv_pool as $invId => $invest) {
+                                $Data['pool']['second']['users'][$invest->user] = $invest->user;
+                                $Data['pool']['total']['users'][$invest->user] = $invest->user;
+                                $Data['pool']['second']['invests']++;
+                                $Data['pool']['total']['invests']++;
+                                $Data['pool']['second']['amount'] += $invest->amount;
+                            }
+                            $Data['pool']['total']['amount'] += $Data['pool']['second']['amount'];
                         }
 
                     } else {

@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$wordcount = $this['wordcount'];
+$wordcount = $vars['wordcount'];
 
 /* Secciones */
 $sections = array(

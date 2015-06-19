@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\NormalForm;
 
-$node = $this['node'];
+$node = $vars['node'];
 
 if (!$node instanceof Model\Node) {
     throw new Redirection('/admin');
@@ -76,11 +76,65 @@ if (!$node instanceof Model\Node) {
                 )
             ),
 
-            'email' => array(
+            'label' => array(
+                'type' => 'Hidden',
+                'value' => $node->label->id,
+            ),
+
+            'thelabel' => array(
+                'type'      => 'group',
+                'title'     => 'Sello',
+                'class'     => 'user_avatar',
+                'children'  => array(
+                    'label_upload'    => array(
+                        'type'  => 'file',
+                        'label' => Text::get('form-image_upload-button'),
+                        'class' => 'inline avatar_upload'
+                    ),
+                    'label-image' => array(
+                        'type'  => 'HTML',
+                        'class' => 'inline avatar-image',
+                        'html'  => is_object($node->label) ?
+                                   $node->label . '<img src="' . SITE_URL . '/image/' . $node->label->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="label-'.$node->label->hash.'-remove" title="Quitar este sello" value="remove">X</button>' :
+                                   ''
+                    )
+
+                )
+            ),
+
+            'owner_background' => array(
+                'type'      => 'TextBox',
+                'size'      => 10,
+                'title'     => 'Background color (Hex)',
+                'value'     => $node->owner_background,
+            ),
+
+            'twitter' => array(
                 'type'      => 'TextBox',
                 'size'      => 20,
-                'title'     => 'Email',
-                'value'     => $node->email,
+                'title'     => 'Twitter',
+                'value'     => $node->twitter,
+            ),
+
+            'facebook' => array(
+                'type'      => 'TextBox',
+                'size'      => 20,
+                'title'     => 'Facebook',
+                'value'     => $node->facebook,
+            ),
+
+            'google' => array(
+                'type'      => 'TextBox',
+                'size'      => 20,
+                'title'     => 'Google +',
+                'value'     => $node->google,
+            ),
+
+            'linkedin' => array(
+                'type'      => 'TextBox',
+                'size'      => 20,
+                'title'     => 'LInkedin',
+                'value'     => $node->linkedin,
             ),
 
             'location' => array(
@@ -96,3 +150,5 @@ if (!$node instanceof Model\Node) {
     ?>
 
 </form>
+
+<script>

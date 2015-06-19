@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$social = $this['social'];
+$social = $vars['social'];
 ?>
 
 <div id="side" class="twitter">

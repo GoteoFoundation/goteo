@@ -5,7 +5,9 @@
 
 namespace Goteo\Controller\Cron {
 
-    use Goteo\Model,
+    use Goteo\Model;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Session,
         Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Library\Text,
@@ -338,7 +340,7 @@ namespace Goteo\Controller\Cron {
                     $commons_url = SITE_URL . '/admin/commons/view/' . $project->id;
                     $reward = Model\Project\Reward::get($_POST['reward']);
 
-                    // También podríamos usar $_SESSION['user']->name
+                    // También podríamos usar Session::getUser()->name
                     $search  = array('%PROJECTNAME%', '%WHO%', '%WHOROLE%', '%RETURN%', '%URL%', '%COMMONSURL%');
                     $replace = array($project->name, $project->whodidit, $project->whorole, $reward->reward, $_POST['value'], $commons_url);
                     break;
@@ -370,7 +372,7 @@ namespace Goteo\Controller\Cron {
                     $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $help, $project->spread, $project->description, $project->comment);
                     break;
 
-                    //Pasamos la difusión  
+                    //Pasamos la difusión
             }
 
             if (!empty($tpl)) {
@@ -528,7 +530,7 @@ namespace Goteo\Controller\Cron {
 
             // Luego, un mailing para cada idioma (como al enviar boletín)
 
-            $comlang = \LANG;
+            $comlang = Lang::current();
 
             // Obtenemos la plantilla para asunto y contenido
             $template = Template::get($tpl, $comlang);

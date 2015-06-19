@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 //tratamos los saltos de linea y los links en las descripciones del proyecto
 $project->description = nl2br(Text::urlink($project->description));
@@ -11,7 +11,7 @@ $project->goal        = nl2br(Text::urlink($project->goal));
 $project->related     = nl2br(Text::urlink($project->related));
 $project->reward     = nl2br(Text::urlink($project->reward));
 
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 
 /* funcion codigo para imágenes */
 $putImages = function ($images) {

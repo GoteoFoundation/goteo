@@ -3,8 +3,8 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
-$errors = $this['errors'];
+$project = $vars['project'];
+$errors = $vars['errors'];
 
 $supports = array();
 
@@ -15,7 +15,7 @@ if (!empty($project->supports)) {
         $ch = array();
 
         // a ver si es el que estamos editando o no
-        if (!empty($this["support-{$support->id}-edit"])) {
+        if (!empty($vars["support-{$support->id}-edit"])) {
 
             $original = \Goteo\Model\Project\Support::get($support->id);
 

@@ -1,6 +1,6 @@
 <?php
 
-$patrons = $this['patrons'];
+$patrons = $vars['patrons'];
 
 // TODO: esto para que es??!!
 // function the_order($val, $user)

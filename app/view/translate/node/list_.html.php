@@ -2,7 +2,7 @@
 use Goteo\Library\Page,
     Goteo\Model\Node;
 
-$node = $this['node'];
+$node = $vars['node'];
 ?>
 <div class="widget board">
     <h3>Contenidos del nodo</h3>

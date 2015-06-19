@@ -3,13 +3,13 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$call = $this['call'];
-$original = $this['original'];
-$errors = $this['errors'];
+$call = $vars['call'];
+$original = $vars['original'];
+$errors = $vars['errors'];
 
 $categories = array();
 
-foreach ($this['categories'] as $value => $label) {
+foreach ($vars['categories'] as $value => $label) {
     $categories[] =  array(
         'value'     => $value,
         'label'     => $label,
@@ -20,7 +20,7 @@ foreach ($this['categories'] as $value => $label) {
 // retornos en opcion checkboxes con icono y descripcion
 $icons = array();
 
-foreach ($this['icons'] as $id=>$icon) {
+foreach ($vars['icons'] as $id=>$icon) {
     $rewards["icon-{$icon->id}"] =  array(
         'name'  => "icons[]",
         'value' => $icon->id,
@@ -36,7 +36,7 @@ foreach ($this['icons'] as $id=>$icon) {
 
 $scope = array();
 
-foreach ($this['scope'] as $value => $label) {
+foreach ($vars['scope'] as $value => $label) {
     $scope[] =  array(
         'value'     => $value,
         'label'     => $label

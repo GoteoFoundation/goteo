@@ -4,8 +4,8 @@ use Goteo\Core\View,
     Goteo\Library\Worth,
     Goteo\Library\Text;
 
-$categories = $this['categories'];
-$shares     = $this['shares'];
+$categories = $vars['categories'];
+$shares     = $vars['shares'];
 
 ?>
        <!-- lista de categorías -->
@@ -17,7 +17,7 @@ $shares     = $this['shares'];
                 <ul>
                     <li><a href="#" class="active">Por categorías</a></li>
                     <li class="separator">|</li>
-                    <li><a href="#">Por tags</a></li>                
+                    <li><a href="#">Por tags</a></li>
                 </ul>
             </div>
 			-->
@@ -32,26 +32,26 @@ $shares     = $this['shares'];
             <div class="list">
                 <ul>
                     <?php foreach ($categories as $catId=>$catName) : if (count($shares[$catId]) == 0) continue; ?>
-                    <li><a id="catlist<?php echo $catId ?>" href="/community/sharemates/<?php echo $catId ?>" <?php if (!empty($this['category'])) : ?>onclick="displayCategory(<?php echo $catId ?>); return false;"<?php endif; ?> <?php if ($catId == $this['category']) echo 'class="active"'?>><?php echo $catName ?></a></li>
+                    <li><a id="catlist<?php echo $catId ?>" href="/community/sharemates/<?php echo $catId ?>" <?php if (!empty($vars['category'])) : ?>onclick="displayCategory(<?php echo $catId ?>); return false;"<?php endif; ?> <?php if ($catId == $vars['category']) echo 'class="active"'?>><?php echo $catName ?></a></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
         </div>
         <!-- fin lista de categorías -->
-        
+
         <!-- detalle de categoría (cabecera de categoría) -->
         <?php foreach ($shares as $catId => $sharemates) :
             if (count($sharemates) == 0) continue;
             shuffle($sharemates);
             ?>
-            <div class="widget user-mates" id="cat<?php echo $catId;?>" <?php if (!empty($this['category']) && $catId != $this['category']) echo 'style="display:none;"'?>>
+            <div class="widget user-mates" id="cat<?php echo $catId;?>" <?php if (!empty($vars['category']) && $catId != $vars['category']) echo 'style="display:none;"'?>>
                 <h3 class="title"><?php echo $categories[$catId] ?></h3>
                 <div class="users">
                     <ul>
-                    <?php 
+                    <?php
                     $cnt = 1;
                     foreach ($sharemates as $mate) :
-                        if (empty($this['category']) && $cnt > 6) break;
+                        if (empty($vars['category']) && $cnt > 6) break;
                     ?>
                         <li class="<?php if($cnt < 3) echo " bordertop"?>">
                             <div class="user">
@@ -64,12 +64,12 @@ $shares     = $this['shares'];
 <!--                                <span class="contact"><a href="/user/profile/<?php echo htmlspecialchars($mate->user) ?>/message"><?php echo Text::get('regular-send_message'); ?></a></span> -->
                             </div>
                         </li>
-                    <?php 
+                    <?php
                     $cnt ++;
                     endforeach; ?>
                     </ul>
                 </div>
-        <?php if (empty($this['category'])) : ?>
+        <?php if (empty($vars['category'])) : ?>
             <a class="more" href="/community/sharemates/<?php echo $catId ?>"><?php echo Text::get('regular-see_more'); ?></a>
         <?php else : ?>
             <a class="more" href="/community/sharemates"><?php echo Text::get('regular-see_all'); ?></a>

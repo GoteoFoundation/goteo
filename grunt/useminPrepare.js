@@ -32,7 +32,8 @@ module.exports = function(grunt) {
     grunt.config('useminPrepare', {
         options: {
             dest: '<%= goteo.dist %>',
-            root: '{.tmp,<%= goteo.app %>}',
+            // root: '{.tmp,<%= goteo.app %>}',
+            root: '{.tmp,<%= goteo.templates %>}',
             flow: {
               steps: {
                 js: ['concat', 'uglifyjs'],
@@ -50,7 +51,10 @@ module.exports = function(grunt) {
               }
             }
         },
-        html: ['<%= goteo.app %>/view/prologue.html.php']
+        html: [
+            // '<%= goteo.app %>/view/prologue.html.php',
+            '<%= goteo.templates %>/default/partials/header/styles.php'
+        ]
     });
 
     grunt.loadNpmTasks('grunt-usemin');

@@ -3,15 +3,15 @@
 use Goteo\Library\Text,
     Goteo\Model;
 
-$promo = $this['promo'];
-$available = $this['available'];
+$promo = $vars['promo'];
+$available = $vars['available'];
 
 $users = Model\user::getVips();
 $status = Model\Project::status();
 
 ?>
 <form method="post" action="/admin/patron">
-    <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
+    <input type="hidden" name="action" value="<?php echo $vars['action'] ?>" />
     <input type="hidden" name="id" value="<?php echo $promo->id; ?>" />
 
 <p>

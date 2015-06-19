@@ -4,9 +4,9 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$project = $this['project'];
-$errors = $project->errors[$this['step']] ?: array();
-$okeys  = $project->okeys[$this['step']] ?: array();
+$project = $vars['project'];
+$errors = $project->errors[$vars['step']] ?: array();
+$okeys  = $project->okeys[$vars['step']] ?: array();
 
 $costs = array();
 
@@ -18,11 +18,11 @@ if (!empty($project->costs)) {
 
         $ch = array();
 
-        if (!empty($this["cost-{$cost->id}-edit"])) {
+        if (!empty($vars["cost-{$cost->id}-edit"])) {
 
             $costTypes = array();
 
-            foreach ($this['types'] as $id => $type) {
+            foreach ($vars['types'] as $id => $type) {
                 $costTypes["cost-{$cost->id}-type-{$id}"] = array(
                     'name'  => "cost-{$cost->id}-type",
                     'value' => $id,
@@ -197,7 +197,7 @@ echo SuperForm::get(array(
     'id'            => $sfid,
 
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('costs-main-header'),
     'hint'          => Text::get('guide-project-costs'),
@@ -296,7 +296,7 @@ echo SuperForm::get(array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -304,7 +304,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

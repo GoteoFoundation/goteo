@@ -4,12 +4,12 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection,
-    Goteo\Library\Message;
+    Goteo\Application\Message;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
-    Message::Error('Instancia de proyecto corrupta');
+    Message::error('Instancia de proyecto corrupta');
     throw new Redirection('/admin/projects');
 }
 
@@ -35,7 +35,7 @@ if (!$project instanceof Model\Project) {
         <p>
             <label>Nueva ID para el proyecto:<br />
                 <input type="text" name="newid"  id="newid"
-                       
+
             </label>
         </p>
 

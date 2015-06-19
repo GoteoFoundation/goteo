@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$current = $this['current'];
+$current = $vars['current'];
 
 $bodyClass = 'faq';
 
@@ -34,7 +34,7 @@ $go_up = Text::get('regular-go_up');
 
 
 </script>
-<?php if (\NODE_ID == \GOTEO_NODE) : ?>
+<?php if (\Goteo\Application\Config::isMasterNode()) : ?>
 		<div id="sub-header-secondary">
             <div class="clearfix">
                 <h2>GOTEO<span class="red">FAQ</span></h2>
@@ -54,21 +54,21 @@ $go_up = Text::get('regular-go_up');
                 <br clear="both" />
 
                 <ul id="faq-sections">
-                <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
-                    <li><a href="/faq/<?php echo ($sectionId == 'node') ? '' : $sectionId; ?>"<?php if ($sectionId == $current) echo ' class="current"'; ?> style="color: <?php echo $this['colors'][$sectionId] ?>;"><?php echo preg_replace('/\s/', '<br />', $sectionName, 1); ?></a></li>
+                <?php foreach ($vars['sections'] as $sectionId=>$sectionName) : ?>
+                    <li><a href="/faq/<?php echo ($sectionId == 'node') ? '' : $sectionId; ?>"<?php if ($sectionId == $current) echo ' class="current"'; ?> style="color: <?php echo $vars['colors'][$sectionId] ?>;"><?php echo preg_replace('/\s/', '<br />', $sectionName, 1); ?></a></li>
                 <?php endforeach; ?>
                 </ul>
 
                 <br clear="both" />
 
-                <h3 style="color: <?php echo $this['colors'][$current] ?>;" ><?php echo $this['sections'][$current]; ?></h3>
+                <h3 style="color: <?php echo $vars['colors'][$current] ?>;" ><?php echo $vars['sections'][$current]; ?></h3>
                 <ol>
-                    <?php foreach ($this['faqs'][$current] as $question)  :
+                    <?php foreach ($vars['faqs'][$current] as $question)  :
                         if (empty($question->title)) continue;
                         ?>
                         <li>
-                            <h4><a href="#q<?php echo $question->id; ?>" class="faq-question" style="color:<?php echo $this['colors'][$current] ?>;"><?php echo $question->title; ?></a></h4>
-                            <div id="q<?php echo $question->id; ?>" style="<?php echo ($this['show'] == $question->id) ? 'display:block;' : 'display:none;' ?>"><?php echo $question->description; ?></div>
+                            <h4><a href="#q<?php echo $question->id; ?>" class="faq-question" style="color:<?php echo $vars['colors'][$current] ?>;"><?php echo $question->title; ?></a></h4>
+                            <div id="q<?php echo $question->id; ?>" style="<?php echo ($vars['show'] == $question->id) ? 'display:block;' : 'display:none;' ?>"><?php echo $question->description; ?></div>
                         </li>
                     <?php endforeach; ?>
                 </ol>

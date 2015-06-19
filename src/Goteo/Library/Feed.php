@@ -5,6 +5,8 @@ namespace Goteo\Library {
         Goteo\Model\Blog\Post,
         Goteo\Library\Text,
         Goteo\Library\Mail,
+        Goteo\Application\Lang,
+        Goteo\Application\Config,
         Goteo\Model\Image;
 
     /*
@@ -169,13 +171,13 @@ namespace Goteo\Library {
          * @return array list of items
 		 */
 		public static function getAll($type = 'all', $scope = 'public', $limit = '99', $node = null) {
-
+            $lang = Lang::current();
             $debug = ($_GET['debug'] == '1');
 
             $list = array();
 
             try {
-                $values = array(':scope' => $scope, ':lang' => \LANG);
+                $values = array(':scope' => $scope, ':lang' => $lang);
 
                 $sqlType = '';
                 if ($type != 'all') {
@@ -217,7 +219,7 @@ namespace Goteo\Library {
                 }
 
 
-                if(\Goteo\Core\Model::default_lang(\LANG)=='es') {
+                if(\Goteo\Core\Model::default_lang($lang) === Config::get('lang')) {
                     $different_select=" IFNULL(post_lang.title, post.title) as post_title,
                                     IFNULL(post_lang.text, post.text) as post_text";
                 }
@@ -470,15 +472,10 @@ namespace Goteo\Library {
          *
 		 */
 		public function add() {
-
             if (empty($this->html)) {
                 @mail(\GOTEO_FAIL_MAIL,
                     'Evento feed sin html: ' . SITE_URL,
                     "Feed sin contenido html<hr /><pre>" . print_r($this, true) . "</pre>");
-                return false;
-            }
-
-            if ($this->scope == 'public' && $_SESSION['user']->id == 'doukeshi') {
                 return false;
             }
 
@@ -515,7 +512,8 @@ namespace Goteo\Library {
                         VALUES
                             ('', :title, :url, :scope, :type, :html, :image, :target_type, :target_id, :post)
                         ";
-				if (Model::query($sql, $values)) {
+
+                if (Model::query($sql, $values)) {
                     return true;
                 } else {
                     @mail(\GOTEO_FAIL_MAIL,

@@ -2,8 +2,8 @@
 
 use Goteo\Core\View;
 
-$type = $this['type'];
-$date = $this['date'];
+$type = $vars['type'];
+$date = $vars['date'];
 
 ?>
 <div class="widget">
@@ -28,5 +28,5 @@ $date = $this['date'];
     </form>
 </div>
 <div style="width:780px; height:1000px; overflow: scroll;">
-    <?php echo $this['content']; ?>
+    <?php echo $vars['content']; ?>
 </div>

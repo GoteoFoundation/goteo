@@ -4,6 +4,8 @@ namespace Goteo\Model\Call {
 
     use Goteo\Model,
         Goteo\Model\Image;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Post extends \Goteo\Core\Model {
 
@@ -23,10 +25,10 @@ namespace Goteo\Model\Call {
 
             try {
                 $list = array();
-                $values = array(':call'=>$call, ':lang'=>\LANG);
+                $values = array(':call'=>$call, ':lang'=>$lang);
 
                 // traduccion default english
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang($lang) === Config::get('lang')) {
                     $different_select=" IFNULL(post_lang.title, post.title) as title,
                                     IFNULL(post_lang.text, post.text) as `text`";
                 }

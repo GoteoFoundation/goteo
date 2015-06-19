@@ -2,8 +2,8 @@
 
 use Goteo\Library\Text;
 
-$project = $this['project'];
-$level = (int) $this['level'] ?: 3;
+$project = $vars['project'];
+$level = (int) $vars['level'] ?: 3;
 
 $costs = $project->costs;
 
@@ -27,9 +27,9 @@ usort($costs,
     );
 
 foreach ($costs as $cost) {
-    
+
     if ($cost->from && $cost->until) {
-    
+
         $cost_from = strtotime($cost->from);
 
         if ($cost_from && (!$from || ($cost_from < $from))) {
@@ -41,9 +41,9 @@ foreach ($costs as $cost) {
         if ($cost->until && ($cost_until > $until)) {
             $until = $cost_until;
         }
-        
+
     }
-    
+
 }
 
 //Minimo, la fecha de creacion del proyecto o si por una hecatombe esta
@@ -73,46 +73,46 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
 
 ?>
 <div class="widget project-schedule">
-    
+
     <h<?php echo $level ?> class="title"><?php echo Text::get('costs-field-schedule'); ?></h<?php echo $level ?>>
-    
+
     <table>
-                        
+
         <thead class="months">
             <tr>
                 <th><?php echo Text::get('regular-months'); ?></th>
-                <?php 
+                <?php
                 $d = $from;
                 while ( $d <= $until) {
-                    
+
                     $to = mktime(0, 0, 0, date('m', $d), date('t', $d), date('Y', $d));
-                    
+
                     if ($to > $until) {
                         $to = $until;
                     }
-                    
+
                     $span = date('j', $to) - date('j', $d) + 1;
-                    
+
                     echo '<th colspan="', $span, '"><span>';
-                    
+
                     if ($span > 10) {
 //                        echo htmlspecialchars(date('F', $d));
                         echo htmlspecialchars(strftime('%B', $d));
                     }
-                    
+
                     echo '</span></th>';
-                    
+
                     $d = mktime(0, 0, 0, date('m', $to), date('j', $to) + 1, date('Y', $to));
-                    
+
                 }
                 ?>
             </tr>
-        </thead>      
-        
+        </thead>
+
         <thead class="days">
             <tr>
                 <th><?php echo Text::get('regular-days'); ?></th>
-                <?php 
+                <?php
                 for ($d = $from; $d <= $until; $d = mktime(0, 0, 0, date('m', $d), date('d', $d) + 1, date('Y', $d))) {
                     $j = date('j', $d);
                     if ($j == 1) {
@@ -126,7 +126,7 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
                 } ?>
             </tr>
         </thead>
-        
+
         <thead class="weeks">
             <tr>
                 <th><?php echo Text::get('regular-weeks'); ?></th>
@@ -134,23 +134,23 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
                 <th colspan="7"><span><?php echo $i ?></span></th>
                 <?php endfor ?>
             </tr>
-        </thead>        
-        <tbody>                        
-            <?php 
-            $iCost = 0; 
-            
-            foreach ($costs as $cost) if ($cost->from && $cost->until): 
-                
-            $iCost++; 
+        </thead>
+        <tbody>
+            <?php
+            $iCost = 0;
+
+            foreach ($costs as $cost) if ($cost->from && $cost->until):
+
+            $iCost++;
             $cost_from = strtotime($cost->from);
             $cost_until = strtotime($cost->until);
-            
+
             ?>
             <tr>
                 <th><strong><?php echo $iCost ?></strong>
                     <span><?php echo htmlspecialchars($cost->cost) ?></span></th>
-                
-                    <?php                                                 
+
+                    <?php
 
                     $d = $from;
 
@@ -158,7 +158,7 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
                     $i = 0;
 
                     while (true) {
-                        
+
                         if ($span === 7) {
                             echo '<td colspan="7"></td>';
                             $span = 0;
@@ -169,22 +169,22 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
                                 echo '<td></td>';
                             }
                             break;
-                        }                   
+                        }
 
                         $span++;
-                        $i++;                    
+                        $i++;
                         $d = mktime(0, 0, 0, date('m', $d), date('d', $d) + 1, date('Y', $d));
 
-                    }               
+                    }
 
                     $span = 0;
 
                     while ($d <= $cost_until) {
-                        $span++;                    
+                        $span++;
                         $i++;
                         $d = mktime(0, 0, 0, date('m', $d), date('d', $d) + 1, date('Y', $d));
                     }
-                    
+
                     $cls = 'on ' . htmlspecialchars($cost->type);
                     $cls .= $cost->required ? ' req' : ' noreq';
 
@@ -206,7 +206,7 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
 
                             if ($span) {
                                 echo '<td colspan="', $span, '"></td>';
-                            }                        
+                            }
                             break;
 
                         } else if (!($i % 7)) {
@@ -225,16 +225,16 @@ $until = mktime(0, 0, 0, date('m', $until) + 1, -1, date('Y', $until));
 
                         $i++;
 
-                        $d = mktime(0, 0, 0, date('m', $d), date('d', $d) + 1, date('Y', $d));                    
+                        $d = mktime(0, 0, 0, date('m', $d), date('d', $d) + 1, date('Y', $d));
 
-                    }    
+                    }
 
                     ?>
             </tr>
-            <?php endif ?>            
+            <?php endif ?>
         </tbody>
-        
+
     </table>
-    
+
 </div>
 <?php endif ?>

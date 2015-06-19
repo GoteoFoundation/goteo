@@ -2,8 +2,8 @@
 use Goteo\Library\Text,
     Goteo\Library\Feed;
 
-$feed = $this['feed'];
-$items = $this['items'];
+$feed = $vars['feed'];
+$items = $vars['items'];
 ?>
 <div class="widget feed">
     <script type="text/javascript">

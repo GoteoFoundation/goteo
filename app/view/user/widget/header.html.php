@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$user = $this['user'];
+$user = $vars['user'];
 ?>
 <div id="sub-header">
     <div>

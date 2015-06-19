@@ -3,9 +3,9 @@
 use Goteo\Library\Text,
     Goteo\Library\NormalForm;
 
-$invest = $this['invest'];
-$project = $this['project'];
-$user = $this['user'];
+$invest = $vars['invest'];
+$project = $vars['project'];
+$user = $vars['user'];
 
 $rewards = array();
 foreach ($invest->rewards as $key => $data) {
@@ -14,7 +14,7 @@ foreach ($invest->rewards as $key => $data) {
 ?>
 <div class="widget">
     <p>
-        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this['status'][$project->status] ?>)<br />
+        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $vars['status'][$project->status] ?>)<br />
         <strong>Usuario: </strong><?php echo $user->name ?><br />
         <strong>Cantidad aportada: </strong><?php echo $invest->amount ?> &euro; <br />
     </p>

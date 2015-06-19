@@ -2,6 +2,9 @@
 
 namespace Goteo\Model\Call {
 
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+
     class Category extends \Goteo\Core\Model {
 
         public
@@ -37,12 +40,12 @@ namespace Goteo\Model\Call {
          */
 		public static function getAll () {
 
-            $lang=\LANG;
+            $lang=Lang::current();
 
             $array = array ();
 
             try {
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(category_lang.name, category.name) as name";
                 }
                 else {
@@ -63,7 +66,7 @@ namespace Goteo\Model\Call {
                     ORDER BY name ASC
                         ";
 
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>$lang));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     // la 15 es de testeos
@@ -85,7 +88,7 @@ namespace Goteo\Model\Call {
          */
 		public static function getNames ($call = null, $limit = null) {
 
-            $lang=\LANG;
+            $lang=Lang::current();
             $array = array ();
             try {
                 $sqlFilter = "";
@@ -93,7 +96,7 @@ namespace Goteo\Model\Call {
                     $sqlFilter = " WHERE category.id IN (SELECT category FROM call_category WHERE `call` = '$call')";
                 }
 
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(category_lang.name, category.name) as name";
                 }
                 else {
@@ -103,7 +106,7 @@ namespace Goteo\Model\Call {
                                     AND eng.lang = 'en'";
                 }
 
-                $sql="SELECT 
+                $sql="SELECT
                             category.id,
                             $different_select
                         FROM category
@@ -114,11 +117,11 @@ namespace Goteo\Model\Call {
                         $sqlFilter
                         ORDER BY `order` ASC
                         ";
-               
+
                 if (!empty($limit)) {
                     $sql .= "LIMIT $limit";
                 }
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>$lang));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     // la 15 es de testeos
@@ -169,7 +172,7 @@ namespace Goteo\Model\Call {
 		 *
 		 * @param varchar(50) $call id de un proyecto
 		 * @param INT(12) $id  identificador de la tabla keyword
-		 * @param array $errors 
+		 * @param array $errors
 		 * @return boolean
 		 */
 		public function remove (&$errors = array()) {
@@ -189,5 +192,5 @@ namespace Goteo\Model\Call {
 		}
 
 	}
-    
+
 }

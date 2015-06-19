@@ -1,6 +1,6 @@
 <?php
-if (!empty($this['projects'])):
-    foreach ($this['projects'] as $project): ?>
+if (!empty($vars['projects'])):
+    foreach ($vars['projects'] as $project): ?>
         <div class="project">
 
             <!--

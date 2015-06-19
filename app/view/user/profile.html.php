@@ -14,7 +14,7 @@ $bodyClass = 'user-profile';
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$user = $this['user'];
+$user = $vars['user'];
 $worthcracy = Worth::getAll();
 ?>
 <script type="text/javascript">
@@ -22,7 +22,7 @@ $worthcracy = Worth::getAll();
     jQuery(document).ready(function ($) {
 
         /* todo esto para cada lista de proyectos (flechitas navegacion) */
-        <?php foreach ($this['lists'] as $type=>$list) :
+        <?php foreach ($vars['lists'] as $type=>$list) :
             if(array_empty($list)) continue; ?>
             $("#discover-group-<?php echo $type ?>-1").show();
             $("#navi-discover-group-<?php echo $type ?>-1").addClass('active');
@@ -55,7 +55,7 @@ $worthcracy = Worth::getAll();
 
 <?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -63,12 +63,12 @@ $worthcracy = Worth::getAll();
 
         <?php echo View::get('user/widget/worth.html.php', array('worthcracy' => $worthcracy, 'level' => $user->worth)) ?>
 
-        <?php echo View::get('user/widget/about.html.php', array('user' => $user, 'projects' => $this['projects'])) ?>
+        <?php echo View::get('user/widget/about.html.php', array('user' => $user, 'projects' => $vars['projects'])) ?>
 
         <?php echo View::get('user/widget/social.html.php', array('user' => $user)) ?>
 
 
-        <?php foreach ($this['lists'] as $type=>$list) :
+        <?php foreach ($vars['lists'] as $type=>$list) :
             if (array_empty($list))
                 continue;
             ?>
@@ -112,8 +112,8 @@ $worthcracy = Worth::getAll();
 
     </div>
     <div class="side">
-        <?php if (!empty($_SESSION['user'])) echo View::get('user/widget/investors.html.php', $this) ?>
-        <?php echo View::get('user/widget/sharemates.html.php', $this) ?>
+        <?php if (!empty($_SESSION['user'])) echo View::get('user/widget/investors.html.php', $vars) ?>
+        <?php echo View::get('user/widget/sharemates.html.php', $vars) ?>
     </div>
 
 </div>

@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$calls = $this['calls'];
+$calls = $vars['calls'];
 ?>
 <div class="widget calls">
 

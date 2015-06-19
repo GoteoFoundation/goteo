@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$post = $this['post'];
+$post = $vars['post'];
 ?>
 <div>
     <span><?php echo htmlentities($post->title); ?></span>

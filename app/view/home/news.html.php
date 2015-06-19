@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$news = $this['news'];
+$news = $vars['news'];
 
 if (count($news) > 4) :  ?>
 <script type="text/javascript">

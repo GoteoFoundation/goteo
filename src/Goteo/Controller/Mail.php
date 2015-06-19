@@ -4,7 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Core\Redirection,
         Goteo\Core\Model,
-        Goteo\Core\View,
+        Goteo\Application\Config,
         Goteo\Library\Mail as Mailer;
 
     class Mail extends \Goteo\Core\Controller {
@@ -50,8 +50,8 @@ namespace Goteo\Controller {
                         } else {
                             $baja = SEC_URL . '/user/leave/?email=' . $parts[1];
 
-                            if (NODE_ID != \GOTEO_NODE && \file_exists('nodesys/'.NODE_ID.'/view/email/default.html.php')) {
-                                return new View (NODE_ID.'/view/email/default.html.php', array('content'=>$content, 'baja' => $baja));
+                            if (!\Goteo\Application\Config::isMasterNode() && \file_exists('nodesys/' . Config::get('current_node') . '/view/email/default.html.php')) {
+                                return new View (Config::get('current_node') . '/view/email/default.html.php', array('content'=>$content, 'baja' => $baja));
                             } else {
                                 return new View ('email/goteo.html.php', array('content'=>$content, 'baja' => $baja));
                             }

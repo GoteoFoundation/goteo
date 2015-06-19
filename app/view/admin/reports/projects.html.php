@@ -2,8 +2,8 @@
 
 use Goteo\Library\Text;
 
-$data = $this['data'];
-$filters = $this['filters'];
+$data = $vars['data'];
+$filters = $vars['filters'];
 
 // lista de proyectos y su estado de financiación
 if (is_array($data)) : ?>

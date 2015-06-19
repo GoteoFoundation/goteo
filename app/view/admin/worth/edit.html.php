@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model;
 
-$worth = $this['worth'];
+$worth = $vars['worth'];
 
 ?>
 <form method="post" action="/admin/worth/edit" >

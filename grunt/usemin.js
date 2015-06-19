@@ -10,17 +10,22 @@ module.exports = function(grunt) {
     'use strict';
 
     var _dist = GOTEO.dist + '/';
+    var _templates = GOTEO.templates + '/';
 
     // Remplaza el archivo por la version con "revision"
     // ej: goteo.css por goteo.1f005531.css
     var replaceRevmap = function(file) {
-        // grunt.log.writeln("FILE: ",file);
+        grunt.log.writeln("FILE: ",file);
         if(grunt.filerev && grunt.filerev.summary) {
             for(var i in grunt.filerev.summary) {
                 if(i === _dist + file) {
                     // grunt.log.writeln(i,' === ',file,' | ',_dist,' ',grunt.filerev.summary[i]);
                     file = grunt.filerev.summary[i].substr(_dist.length); // 'dist'
                 }
+                // if(i === _templates + file) {
+                //     // grunt.log.writeln(i,' === ',file,' | ',_dist,' ',grunt.filerev.summary[i]);
+                //     file = grunt.filerev.summary[i].substr(_templates.length); // 'dist'
+                // }
             }
         }
         return file;
@@ -35,10 +40,10 @@ module.exports = function(grunt) {
                   // grunt.log.writeln('USEMIN CSS BLOCK');
                   // for(var i in block) grunt.log.writeln(i,': ',block[i]);
 
-                  return '<link href="<?php echo SRC_URL; ?>/' + replaceRevmap(block.dest) + '" type="text/css" rel="stylesheet" />';
+                  return '<link href="<?= SRC_URL ?>/' + replaceRevmap(block.dest) + '" type="text/css" rel="stylesheet" />';
               },
               js: function (block) {
-                  var html = '<script type="text/javascript" src="<?php echo SRC_URL; ?>' + replaceRevmap(block.dest) + '"></script>';
+                  var html = '<script type="text/javascript" src="<?= SRC_URL ?>' + replaceRevmap(block.dest) + '"></script>';
                   if(Config.analytics) {
                     html += '\n\n' + Config.analytics;
                   }
@@ -46,7 +51,11 @@ module.exports = function(grunt) {
               }
             }
         },
-        html: ['<%= goteo.dist %>/view/prologue.html.php']
+        html: [
+        // '<%= goteo.dist %>/view/prologue.html.php',
+        '<%= goteo.dist %>/templates/partials/header/styles.php'
+
+        ]
     });
     // grunt.loadNpmTasks('grunt-usemin');
     // grunt.loadNpmTasks('grunt-contrib-concat');

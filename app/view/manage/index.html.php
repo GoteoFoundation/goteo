@@ -17,7 +17,7 @@ include __DIR__ . '/../header.html.php';
             <div class="breadcrumbs">Panel Gestor&iacute;a<?php // echo ADMIN_BCPATH; ?></div>
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main">
 
@@ -25,23 +25,23 @@ include __DIR__ . '/../header.html.php';
 
             <a href="/manage/donors">Certificados</a>
 
-<?php if (!empty($this['folder']) && !empty($this['file'])) :
-        if ($this['folder'] == 'base') {
-            $path = 'manage/'.$this['file'].'.html.php';
+<?php if (!empty($vars['folder']) && !empty($vars['file'])) :
+        if ($vars['folder'] == 'base') {
+            $path = 'manage/'.$vars['file'].'.html.php';
         } else {
-            $path = 'manage/'.$this['folder'].'/'.$this['file'].'.html.php';
+            $path = 'manage/'.$vars['folder'].'/'.$vars['file'].'.html.php';
         }
 
-            echo View::get($path, $this);
+            echo View::get($path, $vars);
        else :
 
         // Central pendientes
     ?>
         <div class="widget admin-home">
             <h3 class="title">Tareas pendientes</h3>
-            <?php if (!empty($this['tasks'])) : ?>
+            <?php if (!empty($vars['tasks'])) : ?>
             <table>
-                <?php foreach ($this['tasks'] as $task) : ?>
+                <?php foreach ($vars['tasks'] as $task) : ?>
                 <tr>
                     <td><?php if (!empty($task->url)) { echo ' <a href="'.$task->url.'">[IR]</a>';} ?></td>
                     <td><?php echo $task->text; ?></td>

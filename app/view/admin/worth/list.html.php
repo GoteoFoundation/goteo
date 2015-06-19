@@ -4,7 +4,7 @@ use Goteo\Library\Text;
 
 ?>
 <div class="widget board">
-    <?php if (!empty($this['worthcracy'])) : ?>
+    <?php if (!empty($vars['worthcracy'])) : ?>
     <table>
         <thead>
             <tr>
@@ -16,7 +16,7 @@ use Goteo\Library\Text;
         </thead>
 
         <tbody>
-            <?php foreach ($this['worthcracy'] as $worth) : ?>
+            <?php foreach ($vars['worthcracy'] as $worth) : ?>
             <tr>
                 <td width="5%"><a href="/admin/worth/edit/<?php echo $worth->id; ?>">[Editar]</a></td>
                 <td width="15%"><?php echo $worth->name; ?></td>

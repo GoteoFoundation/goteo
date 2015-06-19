@@ -1,9 +1,0 @@
-# Sobre los logs
-#-----------------------------------------------------------
-# Se crea un archivo de logs para cada dia
-# Vienen diferenciadas las transacciones de paypal y de tpv
-# Además de transacciones iniciales de aporte vienen las transacciones de ejecución de prepprovals y de calcelaciones
-# Para revisar los errores de transacciones Tpv se puede consultar el codigo SISxxxx en el manual 'guia de comercios' Anexo V
-#
-# paypal y tpv implementados por julian.canaves@gmail.com
-#

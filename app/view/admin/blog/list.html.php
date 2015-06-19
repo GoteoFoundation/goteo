@@ -4,18 +4,18 @@ use Goteo\Library\Text,
     Goteo\Util\Pagination\Paginated,
     Goteo\Util\Pagination\DoubleBarLayout;
 
-$node = $this['node'];
+$node = $vars['node'];
 $transNode = Translate::is_legal($_SESSION['user']->id, $node, 'node') ? true : false;
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 if (empty($filters['show'])) $filters['show'] = 'all';
 $the_filters = '';
 foreach ($filters as $key=>$value) {
     $the_filters .= "&{$key}={$value}";
 }
 
-$pagedResults = new Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($vars['posts'], 10, isset($_GET['page']) ? $_GET['page'] : 1);
 ?>
 <a href="/admin/blog/add" class="button">Nueva entrada</a>
 &nbsp;&nbsp;&nbsp;
@@ -32,7 +32,7 @@ $pagedResults = new Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['
         <div style="float:left;margin:5px;">
             <label for="show-filter">Mostrar:</label><br />
             <select id="show-filter" name="show" onchange="document.getElementById('filter-form').submit();">
-            <?php foreach ($this['show'] as $itemId=>$itemName) : ?>
+            <?php foreach ($vars['show'] as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters['show'] == $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>
             </select>
@@ -43,7 +43,7 @@ $pagedResults = new Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['
             <label for="blog-filter">Del proyecto:</label><br />
             <select id="blog-filter" name="blog" onchange="document.getElementById('filter-form').submit();">
                 <option value="">Cualquiera</option>
-            <?php foreach ($this['blogs'] as $itemId=>$itemName) : ?>
+            <?php foreach ($vars['blogs'] as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters['blog'] == $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>
             </select>
@@ -55,7 +55,7 @@ $pagedResults = new Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['
             <label for="blog-filter">Del nodo:</label><br />
             <select id="blog-filter" name="blog" onchange="document.getElementById('filter-form').submit();">
                 <option value="">Cualquiera</option>
-            <?php foreach ($this['blogs'] as $itemId=>$itemName) : ?>
+            <?php foreach ($vars['blogs'] as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters['blog'] == $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>
             </select>
@@ -65,7 +65,7 @@ $pagedResults = new Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['
 </div>
 
 <div class="widget board">
-    <?php if (!empty($this['posts'])) : ?>
+    <?php if (!empty($vars['posts'])) : ?>
     <table>
         <thead>
             <tr>
@@ -82,10 +82,10 @@ $pagedResults = new Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['
                 <td><?php if ($post->publish) echo '<strong style="color:#20b2b3;font-size:10px;">Publicada</strong>'; ?></td>
                 <td colspan="6"><?php
                         $style = '';
-                        if (isset($this['homes'][$post->id]))
+                        if (isset($vars['homes'][$post->id]))
                             $style .= ' font-weight:bold;';
                         if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE) {
-                            if (isset($this['footers'][$post->id]))
+                            if (isset($vars['footers'][$post->id]))
                                 $style .= ' font-style:italic;';
                         }
 
@@ -99,13 +99,13 @@ $pagedResults = new Paginated($this['posts'], 10, isset($_GET['page']) ? $_GET['
                 <td><?php if (($post->owner_type == 'node' && $post->owner_id == $node) || $node == \GOTEO_NODE) : ?>
                     <a href="/admin/blog/edit/<?php echo $post->id; ?>">[Editar]</a>
                 <?php endif; ?></td>
-                <td><?php if (isset($this['homes'][$post->id])) {
+                <td><?php if (isset($vars['homes'][$post->id])) {
                         echo '<a href="/admin/blog/remove_home/'.$post->id.'" style="color:red;">[Quitar de portada]</a>';
                     } elseif ($post->publish) {
                         echo '<a href="/admin/blog/add_home/'.$post->id.'" style="color:blue;">[Poner en portada]</a>';
                     } ?></td>
                 <td><?php if (empty($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE) {
-                        if (isset($this['footers'][$post->id])) {
+                        if (isset($vars['footers'][$post->id])) {
                             echo '<a href="/admin/blog/remove_footer/'.$post->id.'" style="color:red;">[Quitar del footer]</a>';
                         } elseif ($post->publish) {
                             echo '<a href="/admin/blog/add_footer/'.$post->id.'" style="color:blue;">[Poner en footer]</a>';

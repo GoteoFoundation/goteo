@@ -4,13 +4,13 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$call = $this['call'];
-$errors = $call->errors[$this['step']] ?: array();
-$okeys  = $call->okeys[$this['step']] ?: array();
+$call = $vars['call'];
+$errors = $call->errors[$vars['step']] ?: array();
+$okeys  = $call->okeys[$vars['step']] ?: array();
 
 $categories = array();
 
-foreach ($this['categories'] as $value => $label) {
+foreach ($vars['categories'] as $value => $label) {
     $categories[] =  array(
         'value'     => $value,
         'label'     => $label,
@@ -21,7 +21,7 @@ foreach ($this['categories'] as $value => $label) {
 // retornos en opcion checkboxes con icono y descripcion
 $icons = array();
 if(!is_array($rewards)) $rewards = array();
-foreach ($this['icons'] as $id=>$icon) {
+foreach ($vars['icons'] as $id=>$icon) {
     $rewards["icon-{$icon->id}"] =  array(
         'name'  => "icons[]",
         'value' => $icon->id,
@@ -37,7 +37,7 @@ foreach ($this['icons'] as $id=>$icon) {
 
 $scope = array();
 
-foreach ($this['scope'] as $value => $label) {
+foreach ($vars['scope'] as $value => $label) {
     $scope[] =  array(
         'value'     => $value,
         'label'     => $label
@@ -56,7 +56,7 @@ $maxp_modes = array(
 );
 
 $superform = array(
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'action'        => '',
     'method'        => 'post',
     'title'         => Text::get('call-overview-main-header'),
@@ -307,7 +307,7 @@ $superform = array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $call,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -315,7 +315,7 @@ $superform = array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )
@@ -332,7 +332,7 @@ $superform = array(
 
 foreach ($superform['elements'] as $id => &$element) {
 
-    if (!empty($this['errors'][$this['step']][$id])) {
+    if (!empty($vars['errors'][$vars['step']][$id])) {
         $element['errors'] = array();
     }
 

@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$share = $this['share'];
+$share = $vars['share'];
 ?>
 <section class="redes">
   <a href="<?php echo htmlspecialchars($share->bazar_twitter_url) ?>" target="_blank" title="<?php echo Text::get('spread-twitter'); ?>"><img class="face" src="img/facebook.svg"></a>

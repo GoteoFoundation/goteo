@@ -3,12 +3,12 @@
 use Goteo\Library\Text,
     Goteo\Model;
 
-$story = $this['story'];
+$story = $vars['story'];
 $items = array();
 $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 // $iId = id del post
 // $iObj = titulo
-foreach ($this['items'] as $iId=>$iObj) {
+foreach ($vars['items'] as $iId=>$iObj) {
     $el_val = str_replace(array("'", '"'), '`', $iObj)." ({$iId})";
     $items[] = '{ value: "'.$el_val.'", id: "'.$iId.'" }';
     if ($iId == $story->post) $preVal = "$el_val";
@@ -19,16 +19,16 @@ foreach ($this['items'] as $iId=>$iObj) {
 $projects = Model\Stories::available($story->project);
 $status = Model\Project::status();
 ?>
-<form method="post" action="/admin/stories/<?php echo $this['action'] ?>" enctype="multipart/form-data">
-    <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
+<form method="post" action="/admin/stories/<?php echo $vars['action'] ?>" enctype="multipart/form-data">
+    <input type="hidden" name="action" value="<?php echo $vars['action'] ?>" />
     <input type="hidden" name="order" value="<?php echo $story->order ?>" />
     <input type="hidden" name="id" value="<?php echo $story->id; ?>" />
 
     <input type="hidden" id="item" name="item" value="<?php echo $story->post; ?>" />
 
-<?php if($this['action']=="edit") { ?>
+<?php if($vars['action']=="edit") { ?>
     <input type="hidden" name="project" id="story-project" value="<?php echo $story->project; ?>" size="60" />
-    <h3>    
+    <h3>
         <?php foreach ($projects as $project) : ?>
                 <?php if ($story->project == $project->id) echo $project->name . ' ('. $status[$project->status] . ')'; ?>
         <?php endforeach; ?>

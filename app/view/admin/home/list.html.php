@@ -12,13 +12,13 @@ if ($node != \GOTEO_NODE) {
     $the_items = Home::$items;
 }
 
-$items = $this['items'];
-$new = $this['new'];
-$availables = $this['availables'];
+$items = $vars['items'];
+$new = $vars['new'];
+$availables = $vars['availables'];
 
-$side_items = $this['side_items'];
-$side_new = $this['side_new'];
-$side_availables = $this['side_availables'];
+$side_items = $vars['side_items'];
+$side_new = $vars['side_new'];
+$side_availables = $vars['side_availables'];
 
 ?>
 <?php /* if ($node != \GOTEO_NODE) : ?><a href="/admin/home/addside" class="button" style="margin-right: 270px;">A&ntilde;adir elemento lateral</a><?php endif; ?>
@@ -48,7 +48,7 @@ $side_availables = $this['side_availables'];
                 <td><?php
                 if (isset(Home::$admins[$item->item])) {
                     echo '<a href="'.Home::$admins[$item->item].'" style="text-decoration: underline;">'.$the_side_items[$item->item].'</a>';
-                } else { 
+                } else {
                     echo $the_side_items[$item->item]; }
                 ?></td>
                 <td><a href="/admin/home/up/<?php echo $item->item; ?>/side">[&uarr;]</a></td>
@@ -140,6 +140,6 @@ $side_availables = $this['side_availables'];
 
     </form>
     <?php endif; ?>
-    
+
 </div>
 

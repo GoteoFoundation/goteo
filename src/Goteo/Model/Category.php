@@ -3,6 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Category extends \Goteo\Core\Model {
 
@@ -18,7 +20,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, "category_lang", \LANG);
+                $lang=self::default_lang_by_id($id, "category_lang", Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -44,7 +46,7 @@ namespace Goteo\Model {
 
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(Lang::current() === Config::get('lang')) {
                 $different_select=" IFNULL(category_lang.name, category.name) as name,
                                     IFNULL(category_lang.description, category.description) as description";
             }
@@ -77,7 +79,7 @@ namespace Goteo\Model {
                 $eng_join
                 ORDER BY `order` ASC";
 
-            $query = static::query($sql, array(':lang'=>\LANG));
+            $query = static::query($sql, array(':lang'=>Lang::current()));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $category) {
                 $list[$category->id] = $category;
@@ -96,8 +98,8 @@ namespace Goteo\Model {
 
             $array = array ();
             try {
-                if(self::default_lang(\LANG)=='es') {
-                $different_select=" IFNULL(category_lang.name, category.name) as name";
+                if(Lang::current() === Config::get('lang')) {
+                    $different_select=" IFNULL(category_lang.name, category.name) as name";
                 }
                 else {
                     $different_select=" IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name";
@@ -117,7 +119,7 @@ namespace Goteo\Model {
                         GROUP BY category.id
                         ORDER BY category.order ASC";
 
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>Lang::current()));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     // la 15 es de testeos

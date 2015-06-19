@@ -3,16 +3,16 @@
 use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection,
-    Goteo\Library\Message;
+    Goteo\Application\Message;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
-    Message::Error('Instancia de proyecto corrupta');
+    Message::error('Instancia de proyecto corrupta');
     throw new Redirection('/admin/projects');
 }
 
-$accounts = $this['accounts'];
+$accounts = $vars['accounts'];
 ?>
 <div class="widget">
     <p>Es necesario que un proyecto tenga una cuenta PayPal para ejecutar los cargos. La cuenta bancaria es solamente para tener toda la información en el mismo entorno pero no se utiliza en ningún proceso de este sistema.</p>
@@ -41,6 +41,6 @@ $accounts = $this['accounts'];
     </p>
 
         <input type="submit" name="save-accounts" value="Guardar" />
-        
+
     </form>
 </div>

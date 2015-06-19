@@ -13,7 +13,7 @@ $categories = Category::getList();  // categorias que se usan en proyectos
 $locations = Project::getProjLocs();  //localizaciones de royectos
 $rewards = Icon::getList(); // iconos que se usan en proyectos
 
-$params = $this['params'];
+$params = $vars['params'];
 ?>
 <div class="widget searcher">
     <form method="post" action="/discover/results">

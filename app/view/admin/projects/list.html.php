@@ -3,7 +3,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 
 $the_filters = '';
 foreach ($filters as $key=>$value) {
@@ -26,7 +26,7 @@ foreach ($filters as $key=>$value) {
                     <label for="category-filter">De la categoría:</label><br />
                     <select id="category-filter" name="category" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier categoría</option>
-                    <?php foreach ($this['categories'] as $categoryId=>$categoryName) : ?>
+                    <?php foreach ($vars['categories'] as $categoryId=>$categoryName) : ?>
                         <option value="<?php echo $categoryId; ?>"<?php if ($filters['category'] == $categoryId) echo ' selected="selected"';?>><?php echo $categoryName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -36,7 +36,7 @@ foreach ($filters as $key=>$value) {
                     <label for="node-filter">Del nodo:</label><br />
                     <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier nodo</option>
-                    <?php foreach ($this['nodes'] as $nodeId=>$nodeName) : ?>
+                    <?php foreach ($vars['nodes'] as $nodeId=>$nodeName) : ?>
                         <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId) echo ' selected="selected"';?>><?php echo $nodeName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -53,7 +53,7 @@ foreach ($filters as $key=>$value) {
                     <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
                         <option value="-1"<?php if ($filters['status'] == -1) echo ' selected="selected"';?>>Todos los estados</option>
                         <option value="-2"<?php if ($filters['status'] == -2) echo ' selected="selected"';?>>En negociacion</option>
-                    <?php foreach ($this['status'] as $statusId=>$statusName) : ?>
+                    <?php foreach ($vars['status'] as $statusId=>$statusName) : ?>
                         <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -64,7 +64,7 @@ foreach ($filters as $key=>$value) {
                         <option value="">--</option>
                         <option value="all"<?php if ($filters['called'] == 'all') echo ' selected="selected"';?>>En alguna</option>
                         <option value="none"<?php if ($filters['called'] == 'none') echo ' selected="selected"';?>>En ninguna</option>
-                    <?php foreach ($this['calls'] as $callId=>$callName) : ?>
+                    <?php foreach ($vars['calls'] as $callId=>$callName) : ?>
                         <option value="<?php echo $callId; ?>"<?php if ($filters['called'] == $callId) echo ' selected="selected"';?>><?php echo $callName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -78,7 +78,7 @@ foreach ($filters as $key=>$value) {
                 <td>
                     <label for="order-filter">Ordenar por:</label><br />
                     <select id="order-filter" name="order" onchange="document.getElementById('filter-form').submit();">
-                    <?php foreach ($this['orders'] as $orderId=>$orderName) : ?>
+                    <?php foreach ($vars['orders'] as $orderId=>$orderName) : ?>
                         <option value="<?php echo $orderId; ?>"<?php if ($filters['order'] == $orderId) echo ' selected="selected"';?>><?php echo $orderName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -87,7 +87,7 @@ foreach ($filters as $key=>$value) {
                     <label for="consultant-filter">Asesorado por:</label><br />
                     <select id="consultant-filter" name="consultant" onchange="document.getElementById('filter-form').submit();">
                         <option value="-1"<?php if ($filters['consultant'] == -1) echo ' selected="selected"';?>>Cualquier admin</option>
-                    <?php foreach ($this['admins'] as $userId=>$userName) : ?>
+                    <?php foreach ($vars['admins'] as $userId=>$userName) : ?>
                         <option value="<?php echo $userId; ?>"<?php if ($filters['consultant'] == $userId) echo ' selected="selected"';?>><?php echo $userName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -104,14 +104,14 @@ foreach ($filters as $key=>$value) {
     <a href="/admin/projects/?reset=filters">Quitar filtros</a>
 <?php if ($filters['filtered'] != 'yes') : ?>
     <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (empty($this['projects'])) : ?>
+<?php elseif (empty($vars['projects'])) : ?>
     <p>No se han encontrado registros</p>
 <?php endif; ?>
 </div>
 
 
-<?php if (!empty($this['projects'])) {
-    foreach ($this['projects'] as $project) {
+<?php if (!empty($vars['projects'])) {
+    foreach ($vars['projects'] as $project) {
 ?>
 <div class="widget board">
     <table>
@@ -132,7 +132,7 @@ foreach ($filters as $key=>$value) {
                 <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview" style="<?php if (isset($project->called)) echo 'color: blue;'; ?>"><?php echo (!empty($project->name)) ? $project->name : 'SIN NOMBRE'; ?></a></td>
                 <td><a href="mailto:<?php echo $project->user->email; ?>"><?php echo substr($project->user->email, 0, 100); ?></a></td>
                 <td><?php echo date('d-m-Y', strtotime($project->updated)); ?></td>
-                <td><?php echo ($project->status == 1 && !$project->draft) ? '<span style="color: green;">En negociación</span>' : $this['status'][$project->status]; ?></td>
+                <td><?php echo ($project->status == 1 && !$project->draft) ? '<span style="color: green;">En negociación</span>' : $vars['status'][$project->status]; ?></td>
                 <td style="text-align: center;"><?php echo $project->node; ?></td>
                 <td style="text-align: right;"><?php echo \euro_format($project->mincost).'€'; ?></td>
                 <td style="text-align: right;"><?php echo \euro_format($project->maxcost).'€'; ?></td>
@@ -142,7 +142,7 @@ foreach ($filters as $key=>$value) {
                     if ($project->status < 3) {
                         echo "Información al <strong>{$project->progress}%</strong>";
                     } elseif ($project->status == 3) {
-                        echo "Lleva {$this->days_active} días de campaña.&nbsp;&nbsp;&nbsp;";
+                        echo "Lleva {$project->days_active} días de campaña.&nbsp;&nbsp;&nbsp;";
                         echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;";
                         echo "<strong>Conseguido:</strong> ".\euro_format($project->amount)."€&nbsp;&nbsp;&nbsp;";
                         echo "<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messengers}";
@@ -218,7 +218,7 @@ foreach ($filters as $key=>$value) {
                     <a href="/admin/projects/images/<?php echo $project->id; ?>">[Organizar imágenes]</a>
                     <?php if (in_array($project->status, array('1', '2', '3')) && !isset($project->called)) : ?><a href="<?php echo "/admin/projects/assign/{$project->id}"; ?>">[Asignarlo a una convocatoria]</a><?php endif; ?>
                     <?php if ($project->status == 4 || $project->status == 5) : ?><a href="/admin/commons?project=<?php echo $project->id; ?>">[Retornos colectivos]</a><?php endif; ?>
-                    <?php if (isset($this['contracts'][$project->id])) : ?><a href="<?php echo "/contract/{$project->id}"; ?>" target="_blank">[Contrato]</a><?php endif; ?>
+                    <?php if (isset($vars['contracts'][$project->id])) : ?><a href="<?php echo "/contract/{$project->id}"; ?>" target="_blank">[Contrato]</a><?php endif; ?>
                 </td>
             </tr>
         </tbody>
@@ -226,7 +226,7 @@ foreach ($filters as $key=>$value) {
     </table>
 </div>
     <?php }
-        $this['queryVars'] = $the_filters;
-        echo View::get('pagination.html.php', $this);
+        $vars['queryVars'] = $the_filters;
+        echo View::get('pagination.html.php', $vars);
     }
     ?>

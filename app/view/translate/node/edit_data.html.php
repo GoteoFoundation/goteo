@@ -4,7 +4,7 @@ use Goteo\Core\View,
     Goteo\Library\NormalForm,
     Goteo\Model;
 
-$node = $this['node'];
+$node = $vars['node'];
 
 $original = Model\Node::get($node);
 $data = Model\Node::get($node, $_SESSION['translate_lang']);

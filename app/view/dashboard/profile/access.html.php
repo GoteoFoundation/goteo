@@ -3,11 +3,11 @@
 use Goteo\Library\Text,
     Goteo\Library\NormalForm;
 
-$user = $this['user'];
-$errors = $this['errors'];
-$this['level'] = 3;
+$user = $vars['user'];
+$errors = $vars['errors'];
+$vars['level'] = 3;
 
-$message = $this['action'] == 'recover' ? $this['message'] : '';
+$message = $vars['action'] == 'recover' ? $vars['message'] : '';
 
 /*
 if ($_SESSION['recovering'] == $_SESSION['user']->id) {
@@ -35,14 +35,14 @@ extract($_POST);
 <?php
 echo new NormalForm(array(
 
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'hint'          => Text::get('guide-dashboard-user-access'),
     'elements'      => array(
 
         'action' => array(
             'type' => 'hidden',
-            'value' => $this['action']
+            'value' => $vars['action']
         ),
 
         'data' => array(

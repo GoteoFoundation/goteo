@@ -2,6 +2,9 @@
 
 namespace Goteo\Model\Project {
 
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+
     class Category extends \Goteo\Core\Model {
 
         public
@@ -40,7 +43,7 @@ namespace Goteo\Model\Project {
             $array = array ();
             try {
 
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang(Lang::current()) === Config::get('lang')) {
                 $different_select=" IFNULL(category_lang.name, category.name) as name";
                 }
                 else {
@@ -61,7 +64,7 @@ namespace Goteo\Model\Project {
                     ORDER BY name ASC
                         ";
 
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>Lang::current()));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     // la 15 es de testeos
@@ -81,8 +84,8 @@ namespace Goteo\Model\Project {
          * @param void
          * @return array
          */
-		public static function getNames ($project = null, $limit = null, $lang = \LANG) {
-
+		public static function getNames ($project = null, $limit = null, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             $array = array ();
             try {
                 $sqlFilter = "";
@@ -100,7 +103,7 @@ namespace Goteo\Model\Project {
                                     AND eng.lang = 'en'";
                 }
 
-                $sql="SELECT 
+                $sql="SELECT
                             category.id,
                             $different_select
                         FROM category
@@ -111,7 +114,7 @@ namespace Goteo\Model\Project {
                         $sqlFilter
                         ORDER BY `order` ASC
                         ";
-                 
+
 
                 if (!empty($limit)) {
                     $sql .= " LIMIT $limit";
@@ -167,7 +170,7 @@ namespace Goteo\Model\Project {
 		 *
 		 * @param varchar(50) $project id de un proyecto
 		 * @param INT(12) $id  identificador de la tabla keyword
-		 * @param array $errors 
+		 * @param array $errors
 		 * @return boolean
 		 */
 		public function remove (&$errors = array()) {
@@ -187,5 +190,5 @@ namespace Goteo\Model\Project {
 		}
 
 	}
-    
+
 }

@@ -5,14 +5,13 @@ use Goteo\Core\View,
     Goteo\Library\Text;
 
 // si es un nodo
-if (NODE_ID != GOTEO_NODE) {
+if (!\Goteo\Application\Config::isMasterNode()) {
     include __DIR__ . '/node/index.html.php';
     return;
 }
 
-
-$calls     = $this['calls'];
-$campaigns = $this['campaigns'];
+$calls     = $vars['calls'];
+$campaigns = $vars['campaigns'];
 
 $bodyClass = 'home';
 // para que el prologue ponga el código js para botón facebook en el bannerside
@@ -24,8 +23,8 @@ $ogmeta = array(
     'description' => GOTEO_META_DESCRIPTION,
     'url' => SITE_URL
 );
-if (!empty($this['posts'])) {
-    foreach ($this['posts'] as $post) {
+if (!empty($vars['posts'])) {
+    foreach ($vars['posts'] as $post) {
         if (count($post->gallery) > 1) {
             foreach ($post->gallery as $pbimg) {
                 if ($pbimg instanceof Image) {
@@ -53,10 +52,10 @@ include __DIR__ . '/header.html.php';
 <div id="sub-header" class="banners">
     <div class="clearfix">
         <div class="slides_container">
-            <?php if (!empty($this['banners'])) : foreach ($this['banners'] as $id=>$banner) : ?>
+            <?php if (!empty($vars['banners'])) : foreach ($vars['banners'] as $id=>$banner) : ?>
             <div class="subhead-banner"><?php echo View::get('header/banner.html.php', array('banner'=>$banner)); ?></div>
             <?php endforeach; endif;
-            if (count($this['banners']) == 1) : ?>
+            if (count($vars['banners']) == 1) : ?>
             <div class="subhead-banner"><?php echo Text::html('main-banner-header'); ?></div>
             <?php endif; ?>
         </div>
@@ -91,19 +90,19 @@ include __DIR__ . '/header.html.php';
     </div>
 </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/header/message.html.php'; } ?>
 
 <div id="main">
 
-    <?php foreach ($this['order'] as $item=>$itemData) {
+    <?php foreach ($vars['order'] as $item=>$itemData) {
 
         if ($item=="news")
             {
-                $bannerPrensa = View::get('home/news.html.php',$this);
+                $bannerPrensa = View::get('home/news.html.php',$vars);
                 continue;
             }
 
-        if (!empty($this[$item])) echo View::get("home/{$item}.html.php", $this);
+        if (!empty($vars[$item])) echo View::get("home/{$item}.html.php", $vars);
     } ?>
 
 </div>

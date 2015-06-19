@@ -7,7 +7,8 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
-        Goteo\Library,
+        Goteo\Application,
+        Goteo\Application\Session,
         Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Text;
@@ -21,9 +22,9 @@ namespace Goteo\Controller {
 
             $page = Page::get('review');
 
-            $message = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
+            $message = \str_replace('%USER_NAME%', Session::getUser()->name, $page->content);
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $reviews = Model\Review::assigned($user->id);
             // si no hay proyectos asignados no tendria que estar aqui
@@ -52,7 +53,7 @@ namespace Goteo\Controller {
          */
         public function activity ($option = 'summary', $action = 'list') {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $reviews = Model\Review::assigned($user->id);
             // si no hay proyectos asignados no tendria que estar aqui
@@ -88,7 +89,7 @@ namespace Goteo\Controller {
          */
         public function reviews ($option = 'summary', $action = 'list', $id = null) {
 
-            $user    = $_SESSION['user'];
+            $user    = Session::getUser();
 
             $errors = array();
 
@@ -115,7 +116,7 @@ namespace Goteo\Controller {
                     $log->setTarget($review->project, 'project');
                     $log->populate('revisión cerrada (revisor)', '/review/reviews',
                         \vsprintf('El revisor %s ha %s la revisión de %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('relevant', 'Finalizado'),
                             Feed::item('project', $review->name, $review->project)
                         ))
@@ -143,9 +144,9 @@ namespace Goteo\Controller {
             if ($option == 'evaluate') {
                 //Text::get
                 if ($review->ready == 1) {
-                    Library\Message::Info(Text::get('review-closed-alert'));
+                    Application\Message::info(Text::get('review-closed-alert'));
                 } else {
-                    Library\Message::Info(Text::get('review-ajax-alert'));
+                    Application\Message::info(Text::get('review-ajax-alert'));
                 }
             }
 
@@ -181,7 +182,7 @@ namespace Goteo\Controller {
 
             // sacamos las revisiones realizadas
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $reviews = Model\Review::history($user->id);
             // si no hay proyectos asignados no tendria que estar aqui

@@ -5,7 +5,7 @@ namespace Goteo\Controller\Dashboard {
     use Goteo\Model,
         Goteo\Core\ACL,
         Goteo\Core\Redirection,
-		Goteo\Library\Message,
+		Goteo\Application\Message,
 		Goteo\Library\Text;
 
     class Calls {
@@ -46,7 +46,7 @@ namespace Goteo\Controller\Dashboard {
                 $call->projects = Model\Call\Project::getMini($_SESSION['call']->id, array('all'));
                 $_SESSION['call'] = $call;
             } else {
-                Message::Error('No se puede trabajar con la convocatoria seleccionada, contacta con nosotros');
+                Message::error('No se puede trabajar con la convocatoria seleccionada, contacta con nosotros');
                 $call = null;
             }
 
@@ -98,11 +98,11 @@ namespace Goteo\Controller\Dashboard {
                             }
 
                             if ($sponsor->save($errors)) {
-                                Message::Info('Datos grabados correctamente');
+                                Message::info('Datos grabados correctamente');
                                 if (!$removed)
                                     throw new Redirection('/dashboard/calls/sponsors');
                             } else {
-                                Message::Error('No se han podido grabar los datos. ' . implode(', ', $errors));
+                                Message::error('No se han podido grabar los datos. ' . implode(', ', $errors));
                             }
                         } else {
                             $sponsor = Model\Call\Sponsor::get($id);
@@ -115,9 +115,9 @@ namespace Goteo\Controller\Dashboard {
                         if (!empty($id)) {
 
                             if (Model\Call\Sponsor::delete($id)) {
-                                Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
+                                Message::error('El proyecto se ha quitado correctamente de la convocatoria');
                             } else {
-                                Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
+                                Message::error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
                             }
                         }
                         throw new Redirection('/dashboard/calls/sponsors');

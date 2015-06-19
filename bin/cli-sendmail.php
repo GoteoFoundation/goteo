@@ -15,14 +15,27 @@ use Goteo\Core\Resource,
     Goteo\Core\Error,
     Goteo\Core\Redirection,
     Goteo\Core\Model,
+    Goteo\Application\Lang,
+    Goteo\Application\Config,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
     Goteo\Library\Sender;
 
-require_once __DIR__ . '/../app/config.php';
 
-// montar SITE_URL como el dispatcher para el enlace de darse de baja.
-define('SITE_URL', GOTEO_URL);
+//Public Web path
+define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
+
+require_once __DIR__ . '/../src/autoload.php';
+
+// constantes necesarias (las pone el dispatcher)
+define('HTTPS_ON', false); // para las url de project/media
+define('SITE_URL', 'http://goteo.org'); // para los mails
+define('SEC_URL', 'https:'.str_replace('http:', '', SITE_URL)); // urls para paypal (necesita schema)
+// Config file...
+Config::loadFromYaml('settings.yml');
+// set Lang
+Lang::setDefault(Config::get('lang'));
+Lang::set(Config::get('lang'));
 
 $debug = true;
 
@@ -71,10 +84,9 @@ $query = Model::query('SELECT html, template, lang FROM mail WHERE id = ?', arra
 $data = $query->fetch(\PDO::FETCH_ASSOC);
 $content = $data['html'];
 $template = $data['template'];
-$lang = (!empty($data['lang'])) ? $data['lang'] : 'es';
-// set Lang
-define('LANG', $lang);
 
+Lang::setDefault(Config::get('lang'));
+Lang::set($data['lang']);
 
 if (empty($content)) {
     die("Mailing {$user->mailing_id} sin contenido!\n");

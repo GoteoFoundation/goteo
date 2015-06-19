@@ -2,7 +2,7 @@
 /// esto se usa ???
 use Goteo\Library\Page;
 
-$node = $this['node'];
+$node = $vars['node'];
 
 $pages = Page::getList($node->id);
 ?>

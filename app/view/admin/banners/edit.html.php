@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Model;
 
-$banner = $this['banner'];
+$banner = $vars['banner'];
 
 $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 
@@ -26,7 +26,7 @@ foreach ($projects as $project) {
 }
 ?>
 <form method="post" action="/admin/banners/save/<?php echo $banner->id; ?>" enctype="multipart/form-data">
-    <input type="hidden" name="action" value="<?php echo $this['action'] ?>"/>
+    <input type="hidden" name="action" value="<?php echo $vars['action'] ?>"/>
     <input type="hidden" name="order" value="<?php echo $banner->order ?>"/>
     <input type="hidden" name="id" value="<?php echo $banner->id; ?>"/>
     <input type="hidden" id="item" name="item" value="<?php echo $banner->project; ?>"/>

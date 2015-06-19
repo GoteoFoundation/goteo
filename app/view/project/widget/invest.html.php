@@ -9,7 +9,7 @@ use Goteo\Core\View,
     Goteo\Model\License,
     Goteo\Library\Currency;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 // cantidad de aporte
 if (isset($_SESSION['invest-amount'])) {
@@ -40,10 +40,10 @@ if ($project->called instanceof Call && $project->called->dropable) {
     $allowpp = $project->allowpp;
 }
 
-$personal = $this['personal'];
-$step = $this['step'];
+$personal = $vars['personal'];
+$step = $vars['step'];
 
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 
 $worthcracy = Worth::getAll();
 
@@ -124,7 +124,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 // si es el primer paso, mostramos el botón para ir a login
 if ($step == 'start') : ?>
 <div class="widget project-invest method">
-    <h<?php echo $level ?> class="beak"><?php echo Text::get('user-login-required-to_invest') ?></h<?php echo $level ?>>
+    <!--<h<?php echo $level ?> class="beak"><?php echo Text::get('user-login-required-to_invest') ?></h<?php echo $level ?>>
 
     <div class="buttons">
         <button type="submit" class="button green" name="go-login" value=""><?php echo Text::get('imperative-register'); ?></button>
@@ -136,6 +136,10 @@ if ($step == 'start') : ?>
     <?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
         <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 0, true, true) ); ?></div>
     <?php endif; ?>
+
+    -->
+
+    <?php echo View::get('widget/register.html.php'); ?>
 
 </div>
 <?php else : ?>
@@ -188,11 +192,11 @@ if ($step == 'start') : ?>
 <div class="widget project-invest method">
     <h<?php echo $level ?> class="title"><?php //echo Text::get('project-invest-continue') ?><?php echo Text::get('invest-method-title') ?></h<?php echo $level ?>>
     <input type="hidden" id="paymethod"  />
-    <input type="hidden" id="pool" value="<?php echo $this['pool']; ?>"  />
+    <input type="hidden" id="pool" value="<?php echo $vars['pool']; ?>"  />
 
     <div class="reminder reminder-signed"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span>
     <div id="reward-reminder"></div>
-    <?php   
+    <?php
         if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) :
             echo '<div>'.Text::html('currency-alert', \amount_format($amount, 3, true, true) ).'</div>';
         endif;
@@ -203,11 +207,11 @@ if ($step == 'start') : ?>
         <div class="method"><input type="radio" name="method" id="tpv-method" checked="checked" value="tpv"><label for="tpv-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-card-method') ?><span><img class="img-method" src="/view/css/button/logos_tarjetas.png" /></label></div>
         <?php if ($allowpp) : ?>
             <div class="method"><input type="radio" name="method" id="paypal-method" value="paypal"><label for="paypal-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-paypal-method') ?><span><img class="img-method" src="/view/css/button/paypal-logo.png" /></label></div>
-        <?php 
+        <?php
         endif;
-        if ($this['pool'] > 0) : ?>
-            <div class="method" style="margin-top:5px;"><input type="radio" name="method" id="pool-method" value="pool"><label for="pool-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-pool-method') ?><span class="pool-info" class="pool-info"><img class="img-method" height="28" src="/view/css/dashboard/monedero.svg" /><span style="margin-left:15px;"><?php echo \amount_format($this['pool']); ?> <?php echo Text::get('invest-pool-available'); ?></span></label></div>
-        <?php 
+        if ($vars['pool'] > 0) : ?>
+            <div class="method" style="margin-top:5px;"><input type="radio" name="method" id="pool-method" value="pool"><label for="pool-method" class="label-method"><span class="method-text"><?php echo Text::get('invest-pool-method') ?><span class="pool-info" class="pool-info"><img class="img-method" height="28" src="/view/css/dashboard/monedero.svg" /><span style="margin-left:15px;"><?php echo \amount_format($vars['pool']); ?> <?php echo Text::get('invest-pool-available'); ?></span></label></div>
+        <?php
         endif;
         if (\GOTEO_ENV  != 'real') : // permitimos aportes en cash para testeo ?>
         <div class="method" style="margin-top:10px;"><input type="radio" name="method" id="cash-method" value="cash"><label for="cash-method" class="label-method"><span class="method-text">Cash<span></label></div>
@@ -217,9 +221,9 @@ if ($step == 'start') : ?>
     </div>
 <br />
 
-<?php 
-if (!$allowpp) : 
-    echo Text::html('invest-paypal_disabled'); 
+<?php
+if (!$allowpp) :
+    echo Text::html('invest-paypal_disabled');
 endif;
 ?>
 
@@ -347,7 +351,7 @@ endif;
             var amount = parseFloat(rawamount);
             var pool = $('#pool').val();
             pool_greater(amount,pool);
-            
+
             var rate = parseFloat('<?php echo Currency::rate();?>');
             if (isNaN(amount)) {
                 amount = 0;
@@ -443,7 +447,7 @@ endif;
                    return false;
                }
 
-               if (reward == '') { 
+               if (reward == '') {
                     if (confirm('<?php echo Text::slash('invest-alert-noreward') ?>')) {
                         if (confirm('<?php echo Text::slash('invest-alert-noreward_renounce') ?>')) {
                             $("#address-header").html('<?php echo Text::slash('invest-donation-header') ?>');
@@ -456,7 +460,7 @@ endif;
                         $('#nif').focus();
                         return false;
                     }
-                } 
+                }
             }
 
             if (rest > 0 && greater(amount, rest)) {

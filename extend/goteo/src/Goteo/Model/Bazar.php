@@ -5,6 +5,8 @@ namespace Goteo\Model {
         \Goteo\Model\Project,
         \Goteo\Model\Image,
         \Goteo\Library\Check;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Bazar extends \Goteo\Core\Model {
 
@@ -26,7 +28,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'bazar_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'bazar_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -49,8 +51,7 @@ namespace Goteo\Model {
 
                 if($promo = $query->fetchObject(__CLASS__)) {
 
-                    if (!empty($promo->image))
-                        $promo->image = Image::get($promo->image);
+                    $promo->image = Image::get($promo->image);
 
                     $promo->project = Project::getMini($promo->project);
                 }
@@ -62,10 +63,10 @@ namespace Goteo\Model {
          * Solo proyectos en campaña (y recompensas que queden unidades)
          */
         public static function getAll () {
-
+            $lang = Lang::current();
             $promos = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(bazar_lang.title, bazar.title) as title,
                                     IFNULL(bazar_lang.description, bazar.description) as description";
                 }
@@ -98,7 +99,7 @@ namespace Goteo\Model {
                     WHERE bazar.active = 1
                     ORDER BY `order` ASC, title ASC";
 
-            $query = static::query($sql, array(':lang'=>\LANG));
+            $query = static::query($sql, array(':lang'=>$lang));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
 
@@ -216,7 +217,7 @@ namespace Goteo\Model {
                 if ($image->save($errors)) {
                     $this->image = $image->id;
                 } else {
-                    \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
             }
@@ -277,10 +278,12 @@ namespace Goteo\Model {
          */
         public function delete($id = null) {
             if(empty($id)) return parent::delete();
-
-            if(!($ob = Bazar::get($id))) return false;
-            return $ob->delete();
-
+            $sql = "SELECT id FROM bazar WHERE id = :id";
+            $query = self::query($sql, array(':id' => $id));
+            if ($ob = $query->fetchObject(__CLASS__)) {
+                return $ob->delete();
+            }
+            return false;
         }
 
         /*

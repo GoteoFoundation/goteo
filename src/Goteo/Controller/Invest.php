@@ -11,7 +11,7 @@ namespace Goteo\Controller {
         Goteo\Library\Text,
         Goteo\Library\Mail,
         Goteo\Library\Template,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
         Goteo\Library\Paypal,
         Goteo\Library\Tpv,
         Goteo\Library\Currency;
@@ -51,7 +51,7 @@ namespace Goteo\Controller {
             }
 
             if ($projectData->noinvest) {
-                Message::Error(Text::get('investing_closed'));
+                Message::error(Text::get('investing_closed'));
                 throw new Redirection('/project/'.$project);
             }
 
@@ -71,13 +71,13 @@ namespace Goteo\Controller {
                 }
 
                 if (!isset($methods[$method])) {
-                    Message::Error(Text::get('invest-method-error'));
+                    Message::error(Text::get('invest-method-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 $_amount = $_POST['amount'];
                 if (empty($_amount)) {
-                    Message::Error(Text::get('invest-amount-error'));
+                    Message::error(Text::get('invest-amount-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
@@ -105,7 +105,7 @@ namespace Goteo\Controller {
 
                 } elseif ($pool->amount > 0 && $pool->amount <  $amount && $method == "pool" ) {
                     // pero no son suficientes para este amount, error
-                    Message::Error(Text::get('invest-pool-error'));
+                    Message::error(Text::get('invest-pool-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
@@ -122,7 +122,7 @@ namespace Goteo\Controller {
                 );
 
                 if ($projectData->owner == $user->id) {
-                    Message::Error(Text::get('invest-owner-error'));
+                    Message::error(Text::get('invest-owner-error'));
                     throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
                 }
 
@@ -200,7 +200,7 @@ namespace Goteo\Controller {
                             if (Tpv::preapproval($invest, $errors)) {
                                 die;
                             } else {
-                                Message::Error(Text::get('invest-tpv-error_fatal'));
+                                Message::error(Text::get('invest-tpv-error_fatal'));
                             }
                             break;
                         case 'paypal':
@@ -212,7 +212,7 @@ namespace Goteo\Controller {
                                 if (Paypal::preparePay($invest, $errors)) {
                                     die;
                                 } else {
-                                    Message::Error(Text::get('invest-paypal-error_fatal'));
+                                    Message::error(Text::get('invest-paypal-error_fatal'));
                                 }
                             } else {
 
@@ -220,7 +220,7 @@ namespace Goteo\Controller {
                                 if (Paypal::preapproval($invest, $errors)) {
                                     die;
                                 } else {
-                                    Message::Error(Text::get('invest-paypal-error_fatal'));
+                                    Message::error(Text::get('invest-paypal-error_fatal'));
                                 }
 
                             }
@@ -242,15 +242,15 @@ namespace Goteo\Controller {
                                     $invest->setStatus('1');
                                     throw new Redirection($invest->urlOK);
                                 } else {
-                                    Message::Error(implode('<br />, $errors)'));
+                                    Message::error(implode('<br />, $errors)'));
                                 }
                             break;
                     }
                 } else {
-                    Message::Error(Text::get('invest-create-error').'<br />'.implode('<br />, $errors)'));
+                    Message::error(Text::get('invest-create-error').'<br />'.implode('<br />, $errors)'));
                 }
 			} else {
-                Message::Error(Text::get('invest-data-error'));
+                Message::error(Text::get('invest-data-error'));
             }
 
             throw new Redirection("/project/$project/invest/?confirm=fail");
@@ -263,7 +263,7 @@ namespace Goteo\Controller {
          */
         public function confirmed ($project = null, $id = null, $reward = null) {
             if (empty($id)) {
-                Message::Error(Text::get('invest-data-error'));
+                Message::error(Text::get('invest-data-error'));
                 throw new Redirection('/', Redirection::TEMPORARY);
             }
 
@@ -280,7 +280,7 @@ namespace Goteo\Controller {
 
             // para evitar las duplicaciones de feed y email
             if (isset($_SESSION['invest_'.$invest->id.'_completed'])) {
-                Message::Info(Text::get('invest-process-completed'));
+                Message::info(Text::get('invest-process-completed'));
                 throw new Redirection($retUrl);
             }
 
@@ -509,10 +509,10 @@ namespace Goteo\Controller {
             $mailHandler->html = true;
             $mailHandler->template = $template->id;
             if ($mailHandler->send($errors)) {
-                Message::Info(Text::get('project-invest-thanks_mail-success'));
+                Message::info(Text::get('project-invest-thanks_mail-success'));
             } else {
-                Message::Error(Text::get('project-invest-thanks_mail-fail'));
-                Message::Error(implode('<br />', $errors));
+                Message::error(Text::get('project-invest-thanks_mail-fail'));
+                Message::error(implode('<br />', $errors));
             }
 
             unset($mailHandler);
@@ -538,10 +538,10 @@ namespace Goteo\Controller {
                 $mailHandler->html = true;
                 $mailHandler->template = $template->id;
                 if ($mailHandler->send($errors)) {
-                    Message::Info(Text::get('project-invest-friend_mail-success'));
+                    Message::info(Text::get('project-invest-friend_mail-success'));
                 } else {
-                    Message::Error(Text::get('project-invest-friend_mail-fail'));
-                    Message::Error(implode('<br />', $errors));
+                    Message::error(Text::get('project-invest-friend_mail-fail'));
+                    Message::error(implode('<br />', $errors));
                 }
 
                 unset($mailHandler);

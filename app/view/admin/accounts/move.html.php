@@ -3,9 +3,9 @@
 use Goteo\Library\Text,
     Goteo\Model;
 
-$original = $this['original'];
-$user     = $this['user'];
-$project  = $this['project'];
+$original = $vars['original'];
+$user     = $vars['user'];
+$project  = $vars['project'];
 
 
 // Lastima que no me sirve ni el getAll ni el getList ni el Published

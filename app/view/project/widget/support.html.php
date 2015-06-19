@@ -3,9 +3,9 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 // veamos si tiene el grifo cerrado mientras continua en campaña
 if ($project->status == 3 && $project->noinvest) {
@@ -23,7 +23,7 @@ if ($project->status == 3 && $project->noinvest) {
 
     <?php switch ($project->tagmark) {
         case 'oneround': // "ronda única"
-            
+
             break;
         case 'onrun': // "en marcha"
             echo '<div class="tagmark aqua">' . Text::get('regular-onrun_mark') . '</div>';

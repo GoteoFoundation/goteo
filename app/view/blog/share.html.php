@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$urls = $this['urls'];
+$urls = $vars['urls'];
 ?>
 <ul class="share-goteo">
     <li class="sharetext"><?php echo Text::get('regular-share_this'); ?></li>

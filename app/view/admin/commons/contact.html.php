@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$contact = $this['contact'];
+$contact = $vars['contact'];
 
 // calculo fecha de vencimiento (timestamp de un año despues de financiado)
 $deadline = mktime(0, 0, 0,

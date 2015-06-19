@@ -4,6 +4,8 @@ namespace Goteo\Model {
 
     use Goteo\Library\Check,
         Goteo\Library\Text,
+        Goteo\Application\Config,
+        Goteo\Application\Lang,
         Goteo\Model\Image;;
 
     class News extends \Goteo\Core\Model {
@@ -23,7 +25,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'news_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'news_lang', Lang::current());
 
                 $sql = static::query("
                     SELECT
@@ -60,7 +62,7 @@ namespace Goteo\Model {
                     news.order as `order`
                 FROM news
                 ORDER BY `order` ASC, title ASC
-                ", array(':lang'=>\LANG));
+                ", array(':lang'=>Lang::current()));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 $list[] = $item;
@@ -76,7 +78,7 @@ namespace Goteo\Model {
 
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(Lang::current() === Config::get('lang')) {
                 $different_select=" IFNULL(news_lang.title, news.title) as title,
                                     IFNULL(news_lang.description, news.description) as description";
                 }
@@ -102,7 +104,7 @@ namespace Goteo\Model {
                     AND news_lang.lang = :lang
                 $eng_join
                 ORDER BY `order` ASC, title ASC
-                ", array(':lang'=>\LANG));
+                ", array(':lang'=> Lang::current()));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 if ($highlights) {
@@ -145,7 +147,7 @@ namespace Goteo\Model {
                 if ($image->save($errors)) {
                     $this->image = $image->id;
                 } else {
-                    \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
             }

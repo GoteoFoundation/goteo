@@ -4,7 +4,7 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Model;
 
-$call = $this['call'];
+$call = $vars['call'];
 
 $call->logo = Model\Image::get($call->logo);
 // la imagen es el campo image
@@ -130,7 +130,7 @@ $tag = array(
                     </dd>
                 </dl>
                 <?php endif; ?>
-                
+
             </li>
         </ul>
     </div>

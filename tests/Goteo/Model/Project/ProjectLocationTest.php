@@ -79,7 +79,7 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
             $project = Project::get(self::$data['id']);
         } catch(\Exception $e) {
             // project not exists, ok
-            $this->assertInstanceOf('\Goteo\Core\Error', $e);
+            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
         }
 
         $this->assertFalse($project_location->save());

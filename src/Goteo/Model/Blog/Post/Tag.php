@@ -2,6 +2,9 @@
 
 namespace Goteo\Model\Blog\Post {
 
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+
     class Tag extends \Goteo\Core\Model {
 
         public
@@ -14,7 +17,7 @@ namespace Goteo\Model\Blog\Post {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'tag_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'tag_lang', Lang::current());
                 $query = static::query("
                     SELECT
                         tag.id as id,
@@ -34,12 +37,12 @@ namespace Goteo\Model\Blog\Post {
          * de un post si recibe el parametro
          */
         public static function getAll ($post = null) {
-
+            $lang = Lang::current();
             $list = array();
 
-            $values = array(':lang'=>\LANG);
+            $values = array(':lang'=>$lang);
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(tag_lang.name, tag.name) as name";
                 }
             else {
@@ -84,10 +87,10 @@ namespace Goteo\Model\Blog\Post {
          * Lista simple de tags
          */
         public static function getList () {
-
+            $lang = Lang::current();
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(tag_lang.name, tag.name) as name";
                 }
             else {
@@ -114,7 +117,7 @@ namespace Goteo\Model\Blog\Post {
                 $eng_join
                 ORDER BY tag.name ASC";
 
-            $query = static::query($sql, array(':lang'=>\LANG));
+            $query = static::query($sql, array(':lang'=>$lang));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $tag) {
                 $list[$tag->id] = $tag;

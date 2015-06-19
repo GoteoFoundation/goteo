@@ -1,5 +1,5 @@
 <?php
-$this['horizontal'] = true;
-$this['activable'] = true;
+$vars['horizontal'] = true;
+$vars['activable'] = true;
 include __DIR__ . '/meter.html.php';
 ?>

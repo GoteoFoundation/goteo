@@ -4,5 +4,5 @@ use Goteo\Core\View,
 
 ?>
 <div class="widget">
-    <?php echo \trace($this['pool']); ?>
+    <?php echo \trace($vars['pool']); ?>
 </div>

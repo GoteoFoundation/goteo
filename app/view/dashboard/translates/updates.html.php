@@ -3,13 +3,13 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$blog  = $this['blog'];
-$posts = $this['posts'];
+$blog  = $vars['blog'];
+$posts = $vars['posts'];
 
-$errors = $this['errors'];
+$errors = $vars['errors'];
 
 ?>
-<?php if ($this['action'] == 'list') : ?>
+<?php if ($vars['action'] == 'list') : ?>
 <div class="widget">
     <!-- lista -->
     <?php if (!empty($posts)) : ?>
@@ -29,7 +29,7 @@ $errors = $this['errors'];
 
 <?php  else : // sueprform!
 
-        $post  = $this['post']; // si edit
+        $post  = $vars['post']; // si edit
         //TODO: una llamada aqui al modelo no mola nada
         try {
             $original = \Goteo\Model\Blog\Post::get($post->id);

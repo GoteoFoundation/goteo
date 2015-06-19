@@ -4,7 +4,7 @@ use Goteo\Library\Text,
     Goteo\Model\Image,
     Goteo\Core\View;
 
-$call = $this['call'];
+$call = $vars['call'];
 
 $cuantos = $call->getSupporters(true);
 $supporters = $call->getFaces();

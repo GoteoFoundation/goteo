@@ -1,9 +1,9 @@
 <?php
 use Goteo\Library\Text;
 
-$item = $this['item'];
+$item = $vars['item'];
 
-$share = $this['share'];
+$share = $vars['share'];
 $item_url = str_replace('/bazaar', '/bazaar/'.$item->id,  $share->bazar_url);
 $item_title = Text::get('bazar-spread-text', $item->title);
 $item_twitter_url = 'http://twitter.com/home?status=' . urlencode($item_title . ': ' . $item_url);

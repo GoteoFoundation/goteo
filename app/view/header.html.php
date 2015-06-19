@@ -1,9 +1,9 @@
 <?php
     use Goteo\Library\Text,
-        Goteo\Library\Lang;
+        Goteo\Application\Lang;
 
 // si es un nodo
-if (NODE_ID != GOTEO_NODE) {
+if (!\Goteo\Application\Config::isMasterNode()) {
     include __DIR__ . '/node/header.html.php';
     return;
 }
@@ -27,7 +27,7 @@ if (NODE_ID != GOTEO_NODE) {
                     <?php if($num_currencies>1) { ?>
                     <li id="currency"><a href="#" ><?php echo $select_currency." ".$_SESSION['currency']; ?></a></li>
                     <?php } ?>
-                    <li id="lang"><a href="#" ><?php echo Lang::get(LANG)->short ?></a></li>
+                    <li id="lang"><a href="#" ><?php echo Lang::getShort(); ?></a></li>
                 </ul>
             </div>
 

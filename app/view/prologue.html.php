@@ -1,8 +1,9 @@
 <?php
 
-use \Goteo\Library\Text;
+use Goteo\Library\Text,
+    Goteo\Application\Lang;
 
-if (NODE_ID != GOTEO_NODE) {
+if (!\Goteo\Application\Config::isMasterNode()) {
     include __DIR__ . '/node/prologue.html.php';
     return;
 }
@@ -41,19 +42,22 @@ if (NODE_ID != GOTEO_NODE) {
         <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>
 
+<?php
 
-    <!-- build:css view/css/goteo.css -->
-    <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/goteo.css" />
-    <!-- endbuild -->
+// Incluir la nueva plantilla, es compatible simple php
+// Version "dist"
+if(is_file(__DIR__ . '/../templates/partials/header/styles.php')) {
+    include __DIR__ . '/../templates/partials/header/styles.php';
+}
+else {
+    include __DIR__ . '/../../templates/default/partials/header/styles.php';
+}
+ ?>
 
         <!-- processhtml:remove:dist -->
         <script src="//localhost:35729/livereload.js"></script>
         <!-- /processhtml -->
 
-
-      <!--[if IE]>
-      <link href="<?php echo SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
-      <![endif]-->
 
         <script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)
@@ -96,7 +100,7 @@ if (NODE_ID != GOTEO_NODE) {
         <?php if (isset($jsreq_ckeditor)) : ?>
            <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
         <?php endif; ?>
-        
+
         <!--Para calendar -->
         <?php if (isset($jsreq_calendar)) : ?>
           <link href="<?php echo SRC_URL ?>/view/css/calendar/fullcalendar.css" rel="stylesheet" />
@@ -196,7 +200,7 @@ var _prum = [['id', '5434f3beabe53dcd6ff6f0cf'],
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/<?php echo \Goteo\Library\Lang::locale(); ?>/all.js#xfbml=1&appId=189133314484241";
+  js.src = "//connect.facebook.net/<?php echo Lang::getLocale(); ?>/all.js#xfbml=1&appId=189133314484241";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <?php endif; ?>

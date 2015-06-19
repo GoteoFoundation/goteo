@@ -1,0 +1,14 @@
+# Place for image if filesystem is local
+
+# Suggested .htaccess file:
+
+###### .htaccess ##############
+
+Options -Indexes
+
+<ifmodule mod_rewrite.c>
+    RewriteEngine on
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*) http://localhost:8081/img/$1 [R=302,L]
+</ifmodule>

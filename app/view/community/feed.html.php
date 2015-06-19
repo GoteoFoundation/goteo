@@ -3,7 +3,7 @@ use Goteo\Library\Page,
     Goteo\Library\Feed,
     Goteo\Library\Text;
 
-$items = $this['items'];
+$items = $vars['items'];
 
 ?>
 <div class="widget feed">
@@ -19,7 +19,7 @@ $items = $this['items'];
         <div class="block goteo">
            <h4><?php echo Text::get('feed-head-goteo'); ?></h4>
            <div class="item scroll-pane" style="height:800px;">
-               <?php foreach ($items['goteo'] as $item) : 
+               <?php foreach ($items['goteo'] as $item) :
                    echo Feed::subItem($item);
                 endforeach; ?>
            </div>

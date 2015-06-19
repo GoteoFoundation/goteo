@@ -1,5 +1,5 @@
 <?php
-$contract = $this['contract'];
+$contract = $vars['contract'];
 ?>
 <div class="widget">
     <h2>Gestion de contrato</h2>

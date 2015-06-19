@@ -3,20 +3,20 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$blog  = $this['blog'];
-$posts = $this['posts'];
-$project = $this['project'];
+$blog  = $vars['blog'];
+$posts = $vars['posts'];
+$project = $vars['project'];
 
-$errors = $this['errors'];
+$errors = $vars['errors'];
 
-$level = $this['level'] = 3;
+$level = $vars['level'] = 3;
 
 $url = '/dashboard/projects/updates';
 
-if ($this['action'] == 'none') return;
+if ($vars['action'] == 'none') return;
 
 ?>
-<?php if ($this['action'] == 'list') : ?>
+<?php if ($vars['action'] == 'list') : ?>
 <div class="widget">
     <?php if (!empty($blog->id) && $blog->active) : ?>
         <a class="button" href="<?php echo $url; ?>/add">Publicar nueva entrada</a>
@@ -42,7 +42,7 @@ if ($this['action'] == 'none') return;
 
 <?php  else : // sueprform!
 
-        $post  = $this['post']; // si edit
+        $post  = $vars['post']; // si edit
         if (empty($post->author)) $post->author = $_SESSION['user']->id;
 
         $allow = array(
@@ -111,14 +111,14 @@ $(document).ready(function(){
 });
 </script>
 
-    <form method="post" action="/dashboard/projects/updates/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
+    <form method="post" action="/dashboard/projects/updates/<?php echo $vars['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data">
 
     <?php echo SuperForm::get(array(
         //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
         'autoupdate'    => false,
 
         'action'        => '',
-        'level'         => $this['level'],
+        'level'         => $vars['level'],
         'method'        => 'post',
         'title'         => '',
         'hint'          => Text::get('guide-project-updates'),

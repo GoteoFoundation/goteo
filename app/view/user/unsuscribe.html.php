@@ -7,8 +7,8 @@ $bodyClass = 'user-login';
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$error = $this['error'];
-$message = $this['message'];
+$error = $vars['error'];
+$message = $vars['message'];
 ?>
     <div id="main">
 

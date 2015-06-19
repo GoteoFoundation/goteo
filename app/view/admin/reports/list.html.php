@@ -3,9 +3,9 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$reports = $this['reports'];
-$filters = $this['filters'];
-$data    = $this['data'];
+$reports = $vars['reports'];
+$filters = $vars['filters'];
+$data    = $vars['data'];
 ?>
 <a href="/admin/reports/top" class="button">Top backers</a>
 &nbsp;&nbsp;&nbsp;

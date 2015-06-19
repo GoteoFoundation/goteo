@@ -2,14 +2,14 @@
 use Goteo\Library\Text,
     Goteo\Core\ACL;
 
-$status = $this['status'];
+$status = $vars['status'];
 
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 ?>
 <a href="/admin/promote/add" class="button">Nuevo destacado</a>
 
 <div class="widget board">
-    <?php if (!empty($this['promoted'])) : ?>
+    <?php if (!empty($vars['promoted'])) : ?>
     <table>
         <thead>
             <tr>
@@ -27,7 +27,7 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
         </thead>
 
         <tbody>
-            <?php foreach ($this['promoted'] as $promo) : ?>
+            <?php foreach ($vars['promoted'] as $promo) : ?>
             <tr>
                 <td><a href="/project/<?php echo $promo->project; ?>" target="_blank" title="Preview">[Ver]</a></td>
                 <td><?php echo ($promo->active) ? '<strong>'.$promo->name.'</strong>' : $promo->name; ?></td>

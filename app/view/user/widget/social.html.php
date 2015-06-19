@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$user = $this['user']
+$user = $vars['user']
 ?>
 <?php if (!empty($user->facebook) || !empty($user->google) || !empty($user->twitter) || !empty($user->identica) || !empty($user->linkedin)): ?>
 <div class="widget user-social">
@@ -22,6 +22,6 @@ $user = $this['user']
         <?php if (!empty($user->linkedin)): ?>
         <li class="linkedin"><a href="<?php echo htmlspecialchars($user->linkedin) ?>"><?php echo Text::get('regular-linkedin'); ?></a></li>
         <?php endif ?>
-    </ul>                
-</div>            
+    </ul>
+</div>
 <?php endif ?>

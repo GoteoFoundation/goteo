@@ -1,15 +1,15 @@
 <?php
 use Goteo\Model\Contract;
 
-$project = $this['project'];
-$account = $this['account']; // cuentas del proyecto, para tener el porcentaje de comisión
+$project = $vars['project'];
+$account = $vars['account']; // cuentas del proyecto, para tener el porcentaje de comisión
 
 // comisión goteo para este proyecto
 $GOTEO_FEE = round($account->fee / 100, 2);
 
 $called = $project->called;
-$Data    = $this['Data'];
-$admin = (isset($this['admin']) && $this['admin'] === true) ? true : false;
+$Data    = $vars['Data'];
+$admin = (isset($vars['admin']) && $vars['admin'] === true) ? true : false;
 
 $total_issues = 0;
 foreach ($Data['issues'] as $issue) {
@@ -28,23 +28,24 @@ $cName = "P-{$cNum}-{$cDate}";
 
     <?php
     // tanto los aportes de riego como los cash-no-cobrados: aparecen en el termómetro, cobran comisión, pero no se incluyen en el previsto a transferir
-    $sumData['total'] = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount'];
+    $sumData['total'] = $Data['tpv']['total']['amount'] + $Data['paypal']['total']['amount'] + $Data['cash']['total']['amount'] + $Data['pool']['total']['amount'];
     $sumData['drop'] = $Data['drop']['total']['amount'];
     $sumData['ghost'] = $Data['ghost']['total']['amount'];
     $sumData['fail']  = $total_issues;
-    $sumData['shown'] = $sumData['total'] + $sumData['fail'] + $sumData['drop'] + $sumData['ghost'];
+    $sumData['shown'] = $sumData['total'] + $sumData['fail'] + $sumData['drop'] + $sumData['pool'] + $sumData['ghost'];
     $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
     $sumData['cash_goteo'] = $Data['cash']['total']['amount']  * $GOTEO_FEE;
     $sumData['tpv_goteo'] = $Data['tpv']['total']['amount']  * $GOTEO_FEE;
     $sumData['pp_goteo'] = $Data['paypal']['total']['amount'] * $GOTEO_FEE;
     $sumData['drop_goteo'] = $Data['drop']['total']['amount'] * $GOTEO_FEE;
+    $sumData['pool_goteo'] = $Data['pool']['total']['amount'] * $GOTEO_FEE;
     $sumData['ghost_goteo'] = $Data['ghost']['total']['amount'] * $GOTEO_FEE;
     $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
     $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['amount'] * 0.034);
     $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
     $sumData['pp_net_project'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
     $sumData['fee_goteo'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
-    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'] + $sumData['drop_goteo'] + $sumData['ghost_goteo']; // si que se descuenta la comisión sobre capital riego
+    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'] + $sumData['drop_goteo'] + $sumData['pool_goteo'] + $sumData['ghost_goteo']; // si que se descuenta la comisión sobre capital riego
     $sumData['total_fee_project'] = $sumData['fee_goteo'] + $sumData['goteo']; // este es el importe de la factura
     $sumData['tpv_project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'] - $sumData['pp_project'];
     $sumData['project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'];

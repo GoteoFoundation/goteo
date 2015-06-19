@@ -3,12 +3,12 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$call = $this['call'];
-$filter = $this['filter'];
+$call = $vars['call'];
+$filter = $vars['filter'];
 ?>
 <div id="side">
     <p class="block"><?php echo $call->subtitle ?></p>
-    
+
 <?php if ($call->status == 3) : //inscripcion ?>
     <?php if (!empty($call->amount)) : ?>
     <dl class="">

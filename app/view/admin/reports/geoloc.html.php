@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$data = $this['data'];
+$data = $vars['data'];
 ?>
 <div class="widget board">
     <p>Usuarios registrados: <strong><?php echo $data['registered']; ?></strong></p>

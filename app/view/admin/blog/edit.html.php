@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\NormalForm;
 
-$post = $this['post'];
+$post = $vars['post'];
 
 if (!$post instanceof Model\Blog\Post) {
     throw new Redirection('/admin/blog');
@@ -13,7 +13,7 @@ if (!$post instanceof Model\Blog\Post) {
 
 $tags = array();
 
-foreach ($this['tags'] as $value => $label) {
+foreach ($vars['tags'] as $value => $label) {
     $tags[] =  array(
         'value'     => $value,
         'label'     => $label,
@@ -72,7 +72,7 @@ $(document).ready(function(){
 </script>
 
 
-<form method="post" action="/admin/blog/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" enctype="multipart/form-data">
+<form method="post" action="/admin/blog/<?php echo $vars['action']; ?>/<?php echo $post->id; ?>" enctype="multipart/form-data">
 
     <?php echo new NormalForm(array(
 

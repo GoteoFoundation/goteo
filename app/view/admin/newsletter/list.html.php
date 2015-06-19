@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Library\Template;
 
-$list = $this['list'];
+$list = $vars['list'];
 
 $templates = array(
     '27' => 'Aviso a los donantes',
@@ -26,7 +26,7 @@ $template = Template::get($tpl);
     <form action="/admin/newsletter/init" method="post" onsubmit="return confirm('El envio se activará automáticamente, seguimos?');">
 
     <p>
-        <label>Plantillas masivas: 
+        <label>Plantillas masivas:
             <select id="template" name="template" >
             <?php foreach ($templates as $tplId=>$tplName) : ?>
                 <option value="<?php echo $tplId; ?>" <?php if ( $tplId == $tpl) echo 'selected="selected"'; ?>><?php echo $tplName; ?></option>
@@ -37,11 +37,11 @@ $template = Template::get($tpl);
     <p>
         <label><input type="checkbox" name="test" value="1" checked="checked"/> Es una prueba (se envia a los destinatarios de pruebas)</label>
     </p>
-        
+
     <p>
         <label><input type="checkbox" name="nolang" value="1" checked="checked"/>Solo en español (no tener en cuenta idioma preferido de usuario)</label>
     </p>
-        
+
     <p>
         <input type="submit" name="init" value="Iniciar" />
     </p>

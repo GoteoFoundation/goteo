@@ -18,3 +18,19 @@ ALTER TABLE `node` ADD `email` VARCHAR( 255 ) NOT NULL AFTER `name`;
 
 -- campo imagen a nombre archivo
 ALTER TABLE `node` CHANGE `logo` `logo` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
+
+-- mail de contacto para impulsores
+ALTER TABLE `node` ADD `email` VARCHAR( 255 ) NOT NULL AFTER `name`;
+
+-- perfiles sociales del nooo/canal
+ALTER TABLE `node`
+	  ADD `twitter`  tinytext COLLATE utf8_general_ci,
+  	ADD `facebook` tinytext COLLATE utf8_general_ci,
+    ADD `google` tinytext COLLATE utf8_general_ci,
+  	ADD `linkedin` tinytext COLLATE utf8_general_ci;
+
+-- sello en proyectos
+ALTER TABLE `node` ADD `label` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Sello en proyectos';
+
+-- background color del módulo de owner
+ALTER TABLE `node` ADD `owner_background` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Color de background módulo owner';

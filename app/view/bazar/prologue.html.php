@@ -6,19 +6,19 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title><?php echo $this['metas_seo']['title']; ?></title>
+        <title><?php echo $vars['metas_seo']['title']; ?></title>
         <link rel="icon" type="image/png" href="/myicon.png" />
-        <meta name="description" content="<?php echo $this['metas_seo']['description']; ?>">
+        <meta name="description" content="<?php echo $vars['metas_seo']['description']; ?>">
         <meta name="viewport" content="width=device-width">
 
-        <meta property="og:title" content="<?php echo $this['ogmeta']['title'] ?>" />
+        <meta property="og:title" content="<?php echo $vars['ogmeta']['title'] ?>" />
         <meta property="og:type" content="activity" />
         <meta property="og:site_name" content="Goteo.org" />
-        <meta property="og:description" content="<?php echo $this['ogmeta']['description'] ?>" />
-        <?php foreach($this['ogmeta']['image'] as $ogimg) : ?>
+        <meta property="og:description" content="<?php echo $vars['ogmeta']['description'] ?>" />
+        <?php foreach($vars['ogmeta']['image'] as $ogimg) : ?>
         <meta property="og:image" content="<?php echo $ogimg; ?>" />
         <?php endforeach; ?>
-        <meta property="og:url" content="<?php echo $this['ogmeta']['url'] ?>" />
+        <meta property="og:url" content="<?php echo $vars['ogmeta']['url'] ?>" />
 
 
         <link rel="stylesheet" href="<?php echo SRC_URL; ?>/view/bazar/css/normalize.css" />

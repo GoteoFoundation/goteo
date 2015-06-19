@@ -3,13 +3,16 @@
 namespace Goteo\Library {
 
 	use Goteo\Core\Model,
+        Goteo\Application\Config,
+        Goteo\Application\Lang,
         Goteo\Core\Exception;
 	/*
 	 * Clase para sacar textos dinámicos de la tabla text
      *  @TODO, definir donde se define y se cambia la constante LANG y utilizarla en los _::get_
 	 */
     class Text {
-
+        static private $cache = array();
+        static private $errors = array();
         public
             $id,
             $lang,
@@ -93,7 +96,7 @@ namespace Goteo\Library {
 
         static public function get ($id) {
 
-            $lang = LANG;
+            $lang = Lang::current();
 
             // lang variable para generar contenido en distintos idiomas (/admin/newsletter)
             if (isset($_SESSION['VAR_LANG']) && !empty($_SESSION['VAR_LANG'])) {
@@ -114,20 +117,23 @@ namespace Goteo\Library {
                 $args = array();
             }
 
-			// buscamos el texto en cache
-			static $_cache = array();
-			if (!$nocache && isset($_cache[$id][$lang]) && empty($args)) {
-				return $_cache[$id][$lang];
+            // buscamos el texto en cache
+            if (!$nocache && isset(self::$cache[$id][$lang]) && empty($args)) {
+                return self::$cache[$id][$lang];
             }
 
-			// buscamos el texto en la tabla
+            // buscamos el texto en la tabla
             $values = array(':id'=>$id, ':lang' => $lang);
 
-             if(Model::default_lang($lang)=='es') {
-                $different_select=" IFNULL(text.text,purpose.purpose) as `text`";
+            $model_lang = Model::default_lang($lang);
+             if($model_lang === $lang) {
+                // $different_select=" IFNULL(text.text,purpose.purpose) as `text`";
+                $different_select="text.text, purpose.purpose";
+                $eng_join = '';
                 }
             else {
-                    $different_select=" IFNULL(text.text, IFNULL(eng.text, purpose.purpose)) as `text`";
+                    // $different_select=" IFNULL(text.text, IFNULL(eng.text, purpose.purpose)) as `text`";
+                    $different_select="text.text, eng.text AS text_en, purpose.purpose";
                     $eng_join=" LEFT JOIN text as eng
                                     ON  eng.id = purpose.text
                                     AND eng.lang = 'en'";
@@ -155,21 +161,32 @@ namespace Goteo\Library {
             //el cache de idiomas lo mantenemos hasta una hora
             $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
             if ($exist = $query->fetchObject()) {
-                $tmptxt = $_cache[$id][$lang] = $exist->text;
+                $text = $exist->text;
+                if(empty($text) && $lang !== $model_lang) {
+                    $text = $exist->text_en;
+                    self::$errors[$id] = "[$lang] translation missing";
+                }
+                if(empty($text)) {
+                    $text = $exist->purpose;
+                    // self::$errors[$id] = (array_key_exists($id, self::$errors) ? self::$errors[$id] . " / " : '') . "Text string from purpose table";
+                }
+
+                $tmptxt = self::$cache[$id][$lang] = $text;
 
                 //contamos cuantos argumentos necesita el texto
-                $req_args = \substr_count($exist->text, '%');
+                $req_args = \substr_count($text, '%');
 
                 if (!empty($args) && $req_args > 0 && count($args) >= $req_args) {
-                    $texto = $nocache ? vsprintf($exist->text, $args) : vsprintf($tmptxt, $args);
+                    $texto = $nocache ? vsprintf($text, $args) : vsprintf($tmptxt, $args);
                 } else {
-                    $texto = $nocache ? $exist->text : $tmptxt;
+                    $texto = $nocache ? $text : $tmptxt;
                 }
 
             } else {
                 // para catalogar textos nuevos
 //              Model::query("REPLACE INTO purpose (text, purpose, html, `group`) VALUES (:text, :purpose, NULL, 'new')", array(':text' => $id, ':purpose' => $id));
                 $texto = $id;
+                self::$errors[$id] = 'Not found in purpose table';
             }
             if(!$nocache) {
                 //dejamos la cache como estaba
@@ -781,6 +798,9 @@ namespace Goteo\Library {
         }
 
 
+        static public function getErrors() {
+            return self::$errors;
+        }
 
 
 	}

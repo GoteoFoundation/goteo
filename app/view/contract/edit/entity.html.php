@@ -4,9 +4,9 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$contract = $this['contract'];
-$errors = $contract->errors[$this['step']] ?: array();
-$okeys  = $contract->okeys[$this['step']] ?: array();
+$contract = $vars['contract'];
+$errors = $contract->errors[$vars['step']] ?: array();
+$okeys  = $contract->okeys[$vars['step']] ?: array();
 
 $hint = ($contract->type == 0) ? Text::get('guide-contract-no_entity') : Text::get('guide-contract-entity');
 
@@ -158,7 +158,7 @@ if ($contract->type == 0) {
                         'title' => Text::get('form-footer-errors_title'),
                         'view'  => new View('contract/edit/errors.html.php', array(
                             'contract'   => $contract,
-                            'step'      => $this['step']
+                            'step'      => $vars['step']
                         ))
                     ),
                     'buttons'  => array(
@@ -292,7 +292,7 @@ if ($contract->type == 0) {
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('contract/edit/errors.html.php', array(
                         'contract'   => $contract,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -316,7 +316,7 @@ if ($contract->type == 0) {
 
 echo SuperForm::get(array(
 
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('contract-step-entity'),
     'hint'          => $hint,

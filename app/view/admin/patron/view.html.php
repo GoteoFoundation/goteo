@@ -4,8 +4,8 @@ use Goteo\Library\Text,
 
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 
-$promos = $this['promos'];
-$patron = $this['patron'];
+$promos = $vars['promos'];
+$patron = $vars['patron'];
 
 ?>
 <a href="/admin/patron" class="button">Volver a la lista</a>

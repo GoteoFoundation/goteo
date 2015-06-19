@@ -4,6 +4,7 @@ namespace Goteo\Controller\Cron {
 
     use Goteo\Core\Exception;
     use Goteo\Model,
+        Goteo\Application\Lang,
         Goteo\Library\Text,
         Goteo\Library\Feed,
         Goteo\Library\Template,
@@ -22,7 +23,7 @@ namespace Goteo\Controller\Cron {
                 // revision de proyectos: dias, conseguido y cambios de estado
                 // proyectos en campaña que estén a 5 días de terminar primera ronda a o a 3 de terminar la segunda
 
-                if ($debug) echo 'Comenzamos con los proyectos en campaña (esto está en '.\LANG.')<br /><br />';
+                if ($debug) echo 'Comenzamos con los proyectos en campaña (esto está en '.Lang::current().')<br /><br />';
 
                 $projects = Model\Project::getActive($debug);
                 foreach ($projects as $project) {

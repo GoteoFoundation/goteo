@@ -6,19 +6,19 @@ use Goteo\Core\View,
 
 $bodyClass = 'project-edit';
 
-$project = $this['project'];
+$project = $vars['project'];
 
 $status = View::get('project/edit/status.html.php', array('status' => $project->status, 'progress' => $project->progress));
-$steps  = View::get('project/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'errors' => $project->errors, 'id_project' => $project->id));
+$steps  = View::get('project/edit/steps.html.php', array('steps' => $vars['steps'], 'step' => $vars['step'], 'errors' => $project->errors, 'id_project' => $project->id));
 
 // next step
-$keys = array_keys($this['steps']);
-$next_step = $keys[ array_search($this['step'], $keys) + 1];
+$keys = array_keys($vars['steps']);
+$next_step = $keys[ array_search($vars['step'], $keys) + 1];
 
-if (!empty($this['success'])) {
-    Goteo\Library\Message::Info($this['success']);
+if (!empty($vars['success'])) {
+    Goteo\Application\Message::info($vars['success']);
 } elseif ($project->status == 1) {
-    Goteo\Library\Message::Info(Text::get('form-ajax-info'));
+    Goteo\Application\Message::info(Text::get('form-ajax-info'));
 }
 
 $superform = true;
@@ -46,22 +46,22 @@ include __DIR__ . '/../prologue.html.php';
         </div>
     </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
-    <div id="main" class="<?php echo htmlspecialchars($this['step']) ?>">
+    <div id="main" class="<?php echo htmlspecialchars($vars['step']) ?>">
 
-        <form method="post" id="proj-superform" action="<?php echo "/project/edit/" . $this['project']->id ?>" class="project" enctype="multipart/form-data" >
+        <form method="post" id="proj-superform" action="<?php echo "/project/edit/" . $vars['project']->id ?>" class="project" enctype="multipart/form-data" >
 
-            <input type="hidden" name="view-step-<?php echo $this['step'] ?>" value="please" />
+            <input type="hidden" name="view-step-<?php echo $vars['step'] ?>" value="please" />
 
             <?php
                 echo $status;
 
-                if (count($this['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación
+                if (count($vars['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación
 
-                if($this['step']) echo View::get("project/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3, 'next' => $next_step));
+                if($vars['step']) echo View::get("project/edit/{$vars['step']}.html.php", $vars + array('level' => 3, 'next' => $next_step));
 
-                if (count($this['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación
+                if (count($vars['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación
 
             ?>
 

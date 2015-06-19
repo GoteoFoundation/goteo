@@ -17,7 +17,27 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
                     'project_image' => 'project',
                     'project_lang' => 'id',
                     'project_location' => 'id',
-                    'project_open_tag' => 'project');
+                    'project_open_tag' => 'project',
+                    // 'banner' => 'project', => investigar, parece que hay banners que pueden no tener proyecto
+                    'bazar' => 'project',
+                    // 'blog' => 'owner', => el campo type indica la tabla del owner, se deberia cambiar
+                    'call_project' => 'project',
+                    'contract' => 'project',
+                    'cost' => 'project',
+                    // 'cost_lang' => 'project', => investigar...
+                    'invest' => 'project',
+                    'invest_node' => 'project_id',
+                    // 'message' => 'project', => borrar con tranquilidad
+                    'patron' => 'project',
+                    'promote' => 'project',
+                    // 'review' => 'project', => borrar con tranquilidad
+                    // 'reward' => 'project', => borrar con tranquilidad
+                    // 'reward_lang' => 'project', => borrar con tranquilidad
+                    'stories' => 'project',
+                    // 'support' => 'project', => borrar con tranquilidad
+                    'user_project' => 'project',
+
+                    );
 
     private static $image = array(
                         'name' => 'test.png',
@@ -122,6 +142,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
 
         $project = Project::get($project->id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         $this->assertEquals($project->owner, self::$user['userid']);
         return $project;
@@ -193,14 +214,17 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $project = Project::getMini($id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         $this->assertEquals($project->id, $id);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         $project = Project::getMedium($id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         $this->assertEquals($project->id, $id);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         $widget = Project::getWidget($project);
         $this->assertInstanceOf('\Goteo\Model\Project', $widget);
         $this->assertEquals($widget->id, $id);
+        $this->assertInstanceOf('\Goteo\Model\Image', $widget->image);
 
 
         return $project;
@@ -217,15 +241,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $project->image = ProjectImage::setImage($project->id, $project->gallery);
 
         $this->assertInternalType('array', $project->gallery);
-        $this->assertCount(1, $project->gallery);
-        $this->assertEquals($project->image, $project->gallery[0]->imageData);
+        $this->assertCount(1, $project->gallery, print_r($project->gallery, 1));
+        $this->assertEquals($project->image, $project->gallery[0]->imageData, print_r($project->image, 1));
 
         //remove second image
         $this->assertTrue($project->gallery[0]->imageData->remove($errors, 'project'), print_r($errors, 1));
         $project = Project::get($project->id);
         $this->assertInternalType('array', $project->gallery);
         $this->assertCount(0, $project->gallery);
-        $this->assertEmpty($project->image);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         //add image (to check autodelete)
         $project->image = self::$image;
@@ -251,18 +275,18 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         try {
             $ob = Project::get(self::$data['id']);
         }catch(\Exception $e) {
-            $this->assertInstanceOf('\Goteo\Core\Error', $e);
+            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
         }
         try {
             $ob = Project::get('non-existing-project');
         }catch(\Exception $e) {
-            $this->assertInstanceOf('\Goteo\Core\Error', $e);
+            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
         }
     }
 
     public function testCleanProjectRelated() {
         foreach(self::$related_tables as $tb => $field) {
-            $this->assertEquals(0, Project::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM project)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM project)");
+            $this->assertEquals(0, Project::query("SELECT COUNT(*) FROM `$tb`  WHERE `$field` NOT IN (SELECT id FROM project)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM  `$tb` WHERE `$field` NOT IN (SELECT id FROM project)");
         }
     }
 

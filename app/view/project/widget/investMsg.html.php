@@ -3,7 +3,7 @@ use Goteo\Library\Text;
 
 // aviso para el usuario, puede ser start->hola , ok->gracias o fail->lo sentimos
 
-$user = $this['user'];
+$user = $vars['user'];
 if (!$user instanceof Model\User) {
     $name = '';
     $avatarhtml = '';
@@ -13,7 +13,7 @@ if (!$user instanceof Model\User) {
     $avatarhtml = '<img src="'.$avatar->getLink(50, 50, true).'" />';
 }
 
-switch ($this['message']) {
+switch ($vars['message']) {
     case 'start':
         $title   = Text::get('project-invest-guest');
         $message = Text::get('project-invest-start');
@@ -40,7 +40,7 @@ switch ($this['message']) {
         break;
 }
 
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 
 ?>
 <div class="widget invest-message">

@@ -1,18 +1,18 @@
 <?php
 
 use Goteo\Core\Redirection,
-    Goteo\Library\Message,
+    Goteo\Application\Message,
     Goteo\Model;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
-    Message::Error('Instancia de proyecto corrupta');
+    Message::error('Instancia de proyecto corrupta');
     throw new Redirection('/admin/projects');
 }
 
-$images = $this['images'];
-$sections = $this['sections'];
+$images = $vars['images'];
+$sections = $vars['sections'];
 
 function the_section($current, $image, $sections) {
     $select = '<select name="section_image_'.md5($image).'">';
@@ -21,7 +21,7 @@ function the_section($current, $image, $sections) {
         $select .= '<option value="'.$secId.'"'.$curSec.'>'.$secName.'</option>';
     }
     $select .= '</select>';
-    
+
     return $select;
 }
 
@@ -57,8 +57,8 @@ function move (img, direction, section) {
         <input type="hidden" id="move_pos" name="move" value="" />
     <table>
         <tbody>
-        <?php foreach ($sections as $sec=>$secName) : 
-            if (empty($images[$sec])) continue; 
+        <?php foreach ($sections as $sec=>$secName) :
+            if (empty($images[$sec])) continue;
             ?>
             <tr>
                 <td colspan="3" style="text-align: left;"><h3><?php echo $secName; ?></h3></td>

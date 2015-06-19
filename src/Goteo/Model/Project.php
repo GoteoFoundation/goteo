@@ -3,19 +3,15 @@
 namespace Goteo\Model {
 
     use Goteo\Core\ACL,
+        Goteo\Application\Exception,
+        Goteo\Application\Config,
         Goteo\Application\Session,
+        Goteo\Application\Lang,
         Goteo\Library,
         Goteo\Library\Check,
         Goteo\Library\Text,
-        Goteo\Library\Currency,
-        Goteo\Model\User,
-        Goteo\Model\Image,
-        Goteo\Model\Message,
-        Goteo\Model\Blog,
-        Goteo\Model\Call,
-        Goteo\Model\Invest,
-        Goteo\Model\Patron,
-        Goteo\Model\Node
+        Goteo\Library\Feed,
+        Goteo\Library\Currency
         ;
 
     class Project extends \Goteo\Core\Model {
@@ -184,6 +180,26 @@ namespace Goteo\Model {
             return $this->$name;
         }
 
+
+        /**
+         * Returns an array of project languages
+         * @param  [type] $project_id [description]
+         * @return [type]             [description]
+         */
+        public function getLangs() {
+            $sql = 'SELECT lang FROM project WHERE id = :id
+                    UNION
+                SELECT lang FROM project_lang WHERE id = :id
+                ORDER BY lang ASC';
+
+            $query = static::query($sql, array(':id' => $this->id));
+            $langs = array();
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $lang) {
+                $langs[$lang->lang] = Lang::getName($lang->lang);
+            }
+            return $langs;
+        }
+
         /**
          * Check if the project is can be seen by the user id
          * @param  string $user_id ID of the user
@@ -345,6 +361,7 @@ namespace Goteo\Model {
                                 project.id REGEXP '[0-9a-f]{32}' as draft,
                                 node.name as node_name,
                                 node.url as node_url,
+                                node.label as node_label,
                                 project_conf.*,
                                 user.name as user_name,
                                 user.email as user_email,
@@ -375,7 +392,7 @@ namespace Goteo\Model {
 				$project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
-                    throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
+                    throw new Exception\ModelNotFoundException(Text::html('fatal-error-project'));
                 }
 
                 // si nos estan pidiendo el idioma original no traducimos nada, damos lo que sacamos de
@@ -412,12 +429,17 @@ namespace Goteo\Model {
                 }
 
                 // datos del nodo
-                if (!empty($project->node)) {
-                    $project->nodeData = new Node;
-                    $project->nodeData->id = $project->node;
-                    $project->nodeData->name = $project->node_name;
-                    $project->nodeData->url = $project->node_url;
-                }
+                $project->nodeData = new Node;
+                $project->nodeData->id = $project->node;
+                $project->nodeData->name = $project->node_name;
+                $project->nodeData->url = $project->node_url;
+
+                // label
+                $project->nodeData->label = Image::get($project->node_label);
+
+                 //para diferenciar el único nodo de los canales
+                if($project->node=='barcelona')
+                    $project->nodeData->type='node';
 
                 if (isset($project->media)) {
                     $project->media = new Project\Media($project->media);
@@ -456,12 +478,12 @@ namespace Goteo\Model {
                 $project->secGallery = $project->all_galleries;
 
                 // image from main gallery
-                if (!empty($project->image)) {
-                    $project->image = Image::get($project->image);
-                } else {
+                if (empty($project->image)) {
                     $project->image = Project\Image::setImage($project->id, $project->gallery);
                 }
-
+                else {
+                    $project->image = Image::get($project->image);
+                }
 
                 // categorias
                 $project->categories = Project\Category::get($id);
@@ -576,9 +598,7 @@ namespace Goteo\Model {
 				return $project;
 
 			} catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
-			} catch(\Goteo\Core\Error $e) {
-                throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
+				throw new Exception\ModelException($e->getMessage());
 			}
 		}
 
@@ -610,6 +630,10 @@ namespace Goteo\Model {
                                       WHERE project.id = ?", array($id));
 				$project = $query->fetchObject(__CLASS__);
 
+                if (!$project instanceof \Goteo\Model\Project) {
+                    throw new Exception\ModelNotFoundException(Text::html('fatal-error-project'));
+                }
+
                 // primero, que no lo grabe
                 $project->dontsave = true;
 
@@ -622,6 +646,7 @@ namespace Goteo\Model {
                 $project->user->node=$project->user_node;
 
                 $project->user->avatar = Image::get($project->user_avatar);
+                $project->image = Image::get($project->image);
 
                 // convocado
                 $call = Call\Project::calledMini($project->id);
@@ -649,17 +674,15 @@ namespace Goteo\Model {
                 return $project;
 
 			} catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
-			} catch(\Goteo\Core\Error $e) {
-                throw new \Goteo\Core\Error('404', Text::html('fatal-error-project'));
-            }
+				throw new Exception\ModelException($e->getMessage());
+			}
 		}
 
         /*
          *  Cargamos los datos suficientes para pintar un widget de proyecto
          */
-        public static function getMedium($id, $lang = \LANG) {
-
+        public static function getMedium($id, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             try {
 
                 $sql ="
@@ -685,6 +708,7 @@ namespace Goteo\Model {
                     user.id as user_id,
                     user.name as user_name,
                     user.email as user_email,
+                    user.avatar as user_avatar,
                     user.lang as user_lang,
                     project_conf.noinvest as noinvest,
                     project_conf.one_round as one_round,
@@ -701,6 +725,20 @@ namespace Goteo\Model {
                 $values = array(':id'=>$id);
 				$query = self::query($sql, $values);
 				$project = $query->fetchObject(__CLASS__);
+
+                if (!$project instanceof \Goteo\Model\Project) {
+                    throw new Exception\ModelNotFoundException(Text::html('fatal-error-project'));
+                }
+
+                $project->user=new User;
+                $project->user->id=$project->user_id;
+                $project->user->name=$project->user_name;
+                $project->user->email=$project->user_email;
+                $project->user->lang=$project->user_lang;
+                $project->user->node=$project->user_node;
+
+                $project->user->avatar = Image::get($project->user_avatar);
+                $project->image = Image::get($project->image);
 
                 // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
                 if(!empty($lang) && $lang!=$project->lang) {
@@ -742,77 +780,68 @@ namespace Goteo\Model {
                 return $project;
 
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+				throw new Exception\ModelException($e->getMessage());
             }
         }
 
         /*
          *  Datos extra para un widget de proyectos
          */
-        public static function getWidget(Project $project, $lang = \LANG) {
+        public static function getWidget(Project $project, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
+            $Widget = new Project();
+            $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
+            $Widget->status = $project->status;
+            $Widget->name = $project->name;
+            $Widget->owner = $project->owner;
+            $Widget->description = $project->description;
+            $Widget->published = $project->published;
+            $Widget->created = $project->created;
+            $Widget->updated = $project->updated;
+            $Widget->success = $project->success;
+            $Widget->closed = $project->closed;
 
-                $Widget = new Project();
-                $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
-                $Widget->status = $project->status;
-                $Widget->name = $project->name;
-                $Widget->owner = $project->owner;
-                $Widget->description = $project->description;
-                $Widget->published = $project->published;
-                $Widget->created = $project->created;
-                $Widget->updated = $project->updated;
-                $Widget->success = $project->success;
-                $Widget->closed = $project->closed;
+            // configuración de campaña
+            // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
+            // no necesario: $Widget->watch = $project->watch;
+            $Widget->noinvest = $project->noinvest;
+            $Widget->days_round1 = (!empty($project->days_round1)) ? $project->days_round1 : 40;
+            $Widget->days_round2 = (!empty($project->days_round2)) ? $project->days_round2 : 40;
+            $Widget->one_round = $project->one_round;
+            $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
 
-                // configuración de campaña
-                // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
-                // no necesario: $Widget->watch = $project->watch;
-                $Widget->noinvest = $project->noinvest;
-                $Widget->days_round1 = (!empty($project->days_round1)) ? $project->days_round1 : 40;
-                $Widget->days_round2 = (!empty($project->days_round2)) ? $project->days_round2 : 40;
-                $Widget->one_round = $project->one_round;
-                $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
+            // image from main gallery
+            $Widget->image = Image::get($project->image);
 
-                //all galleries
-                $project->secGallery = Project\Image::getGalleries($project->id);
-                //Main gallery
-                $project->gallery = $project->secGallery[''];
+            $Widget->amount = $project->amount;
+            $Widget->invested = $project->amount; // compatibilidad, ->invested no debe usarse
+            $Widget->num_investors = $project->num_investors;
 
-                // image from main gallery
-                if (!empty($project->image)) {
-                    $Widget->image = Image::get($project->image);
-                } else {
-                    $Widget->image = Project\Image::setImage($Widget->id, $gallery);
-                }
+            // @TODO : hay que hacer campos calculados conn traducción para esto
+            $Widget->cat_names = Project\Category::getNames($Widget->id, 2, $lang);
+            $Widget->rewards = Project\Reward::getWidget($Widget->id);
 
-                $Widget->amount = $project->amount;
-                $Widget->invested = $project->amount; // compatibilidad, ->invested no debe usarse
-                $Widget->num_investors = $project->num_investors;
+            if(!empty($project->mincost) && !empty($project->maxcost)) {
+                $Widget->mincost = $project->mincost;
+                $Widget->maxcost = $project->maxcost;
+            } else {
+                $calc = Project::calcCosts($project->project);
+                $Widget->mincost = $calc->mincost;
+                $Widget->maxcost = $calc->maxcost;
+            }
+            $Widget->user = new User;
+            $Widget->user->id = $project->user_id;
+            $Widget->user->name = $project->user_name;
+            $Widget->user->email = $project->user_email;
+            $Widget->user->lang = $project->user_lang;
 
-                // @TODO : hay que hacer campos calculados conn traducción para esto
-                $Widget->cat_names = Project\Category::getNames($Widget->id, 2, $lang);
-                $Widget->rewards = Project\Reward::getWidget($Widget->id);
+            // calcular dias sin consultar sql
+            $Widget->days = $project->days;
 
-                if(!empty($project->mincost) && !empty($project->maxcost)) {
-                    $Widget->mincost = $project->mincost;
-                    $Widget->maxcost = $project->maxcost;
-                } else {
-                    $calc = Project::calcCosts($project->project);
-                    $Widget->mincost = $calc->mincost;
-                    $Widget->maxcost = $calc->maxcost;
-                }
-                $Widget->user = new User;
-                $Widget->user->id = $project->user_id;
-                $Widget->user->name = $project->user_name;
-                $Widget->user->email = $project->user_email;
-                $Widget->user->lang = $project->user_lang;
+            $Widget->setDays(); // esto hace una consulta para el número de días que le faltaan segun configuración
+            $Widget->setTagmark(); // esto no hace consulta
 
-                // calcular dias sin consultar sql
-                $Widget->days = $project->days;
-
-                $Widget->setDays(); // esto hace una consulta para el número de días que le faltaan segun configuración
-                $Widget->setTagmark(); // esto no hace consulta
-
-                return $Widget;
+            return $Widget;
 
         }
 
@@ -2172,6 +2201,97 @@ namespace Goteo\Model {
             }
         }
 
+        /**
+         * Creates a new project for a user and node/channel
+         */
+        static public function createNewProject(User $user = null, $node_id = null) {
+
+            if(empty($user)) $user = Session::getUser();
+            if(empty($node_id)) $node_id = Config::get('current_node');
+
+            $project = new self(array('owner' => $user->id));
+
+            $errors = array();
+            if ($project->create($node_id, $errors)) {
+
+                //TODO: as events
+                //
+                // Evento Feed
+                $log = new Feed();
+                $log->setTarget($user->id, 'user');
+                $log->populate('usuario crea nuevo proyecto', 'admin/projects',
+                    \vsprintf('%s ha creado un nuevo proyecto, %s', array(
+                        Feed::item('user', $user->name, $user->id),
+                        Feed::item('project', $project->name, $project->id))
+                    ));
+                $log->doAdmin('project');
+                unset($log);
+
+                // Si hay que asignarlo a un proyecto
+                if ($call = Session::get('oncreate_applyto')) {
+
+                    $registry = new Call\Project;
+                    $registry->id = $project->id;
+                    $registry->call = $call;
+                    if ($registry->save($errors)) {
+
+                        $callData = Call::getMini($call);
+                        // email al autor
+
+                        //  idioma de preferencia del usuario
+                        $prefer = User::getPreferences($user->id);
+                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
+
+                        // Obtenemos la plantilla para asunto y contenido
+                        $template = Template::get(39, $comlang);
+
+                        // Sustituimos los datos
+                        $subject = str_replace('%CALLNAME%', $callData->name, $template->title);
+
+                        // En el contenido:
+                        $search  = array('%USERNAME%', '%CALLNAME%', '%CALLERNAME%', '%CALLURL%');
+                        $replace = array($user->name, $callData->name, $callData->user->name, SITE_URL.'/call/'.$call);
+                        $content = \str_replace($search, $replace, $template->text);
+
+
+                        $mailHandler = new Library\Mail();
+
+                        $mailHandler->to = $user->email;
+                        $mailHandler->toName = $user->name;
+                        $mailHandler->subject = $subject;
+                        $mailHandler->content = $content;
+                        $mailHandler->html = true;
+                        $mailHandler->template = $template->id;
+                        if ($mailHandler->send($errors)) {
+                            Application\Message::info(Text::get('assign-call-success', $callData->name));
+                        } else {
+                            Application\Message::error(Text::get('project-review-confirm_mail-fail'));
+                            \mail(\GOTEO_FAIL_MAIL, 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $user->email . ' con esta instancia <pre>'.print_r($mailHandler, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
+                        }
+
+                        unset($mailHandler);
+
+                        // Evento feed
+                        $log = new Feed();
+                        $log->setTarget($call, 'call');
+                        $log->populate('nuevo proyecto asignado a convocatoria ' . $call, 'admin/calls/'.$call.'/projects',
+                            \vsprintf('Nuevo proyecto %s aplicado a la convocatoria %s', array(
+                                Feed::item('project', $project->name, $project->id),
+                                Feed::item('call', $call, $call))
+                            ));
+                        $log->doAdmin('project');
+                        unset($log);
+                    } else {
+                        \mail(\GOTEO_FAIL_MAIL, 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
+                    }
+                }
+
+                return $project;
+            }
+
+            throw new Exception\ModelException('Error creating project: ' . implode("\n", $errors));
+        }
+
         /*
          * Para cambiar el id temporal a idealiza
          * solo si es md5
@@ -2216,7 +2336,7 @@ namespace Goteo\Model {
                             return false;
                         }
                     } else {
-                        throw new \Goteo\Core\Exception('Fallo al iniciar transaccion rebase. ');
+                        throw new Exception\ModelException('Fallo al iniciar transaccion rebase. ');
                     }
                 } elseif (!empty ($newid)) {
 //                   echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
@@ -2295,13 +2415,13 @@ namespace Goteo\Model {
                             return false;
                         }
                     } else {
-                        throw new Exception('Fallo al iniciar transaccion rebase. ');
+                        throw new Exception\ModelException('Fallo al iniciar transaccion rebase. ');
                     }
                 }
 
                 return true;
             } catch (\PDOException $e) {
-                throw new Exception('Fallo rebase id temporal. ' . $e->getMessage());
+                throw new Exception\ModelException('Fallo rebase id temporal. ' . $e->getMessage());
             }
 
         }
@@ -2327,7 +2447,7 @@ namespace Goteo\Model {
                 return $id;
             }
             catch (\PDOException $e) {
-                throw new Exception('Fallo al verificar id única para el proyecto. ' . $e->getMessage());
+                throw new Exception\ModelException('Fallo al verificar id única para el proyecto. ' . $e->getMessage());
             }
         }
 
@@ -2352,16 +2472,17 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos de un usuario
-         * @return: array of Model\Project
+         * @return: array of Project
          */
         public static function ofmine($owner, $published = false)
         {
+            $lang = Lang::current();
             $projects = array();
             $values = array();
-            $values[':lang'] = \LANG;
+            $values[':lang'] = $lang;
             $values[':owner'] = $owner;
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(project_lang.description, project.description) as description";
             }
             else {
@@ -2425,16 +2546,17 @@ namespace Goteo\Model {
 
         /*
          * Lista de proyectos que tienen las categorias preferidas de un usuario
-         * @return: array of Model\Project
+         * @return: array of Project
          */
         public static function favouriteCategories($user, $published = false)
         {
+            $lang = Lang::current();
             $projects = array();
             $values = array();
-            $values[':lang'] = \LANG;
+            $values[':lang'] = $lang;
             $values[':user'] = $user;
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Lang::current()) {
                 $different_select=" IFNULL(project_lang.description, project.description) as description";
             }
             else {
@@ -2511,19 +2633,25 @@ namespace Goteo\Model {
          * @param $mini boolean
          * @param $page int
          * @param $pages int
-         * @return: array of Model\Project
+         * @return: array of Project
          */
-        public static function published($type = 'all', $limit = 9, $page = 1, &$pages)
+        public static function published($type = 'all', $limit = 9, $page = 1, &$pages = 0, $node=NULL)
         {
-
+            $lang = Lang::current();
             $different_select='';
 
             $values = array();
             // si es un nodo, filtrado
-            if (\NODE_ID != \GOTEO_NODE) {
+            if (!\Goteo\Application\Config::isMasterNode()) {
                 $sqlFilter = " AND project.node = :node";
-                $values[':node'] = NODE_ID;
-            } else {
+                $values[':node'] = Config::get('current_node');
+            }
+            elseif(!is_null($node))
+            {
+                $sqlFilter = " AND project.node = :node";
+                $values[':node'] = $node;
+            }
+            else {
                 $sqlFilter = "";
             }
 
@@ -2616,7 +2744,7 @@ namespace Goteo\Model {
             $offset = $ret['offset'];
             $pages = $ret['pages'];
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
             }
             else {
@@ -2667,12 +2795,12 @@ namespace Goteo\Model {
                 LIMIT $offset,$limit
                 ";
 
-            $values[':lang'] = \LANG;
+            $values[':lang'] = $lang;
 
             $projects = array();
             $query = self::query($sql, $values);
 
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[]=self::getWidget($proj);
             }
             return $projects;
@@ -2775,7 +2903,7 @@ namespace Goteo\Model {
          *
          * Escogemos los proyectos que están a 5 días de terminar primera ronda o 3 días de terminar segunda.
          * En cron/execute necesitamos estos proyectos para feed y mail automático.
-         * @return: array of Model\Project (full instance (get))
+         * @return: array of Project (full instance (get))
          */
         public static function getActive($debug = false)
         {
@@ -3270,12 +3398,12 @@ namespace Goteo\Model {
                 }
                 return $results;
             } catch (\PDOException $e) {
-                throw new Exception('Fallo la lista de localizaciones');
+                throw new Exception\ModelException('Fallo la lista de localizaciones');
             }
         }
         /**
          *  Saca las vias de contacto para un proyecto
-         * @return: Model\Project
+         * @return: Project
          */
         public static function getContact($id) {
 

@@ -2,6 +2,8 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
     use Goteo\Library\Check,
         Goteo\Library\Text;
 
@@ -20,7 +22,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'criteria_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'criteria_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -44,8 +46,8 @@ namespace Goteo\Model {
          * Lista de proyectos destacados
          */
         public static function getAll ($section = 'project') {
-
-            if(self::default_lang(\LANG)=='es') {
+            $lang = Lang::current();
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(criteria_lang.title, criteria.title) as title,
                                     IFNULL(criteria_lang.description, criteria.description) as description";
                 }
@@ -70,7 +72,7 @@ namespace Goteo\Model {
                         WHERE criteria.section = :section
                         ORDER BY `order` ASC, title ASC";
 
-            $query = static::query($sql, array(':section' => $section, ':lang'=>\LANG));
+            $query = static::query($sql, array(':section' => $section, ':lang'=>$lang));
 
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }

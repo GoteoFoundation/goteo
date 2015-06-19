@@ -3,16 +3,16 @@
 use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection,
-    Goteo\Library\Message;
+    Goteo\Application\Message;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 if (!$project instanceof Model\Project) {
-    Message::Error('Instancia de proyecto corrupta');
+    Message::error('Instancia de proyecto corrupta');
     throw new Redirection('/admin/projects');
 }
 
-$conf = $this['conf'];
+$conf = $vars['conf'];
 ?>
 <script type="text/javascript">
 function disableRound2() {
