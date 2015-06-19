@@ -30,6 +30,12 @@ $custom_routes->add('barcelona-node', new Route(
     '{domain}'
 ));
 
+// Calendar
+$custom_routes->add('calendar', new Route(
+    '/calendar',
+    array('_controller' => 'Goteo\Controller\CalendarController::indexAction')
+));
+
 // Adding Default routes
 $main_routes = include(__DIR__ . '/../../../src/routes.php');
 $custom_routes->addCollection($main_routes);
