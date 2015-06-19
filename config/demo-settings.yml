@@ -64,6 +64,10 @@ extend:
 
 # Force using https protocol
 ssl: false
+# IMPORTANT! if ssl and your server is behind a proxy
+# List the trusted proxies for SSL connection here
+proxies:
+    - 127.0.0.1
 
 # Default commission fee
 fee: 4
