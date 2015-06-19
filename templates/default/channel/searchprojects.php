@@ -25,12 +25,14 @@ $this->section('content');
             <h2 class="title"><?= $this->title_text ?>
             <span class="line"></span>
             </h2>
-            <ul>
+            <?php if ($promotes) : ?>
                 <?php foreach ($promotes as $project) {
                     $project->per_amount = round(($project->amount / $project->mincost) * 100);
                     echo $this->insert('project/widget/horizontal_project', ['project' => $project]);
                 }?>
-            </ul>
+            <?php else : ?>
+                <?=$this->text('discover-results-empty')?>
+            <?php endif ?>
         </div>
     </div>
 </div>

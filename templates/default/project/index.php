@@ -93,14 +93,17 @@ $this->section('content');
                 <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?= $this->text('regular-by') ?> <?php echo $project->user->name; ?></a></div>
                 <br/>
 
+                
                 <!--
                 <?php if (!empty($project->cat_names)) : ?>
                 <div class="categories">
+                    <h3><?php echo Text::get('project-view-categories-title'); ?></h3>
                     <?php $sep = ''; foreach ($project->cat_names as $key=>$value) :
                         echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'">'.htmlspecialchars($value).'</a>';
                     $sep = ', '; endforeach; ?>
                 </div>
-                <?php endif; ?>-->
+                <?php endif; ?>
+                -->
 
                 <?php if ($project->node !== $this->get_config('current_node')) : ?>
                 <div class="nodemark">

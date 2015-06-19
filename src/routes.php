@@ -229,6 +229,11 @@ $routes->add('channel-project-create', new Route(
     array('_controller' => 'Goteo\Controller\ChannelController::createAction')
 ));
 
+$routes->add('channel-all-projects', new Route(
+    '/channel/{id}/projects',
+    array('_controller' => 'Goteo\Controller\ChannelController::allProjectsAction')
+));
+
 $routes->add('channel-category-projects', new Route(
     '/channel/{id}/category/{category}',
     array('_controller' => 'Goteo\Controller\ChannelController::filterCategoryAction')

@@ -201,6 +201,39 @@ class ChannelController extends \Goteo\Core\Controller {
     }
 
     /**
+     * All channel projects
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function allProjectsAction($id, Request $request)
+    {
+        self::setChannel($id);
+        
+        $type='available';
+        
+        $page = max(1, (int) $request->request->get('page'));
+
+        $items_per_page = 10;
+
+        $list = Project::published($type, $items_per_page, $page, $pages, $id);
+
+        $title_text=Text::get('regular-discover');
+
+        return new Response(View::render(
+        'channel/searchprojects',
+        array(
+            'projects' => $list,
+            'category'=> $type,
+            'title_text' => $title_text,
+            'type' => $type,
+            'pages' => $pages,
+            'currentPage' => $page
+            )
+        ));
+    }
+
+
+    /**
      * Initial create project action
      * @param  Request $request [description]
      * @return [type]           [description]
