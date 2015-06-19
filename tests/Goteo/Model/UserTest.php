@@ -13,7 +13,6 @@ class UserTest extends \PHPUnit_Framework_TestCase {
                     'user_lang' => 'id',
                     'user_location' => 'id',
                     'user_login' => 'user',
-                    'user_node' => 'user',
                     'user_personal' => 'user',
                     'user_pool' => 'user',
                     'user_prefer' => 'user',
