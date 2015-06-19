@@ -15,13 +15,20 @@ date_default_timezone_set("Europe/Madrid");
 use Goteo\Core\Resource,
     Goteo\Core\Error,
     Goteo\Core\Model,
+    Goteo\Application\Config,
     Goteo\Model\Location,
     Goteo\Library\Cacher,
     Goteo\Model\User\UserLocation,
     Goteo\Util\Google\GoogleGeocoder,
     Goteo\Model\Project\ProjectLocation;
 
-require_once __DIR__ . '/../app/config.php';
+//Public Web path
+define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
+
+require_once __DIR__ . '/../src/autoload.php';
+
+// Config file...
+Config::loadFromYaml('settings.yml');
 
 echo "This script geolocates Users & Projects into the tables location/user_location/project_location\n";
 

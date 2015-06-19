@@ -4,7 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\App;
 use Goteo\Application\Config;
 
-ini_set("display_errors", 0);
+ini_set('display_errors', 0);
 
 //Public Web path
 define('GOTEO_WEB_PATH', __DIR__ . '/');

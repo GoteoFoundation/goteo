@@ -21,10 +21,21 @@ use Goteo\Core\Resource,
     Goteo\Library\Mail,
     Goteo\Library\Sender;
 
-require_once __DIR__ . '/../app/config.php';
 
-// montar SITE_URL como el dispatcher para el enlace de darse de baja.
-define('SITE_URL', GOTEO_URL);
+//Public Web path
+define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
+
+require_once __DIR__ . '/../src/autoload.php';
+
+// constantes necesarias (las pone el dispatcher)
+define('HTTPS_ON', false); // para las url de project/media
+define('SITE_URL', 'http://goteo.org'); // para los mails
+define('SEC_URL', 'https:'.str_replace('http:', '', SITE_URL)); // urls para paypal (necesita schema)
+// Config file...
+Config::loadFromYaml('settings.yml');
+// set Lang
+Lang::setDefault(Config::get('lang'));
+Lang::set(Config::get('lang'));
 
 $debug = true;
 
