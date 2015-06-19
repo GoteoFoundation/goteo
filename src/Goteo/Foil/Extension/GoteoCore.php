@@ -8,6 +8,7 @@ use Goteo\Application\Message;
 use Goteo\Application\Cookie;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
+use Goteo\Application\Lang;
 
 class GoteoCore implements ExtensionInterface
 {
@@ -50,6 +51,7 @@ class GoteoCore implements ExtensionInterface
           'get_post' => [$this, 'get_post'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
           'get_querystring' => [$this, 'get_querystring'],
+          'current_lang' => [$this, 'current_lang'],
         ];
     }
 
@@ -61,6 +63,11 @@ class GoteoCore implements ExtensionInterface
     public function errors()
     {
         return Message::getErrors();
+    }
+
+    public function current_lang()
+    {
+        return Lang::current();
     }
 
     //Cookies

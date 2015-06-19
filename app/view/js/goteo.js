@@ -103,6 +103,17 @@ $(function() {
        $("#currency").css("background","#59595C");
     });
 
+    // Footer sponsors
+    $('#slides_sponsor').slides({
+        container: 'slides_container',
+        effect: 'fade',
+        crossfade: false,
+        fadeSpeed: 350,
+        play: 5000,
+        pause: 1
+    });
+
+    // Session keeper
     goteo.keepAlive();
 
     try {

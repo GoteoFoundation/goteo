@@ -7,8 +7,6 @@ Goteo\Model\Sponsor;
 //activamos la cache para las consultas de categorias, posts, sponsors
 \Goteo\Core\DB::cache(true);
 
-$lang = (LANG != 'es') ? '?lang='.LANG : '';
-
 $categories = Category::getList();  // categorias que se usan en proyectos
 $posts      = Post::getList('footer');
 
@@ -89,17 +87,19 @@ $sponsors   = Sponsor::getList();
 
         </div>
 
+    <?php $this->section('footer-social') ?>
+
         <div class="block social" style="border-right:#ebe9ea 2px solid;">
             <h6 class="title"><?=$this->text('footer-header-social') ?></h6>
             <ul>
                 <li class="twitter"><a href="<?=$this->text('social-account-twitter') ?>" target="_blank"><?=$this->text('regular-twitter') ?></a></li>
                 <li class="facebook"><a href="<?=$this->text('social-account-facebook') ?>" target="_blank"><?=$this->text('regular-facebook') ?></a></li>
-                <li class="calendar"><a href="/calendar" target="_blank"><?=$this->text('regular-calendar') ?></a></li>
                 <li class="gplus"><a href="<?=$this->text('social-account-google') ?>" target="_blank"><?=$this->text('regular-google') ?></a></li>
-                <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss<?php echo $lang ?>" target="_blank"><?=$this->text('regular-share-rss')?></a></li>
+                <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss/<?= $this->current_lang() ?>" target="_blank"><?=$this->text('regular-share-rss')?></a></li>
 
             </ul>
         </div>
+    <?php $this->stop() ?>
 
 	</div>
 </div>
@@ -121,7 +121,7 @@ $sponsors   = Sponsor::getList();
 
             <div class="platoniq">
                <span class="text"><a href="#" class="poweredby"><?=$this->text('footer-platoniq-iniciative') ?></a></span>
-               <span class="logo"><a href="http://fuentesabiertas.org" target="_blank" class="foundation">FFA</a></span>
+               <span class="logo"><a href="http://fundacion.goteo.org" target="_blank" class="foundation">Fundación Goteo</a></span>
                <span class="logo"><a href="http://www.youcoop.org" target="_blank" class="growby">Platoniq</a></span>
             </div>
 
@@ -129,16 +129,3 @@ $sponsors   = Sponsor::getList();
     </div>
 
 </div>
-
-<script type="text/javascript">
-    $(function(){
-        $('#slides_sponsor').slides({
-            container: 'slides_container',
-            effect: 'fade',
-            crossfade: false,
-            fadeSpeed: 350,
-            play: 5000,
-            pause: 1
-        });
-    });
-</script>
