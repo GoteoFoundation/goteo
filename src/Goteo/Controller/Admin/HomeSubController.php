@@ -43,6 +43,21 @@ class HomeSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
+    public function upAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('up', $id, $this->getFilters(), $subaction));
+    }
+
+    public function downAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('down', $id, $this->getFilters(), $subaction));
+    }
+
+    public function removeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('remove', $id, $this->getFilters(), $subaction));
+    }
+
 
     public function process ($action = 'list', $id = null, $filters = array(), $type = 'main') {
 
