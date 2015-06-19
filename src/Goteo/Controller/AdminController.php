@@ -86,6 +86,11 @@ namespace Goteo\Controller {
 
             // get working node
             $admin_node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
+            if(!array_key_exists($admin_node, $admin_nodes)) {
+                // back to first node
+                $admin_node = key($admin_nodes);
+            }
+
             //if need to change the current node
             if($request->query->has('admin_node') && array_key_exists($request->query->get('admin_node'), $admin_nodes)) {
                 $admin_node = $request->query->get('admin_node');
@@ -124,6 +129,7 @@ namespace Goteo\Controller {
                     'breadcrumb' => $breadcrumb,
                     ]);
 
+            // print_r($user);print_r($menu);die;
             // If menu is not allowed, throw exception
             if(empty($menu) || ($option && ! array_key_exists($option, $menu)) ) {
                 $zone = $menu[$option] ? $menu[$option] : $option;
