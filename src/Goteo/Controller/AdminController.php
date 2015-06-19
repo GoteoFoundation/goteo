@@ -37,7 +37,7 @@ namespace Goteo\Controller {
          * Registers a subcontroller in the admin
          * @param [type] $classname [description]
          */
-        public static function addSubController(Admin\AbstractSubController $classname) {
+        public static function addSubController($classname) {
             self::$subcontrollers[] = $classname;
         }
 
