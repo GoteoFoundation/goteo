@@ -3,8 +3,9 @@ $channel=$this->channel;
 ?>
 <div class="owner-info rounded-corners" <?php if(!empty($channel->owner_background)) echo 'style="background-color:'.$channel->owner_background.'"'; ?>>
         <div class="avatar">
-            <img src="<?php echo SITE_URL . '/image/' . $channel->logo->name; ?>" alt="<?php echo $channel->name ?>"/><br />
-            <!-- enlaces sociales (iconitos como footer) -->                   
+            <a href="<?= $URL.'/channel/'.$this->channel->id ?>"> 
+                <img src="<?php echo SITE_URL . '/image/' . $channel->logo->name; ?>" alt="<?php echo $channel->name ?>"/><br />
+            </a>
         </div>              
         <div class="info">
             <!-- Nombre y texto presentación -->
@@ -19,6 +20,7 @@ $channel=$this->channel;
             </ul>
             -->
         </div>
+        <!-- enlaces sociales  -->                   
         <ul class="social">
                 <?php if (!empty($channel->facebook)): ?>
                <li class="facebook"><a href="<?= htmlspecialchars($channel->facebook) ?>" target="_blank">F</a></li>
