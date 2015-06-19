@@ -55,10 +55,12 @@ class SessionListener implements EventSubscriberInterface
             Message::info('That\'s all folks!');
         });
 
-        // si el usuario ya está validado debemos mantenerlo en entorno seguro
-        // usamos la funcionalidad de salto entre nodos para mantener la sesión
-        if (Config::get('ssl') && Session::isLogged() && !HTTPS_ON) {
-            $event->setResponse(new RedirectResponse(SEC_URL . $request->server->get('REQUEST_URI')));
+        // Mantain user in secure enviroment if logged and ssl config on
+        if(is_array(Config::get('proxies'))) {
+            $request->setTrustedProxies(Config::get('proxies'));
+        }
+        if (Config::get('ssl') && Session::isLogged() && !$request->isSecure()) {
+            $event->setResponse(new RedirectResponse('https://' . $request->getHttpHost() . $request->getRequestUri()));
             return;
         }
 
