@@ -1281,30 +1281,29 @@ namespace Goteo\Model {
 
 
         public function delRoleFromNode($to_role, $to_node = '') {
-            $values = array(':user' => $this->id, ':role' => $to_role, ':node' => $to_node);
-            $del_sql = 'DELETE FROM user_role WHERE user_id = :user AND role_id = :role';
-            if(empty($to_node)) {
-                $del_sql .= ' AND ISNULL(node_id)';
-                unset($values[':node']);
+            $values = array(':user' => $this->id, ':role' => $to_role);
+            $where = 'WHERE user_id = :user AND role_id = :role';
+            if($to_node) {
+                $where .= ' AND node_id = :node';
+                $values[':node'] = $to_node;
             }
             else {
-                $del_sql .= ' AND node_id = :node';
+                $where .= ' AND ISNULL(node_id)';
             }
-            if(self::query($del_sql, $values)) {
-                return true;
-            }
-            return false;
+            self::query('DELETE FROM user_role ' . $where, $values);
+
+            return 0 === (int) self::query('SELECT COUNT(*) FROM user_role ' . $where, $values)->fetchColumn();
         }
 
         public function addRoleToNode($to_role, $to_node = '') {
-            $values = array(':user' => $this->id, ':role' => $to_role, ':node' => $to_node);
+            $values = array(':user' => $this->id, ':role' => $to_role);
             $insert_sql = 'INSERT INTO user_role (user_id,role_id,node_id) VALUES (:user, :role, ';
-            if(empty($to_node)) {
-                $insert_sql .= 'NULL)';
-                unset($values[':node']);
+            if($to_node) {
+                $insert_sql .= ':node)';
+                $values[':node'] = $to_node;
             }
             else {
-                $insert_sql .= ':node)';
+                $insert_sql .= 'NULL)';
             }
             if($this->delRoleFromNode($to_role, $to_node)) {
                 if(self::query($insert_sql, $values)) return true;

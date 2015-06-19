@@ -170,7 +170,7 @@ class UsersSubController extends AbstractSubController {
             // check if we can admin this role
             if( $this->user->canAdminRoleInNode($this->getPost('add_role'), $this->getPost('to_node'))) {
                 // die('<br>i can ' .$all_roles[$this->getPost('add_role')] .'->'. $this->getPost('to_node'));
-                if( $this->user->addRoleToNode($this->getPost('add_role'), $this->getPost('to_node')) ) {
+                if( $user->addRoleToNode($this->getPost('add_role'), $this->getPost('to_node')) ) {
                     $text = sprintf("Añadido rol de <strong>%s</strong> para el nodo <strong>%s</strong>",
                                     $all_roles[$this->getPost('add_role')],
                                     $all_nodes[$this->getPost('to_node')]);
@@ -188,7 +188,7 @@ class UsersSubController extends AbstractSubController {
             if( $this->user->canAdminRoleInNode($this->getGet('del_role'), $this->getGet('from_node')) &&
                 // TODO: Do not let remove myself
 
-                $this->user->delRoleFromNode($this->getGet('del_role'), $this->getGet('from_node')) ) {
+                $user->delRoleFromNode($this->getGet('del_role'), $this->getGet('from_node')) ) {
                 $text = sprintf("Quitado rol de <strong>%s</strong> para el nodo <strong>%s</strong>",
                                 $all_roles[$this->getGet('del_role')],
                                 $all_nodes[$this->getGet('from_node')]);
