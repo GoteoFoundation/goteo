@@ -59,10 +59,7 @@ class ChannelController extends \Goteo\Core\Controller {
     }
 
     /**
-     * TODO: de momento no se usa, solo listado de proyectos para canales
-     * @param  [type] $id   [description]
-     * @param  string $page [description]
-     * @return [type]       [description]
+     * @param  [type] $id   Channel id
      */
     public function indexAction($id, Request $request)
     {
@@ -98,8 +95,8 @@ class ChannelController extends \Goteo\Core\Controller {
 
     /**
      * All channel projects
+     * @param  [type] $id   Channel id
      * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function listProjectsAction($id, $type = 'available', $category = null, Request $request)
     {
@@ -136,7 +133,6 @@ class ChannelController extends \Goteo\Core\Controller {
     /**
      * Initial create project action
      * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function createAction ($id, Request $request)
     {

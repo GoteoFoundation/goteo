@@ -231,23 +231,13 @@ namespace Goteo\Model {
                 'active'
                 );
 
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
             try {
-                $sql = "REPLACE INTO promote SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->dbInsertUpdate($fields);
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = "Save error " . $e->getMessage();
                 return false;
             }
         }
