@@ -1,49 +1,27 @@
 <?php
 
-$channel=$this->channel;
-$promotes=$this->projects;
-
-$this->layout("layout", [
-    'bodyClass' => 'channel home',
-    'title' => $this->title_text.' :: '.$channel->name,
-    'meta_description' => $this->title_text.'. '.$channel->description
+$this->layout('channel/layout', [
+    'title' => $this->title_text.' :: '.$this->channel->name,
+    'meta_description' => $this->title_text.'. '.$this->channel->description
     ]);
 
-$this->section('content');
+$this->section('channel-content');
 
 ?>
-<div id="channel-main">
-
-    <?= $this->insert("channel/partials/owner_info") ?>
-
-    <div id="side">
-
-    <?php foreach ($this->side_order as $sideitem => $sideitemName) {
-            echo $this->insert("channel/partials/side/$sideitem");
-    } ?>
+    <div id="channel-projects-promote" class="content_widget channel-projects rounded-corners">
+        <h2 class="title"><?= $this->title_text ?>
+        <span class="line"></span>
+        </h2>
+        <?php if ($this->projects) : ?>
+            <?php foreach ($this->projects as $project) {
+                echo $this->insert('project/widget/horizontal_project', ['project' => $project]);
+            }?>
+        <?php else : ?>
+            <?= $this->text('discover-results-empty') ?>
+        <?php endif ?>
     </div>
 
-    <div id="content">
-        <div id="channel-projects-promote" class="content_widget channel-projects rounded-corners" <?php if ($this->hide_promotes) : ?>style="display:none;"<?php endif; ?>>
-            <h2 class="title"><?= $this->title_text ?>
-            <span class="line"></span>
-            </h2>
-            <?php if ($promotes) : ?>
-                <?php foreach ($promotes as $project) {
-                    $project->per_amount = round(($project->amount / $project->mincost) * 100);
-                    echo $this->insert('project/widget/horizontal_project', ['project' => $project]);
-                }?>
-            <?php else : ?>
-                <?=$this->text('discover-results-empty')?>
-            <?php endif ?>
-        </div>
-
-        <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit ? $this->limit : 10]) ?>
-
-    </div>
-
-
-</div>
+    <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit ? $this->limit : 10]) ?>
 
 
 <?php $this->replace() ?>

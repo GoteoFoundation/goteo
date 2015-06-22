@@ -72,74 +72,40 @@ class ChannelController extends \Goteo\Core\Controller {
     }
 
     /**
-     * TODO:
+     * TODO: de momento no se usa, solo listado de proyectos para canales
      * @param  [type] $id   [description]
      * @param  string $page [description]
      * @return [type]       [description]
      */
-    public function indexAction($id)
+    public function indexAction($id, Request $request)
     {
         $this->setChannelContext($id);
 
-        // orden de los elementos en portada
-        $order = Home::getAll($id);
-        $side_order = Home::getAllSide($id);
+        // Proyectos destacados si hay
 
+        $limit = 999;
 
-        $hide_promotes = false;
-
-        // Proyectos destacados primero para saber si lo meto en el buscador o no
-        if (isset($order['promotes']) || isset($side_order['searcher'])) {
-            $promotes  = Promote::getAll(true, $id);
+        if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
+            $total = count($list);
+        }
+        else {
+            // if no promotes let's show some random projects...
+            $limit = 10;
+            $total = $limit;
+            $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
 
-        // padrinos
-        if (isset($order['patrons'])) {
-            $patrons  =  $patrons = Patron::getInHome();
-        }
-
-        // Laterales
-        // ---------------------
-        if (isset($side_order['searcher'])) {
-            // Selector proyectos: los destacados, los grupos de discover y los retornos
-
-            if (!empty($promotes)) {
-                $searcher['promote'] = Text::get('node-side-searcher-promote');
-
-            }
-        }
-
-        // resto de centrales
-        // entradas de blog
-        if (isset($order['posts'])) {
-            // entradas en portada
-            $posts     = Post::getAll('home', $id);
-        }
-
-        // Convocatorias destacadas
-        if (isset($order['calls'])) {
-            $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
-            $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
-        }
 
         return $this->viewResponse(
-            'channel/index',
+            'channel/list_projects',
             array(
-
-                // centrales
-                'order'    => $order,
-                    'posts'    => $posts,
-                    'promotes' => $promotes,
-                    'calls'    => array('calls'=>$calls, 'campaigns'=>$campaigns),
-                    'patrons' => $patrons,
-
-                // laterales
-                    'searcher' => $searcher,
-
-                // los ocultos del discover
-                'discover' => $discover
-
-            )
+                'projects' => $list,
+                'category'=> $category,
+                'title_text' => Text::get('node-side-searcher-promote'),
+                'type' => $type,
+                'total' => $total,
+                'limit' => $limit
+                )
         );
     }
 
@@ -155,7 +121,7 @@ class ChannelController extends \Goteo\Core\Controller {
         $limit = 10;
         $filter = ['type' => $type];
 
-        $title_text = $type === 'available' ? Text::get('regular-discover') : Text::get('node-side-searcher-'.$type);
+        $title_text = $type === 'available' ? Text::get('regular-see_all') : Text::get('node-side-searcher-'.$type);
         if($category) {
             if($cat = Category::get($category)) {
                 $title_text .= ' / '. Text::get('discover-searcher-bycategory-header') . ' ' . $cat->name;

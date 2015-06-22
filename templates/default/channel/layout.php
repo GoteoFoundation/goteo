@@ -23,18 +23,24 @@ $this->section('content');
     </div>
 
     <div id="content">
-        <?php
-        // primero los ocultos, los destacados si esta el buscador lateral lo ponemos anyway
-        if (isset($this->side_order['searcher'])) echo $this->insert("channel/partials/home/discover");
-        if (isset($this->side_order['categories'])) echo $this->insert("channel/partials/home/discat");
-
-        foreach ($this->order as $item=>$itemName)
-        {
-            echo $this->insert("channel/partials/home/$item");
-        }
-        ?>
+        <?= $this->supply('channel-content') ?>
     </div>
 </div>
 
 <?php $this->replace() ?>
 
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+    $(function(){
+        $('#slides_side_sponsor').slides({
+            container: 'slides_container',
+            effect: 'fade',
+            crossfade: false,
+            fadeSpeed: 350,
+            play: 5000,
+            pause: 1
+        });
+    });
+</script>
+<?php $this->append() ?>

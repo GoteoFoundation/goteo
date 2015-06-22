@@ -229,18 +229,19 @@ $routes->add('channel-project-create', new Route(
     array('_controller' => 'Goteo\Controller\ChannelController::createAction')
 ));
 
-$routes->add('channel-list-projects', new Route(
-    '/channel/{id}/{type}/{category}',
-    array('_controller' => 'Goteo\Controller\ChannelController::listProjectsAction',
-        'type' => 'available',
-        'category' => null
-        )
-));
-
 $routes->add('channel', new Route(
     '/channel/{id}',
     array('_controller' => 'Goteo\Controller\ChannelController::indexAction')
 ));
+
+$routes->add('channel-list-projects', new Route(
+    '/channel/{id}/{type}/{category}',
+    array('_controller' => 'Goteo\Controller\ChannelController::listProjectsAction',
+        // 'type' => 'available',
+        'category' => null
+        )
+));
+
 
 
 ////// ADMIN //////

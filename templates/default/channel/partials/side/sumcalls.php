@@ -1,6 +1,4 @@
 <?php
-use Goteo\Library\Text,
-    Goteo\Core\View;
 
 // ver página de ver mas convocatorias
 ?>

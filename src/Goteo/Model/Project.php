@@ -2394,7 +2394,6 @@ namespace Goteo\Model {
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE promote SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE patron SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
@@ -2643,6 +2642,7 @@ namespace Goteo\Model {
 
             $values = array();
             $where = array();
+            $join = '';
 
             // todos los que estan 'en campaña', en cualquier nodo
             $status = array(self::STATUS_IN_CAMPAIGN);
@@ -2697,6 +2697,20 @@ namespace Goteo\Model {
                 $status = array(self::STATUS_UNFUNDED);
                 $order = 'closed DESC';
             }
+            elseif($filter['type'] === 'promoted') {
+                // en "promote"
+                $status[] = self::STATUS_FUNDED;
+                $status[] = self::STATUS_FULFILLED;
+                $join = 'INNER JOIN promote ON promote.project = project.id';
+                $where[] = 'promote.active = 1';
+                if($node) {
+                    $where[] = 'promote.node = :node';
+                }
+                $order = 'promote.order ASC, name ASC';
+            }
+            elseif($filter['type'] === 'random') {
+                $order = 'RAND()';
+            }
 
             // filter by category?
             if(array_key_exists('category', $filter)) {
@@ -2705,20 +2719,20 @@ namespace Goteo\Model {
             }
 
             // Build the query
-            $where = ' project.status IN ('. implode(', ', $status) .') ' . ($where ? ' AND ' . implode(' AND ', $where) : '');
+            $where = 'project.status IN ('. implode(', ', $status) .') ' . ($where ? ' AND ' . implode(' AND ', $where) : '');
 
             // Return total count for pagination
             if($count) {
-                $sql = "SELECT COUNT(id) FROM project WHERE $where";
+                $sql = "SELECT COUNT(project.id) FROM project $join WHERE $where";
                 return (int) self::query($sql, $values)->fetchColumn();
             }
 
             if(self::default_lang($lang) === Config::get('lang')) {
-                $lang_select = ' IFNULL(project_lang.description, project.description) as description';
+                $lang_select = ' IFNULL(project_lang.description, project.description) AS description';
             }
             else {
-                $lang_select = ' IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description';
-                $lang_join = " LEFT JOIN project_lang as eng
+                $lang_select = ' IFNULL(project_lang.description, IFNULL(eng.description, project.description)) AS description';
+                $lang_join = " LEFT JOIN project_lang AS eng
                                 ON  eng.id = project.id
                                 AND eng.lang = 'en'";
             }
@@ -2727,33 +2741,34 @@ namespace Goteo\Model {
             $limit = (int) $limit;
             $sql ="
                 SELECT
-                    project.id as project,
-                    project.name as name,
+                    project.id AS project,
+                    project.name AS name,
                     $lang_select,
-                    project.status as status,
-                    project.published as published,
-                    project.created as created,
-                    project.updated as updated,
-                    project.success as success,
-                    project.closed as closed,
-                    project.mincost as mincost,
-                    project.maxcost as maxcost,
-                    project.amount as amount,
-                    project.image as image,
-                    project.num_investors as num_investors,
-                    project.num_messengers as num_messengers,
-                    project.num_posts as num_posts,
-                    project.days as days,
-                    project.popularity as popularity,
-                    user.id as user_id,
-                    user.name as user_name,
-                    project_conf.noinvest as noinvest,
-                    project_conf.one_round as one_round,
-                    project_conf.days_round1 as days_round1,
-                    project_conf.days_round2 as days_round2
+                    project.status AS status,
+                    project.published AS published,
+                    project.created AS created,
+                    project.updated AS updated,
+                    project.success AS success,
+                    project.closed AS closed,
+                    project.mincost AS mincost,
+                    project.maxcost AS maxcost,
+                    project.amount AS amount,
+                    project.image AS image,
+                    project.num_investors AS num_investors,
+                    project.num_messengers AS num_messengers,
+                    project.num_posts AS num_posts,
+                    project.days AS days,
+                    project.popularity AS popularity,
+                    user.id AS user_id,
+                    user.name AS user_name,
+                    project_conf.noinvest AS noinvest,
+                    project_conf.one_round AS one_round,
+                    project_conf.days_round1 AS days_round1,
+                    project_conf.days_round2 AS days_round2
                 FROM  project
                 INNER JOIN user
                     ON user.id = project.owner
+                $join
                 LEFT JOIN project_conf
                     ON project_conf.project = project.id
                 LEFT JOIN project_lang
