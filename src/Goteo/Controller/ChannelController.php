@@ -5,24 +5,15 @@ namespace Goteo\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Application\Session;
-use Goteo\Application;
+use Goteo\Application\Message;
 use Goteo\Application\View;
-use Goteo\Model;
 use Goteo\Model\Node;
 use Goteo\Model\Home;
 use Goteo\Model\Project;
-use Goteo\Model\Banner;
-use Goteo\Model\Stories;
-use Goteo\Model\News;
-use Goteo\Model\Post;
-use // esto son entradas en portada o en footer
-    Goteo\Model\Promote;
-use Goteo\Model\Patron;
-use Goteo\Model\Campaign;
+use Goteo\Model\Sponsor;
 use // convocatorias en portada
     Goteo\Model\Call,
     Goteo\Model\User;
-use Goteo\Model\Icon;
 use Goteo\Model\Category;
 use Goteo\Library\Text;
 use Goteo\Library\Page;
@@ -34,7 +25,7 @@ class ChannelController extends \Goteo\Core\Controller {
     {
         $channel = Node::get($id);
 
-        $categories=Category::getList();
+        $categories = Category::getList();
 
         $side_order = Home::getAllSide($id); //orden de lateral side
 
@@ -49,13 +40,9 @@ class ChannelController extends \Goteo\Core\Controller {
             $summary = $channel->getSummary();
         }
 
-        if (isset($side_order['sumcalls'])) {
-            $sumcalls = $channel->getSumcalls();
-        }
-
         if (isset($side_order['sponsors'])) {
             // Patrocinadores del nodo
-            $sponsors = \Goteo\Model\Sponsor::getList($id);
+            $sponsors = Sponsor::getList($id);
         }
 
 
@@ -158,7 +145,7 @@ class ChannelController extends \Goteo\Core\Controller {
 
         if (! ($user = Session::getUser()) ) {
             Session::store('jumpto', '/channel/' . $id . '/create');
-            Application\Message::info(Text::get('user-login-required-to_create'));
+            Message::info(Text::get('user-login-required-to_create'));
             return $this->redirect(SEC_URL.'/user/login');
         }
 
