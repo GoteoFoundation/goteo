@@ -13,9 +13,12 @@ $this->section('content');
 
 ?>
 <div id="channel-main">
+
     <?= $this->insert("channel/partials/owner_info") ?>
+
     <div id="side">
-    <?php foreach ($this->side_order as $sideitem=>$sideitemName) {
+
+    <?php foreach ($this->side_order as $sideitem => $sideitemName) {
             echo $this->insert("channel/partials/side/$sideitem");
     } ?>
     </div>
@@ -34,8 +37,14 @@ $this->section('content');
                 <?=$this->text('discover-results-empty')?>
             <?php endif ?>
         </div>
+
+        <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit ? $this->limit : 10]) ?>
+
     </div>
+
+
 </div>
+
 
 <?php $this->replace() ?>
 

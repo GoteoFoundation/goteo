@@ -2,8 +2,6 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Application\Session;
@@ -31,19 +29,10 @@ use Goteo\Library\Page;
 
 class ChannelController extends \Goteo\Core\Controller {
 
-    // Gets the channel and assign some default vars to all views
-    private static function getChannel($id) {
-        $channel = Node::get($id);
-        View::getEngine()->useContext('/', [
-            'url_project_create' => '/channel/' . $id . '/create'
-            ]);
-        return $channel;
-    }
-
     // Set the global vars to all the channel views
-    private static function setChannel($id)
+    private function setChannelContext($id)
     {
-        $channel=self::getChannel($id);
+        $channel = Node::get($id);
 
         $categories=Category::getList();
 
@@ -70,34 +59,33 @@ class ChannelController extends \Goteo\Core\Controller {
         }
 
 
-        View::getEngine()->useContext('channel/', [
+        $this->contextVars('channel/', [
             'channel'     => $channel,
             'side_order' => $side_order,
             'summary' => $summary,
             'sumcalls' => $sumcalls,
             'sponsors' => $sponsors,
             'categories' => $categories,
-            'types' => $types
+            'types' => $types,
+            'url_project_create' => '/channel/' . $id . '/create'
         ]);
     }
 
     /**
-     * TODO: 
+     * TODO:
      * @param  [type] $id   [description]
      * @param  string $page [description]
      * @return [type]       [description]
      */
     public function indexAction($id)
     {
-        self::setChannel($id);
-
-        $channel = self::getChannel($id);
+        $this->setChannelContext($id);
 
         // orden de los elementos en portada
         $order = Home::getAll($id);
         $side_order = Home::getAllSide($id);
 
-        
+
         $hide_promotes = false;
 
         // Proyectos destacados primero para saber si lo meto en el buscador o no
@@ -114,10 +102,10 @@ class ChannelController extends \Goteo\Core\Controller {
         // ---------------------
         if (isset($side_order['searcher'])) {
             // Selector proyectos: los destacados, los grupos de discover y los retornos
-            
+
             if (!empty($promotes)) {
                 $searcher['promote'] = Text::get('node-side-searcher-promote');
-                
+
             }
         }
 
@@ -134,10 +122,10 @@ class ChannelController extends \Goteo\Core\Controller {
             $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
         }
 
-        return new Response(View::render(
+        return $this->viewResponse(
             'channel/index',
             array(
-                
+
                 // centrales
                 'order'    => $order,
                     'posts'    => $posts,
@@ -152,52 +140,7 @@ class ChannelController extends \Goteo\Core\Controller {
                 'discover' => $discover
 
             )
-        ));
-    }
-
-    /**
-     * Project filter by category
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function filterCategoryAction($id,$category)
-    {
-        self::setChannel($id);
-        $cat_projs = \Goteo\Library\Search::params(array('category'=>array($category), 'channel'=>$id), false);
-        $category=Category::get($category);
-
-        $title_text=Text::get('discover-searcher-bycategory-header').' '.$category->name;
-        
-        return new Response(View::render(
-        'channel/searchprojects',
-        array(
-            'projects' => $cat_projs,
-            'category'=> $category->name,
-            'title_text' => $title_text
-            )
-        ));
-    }
-
-    /**
-     * Project filter by type of project
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function filterTypeAction($id,$type)
-    {
-        self::setChannel($id);
-        $cat_projs = Project::published($type, 10, 1, $pages, $id);
-
-        $title_text=Text::get('node-side-searcher-'.$type);
-        return new Response(View::render(
-        'channel/searchprojects',
-        array(
-            'projects' => $cat_projs,
-            'category'=> $type,
-            'title_text' => $title_text,
-            'type' => $type
-            )
-        ));
+        );
     }
 
     /**
@@ -205,31 +148,35 @@ class ChannelController extends \Goteo\Core\Controller {
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function allProjectsAction($id, Request $request)
+    public function listProjectsAction($id, $type = 'available', $category = null, Request $request)
     {
-        self::setChannel($id);
-        
-        $type='available';
-        
-        $page = max(1, (int) $request->request->get('page'));
+        $this->setChannelContext($id);
 
-        $items_per_page = 10;
+        $limit = 10;
+        $filter = ['type' => $type];
 
-        $list = Project::published($type, $items_per_page, $page, $pages, $id);
+        $title_text = $type === 'available' ? Text::get('regular-discover') : Text::get('node-side-searcher-'.$type);
+        if($category) {
+            if($cat = Category::get($category)) {
+                $title_text .= ' / '. Text::get('discover-searcher-bycategory-header') . ' ' . $cat->name;
+                $filter['category'] = $category;
+            }
+        }
 
-        $title_text=Text::get('regular-discover');
+        $list = Project::published($filter, $id, (int)$request->query->get('pag') * $limit, $limit);
+        $total = Project::published($filter, $id, 0, 0, true);
 
-        return new Response(View::render(
-        'channel/searchprojects',
-        array(
-            'projects' => $list,
-            'category'=> $type,
-            'title_text' => $title_text,
-            'type' => $type,
-            'pages' => $pages,
-            'currentPage' => $page
-            )
-        ));
+        return $this->viewResponse(
+            'channel/list_projects',
+            array(
+                'projects' => $list,
+                'category'=> $category,
+                'title_text' => $title_text,
+                'type' => $type,
+                'total' => $total,
+                'limit' => $limit
+                )
+        );
     }
 
 
@@ -240,29 +187,30 @@ class ChannelController extends \Goteo\Core\Controller {
      */
     public function createAction ($id, Request $request)
     {
-        $channel = self::getChannel($id);
+        // Some context vars
+        $this->contextVars('/', ['url_project_create' => '/channel/' . $id . '/create']);
 
         if (! ($user = Session::getUser()) ) {
-            Session::store('jumpto', '/channel/' . $channel->id . '/create');
+            Session::store('jumpto', '/channel/' . $id . '/create');
             Application\Message::info(Text::get('user-login-required-to_create'));
-            return new RedirectResponse(SEC_URL.'/user/login');
+            return $this->redirect(SEC_URL.'/user/login');
         }
 
         if ($request->request->get('action') != 'continue' || $request->request->get('confirm') != 'true') {
             $page = Page::get('howto');
 
-             return new Response(View::render('project/howto', array(
-                    'action' => '/channel/' . $channel->id . '/create',
-                    'name' => $page->name,
-                    'description' => $page->description,
-                    'content' => $page->content
-                )
-             ));
+             return $this->viewResponse('project/howto', array(
+                        'action' => '/channel/' . $id . '/create',
+                        'name' => $page->name,
+                        'description' => $page->description,
+                        'content' => $page->content
+                    )
+                 );
         }
 
         //Do the creation stuff (exception will be throwed on fail)
-        $project = Project::createNewProject(Session::getUser(), $channel->id);
-        return new RedirectResponse('/project/edit/'.$project->id);
+        $project = Project::createNewProject(Session::getUser(), $id);
+        return $this->redirect('/project/edit/'.$project->id);
     }
 
 }

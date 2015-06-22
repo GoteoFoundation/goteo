@@ -12,10 +12,12 @@ $this->section('content');
 
 ?>
 <div id="channel-main">
+
     <?= $this->insert("channel/partials/owner_info") ?>
+
     <div id="side">
-    
-    <?php foreach ($this->side_order as $sideitem=>$sideitemName) {
+
+    <?php foreach ($this->side_order as $sideitem => $sideitemName) {
             echo $this->insert("channel/partials/side/$sideitem");
     } ?>
     </div>

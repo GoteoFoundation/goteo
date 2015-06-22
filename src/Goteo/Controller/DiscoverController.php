@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Goteo\Application\View;
+use Goteo\Application\Config;
 use Goteo\Model;
 use Goteo\Library\Text;
 use Goteo\Application\Message;
@@ -55,13 +56,15 @@ class DiscoverController extends \Goteo\Core\Controller {
             ]
         );
 
-        if (!\Goteo\Application\Config::isMasterNode()) {
+        $node = null;
+        if (!Config::isMasterNode()) {
             $types[] = 'others';
+            $node = Config::get('current_node');
         }
 
         // cada tipo tiene sus grupos
         foreach ($types as $type) {
-            $projects = Model\Project::published($type, 33);
+            $projects = Model\Project::published($type, $node, 33);
             if (empty($projects)) continue;
             // random para exitosos y retorno cumplido
             if ($type == 'success' || $type == 'fulfilled') shuffle ($projects);
@@ -124,8 +127,10 @@ class DiscoverController extends \Goteo\Core\Controller {
         $types = self::$types;
 
         $types[] = 'all';
-        if (!\Goteo\Application\Config::isMasterNode()) {
+        $node = null;
+        if (!Config::isMasterNode()) {
             $types[] = 'others';
+            $node = $node = Config::get('current_node');
         }
 
         if (!in_array($type, $types)) {
@@ -137,11 +142,10 @@ class DiscoverController extends \Goteo\Core\Controller {
         // segun el tipo cargamos el título de la página
         $viewData['title'] = Text::get('discover-group-'.$type.'-header');
 
-        $page = max(1, (int) $request->request->get('page'));
-        $items_per_page = 9;
-        $viewData['list'] = Model\Project::published($type, $items_per_page, $page, $pages);
-        $viewData['pages'] = $pages;
-        $viewData['currentPage'] = $page;
+        $limit = 9;
+        $viewData['list'] = Model\Project::published($type, $node, (int)$request->query->get('pag') * $limit, $limit);
+        $viewData['total'] = Model\Project::published($type, $node, 0, 0, true);
+        $viewData['limit'] = $limit;
 
         // segun el tipo cargamos la lista
         if ($request->request->has('list')) {

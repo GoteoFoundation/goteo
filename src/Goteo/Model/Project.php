@@ -2626,139 +2626,110 @@ namespace Goteo\Model {
         }
 
 
-        /*
+        /**
          * Lista de proyectos publicados
          * @param $type string
-         * @param $limit int
-         * @param $mini boolean
-         * @param $page int
-         * @param $pages int
+         * @param $node string
+         * @param $count returns a integer with the number of elements instead the list
          * @return: array of Project
          */
-        public static function published($type = 'all', $limit = 9, $page = 1, &$pages = 0, $node=NULL)
+        public static function published($filter = array(), $node = null, $offset = 0, $limit = 10, $count = false)
         {
+            //compatibility with simple string filter
+            if(!is_array($filter)) {
+                $filter = array('type' => (string) $filter);
+            }
             $lang = Lang::current();
-            $different_select='';
 
             $values = array();
-            // si es un nodo, filtrado
-            if (!\Goteo\Application\Config::isMasterNode()) {
-                $sqlFilter = " AND project.node = :node";
-                $values[':node'] = Config::get('current_node');
-            }
-            elseif(!is_null($node))
-            {
-                $sqlFilter = " AND project.node = :node";
+            $where = array();
+
+            // todos los que estan 'en campaña', en cualquier nodo
+            $status = array(self::STATUS_IN_CAMPAIGN);
+            $order = 'name ASC';
+
+            if($node) {
+                $where[] = 'project.node = :node';
                 $values[':node'] = $node;
             }
-            else {
-                $sqlFilter = "";
+
+            // segun el tipo
+            if ($filter['type'] === 'popular') {
+                // de los que estan en campaña,
+                // los que tienen más usuarios entre cofinanciadores y mensajeros
+                $where[] = 'project.popularity >20';
+                $order = 'popularity DESC';
+            }
+            elseif($filter['type'] === 'outdate') {
+                // los que les quedan 15 dias o menos
+                $where[] = 'days <= 15 AND days > 0';
+                $order = 'popularity ASC';
+            }
+            elseif($filter['type'] === 'recent') {
+                $where[] = 'project.passed IS NULL';
+                $order = 'published DESC';
+            }
+            elseif($filter['type'] === 'success') {
+                // los que han conseguido el mínimo
+                $where[] = 'project.amount >= mincost';
+                $order = 'published DESC';
+                $status[] = self::STATUS_FUNDED;
+                $status[] = self::STATUS_FULFILLED;
+            }
+            elseif($filter['type'] === 'almost-fulfilled') {
+                // para gestión de retornos
+                $order = 'name ASC';
+                $status = array(self::STATUS_FUNDED, self::STATUS_FULFILLED);
+            }
+            elseif($filter['type'] === 'fulfilled') {
+                // retorno cumplido
+                $status = array(self::STATUS_FULFILLED);
+                $order = 'name ASC';
+            }
+            elseif($filter['type'] === 'available') {
+                // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
+                $status[] = self::STATUS_FUNDED;
+                $status[] = self::STATUS_FULFILLED;
+                $order = 'name ASC';
+            }
+            elseif($filter['type'] === 'archive') {
+                // caducados sin financiacion
+                $status = array(self::STATUS_UNFUNDED);
+                $order = 'closed DESC';
             }
 
-            // segun el tipo (ver controller/discover.php)
-            switch ($type) {
-                case 'popular':
-                    // de los que estan en campaña,
-                    // los que tienen más usuarios entre cofinanciadores y mensajeros
-
-                    $different_select="project.popularity as popularity,";
-                    $where="project.status= 3 AND popularity >20";
-                    $order="popularity DESC";
-
-                    break;
-
-                case 'outdate':
-                    // los que les quedan 15 dias o menos
-
-                    $where="days <= 15 AND days > 0 AND status = 3";
-                    $order="popularity ASC";
-                    break;
-                case 'recent':
-                    // los que llevan menos tiempo desde el published, hasta 15 dias
-                    // Cambio de criterio: Los últimos 9
-                    //,  DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
-                    //        HAVING day <= 15 AND day IS NOT NULL
-
-                    $where="project.status = 3 AND project.passed IS NULL";
-                    $order="published DESC";
-                    break;
-                case 'success':
-                    // los que han conseguido el mínimo
-
-                    $where="status IN ('3', '4', '5') AND project.amount >= mincost";
-                    $order="published DESC";
-                    break;
-                case 'almost-fulfilled':
-                    // para gestión de retornos
-
-                    $where="status IN ('4','5')";
-                    $order="name ASC";
-                    break;
-                case 'fulfilled':
-                    // retorno cumplido
-
-                    $where="status IN ('5')";
-                    $order="name ASC";
-                    break;
-                case 'available':
-                    // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
-
-                    $where="status < 6";
-                    $order="name ASC";
-                    break;
-                case 'archive':
-                    // caducados, financiados o casos de exito
-
-                    $where="status = 6";
-                    $order="closed DESC";
-                    break;
-                case 'others':
-                    // todos los que estan 'en campaña', en otro nodo
-                    if (!empty($sqlFilter)) $sqlFilter = \str_replace('=', '!=', $sqlFilter);
-                    // cambio de criterio, en otros nodos no filtramos por followers,
-                    //   mostramos todos los que estan en campaña (los nuevos primero)
-                    //  limitamos a 40
-
-                    $where="project.status = 3";
-                    $order="closed DESC";
-                    $limit = 40;
-                    break;
-                default:
-                    // todos los que estan 'en campaña', en cualquier nodo
-
-                    $where="project.status = 3";
-                    $order="name ASC";
-                    $limit = 40;
-
+            // filter by category?
+            if(array_key_exists('category', $filter)) {
+                if(!is_array($filter['category'])) $filter['category'] = array($filter['category']);
+                $where[] = ' project.id IN (SELECT project FROM project_category WHERE project_category.category IN (' . implode(',', $filter['category']) . '))';
             }
 
-            $where.= $sqlFilter;
+            // Build the query
+            $where = ' project.status IN ('. implode(', ', $status) .') ' . ($where ? ' AND ' . implode(' AND ', $where) : '');
 
-            $sql_count ="
-                SELECT COUNT(id)
-                FROM project
-                WHERE $where
-                ";
-
-            $ret = self::doPagination($sql_count, $values, $page, $limit);
-            $offset = $ret['offset'];
-            $pages = $ret['pages'];
+            // Return total count for pagination
+            if($count) {
+                $sql = "SELECT COUNT(id) FROM project WHERE $where";
+                return (int) self::query($sql, $values)->fetchColumn();
+            }
 
             if(self::default_lang($lang) === Config::get('lang')) {
-                $different_select2=" IFNULL(project_lang.description, project.description) as description";
+                $lang_select = ' IFNULL(project_lang.description, project.description) as description';
             }
             else {
-                $different_select2=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
-                $eng_join=" LEFT JOIN project_lang as eng
+                $lang_select = ' IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description';
+                $lang_join = " LEFT JOIN project_lang as eng
                                 ON  eng.id = project.id
                                 AND eng.lang = 'en'";
             }
 
+            $offset = (int) $offset;
+            $limit = (int) $limit;
             $sql ="
                 SELECT
                     project.id as project,
                     project.name as name,
-                    $different_select2,
+                    $lang_select,
                     project.status as status,
                     project.published as published,
                     project.created as created,
@@ -2773,7 +2744,7 @@ namespace Goteo\Model {
                     project.num_messengers as num_messengers,
                     project.num_posts as num_posts,
                     project.days as days,
-                    $different_select
+                    project.popularity as popularity,
                     user.id as user_id,
                     user.name as user_name,
                     project_conf.noinvest as noinvest,
@@ -2788,7 +2759,7 @@ namespace Goteo\Model {
                 LEFT JOIN project_lang
                             ON  project_lang.id = project.id
                             AND project_lang.lang = :lang
-                $eng_join
+                $lang_join
                 WHERE
                 $where
                 ORDER BY $order
@@ -2801,7 +2772,7 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $projects[]=self::getWidget($proj);
+                $projects[] = self::getWidget($proj);
             }
             return $projects;
         }
