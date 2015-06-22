@@ -8,3 +8,10 @@ CREATE TABLE `promote_lang` (
 
 -- pendiente de traducir
 ALTER TABLE `promote_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+
+
+-- constrains
+DELETE FROM promote_lang WHERE id NOT IN (SELECT id FROM promote);
+ALTER TABLE `promote_lang`
+    ADD CONSTRAINT `promote_lang_ibfk_1`
+    FOREIGN KEY (`id`) REFERENCES `promote` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
