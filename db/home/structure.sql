@@ -9,6 +9,7 @@ CREATE TABLE `home` (
 ALTER TABLE `home` ADD `type` VARCHAR( 5 ) NULL DEFAULT 'main' COMMENT 'lateral o central' AFTER `item` ;
 
 -- constrains
+DELETE FROM `home` WHERE `node` NOT IN (SELECT id FROM `node`);
 ALTER TABLE `home` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 -- optimization
