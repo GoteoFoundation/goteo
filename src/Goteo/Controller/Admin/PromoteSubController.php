@@ -137,7 +137,8 @@ class PromoteSubController extends AbstractSubController {
         return array(
                 'template' => 'admin/promote/list',
                 'promoted' => $promoted,
-                'status' => $status
+                'status' => $status,
+                'translator' => $this->isTranslator()
         );
     }
 

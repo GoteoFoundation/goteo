@@ -162,6 +162,14 @@ abstract class AbstractSubController {
     }
 
     /**
+     * Returns true if the user is a translator
+     * @return boolean [description]
+     */
+    public function isTranslator() {
+        return $this->user->hasRoleInNode($this->node, ['translator']);
+    }
+
+    /**
      * Returns true if the user is at least admin
      * @return boolean [description]
      */
@@ -278,5 +286,12 @@ abstract class AbstractSubController {
      */
     public function response($view, $data = []) {
         return new Response(View::render($view, $data));
+    }
+
+    /**
+     * Handy method to add context vars to all view
+     */
+    public function contextVars(array $vars = [], $view_path_context = '/admin') {
+        View::getEngine()->useContext($view_path_context, $vars);
     }
 }

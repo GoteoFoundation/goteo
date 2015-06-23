@@ -33,7 +33,7 @@ abstract class Controller {
     /**
      * Handy method to add context vars to all view
      */
-    public function contextVars($view_path_context = '/', array $vars = []) {
+    public function contextVars(array $vars = [], $view_path_context = '/') {
         View::getEngine()->useContext($view_path_context, $vars);
     }
 }

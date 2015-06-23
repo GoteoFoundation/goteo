@@ -1,17 +1,15 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Model,
-    Goteo\Core\Redirection,
-    Goteo\Library\NormalForm;
+use Goteo\Library\NormalForm;
 
-$node = $vars['node'];
+$node = $this->node;
 
-if (!$node instanceof Model\Node) {
-    throw new Redirection('/admin');
-}
 ?>
-<form method="post" action="/admin/node/edit" enctype="multipart/form-data">
+<?php $this->layout('admin/node/layout') ?>
+
+<?php $this->section('admin-node-content') ?>
+
+    <form method="post" action="/admin/node/edit" enctype="multipart/form-data">
 
     <?php echo new NormalForm(array(
 
@@ -24,7 +22,7 @@ if (!$node instanceof Model\Node) {
             'view-step-preview' => array(
                 'type'  => 'submit',
                 'name'  => 'save-node',
-                'label' => Text::get('regular-save'),
+                'label' => $this->text('regular-save'),
                 'class' => 'next'
             )
         ),
@@ -62,14 +60,14 @@ if (!$node instanceof Model\Node) {
                 'children'  => array(
                     'logo_upload'    => array(
                         'type'  => 'file',
-                        'label' => Text::get('form-image_upload-button'),
+                        'label' => $this->text('form-image_upload-button'),
                         'class' => 'inline avatar_upload'
                     ),
                     'logo-image' => array(
                         'type'  => 'HTML',
                         'class' => 'inline avatar-image',
                         'html'  => is_object($node->logo) ?
-                                   $node->logo . '<img src="' . SITE_URL . '/image/' . $node->logo->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="logo-'.$node->logo->hash.'-remove" title="Quitar este logo" value="remove">X</button>' :
+                                    '<img src="' . '/img/small/' . $node->logo->id . '" alt="Avatar" title="'.$node->logo->id.'" /><button class="image-remove" type="submit" name="logo-'.$node->logo->hash.'-remove" title="Quitar este logo" value="remove">X</button>' :
                                    ''
                     )
 
@@ -88,14 +86,14 @@ if (!$node instanceof Model\Node) {
                 'children'  => array(
                     'label_upload'    => array(
                         'type'  => 'file',
-                        'label' => Text::get('form-image_upload-button'),
+                        'label' => $this->text('form-image_upload-button'),
                         'class' => 'inline avatar_upload'
                     ),
                     'label-image' => array(
                         'type'  => 'HTML',
                         'class' => 'inline avatar-image',
                         'html'  => is_object($node->label) ?
-                                   $node->label . '<img src="' . SITE_URL . '/image/' . $node->label->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="label-'.$node->label->hash.'-remove" title="Quitar este sello" value="remove">X</button>' :
+                                   '<img src="' . '/img/small/' . $node->label->id . '" alt="Avatar"  title="'.$node->label->id.'"  /><button class="image-remove" type="submit" name="label-'.$node->label->hash.'-remove" title="Quitar este sello" value="remove">X</button>' :
                                    ''
                     )
 
@@ -133,7 +131,7 @@ if (!$node instanceof Model\Node) {
             'linkedin' => array(
                 'type'      => 'TextBox',
                 'size'      => 20,
-                'title'     => 'LInkedin',
+                'title'     => 'LinkedIn',
                 'value'     => $node->linkedin,
             ),
 
@@ -149,6 +147,6 @@ if (!$node instanceof Model\Node) {
     ));
     ?>
 
-</form>
+    </form>
 
-<script>
+<?php $this->replace() ?>

@@ -46,7 +46,7 @@ class ChannelController extends \Goteo\Core\Controller {
         }
 
 
-        $this->contextVars('channel/', [
+        $this->contextVars([
             'channel'     => $channel,
             'side_order' => $side_order,
             'summary' => $summary,
@@ -55,7 +55,7 @@ class ChannelController extends \Goteo\Core\Controller {
             'categories' => $categories,
             'types' => $types,
             'url_project_create' => '/channel/' . $id . '/create'
-        ]);
+        ], 'channel/');
     }
 
     /**
@@ -137,7 +137,7 @@ class ChannelController extends \Goteo\Core\Controller {
     public function createAction ($id, Request $request)
     {
         // Some context vars
-        $this->contextVars('/', ['url_project_create' => '/channel/' . $id . '/create']);
+        $this->contextVars(['url_project_create' => '/channel/' . $id . '/create']);
 
         if (! ($user = Session::getUser()) ) {
             Session::store('jumpto', '/channel/' . $id . '/create');

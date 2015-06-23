@@ -2,8 +2,6 @@
 
 $status = $this->status;
 
-$translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
-
 ?>
 <?php $this->layout('admin/layout') ?>
 
@@ -24,7 +22,9 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
                 <th><!-- Bajar --></th>
                 <th><!-- Editar--></th>
                 <th><!-- On/Off --></th>
-                <th><!-- Traducir--></th>
+                <?php if ($this->translator) : ?>
+                    <th><!-- Traducir--></th>
+                <?php endif ?>
                 <th><!-- Quitar--></th>
             </tr>
         </thead>
@@ -39,23 +39,25 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
                 <td><a href="/admin/promote/up/<?php echo $promo->id; ?>">[&uarr;]</a></td>
                 <td><a href="/admin/promote/down/<?php echo $promo->id; ?>">[&darr;]</a></td>
                 <td><a href="/admin/promote/edit/<?php echo $promo->id; ?>">[Editar]</a></td>
-                <td><?php if ($promo->active) : ?>
-                <a href="/admin/promote/active/<?php echo $promo->id; ?>/off">[Ocultar]</a>
+                <td>
+                <?php if ($promo->active) : ?>
+                    <a href="/admin/promote/active/<?php echo $promo->id; ?>/off">[Ocultar]</a>
                 <?php else : ?>
-                <a href="/admin/promote/active/<?php echo $promo->id; ?>/on">[Mostrar]</a>
-                <?php endif; ?></td>
-                <?php if ($translator) : ?>
-                <td><a href="/translate/promote/edit/<?php echo $promo->id; ?>" >[Traducir]</a></td>
-                <?php endif; ?>
+                    <a href="/admin/promote/active/<?php echo $promo->id; ?>/on">[Mostrar]</a>
+                <?php endif ?>
+                </td>
+                <?php if ($this->translator) : ?>
+                    <td><a href="/translate/promote/edit/<?php echo $promo->id; ?>" >[Traducir]</a></td>
+                <?php endif ?>
                 <td><a href="/admin/promote/remove/<?php echo $promo->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
             </tr>
-            <?php endforeach; ?>
+            <?php endforeach ?>
         </tbody>
 
     </table>
     <?php else : ?>
         <p>No se han encontrado registros</p>
-    <?php endif; ?>
+    <?php endif ?>
 </div>
 
 
