@@ -27,7 +27,7 @@ $sections = $this->image_sections;
             <?php foreach ($images[$sec] as $image) : ?>
             <tr>
                 <td style="width:100px;text-align: center;">
-                    <?= $this->html('input', ['type' => 'text', 'name' => 'order[' . $image->image . ']', 'value' => $image->order]) ?>
+                    <?= $this->html('input', ['type' => 'text', 'name' => 'order[' . $image->image . ']', 'value' => $image->order, 'attribs' => ['style' => 'width:20px']]) ?>
                 </td>
                 <td style="width:105px;text-align: left;"><img src="<?= $image->imageData->getLink(175, 100) ?>" alt="image" /></td>
                 <td>
@@ -36,7 +36,7 @@ $sections = $this->image_sections;
                         <?= $this->html('select', ['name' => 'section[' . $image->image . ']', 'value' => $sec, 'options' => $sections]) ?>
                     </p>
                     <p>
-                        <label>Enlace:<br /><?= $this->html('input', ['type' => 'text', 'name' => 'url[' . $image->image . ']', 'value' => $image->url]) ?></label>
+                        <label>Enlace:<br /><?= $this->html('input', ['type' => 'text', 'name' => 'url[' . $image->image . ']', 'value' => $image->url, 'attribs' => ['style' => 'width:100%']]) ?></label>
                     </p>
                 </td>
             </tr>
