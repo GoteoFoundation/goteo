@@ -83,7 +83,7 @@ class NodeController extends \Goteo\Core\Controller {
 
         // orden de los elementos en portada
         $order = Home::getAll($node_id);
-        $side_order = Home::getAllSide($node_id);
+        $side_order = Home::getAll($node_id, 'side');
 
         $icons = Icon::getAll();
         $cats  = Category::getList();  // categorias que se usan en proyectos

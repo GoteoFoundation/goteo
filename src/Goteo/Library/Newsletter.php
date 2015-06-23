@@ -2,6 +2,7 @@
 
 namespace Goteo\Library {
 
+    use Goteo\Application\Config;
 	use Goteo\Core\Model,
         Goteo\Core\Exception,
         Goteo\Library\Template,
@@ -114,7 +115,7 @@ namespace Goteo\Library {
             $_SESSION['VAR_LANG'] = $lang;
 
             // orden de los elementos en portada
-            $order = \Goteo\Model\Home::getAll();
+            $order = \Goteo\Model\Home::getAll(Config::get('node'));
 
             // entradas de blog
             $posts_content = '';

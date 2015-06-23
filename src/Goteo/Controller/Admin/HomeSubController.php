@@ -11,60 +11,47 @@ use Goteo\Model;
 class HomeSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Gestionando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
-      'add' => 'Nueva Pregunta',
-      'move' => 'Reubicando el aporte',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe de proyecto',
-      'viewer' => 'Viendo logs',
-      'edit' => 'Editando Pregunta',
-      'translate' => 'Traduciendo Pregunta',
-      'reorder' => 'Ordenando las entradas en Portada',
-      'footer' => 'Ordenando las entradas en el Footer',
-      'projects' => 'Gestionando proyectos de la convocatoria',
-      'admins' => 'Asignando administradores de la convocatoria',
-      'posts' => 'Entradas de blog en la convocatoria',
-      'conf' => 'Configurando la convocatoria',
-      'dropconf' => 'Gestionando parte económica de la convocatoria',
-      'keywords' => 'Palabras clave',
-      'view' => 'Gestión de retornos',
-      'info' => 'Información de contacto',
+      'list' => 'Elementos de portada',
     );
-
 
     static protected $label = 'Elementos en portada';
 
+    static protected $admin_modules = array(
+         'promotes' => '\Goteo\Controller\Admin\PromoteSubController',
+         'drops' => '\Goteo\Controller\Admin\CallsSubController',
+         'calls' => '\Goteo\Controller\Admin\CampaignsSubController',
+         'posts' => '\Goteo\Controller\Admin\BlogSubController',
+         'patrons' => '\Goteo\Controller\Admin\PatronSubController',
+         'sponsors' => '\Goteo\Controller\Admin\SponsorsSubController',
+         'stories' => '\Goteo\Controller\Admin\StoriesSubController',
+         'news' => '\Goteo\Controller\Admin\NewsSubController',
+
+         // 'categories' => '\Goteo\Controller\Admin\CategoriesSubController',
+         'sumcalls' => '\Goteo\Controller\Admin\CallsSubController',
+         'summary' => '\Goteo\Controller\Admin\ProjectsSubController',
+         'searcher' => '\Goteo\Controller\Admin\ProjectsSubController',
+     );
+    static protected $available_types = array(
+        'main' => array( 'posts' => 'Entradas de blog',
+                         'promotes' => 'Proyectos destacados',
+                         'drops' => 'Capital Riego',
+                         'feed' => 'Actividad reciente',
+                         'patrons' => 'Padrinos',
+                         'stories' => 'Historias exitosas',
+                         'news' => 'Banner de prensa',
+                         'calls' => 'Convocatorias'
+                        ),
+        'side' => array( 'searcher' => 'Selector proyectos',
+                         'categories' => 'Categorias de proyectos',
+                         'summary' => 'Resumen proyectos',
+                         'sumcalls' => 'Resumen convocatorias',
+                         'sponsors' => 'Patrocinadores'
+                        ),
+    );
 
     public function listAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
-    }
-
-    public function upAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('up', $id, $this->getFilters(), $subaction));
-    }
-
-    public function downAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('down', $id, $this->getFilters(), $subaction));
-    }
-
-    public function removeAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('remove', $id, $this->getFilters(), $subaction));
-    }
-
-
-    public function process ($action = 'list', $id = null, $filters = array(), $type = 'main') {
 
         $node = $this->node;
-        if (Config::isMasterNode($node) || empty($type)) {
-            $type = 'main';
-        }
 
         $errors = array();
 
@@ -79,85 +66,85 @@ class HomeSubController extends AbstractSubController {
                 'move' => 'down'
             ));
 
-			if ($item->save($errors)) {
+            if ($item->save($errors)) {
                 // ok, sin mensaje porque todo se gestiona en la portada
                 // Message::info('Elemento añadido correctamente');
-			} else {
+                return $this->redirect();
+            } else {
                 Message::error(implode('<br />', $errors));
             }
-		}
-
-
-        switch ($action) {
-            case 'remove':
-                Model\Home::delete($id, $node, $type);
-                return $this->redirect('/admin/home');
-                break;
-            case 'up':
-                Model\Home::up($id, $node, $type);
-                return $this->redirect('/admin/home');
-                break;
-            case 'down':
-                Model\Home::down($id, $node, $type);
-                return $this->redirect('/admin/home');
-                break;
-            /*
-            case 'add':
-                $next = Model\Home::next($node, 'main');
-                $availables = Model\Home::available($node);
-
-                if (empty($availables)) {
-                    Message::info('Todos los elementos disponibles ya estan en portada');
-                    return $this->redirect('/admin/home');
-                    break;
-                }
-                return array(
-                        'folder' => 'home',
-                        'file' => 'add',
-                        'action' => 'add',
-                        'home' => (object) array('node'=>$node, 'order'=>$next, 'type'=>'main'),
-                        'availables' => $availables
-                );
-                break;
-            case 'addside':
-                $next = Model\Home::next($node, 'side');
-                $availables = Model\Home::availableSide($node);
-
-                if (empty($availables)) {
-                    Message::info('Todos los elementos laterales disponibles ya estan en portada');
-                    return $this->redirect('/admin/home');
-                    break;
-                }
-                return array(
-                        'folder' => 'home',
-                        'file' => 'add',
-                        'action' => 'add',
-                        'home' => (object) array('node'=>$node, 'order'=>$next, 'type'=>'side'),
-                        'availables' => $availables
-                );
-                break;
-             *
-             */
         }
 
-        $viewData = array(
-            'folder' => 'home',
-            'file' => 'list'
+        $central_items = Model\Home::getAll($node, 'main');
+        $central_availables = array_diff_key(static::$available_types['main'], $central_items);
+        foreach(self::$available_types['main'] as $type => $desc) {
+            $item = $central_items[$type];
+            if(isset($item)) {
+                $item->desc = $desc;
+                $item->item = $type;
+            }
+            $class = static::$admin_modules[$type];
+            if(class_exists($class)) {
+                if($class::isAllowed($this->user, $this->node)) {
+                    $item->adminUrl = $class::getUrl();
+                }
+                else {
+                    unset($central_availables[$type]);
+                }
+            }
+        }
+
+        $side_items = Model\Home::getAll($node, 'side');
+        $side_availables = array_diff_key(static::$available_types['side'], $side_items);
+        foreach(self::$available_types['side'] as $type => $desc) {
+            $item = $side_items[$type];
+            if(isset($item)) {
+                $item->desc = $desc;
+                $item->item = $type;
+            }
+            $class = static::$admin_modules[$type];
+            if(class_exists($class)) {
+                if($class::isAllowed($this->user, $this->node)) {
+                    $item->adminUrl = $class::getUrl();
+                }
+                else {
+                    unset($side_availables[$type]);
+                }
+            }
+        }
+
+        return  array(
+            'template' => 'admin/home/' . ($this->isMasterNode() ? 'master_node' : ($this->isSuperAdmin() ? 'superadmin_node' : 'admin_node')),
+            'central_items' => $central_items,
+            /* Para añadir nuevos desde la lista */
+            'central_availables' => $central_availables,
+            'central_new' => (object) array('node' => $node, 'order' => Model\Home::next($node, 'main'), 'type' => 'main'),
+
+            // laterales
+            'side_items' => $side_items,
+            'side_availables' => $side_availables,
+            'side_new' => (object) array('node' => $node, 'order' => Model\Home::next($node, 'side'), 'type' => 'side'),
         );
 
-        $viewData['items'] = Model\Home::getAll($node);
 
-        /* Para añadir nuevos desde la lista */
-        $viewData['availables'] = Model\Home::available($node);
-        $viewData['new'] = (object) array('node'=>$node, 'order'=>Model\Home::next($node, 'main'), 'type'=>'main');
+    }
 
-        // laterales
-        $viewData['side_items'] = Model\Home::getAllSide($node);
-        $viewData['side_availables'] = Model\Home::availableSide($node);
-        $viewData['side_new'] = (object) array('node'=>$node, 'order'=>Model\Home::next($node, 'side'), 'type'=>'side');
+    public function upAction($id = null, $subaction = null) {
+        $type = ($this->isMasterNode() || empty($subaction)) ? 'main' : $subaction;
+        Model\Home::up($id, $this->node, $type);
+        return $this->redirect();
+    }
 
-        return $viewData;
+    public function downAction($id = null, $subaction = null) {
+        $type = ($this->isMasterNode() || empty($subaction)) ? 'main' : $subaction;
+        Model\Home::down($id, $this->node, $type);
+        return $this->redirect();
+    }
 
+    public function removeAction($id = null, $subaction = null) {
+        $type = ($this->isMasterNode() || empty($subaction)) ? 'main' : $subaction;
+        Model\Home::delete($id, $this->node, $type);
+        return $this->redirect();
     }
 
 }

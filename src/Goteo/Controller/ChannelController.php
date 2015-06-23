@@ -27,7 +27,7 @@ class ChannelController extends \Goteo\Core\Controller {
 
         $categories = Category::getList();
 
-        $side_order = Home::getAllSide($id); //orden de lateral side
+        $side_order = Home::getAll($id, 'side'); //orden de lateral side
 
         $types = array(
             'popular',
