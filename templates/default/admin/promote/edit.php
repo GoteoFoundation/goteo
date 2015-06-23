@@ -9,7 +9,7 @@ $promo = $this->promo;
 // TODO: better autocomplete
 // proyectos disponibles
 // si tenemos ya proyecto seleccionado lo incluimos
-$projects = \Goteo\Model\Project::published([], $this->node);
+$projects = $this->projects;
 $action = $this->action;
 //para autocomplete
 $items = array();
