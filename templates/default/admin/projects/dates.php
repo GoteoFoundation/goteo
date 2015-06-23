@@ -1,17 +1,10 @@
+<?php $this->layout('admin/projects/edit_layout') ?>
+
+<?php $this->section('admin-project-content') ?>
+
 <?php
 
-use Goteo\Core\View,
-    Goteo\Library\Text,
-    Goteo\Model,
-    Goteo\Core\Redirection,
-    Goteo\Application\Message;
-
-$project = $vars['project'];
-
-if (!$project instanceof Model\Project) {
-    Message::error('Instancia de proyecto corrupta');
-    throw new Redirection('/admin/projects');
-}
+$project = $this->project;
 
 $elements = array(
     'created' => array(
@@ -50,7 +43,7 @@ $elements = array(
 
 );
 ?>
-<div class="widget">
+
 <p>
     <?php if (!empty($project->passed)) {
         echo 'El proyecto terminó la primera ronda el día <strong>'.date('d/m/Y', strtotime($project->passed)).'</strong>.';
@@ -65,19 +58,19 @@ $elements = array(
 
     <p>Cambiar las fechas puede causar cambios en los días de campaña del proyecto.</p>
 
-    <form method="post" action="/admin/projects" >
-        <input type="hidden" name="id" value="<?php echo $project->id ?>" />
+    <form method="post" action="/admin/projects/dates/<?php echo $project->id ?>" >
 
 <?php foreach ($elements as $id=>$element) : ?>
     <div id="<?php echo $id ?>">
         <h4><?php echo $element['title'] ?>:</h4>
-        <?php echo View::get('superform/element/datebox.html.php', array('value'=>$element['value'], 'id'=>$id, 'name'=>$id, 'js' => true)); ?>
+        <?php echo \Goteo\Core\View::get('superform/element/datebox.html.php', array('value'=>$element['value'], 'id'=>$id, 'name'=>$id, 'js' => true)); ?>
         <?php if (!empty($element['subtitle'])) echo $element['subtitle'].'<br />'; ?>
     </div>
         <br />
-<?php endforeach; ?>
+<?php endforeach ?>
 
         <input type="submit" name="save-dates" value="Guardar" />
 
     </form>
-</div>
+
+<?php $this->replace() ?>

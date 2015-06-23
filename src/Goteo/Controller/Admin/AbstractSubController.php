@@ -144,15 +144,6 @@ abstract class AbstractSubController {
         return false;
     }
 
-    // public static function getMenu(\Goteo\Model\User $user, $node) {
-    //     $menu = array();
-    //     foreach(static::$labels as $action => $label) {
-    //         // TODO: permission check
-    //         $menu[$action] = $label;
-    //     }
-    //     return $menu;
-    // }
-
     /**
      * Returns true if current node/channel is the master
      * @return boolean [description]

@@ -2973,9 +2973,7 @@ namespace Goteo\Model {
          * @param int pages
          * @return array of project instances
          */
-        public static function getList($filters = array(), $node = null, $limit = 10, &$pages, $page = 1) {
-
-            $debug = (isset($_GET['dbg']) && $_GET['dbg'] == 'debug');
+        public static function getList($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false) {
 
             $projects = array();
 
@@ -3102,21 +3100,13 @@ namespace Goteo\Model {
                       $sqlFilter
                       $sqlOrder";
 
-            if ($limit != 0) {
-                $sql_count ="
-                    SELECT COUNT(id)
+            if($count) {
+                // Return count
+                $sql = "SELECT COUNT(id)
                     FROM project
                     $sqlConsultantFilter
-                    WHERE $where
-                    ";
-
-                $ret = self::doPagination($sql_count, $values, $page, $limit);
-                $offset = $ret['offset'];
-                $pages = $ret['pages'];
-
-                $limit_cond = "LIMIT $offset,$limit";
-            } else {
-                $limit_cond = "";
+                    WHERE $where";
+                return (int) self::query($sql, $values)->fetchColumn();
             }
 
             // la select
@@ -3158,14 +3148,11 @@ namespace Goteo\Model {
 
                     $sqlConsultantFilter
                     WHERE $where
-                    $limit_cond
+                    LIMIT $offset, $limit
                     ";
 
 
-            if ($debug) {
-                echo \sqldbg($sql, $values);
-                die;
-            }
+            // echo \sqldbg($sql, $values);
 
 
             $query = self::query($sql, $values);

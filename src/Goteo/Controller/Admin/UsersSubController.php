@@ -363,7 +363,8 @@ class UsersSubController extends AbstractSubController {
 
     public function listAction($id = null, $subaction = null) {
         $filters = $this->getFilters();
-        $users = Model\User::getAll($filters, array_keys($this->nodes));
+        $limit = 20;
+        $users = Model\User::getAll($filters, array_keys($this->nodes), $this->getGet('pag') * $limit, $limit);
         $total = Model\User::getAll($filters, array_keys($this->nodes), 0, 0 , true);
 
         $status = array(
@@ -400,7 +401,8 @@ class UsersSubController extends AbstractSubController {
                 'roles' => $roles,
                 'types' => $types,
                 'projects' => $projects,
-                'orders' => $orders
+                'orders' => $orders,
+                'limit' => $limit
         );
     }
 
