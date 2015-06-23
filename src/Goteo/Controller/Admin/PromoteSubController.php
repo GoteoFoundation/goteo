@@ -4,6 +4,7 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception;
 use Goteo\Library\Feed,
     Goteo\Application\Message,
@@ -22,8 +23,16 @@ class PromoteSubController extends AbstractSubController {
 
     static protected $label = 'Proyectos destacados';
 
+    private function checkItemPermission($id) {
+        if($sponsor = Model\Promote::get($id)) {
+            if($sponsor->node === $this->node) return true;
+        }
+        throw new ControllerAccessDeniedException('You cannot admin this item');
+    }
 
-    public function editAction($id = null, $subaction = null) {
+    public function editAction($id) {
+        $this->checkItemPermission($id);
+
         $promo = Model\Promote::get($id);
         if ($promo && $this->isPost()) {
 
@@ -65,7 +74,7 @@ class PromoteSubController extends AbstractSubController {
     }
 
 
-    public function addAction($id = null, $subaction = null) {
+    public function addAction() {
         // siguiente orden
         $next = Model\Promote::next($this->node);
         if ($this->isPost()) {
@@ -128,7 +137,7 @@ class PromoteSubController extends AbstractSubController {
     }
 
 
-    public function listAction($id = null, $subaction = null) {
+    public function listAction() {
 
         $promoted = Model\Promote::getList(false, $this->node);
         // estados de proyectos
@@ -142,22 +151,26 @@ class PromoteSubController extends AbstractSubController {
         );
     }
 
-    public function upAction($id = null, $subaction = null) {
+    public function upAction($id) {
+        $this->checkItemPermission($id);
         Model\Promote::up($id, $this->node);
         return $this->redirect();
     }
 
-    public function downAction($id = null, $subaction = null) {
+    public function downAction($id) {
+        $this->checkItemPermission($id);
         Model\Promote::down($id, $this->node);
         return $this->redirect();
     }
 
-    public function activeAction($id = null, $subaction = null) {
+    public function activeAction($id, $subaction = null) {
+        $this->checkItemPermission($id);
         Model\Promote::setActive($id, $subaction == 'on' ? true : false);
         return $this->redirect();
     }
 
-    public function removeAction($id = null, $subaction = null) {
+    public function removeAction($id = null) {
+        $this->checkItemPermission($id);
         if (Model\Promote::delete($id)) {
             Message::info('Destacado quitado correctamente');
         } else {
