@@ -71,7 +71,7 @@ namespace Goteo\Controller {
             $user = Session::getUser();
 
             if ( ! $user ) {
-                throw new ControllerAccessDeniedException("Access denied! User has no permissions");
+                throw new ControllerAccessDeniedException('Access denied! User has no permissions');
             }
 
             // all node names

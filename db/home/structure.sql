@@ -9,7 +9,7 @@ CREATE TABLE `home` (
 ALTER TABLE `home` ADD `type` VARCHAR( 5 ) NULL DEFAULT 'main' COMMENT 'lateral o central' AFTER `item` ;
 
 -- constrains
-ALTER TABLE `goteo`.`home` ADD FOREIGN KEY (`node`) REFERENCES `goteo`.`node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE `home` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 -- optimization
-ALTER TABLE `goteo`.`home` CHANGE `type` `type` VARCHAR(5) CHARSET utf8 COLLATE utf8_general_ci DEFAULT 'main' NOT NULL COMMENT 'lateral o central';
+ALTER TABLE `home` CHANGE `type` `type` VARCHAR(5) CHARSET utf8 COLLATE utf8_general_ci DEFAULT 'main' NOT NULL COMMENT 'lateral o central';

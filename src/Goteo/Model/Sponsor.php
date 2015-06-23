@@ -116,7 +116,7 @@ class Sponsor extends \Goteo\Core\Model {
 
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
-
+        $fail = false;
         // Primero la imagenImagen
         if (is_array($this->image) && !empty($this->image['name'])) {
             $image = new Image($this->image);
@@ -124,7 +124,8 @@ class Sponsor extends \Goteo\Core\Model {
             if ($image->save($errors)) {
                 $this->image = $image->id;
             } else {
-                \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
+                //mmmm
+                $fail = true;
                 $this->image = '';
             }
         }
@@ -137,26 +138,14 @@ class Sponsor extends \Goteo\Core\Model {
             'image',
             'order'
             );
-
-        $set = '';
-        $values = array();
-
-        foreach ($fields as $field) {
-            if ($set != '') $set .= ", ";
-            $set .= "`$field` = :$field ";
-            $values[":$field"] = $this->$field;
-        }
-
         try {
-            $sql = "REPLACE INTO sponsor SET " . $set;
-            self::query($sql, $values);
-            if (empty($this->id)) $this->id = self::insertId();
-
+            //automatic $this->id assignation
+            $this->dbInsertUpdate($fields);
             Check::reorder($this->id, 'up', 'sponsor');
 
-            return true;
+            return !$fail;
         } catch(\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
+            $errors[] = 'Save error ' . $e->getMessage();
             return false;
         }
     }

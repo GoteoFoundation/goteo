@@ -34,10 +34,12 @@
         </dl>
         <input type="submit" name="<?= $this->form['submit']['name'] ?>" value="<?= $this->form['submit']['label'] ?>" />
 
+    <?php if($this->translator): ?>
         <p>
             <label for="mark-pending">Marcar como pendiente de traducir</label>
             <input id="mark-pending" type="checkbox" name="pending" value="1" />
         </p>
+    <?php endif ?>
 
     </form>
 </div>
