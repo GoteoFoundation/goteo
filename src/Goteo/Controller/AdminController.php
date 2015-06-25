@@ -95,8 +95,8 @@ namespace Goteo\Controller {
             //if need to change the current node
             if($request->query->has('admin_node') && array_key_exists($request->query->get('admin_node'), $admin_nodes)) {
                 $admin_node = $request->query->get('admin_node');
-                Session::store('admin_node', $admin_node);
             }
+            Session::store('admin_node', $admin_node);
 
 
             // Build menu from subcontrollers for the current user/node
