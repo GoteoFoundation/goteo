@@ -202,58 +202,71 @@ namespace Goteo\Model {
 
         /**
          * Check if the project is can be seen by the user id
-         * @param  string $user_id ID of the user
+         * @param  Goteo\Model\User $user  the user to check (if empty checks )
          * @return boolean          true if success, false otherwise
          */
-        public static function userPublicable($project, $user) {
+        public function userCanView(User $user = null) {
 
-            // solamente se puede ver publicamente si...
-            $grant = false;
-            if ( $project->status > 2 // está publicado
-                || $project->owner == $user->id // es su proyecto
-                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
-                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
-                || isset($user->roles['superadmin']) // es superadmin
-                || (isset($user->roles['checker']) && User\Review::is_assigned($user->id, $project->id)) // es revisor
-                || (isset($user->roles['caller']) && Call\Project::is_assigned($user->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
-            )
-                $grant = true;
+            // already published:
+            if($this->status >= self::STATUS_IN_CAMPAIGN) return true;
+            if(empty($user)) return false;
+            // owns the project
+            if($this->owner === $user->id) return true;
+            // is admin in the project node
+            if($user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root'])) return true;
+            // is reviewer
+            if($user->hasRoleInNode($this->node, ['checker']) || User\Review::is_assigned($user->id, $this->id)) return true;
+            // is caller
+            if($user->hasRoleInNode($this->node, ['caller']) || Call\Project::is_assigned($user->id, $this->id)) return true;
 
-            return $grant;
+            return false;
         }
 
         /**
          * Check if the project is editable by the user id
-         * @param  string $user_id ID of the user
+         * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public static function userEditable($project, $user) {
-            $grant = false;
-            // Substituye ACL, solo lo puede editar si...
-            if ($project->owner == $user->id // es su proyecto
-                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
-                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
-                || isset($user->roles['superadmin']) // es superadmin
-                || (isset($user->roles['checker']) && User\Review::is_assigned($user->id, $project->id)) // es revisor
-            )
-                $grant = true;
+        public function userCanEdit(User $user = null) {
+            if(empty($user)) return false;
+            // owns the project
+            if($this->owner === $user->id) return true;
+            // is admin in the project node
+            if($user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root'])) return true;
+            // is reviewer
+            if($user->hasRoleInNode($this->node, ['checker']) || User\Review::is_assigned($user->id, $this->id)) return true;
 
-            return $grant;
+            return false;
         }
 
         /**
          * Check if the project is removable by the user id
-         * @param  string $user_id ID of the user
+         * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public static function userRemovable($project, $user) {
-            $grant = false;
-            if ($project->owner == $user->id // es su proyecto
-                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
-                || isset($user->roles['superadmin']) // es superadmin
-            )
-                $grant = true;
-            return $grant;
+        public function userCanDelete(User $user = null) {
+            if(empty($user)) return false;
+            // owns the project
+            if($this->owner === $user->id) return true;
+            // is superadmin in the project node
+            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+
+            return false;
+        }
+
+        /**
+         * Check if the project is administrable by the user id
+         * Meaning touchgin sensitive data such as bank account, etc
+         * @param  Goteo\Model\User $user  the user to check
+         * @return boolean          true if success, false otherwise
+         */
+        public function userCanAdmin(User $user = null) {
+            if(empty($user)) return false;
+
+            // is superadmin in the project node
+            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+
+            return false;
         }
 
         /**
@@ -262,7 +275,8 @@ namespace Goteo\Model {
          * @param array $data
          * @return boolean
          */
-        public function create ($node = \GOTEO_NODE, &$errors = array()) {
+        public function create ($node = null, &$errors = array()) {
+            if(empty($node)) $node = Config::get('node');
             $user = $this->owner;
 
             if (empty($user)) {
@@ -849,7 +863,8 @@ namespace Goteo\Model {
          * Listado simple de todos los proyectos de cierto nodo
          * @return: strings array
          */
-        public static function getAll($node = \GOTEO_NODE) {
+        public static function getAll($node = null) {
+            if(empty($node)) $node = Config::get('node');
 
             $list = array();
 
@@ -3072,7 +3087,7 @@ namespace Goteo\Model {
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $filters['node'];
-            } elseif (!empty($node) && $node != \GOTEO_NODE) {
+            } elseif (!empty($node) && !Config::isMasterNode($node)) {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
@@ -3262,7 +3277,7 @@ namespace Goteo\Model {
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $filters['node'];
-            } elseif (!empty($node) && $node != \GOTEO_NODE) {
+            } elseif (!empty($node) && !Config::isMasterNode($node)) {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
@@ -3312,7 +3327,8 @@ namespace Goteo\Model {
          * @param string node id
          * @return array of project instances
          */
-        public static function getTranslates($filters = array(), $node = \GOTEO_NODE) {
+        public static function getTranslates($filters = array(), $node = null) {
+            if(empty($node)) $node = Config::get('node');
             $projects = array();
 
             $values = array(':node' => $node);

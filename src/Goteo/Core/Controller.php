@@ -12,8 +12,8 @@ abstract class Controller {
     /**
      * Handy method to send a response from a view
      */
-    public function viewResponse($view, $vars = []) {
-        return new Response(View::render($view, $vars));
+    public function viewResponse($view, $vars = [], $status = 200) {
+        return new Response(View::render($view, $vars), $status);
     }
 
     /**

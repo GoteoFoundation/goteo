@@ -92,6 +92,7 @@ class ProjectsSubController extends AbstractSubController {
         $this->contextVars([
             'nodes' => $this->isMasterNode() ? $this->nodes : [],
             'calls' => $this->calls,
+            'user' => $this->user,
             ], '/admin/projects');
     }
 
@@ -100,8 +101,21 @@ class ProjectsSubController extends AbstractSubController {
      * @param  [type] $id [description]
      * @return [type]     [description]
      */
-    private function getProject($id) {
+    private function getProject($id, $level = 'view') {
         $project = Model\Project::get($id);
+        if($level === 'admin' && !$project->userCanAdmin($this->user)) {
+            throw new ControllerAccessDeniedException('You cannot admin this project');
+        }
+        elseif($level === 'delete' && !$project->userCanDelete($this->user)) {
+            throw new ControllerAccessDeniedException('You cannot delete this project');
+        }
+        elseif($level === 'edit' && !$project->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException('You cannot edit this project');
+        }
+        elseif(!$project->userCanView($this->user)) {
+            throw new ControllerAccessDeniedException('You cannot view this project');
+        }
+
         if(!in_array($project->node, $this->nodes)) {
             $project->consultants = Model\Project::getConsultants($project->id);
             return $project;
@@ -111,7 +125,7 @@ class ProjectsSubController extends AbstractSubController {
     }
 
     public function confAction($id = null) {
-        $project = Model\Project::get($id);
+        $project = $this->getProject($id, 'edit');
         $conf = Model\Project\Conf::get($project->id);
 
 
@@ -139,7 +153,7 @@ class ProjectsSubController extends AbstractSubController {
 
 
     public function consultantsAction($id) {
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
         // cambiar el asesor
         $op = $this->getGet('op');
         $user = Model\User::get($this->getGet('user'));
@@ -162,7 +176,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function rebaseAction($id = null, $subaction = null) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         if ($this->getPost('newid')) {
 
@@ -200,7 +214,7 @@ class ProjectsSubController extends AbstractSubController {
 
 
     public function reportAction($id) {
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'edit');
         // informe financiero
         // Datos para el informe de transacciones correctas
         $data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
@@ -217,7 +231,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function open_tagsAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         // cambiar la agrupacion
         $op = $this->getGet('op');
@@ -243,7 +257,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function assignAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         // asignar a una convocatoria solo si
         //   está en edición a campaña
@@ -287,7 +301,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function moveAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         if ($this->isPost()) {
 
@@ -331,7 +345,7 @@ class ProjectsSubController extends AbstractSubController {
     public function imagesAction($id) {
         // Project && permission check
 
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'edit');
         // FROM POST
         $section = $this->getPost('section');
         $url = $this->getPost('url');
@@ -389,7 +403,7 @@ class ProjectsSubController extends AbstractSubController {
 
 
     public function accountsAction($id) {
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         if ($this->isPost()) {
             $accounts = Model\Project\Account::get($project->id);
@@ -420,7 +434,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function datesAction($id = null, $subaction = null) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'edit');
         if($this->isPost()) {
             $fields = array(
                 'created',
@@ -477,7 +491,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function reviewAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
         // pasar un proyecto a revision
         if ($project->ready($errors)) {
             // feed this action
@@ -491,7 +505,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function publishAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
         // poner un proyecto en campaña
         if ($project->publish($errors)) {
             Send::toOwner('tip_0', $project);
@@ -505,7 +519,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function enableAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
         // si no esta en edicion, recuperarlo
 
         // Si el proyecto no tiene asesor, asignar al admin que lo ha pasado a negociación
@@ -528,7 +542,7 @@ class ProjectsSubController extends AbstractSubController {
     // descartar un proyecto por malo
     public function cancelAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         // Asignar como asesor al admin que lo ha descartado
         if ($this->user->id != 'root') {
@@ -548,7 +562,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function fulfillAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         // marcar que el proyecto ha cumplido con los retornos colectivos
         if ($project->satisfied($errors)) {
@@ -562,7 +576,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function unfulfillAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         // dar un proyecto por financiado manualmente
         if ($project->rollback($errors)) {
@@ -577,7 +591,7 @@ class ProjectsSubController extends AbstractSubController {
     //rechazo express
     public function rejectAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         //  idioma de preferencia
         $prefer = Model\User::getPreferences($project->user->id);
@@ -621,7 +635,7 @@ class ProjectsSubController extends AbstractSubController {
     // cortar el grifo
     public function noinvestAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         if (Model\Project\Conf::closeInvest($project->id)) {
             $this->doFeed($project, 'El admin %s ha <span class="red">cerrado el grifo</span> al proyecto %s');
@@ -636,7 +650,7 @@ class ProjectsSubController extends AbstractSubController {
     // abrir el grifo
     public function openinvestAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         if (Model\Project\Conf::openInvest($project->id)) {
             $this->doFeed($project, 'El admin %s ha <span class="red">abierto el grifo</span> al proyecto %s');
@@ -651,7 +665,7 @@ class ProjectsSubController extends AbstractSubController {
     // Vigilar
     public function watchAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         if (Model\Project\Conf::watch($project->id)) {
             $this->doFeed($project, 'El admin %s ha empezado a <span class="red">vigilar</span> el proyecto %s');
@@ -665,7 +679,7 @@ class ProjectsSubController extends AbstractSubController {
     // Dejar de vigilar
     public function unwatchAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         if (Model\Project\Conf::unwatch($project->id)) {
             $this->doFeed($project, 'El admin %s ha <span class="red">dejado de vigilar</span> el proyecto %s');
@@ -680,7 +694,7 @@ class ProjectsSubController extends AbstractSubController {
     // Finalizar campaña
     public function finishAction($id) {
         // Project && permission check
-        $project = $this->getProject($id);
+        $project = $this->getProject($id, 'admin');
 
         if (Model\Project\Conf::finish($project)) {
             $this->doFeed($project, 'El admin %s ha <span class="red">finalizado la campaña</span> del proyecto %s');

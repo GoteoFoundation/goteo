@@ -136,55 +136,74 @@ foreach ($filters as $key=>$value) {
             </tr>
             <tr>
                 <td colspan="7"><?php
+                    $add = array();
                     if ($project->status < 3) {
-                        echo "Información al <strong>{$project->progress}%</strong>";
+                        $add[] = "Información al <strong>{$project->progress}%</strong>";
                     } elseif ($project->status == 3) {
-                        echo "Lleva {$project->days_active} días de campaña.&nbsp;&nbsp;&nbsp;";
-                        echo "Le quedan {$project->days} días de la {$project->round}ª ronda.&nbsp;&nbsp;&nbsp;";
-                        echo "<strong>Conseguido:</strong> ".\euro_format($project->amount)."€&nbsp;&nbsp;&nbsp;";
-                        echo "<strong>Cofin:</strong> {$project->num_investors}&nbsp;&nbsp;&nbsp;<strong>Colab:</strong> {$project->num_messengers}";
+                        $add[] = "Lleva {$project->days_active} días de campaña";
+                        $add[] = "Le quedan {$project->days} días de la {$project->round}ª ronda";
+                        $add[] = "<strong>Conseguido:</strong> ".\euro_format($project->amount)."€";
+                        $add[] = "<strong>Cofin:</strong> {$project->num_investors}";
+                        $add[] = "<strong>Colab:</strong> {$project->num_messengers}";
 
                     }
 
-                    $consultants = array_values($project->consultants);
-                    if (!empty($consultants)) {
-                        if (($project->status < 3) ||  ($project->status == 3 && $project->round > 0)) {
-                            echo " | ";
+                    if ($project->consultants) {
+                        $consultants = array();
+                        foreach($project->consultants as $id => $name) {
+                            if(\Goteo\Controller\Admin\UsersSubController::isAllowed($this->user, $project->node)) {
+                                $consultants[] = '<a href="/admin/users/manage/'.$id.'">' . $name . '</a>';
+                            }
+                            else {
+                                $consultants[] = $name;
+                            }
                         }
-                        echo "Asesorado por: " . implode(", ", $consultants);
-                    }
+                        if($consultants) $add[] = "Asesorado por: " . implode(', ', $consultants);
 
+                    }
+                    echo implode(' | ', $add);
                 ?></td>
             </tr>
-            <tr>
+            <?php if($project->userCanView($this->user)): ?>
+              <tr>
                 <td colspan="7">
                     IR A:&nbsp;
-                    <a href="/project/edit/<?= $project->id ?>" target="_blank">[Editar]</a>
-                    <a href="/admin/users/?id=<?= $project->owner ?>" target="_blank">[Impulsor]</a>
-                    <?php if (!isset($_SESSION['admin_node'])
-                            || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE)
-                            || (isset($_SESSION['admin_node']) && $user->node == $_SESSION['admin_node'])) : ?>
-                    <a href="/admin/accounts/?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
-                    <?php else:  ?>
-                    <a href="/admin/invests/?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
+                    <a href="/project/<?= $project->id ?>" target="_blank">[Página publica]</a>
+                    <?php if($project->userCanEdit($this->user)): ?>
+                        <a href="/project/edit/<?= $project->id ?>" target="_blank">[Editar]</a>
+                        <a href="/admin/projects/report/<?= $project->id ?>" target="_blank">[Informe Financiacion]</a>
                     <?php endif ?>
-                    <a href="/admin/users/?project=<?= $project->id ?>" title="Ver sus cofinanciadores">[Cofinanciadores]</a>
-                    <a href="/admin/projects/report/<?= $project->id ?>" target="_blank">[Informe Financiacion]</a>
+                    <?php if(\Goteo\Controller\Admin\UsersSubController::isAllowed($this->user, $project->node)): ?>
+                        <a href="/admin/users/?id=<?= $project->owner ?>" target="_blank">[Impulsor]</a>
+                        <a href="/admin/users/?project=<?= $project->id ?>" title="Ver sus cofinanciadores">[Cofinanciadores]</a>
+                    <?php endif ?>
+                    <?php if(\Goteo\Controller\Admin\InvestsSubController::isAllowed($this->user, $project->node)): ?>
+                        <a href="/admin/invests/?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
+                    <?php elseif(\Goteo\Controller\Admin\AccountsSubController::isAllowed($this->user, $project->node)): ?>
+                    <?php elseif(\Goteo\Controller\Admin\AccountsSubController::isAllowed($this->user, $project->node)): ?>
+                        <a href="/admin/accounts/?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
+                    <?php endif ?>
                 </td>
-            </tr>
-            <tr>
+              </tr>
+            <?php endif ?>
+            <?php if($project->userCanEdit($this->user)): ?>
+              <tr>
                 <td colspan="7">
                     CAMBIAR:&nbsp;
                     <a href="<?php echo "/admin/projects/dates/{$project->id}" ?>" title="Para modificar a mano las fechas clave">[Fechas]</a>
-                    <a href="<?php echo "/admin/projects/accounts/{$project->id}" ?>" title="Para cambiar las cuentas bancarias">[Cuentas]</a>
-                    <a href="<?php echo "/admin/projects/move/{$project->id}" ?>" title="Para pasar el proyecto a otro nodo">[Nodo]</a>
-                    <a href="<?php echo "/admin/projects/open_tags/{$project->id}" ?>" title="Para asignar Opentags">[Agrupación]</a>
-                    <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}" ?>" title="Para cambiar la Url del proyecto" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Id]</a><?php endif ?>
-                    <a href="<?php echo "/admin/projects/consultants/{$project->id}" ?>" title="Para gestionar los asesosres">[Asesor]</a>
+                    <?php if($project->userCanAdmin($this->user)): ?>
+                        <a href="<?php echo "/admin/projects/accounts/{$project->id}" ?>" title="Para cambiar las cuentas bancarias">[Cuentas]</a>
+                        <a href="<?php echo "/admin/projects/move/{$project->id}" ?>" title="Para pasar el proyecto a otro nodo">[Nodo]</a>
+                        <a href="<?php echo "/admin/projects/open_tags/{$project->id}" ?>" title="Para asignar Opentags">[Agrupación]</a>
+                        <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}" ?>" title="Para cambiar la Url del proyecto" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Id]</a><?php endif ?>
+                        <a href="<?php echo "/admin/projects/consultants/{$project->id}" ?>" title="Para gestionar los asesosres">[Asesor]</a>
+                    <?php endif ?>
                     <a href="<?php echo "/admin/projects/conf/{$project->id}" ?>" title="Para cambiar los días de primera y segunda ronda">[Configuración de campaña]</a>
                 </td>
-            </tr>
-            <tr>
+              </tr>
+            <?php endif ?>
+            <?php if($project->userCanAdmin($this->user)): ?>
+              <tr>
                 <td colspan="7">
                     ACCIONES:&nbsp;
                     <?php if ($project->status == 0) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}" ?>" title="Pasa el proyecto al estado Editándose">[Reabrir edición]</a><?php endif ?>
@@ -204,20 +223,33 @@ foreach ($filters as $key=>$value) {
                     <?php } ?>
                     <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/projects/reject/{$project->id}" ?>" title="Pasa el proyecto a estado Descartado y manda un mail" onclick="return confirm('Se va a enviar un mail automáticamente y pasará a estado descartado, ok?');">[Rechazo express]</a><?php endif ?>
                 </td>
-            </tr>
-            <tr>
+              </tr>
+            <?php endif ?>
+            <?php if($project->userCanEdit($this->user)): ?>
+              <tr>
                 <td colspan="5">
                     GESTIONAR:&nbsp;
-                    <?php if ($project->status == 1) : ?><a href="<?php echo "/admin/reviews/add/{$project->id}" ?>" onclick="return confirm('Se va a iniciar revisión de un proyecto en estado Edición, ok?');">[Iniciar revisión]</a><?php endif ?>
-                    <?php if ($project->status == 2) : ?><a href="<?php echo "/admin/reviews/?project=".urlencode($project->id) ?>">[Ir a la revisión]</a><?php endif ?>
-                    <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}" ?>">[Ir a la traducción]</a>
-                    <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}" ?>">[Habilitar traducción]</a><?php endif ?>
+                    <?php if(\Goteo\Controller\Admin\ReviewsSubController::isAllowed($this->user, $project->node)): ?>
+                        <?php if ($project->status == 1) : ?><a href="<?php echo "/admin/reviews/add/{$project->id}" ?>" onclick="return confirm('Se va a iniciar revisión de un proyecto en estado Edición, ok?');">[Iniciar revisión]</a><?php endif ?>
+                        <?php if ($project->status == 2) : ?><a href="<?php echo "/admin/reviews/?project=".urlencode($project->id) ?>">[Ir a la revisión]</a><?php endif ?>
+                    <?php endif ?>
+                    <?php if(\Goteo\Controller\Admin\TranslatesSubController::isAllowed($this->user, $project->node)): ?>
+                        <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}" ?>">[Ir a la traducción]</a>
+                        <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}" ?>">[Habilitar traducción]</a><?php endif ?>
+                    <?php endif ?>
                     <a href="/admin/projects/images/<?= $project->id ?>">[Organizar imágenes]</a>
-                    <?php if (in_array($project->status, array('1', '2', '3')) && !isset($project->called)) : ?><a href="<?php echo "/admin/projects/assign/{$project->id}" ?>">[Asignarlo a una convocatoria]</a><?php endif ?>
-                    <?php if ($project->status == 4 || $project->status == 5) : ?><a href="/admin/commons?project=<?= $project->id ?>">[Retornos colectivos]</a><?php endif ?>
-                    <?php if (isset($this->contracts[$project->id])) : ?><a href="<?php echo "/contract/{$project->id}" ?>" target="_blank">[Contrato]</a><?php endif ?>
+                    <?php if(\Goteo\Controller\Admin\CommonsSubController::isAllowed($this->user, $project->node)): ?>
+                        <?php if (in_array($project->status, array('1', '2', '3')) && !isset($project->called)) : ?><a href="<?php echo "/admin/projects/assign/{$project->id}" ?>">[Asignarlo a una convocatoria]</a><?php endif ?>
+                        <?php if ($project->status == 4 || $project->status == 5) : ?><a href="/admin/commons?project=<?= $project->id ?>">[Retornos colectivos]</a><?php endif ?>
+                    <?php endif ?>
+                    <?php
+                    // TODO: ContractController is not secure!!!
+                    if($project->userCanAdmin($this->user)): ?>
+                        <?php if (isset($this->contracts[$project->id])) : ?><a href="<?php echo "/contract/{$project->id}" ?>" target="_blank">[Contrato]</a><?php endif ?>
+                    <?php endif ?>
                 </td>
-            </tr>
+              </tr>
+            <?php endif ?>
         </tbody>
 
     </table>
