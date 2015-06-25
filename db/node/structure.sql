@@ -34,3 +34,10 @@ ALTER TABLE `node` ADD `label` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Sello e
 
 -- background color del módulo de owner
 ALTER TABLE `node` ADD `owner_background` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Color de background módulo owner';
+
+-- asesor por defecto del canal
+ALTER TABLE `node` ADD `default_consultant` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Asesor por defecto para el proyecto';
+
+-- limite de sponsors
+ALTER TABLE `node` ADD `sponsors_limit` INT( 2 ) DEFAULT NULL COMMENT 'Número de sponsors permitidos para el canal';
+

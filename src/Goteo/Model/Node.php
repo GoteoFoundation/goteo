@@ -15,7 +15,9 @@ namespace Goteo\Model {
             $admins = array(), // administradores
             $logo,
             $sello,
-            $image;
+            $image,
+            $default_consultant,
+            $sponsors_limit;
 
 
 
@@ -45,7 +47,9 @@ namespace Goteo\Model {
                     node.facebook as facebook,
                     node.linkedin as linkedin,
                     node.google as google,
-                    node.owner_background as owner_background
+                    node.owner_background as owner_background,
+                    node.default_consultant as default_consultant,
+                    node.sponsors_limit as sponsors_limit
                 FROM node
                 LEFT JOIN node_lang
                     ON  node_lang.id = node.id
@@ -217,7 +221,9 @@ namespace Goteo\Model {
             $fields = array(
                 'name',
                 'email',
-                'active'
+                'active',
+                'default_consultant',
+                'sponsors_limit'
                 );
 
             $set = '';
@@ -253,7 +259,9 @@ namespace Goteo\Model {
                 'name',
                 'email',
                 'url',
-                'active'
+                'active',
+                'default_consultant',
+                'sponsors_limit'
                 );
 
             $set = '';

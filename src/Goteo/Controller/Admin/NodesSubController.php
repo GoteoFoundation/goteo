@@ -92,7 +92,6 @@ class NodesSubController extends AbstractSubController {
         $errors = array();
 
         if ($this->isPost()) {
-
             switch ($this->getPost('action')) {
                 case 'add':
 
@@ -103,7 +102,9 @@ class NodesSubController extends AbstractSubController {
                                 'name' => $this->getPost('name'),
                                 'email' => $this->getPost('email'),
                                 'url' => $url,
-                                'active' => $this->getPost('active')
+                                'active' => $this->getPost('active'),
+                                'default_consultant' => $this->getPost('default_consultant'),
+                                'sponsors_limit' => $this->getPost('sponsors_limit')
                             ));
 
                     if ($node->create($errors)) {
@@ -143,7 +144,9 @@ class NodesSubController extends AbstractSubController {
                                 'name' => $this->getPost('name'),
                                 'email' => $this->getPost('email'),
                                 'url' => $this->getPost('url'),
-                                'active' => $this->getPost('active')
+                                'active' => $this->getPost('active'),
+                                'default_consultant' => $this->getPost('default_consultant'),
+                                'sponsors_limit' => $this->getPost('sponsors_limit')
                             ));
 
                     if ($node->save($errors)) {
@@ -170,10 +173,8 @@ class NodesSubController extends AbstractSubController {
                         Message::error('Fallo al actualizar, revisar los campos');
 
                         return array(
-                                'folder' => 'nodes',
-                                'file' => 'edit',
-                                'action' => 'edit',
-                                'node' => $node
+                                'node' => $node,
+                                'template' => 'admin/nodes/edit'
                         );
                     }
                     break;
@@ -182,21 +183,24 @@ class NodesSubController extends AbstractSubController {
 
         switch ($action) {
             case 'add':
+                $node_admins = Model\Node::getAdmins($id);
+                
                 return array(
-                    'folder' => 'nodes',
-                    'file' => 'add',
+                    'node' => $node,
                     'action' => 'add',
-                    'node' => null
+                    'template' => 'admin/nodes/add',
+                    'node_admins' => $node_admins
                 );
                 break;
             case 'edit':
                 $node = Model\Node::get($id);
+                $node_admins = Model\Node::getAdmins($id);
 
                 return array(
-                    'folder' => 'nodes',
-                    'file' => 'edit',
+                    'node' => $node,
                     'action' => 'edit',
-                    'node' => $node
+                    'template' => 'admin/nodes/edit',
+                    'node_admins' => $node_admins
                 );
                 break;
             case 'admins':
