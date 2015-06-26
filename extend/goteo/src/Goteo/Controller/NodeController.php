@@ -83,7 +83,7 @@ class NodeController extends \Goteo\Core\Controller {
 
         // orden de los elementos en portada
         $order = Home::getAll($node_id);
-        $side_order = Home::getAllSide($node_id);
+        $side_order = Home::getAll($node_id, 'side');
 
         $icons = Icon::getAll();
         $cats  = Category::getList();  // categorias que se usan en proyectos
@@ -117,25 +117,25 @@ class NodeController extends \Goteo\Core\Controller {
 
             // vamos sacando los 4 primeros de cada categoria (excepto promotes y excepto byreward)
             // si una categoria no tiene proyectos no la ponemos en los pastillos del buscador
-            $disc_popular = Project::published('popular', 4);
+            $disc_popular = Project::published('popular', $node, 4);
             if (!empty($disc_popular)) {
                 $searcher['popular'] = Text::get('node-side-searcher-popular');
                 $discover['popular'] = $disc_popular;
             }
 
-            $disc_recent = Project::published('recent', 4);
+            $disc_recent = Project::published('recent', $node, 4);
             if (!empty($disc_recent)) {
                 $searcher['recent'] = Text::get('node-side-searcher-recent');
                 $discover['recent'] = $disc_recent;
             }
 
-            $disc_success = Project::published('success', 4);
+            $disc_success = Project::published('success', $node, 4);
             if (!empty($disc_success)) {
                 $searcher['success'] = Text::get('node-side-searcher-success');
                 $discover['success'] = $disc_success;
             }
 
-            $disc_outdate = Project::published('outdate', 4);
+            $disc_outdate = Project::published('outdate', $node, 4);
             if (!empty($disc_outdate)) {
                 $searcher['outdate'] = Text::get('node-side-searcher-outdate');
                 $discover['outdate'] = $disc_outdate;

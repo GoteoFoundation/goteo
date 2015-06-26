@@ -192,7 +192,7 @@ namespace Goteo\Controller {
 
             $msg = Model\Message::get($id);
             if ($msg instanceof Model\Message && $msg->project == $project) {
-                $msg->delete();
+                $msg->dbDelete();
             }
 
             throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);

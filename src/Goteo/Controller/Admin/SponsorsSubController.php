@@ -4,6 +4,7 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Library\Text,
 	Goteo\Library\Feed,
     Goteo\Application\Message,
@@ -14,60 +15,22 @@ class SponsorsSubController extends AbstractSubController {
 
     static protected $labels = array (
       'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
       'add' => 'Nuevo Patrocinador',
-      'move' => 'Moviendo a otro Nodo el proyecto',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe',
-      'viewer' => 'Viendo logs',
       'edit' => 'Editando Patrocinador',
-      'translate' => 'Traduciendo Destacado',
-      'reorder' => 'Ordenando los padrinos en Portada',
-      'footer' => 'Ordenando las entradas en el Footer',
-      'projects' => 'Informe Impulsores',
-      'admins' => 'Asignando administradores del Canal',
-      'posts' => 'Entradas de blog en la convocatoria',
-      'conf' => 'Configuración de campaña del proyecto',
-      'dropconf' => 'Gestionando parte económica de la convocatoria',
-      'keywords' => 'Palabras clave',
-      'view' => 'Apadrinamientos',
-      'info' => 'Información de contacto',
-      'send' => 'Comunicación enviada',
-      'init' => 'Iniciando un nuevo envío',
-      'activate' => 'Iniciando envío',
-      'detail' => 'Viendo destinatarios',
-      'dates' => 'Fechas del proyecto',
-      'accounts' => 'Cuentas del proyecto',
-      'images' => 'Imágenes del proyecto',
-      'assign' => 'Asignando a una Convocatoria el proyecto',
-      'open_tags' => 'Asignando una agrupación al proyecto',
-      'rebase' => 'Cambiando Id de proyecto',
-      'consultants' => 'Cambiando asesor del proyecto',
-      'paypal' => 'Informe PayPal',
-      'geoloc' => 'Informe usuarios Localizados',
-      'calls' => 'Informe Convocatorias',
-      'donors' => 'Informe Donantes',
-      'top' => 'Top Cofinanciadores',
-      'currencies' => 'Actuales ratios de conversión',
-    );
+      );
 
 
     static protected $label = 'Apoyos institucionales';
 
-    /**
-     * Overwrite some permissions
-     * @inherit
-     */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
-        // Only central node or superadmins allowed here
-        if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
-        return parent::isAllowed($user, $node);
+    private function checkItemPermission($id) {
+        if($sponsor = Sponsor::get($id)) {
+            if($sponsor->node === $this->node) return true;
+        }
+        throw new ControllerAccessDeniedException('You cannot admin this sponsor');
     }
 
     public function editAction($id = null, $subaction = null) {
-
+        $this->checkItemPermission($id);
         // gestionar post
         if ($this->isPost()) {
             $id = $this->getPost('id');
@@ -106,6 +69,7 @@ class SponsorsSubController extends AbstractSubController {
         return array(
             'template' => 'admin/generic_edit',
             'data' => $item,
+            'translator' => $this->isTranslator(),
             'form' => array(
                 'action' => static::getUrl('edit', $id),
                 'submit' => array(
@@ -155,7 +119,7 @@ class SponsorsSubController extends AbstractSubController {
     /**
     * Just the form
     */
-    public function addAction($id = null, $subaction = null) {
+    public function addAction() {
         return array(
             'template' => 'admin/generic_edit',
             'data' => (object) array('order' => Sponsor::next($this->node), 'node' => $this->node ),
@@ -205,7 +169,7 @@ class SponsorsSubController extends AbstractSubController {
     }
 
 
-    public function listAction($id = null, $subaction = null) {
+    public function listAction() {
         $data = Sponsor::getAll($this->node);
         return array(
             'template' => 'admin/generic_list',
@@ -227,16 +191,20 @@ class SponsorsSubController extends AbstractSubController {
     }
 
     public function upAction($id = null, $subaction = null) {
+        $this->checkItemPermission($id);
         Sponsor::up($id, $this->node);
         return $this->redirect(static::getUrl());
     }
 
     public function downAction($id = null, $subaction = null) {
+        $this->checkItemPermission($id);
         Sponsor::down($id, $this->node);
         return $this->redirect(static::getUrl());
     }
 
     public function removeAction($id = null, $subaction = null) {
+        $this->checkItemPermission($id);
+
         if (Sponsor::delete($id)) {
             Message::info('Se ha eliminado el registro');
         } else {

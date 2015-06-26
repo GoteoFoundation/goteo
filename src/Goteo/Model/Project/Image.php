@@ -164,21 +164,6 @@ namespace Goteo\Model\Project {
 
         }
 
-
-        /*
-         * Para aplicar una seccion o un enlace
-         */
-        public static function updateImage ($project, $image, $field, $value) {
-
-            $sql = "UPDATE project_image SET `$field` = :val WHERE project = :project AND MD5(image) = :image";
-            if (self::query($sql, array(':project'=>$project, ':image'=>$image, ':val'=>$value))) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
         /*
          * Para que una imagen salga antes  (disminuir el order)
          */

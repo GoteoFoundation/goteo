@@ -71,7 +71,7 @@ namespace Goteo\Controller {
             $user = Session::getUser();
 
             if ( ! $user ) {
-                throw new ControllerAccessDeniedException("Access denied! User has no permissions");
+                throw new ControllerAccessDeniedException('Access denied! User has no permissions');
             }
 
             // all node names
@@ -95,8 +95,8 @@ namespace Goteo\Controller {
             //if need to change the current node
             if($request->query->has('admin_node') && array_key_exists($request->query->get('admin_node'), $admin_nodes)) {
                 $admin_node = $request->query->get('admin_node');
-                Session::store('admin_node', $admin_node);
             }
+            Session::store('admin_node', $admin_node);
 
 
             // Build menu from subcontrollers for the current user/node
@@ -151,7 +151,7 @@ namespace Goteo\Controller {
             } catch(ControllerAccessDeniedException $e) {
                 // Instead of the default denied page, redirect to login
                 Message::error($e->getMessage());
-                return new RedirectResponse('/user/login');
+                return $this->redirect('/user/login');
             }
 
             //feed by default for someones
@@ -160,7 +160,7 @@ namespace Goteo\Controller {
                 $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, Session::get('admin_node'));
             }
             //default admin dashboard (nothing!)
-            return new Response(View::render('admin/default', $ret));
+            return $this->viewResponse('admin/default', $ret);
 
         }
 
@@ -172,20 +172,22 @@ namespace Goteo\Controller {
             try {
                 $user = self::checkCurrentUser($request, $option, $action, $id);
                 if( ! class_exists($SubC) ) {
-                    return new Response(View::render('admin/denied', ['msg' => "Class [$SubC] not found"]), Response::HTTP_BAD_REQUEST);
+                    return $this->viewResponse('admin/denied', ['msg' => "Class [$SubC] not found"], Response::HTTP_BAD_REQUEST);
                 }
                 $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
                 $controller = new $SubC($node, $user, $request);
                 $method = $action . 'Action';
                 if( ! method_exists($controller, $method) ) {
-                    return new Response(View::render('admin/denied', ['msg' => "Method [$method()] not found for class [$SubC]"]), Response::HTTP_BAD_REQUEST);
+                    return $this->viewResponse('admin/denied', ['msg' => "Method [$method()] not found for class [$SubC]"], Response::HTTP_BAD_REQUEST);
                 }
                 $ret = $controller->$method($id, $subaction);
 
             } catch(ControllerAccessDeniedException $e) {
                 // Instead of the default denied page, redirect to login
                 Message::error($e->getMessage());
-                return new RedirectResponse('/admin');
+                $url = $request->headers->get('referer');
+                if(empty($url) || $url == $request->getUri()) $url = '/admin';
+                return $this->redirect($url);
             }
 
             //Return the response if the subcontroller is a handy guy
@@ -200,18 +202,18 @@ namespace Goteo\Controller {
                 $old_path = 'admin/' . ($ret['folder'] === 'base' ? '' : $ret['folder'] . '/') . $ret['file'].'.html.php';
             }
             if ($old_path) {
-                return new Response(View::render('admin/simple', [
+                return $this->viewResponse('admin/simple', [
                     'content' => \Goteo\Core\View::get($old_path, $ret)
-                    ]));
+                    ]);
             }
 
             // If the subcontroller just specifies a template to render let's do it
             if ($ret['template']) {
-                  return new Response(View::render($ret['template'], $ret));
+                  return $this->viewResponse($ret['template'], $ret);
             }
 
             //default admin dashboard (nothing!)
-            return new Response(View::render('admin/default', $ret));
+            return $this->viewResponse('admin/default', $ret);
 
         }
 

@@ -59,7 +59,7 @@ $url_project_create = $this->url_project_create ? $this->url_project_create : '/
                             <li><a href="/review"><span><?= $this->text('regular-review_board') ?></span></a></li>
                         <?php endif; ?>
 
-                        <?php if ( $this->user_can_admin() ): ?>
+                        <?php if ( $this->is_admin() ): ?>
                             <li><a href="/admin"><span><?= $this->text('regular-admin_board') ?></span></a></li>
                         <?php endif; ?>
 

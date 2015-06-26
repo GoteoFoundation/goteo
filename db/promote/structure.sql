@@ -18,3 +18,14 @@ ALTER TABLE `promote` ADD `active` INT(1) NOT NULL DEFAULT '0' ;
 
 -- indices
 ALTER TABLE `promote` ADD INDEX `activos` ( `active` );
+
+-- Constrains
+ALTER TABLE `promote`
+    ADD KEY `project`(`project`) ;
+ALTER TABLE `promote`
+    ADD CONSTRAINT `promote_ibfk_1`
+    FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ,
+    ADD CONSTRAINT `promote_ibfk_2`
+    FOREIGN KEY (`project`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+

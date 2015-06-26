@@ -141,13 +141,14 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         $this->assertInternalType('array', $ob->gallery);
         $this->assertCount(1, $ob->gallery);
         $this->assertEquals($ob->image, $ob->gallery[0]);
+        return $ob;
     }
     /**
-     * @depends testGetPost
+     * @depends testRemoveImagePost
      */
     public function testDeletePost($ob) {
         //delete post
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         return $ob;
     }
@@ -158,7 +159,6 @@ class PostTest extends \PHPUnit_Framework_TestCase {
     public function testNonExisting($ob) {
         $sob = Post::get($ob->id);
         $this->assertFalse($sob);
-        $this->assertFalse(Post::delete($ob->id));
     }
 
     public function testCleanProjectRelated() {

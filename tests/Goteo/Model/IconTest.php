@@ -38,7 +38,7 @@ class IconTest extends \PHPUnit_Framework_TestCase {
             $this->assertEquals($ob->$key, $val);
         }
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         return $ob;
     }

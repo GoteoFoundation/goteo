@@ -178,7 +178,7 @@ class CallsSubController extends AbstractSubController {
                 }
                 break;
             case 'delete': // eliminar completamente la convocatoria
-                if ($call->delete($errors)) {
+                if (Model\Call::delete($id, $errors)) {
                     $log_text = 'El admin %s ha eliminado la convocatoria %s <span class="red">Completamente</span>';
                 } else {
                     $log_text = 'Al admin %s le ha fallado al eliminar la convocatoria %s <span class="red">Completamente</span>';

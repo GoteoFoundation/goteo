@@ -747,7 +747,7 @@ namespace Goteo\Model {
                                 )
                             ) ";
                         break;
-                    case 'consultants': // asesores de proyectos (admins)
+                    case 'consultants': // asesores de proyectos (admins o consultants)
                         $sqlFilter .= " AND id IN (
                             SELECT DISTINCT(user)
                             FROM user_project
@@ -1828,28 +1828,6 @@ namespace Goteo\Model {
                 }
             }
             return false;
-        }
-
-        /*
-         * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
-         * @return: boolean
-         */
-        public function delete(&$errors = array()) {
-            $id = $this->id;
-            if(empty($id)) {
-                // throw new Exception("Delete error: ID not defined!");
-                return false;
-            }
-
-            $sql = 'DELETE FROM user WHERE id = ?';
-            try {
-                self::query($sql, array($id));
-            } catch (\PDOException $e) {
-                // throw new Exception("Delete error in $sql");
-                $errors[] = "Error deleting user $id. " . $e->getMessage();
-                return false;
-            }
-            return true;
         }
 
         /**

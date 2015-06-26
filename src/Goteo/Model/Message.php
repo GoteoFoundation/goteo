@@ -267,16 +267,13 @@ namespace Goteo\Model {
         /*
          * Para que el admin pueda borrar mensajes que no aporten nada
          */
-        public function delete ($id = null) {
-            if(empty($id) && $this->id) {
-                $id = $this->id;
-                $m = $this;
-            }
+        public static function delete ($id) {
+
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
                 return false;
             }
-            if(empty($m)) $m = self::get($id);
+            $m = self::get($id);
 
             try {
 
@@ -290,7 +287,7 @@ namespace Goteo\Model {
                 if (empty($m->thread) && is_array($m->responses)) {
                     foreach ($m->responses as $response) {
                         if ($response instanceof Message) {
-                            $response->delete();
+                            $response->dbDelete();
                         }
                     }
                 }

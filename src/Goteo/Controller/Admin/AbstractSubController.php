@@ -97,10 +97,6 @@ abstract class AbstractSubController {
         return $filters;
     }
 
-    public function addAllowedNode($node) {
-        static::$allowed_nodes[] = $node;
-    }
-
     /**
      * Returns the identificator for this controller
      * @return MyControllerSubController becames mycontroller
@@ -148,19 +144,52 @@ abstract class AbstractSubController {
         return false;
     }
 
-    // public static function getMenu(\Goteo\Model\User $user, $node) {
-    //     $menu = array();
-    //     foreach(static::$labels as $action => $label) {
-    //         // TODO: permission check
-    //         $menu[$action] = $label;
-    //     }
-    //     return $menu;
-    // }
-
+    /**
+     * Returns true if current node/channel is the master
+     * @return boolean [description]
+     */
     public function isMasterNode() {
         return Config::isMasterNode($this->node);
     }
 
+    /**
+     * Returns true if the user is a translator
+     * @return boolean [description]
+     */
+    public function isTranslator() {
+        return $this->user->hasRoleInNode($this->node, ['translator']);
+    }
+
+    /**
+     * Returns true if the user is at least admin
+     * @return boolean [description]
+     */
+    public function isAdmin() {
+        return $this->user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root']);
+    }
+
+    /**
+     * Returns true if the user is at least superadmin
+     * @return boolean [description]
+     */
+    public function isSuperAdmin() {
+        return $this->user->hasRoleInNode($this->node, ['superadmin', 'root']);
+    }
+
+    /**
+     * Returns true if the user is at least root
+     * @return boolean [description]
+     */
+    public function isRoot() {
+        return $this->user->hasRoleInNode($this->node, ['root']);
+    }
+
+    /**
+     * Get a var from the _GET global
+     * if no var specified returns a Requests->query object
+     * @param  string $var var to be retrieved (if null the full object will be returned)
+     * @return mixed      The value of the var or the object
+     */
     public function getGet($var = null) {
         if($var) {
             //return requested var
@@ -168,10 +197,21 @@ abstract class AbstractSubController {
         }
         return $this->request->query;
     }
+    /**
+     * Checks if a var exists in _GET global
+     * @param  string  $var var to be checked
+     * @return boolean      true on success
+     */
     public function hasGet($var) {
         return $this->request->query->has($var);
     }
 
+    /**
+     * Get a var from the _POST global
+     * if no var specified returns a Requests->request object
+     * @param  string $var var to be retrieved (if null the full object will be returned)
+     * @return mixed      The value of the var or the object
+     */
     public function getPost($var = null) {
         if($var) {
             //return requested var
@@ -180,11 +220,20 @@ abstract class AbstractSubController {
         //return object
         return $this->request->request;
     }
-
+    /**
+     * Checks if a var exists in _POST global
+     * @param  string  $var var to be checked
+     * @return boolean      true on success
+     */
     public function hasPost($var) {
         return $this->request->request->has($var);
     }
-
+    /**
+     * Get a var from the _SERVER global
+     * if no var specified returns a Requests->server object
+     * @param  string $var var to be retrieved (if null the full object will be returned)
+     * @return mixed      The value of the var or the object
+     */
     public function getServer($var = null) {
         if($var) {
             //return requested var
@@ -193,14 +242,26 @@ abstract class AbstractSubController {
         return $this->request->server;
     }
 
+    /**
+     * Returns POST or the method used in the Request
+     * @return [type] [description]
+     */
     public function getMethod() {
         return $this->request->getMethod();
     }
-
+    /**
+     * True if the method is POST
+     * @return boolean [description]
+     */
     public function isPost() {
         return $this->request->getMethod() === 'POST';
     }
 
+    /**
+     * Returns a redirection. By default to the module administration URL
+     * @param  [type] $url [description]
+     * @return [type]      [description]
+     */
     public function redirect($url = null) {
         if(empty($url)) {
             $url = static::getUrl();
@@ -208,7 +269,20 @@ abstract class AbstractSubController {
         return new RedirectResponse($url);
     }
 
+    /**
+     * Returns a response for a view with passed data
+     * @param  [type] $view [description]
+     * @param  array  $data [description]
+     * @return [type]       [description]
+     */
     public function response($view, $data = []) {
         return new Response(View::render($view, $data));
+    }
+
+    /**
+     * Handy method to add context vars to all view
+     */
+    public function contextVars(array $vars = [], $view_path_context = '/admin') {
+        View::getEngine()->useContext($view_path_context, $vars);
     }
 }

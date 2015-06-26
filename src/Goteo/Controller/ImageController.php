@@ -14,6 +14,7 @@ class ImageController extends \Goteo\Core\Controller {
             'icon' => '16x16',
             'tiny' => '32x32',
             'thumb' => '56x56',
+            'small' => '128x128',
             'medium' => '192x192',
             'large' => '512x512',
             'big' => '1024x1024',

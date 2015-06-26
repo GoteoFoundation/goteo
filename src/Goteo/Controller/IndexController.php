@@ -4,6 +4,7 @@ namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
+use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Model;
 use Goteo\Model\Home;
@@ -44,7 +45,7 @@ class IndexController extends \Goteo\Core\Controller
         }
 
         // orden de los elementos en portada
-        $order = Home::getAll();
+        $order = Home::getAll(Config::get('node'));
 
         // entradas de blog
         if (isset($order['posts'])) {

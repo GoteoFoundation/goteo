@@ -271,21 +271,6 @@ namespace Goteo\Model {
 
         }
 
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-            $sql = "SELECT id FROM bazar WHERE id = :id";
-            $query = self::query($sql, array(':id' => $id));
-            if ($ob = $query->fetchObject(__CLASS__)) {
-                return $ob->delete();
-            }
-            return false;
-        }
-
         /*
          * Para que salga antes  (disminuir el order)
          */

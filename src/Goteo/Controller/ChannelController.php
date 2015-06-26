@@ -2,52 +2,32 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Application\Session;
-use Goteo\Application;
+use Goteo\Application\Message;
 use Goteo\Application\View;
-use Goteo\Model;
 use Goteo\Model\Node;
 use Goteo\Model\Home;
 use Goteo\Model\Project;
-use Goteo\Model\Banner;
-use Goteo\Model\Stories;
-use Goteo\Model\News;
-use Goteo\Model\Post;
-use // esto son entradas en portada o en footer
-    Goteo\Model\Promote;
-use Goteo\Model\Patron;
-use Goteo\Model\Campaign;
+use Goteo\Model\Sponsor;
 use // convocatorias en portada
     Goteo\Model\Call,
     Goteo\Model\User;
-use Goteo\Model\Icon;
 use Goteo\Model\Category;
 use Goteo\Library\Text;
 use Goteo\Library\Page;
 
 class ChannelController extends \Goteo\Core\Controller {
 
-    // Gets the channel and assign some default vars to all views
-    private static function getChannel($id) {
-        $channel = Node::get($id);
-        View::getEngine()->useContext('/', [
-            'url_project_create' => '/channel/' . $id . '/create'
-            ]);
-        return $channel;
-    }
-
     // Set the global vars to all the channel views
-    private static function setChannel($id)
+    private function setChannelContext($id)
     {
-        $channel=self::getChannel($id);
+        $channel = Node::get($id);
 
-        $categories=Category::getList();
+        $categories = Category::getList();
 
-        $side_order = Home::getAllSide($id); //orden de lateral side
+        $side_order = Home::getAll($id, 'side'); //orden de lateral side
 
         $types = array(
             'popular',
@@ -60,209 +40,126 @@ class ChannelController extends \Goteo\Core\Controller {
             $summary = $channel->getSummary();
         }
 
-        if (isset($side_order['sumcalls'])) {
-            $sumcalls = $channel->getSumcalls();
-        }
-
         if (isset($side_order['sponsors'])) {
             // Patrocinadores del nodo
-            $sponsors = \Goteo\Model\Sponsor::getList($id);
+            $sponsors = Sponsor::getList($id);
         }
 
 
-        View::getEngine()->useContext('channel/', [
+        $this->contextVars([
             'channel'     => $channel,
             'side_order' => $side_order,
             'summary' => $summary,
             'sumcalls' => $sumcalls,
             'sponsors' => $sponsors,
             'categories' => $categories,
-            'types' => $types
-        ]);
+            'types' => $types,
+            'url_project_create' => '/channel/' . $id . '/create'
+        ], 'channel/');
     }
 
     /**
-     * TODO: 
-     * @param  [type] $id   [description]
-     * @param  string $page [description]
-     * @return [type]       [description]
+     * @param  [type] $id   Channel id
      */
-    public function indexAction($id)
+    public function indexAction($id, Request $request)
     {
-        self::setChannel($id);
+        $this->setChannelContext($id);
 
-        $channel = self::getChannel($id);
+        // Proyectos destacados si hay
 
-        // orden de los elementos en portada
-        $order = Home::getAll($id);
-        $side_order = Home::getAllSide($id);
+        $limit = 999;
 
-        
-        $hide_promotes = false;
-
-        // Proyectos destacados primero para saber si lo meto en el buscador o no
-        if (isset($order['promotes']) || isset($side_order['searcher'])) {
-            $promotes  = Promote::getAll(true, $id);
+        if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
+            $total = count($list);
+        }
+        else {
+            // if no promotes let's show some random projects...
+            $limit = 10;
+            $total = $limit;
+            $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
 
-        // padrinos
-        if (isset($order['patrons'])) {
-            $patrons  =  $patrons = Patron::getInHome();
-        }
 
-        // Laterales
-        // ---------------------
-        if (isset($side_order['searcher'])) {
-            // Selector proyectos: los destacados, los grupos de discover y los retornos
-            
-            if (!empty($promotes)) {
-                $searcher['promote'] = Text::get('node-side-searcher-promote');
-                
-            }
-        }
-
-        // resto de centrales
-        // entradas de blog
-        if (isset($order['posts'])) {
-            // entradas en portada
-            $posts     = Post::getAll('home', $id);
-        }
-
-        // Convocatorias destacadas
-        if (isset($order['calls'])) {
-            $calls     = Call::getActive(3); // convocatorias en modalidad 1; inscripcion de proyectos
-            $campaigns = Call::getActive(4); // convocatorias en modalidad 2; repartiendo capital riego
-        }
-
-        return new Response(View::render(
-            'channel/index',
+        return $this->viewResponse(
+            'channel/list_projects',
             array(
-                
-                // centrales
-                'order'    => $order,
-                    'posts'    => $posts,
-                    'promotes' => $promotes,
-                    'calls'    => array('calls'=>$calls, 'campaigns'=>$campaigns),
-                    'patrons' => $patrons,
-
-                // laterales
-                    'searcher' => $searcher,
-
-                // los ocultos del discover
-                'discover' => $discover
-
-            )
-        ));
-    }
-
-    /**
-     * Project filter by category
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function filterCategoryAction($id,$category)
-    {
-        self::setChannel($id);
-        $cat_projs = \Goteo\Library\Search::params(array('category'=>array($category), 'channel'=>$id), false);
-        $category=Category::get($category);
-
-        $title_text=Text::get('discover-searcher-bycategory-header').' '.$category->name;
-        
-        return new Response(View::render(
-        'channel/searchprojects',
-        array(
-            'projects' => $cat_projs,
-            'category'=> $category->name,
-            'title_text' => $title_text
-            )
-        ));
-    }
-
-    /**
-     * Project filter by type of project
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function filterTypeAction($id,$type)
-    {
-        self::setChannel($id);
-        $cat_projs = Project::published($type, 10, 1, $pages, $id);
-
-        $title_text=Text::get('node-side-searcher-'.$type);
-        return new Response(View::render(
-        'channel/searchprojects',
-        array(
-            'projects' => $cat_projs,
-            'category'=> $type,
-            'title_text' => $title_text,
-            'type' => $type
-            )
-        ));
+                'projects' => $list,
+                'category'=> $category,
+                'title_text' => Text::get('node-side-searcher-promote'),
+                'type' => $type,
+                'total' => $total,
+                'limit' => $limit
+                )
+        );
     }
 
     /**
      * All channel projects
+     * @param  [type] $id   Channel id
      * @param  Request $request [description]
-     * @return [type]           [description]
      */
-    public function allProjectsAction($id, Request $request)
+    public function listProjectsAction($id, $type = 'available', $category = null, Request $request)
     {
-        self::setChannel($id);
-        
-        $type='available';
-        
-        $page = max(1, (int) $request->request->get('page'));
+        $this->setChannelContext($id);
 
-        $items_per_page = 10;
+        $limit = 10;
+        $filter = ['type' => $type];
 
-        $list = Project::published($type, $items_per_page, $page, $pages, $id);
+        $title_text = $type === 'available' ? Text::get('regular-see_all') : Text::get('node-side-searcher-'.$type);
+        if($category) {
+            if($cat = Category::get($category)) {
+                $title_text .= ' / '. Text::get('discover-searcher-bycategory-header') . ' ' . $cat->name;
+                $filter['category'] = $category;
+            }
+        }
 
-        $title_text=Text::get('regular-discover');
+        $list = Project::published($filter, $id, (int)$request->query->get('pag') * $limit, $limit);
+        $total = Project::published($filter, $id, 0, 0, true);
 
-        return new Response(View::render(
-        'channel/searchprojects',
-        array(
-            'projects' => $list,
-            'category'=> $type,
-            'title_text' => $title_text,
-            'type' => $type,
-            'pages' => $pages,
-            'currentPage' => $page
-            )
-        ));
+        return $this->viewResponse(
+            'channel/list_projects',
+            array(
+                'projects' => $list,
+                'category'=> $category,
+                'title_text' => $title_text,
+                'type' => $type,
+                'total' => $total,
+                'limit' => $limit
+                )
+        );
     }
 
 
     /**
      * Initial create project action
      * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function createAction ($id, Request $request)
     {
-        $channel = self::getChannel($id);
+        // Some context vars
+        $this->contextVars(['url_project_create' => '/channel/' . $id . '/create']);
 
         if (! ($user = Session::getUser()) ) {
-            Session::store('jumpto', '/channel/' . $channel->id . '/create');
-            Application\Message::info(Text::get('user-login-required-to_create'));
-            return new RedirectResponse(SEC_URL.'/user/login');
+            Session::store('jumpto', '/channel/' . $id . '/create');
+            Message::info(Text::get('user-login-required-to_create'));
+            return $this->redirect(SEC_URL.'/user/login');
         }
 
         if ($request->request->get('action') != 'continue' || $request->request->get('confirm') != 'true') {
             $page = Page::get('howto');
 
-             return new Response(View::render('project/howto', array(
-                    'action' => '/channel/' . $channel->id . '/create',
-                    'name' => $page->name,
-                    'description' => $page->description,
-                    'content' => $page->content
-                )
-             ));
+             return $this->viewResponse('project/howto', array(
+                        'action' => '/channel/' . $id . '/create',
+                        'name' => $page->name,
+                        'description' => $page->description,
+                        'content' => $page->content
+                    )
+                 );
         }
 
         //Do the creation stuff (exception will be throwed on fail)
-        $project = Project::createNewProject(Session::getUser(), $channel->id);
-        return new RedirectResponse('/project/edit/'.$project->id);
+        $project = Project::createNewProject(Session::getUser(), $id);
+        return $this->redirect('/project/edit/'.$project->id);
     }
 
 }

@@ -40,7 +40,7 @@ class PatronTest extends \PHPUnit_Framework_TestCase {
             $this->assertEquals($ob->$key, $val, "[$key]: " . print_r($ob->$key, 1));
         }
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save());

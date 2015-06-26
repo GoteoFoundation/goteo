@@ -202,58 +202,73 @@ namespace Goteo\Model {
 
         /**
          * Check if the project is can be seen by the user id
-         * @param  string $user_id ID of the user
+         * @param  Goteo\Model\User $user  the user to check (if empty checks )
          * @return boolean          true if success, false otherwise
          */
-        public static function userPublicable($project, $user) {
+        public function userCanView(User $user = null) {
 
-            // solamente se puede ver publicamente si...
-            $grant = false;
-            if ( $project->status > 2 // está publicado
-                || $project->owner == $user->id // es su proyecto
-                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
-                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
-                || isset($user->roles['superadmin']) // es superadmin
-                || (isset($user->roles['checker']) && User\Review::is_assigned($user->id, $project->id)) // es revisor
-                || (isset($user->roles['caller']) && Call\Project::is_assigned($user->id, $project->id)) // es un convocador y lo tiene seleccionado en su convocatoria
-            )
-                $grant = true;
+            // already published:
+            if($this->status >= self::STATUS_IN_CAMPAIGN) return true;
+            if(empty($user)) return false;
+            // owns the project
+            if($this->owner === $user->id) return true;
+            // is admin in the project node
+            if($user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root'])) return true;
+            // is reviewer
+            if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
+            // is caller
+            if($user->hasRoleInNode($this->node, ['caller']) && Call\Project::is_assigned($user->id, $this->id)) return true;
 
-            return $grant;
+            return false;
         }
 
         /**
          * Check if the project is editable by the user id
-         * @param  string $user_id ID of the user
+         * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public static function userEditable($project, $user) {
-            $grant = false;
-            // Substituye ACL, solo lo puede editar si...
-            if ($project->owner == $user->id // es su proyecto
-                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
-                || (isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node']) // es de su nodo
-                || isset($user->roles['superadmin']) // es superadmin
-                || (isset($user->roles['checker']) && User\Review::is_assigned($user->id, $project->id)) // es revisor
-            )
-                $grant = true;
+        public function userCanEdit(User $user = null) {
+            if(empty($user)) return false;
+            // owns the project
+            if($this->owner === $user->id) return true;
+            // is superadmin in the project node
+            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            // is a consultant
+            if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
+            // is reviewer ... ¡no! ?? TODO: check this...
+            // if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
 
-            return $grant;
+            return false;
         }
 
         /**
          * Check if the project is removable by the user id
-         * @param  string $user_id ID of the user
+         * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public static function userRemovable($project, $user) {
-            $grant = false;
-            if ($project->owner == $user->id // es su proyecto
-                || (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE) // es admin de central
-                || isset($user->roles['superadmin']) // es superadmin
-            )
-                $grant = true;
-            return $grant;
+        public function userCanDelete(User $user = null) {
+            if(empty($user)) return false;
+            // owns the project
+            if($this->owner === $user->id) return true;
+            // is superadmin in the project node
+            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+
+            return false;
+        }
+
+        /**
+         * Check if the project is administrable by the user id
+         * Meaning touchgin sensitive data such as bank account, etc
+         * @param  Goteo\Model\User $user  the user to check
+         * @return boolean          true if success, false otherwise
+         */
+        public function userCanAdmin(User $user = null) {
+            if(empty($user)) return false;
+
+            // is superadmin in the project node
+            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+
+            return false;
         }
 
         /**
@@ -262,7 +277,8 @@ namespace Goteo\Model {
          * @param array $data
          * @return boolean
          */
-        public function create ($node = \GOTEO_NODE, &$errors = array()) {
+        public function create ($node = null, &$errors = array()) {
+            if(empty($node)) $node = Config::get('node');
             $user = $this->owner;
 
             if (empty($user)) {
@@ -849,7 +865,8 @@ namespace Goteo\Model {
          * Listado simple de todos los proyectos de cierto nodo
          * @return: strings array
          */
-        public static function getAll($node = \GOTEO_NODE) {
+        public static function getAll($node = null) {
+            if(empty($node)) $node = Config::get('node');
 
             $list = array();
 
@@ -869,18 +886,30 @@ namespace Goteo\Model {
             return $list;
         }
 
+        /**
+         * Get consultants for this project
+         * @return array array of user id that are consultants
+         */
+        public function getConsultants() {
+            if($this->consultants && is_array($this->consultants)) return $this->consultants;
+            $this->consultants = self::getConsultantsForProject($this);
+            return $this->consultants;
+        }
         /*
+         * Static version
          * Array asociativo de los asesores de un proyecto
          *  (o todos los que asesoran alguno, si no hay filtro)
          * @return: strings array
          */
-        public static function getConsultants ($project = null) {
+        public static function getConsultantsForProject (Project $project) {
 
             $list = array();
 
-            $sqlFilter = "";
-            if (!empty($project)) {
-                $sqlFilter .= " WHERE user_project.project = '{$project}'";
+            $sqlFilter = '';
+            $values = array();
+            if ($project) {
+                $sqlFilter .= ' WHERE user_project.project = :project';
+                $values[':project'] = $project->id;
             }
 
             $query = static::query("
@@ -892,12 +921,27 @@ namespace Goteo\Model {
                     ON user.id = user_project.user
                 $sqlFilter
                 ORDER BY user.name ASC
-                ");
+                ", $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[$item->consultant] = $item->name;
             }
+            // add default node consultant if empty
+            if(empty($list) && $project) {
+                $sql = 'SELECT
+                        default_consultant AS consultant,
+                        user.name as name
+                    FROM node
+                    INNER JOIN user
+                        ON user.id = node.default_consultant
+                    WHERE node.id = :node';
+                $query = static::query($sql, [':node' => $project->node]);
+                if ($item = $query->fetchObject()) {
+                    $list[$item->consultant] = $item->name;
+                }
+            }
 
+            // TODO: add default consultant from settings
             return $list;
         }
 
@@ -2166,7 +2210,7 @@ namespace Goteo\Model {
          * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
          * @return: boolean
          */
-        public function delete(&$errors = array()) {
+        public function dbDelete(&$errors = array()) {
 
             if ($this->status > 1) {
                 $errors[] = "El proyecto no esta descartado ni en edicion";
@@ -2184,7 +2228,6 @@ namespace Goteo\Model {
                 self::query("DELETE FROM project_account WHERE project = ?", array($this->id)); // cuentas
                 self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
                 self::query("DELETE FROM call_project WHERE project = ?", array($this->id)); // convocado
-                self::query("DELETE FROM user_project WHERE project = ?", array($this->id)); // asesores
                 self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
@@ -2317,7 +2360,6 @@ namespace Goteo\Model {
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE user_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
@@ -2394,7 +2436,6 @@ namespace Goteo\Model {
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE promote SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE patron SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
@@ -2626,169 +2667,156 @@ namespace Goteo\Model {
         }
 
 
-        /*
+        /**
          * Lista de proyectos publicados
          * @param $type string
-         * @param $limit int
-         * @param $mini boolean
-         * @param $page int
-         * @param $pages int
+         * @param $node string
+         * @param $count returns a integer with the number of elements instead the list
          * @return: array of Project
          */
-        public static function published($type = 'all', $limit = 9, $page = 1, &$pages = 0, $node=NULL)
+        public static function published($filter = array(), $node = null, $offset = 0, $limit = 10, $count = false)
         {
+            //compatibility with simple string filter
+            if(!is_array($filter)) {
+                $filter = array('type' => (string) $filter);
+            }
             $lang = Lang::current();
-            $different_select='';
 
             $values = array();
-            // si es un nodo, filtrado
-            if (!\Goteo\Application\Config::isMasterNode()) {
-                $sqlFilter = " AND project.node = :node";
-                $values[':node'] = Config::get('current_node');
-            }
-            elseif(!is_null($node))
-            {
-                $sqlFilter = " AND project.node = :node";
+            $where = array();
+            $join = '';
+
+            // todos los que estan 'en campaña', en cualquier nodo
+            $status = array(self::STATUS_IN_CAMPAIGN);
+            $order = 'name ASC';
+
+            if($node) {
+                $where[] = 'project.node = :node';
                 $values[':node'] = $node;
             }
-            else {
-                $sqlFilter = "";
+
+            // segun el tipo
+            if ($filter['type'] === 'popular') {
+                // de los que estan en campaña,
+                // los que tienen más usuarios entre cofinanciadores y mensajeros
+                $where[] = 'project.popularity >20';
+                $order = 'popularity DESC';
+            }
+            elseif($filter['type'] === 'outdate') {
+                // los que les quedan 15 dias o menos
+                $where[] = 'days <= 15 AND days > 0';
+                $order = 'popularity ASC';
+            }
+            elseif($filter['type'] === 'recent') {
+                $where[] = 'project.passed IS NULL';
+                $order = 'published DESC';
+            }
+            elseif($filter['type'] === 'success') {
+                // los que han conseguido el mínimo
+                $where[] = 'project.amount >= mincost';
+                $order = 'published DESC';
+                $status[] = self::STATUS_FUNDED;
+                $status[] = self::STATUS_FULFILLED;
+            }
+            elseif($filter['type'] === 'almost-fulfilled') {
+                // para gestión de retornos
+                $order = 'name ASC';
+                $status = array(self::STATUS_FUNDED, self::STATUS_FULFILLED);
+            }
+            elseif($filter['type'] === 'fulfilled') {
+                // retorno cumplido
+                $status = array(self::STATUS_FULFILLED);
+                $order = 'name ASC';
+            }
+            elseif($filter['type'] === 'available') {
+                // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
+                $status[] = self::STATUS_FUNDED;
+                $status[] = self::STATUS_FULFILLED;
+                $order = 'name ASC';
+            }
+            elseif($filter['type'] === 'archive') {
+                // caducados sin financiacion
+                $status = array(self::STATUS_UNFUNDED);
+                $order = 'closed DESC';
+            }
+            elseif($filter['type'] === 'promoted') {
+                // en "promote"
+                $status[] = self::STATUS_FUNDED;
+                $status[] = self::STATUS_FULFILLED;
+                $join = 'INNER JOIN promote ON promote.project = project.id';
+                $where[] = 'promote.active = 1';
+                if($node) {
+                    $where[] = 'promote.node = :node';
+                }
+                $order = 'promote.order ASC, name ASC';
+            }
+            elseif($filter['type'] === 'random') {
+                $order = 'RAND()';
             }
 
-            // segun el tipo (ver controller/discover.php)
-            switch ($type) {
-                case 'popular':
-                    // de los que estan en campaña,
-                    // los que tienen más usuarios entre cofinanciadores y mensajeros
-
-                    $different_select="project.popularity as popularity,";
-                    $where="project.status= 3 AND popularity >20";
-                    $order="popularity DESC";
-
-                    break;
-
-                case 'outdate':
-                    // los que les quedan 15 dias o menos
-
-                    $where="days <= 15 AND days > 0 AND status = 3";
-                    $order="popularity ASC";
-                    break;
-                case 'recent':
-                    // los que llevan menos tiempo desde el published, hasta 15 dias
-                    // Cambio de criterio: Los últimos 9
-                    //,  DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(published)), '%e') as day
-                    //        HAVING day <= 15 AND day IS NOT NULL
-
-                    $where="project.status = 3 AND project.passed IS NULL";
-                    $order="published DESC";
-                    break;
-                case 'success':
-                    // los que han conseguido el mínimo
-
-                    $where="status IN ('3', '4', '5') AND project.amount >= mincost";
-                    $order="published DESC";
-                    break;
-                case 'almost-fulfilled':
-                    // para gestión de retornos
-
-                    $where="status IN ('4','5')";
-                    $order="name ASC";
-                    break;
-                case 'fulfilled':
-                    // retorno cumplido
-
-                    $where="status IN ('5')";
-                    $order="name ASC";
-                    break;
-                case 'available':
-                    // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
-
-                    $where="status < 6";
-                    $order="name ASC";
-                    break;
-                case 'archive':
-                    // caducados, financiados o casos de exito
-
-                    $where="status = 6";
-                    $order="closed DESC";
-                    break;
-                case 'others':
-                    // todos los que estan 'en campaña', en otro nodo
-                    if (!empty($sqlFilter)) $sqlFilter = \str_replace('=', '!=', $sqlFilter);
-                    // cambio de criterio, en otros nodos no filtramos por followers,
-                    //   mostramos todos los que estan en campaña (los nuevos primero)
-                    //  limitamos a 40
-
-                    $where="project.status = 3";
-                    $order="closed DESC";
-                    $limit = 40;
-                    break;
-                default:
-                    // todos los que estan 'en campaña', en cualquier nodo
-
-                    $where="project.status = 3";
-                    $order="name ASC";
-                    $limit = 40;
-
+            // filter by category?
+            if(array_key_exists('category', $filter)) {
+                if(!is_array($filter['category'])) $filter['category'] = array($filter['category']);
+                $where[] = ' project.id IN (SELECT project FROM project_category WHERE project_category.category IN (' . implode(',', $filter['category']) . '))';
             }
 
-            $where.= $sqlFilter;
+            // Build the query
+            $where = 'project.status IN ('. implode(', ', $status) .') ' . ($where ? ' AND ' . implode(' AND ', $where) : '');
 
-            $sql_count ="
-                SELECT COUNT(id)
-                FROM project
-                WHERE $where
-                ";
-
-            $ret = self::doPagination($sql_count, $values, $page, $limit);
-            $offset = $ret['offset'];
-            $pages = $ret['pages'];
+            // Return total count for pagination
+            if($count) {
+                $sql = "SELECT COUNT(project.id) FROM project $join WHERE $where";
+                return (int) self::query($sql, $values)->fetchColumn();
+            }
 
             if(self::default_lang($lang) === Config::get('lang')) {
-                $different_select2=" IFNULL(project_lang.description, project.description) as description";
+                $lang_select = ' IFNULL(project_lang.description, project.description) AS description';
             }
             else {
-                $different_select2=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
-                $eng_join=" LEFT JOIN project_lang as eng
+                $lang_select = ' IFNULL(project_lang.description, IFNULL(eng.description, project.description)) AS description';
+                $lang_join = " LEFT JOIN project_lang AS eng
                                 ON  eng.id = project.id
                                 AND eng.lang = 'en'";
             }
 
+            $offset = (int) $offset;
+            $limit = (int) $limit;
             $sql ="
                 SELECT
-                    project.id as project,
-                    project.name as name,
-                    $different_select2,
-                    project.status as status,
-                    project.published as published,
-                    project.created as created,
-                    project.updated as updated,
-                    project.success as success,
-                    project.closed as closed,
-                    project.mincost as mincost,
-                    project.maxcost as maxcost,
-                    project.amount as amount,
-                    project.image as image,
-                    project.num_investors as num_investors,
-                    project.num_messengers as num_messengers,
-                    project.num_posts as num_posts,
-                    project.days as days,
-                    $different_select
-                    user.id as user_id,
-                    user.name as user_name,
-                    project_conf.noinvest as noinvest,
-                    project_conf.one_round as one_round,
-                    project_conf.days_round1 as days_round1,
-                    project_conf.days_round2 as days_round2
+                    project.id AS project,
+                    project.name AS name,
+                    $lang_select,
+                    project.status AS status,
+                    project.published AS published,
+                    project.created AS created,
+                    project.updated AS updated,
+                    project.success AS success,
+                    project.closed AS closed,
+                    project.mincost AS mincost,
+                    project.maxcost AS maxcost,
+                    project.amount AS amount,
+                    project.image AS image,
+                    project.num_investors AS num_investors,
+                    project.num_messengers AS num_messengers,
+                    project.num_posts AS num_posts,
+                    project.days AS days,
+                    project.popularity AS popularity,
+                    user.id AS user_id,
+                    user.name AS user_name,
+                    project_conf.noinvest AS noinvest,
+                    project_conf.one_round AS one_round,
+                    project_conf.days_round1 AS days_round1,
+                    project_conf.days_round2 AS days_round2
                 FROM  project
                 INNER JOIN user
                     ON user.id = project.owner
+                $join
                 LEFT JOIN project_conf
                     ON project_conf.project = project.id
                 LEFT JOIN project_lang
                             ON  project_lang.id = project.id
                             AND project_lang.lang = :lang
-                $eng_join
+                $lang_join
                 WHERE
                 $where
                 ORDER BY $order
@@ -2801,7 +2829,7 @@ namespace Goteo\Model {
             $query = self::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                $projects[]=self::getWidget($proj);
+                $projects[] = self::getWidget($proj);
             }
             return $projects;
         }
@@ -2987,9 +3015,7 @@ namespace Goteo\Model {
          * @param int pages
          * @return array of project instances
          */
-        public static function getList($filters = array(), $node = null, $limit = 10, &$pages, $page = 1) {
-
-            $debug = (isset($_GET['dbg']) && $_GET['dbg'] == 'debug');
+        public static function getList($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false) {
 
             $projects = array();
 
@@ -3088,7 +3114,7 @@ namespace Goteo\Model {
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $filters['node'];
-            } elseif (!empty($node) && $node != \GOTEO_NODE) {
+            } elseif (!empty($node) && !Config::isMasterNode($node)) {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
@@ -3116,21 +3142,13 @@ namespace Goteo\Model {
                       $sqlFilter
                       $sqlOrder";
 
-            if ($limit != 0) {
-                $sql_count ="
-                    SELECT COUNT(id)
+            if($count) {
+                // Return count
+                $sql = "SELECT COUNT(id)
                     FROM project
                     $sqlConsultantFilter
-                    WHERE $where
-                    ";
-
-                $ret = self::doPagination($sql_count, $values, $page, $limit);
-                $offset = $ret['offset'];
-                $pages = $ret['pages'];
-
-                $limit_cond = "LIMIT $offset,$limit";
-            } else {
-                $limit_cond = "";
+                    WHERE $where";
+                return (int) self::query($sql, $values)->fetchColumn();
             }
 
             // la select
@@ -3172,14 +3190,11 @@ namespace Goteo\Model {
 
                     $sqlConsultantFilter
                     WHERE $where
-                    $limit_cond
+                    LIMIT $offset, $limit
                     ";
 
 
-            if ($debug) {
-                echo \sqldbg($sql, $values);
-                die;
-            }
+            // echo \sqldbg($sql, $values);
 
 
             $query = self::query($sql, $values);
@@ -3191,11 +3206,6 @@ namespace Goteo\Model {
                 $proj->user->name = $proj->user_name;
                 $proj->user->email = $proj->user_email;
                 $proj->user->lang = $proj->user_lang;
-
-
-                //añadir lo que haga falta
-                $proj->consultants = self::getConsultants($proj->id);
-
 
                 // convocado
                 $call = Call\Project::calledMini($proj->id);
@@ -3289,7 +3299,7 @@ namespace Goteo\Model {
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $filters['node'];
-            } elseif (!empty($node) && $node != \GOTEO_NODE) {
+            } elseif (!empty($node) && !Config::isMasterNode($node)) {
                 $sqlFilter .= " AND project.node = :node";
                 $values[':node'] = $node;
             }
@@ -3339,7 +3349,8 @@ namespace Goteo\Model {
          * @param string node id
          * @return array of project instances
          */
-        public static function getTranslates($filters = array(), $node = \GOTEO_NODE) {
+        public static function getTranslates($filters = array(), $node = null) {
+            if(empty($node)) $node = Config::get('node');
             $projects = array();
 
             $values = array(':node' => $node);

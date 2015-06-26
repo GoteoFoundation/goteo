@@ -231,23 +231,13 @@ namespace Goteo\Model {
                 'active'
                 );
 
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
             try {
-                $sql = "REPLACE INTO promote SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->dbInsertUpdate($fields);
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = "Save error " . $e->getMessage();
                 return false;
             }
         }
@@ -263,24 +253,6 @@ namespace Goteo\Model {
                 return false;
             }
 
-        }
-
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            $sql = 'DELETE FROM promote WHERE id = ?';
-            try {
-                self::query($sql, array($id));
-            } catch (\PDOException $e) {
-                // throw new Exception("Delete error in $sql");
-                return false;
-            }
-            return true;
         }
 
         /*

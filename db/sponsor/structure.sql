@@ -14,3 +14,7 @@ UPDATE `sponsor` set node = 'goteo';
 
 -- campo imagen a nombre archivo
 ALTER TABLE `sponsor` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
+
+-- Constrain
+DELETE FROM `sponsor` WHERE `node` NOT IN (SELECT id FROM `nodes`);
+ALTER TABLE `sponsor` DROP INDEX `id`, ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

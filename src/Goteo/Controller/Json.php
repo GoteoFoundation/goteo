@@ -144,7 +144,7 @@ class Json extends \Goteo\Core\Controller {
                 //check if user can edit project
                 try {
                     $project = Project::get($id);
-                    if(!Project::userEditable($project, Session::getUser())) {
+                    if(!$project->userCanEdit(Session::getUser())) {
                         $return['msg'] = 'Project id invalid: You don\'t have permissions to edit this project!';
                         $project = false;
                     }

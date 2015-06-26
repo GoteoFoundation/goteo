@@ -66,13 +66,13 @@ namespace Goteo\Controller {
             }
 
             // no lo puede eliminar si
-            if (!Project::userRemovable($project, Session::getUser())) {
+            if (!$project->userCanDelete(Session::getUser())) {
                 Application\Message::info('No tienes permiso para eliminar este proyecto');
                 return new RedirectResponse($goto);
             }
 
             $errors = array();
-            if ($project->delete($errors)) {
+            if ($project->dbDelete($errors)) {
                 Application\Message::info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
                 if ($_SESSION['project']->id == $id) {
                     unset($_SESSION['project']);
@@ -98,7 +98,7 @@ namespace Goteo\Controller {
                 return new RedirectResponse('/dashboard/projects');
             }
 
-            if (!Project::userEditable($project, Session::getUser())) {
+            if (!$project->userCanEdit(Session::getUser())) {
                 Application\Message::info('No tienes permiso para editar este proyecto');
                 return new RedirectResponse($goto);
             }
@@ -583,7 +583,7 @@ namespace Goteo\Controller {
             }
 
             // si lo puede ver
-            if (Project::userPublicable($project, Session::getUser())) {
+            if ($project->userCanView(Session::getUser())) {
 
                 $project->cat_names = Project\Category::getNames($id);
 

@@ -48,7 +48,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
             $this->assertEquals($ob->$key, $val, "[$key : $val] != [{$ob->key}]");
         }
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
 
         $ob = new Post(self::$data);

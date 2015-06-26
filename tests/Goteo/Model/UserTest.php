@@ -3,9 +3,10 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\User;
 
-class UserTest extends \PHPUnit_Framework_TestCase {
+class UserTest extends TestCase {
     private static $related_tables = array('user_api' => 'user_id',
                     'user_call' => 'user',
                     'user_donation' => 'user',
@@ -39,9 +40,9 @@ class UserTest extends \PHPUnit_Framework_TestCase {
                     );
 
     private static $user = array(
-            'userid' => '012-simulated-user-test-210',
+            'userid' => '012-simulated-user-test-211',
             'name' => 'Test user - please delete me',
-            'email' => 'simulated-user-test@goteo.org'
+            'email' => 'simulated-user-test2@goteo.org'
         );
 
     public function testInstance() {
@@ -84,7 +85,7 @@ class UserTest extends \PHPUnit_Framework_TestCase {
      * @depends testCreateUser
      */
     public function testDeleteUser($user) {
-        $this->assertTrue($user->delete());
+        $this->assertTrue($user->dbDelete());
         $this->assertFalse(User::get(self::$user['userid']));
     }
 

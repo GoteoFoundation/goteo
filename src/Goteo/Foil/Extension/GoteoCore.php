@@ -46,7 +46,8 @@ class GoteoCore implements ExtensionInterface
           'get_config' => [$this, 'get_config'],
           'get_user' => [$this, 'get_user'],
           'is_logged' => [$this, 'is_logged'],
-          'user_can_admin' => [$this, 'user_can_admin'],
+          'is_admin' => [$this, 'is_admin'],
+          'is_module_admin' => [$this, 'is_module_admin'],
           'get_query' => [$this, 'get_query'],
           'get_post' => [$this, 'get_post'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
@@ -119,8 +120,25 @@ class GoteoCore implements ExtensionInterface
     }
 
     // Returns if the user can admin anything or not
-    public function user_can_admin() {
-        return \Goteo\Controller\AdminController::isAllowed(Session::getUser());
+    public function is_admin() {
+        if(Session::isLogged()) {
+            return \Goteo\Controller\AdminController::isAllowed(Session::getUser());
+        }
+        return false;
+    }
+
+    // Returns if the user can admin some specific module
+    public function is_module_admin($subcontroller, $node = null, \Goteo\Model\User $user = null) {
+        if(Session::isLogged()) {
+            if(empty($node)) $node = Config::get('current_node');
+            if(empty($user)) $user = Session::getUser();
+            $class = '\Goteo\Controller\Admin\\' . ucfirst($subcontroller) . 'SubController';
+            // Silent false return on missing class
+            if( ! class_exists($class) ) return false;
+            // let's throw a exception if its a wrong class
+            return $class::isAllowed($user, $node);
+        }
+        return false;
     }
 
     //is logged

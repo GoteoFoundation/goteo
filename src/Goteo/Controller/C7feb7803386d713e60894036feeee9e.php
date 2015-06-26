@@ -135,10 +135,9 @@ namespace Goteo\Controller {
 
             // Enviar correo informativo a los asesores del proyecto.
             $project_obj = Model\Project::getMini($project);
-            $project_obj->consultants = Model\Project::getConsultants($project);
 
             //Añadir siempre a Olivier.
-            if (!in_array('olivier', array_keys($project_obj->consultants))) {
+            if (!in_array('olivier', array_keys($project_obj->getConsultants()))) {
                 $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
             }
             $project_obj->whodidit = $who;

@@ -173,8 +173,7 @@ namespace Goteo\Controller\Dashboard {
 
                     break;
                 case 'delete':
-                    $post = Model\Blog\Post::get($id);
-                    if ($post->delete($id)) {
+                    if (Model\Blog\Post::delete($id)) {
                         Message::info(Text::get('dashboard-project-updates-deleted'));
                     } else {
                         Message::error(Text::get('dashboard-project-updates-delete_fail'));

@@ -248,19 +248,26 @@ h1, h2, h3, h4, h5, h6, h7, h8 {
 .clearfix { display: block; }
 /* End hide from IE-mac */
 
+ul.menu {
+
+}
+ul>li.selected, ul>li.selected>a {
+    font-weight:bold;
+}
 /** pagination **/
  ul#pagination, ul.pagination {
 	list-style:none;
-	float:left;
-	margin: 0px;
+	/*float:left;*/
+    text-align: center;
+	margin: 0 0 10px 0;
 	padding:0px;
 }
 ul#pagination li, ul.pagination li {
-	display:inline;
+	display:inline-block;
 	margin: 0 6px 0 0;
 	background: white;
 	width: auto;
-	float: left;
+	// float: left;
 	text-align: center;
 }
 ul#pagination li.selected, ul.pagination li.selected {

@@ -21,7 +21,7 @@ if(empty($baselink)) $baselink = $this->get_pathinfo() . '?' . $this->get_querys
 
 // max number of pages without resuming in ... dots
 $max_pages =  (string) $this->max_pages;
-if (empty($max_pages)) $max_pages = 16;
+if (empty($max_pages)) $max_pages = 10;
 
 // Texts for next/prev result
 $t_prev =  (string) $this->text_prev;

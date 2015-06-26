@@ -177,7 +177,7 @@ foreach ($filters as $key=>$value) {
 
 </div>
 
-<?= $this->insert('partials/utils/paginator', ['page' => 0, 'total' => $this->total, 'limit' => 100]) ?>
+<?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>
 
 
 

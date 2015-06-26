@@ -37,12 +37,6 @@ namespace Goteo\Controller {
             }
         }
 
-        public function raw ($id) {
-            $call = Model\Call::get($id, Lang::current());
-            \trace($call);
-            die;
-        }
-
         public function delete ($id) {
             // redirección según usuario
             $goto = isset($_SESSION['user']->roles['admin']) ? '/admin/calls' : '/dashboard/projects';
@@ -64,7 +58,7 @@ namespace Goteo\Controller {
             }
 
 
-            if ($call->delete()) {
+            if (Model\Call::delete($id)) {
                 if ($_SESSION['call']->id == $id) {
                     unset($_SESSION['call']);
                 }

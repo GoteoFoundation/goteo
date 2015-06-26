@@ -143,10 +143,8 @@ namespace Goteo\Model {
         /*
          * Para quitar una pregunta
          */
-        public function delete ($id = null, $node = null) {
-            if(empty($id) && $this->id) $id = $this->id;
-            if(empty($node) && $this->node) $node = $this->node;
-            if(empty($node)) $node = \GOTEO_NODE;
+        public static function delete ($id, $node = null) {
+            if(empty($node)) Config::get('node');
             if(empty($id)) return false;
             try {
                 $sql = "DELETE FROM faq WHERE id = :id AND node = :node";

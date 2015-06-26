@@ -1,6 +1,9 @@
 TODO
 =====
 
+Corto plazo:
+    - añadir rol "consultant" para que sea posible añadir como asesores de proyecto los que tengan ese rol. De momento solo admines pueden ser asesores
+
 TESTS:
 
 añadir check para futuros foreing keys
