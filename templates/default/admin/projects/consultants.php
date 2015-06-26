@@ -7,7 +7,7 @@
             <th>Asesor</th>
             <th></th>
         </tr>
-        <?php foreach ($this->project->consultants as $userId => $userName) : ?>
+        <?php foreach ($this->project->getConsultants() as $userId => $userName) : ?>
         <tr>
             <td><?php echo $userName; ?></td>
             <td><a href="/admin/projects/consultants/<?php echo $this->project->id; ?>/?op=unassignConsultant&user=<?php echo $userId; ?>">[Desasignar]</a></td>
@@ -20,7 +20,7 @@
                 <select id="assign-user" name="user">
                     <option value="">Asigna otro asesor</option>
                     <?php foreach ($this->admins as $userId => $userName) :
-                        if (isset($this->project->consultants[$userId])) continue;
+                        if (array_key_exists($userId, $this->project->getConsultants())) continue;
                         ?>
                     <option value="<?php echo $userId; ?>"><?php echo $userName; ?></option>
                     <?php endforeach; ?>

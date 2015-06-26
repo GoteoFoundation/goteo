@@ -215,9 +215,9 @@ namespace Goteo\Model {
             // is admin in the project node
             if($user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root'])) return true;
             // is reviewer
-            if($user->hasRoleInNode($this->node, ['checker']) || User\Review::is_assigned($user->id, $this->id)) return true;
+            if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
             // is caller
-            if($user->hasRoleInNode($this->node, ['caller']) || Call\Project::is_assigned($user->id, $this->id)) return true;
+            if($user->hasRoleInNode($this->node, ['caller']) && Call\Project::is_assigned($user->id, $this->id)) return true;
 
             return false;
         }
@@ -231,10 +231,12 @@ namespace Goteo\Model {
             if(empty($user)) return false;
             // owns the project
             if($this->owner === $user->id) return true;
-            // is admin in the project node
-            if($user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root'])) return true;
-            // is reviewer
-            if($user->hasRoleInNode($this->node, ['checker']) || User\Review::is_assigned($user->id, $this->id)) return true;
+            // is superadmin in the project node
+            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            // is a consultant
+            if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
+            // is reviewer ... ¡no! ?? TODO: check this...
+            // if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
 
             return false;
         }
@@ -884,18 +886,30 @@ namespace Goteo\Model {
             return $list;
         }
 
+        /**
+         * Get consultants for this project
+         * @return array array of user id that are consultants
+         */
+        public function getConsultants() {
+            if($this->consultants && is_array($this->consultants)) return $this->consultants;
+            $this->consultants = self::getConsultantsForProject($this);
+            return $this->consultants;
+        }
         /*
+         * Static version
          * Array asociativo de los asesores de un proyecto
          *  (o todos los que asesoran alguno, si no hay filtro)
          * @return: strings array
          */
-        public static function getConsultants ($project = null) {
+        public static function getConsultantsForProject (Project $project) {
 
             $list = array();
 
-            $sqlFilter = "";
-            if (!empty($project)) {
-                $sqlFilter .= " WHERE user_project.project = '{$project}'";
+            $sqlFilter = '';
+            $values = array();
+            if ($project) {
+                $sqlFilter .= ' WHERE user_project.project = :project';
+                $values[':project'] = $project->id;
             }
 
             $query = static::query("
@@ -907,12 +921,27 @@ namespace Goteo\Model {
                     ON user.id = user_project.user
                 $sqlFilter
                 ORDER BY user.name ASC
-                ");
+                ", $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[$item->consultant] = $item->name;
             }
+            // add default node consultant if empty
+            if(empty($list) && $project) {
+                $sql = 'SELECT
+                        default_consultant AS consultant,
+                        user.name as name
+                    FROM node
+                    INNER JOIN user
+                        ON user.id = node.default_consultant
+                    WHERE node.id = :node';
+                $query = static::query($sql, [':node' => $project->node]);
+                if ($item = $query->fetchObject()) {
+                    $list[$item->consultant] = $item->name;
+                }
+            }
 
+            // TODO: add default consultant from settings
             return $list;
         }
 
@@ -2199,7 +2228,6 @@ namespace Goteo\Model {
                 self::query("DELETE FROM project_account WHERE project = ?", array($this->id)); // cuentas
                 self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
                 self::query("DELETE FROM call_project WHERE project = ?", array($this->id)); // convocado
-                self::query("DELETE FROM user_project WHERE project = ?", array($this->id)); // asesores
                 self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
@@ -2332,7 +2360,6 @@ namespace Goteo\Model {
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE user_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
@@ -3179,11 +3206,6 @@ namespace Goteo\Model {
                 $proj->user->name = $proj->user_name;
                 $proj->user->email = $proj->user_email;
                 $proj->user->lang = $proj->user_lang;
-
-
-                //añadir lo que haga falta
-                $proj->consultants = self::getConsultants($proj->id);
-
 
                 // convocado
                 $call = Call\Project::calledMini($proj->id);

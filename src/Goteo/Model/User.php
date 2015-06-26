@@ -747,7 +747,7 @@ namespace Goteo\Model {
                                 )
                             ) ";
                         break;
-                    case 'consultants': // asesores de proyectos (admins)
+                    case 'consultants': // asesores de proyectos (admins o consultants)
                         $sqlFilter .= " AND id IN (
                             SELECT DISTINCT(user)
                             FROM user_project

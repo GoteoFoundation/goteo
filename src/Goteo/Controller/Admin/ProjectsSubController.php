@@ -98,7 +98,6 @@ class ProjectsSubController extends AbstractSubController {
         }
 
         if(!in_array($project->node, $this->nodes)) {
-            $project->consultants = Model\Project::getConsultants($project->id);
             return $project;
         }
 
@@ -116,6 +115,7 @@ class ProjectsSubController extends AbstractSubController {
             $conf->one_round = $this->hasPost('oneround');
             // si es ronda única, los días de segunda deben grabarse a cero (para que el getActive no lo cuente para segunda)
             if ($conf->one_round) $conf->days_round2 = 0;
+            $errors = array();
             if ($conf->save($errors)) {
                 Message::info('Se han actualizado los días de campaña del proyecto ' . $project->name);
             } else {
@@ -138,11 +138,11 @@ class ProjectsSubController extends AbstractSubController {
         // cambiar el asesor
         $op = $this->getGet('op');
         $user = Model\User::get($this->getGet('user'));
-        if (($user && $op === 'assignConsultant' && $user->hasRoleInNode($this->node, ['admin', 'superadmin'])) || $op === 'unassignConsultant') {
-            if ($project->$op($user)) {
+        if (($user && $op === 'assignConsultant' && $user->hasRoleInNode($this->node, ['consultant', 'admin', 'superadmin'])) || $op === 'unassignConsultant') {
+            if ($project->$op($user->id)) {
                 // ok
             } else {
-                Message::error(implode('<br />', $errors));
+                Message::error('Error assigning consultant');
             }
         }
 
@@ -501,11 +501,13 @@ class ProjectsSubController extends AbstractSubController {
     public function enableAction($id) {
         // Project && permission check
         $project = $this->getProject($id, 'admin');
+        $consultants = $project->getConsultants();
         // si no esta en edicion, recuperarlo
 
         // Si el proyecto no tiene asesor, asignar al admin que lo ha pasado a negociación
         // No funciona con el usuario root
-        if ((empty($project->consultants)) && $this->user->id != 'root') {
+        // TODO
+        if ((empty($consultants)) && $this->user->id != 'root') {
             if ($project->assignConsultant($this->user->id, $errors)) {
                 $msg = 'Se ha asignado tu usuario (' . $this->user->id . ') como asesor del proyecto "' . $project->id . '"';
                 Message::info($msg);
@@ -524,10 +526,10 @@ class ProjectsSubController extends AbstractSubController {
     public function cancelAction($id) {
         // Project && permission check
         $project = $this->getProject($id, 'admin');
-
+        $consultants = $project->getConsultants();
         // Asignar como asesor al admin que lo ha descartado
         if ($this->user->id != 'root') {
-            if ((!isset($project->consultants[$this->user->id])) && ($project->assignConsultant($this->user->id, $errors))) {
+            if ((!isset($consultants[$this->user->id])) && ($project->assignConsultant($this->user->id, $errors))) {
                 $msg = 'Se ha asignado tu usuario (' . $this->user->id . ') como asesor del proyecto "' . $project->id . '"';
                 Message::info($msg);
             }
@@ -573,6 +575,7 @@ class ProjectsSubController extends AbstractSubController {
     public function rejectAction($id) {
         // Project && permission check
         $project = $this->getProject($id, 'admin');
+        $consultants = $project->getConsultants();
 
         //  idioma de preferencia
         $prefer = Model\User::getPreferences($project->user->id);
@@ -602,7 +605,7 @@ class ProjectsSubController extends AbstractSubController {
 
         // Asignar como asesor al admin que lo ha rechazado
         if ($this->user->id != 'root') {
-            if ((!isset($project->consultants[$this->user->id])) && ($project->assignConsultant($this->user->id, $errors))) {
+            if ((!isset($consultants[$this->user->id])) && ($project->assignConsultant($this->user->id, $errors))) {
                 $msg = 'Se ha asignado tu usuario (' . $this->user->id . ') como asesor del proyecto "' . $project->id . '"';
                 Message::info($msg);
             }

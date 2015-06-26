@@ -148,9 +148,9 @@ foreach ($filters as $key=>$value) {
 
                     }
 
-                    if ($project->consultants) {
+                    if ($project->getConsultants()) {
                         $consultants = array();
-                        foreach($project->consultants as $id => $name) {
+                        foreach($project->getConsultants() as $id => $name) {
                             if($this->is_module_admin('Users', $project->node)) {
                                 $consultants[] = '<a href="/admin/users/manage/'.$id.'">' . $name . '</a>';
                             }

@@ -18,6 +18,7 @@ namespace Goteo\Controller\Cron {
     class Send {
 
         // asesores por defecto si no un proyecto no tiene asesores
+        // TODO: by config...
         public static $consultants = array(
             'esenabre' => 'Enric Senabre',
             'olivier' => 'Olivier Schulbaum',
@@ -35,6 +36,15 @@ namespace Goteo\Controller\Cron {
             $tpl = null; // Número de la plantilla que se obtendrá a partir del identificador
             $debug = \defined('CRON_EXEC');
             $error_sending = false;
+
+            // necesitamos saber los consultores
+            // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos default
+            // TODO: default from config, not here
+            if($project->getConsultants()) {
+                $consultants = implode(', ', $project->getConsultants());
+            } else {
+                $consultants = 'Mercè Moreno Tarrés';
+            }
 
             if ($debug) echo 'toOwner: ';
 
@@ -124,40 +134,12 @@ namespace Goteo\Controller\Cron {
                     // tener en cuenta si están enviando el draft o la negociación
                     $tpl = ($project->draft) ? 8 : 62;
 
-                    // necesitamos saber los consultores (lo hemos quitado del Project::get  )
-                    $project->consultants = Model\Project::getConsultants($project->id);
-
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
-                    if(empty($project->consultants)) {
-                        $consultants = 'Mercè Moreno Tarrés';
-                    } else {
-                        $consultants_copy = $project->consultants;
-                        $consultants = array_shift($consultants_copy);
-                        foreach ($consultants_copy as $userId=>$userName) {
-                            $consultants .= ', ' . $userName;
-                        }
-                    }
-
                     $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%NOMBREASESOR%');
                     $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $consultants);
                     break;
 
                 case 'tip_0':
                     $tpl = 57;
-
-                    // necesitamos saber los consultores (lo hemos quitado del Project::get  )
-                    $project->consultants = Model\Project::getConsultants($project->id);
-
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
-                    if(empty($project->consultants)) {
-                        $consultants = 'Mercè Moreno Tarrés';
-                    } else {
-                        $consultants_copy = $project->consultants;
-                        $consultants = array_shift($consultants_copy);
-                        foreach ($consultants_copy as $userId=>$userName) {
-                            $consultants .= ', ' . $userName;
-                        }
-                    }
 
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
                     $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
@@ -246,10 +228,9 @@ namespace Goteo\Controller\Cron {
 
                 // vigilancia de proyectos (añade en copia oculta a asesores + otros)
                 if (Model\Project\Conf::isWatched($project->id)) {
-                    $consultants = Model\Project::getConsultants($project->id);
                     $monitors = array();
 
-                    foreach ($consultants as $id=>$name) {
+                    foreach ($project->getConsultants() as $id => $name) {
                         $user = Model\User::getMini($id);
                         $monitors[] = $user->email;
                     }
@@ -295,8 +276,11 @@ namespace Goteo\Controller\Cron {
 
             if ($debug) echo 'toConsultants: ';
 
-            // ya no está por defecto en el ::get()
-            $project->consultants = Model\Project::getConsultants($project->id);
+            $consultants = $project->getConsultants();
+            // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a los asesores por defecto
+            if (empty($consultants)) {
+                $consultants = self::$consultants;
+            }
 
             /// tipo de envio
             switch ($type) {
@@ -309,29 +293,13 @@ namespace Goteo\Controller\Cron {
                     $search  = array('%PROJECTNAME%', '%URL%', '%INFO%');
                     $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id, $info_html);
 
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a los asesores por defecto
-                    if (empty($project->consultants)) {
-                        $project->consultants = self::$consultants;
-                    }
                     break;
 
                 case 'tip_0':
                     $tpl = 57;
 
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
-                    if (empty($project->consultants)) {
-                        $project->consultants = self::$consultants;
-                    }
-
-                    $consultants_copy = $project->consultants;
-                    $consultants = array_shift($consultants_copy);
-                    foreach ($consultants_copy as $userId=>$userName) {
-                        $consultants .= ', ' . $userName;
-                    }
-
-
                     $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
-                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
+                    $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, implode(', ', $consultants));
                     break;
 
                 case 'rewardfulfilled': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
@@ -348,21 +316,12 @@ namespace Goteo\Controller\Cron {
                 case 'project_to_review_consultant': // template 59, "Aviso a asesores cuando un impulsor envia el proyecto a revisión"
                     $tpl = 59;
 
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
-                    if (empty($project->consultants)) {
-                        $project->consultants = self::$consultants;
-                    }
                     $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%COMMENT%');
                     $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $project->comment);
                     break;
 
                 case 'project_preform_to_review_consultant': // template 63, "Aviso a asesores cuando un impulsor envia el proyecto a revisión desde preform"
                     $tpl = 63;
-
-                    // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, ponemos Enric
-                    if (empty($project->consultants)) {
-                        $project->consultants = self::$consultants;
-                    }
 
                     //Creamos el mensaje que avisa si ha solicitado ayuda a través de los checkbox
                     $help="";
@@ -383,7 +342,7 @@ namespace Goteo\Controller\Cron {
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                 $pre_content = \str_replace($search, $replace, $template->text);
 
-                foreach ($project->consultants as $id=>$name) {
+                foreach ($consultants as $id=>$name) {
                     $consultant = Model\User::getMini($id);
 
                     // Sustituimos el nombre del asesor en el cuerpo del e-mail
