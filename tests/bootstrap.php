@@ -152,7 +152,7 @@ function get_test_project() {
 function delete_test_project() {
     try {
         $project = \Goteo\Model\Project::get('012-simulated-project-test-210');
-        $project->delete();
+        $project->dbDelete();
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
         error_log('Already deleted test project');

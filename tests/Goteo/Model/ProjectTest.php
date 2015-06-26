@@ -106,6 +106,9 @@ class ProjectTest extends TestCase {
 
 
     public function testCreateUser() {
+        delete_test_user();
+        delete_test_node();
+
         //delete test project if exists
         try {
             $project = Project::get(self::$data['id']);
@@ -141,7 +144,7 @@ class ProjectTest extends TestCase {
      * @depends testCreateProject
      */
     public function testEditProject($project) {
-        $user = \get_test_user();
+        $user = get_test_user();
         $errors = array();
         $project->name = self::$data['name'];
         //add image
@@ -283,7 +286,8 @@ class ProjectTest extends TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass() {
-        \delete_test_user();
+        delete_test_user();
+        delete_test_node();
         // Remove temporal files on finish
         unlink(self::$image['tmp_name']);
         unlink(self::$image2['tmp_name']);

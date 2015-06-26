@@ -3,13 +3,14 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\Promote;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 
-class PromoteTest extends \PHPUnit_Framework_TestCase {
+class PromoteTest extends TestCase {
 
-    private static $data = array('node' => 'goteo', 'title' => 'test title', 'description' => 'test description', 'order' => 0, 'active' => 0);
+    private static $data = array('title' => 'test title', 'description' => 'test description', 'order' => 0, 'active' => 0);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -34,8 +35,9 @@ class PromoteTest extends \PHPUnit_Framework_TestCase {
      * @depends  testValidate
      */
     public function testSavePromoteNonProject($ob) {
+        delete_test_node();
         delete_test_project();
-        delete_test_user();
+        self::$data['node'] = get_test_node()->id;
         $ob = new Promote(self::$data);
         $this->assertFalse($ob->save());
     }
@@ -83,7 +85,6 @@ class PromoteTest extends \PHPUnit_Framework_TestCase {
      */
     static function tearDownAfterClass() {
         delete_test_project();
-        delete_test_user();
         delete_test_node();
     }
 }
