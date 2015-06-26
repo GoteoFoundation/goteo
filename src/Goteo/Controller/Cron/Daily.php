@@ -70,10 +70,10 @@ namespace Goteo\Controller\Cron {
                 }
 
                 if ($debug) echo "Proyecto <strong>{$project->name}</strong>, Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias, conseguido {$project->amount}<br />";
-                
+
                 // primero los que no se bloquean
                 //Solicitud de datos del contrato
-                if ($project->days == $project->days_round1 + 1) {
+                if ($project->published == date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') + 1, date('Y')) )) {
                     // si ha superado el mínimo
                     if ($project->amount >= $project->mincost) {
                         if ($debug) echo "Solicitud de datos contrato<br />";
@@ -94,7 +94,7 @@ namespace Goteo\Controller\Cron {
                             if ($debug) echo "Recompensas/Retornos cumplidas, no se envía<br />";
                         }
                 }
-                
+
                 // Recuerdo al autor proyecto, 8 meses despues de campaña finalizada
                 // FIXME  (depende de days_total)
                 if ($project->days == 320) {
@@ -106,7 +106,7 @@ namespace Goteo\Controller\Cron {
                             if ($debug) echo "Retornos cumplidos, no se envía<br />";
                         }
                 }
-                
+
                 // ahora checkeamos bloqueo de consejos
                 $prefs = Model\User::getPreferences($project->owner);
                 if ($prefs->tips) {
@@ -123,7 +123,7 @@ namespace Goteo\Controller\Cron {
                 // TODO : se comentó que para proyectos con campañas cortas, los consejos se envien proporcionalmente
                 // Consejos/avisos puntuales
                 switch ($project->days) {
-                    
+
                     // NO condicionales
                     case 0: // Proyecto publicado
                         $template = 'tip_0';
@@ -141,15 +141,15 @@ namespace Goteo\Controller\Cron {
                         if ($debug) echo "Envío {$template}<br />";
                         Send::toOwner($template, $project);
                         break;
-                    
+
                     // periodico condicional
-                    case 6: // Publica novedades! 
+                    case 6: // Publica novedades!
                     // y  se repite cada 6 días (fechas libres) mientras no haya posts
-                    case 12: 
-                    case 18: 
-                    case 24: 
-                    case 30: 
-                    case 36: 
+                    case 12:
+                    case 18:
+                    case 24:
+                    case 30:
+                    case 36:
                         // si ya hay novedades, nada
                         if (Model\Blog::hasUpdates($project->id)) {
                             if ($debug) echo "Ya ha publicado novedades<br />";
@@ -159,15 +159,15 @@ namespace Goteo\Controller\Cron {
                             $avisado = true;
                         }
                         break;
-                    
+
                     // comprobación periódica pero solo un envío
                     case 7: // Apóyate en quienes te van apoyando, si más de 20 cofinanciadores
                         // o en cuanto llegue a 20 backers (en fechas libres)
-                    case 14: 
-                    case 17: 
-                    case 21: 
-                    case 24: 
-                    case 27: 
+                    case 14:
+                    case 17:
+                    case 21:
+                    case 24:
+                    case 27:
                         // Si ya se mandó esta plantilla (al llegar a los 20 por primera vez) no se envía de nuevo
                         $sql = "
                             SELECT
@@ -190,7 +190,7 @@ namespace Goteo\Controller\Cron {
                             if ($debug) echo "Ya enviado<br />";
                         }
                         break;
-                    
+
                     case 9: // Busca prescriptores e implícalos
                         // si no tiene padrinos
                         if ($project->patrons > 0) {
@@ -200,7 +200,7 @@ namespace Goteo\Controller\Cron {
                             Send::toOwner('tip_9', $project);
                         }
                         break;
-                    
+
                     case 10: // Luce tus recompensas y retornos
                         // que no se envie a los que solo tienen recompensas de agradecimiento
                         $thanksonly = true;
@@ -229,8 +229,8 @@ namespace Goteo\Controller\Cron {
                             Send::toOwner('tip_10', $project);
                         }
                         break;
-                        
-                        
+
+
                     case 11: // Refresca tu mensaje de motivacion
                         // si no tiene video motivacional
                         if (empty($project->video)) {
@@ -240,7 +240,7 @@ namespace Goteo\Controller\Cron {
                             if ($debug) echo "Tiene video motivacional<br />";
                         }
                         break;
-                    
+
                     case 15: // Sigue los avances y calcula lo que falta
                         // si no ha llegado al mínimo
                         if ($project->amount < $project->mincost) {
@@ -250,7 +250,7 @@ namespace Goteo\Controller\Cron {
                             if ($debug) echo "Ha llegado al mínimo<br />";
                         }
                         break;
-                    
+
                     case 25: // No bajes la guardia!
                         // si no ha llegado al mínimo
                         if ($project->amount < $project->mincost) {
@@ -260,7 +260,7 @@ namespace Goteo\Controller\Cron {
                             if ($debug) echo "Ha llegado al mínimo<br />";
                         }
                         break;
-                    
+
                     case 32: // Al proyecto le faltan 8 días para archivarse
                         // si no ha llegado al mínimo
                         if ($project->amount < $project->mincost) {
@@ -270,8 +270,8 @@ namespace Goteo\Controller\Cron {
                             if ($debug) echo "Ha llegado al mínimo<br />";
                         }
                         break;
-                    
-                    case 38: // Al proyecto le faltan 2 días para archivarse 
+
+                    case 38: // Al proyecto le faltan 2 días para archivarse
                         // si no ha llegado al mínimo pero está por encima del 70%
                         if ($project->amount < $project->mincost && $project->percent >= 70) {
                             if ($debug) echo "No ha llegado al mínimo<br />";
@@ -281,13 +281,13 @@ namespace Goteo\Controller\Cron {
                         }
                         break;
                 }
-                
-                // Avisos periodicos 
-                // si lleva más de 15 días: si no se han publicado novedades en la última semana 
+
+                // Avisos periodicos
+                // si lleva más de 15 días: si no se han publicado novedades en la última semana
                 // Ojo! que si no ha enviado ninguna no lanza este sino la de cada 6 días
                 if (!$avisado && $project->days > 15) {
                     if ($debug) echo "ya lleva una quincena de campaña, verificamos novedades<br />";
-                    
+
                     // veamos si ya le avisamos hace una semana
                     // Si ya se mandó esta plantilla (al llegar a los 20 por primera vez) no se envía de nuevo
                     $sql = "
@@ -333,19 +333,19 @@ namespace Goteo\Controller\Cron {
                     } else {
                         if ($debug) echo "Se le avisó por novedades hace menos de una semana<br />";
                     }
-                    
-                    
+
+
                 }
-                
+
                 if ($debug) echo "<br />";
-                
+
             }
-            
+
             // Obtiene los proyectos que llevan 10 meses con status=4 (proyecto financiado) y
             // envía un correo a los asesores del proyecto en caso de que no consten aún los retornos colectivos
             $projects = Model\Project::getFunded(10);
 
-            $filtered_projects = array_filter($projects, 
+            $filtered_projects = array_filter($projects,
                 function($project) {
                     $rewards_fulfilled = Model\Project\Reward::areFulfilled($project->id, 'social');
                     $project_fulfilled = $project->status == 5;
@@ -377,13 +377,13 @@ namespace Goteo\Controller\Cron {
             return;
         }
 
-        
+
         /**
          * Control diario de convocatorias
          * @param bool $debug
          */
         public static function Calls ($debug = false) {
-            
+
             $time = microtime();
             $time = explode(' ', $time);
             $time = $time[1] + $time[0];
@@ -479,7 +479,7 @@ namespace Goteo\Controller\Cron {
                     $log->doAdmin('call');
                     $log->populate($campaign->name, '/call/'.$campaign->id.'?rest='.$amount,
                         \vsprintf('Quedan menos de %s en la campaña %s', array(
-                            Feed::item('money', $amount.' &euro;') 
+                            Feed::item('money', $amount.' &euro;')
                                 . ' de '
                                 . Feed::item('drop', 'Capital Riego', '/service/resources'),
                             Feed::item('call', $campaign->name, $campaign->id))
@@ -488,7 +488,7 @@ namespace Goteo\Controller\Cron {
                     unset($log);
                 }
             }
-            
+
             $time = microtime();
             $time = explode(' ', $time);
             $time = $time[1] + $time[0];
@@ -499,7 +499,7 @@ namespace Goteo\Controller\Cron {
 
             return;
         }
-        
+
     }
 
 }
