@@ -1308,7 +1308,11 @@ namespace Goteo\Model {
          * Metodo para obtener datos para el informe completo (con incidencias y netos)
          */
          public static function getReportData($project, $status, $round, $passed) {
-             $Data = array();
+            $Data = array();
+            // update details, just in case
+            // proyecto
+            self::invested($project); // conseguido
+            self::numInvestors($project); // inversores
 
             // segun estado, ronda y fecha de pase a segunda
             // el cash(1) es igual para todos
