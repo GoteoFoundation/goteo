@@ -48,7 +48,7 @@ class ProjectTest extends TestCase {
                         'error' => '',
                         'size' => 0);
 
-    private static $data = array('id' => '012-simulated-project-test-210', 'name' => '012 Simulated Project Test 210');
+    private static $data = array('id' => '012-simulated-project-test-211', 'name' => '012 Simulated Project Test 211');
 
     private static $image2;
 
@@ -119,8 +119,8 @@ class ProjectTest extends TestCase {
      * @depends testCreateUser
      */
     public function testCreateProject() {
-        $node = \get_test_node();
-        $user = \get_test_user();
+        $node = get_test_node();
+        $user = get_test_user();
         self::$data['owner'] = $user->id;
 
         $errors = array();
@@ -255,7 +255,7 @@ class ProjectTest extends TestCase {
      */
     public function testDeleteProject($project) {
         $errors = array();
-        $this->assertTrue($project->delete($errors), print_r($errors, 1));
+        $this->assertTrue($project->dbDelete($errors), print_r($errors, 1));
 
         return $project;
     }

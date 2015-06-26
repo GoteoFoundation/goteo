@@ -8,13 +8,7 @@ use Goteo\Model\Project;
 
 class BazarTest extends \PHPUnit_Framework_TestCase {
 
-    private static $data = array('reward' => 1, 'project' => '012-simulated-project-test-210', 'title' => 'test title', 'description' => 'test description', 'order' => 0, 'active' => 0);
-    private static $project_data = array('id' => '012-simulated-project-test-210', 'owner' => '012-simulated-user-test-210', 'name' => '012 Simulated Project Test 210');
-    private static $user = array(
-            'userid' => '012-simulated-user-test-210',
-            'name' => 'Test user - please delete me',
-            'email' => 'simulated-user-test@goteo.org'
-        );
+    private static $data = array('reward' => 1, 'title' => 'test title', 'description' => 'test description', 'order' => 0, 'active' => 0);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -30,38 +24,16 @@ class BazarTest extends \PHPUnit_Framework_TestCase {
      * @depends testInstance
      */
     public function testValidate($ob) {
+        delete_test_project();
+        delete_test_user();
+
         $this->assertFalse($ob->validate(), print_r($errors, 1));
         $this->assertFalse($ob->save());
     }
 
-    public function testCreateUser() {
-        // We don't care if exists or not the test user:
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
-            $user->delete();
-        }
-        $errors = array();
-        $user = new \Goteo\Model\User(self::$user);
-        $this->assertTrue($user->save($errors, array('password')), print_r($errors, 1));
-        $this->assertInstanceOf('\Goteo\Model\User', $user);
-
-        //delete test project if exists
-        try {
-            $project = Project::get(self::$data['id']);
-            $project->delete();
-        } catch(\Exception $e) {
-            // project not exists, ok
-        }
-        return $user;
-    }
-
-    /**
-     * @depends testCreateUser
-     */
-    public function testCreate($user) {
-        $project = new Project(self::$project_data);
-        $this->assertTrue($project->validate($errors), print_r($errors, 1));
-        $this->assertNotFalse($project->create(GOTEO_NODE, $errors), print_r($errors, 1));
-        $project = Project::get($project->id);
+    public function testCreate() {
+        $user = get_test_user();
+        $project = get_test_project();
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         self::$data['project'] = $project->id;
         $ob = new Bazar(self::$data);
@@ -76,13 +48,12 @@ class BazarTest extends \PHPUnit_Framework_TestCase {
             // else $this->assertInstanceOf('\Goteo\Model\Project', $ob->$key, "[$key]: " . print_r($ob->$key, 1));
         }
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save());
         $this->assertTrue(Bazar::delete($ob->id));
 
-        $this->assertTrue($project->delete($errors), print_r($errors, 1));
         return $ob;
     }
     /**
@@ -98,9 +69,7 @@ class BazarTest extends \PHPUnit_Framework_TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass() {
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
-            $user->delete();
-        }
-        // Remove temporal files on finish
+        delete_test_project();
+        delete_test_user();
     }
 }

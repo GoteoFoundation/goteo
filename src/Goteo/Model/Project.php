@@ -2181,7 +2181,7 @@ namespace Goteo\Model {
          * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
          * @return: boolean
          */
-        public function delete(&$errors = array()) {
+        public function dbDelete(&$errors = array()) {
 
             if ($this->status > 1) {
                 $errors[] = "El proyecto no esta descartado ni en edicion";

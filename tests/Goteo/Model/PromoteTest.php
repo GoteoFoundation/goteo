@@ -34,14 +34,14 @@ class PromoteTest extends \PHPUnit_Framework_TestCase {
      * @depends  testValidate
      */
     public function testSavePromoteNonProject($ob) {
-        \delete_tests_project();
-        \delete_tests_user();
+        delete_test_project();
+        delete_test_user();
         $ob = new Promote(self::$data);
         $this->assertFalse($ob->save());
     }
 
     public function testCreateProject() {
-        $project = \get_test_project();
+        $project = get_test_project();
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         self::$data['project'] = $project->id;
         return $project;
@@ -62,7 +62,7 @@ class PromoteTest extends \PHPUnit_Framework_TestCase {
             $this->assertEquals($ob->$key, $val);
         }
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save($errors), print_r($errors, 1));
@@ -82,8 +82,8 @@ class PromoteTest extends \PHPUnit_Framework_TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass() {
-        \delete_test_project();
-        \delete_test_user();
-        \delete_test_node();
+        delete_test_project();
+        delete_test_user();
+        delete_test_node();
     }
 }

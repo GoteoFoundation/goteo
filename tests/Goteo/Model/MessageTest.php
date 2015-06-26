@@ -55,7 +55,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
             else $this->assertEquals($ob->$key, $val);
         }
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save());

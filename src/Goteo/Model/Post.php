@@ -501,18 +501,6 @@ namespace Goteo\Model {
 
         }
 
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = Post::get($id))) return false;
-            return $ob->delete();
-
-        }
         /*
          * Para que salga antes  (disminuir el order)
          */

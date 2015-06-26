@@ -197,19 +197,6 @@ namespace Goteo\Model\Blog\Post {
             }
         }
 
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = Tag::get($id))) return false;
-            return $ob->delete();
-
-        }
-
         /*
          * Para quitar un tag de un post
          */

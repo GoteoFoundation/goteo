@@ -168,27 +168,34 @@ namespace Goteo\Core {
             if(empty($values)) throw new \PDOException("No fields specified!", 1);
             $sql = 'DELETE FROM `' . $this->Table . '` WHERE ' . implode(',', $clause);
 
-            return self::query($sql, $values);
+            self::query($sql, $values);
+            return true;
         }
 
         /**
-         * Delete without exception.
+         * Statically delete without exception.
          * TODO: remove this method...
          * @return  type bool   true|false
          */
-        public function delete (&$errors = array()) {
-            $id = $this->id;
+        public static function delete ($id, &$errors = array()) {
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
                 return false;
             }
+            $class = get_called_class();
+            $ob = new $class(['id' => $id]); //
 
             try {
-                $this->dbDelete();
+                if($ob->dbDelete()) {
+                    return true;
+                }
+                $errors[] = 'Unknow error. Empty id?';
             } catch (\PDOException $e) {
+                $errors[] = 'Delete error. ' . $e->getMessage();
                 return false;
             }
-            return true;
+
+            return false;
         }
 
         /**

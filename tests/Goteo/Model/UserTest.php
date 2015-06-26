@@ -40,9 +40,9 @@ class UserTest extends TestCase {
                     );
 
     private static $user = array(
-            'userid' => '012-simulated-user-test-210',
+            'userid' => '012-simulated-user-test-211',
             'name' => 'Test user - please delete me',
-            'email' => 'simulated-user-test@goteo.org'
+            'email' => 'simulated-user-test2@goteo.org'
         );
 
     public function testInstance() {
@@ -85,7 +85,7 @@ class UserTest extends TestCase {
      * @depends testCreateUser
      */
     public function testDeleteUser($user) {
-        $this->assertTrue($user->delete());
+        $this->assertTrue($user->dbDelete());
         $this->assertFalse(User::get(self::$user['userid']));
     }
 

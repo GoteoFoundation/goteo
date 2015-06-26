@@ -103,34 +103,32 @@ namespace Goteo\Model\Blog {
                 if ($debug) die(' no es \Goteo\Model\Blog\Post  ???');
                 return false;
 
-            } else {
-
-                // autor
-                $post->user   = new User;
-                $post->user->name = $post->user_name;
-
-                $post->gallery = Image::getModelGallery('post', $post->id);
-                $post->image = Image::getModelImage($post->image, $post->gallery);
-
-                // video
-                if (isset($post->media)) {
-                    $post->media = new Media($post->media);
-                }
-
-                $post->comments = Post\Comment::getAll($id);
-
-                if (!isset($post->num_comments)) {
-                    $post->num_comments = Post\Comment::getCount($post->id);
-                }
-
-                //tags
-                $post->tags = Post\Tag::getAll($id);
-
-                //agregamos html si es texto plano
-                if(strip_tags($post->text) == $post->text)
-                    $post->text = nl2br(Text::urlink($post->text));
-
             }
+
+            // autor
+            $post->user   = new User;
+            $post->user->name = $post->user_name;
+
+            $post->gallery = Image::getModelGallery('post', $post->id);
+            $post->image = Image::getModelImage($post->image, $post->gallery);
+
+            // video
+            if (isset($post->media)) {
+                $post->media = new Media($post->media);
+            }
+
+            $post->comments = Post\Comment::getAll($id);
+
+            if (!isset($post->num_comments)) {
+                $post->num_comments = Post\Comment::getCount($post->id);
+            }
+
+            //tags
+            $post->tags = Post\Tag::getAll($id);
+
+            //agregamos html si es texto plano
+            if(strip_tags($post->text) == $post->text)
+                $post->text = nl2br(Text::urlink($post->text));
 
             return $post;
         }
@@ -575,19 +573,6 @@ namespace Goteo\Model\Blog {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
-        }
-
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = Post::get($id))) return false;
-            return $ob->delete();
-
         }
 
         /*

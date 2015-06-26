@@ -209,7 +209,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $mock->id=null;
         $mock->dbInsertUpdate(['uniq','name']);
         $this->assertEquals(1, $mock::dbCount());
-        $this->assertTrue($mock->delete());
+        $this->assertTrue(MockModel::delete($mock->id));
         $this->assertEquals(0, $mock::dbCount());
         // $this->assertFalse($mock->delete());
 

@@ -558,10 +558,7 @@ namespace Goteo\Model {
         /*
          * Para quitar un apadrinamiento
          */
-        public function delete ($id = null) {
-            if(empty($id) && $this->id) {
-                $id = $this->id;
-            }
+        public static function delete ($id) {
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
                 return false;

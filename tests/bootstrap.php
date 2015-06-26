@@ -9,8 +9,8 @@ define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
-// error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
-// ini_set("display_errors", 0);
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
+ini_set("display_errors", 1);
 
 //ensures we have cache to test
 define('SQL_CACHE_TIME', 1);
@@ -28,22 +28,28 @@ Config::loadFromYaml('settings.yml');
 // User, Project, Node creation
 function get_test_user() {
     $data = array(
-        'id' => '012-simulated-user-test-210',
+        'userid' => '012-simulated-user-test-210',
         'name' => 'Test user - please delete me',
         'email' => 'simulated-user-test@goteo.org'
     );
     $data['node'] = get_test_node()->id;
     // if exists, return the user
-    if($user = \Goteo\Model\User::get($data['id'])) {
+    if($user = \Goteo\Model\User::get($data['userid'])) {
         return $user;
     }
     $errors = array();
     $user = new \Goteo\Model\User($data);
     if ( ! $user->save($errors, array('password')) ) {
-        error_log("Error creating test user!");
+        error_log("Error creating test user! " . print_r($errors, 1));
         return false;
     }
-    return $user;
+
+    if($user = \Goteo\Model\User::get($data['userid'])) {
+        return $user;
+    }
+    else {
+        error_log('Unknow error getting user id');
+    }
 }
 
 function delete_test_user() {
@@ -61,7 +67,8 @@ function get_test_node() {
     $data = array(
         'id' => 'testnode',
         'name' => 'Test node - please delete me',
-        'email' => 'simulated-node-test@goteo.org'
+        'email' => 'simulated-node-test@goteo.org',
+        'url' => ''
     );
     // if exists, return the node
     try {
@@ -71,29 +78,35 @@ function get_test_node() {
     }
     $errors = array();
     $node = new \Goteo\Model\Node($data);
-    if ( ! $node->save($errors, array('password')) ) {
-        error_log("Error creating test node!");
+    if( ! $node->create($errors)) {
+        error_log("Error creating test node! " . print_r($errors, 1));
         return false;
     }
-    return $node;
+    try {
+        return \Goteo\Model\Node::get($data['id']);
+    }
+    catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+        error_log("unknow error getting test node! " . $e->getMessage());
+    }
+    return false;
 }
 function delete_test_node() {
     try {
-        $project = \Goteo\Model\Node::get('testnode');
-        $project->dbDelete();
+        $node= \Goteo\Model\Node::get('testnode');
+        $node->dbDelete();
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
     }
 
     try {
-        return \Goteo\Model\Node::get('testnode');
+        \Goteo\Model\Node::get('testnode');
+        error_log('unknow error deleting test project! ' . print_r($errors, 1));
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
-        error_log('unknow error deleting test project');
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 function get_test_project() {
@@ -104,31 +117,34 @@ function get_test_project() {
     $data['node'] = get_test_node()->id;
     $data['owner'] = get_test_user()->id;
     // if exists, return the project
+
     try {
         return \Goteo\Model\Project::get($data['id']);
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+        error_log('Project [' . $data['id'] . '] not found, creating...');
     }
     $errors = array();
     $project = new \Goteo\Model\Project($data);
     if( ! $project->create($data['node'], $errors)) {
-        error_log("Error creating test project!");
+        error_log("Error creating test project! " . print_r($errors, 1));
         return false;
     }
     $project->name = $data['name'];
     if ( ! $project->save($errors) ) {
-        error_log("Error saving test project!");
+        error_log("Error saving test project! " . print_r($errors, 1));
         return false;
     }
     if ( ! $project->rebase($data['id'], $errors) ) {
-        error_log("Error rebasing test project!");
+        error_log("Error rebasing test project! " . print_r($errors, 1));
         return false;
     }
+
     try {
         return \Goteo\Model\Project::get($data['id']);
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
-        error_log('unknow error getting test project');
+        error_log('unknow error getting test project ' . $e->getMessage());
         return false;
     }
 }
@@ -139,17 +155,18 @@ function delete_test_project() {
         $project->delete();
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+        error_log('Already deleted test project');
     }
 
     try {
-        return \Goteo\Model\Project::get('012-simulated-project-test-210');
+        \Goteo\Model\Project::get('012-simulated-project-test-210');
+        error_log('unknow error deleting test project');
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
-        error_log('unknow error deleting test project');
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 delete_test_project();

@@ -13,14 +13,9 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
             'country_code' => 'XX',
             'latitude' => 0.1234567890,
             'longitude' => -0.1234567890,
-            'method' => 'ip',
-            'id' => '012-simulated-user-test-210'
+            'method' => 'ip'
         );
-    private static $user = array(
-            'userid' => '012-simulated-user-test-210',
-            'name' => 'Test user - please delete me',
-            'email' => 'simulated-user-test@goteo.org'
-        );
+
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
 
@@ -38,10 +33,11 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
     public function testDefaultValidation($location) {
         $this->assertFalse($location->validate($errors));
         $this->assertFalse($location->save());
+        delete_test_user();
     }
 
     public function testAddUserLocation() {
-
+        self::$data['id'] = 'test-user-non-existing';
         $user_location = new UserLocation(self::$data);
         $this->assertInstanceOf('\Goteo\Model\User\UserLocation', $user_location);
         $this->assertEquals($user_location->latitude, self::$data['latitude']);
@@ -60,22 +56,23 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
      * @depends testAddUserLocation
      */
     public function testSaveUserLocationNonUser($user_location) {
-        // We don't care if exists or not the test user:
-        if($user = User::get(self::$user['userid'])) {
-            $user->delete();
-        }
-
         $this->assertFalse($user_location->save());
-    }
-
-    public function testCreateUser() {
-        $user = new User(self::$user);
-        $this->assertTrue($user->save($errors, array('password')));
-        $this->assertInstanceOf('\Goteo\Model\User', $user);
+        return $user_location;
     }
 
     /**
-     * @depends testAddUserLocation
+     * @depends testSaveUserLocationNonUser
+     */
+    public function testCreateUser($user_location) {
+        $user = get_test_user();
+        $this->assertInstanceOf('\Goteo\Model\User', $user);
+        self::$data['id'] = $user->id;
+        $user_location->id = $user->id;
+        return $user_location;
+    }
+
+    /**
+     * @depends testCreateUser
      */
     public function testSaveUserLocation($user_location) {
         $errors = array();
@@ -165,18 +162,19 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
      */
     public function testAddSecondUser($user_location) {
         $errors = array();
-        $user = self::$user;
-        $user['userid'] = $user['userid'] . '-2';
-        $user['email'] = '2.' . $user['email'];
-        if($u = User::get($user['userid'])) {
-            $u->delete();
+        $user = get_test_user();
+        $usr['userid'] = '012-second-test-user-210';
+        $usr['name'] = $user->name . ' II';
+        $usr['email'] = '2.' . $user->email;
+        if(User::get($user->id)) {
+            $user->dbDelete();
         }
-        $u = new User($user);
+        $u = new User($usr);
         $this->assertTrue($u->save($errors, array('password')), print_r($errors, 1));
         $this->assertInstanceOf('\Goteo\Model\User', $u);
 
         $data = self::$data;
-        $data['id'] = $user['userid'];
+        $data['id'] = $usr['userid'];
         $data['latitude'] = $data['latitude'] + 0.0001;
         $data['longitude'] = $data['longitude'] + 0.0001;
         $location2 = new UserLocation($data);
@@ -202,8 +200,8 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
         }
         $this->assertContains($user2->id, $keys);
 
-        $this->assertTrue($user1->delete($errors), print_r($errors, 1));
-        $this->assertTrue($user2->delete($errors), print_r($errors, 1));
+        $this->assertTrue($user1->dbDelete());
+        $this->assertTrue($user2->dbDelete());
     }
 
     /**
@@ -211,7 +209,7 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
      */
     public function testRemoveLocationEntry($user_location) {
         $errors = array();
-        $this->assertTrue($user_location->delete($errors), print_r($errors, 1));
+        $this->assertTrue($user_location->dbDelete());
         $user_location2 = UserLocation::get($user_location->id);
 
         $this->assertFalse($user_location2);
@@ -222,11 +220,9 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass() {
-        if($user = User::get(self::$user['userid'])) {
-            $user->delete();
+        if($user = User::get('012-second-test-user-210')) {
+            $user->dbDelete();
         }
-        if($user = User::get(self::$user['userid'] . '-2')) {
-            $user->delete();
-        }
+        delete_test_user();
     }
 }

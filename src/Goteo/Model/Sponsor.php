@@ -150,19 +150,6 @@ class Sponsor extends \Goteo\Core\Model {
         }
     }
 
-    /**
-     * Static compatible version of parent delete()
-     * @param  [type] $id [description]
-     * @return [type]     [description]
-     */
-    public function delete($id = null) {
-        if(empty($id)) return parent::delete();
-
-        if(!($ob = Sponsor::get($id))) return false;
-        return $ob->delete();
-
-    }
-
     /*
      * Para que salga antes  (disminuir el order)
      */

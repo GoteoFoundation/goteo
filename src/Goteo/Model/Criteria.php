@@ -128,18 +128,6 @@ namespace Goteo\Model {
                 return false;
             }
         }
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = Criteria::get($id))) return false;
-            return $ob->delete();
-
-        }
 
         /*
          * Para que una pregunta salga antes  (disminuir el order)

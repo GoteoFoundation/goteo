@@ -98,7 +98,7 @@ class Home extends \Goteo\Core\Model {
     /*
      * Para quitar un elemento
      */
-    public function delete ($item, $node, $type = 'main') {
+    public static function delete ($item, $node, $type = 'main') {
 
         $sql = "DELETE FROM home WHERE item = :item AND node = :node AND type = :type";
         try {

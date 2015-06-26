@@ -39,7 +39,7 @@ class BannerTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\Goteo\Model\Image', $ob->image);
         $this->assertEquals($ob->image->name, self::$data['image']);
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save());

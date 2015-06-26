@@ -17,15 +17,6 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
             'latitude' => 0.1234567890,
             'longitude' => -0.1234567890,
             'method' => 'ip',
-            'id' => '012-simulated-project-test-210'
-        );
-    private static $project = array('id' => '012-simulated-project-test-210',
-                                    'owner' => '012-simulated-user-test-210',
-                                    'name' => '012 Simulated Project Test 210');
-    private static $user = array(
-            'userid' => '012-simulated-user-test-210',
-            'name' => 'Test user - please delete me',
-            'email' => 'simulated-user-test@goteo.org'
         );
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -64,23 +55,8 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
      * @depends testAddProjectLocation
      */
     public function testSaveProjectLocationNonProject($project_location) {
-        // We don't care if exists or not the test user:
-        if($user = User::get(self::$user['userid'])) {
-            $user->delete();
-        }
-        //delete test project if exists
-        try {
-            $project = Project::get(self::$data['id']);
-            $project->delete();
-        } catch(\Exception $e) {
-            // project not exists, ok
-        }
-        try {
-            $project = Project::get(self::$data['id']);
-        } catch(\Exception $e) {
-            // project not exists, ok
-            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
-        }
+        delete_test_project();
+        delete_test_user();
 
         $this->assertFalse($project_location->save());
     }

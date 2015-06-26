@@ -255,24 +255,6 @@ namespace Goteo\Model {
 
         }
 
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            $sql = 'DELETE FROM promote WHERE id = ?';
-            try {
-                self::query($sql, array($id));
-            } catch (\PDOException $e) {
-                // throw new Exception("Delete error in $sql");
-                return false;
-            }
-            return true;
-        }
-
         /*
          * Para que salga antes  (disminuir el order)
          */
