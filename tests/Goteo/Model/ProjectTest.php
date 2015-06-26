@@ -3,12 +3,14 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
+
 use Goteo\Model\Project;
 use Goteo\Model\User;
 use Goteo\Model\Image;
 use Goteo\Model\Project\Image as ProjectImage;
 
-class ProjectTest extends \PHPUnit_Framework_TestCase {
+class ProjectTest extends TestCase {
 
     private static $related_tables = array('project_category' => 'project',
                     'project_account' => 'project',
@@ -46,13 +48,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
                         'error' => '',
                         'size' => 0);
 
-    private static $data = array('id' => '012-simulated-project-test-210', 'owner' => '012-simulated-user-test-210', 'name' => '012 Simulated Project Test 210');
-
-    private static $user = array(
-            'userid' => '012-simulated-user-test-210',
-            'name' => 'Test user - please delete me',
-            'email' => 'simulated-user-test@goteo.org'
-        );
+    private static $data = array('id' => '012-simulated-project-test-210', 'name' => '012 Simulated Project Test 210');
 
     private static $image2;
 
@@ -110,15 +106,6 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
 
 
     public function testCreateUser() {
-        // We don't care if exists or not the test user:
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
-            $user->delete();
-        }
-        $errors = array();
-        $user = new \Goteo\Model\User(self::$user);
-        $this->assertTrue($user->save($errors, array('password')), print_r($errors, 1));
-        $this->assertInstanceOf('\Goteo\Model\User', $user);
-
         //delete test project if exists
         try {
             $project = Project::get(self::$data['id']);
@@ -126,25 +113,26 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         } catch(\Exception $e) {
             // project not exists, ok
         }
-        return $user;
     }
 
     /**
      * @depends testCreateUser
      */
-    public function testCreateProject($user) {
-        $this->assertEquals($user->id, self::$data['owner']);
+    public function testCreateProject() {
+        $node = \get_test_node();
+        $user = \get_test_user();
+        self::$data['owner'] = $user->id;
 
         $errors = array();
         $project = new Project(self::$data);
         $this->assertTrue($project->validate($errors), print_r($errors, 1));
-        $this->assertNotFalse($project->create(GOTEO_NODE, $errors), print_r($errors, 1));
-
+        $this->assertNotFalse($project->create($node->id, $errors), print_r($errors, 1));
+// die($project->id);
         $project = Project::get($project->id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
-        $this->assertEquals($project->owner, self::$user['userid']);
+        $this->assertEquals($project->owner, $user->id);
         return $project;
     }
 
@@ -153,6 +141,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
      * @depends testCreateProject
      */
     public function testEditProject($project) {
+        $user = \get_test_user();
         $errors = array();
         $project->name = self::$data['name'];
         //add image
@@ -170,7 +159,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $this->assertCount(7, $project->all_galleries);
         $this->assertCount(2, $project->all_galleries['']);
         $this->assertEquals($project->image, $project->gallery[0]->imageData);
-        $this->assertEquals($project->owner, self::$user['userid']);
+        $this->assertEquals($project->owner, $user->id);
         $this->assertEquals($project->name, self::$data['name']);
 
     }
@@ -294,9 +283,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass() {
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
-            $user->delete();
-        }
+        \delete_test_user();
         // Remove temporal files on finish
         unlink(self::$image['tmp_name']);
         unlink(self::$image2['tmp_name']);

@@ -3,9 +3,10 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\Sponsor;
 
-class SponsorTest extends \PHPUnit_Framework_TestCase {
+class SponsorTest extends TestCase {
 
     private static $data = array('name' => 'Test Sponsor', 'url' => 'http://goteo.org', 'node' => 'test', 'order' => 0);
 

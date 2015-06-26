@@ -3,9 +3,10 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\User;
 
-class UserTest extends \PHPUnit_Framework_TestCase {
+class UserTest extends TestCase {
     private static $related_tables = array('user_api' => 'user_id',
                     'user_call' => 'user',
                     'user_donation' => 'user',

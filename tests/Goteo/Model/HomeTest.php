@@ -3,9 +3,10 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\Home;
 
-class HomeTest extends \PHPUnit_Framework_TestCase {
+class HomeTest extends TestCase {
 
     private static $data = array('node' => 'test', 'item' => 'test', 'type' => 'side', 'order' => 0);
 
