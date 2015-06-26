@@ -1,9 +1,9 @@
+<?php $this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Model\User;
-
-$filters = $vars['filters'];
+$filters = $this->filters;
 
 ?>
 <a href="/admin/nodes/add" class="button">Crear nuevo nodo</a>
@@ -18,22 +18,22 @@ $filters = $vars['filters'];
                     <label for="admin-filter">Administrados por:</label><br />
                     <select id="admin-filter" name="admin" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier administrador</option>
-                    <?php foreach ($vars['admins'] as $userId=>$userName) : ?>
-                        <option value="<?php echo $userId; ?>"<?php if ($filters['admin'] == $userId) echo ' selected="selected"';?>><?php echo $userName; ?></option>
-                    <?php endforeach; ?>
+                    <?php foreach ($this->admins as $userId => $userName) : ?>
+                        <option value="<?= $userId ?>"<?php if ($filters['admin'] == $userId) echo ' selected="selected"';?>><?= $userName ?></option>
+                    <?php endforeach ?>
                     </select>
                 </td>
                 <td>
                     <label for="name-filter">Nombre:</label><br />
-                    <input id="name-filter" name="name" value="<?php echo $filters['name']; ?>" style="width:250px"/>
+                    <input id="name-filter" name="name" value="<?= $filters['name'] ?>" style="width:250px"/>
                 </td>
                 <td>
                     <label for="status-filter">Mostrar por estado:</label><br />
                     <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
                         <option value="">Cualquier estado</option>
-                    <?php foreach ($vars['status'] as $statusId=>$statusName) : ?>
-                        <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
-                    <?php endforeach; ?>
+                    <?php foreach ($this->status as $statusId => $statusName) : ?>
+                        <option value="<?= $statusId ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?= $statusName ?></option>
+                    <?php endforeach ?>
                     </select>
                 </td>
             </tr>
@@ -44,15 +44,18 @@ $filters = $vars['filters'];
             </tr>
         </table>
     </form>
+    <br clear="both" />
+    <a href="/admin/nodes/?reset=filters">[Quitar filtros]</a>
 </div>
 
 <div class="widget board">
-    <?php if (!empty($vars['nodes'])) : ?>
+    <?php if ($this->nodes) : ?>
     <table>
         <thead>
             <tr>
                 <th>Nodo</th>
                 <th>Nombre</th>
+                <th>URL</th>
                 <th>Estado</th>
                 <th></th>
                 <th></th>
@@ -61,27 +64,26 @@ $filters = $vars['filters'];
         </thead>
 
         <tbody>
-            <?php foreach ($vars['nodes'] as $node) :
+            <?php foreach ($this->nodes as $node) :
                 $status = $node->active ? 'active' : 'inactive';
-                if (GOTEO_ENV == 'local') {
-                    $url = str_replace('http://', "http://{$node->id}.", SITE_URL);
-                } else {
-                    $url = $node->url;
-                }
+                $url = $node->getUrl();
                 ?>
             <tr>
-                <td><a class="node-jump" href="<?php echo $url; ?>" target="_blank"><?php echo $url; ?></a></td>
-                <td><?php echo $node->name; ?></td>
-                <td><?php echo $vars['status'][$status]; ?></td>
-                <td><a href="/admin/nodes/edit/<?php echo $node->id; ?>">[Editar]</a></td>
-                <td><a href="/admin/nodes/admins/<?php echo $node->id; ?>">[Admins]</a></td>
-                <td><?php echo implode(', ', $node->admins); ?></td>
+                <td><a class="node-jump" href="<?= $url ?>" target="_blank"><?= $node->id ?></a></td>
+                <td><?= $node->name ?></td>
+                <td><?= $url ?></td>
+                <td><?= $this->status[$status] ?></td>
+                <td><a href="/admin/nodes/edit/<?= $node->id ?>">[Editar]</a></td>
+                <td><a href="/admin/nodes/admins/<?= $node->id ?>">[Admins]</a></td>
+                <td><?= implode(', ', $node->admins) ?></td>
             </tr>
-            <?php endforeach; ?>
+            <?php endforeach ?>
         </tbody>
 
     </table>
     <?php else : ?>
     <p>No se han encontrado registros</p>
-    <?php endif; ?>
+    <?php endif ?>
 </div>
+
+<?php $this->replace() ?>

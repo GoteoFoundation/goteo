@@ -4,6 +4,7 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\Request;
 use Goteo\Library\Feed,
     Goteo\Application\Message,
     Goteo\Application\Config,
@@ -16,30 +17,9 @@ class NodesSubController extends AbstractSubController {
 
     static protected $labels = array (
       'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
       'add' => 'Nuevo Canal',
-      'move' => 'Reubicando el aporte',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe de proyecto',
-      'viewer' => 'Viendo logs',
       'edit' => 'Gestionando Canal',
-      'translate' => 'Traduciendo Micronoticia',
-      'reorder' => 'Ordenando las entradas en Portada',
-      'footer' => 'Ordenando las entradas en el Footer',
-      'projects' => 'Gestionando proyectos de la convocatoria',
       'admins' => 'Asignando administradores del Canal',
-      'posts' => 'Entradas de blog en la convocatoria',
-      'conf' => 'Configurando la convocatoria',
-      'dropconf' => 'Gestionando parte económica de la convocatoria',
-      'keywords' => 'Palabras clave',
-      'view' => 'Gestión de retornos',
-      'info' => 'Información de contacto',
-      'send' => 'Comunicación enviada',
-      'init' => 'Iniciando un nuevo envío',
-      'activate' => 'Iniciando envío',
-      'detail' => 'Viendo destinatarios',
     );
 
 
@@ -63,171 +43,126 @@ class NodesSubController extends AbstractSubController {
         return parent::isAllowed($user, $node);
     }
 
-    public function adminsAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('admins', $id, $this->getFilters(), $subaction));
+    /**
+     * Get or exception to handle node
+     * TODO: some extra security check?
+     * @param  string $id node id
+     */
+    private function getNode($id) {
+        $node = Model\Node::get($id);
+        $this->contextVars([
+                'node' => $node,
+                'node_admins' => Model\Node::getAdmins($id)
+            ], '/admin/nodes/');
+        return $node;
     }
 
+    public function adminsAction($id = null) {
 
-    public function editAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('edit', $id, $this->getFilters(), $subaction));
-    }
+        $node = $this->getNode($id);
 
-
-    public function addAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('add', $id, $this->getFilters(), $subaction));
-    }
-
-
-    public function listAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
-    }
-
-
-    public function process($action = 'list', $id = null, $filters = array()) {
-
-        $errors = array();
-
-        if ($this->isPost()) {
-            switch ($this->getPost('action')) {
-                case 'add':
-
-                    $url = '/channel/' . $this->getPost('id');
-                    // objeto
-                    $node = new Model\Node(array(
-                                'id' => $this->getPost('id'),
-                                'name' => $this->getPost('name'),
-                                'email' => $this->getPost('email'),
-                                'url' => $url,
-                                'active' => $this->getPost('active'),
-                                'default_consultant' => $this->getPost('default_consultant'),
-                                'sponsors_limit' => $this->getPost('sponsors_limit')
-                            ));
-
-                    if ($node->create($errors)) {
-
-                            Message::info('Canal creado');
-                            $txt_log = 'creado';
-
-                        // Evento feed
-                        $log = new Feed();
-                        $log->setTarget($node->id, 'node');
-                        $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
-                                    Feed::item('user', $this->user->name, $this->user->id),
-                                    Feed::item('relevant', $txt_log),
-                                    Feed::item('project', $node->name))
-                                ));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                        if ($this->getPost('action') == 'add') {
-                            Message::info('Puedes asignar ahora sus administradores');
-                            return $this->redirect('/admin/nodes/admins/' . $node->id);
-                        }
-                    } else {
-                        Message::error('Fallo al crear, revisar los campos');
-
-                        return array(
-                            'folder' => 'nodes',
-                            'file' => 'add',
-                            'action' => 'add'
-                        );
-                    }
-                    break;
-                case 'edit':
-                    // objeto
-                    $node = new Model\Node(array(
-                                'id' => $this->getPost('id'),
-                                'name' => $this->getPost('name'),
-                                'email' => $this->getPost('email'),
-                                'url' => $this->getPost('url'),
-                                'active' => $this->getPost('active'),
-                                'default_consultant' => $this->getPost('default_consultant'),
-                                'sponsors_limit' => $this->getPost('sponsors_limit')
-                            ));
-
-                    if ($node->save($errors)) {
-
-                            Message::info('Canal actualizado');
-                            $txt_log = 'actualizado';
-
-                        // Evento feed
-                        $log = new Feed();
-                        $log->setTarget($node->id, 'node');
-                        $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
-                                    Feed::item('user', $this->user->name, $this->user->id),
-                                    Feed::item('relevant', $txt_log),
-                                    Feed::item('project', $node->name))
-                                ));
-                        $log->doAdmin('admin');
-                        unset($log);
-
-                        if ($this->getPost('action') == 'add') {
-                            Message::info('Puedes asignar ahora sus administradores');
-                            return $this->redirect('/admin/nodes/admins/' . $node->id);
-                        }
-                    } else {
-                        Message::error('Fallo al actualizar, revisar los campos');
-
-                        return array(
-                                'node' => $node,
-                                'template' => 'admin/nodes/edit'
-                        );
-                    }
-                    break;
+        $op = $this->getGet('op');
+        $user = $this->getGet('user');
+        if ($op && $user && in_array($op, array('assign', 'unassign'))) {
+            if ($node->$op($user)) {
+                // ok
+            } else {
+                Message::error("Error with operation [$op] and user [$user]");
             }
         }
 
-        switch ($action) {
-            case 'add':
-                $node_admins = Model\Node::getAdmins($id);
-                
-                return array(
-                    'node' => $node,
-                    'action' => 'add',
-                    'template' => 'admin/nodes/add',
-                    'node_admins' => $node_admins
-                );
-                break;
-            case 'edit':
-                $node = Model\Node::get($id);
-                $node_admins = Model\Node::getAdmins($id);
+        $node->admins = Model\Node::getAdmins($node->id); //rebuild admins
+        $admins = Model\User::getAdmins(true);
 
-                return array(
-                    'node' => $node,
-                    'action' => 'edit',
-                    'template' => 'admin/nodes/edit',
-                    'node_admins' => $node_admins
-                );
-                break;
-            case 'admins':
-                $node = Model\Node::get($id);
-                $op = $this->getGet('op');
-                if ($op && $this->hasGet('user') && in_array($op, array('assign', 'unassign'))) {
-                    if ($node->$op($this->getGet('user'))) {
-                        // ok
-                    } else {
-                        Message::error(implode('<br />', $errors));
-                    }
-                }
+        return array(
+            'template' => 'admin/nodes/admins',
+            'admins' => $admins
+        );
+    }
 
-                $node->admins = Model\Node::getAdmins($node->id);
-                $admins = Model\User::getAdmins(true);
 
-                return array(
-                    'folder' => 'nodes',
-                    'file' => 'admins',
-                    'action' => 'admins',
-                    'node' => $node,
-                    'admins' => $admins
-                );
-                break;
+    public function editAction($id) {
+        $node = $this->getNode($id);
+        if($this->isPost()) {
+            $node->name = $this->getPost('name');
+            $node->email = $this->getPost('email');
+            $node->default_consultant = $this->getPost('default_consultant');
+
+            if(!$node->isMasterNode()) {
+                // $node->id = $node->id; //not changin id allowed at this moment
+                $node->url = $this->getPost('url');
+                $node->active = $this->getPost('active');
+                $node->sponsors_limit = $this->getPost('sponsors_limit');
+            }
+
+            $errors = array();
+            if ($node->save($errors)) {
+
+                Message::info('Canal actualizado');
+                $txt_log = 'actualizado';
+
+                // Evento feed
+                $log = new Feed();
+                $log->setTarget($node->id, 'node');
+                $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
+                            Feed::item('user', $this->user->name, $this->user->id),
+                            Feed::item('relevant', $txt_log),
+                            Feed::item('project', $node->name))
+                        ));
+                $log->doAdmin('admin');
+                return $this->redirect();
+            } else {
+                Message::error('Fallo al actualizar, revisar los campos. ', implode('<br>', $errors));
+            }
         }
+        return array( 'template' => 'admin/nodes/edit' );
+    }
 
 
+    public function addAction($id = null) {
+
+       if($this->isPost()) {
+
+            // objeto
+            $node = new Model\Node(array(
+                        'id' => $this->getPost('id'),
+                        'name' => $this->getPost('name'),
+                        'email' => $this->getPost('email'),
+                        'url' => $this->getPost('url'),
+                        'active' => $this->getPost('active'),
+                        'default_consultant' => $this->getPost('default_consultant'),
+                        'sponsors_limit' => $this->getPost('sponsors_limit')
+                    ));
+
+            $errors = array();
+            if ($node->create($errors)) {
+
+                Message::info('Canal creado');
+                $txt_log = 'creado';
+
+                // Evento feed
+                $log = new Feed();
+                $log->setTarget($node->id, 'node');
+                $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
+                            Feed::item('user', $this->user->name, $this->user->id),
+                            Feed::item('relevant', $txt_log),
+                            Feed::item('project', $node->name))
+                        ));
+                $log->doAdmin('admin');
+
+                Message::info('Puedes asignar ahora sus administradores');
+                return $this->redirect('/admin/nodes/admins/' . $node->id);
+
+            } else {
+                Message::error('Fallo al crear, revisar los campos.' . implode('<br>', $errors));
+            }
+        }
+        return array( 'template' => 'admin/nodes/add' );
+    }
+
+
+    public function listAction() {
+        $filters = $this->getFilters();
         $nodes = Model\Node::getAll($filters);
         $status = array(
             'active' => 'Activo',
@@ -236,8 +171,7 @@ class NodesSubController extends AbstractSubController {
         $admins = Model\Node::getAdmins();
 
         return array(
-            'folder' => 'nodes',
-            'file' => 'list',
+            'template' => 'admin/nodes/list',
             'filters' => $filters,
             'nodes' => $nodes,
             'status' => $status,

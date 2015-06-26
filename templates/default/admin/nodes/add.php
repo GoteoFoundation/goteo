@@ -1,7 +1,5 @@
 <?php
 
-use Goteo\Library\NormalForm;
-
 $node = $this->node;
 
 ?>
@@ -9,11 +7,10 @@ $node = $this->node;
 
 <?php $this->section('admin-node-content') ?>
 
-    <form method="post" action="/admin/nodes" >
-        <input type="hidden" name="action" value="add" />
+    <form method="post" action="/admin/nodes/add" >
     <p>
         <label for="node-id">Identificador:</label><br />
-        http://<input type="text" id="node-id" name="id" value="" />.goteo.org
+        <input type="text" id="node-id" name="id" value="" />
     </p>
     <p>
         <label for="node-name">Nombre:</label><br />

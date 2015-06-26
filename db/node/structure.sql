@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS node (
 
 -- Alters
 ALTER TABLE `node` ADD `url` VARCHAR( 255 ) NOT NULL;
-ALTER TABLE `node` 
+ALTER TABLE `node`
 	ADD `subtitle` TEXT NULL ,
 	ADD `logo` INT( 20 ) UNSIGNED NULL ,
 	ADD `location` VARCHAR( 100 ) NULL ,
@@ -41,3 +41,5 @@ ALTER TABLE `node` ADD `default_consultant` VARCHAR( 255 ) NULL DEFAULT NULL COM
 -- limite de sponsors
 ALTER TABLE `node` ADD `sponsors_limit` INT( 2 ) DEFAULT NULL COMMENT 'Número de sponsors permitidos para el canal';
 
+-- contrains
+ALTER TABLE `node` CHANGE `default_consultant` `default_consultant` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NULL COMMENT 'Asesor por defecto para el proyecto', ADD FOREIGN KEY (`default_consultant`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE SET NULL;

@@ -151,7 +151,7 @@ foreach ($filters as $key=>$value) {
                     if ($project->consultants) {
                         $consultants = array();
                         foreach($project->consultants as $id => $name) {
-                            if(\Goteo\Controller\Admin\UsersSubController::isAllowed($this->user, $project->node)) {
+                            if($this->is_module_admin('Users', $project->node)) {
                                 $consultants[] = '<a href="/admin/users/manage/'.$id.'">' . $name . '</a>';
                             }
                             else {
@@ -173,14 +173,14 @@ foreach ($filters as $key=>$value) {
                         <a href="/project/edit/<?= $project->id ?>" target="_blank">[Editar]</a>
                         <a href="/admin/projects/report/<?= $project->id ?>" target="_blank">[Informe Financiacion]</a>
                     <?php endif ?>
-                    <?php if(\Goteo\Controller\Admin\UsersSubController::isAllowed($this->user, $project->node)): ?>
+                    <?php if($this->is_module_admin('Users', $project->node)): ?>
                         <a href="/admin/users/?id=<?= $project->owner ?>" target="_blank">[Impulsor]</a>
                         <a href="/admin/users/?project=<?= $project->id ?>" title="Ver sus cofinanciadores">[Cofinanciadores]</a>
                     <?php endif ?>
-                    <?php if(\Goteo\Controller\Admin\InvestsSubController::isAllowed($this->user, $project->node)): ?>
+                    <?php if($this->is_module_admin('Invests', $project->node)): ?>
                         <a href="/admin/invests/?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
-                    <?php elseif(\Goteo\Controller\Admin\AccountsSubController::isAllowed($this->user, $project->node)): ?>
-                    <?php elseif(\Goteo\Controller\Admin\AccountsSubController::isAllowed($this->user, $project->node)): ?>
+                    <?php elseif($this->is_module_admin('Accounts', $project->node)): ?>
+                    <?php elseif($this->is_module_admin('Accounts', $project->node)): ?>
                         <a href="/admin/accounts/?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
                     <?php endif ?>
                 </td>
@@ -229,16 +229,16 @@ foreach ($filters as $key=>$value) {
               <tr>
                 <td colspan="5">
                     GESTIONAR:&nbsp;
-                    <?php if(\Goteo\Controller\Admin\ReviewsSubController::isAllowed($this->user, $project->node)): ?>
+                    <?php if($this->is_module_admin('Reviews', $project->node)): ?>
                         <?php if ($project->status == 1) : ?><a href="<?php echo "/admin/reviews/add/{$project->id}" ?>" onclick="return confirm('Se va a iniciar revisión de un proyecto en estado Edición, ok?');">[Iniciar revisión]</a><?php endif ?>
                         <?php if ($project->status == 2) : ?><a href="<?php echo "/admin/reviews/?project=".urlencode($project->id) ?>">[Ir a la revisión]</a><?php endif ?>
                     <?php endif ?>
-                    <?php if(\Goteo\Controller\Admin\TranslatesSubController::isAllowed($this->user, $project->node)): ?>
+                    <?php if($this->is_module_admin('Translates', $project->node)): ?>
                         <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}" ?>">[Ir a la traducción]</a>
                         <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}" ?>">[Habilitar traducción]</a><?php endif ?>
                     <?php endif ?>
                     <a href="/admin/projects/images/<?= $project->id ?>">[Organizar imágenes]</a>
-                    <?php if(\Goteo\Controller\Admin\CommonsSubController::isAllowed($this->user, $project->node)): ?>
+                    <?php if($this->is_module_admin('Commons', $project->node)): ?>
                         <?php if (in_array($project->status, array('1', '2', '3')) && !isset($project->called)) : ?><a href="<?php echo "/admin/projects/assign/{$project->id}" ?>">[Asignarlo a una convocatoria]</a><?php endif ?>
                         <?php if ($project->status == 4 || $project->status == 5) : ?><a href="/admin/commons?project=<?= $project->id ?>">[Retornos colectivos]</a><?php endif ?>
                     <?php endif ?>
