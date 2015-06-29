@@ -9,11 +9,6 @@ $num_currencies=count($currencies);
 
 $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 
-// piñonaco para activar portugués en la convocatoria de extremadura
-// TODO: por configuracion
-if (isset($call) && $call->id == 'cofinancia-extremadura')
-    Lang::setPublic('pt');
-
 $langs = Lang::listAll('short');
 
 ?>
