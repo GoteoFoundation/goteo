@@ -295,9 +295,9 @@ namespace Goteo\Model {
                 if (!isset($call->running_projects)) {
                     $call->running_projects = Call\Project::numRunningProjects($id);
                 }
-                if (!isset($call->success_projects)) {
-                    $call->success_projects = Call\Project::numSuccessProjects($id);
-                }
+                
+                $call->success_projects = Call\Project::numSuccessProjects($id);
+                
 
                 // para convocatorias en campaña o posterior
                 // los proyectos han conseguido pasta, son exitosos, estan en campaña o no han conseguido y estan caducados pero no se calculan ni dias ni ronda

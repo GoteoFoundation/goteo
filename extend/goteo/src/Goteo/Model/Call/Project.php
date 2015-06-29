@@ -724,9 +724,7 @@ namespace Goteo\Model\Call {
                     ON call_project.call = call.id
                 INNER JOIN project
                     ON call_project.project = project.id
-                    AND (project.status IN (4, 5)
-                        OR (project.status = 3 AND project.passed IS NOT NULL)
-                    )
+                    AND (project.amount >= project.mincost)
                 WHERE   call.id = :call
                 ";
 
@@ -744,7 +742,7 @@ namespace Goteo\Model\Call {
                 }
             }
 
-            return (int) $got->messengers;
+            return (int) $got->projects;
         }
 
         /*
