@@ -67,7 +67,16 @@ namespace Goteo\Core {
          * @param   type mixed  $id     Identificador
          * @return  type object         Objeto or false if not found
          */
-        abstract static public function get ($id);
+        static public function get ($id) {
+            if(empty($id)) {
+                // throw new Exception("Delete error: ID not defined!");
+                return false;
+            }
+            $class = get_called_class();
+            $ob = new $class();
+            static::query('SELECT * FROM ' . $ob->getTable() . ' WHERE id = :id', array(':id' => $id));
+            return $query->fetchObject(__CLASS__);
+        }
 
         /**
 		 * Guardar.
@@ -154,7 +163,7 @@ namespace Goteo\Core {
          * Delete
          * @return  type bool   true|false
          */
-        public function dbDelete ($where = ['id']) {
+        public function dbDelete (array $where = ['id']) {
             $clause = [];
             foreach($where as $field) {
                 if(property_exists($this, $field)) {

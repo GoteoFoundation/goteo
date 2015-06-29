@@ -88,7 +88,7 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
         <!-- carrusel de cuadritos -->
         <div class="navi-bar">
             <ul class="navi">
-                <?php foreach (array_keys($list) as $group) : ?>
+                <?php foreach (array_keys($vars['lists']['favourite_categories']) as $group) : ?>
                 <li><a id="navi-discover-group-<?php echo 'my_projects-'.$group ?>" href="#my_projects" rev="my_projects" rel="<?php echo "my_projects-{$group}" ?>" class="navi-discover-group navi-discover-group-my_projects"><?php echo $group ?></a></li>
                 <?php endforeach ?>
             </ul>
@@ -145,7 +145,7 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
         <!-- carrusel de cuadritos -->
         <div class="navi-bar">
             <ul class="navi">
-                <?php foreach (array_keys($list) as $group) : ?>
+                <?php foreach (array_keys($vars['lists']['invest_on']) as $group) : ?>
                 <li><a id="navi-discover-group-<?php echo 'invest_on-'.$group ?>" href="#invest_on" rev="invest_on" rel="<?php echo "invest_on-{$group}" ?>" class="navi-discover-group navi-discover-group-invest_on"><?php echo $group ?></a></li>
                 <?php endforeach ?>
             </ul>

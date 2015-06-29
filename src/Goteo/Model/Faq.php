@@ -143,7 +143,7 @@ namespace Goteo\Model {
         /*
          * Para quitar una pregunta
          */
-        public static function delete ($id, $node = null) {
+        public static function delete ($id, &$errors = array()) {
             if(empty($node)) Config::get('node');
             if(empty($id)) return false;
             try {

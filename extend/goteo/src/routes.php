@@ -26,7 +26,9 @@ $custom_routes->add('barcelona-node-redirection', new Route(
 // 127.0.0.1 barcelona.localhost
 //
 if(in_array(strtok($_SERVER['HTTP_HOST'], '.'), array('barcelona', 'betabarcelona', 'euskadi', 'andalucia'))) {
+
     View::addFolder(__DIR__ . '/../templates/barcelona', 'barcelona');
+
     define('NODE_META_TITLE', 'Goteo Barcelona - Cofinanciació del procomú');
 
     Config::set('mail.contact', 'barcelona@goteo.org');

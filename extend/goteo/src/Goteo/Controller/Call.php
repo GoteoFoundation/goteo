@@ -58,7 +58,7 @@ namespace Goteo\Controller {
             }
 
 
-            if (Model\Call::delete($id)) {
+            if ($call->remove($errors)) {
                 if ($_SESSION['call']->id == $id) {
                     unset($_SESSION['call']);
                 }
