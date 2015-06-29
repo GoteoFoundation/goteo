@@ -37,11 +37,16 @@ class NodeController extends \Goteo\Core\Controller {
     /**
      * Any route node controller
      */
-    public function barcelonaAction ($url = '', Request $request) {
+    public function subdomainAction ($url = '', Request $request) {
+
+        if(!in_array(strtok($request->getHost(), '.'), array('barcelona', 'betabarcelona', 'www', 'beta', 'dev'))) {
+            return $this->redirect('//goteo.org');
+        }
+        if(strpos($url, 'channel') === 0) {
+            return $this->redirect('//goteo.org/' . $url);
+        }
 
         $pages = array('' => 'index', 'about' => 'about');
-
-
         if(array_key_exists($url, $pages)) {
             //Get vars
             $vars = self::node_index($pages[$url]);
@@ -58,10 +63,7 @@ class NodeController extends \Goteo\Core\Controller {
         // remove this route to avoid recursion
         $routes->remove('barcelona-node');
         //Return a sub-request
-        // die(end(explode('.', $request->getHttpHost())) . $request->getPathInfo());
-        $host = explode('.', $request->getHttpHost());
-        if($host > 1) array_shift($host);
-        $r = Request::create(implode('.', $host) . $request->getPathInfo(),
+        $r = Request::create($request->getPathInfo(),
                              $request->getMethod(),
                              $request->getMethod() === 'GET' ? $request->query->all() : $request->request->all(),
                              $request->cookies->all(),
