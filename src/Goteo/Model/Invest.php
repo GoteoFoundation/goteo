@@ -1123,8 +1123,8 @@ namespace Goteo\Model {
          */
         public function setStatus ($status) {
 
-            if (!in_array($status, array(self::STATUS_PROCESSING, self::STATUS_PENDING, self::STATUS_PAID, self::STATUS_CANCELED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_RELOCATED))) {
-                return false;
+            if (!in_array($status, array(self::STATUS_PROCESSING, self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_CANCELED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_RELOCATED))) {
+                throw new \Exception("Error: Invest status unknow! [$status]");
             }
 
             $values = array(
@@ -1146,12 +1146,10 @@ namespace Goteo\Model {
                         $drop->setStatus($status);
                     }
                 }
-
                 return true;
-            } else {
-                return false;
             }
 
+            throw new \Exception("Error: Invest setting payment status! [$status]");
         }
 
         /*
