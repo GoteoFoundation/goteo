@@ -17,8 +17,6 @@ $custom_routes->add('barcelona-node-redirection', new Route(
         )
     )
 );
-
-
 // chapucilla mientras no mejoramos el nodo barcelona con vistas nuevas
 // también porque de momento foilphp no permite "prepend" de vistas
 // Para testeo, barcelona.localhost sirve como nodo "barcelona"
@@ -27,7 +25,7 @@ $custom_routes->add('barcelona-node-redirection', new Route(
 //
 // 127.0.0.1 barcelona.localhost
 //
-if(in_array(strtok($_SERVER['HTTP_HOST'], '.'), array('barcelona', 'betabarcelona'))) {
+if(in_array(strtok($_SERVER['HTTP_HOST'], '.'), array('barcelona', 'betabarcelona', 'euskadi', 'andalucia'))) {
     View::addFolder(__DIR__ . '/../templates/barcelona', 'barcelona');
     define('NODE_META_TITLE', 'Goteo Barcelona - Cofinanciació del procomú');
 
@@ -41,10 +39,11 @@ if(in_array(strtok($_SERVER['HTTP_HOST'], '.'), array('barcelona', 'betabarcelon
         'meta_description' => 'Xarxa social de finançament col·lectiu',
         'meta_keywords' => 'crowdfunding, procomún, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres'
         ]);
-    $custom_routes->add('barcelona-node', new Route(
+
+    $custom_routes->add('subdomain-node', new Route(
         '/{url}',
         array(
-            '_controller' => 'Goteo\Controller\NodeController::barcelonaAction',
+            '_controller' => 'Goteo\Controller\NodeController::subdomainAction',
             'url' => '',
             ),
         array(
