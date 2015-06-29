@@ -1,5 +1,5 @@
 <?php
-echo $banners;
+
 if (empty($banners)) return '';
 
 ?>

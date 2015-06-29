@@ -39,19 +39,6 @@ class NodeController extends \Goteo\Core\Controller {
      */
     public function barcelonaAction ($url = '', Request $request) {
 
-        define('NODE_META_TITLE', 'Goteo Barcelona - Cofinanciació del procomú');
-
-        Config::set('mail.contact', 'barcelona@goteo.org');
-        Config::set('mail.contact_name', 'Goteo Barcelona');
-
-        Config::set('current_node', 'barcelona');
-        View::addFolder(__DIR__ . '/../../../templates/barcelona', 'barcelona');
-
-        View::getEngine()->useData([
-            'title' => 'Goteo Barcelona - Cofinanciació del procomú',
-            'meta_description' => 'Xarxa social de finançament col·lectiu',
-            'meta_keywords' => 'crowdfunding, procomún, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres'
-            ]);
         $pages = array('' => 'index', 'about' => 'about');
 
 
@@ -71,8 +58,14 @@ class NodeController extends \Goteo\Core\Controller {
         // remove this route to avoid recursion
         $routes->remove('barcelona-node');
         //Return a sub-request
-        // return App::get()->handle(Request::create($request->getPathInfo()), HttpKernelInterface::SUB_REQUEST, false);
-        return App::get()->handle(Request::create($request->getPathInfo()), HttpKernelInterface::SUB_REQUEST);
+        // die(end(explode('.', $request->getHttpHost())) . $request->getPathInfo());
+        $r = Request::create(end(explode('.', $request->getHttpHost())) . $request->getPathInfo(),
+                             $request->getMethod(),
+                             $request->getMethod() === 'GET' ? $request->query->all() : $request->request->all(),
+                             $request->cookies->all(),
+                             $request->files->all(),
+                             $request->server->all());
+        return App::get()->handle($r, HttpKernelInterface::SUB_REQUEST);
     }
 
     public static function node_index($page = 'index')

@@ -4,6 +4,8 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\App;
+use Goteo\Application\Config;
+use Goteo\Application\View;
 
 $custom_routes = new RouteCollection();
 $custom_routes->add('barcelona-node-redirection', new Route(
@@ -16,19 +18,43 @@ $custom_routes->add('barcelona-node-redirection', new Route(
     )
 );
 
-$custom_routes->add('barcelona-node', new Route(
-    '/{url}',
-    array(
-        '_controller' => 'Goteo\Controller\NodeController::barcelonaAction',
-        'url' => ''
-        ),
-    array(
-        'url' => '.*',
-         'domain' => 'barcelona.goteo.org|betabarcelona.goteo.org|devgoteo.org'
-        ), // Para testeo, devgoteo.org sirve como nodo "barcelona"
-    array(),
-    '{domain}'
-));
+
+// chapucilla mientras no mejoramos el nodo barcelona con vistas nuevas
+// también porque de momento foilphp no permite "prepend" de vistas
+// Para testeo, barcelona.localhost sirve como nodo "barcelona"
+//
+// Añadir a /etc/hosts para testeo:
+//
+// 127.0.0.1 barcelona.localhost
+//
+if(in_array(strtok($_SERVER['HTTP_HOST'], '.'), array('barcelona', 'betabarcelona'))) {
+    View::addFolder(__DIR__ . '/../templates/barcelona', 'barcelona');
+    define('NODE_META_TITLE', 'Goteo Barcelona - Cofinanciació del procomú');
+
+    Config::set('mail.contact', 'barcelona@goteo.org');
+    Config::set('mail.contact_name', 'Goteo Barcelona');
+
+    Config::set('current_node', 'barcelona');
+
+    View::getEngine()->useData([
+        'title' => 'Goteo Barcelona - Cofinanciació del procomú',
+        'meta_description' => 'Xarxa social de finançament col·lectiu',
+        'meta_keywords' => 'crowdfunding, procomún, commons, social, network, financiacion colectiva, cultural, creative commons, proyectos abiertos, open source, free software, licencias libres'
+        ]);
+    $custom_routes->add('barcelona-node', new Route(
+        '/{url}',
+        array(
+            '_controller' => 'Goteo\Controller\NodeController::barcelonaAction',
+            'url' => '',
+            ),
+        array(
+            'url' => '.*'
+            )
+    ));
+}
+
+
+
 
 // Calendar
 $custom_routes->add('calendar', new Route(
