@@ -236,26 +236,6 @@ namespace Goteo\Library {
                 /// este token lo recibiríamos de vuelta para redirigir a la pasarela
                 $token = $setECResponse->Token;
 
-                if (!empty($token)) {
-
-                    Invest::setDetail($invest->id, 'paypal-init', 'Se ha preparado el pago directo y se redirije al usuario a paypal para completarlo. Proceso libary/paypal::preparePay');
-                    $invest->setPayment($token);
-                    $payPalURL = \PAYPAL_REDIRECT_URL.'_express-checkout&token=' . $token;
-                    throw new Redirection($payPalURL, Redirection::TEMPORARY);
-                    return true;
-
-
-                } else {
-
-
-                    Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al preparar el pago directo y no se redirije al usuario a paypal. Proceso libary/paypal::preparePay');
-                    $errors[] = 'No payment token obtained.';
-                    Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR. No payment token obtained.<br /><pre>' . print_r($setECResponse, true) . '</pre>', '\Library\Paypal:' . __FUNCTION__);
-
-                    return false;
-
-
-                }
 
             } catch (\Exception $ex) {
 
@@ -268,6 +248,23 @@ namespace Goteo\Library {
 
             }
 
+            if (!empty($token)) {
+
+                Invest::setDetail($invest->id, 'paypal-init', 'Se ha preparado el pago directo y se redirije al usuario a paypal para completarlo. Proceso libary/paypal::preparePay');
+                $invest->setPayment($token);
+                $payPalURL = \PAYPAL_REDIRECT_URL.'_express-checkout&token=' . $token;
+                throw new Redirection($payPalURL, Redirection::TEMPORARY);
+                return true;
+
+            } else {
+
+                Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al preparar el pago directo y no se redirije al usuario a paypal. Proceso libary/paypal::preparePay');
+                $errors[] = 'No payment token obtained.';
+                Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR. No payment token obtained.<br /><pre>' . print_r($setECResponse, true) . '</pre>', '\Library\Paypal:' . __FUNCTION__);
+
+                return false;
+
+            }
         }
 
         /*
