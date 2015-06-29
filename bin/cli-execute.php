@@ -631,7 +631,12 @@ function execute_payment($invest, $project, $userData, $projectAccount)
             if ($UPDATE) {
                 if (Paypal::execute($invest, $err)) {
                     $log_text = "Se ha ejecutado el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                    echo " -> Ok\n";
+                    if($err) {
+                        echo "ERRORS: " . print_r($err, 1);
+                    }
+                    else {
+                        echo " -> Ok\n";
+                    }
                     Model\Invest::setDetail($invest->id, 'executed', 'Se ha ejecutado el preapproval, ha iniciado el pago encadenado. Proceso cli-execute');
                     // si era incidencia la desmarcamos
                     if ($invest->issue) {
