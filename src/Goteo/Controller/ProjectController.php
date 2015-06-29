@@ -583,7 +583,7 @@ namespace Goteo\Controller {
             }
 
             // si lo puede ver
-            if ($project->userCanView(Session::getUser())) {
+            if (Session::isLogged() && $project->userCanView(Session::getUser())) {
 
                 $project->cat_names = Project\Category::getNames($id);
 
