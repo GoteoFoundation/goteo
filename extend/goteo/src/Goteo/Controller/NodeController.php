@@ -61,7 +61,7 @@ class NodeController extends \Goteo\Core\Controller {
         // get routes
         $routes = App::getRoutes();
         // remove this route to avoid recursion
-        $routes->remove('barcelona-node');
+        $routes->remove('subdomain-node');
         //Return a sub-request
         $r = Request::create($request->getPathInfo(),
                              $request->getMethod(),
