@@ -135,7 +135,7 @@ namespace Goteo\Library {
 
                 }
 
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
 
                 Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
@@ -257,7 +257,7 @@ namespace Goteo\Library {
 
                 }
 
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
 
                 Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al preparar el pago directo y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
@@ -318,7 +318,7 @@ namespace Goteo\Library {
                 }
 
             }
-            catch (Exception $ex) {
+            catch (\Exception $ex) {
                 $invest->setStatus(0);
                 Invest::setIssue($invest->id);
                 Invest::setDetail($invest->id, 'paypal-completepay-exception', 'Ha fallado al completar el pago directo al volver de paypal. Proceso libary/paypal::completePay');
@@ -375,7 +375,7 @@ namespace Goteo\Library {
 
                 }
 
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
 
                 Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el pago PayPal. Proceso libary/paypal::cancelPay');
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
@@ -416,7 +416,7 @@ namespace Goteo\Library {
                     return false;
                 }
 
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
                 Feed::logger('paypal-exception', 'invest.payment', $key, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
@@ -750,7 +750,7 @@ namespace Goteo\Library {
 
                 }
 
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
 
                 Invest::setIssue($invest->id);
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
@@ -860,7 +860,7 @@ namespace Goteo\Library {
                     return false;
                 }
 
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
                 Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
@@ -897,7 +897,7 @@ namespace Goteo\Library {
                 } else {
                     return $response;
                 }
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
                 Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
@@ -932,7 +932,7 @@ namespace Goteo\Library {
                 } else {
                     return $response;
                 }
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
 
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
                 Feed::logger('paypal-exception', 'invest.payment', $key, $ex->getMessage(), '\Library\Paypal.php:' . __FUNCTION__);
@@ -979,7 +979,7 @@ namespace Goteo\Library {
                     $invest->cancel($fail);
                     return true;
                 }
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
 
                 Invest::setDetail($invest->id, 'paypal-cancel-fail', 'Ha fallado al cancelar el preapproval. Proceso libary/paypal::cancelPreapproval');
                 $errors[] = 'No se ha podido inicializar la comunicación con Paypal, se ha reportado la incidencia.';
