@@ -59,7 +59,9 @@ class NodeController extends \Goteo\Core\Controller {
         $routes->remove('barcelona-node');
         //Return a sub-request
         // die(end(explode('.', $request->getHttpHost())) . $request->getPathInfo());
-        $r = Request::create(end(explode('.', $request->getHttpHost())) . $request->getPathInfo(),
+        $host = explode('.', $request->getHttpHost());
+        if($host > 1) array_shift($host);
+        $r = Request::create(implode('.', $host) . $request->getPathInfo(),
                              $request->getMethod(),
                              $request->getMethod() === 'GET' ? $request->query->all() : $request->request->all(),
                              $request->cookies->all(),
