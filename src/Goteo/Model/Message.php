@@ -267,7 +267,7 @@ namespace Goteo\Model {
         /*
          * Para que el admin pueda borrar mensajes que no aporten nada
          */
-        public static function delete ($id) {
+        public static function delete ($id, &$errors = array()) {
 
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
