@@ -112,34 +112,33 @@ namespace Goteo\Library {
                 /// este token lo recibiríamos de vuelta para redirigir a la pasarela
                 $token = $response->preapprovalKey;
 
-                // @todo : cambiar a catch Exception o return;
-                if (!empty($token)) {
-
-
-                    Invest::setDetail($invest->id, 'paypal-init', 'Se ha iniciado el preaproval y se redirije al usuario a paypal para aceptarlo. Proceso libary/paypal::preapproval');
-                    $invest->setPreapproval($token);
-                    $payPalURL = PAYPAL_REDIRECT_URL . '_ap-preapproval&preapprovalkey=' . $token;
-                    throw new Redirection($payPalURL, Redirection::TEMPORARY);
-                    return true;
-
-
-                } else {
-
-
-                    Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
-                    $errors[] = 'No preapproval key obtained. <pre>' . print_r($response, true) . '</pre>';
-                    Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR. No preapproval key obtained.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal:' . __FUNCTION__);
-
-                    return false;
-
-
-                }
-
             } catch (\Exception $ex) {
 
                 Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
                 Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php');
+
+                return false;
+
+
+            }
+
+            // @todo : cambiar a catch Exception o return;
+            if (!empty($token)) {
+
+                Invest::setDetail($invest->id, 'paypal-init', 'Se ha iniciado el preaproval y se redirije al usuario a paypal para aceptarlo. Proceso libary/paypal::preapproval');
+                $invest->setPreapproval($token);
+                $payPalURL = PAYPAL_REDIRECT_URL . '_ap-preapproval&preapprovalkey=' . $token;
+                throw new Redirection($payPalURL, Redirection::TEMPORARY);
+                return true;
+
+
+            } else {
+
+
+                Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
+                $errors[] = 'No preapproval key obtained. <pre>' . print_r($response, true) . '</pre>';
+                Feed::logger('paypal-communication-error', 'invest', $invest->id, 'ERROR. No preapproval key obtained.<br /><pre>' . print_r($response, true) . '</pre>', '\Library\Paypal:' . __FUNCTION__);
 
                 return false;
 
