@@ -3,11 +3,12 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\Faq;
 
-class FaqTest extends \PHPUnit_Framework_TestCase {
+class FaqTest extends TestCase {
 
-    private static $data = array('node' => 'test', 'section' => 'test-section', 'description' => 'test description', 'title' => 'Test title', 'order' => 0);
+    private static $data = array('section' => 'test-section', 'description' => 'test description', 'title' => 'Test title', 'order' => 0);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -28,6 +29,7 @@ class FaqTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCreate() {
+        self::$data['node'] = get_test_node()->id;
         $ob = new Faq(self::$data);
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
@@ -44,7 +46,7 @@ class FaqTest extends \PHPUnit_Framework_TestCase {
         //save and delete statically
         $ob = new Faq(self::$data);
         $this->assertTrue($ob->save());
-        $this->assertTrue(Faq::delete($ob->id, self::$data['node']));
+        $this->assertTrue(Faq::remove($ob->id, self::$data['node']));
 
         return $ob;
     }
@@ -54,6 +56,12 @@ class FaqTest extends \PHPUnit_Framework_TestCase {
     public function testNonExisting($ob) {
         $ob = Faq::get($ob->id);
         $this->assertFalse($ob);
-        $this->assertFalse(Faq::delete($ob->id));
+        $this->assertFalse(Faq::remove($ob->id));
+    }
+    /**
+     * Some cleanup
+     */
+    static function tearDownAfterClass() {
+        delete_test_node();
     }
 }
