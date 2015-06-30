@@ -103,7 +103,7 @@ abstract class AbstractSubController {
      */
     public static function getId() {
         $class = get_called_class();
-        return strtolower(substr(end(explode('\\',$class)),0,-13));
+        return strtolower(substr(end((explode('\\', $class))), 0, -13));
     }
     /**
      * Returns the label for this controller

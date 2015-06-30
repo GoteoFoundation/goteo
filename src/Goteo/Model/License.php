@@ -218,7 +218,7 @@ namespace Goteo\Model {
         /*
          * Para quitar una pregunta
          */
-        public static function delete ($id = null) {
+        public static function delete ($id, &$errors = array()) {
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
                 return false;

@@ -53,7 +53,9 @@ namespace Goteo\Controller {
         }
 
         public function deleteAction ($id) {
+
             $user = Session::getUser();
+
             // redirección según usuario
             $goto = isset($user->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
 
@@ -66,13 +68,13 @@ namespace Goteo\Controller {
             }
 
             // no lo puede eliminar si
-            if (!$project->userCanDelete(Session::getUser())) {
+            if (!Session::isLogged() || !$project->userCanDelete($user)) {
                 Application\Message::info('No tienes permiso para eliminar este proyecto');
                 return new RedirectResponse($goto);
             }
 
             $errors = array();
-            if ($project->dbDelete($errors)) {
+            if ($project->remove($errors)) {
                 Application\Message::info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
                 if ($_SESSION['project']->id == $id) {
                     unset($_SESSION['project']);
@@ -87,6 +89,7 @@ namespace Goteo\Controller {
         public function editAction ($id, $step = 'userProfile') {
 
             $user = Session::getUser();
+
             // redirección según usuario
             $goto = isset($user->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
 
@@ -98,7 +101,7 @@ namespace Goteo\Controller {
                 return new RedirectResponse('/dashboard/projects');
             }
 
-            if (!$project->userCanEdit(Session::getUser())) {
+            if (!Session::isLogged() || !$project->userCanEdit(Session::getUser())) {
                 Application\Message::info('No tienes permiso para editar este proyecto');
                 return new RedirectResponse($goto);
             }

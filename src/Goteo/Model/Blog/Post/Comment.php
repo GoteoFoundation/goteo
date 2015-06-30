@@ -221,7 +221,7 @@ namespace Goteo\Model\Blog\Post {
         /*
          * Para quitar un comentario
          */
-        public static function delete ($id = null) {
+        public static function delete ($id, &$errors = array()) {
             $query = self::query('SELECT post FROM comment WHERE id = ?', array($id));
             $post = $query->fetchColumn();
 

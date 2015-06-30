@@ -17,6 +17,7 @@ namespace Goteo\Model {
     class Project extends \Goteo\Core\Model {
 
         // PROJECT STATUS IDs
+        const STATUS_DRAFT       = -1;
         const STATUS_REJECTED    = 0;
         const STATUS_EDITING     = 1; // en negociación
         const STATUS_REVIEWING   = 2; //
@@ -248,6 +249,7 @@ namespace Goteo\Model {
          */
         public function userCanDelete(User $user = null) {
             if(empty($user)) return false;
+            if($this->status !== self::STATUS_DRAFT) return false;
             // owns the project
             if($this->owner === $user->id) return true;
             // is superadmin in the project node
@@ -2210,7 +2212,7 @@ namespace Goteo\Model {
          * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
          * @return: boolean
          */
-        public function dbDelete(&$errors = array()) {
+        public function remove(&$errors = array()) {
 
             if ($this->status > 1) {
                 $errors[] = "El proyecto no esta descartado ni en edicion";
@@ -2578,7 +2580,7 @@ namespace Goteo\Model {
                 ";
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[] = self::getWidget($proj);
             }
 
@@ -2659,7 +2661,7 @@ namespace Goteo\Model {
                 ";
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 $projects[] = self::getWidget($proj);
             }
 

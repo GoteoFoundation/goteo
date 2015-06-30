@@ -162,7 +162,7 @@ $superarray = array(
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) &&  $user->avatar->id != 1 ?
-                               $user->avatar . '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128/1" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="/img/small/' . $user->avatar->id . '" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
@@ -196,7 +196,7 @@ if (isset($user->roles['vip'])) {
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($vip->image) ?
-                               $vip->image . '<img src="' . SITE_URL . '/image/' . $vip->image->id . '/112/74/1" alt="Avatar" /><button class="image-remove" type="submit" name="vip_image-'.$vip->image->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="/img/112x24x1/' . $vip->image->id . '" alt="Avatar" /><button class="image-remove" type="submit" name="vip_image-'.$vip->image->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 

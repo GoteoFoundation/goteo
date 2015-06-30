@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-use Goteo\Application\View;
 use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Model;
@@ -45,6 +44,13 @@ class NodeController extends \Goteo\Core\Controller {
         if(strpos($url, 'channel') === 0) {
             return $this->redirect('//goteo.org/' . $url);
         }
+
+        // $folders = $this->getViewEngine()->finder()->dirs();
+        // array_unshift($folders, __DIR__ . '/../../../templates/barcelona');
+        // print_r($folders);
+        // $this->getViewEngine()->setFolders($folders);
+        // $folders = $this->getViewEngine()->finder()->dirs();
+        // print_r($folders);die;
 
         $pages = array('' => 'index', 'about' => 'about');
         if(array_key_exists($url, $pages)) {
@@ -114,25 +120,25 @@ class NodeController extends \Goteo\Core\Controller {
 
             // vamos sacando los 4 primeros de cada categoria (excepto promotes y excepto byreward)
             // si una categoria no tiene proyectos no la ponemos en los pastillos del buscador
-            $disc_popular = Project::published('popular', $node, 4);
+            $disc_popular = Project::published('popular', $node_id, 4);
             if (!empty($disc_popular)) {
                 $searcher['popular'] = Text::get('node-side-searcher-popular');
                 $discover['popular'] = $disc_popular;
             }
 
-            $disc_recent = Project::published('recent', $node, 4);
+            $disc_recent = Project::published('recent', $node_id, 4);
             if (!empty($disc_recent)) {
                 $searcher['recent'] = Text::get('node-side-searcher-recent');
                 $discover['recent'] = $disc_recent;
             }
 
-            $disc_success = Project::published('success', $node, 4);
+            $disc_success = Project::published('success', $node_id, 4);
             if (!empty($disc_success)) {
                 $searcher['success'] = Text::get('node-side-searcher-success');
                 $discover['success'] = $disc_success;
             }
 
-            $disc_outdate = Project::published('outdate', $node, 4);
+            $disc_outdate = Project::published('outdate', $node_id, 4);
             if (!empty($disc_outdate)) {
                 $searcher['outdate'] = Text::get('node-side-searcher-outdate');
                 $discover['outdate'] = $disc_outdate;

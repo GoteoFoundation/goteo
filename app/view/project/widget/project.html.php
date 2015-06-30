@@ -96,12 +96,12 @@ if ($project->status == 3 && $project->noinvest) {
         <h<?php echo $level + 1 ?>><?php echo Text::get('project-rewards-header'); ?></h<?php echo $level + 1?>>
 
         <ul>
-           <?php foreach ($project->rewards as $reward): ?>
+           <?php if($project->rewards): foreach ($project->rewards as $reward): ?>
             <li class="<?php echo $reward->icon ?> activable">
                 <?php $link_param= ($reward->type == 'individual') ? "/invest?amount=".\amount_format($reward->amount, 0, true) : "/rewards#social-rewards"; ?>
                 <a href="<?php echo $url ?>/project/<?php echo $project->id.$link_param ?>" title="<?php echo htmlspecialchars("{$reward->icon_name}: {$reward->reward}"); if ($reward->type == 'individual') echo ' '.\amount_format($reward->amount); ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($reward->reward) ?></a>
             </li>
-           <?php endforeach ?>
+           <?php endforeach; endif ?>
         </ul>
 
 

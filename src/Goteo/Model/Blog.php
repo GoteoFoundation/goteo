@@ -31,8 +31,9 @@ namespace Goteo\Model {
                     WHERE owner = :owner
                     AND type = :type
                     ", array(':owner' => $owner, ':type' => $type));
-                
+
                 $blog =  $query->fetchObject(__CLASS__);
+                if(empty($blog)) $blog = new self();
                 switch ($blog->type) {
                     case 'node':
                         $blog->node = $blog->owner;
@@ -165,5 +166,5 @@ namespace Goteo\Model {
 
 
     }
-    
+
 }

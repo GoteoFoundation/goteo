@@ -297,9 +297,9 @@ namespace Goteo\Model {
                 if (!isset($call->running_projects)) {
                     $call->running_projects = Call\Project::numRunningProjects($id);
                 }
-                
+
                 $call->success_projects = Call\Project::numSuccessProjects($id);
-                
+
 
                 // para convocatorias en campaña o posterior
                 // los proyectos han conseguido pasta, son exitosos, estan en campaña o no han conseguido y estan caducados pero no se calculan ni dias ni ronda
@@ -327,20 +327,20 @@ namespace Goteo\Model {
                 // campos calculados
 
                 // riego comprometido
-                
+
                     $call->used = $call->getUsed();
-               
+
 
                 // riego restante
-                
+
                     $call->rest = $call->getRest($call->used);
-                
+
 
                 // proyectos asignados
                     // número de proyectos presentados a la campaña
                     $applied = $call->getConf('applied');
                     $call->applied = (isset($applied)) ? $applied : $call->getApplied();
-        
+
 
                 return $call;
             } catch (\PDOException $e) {
@@ -844,7 +844,7 @@ namespace Goteo\Model {
         /*
          * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
          */
-        public function dbDelete(&$errors = array()) {
+        public function remove(&$errors = array()) {
 
             if ($this->status != 1) {
                 return false;

@@ -31,6 +31,12 @@ abstract class Controller {
     }
 
     /**
+     * Handy method to obtain the view engine object
+     */
+    public function getViewEngine() {
+        return View::getEngine();
+    }
+    /**
      * Handy method to add context vars to all view
      */
     public function contextVars(array $vars = [], $view_path_context = '/') {
