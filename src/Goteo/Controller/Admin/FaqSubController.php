@@ -165,7 +165,7 @@ class FaqSubController extends AbstractSubController {
                 );
                 break;
             case 'remove':
-                Model\Faq::delete($id);
+                Model\Faq::remove($id);
                 break;
         }
 
