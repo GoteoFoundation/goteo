@@ -2699,9 +2699,11 @@ namespace Goteo\Model {
 
             // segun el tipo
             if ($filter['type'] === 'popular') {
+                $popularity = (int)$filter['popularity'];
+                if(empty($popularity)) $popularity = 20;
                 // de los que estan en campaña,
                 // los que tienen más usuarios entre cofinanciadores y mensajeros
-                $where[] = 'project.popularity >20';
+                $where[] = 'project.popularity >' . $popularity;
                 $order = 'popularity DESC';
             }
             elseif($filter['type'] === 'outdate') {

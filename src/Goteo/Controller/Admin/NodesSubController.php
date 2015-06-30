@@ -157,7 +157,7 @@ class NodesSubController extends AbstractSubController {
                 Message::error('Fallo al crear, revisar los campos.' . implode('<br>', $errors));
             }
         }
-        return array( 'template' => 'admin/nodes/add' );
+        return array( 'template' => 'admin/nodes/add', 'node_admins' => Model\Node::getAdmins() );
     }
 
 

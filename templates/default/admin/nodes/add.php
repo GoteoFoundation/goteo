@@ -1,8 +1,3 @@
-<?php
-
-$node = $this->node;
-
-?>
 <?php $this->layout('admin/nodes/layout') ?>
 
 <?php $this->section('admin-node-content') ?>

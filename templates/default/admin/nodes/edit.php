@@ -1,13 +1,8 @@
-<?php
-
-$node = $this->node;
-
-?>
 <?php $this->layout('admin/nodes/layout') ?>
 
 <?php $this->section('admin-node-content') ?>
 
-    <form method="post" action="/admin/nodes/edit/<?= $node->id ?>" >
+    <form method="post" action="/admin/nodes/edit/<?= $this->node->id ?>" >
 
     <?= $this->insert('admin/nodes/partials/edit_common', ['masternode' => $this->node->isMasterNode()]) ?>
 
