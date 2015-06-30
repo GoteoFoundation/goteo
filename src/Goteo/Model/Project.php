@@ -249,7 +249,7 @@ namespace Goteo\Model {
          */
         public function userCanDelete(User $user = null) {
             if(empty($user)) return false;
-            if($this->status !== self::STATUS_DRAFT) return false;
+            if(!in_array($this->status, array(self::STATUS_DRAFT, self::STATUS_REJECTED, self::STATUS_EDITING)) return false;
             // owns the project
             if($this->owner === $user->id) return true;
             // is superadmin in the project node
