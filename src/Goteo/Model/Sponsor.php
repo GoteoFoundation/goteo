@@ -68,10 +68,12 @@ class Sponsor extends \Goteo\Core\Model {
     /*
      * Lista de patrocinadores
      */
-    public static function getList ($node = null) {
+    public static function getList ($node = null, $offset = 0, $limit = 10, $count = false) {
         if(empty($node)) $node = Config::get('current_node');
 
         $list = array();
+        $offset = (int) $offset;
+        $limit = (int) $limit;
 
         $sql = "
             SELECT
@@ -82,11 +84,16 @@ class Sponsor extends \Goteo\Core\Model {
             FROM    sponsor
             WHERE node = :node
             ORDER BY `order` ASC, name ASC
+            LIMIT $offset, $limit
             ";
 
-        // echo $sql;
+        if($count) {
+            // Return count
+            $sql = 'SELECT COUNT(id) FROM sponsor where node = :node';
+            return (int) self::query($sql, [':node'=>$node])->fetchColumn();
+        }
 
-        $query = static::query($sql, array(':node'=>$node));
+        $query = static::query($sql, [':node'=>$node]);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
 

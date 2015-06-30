@@ -9,7 +9,8 @@ use Goteo\Library\Text,
 	Goteo\Library\Feed,
     Goteo\Application\Message,
 	Goteo\Application\Config,
-    Goteo\Model\Sponsor;
+    Goteo\Model\Sponsor,
+    Goteo\Model\Node;
 
 class SponsorsSubController extends AbstractSubController {
 
@@ -22,11 +23,20 @@ class SponsorsSubController extends AbstractSubController {
 
     static protected $label = 'Apoyos institucionales';
 
-    private function checkItemPermission($id) {
+    private function checkItemPermission($id = null) {
         if($sponsor = Sponsor::get($id)) {
             if($sponsor->node === $this->node) return true;
+            throw new ControllerAccessDeniedException('You cannot admin this sponsor');
         }
-        throw new ControllerAccessDeniedException('You cannot admin this sponsor');
+        elseif(!$this->isMasterNode()) {
+            // check max number of sponsors
+            $node = Node::get($this->node);
+            $limit = (int) $node->sponsors_limit;
+            $count = Sponsor::getList($this->node, 0 , 0, true);
+            if($count >= $limit) {
+                throw new ControllerAccessDeniedException('Max number of sponsor reached!');
+            }
+        }
     }
 
     public function editAction($id = null, $subaction = null) {
@@ -120,6 +130,7 @@ class SponsorsSubController extends AbstractSubController {
     * Just the form
     */
     public function addAction() {
+        $this->checkItemPermission();
         return array(
             'template' => 'admin/generic_edit',
             'data' => (object) array('order' => Sponsor::next($this->node), 'node' => $this->node ),

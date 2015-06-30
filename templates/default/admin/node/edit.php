@@ -36,7 +36,7 @@ $node = $this->node;
             'subtitle' => array(
                 'type'      => 'TextBox',
                 'size'      => 20,
-                'title'     => 'Título',
+                'title'     => 'Subtítulo',
                 'value'     => $node->subtitle,
             ),
 

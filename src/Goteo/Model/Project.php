@@ -3171,6 +3171,8 @@ namespace Goteo\Model {
                 return (int) self::query($sql, $values)->fetchColumn();
             }
 
+            $offset = (int) $offset;
+            $limit = (int) $limit;
             // la select
             //@Javier: esto es de admin pero meter los campos en la select y no usar getMedium ni getWidget.
             // Si la lista de proyectos necesita campos calculados lo añadimos aqui  (ver view/admin/projects/list.html.php)
