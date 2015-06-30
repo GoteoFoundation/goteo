@@ -71,8 +71,8 @@ class NodesSubController extends AbstractSubController {
             }
         }
 
-        $node->admins = Model\Node::getAdmins($node->id); //rebuild admins
-        $admins = Model\User::getAdmins(true);
+        $node->admins = Model\Node::getAdmins($node->id);
+        $admins = Model\Node::getAdmins();
 
         return array(
             'template' => 'admin/nodes/admins',

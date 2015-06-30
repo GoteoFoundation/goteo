@@ -14,7 +14,7 @@ $node = $this->node;
         <?php foreach ($node->admins as $userId => $userName) : ?>
         <tr>
             <td><?= $userName ?></td>
-            <td><a href="/admin/nodes/admins/<?= $node->id ?>/?op=unassign&user=<?= $userId ?>">[Desasignar]</a></td>
+            <td><a href="/admin/nodes/admins/<?= $node->id ?>/?op=unassign&amp;user=<?= $userId ?>">[Desasignar]</a></td>
         </tr>
         <?php endforeach ?>
         <tr>
