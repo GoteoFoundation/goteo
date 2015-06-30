@@ -68,7 +68,7 @@ namespace Goteo\Controller {
             }
 
             // no lo puede eliminar si
-            if (!Session::isLogged() || !$project->userCanDelete($user)) {
+            if (!$project->userCanDelete($user)) {
                 Application\Message::info('No tienes permiso para eliminar este proyecto');
                 return new RedirectResponse($goto);
             }
@@ -101,7 +101,7 @@ namespace Goteo\Controller {
                 return new RedirectResponse('/dashboard/projects');
             }
 
-            if (!Session::isLogged() || !$project->userCanEdit(Session::getUser())) {
+            if (!$project->userCanEdit(Session::getUser())) {
                 Application\Message::info('No tienes permiso para editar este proyecto');
                 return new RedirectResponse($goto);
             }
@@ -586,7 +586,7 @@ namespace Goteo\Controller {
             }
 
             // si lo puede ver
-            if (Session::isLogged() && $project->userCanView(Session::getUser())) {
+            if ($project->userCanView(Session::getUser())) {
 
                 $project->cat_names = Project\Category::getNames($id);
 
@@ -726,6 +726,7 @@ namespace Goteo\Controller {
                 return new Response(View::render('project/index', $viewData));
 
             } else {
+                Application\Message::info('Project not public yet!');
                 // no lo puede ver
                 return new RedirectResponse('/');
             }

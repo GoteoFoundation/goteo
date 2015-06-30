@@ -41,16 +41,6 @@ class UrlListener implements EventSubscriberInterface
             $event->setResponse(new RedirectResponse('/about/maintenance'));
             return;
         }
-
-        // si el usuario ya está validado debemos mantenerlo en entorno seguro
-        // usamos la funcionalidad de salto entre nodos para mantener la sesión
-        if (Config::get('ssl')
-            && Session::isLogged()
-            && !$request->isSecure()
-        ) {
-            $event->setResponse(new RedirectResponse( str_replace('http://', 'https://', $request->getUri())));
-            return;
-        }
     }
 
 

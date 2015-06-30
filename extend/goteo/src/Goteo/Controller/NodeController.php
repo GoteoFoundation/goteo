@@ -37,8 +37,8 @@ class NodeController extends \Goteo\Core\Controller {
      * Any route node controller
      */
     public function subdomainAction ($url = '', Request $request) {
-
-        if(!in_array(strtok($request->getHost(), '.'), array('barcelona', 'betabarcelona', 'www', 'beta', 'dev'))) {
+        $subdomain = strtok($request->getHost(), '.');
+        if(!in_array($subdomain, array('barcelona', 'betabarcelona', 'www', 'beta', 'dev'))) {
             return $this->redirect('//goteo.org');
         }
         if(strpos($url, 'channel') === 0) {
@@ -69,12 +69,14 @@ class NodeController extends \Goteo\Core\Controller {
         // remove this route to avoid recursion
         $routes->remove('subdomain-node');
         //Return a sub-request
-        $r = Request::create($request->getPathInfo(),
+        $r = Request::create("/$url",
                              $request->getMethod(),
                              $request->getMethod() === 'GET' ? $request->query->all() : $request->request->all(),
                              $request->cookies->all(),
                              $request->files->all(),
-                             $request->server->all());
+                             $request->server->all()
+                             );
+        // var_dump($r);die;
         return App::get()->handle($r, HttpKernelInterface::SUB_REQUEST);
     }
 
