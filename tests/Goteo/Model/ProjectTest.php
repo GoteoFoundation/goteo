@@ -258,7 +258,7 @@ class ProjectTest extends TestCase {
      */
     public function testDeleteProject($project) {
         $errors = array();
-        $this->assertTrue($project->dbDelete($errors), print_r($errors, 1));
+        $this->assertTrue($project->remove($errors), print_r($errors, 1));
 
         return $project;
     }
