@@ -113,7 +113,7 @@ namespace Goteo\Library {
                 $token = $response->preapprovalKey;
 
             } catch (\Exception $ex) {
-
+                // print_r($preapprovalRequest);print_r($ex);die;
                 Invest::setDetail($invest->id, 'paypal-init-fail', 'Ha fallado al iniciar el preapproval y no se redirije al usuario a paypal. Proceso libary/paypal::preapproval');
                 $errors[] = 'Error fatal en la comunicación con Paypal, se ha reportado la incidencia. Disculpe las molestias.';
                 Feed::logger('paypal-exception', 'invest', $invest->id, $ex->getMessage(), '\Library\Paypal.php');

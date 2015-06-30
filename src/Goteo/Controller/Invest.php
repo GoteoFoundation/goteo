@@ -62,19 +62,6 @@ namespace Goteo\Controller {
 
                 if ($debug) echo \trace($_POST);
 
-                // Funcionalidad crédito:
-                $pool = Model\User\Pool::get($user->id);
-
-                // si el usuario tiene gotas el metodo 'pool' es permitido
-                if ($pool->amount > 0) {
-                    $methods['pool'] = 'pool';
-                }
-
-                if (!isset($methods[$method])) {
-                    Message::error(Text::get('invest-method-error'));
-                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
-                }
-
                 $_amount = $_POST['amount'];
                 if (empty($_amount)) {
                     Message::error(Text::get('invest-amount-error'));
@@ -93,22 +80,27 @@ namespace Goteo\Controller {
 
                 // si está marcado "a reservar" llega $_POST['pool']
 
+                // Funcionalidad crédito:
+                $pool = Model\User\Pool::get($user->id);
+
+                // si el usuario tiene gotas el metodo 'pool' es permitido
+                if ($pool->amount > 0) {
+                    $methods['pool'] = 'pool';
+                    if ($pool->amount <  $amount && $method == "pool" ) {
+                        // pero no son suficientes para este amount, error
+                        Message::Error(Text::get('invest-pool-error'));
+                        throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    }
+                }
+
+                if (!isset($methods[$method])) {
+                    Message::Error(Text::get('invest-method-error'));
+                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                }
 
 
                 // si es a reservar
                 $to_pool = $_POST['pool'];
-
-                // si el usuario tiene gotas
-                if ($pool->amount > 0 && $pool->amount >=  $amount) {
-                    // guay, será tambien un aporte a reservar
-                    $to_pool = 1;
-
-                } elseif ($pool->amount > 0 && $pool->amount <  $amount && $method == "pool" ) {
-                    // pero no son suficientes para este amount, error
-                    Message::error(Text::get('invest-pool-error'));
-                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
-                }
-
 
                 // dirección de envio para las recompensas
                 // o datoas fiscales del donativo
@@ -204,7 +196,6 @@ namespace Goteo\Controller {
                             }
                             break;
                         case 'paypal':
-
                             // si es un aporte a reservar se paga con expresscheckout (y pronto siempre así)
                             if ($invest->pool) {
                                 // expresscheckout
