@@ -12,26 +12,11 @@ $node = $this->node;
         <label for="node-id">Identificador:</label><br />
         <input type="text" id="node-id" name="id" value="" />
     </p>
-    <p>
-        <label for="node-name">Nombre:</label><br />
-        <input type="text" id="node-name" name="name" value="" style="width:250px" />
-    </p>
-    <p>
-        <label for="node-email">Email:</label><br />
-        <input type="text" id="node-email" name="email" value="" style="width:250px" />
-    </p>
 
-    <p>
-        <label for="node-sponsors">Límite sponsors:</label><br />
-        <input type="text" id="node-sponsors" name="sponsors_limit" value="" />
-    </p>
+    <?= $this->insert('admin/nodes/partials/edit_common') ?>
 
-    <p>
-        <label for="node-active">Activarlo ahora:</label><br />
-        <input type="checkbox" id="node-active" name="active" value="1" />
-    </p>
 
-        <input type="submit" name="save" value="Guardar" />
+        <input type="submit" name="save" value="Crear" />
     </form>
 
 <?php $this->replace() ?>
