@@ -76,7 +76,7 @@ class NodeController extends \Goteo\Core\Controller {
                              // $request->files->all(),
                              // $request->server->all()
                              );
-        var_dump($r);die;
+        // var_dump($r);die;
         return App::get()->handle($r, HttpKernelInterface::SUB_REQUEST);
     }
 
