@@ -383,7 +383,7 @@ namespace Goteo\Library {
          * @param array $filters    user (nombre o email),  template
          * FIXME: No funciona cuando las fechas desde y hasta son iguales.
          */
-        public static function getSended($filters = array(), $node = null, $limit = 9) {
+        public static function getSentList($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false) {
 
             $values = array();
             $sqlFilter = '';
@@ -425,6 +425,14 @@ namespace Goteo\Library {
                 $values[':date_until'] = $filters['date_until'];
             }
 
+            // Return total count for pagination
+            if($count) {
+                $sql = "SELECT COUNT(mail.id) FROM mail $sqlFilter";
+                return (int) Model::query($sql, $values)->fetchColumn();
+            }
+
+            $offset = (int) $offset;
+            $limit = (int) $limit;
             $sql = "SELECT
                         mail.id as id,
                         mail.email as email,
@@ -433,7 +441,7 @@ namespace Goteo\Library {
                     FROM mail
                     $sqlFilter
                     ORDER BY mail.date DESC
-                    LIMIT {$limit}";
+                    LIMIT $offset,$limit";
 
             $query = Model::query($sql, $values);
             return $query->fetchAll(\PDO::FETCH_OBJ);
@@ -457,16 +465,13 @@ namespace Goteo\Library {
                 $query = Model::query($sql, array(':id' => $id));
                 $content = $query->fetchColumn();
 
-                if (empty($content)) return null;
-
             } else {
                 $content = $filename;
             }
 
+            $url = SITE_URL . '/mail' . $content;
             if (FILE_HANDLER == 's3') {
                 $url = 'http://' . AWS_S3_BUCKET_MAIL . $content;
-            } elseif (FILE_HANDLER == 'file') {
-                $url = SITE_URL . '/mail' . $content;
             }
 
             return $url;

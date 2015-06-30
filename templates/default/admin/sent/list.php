@@ -1,22 +1,23 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Library\Mail,
-    Goteo\Util\Pagination\Paginated,
-    Goteo\Util\Pagination\DoubleBarLayout,
+use Goteo\Library\Mail,
     Goteo\Core\View;
 
-$filters = $vars['filters'];
-$templates = $vars['templates'];
-$the_filters = '';
-foreach ($filters as $key => $value) {
-    $the_filters .= "&{$key}={$value}";
-}
+?>
+<?php $this->layout('admin/layout') ?>
 
-$pagedResults = new Paginated($vars['sended'], 20, isset($_GET['page']) ? $_GET['page'] : 1);
+<?php $this->section('admin-content') ?>
+
+<?php
+
+
+$filters = $this->filters;
+$templates = $this->templates;
+
+
 ?>
 <div class="widget board">
-    <form id="filter-form" action="/admin/sended" method="get">
+    <form id="filter-form" action="/admin/sent" method="get">
         <div style="float:left;margin:5px;">
             <label for="user-filter">ID, nombre o email del destinatario</label><br />
             <input id="user-filter" name="user" value="<?php echo $filters['user']; ?>" style="width:300px;"/>
@@ -35,12 +36,12 @@ $pagedResults = new Paginated($vars['sended'], 20, isset($_GET['page']) ? $_GET[
 
         <br clear="both" />
 
-<?php if (!isset($_SESSION['admin_node'])) : ?>
+<?php if ($this->nodes) : ?>
             <div style="float:left;margin:5px;">
                 <label for="node-filter">Enviado por el nodo:</label><br />
                 <select id="node-filter" name="node" onchange="document.getElementById('filter-form').submit();">
                     <option value="">Cualquier nodo</option>
-                    <?php foreach ($vars['nodes'] as $nodeId => $nodeName) : ?>
+                    <?php foreach ($this->nodes as $nodeId => $nodeName) : ?>
                         <option value="<?php echo $nodeId; ?>"<?php if ($filters['node'] == $nodeId)
                     echo ' selected="selected"'; ?>><?php echo $nodeName; ?></option>
             <?php endforeach; ?>
@@ -64,39 +65,37 @@ $pagedResults = new Paginated($vars['sended'], 20, isset($_GET['page']) ? $_GET[
 </div>
 
 <div class="widget board">
-    <?php if ($filters['filtered'] != 'yes') : ?>
-        <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($vars['sended'])) : ?>
-        <table>
-            <thead>
-                <tr>
-                    <th width="5%"><!-- Si no ves --></th>
-                    <th width="45%">Destinatario</th>
-                    <th width="35%">Plantilla</th>
-                    <th width="15%">Fecha</th>
-                    <th><!-- reenviar --></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                while ($send = $pagedResults->fetchPagedRow()) :
-                    $link = Mail::getSinovesLink($send->id);
-                    ?>
+    <?php if ($this->sent) : ?>
+            <table>
+                <thead>
                     <tr>
-                        <td><a href="<?php echo $link; ?>" target="_blank">[Enlace]</a></td>
-                        <td><a href="/admin/users/?name=<?php echo urlencode($send->email) ?>"><?php echo $send->email; ?></a></td>
-                        <td><?php echo $templates[$send->template]; ?></td>
-                        <td><?php echo $send->date; ?></td>
-                        <td><!-- <a href="#" target="_blank">[Reenviar]</a> --></td>
+                        <th width="5%"><!-- Si no ves --></th>
+                        <th width="45%">Destinatario</th>
+                        <th width="35%">Plantilla</th>
+                        <th width="15%">Fecha</th>
+                        <th><!-- reenviar --></th>
                     </tr>
-    <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-    <ul id="pagination">
-    <?php $pagedResults->setLayout(new DoubleBarLayout());
-    echo $pagedResults->fetchPagedNavigation(str_replace('?', '&', $the_filters)); ?>
-    </ul>
-<?php else : ?>
-    <p>No se han encontrado registros</p>
-<?php endif; ?>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach($this->sent as $send):
+                        ?>
+                        <tr>
+                            <td><a href="/mail/<?= $send->id ?>" target="_blank">[Enlace]</a></td>
+                            <td><a href="/admin/users/?name=<?php echo urlencode($send->email) ?>"><?php echo $send->email; ?></a></td>
+                            <td><?php echo $templates[$send->template]; ?></td>
+                            <td><?php echo $send->date; ?></td>
+                            <td><!-- <a href="#" target="_blank">[Reenviar]</a> --></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>
+
+    <?php else : ?>
+        <p>No se han encontrado registros</p>
+    <?php endif; ?>
+
+<?php $this->replace() ?>
