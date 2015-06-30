@@ -259,6 +259,6 @@ class Session {
      * @return boolean
      */
     static public function getUser () {
-        return (self::isLogged()) ? self::get('user') : false;
+        return (self::isLogged()) ? self::get('user') : null;
     }
 }
