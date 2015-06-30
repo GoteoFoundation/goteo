@@ -196,10 +196,6 @@ class Config {
         define('GOTEO_LOG_MAIL', self::get('mail.log'));
         define('GOTEO_MAIL_QUOTA', self::get('mail.quota.total'));
         define('GOTEO_MAIL_SENDER_QUOTA', self::get('mail.quota.sender'));
-        define('AWS_SNS_CLIENT_ID', self::get('mail.sns.client_id'));
-        define('AWS_SNS_REGION', self::get('mail.sns.region'));
-        define('AWS_SNS_BOUNCES_TOPIC', self::get('mail.sns.bounces_topic'));
-        define('AWS_SNS_COMPLAINTS_TOPIC', self::get('mail.sns.complaints_topic'));
 
         define('GOTEO_URL', self::get('url.main'));
         define('SRC_URL', self::get('url.assets'));

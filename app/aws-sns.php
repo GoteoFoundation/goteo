@@ -5,14 +5,17 @@ ini_set("display_errors",1);
 //system timezone
 date_default_timezone_set("Europe/Madrid");
 
-use Goteo\Core\Resource,
-    Goteo\Core\Error,
-    Goteo\Core\Redirection,
-    Goteo\Core\Model,
-    Goteo\Library\Mail,
-    Goteo\Library\AmazonSns;
+use Goteo\Core\Resource;
+use Goteo\Core\Error;
+use Goteo\Core\Redirection;
+use Goteo\Core\Model;
+use Goteo\Library\Mail;
+use Goteo\Library\AmazonSns;
+use Goteo\Application\Config;
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../src/autoload.php';
+// Config file...
+Config::loadFromYaml('settings.yml');
 
 try {
 
@@ -27,7 +30,7 @@ try {
     if (!$contentsJson)
         throw new Exception('La entrada no tiene un código JSON válido');
 
-    if (!AmazonSns::verify($contentsJson, AWS_SNS_CLIENT_ID, AWS_SNS_REGION, array(AWS_SNS_BOUNCES_TOPIC, AWS_SNS_COMPLAINTS_TOPIC)))
+    if (!AmazonSns::verify($contentsJson, Config::get('mail.sns.client_id'), Config::get('mail.sns.region'), array(Config::get('mail.sns.bounces_topic'), Config::get('mail.sns.complaints_topic'))))
         throw new Exception('Petición incorrecta');
 
     if ($contentsJson->Type == 'SubscriptionConfirmation') {
