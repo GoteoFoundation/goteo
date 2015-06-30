@@ -43,8 +43,6 @@ class SessionListener implements EventSubscriberInterface
             Model::cleanCache();
         }
 
-        /* Iniciación constantes *_URL */
-
         /**
          * Session.
          */

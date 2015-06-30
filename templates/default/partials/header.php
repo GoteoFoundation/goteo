@@ -27,7 +27,7 @@ $langs = Lang::listAll('short');
                             <?php foreach ($langs as $id => $lang): ?>
                                 <?php if (Lang::isActive($id)) continue; ?>
                                 <li >
-                                <a href="?lang=<?php echo $id ?>"><?php echo htmlspecialchars($lang) ?></a>
+                                <a href="?lang=<?php echo $id ?>"><?php echo $lang ?></a>
                                 </li>
                             <?php endforeach ?>
                         </ul>
