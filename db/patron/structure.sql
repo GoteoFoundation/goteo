@@ -18,3 +18,6 @@ ALTER TABLE `patron` ADD `description` TEXT NULL AFTER `title`;
 ALTER TABLE `patron`
 	DROP KEY `id` ,
 	ADD PRIMARY KEY(`id`) ;
+
+-- constrains
+ALTER TABLE `patron` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

@@ -19,3 +19,6 @@ ALTER TABLE `mail` ADD `content` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ID del a
 
 -- cuando se pueda quitar...
 ALTER TABLE `mail` DROP `html`;
+
+-- constrains
+ALTER TABLE `mail` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

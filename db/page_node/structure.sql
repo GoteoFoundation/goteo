@@ -12,3 +12,7 @@ ADD `description` TEXT NULL AFTER `name`;
 
 -- pendiente de traducir
 ALTER TABLE `page_node` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+
+
+--constrains
+ALTER TABLE `page_node` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

@@ -68,3 +68,5 @@ CHANGE `num_patron_active` `num_patron_active` INT( 10 ) UNSIGNED NULL DEFAULT N
 CHANGE `num_invested` `num_invested` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos cofinanciados',
 CHANGE `num_owned` `num_owned` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num. proyectos publicados';
 
+-- Constrains
+ALTER TABLE `user` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
