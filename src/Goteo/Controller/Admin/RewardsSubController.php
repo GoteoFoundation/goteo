@@ -131,8 +131,7 @@ class RewardsSubController extends AbstractSubController {
             }
 
             return array(
-                    'folder' => 'rewards',
-                    'file' => 'edit',
+                    'template' => 'admin/rewards/edit',
                     'invest'   => $invest,
                     'project'  => $projectData,
                     'user'  => $userData,

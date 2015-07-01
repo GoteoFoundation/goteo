@@ -1,11 +1,11 @@
+<?php $this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Library\NormalForm;
-
-$invest = $vars['invest'];
-$project = $vars['project'];
-$user = $vars['user'];
+$invest = $this->invest;
+$project = $this->project;
+$user = $this->user;
 
 $rewards = array();
 foreach ($invest->rewards as $key => $data) {
@@ -14,11 +14,11 @@ foreach ($invest->rewards as $key => $data) {
 ?>
 <div class="widget">
     <p>
-        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $vars['status'][$project->status] ?>)<br />
+        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this->status[$project->status] ?>)<br />
         <strong>Usuario: </strong><?php echo $user->name ?><br />
         <strong>Cantidad aportada: </strong><?php echo $invest->amount ?> &euro; <br />
     </p>
-</div>
+
 
 <form method="post" action="/admin/rewards/edit/<?php echo  $invest->id; ?>" >
     <h3>Recompensa</h3>
@@ -52,14 +52,14 @@ foreach ($invest->rewards as $key => $data) {
 
 
 <?php
-echo new NormalForm(array(
+echo new \Goteo\Library\NormalForm(array(
 
     'level'         => 3,
     'method'        => 'post',
     'footer'        => array(
         'view-step-overview' => array(
             'type'  => 'submit',
-            'label' => Text::get('form-apply-button'),
+            'label' => $this->text('form-apply-button'),
             'class' => 'next',
             'name'  => 'update'
         )
@@ -69,41 +69,41 @@ echo new NormalForm(array(
         'name' => array(
             'type'      => 'textbox',
             'size'      => 40,
-            'title'     => Text::get('personal-field-contract_name'),
+            'title'     => $this->text('personal-field-contract_name'),
             'value'     => $invest->address->name
         ),
 
         'nif' => array(
             'type'      => 'textbox',
-            'title'     => Text::get('personal-field-contract_nif'),
+            'title'     => $this->text('personal-field-contract_nif'),
             'size'      => 15,
             'value'     => $invest->address->nif
         ),
 
         'address' => array(
             'type'  => 'textbox',
-            'title' => Text::get('personal-field-address'),
+            'title' => $this->text('personal-field-address'),
             'size'  => 55,
             'value' => $invest->address->address
         ),
 
         'location' => array(
             'type'  => 'textbox',
-            'title' => Text::get('personal-field-location'),
+            'title' => $this->text('personal-field-location'),
             'size'  => 55,
             'value' => $invest->address->location
         ),
 
         'zipcode' => array(
             'type'  => 'textbox',
-            'title' => Text::get('personal-field-zipcode'),
+            'title' => $this->text('personal-field-zipcode'),
             'size'  => 7,
             'value' => $invest->address->zipcode
         ),
 
         'country' => array(
             'type'  => 'textbox',
-            'title' => Text::get('personal-field-country'),
+            'title' => $this->text('personal-field-country'),
             'size'  => 55,
             'value' => $invest->address->country
         ),
@@ -111,7 +111,7 @@ echo new NormalForm(array(
 
         'regalo' => array(
             'type'  => 'checkbox',
-            'title' => Text::get('invest-address-friend-field'),
+            'title' => $this->text('invest-address-friend-field'),
             'value' => '1',
             'checked' => $invest->address->regalo
         ),
@@ -119,14 +119,14 @@ echo new NormalForm(array(
 
         'namedest' => array(
             'type'  => 'textbox',
-            'title' => Text::get('invest-address-namedest-field'),
+            'title' => $this->text('invest-address-namedest-field'),
             'value' => $invest->address->namedest
         ),
 
 
         'emaildest' => array(
             'type'  => 'textbox',
-            'title' => Text::get('invest-address-maildest-field'),
+            'title' => $this->text('invest-address-maildest-field'),
             'value' => $invest->address->emaildest
         ),
 
@@ -136,3 +136,5 @@ echo new NormalForm(array(
 
 ?>
 </form>
+</div>
+<?php $this->replace() ?>
