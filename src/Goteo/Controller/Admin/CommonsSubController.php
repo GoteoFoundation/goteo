@@ -160,7 +160,8 @@ class CommonsSubController extends AbstractSubController {
                             'statuses' => $statuses,
                             'status' => $status,
                             'icons' => $icons,
-                            'licenses' => $licenses
+                            'licenses' => $licenses,
+                            'path' => '/admin/commons'
                     );
                     break;
 
@@ -168,7 +169,7 @@ class CommonsSubController extends AbstractSubController {
                 case 'add':
                 case 'edit':
                     // editar un retorno colectivo
-                    if ($this->getGet('reward_id')) {
+                    if (!$this->getGet('reward_id')) {
                         $reward = new Model\Project\Reward;
                         $reward->id = '';
                         $reward->project = $id;
