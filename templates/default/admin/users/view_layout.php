@@ -11,8 +11,8 @@ $role_node_info = array();
 foreach($node_roles as $n) {
     $role_node_info[] = $n->node .': ' .$user->roles[$n->role]->name;
 }
-
-$part = end(explode('/', $this->template));
+$parts = explode('/', $this->template);
+$part = end($parts);
 
 ?>
 <div class="widget board">
@@ -21,7 +21,7 @@ $part = end(explode('/', $this->template));
     <li<?= ($part === 'edit' ? ' class="selected"' : '') ?>><a href="/admin/users/edit/<?php echo $user->id; ?>">[Email/contraseña]</a></li>
     <li<?= ($part === 'move' ? ' class="selected"' : '') ?>><a href="/admin/users/move/<?php echo $user->id; ?>">[Mover de   Nodo]</a></li>
     <li<?= ($part === 'impersonate' ? ' class="selected"' : '') ?>><a href="/admin/users/impersonate/<?php echo $user->id; ?>">[Suplantar]</a></li>
-    <?php if (\Goteo\Controller\Admin\AccountsSubController::isAllowed($this->get_user(), $this->admin_node)) : ?>
+    <?php if ($this->is_module_admin('Accounts', $this->admin_node)) : ?>
         <li><a href="/admin/accounts/add?user=<?php echo $user->id; ?>">[Crear aporte]</a></li>
         <li><a href="/admin/accounts?name=<?php echo $user->email; ?>">[Historial aportes]</a></li>
     <?php else: ?>

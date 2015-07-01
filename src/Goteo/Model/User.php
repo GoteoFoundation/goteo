@@ -687,8 +687,8 @@ namespace Goteo\Model {
             }
 
             // un admin de central puede filtrar usuarios de nodo
-            if(!is_array($subnodes)) $subnodes = array( (string) $subnodes );
             if($subnodes) {
+                if(!is_array($subnodes)) $subnodes = array( (string) $subnodes );
                 $ns = array();
                 foreach($subnodes as $i => $node) {
                     $ns[":node$i"] = $node;
@@ -818,7 +818,7 @@ namespace Goteo\Model {
                     $sqlOrder
                     LIMIT $offset, $limit
                     ";
-
+            sqldbg($sql, $values);
             // echo str_replace(array_keys($values), array_values($values),$sql).'<br />';
             $query = self::query($sql, $values);
 

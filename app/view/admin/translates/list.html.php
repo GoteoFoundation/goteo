@@ -12,7 +12,7 @@ $filters = $vars['filters'];
     <select id="owner-filter" name="owner" onchange="document.getElementById('filter-form').submit();">
         <option value="">Todos los productores</option>
     <?php foreach ($vars['owners'] as $ownerId=>$ownerName) : ?>
-        <option value="<?php echo $ownerId; ?>"<?php if ($filters['owner'] == $ownerId) echo ' selected="selected"';?>><?php echo $ownerName; ?></option>
+        <option value="<?php echo $ownerId; ?>"<?php if ($filters['owner'] == $ownerId) echo ' selected="selected"';?>><?php echo $ownerName ? $ownerName : $ownerId; ?></option>
     <?php endforeach; ?>
     </select>
 
