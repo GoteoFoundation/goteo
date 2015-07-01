@@ -1,10 +1,11 @@
+<?php $this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
+
 <?php
-use Goteo\Library\Text,
-    Goteo\Model\Invest;
 
-$filters = $vars['filters'];
+$filters = $this->filters;
 
-$emails = Invest::emails(true);
 ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
@@ -13,7 +14,7 @@ $emails = Invest::emails(true);
             <label for="projects-filter">Proyecto</label><br />
             <select id="projects-filter" name="project" onchange="document.getElementById('filter-form').submit();">
                 <option value="">Todos los proyectos</option>
-            <?php foreach ($vars['projects'] as $itemId=>$itemName) : ?>
+            <?php foreach ($this->projects as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters['project'] === (string) $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
             <?php endforeach; ?>
             </select>
@@ -28,7 +29,7 @@ $emails = Invest::emails(true);
             <label for="status-filter">Mostrar por estado de recompensa:</label><br />
             <select id="status-filter" name="status" >
                 <option value="">Todos</option>
-            <?php foreach ($vars['status'] as $statusId=>$statusName) : ?>
+            <?php foreach ($this->status as $statusId=>$statusName) : ?>
                 <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
             <?php endforeach; ?>
             </select>
@@ -54,9 +55,7 @@ $emails = Invest::emails(true);
 </div>
 
 <div class="widget board">
-<?php if ($filters['filtered'] != 'yes') : ?>
-    <p>Es necesario poner algun filtro, hay demasiados registros!</p>
-<?php elseif (!empty($vars['list'])) : ?>
+<?php if($this->list) : ?>
     <table width="100%">
         <thead>
             <tr>
@@ -70,11 +69,11 @@ $emails = Invest::emails(true);
         </thead>
 
         <tbody>
-            <?php foreach ($vars['list'] as $reward) : ?>
+            <?php foreach ($this->list as $reward) : ?>
             <tr>
                 <td><a href="/admin/rewards/edit/<?php echo $reward->invest ?>" >[Modificar]</a></td>
                 <td><a href="/admin/users/manage/<?php echo $reward->user ?>" target="_blank" title="<?php echo $reward->name; ?>"><?php echo $reward->email; ?></a></td>
-                <td><a href="/admin/projects/?name=<?php echo $vars['projects'][$reward->project] ?>" target="_blank"><?php echo Text::recorta($vars['projects'][$reward->project], 20); if (!empty($invest->campaign)) echo '<br />('.$vars['calls'][$invest->campaign].')'; ?></a></td>
+                <td><a href="/admin/projects/?name=<?php echo $this->projects[$reward->project] ?>" target="_blank"><?php echo $this->text_recorta($this->projects[$reward->project], 20); if (!empty($invest->campaign)) echo '<br />('.$this->calls[$invest->campaign].')'; ?></a></td>
                 <td><?php echo $reward->reward_name ?></td>
                 <?php if (!$reward->fulfilled) : ?>
                     <td style="color: red;" >Pendiente</td>
@@ -88,7 +87,13 @@ $emails = Invest::emails(true);
         </tbody>
 
     </table>
+
+
+    <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>
+
 <?php else : ?>
     <p>No hay aportes que cumplan con los filtros.</p>
 <?php endif;?>
 </div>
+
+<?php $this->replace() ?>

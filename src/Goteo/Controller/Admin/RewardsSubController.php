@@ -13,43 +13,7 @@ class RewardsSubController extends AbstractSubController {
 
     static protected $labels = array (
       'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
-      'add' => 'Iniciando briefing',
-      'move' => 'Moviendo a otro Nodo el proyecto',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe',
-      'viewer' => 'Viendo logs',
       'edit' => 'Gestionando recompensa',
-      'translate' => 'Traduciendo Destacado',
-      'reorder' => 'Ordenando los padrinos en Portada',
-      'footer' => 'Ordenando las entradas en el Footer',
-      'projects' => 'Informe Impulsores',
-      'admins' => 'Asignando administradores del Canal',
-      'posts' => 'Entradas de blog en la convocatoria',
-      'conf' => 'Configuración de campaña del proyecto',
-      'dropconf' => 'Gestionando parte económica de la convocatoria',
-      'keywords' => 'Palabras clave',
-      'view' => 'Apadrinamientos',
-      'info' => 'Información de contacto',
-      'send' => 'Comunicación enviada',
-      'init' => 'Iniciando un nuevo envío',
-      'activate' => 'Iniciando envío',
-      'detail' => 'Viendo destinatarios',
-      'dates' => 'Fechas del proyecto',
-      'accounts' => 'Cuentas del proyecto',
-      'images' => 'Imágenes del proyecto',
-      'assign' => 'Asignando a una Convocatoria el proyecto',
-      'open_tags' => 'Asignando una agrupación al proyecto',
-      'rebase' => 'Cambiando Id de proyecto',
-      'consultants' => 'Cambiando asesor del proyecto',
-      'paypal' => 'Informe PayPal',
-      'geoloc' => 'Informe usuarios Localizados',
-      'calls' => 'Informe Convocatorias',
-      'donors' => 'Informe Donantes',
-      'top' => 'Top Cofinanciadores',
-      'currencies' => 'Actuales ratios de conversión',
     );
 
 
@@ -79,10 +43,19 @@ class RewardsSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('edit', $id, $this->getFilters(), $subaction));
     }
 
-
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
+    }
+
+    public function fulfillAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('fulfill', $id, $this->getFilters(), $subaction));
+    }
+
+    public function unfillAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('unfill', $id, $this->getFilters(), $subaction));
     }
 
 
@@ -170,32 +143,28 @@ class RewardsSubController extends AbstractSubController {
 
         }
 
-
-
         // listado de proyectos
         $projects = Model\Invest::projects();
 
         $status = array(
                     'nok' => 'Pendiente',
                     'ok'  => 'Cumplida'
-
                 );
 
         // listado de aportes
-        if ($filters['filtered'] == 'yes') {
-            $list = Model\Project\Reward::getChosen($filters);
-        } else {
-            $list = array();
-        }
-
+        $limit = 20;
+        $list = Model\Project\Reward::getChosen($filters, $this->getGet('pag') * $limit, $limit);
+        $total = Model\Project\Reward::getChosen($filters, 0, 0, true);
 
         return array(
-                'folder' => 'rewards',
-                'file' => 'list',
+                'template' => 'admin/rewards/list',
                 'list'          => $list,
                 'filters'       => $filters,
                 'projects'      => $projects,
-                'status'        => $status
+                'status'        => $status,
+                'limit' => $limit,
+                'total' => $total
+
         );
 
     }

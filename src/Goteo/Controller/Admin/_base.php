@@ -6,10 +6,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Base extends AdminSubController {
 
-    public function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
-        $ret = array();
-
-        return $ret;
+    public function listAction($id = null, $subaction = null) {
+        return array('template' => '');
     }
 
 }
