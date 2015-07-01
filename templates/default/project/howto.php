@@ -2,8 +2,8 @@
 
 $this->layout("layout", [
     'bodyClass' => 'about',
-    'title' => $this->text('meta-title-howto'),
-    'meta_description' => $this->text('meta-description-glossary')
+    'title' => $this->text('meta-title-create-project'),
+    'meta_description' => $this->text('meta-description-create-project')
     ]);
 
 $this->section('content');

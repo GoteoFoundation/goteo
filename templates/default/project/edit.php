@@ -21,8 +21,8 @@ if (!empty($this->success)) {
 $this->layout("layout", [
     'bodyClass' => 'project-edit',
     'superform' => true,
-    'title' => $this->text('meta-title-edit-project'),
-    'meta_description' => $this->text('meta-description-edit-project')
+    'title' => $this->text('meta-title-create-project'),
+    'meta_description' => $this->text('meta-description-create-project')
     ]);
 
 $this->section('content');
