@@ -102,6 +102,11 @@ class BlogSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('down_footer', $id, $this->getFilters(), $subaction));
     }
 
+    public function add_footerAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('add_footer', $id, $this->getFilters(), $subaction));
+    }
+
     public function remove_footerAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('remove_footer', $id, $this->getFilters(), $subaction));
