@@ -13,14 +13,7 @@ class BlogSubController extends AbstractSubController {
 
     static protected $labels = array (
       'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
       'add' => 'Nueva Entrada',
-      'move' => 'Reubicando el aporte',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe de proyecto',
-      'viewer' => 'Viendo logs',
       'edit' => 'Editando Entrada',
       'translate' => 'Traduciendo Entrada',
       'reorder' => 'Ordenando las entradas en Portada',
@@ -70,10 +63,54 @@ class BlogSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('edit', $id, $this->getFilters(), $subaction));
     }
 
-
     public function addAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('add', $id, $this->getFilters(), $subaction));
+    }
+
+    public function upAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('up', $id, $this->getFilters(), $subaction));
+    }
+
+    public function downAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('down', $id, $this->getFilters(), $subaction));
+    }
+
+    public function removeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('remove', $id, $this->getFilters(), $subaction));
+    }
+
+    public function add_homeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('add_home', $id, $this->getFilters(), $subaction));
+    }
+
+    public function remove_homeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('remove_home', $id, $this->getFilters(), $subaction));
+    }
+
+    public function footerAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('footer', $id, $this->getFilters(), $subaction));
+    }
+
+    public function up_footerAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('up_footer', $id, $this->getFilters(), $subaction));
+    }
+
+    public function down_footerAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('down_footer', $id, $this->getFilters(), $subaction));
+    }
+
+    public function remove_footerAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('remove_footer', $id, $this->getFilters(), $subaction));
     }
 
 
