@@ -8,11 +8,11 @@
         <title><?= $this->title ?></title>
         <link rel="icon" type="image/png" href="/myicon.png" />
 
-        <?= $this->insert("partials/header/metas") ?>
+        <?= $this->insert('partials/header/metas') ?>
 
-        <?= $this->insert("partials/header/styles") ?>
+        <?= $this->insert('partials/header/styles') ?>
 
-        <?= $this->insert("partials/header/javascript") ?>
+        <?= $this->insert('partials/header/javascript') ?>
 
 
     <?php $this->stop() ?>
@@ -26,17 +26,17 @@
 
     <div id="wrapper">
 
-    <?= $this->insert("wrapper") ?>
+    <?= $this->insert('wrapper') ?>
 
     </div>
 
     <?php $this->section('footer') ?>
 
-        <?= $this->insert("partials/footer") ?>
+        <?= $this->insert('partials/footer') ?>
 
-        <?= $this->insert("partials/footer/analytics") ?>
+        <?= $this->insert('partials/footer/analytics') ?>
 
-        <?= $this->insert("partials/footer/javascript") ?>
+        <?= $this->insert('partials/footer/javascript') ?>
 
     <?php $this->stop() ?>
 

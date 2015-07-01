@@ -83,6 +83,4 @@ $this->section('content');
 <script src="<?php echo SRC_URL ?>/view/js/calendar/gcal.js"></script>
 <script src="<?php echo SRC_URL ?>/view/js/calendar/custom_calendar.js"></script>
 
-
-
 <?php $this->append() ?>
