@@ -23,14 +23,6 @@ namespace Goteo\Controller {
 
     class AdminController extends \Goteo\Core\Controller {
 
-        // TODO: Array de usuarios con permisos especiales
-        static public $supervisors = array(
-            'contratos' => array(
-                // paneles de admin permitidos
-                'commons'
-            )
-        );
-
         private static $subcontrollers = array();
 
         /**
@@ -155,9 +147,10 @@ namespace Goteo\Controller {
             }
 
             //feed by default for someones
-            if($nodes = $user->getAdminNodes()) {
+            $admin_node = Session::get('admin_node');
+            if($user->hasRoleInNode($admin_node, ['superadmin', 'root']) || ($user->hasRoleInNode($admin_node, ['admin']) && Config::isMasterNode($admin_node))) {
                 //TODO: allow Feed to handle multiple nodes
-                $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, Session::get('admin_node'));
+                $ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, $admin_node);
             }
             //default admin dashboard (nothing!)
             return $this->viewResponse('admin/default', $ret);

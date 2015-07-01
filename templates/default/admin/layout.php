@@ -21,9 +21,9 @@ $this->layout('layout', [
 
             <?= $this->supply('admin-menu', $this->insert('admin/partials/menu')) ?>
 
-            <?php echo $this->supply('admin-content') ?>
+            <?= $this->supply('admin-content') ?>
 
-            <?php echo $this->supply('admin-aside') ?>
+            <?= $this->supply('admin-aside') ?>
 
             </div> <!-- fin center -->
 
