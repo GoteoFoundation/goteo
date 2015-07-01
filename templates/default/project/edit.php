@@ -5,8 +5,6 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 $project = $this->project;
-$status = View::get('project/edit/status.html.php', array('status' => $project->status, 'progress' => $project->progress));
-$steps  = View::get('project/edit/steps.html.php', array('steps' => $this->steps, 'step' => $this->step, 'errors' => $project->errors, 'id_project' => $project->id));
 
 // next step
 $keys = array_keys($this->steps);
@@ -18,7 +16,7 @@ if (!empty($this->success)) {
     Goteo\Application\Message::info($this->text('form-ajax-info'));
 }
 
-$this->layout("layout", [
+$this->layout( $this->is_ajax() ? 'wrapper' : 'layout', [
     'bodyClass' => 'project-edit',
     'superform' => true,
     'title' => $this->text('meta-title-create-project'),
@@ -44,7 +42,9 @@ $this->section('content');
             <input type="hidden" name="view-step-<?= $this->step ?>" value="please" />
 
             <?php
-                echo $status;
+                echo View::get('project/edit/status.html.php', array('status' => $project->status, 'progress' => $project->progress));
+
+                $steps  = View::get('project/edit/steps.html.php', array('steps' => $this->steps, 'step' => $this->step, 'errors' => $project->errors, 'id_project' => $project->id));
 
                 if (count($this->steps) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación
 

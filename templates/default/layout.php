@@ -5,14 +5,14 @@
     <?php $this->section('head') ?>
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title><?=$this->title?></title>
+        <title><?= $this->title ?></title>
         <link rel="icon" type="image/png" href="/myicon.png" />
 
-        <?=$this->insert("partials/header/metas")?>
+        <?= $this->insert("partials/header/metas") ?>
 
-        <?=$this->insert("partials/header/styles")?>
+        <?= $this->insert("partials/header/styles") ?>
 
-        <?=$this->insert("partials/header/javascript")?>
+        <?= $this->insert("partials/header/javascript") ?>
 
 
     <?php $this->stop() ?>
@@ -26,29 +26,17 @@
 
     <div id="wrapper">
 
-
-    <?php $this->section('header') ?>
-        <?=$this->insert("partials/header")?>
-    <?php $this->stop() ?>
-
-    <?php $this->section('sub-header') ?>
-    <?php $this->stop() ?>
-
-    <?php echo $this->supply('messages', $this->insert("partials/header/messages")) ?>
-
-    <?php $this->section('content') ?>
-    <?php $this->stop() ?>
-
+    <?= $this->insert("wrapper") ?>
 
     </div>
 
     <?php $this->section('footer') ?>
 
-        <?=$this->insert("partials/footer")?>
+        <?= $this->insert("partials/footer") ?>
 
-        <?=$this->insert("partials/footer/analytics")?>
+        <?= $this->insert("partials/footer/analytics") ?>
 
-        <?=$this->insert("partials/footer/javascript")?>
+        <?= $this->insert("partials/footer/javascript") ?>
 
     <?php $this->stop() ?>
 

@@ -246,7 +246,9 @@
             el.append(new_cont);
         }
 
-        if(new_cont.length) goteo.trace('nuevo contendido:', new_cont.html());
+        if(new_cont.length) {
+            goteo.trace('nuevo contendido:', new_cont.html());
+        }
 
         //miramos si hay apartado feedback
         var feed = el.children('div.feedback');
