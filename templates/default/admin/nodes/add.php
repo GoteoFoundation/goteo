@@ -1,8 +1,3 @@
-<?php
-
-$node = $this->node;
-
-?>
 <?php $this->layout('admin/nodes/layout') ?>
 
 <?php $this->section('admin-node-content') ?>
@@ -10,7 +5,7 @@ $node = $this->node;
     <form method="post" action="/admin/nodes/add" >
     <p>
         <label for="node-id">Identificador:</label><br />
-        <input type="text" id="node-id" name="id" value="" />
+        <input style="border:1px solid #b00" type="text" id="node-id" name="id" value="<?= $this->node->id ?>" />
     </p>
 
     <?= $this->insert('admin/nodes/partials/edit_common') ?>

@@ -9,7 +9,7 @@ CREATE TABLE `banner` (
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Proyectos en banner superior';
 
 -- alters
-ALTER TABLE `banner` ADD `image` INT( 10 ) NULL ; 
+ALTER TABLE `banner` ADD `image` INT( 10 ) NULL ;
 
 -- banners sin proyecto
 ALTER TABLE `banner` DROP INDEX `id` ;
@@ -22,3 +22,8 @@ ALTER TABLE `banner` ADD `url` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_
 
 -- campo imagen a nombre archivo
 ALTER TABLE `banner` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
+
+-- constrains
+UPDATE banner SET project=NULL WHERE project='';
+ALTER TABLE `banner` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+                     ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

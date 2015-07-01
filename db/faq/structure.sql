@@ -6,3 +6,6 @@ CREATE TABLE `faq` (
 `description` TEXT NULL ,
 `order` TINYINT NOT NULL DEFAULT '1'
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Preguntas frecuentes';
+
+-- constrains
+ALTER TABLE `faq` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

@@ -44,15 +44,13 @@ $this->section('content');
     <div id="sub-header">
         <div class="project-header">
             <a href="/user/<?php echo $project->owner; ?>" target="_blank"><img src="<?php echo $project->user->avatar->getLink(50, 50, true); ?>" /></a>
-            <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
-            <div class="project-subtitle"><?php echo htmlspecialchars($project->subtitle) ?></div>
+            <h2><span><?php echo $project->name ?></span></h2>
+            <div class="project-subtitle"><?php echo $project->subtitle ?></div>
             <div class="project-by"><a href="/user/<?php echo $project->owner; ?>" target="_blank">Por: <?php echo $project->user->name; ?></a></div>
         </div>
     </div>
 
-<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
-
-    <div id="main" class="<?php echo htmlspecialchars($this->step) ?>">
+    <div id="main" class="<?php echo $this->step ?>">
 
         <form method="post" id="proj-superform" action="<?php echo "/project/edit/" . $this->project->id ?>" class="project" enctype="multipart/form-data" >
 

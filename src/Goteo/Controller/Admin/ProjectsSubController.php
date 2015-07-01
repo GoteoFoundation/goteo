@@ -87,6 +87,9 @@ class ProjectsSubController extends AbstractSubController {
         if($level === 'admin' && !$project->userCanAdmin($this->user)) {
             throw new ControllerAccessDeniedException('You cannot admin this project');
         }
+        elseif($level === 'moderate' && !$project->userCanModerate($this->user)) {
+            throw new ControllerAccessDeniedException('You cannot moderate this project');
+        }
         elseif($level === 'delete' && !$project->userCanDelete($this->user)) {
             throw new ControllerAccessDeniedException('You cannot delete this project');
         }
@@ -472,7 +475,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function reviewAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
         // pasar un proyecto a revision
         if ($project->ready($errors)) {
             // feed this action
@@ -486,7 +489,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function publishAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
         // poner un proyecto en campaña
         if ($project->publish($errors)) {
             Send::toOwner('tip_0', $project);
@@ -525,7 +528,7 @@ class ProjectsSubController extends AbstractSubController {
     // descartar un proyecto por malo
     public function cancelAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
         $consultants = $project->getConsultants();
         // Asignar como asesor al admin que lo ha descartado
         if ($this->user->id != 'root') {
@@ -545,7 +548,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function fulfillAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
 
         // marcar que el proyecto ha cumplido con los retornos colectivos
         if ($project->satisfied($errors)) {
@@ -559,7 +562,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function unfulfillAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
 
         // dar un proyecto por financiado manualmente
         if ($project->rollback($errors)) {
@@ -574,7 +577,7 @@ class ProjectsSubController extends AbstractSubController {
     //rechazo express
     public function rejectAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
         $consultants = $project->getConsultants();
 
         //  idioma de preferencia
@@ -649,7 +652,7 @@ class ProjectsSubController extends AbstractSubController {
     // Vigilar
     public function watchAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
 
         if (Model\Project\Conf::watch($project->id)) {
             $this->doFeed($project, 'El admin %s ha empezado a <span class="red">vigilar</span> el proyecto %s');
@@ -663,7 +666,7 @@ class ProjectsSubController extends AbstractSubController {
     // Dejar de vigilar
     public function unwatchAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
 
         if (Model\Project\Conf::unwatch($project->id)) {
             $this->doFeed($project, 'El admin %s ha <span class="red">dejado de vigilar</span> el proyecto %s');
@@ -678,7 +681,7 @@ class ProjectsSubController extends AbstractSubController {
     // Finalizar campaña
     public function finishAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
 
         if (Model\Project\Conf::finish($project)) {
             $this->doFeed($project, 'El admin %s ha <span class="red">finalizado la campaña</span> del proyecto %s');

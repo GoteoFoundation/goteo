@@ -112,7 +112,7 @@ class ProjectTest extends TestCase {
         //delete test project if exists
         try {
             $project = Project::get(self::$data['id']);
-            $project->delete();
+            $project->remove();
         } catch(\Exception $e) {
             // project not exists, ok
         }

@@ -72,7 +72,6 @@ namespace Goteo\Model\Call {
                             project.description as description,
                             project.image as image,
                             project.maxproj as maxproj,
-                            project.called as called,
                             project.amount_users as amount_users,
                             project.amount_call as amount_call,
                             project.id REGEXP '[0-9a-f]{32}' as draft,

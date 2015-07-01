@@ -12,7 +12,6 @@ $posts      = Post::getList('footer');
 
 $sponsors   = Sponsor::getList();
 
-//echo \trace($sponsors);
 ?>
 
 <div id="footer">

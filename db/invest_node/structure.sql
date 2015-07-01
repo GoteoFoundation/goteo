@@ -15,3 +15,8 @@ ALTER TABLE `invest_node`
     ADD KEY `project_id`(`project_id`) ,
     ADD KEY `project_node`(`project_node`) ,
     ADD KEY `user_id`(`user_id`) ;
+
+-- constrains
+ALTER TABLE `invest_node` ADD FOREIGN KEY (`user_node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+                          ADD FOREIGN KEY (`project_node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+                          ADD FOREIGN KEY (`invest_node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

@@ -103,7 +103,7 @@ class ChannelController extends \Goteo\Core\Controller {
         $this->setChannelContext($id);
 
         $limit = 10;
-        $filter = ['type' => $type];
+        $filter = ['type' => $type, 'popularity' => 5];
 
         $title_text = $type === 'available' ? Text::get('regular-see_all') : Text::get('node-side-searcher-'.$type);
         if($category) {

@@ -3,12 +3,13 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\Campaign;
 
-class CampaignTest extends \PHPUnit_Framework_TestCase {
+class CampaignTest extends TestCase {
 
 
-    private static $data = array('node' => 'test', 'call' => 'test', 'order' => 0, 'active' => 0);
+    private static $data = array('call' => 'test', 'order' => 0, 'active' => 0);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -29,6 +30,7 @@ class CampaignTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCreate() {
+        self::$data['node'] = get_test_node()->id;
         $ob = new Campaign(self::$data);
         $this->assertTrue($ob->validate($errors), print_r($errors, 1));
         $this->assertTrue($ob->save($errors), print_r($errors, 1));
@@ -56,5 +58,11 @@ class CampaignTest extends \PHPUnit_Framework_TestCase {
         $ob = Campaign::get($ob->id);
         $this->assertFalse($ob);
         $this->assertFalse(Campaign::delete($ob->id));
+    }
+    /**
+     * Clean up
+     */
+    public static function tearDownAfterClass($fp) {
+        delete_test_node();
     }
 }

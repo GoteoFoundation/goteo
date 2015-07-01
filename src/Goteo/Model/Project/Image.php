@@ -149,7 +149,7 @@ namespace Goteo\Model\Project {
         /*
          * Recalcular imagen principal
          */
-        public function setImage ($id, $gallery) {
+        public static function setImage ($id, $gallery) {
             if(!$gallery) {
                 return new Model\Image();
             }

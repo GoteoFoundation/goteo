@@ -28,6 +28,8 @@ class PatronTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCreate() {
+        self::$data['node'] = get_test_node()->id;
+        self::$data['project'] = get_test_project()->id;
         $ob = new Patron(self::$data);
 
         $this->assertTrue($ob->validate($errors), print_r($errors, 1));
@@ -56,5 +58,13 @@ class PatronTest extends \PHPUnit_Framework_TestCase {
         $ob = Patron::get($ob->id);
         $this->assertFalse($ob);
         $this->assertFalse(Patron::delete($ob->id));
+    }
+    /**
+     * Clean up
+     */
+    public static function tearDownAfterClass($fp) {
+        delete_test_project();
+        delete_test_user();
+        delete_test_node();
     }
 }
