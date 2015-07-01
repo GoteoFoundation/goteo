@@ -7,6 +7,7 @@ use Goteo\Core\View,
 
 $this->layout("layout", [
     'bodyClass' => 'discover',
+    'title' => $this->text('meta-title-discover-calls'),
     'meta_description' => $this->text('meta-description-discover'),
     'image' => $og_image
     ]);

@@ -22,14 +22,9 @@ $sponsors   = Sponsor::getList();
 //echo \trace($sponsors);
 ?>
 
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-	$('.scroll-pane').jScrollPane({showArrows: true});
-});
-</script>
 
     <div id="footer">
-        <?php if( $bannerPrensa && count($vars[news]) ) {?>
+        <?php if( $bannerPrensa && count($vars['news']) ) {?>
         <div id="press_banner">
             <?php echo $bannerPrensa;?>
         </div>
@@ -73,18 +68,7 @@ jQuery(document).ready(function($) {
                     <li><a href="https://github.com/Goteo/Goteo" target="_blank"><?php echo Text::get('footer-resources-source_code') ?></a></li>
                 </ul>
             </div>
-			<script type="text/javascript">
-				$(function(){
-					$('#slides_sponsor').slides({
-						container: 'slides_container',
-						effect: 'fade',
-						crossfade: false,
-						fadeSpeed: 350,
-						play: 5000,
-						pause: 1
-					});
-				});
-			</script>
+
            <div id="slides_sponsor" class="block sponsors">
                 <h6 class="title"><?php echo Text::get('footer-header-sponsors') ?></h6>
 				<div class="slides_container">

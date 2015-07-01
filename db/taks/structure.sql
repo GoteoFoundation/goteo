@@ -11,3 +11,7 @@ PRIMARY KEY ( `id` )
 
 -- engine
 ALTER TABLE `task` ENGINE = InnoDB;
+
+
+-- constrains
+ALTER TABLE `task` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

@@ -4,7 +4,7 @@ $channel=$this->channel;
 
 $this->layout("layout", [
     'bodyClass' => 'channel home',
-    'title' => $channel->name,
+    'title' => $this->text('regular-channel').' '.$channel->name,
     'meta_description' => $channel->description
     ]);
 

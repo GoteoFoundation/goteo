@@ -54,6 +54,7 @@ class GoteoCore implements ExtensionInterface
           'get_querystring' => [$this, 'get_querystring'],
           'lang_current' => [$this, 'lang_current'],
           'lang_locale' => [$this, 'lang_locale'],
+          'is_ajax' => [$this, 'is_ajax'],
         ];
     }
 
@@ -85,6 +86,11 @@ class GoteoCore implements ExtensionInterface
     //Session
     public function get_session($var) {
         return Session::get($var);
+    }
+
+    //returns if is a XmlHttpRequest (ajax) petition
+    public function is_ajax() {
+        return self::getRequest()->isXmlHttpRequest();
     }
 
     //Request (_GET) var

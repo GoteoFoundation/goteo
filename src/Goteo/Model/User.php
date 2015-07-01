@@ -52,6 +52,7 @@ namespace Goteo\Model {
             $args = func_get_args();
             call_user_func_array(array('parent', '__construct'), $args);
             $this->avatar = new Image();
+            if(empty($this->node)) $this->node = Config::get('current_node');
         }
 
         /**
@@ -126,7 +127,7 @@ namespace Goteo\Model {
                     $data[':active'] = true;
                     $data[':confirmed'] = false;
                     $data[':lang'] = Lang::current();
-                    $data[':node'] = Config::get('current_node');
+                    $data[':node'] = $this->node;
 
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;

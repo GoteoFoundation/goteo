@@ -9,6 +9,8 @@ namespace Goteo\Controller {
         Goteo\Application\View,
         Goteo\Application\Lang,
         Goteo\Application\Session,
+        Goteo\Application\Exception\ModelException,
+        Goteo\Application\Exception\ModelNotFoundException,
         Goteo\Application,
         Goteo\Controller\Cron\Send,
         Goteo\Library\Text,
@@ -86,7 +88,7 @@ namespace Goteo\Controller {
         }
 
         //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
-        public function editAction ($id, $step = 'userProfile') {
+        public function editAction ($id, $step = 'userProfile', Request $request) {
 
             $user = Session::getUser();
 
@@ -97,12 +99,16 @@ namespace Goteo\Controller {
             try {
                 $project = Project::get($id, null);
 
-            } catch(\Goteo\Core\Error $e) {
-                return new RedirectResponse('/dashboard/projects');
+            } catch(ModelException $e) {
+                Application\Message::error('Project error!');
+                return new RedirectResponse($goto);
+            } catch(ModelNotFoundException $e) {
+                Application\Message::error('Project not found!');
+                return new RedirectResponse($goto);
             }
 
             if (!$project->userCanEdit(Session::getUser())) {
-                Application\Message::info('No tienes permiso para editar este proyecto');
+                Application\Message::error('No tienes permiso para editar este proyecto');
                 return new RedirectResponse($goto);
             }
 
@@ -320,9 +326,6 @@ namespace Goteo\Controller {
                 }
 
 
-
-
-
                 // si estan enviando el proyecto a revisión
                 if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
                     $errors = array();
@@ -500,15 +503,7 @@ namespace Goteo\Controller {
                 unset($_SESSION['superform_item_edit']);
             }
 
-
-            /*$view = new View (
-                'project/edit.html.php',
-                $viewData
-            );*/
-
-            return new Response(View::render('project/edit', $viewData));
-
-            //return $view;
+            return $this->viewResponse('project/edit', $viewData);
 
         }
 

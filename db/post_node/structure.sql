@@ -4,3 +4,6 @@ CREATE TABLE IF NOT EXISTS `post_node` (
   `order` int(11) DEFAULT '1',
   PRIMARY KEY (`post`,`node`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Entradas para la portada de nodos';
+
+-- constrains
+ALTER TABLE `post_node` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

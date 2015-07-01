@@ -26,43 +26,6 @@ Config::loadFromYaml('settings.yml');
 
 // usefull stuff
 // User, Project, Node creation
-function get_test_user() {
-    $data = array(
-        'userid' => '012-simulated-user-test-210',
-        'name' => 'Test user - please delete me',
-        'email' => 'simulated-user-test@goteo.org'
-    );
-    $data['node'] = get_test_node()->id;
-    // if exists, return the user
-    if($user = \Goteo\Model\User::get($data['userid'])) {
-        return $user;
-    }
-    $errors = array();
-    $user = new \Goteo\Model\User($data);
-    if ( ! $user->save($errors, array('password')) ) {
-        error_log("Error creating test user! " . print_r($errors, 1));
-        return false;
-    }
-
-    if($user = \Goteo\Model\User::get($data['userid'])) {
-        return $user;
-    }
-    else {
-        error_log('Unknow error getting user id');
-    }
-}
-
-function delete_test_user() {
-    if($user = \Goteo\Model\User::get('012-simulated-user-test-210')) {
-        $user->dbDelete();
-        if(\Goteo\Model\User::get($user->id)) {
-            error_log("Error deleting test user!");
-            return false;
-        }
-    }
-    return true;
-}
-
 function get_test_node() {
     $data = array(
         'id' => 'testnode',
@@ -109,6 +72,42 @@ function delete_test_node() {
     return false;
 }
 
+function get_test_user() {
+    $data = array(
+        'userid' => '012-simulated-user-test-210',
+        'name' => 'Test user - please delete me',
+        'email' => 'simulated-user-test@goteo.org'
+    );
+    $data['node'] = get_test_node()->id;
+    // if exists, return the user
+    if($user = \Goteo\Model\User::get($data['userid'])) {
+        return $user;
+    }
+    $errors = array();
+    $user = new \Goteo\Model\User($data);
+    if ( ! $user->save($errors, array('password')) ) {
+        error_log("Error creating test user! " . print_r($errors, 1));
+        return false;
+    }
+
+    if($user = \Goteo\Model\User::get($data['userid'])) {
+        return $user;
+    }
+    else {
+        error_log('Unknow error getting user id');
+    }
+}
+
+function delete_test_user() {
+    if($user = \Goteo\Model\User::get('012-simulated-user-test-210')) {
+        $user->dbDelete();
+        if(\Goteo\Model\User::get($user->id)) {
+            error_log("Error deleting test user!");
+            return false;
+        }
+    }
+    return true;
+}
 function get_test_project() {
     $data = array(
         'id' => '012-simulated-project-test-210',

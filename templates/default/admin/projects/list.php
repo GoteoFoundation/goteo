@@ -202,7 +202,7 @@ foreach ($filters as $key=>$value) {
                 </td>
               </tr>
             <?php endif ?>
-            <?php if($project->userCanAdmin($this->user)): ?>
+            <?php if($project->userCanModerate($this->user)): ?>
               <tr>
                 <td colspan="7">
                     ACCIONES:&nbsp;

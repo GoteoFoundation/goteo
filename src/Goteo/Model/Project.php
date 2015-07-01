@@ -259,6 +259,22 @@ namespace Goteo\Model {
         }
 
         /**
+         * Check if the project can ber published and other sensitive actions
+         * @param  Goteo\Model\User $user  the user to check
+         * @return boolean          true if success, false otherwise
+         */
+        public function userCanModerate(User $user = null) {
+            if(empty($user)) return false;
+
+            // is superadmin in the project node
+            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            // is a consultant
+            if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
+
+            return false;
+        }
+
+        /**
          * Check if the project is administrable by the user id
          * Meaning touchgin sensitive data such as bank account, etc
          * @param  Goteo\Model\User $user  the user to check
@@ -2229,7 +2245,6 @@ namespace Goteo\Model {
                 self::query("DELETE FROM message WHERE project = ?", array($this->id)); // mensajes
                 self::query("DELETE FROM project_account WHERE project = ?", array($this->id)); // cuentas
                 self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
-                self::query("DELETE FROM call_project WHERE project = ?", array($this->id)); // convocado
                 self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
@@ -2362,7 +2377,6 @@ namespace Goteo\Model {
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
@@ -2437,7 +2451,6 @@ namespace Goteo\Model {
                             self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE patron SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
@@ -2699,9 +2712,11 @@ namespace Goteo\Model {
 
             // segun el tipo
             if ($filter['type'] === 'popular') {
+                $popularity = (int)$filter['popularity'];
+                if(empty($popularity)) $popularity = 20;
                 // de los que estan en campaña,
                 // los que tienen más usuarios entre cofinanciadores y mensajeros
-                $where[] = 'project.popularity >20';
+                $where[] = 'project.popularity >' . $popularity;
                 $order = 'popularity DESC';
             }
             elseif($filter['type'] === 'outdate') {
@@ -3153,6 +3168,8 @@ namespace Goteo\Model {
                 return (int) self::query($sql, $values)->fetchColumn();
             }
 
+            $offset = (int) $offset;
+            $limit = (int) $limit;
             // la select
             //@Javier: esto es de admin pero meter los campos en la select y no usar getMedium ni getWidget.
             // Si la lista de proyectos necesita campos calculados lo añadimos aqui  (ver view/admin/projects/list.html.php)

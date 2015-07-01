@@ -154,7 +154,7 @@ echo SuperForm::get(array(
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) &&  $user->avatar->id != 'la_gota.png' ?
-                               $user->avatar . '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 

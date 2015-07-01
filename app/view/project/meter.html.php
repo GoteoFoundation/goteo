@@ -30,15 +30,15 @@ $num_investors  = $project->num_investors;
 
 // PHP la pifia (y mucho) con los cálculos en coma flotante
 if ($reached >= $minimum) {
-    $minimum_done = floor(($reached / $minimum) * 100);
-    $minimum_done_per = floor(($reached / $minimum) * 100);
+    $minimum_done = @floor(($reached / $minimum) * 100);
+    $minimum_done_per = @floor(($reached / $minimum) * 100);
     $minimum_left = 0;
 
 } else {
 
-    $minimum_done = min(100, floor(($reached / $minimum) * 100));
-    $minimum_done_per = floor(($reached / $minimum) * 100);
-    $minimum_left = max(0, floor((1 - $reached / $minimum) * 100));
+    $minimum_done = min(100, @floor(($reached / $minimum) * 100));
+    $minimum_done_per = @floor(($reached / $minimum) * 100);
+    $minimum_left = max(0, @floor((1 - $reached / $minimum) * 100));
 
     if ($minimum_done >= 100) {
         // No muestres 100 si falta aunque sea un céntimo
@@ -74,7 +74,7 @@ if ($over > 0) {
     if ($over >= $more) {
         $optimum_done = 100;
     } else {
-        $optimum_done = min(100, floor($over / ($optimum - $minimum)));
+        $optimum_done = min(100, @floor($over / ($optimum - $minimum)));
 
         if ($optimum_done >= 100) {
             $optimum_done = 99;
@@ -87,7 +87,7 @@ if ($over > 0) {
 
 $optimum_left = 100 - $optimum_done;
 
-$minimum_ratio =  min(100, floor(($minimum / $optimum) * 100));
+$minimum_ratio =  min(100, @floor(($minimum / $optimum) * 100));
 
 $currencies = Currency::$currencies;
 
@@ -98,7 +98,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 ?>
     <div class="meter <?php echo $horizontal ? 'hor' : 'ver'; echo $big ? ' big' : ''; echo $activable ? ' activable' : ''; ?>">
         <h<?php echo $level ?> class="title investment"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level ?>>
-        
+
         <?php if (!$project->one_round && !empty($round)) : ?>
             <h<?php echo $level ?> class="title ronda">
             <?php echo $round . Text::get('regular-round'); ?></h<?php echo $level ?>>
@@ -108,7 +108,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
         <?php endif; ?>
 
 
-        
+
         <?php if ($activable) : ?><h<?php echo $level ?> class="title obtained"><?php echo Text::get('project-view-metter-got'); ?></h<?php echo $level ?>><?php endif; ?>
         <div class="graph">
             <div class="optimum">
