@@ -35,8 +35,9 @@ class PromoteTest extends TestCase {
      * @depends  testValidate
      */
     public function testSavePromoteNonProject($ob) {
-        delete_test_node();
         delete_test_project();
+        delete_test_user();
+        delete_test_node();
         self::$data['node'] = get_test_node()->id;
         $ob = new Promote(self::$data);
         $this->assertFalse($ob->save());
@@ -85,6 +86,7 @@ class PromoteTest extends TestCase {
      */
     static function tearDownAfterClass() {
         delete_test_project();
+        delete_test_user();
         delete_test_node();
     }
 }

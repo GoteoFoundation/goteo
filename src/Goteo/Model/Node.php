@@ -189,6 +189,10 @@ class Node extends \Goteo\Core\Model {
             $errors[] = 'Falta Identificador';
         }
 
+        if(preg_match('/[^a-z0-9]/',$this->id) || strlen($this->id) > 50) {
+            $errors[] = "Newid [$this->id] is not valid or too long, please use only lowercase characters!";
+        }
+
         if (empty($this->name)) {
             // $errors[] = 'Empty name';
             $this->name = $this->id;
@@ -293,9 +297,28 @@ class Node extends \Goteo\Core\Model {
 
             return true;
         } catch(\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
-            return false;
+            $errors[] = "Error creating: " . $e->getMessage();
         }
+        return false;
+     }
+
+     /**
+      * Renames a id
+      * @param  string $newid [description]
+      */
+     public function rebase($newid) {
+        if(preg_match('/[^a-z0-9]/',$newid) || strlen($newid) > 50) {
+            throw new Exception\ModelException("Newid [$newid] is not valid or too long, please use only lowercase characters!");
+        }
+        try {
+            $sql = "UPDATE node SET id = :newid WHERE id = :oldid";
+            self::query($sql, [':oldid' => $this->id, ':newid' => $newid]);
+        } catch(\PDOException $e) {
+            throw new Exception\ModelException("Error rebasing node [{$this->id}] to [$newid]" . $e->getMessage());
+        }
+
+        $this->id = $newid;
+        return true;
      }
 
     public function getUrl() {
