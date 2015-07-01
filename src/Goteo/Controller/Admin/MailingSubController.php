@@ -18,26 +18,7 @@ class MailingSubController extends AbstractSubController {
 
     static protected $labels = array (
       'list' => 'Seleccionando destinatarios',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
-      'add' => 'Creando Idea',
-      'move' => 'Reubicando el aporte',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe de proyecto',
-      'viewer' => 'Viendo logs',
       'edit' => 'Escribiendo contenido',
-      'translate' => 'Traduciendo Licencia',
-      'reorder' => 'Ordenando las entradas en Portada',
-      'footer' => 'Ordenando las entradas en el Footer',
-      'projects' => 'Gestionando proyectos de la convocatoria',
-      'admins' => 'Asignando administradores de la convocatoria',
-      'posts' => 'Entradas de blog en la convocatoria',
-      'conf' => 'Configurando la convocatoria',
-      'dropconf' => 'Gestionando parte económica de la convocatoria',
-      'keywords' => 'Palabras clave',
-      'view' => 'Gestión de retornos',
-      'info' => 'Información de contacto',
       'send' => 'Comunicación enviada',
     );
 
@@ -45,7 +26,7 @@ class MailingSubController extends AbstractSubController {
     static protected $label = 'Comunicaciones';
 
 
-        protected $filters = array (
+    protected $filters = array (
       'project' => '',
       'type' => '',
       'status' => '-1',
