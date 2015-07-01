@@ -7,7 +7,8 @@ $mailing = $vars['mailing'];
 $list = $vars['list'];
 $detail = $vars['detail'];
 
-$link = Mail::getSinovesLink($mailing->mail);
+// $link = Mail::getSinovesLink($mailing->mail);
+$link = '/mail/'.\mybase64_encode(md5(uniqid()) . '¬¬' . $mailing->mail);
 
 $title = array(
     'receivers' => 'Destinatarios',
