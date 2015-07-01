@@ -6,6 +6,7 @@ namespace Goteo\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Library\Feed,
+    Goteo\Application\Exception\ModelException,
     Goteo\Application\Message,
     Goteo\Application\Config,
     Goteo\Model;
@@ -89,7 +90,13 @@ class NodesSubController extends AbstractSubController {
             $node->default_consultant = $this->getPost('default_consultant');
 
             if(!$node->isMasterNode()) {
-                // $node->id = $node->id; //not changin id allowed at this moment
+                if($this->hasPost('id')) {
+                    try {
+                        $node->rebase($this->getPost('id'));
+                    } catch(ModelException $e) {
+                        Message::error('Error changing node id: ' . $e->getMessage());
+                    }
+                }
                 $node->url = $this->getPost('url');
                 $node->active = $this->getPost('active');
                 $node->sponsors_limit = $this->getPost('sponsors_limit');
@@ -157,7 +164,7 @@ class NodesSubController extends AbstractSubController {
                 Message::error('Fallo al crear, revisar los campos.' . implode('<br>', $errors));
             }
         }
-        return array( 'template' => 'admin/nodes/add', 'node_admins' => Model\Node::getAdmins() );
+        return array( 'template' => 'admin/nodes/add', 'node_admins' => Model\Node::getAdmins(), 'node' => $node );
     }
 
 
