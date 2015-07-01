@@ -100,7 +100,7 @@ class FooterSubController extends AbstractSubController {
                 );
                 break;
             case 'edit':
-                throw new Redirection('/admin/blog');
+                return $this->redirect('/admin/blog');
                 break;
             case 'remove':
                 Model\Post::remove($id, 'footer');

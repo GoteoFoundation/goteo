@@ -52,6 +52,13 @@ class OpenTagsSubController extends AbstractSubController {
         return parent::isAllowed($user, $node);
     }
 
+    /**
+     * This id is not opentag
+     * @return [type] [description]
+     */
+    public static function getId() {
+        return 'open_tags';
+    }
     public function translateAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('translate', $id, $this->getFilters(), $subaction));
@@ -69,6 +76,20 @@ class OpenTagsSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('add', $id, $this->getFilters(), $subaction));
     }
 
+    public function upAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('up', $id, $this->getFilters(), $subaction));
+    }
+
+    public function downAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('down', $id, $this->getFilters(), $subaction));
+    }
+
+    public function removeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('remove', $id, $this->getFilters(), $subaction));
+    }
 
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -193,8 +214,7 @@ class OpenTagsSubController extends AbstractSubController {
         }
 
         return array(
-                'folder' => 'base',
-                'file' => 'list',
+                'template' => 'admin/generic_list',
                 'model' => 'open_tag',
                 'addbutton' => 'Nueva agrupación',
                 'data' => $model::getAll(),

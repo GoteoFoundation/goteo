@@ -15,44 +15,8 @@ class TasksSubController extends AbstractSubController {
 
     static protected $labels = array (
       'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
       'add' => 'Nueva Tarea',
-      'move' => 'Moviendo a otro Nodo el proyecto',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe',
-      'viewer' => 'Viendo logs',
       'edit' => 'Editando Tarea',
-      'translate' => 'Traduciendo Tag',
-      'reorder' => 'Ordenando los padrinos en Portada',
-      'footer' => 'Ordenando las entradas en el Footer',
-      'projects' => 'Informe Impulsores',
-      'admins' => 'Asignando administradores del Canal',
-      'posts' => 'Entradas de blog en la convocatoria',
-      'conf' => 'Configuración de campaña del proyecto',
-      'dropconf' => 'Gestionando parte económica de la convocatoria',
-      'keywords' => 'Palabras clave',
-      'view' => 'Apadrinamientos',
-      'info' => 'Información de contacto',
-      'send' => 'Comunicación enviada',
-      'init' => 'Iniciando un nuevo envío',
-      'activate' => 'Iniciando envío',
-      'detail' => 'Viendo destinatarios',
-      'dates' => 'Fechas del proyecto',
-      'accounts' => 'Cuentas del proyecto',
-      'images' => 'Imágenes del proyecto',
-      'assign' => 'Asignando a una Convocatoria el proyecto',
-      'open_tags' => 'Asignando una agrupación al proyecto',
-      'rebase' => 'Cambiando Id de proyecto',
-      'consultants' => 'Cambiando asesor del proyecto',
-      'paypal' => 'Informe PayPal',
-      'geoloc' => 'Informe usuarios Localizados',
-      'calls' => 'Informe Convocatorias',
-      'donors' => 'Informe Donantes',
-      'top' => 'Top Cofinanciadores',
-      'currencies' => 'Actuales ratios de conversión',
-      'preview' => 'Previsualizando Historia',
     );
 
 
@@ -86,6 +50,11 @@ class TasksSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('add', $id, $this->getFilters(), $subaction));
     }
 
+    public function removeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('remove', $id, $this->getFilters(), $subaction));
+    }
+
 
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -117,7 +86,7 @@ class TasksSubController extends AbstractSubController {
                     if($task->save($errors)) {
                       // mensaje de ok y volvemos a la lista de tareas
                       Message::info('Nueva tarea pendiente creada correctamente');
-                      throw new Redirection('/admin/tasks');
+                      return $this->redirect('/admin/tasks');
                     } else {
                         // si hay algun error volvemos a poner los datos en el formulario
                         $task = (object) $_POST;
@@ -153,7 +122,7 @@ class TasksSubController extends AbstractSubController {
 
                         // mensaje de ok y volvemos a la lista de tareas
                         Message::info('Tarea actualizada');
-                        throw new Redirection('/admin/tasks');
+                        return $this->redirect('/admin/tasks');
 
                     } else {
                         // si hay algun error volvemos a poner los datos en el formulario
@@ -181,7 +150,7 @@ class TasksSubController extends AbstractSubController {
                     } else {
                         Message::error(implode('<br />', $errors));
                     }
-                    throw new Redirection('/admin/tasks');
+                    return $this->redirect('/admin/tasks');
                 }
                 break;
 

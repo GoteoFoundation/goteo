@@ -87,6 +87,26 @@ class TranscallsSubController extends AbstractSubController {
     }
 
 
+    public function assignAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('assign', $id, $this->getFilters(), $subaction));
+    }
+
+    public function unassignAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('unassign', $id, $this->getFilters(), $subaction));
+    }
+
+    public function sendAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('send', $id, $this->getFilters(), $subaction));
+    }
+
+    public function closeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('close', $id, $this->getFilters(), $subaction));
+    }
+
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));

@@ -149,7 +149,7 @@ class GlossarySubController extends AbstractSubController {
                 break;
             case 'edit':
                 if (empty($id)) {
-                    throw new Redirection('/admin/glossary');
+                    return $this->redirect('/admin/glossary');
                     break;
                 } else {
                     $post = Model\Glossary::get($id);

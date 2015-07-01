@@ -13,14 +13,7 @@ class BazarSubController extends AbstractSubController {
 
     static protected $labels = array (
       'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
       'add' => 'Nuevo Elemento',
-      'move' => 'Reubicando el aporte',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe de proyecto',
-      'viewer' => 'Viendo logs',
       'edit' => 'Editando Elemento',
       'translate' => 'Traduciendo Elemento',
     );
@@ -50,6 +43,20 @@ class BazarSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('edit', $id, $this->getFilters(), $subaction));
     }
 
+    public function upAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('up', $id, $this->getFilters(), $subaction));
+    }
+
+    public function downAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('down', $id, $this->getFilters(), $subaction));
+    }
+
+    public function removeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('remove', $id, $this->getFilters(), $subaction));
+    }
 
     public function addAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -70,8 +77,6 @@ class BazarSubController extends AbstractSubController {
 
 
         if ($this->isPost()) {
-
-//die(\trace($_FILES));
 
             $el_item = $this->getPost('item');
             if (!empty($el_item)) {

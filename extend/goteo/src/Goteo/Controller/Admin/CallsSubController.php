@@ -15,18 +15,7 @@ class CallsSubController extends AbstractSubController {
 
     static protected $labels = array (
       'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
       'add' => 'Nueva convocatoria',
-      'move' => 'Reubicando el aporte',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe de proyecto',
-      'viewer' => 'Viendo logs',
-      'edit' => 'Editando Entrada',
-      'translate' => 'Traduciendo Entrada',
-      'reorder' => 'Ordenando las entradas en Portada',
-      'footer' => 'Ordenando las entradas en el Footer',
       'projects' => 'Gestionando proyectos de la convocatoria',
       'admins' => 'Asignando administradores de la convocatoria',
       'posts' => 'Entradas de blog en la convocatoria',
@@ -90,6 +79,41 @@ class CallsSubController extends AbstractSubController {
     public function addAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('add', $id, $this->getFilters(), $subaction));
+    }
+
+    public function reviewAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('review', $id, $this->getFilters(), $subaction));
+    }
+
+    public function openAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('open', $id, $this->getFilters(), $subaction));
+    }
+
+    public function publishAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('publish', $id, $this->getFilters(), $subaction));
+    }
+
+    public function cancelAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('cancel', $id, $this->getFilters(), $subaction));
+    }
+
+    public function enableAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('enable', $id, $this->getFilters(), $subaction));
+    }
+
+    public function completeAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('complete', $id, $this->getFilters(), $subaction));
+    }
+
+    public function deleteAction($id = null, $subaction = null) {
+        // Action code should go here instead of all in one process funcion
+        return call_user_func_array(array($this, 'process'), array('delete', $id, $this->getFilters(), $subaction));
     }
 
 

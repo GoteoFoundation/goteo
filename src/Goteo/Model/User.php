@@ -818,7 +818,7 @@ namespace Goteo\Model {
                     $sqlOrder
                     LIMIT $offset, $limit
                     ";
-            sqldbg($sql, $values);
+            // sqldbg($sql, $values);
             // echo str_replace(array_keys($values), array_values($values),$sql).'<br />';
             $query = self::query($sql, $values);
 

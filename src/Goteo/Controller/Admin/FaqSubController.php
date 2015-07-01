@@ -4,8 +4,7 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Core\Redirection,
-    Goteo\Application\Message,
+use Goteo\Application\Message,
 	Goteo\Application\Config,
     Goteo\Model;
 
