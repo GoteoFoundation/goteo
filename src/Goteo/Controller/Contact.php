@@ -8,6 +8,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Library,
         Goteo\Library\Text,
+        Goteo\Application\Message,
         Goteo\Library\Template;
 
     class Contact extends \Goteo\Core\Controller {
@@ -109,10 +110,10 @@ namespace Goteo\Controller {
                     $mailHandler->html = true;
                     $mailHandler->template = $template->id;
                     if ($mailHandler->send($errors)) {
-                        Application\Message::info('Mensaje de contacto enviado correctamente.');
+                        Message::info('Mensaje de contacto enviado correctamente.');
                         $data = array();
                     } else {
-                        Application\Message::error('Ha fallado al enviar el mensaje.');
+                        Message::error('Ha fallado al enviar el mensaje.');
                     }
 
                     unset($mailHandler);
