@@ -2245,7 +2245,6 @@ namespace Goteo\Model {
                 self::query("DELETE FROM message WHERE project = ?", array($this->id)); // mensajes
                 self::query("DELETE FROM project_account WHERE project = ?", array($this->id)); // cuentas
                 self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
-                self::query("DELETE FROM call_project WHERE project = ?", array($this->id)); // convocado
                 self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
                 // y los permisos
@@ -2378,7 +2377,6 @@ namespace Goteo\Model {
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
@@ -2453,7 +2451,6 @@ namespace Goteo\Model {
                             self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE call_project SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE patron SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));

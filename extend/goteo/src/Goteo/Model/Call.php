@@ -855,7 +855,6 @@ namespace Goteo\Model {
                 //borrar todos los registros
                 self::query("DELETE FROM call_category WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM call_icon WHERE `call` = ?", array($this->id));
-                self::query("DELETE FROM call_project WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM call_banner WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM call_sponsor WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM `call` WHERE id = ?", array($this->id));
