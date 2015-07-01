@@ -18,6 +18,8 @@ module.exports = function(grunt) {
                 livereload: '<%= php.options.livereload %>'
             },
             files: [
+                'templates/**/*.php',
+                'extend/**/templates/**/*.php',
                 '<%= goteo.app %>/**/view/**/*.php',
                 '<%= goteo.app %>/**/view/css/**/*.css',
                 '<%= goteo.app %>/**/view/js/**/*.js',

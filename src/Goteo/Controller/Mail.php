@@ -4,6 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Core\Redirection,
         Goteo\Core\Model,
+        Goteo\Core\View,
         Goteo\Application\Config,
         Goteo\Library\Mail as Mailer;
 

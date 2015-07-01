@@ -1802,7 +1802,7 @@ namespace Goteo\Model {
             }
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') as $proj) {
                 $projects[] = Project::getWidget($proj);
             }
             return $projects;
