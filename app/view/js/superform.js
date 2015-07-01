@@ -85,19 +85,22 @@
                 cache:      false
             };
 
-        try {
-            //si se quiere metodo tracicional (no sube archivos):
-            // throw new Exception();
-            //metdo html5
-            post.data = new FormData(frm[0]);
-            //con este metodo jquery no hade falte que procese el formulario:
-            post.contentType = false;
-            post.processData = false;
-        }
-        catch(e) {
-            //metodo serializado
-            post.data = frm.serializeArray();
-        }
+        post.data = frm.serializeArray();
+        post.processData = true;
+
+        // try {
+        //     //si se quiere metodo tracicional (no sube archivos):
+        //     // throw new Exception();
+        //     //metdo html5
+        //     post.data = new FormData(frm[0]);
+        //     //con este metodo jquery no hade falte que procese el formulario:
+        //     post.contentType = false;
+        //     post.processData = false;
+        // }
+        // catch(e) {
+        //     //metodo serializado
+        //     post.data = frm.serializeArray();
+        // }
 
         // console.log(typeof post.data);
         //elemento a actualizar, por defecto el que realiza la llamada
@@ -112,16 +115,16 @@
 
             //añadir los elementos pasados
             $.each(settings.data, function (k, v) {
-                try {
-                    //metodo html5
-                    post.data.append(k, v);
-                }
-                catch(e) {
+                // try {
+                //     //metodo html5
+                //     post.data.append(k, v);
+                // }
+                // catch(e) {
                     post.data.push({
                         name: k,
                         value: v
                     });
-                }
+                // }
             });
 
             // console.log('sending data:', post.data);
@@ -142,7 +145,11 @@
                 _superformUpdate(t, el, html);
             }).fail( function(html, status) {
                 // console.log(html,status,xhr);
-                if(status !== 'abort') alert('Error, status return not success: ' +  status);
+                if(status !== 'abort') {
+                    // alert('Error, status return not success: ' +  status);
+                    goteo.trace('Error, status return not success: ' +  status);
+                    goteo.trace(html,status);
+                }
             });
         }
     };
@@ -409,29 +416,6 @@ $(function() {
             }
             //auto-actualizacion si lleva la clase autoupdate
             // @TODO, poner barra de progreso
-            /*
-            if(input.closest('div.superform').hasClass('autoupdate')) {
-                // input.closest('form').submit();
-                var li = input.closest('div.superform > div.elements > ol > li.element');
-                // alert(li[0].id)
-                if(li[0].__updating === undefined) {
-                    li[0].__updating = null;
-                }
-                clearTimeout(li[0].__updating);
-
-                var files = {};
-                files[this.name] = this.files[0];
-                console.log('files',files);
-                li[0].__updating = setTimeout(function () {
-                    li.superform({data:files});
-                    li.one('superform.ajax.done', function (event, html, new_el) {
-                        //Como html es un string, solo actualiza contenido, no reenvia los datos
-                        //Actualizar galeria
-                       $('li.element#gallery').superform(html);
-                    });
-                }, 10);
-            }
-            */
 
         }catch(e){}
     });

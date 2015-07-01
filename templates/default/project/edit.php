@@ -28,19 +28,6 @@ $this->layout("layout", [
 $this->section('content');
 ?>
 
-<script type="text/javascript">
-    $(function(){
-        var hash = document.location.hash;
-        if (hash != '') {
-            $(hash).focus();
-        }
-    });
-
-
-</script>
-
-
-
     <div id="sub-header">
         <div class="project-header">
             <a href="/user/<?php echo $project->owner; ?>" target="_blank"><img src="<?php echo $project->user->avatar->getLink(50, 50, true); ?>" /></a>
@@ -67,16 +54,26 @@ $this->section('content');
 
             ?>
 
-            <script type="text/javascript">
-            $(function () {
-                $('div.superform').bind('superform.ajax.done', function (event, html, new_el) {
-                    $('li#errors').superform(html);
-                });
-            });
-            </script>
-
         </form>
 
     </div>
 
 <?php $this->replace() ?>
+
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+    $(function(){
+        var hash = document.location.hash;
+        if (hash != '') {
+            $(hash).focus();
+        }
+
+        $('div.superform').bind('superform.ajax.done', function (event, html, new_el) {
+            $('li#errors').superform(html);
+        });
+    });
+
+
+</script>
+<?php $this->append() ?>

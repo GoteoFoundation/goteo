@@ -79,8 +79,10 @@ $this->section('content');
 <script src="<?php echo SRC_URL ?>/view/js/calendar/moment.min.js"></script>
 <script src="<?php echo SRC_URL ?>/view/js/calendar/jquery.min.js"></script>
 <script src="<?php echo SRC_URL ?>/view/js/calendar/fullcalendar.js"></script>
-<script src="<?php echo SRC_URL ?>/view/js/calendar/lang/es.js"></script>
+<script src="<?php echo SRC_URL ?>/view/js/calendar/lang/<?= $this->lang_current() ?>.js"></script>
 <script src="<?php echo SRC_URL ?>/view/js/calendar/gcal.js"></script>
 <script src="<?php echo SRC_URL ?>/view/js/calendar/custom_calendar.js"></script>
+
+
 
 <?php $this->append() ?>
