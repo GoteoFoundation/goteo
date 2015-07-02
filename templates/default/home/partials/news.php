@@ -21,7 +21,8 @@ $news = $this->news;
         <?php endif ?>
         <div class="slder_news">
         <?php
-        array_walk($this->chunk($news, 4, '&nbsp;'), function($row) {
+        $chunks = $this->chunk($news, 4, '&nbsp;');
+        array_walk($chunks, function($row) {
             echo '<div class="row">';
             foreach($row as $new) {
                 echo '<div class="new"><a href="' . $new->url .'" class="tipsy" title="' . $this->e($new->title) . '" target="_blank" rel="nofollow"><img src="' . $new->image->getLink(150, 85)  . '" alt="' . $this->e($new->title) . '" /></a></div>';

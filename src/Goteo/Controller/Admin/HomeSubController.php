@@ -143,7 +143,7 @@ class HomeSubController extends AbstractSubController {
 
     public function removeAction($id = null, $subaction = null) {
         $type = ($this->isMasterNode() || empty($subaction)) ? 'main' : $subaction;
-        Model\Home::delete($id, $this->node, $type);
+        Model\Home::remove($id, $this->node, $type);
         return $this->redirect();
     }
 
