@@ -59,7 +59,8 @@ namespace Goteo\Model {
                 SELECT
                     news.id as id,
                     news.title as title,
-                    news.order as `order`
+                    news.order as `order`,
+                    news.press_banner as `press_banner`
                 FROM news
                 ORDER BY `order` ASC, title ASC
                 ", array(':lang'=>Lang::current()));
@@ -127,9 +128,6 @@ namespace Goteo\Model {
             if (empty($this->url))
                 $errors[] = 'Falta url';
                 //Text::get('mandatory-news-url');
-
-            if (empty($this->order))
-                $errors[] = 'Falta orden';
 
             if (empty($errors))
                 return true;
