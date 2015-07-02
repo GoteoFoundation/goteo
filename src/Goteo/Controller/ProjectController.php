@@ -711,7 +711,7 @@ namespace Goteo\Controller {
                     $viewData['owner'] = $project->owner;
 
                     if (empty($user)) {
-                        Application\Message::error(Text::html('user-login-required'));
+                        Application\Message::info(Text::html('user-login-required'));
                     }
                 }
 
