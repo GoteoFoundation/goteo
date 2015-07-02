@@ -96,7 +96,7 @@ class NewsSubController extends AbstractSubController {
                         'file' => 'edit',
                         'data' => (object) array('order' => '0'),
                         'form' => array(
-                            'action' => "$url/edit/",
+                            'action' => "$url/edit",
                             'submit' => array(
                                 'name' => 'update',
                                 'label' => 'Añadir'
