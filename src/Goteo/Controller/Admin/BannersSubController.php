@@ -119,8 +119,8 @@ class BannersSubController extends AbstractSubController {
                 Message::info('Datos guardados');
 
                 if ($this->getPost('action') == 'add') {
-                    $projectData = Model\Project::getMini($this->getPost('project'));
-
+                    if(!empty($this->getPost('item')))
+                        $projectData = Model\Project::getMini($this->getPost('item'));
                     // Evento Feed
                     $log = new Feed();
                     $log->setTarget($projectData->id);
@@ -138,7 +138,7 @@ class BannersSubController extends AbstractSubController {
                     && !Model\Banner::setPending($banner->id, 'banner')) {
                     Message::error('NO se ha marcado como pendiente de traducir!');
                 }
-
+                
                 return $this->redirect('/admin/banners');
 			}
 			else {

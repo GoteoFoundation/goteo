@@ -25,7 +25,7 @@ foreach ($projects as $project) {
     $items[] = '{ value: "' . str_replace('"', '\"', $project->name) . '", id: "' . $project->id . '" }';
 }
 ?>
-<form method="post" action="/admin/banners/save/<?php echo $banner->id; ?>" enctype="multipart/form-data">
+<form method="post" action="/admin/banners/<?= $banner->id ? $vars['action'].'/'.$banner->id : $vars['action'] ?>" enctype="multipart/form-data">
     <input type="hidden" name="action" value="<?php echo $vars['action'] ?>"/>
     <input type="hidden" name="order" value="<?php echo $banner->order ?>"/>
     <input type="hidden" name="id" value="<?php echo $banner->id; ?>"/>
