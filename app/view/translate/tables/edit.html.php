@@ -21,7 +21,7 @@ $sizes = array(
 <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
 
 <div class="widget board">
-    <form action="/translate/<?php echo $table ?>/edit/<?php echo $id ?>/<?php echo $vars['filter'] . '&page=' . $_GET['page'] ?>" method="post" >
+    <form action="/translate/<?php echo $table ?>/edit/<?php echo $id ?><?php echo $vars['filter'] . '&page=' . $_GET['page'] ?>" method="post" >
         <input type="hidden" name="table" value="<?php echo $table ?>" />
         <input type="hidden" name="id" value="<?php echo $id ?>" />
         <input type="hidden" name="lang" value="<?php echo $_SESSION['translate_lang'] ?>" />
