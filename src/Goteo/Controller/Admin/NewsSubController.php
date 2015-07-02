@@ -212,7 +212,7 @@ class NewsSubController extends AbstractSubController {
                         'file' => 'edit',
                         'data' => $item,
                         'form' => array(
-                            'action' => "$url/edit/$id",
+                            'action' => "$url/edit" . ($id ? "/$id" : ''),
                             'submit' => array(
                                 'name' => 'update',
                                 'label' => Text::get('regular-save')
