@@ -25,7 +25,7 @@
 
     <p>
         <label for="node-sponsors">URL (dejar vacio para <b>/channel/<?= $this->node->id ?>)</b>:</label><br />
-        <input type="text" id="node-sponsors" name="sponsors_limit" value="<?= $this->node->url; ?>" style="width:250px" />
+        <input type="text" id="node-url" name="url" value="<?= $this->node->url; ?>" style="width:250px" />
     </p>
 
     <p>
