@@ -48,7 +48,7 @@ $(document).ready(function(){
 });
 </script>
 
-<form method="post" action="/admin/glossary/<?php echo $vars['action']; ?>/<?php echo $post->id; ?>" enctype="multipart/form-data">
+<form method="post" action="/admin/glossary/<?= $post->id ? $vars['action'].'/'.$post->id : $vars['action'] ?>" enctype="multipart/form-data">
 
     <?php echo new NormalForm(array(
 

@@ -72,7 +72,7 @@ $(document).ready(function(){
 </script>
 
 
-<form method="post" action="/admin/blog/<?= $id ? $vars['action'].'/'.$id : $vars['action'] ?>" enctype="multipart/form-data">
+<form method="post" action="/admin/blog/<?= $post->id ? $vars['action'].'/'.$post->id : $vars['action'] ?>" enctype="multipart/form-data">
 
     <?php echo new NormalForm(array(
 
