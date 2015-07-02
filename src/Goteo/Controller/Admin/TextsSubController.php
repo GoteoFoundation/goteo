@@ -150,7 +150,7 @@ class TextsSubController extends AbstractSubController {
                             'text' => $text
                         ),
                         'form' => array(
-                            'action' => '/admin/texts/edit/'.$id,
+                            'action' => "/admin/texts/edit/" . ($id ? "/$id" : ''),
                             'submit' => array(
                                 'name' => 'update',
                                 'label' => 'Aplicar'
