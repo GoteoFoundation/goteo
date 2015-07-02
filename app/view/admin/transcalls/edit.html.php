@@ -29,7 +29,7 @@ function assign() {
             <?php foreach ($call->translators as $userId=>$userName) : ?>
             <tr>
                 <td><?php if ($userId == $call->owner) echo '(AUTOR) '; ?><?php echo $userName; ?></td>
-                <td><a href="/admin/transcalls/unassign/<?php echo $call->id; ?>/?user=<?php echo $userId; ?>">[Desasignar]</a></td>
+                <td><a href="/admin/transcalls/unassign/<?php echo $call->id; ?>?user=<?php echo $userId; ?>">[Desasignar]</a></td>
             </tr>
             <?php endforeach; ?>
             <tr>

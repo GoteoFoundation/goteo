@@ -13,7 +13,7 @@ if (count($langs) <= 1) return '';
     <?php
     foreach ($langs as $langId => $langName) {
         if ($langId == \LANG) continue;
-        echo '<a href="/project/'.$project->id.'/?lang='.$langId.'">'.$langName.'</a>';
+        echo '<a href="/project/'.$project->id.'?lang='.$langId.'">'.$langName.'</a>';
     }
     ?>
 </div>

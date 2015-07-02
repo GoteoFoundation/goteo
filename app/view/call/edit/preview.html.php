@@ -58,9 +58,9 @@ $elements      = array(
         'type'      => 'HTML',
         'class'     => 'fullwidth',
         'html'      =>  '<table><tr><td>'
-                        . '<a href="/call/'.$call->id.'/?preview=apply" class="button" target="_blank">'.Text::get('call-see_apply-button').'</a>'
+                        . '<a href="/call/'.$call->id.'?preview=apply" class="button" target="_blank">'.Text::get('call-see_apply-button').'</a>'
                         . '</td><td>'
-                        . '<a href="/call/'.$call->id.'/?preview=campaign" class="button" target="_blank">'.Text::get('call-see_campaign-button').'</a>'
+                        . '<a href="/call/'.$call->id.'?preview=campaign" class="button" target="_blank">'.Text::get('call-see_campaign-button').'</a>'
                         . '</td></tr><tr><td>'
                         . '<a href="/dashboard/calls" class="button">'.Text::get('call-go_dashboard-button').'</a>'
                         . '</td></tr></table>'

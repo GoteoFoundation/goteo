@@ -31,12 +31,12 @@
 		</script>
     <?php endif; ?>
 	<h<?php echo $level + 1?>><a href="<?php echo $url.$post->id; ?>"><?php echo $post->title; ?></a></h<?php echo $level + 1?>>
-    <span class="categories"><?php echo Text::get('regular-by') ?> <a href="<?php echo ($post->owner_type == 'project') ? '/project/'.$post->owner_id.'/updates' : '/blog/?author='.$post->author ; ?>"><?php echo $post->user->name; ?></a></span>
+    <span class="categories"><?php echo Text::get('regular-by') ?> <a href="<?php echo ($post->owner_type == 'project') ? '/project/'.$post->owner_id.'/updates' : '/blog?author='.$post->author ; ?>"><?php echo $post->user->name; ?></a></span>
 	<span class="date"><?php echo $post->fecha; ?></span>
 	<?php if (!empty($post->tags)) : $sep = '';?>
 		<span class="categories">
             <?php foreach ($post->tags as $key => $value) :
-                echo $sep.'<a href="/blog/?tag='.$key.'">'.$value.'</a>';
+                echo $sep.'<a href="/blog?tag='.$key.'">'.$value.'</a>';
             $sep = ', '; endforeach; ?>
         </span>
 	<?php endif; ?>

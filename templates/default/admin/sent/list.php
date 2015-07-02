@@ -81,7 +81,7 @@ $templates = $this->templates;
                         ?>
                         <tr>
                             <td><a href="/mail/<?= \mybase64_encode(md5(uniqid()) . '¬' . $send->to  . '¬' . $send->id) ?>" target="_blank">[Enlace]</a></td>
-                            <td><a href="/admin/users/?name=<?php echo urlencode($send->email) ?>"><?php echo $send->email; ?></a></td>
+                            <td><a href="/admin/users?name=<?php echo urlencode($send->email) ?>"><?php echo $send->email; ?></a></td>
                             <td><?php echo $templates[$send->template]; ?></td>
                             <td><?php echo $send->date; ?></td>
                             <td><!-- <a href="#" target="_blank">[Reenviar]</a> --></td>

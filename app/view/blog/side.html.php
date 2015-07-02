@@ -23,7 +23,7 @@ switch ($vars['type']) {
         // enlace a la lista de entradas con filtro tag
         foreach ($items as $item) {
             if ($item->used > 0) {
-                $list[] = '<a href="/blog/?tag='.$item->id.'">'.$item->name.'</a>';
+                $list[] = '<a href="/blog?tag='.$item->id.'">'.$item->name.'</a>';
             }
         }
         break;

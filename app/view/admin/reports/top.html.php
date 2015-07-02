@@ -51,11 +51,11 @@ $filters = $vars['filters'];
         <tbody>
             <?php foreach ($data as $row) : ?>
             <tr>
-                <td><a href="/admin/users/?id=<?php echo $row->id; ?>"><?php echo $row->name; ?></a></td>
+                <td><a href="/admin/users?id=<?php echo $row->id; ?>"><?php echo $row->name; ?></a></td>
                 <td><a href="/admin/users/manage/<?php echo $row->id; ?>"><?php echo $row->id; ?></a></td>
                 <td><a href="mailto:<?php echo $row->email; ?>"><?php echo $row->email; ?></a></td>
                 <td><?php echo $row->amount; ?></td>
-                <td><a href="/admin/accounts/?name=<?php echo $row->email; ?>"><?php echo $row->numproj; ?></a></td>
+                <td><a href="/admin/accounts?name=<?php echo $row->email; ?>"><?php echo $row->numproj; ?></a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

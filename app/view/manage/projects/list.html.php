@@ -63,7 +63,7 @@ $filters = $vars['filters'];
 
         <div style="float:left;margin:5px;">
             <input type="submit" value="filtrar" />
-            <a href="/manage/projects/?reset=filters">Quitar filtros</a>
+            <a href="/manage/projects?reset=filters">Quitar filtros</a>
         </div>
 
     </form>
@@ -116,8 +116,8 @@ $filters = $vars['filters'];
                     <?php else : ?>
                         <a href="/contract/edit/<?php echo $project->id; ?>" target="_blank" title="Abre el formulario de contrato">[Formulario Contrato]</a>
                     <?php endif; ?>
-                    <a href="/admin/users/?id=<?php echo $project->owner; ?>" target="_blank" title="Abre la gestión de usuarios del admin">[Impulsor]</a>
-                    <a href="/admin/accounts/?projects=<?php echo $project->id; ?>" target="_blank" title="Abre la gestión de aportes del admin">[Aportes]</a>
+                    <a href="/admin/users?id=<?php echo $project->owner; ?>" target="_blank" title="Abre la gestión de usuarios del admin">[Impulsor]</a>
+                    <a href="/admin/accounts?projects=<?php echo $project->id; ?>" target="_blank" title="Abre la gestión de aportes del admin">[Aportes]</a>
                     <a href="/manage/projects/report/<?php echo $project->id; ?>" target="_blank">[Informe Financiacion]</a>
                 </td>
             </tr>
@@ -173,7 +173,7 @@ $filters = $vars['filters'];
                         <strong>M&iacute;nimo: </strong><?php echo $project->mincost; ?>&euro;&nbsp;&nbsp;&nbsp;
                         <strong>&Oacute;ptimo: </strong><?php echo $project->maxcost; ?>&euro;&nbsp;&nbsp;&nbsp;
                         <strong>Conseguido: </strong><?php echo $project->amount; ?>&euro;&nbsp;&nbsp;&nbsp
-                        <?php if (!empty($project->issues)) : ?><strong>Incidencias: </strong><?php echo $project->issues; ?>&euro; <a href="/admin/accounts/?projects=<?php echo $project->id; ?>&issue=show" target="_blank" title="Ver aportes con incidencia">[Ver]</a><?php endif; ?>
+                        <?php if (!empty($project->issues)) : ?><strong>Incidencias: </strong><?php echo $project->issues; ?>&euro; <a href="/admin/accounts?projects=<?php echo $project->id; ?>&issue=show" target="_blank" title="Ver aportes con incidencia">[Ver]</a><?php endif; ?>
                     </p>
                 </td>
             </tr>

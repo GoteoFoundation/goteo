@@ -73,7 +73,7 @@ foreach ($vars['projects'] as $project) {
         </div>
     </form>
     <br clear="both" />
-    <a href="/admin/commons/?reset=filters">Quitar filtros</a>
+    <a href="/admin/commons?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">
@@ -110,7 +110,7 @@ foreach ($vars['projects'] as $project) {
                     <a href="/admin/commons/view/<?php echo $project->id?>">[Gestionar]</a>&nbsp;
                     <a href="/admin/commons/info/<?php echo $project->id?>">[Ver Contacto]</a>&nbsp;
                     <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/commons/fulfill/{$project->id}"; ?>" onclick="return confirm('Se va a cambiar el estado del proyecto, ok?');">[Cumplido]</a>&nbsp;<?php endif; ?>
-                    <a href="/admin/projects/?proj_id=<?php echo $project->id?>" target="blank">[Admin]</a>
+                    <a href="/admin/projects?proj_id=<?php echo $project->id?>" target="blank">[Admin]</a>
                 </td>
             </tr>
         <?php endwhile; ?>

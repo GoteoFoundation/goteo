@@ -59,7 +59,7 @@ $filter = $vars['filter'];
                 if ($catId == $filter) {
                     echo '<a href="/call/'.$call->id.'/projects" class="current">'.$catName.'</a>';
                 } else {
-                    echo '<a href="/call/'.$call->id.'/projects/?filter='.$catId.'">'.$catName.'</a>';
+                    echo '<a href="/call/'.$call->id.'/projects?filter='.$catId.'">'.$catName.'</a>';
                 }
                 if ($c < count($call->categories))
                     echo ', ';

@@ -52,7 +52,7 @@ if (is_array($data)) : ?>
                 <td><?php echo $row['fin_1a']; ?></td>
                 <td><?php echo $row['fin_2a']; ?></td>
                 <td><?php if (!empty($row['fin_1a'])) : ?><a href="/admin/contracts/<?php echo $id; ?>" target="_blank">[Contrato]<?php endif; ?></td>
-                <td><a href="/admin/projects/?proj_name=<?php echo substr($row['name'], 0, 10); ?>" target="_blank">[Proyecto]</td>
+                <td><a href="/admin/projects?proj_name=<?php echo substr($row['name'], 0, 10); ?>" target="_blank">[Proyecto]</td>
                 <td><a href="/project/<?php echo $id; ?>" target="_blank">[Ver]</td>
             </tr>
             <?php endforeach; ?>

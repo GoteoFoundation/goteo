@@ -48,7 +48,7 @@ foreach ($words as $v) {
             <tr>
                 <td><?php echo $word; ?></td>
                 <td><?php echo $uses[$word]; ?></td>
-                <td><a href="/admin/categories/add/?word=<?php echo urlencode($word); ?>" target="_blank">Añadir</a></td>
+                <td><a href="/admin/categories/add?word=<?php echo urlencode($word); ?>" target="_blank">Añadir</a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

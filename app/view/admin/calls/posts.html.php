@@ -26,7 +26,7 @@ function save() {
         <?php foreach ($call->posts as $post) : ?>
         <tr>
             <td><?php echo "({$post->id}) {$post->title}"; ?></td>
-            <td><a href="/admin/calls/posts/<?php echo $call->id; ?>/?op=remove&post=<?php echo $post->id; ?>">[Quitar]</a></td>
+            <td><a href="/admin/calls/posts/<?php echo $call->id; ?>?op=remove&post=<?php echo $post->id; ?>">[Quitar]</a></td>
         </tr>
         <?php endforeach; ?>
         <tr>

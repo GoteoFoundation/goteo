@@ -163,7 +163,7 @@ class SocialAuth {
 				}
 			}
 			else {
-				$openid->returnUrl = $this->host . '/user/oauth/?provider=' .  urlencode($this->original_provider);
+				$openid->returnUrl = $this->host . '/user/oauth?provider=' .  urlencode($this->original_provider);
 				$url = $openid->authUrl();
 				header("Location: $url");
 				exit;
@@ -186,7 +186,7 @@ class SocialAuth {
 			$credentials = new Credentials(
 				$this->credentials['twitter']['key'],
 				$this->credentials['twitter']['secret'],
-				$this->host . '/user/oauth/?provider=twitter'
+				$this->host . '/user/oauth?provider=twitter'
 			);
 			// Instantiate the twitter service using the credentials, http client and storage mechanism for the token
 			/** @var $twitterService Twitter */
@@ -262,7 +262,7 @@ class SocialAuth {
 			$credentials = new Credentials(
 				$this->credentials['facebook']['key'],
 				$this->credentials['facebook']['secret'],
-				$this->host . '/user/oauth/?provider=facebook'
+				$this->host . '/user/oauth?provider=facebook'
 			);
 			// Instantiate the Facebook service using the credentials, http client and storage mechanism for the token
 			/** @var $facebookService Facebook */
@@ -350,7 +350,7 @@ class SocialAuth {
 			$credentials = new Credentials(
 				$this->credentials['linkedin']['key'],
 				$this->credentials['linkedin']['secret'],
-				$this->host . '/user/oauth/?provider=linkedin'
+				$this->host . '/user/oauth?provider=linkedin'
 			);
 			// Instantiate the Linkedin service using the credentials, http client and storage mechanism for the token
 			/** @var $linkedinService Linkedin */

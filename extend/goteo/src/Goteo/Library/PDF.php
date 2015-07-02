@@ -182,7 +182,7 @@ class PDF extends \FPDF {
         $pdf->Write(5,'La Fundación destinará la donación a actividades propias de la Fundación y recogidas dentro de los fines fundacionales de la misma (');
         $pdf->blue();
         $pdf->underlined();
-        $pdf->Write(5,$data->ffa->site . '/?page_id=36',$data->ffa->site . '/?page_id=36');
+        $pdf->Write(5,$data->ffa->site . '?page_id=36',$data->ffa->site . '?page_id=36');
         $pdf->black();
         $pdf->regular();
         $pdf->Write(5,').');

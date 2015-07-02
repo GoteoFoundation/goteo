@@ -43,7 +43,7 @@ namespace Goteo\Controller {
                 $letra = \strtolower($post->title[0]);
                 $index[$letra][] = (object) array(
                     'title' => $post->title,
-                    'url'   => '/glossary/?page='.$page.'#term' . $post->id
+                    'url'   => '/glossary?page='.$page.'#term' . $post->id
                 );
 
                 $p++;

@@ -47,7 +47,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <?php endif; ?>
 
         <?php if (!$invest->resign && $invest->status == 1 && $invest->status == 3) : ?>
-        <a href="/admin/accounts/resign/<?php echo $invest->id ?>/?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
+        <a href="/admin/accounts/resign/<?php echo $invest->id ?>?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
         <?php endif; ?>
     </p>
 
@@ -149,7 +149,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <?php if ($invest->method == 'paypal') : ?>
         <?php if (!isset($_GET['full'])) : ?>
         <p>
-            <a href="/admin/accounts/details/<?php echo $invest->id; ?>/?full=show">Mostrar detalles técnicos</a>
+            <a href="/admin/accounts/details/<?php echo $invest->id; ?>?full=show">Mostrar detalles técnicos</a>
         </p>
         <?php endif; ?>
 

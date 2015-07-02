@@ -27,7 +27,7 @@ function assign() {
         <?php foreach ($call->admins as $userId=>$userName) : ?>
         <tr>
             <td><?php echo $userName; ?></td>
-            <td><a href="/admin/calls/admins/<?php echo $call->id; ?>/?op=unassign&user=<?php echo $userId; ?>">[Desasignar]</a></td>
+            <td><a href="/admin/calls/admins/<?php echo $call->id; ?>?op=unassign&user=<?php echo $userId; ?>">[Desasignar]</a></td>
         </tr>
         <?php endforeach; ?>
         <tr>

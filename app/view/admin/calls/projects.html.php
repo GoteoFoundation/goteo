@@ -37,7 +37,7 @@ $status = $vars['status'];
         </tr>
         <?php foreach ($projects as $proj) : ?>
         <tr>
-            <td><a href="/admin/projects/?proj_name=<?php echo urlencode($proj->name) ?>&status=<?php echo $proj->status ?>&name=&category=&node=" target="_blank" title="Gestionar proyecto">[Gestionar]</a></td>
+            <td><a href="/admin/projects?proj_name=<?php echo urlencode($proj->name) ?>&status=<?php echo $proj->status ?>&name=&category=&node=" target="_blank" title="Gestionar proyecto">[Gestionar]</a></td>
             <td><a href="/project/<?php echo $proj->id ?>" target="_blank" title="Ver proyecto"><?php echo $proj->name ?></a></td>
             <td><?php echo ($proj->status == 1 && !$proj->draft) ? 'En negociación' : $status[$proj->status] ?></td>
             <td><?php echo $proj->location ?></td>
@@ -76,7 +76,7 @@ $status = $vars['status'];
         </tr>
         <?php foreach ($available as $proj) : ?>
         <tr>
-            <td><a href="/admin/projects/?proj_name=<?php echo urlencode($proj->name) ?>&status=<?php echo $proj->status ?>&name=&category=&node=" target="_blank" title="Gestionar proyecto">[Gestionar]</a></td>
+            <td><a href="/admin/projects?proj_name=<?php echo urlencode($proj->name) ?>&status=<?php echo $proj->status ?>&name=&category=&node=" target="_blank" title="Gestionar proyecto">[Gestionar]</a></td>
             <td><a href="/project/<?php echo $proj->id ?>" target="_blank" title="Ver proyecto"><?php echo $proj->name ?></a></td>
             <td><?php echo $status[$proj->status] ?></td>
             <td><?php echo $proj->location ?></td>
