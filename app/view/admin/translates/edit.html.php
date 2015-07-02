@@ -56,7 +56,7 @@ function assign() {
         <hr />
 <?php endif; ?>
 
-    <form method="post" action="/admin/translates/<?php echo $vars['action']; ?>/<?php echo $project->id; ?>">
+    <form method="post" action="/admin/translates/<?= $post->id ? $vars['action'].'/'.$project->id : $vars['action'] ?>">
 
         <table>
             <tr>
