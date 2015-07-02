@@ -35,8 +35,8 @@ $this->layout('default::home/index');
 
 <?php $this->section('footer') ?>
 
-<script src="<?php echo SRC_URL ?>/view/js/calendar/jquery.min.js"></script>
 <script src="<?php echo SRC_URL ?>/view/js/calendar/moment.min.js"></script>
+<script src="<?php echo SRC_URL ?>/view/js/calendar/lang/es.js"></script>
 <script src="<?php echo SRC_URL ?>/view/js/calendar/home_calendar.js"></script>
 
 <?php $this->append() ?>
