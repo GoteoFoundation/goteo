@@ -29,7 +29,7 @@ function assign() {
             <?php foreach ($node->translators as $userId=>$userName) : ?>
             <tr>
                 <td><?php echo $userName; ?></td>
-                <td><a href="/admin/transnodes/unassign/<?php echo $node->id; ?>/?user=<?php echo $userId; ?>">[Desasignar]</a></td>
+                <td><a href="/admin/transnodes/unassign/<?php echo $node->id; ?>?user=<?php echo $userId; ?>">[Desasignar]</a></td>
             </tr>
             <?php endforeach; ?>
             <tr>

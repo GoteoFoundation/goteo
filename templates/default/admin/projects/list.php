@@ -104,7 +104,7 @@ foreach ($filters as $key=>$value) {
         </table>
     </form>
     <br clear="both" />
-    <a href="/admin/projects/?reset=filters">[Quitar filtros]</a>
+    <a href="/admin/projects?reset=filters">[Quitar filtros]</a>
 
 
 <?php if ($this->projects): ?>
@@ -174,14 +174,14 @@ foreach ($filters as $key=>$value) {
                         <a href="/admin/projects/report/<?= $project->id ?>" target="_blank">[Informe Financiacion]</a>
                     <?php endif ?>
                     <?php if($this->is_module_admin('Users', $project->node)): ?>
-                        <a href="/admin/users/?id=<?= $project->owner ?>" target="_blank">[Impulsor]</a>
-                        <a href="/admin/users/?project=<?= $project->id ?>" title="Ver sus cofinanciadores">[Cofinanciadores]</a>
+                        <a href="/admin/users?id=<?= $project->owner ?>" target="_blank">[Impulsor]</a>
+                        <a href="/admin/users?project=<?= $project->id ?>" title="Ver sus cofinanciadores">[Cofinanciadores]</a>
                     <?php endif ?>
                     <?php if($this->is_module_admin('Invests', $project->node)): ?>
-                        <a href="/admin/invests/?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
+                        <a href="/admin/invests?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
                     <?php elseif($this->is_module_admin('Accounts', $project->node)): ?>
                     <?php elseif($this->is_module_admin('Accounts', $project->node)): ?>
-                        <a href="/admin/accounts/?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
+                        <a href="/admin/accounts?projects=<?= $project->id ?>" title="Ver sus aportes">[Aportes]</a>
                     <?php endif ?>
                 </td>
               </tr>
@@ -231,11 +231,11 @@ foreach ($filters as $key=>$value) {
                     GESTIONAR:&nbsp;
                     <?php if($this->is_module_admin('Reviews', $project->node)): ?>
                         <?php if ($project->status == 1) : ?><a href="<?php echo "/admin/reviews/add/{$project->id}" ?>" onclick="return confirm('Se va a iniciar revisión de un proyecto en estado Edición, ok?');">[Iniciar revisión]</a><?php endif ?>
-                        <?php if ($project->status == 2) : ?><a href="<?php echo "/admin/reviews/?project=".urlencode($project->id) ?>">[Ir a la revisión]</a><?php endif ?>
+                        <?php if ($project->status == 2) : ?><a href="<?php echo "/admin/reviews?project=".urlencode($project->id) ?>">[Ir a la revisión]</a><?php endif ?>
                     <?php endif ?>
                     <?php if($this->is_module_admin('Translates', $project->node)): ?>
                         <?php if ($project->translate) : ?><a href="<?php echo "/admin/translates/edit/{$project->id}" ?>">[Ir a la traducción]</a>
-                        <?php else : ?><a href="<?php echo "/admin/translates/add/?project={$project->id}" ?>">[Habilitar traducción]</a><?php endif ?>
+                        <?php else : ?><a href="<?php echo "/admin/translates/add?project={$project->id}" ?>">[Habilitar traducción]</a><?php endif ?>
                     <?php endif ?>
                     <a href="/admin/projects/images/<?= $project->id ?>">[Organizar imágenes]</a>
                     <?php if($this->is_module_admin('Commons', $project->node)): ?>

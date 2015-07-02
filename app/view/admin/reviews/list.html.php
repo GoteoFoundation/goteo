@@ -95,7 +95,7 @@ $filters = $vars['filters'];
                     <td><?php echo $checker->name; ?></td>
                     <td><?php echo $checker->score . '/' . $checker->max; ?></td>
                     <td><?php if ($checker->ready) : ?>Listo <a href="/admin/reviews/unready/<?php echo $project->review; ?>?user=<?php echo $user; ?>">[Reabrir]</a><?php endif ?></td>
-                    <td><a href="/admin/reviews/unassign/<?php echo $project->review; ?>/?user=<?php echo $user; ?>">[Desasignar]</a></td>
+                    <td><a href="/admin/reviews/unassign/<?php echo $project->review; ?>?user=<?php echo $user; ?>">[Desasignar]</a></td>
                 </tr>
                 <?php endforeach; ?>
                 <?php if ($project->status > 0) : ?>

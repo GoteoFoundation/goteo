@@ -10,7 +10,7 @@
         <?php foreach ($this->project->open_tags as $open_tagId => $open_tagName) : ?>
         <tr>
             <td><?= $open_tagName ?></td>
-            <td><a href="/admin/projects/open_tags/<?= $this->project->id ?>/?op=unassignOpen_tag&amp;open_tag=<?= $open_tagId ?>">[Desasignar]</a></td>
+            <td><a href="/admin/projects/open_tags/<?= $this->project->id ?>?op=unassignOpen_tag&amp;open_tag=<?= $open_tagId ?>">[Desasignar]</a></td>
         </tr>
         <?php endforeach ?>
         <tr>

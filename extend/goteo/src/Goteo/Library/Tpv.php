@@ -60,7 +60,7 @@ namespace Goteo\Library {
                 $clave = TPV_ENCRYPT_KEY;
 
                 $Url_OK  = $invest->urlOK;
-                $Url_NOK = $invest->urlNOK."/?amount=".$invest->amount;
+                $Url_NOK = $invest->urlNOK."?amount=".$invest->amount;
                 // y la firma
                 // Clave_encriptacion+MerchantID+AcquirerBIN+TerminalID+Num_operacion+Importe+Tipo Moneda+Exponente+ +Cadena SHA1+URL_OK+URL_NOK
                 $sign_code = $clave.$MerchantID.$AcquirerBIN.$TerminalID.$token.$amount.$currency.$exponent.$cypher.$Url_OK.$Url_NOK;
@@ -103,7 +103,7 @@ namespace Goteo\Library {
                 echo '<html>
                 <head>
                     <title>Goteo.org</title>
-                    <noscript>'.Text::get('warning_nojavascript').'<br /><a href="/project/'.$invest->project.'/invest/?amount='.$invest->amount.'">CONTINUE</a></noscript>
+                    <noscript>'.Text::get('warning_nojavascript').'<br /><a href="/project/'.$invest->project.'/invest?amount='.$invest->amount.'">CONTINUE</a></noscript>
                 </head>
                 <body>
                 <form action="'.$urlTPV.'" method="post" id="form_tpv" enctype="application/x-www-form-urlencoded">'.$data.'</form>

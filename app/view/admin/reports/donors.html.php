@@ -5,7 +5,7 @@ use Goteo\Library\Text;
 $data = $vars['data'];
 $filters = $vars['filters'];
 ?>
-<a href="/sacaexcel/donors/?year=<?php echo $filters['year']; ?>&status=<?php echo $filters['status']; ?>&user=<?php echo $filters['user']; ?>" target="_blank">Sacaexcel</a>
+<a href="/sacaexcel/donors?year=<?php echo $filters['year']; ?>&status=<?php echo $filters['status']; ?>&user=<?php echo $filters['user']; ?>" target="_blank">Sacaexcel</a>
 <div class="widget board">
     <form id="filter-form" action="/admin/reports/donors" method="get">
 
@@ -61,7 +61,7 @@ $filters = $vars['filters'];
         <tbody>
             <?php foreach ($data as $row) : ?>
             <tr>
-                <td><a href="/admin/users/?id=<?php echo $row->id; ?>"><?php echo $row->email; ?></a></td>
+                <td><a href="/admin/users?id=<?php echo $row->id; ?>"><?php echo $row->email; ?></a></td>
                 <td><?php echo "{$row->name} "; ?> <?php echo $row->nif; ?></td>
                 <td><?php echo $row->amount; ?></td>
                 <td><?php echo $row->numproj; ?></td>

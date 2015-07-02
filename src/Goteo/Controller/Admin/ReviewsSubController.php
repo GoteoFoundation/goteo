@@ -123,7 +123,7 @@ class ReviewsSubController extends AbstractSubController {
                                 $log->doAdmin('admin');
                                 unset($log);
 
-                                return $this->redirect('/admin/reviews/?project='.  urlencode($project->id));
+                                return $this->redirect('/admin/reviews?project='.  urlencode($project->id));
                                 break;
                             case 'edit':
                                 Message::info('Datos editados correctamente');

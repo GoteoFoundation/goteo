@@ -31,7 +31,7 @@ function assign() {
             <?php foreach ($project->translators as $userId=>$userName) : ?>
             <tr>
                 <td><?php if ($userId == $project->owner) echo '(AUTOR) '; ?><?php echo $userName; ?></td>
-                <td><a href="/admin/translates/unassign/<?php echo $project->id; ?>/?user=<?php echo $userId; ?>">[Desasignar]</a></td>
+                <td><a href="/admin/translates/unassign/<?php echo $project->id; ?>?user=<?php echo $userId; ?>">[Desasignar]</a></td>
             </tr>
             <?php endforeach; ?>
             <tr>

@@ -4,7 +4,8 @@ use Goteo\Core\View,
     Goteo\Controller\Manage;
 
 if (LANG != 'es') {
-    header('Location: /manage/?lang=es');
+    header('Location: /manage?lang=es');
+    exit;
 }
 
 $bodyClass = 'admin';

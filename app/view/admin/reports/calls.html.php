@@ -53,7 +53,7 @@ if (is_array($data)) : ?>
                 <td><?php echo $row['fin_0']; ?></td>
                 <td><?php echo $row['init_1']; ?></td>
                 <td><?php echo $row['fin_1']; ?></td>
-                <td><a href="/admin/calls/?name=<?php echo substr($row['name'], 0, 10); ?>" target="_blank">[Gestion]</td>
+                <td><a href="/admin/calls?name=<?php echo substr($row['name'], 0, 10); ?>" target="_blank">[Gestion]</td>
                 <td><a href="/call/<?php echo $id; ?>" target="_blank">[Ver]</td>
             </tr>
             <?php endforeach; ?>

@@ -250,12 +250,12 @@ namespace Goteo\Library {
             $sinoves_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $this->id;
             $leave_token = md5(uniqid()) . '¬' . $this->to  . '¬' . $this->id;
 
-            $viewData['sinoves'] = SITE_URL . '/mail/' . \mybase64_encode($sinoves_token) . '/?email=' . $this->to;
+            $viewData['sinoves'] = SITE_URL . '/mail/' . \mybase64_encode($sinoves_token) . '?email=' . $this->to;
             // $viewData['sinoves'] = static::getSinovesLink($sendId);
             // no podemos usar este porque el content no se graba hasta despues de enviado
             // y el método no tiene esta prueba de fallo
 
-            $viewData['baja'] = SITE_URL . '/user/leave/?email=' . $this->to;
+            $viewData['baja'] = SITE_URL . '/user/leave?email=' . $this->to;
 
             if ($plain) {
                 return strip_tags($this->content) . '

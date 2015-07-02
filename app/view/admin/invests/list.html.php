@@ -52,7 +52,7 @@ $filters = $vars['filters'];
         </div>
     </form>
     <br clear="both" />
-    <a href="/admin/invests/?reset=filters">Quitar filtros</a>
+    <a href="/admin/invests?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">
@@ -90,7 +90,7 @@ $filters = $vars['filters'];
                 <td><?php echo $invest->id ?></td>
                 <td><?php echo $invest->invested ?></td>
                 <td><a href="/admin/users?id=<?php echo $invest->user ?>" target="_blank"><?php echo $vars['users'][$invest->user]; ?></a><?php if (!empty($invest->call)) echo '<br />(<strong>'.$vars['calls'][$invest->call].'</strong>)'; ?></td>
-                <td><a href="/admin/projects/?name=<?php echo $vars['projects'][$invest->project] ?>" target="_blank"><?php echo $vars['projects'][$invest->project] ?></a></td>
+                <td><a href="/admin/projects?name=<?php echo $vars['projects'][$invest->project] ?>" target="_blank"><?php echo $vars['projects'][$invest->project] ?></a></td>
                 <td><?php echo $vars['methods'][$invest->method] ?></td>
                 <td><?php echo $vars['investStatus'][$invest->investStatus] ?></td>
                 <td><?php echo $invest->amount ?></td>

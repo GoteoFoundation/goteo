@@ -65,7 +65,7 @@ namespace Goteo\Controller {
                 $_amount = $_POST['amount'];
                 if (empty($_amount)) {
                     Message::error(Text::get('invest-amount-error'));
-                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    throw new Redirection(SEC_URL."/project/$project/invest?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 // conversión a euros
@@ -89,13 +89,13 @@ namespace Goteo\Controller {
                     if ($pool->amount <  $amount && $method == "pool" ) {
                         // pero no son suficientes para este amount, error
                         Message::Error(Text::get('invest-pool-error'));
-                        throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                        throw new Redirection(SEC_URL."/project/$project/invest?confirm=fail", Redirection::TEMPORARY);
                     }
                 }
 
                 if (!isset($methods[$method])) {
                     Message::Error(Text::get('invest-method-error'));
-                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    throw new Redirection(SEC_URL."/project/$project/invest?confirm=fail", Redirection::TEMPORARY);
                 }
 
 
@@ -115,7 +115,7 @@ namespace Goteo\Controller {
 
                 if ($projectData->owner == $user->id) {
                     Message::error(Text::get('invest-owner-error'));
-                    throw new Redirection(SEC_URL."/project/$project/invest/?confirm=fail", Redirection::TEMPORARY);
+                    throw new Redirection(SEC_URL."/project/$project/invest?confirm=fail", Redirection::TEMPORARY);
                 }
 
                 // añadir recompensas que ha elegido
@@ -244,7 +244,7 @@ namespace Goteo\Controller {
                 Message::error(Text::get('invest-data-error'));
             }
 
-            throw new Redirection("/project/$project/invest/?confirm=fail");
+            throw new Redirection("/project/$project/invest?confirm=fail");
         }
 
         /* para atender url de confirmación de aporte
@@ -267,7 +267,7 @@ namespace Goteo\Controller {
             $projectData = Model\Project::getMedium($invest->project);
 
             // si es de Bazar, a /bazar/id-reward/thanks
-            $retUrl = ($project == 'bazargoteo') ? "/bazaar/{$reward}/thanks" : "/project/{$invest->project}/invest/?confirm=ok";
+            $retUrl = ($project == 'bazargoteo') ? "/bazaar/{$reward}/thanks" : "/project/{$invest->project}/invest?confirm=ok";
 
             // para evitar las duplicaciones de feed y email
             if (isset($_SESSION['invest_'.$invest->id.'_completed'])) {
@@ -302,7 +302,7 @@ namespace Goteo\Controller {
                     if ($project == 'bazargoteo')
                         throw new Redirection("/bazaar/{$reward}/fail");
                     else
-                        throw new Redirection("/project/{$invest->project}/invest/?confirm=fail");
+                        throw new Redirection("/project/{$invest->project}/invest?confirm=fail");
                 }
             }
             */
@@ -331,12 +331,12 @@ namespace Goteo\Controller {
 
                     } else {
                         Model\Invest::setDetail($invest->id, 'paypal-completion-error', 'El usuario ha regresado de PayPal y recibimos el token: '.$token.'  y el PayerID '.$payerid.'. Pero completePay ha fallado. <pre>'.print_r($invest ,1).'</pre>');
-                        throw new Redirection("/project/$project/invest/?confirm=fail");
+                        throw new Redirection("/project/$project/invest?confirm=fail");
                     }
 
                 } else {
                     Model\Invest::setDetail($invest->id, 'paypal-return-error', 'El usuario ha regresado de un aporte de PayPal pero no tiene ni preapproval ni token. <pre>'.print_r($invest ,1).'</pre>');
-                    throw new Redirection("/project/$project/invest/?confirm=fail");
+                    throw new Redirection("/project/$project/invest?confirm=fail");
                 }
 
 
@@ -601,7 +601,7 @@ namespace Goteo\Controller {
             if ($project == 'bazargoteo')
                 throw new Redirection("/bazaar/{$reward}/fail");
             else
-                throw new Redirection("/project/{$project}/invest/?confirm=fail");
+                throw new Redirection("/project/{$project}/invest?confirm=fail");
         }
 
         // resultado del cargo

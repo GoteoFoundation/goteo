@@ -10,7 +10,7 @@
         <?php foreach ($this->project->getConsultants() as $userId => $userName) : ?>
         <tr>
             <td><?php echo $userName; ?></td>
-            <td><a href="/admin/projects/consultants/<?php echo $this->project->id; ?>/?op=unassignConsultant&user=<?php echo $userId; ?>">[Desasignar]</a></td>
+            <td><a href="/admin/projects/consultants/<?php echo $this->project->id; ?>?op=unassignConsultant&user=<?php echo $userId; ?>">[Desasignar]</a></td>
         </tr>
         <?php endforeach; ?>
         <tr>

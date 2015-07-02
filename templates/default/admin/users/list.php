@@ -111,7 +111,7 @@ foreach ($filters as $key=>$value) {
 
     </form>
     <br clear="both" />
-    <a href="/admin/users/?reset=filters">Quitar filtros</a>
+    <a href="/admin/users?reset=filters">Quitar filtros</a>
 </div>
 
 <div class="widget board">
@@ -151,9 +151,9 @@ foreach ($filters as $key=>$value) {
                 <td><a href="/admin/users/manage/<?php echo $user->id; ?>" title="Gestionar">[Gestionar]</a></td>
                 <td><?php if ($user->num_invested > 0) {
                     if (!isset($_SESSION['admin_node']) || $_SESSION['admin_node'] == \GOTEO_NODE ) : ?>
-                <a href="/admin/accounts/?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
+                <a href="/admin/accounts?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
                 <?php else:  ?>
-                <a href="/admin/invests/?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
+                <a href="/admin/invests?name=<?php echo $user->email; ?>" title="Ver sus aportes">[Aportes]</a>
                 <?php endif; } ?></td>
                 <td colspan="5" style="color:blue;">
                     <?php echo (!$user->active && $user->hide) ? ' Baja ' : ''; ?>

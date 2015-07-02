@@ -105,7 +105,7 @@ $filters = $vars['filters'];
             <tr>
                 <td colspan="7"> GESTI&Oacute;N:&nbsp;
                     <a href="/call/edit/<?php echo $call->id; ?>" target="_blank">[Editar]</a>
-                    <a href="/admin/users/?id=<?php echo $call->owner; ?>" target="_blank">[Convocador]</a>
+                    <a href="/admin/users?id=<?php echo $call->owner; ?>" target="_blank">[Convocador]</a>
                     <a href="<?php echo "/admin/calls/projects/{$call->id}"; ?>">[Proyectos]</a>
                     <?php if (isset($_SESSION['user']->roles['superadmin'])) : ?><a href="<?php echo "/admin/calls/admins/{$call->id}"; ?>">[Administradores]</a><?php endif; ?>
                     <a href="<?php echo "/admin/calls/conf/{$call->id}"; ?>">[Configuraci&oacute;n]</a>
@@ -122,7 +122,7 @@ $filters = $vars['filters'];
                     <a href="<?php echo "/admin/calls/posts/{$call->id}"; ?>">[Posts]</a>
                     &nbsp;|&nbsp;&nbsp;&nbsp;
                     <?php if ($call->translate) : ?><a href="<?php echo "/admin/transcalls/edit/{$call->id}"; ?>">[Asignar traducción]</a>
-                    <?php else : ?><a href="<?php echo "/admin/transcalls/add/?call={$call->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
+                    <?php else : ?><a href="<?php echo "/admin/transcalls/add?call={$call->id}"; ?>">[Habilitar traducción]</a><?php endif; ?>
                     <?php if (isset($_SESSION['user']->roles['translator'])) : ?><a href="<?php echo "/dashboard/translates"; ?>" target="_blank">[Abrir Mis Traducciones]</a><?php endif; ?>
                 </td>
             </tr>
