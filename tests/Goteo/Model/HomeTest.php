@@ -42,7 +42,7 @@ class HomeTest extends TestCase {
         }
 
         //delete statically
-        $this->assertTrue(Home::delete($ob->item, self::$data['node'], self::$data['type']));
+        $this->assertTrue(Home::remove($ob->item, self::$data['node'], self::$data['type']));
 
         return $ob;
     }
