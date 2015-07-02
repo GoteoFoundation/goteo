@@ -111,7 +111,7 @@ $(document).ready(function(){
 });
 </script>
 
-    <form method="post" action="/dashboard/projects/updates/<?= $id? $vars['action'].'/'.$id : $vars['action'] ?>" class="project" enctype="multipart/form-data">
+    <form method="post" action="/dashboard/projects/updates/<?= $id ? $vars['action'].'/'.$id : $vars['action'] ?>" class="project" enctype="multipart/form-data">
 
     <?php echo SuperForm::get(array(
         //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
