@@ -50,7 +50,7 @@ class SessionListener implements EventSubscriberInterface
             Message::info(Text::get('session-expired'));
         });
         Session::onSessionDestroyed(function () {
-            Message::info('That\'s all folks!');
+            //Message::info('That\'s all folks!');
         });
 
         // Mantain user in secure enviroment if logged and ssl config on
