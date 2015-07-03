@@ -34,7 +34,7 @@ include __DIR__ . '/../prologue.html.php';
 
             <?php echo $steps ?>
 
-            <?php if($vars['step']) echo View::get("contract/edit/{$vars['step']}.html.php", $vars + array('level' => 3)); ?>
+            <?php if($vars['step']) echo View::get("contract/edit/{$vars['step']}.html.php", array_merge($vars, array('level' => 3))); ?>
 
             <?php echo $steps ?>
 

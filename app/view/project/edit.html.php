@@ -59,7 +59,7 @@ include __DIR__ . '/../prologue.html.php';
 
                 if (count($vars['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación
 
-                if($vars['step']) echo View::get("project/edit/{$vars['step']}.html.php", $vars + array('level' => 3, 'next' => $next_step));
+                if($vars['step']) echo View::get("project/edit/{$vars['step']}.html.php", array_merge($vars, array('level' => 3, 'next' => $next_step)));
 
                 if (count($vars['steps']) > 1) echo $steps; // si solo se permite un paso no ponemos la navegación
 
