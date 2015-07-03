@@ -258,6 +258,7 @@ div.widget.project-support div.tagmark span.small {
     font-size: 0.8em !important;
     font-weight: normal !important;
 	line-height: normal;
+    display:block;
 }
 
 /* Dos lineas para el en marcha y aun puedes */
