@@ -45,7 +45,7 @@ $url_project_create = $this->url_project_create ? $this->url_project_create : '/
                         <li><a href="/dashboard/profile"><span><?= $this->text('dashboard-menu-profile') ?></span></a></li>
                         <li><a href="/dashboard/activity"><span><?= $this->text('dashboard-menu-activity') ?></span></a></li>
                         <li><a href="/dashboard/projects"><span><?= $this->text('dashboard-menu-projects') ?></span></a></li>
-                        <li><a href="/dashboard/profile/preferences"><span><?= $this->text('dashboard-menu-profile-references'); ?></span></a></li>
+                        <li><a href="/dashboard/profile/preferences"><span><?= $this->text('dashboard-menu-profile-preferences'); ?></span></a></li>
 
                         <?php if ( isset($this->get_user()->roles['caller']) ) : ?>
                             <li><a href="/dashboard/calls"><span><?= $this->text('dashboard-menu-calls') ?></span></a></li>
