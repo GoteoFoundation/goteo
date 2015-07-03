@@ -61,7 +61,7 @@ $(document).ready(function(){
 });
 </script>
 
-<form method="post" action="/admin/info/<?php echo $vars['action']; ?>/<?php echo $post->id; ?>" class="project" enctype="multipart/form-data" style="margin-bottom: 20px;">
+<form method="post" action="/admin/info/<?= $post->id ? $vars['action'].'/'.$post->id : $vars['action'] ?>" class="project" enctype="multipart/form-data" style="margin-bottom: 20px;">
 
     <?php echo new NormalForm(array(
 
