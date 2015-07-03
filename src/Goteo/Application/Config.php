@@ -217,6 +217,8 @@ class Config {
         define('TPV_ENCRYPT_KEY', self::get('tpv.encrypt_key'));
         define('OAUTH_FACEBOOK_ID', self::get('oauth.facebook.id'));
         define('OAUTH_FACEBOOK_SECRET', self::get('oauth.facebook.secret'));
+        define('OAUTH_GOOGLE_ID', self::get('oauth.google.id'));
+        define('OAUTH_GOOGLE_SECRET', self::get('oauth.google.secret'));
         define('OAUTH_TWITTER_ID', self::get('oauth.twitter.id'));
         define('OAUTH_TWITTER_SECRET', self::get('oauth.twitter.secret'));
         define('OAUTH_LINKEDIN_ID', self::get('oauth.linkedin.id'));

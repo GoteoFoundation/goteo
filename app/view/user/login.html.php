@@ -119,7 +119,7 @@ jQuery(document).ready(function($) {
                 $logins = array(
 					'facebook' => '<a href="/user/oauth?provider=facebook">' . Text::get('login-signin-facebook') . '</a>',
 					'twitter' => '<a href="/user/oauth?provider=twitter">' . Text::get('login-signin-twitter') . '</a>',
-					'Google' => '<a href="/user/oauth?provider=Google">' . Text::get('login-signin-google') . '</a>',
+					'google' => '<a href="/user/oauth?provider=google">' . Text::get('login-signin-google') . '</a>',
 					'Yahoo' => '<a href="/user/oauth?provider=Yahoo">' . Text::get('login-signin-yahoo') . '</a>',
 					'Ubuntu' => '<a href="/user/oauth?provider=Ubuntu">' . Text::get('login-signin-ubuntu') . '</a>',
 					'linkedin' => '<a href="/user/oauth?provider=linkedin">' . Text::get('login-signin-linkedin') . '</a>',
