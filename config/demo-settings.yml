@@ -207,6 +207,11 @@ oauth:
         id:     aaaaaaaaaaaa     #
         secret: aaaaaaaaaaaaaaaa #
 
+    # Credenciales Google
+    google:
+        id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        secret: aaaaaaaaaaaaaaaaaa
+
 # recaptcha
 recaptcha:
     public:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
